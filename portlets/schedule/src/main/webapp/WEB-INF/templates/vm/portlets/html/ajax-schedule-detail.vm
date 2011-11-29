@@ -44,7 +44,15 @@
 #ALtableheaderWide()
 #if(!$!result.isActivity())
 #ALtdcaption("名前")
-#ALtditem($!{result.Detail.User.AliasName})
+#ALtditemheader()
+<br>
+$!{result.Detail.User.AliasName}
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreenPrint").addQueryData("view_date",$!{result.getViewDate().toString()})');void(0);" title="印刷画面を開く" class="floatRight" style="padding:4px 3px;">
+<span>
+<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
+</span>
+</a>
+#ALtditemfooter()
 #end
 #ALtdcaption("日時")
 #ALtditemheader()
@@ -143,14 +151,13 @@ ${record.FacilityName}<br/>
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
 <tr>
 #ALtdcellheaderAtt("colspan='2' align='center'")
-
 #if( !$!result.isActivity() && ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
     <div align="left" style="padding:0px 0px 2px 0px">
     #if($viewDateEnable == "true")
         #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
         <h3>削除する場合の条件</h3>
         #set($prestr = "$!{result.Detail.User.AliasName} の")
-        
+
             #if($hasMember && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
             <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
@@ -243,11 +250,11 @@ ${record.FacilityName}<br/>
         #end
         #end
     #end
-    
+
     #if($!{result.hasAuthoritySelfInsert()} && ($viewDateEnable == "true"))
     #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" "コピーして登録する")
     #end
-    
+
     #ALajaxbuttonClose()
     </tr>
 #else

@@ -87,6 +87,12 @@ public class ScheduleSelectData extends
   /** <code>facilities</code> 共有設備 */
   private List<FacilityResultData> facilities;
 
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype;
+
+  /** <code>user</code> ユーザー */
+  private ALEipUser user;
+
   /** <code>hasAuthorityOtherEdit</code> アクセス権限 */
   private boolean hasAuthorityOtherEdit = false;
 
@@ -121,8 +127,15 @@ public class ScheduleSelectData extends
     // 展開されるパラメータは以下の通りです。
     // ・userid 形式 int
 
+    // アクセスコントロール
+    int loginUserId = ALEipUtils.getUserId(rundata);
+
+    this.setUser(ALEipUtils.getALEipUser(loginUserId));
+
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
+    viewtype = "detail";
+
     view_date = new ALDateTimeField("yyyy-MM-dd");
     if (ALEipUtils.isMatch(rundata, context)) {
       if (rundata.getParameters().containsKey("view_date")) {
@@ -510,6 +523,33 @@ public class ScheduleSelectData extends
 
   public List<FacilityResultData> getFacilityList() {
     return facilities;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
+  }
+
+  /**
+   * ユーザーを取得します。
+   * 
+   * @return
+   */
+  public ALEipUser getUser() {
+    return user;
+  }
+
+  /**
+   * ユーザーを設定します。
+   * 
+   * @param user
+   */
+  public void setUser(ALEipUser user) {
+    this.user = user;
   }
 
   /**

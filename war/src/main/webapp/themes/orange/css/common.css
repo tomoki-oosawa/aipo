@@ -3302,6 +3302,7 @@ float:left;
 }
 .auiSelectButton li.active a.last {
 	border-right:none;
+	padding-left: 2px;
 }
 .auiSelectButton li.active a.last,
 .auiSelectButton li.active a.last:hover,

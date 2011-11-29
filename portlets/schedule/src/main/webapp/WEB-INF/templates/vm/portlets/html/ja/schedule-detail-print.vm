@@ -1,0 +1,217 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+<div id="printHeader">
+<div class="buttons">
+<a href="javascript:print();"><img src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+</div>
+※この枠の範囲の設定項目は、印刷へ反映されません。
+<table>
+<tr>
+<th>表示する幅</th>
+<td>
+<select id="print_width">
+<option value="100%" >100%</option>
+<option value="90%">90%</option>
+<option value="80%">80%</option>
+<option selected="selected" value="600px">600ピクセル</option>
+<option value="620px">620ピクセル</option>
+<option value="640px">640ピクセル</option>
+<option value="660px">660ピクセル</option>
+<option value="680px">680ピクセル</option>
+<option value="700px">700ピクセル</option>
+<option value="720px">720ピクセル</option>
+<option value="740px">740ピクセル</option>
+<option value="760px">760ピクセル</option>
+<option value="780px">780ピクセル</option>
+<option value="800px">800ピクセル</option>
+</select>
+<input type="button" value="変更する" onclick="change_print_form()"/></td>
+</tr>
+<tr>
+<th>文字サイズ</th>
+<td><select id="print_word_size">
+<option value="8pt">8pt</option>
+<option value="9pt">9pt</option>
+<option selected="selected" value="10pt">10pt</option>
+<option value="11pt">11pt</option>
+<option value="12pt">12pt</option>
+<option value="13pt">13pt</option>
+<option value="14pt">14pt</option>
+<option value="16pt">16pt</option>
+<option value="18pt">18pt</option>
+<option value="20pt">20pt</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>その他表示設定</th>
+<td>
+<input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。<br />
+</td>
+</tr>
+<th></th>
+</table>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = 'none';
+      }
+    }
+  }
+  //]]>
+</script>
+
+
+<div id="printBody" style="width:600px;font-size:10pt;">
+<h1>$!{result.User.AliasName}さん $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 $!{result.Detail.Date2}のスケジュール</h1>
+
+
+<table><tbody>
+
+#ALtdcaption("名前")
+#ALtditem($!{result.Detail.User.AliasName})
+#ALtdcaption("日時")
+#ALtditemheader()
+#if($!{result.Detail.isSpan()})
+$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.EndDate.Year} 年 $!{result.Detail.EndDate.Month} 月 $!{result.Detail.EndDate.Day} 日 $!{result.Detail.EndDate.DayOfWeek}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+#elseif($!{result.Detail.isRepeat()})
+$!{result.Detail.Text}<br/>
+$!{result.Detail.Date2}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+#else
+$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.Date2}
+#if(! ${result.Detail.isPublic()})
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#end
+#end
+#if($!{result.Detail.isTmpreserve()})
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+#end
+#ALtditemfooter()
+#ALtdcaption('予定')
+#ALtditem($!{result.Detail.Name})
+
+#* 共有カテゴリ連携（ここから）  *#
+
+#ALtdcaption('共有カテゴリ')
+#ALtditem($!{result.Detail.CommonCategoryName})
+
+#* 共有カテゴリ連携（ここまで）  *#
+
+#ALtdcaption('場所')
+#ALtditem($!{result.Detail.Place})
+#ALtdcaption('内容')
+#ALtditem($!{result.Detail.Note})
+#ALtdcaption('公開区分')
+#ALtditemheader()
+#if($!result.Detail.isPublic())
+公開 （スケジュールを全員に公開します）
+#elseif(!$!result.Detail.isHidden())
+非公開 （スケジュールの日時のみを全員に公開します）
+#else
+完全に隠す （スケジュールをすべて非公開とします）
+#end
+#ALtditemfooter()
+#ALtdcaption('参加ユーザー')
+#ALtditemheader()
+#set($counter = 0)
+#foreach($record in $!result.MemberList)
+    #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
+    $!record.AliasName
+        #if($result.getStatus($record.UserId.Value) == "T")
+        <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+        #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
+        #set($counter = $counter + 1)
+        <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
+        #end
+    <br/>
+    #end
+#end
+#if($counter < ($!result.MemberList.size() - 1))
+#set ($hasMember = true)
+#end
+#if($hasMember)
+<div style="padding:4px 0px 0px 0px">
+#if($!{result.Detail.isEditable()}) 参加ユーザーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加ユーザー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
+</div>
+
+<div>
+#if($!{result.Detail.MailFlag} == "A")
+更新時に参加ユーザーにメール通知をおこないます。
+#else
+更新時に参加ユーザーにメール通知をおこないません。
+#end
+</div>
+#end
+
+#ALtdcellfooter()
+
+#ALtdcaption('設備')
+#ALtditemheader()
+#foreach($record in $!result.FacilityList)
+${record.FacilityName}<br/>
+#end
+#ALtditemfooter()
+
+#ALtdcaption('登録者名')
+#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
+#ALtdcaption('更新者名')
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
+
+
+</tbody></table>
+</div>
+
+<!--
+#if($!ajax_onloadimage)
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+#else
+  <script type="text/javascript" language="JavaScript">
+    //<![CDATA[
+    dojo.addOnLoad(function(){
+      aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
+    });
+    //]]>
+  </script>
+#end
+-->
+

@@ -82,6 +82,10 @@
 #if ($!result.Viewtype == "weekly-group")
 #parse("/portlets/html/ja/schedule-weekly-group-print.vm")
 #end
+## Detail
+#if ($!result.Viewtype == "detail")
+#parse("/portlets/html/ja/schedule-detail-print.vm")
+#end
 #ALspacebothfooter()
 
 </html>
