@@ -54,10 +54,6 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('Webメール')
 
-#if($StatStr && !($StatStr == ''))
-<div class="spaceBottom"><div class="indicator" id="indicator-$portlet_id">$StatStr</div></div>
-#end
-
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
@@ -77,6 +73,9 @@
 <a class="auiButton" title="メール受信" href="javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
 <span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
 </a>
+#if($StatStr && !($StatStr == ''))
+<span class="indicator" id="indicator-$portlet_id">$StatStr</span>
+#end
 </div>
 #if($result.List.size() != 0)
 #AUIajaxpageview('WebMailListScreen' $result)
