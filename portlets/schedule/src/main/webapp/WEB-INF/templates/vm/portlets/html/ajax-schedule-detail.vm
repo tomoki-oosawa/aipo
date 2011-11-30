@@ -45,13 +45,7 @@
 #if(!$!result.isActivity())
 #ALtdcaption("名前")
 #ALtditemheader()
-<br>
 $!{result.Detail.User.AliasName}
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreenPrint").addQueryData("view_date",$!{result.getViewDate().toString()})');void(0);" title="印刷画面を開く" class="floatRight" style="padding:4px 3px;">
-<span>
-<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
-</span>
-</a>
 #ALtditemfooter()
 #end
 #ALtdcaption("日時")
@@ -208,6 +202,7 @@ ${record.FacilityName}<br/>
         #end
     #end
     </div>
+    <span style="padding:4px 3px;"><a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreenPrint").addQueryData("view_date",$!{result.getViewDate().toString()})');void(0);" title="印刷画面を開く"><img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" /></a></span>
     #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()})
         #if($!{result.hasAuthoritySelfEdit()} && ($viewDateEnable == "true"))
             #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
