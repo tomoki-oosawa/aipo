@@ -608,7 +608,7 @@ public class ALUserManagement extends TurbineBaseService implements
       for (int i = 0; i < portlet_size; i++) {
         Portlets p = portlets.getPortlets(i);
         if (p.getSecurityRef().getParent().equals("admin-view")) {
-          portlets.removePortlets(i);
+          remove_index.add(Integer.valueOf(i));
         }
       }
       Collections.reverse(remove_index);
