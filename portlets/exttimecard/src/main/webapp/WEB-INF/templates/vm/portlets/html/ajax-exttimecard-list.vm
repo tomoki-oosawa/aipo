@@ -25,20 +25,41 @@
 #else
 #if($!result.TargetUserId != "")
 <div class="auiSummaryMeta clearfix">
+<div class="auiSelectButton floatLeft">
+<ul class="floatLeft">
+<li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月" class="btn" style="width:4em;"><span>今月</span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月" class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="先月" /></span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月" class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="来月" /></span></a></li>
+</ul>
+</div>
+<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
 #if($!result.hasAclXlsExport())
-<div class="floatLeft">
+<div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addQueryData('target_user_id', "$!result.TargetUserId").addQueryData('view_month', "$!result.ViewMonth")) )
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #end
-<div class="auiSelectButton floatRight">
-<div class="floatLeft" style="line-height:24px;margin-right:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
-<ul class="floatLeft">
-<li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月</span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月へ" /></span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月へ" /></span></a></li>
-</ul>
 </div>
+<div class="auiSummaryMeta">
+<form class="auiForm">
+<select name="target_group_name_list" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:16em">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
+#foreach( $record in $!result.MyGroupList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+#end
+#if(($result.MyGroupList.size() > 0) && ($result.PostMap.size() > 0))
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+#end
+#foreach( $record in $!result.PostMap )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+#end
+</select>
+<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:16em">
+#foreach($record in $!result.Users)
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
+#end
+</select>
+</form>
 </div>
 #if($!result.TargetUserId == $!result.UserId)
 #set($col_count = 5)
@@ -240,17 +261,6 @@
 </tr>
 #end
 #AUItablefooter()
-
-<div class="auiSummaryMeta clearfix">
-<div class="auiSelectButton floatRight">
-<div class="floatLeft" style="line-height:24px;margin-right:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
-<ul class="floatLeft">
-<li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月</span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_l.gif" alt="先月へ" /></span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="https://app.aipo.com/themes/orange/images/icon/icon_arrow_r.gif" alt="来月へ" /></span></a></li>
-</ul>
-</div>
-</div>
 
 #else
 <div class="message">指定されたグループにはユーザーが所属していません。</div>
