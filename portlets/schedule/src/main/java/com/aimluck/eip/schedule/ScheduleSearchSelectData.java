@@ -54,7 +54,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private int userid;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -126,7 +126,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   *
+   * 
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -142,7 +142,6 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       boolean is_member = record.isMember();
 
       if ("C".equals(record.getPublicFlag())
-        && (userid != record.getUserId().intValue())
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
         rd.setName("非公開");
@@ -169,7 +168,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       // ダミーか
       rd.setDummy("D".equals(record.getStatus()));
       // ログインユーザかどうか
-      // rd.setLoginuser(record.getUserId().intValue() == userid);
+      // rd.setLoginuser(is_member);
       // オーナーかどうか
       rd.setOwner(record.getOwnerId().intValue() == userid);
       // 共有メンバーかどうか
@@ -212,7 +211,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   *
+   * 
    * @return
    */
   @Override

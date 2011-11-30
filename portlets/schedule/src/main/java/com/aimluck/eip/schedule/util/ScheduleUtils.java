@@ -3649,7 +3649,12 @@ public class ScheduleUtils {
       body
         .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
     } else {
-      body.append(" AND (eip_t_schedule.public_flag <> 'P'");
+      if (isSearch) {
+        body.append(" AND (eip_t_schedule.public_flag = 'O'");
+
+      } else {
+        body.append(" AND (eip_t_schedule.public_flag <> 'P'");
+      }
       body
         .append(" OR ((SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) > 0 )");
       body
