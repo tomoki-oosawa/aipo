@@ -3413,7 +3413,7 @@ float:left;
 	border:solid 1px #ccc;
 	border-radius:2px;
 	background:#f0f0f0;
-	>background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
+	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));/*Ch*/
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);/*Fx*/
 }

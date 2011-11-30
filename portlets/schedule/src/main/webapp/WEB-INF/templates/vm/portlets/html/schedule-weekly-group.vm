@@ -71,11 +71,13 @@
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 
-<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="floatRight" style="padding:4px 3px;">
+<div class="floatRight">
+<a href="javascript:void(0);" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new")');void(0);" title="印刷画面を開く" class="auiButton pl5 pr5">
 <span>
-<img src="themes/$!result.Theme/images/icon/print.gif" width="17" height="18" alt="印刷" />
+<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
 </span>
 </a>
+</div>
 
 #if(($!{hasAcl}) && $!{hasAcl} == "T")
 	<div class="auiForm">
@@ -101,12 +103,6 @@
         		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","facilitygroup"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
             #end
         </select>
-<<<<<<< .mine
-    	#if($result.GroupList.size() <= 0)
-    				&nbsp;&nbsp;<a href="$!result.MyGroupURI">こちらからグループを追加できます。</a>
-    	#end
-=======
->>>>>>> .r2103
 	</div>
 #end
 
