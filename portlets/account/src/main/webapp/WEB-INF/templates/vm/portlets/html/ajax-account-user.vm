@@ -39,7 +39,7 @@
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">（全体）</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">すべての部署</option>
 #foreach( $record in $result.PostMap )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post").addQueryData("adminfiltered",$adminfiltered ))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
 #end

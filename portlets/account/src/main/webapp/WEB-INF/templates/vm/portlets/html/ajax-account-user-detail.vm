@@ -33,7 +33,7 @@
 #ALajaxdetailformheader("ユーザー")
 <div id="messageDiv"></div>
 #ALtableheaderWide()
-#ALtdcaption('ログイン名')
+#ALtdcaption('ユーザー名')
 #ALtditem($!result.Detail.UserName)
 #ALtdcaption('名前')
 #ALtditem($!result.Detail.Name)
