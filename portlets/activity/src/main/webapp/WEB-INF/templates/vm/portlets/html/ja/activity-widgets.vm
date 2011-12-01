@@ -31,8 +31,8 @@
 #ALsetCategoryList('Msgboard' '掲示板')
 #ALsetCategoryList('blog' 'ブログ')
 #ALsetCategoryList('todo' '共有ToDo')
-#ALsetCategoryList('Cabinet' '共有ファイル')
-#ALsetCategoryList('GadgetAdd' 'その他（Aipoアプリ）')
+#ALsetCategoryList('Cabinet' '共有フォルダ')
+#ALsetCategoryList('GadgetAdd' 'Aipoアプリ')
 </ul>
 </div>
 </div>
