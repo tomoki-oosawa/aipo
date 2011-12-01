@@ -560,10 +560,16 @@ public class BlogUtils {
     }
     if (valid_length < src.length()) {
       src = src.substring(0, valid_length);
-      m = Pattern.compile(a).matcher(src);
-      int stt_a = m.groupCount();
-      m = Pattern.compile(_a).matcher(src);
-      int end_a = m.groupCount();
+      Matcher am = Pattern.compile(a).matcher(src);
+      int stt_a = 0;
+      while (am.find()) {
+        stt_a++;
+      }
+      Matcher _am = Pattern.compile(_a).matcher(src);
+      int end_a = 0;
+      while (_am.find()) {
+        end_a++;
+      }
       sb.delete(0, sb.length());
       sb.append(src);
       for (int i = 0; i < stt_a - end_a; i++) {
