@@ -64,8 +64,8 @@ public class WorkflowSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(WorkflowSelectData.class.getName());
 
   /** サブメニュー（確認依頼） */
   public static final String SUBMENU_REQUESTED = "requested";
@@ -295,8 +295,8 @@ public class WorkflowSelectData extends
     Integer login_user_id =
       Integer.valueOf((int) login_user.getUserId().getValue());
 
+    // 受信
     if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
-      // 確認依頼
 
       Expression exp1 =
         ExpressionFactory.matchExp(
@@ -306,58 +306,59 @@ public class WorkflowSelectData extends
           login_user_id);
       query.setQualifier(exp1);
 
-      if (TAB_UNCONFIRMED.equals(currentTab)) {
-        Expression exp21 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            WorkflowUtils.DB_PROGRESS_WAIT);
-        Expression exp22 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-              + "."
-              + EipTWorkflowRequestMap.STATUS_PROPERTY,
-            WorkflowUtils.DB_STATUS_CONFIRM);
-        Expression exp31 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-              + "."
-              + EipTWorkflowRequestMap.STATUS_PROPERTY,
-            WorkflowUtils.DB_STATUS_REQUEST);
-        Expression exp32 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            WorkflowUtils.DB_PROGRESS_DENAIL);
+      // TAB_UNCONFIRMED.equals(currentTab)
+      Expression exp21 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_WAIT);
+      Expression exp22 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.STATUS_PROPERTY,
+          WorkflowUtils.DB_STATUS_CONFIRM);
+      Expression exp31 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.STATUS_PROPERTY,
+          WorkflowUtils.DB_STATUS_REQUEST);
+      Expression exp32 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_DENAIL);
 
-        query.andQualifier((exp21.andExp(exp22)).orExp(exp31.andExp(exp32)));
-      } else if (TAB_CONFIRMED.equals(currentTab)) {
-        Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            WorkflowUtils.DB_PROGRESS_WAIT);
-        query.andQualifier(exp2);
+      query.andQualifier((exp21.andExp(exp22)).orExp(exp31.andExp(exp32)));
 
-        Expression exp3 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-              + "."
-              + EipTWorkflowRequestMap.STATUS_PROPERTY,
-            WorkflowUtils.DB_STATUS_ACCEPT);
-        query.andQualifier(exp3);
-      } else {
-        Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            WorkflowUtils.DB_PROGRESS_ACCEPT);
-        query.andQualifier(exp2);
+      // TAB_CONFIRMED.equals(currentTab)
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_WAIT);
 
-        Expression exp3 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-              + "."
-              + EipTWorkflowRequestMap.STATUS_PROPERTY,
-            WorkflowUtils.DB_STATUS_ACCEPT);
-        query.andQualifier(exp3);
-      }
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.STATUS_PROPERTY,
+          WorkflowUtils.DB_STATUS_ACCEPT);
+      query.orQualifier(exp3.andExp(exp2));
+
+      // TAB_COMPLETED.equals(currentTab)
+      Expression exp52 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_ACCEPT);
+
+      Expression exp53 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
+            + "."
+            + EipTWorkflowRequestMap.STATUS_PROPERTY,
+          WorkflowUtils.DB_STATUS_ACCEPT);
+      query.orQualifier(exp53.andExp(exp52));
+
+      // 送信
     } else {
       // 作成分
       Expression exp1 =
@@ -366,35 +367,6 @@ public class WorkflowSelectData extends
           login_user_id);
       query.setQualifier(exp1);
 
-      if (TAB_UNFINISHED.equals(currentTab)) {
-        List<String> progressList = new ArrayList<String>();
-        progressList.add(WorkflowUtils.DB_PROGRESS_WAIT);
-        progressList.add(WorkflowUtils.DB_PROGRESS_DENAIL);
-        Expression exp2 =
-          ExpressionFactory.inExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            progressList);
-        query.andQualifier(exp2);
-
-        // C（確認）/ W（待ち状態）/ D（否認）があれば、未完了の状態
-        List<String> stausList = new ArrayList<String>();
-        stausList.add(WorkflowUtils.DB_STATUS_CONFIRM);
-        stausList.add(WorkflowUtils.DB_STATUS_WAIT);
-        stausList.add(WorkflowUtils.DB_STATUS_DENIAL);
-        Expression exp3 =
-          ExpressionFactory.inExp(
-            EipTWorkflowRequest.EIP_TWORKFLOW_REQUEST_MAP_PROPERTY
-              + "."
-              + EipTWorkflowRequestMap.STATUS_PROPERTY,
-            stausList);
-        query.andQualifier(exp3);
-      } else {
-        Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTWorkflowRequest.PROGRESS_PROPERTY,
-            WorkflowUtils.DB_PROGRESS_ACCEPT);
-        query.andQualifier(exp2);
-      }
       query.distinct();
     }
 
