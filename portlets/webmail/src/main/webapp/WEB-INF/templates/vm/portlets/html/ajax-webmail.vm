@@ -42,7 +42,7 @@
 
 #set ($StatStr = $!{result.StatStr})
 #if($StatStr && !($StatStr == ''))
-<div class="spaceBottom"><div class="indicator" id="indicator-'$!portlet.ID">$StatStr</div></div>
+<div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
 #end
 #if($!result.List && $!result.List.size() <= 0)
 <div class="message">受信メールはありません。</div>
