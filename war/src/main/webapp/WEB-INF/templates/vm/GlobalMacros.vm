@@ -1553,6 +1553,10 @@ $link.get(0)
 <a title="$text" href="$url" class="auiButton">$text</a>
 #end
 
+#macro(AUIajaxbuttonLink $title $url)
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)');" >$title</a>
+#end
+
 #macro(AUIajaxbuttonLinkCallback $title $url $portlet_id $callback)
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
 #end
@@ -1636,6 +1640,16 @@ $item.get(0)
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdelete$portlet_id" value="" />
 #end
 
+#macro(AUIajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
+<a name="ajaxbuttonCheckboxEnable" class="auiButton" onclick="aimluck.io.ajaxCheckboxEnableSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxenable$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
+<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxenable$portlet_id" value="" />
+#end
+
+#macro(AUIajaxbuttonCheckboxDisable $name $url $indicator_id $portlet_id $rt)
+<a name="ajaxbuttonCheckboxDisable" class="auiButton" onclick="aimluck.io.ajaxCheckboxDisableSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxdisable$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
+<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdisable$portlet_id" value="" />
+#end
+
 #macro(AUIsearchresult $keyword)
 #if($!keyword && $!keyword != "")
 <div class="auiSummaryMeta auiSearchResult">検索結果：$!keyword</div>
@@ -1644,6 +1658,11 @@ $item.get(0)
 
 #macro(AUIcontentsAreaHeader)
 <div id="auiContentsArea"><div id="auiContentsAreaInner">
+#end
+
+
+#macro(AUIwideAreaHeader)
+<div id="auiWideArea"><div id="auiWideAreaInner">
 #end
 
 #macro(AUIcontentsAreaFooter)

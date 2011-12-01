@@ -29,4 +29,4 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-account-user.vm")
-#parse("/portlets/html/ja/account-user-menu.vm")
+##parse("/portlets/html/ja/account-user-menu.vm")
