@@ -60,8 +60,8 @@ public class WorkflowAllSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(WorkflowAllSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WorkflowAllSelectData.class.getName());
 
   //
   /** サブメニュー（作成分）のタブ（未完了） */
@@ -252,6 +252,20 @@ public class WorkflowAllSelectData extends
 
     SelectQuery<EipTWorkflowRequest> query =
       Database.query(EipTWorkflowRequest.class);
+
+    if (TAB_UNFINISHED.equals(currentTab)) {
+      Expression exp1 =
+        ExpressionFactory.noMatchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_ACCEPT);
+      query.setQualifier(exp1);
+    } else if (TAB_FINISHED.equals(currentTab)) {
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTWorkflowRequest.PROGRESS_PROPERTY,
+          WorkflowUtils.DB_PROGRESS_ACCEPT);
+      query.setQualifier(exp1);
+    }
 
     return buildSelectQueryForFilter(query, rundata, context);
   }

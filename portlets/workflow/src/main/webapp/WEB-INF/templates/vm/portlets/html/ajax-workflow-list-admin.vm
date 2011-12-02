@@ -31,23 +31,6 @@
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
-<div class="auiSummaryMeta clearfix">
-<form class="floatLeft">
-#ALselectpdheader("category" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-
-#if ($all_flg)
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">すべての分類</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-
-#else
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">すべての分類</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-#end
-</select></form></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Workflow')
@@ -64,7 +47,7 @@
 #ALtdheadThin("#ALajaxsort('price' '金額' $result 'WorkflowAllListScreen')")
 #ALtdheadThin("#ALajaxsort('create_date' '作成日時' $result 'WorkflowAllListScreen')")
 #ALtdheadThin("最終閲覧者")
-#ALtdheadThin("進捗")
+#ALtdheadThin("進歩")
 </tr>
 #foreach ($record in $result.List)
 <tr>
