@@ -65,7 +65,7 @@
         <parameter name="function_after_function1" value="aipo.workflow.onLoadWorkflowDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 	    <parameter name="p3a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>ワークフロー表題の表示文字数</title>
+                <title>ワークフロー標題の表示文字数</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>

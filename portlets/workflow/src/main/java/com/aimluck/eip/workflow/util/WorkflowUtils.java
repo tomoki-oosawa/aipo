@@ -1221,7 +1221,7 @@ public class WorkflowUtils {
       String CR, boolean isCell, WorkflowMailBean mailBean) {
     StringBuilder body = new StringBuilder("");
 
-    body.append("[表題]").append(CR);
+    body.append("[標題]").append(CR);
     body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
 
     if (request.getRequestName() != null

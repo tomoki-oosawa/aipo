@@ -380,7 +380,6 @@ public class WorkflowAllSelectData extends
 
       String lastUpdateUser = null;
       EipTWorkflowRequestMap map = null;
-      int order = 0;
       List<EipTWorkflowRequestMap> maps =
         WorkflowUtils.getEipTWorkflowRequestMap(record);
       int size = maps.size();
@@ -390,7 +389,6 @@ public class WorkflowAllSelectData extends
         map = maps.get(size - 1);
         ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
         lastUpdateUser = user.getAliasName().getValue();
-        order = map.getOrderIndex().intValue();
       } else {
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
@@ -399,14 +397,20 @@ public class WorkflowAllSelectData extends
             ALEipUser user =
               ALEipUtils.getALEipUser(map.getUserId().intValue());
             lastUpdateUser = user.getAliasName().getValue();
-            order = map.getOrderIndex().intValue() - 1;
             break;
           }
         }
       }
-
-      rd.setStateString(order + "/" + (size - 1));
-
+      String state = new String();
+      if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
+        state = "完了";
+      } else if (WorkflowUtils.DB_PROGRESS_WAIT.equals(record.getProgress())
+        || WorkflowUtils.DB_PROGRESS_REAPPLY.equals(record.getProgress())) {
+        state = "進行中";
+      } else {
+        state = "否認";
+      }
+      rd.setStateString(state);
       rd.setLastUpdateUser(lastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(

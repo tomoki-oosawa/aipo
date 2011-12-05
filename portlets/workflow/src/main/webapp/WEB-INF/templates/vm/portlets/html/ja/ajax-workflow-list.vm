@@ -19,6 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
+#if($result.CurrentSubMenu == "requested")
+#set ($title = "申請者")
+#else
+#set ($title = "決済者")
+#end
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
@@ -31,6 +36,24 @@
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
+
+<div class="auiSummfloatLeftaryMeta clearfix">
+<form class="auiForm">
+#ALselectpdheader("category" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+
+#if ($all_flg)
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">すべての分類</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+#end
+
+#else
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">すべての分類</option>
+#foreach( $record in $result.CategoryList )
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+#end
+#end
+</select></form></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Workflow')
@@ -43,23 +66,26 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
-#ALtdheadAtt("#ALajaxsort('request_name' '表題' $result 'WorkflowListScreen')" 'class=""')
-#ALtdheadThin("#ALajaxsort('price' '金額' $result 'WorkflowListScreen')")
-#ALtdheadThin("#ALajaxsort('create_date' '作成日時' $result 'WorkflowListScreen')")
-#ALtdheadThin("最終閲覧者")
-#ALtdheadThin("進歩")
+#ALtdhead("#ALajaxsort('request_name' '標題' $result 'WorkflowListScreen')")
+#ALtdheadAtt("状況" 'style="width:6em"')
+#ALtdheadAtt("$title" 'style="width:12em"')
+#ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
+#if($result.CurrentSubMenu == "requested")
+#set ($user = $!record.ClientName)
+#else
+#set ($user = $!record.LastUpdateUser)
+#end
 <tr>
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt("$!{record.PriceStr}&nbsp;円" 'class="right" nowrap="nowrap"')
-#ALtdcellAtt("$!record.CreateDateTime" 'class="center" nowrap="nowrap"')
-#ALtdcellAtt("$!record.LastUpdateUser" 'class="left" nowrap="nowrap"')
 #ALtdcellAtt("$!record.StateString" 'class="center" nowrap="nowrap"')
+#ALtdcellAtt("$user" 'nowrap="nowrap"')
+#ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()

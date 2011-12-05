@@ -71,10 +71,10 @@
 <input id=$NoteChangeFlag type="checkbox" style="display:none"/>
 <textarea id=$Note_id class="text wide" name=$Note rows="10" cols="40" onchange="aipo.workflow.onChangeNote()">$!result.Note</textarea>
 #ALtditemfooter()
-#ALtdcaption("$!result.getFieldName('price')")
-#ALtditemheader()
-#ALtextfield('price' $!result.Price '35%' 16 'disabled')&nbsp;円&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caution">￥、カンマ（,）は不要</span>
-#ALtditemfooter()
+##ALtdcaption("$!result.getFieldName('price')")
+##ALtditemheader()
+##ALtextfield('price' $!result.Price '35%' 16 'disabled')&nbsp;円&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caution">￥、カンマ（,）は不要</span>
+##ALtditemfooter()
 #ALtdcaption("#ALrequired('申請先')")
 #ALtditemheader()
 <input id="is_saved_route" name="is_saved_route" type="hidden" value="$!result.isSavedRoute" />

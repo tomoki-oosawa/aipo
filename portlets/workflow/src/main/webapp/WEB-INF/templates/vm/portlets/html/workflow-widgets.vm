@@ -26,58 +26,26 @@
 </div>
 
 <div class="auiWidget clearfix"><ul>
-<li>
-<span>あなた宛の依頼</span>
-<ul>
-<li #if($!result.currentTab == 'unconfirmed')class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("tab","unconfirmed").addQueryData("reset_params","true"))','$!portlet.ID');">未確認</a></li>
-<li #if($!result.currentTab == 'confirmed')class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("tab","confirmed").addQueryData("reset_params","true"))','$!portlet.ID');">確認済み</a></li>
-<li #if($!result.currentTab == 'completed')class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("tab","completed").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
-</ul>
-</li>
 
-<li>
-<span>作成した依頼</span>
 <ul>
 <li #if(($!result.currentTab == 'unfinished') && !($all_flg))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("tab","unfinished").addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
-<li #if(($!result.currentTab == 'finished') && !($all_flg))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("tab","finished").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">送信依頼</a></li>
 </ul>
-</li>
+
+
+<ul>
+<li #if($!result.currentTab == 'unconfirmed')class="active"#end>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unconfirmed"))','$!portlet.ID');">受信依頼</a></li>
+</ul>
+
 
 #if($!result.hasAuthorityOther())
-<li>
-<span>すべての依頼</span>
 <ul>
 <li #if(($!result.currentTab == 'unfinished') && ($all_flg))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("alltab","unfinished").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true"))','$!portlet.ID');">未完了</a></li>
-<li #if(($!result.currentTab == 'finished') && ($all_flg))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("alltab","finished").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true"))','$!portlet.ID');">完了</a></li>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true"))','$!portlet.ID');">すべての依頼</a></li>
 </ul>
-</li>
 #end
 </ul></div>
-
-<div class="auiWidget clearfix">
-<form class="auiForm">
-#ALselectpdheader("category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-
-#if ($all_flg)
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">すべての分類</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-
-#else
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">すべての分類</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-#end
-</select></form></div>
 
 </div>
 

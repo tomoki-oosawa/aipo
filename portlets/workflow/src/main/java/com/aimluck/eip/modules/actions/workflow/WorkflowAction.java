@@ -58,6 +58,7 @@ public class WorkflowAction extends ALBaseAction {
 
     // セッション情報をクリア
     clearWorkflowSession(rundata, context);
+    ALEipUtils.setTemp(rundata, context, "Workflow_Maximize", "false");
 
     WorkflowSelectData listData = new WorkflowSelectData();
     listData.initField();
@@ -84,6 +85,7 @@ public class WorkflowAction extends ALBaseAction {
 
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    ALEipUtils.setTemp(rundata, context, "Workflow_Maximize", "true");
     try {
       if (ALEipConstants.MODE_LIST.equals(mode)) {
         doWorkflow_list(rundata, context);

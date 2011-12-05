@@ -40,7 +40,7 @@
 <dt>分類</dt>
 <dd>$!{result.Detail.CategoryName}</dd>
 #if($!result.Detail.RequestName != '')
-<dt>表題</dt>
+<dt>標題</dt>
 <dd>$!result.Detail.RequestName</dd>
 #end
 <dt>投稿日</dt>
@@ -51,8 +51,8 @@
 <dd>$!result.Detail.PriorityString</dd>
 <dt>申請内容</dt>
 <dd>$!result.Detail.Note</dd>
-<dt>金額</dt>
-<dd>$!{result.Detail.PriceStr}&nbsp;円</dd>
+##<dt>金額</dt>
+##<dd>$!{result.Detail.PriceStr}&nbsp;円</dd>
 
 </dl>
 
