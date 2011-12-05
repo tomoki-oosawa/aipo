@@ -574,16 +574,19 @@ public class ToDoUtils {
       StringBuffer title;
       ALEipUser user;
       for (EipTTodoCategory record : categoryList2) {
-        rd = new ToDoCategoryResultData();
-        rd.initField();
-        rd.setCategoryId(record.getCategoryId().longValue());
         user = ALEipUtils.getALEipUser(record.getUserId());
-        title = new StringBuffer(record.getCategoryName());
-        title.append(" （");
-        title.append(user.getAliasName());
-        title.append("）");
-        rd.setCategoryName(title.toString());
-        categoryList.add(rd);
+        // exclude 「未分類」
+        if (user != null) {
+          rd = new ToDoCategoryResultData();
+          rd.initField();
+          rd.setCategoryId(record.getCategoryId().longValue());
+          title = new StringBuffer(record.getCategoryName());
+          title.append(" （");
+          title.append(user.getAliasName());
+          title.append("）");
+          rd.setCategoryName(title.toString());
+          categoryList.add(rd);
+        }
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
