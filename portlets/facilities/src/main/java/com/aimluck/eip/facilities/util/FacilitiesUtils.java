@@ -144,14 +144,14 @@ public class FacilitiesUtils {
 
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
-    statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
+    statement.append("  B.FACILITY_ID, B.FACILITY_NAME, B.SORT ");
     statement.append("FROM eip_facility_group as A ");
     statement.append("LEFT JOIN eip_m_facility as B ");
     statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
     statement.append("LEFT JOIN turbine_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("WHERE C.GROUP_NAME = #bind($groupname) ");
-    statement.append("ORDER BY B.FACILITY_NAME");
+    statement.append("ORDER BY B.SORT");
 
     String query = statement.toString();
 
@@ -183,14 +183,14 @@ public class FacilitiesUtils {
 
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
-    statement.append("  B.FACILITY_ID, B.FACILITY_NAME ");
+    statement.append("  B.FACILITY_ID, B.FACILITY_NAME, B.SORT ");
     statement.append("FROM eip_m_facility_group_map as A ");
     statement.append("LEFT JOIN eip_m_facility as B ");
     statement.append("  on A.FACILITY_ID = B.FACILITY_ID ");
     statement.append("LEFT JOIN eip_m_facility_group as C ");
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("WHERE C.GROUP_ID = #bind($groupid) ");
-    statement.append("ORDER BY B.FACILITY_NAME");
+    statement.append("ORDER BY B.SORT");
 
     String query = statement.toString();
 
@@ -222,7 +222,7 @@ public class FacilitiesUtils {
 
     // SQLの作成
     StringBuffer statement = new StringBuffer();
-    statement.append("SELECT B.FACILITY_ID, B.FACILITY_NAME ");
+    statement.append("SELECT B.FACILITY_ID, B.FACILITY_NAME, B.SORT ");
     statement.append("FROM eip_m_facility_group_map as A ");
     statement
       .append("LEFT JOIN eip_m_facility as B on A.FACILITY_ID = B.FACILITY_ID ");

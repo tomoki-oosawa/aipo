@@ -36,7 +36,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -904,10 +903,7 @@ public class ScheduleMonthlySelectData extends
       }
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
-      facilityList =
-        FacilitiesUtils
-          .getFacilitiesFromSelectQuery(new com.aimluck.eip.orm.query.SelectQuery<EipMFacility>(
-            EipMFacility.class));
+      facilityList = FacilitiesUtils.getFacilityAllList();
     }
 
     if ((userList == null || userList.size() == 0)
