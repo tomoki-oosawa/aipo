@@ -302,7 +302,7 @@ public class WebMailSelectData extends
    */
   private void loadUnreadMailSumMap(RunData rundata, Context context) {
     String unreadMailSumMapString =
-      ALEipUtils.getTemp(rundata, context, "unreadmailsummap");
+      ALEipUtils.getTemp(rundata, context, WebMailUtils.UNREAD_MAIL);
     if ((rundata.getParameters().containsKey("noupdateunread")
       || rundata.getParameters().containsKey("sort") || rundata
       .getParameters()
@@ -318,8 +318,11 @@ public class WebMailSelectData extends
         WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
     }
     // セッションに保存
-    ALEipUtils.setTemp(rundata, context, "unreadmailsummap", unreadMailSumMap
-      .toString());
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      WebMailUtils.UNREAD_MAIL,
+      unreadMailSumMap.toString());
   }
 
   /**

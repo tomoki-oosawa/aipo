@@ -171,6 +171,9 @@ public class WebMailAction extends ALBaseAction {
    */
   public void doWebmail_filter_list(RunData rundata, Context context)
       throws Exception {
+    // セッションを破棄
+    ALEipUtils.removeTemp(rundata, context, WebMailUtils.UNREAD_MAIL);
+
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
 
     WebMailFilterSelectData listData = new WebMailFilterSelectData();
@@ -182,6 +185,7 @@ public class WebMailAction extends ALBaseAction {
     listData.setStrLength(0);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail-filter-list");
+
   }
 
   /**
@@ -214,6 +218,7 @@ public class WebMailAction extends ALBaseAction {
 
     // 受信・送信トレイの選択をクリア
     ALEipUtils.removeTemp(rundata, context, "tab");
+    ALEipUtils.removeTemp(rundata, context, WebMailUtils.UNREAD_MAIL);
 
     jdata.getUser().removeTemp(WebMailUtils.ACCOUNT_ID);
     jdata.getUser().removeTemp(WebMailUtils.FOLDER_ID);

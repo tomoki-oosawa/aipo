@@ -102,6 +102,8 @@ public class WebMailUtils {
 
   public static final String WEBMAIL_ADMIN_PORTLET_NAME = "WebMailAdmin";
 
+  public static final String UNREAD_MAIL = "unreadmailsummap";
+
   public static final List<EipMMailAccount> getMailAccountNameList(int userId) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
