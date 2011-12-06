@@ -20,35 +20,60 @@
 ## ---------------------------------------------------------------------------
 #set($tabs = [["グループ一覧", "",""]])
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
-#ALspacebothheader()
+
+#AUISummaryDiv()
+	#AUIbuttonAction("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
+#AUISummaryDivfooter()
+
 #if($result.List.size() == 0)
-<div class="message">社内の同僚をグループ化することで、ToDo などでグループごとの表示の切り替えが可能になります。 </div>
-<div class="message">『グループ追加』 ボタンを押して、追加してください。 </div>
+	<div class="message">社内の同僚をグループ化することで、ToDo などでグループごとの表示の切り替えが可能になります。 </div>
+	<div class="message">『グループ追加』 ボタンを押して、追加してください。 </div>
 #else
 #ALformheader('Myグループ' $jslink $portlet)
-#ALajaxpageview('MyGroupListScreen' $result)
-#ALtableheaderWide()
-<tr>
-## #ALtdheadThin(' ')
-#ALtdheadWide("#ALajaxsort('group_alias_name' 'グループ名' $result 'MyGroupListScreen')")
-#ALtdheadThin(' ')
-</tr>
-#foreach ($record in $result.List)
-<tr>
-## #ALtdcellAtt("<input name='check$!record.GroupName' type='checkbox' value='$!record.GroupName'/>" 'align="center"')
-#ALtdcellheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MyGroupDetailScreen").addQueryData("entityid",$!record.GroupName))');">$!record.GroupAliasName</a>
-#ALtdcellfooter()
-#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid', $!record.GroupName) 'images/icon/icon_edit.gif' $!portlet.ID 'aipo.mygroup.onLoadMygroupDialog')" 'nowrap="nowrap"')
-</tr>
-#end
-#ALtablefooter()
-## #ALbuttonheaderRight()
-## 選択したグループを#ALbutton('eventSubmit_doMygroup_multi_delete' '削除する' 'aimluck.io.checkboxDeleteSubmit(this)')"
-## #ALbuttonfooterRight()
-#ALajaxpageviewFooter('MyGroupListScreen' $result)
+
+	#AUISummaryDiv()
+		#AUIajaxpageview('MyGroupListScreen' $result)
+	#AUISummaryDivfooter()
+	<table class="auiRowTable wide">
+	<colgroup style="width:50%;">
+	</colgroup>
+	<colgroup style="width:25%;">
+	</colgroup>
+	<colgroup style="width:25%;">
+	</colgroup>
+		<tbody>
+		<tr>
+		#ALtdhead("#ALajaxsort('group_alias_name' 'グループ名' $result 'MyGroupListScreen')")
+		#ALtdhead('ユーザー')
+		#ALtdhead('設備')
+		
+		</tr>
+		#foreach ($record in $result.List)
+			<tr>
+			#ALtdcellheader()
+			<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MyGroupDetailScreen").addQueryData("entityid",$!record.GroupName))');">$!record.GroupAliasName</a></div>
+			#ALtdcellfooter()
+			#ALtdcellheader()
+			<div>
+			#foreach ($member in $result.getMemberList($record.GroupName.Value))
+				#if($velocityCount > 1)、&nbsp;#end
+				$!{member.AliasName}
+			#end
+			</div>
+			#ALtdcellfooter()
+			#ALtdcellheader()<div>
+			#foreach ($facility in $result.getFacilityList($record.GroupName.Value))
+				#if($velocityCount > 1)、&nbsp;#end
+				$facility.FacilityName
+			#end
+			</div>
+			#ALtdcellfooter()
+			</tr>
+		#end
+	#ALtablefooter()
+	#AUISummaryDiv()
+		#AUIajaxpageview('MyGroupListScreen' $result)
+	#AUISummaryDivfooter()
 #ALformfooter()
-#ALspacebothfooter()
-#ALtabfooter()
+
 #end

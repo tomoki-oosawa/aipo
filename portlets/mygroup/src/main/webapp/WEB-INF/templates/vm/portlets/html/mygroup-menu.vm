@@ -22,16 +22,5 @@
 //<![CDATA[
 dojo.require("aimluck.widget.Menu");
 
-dojo.addOnLoad(function () {
-	
-    var subMenu =
-		[
-		    {   caption: "グループ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMygroup_list','1')"    },
-            {   caption: "グループを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MyGroupFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);"    }
-		];
-
-    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
-});
-
 //]]>
 </script> 
