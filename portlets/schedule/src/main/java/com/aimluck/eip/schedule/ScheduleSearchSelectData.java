@@ -49,6 +49,9 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleSearchSelectData.class.getName());
 
+  private static final String TARGET_GROUP_NAME_AT_SERCH =
+    "target_group_name_at_serch";
+
   private final ALStringField target_keyword = new ALStringField();
 
   private int userid;
@@ -78,12 +81,31 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
     try {
       target_keyword.setValue(ScheduleUtils.getTargetKeyword(rundata, context));
       setupLists(rundata, context);
-
       return getScheduleList(rundata, context);
     } catch (Exception e) {
       logger.error("[ScheduleOnedaySelectData]", e);
       throw new ALDBErrorException();
     }
+  }
+
+  /** <code>TARGET_USER_ID_AT_SERCH</code> 検索におけるユーザによる表示切り替え用変数の識別子 */
+  private final String TARGET_USER_ID_AT_SERCH = "target_user_id_at_serch";
+
+  /**
+   * 表示切り替えで指定したグループ ID を取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  @Override
+  protected String getTargetGroupName(RunData rundata, Context context) {
+    return getTargetGroupName(rundata, context, TARGET_GROUP_NAME_AT_SERCH);
+  }
+
+  @Override
+  protected String getTargetUserId(RunData rundata, Context context) {
+    return getTargetUserId(rundata, context, TARGET_USER_ID_AT_SERCH);
   }
 
   protected ResultList<VEipTScheduleList> getScheduleList(RunData rundata,

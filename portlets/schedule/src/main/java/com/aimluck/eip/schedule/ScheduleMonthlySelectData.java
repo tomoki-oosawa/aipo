@@ -876,6 +876,7 @@ public class ScheduleMonthlySelectData extends
    * @throws ALDBErrorException
    */
   protected void setupLists(RunData rundata, Context context) {
+
     target_group_name = getTargetGroupName(rundata, context);
 
     current_filter = target_group_name;
@@ -932,6 +933,7 @@ public class ScheduleMonthlySelectData extends
       logger.error(e);
       target_user_name = null;
     }
+
   }
 
   /**
@@ -941,20 +943,33 @@ public class ScheduleMonthlySelectData extends
    * @param context
    * @return
    */
-  private String getTargetGroupName(RunData rundata, Context context) {
+  protected String getTargetGroupName(RunData rundata, Context context) {
+    return getTargetGroupName(rundata, context, TARGET_GROUP_NAME);
+  }
+
+  /**
+   * 表示切り替えで指定したグループ ID を取得する．
+   * 
+   * @param rundata
+   * @param target_key
+   * @param context
+   * @return
+   */
+  protected String getTargetGroupName(RunData rundata, Context context,
+      String target_key) {
     String target_group_name = null;
     String idParam = null;
     if (ALEipUtils.isMatch(rundata, context)) {
       // 自ポートレットへのリクエストの場合に，グループ名を取得する．
-      idParam = rundata.getParameters().getString(TARGET_GROUP_NAME);
+      idParam = rundata.getParameters().getString(target_key);
     }
-    target_group_name = ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
+    target_group_name = ALEipUtils.getTemp(rundata, context, target_key);
 
     if (idParam == null && target_group_name == null) {
-      ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, "all");
+      ALEipUtils.setTemp(rundata, context, target_key, "all");
       target_group_name = "all";
     } else if (idParam != null) {
-      ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, idParam);
+      ALEipUtils.setTemp(rundata, context, target_key, idParam);
       target_group_name = idParam;
     }
     return target_group_name;
@@ -965,18 +980,21 @@ public class ScheduleMonthlySelectData extends
    * 
    * @param rundata
    * @param context
+   * @param target_key
+   *          TARGET_USER_ID or TARGET_USER_ID_AT_SERCH
    * @return
    */
-  private String getTargetUserId(RunData rundata, Context context) {
+  protected String getTargetUserId(RunData rundata, Context context,
+      String target_key) {
     String target_user_id = null;
     String idParam = null;
     String tmp_user_id = "";
 
     if (ALEipUtils.isMatch(rundata, context)) {
       // 自ポートレットへのリクエストの場合に，ユーザ ID を取得する．
-      idParam = rundata.getParameters().getString(TARGET_USER_ID);
+      idParam = rundata.getParameters().getString(target_key);
     }
-    target_user_id = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
+    target_user_id = ALEipUtils.getTemp(rundata, context, target_key);
 
     if ("Facility".equals(getTargetGroupName())) {
       // 表示グループで「設備一覧」が選択されている場合
@@ -990,20 +1008,18 @@ public class ScheduleMonthlySelectData extends
         }
 
         if ("all".equals(tmp_user_id) && !"monthly".equals(viewtype)) {
-          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
           target_user_id = "all";
         } else if (containsFacilityId(facilityList, tmp_user_id)) {
-          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
           target_user_id = tmp_user_id;
         } else {
           FacilityResultData rd = facilityList.get(0);
           target_user_id = "f" + rd.getFacilityId().getValue();
-          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, target_user_id);
         }
+        ALEipUtils.setTemp(rundata, context, target_key, target_user_id);
       }
     } else {
       if (idParam == null && (target_user_id == null)) {
-        tmp_user_id = userid;
+        tmp_user_id = (target_key.matches(TARGET_USER_ID)) ? userid : "all";
       } else if (idParam != null) {
         tmp_user_id = idParam;
       } else {
@@ -1012,14 +1028,13 @@ public class ScheduleMonthlySelectData extends
 
       if (tmp_user_id.startsWith("f")) {
         if (containsFacilityId(facilityList, tmp_user_id)) {
-          ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
+          ALEipUtils.setTemp(rundata, context, target_key, tmp_user_id);
           target_user_id = tmp_user_id;
         } else {
           if (facilityList != null && facilityList.size() > 0) {
             FacilityResultData rd = facilityList.get(0);
             target_user_id = "f" + rd.getFacilityId().getValue();
-            ALEipUtils
-              .setTemp(rundata, context, TARGET_USER_ID, target_user_id);
+            ALEipUtils.setTemp(rundata, context, target_key, target_user_id);
           } else {
             target_user_id = userid;
           }
@@ -1030,26 +1045,34 @@ public class ScheduleMonthlySelectData extends
           // ログインユーザもしくはユーザリストの一番初めのユーザを
           // 表示するため，ユーザ ID を設定する．
           if ("all".equals(tmp_user_id) && !"monthly".equals(viewtype)) {
-            ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
             target_user_id = "all";
           } else if (containsUserId(userList, tmp_user_id)) {
-            ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, tmp_user_id);
             target_user_id = tmp_user_id;
           } else if (containsUserId(userList, userid)) {
             // ログインユーザのスケジュールを表示するため，ログイン ID を設定する．
-            ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userid);
             target_user_id = userid;
           } else {
             ALEipUser eipUser = userList.get(0);
             String userId = eipUser.getUserId().getValueAsString();
-            ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userId);
             target_user_id = userId;
           }
+          ALEipUtils.setTemp(rundata, context, target_key, target_user_id);
         }
       }
     }
 
     return target_user_id;
+  }
+
+  /**
+   * 表示切り替えで指定したユーザ ID を取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  protected String getTargetUserId(RunData rundata, Context context) {
+    return getTargetUserId(rundata, context, TARGET_USER_ID);
   }
 
   private boolean containsUserId(List<ALEipUser> list, String userid) {
