@@ -26,7 +26,6 @@
 <div class="auiWidget clearfix">
 #AUIbuttonAction("ファイルを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);")
 </div>
-
 <div class="auiWidget clearfix">
 <div class="auiDirectoryList">
 <div class="d0 #if(!$result.SelectedFolderInfo) open active #end">
