@@ -160,9 +160,9 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_NOTE = "伝言メモ";
 
-  public static final String PORTLET_TYPE_STR_TIMECARD = "タイムカード";
+  public static final String PORTLET_TYPE_STR_TIMECARD = "旧タイムカード";
 
-  public static final String PORTLET_TYPE_STR_TIMECARD_XLS_SCREEN = "タイムカード出力";
+  public static final String PORTLET_TYPE_STR_TIMECARD_XLS_SCREEN = "旧タイムカード出力";
 
   public static final String PORTLET_TYPE_STR_ADDRESSBOOK = "アドレス帳(アドレス)";
 
@@ -207,5 +207,9 @@ public class ALActionEventlogConstants {
   public static final String PORTLET_TYPE_STR_CELLULAR = "携帯電話設定";
 
   public static final String PORTLET_TYPE_STR_COMMON_CATEGORY = "共有カテゴリ";
+
+  public static final String PORTLET_TYPE_STR_EXTTIMECARD = "タイムカード";
+
+  public static final String PORTLET_TYPE_STR_EXTTIMECARD_SYSTEM = "タイムカード管理";
 
 }

@@ -136,6 +136,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_NOTE;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TIMECARD) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_TIMECARD;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TIMECARD_XLS_SCREEN) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_TIMECARD_XLS_SCREEN;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_ADDRESSBOOK;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_COMPANY) {
@@ -179,6 +181,10 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_CELLULAR;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_COMMON_CATEGORY;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTTIMECARD;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTTIMECARD_SYSTEM;
     } else {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_STR_NONE;
     }
