@@ -832,11 +832,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     return map.get(userid).getDuplicateSchedule();
   }
 
-  public int getDuplicateScheduleListRowCount(long id) {
-    Integer userid = Integer.valueOf((int) id);
-    return map.get(userid).getDuplicateScheduleRowCount();
-  }
-
   /**
    * 部署マップを取得します。
    * 

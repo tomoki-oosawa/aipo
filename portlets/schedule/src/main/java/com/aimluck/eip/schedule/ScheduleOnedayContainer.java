@@ -38,13 +38,6 @@ public class ScheduleOnedayContainer implements ALData {
   /** <code>dList</code> 重複スケジュールリスト */
   private List<ScheduleOnedayResultData> dList;
 
-  /** <code>dList</code> 重複スケジュールリスト */
-  private List<ScheduleOnedayResultData> dupList;
-
-  /** <code>rowIndex</code> rowIndex */
-
-  private int dRowCount;
-
   /** <code>rd</code> 期間スケジュール */
   private ScheduleOnedayResultData rd;
 
@@ -53,9 +46,6 @@ public class ScheduleOnedayContainer implements ALData {
 
   /** <code>count</code> count */
   private int count;
-
-  /** <code>count</code> count */
-  private int dcount;
 
   /** <code>rowIndex</code> rowIndex */
   private int rowIndex;
@@ -71,8 +61,6 @@ public class ScheduleOnedayContainer implements ALData {
     list = new ArrayList<ScheduleOnedayResultData>();
     // 重複スケジュールリスト
     dList = new ArrayList<ScheduleOnedayResultData>();
-    // 重複スケジュールリスト
-    dupList = new ArrayList<ScheduleOnedayResultData>();
   }
 
   /**
@@ -142,6 +130,7 @@ public class ScheduleOnedayContainer implements ALData {
         ed++;
       }
       sta -= tmpRowIndex;
+      // eta -= tmpRowIndex;
       if (st - sta - count > 0) {
         // Rowspan は Velocity で設定される。
         // rd2.setRowspan(st - sta - count);
@@ -164,233 +153,31 @@ public class ScheduleOnedayContainer implements ALData {
         rd2.setEndRow(rd.getStartRow());
         list.add(rd2);
       } else if (st - sta - count != 0) {
+        dList.add(rd);
         rd.setDuplicate(true);
         dup = true;
         list.get(list.size() - 1).setDuplicate(true);
-        dupList.add(rd);
-        // 重複スケジュールの並べ替え
-        dRowCount = dupList.size();
-        for (int i = 0; i < dupList.size() - 1; i++) {
-          for (int j = i + 1; j < dupList.size(); j++) {
-            if ((dupList.get(i).getEndDateTime() <= dupList
-              .get(j)
-              .getStartDateTime())) {
-              dupList.add(i + 1, dupList.get(j));
-              dupList.remove(j + 1);
-              dRowCount = dRowCount - 1;
+        for (int i = 0; i < dList.size() - 1; i++) {
+          for (int j = i + 1; j < dList.size(); j++) {
+            if (dList.get(i).getEndRow() <= dList.get(j).getStartRow()) {
+              dummyList = dList.get(i + 1);
+              dList.set(i + 1, dList.get(j));
+              dList.set(j, dummyList);
               break;
             } else {
             }
           }
         }
-        interrupDList(rd, dupList, startHour, endHour, viewDate);
-      }
 
+      } else {
+
+      }
       if (!dup) {
         list.add(rd);
         count = ed - sta;
-      } else {
-        rd.setdRowCount(dRowCount);
       }
+
     }
-  }
-
-  /**
-   * @param rd3
-   * @param dupList2
-   * @param i
-   * @param viewDate
-   * @param endHour
-   * @param startHour
-   */
-  private void interrupDList(ScheduleOnedayResultData rd3,
-      List<ScheduleOnedayResultData> dupList2, int startHour, int endHour,
-      ALDateTimeField viewDate) {
-    dList.clear();
-    dcount = 0;
-
-    int i = 0;
-    int tmpRowIndex = 0;
-    int dRowIndex = 0;
-    // 重複スケジュールでのrows加算
-    int sta = startHour * 4;
-    int eta = endHour * 4;
-    int st =
-      Integer.parseInt(rd3.getStartDate().getHour())
-        * 4
-        + Integer.parseInt(rd3.getStartDate().getMinute())
-        / 15;
-    int ed =
-      Integer.parseInt(rd3.getEndDate().getHour())
-        * 4
-        + Integer.parseInt(rd3.getEndDate().getMinute())
-        / 15;
-    if (!(rd3.getStartDate().getDay().equals(rd3.getEndDate().getDay()))
-      && rd3.getEndDate().getHour().equals("0")) {
-      ed = 4 * 24;
-    }
-    if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
-      if (sta > st) {
-        st = sta;
-      }
-      if (eta < ed) {
-        ed = eta;
-      }
-
-      tmpRowIndex = rowIndex;
-      if ((ed - st == 0) && (st - sta + tmpRowIndex - dcount >= 0)) {
-        rd3.setIndex(rows[st - sta]);
-        if (rows[st - sta] > 1) {
-          rd3.setDuplicate(true);
-        }
-        rows[st - sta]++;
-      }
-    }
-
-    do {
-      ScheduleOnedayResultData rd2 = new ScheduleOnedayResultData();
-      rd2.setFormat("yyyy-MM-dd-HH-mm");
-      rd2.initField();
-      // Oneday
-      sta = startHour * 4;
-      eta = endHour * 4;
-      st =
-        Integer.parseInt(dupList2.get(i).getStartDate().getHour())
-          * 4
-          + Integer.parseInt(dupList2.get(i).getStartDate().getMinute())
-          / 15;
-      ed =
-        Integer.parseInt(dupList2.get(i).getEndDate().getHour())
-          * 4
-          + Integer.parseInt(dupList2.get(i).getEndDate().getMinute())
-          / 15;
-      if (!(dupList2.get(i).getStartDate().getDay().equals(dupList2
-        .get(i)
-        .getEndDate()
-        .getDay()))
-        && dupList2.get(i).getEndDate().getHour().equals("0")) {
-        ed = 4 * 24;
-      }
-      if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
-        if (sta > st) {
-          st = sta;
-        }
-        if (eta < ed) {
-          ed = eta;
-        }
-
-        tmpRowIndex = dRowIndex;
-        // tmpRowIndex = rows[st - sta];
-        dupList2.get(i).setStartRow(st - sta);
-        dupList2.get(i).setEndRow(ed - sta);
-        if ((ed - st == 0) && (st - sta + tmpRowIndex - dcount >= 0)) {
-          dRowIndex++;
-          ed++;
-        }
-        sta -= tmpRowIndex;
-        if (i > 0) {
-          if (st - sta - dcount > 0) {
-            // Rowspan は Velocity で設定される。
-            // rd2.setRowspan(st - sta - count);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(viewDate.getValue());
-            cal.add(Calendar.HOUR, startHour);
-            int hour = (dcount - tmpRowIndex) / 4;
-            int min = ((dcount - tmpRowIndex) % 4) * 15;
-            cal.add(Calendar.HOUR, hour);
-            cal.add(Calendar.MINUTE, min);
-            rd2.setStartDate(cal.getTime());
-            hour = (st - sta - dcount) / 4;
-            min = ((st - sta - dcount) % 4) * 15;
-            cal.add(Calendar.HOUR, hour);
-            cal.add(Calendar.MINUTE, min);
-            rd2.setEndDate(cal.getTime());
-            rd2.setStartRow(dList.size() == 0 ? 0 : dList
-              .get(dList.size() - 1)
-              .getEndRow());
-            rd2.setEndRow(dupList2.get(i).getStartRow());
-            dList.add(rd2);
-          } else if (st - sta - dcount == 0) {
-
-          } else {
-            int index = (endHour - startHour) * 4 + dRowIndex;
-            if (index > dcount) {
-              ScheduleOnedayResultData rd = new ScheduleOnedayResultData();
-              rd.setFormat("yyyy-MM-dd-HH-mm");
-              rd.initField();
-              rd.setRowspan(index - dcount);
-              Calendar cal = Calendar.getInstance();
-              cal.setTime(viewDate.getValue());
-              cal.add(Calendar.HOUR, startHour);
-              int hour = (dcount - dRowIndex) / 4;
-              int min = ((dcount - dRowIndex) % 4) * 15;
-              cal.add(Calendar.HOUR, hour);
-              cal.add(Calendar.MINUTE, min);
-              rd.setStartDate(cal.getTime());
-              hour = (index - dcount) / 4;
-              min = ((index - dcount) % 4) * 15;
-              cal.add(Calendar.HOUR, hour);
-              cal.add(Calendar.MINUTE, min);
-              rd.setEndDate(cal.getTime());
-              rd.setStartRow(dList.size() == 0 ? 0 : dList
-                .get(dList.size() - 1)
-                .getEndRow());
-              rd.setEndRow(rows.length - 1);
-              dList.add(rd);
-            }
-            dcount = 0;
-            dRowIndex = 0;
-            tmpRowIndex = dRowIndex;
-            if (st - sta - dcount > 0) {
-              Calendar cal = Calendar.getInstance();
-              cal.setTime(viewDate.getValue());
-              cal.add(Calendar.HOUR, startHour);
-              int hour = (dcount - tmpRowIndex) / 4;
-              int min = ((dcount - tmpRowIndex) % 4) * 15;
-              cal.add(Calendar.HOUR, hour);
-              cal.add(Calendar.MINUTE, min);
-              rd2.setStartDate(cal.getTime());
-              hour = (st - sta - dcount) / 4;
-              min = ((st - sta - dcount) % 4) * 15;
-              cal.add(Calendar.HOUR, hour);
-              cal.add(Calendar.MINUTE, min);
-              rd2.setEndDate(cal.getTime());
-              rd2.setStartRow(0);
-              rd2.setEndRow(dupList2.get(i).getStartRow());
-              dList.add(rd2);
-            }
-          }
-        } else {
-          if (st - sta - dcount > 0) {
-            // Rowspan は Velocity で設定される。
-            // rd2.setRowspan(st - sta - count);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(viewDate.getValue());
-            cal.add(Calendar.HOUR, startHour);
-            int hour = (dcount - tmpRowIndex) / 4;
-            int min = ((dcount - tmpRowIndex) % 4) * 15;
-            cal.add(Calendar.HOUR, hour);
-            cal.add(Calendar.MINUTE, min);
-            rd2.setStartDate(cal.getTime());
-            hour = (st - sta - dcount) / 4;
-            min = ((st - sta - dcount) % 4) * 15;
-            cal.add(Calendar.HOUR, hour);
-            cal.add(Calendar.MINUTE, min);
-            rd2.setEndDate(cal.getTime());
-            rd2.setStartRow(dList.size() == 0 ? 0 : dList
-              .get(dList.size() - 1)
-              .getEndRow());
-            rd2.setEndRow(dupList2.get(i).getStartRow());
-            dList.add(rd2);
-          } else if (st - sta - dcount != 0) {
-          }
-        }
-        dcount = ed - sta;
-        dList.add(dupList2.get(i));
-      }
-      i++;
-    } while (i < dupList2.size());
-
   }
 
   /**
@@ -425,31 +212,6 @@ public class ScheduleOnedayContainer implements ALData {
         .getEndRow());
       rd.setEndRow(rows.length - 1);
       list.add(rd);
-    }
-
-    if (index > dcount + rowIndex) {
-      ScheduleOnedayResultData rd = new ScheduleOnedayResultData();
-      rd.setFormat("yyyy-MM-dd-HH-mm");
-      rd.initField();
-      rd.setRowspan(index - dcount);
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(viewDate.getValue());
-      cal.add(Calendar.HOUR, startHour);
-      int hour = (dcount - rowIndex) / 4;
-      int min = ((dcount - rowIndex) % 4) * 15;
-      cal.add(Calendar.HOUR, hour);
-      cal.add(Calendar.MINUTE, min);
-      rd.setStartDate(cal.getTime());
-      hour = (index - dcount) / 4;
-      min = ((index - dcount) % 4) * 15;
-      cal.add(Calendar.HOUR, hour);
-      cal.add(Calendar.MINUTE, min);
-      rd.setEndDate(cal.getTime());
-      rd.setStartRow(dList.size() == 0 ? 0 : dList
-        .get(dList.size() - 1)
-        .getEndRow());
-      rd.setEndRow(rows.length - 1);
-      dList.add(rd);
     }
   }
 
@@ -505,13 +267,6 @@ public class ScheduleOnedayContainer implements ALData {
    */
   public boolean isDuplicate() {
     return dList.size() != 0;
-  }
-
-  /**
-   * @return
-   */
-  public int getDuplicateScheduleRowCount() {
-    return dRowCount;
   }
 
 }
