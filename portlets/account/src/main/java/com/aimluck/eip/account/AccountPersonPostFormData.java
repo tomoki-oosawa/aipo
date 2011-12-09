@@ -27,6 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -38,7 +39,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 　部署を表示するためのフォームデータです。
+ * アカウントデータと　部署を表示するためのフォームデータです。
  * 
  */
 public class AccountPersonPostFormData extends ALAbstractFormData {
@@ -46,6 +47,46 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountPersonPostFormData.class.getName());
+
+  /** ユーザーID */
+  private ALNumberField user_id;
+
+  /** 有効/無効 */
+  private ALStringField disabled;
+
+  /** ユーザー名 */
+  private ALStringField user_name;
+
+  /** 名前 */
+  private ALStringField name;
+
+  /** フリガナ（名前） */
+  private ALStringField name_kana;
+
+  /** メールアドレス */
+  private ALStringField email;
+
+  /** 電話番号（外線） */
+  private ALStringField out_telephone;
+
+  /** 電話番号（内線） */
+  private ALStringField in_telephone;
+
+  /** 電話番号（携帯） */
+  private ALStringField cellular_phone;
+
+  /** 携帯メールアドレス */
+  private ALStringField cellular_mail;
+
+  /** 部署名 */
+  private List<String> post_name_list;
+
+  /** 役職名 */
+  private ALStringField position_name;
+
+  private boolean has_photo;
+
+  private boolean is_admin;
 
   /** 会社名 */
   private ALStringField company_name;
@@ -82,9 +123,6 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /** 所属メンバー */
   private List<ALEipUser> memberList;
-
-  /** 所属する部署リスト */
-  private List<String> post_name_list;
 
   /** 所属する部署IDリスト */
   private List<Integer> post_id_list;
@@ -203,7 +241,45 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
+    // ユーザーID
+    user_id = new ALNumberField();
+
+    // ユーザー名
+    user_name = new ALStringField();
+    user_name.setFieldName("ユーザー名");
+    // 名前
+    name = new ALStringField();
+    name.setFieldName("名前");
+    // カナ
+    name_kana = new ALStringField();
+    name_kana.setFieldName("カナ");
+    // メールアドレス
+    email = new ALStringField();
+    email.setFieldName("メールアドレス");
+    // 外線
+    out_telephone = new ALStringField();
+    out_telephone.setFieldName("電話番号(外線)");
+    // 内線
+    in_telephone = new ALStringField();
+    in_telephone.setFieldName("電話番号(内線)");
+    // 携帯
+    cellular_phone = new ALStringField();
+    cellular_phone.setFieldName("電話番号(携帯)");
+    // 携帯メール
+    cellular_mail = new ALStringField();
+    cellular_mail.setFieldName("携帯メールアドレス");
+    // 部署のリスト
+    post_name_list = new ArrayList<String>();
+    // 役職のリスト
+    position_name = new ALStringField();
+    disabled = new ALStringField();
+    // 顔写真
+    has_photo = false;
+    // 管理者権限
+    is_admin = false;
+
     // 会社名
     company_name = new ALStringField();
     company_name.setFieldName("会社名");
@@ -258,6 +334,196 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
     memberList = new ArrayList<ALEipUser>();
     post_name_list = new ArrayList<String>();
     post_id_list = new ArrayList<Integer>();
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getName() {
+    return name;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getUserName() {
+    return user_name;
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getDisabled() {
+    return disabled;
+  }
+
+  /**
+   * @param string
+   */
+  public void setName(String string) {
+    name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setUserName(String string) {
+    user_name.setValue(string);
+  }
+
+  /**
+   * @param i
+   */
+  public void setUserId(int i) {
+    user_id.setValue(i);
+  }
+
+  /**
+   * @param string
+   */
+  public void setDisabled(String string) {
+    disabled.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getPositionName() {
+    return position_name;
+  }
+
+  /**
+   * @return
+   */
+  public List<String> getPostNameList() {
+    return post_name_list;
+  }
+
+  /**
+   * @param string
+   */
+  public void setPositionName(String string) {
+    position_name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setPostNameList(List<String> list) {
+    post_name_list.addAll(list);
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCellularMail() {
+    return cellular_mail;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCellularPhone() {
+    return cellular_phone;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getEmail() {
+    return email;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getInTelephone() {
+    return in_telephone;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getOutTelephone() {
+    return out_telephone;
+  }
+
+  /**
+   * @param string
+   */
+  public void setCellularMail(String string) {
+    cellular_mail.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCellularPhone(String string) {
+    cellular_phone.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setEmail(String string) {
+    email.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setInTelephone(String string) {
+    in_telephone.setValue(string);
+  }
+
+  /**
+   * @param field
+   */
+  public void setOutTelephone(String string) {
+    out_telephone.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getNameKana() {
+    return name_kana;
+  }
+
+  /**
+   * @param string
+   */
+  public void setNameKana(String string) {
+    name_kana.setValue(string);
+  }
+
+  public boolean hasPhoto() {
+    return has_photo;
+  }
+
+  public void setHasPhoto(boolean bool) {
+    has_photo = bool;
+  }
+
+  /**
+   * @return is_admin
+   */
+  public boolean isAdmin() {
+    return is_admin;
+  }
+
+  /**
+   * @param is_admin
+   */
+  public void setIsAdmin(boolean is_admin) {
+    this.is_admin = is_admin;
   }
 
   /**
@@ -366,15 +632,6 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
    */
   public List<ALEipUser> getMemberList() {
     return memberList;
-  }
-
-  /**
-   * 部署名リストを取得します。 <BR>
-   * 
-   * @return
-   */
-  public List<String> getPostNameList() {
-    return post_name_list;
   }
 
   /**

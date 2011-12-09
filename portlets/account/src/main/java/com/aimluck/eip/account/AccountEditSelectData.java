@@ -28,6 +28,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.account.util.AccountUtils;
+import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipManager;
@@ -86,7 +88,8 @@ public class AccountEditSelectData extends
 
       List<String> postNames =
         ALEipUtils.getPostNameList(Integer.valueOf(record.getUserId()));
-
+      List<Integer> postIds =
+        ALEipUtils.getPostIdList(Integer.valueOf(record.getUserId()));
       AccountResultData rd = new AccountResultData();
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
@@ -106,16 +109,31 @@ public class AccountEditSelectData extends
       rd.setInTelephone(record.getInTelephone());
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
+      rd.setCompanyId(record.getCompanyId());
 
       if (record.getPhoto() != null) {
         rd.setHasPhoto(true);
       } else {
         rd.setHasPhoto(false);
       }
-
+      rd.setPostIdList(postIds);
       rd.setPostNameList(postNames);
       rd.setPositionName(getPositionName(record.getPositionId()));
+
+      EipMCompany company_data =
+        AccountUtils.getEipMCompany(Long
+          .toString(rd.getCompany_id().getValue()));
+      if (company_data != null) {
+        // 会社情報を保存します。
+        rd.setCompanyId(company_data.getCompanyId().intValue());
+        rd.setCompanyName(company_data.getCompanyName());
+        rd.setCompanyZipcode(company_data.getZipcode());
+        rd.setCompanyAddress(company_data.getAddress());
+        rd.setCompanyTelephone(company_data.getTelephone());
+        rd.setCompanyFaxNumber(company_data.getFaxNumber());
+      }
       return rd;
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -167,4 +185,5 @@ public class AccountEditSelectData extends
     SecureRandom random = new SecureRandom();
     return (random.nextInt() * 100);
   }
+
 }

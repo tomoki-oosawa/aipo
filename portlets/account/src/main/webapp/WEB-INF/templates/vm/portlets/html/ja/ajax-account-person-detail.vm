@@ -18,10 +18,16 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["ユーザー情報詳細", "",""]])
+
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
-#ALspacebothheader()
+
+<div class="auiSummaryMeta clearfix">
+<div class="floatRight">
+#set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
+<a class="auiButton" title="ユーザー情報とパスワードを編集する" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">ユーザー情報とパスワードを編集する</a>
+</div>
+</div>
+
 #ALajaxlistformheader('ユーザー')
 #ALtableheaderWide()
 #ALtdcaption('ユーザー名')
@@ -51,15 +57,27 @@
 #ALtdcaption('部署')
 #ALtditemheader()
 #foreach($record in $!result.Detail.getPostNameList())
-$!record <br />
+#set($n = $velocityCount - 1)
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonPostDetailScreen').addQueryData('entityid',$!result.Detail.getPostID($!n)))');" style="display:block;">$!record</a>
 #end
 #ALtditemfooter()
 #ALtdcaption('役職')
 #ALtditem($!result.Detail.PositionName)
 #ALtablefooter()
-#ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')" "$!portlet.ID" "aipo.account_person.onLoadPersonInfoDialog")
-#ALbuttonfooter()
 #ALformfooter()
-#ALspacebothfooter()
-#ALajaxtabfooter()
+
+<h3>会社情報</h3>
+#ALtableheaderWide()
+#ALtdcaption('会社名')
+#ALtditem($!result.Detail.CompanyName)
+#ALtdcaption('郵便番号')
+#ALtditemheader()
+#if($!result.Detail.CompanyZipcode.toString() != "")〒#end $!result.Detail.CompanyZipcode
+#ALtditemfooter()
+#ALtdcaption('住所')
+#ALtditem($!result.Detail.CompanyAddress)
+#ALtdcaption('電話番号')
+#ALtditem($!result.Detail.CompanyTelephone)
+#ALtdcaption('FAX番号')
+#ALtditem($!result.Detail.CompanyFaxNumber)
+#ALtablefooter()

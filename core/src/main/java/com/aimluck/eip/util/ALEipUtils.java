@@ -1637,6 +1637,41 @@ public class ALEipUtils {
   }
 
   /**
+   * ユーザーの所属する部署のIDを取得します。
+   * 
+   * @param id
+   *          ユーザーID
+   * @return 所属する部署リスト
+   */
+  public static List<Integer> getPostIdList(int id) {
+    SelectQuery<TurbineUserGroupRole> query =
+      Database.query(TurbineUserGroupRole.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(
+        TurbineUserGroupRole.TURBINE_USER_PROPERTY,
+        Integer.valueOf(id));
+    Expression exp2 =
+      ExpressionFactory.greaterExp(
+        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+        Integer.valueOf(3));
+    Expression exp3 =
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
+    query.setQualifier(exp1);
+    query.andQualifier(exp2);
+    query.andQualifier(exp3);
+    List<TurbineUserGroupRole> list = query.fetchList();
+
+    List<Integer> postIds = new ArrayList<Integer>();
+    for (TurbineUserGroupRole role : list) {
+      postIds.add(role.getTurbineGroup().getEipMPost().getPostId());
+    }
+
+    return postIds;
+  }
+
+  /**
    * アクセス権限をチェックします（ポートレットカスタマイズ）
    * 
    * @return

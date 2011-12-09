@@ -18,14 +18,13 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["会社情報・部署情報", "",""]])
+##set($tabs = [["会社情報・部署情報", "",""]])
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
 #ALspacebothheader()
 <h3>会社情報</h3>
 #ALtableheaderWide()
 #ALtdcaption('会社名')
-#ALtditem($!result.CompanyName)
+#ALtditem($!result.Detail.CompanyName)
 #ALtdcaption('郵便番号')
 #ALtditemheader()
 #if($!result.CompanyZipcode.toString() != "")〒#end $!result.CompanyZipcode
@@ -55,4 +54,3 @@
 #end
 </div>
 #ALspacebothfooter()
-#ALajaxtabfooter()

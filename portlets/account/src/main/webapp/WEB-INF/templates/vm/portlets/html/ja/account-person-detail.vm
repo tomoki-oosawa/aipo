@@ -29,4 +29,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-account-person-detail.vm")
-#parse("/portlets/html/ja/account-person-menu.vm")

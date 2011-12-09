@@ -143,7 +143,7 @@ public class AccountAction extends ALSecureBaseAction {
     formData.initField();
     if (formData.doUpdate(this, rundata, context)) {
       // データの更新に成功したとき
-      // doAccount_list(rundata, context);
+      doAccount_list(rundata, context);
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       rundata.setRedirectURI(jsLink.getPortletById(
         ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
@@ -172,8 +172,6 @@ public class AccountAction extends ALSecureBaseAction {
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
-    // 一時ファイルを削除
-    // deleteTempFiles();
   }
 
   /**

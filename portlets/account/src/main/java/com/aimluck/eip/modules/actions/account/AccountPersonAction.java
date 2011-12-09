@@ -34,8 +34,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.account.AccountEditFormData;
 import com.aimluck.eip.account.AccountEditSelectData;
-import com.aimluck.eip.account.AccountPasswdFormData;
-import com.aimluck.eip.account.AccountPersonPostFormData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
@@ -58,14 +56,6 @@ public class AccountPersonAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-    // MODEを取得
-    String mode = rundata.getParameters().getString(ALEipConstants.MODE);
-    if ("infocompost".equals(mode)) {
-      doAccountperson_postdetail(rundata, context);
-    } else if ("passwdform".equals(mode)) {
-      doAccount_passwd_form(rundata, context);
-    }
-
     if (getMode() == null) {
       doAccountperson_detail(rundata, context);
     }
@@ -91,10 +81,6 @@ public class AccountPersonAction extends ALBaseAction {
         doAccountperson_form(rundata, context);
       } else if (ALEipConstants.MODE_DETAIL.equals(mode)) {
         doAccountperson_detail(rundata, context);
-      } else if ("infocompost".equals(mode)) {
-        doAccountperson_postdetail(rundata, context);
-      } else if ("passwdform".equals(mode)) {
-        doAccount_passwd_form(rundata, context);
       }
 
       if (getMode() == null) {
@@ -174,60 +160,6 @@ public class AccountPersonAction extends ALBaseAction {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     setTemplate(rundata, "account-person-form");
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doAccount_passwd_form(RunData rundata, Context context)
-      throws Exception {
-    AccountPasswdFormData formData = new AccountPasswdFormData();
-    formData.initField();
-    formData.doViewForm(this, rundata, context);
-    setTemplate(rundata, "account-person-passwd-form");
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doAccount_passwd_update(RunData rundata, Context context)
-      throws Exception {
-    AccountPasswdFormData formData = new AccountPasswdFormData();
-    formData.initField();
-    if (formData.doUpdate(this, rundata, context)) {
-      context.put("success", "true");
-      doAccount_return_passwd_form(rundata, context);
-    } else {
-      setTemplate(rundata, "account-person-passwd-form");
-    }
-  }
-
-  public void doAccount_return_passwd_form(RunData rundata, Context context)
-      throws Exception {
-    AccountPasswdFormData formData = new AccountPasswdFormData();
-    formData.initField();
-    formData.doViewForm(this, rundata, context);
-    setTemplate(rundata, "account-person-passwd-form");
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public void doAccountperson_postdetail(RunData rundata, Context context)
-      throws Exception {
-    AccountPersonPostFormData formData = new AccountPersonPostFormData();
-    formData.initField();
-    formData.doViewForm(this, rundata, context);
-    setTemplate(rundata, "account-person-postdetail");
   }
 
   /**

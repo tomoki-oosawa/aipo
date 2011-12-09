@@ -35,6 +35,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -59,11 +60,20 @@ public class AccountEditFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountEditFormData.class.getName());
 
+  /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
+  private static final String DEFAULT_VIEW_PASSWORD = "******";
+
   /** 名前（名） */
   private ALStringField firstname;
 
   /** 名前（姓） */
   private ALStringField lastname;
+
+  /** 新しいパスワード */
+  private ALStringField new_password;
+
+  /** 新しいパスワード（確認用） */
+  private ALStringField new_password_confirm;
 
   /** メールアドレス */
   private ALStringField email;
@@ -112,6 +122,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  /** パスワード変更の可否．変更する場合は，false． */
+  private boolean dontUpdatePasswd = false;
+
   /**
    * 初期化処理を行います。 <BR>
    * 
@@ -149,6 +162,16 @@ public class AccountEditFormData extends ALAbstractFormData {
     lastname = new ALStringField();
     lastname.setFieldName("名前（姓）");
     lastname.setTrim(true);
+    // 新しいパスワード
+    new_password = new ALStringField();
+    new_password.setFieldName("新しいパスワード");
+    new_password.setTrim(true);
+
+    // 新しいパスワード（確認用）
+    new_password_confirm = new ALStringField();
+    new_password_confirm.setFieldName("新しいパスワード（確認用）");
+    new_password_confirm.setTrim(true);
+
     // メールアドレス
     email = new ALStringField();
     email.setFieldName("メールアドレス");
@@ -215,7 +238,7 @@ public class AccountEditFormData extends ALAbstractFormData {
           FileuploadUtils.getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
-          if (filebean.getFileId() > 0) {
+          if (filebean.getFileId() != 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto =
@@ -258,7 +281,15 @@ public class AccountEditFormData extends ALAbstractFormData {
     // 姓（フリガナ）
     last_name_kana.setNotNull(true);
     last_name_kana.limitMaxLength(50);
+    // 新しいパスワード
+    new_password.setNotNull(true);
+    new_password.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_password.limitMaxLength(16);
 
+    // 新しいパスワード（確認用）
+    new_password_confirm.setNotNull(true);
+    new_password_confirm.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_password_confirm.limitMaxLength(16);
     // 内線
     in_telephone.setCharacterType(ALStringField.TYPE_ASCII);
     in_telephone.limitMaxLength(13);
@@ -303,6 +334,10 @@ public class AccountEditFormData extends ALAbstractFormData {
       .convertH2ZKana(last_name_kana.toString())));
     first_name_kana.validate(msgList);
     last_name_kana.validate(msgList);
+
+    if (!new_password.toString().equals(new_password_confirm.toString())) {
+      msgList.add("確認用のパスワードと一致しません。");
+    }
 
     // 内線
     in_telephone.validate(msgList);
@@ -351,8 +386,32 @@ public class AccountEditFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() > 0 && facePhoto == null) {
+    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
       msgList.add("『 <span class='em'>顔写真</span> 』にはJpeg画像を指定してください。");
+    }
+
+    // パスワードの確認
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      if (!new_password.getValue().equals(new_password_confirm.getValue())) {
+        msgList
+          .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+      } else {
+        new_password.validate(msgList);
+        new_password_confirm.validate(msgList);
+      }
+    } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      if (new_password.getValue().equals(DEFAULT_VIEW_PASSWORD)
+        && new_password_confirm.getValue().equals(DEFAULT_VIEW_PASSWORD)) {
+        dontUpdatePasswd = true;
+      } else {
+        if (!new_password.getValue().equals(new_password_confirm.getValue())) {
+          msgList
+            .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+        } else {
+          new_password.validate(msgList);
+          new_password_confirm.validate(msgList);
+        }
+      }
     }
 
     return (msgList.size() == 0);
@@ -409,6 +468,9 @@ public class AccountEditFormData extends ALAbstractFormData {
         filebean.setFileId(0);
         filebean.setFileName("以前の写真ファイル");
       }
+
+      new_password.setValue(DEFAULT_VIEW_PASSWORD);
+      new_password_confirm.setValue(DEFAULT_VIEW_PASSWORD);
 
       return true;
     } catch (Exception e) {
@@ -509,12 +571,20 @@ public class AccountEditFormData extends ALAbstractFormData {
       user.setEmail(email.getValue());
 
       if (filebean != null) {
-        if (filebean.getFileId() > 0) {
+        if (filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhoto(facePhoto);
         }
       } else {
         user.setPhoto(null);
+      }
+
+      // 新しいパスワードをセットする
+      if (!dontUpdatePasswd) {
+        JetspeedSecurity.forcePassword(user, new_password.toString());
+      } else {
+        TurbineUser tuser = Database.get(TurbineUser.class, user.getUserId());
+        user.setPassword(tuser.getPasswordValue());
       }
 
       // ユーザーを更新
@@ -526,6 +596,10 @@ public class AccountEditFormData extends ALAbstractFormData {
         .getDataSyncHandler()
         .updateUser(user)) {
         return false;
+      }
+      ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
+      if (currentUser.getUserName().equals(user.getUserName())) {
+        currentUser.setPassword(user.getPassword());
       }
 
       // イベントログに保存
@@ -592,6 +666,34 @@ public class AccountEditFormData extends ALAbstractFormData {
    */
   public ALStringField getFirstName() {
     return firstname;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getNewPassword() {
+    return new_password;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getNewpasswordConfirm() {
+    return new_password_confirm;
+  }
+
+  /**
+   * @param field
+   */
+  public void setNewpassword(String field) {
+    new_password.setValue(field);
+  }
+
+  /**
+   * @param field
+   */
+  public void setNewpasswordConfirm(String field) {
+    new_password_confirm.setValue(field);
   }
 
   /**

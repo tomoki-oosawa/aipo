@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- *
+ * 
  */
 public class AccountResultData implements ALData {
 
@@ -62,7 +62,10 @@ public class AccountResultData implements ALData {
   /** 携帯メールアドレス */
   private ALStringField cellular_mail;
 
-  /** 部署名 */
+  /** 部署IDリスト */
+  private List<Integer> post_id_list;
+
+  /** 部署名リスト */
   private List<String> post_name_list;
 
   /** 役職名 */
@@ -71,6 +74,33 @@ public class AccountResultData implements ALData {
   private boolean has_photo;
 
   private boolean is_admin;
+
+  /** 会社ID */
+  private ALNumberField company_id;
+
+  /** 会社名 */
+  private ALStringField company_name;
+
+  /** 郵便番号 */
+  private ALStringField company_zipcode;
+
+  /** 住所 */
+  private ALStringField company_address;
+
+  /** 電話番号 */
+  private ALStringField company_telephone;
+
+  /** FAX 番号 */
+  private ALStringField company_fax_number;
+
+  /** 登録日 */
+  private ALStringField create_date;
+
+  /** 更新日 */
+  private ALStringField update_date;
+
+  /** グループ名 */
+  private ALStringField group_name;
 
   /**
    *
@@ -88,11 +118,22 @@ public class AccountResultData implements ALData {
     cellular_phone = new ALStringField();
     cellular_mail = new ALStringField();
     post_name_list = new ArrayList<String>();
+    post_id_list = new ArrayList<Integer>();
     position_name = new ALStringField();
     disabled = new ALStringField();
 
     has_photo = false;
     is_admin = false;
+
+    company_id = new ALNumberField();
+    company_name = new ALStringField();
+    company_zipcode = new ALStringField();
+    company_address = new ALStringField();
+    company_telephone = new ALStringField();
+    company_fax_number = new ALStringField();
+    create_date = new ALStringField();
+    update_date = new ALStringField();
+    group_name = new ALStringField();
   }
 
   /**
@@ -283,6 +324,162 @@ public class AccountResultData implements ALData {
    */
   public void setIsAdmin(boolean is_admin) {
     this.is_admin = is_admin;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCompanyAddress() {
+    return company_address;
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getCompany_id() {
+    return company_id;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCreate_date() {
+    return create_date;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCompanyFaxNumber() {
+    return company_fax_number;
+  }
+
+  /**
+   * @return
+   */
+  // public ALNumberField getPostId() {
+  // return post_id;
+  // }
+
+  /**
+   * @return
+   */
+  public ALStringField getCompanyName() {
+    return company_name;
+  }
+
+  /**
+   * 会社の電話番号を取得します。
+   * 
+   * @return
+   */
+  public ALStringField getCompanyTelephone() {
+    return company_telephone;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getUpdateDate() {
+    return update_date;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getCompanyZipcode() {
+    return company_zipcode;
+  }
+
+  /**
+   * @param string
+   */
+  public void setCompanyAddress(String string) {
+    company_address.setValue(string);
+  }
+
+  /**
+   * @param id
+   */
+  public void setCompanyId(int id) {
+    company_id.setValue(id);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCreateDate(String string) {
+    create_date.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCompanyFaxNumber(String string) {
+    company_fax_number.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCompanyName(String string) {
+    company_name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCompanyTelephone(String string) {
+    company_telephone.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setUpdateDate(String string) {
+    update_date.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setCompanyZipcode(String string) {
+    company_zipcode.setValue(string);
+  }
+
+  /**
+   * グループ名を取得します
+   * 
+   * @return
+   */
+  public ALStringField getGroupName() {
+    return group_name;
+  }
+
+  /**
+   * グループ名をセットします
+   * 
+   * @param string
+   */
+  public void setGroupName(String string) {
+    group_name.setValue(string);
+  }
+
+  /**
+   * 部署IDを取得します。 <BR>
+   * 
+   * @return
+   */
+  public Object getPostID(int i) {
+    return getPostIdList().get(i);
+  }
+
+  public void setPostIdList(List<Integer> post_id_list) {
+    this.post_id_list.addAll(post_id_list);
+  }
+
+  public List<Integer> getPostIdList() {
+    return post_id_list;
   }
 
 }

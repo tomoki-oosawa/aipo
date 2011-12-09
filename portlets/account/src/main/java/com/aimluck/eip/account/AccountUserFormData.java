@@ -337,7 +337,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           FileuploadUtils.getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
-          if (filebean.getFileId() > 0) {
+          if (filebean.getFileId() != 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto =
@@ -579,7 +579,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() > 0 && facePhoto == null) {
+    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
       msgList.add("『 <span class='em'>顔写真</span> 』にはJpeg画像を指定してください。");
     }
 
@@ -805,7 +805,7 @@ public class AccountUserFormData extends ALAbstractFormData {
             user.setPerm("isAdmin", false);
           }
         }
-        if (filebean != null && filebean.getFileId() > 0) {
+        if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhoto(facePhoto);
         }
@@ -951,7 +951,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         user.setFirstNameKana(first_name_kana.getValue());
         user.setLastNameKana(last_name_kana.getValue());
         if (filebean != null) {
-          if (filebean.getFileId() > 0) {
+          if (filebean.getFileId() != 0) {
             // 顔写真を登録する．
             user.setPhoto(facePhoto);
           }

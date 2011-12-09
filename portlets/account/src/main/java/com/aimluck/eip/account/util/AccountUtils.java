@@ -118,8 +118,14 @@ public class AccountUtils {
    * @return
    */
   public static EipMCompany getEipMCompany(RunData rundata, Context context) {
+    return getEipMCompany(ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID));
+  }
+
+  public static EipMCompany getEipMCompany(String id) {
     EipMCompany result = null;
-    String id = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (id == null || Integer.valueOf(id) == null) {
         logger.debug("Empty ID...");
@@ -150,8 +156,14 @@ public class AccountUtils {
    * @return
    */
   public static EipMPost getEipMPost(RunData rundata, Context context) {
+    return getEipMPost(ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID));
+  }
+
+  public static EipMPost getEipMPost(String id) {
     EipMPost result = null;
-    String id = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (id == null || Integer.valueOf(id) == null) {
         logger.debug("Empty ID...");
