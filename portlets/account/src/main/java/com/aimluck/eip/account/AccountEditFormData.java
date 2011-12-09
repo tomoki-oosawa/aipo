@@ -678,21 +678,21 @@ public class AccountEditFormData extends ALAbstractFormData {
   /**
    * @return
    */
-  public ALStringField getNewpasswordConfirm() {
+  public ALStringField getNewPasswordConfirm() {
     return new_password_confirm;
   }
 
   /**
    * @param field
    */
-  public void setNewpassword(String field) {
+  public void setNewPassword(String field) {
     new_password.setValue(field);
   }
 
   /**
    * @param field
    */
-  public void setNewpasswordConfirm(String field) {
+  public void setNewPasswordConfirm(String field) {
     new_password_confirm.setValue(field);
   }
 
