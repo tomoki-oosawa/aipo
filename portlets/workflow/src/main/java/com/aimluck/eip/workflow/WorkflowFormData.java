@@ -150,7 +150,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   public void initField() {
     // リクエスト名
     request_name = new ALStringField();
-    request_name.setFieldName("標題");
+    request_name.setFieldName("タイトル");
     request_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
@@ -390,7 +390,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     // カテゴリID
     if (category_id.getValue() == 1 && request_name.getValue().length() == 0) {
       msgList
-        .add("『 <span class='em'>カテゴリ</span> 』を未分類以外に変更するか、『 <span class='em'>標題</span> 』を入力してください。");
+        .add("『 <span class='em'>カテゴリ</span> 』を未分類以外に変更するか、『 <span class='em'>タイトル</span> 』を入力してください。");
     }
     // リクエスト名
     request_name.validate(msgList);

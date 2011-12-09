@@ -125,12 +125,11 @@ public class WorkflowAllSelectData extends
     String tabParam = rundata.getParameters().getString("alltab");
     currentTab = ALEipUtils.getTemp(rundata, context, "alltab");
     if (tabParam == null && currentTab == null) {
-      ALEipUtils.setTemp(rundata, context, "alltab", TAB_UNFINISHED);
-      currentTab = TAB_UNFINISHED;
+      currentTab = null;
     } else if (tabParam != null) {
-      ALEipUtils.setTemp(rundata, context, "alltab", tabParam);
       currentTab = tabParam;
     }
+    ALEipUtils.setTemp(rundata, context, "alltab", tabParam);
 
     // カテゴリの初期値を取得する
     try {
@@ -219,7 +218,6 @@ public class WorkflowAllSelectData extends
         target_keyword.setValue(WorkflowUtils
           .getTargetKeyword(rundata, context));
       }
-
       SelectQuery<EipTWorkflowRequest> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
@@ -253,7 +251,9 @@ public class WorkflowAllSelectData extends
     SelectQuery<EipTWorkflowRequest> query =
       Database.query(EipTWorkflowRequest.class);
 
-    if (TAB_UNFINISHED.equals(currentTab)) {
+    if (currentTab == null) {
+      // 全取得
+    } else if (TAB_UNFINISHED.equals(currentTab)) {
       Expression exp1 =
         ExpressionFactory.noMatchExp(
           EipTWorkflowRequest.PROGRESS_PROPERTY,
@@ -377,30 +377,11 @@ public class WorkflowAllSelectData extends
         .intValue()));
       rd.setProgress(record.getProgress());
       rd.setPrice(record.getPrice().longValue());
+      // test
 
-      String lastUpdateUser = null;
-      EipTWorkflowRequestMap map = null;
-      List<EipTWorkflowRequestMap> maps =
-        WorkflowUtils.getEipTWorkflowRequestMap(record);
-      int size = maps.size();
+      ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
+      rd.setClientName(client.getAliasName().getValue());
 
-      if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
-        // すべて承認済みの場合、最終承認者をセットする
-        map = maps.get(size - 1);
-        ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
-        lastUpdateUser = user.getAliasName().getValue();
-      } else {
-        for (int i = 0; i < size; i++) {
-          map = maps.get(i);
-          if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
-            // 最終閲覧者を取得する
-            ALEipUser user =
-              ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = user.getAliasName().getValue();
-            break;
-          }
-        }
-      }
       String state = new String();
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         state = "完了";
@@ -411,7 +392,6 @@ public class WorkflowAllSelectData extends
         state = "否認";
       }
       rd.setStateString(state);
-      rd.setLastUpdateUser(lastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),

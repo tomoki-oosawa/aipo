@@ -33,7 +33,7 @@
 #ALcell_dt($career '分類')
 #ALcell_dd($career $!{result.Detail.CategoryName})
 #if($!result.Detail.RequestName != '')
-#ALcell_dt($career '標題')
+#ALcell_dt($career 'タイトル')
 #ALcell_dd($career $!{result.Detail.RequestName})
 #end
 #ALcell_dt($career '投稿日')

@@ -42,7 +42,7 @@
 &nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');")
 #end
 #ALtditemfooter()
-#ALtdcaption('標題')
+#ALtdcaption('タイトル')
 #ALtditemheader()
 $!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
 #ALtditemfooter()

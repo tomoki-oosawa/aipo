@@ -60,9 +60,9 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('request_name' '標題' $result 'WorkflowAllListScreen')")
+#ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowAllListScreen')")
 #ALtdheadAtt("状況" 'style="width:6em"')
-#ALtdheadAtt("最終閲覧者" 'style="width:12em"')
+#ALtdheadAtt("申請者" 'style="width:12em"')
 #ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowAllListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
@@ -73,7 +73,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("$!record.StateString" 'class="center" nowrap="nowrap"')
-#ALtdcellAtt("$!record.LastUpdateUser" 'class="left" nowrap="nowrap"')
+#ALtdcellAtt("$!record.ClientName" 'class="left" nowrap="nowrap"')
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end

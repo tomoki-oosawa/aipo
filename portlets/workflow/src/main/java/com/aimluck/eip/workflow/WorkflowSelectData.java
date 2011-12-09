@@ -91,7 +91,7 @@ public class WorkflowSelectData extends
   /** 現在選択されているサブメニュー */
   private String currentSubMenu;
 
-  /** 現在選択されているタブ */
+  /** 現在選択されているタブ　nullで全表示 */
   private String currentTab;
 
   /** カテゴリ一覧 */

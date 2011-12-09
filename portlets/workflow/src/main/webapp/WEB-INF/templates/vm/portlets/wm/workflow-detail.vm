@@ -40,7 +40,7 @@
 <dt>分類</dt>
 <dd>$!{result.Detail.CategoryName}</dd>
 #if($!result.Detail.RequestName != '')
-<dt>標題</dt>
+<dt>タイトル</dt>
 <dd>$!result.Detail.RequestName</dd>
 #end
 <dt>投稿日</dt>

@@ -60,7 +60,7 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('request_name' '標題' $result 'WorkflowAllListScreen')")
+#ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowAllListScreen')")
 #ALtdheadAtt("状況" 'style="width:6em"')
 #ALtdheadAtt("最終閲覧者" 'style="width:12em"')
 #ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowAllListScreen')" 'style="width:6em"')
