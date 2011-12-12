@@ -524,15 +524,15 @@ public class BlogUtils {
   }
 
   /**
-   * 保持されるタグは　a、wbr の２種類。 brも保持したい場合はコメントアウトを戻すこと。
+   * 保持されるタグは　a、wbr の２種類。 brも保持したい場合はコメントアウトを外すこと。
    * 
    * @param src
    *          圧縮したい文字列
    * @return 上記のタグを除いて100文字以下の文字列。有効なタグは保持される。
    */
   public static String compressString(String src) {
-    final int LENGTH = 100;
-    if (src == null || src.length() == 0 || LENGTH <= 0) {
+    final int ALLOWED_MAX_LENGTH = 100;
+    if (src == null || src.length() <= ALLOWED_MAX_LENGTH) {
       return src;
     }
     String a = "<a .+?>";
@@ -549,17 +549,12 @@ public class BlogUtils {
     // sb.append(br);
     String regex = sb.toString();
     Matcher m = Pattern.compile(regex).matcher(src);
-    int valid_length = 0;
-    int sum_tags_length = 0;
-    while (m.find()) {
-      valid_length = LENGTH + sum_tags_length;
-      if (m.start() >= valid_length) {
-        break;
-      }
-      sum_tags_length += m.group().length();
+    int allowed_max_length_added_tags = ALLOWED_MAX_LENGTH;
+    while (m.find() && m.start() < allowed_max_length_added_tags) {
+      allowed_max_length_added_tags += m.group().length();
     }
-    if (valid_length < src.length()) {
-      src = src.substring(0, valid_length);
+    if (src.length() > allowed_max_length_added_tags) {
+      src = src.substring(0, allowed_max_length_added_tags);
       Matcher am = Pattern.compile(a).matcher(src);
       int stt_a = 0;
       while (am.find()) {
@@ -570,13 +565,11 @@ public class BlogUtils {
       while (_am.find()) {
         end_a++;
       }
-      sb.delete(0, sb.length());
-      sb.append(src);
       for (int i = 0; i < stt_a - end_a; i++) {
-        sb.append("</a>");
+        // aタグが入れ子でない限り、差は必ず0か1
+        src = src.concat("</a>");
       }
-      sb.append("・・・");
-      src = sb.toString();
+      src = src.concat("・・・");
     }
     return src;
   }
