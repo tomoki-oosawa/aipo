@@ -53,6 +53,9 @@ public class FacilityGroupSelectData extends
   /** 設備グループの総数 */
   private int facilitygroupSum;
 
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype;
+
   /**
    * 
    * @param action
@@ -71,6 +74,7 @@ public class FacilityGroupSelectData extends
     }
 
     super.init(action, rundata, context);
+    viewtype = "group";
   }
 
   /**
@@ -174,6 +178,15 @@ public class FacilityGroupSelectData extends
    */
   public int getFacilityGroupSum() {
     return facilitygroupSum;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
   /**

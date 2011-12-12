@@ -28,4 +28,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-facility-group.vm")
-#parse("/portlets/html/ja/facility-menu.vm")

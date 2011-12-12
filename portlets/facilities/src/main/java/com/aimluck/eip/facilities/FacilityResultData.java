@@ -187,14 +187,18 @@ public class FacilityResultData implements ALData {
       for (EipMFacilityGroupMap map : maps) {
         faclityGroupIdList.add(map.getGroupId());
       }
-      SelectQuery<EipMFacilityGroup> fquery =
-        Database.query(EipMFacilityGroup.class);
-      Expression exp =
-        ExpressionFactory.inDbExp(
-          EipMFacilityGroup.GROUP_ID_PK_COLUMN,
-          faclityGroupIdList);
-      fquery.setQualifier(exp);
-      return facility_group_list = fquery.fetchList();
+      if (faclityGroupIdList.size() > 0) {
+        SelectQuery<EipMFacilityGroup> fquery =
+          Database.query(EipMFacilityGroup.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(
+            EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+            faclityGroupIdList);
+        fquery.setQualifier(exp);
+        return facility_group_list = fquery.fetchList();
+      } else {
+        return null;
+      }
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);

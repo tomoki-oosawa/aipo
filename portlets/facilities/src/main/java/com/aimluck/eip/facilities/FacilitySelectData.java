@@ -63,6 +63,9 @@ public class FacilitySelectData extends
   /** 全設備グループの一覧 */
   private List<EipMFacilityGroup> AllFacilitygroup;
 
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype;
+
   /**
    * 
    * @param action
@@ -83,6 +86,7 @@ public class FacilitySelectData extends
       Database.query(EipMFacilityGroup.class);
     AllFacilitygroup = query.fetchList();
     super.init(action, rundata, context);
+    viewtype = "facility";
   }
 
   /**
@@ -241,6 +245,15 @@ public class FacilitySelectData extends
    */
   public int getFacilitySum() {
     return facilitySum;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
   /**
