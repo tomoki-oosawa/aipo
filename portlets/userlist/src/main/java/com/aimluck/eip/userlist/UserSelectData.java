@@ -74,7 +74,7 @@ public class UserSelectData extends
   private String currentPost;
 
   /** 検索キーワード */
-  private String searchWord;
+  private ALStringField searchWord;
 
   private int registeredUserNum = 0;
 
@@ -90,6 +90,7 @@ public class UserSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     tab = new ALStringField(ALEipUtils.getTemp(rundata, context, "tab"));
+    searchWord = new ALStringField();
     super.init(action, rundata, context);
   }
 
@@ -188,30 +189,31 @@ public class UserSelectData extends
         + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
     }
 
-    searchWord = UserListUtils.getKeyword(rundata, context);
-    if (searchWord != null && searchWord.length() > 0) {
+    searchWord.setValue(UserListUtils.getKeyword(rundata, context));
+    String searchWordValue = searchWord.getValue();
+    if (searchWordValue != null && searchWordValue.length() > 0) {
       String transWord =
         ALStringUtil.convertHiragana2Katakana(ALStringUtil
-          .convertH2ZKana(searchWord));
+          .convertH2ZKana(searchWordValue));
       Expression exp11 =
         ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp12 =
         ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp13 =
         ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp14 =
         ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp15 =
         ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp16 =
         ExpressionFactory.likeExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
@@ -221,15 +223,15 @@ public class UserSelectData extends
           + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + searchWord + "%");
       Expression exp21 =
         ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp22 =
         ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp23 =
         ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
-          + searchWord
+          + searchWordValue
           + "%");
       Expression exp31 =
         ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
@@ -253,7 +255,7 @@ public class UserSelectData extends
           + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
           + "."
           + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
-      if (searchWord != null && !"".equals(searchWord)) {
+      if (searchWordValue != null && !"".equals(searchWordValue)) {
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
           exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
           exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
@@ -429,7 +431,7 @@ public class UserSelectData extends
   /**
    * @return searchWord
    */
-  public String getSearchWord() {
+  public ALStringField getSearchWord() {
     return searchWord;
   }
 
