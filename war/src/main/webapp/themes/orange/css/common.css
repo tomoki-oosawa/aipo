@@ -3658,8 +3658,9 @@ table.auiRowTable td {
 }
 table.auiRowTable div {
 	width:100%;
-	height:1.5em;
-	line-height:1.5em;
+	height:1.6em;
+	line-height:1.6em;
+	min-height:18px;
 	overflow:hidden;
 }
 table.auiRowTable tr.even {
