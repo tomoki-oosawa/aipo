@@ -59,7 +59,7 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
-    <portlet-entry name="NoteGroup" hidden="false" type="ref" parent="Velocity" application="false">
+    <portlet-entry name="NoteGroup" hidden="true" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
             <title>伝言メモ（送信用）</title>
