@@ -46,6 +46,7 @@
     <module>system</module>
     <module>timecard</module>
     <module>todo</module>
+    <module>userlist</module>
     <module>webmail</module>
     <module>webpage</module>
     <module>whatsnew</module>

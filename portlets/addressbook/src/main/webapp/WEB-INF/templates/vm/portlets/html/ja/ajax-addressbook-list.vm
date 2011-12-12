@@ -85,7 +85,7 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div><a href='mailto:$!record.Email'>$result.getStringCR($!record.Email)</a></div>" 'nowrap="nowrap"')
+#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap"')
 #ALtdcellAtt($!record.Telephone 'nowrap="nowrap"')
 #ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap"')
 </tr>

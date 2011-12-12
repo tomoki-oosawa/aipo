@@ -18,39 +18,11 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if($address_type)
-#set ($addresstype = $address_type)
-#else
-#set ($addresstype = "hollow")
-#end
-#if($!{result.CurrentTab})
-#set ($current_tab = $!{result.CurrentTab})
-#else
-#set ($current_tab = "hollow")
-#end
-
-#if(!($addresstype=="corp_address" || $current_tab == "corp"))
-#set ($isSyagai = true)
-#else
-#set ($isSyagai = false)
-#end
-
-## ---------------------------------------------------------------------------
-
-
-
 <form class="auiSearch auiForm" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="#" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID',''); return false;">
 
 #AUISummaryDiv()
 <input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">検索</a>
-
-#AUISummaryDivfooter()
-#AUISummaryDiv()
-<input name="tab" type="radio" value="syagai" id="$!{portlet.ID}syagai" #if($isSyagai) checked="checked" #end />
-<label for="$!{portlet.ID}syagai">社外名簿</label>
-<input name="tab" type="radio" value="corp" id="$!{portlet.ID}corp" #if(!$isSyagai) checked="checked" #end />
-<label for="$!{portlet.ID}corp">社内名簿</label>
 #AUISummaryDivfooter()
 
 <input name="mode" type="hidden" value="ajaxsearch" />
@@ -78,9 +50,7 @@
 #ALtdcellfooter()
 #ALtdcellheader()
 <div>
-#if($isSyagai)
-	$result.getStringCR($!record.CompanyName)
-#end
+$result.getStringCR($!record.CompanyName)
 </div>
 #ALtdcellfooter()
 </tr>

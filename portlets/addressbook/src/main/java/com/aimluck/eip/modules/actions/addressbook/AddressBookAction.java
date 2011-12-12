@@ -63,20 +63,9 @@ public class AddressBookAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-
     // セッションのクリア
     clearAddressbookSession(rundata, context);
-
-    String address_type =
-      ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-type");
-    context.put("address_type", address_type);
-    //
     setTemplate(rundata, "addressbook");
-    //
-
   }
 
   /**

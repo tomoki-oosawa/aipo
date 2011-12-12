@@ -30,7 +30,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -68,11 +67,7 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
 
   public static AbstractAddressBookWordSelectData<?, ?> createAddressBookWordSelectData(
       RunData rundata, Context context) {
-    if (AddressBookUtils.isSyagai(rundata, context)) {
-      return new AddressBookWordSelectData();
-    } else {
-      return new AddressBookCorpWordSelectData();
-    }
+    return new AddressBookWordSelectData();
   }
 
   /**
@@ -106,15 +101,8 @@ public abstract class AbstractAddressBookWordSelectData<M1, M2> extends
     searchWord.setValue(ALEipUtils
       .getTemp(rundata, context, "AddressBooksword"));
 
-    String tabParam = rundata.getParameters().getString("tab");
-    currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (tabParam == null && currentTab == null) {
-      ALEipUtils.setTemp(rundata, context, "tab", "syagai");
-      currentTab = "syagai";
-    } else if (tabParam != null) {
-      ALEipUtils.setTemp(rundata, context, "tab", tabParam);
-      currentTab = tabParam;
-    }
+    // 社内名簿廃止(2011/12/08)
+    currentTab = "syagai";
 
     hasAuthorityList =
       checkHasAuthority(rundata, ALAccessControlConstants.VALUE_ACL_LIST);

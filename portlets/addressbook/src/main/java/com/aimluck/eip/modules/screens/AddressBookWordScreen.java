@@ -83,6 +83,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
           rundata,
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
+        listData.loadGroups(rundata, context);
 
         setTemplate(rundata, context, listData.getTemplateFilePath());
       }

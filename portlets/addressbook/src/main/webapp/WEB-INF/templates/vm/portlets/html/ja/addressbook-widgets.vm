@@ -27,20 +27,14 @@
 <ul>
 <li#if($result.currentTab == "syagai" && ! $!result.CurrentFilter ) class="active"#end>
 #set($all = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData("eventSubmit_doAddressbook_list", "1").addQueryData("filter", "").addQueryData("filtertype", "group").addQueryData('tab','syagai')))
-<a href="javascript:void(0);" onclick="aipo.viewPage('$all', '$!portlet.ID');" >社外名簿</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$all', '$!portlet.ID');" >すべてのアドレス</a>
 #if($result.GroupList.size()!=0)
-    <ul>
-    #foreach($record in $result.GroupList)
-        <li#if($result.currentTab == "syagai" && $!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) class="active"#end>
-            <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('eventSubmit_doAddressbook_list', '1').addQueryData('filter', $!record.GroupId).addQueryData('filtertype', 'group').addQueryData('tab','syagai'))', '$!portlet.ID');" >$!record.GroupName</a>
-        </li>
-    #end
-    </ul>
-#end
+#foreach($record in $result.GroupList)
+<li#if($result.currentTab == "syagai" && $!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) class="active"#end>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('eventSubmit_doAddressbook_list', '1').addQueryData('filter', $!record.GroupId).addQueryData('filtertype', 'group').addQueryData('tab','syagai'))', '$!portlet.ID');" >$!record.GroupName</a>
 </li>
-<li#if($result.currentTab == "corp") class="active"#end>
-#set($corp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('tab','corp')))
-<a href="javascript:void(0);" onclick="aipo.viewPage('$corp', '$!portlet.ID');" >社内名簿</a>
+#end
+#end
 </li>
 
 </ul>
