@@ -66,6 +66,9 @@ public class ExtTimecardSystemMapSelectData extends
   /** システムの総数 */
   private int mapSum;
 
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype = "user";
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -276,6 +279,15 @@ public class ExtTimecardSystemMapSelectData extends
 
   public int getSystemSum() {
     return mapSum;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
   /**

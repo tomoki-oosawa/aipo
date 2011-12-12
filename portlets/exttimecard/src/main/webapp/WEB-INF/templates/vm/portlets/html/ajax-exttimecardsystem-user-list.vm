@@ -16,76 +16,91 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-#set($tabs = [["ユーザー一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
-
-#macro(ALajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
-<input name="ajaxbuttonCheckboxEnable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxEnableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
-#end
-#macro(ALajaxbuttonCheckboxDisable $name $url $indicator_id $portlet_id $rt)
-<input name="ajaxbuttonCheckboxDisable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDisableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
-#end
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
-#ALspacebothheader()
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('ユーザー')
-#ALtableheaderSimpleWide()
-#ALtdcaption('部署')
-#ALtditemheader()
-<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">（全体）</option>
+#AUIwideAreaHeader()
+#AUISummaryDiv()
+<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">すべての部署</option>
 #foreach( $record in $result.PostMap )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
 #end
-</select>
-#ALtditemfooter()
-#ALtablefooter()
+</select>&nbsp;
+</form>
+<div class="floatRight">
+<div class="auiSelectButton">
+<ul>
+#set($tab = ["ユーザー", "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["勤務形態", "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+</div>
+</div>
+#AUISummaryDivfooter()
+<div id="listMessageDiv"></div>
+<form class="auiForm" name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
+<input type="hidden" name="_name" value="ユーザー" />
+<input type="hidden" name="secid" value="$secid" />
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するユーザーはありません。</div>
+指定された条件に該当するユーザーはありません。<br />
 #else
-#ALajaxpageview('ExtTimecardSystemMapListScreen' $result)
-#ALtableheaderWide()
+#AUISummaryDiv()
+#AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)
+#AUISummaryDivfooter()
+<table class="auiRowTable wide">
+<colgroup style="width:20px;">
+</colgroup><colgroup style="width:20em;">
+</colgroup><colgroup style="">
+</colgroup><colgroup style="width:12em;">
+</colgroup>
+<tbody>
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadW33("#ALajaxsort('name_kana' '名前' $result 'ExtTimecardSystemMapListScreen')")
-#ALtdheadW33("部署名")
-#ALtdheadW33("勤務形態")
+#ALtdhead("#ALswitchCheckbox()")
+#ALtdhead("#ALajaxsort('name_kana' '名前' $result 'ExtTimecardSystemMapListScreen')")
+#ALtdhead("部署名")
+#ALtdhead("勤務形態")
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.UserId' type='checkbox' value='$!record.UserId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!record.UserId' type='checkbox' value='$!record.UserId'/>" 'class="center"')
 #ALtdcellheader()
+<div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.LoginName).addQueryData("noedit",1))');">$!record.Name</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellheader()
 #set($pcount = 0)
+<div>
 #foreach($postname in $!record.PostNameList)
 #if($pcount != 0)、&nbsp;#end
 $!postname.Name
 #set($pcount = $pcount + 1)
 #end
+</div>
 #ALtdcellfooter()
 #ALtdcellheader()
+<div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemDetailScreen").addQueryData("entityid",$record.SystemId))');">$!record.SystemName</a>
+</div>
 #ALtdcellfooter()
 </tr>
 #end
 #ALtablefooter()
-#ALbuttonheaderRight()
-選択したユーザーの勤務形態を
-<select name="system_id">
+#AUISummaryDiv()
+<div class="floatLeft">
+<select name="system_id" style="width:180px;">
 #foreach( $record in $result.SystemList )
 <option value="$!{record.SystemId}">$!record.SystemName</option>
 #end
 </select>
 に
-#ALajaxbuttonCheckboxAction('変更する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapFormJSONScreen').addQueryData('mode','multi_change')" "${indicator_id}" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
-#ALbuttonfooterRight()
-#ALajaxpageviewFooter('ExtTimecardSystemMapListScreen' $result)
-#end
+#AUIajaxbuttonCheckboxAction('変更する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapFormJSONScreen').addQueryData('mode','multi_change')" "${indicator_id}" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+</div>
+#AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)
+#AUISummaryDivfooter()
 #ALformfooter()
-#ALspacebothfooter()
-#ALajaxtabfooter()
+#end
+#AUIcontentsAreaFooter()

@@ -47,6 +47,9 @@ public class ExtTimecardSystemSelectData extends
   /** システムの総数 */
   private int systemSum;
 
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype = "system";
+
   /**
    * 
    * @param rundata
@@ -177,6 +180,15 @@ public class ExtTimecardSystemSelectData extends
 
   public int getSystemSum() {
     return systemSum;
+  }
+
+  /**
+   * 表示タイプを取得します。
+   * 
+   * @return
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
 }
