@@ -3285,8 +3285,8 @@ float:left;
 }
 .auiSelectButton li.active a {
 	cursor:default;
-	border-right:solid 2px #f37e00;
-	border-left:solid 1px #f37e00;
+/*	border-right:solid 2px #f37e00;
+	border-left:solid 1px #f37e00;*/
 }
 .auiSelectButton li.active span {
 	color:#fff;
@@ -3302,6 +3302,7 @@ float:left;
 }
 .auiSelectButton li.active a.last {
 	border-right:none;
+/*	padding-left:2px;*/	
 }
 .auiSelectButton li.active a.last,
 .auiSelectButton li.active a.last:hover,
