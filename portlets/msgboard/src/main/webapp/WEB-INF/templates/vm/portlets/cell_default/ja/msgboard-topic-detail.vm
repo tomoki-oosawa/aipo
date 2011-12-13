@@ -31,15 +31,18 @@
 #ALcell_dt($career 'ｶﾃｺﾞﾘ')
 #ALcell_dd($career $!{result.ParentTopic.CategoryName})
 #ALcell_dt($career '投稿者')
-<dd>$!{result.ParentTopic.OwnerName}</dd>
+#ALcell_dd($career "$!{result.ParentTopic.OwnerName}")
 #ALcell_dt($career '投稿日')
-<dd>$!{result.ParentTopic.CreateDate.Year}/$!{result.ParentTopic.CreateDate.Month}/$!{result.ParentTopic.CreateDate.Day}&nbsp;$!{result.ParentTopic.CreateDate.Hour}:$!{result.ParentTopic.CreateDate.Minute}</dd>
+#ALcell_dd($career "$!{result.ParentTopic.CreateDate.Year}/$!{result.ParentTopic.CreateDate.Month}/$!{result.ParentTopic.CreateDate.Day}&nbsp;$!{result.ParentTopic.CreateDate.Hour}:$!{result.ParentTopic.CreateDate.Minute}")
 #ALcell_dt($career "内容")
 #ALcell_dd($career $!{result.ParentTopic.Note})
+#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size()>0)
+#ALcell_dt($career "添付ファイル")
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+#ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
-<img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>")
+#end
 #end
 #end
 #if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}))
@@ -69,12 +72,24 @@
 <dd>$!{record.UpdateDate}</dd>
 #ALcell_dt($career "書き込み")
 #ALcell_dd($career $!{record.Note})
+#if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
+#ALcell_dt($career "添付ファイル")
+#foreach( $attachmentFile in $!record.AttachmentFileList )
+#ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
+#if($attachmentFile.isImage())
+#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>")
+#end
+#end
+#end
+#*
+
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 #if($attachmentFile.isImage())
 <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
 #end
 #end
+*#
 #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
 <form action="$!jslink.getPortletById($!portlet.ID)" method="post">
 <input type="hidden" name="topic_reply_id" value=${record.TopicId}>

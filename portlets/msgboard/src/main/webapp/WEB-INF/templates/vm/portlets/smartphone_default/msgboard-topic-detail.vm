@@ -40,11 +40,15 @@ function onCommentDelete(form) {
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
 #ALcell_msgboard_detail($career $!{result.ParentTopic})
+#if($result.ParentTopic.AttachmentFileList && $result.ParentTopic.AttachmentFileList.size()>0)
+<p>
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 <img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
     #if($attachmentFile.isImage())
-    <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+    <img border="0" style="padding-left:13px" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
     #end
+#end
+</p>
 #end
 #if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
 <form action="$!jslink.getPortletById($!portlet.ID)" method="post">
@@ -61,11 +65,15 @@ function onCommentDelete(form) {
     #foreach ($record in $result.CoTopicList)
     <h4>$!{record.TopicName}</h4>
     #ALcell_msgboard_comment($career $!{record})
+        #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
+        <p>
         #foreach( $attachmentFile in $!record.AttachmentFileList )
         <img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
             #if($attachmentFile.isImage())
-            <img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+            <img border="0" style="padding-left:13px" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
             #end
+        #end
+        </p>
         #end
 
         #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
