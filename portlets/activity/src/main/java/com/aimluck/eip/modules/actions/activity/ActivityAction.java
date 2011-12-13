@@ -109,6 +109,8 @@ public class ActivityAction extends ALBaseAction {
     list.add("entityid");
     // 選択しているタブ情報の削除
     list.add("tab");
+    // 選択しているタブ情報の削除2
+    list.add("category");
     ALEipUtils.removeTemp(rundata, context, list);
   }
 
