@@ -37,7 +37,6 @@ public class GadgetsAdminListScreen extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-
     GadgetsAdminSelectData selectData = new GadgetsAdminSelectData();
     selectData.initField();
     selectData.doViewList(this, rundata, context);

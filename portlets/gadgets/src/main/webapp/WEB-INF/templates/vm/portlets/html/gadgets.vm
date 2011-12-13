@@ -29,6 +29,6 @@ aipo.container.assign(${assignData});
 
 </script>
 #else
-このアプリケーションは現在利用できません。
+このアプリは現在利用できません。
 #end
 
