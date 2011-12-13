@@ -21,23 +21,5 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-dojo.require("aimluck.widget.Menu");
-
-dojo.addOnLoad(function () {
-
-    var subMenu =
-		[
-		      {   caption: "ロール一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccessctl_list','1')"    },
-			  {   caption: "ロールを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccessControlFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.accessctl.onLoadAccessctlDialog);"}
-		];
-
-    if(aipo.accessctl.menuSelected == "undefined"){
-       aipo.accessctl.menuSelected = -1;  
-    }
-
-	var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex: aipo.accessctl.menuSelected}, "portletMenu");
-
-});
-
 //]]>
 </script> 
