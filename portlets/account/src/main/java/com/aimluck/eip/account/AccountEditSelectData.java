@@ -28,6 +28,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractSelectData;
@@ -86,7 +87,7 @@ public class AccountEditSelectData extends
   protected Object getResultDataDetail(ALBaseUser record) {
     try {
 
-      List<String> postNames =
+      List<ALStringField> postNames =
         ALEipUtils.getPostNameList(Integer.valueOf(record.getUserId()));
       List<Integer> postIds =
         ALEipUtils.getPostIdList(Integer.valueOf(record.getUserId()));

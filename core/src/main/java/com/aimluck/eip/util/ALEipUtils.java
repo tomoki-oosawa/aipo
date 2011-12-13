@@ -1608,7 +1608,7 @@ public class ALEipUtils {
    *          ユーザーID
    * @return 所属する部署リスト
    */
-  public static List<String> getPostNameList(int id) {
+  public static List<ALStringField> getPostNameList(int id) {
     SelectQuery<TurbineUserGroupRole> query =
       Database.query(TurbineUserGroupRole.class);
     Expression exp1 =
@@ -1628,9 +1628,11 @@ public class ALEipUtils {
     query.andQualifier(exp3);
     List<TurbineUserGroupRole> list = query.fetchList();
 
-    List<String> postNames = new ArrayList<String>();
+    ALStringField sf = null;
+    List<ALStringField> postNames = new ArrayList<ALStringField>();
     for (TurbineUserGroupRole role : list) {
-      postNames.add(role.getTurbineGroup().getGroupAliasName());
+      sf = new ALStringField(role.getTurbineGroup().getGroupAliasName());
+      postNames.add(sf);
     }
 
     return postNames;

@@ -66,7 +66,7 @@ public class AccountResultData implements ALData {
   private List<Integer> post_id_list;
 
   /** 部署名リスト */
-  private List<String> post_name_list;
+  private List<ALStringField> post_name_list;
 
   /** 役職名 */
   private ALStringField position_name;
@@ -117,7 +117,7 @@ public class AccountResultData implements ALData {
     in_telephone = new ALStringField();
     cellular_phone = new ALStringField();
     cellular_mail = new ALStringField();
-    post_name_list = new ArrayList<String>();
+    post_name_list = new ArrayList<ALStringField>();
     post_id_list = new ArrayList<Integer>();
     position_name = new ALStringField();
     disabled = new ALStringField();
@@ -202,7 +202,7 @@ public class AccountResultData implements ALData {
   /**
    * @return
    */
-  public List<String> getPostNameList() {
+  public List<ALStringField> getPostNameList() {
     return post_name_list;
   }
 
@@ -216,7 +216,7 @@ public class AccountResultData implements ALData {
   /**
    * @param string
    */
-  public void setPostNameList(List<String> list) {
+  public void setPostNameList(List<ALStringField> list) {
     post_name_list.addAll(list);
   }
 

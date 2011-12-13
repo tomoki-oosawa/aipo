@@ -28,6 +28,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
@@ -126,7 +127,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
       int size = list.size();
       for (int i = 0; i < size; i++) {
         record = list.get(i);
-        List<String> postNames = new ArrayList<String>();
+        List<ALStringField> postNames = new ArrayList<ALStringField>();
         try {
           postNames = ALEipUtils.getPostNameList(record.getUserId());
           EipMPosition position_data =
