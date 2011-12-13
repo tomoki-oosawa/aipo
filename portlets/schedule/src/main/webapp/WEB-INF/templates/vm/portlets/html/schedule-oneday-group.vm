@@ -137,20 +137,7 @@
 #foreach($record3 in $result.MemberList)
 
 #if($result.isDuplicate())
-#set($duplirowcount = ${result.getDuplicateScheduleList($record3.UserId.Value).size()})
-
-#set($startRow2 = 0)
-#set($endRow2 = 24*4)
-#foreach($record in ${result.getDuplicateScheduleList($record3.UserId.Value)})
-#set($startRow = $record.startRow)
-#set($endRow = $record.endRow)
-#if($endRow2 <= $startRow)
-#set($duplirowcount = $duplirowcount - 1)
-#end
-#set($startRow2 = $startRow)
-#set($endRow2 = $endRow)
-#end
-
+#set($duplirowcount = ${result.getDuplicateScheduleListRowCount($record3.UserId.Value)})
 #if($duplirowcount > 0)
 #set($duplirowmax = $duplirowcount + 1)
 #else
@@ -160,11 +147,7 @@
 #set($duplirowcount = 0)
 #set($duplirowmax = 1)
 #end
-
 #ALtdheadheaderAtt("class='groupOneday' rowspan='$duplirowmax'")
-
-
-
 $record3.AliasName
 #if(!$result.isMatch($record3.UserId.Value) && $result.hasAuthorityNote())
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
@@ -180,12 +163,12 @@ $record3.AliasName
 #ALtdcellheaderAtt("style='background-color:#FFE5E5;'rowspan='$duplirowmax'")
 <div class="calendarScheduleDiv">
 <div class="small">
-##if($result.isMatch($record.UserId.Value))
+#if($result.isMatch($record.UserId.Value))
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-##else
-##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-##end
-##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
+#else
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
+#end
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ${record.TodoName}
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -294,10 +277,11 @@ $record.WbrName
 
 ### 重複スケジュール表示（ここから） ###
 #if($duplirowcount > 0)
-<tr class="duplicate">
 #set($insert = false)
 #set($startrow2 = 0)
 #set($endrow2 = 0)
+#set($starttime2 = 0)
+#set($endtime2 = 0)
 
 #foreach($record in $result.getDuplicateScheduleList($record3.UserId.Value))
 #set($rows = $result.getRows($record3.UserId.Value))
@@ -306,31 +290,23 @@ $record.WbrName
 #set($endrow = $record.EndRow)
 #set($starthour = $result.StartHour)
 #set($endhour = $result.EndHour)
+#set($starttime = $record.startDateTime)
+#set($endtime = $record.endDateTime)
 
-#if($startrow > 0)
-#if($endrow2 <= $startrow)
-#set($colspan = $startrow - $endrow2)
-#else
-#if($endrow2 < ($endhour - $starthour) * 4)
-#set($colspan = ($endhour - $starthour) * 4 - $endrow2)
-#ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-#ALtdcellfooter()
+#set($endRowResult = 0)
+#foreach($hour in [$!{result.StartHour}..$endHour])
+#set($endRowResult = $endRowResult + 4)
 #end
-</tr>
+
+#if($startrow == 0)
+#if($colspan != $endRowResult)
 <tr class="duplicate">
-#set($colspan = $startrow)
-#end
-#if($colspan > 0)
-#ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-#ALtdcellfooter()
 #end
 #end
-#set($colspan = $endrow - $startrow)
+
+#if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
-
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
@@ -343,7 +319,6 @@ $record.WbrName
 <div class="small">$record.WbrName</div>
 </div>
 #end
-
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #end
@@ -354,45 +329,43 @@ $record.WbrName
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end
-
 #ALtdcellfooter()
-
-#set($startrow2 = $startrow)
-#set($endrow2 = $endrow)
+#else
+#if ($!{result.hasAuthoritySelfInsert()})
+#if ($!{result.isMatch($record3.UserId.Value)})
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()})")
+#else
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-
-#if($endrow < ($endhour - $starthour) * 4)
-#set($colspan = ($endhour - $starthour) * 4 - $endrow)
 #ALtdcellheaderAtt("colspan='$colspan'")
 <div class="calendarScheduleDiv"><div class="small">
+</div></div>
 #ALtdcellfooter()
+#else
+#ALtdcellAtt("" "colspan='$colspan' height='1'")
 #end
+#end
+#if($endrow == $endRowResult)
 </tr>
 #end
 #end
 
-
+#set($startrow2 = $startrow)
+#set($endrow2 = $endrow)
+#set($starttime2 = $starttime)
+#set($endtime2 = $endtime)
+#end
 ### 重複スケジュール表示（ここまで） ###
+##</tr>
+#end
 
 ### 設備スケジュール表示（ここから） ###
 #set($duplirowcount = 0)
 #set($colspanmax = $!{result.Max} + 1)
 
 #foreach($record3 in $result.FacilityList)
-
 #if($result.isDuplicate())
-#set($duplirowcount = ${result.getFacilityDuplicateScheduleList($record3.FacilityId.Value).size()})
-#set($startRow2 = 0)
-#set($endRow2 = 24*4)
-#foreach($record in ${result.getFacilityDuplicateScheduleList($record3.FacilityId.Value)})
-#set($startRow = $record.startRow)
-#set($endRow = $record.endRow)
-#if($endRow2 <= $startRow)
-#set($duplirowcount = $duplirowcount - 1)
-#end
-#set($startRow2 = $startRow)
-#set($endRow2 = $endRow)
-#end
+#set($duplirowcount = ${result.getFacilityDuplicateScheduleListRowCount($record3.FacilityId.Value)})
 #if($duplirowcount > 0)
 #set($duplirowmax = $duplirowcount + 1)
 #else
@@ -462,7 +435,6 @@ $record.WbrName
 
 ### 重複スケジュール表示（ここから） ###
 #if($duplirowcount > 0)
-<tr class="duplicate">
 #set($insert = false)
 #set($startrow2 = 0)
 #set($endrow2 = 0)
@@ -475,28 +447,17 @@ $record.WbrName
 #set($starthour = $result.StartHour)
 #set($endhour = $result.EndHour)
 
-#if($startrow > 0)
-#if($endrow2 <= $startrow)
-#set($colspan = $startrow - $endrow2)
-#else
-#if($endrow2 < ($endhour - $starthour) * 4)
-#set($colspan = ($endhour - $starthour) * 4 - $endrow2)
-#ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-#ALtdcellfooter()
+#set($endRowResult = 0)
+#foreach($hour in [$!{result.StartHour}..$endHour])
+#set($endRowResult = $endRowResult + 4)
 #end
-</tr>
+#if($startrow == 0)
+#if($colspan != $endRowResult)
 <tr class="duplicate">
-#set($colspan = $startrow)
-#end
-#if($colspan > 0)
-#ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-#ALtdcellfooter()
 #end
 #end
 
-#set($colspan = $endrow - $startrow)
+#if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
 
@@ -523,18 +484,28 @@ $record.WbrName
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end
+#else
+#if ($!{result.hasAuthoritySelfInsert()})
+#if ($!{result.isMatch($record3.UserId.Value)})
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()})")
+#else
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
+#end
+#ALtdcellheaderAtt("colspan='$colspan'")
+<div class="calendarScheduleDiv"><div class="small">
+</div></div>
+#ALtdcellfooter()
+#else
+#ALtdcellAtt("" "colspan='$colspan' height='1'")
+#end
+#end
 
 #set($startrow2 = $startrow)
 #set($endrow2 = $endrow)
 #end
-
-#if($endrow < ($endhour - $starthour) * 4)
-#set($colspan = ($endhour - $starthour) * 4 - $endrow)
-#ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-#ALtdcellfooter()
-#end
+#if($endrow == $endRowResult)
 </tr>
+#end
 #end
 
 
@@ -546,7 +517,7 @@ $record.WbrName
 
 #ALtablefooter()
 #end
-</div>
+##</div>
 
 
 #if($!ajax_onloadimage)

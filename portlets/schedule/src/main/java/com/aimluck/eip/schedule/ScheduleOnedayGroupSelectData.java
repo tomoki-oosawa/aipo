@@ -832,6 +832,11 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     return map.get(userid).getDuplicateSchedule();
   }
 
+  public int getDuplicateScheduleListRowCount(long id) {
+    Integer userid = Integer.valueOf((int) id);
+    return map.get(userid).getDuplicateScheduleRowCount();
+  }
+
   /**
    * 部署マップを取得します。
    * 
@@ -965,6 +970,11 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   public List<ScheduleOnedayResultData> getFacilityDuplicateScheduleList(long id) {
     Integer fid = Integer.valueOf((int) id);
     return facilitymap.get(fid).getDuplicateSchedule();
+  }
+
+  public int getFacilityDuplicateScheduleListRowCount(long id) {
+    Integer fid = Integer.valueOf((int) id);
+    return facilitymap.get(fid).getDuplicateScheduleRowCount();
   }
 
   /**

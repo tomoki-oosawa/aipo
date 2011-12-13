@@ -45,8 +45,12 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>start_date</code> 開始時間 */
   private ALDateTimeField start_date;
 
+  private int start_date_time;
+
   /** <code>end_date</code> 終了時間 */
   private ALDateTimeField end_date;
+
+  private int end_date_time;
 
   /** <code>name</code> 予定 */
   private ALStringField name;
@@ -133,6 +137,10 @@ public class ScheduleResultData implements ALData, Cloneable {
     return end_date;
   }
 
+  public int getEndDateTime() {
+    return end_date_time;
+  }
+
   /**
    * 開始時間を取得します。
    * 
@@ -142,13 +150,21 @@ public class ScheduleResultData implements ALData, Cloneable {
     return start_date;
   }
 
+  public int getStartDateTime() {
+    return start_date_time;
+  }
+
   /**
    * 終了時間を設定します。
    * 
    * @param date
    */
   public void setEndDate(Date date) {
+    int hh, mm;
     end_date.setValue(date);
+    hh = Integer.parseInt(end_date.getHour());
+    mm = Integer.parseInt(end_date.getMinute());
+    end_date_time = hh * 60 + mm;
   }
 
   /**
@@ -157,7 +173,11 @@ public class ScheduleResultData implements ALData, Cloneable {
    * @param date
    */
   public void setStartDate(Date date) {
+    int hh, mm;
     start_date.setValue(date);
+    hh = Integer.parseInt(start_date.getHour());
+    mm = Integer.parseInt(start_date.getMinute());
+    start_date_time = hh * 60 + mm;
   }
 
   /**

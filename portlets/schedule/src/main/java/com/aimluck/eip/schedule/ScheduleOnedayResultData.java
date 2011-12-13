@@ -34,6 +34,8 @@ public class ScheduleOnedayResultData extends ScheduleResultData {
   /** <code>index</code> インデックス */
   private int index;
 
+  private int dRowCount;
+
   /**
    * 終了地点を取得します。
    * 
@@ -86,5 +88,19 @@ public class ScheduleOnedayResultData extends ScheduleResultData {
    */
   public void setIndex(int index) {
     this.index = index;
+  }
+
+  /**
+   * @param dRowCount
+   */
+  public void setdRowCount(int dRowCount) {
+    this.dRowCount = dRowCount;
+  }
+
+  /**
+   * @return dRowCount
+   */
+  public int getdRowCount() {
+    return dRowCount;
   }
 }
