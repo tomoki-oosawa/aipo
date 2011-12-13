@@ -53,7 +53,14 @@
 <dd>$!result.Detail.Note</dd>
 ##<dt>金額</dt>
 ##<dd>$!{result.Detail.PriceStr}&nbsp;円</dd>
-
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+<dt>添付ファイル</dt>
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+<dd>
+<a href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a>
+</dd>
+#end
+#end
 </dl>
 
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
