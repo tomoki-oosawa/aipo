@@ -28,7 +28,7 @@
 <div class="auiWidget clearfix"><ul>
 
 <ul>
-<li #if(($!result.currentTab == 'unfinished') && !($all_flg))class="active"#end>
+<li #if(($!result.currentTab == 'unfinished') && !(${all_flg}))class="active"#end>
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">送信依頼</a></li>
 </ul>
 
@@ -41,7 +41,7 @@
 
 #if($!result.hasAuthorityOther())
 <ul>
-<li #if(($!result.currentTab == 'unfinished') && ($all_flg))class="active"#end>
+<li #if((!($!result.currentTab)||$!result.currentTab.isEmpty()) && (${all_flg}))class="active"#end>
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true"))','$!portlet.ID');">すべての依頼</a></li>
 </ul>
 #end
