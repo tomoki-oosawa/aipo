@@ -96,7 +96,19 @@
 </tr>
 #foreach ($record in $result.List)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('activityId','none').addQueryData('view_date', $!{record.ViewDate.toString()})")
+#if(!$record.isStartDayEqualsEndDay())
 <tr>
+#elseif($record.isStartDayEqualsToday())
+<tr class="today">
+#elseif($record.isStartDateHoliday())
+<tr class="sunday">
+#elseif($record.StartDate.Value.Day==0)
+<tr class="sunday">
+#elseif($record.StartDate.Value.Day==6)
+<tr class="saturday">
+#else
+<tr>
+#end
 <td nowrap="nowrap">${record.DateDetail}</td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 &nbsp;#if(! ${record.isPublic()})

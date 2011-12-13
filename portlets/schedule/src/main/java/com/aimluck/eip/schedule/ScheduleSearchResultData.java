@@ -22,6 +22,7 @@ package com.aimluck.eip.schedule;
 import java.text.SimpleDateFormat;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALCommonUtils;
 
@@ -53,14 +54,36 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     return b.toString();
   }
 
+  /**
+   * 時刻まではチェックしない。
+   * 
+   * @return 年・月・日が等しいならtrue
+   */
+  public boolean isStartDayEqualsEndDay() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String startDate = sdf.format(getStartDate().getValue());
+    String endDate = sdf.format(getEndDate().getValue());
+    return startDate.equals(endDate);
+  }
+
+  public boolean isStartDayEqualsToday() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String startDate = sdf.format(getStartDate().getValue());
+    String toDay = sdf.format(new java.util.Date());
+    return startDate.equals(toDay);
+  }
+
+  public boolean isStartDateHoliday() {
+    return ALEipHolidaysManager.getInstance().isHoliday(
+      getStartDate().getValue()) != null;
+  }
+
   public String getDateDetail() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'MM'月'dd'日（'E'）'");
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
-      String startDate = sdf.format(getStartDate().getValue());
-      b.append(startDate);
-      String endDate = sdf.format(getEndDate().getValue());
-      if (!startDate.equals(endDate)) {
+      b.append(sdf.format(getStartDate().getValue()));
+      if (!isStartDayEqualsEndDay()) {
         b.append("～");
         b.append(sdf.format(getEndDate().getValue()));
       }
