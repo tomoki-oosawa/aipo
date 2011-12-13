@@ -62,6 +62,15 @@
 #set ($count = $count + 1)
 #end
 #end
+
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALcell_dt($career '添付ファイル')
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+#ALcell_dd($career "<a href='$jslink.getTemplate('WorkflowFileRawScreen').addQueryData('attachmentIndex', $attachmentFile.FileId).addQueryData('ownerid', $!{result.Detail.UserId}).addQueryData('entityid', $!result.Detail.RequestId)'>$!{attachmentFile.FileName}</a>")
+#end
+#end
+
+
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 <div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;"><img src="${context_path}/images/dot.gif" width="1" height="1" /></div>
 <div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">決裁履歴</div>
