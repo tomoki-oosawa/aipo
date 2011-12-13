@@ -201,6 +201,10 @@ public class WorkflowCategorySelectData extends
     return categorySum;
   }
 
+  public String getViewtype() {
+    return "category";
+  }
+
   /**
    * 
    * @param rundata

@@ -178,6 +178,10 @@ public class WorkflowRouteSelectData extends
     return rd;
   }
 
+  public String getViewtype() {
+    return "route";
+  }
+
   /**
    * @return
    * 

@@ -27,14 +27,6 @@ dojo.addOnLoad(function () {
 
     var subMenu =
         [
-              {   caption: "分類管理",
-                  iconClass: "menuBarIconList",
-                  url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"
-              },
-              {   caption: "申請経路管理",
-                  iconClass: "menuBarIconList",
-                  url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_route_list','1')"
-              }
         ];
 
     var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex: aipo.workflow_category.menuSelected}, "portletMenu");

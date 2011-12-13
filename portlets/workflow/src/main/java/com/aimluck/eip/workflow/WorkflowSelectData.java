@@ -91,8 +91,11 @@ public class WorkflowSelectData extends
   /** 現在選択されているサブメニュー */
   private String currentSubMenu;
 
-  /** 現在選択されているタブ　nullで全表示 */
+  /** 現在選択されているタブ */
   private String currentTab;
+
+  /** <code>viewtype</code> 表示タイプ */
+  protected String viewtype;
 
   /** カテゴリ一覧 */
   private List<WorkflowCategoryResultData> categoryList;
@@ -198,6 +201,8 @@ public class WorkflowSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+    super.init(action, rundata, context);
+    viewtype = "detail";
     // カテゴリの初期値を取得する
     try {
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
@@ -659,6 +664,10 @@ public class WorkflowSelectData extends
 
   public ALNumberField getPreviousID() {
     return previous_id;
+  }
+
+  public String getViewtype() {
+    return viewtype;
   }
 
   /**
