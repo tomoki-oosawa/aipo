@@ -42,6 +42,14 @@
 #ALthtd('重要度' "$!result.Detail.PriorityString")
 #ALthtd('申請内容' $!result.Detail.Note)
 ##ALthtd('金額' "$!{result.Detail.PriceStr}&nbsp;円")
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+<tr><th>添付ファイル</th>
+<td>
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+	<a href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a><br />
+#end
+</td></tr>
+#end
 
 #ALtablefooterBorder()
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
