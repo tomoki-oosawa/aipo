@@ -41,12 +41,14 @@ function onCommentDelete(form) {
 #ALcell_linklist_iphone($career $methodlist)
 #ALcell_contents_header($career)
 #ALcell_blog_detail($career $!{result.Detail})
+<p>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<img src="images/blog/blog_item.gif">&nbsp;<a href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
+<img src="images/blog/blog_item.gif">&nbsp;<a href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br/>
 #if($attachmentFile.isImage())
-<img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+<img border="0" style="padding-left:12px;" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br/>
 #end
 #end
+</p>
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="mode" value="delete">
 <p class="right ma0">
