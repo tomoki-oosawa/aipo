@@ -29,6 +29,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.common.ALAbstractSelectData;
@@ -171,7 +172,7 @@ public class AddressBookGroupSelectData extends
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
-  public List<String> getGroupMemberList(String gid) {
+  public List<ALStringField> getGroupMemberList(String gid) {
     return AddressBookUtils.getGroupMember(gid);
   }
 

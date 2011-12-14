@@ -33,6 +33,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.addressbook.AddressBookGroup;
 import com.aimluck.eip.addressbook.AddressBookGroupResultData;
 import com.aimluck.eip.addressbook.AddressBookResultData;
@@ -316,8 +317,8 @@ public class AddressBookUtils {
     }
   }
 
-  public static List<String> getGroupMember(String gid) {
-    List<String> resultList = new ArrayList<String>();
+  public static List<ALStringField> getGroupMember(String gid) {
+    List<ALStringField> resultList = new ArrayList<ALStringField>();
 
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT ");
@@ -356,7 +357,8 @@ public class AddressBookUtils {
         if (companyName != null && companyName.trim().length() > 0) {
           strBuf.append(" (").append(companyName).append(")");
         }
-        resultList.add(strBuf.toString());
+        ALStringField st = new ALStringField(strBuf.toString());
+        resultList.add(st);
       }
     } catch (Exception ex) {
       logger.error("[AddressbookUtils]", ex);
