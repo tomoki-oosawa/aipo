@@ -24,8 +24,8 @@
     <portlet-entry name="GadgetsAdmin" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="admin-view"/>
         <meta-info>
-            <title>アプリ管理</title>
-            <description>アプリを管理します。</description>
+            <title>アプリケーション管理</title>
+            <description>アプリケーションを管理します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="gadgets-admin-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
