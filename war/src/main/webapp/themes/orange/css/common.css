@@ -3302,7 +3302,7 @@ float:left;
 }
 .auiSelectButton li.active a.last {
 	border-right:none;
-/*	padding-left:2px;*/	
+/*	padding-left:2px;*/
 }
 .auiSelectButton li.active a.last,
 .auiSelectButton li.active a.last:hover,
@@ -3476,6 +3476,18 @@ input.auiButton {
 	vertical-align:middle;
 }
 
+
+/*.auiButtonAction,*/
+.auiButtonBold {
+	display:inline-block;
+	line-height:2.2em;
+	padding:0 1em;
+	text-decoration:none;
+	text-align:center;
+	cursor:pointer;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
 .auiButtonAction {
 	display:inline-block;
 	line-height:2.2em;
@@ -3493,14 +3505,27 @@ input.auiButton {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
 }
+.auiButtonBold {
+	color:#000;
+	text-shadow:0 1px 0 #f8f8f8;
+	border:solid 1px #ccc;
+	background:#f0f0f0;
+	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));/*Ch*/
+	background: -moz-linear-gradient(top, #fff, #f0f0f0);/*Fx*/
+}
 input[type='submit'].auiButtonAction,
 input[type='reset'].auiButtonAction,
-input[type='button'].auiButtonAction {
+input[type='button'].auiButtonAction,
+input[type='submit'].auiButtonBold,
+input[type='reset'].auiButtonBold,
+input[type='button'].auiButtonBold {
 	height:2.5em;
 	line-height:auto;
 	>padding:0;
 }
-button.auiButtonAction {
+button.auiButtonAction,
+button.auiButtonBold {
 	height:2.5em;
 	line-height:auto;
 	>padding:0;
@@ -3519,6 +3544,23 @@ button.auiButtonAction {
 	background:#ff9000;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22));/*Ch*/
 	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
+}
+
+.auiButtonBold:hover {
+	color:#000;
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0.2);
+	background:#e0e0e0;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e1e1e1));/*Ch*/
+	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
+}
+.auiButtonBold:active {
+	color:#000;
+	border:solid 1px #999;
+	box-shadow:0 1px 1px rgba(0,0,0,0);
+	background:#ccc;
+	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
+	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
 
 /* auiSearch ********************/
@@ -3976,7 +4018,39 @@ table.auiCalendar td:hover {
 	background-position:23px 1em;
 }
 
-
+.auiDropDown {
+	position:relative;
+}
+.dropButton {
+	text-decoration:none;
+}
+.auiDropDown div.auiMenuList {
+	position:absolute;
+	margin:0;
+	border:solid 1px #ccc;
+	border-radius:3px;
+	-ms-border-radius:3px;
+	background:#fff;
+	overflow:hidden;
+	z-index:999;
+	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+}
+.auiDropDown div.auiMenuListItem {
+	margin:0;
+	padding:0;
+	background:none;
+}
+.auiDropDown li:first-child {
+}
+.auiDropDown div.auiMenuListItem a {
+	display:block;
+	padding:5px;
+	text-decoration:none;
+}
+.auiDropDown div.auiMenuListItem a:hover {
+	color:#000;
+	background:#f0f0f0;
+}
 /* auiIcon ********************/
 /*
 auiIconは「class="auiIcon auiIconSetting"」と

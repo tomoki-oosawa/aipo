@@ -34,7 +34,14 @@
 #AUIwideAreaHeader()
 
 #AUISummaryDiv()
+<div class="floatLeft">
 #AUIbuttonAction("ユーザーを追加する" "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
+</div>
+
+#AUIconfigheader($!{portlet.ID} "13em")
+#AUIconfigitem("ユーザーの順番を変更する" $orderUser)
+#AUIconfigfooter()
+
 #AUISummaryDivfooter()
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
@@ -59,7 +66,6 @@ value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("tem
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
-#AUIajaxbuttonLink('ユーザーの順番を変更する' $orderUser)
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
@@ -98,9 +104,9 @@ value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("tem
 #ALtdcellheader()
 #set($pcount = 0)
 <div>
-#foreach($postname in $!record.PostNameList)
+#foreach($postname in $!record.getPostNameList())
 #if($pcount != 0)、&nbsp;#end
-$!postname
+$postname
 #set($pcount = $pcount + 1)
 #end
 </div>
@@ -114,7 +120,6 @@ $!postname
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
-#AUIajaxbuttonLink('ユーザーの順番を変更する' $orderUser)
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()

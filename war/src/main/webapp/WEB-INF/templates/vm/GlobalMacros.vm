@@ -1711,4 +1711,19 @@ $item.get(0)
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(AUIconfigheader $portlet_id $width)
+<div class="floatRight auiDropDown clearfix">
+<div><a href="javascript:void(0);" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting"></span> 設定</a></div>
+<div class="menubar" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; border: 0px; display: none; ">
+<div class="auiMenuList">
+#end
 
+#macro(AUIconfigitem $text $link)
+<div class="auiMenuListItem"><a style="width: 100%; " href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($link)');">$text</a></div>
+#end
+
+#macro(AUIconfigfooter)
+</div>
+</div>
+</div>
+#end
