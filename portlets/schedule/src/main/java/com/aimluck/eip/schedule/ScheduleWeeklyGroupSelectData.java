@@ -141,7 +141,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
       target_group_name = getGroup(filter);
 
-      if (filter == null || filter.equals("")) {
+      if (filter == null) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String groupName =
           portlet.getPortletConfig().getInitParameter("p3a-group");
