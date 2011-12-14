@@ -44,6 +44,7 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -185,7 +186,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    * Utilty class describing a Tab elemnt in the template Velocity Context
    */
   public class PortletTab {
-    private String title = null;
+    private final ALStringField title = new ALStringField();
 
     private boolean selected = false;
 
@@ -197,12 +198,12 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
     private boolean authority = true;
 
-    public String getTitle() {
+    public ALStringField getTitle() {
       return this.title;
     }
 
     public void setTitle(String title) {
-      this.title = title;
+      this.title.setValue(title);
     }
 
     public boolean isSelected() {
