@@ -41,7 +41,7 @@
 #end
 <a href="http://store.aipo.com/" target="_blank"><strong>Aipoストア</strong></a>でアプリを探すことができます。<br/><br/>
 #if($mode=="new_form")
-外部のアプリあるいは独自のアプリをインストールする場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
+外部のアプリケーションあるいは独自のアプリケーションをインストールする場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
 #end
 #ALtableheaderWide()
 #ALtdcaptionAtt("#ALrequired('ガジェットURL')" "style='width:180px;'")

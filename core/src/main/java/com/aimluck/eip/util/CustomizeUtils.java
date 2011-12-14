@@ -53,7 +53,6 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
-import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 
 /**
  * 伝言メモの一覧を処理するクラスです。
@@ -140,77 +139,6 @@ public class CustomizeUtils {
       entry.setParent("GadgetsTemplate");
       entry.addParameter("aid", app.getAppId().getValue());
       entry.addParameter("url", app.getUrl().getValue());
-      list.add(entry);
-    }
-
-    String[] filterFields =
-      (String[]) PortletSessionState.getAttribute(data, FILTER_FIELDS);
-    String[] filterValues =
-      (String[]) PortletSessionState.getAttribute(data, FILTER_VALUES);
-    list = PortletFilter.filterPortlets(list, filterFields, filterValues);
-
-    Collections.sort(list, new Comparator<PortletEntry>() {
-      @Override
-      public int compare(PortletEntry o1, PortletEntry o2) {
-        String t1 =
-          ((o1).getTitle() != null) ? (o1).getTitle().toLowerCase() : (o1)
-            .getName()
-            .toLowerCase();
-        String t2 =
-          ((o2).getTitle() != null) ? (o2).getTitle().toLowerCase() : (o2)
-            .getName()
-            .toLowerCase();
-
-        return t1.compareTo(t2);
-      }
-    });
-    // this is used only by maintainUserSelection - which does not need the
-    // portlet list to be regenrated
-    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
-    return list;
-  }
-
-  // Create a list of all available portlets and all applications
-  @SuppressWarnings("unchecked")
-  public static List<PortletEntry> buildPortletListWithStatus(RunData data,
-      String mediaType, List<PortletEntry> allPortlets, Status status) {
-    List<PortletEntry> list = new ArrayList<PortletEntry>();
-    Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
-
-    while (i.hasNext()) {
-      PortletEntry entry =
-        (PortletEntry) Registry.getEntry(Registry.PORTLET, (String) i.next());
-      entry.setType("active");
-      // Iterator medias;
-      // Make a master portlet list, we will eventually us this to build a
-      // category list
-      allPortlets.add(entry);
-      // MODIFIED: Selection now takes care of the specified mediatype!
-      if (JetspeedSecurity.checkPermission(
-        (JetspeedUser) data.getUser(),
-        new PortalResource(entry),
-        JetspeedSecurity.PERMISSION_VIEW)
-        && ((!entry.isHidden())
-          && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))
-        && ALPortalApplicationService.isActive(entry.getName())
-        && !entry.getSecurityRef().getParent().equals("admin-view")
-        && !status.equals(ALApplicationGetRequest.Status.INACTIVE)) {
-        list.add(entry);
-      }
-    }
-
-    ResultList<ALApplication> appList =
-      ALApplicationService.getList(new ALApplicationGetRequest()
-        .withStatus(status));
-
-    for (ALApplication app : appList) {
-      BasePortletEntry entry = new BasePortletEntry();
-      entry.setTitle(app.getTitle().getValue());
-      entry.setDescription(app.getDescription().getValue());
-      entry.setName("GadgetsTemplate::" + app.getAppId().getValue());
-      entry.setParent("GadgetsTemplate");
-      entry.setType((app.getStatus() == 1) ? "active" : "inactive");
       list.add(entry);
     }
 

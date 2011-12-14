@@ -16,83 +16,66 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
+
 ## ---------------------------------------------------------------------------
+#set($tabs = [["アプリ一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
 
-#set ($addApp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")))
+#macro(ALajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxEnable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxEnableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
+#macro(ALajaxbuttonCheckboxDisable $name $url $indicator_id $portlet_id $rt)
+<input name="ajaxbuttonCheckboxDisable" class="button" type="button" value="$name" onclick="aimluck.io.ajaxCheckboxDisableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" />
+#end
 ## ---------------------------------------------------------------------------
-#AUIwideAreaHeader()
-#AUISummaryDiv()
-#AUIbuttonAction("アプリを追加する" "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
-#AUISummaryDivfooter()
-#AUISummaryDiv()
-<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
-<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","all").addQueryData("filtertype","status"))">すべてのアプリ</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>有効のアプリ</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>無効のアプリ</option>
-</select>
-#ALformfooter()
-<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
-#AUISummaryDivfooter()
-<div id="listMessageDiv"></div>
+#ALtabheader($tabs "")
+#ALspacebothheader()
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader('アプリ')
+#ALtableheaderSimpleWide()
+#ALtdcaption('状態')
+#ALtditemheader()
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","all").addQueryData("filtertype","status"))">すべて</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>有効</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>無効</option>
+</select>
+#ALtditemfooter()
+#ALtablefooter()
 #if($result.List.size() == 0)
-指定された条件に該当するアプリはありません。<br />
+<div class="message">指定された条件に該当するアプリはありません。</div>
 #else
-#AUISummaryDiv()
-<div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-</div>
-#AUIajaxpageview('GadgetsAdminListScreen' $result)
-#AUISummaryDivfooter()
-<table class="auiRowTable wide">
-<colgroup style="width:20px;">
-</colgroup><colgroup style="width:3em;">
-</colgroup><colgroup>
-</colgroup>
-<tbody>
+#ALajaxpageview('GadgetsAdminListScreen' $result)
+#ALtableheaderWide()
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("状態")
-#ALtdhead("アプリ名")
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThin("状態")
+#ALtdheadW75("タイトル")
+#ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($record.Parent == "GadgetsTemplate")
-#set($appId = $!result.getStringNumber($!record.Name))
-#ALtdcellAtt("<input name='check$!appId' type='checkbox' value='$!appId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!record.AppId' type='checkbox' value='$!record.AppId'/>" 'align="center"')
+#if($!record.Status == 1)
+#ALtdcellAtt("有効" 'nowrap="nowrap"')
 #else
-#ALtdcellAtt("" "")
+#ALtdcellAtt("無効" 'nowrap="nowrap"')
 #end
-#if($record.Type == "active")
-#ALtdcellAtt("有効" 'class="center" nowrap="nowrap"')
-#else
-#ALtdcellAtt("無効" 'class="center" nowrap="nowrap"')
-#end
-#if($record.Parent == "GadgetsTemplate")
-#set($appId = $!result.getStringNumber($!record.Name))
 #ALtdcellheader()
-<div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminDetailScreen").addQueryData("entityid",$!appId))');">$!record.Title</a>
-</div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminDetailScreen").addQueryData("entityid",$record.AppId))');">$!record.Title</a>
 #ALtdcellfooter()
-#else
-#ALtdcellAtt("<div>$record.Title</div>" '')
-#end
+#ALtdcellAtt("#ALajaxbuttonLinkCallback('編集' $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormScreen').addQueryData('entityid', $!record.AppId) 'images/icon/icon_edit.gif' '$!portlet.ID' 'aipo.gadgets_admin.onLoadDialog')" 'nowrap="nowrap"')
 </tr>
 #end
 #ALtablefooter()
-#AUISummaryDiv()
-<div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-</div>
-#AUIajaxpageview('GadgetsAdminListScreen' $result)
-#AUISummaryDivfooter()
-#ALformfooter()
+#ALbuttonheaderRight()
+選択したアプリを
+<input name="ajaxbuttonCheckboxDelete" class="button" type="button" value="アンインストールする" onclick="aipo.gadgets_admin.ajaxCheckboxDeleteSubmit(this, '$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete'))', '${indicator_id}', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);" />
+#ALajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#ALajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#ALbuttonfooterRight()
+#ALajaxpageviewFooter('GadgetsAdminListScreen' $result)
 #end
-#AUIcontentsAreaFooter()
+#ALformfooter()
+#ALspacebothfooter()
+#ALajaxtabfooter()

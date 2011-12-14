@@ -34,7 +34,7 @@ aipo.container.assign(${assignData});
 
 </script>
 #else
-このアプリは現在利用できません。
+このアプリケーションは現在利用できません。
 #end
 #ALspacebothfooter()
 #ALcontentfooter()
