@@ -37,6 +37,7 @@ public class UserGroupLiteBean implements ALData, Cloneable {
   /**
    *
    */
+  @Override
   public void initField() {
     group_id = new ALStringField();
     name = new ALStringField();
@@ -56,6 +57,10 @@ public class UserGroupLiteBean implements ALData, Cloneable {
    */
   public String getName() {
     return name.getValue();
+  }
+
+  public ALStringField getAliasName() {
+    return name;
   }
 
   /**

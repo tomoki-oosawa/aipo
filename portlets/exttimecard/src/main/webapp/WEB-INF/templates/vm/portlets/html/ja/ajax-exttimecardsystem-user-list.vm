@@ -76,7 +76,7 @@
 <div>
 #foreach($postname in $!record.PostNameList)
 #if($pcount != 0)、&nbsp;#end
-$!postname.Name
+$!postname.AliasName
 #set($pcount = $pcount + 1)
 #end
 </div>
