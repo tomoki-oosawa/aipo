@@ -1052,4 +1052,10 @@ ALTER TABLE `eip_t_workflow_file` ADD FOREIGN KEY (  `request_id` ) REFERENCES  
 
 ALTER TABLE `eip_t_workflow_request_map` ADD FOREIGN KEY (  `request_id` ) REFERENCES  `eip_t_workflow_request` (`request_id`) ON DELETE CASCADE ;
 
+ALTER TABLE `eip_t_report_file` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+
+ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+
+ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+
 

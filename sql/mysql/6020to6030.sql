@@ -100,4 +100,7 @@ INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_self','報告書（自
 INSERT INTO eip_t_acl_role VALUES(null, '報告書（自分の報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_self' limit 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', null, null);
 INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_other','報告書（他ユーザーの報告書）操作',3);
 INSERT INTO eip_t_acl_role VALUES(null, '報告書（他ユーザーの報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_other' limit 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', null, null);
+ALTER TABLE `eip_t_report_file` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 -- 20111214
