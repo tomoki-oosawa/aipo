@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.report.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +40,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
@@ -48,6 +51,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -91,6 +97,14 @@ public class ReportUtils {
   public static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.report.categorykey",
     "");
+
+  /** デフォルトエンコーディングを表わすシステムプロパティのキー */
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
+
+  /** データベースに登録されたファイルを表す識別子 */
+  public static final String PREFIX_DBFILE = "DBF";
 
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
@@ -406,6 +420,134 @@ public class ReportUtils {
         .valueOf(requestid));
     query.setQualifier(exp);
     return query;
+  }
+
+  /**
+   * 添付ファイルを取得します。
+   * 
+   * @param uid
+   * @return
+   */
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
+      return null;
+    }
+
+    ArrayList<String> hadfileids = new ArrayList<String>();
+    ArrayList<String> newfileids = new ArrayList<String>();
+
+    for (int j = 0; j < fileids.length; j++) {
+      if (fileids[j].trim().startsWith("s")) {
+        hadfileids.add(fileids[j].trim().substring(1));
+      } else {
+        newfileids.add(fileids[j].trim());
+      }
+    }
+
+    ArrayList<FileuploadLiteBean> fileNameList =
+      new ArrayList<FileuploadLiteBean>();
+    FileuploadLiteBean filebean = null;
+    int fileid = 0;
+
+    // 新規にアップロードされたファイルの処理
+    if (newfileids.size() > 0) {
+      String folderName =
+        rundata.getParameters().getString(
+          FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
+      if (folderName == null || folderName.equals("")) {
+        return null;
+      }
+
+      int length = newfileids.size();
+      for (int i = 0; i < length; i++) {
+        if (newfileids.get(i) == null || newfileids.get(i).equals("")) {
+          continue;
+        }
+
+        try {
+          fileid = Integer.parseInt(newfileids.get(i));
+        } catch (Exception e) {
+          continue;
+        }
+
+        if (fileid == 0) {
+          filebean = new FileuploadLiteBean();
+          filebean.initField();
+          filebean.setFolderName("photo");
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
+        } else {
+          BufferedReader reader = null;
+          try {
+            reader =
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getTmpFile(ALEipUtils.getUserId(rundata), folderName, fileid
+                  + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            String line = reader.readLine();
+            if (line == null || line.length() <= 0) {
+              continue;
+            }
+
+            filebean = new FileuploadLiteBean();
+            filebean.initField();
+            filebean.setFolderName(fileids[i]);
+            filebean.setFileId(fileid);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
+          } catch (Exception e) {
+            logger.error("Exception", e);
+          } finally {
+            try {
+              reader.close();
+            } catch (Exception e) {
+              logger.error("Exception", e);
+            }
+          }
+        }
+
+      }
+    }
+
+    if (hadfileids.size() > 0) {
+      // すでにあるファイルの処理
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
+      for (int k = 0; k < hadfileids.size(); k++) {
+        try {
+          fileid = Integer.parseInt(hadfileids.get(k));
+          hadfileidsValue.add(fileid);
+        } catch (Exception e) {
+          continue;
+        }
+      }
+
+      try {
+        SelectQuery<EipTReportFile> reqquery =
+          Database.query(EipTReportFile.class);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTBlogFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
+        reqquery.setQualifier(reqexp1);
+        List<EipTReportFile> requests = reqquery.fetchList();
+        int requestssize = requests.size();
+        for (int i = 0; i < requestssize; i++) {
+          EipTReportFile file = requests.get(i);
+          filebean = new FileuploadBean();
+          filebean.initField();
+          filebean.setFileId(file.getFileId());
+          filebean.setFileName(file.getFileName());
+          filebean.setFlagNewFile(false);
+          fileNameList.add(filebean);
+        }
+      } catch (Exception ex) {
+        logger.error("[BlogUtils] Exception.", ex);
+      }
+    }
+    return fileNameList;
   }
 
   /**

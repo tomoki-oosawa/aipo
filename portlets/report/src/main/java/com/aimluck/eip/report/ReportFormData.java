@@ -217,8 +217,7 @@ public class ReportFormData extends ALAbstractFormData {
           query.setQualifier(exp);
           mapList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
         }
-
-        fileuploadList = FileuploadUtils.getFileuploadList(rundata);
+        fileuploadList = ReportUtils.getFileuploadList(rundata);
       } catch (Exception ex) {
         logger.error("Exception", ex);
       }
@@ -328,7 +327,8 @@ public class ReportFormData extends ALAbstractFormData {
         EipTReportFile file = files.get(i);
         filebean = new FileuploadLiteBean();
         filebean.initField();
-        filebean.setFolderName(ReportUtils.getRelativePath(file.getFileName()));
+        filebean.setFolderName(ReportUtils.PREFIX_DBFILE
+          + Integer.toString(file.getFileId()));
         filebean.setFileName(file.getFileName());
         filebean.setFileId(file.getFileId());
         fileuploadList.add(filebean);
@@ -479,9 +479,6 @@ public class ReportFormData extends ALAbstractFormData {
       // 「更新情報」に表示させる。
       ReportUtils.createNewReportActivity(report, loginName, true);
 
-      // 添付ファイル保存先のフォルダを削除
-      ALStorageService.deleteTmpFolder(uid, folderName);
-
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
@@ -572,6 +569,13 @@ public class ReportFormData extends ALAbstractFormData {
       report.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
         .getUserId(rundata)));
 
+      // 古いマップデータを削除
+      List<EipTReportMap> tmp_map = ReportUtils.getEipTReportMap(report);
+      List<EipTReportMemberMap> tmp_member_map =
+        ReportUtils.getEipTReportMemberMap(report);
+      Database.deleteAll(tmp_map);
+      Database.deleteAll(tmp_member_map);
+
       // 社内参加者
       for (ALEipUser user : memberList) {
         EipTReportMemberMap map = Database.create(EipTReportMemberMap.class);
@@ -589,9 +593,30 @@ public class ReportFormData extends ALAbstractFormData {
         map.setEipTReport(report);
         map.setUserId(Integer.valueOf(userid));
         // R: 未読 A: 既読
+        // 更新があった際には常に未読とする
         map.setStatus(ReportUtils.DB_STATUS_UNREAD);
         map.setCreateDate(nowDate);
         map.setUpdateDate(nowDate);
+      }
+
+      // サーバーに残すファイルのID
+      List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
+      // 現在選択しているエントリが持っているファイル
+      List<EipTReportFile> files = ReportUtils.getEipTReportFile(report);
+      if (files != null) {
+        int size = files.size();
+        for (int i = 0; i < size; i++) {
+          EipTReportFile file = files.get(i);
+          if (!attIdList.contains(file.getFileId())) {
+            // ファイルシステムから削除
+            ALStorageService.deleteFile(ReportUtils.getSaveDirPath(orgId, uid)
+              + file.getFilePath());
+
+            // DBから削除
+            Database.delete(file);
+
+          }
+        }
       }
 
       // 添付ファイルを登録する．
@@ -618,9 +643,6 @@ public class ReportFormData extends ALAbstractFormData {
 
       // 「更新情報」に表示させる。
       ReportUtils.createNewReportActivity(report, loginName, false);
-
-      // 添付ファイル保存先のフォルダを削除
-      ALStorageService.deleteTmpFolder(uid, folderName);
 
     } catch (Exception ex) {
       Database.rollback();
@@ -674,6 +696,23 @@ public class ReportFormData extends ALAbstractFormData {
       return false;
     }
     return true;
+  }
+
+  private List<Integer> getRequestedHasFileIdList(
+      List<FileuploadLiteBean> attachmentFileNameList) {
+    List<Integer> idlist = new ArrayList<Integer>();
+    FileuploadLiteBean filebean = null;
+    if (attachmentFileNameList != null) {
+      int size = attachmentFileNameList.size();
+      for (int i = 0; i < size; i++) {
+        filebean = attachmentFileNameList.get(i);
+        if (!filebean.isNewFile()) {
+          int index = filebean.getFileId();
+          idlist.add(Integer.valueOf(index));
+        }
+      }
+    }
+    return idlist;
   }
 
   private boolean insertAttachmentFiles(
@@ -731,7 +770,7 @@ public class ReportFormData extends ALAbstractFormData {
           ALStorageService.copyTmpFile(
             uid,
             folderName,
-            String.valueOf(filebean.getFileId()),
+            String.valueOf(newfilebean.getFileId()),
             ReportUtils.FOLDER_FILEDIR_REPORT,
             ReportUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
             filename);
