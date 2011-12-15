@@ -135,11 +135,11 @@ public class UserSelectData extends
       ExpressionFactory.matchAllDbExp(
         oid.getIdSnapshot(),
         Expression.GREATER_THAN);
+    Expression exp2 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
 
-    SelectQuery<TurbineUser> query =
-      Database.query(TurbineUser.class, exp1).where(
-        Operations.eq(TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1)),
-        Operations.ne(TurbineUser.DISABLED_PROPERTY, "T"));
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    query.setQualifier(exp1.andExp(exp2));
 
     adminFilter = rundata.getParameters().getBoolean("adminfiltered");
     if (adminFilter) {
@@ -195,6 +195,7 @@ public class UserSelectData extends
       String transWord =
         ALStringUtil.convertHiragana2Katakana(ALStringUtil
           .convertH2ZKana(searchWordValue));
+
       Expression exp11 =
         ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
           + searchWordValue
