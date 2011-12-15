@@ -173,6 +173,7 @@
 	<obj-relationship name="eipTAclUserRoleMaps" source="TurbineUser" target="EipTAclUserRoleMap" db-relationship-path="eipTAclUserRoleMaps"/>
 	<obj-relationship name="eipTEventlog" source="TurbineUser" target="EipTEventlog" db-relationship-path="eipTEventlog"/>
 	<obj-relationship name="eipTMsgboardCategory" source="TurbineUser" target="EipTMsgboardCategory" db-relationship-path="eipTMsgboardCategory"/>
+	<obj-relationship name="eipTReport" source="TurbineUser" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTTodo" source="TurbineUser" target="EipTTodo" db-relationship-path="eipTTodo"/>
 	<obj-relationship name="eipTTodoCategory" source="TurbineUser" target="EipTTodoCategory" db-relationship-path="eipTTodoCategory"/>
 	<obj-relationship name="turbineUserGroupRole" source="TurbineUser" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>

@@ -1157,7 +1157,7 @@
 	<db-relationship name="eipTNote" source="eip_t_note_map" target="eip_t_note" toMany="false">
 		<db-attribute-pair source="NOTE_ID" target="NOTE_ID"/>
 	</db-relationship>
-	<db-relationship name="eipTMsgboardFiles" source="eip_t_report" target="eip_t_report_file" toMany="true">
+	<db-relationship name="eipTReportFiles" source="eip_t_report" target="eip_t_report_file" toMany="true">
 		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTReportMap" source="eip_t_report" target="eip_t_report_map" toMany="true">
