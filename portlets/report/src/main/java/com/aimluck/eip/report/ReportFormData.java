@@ -153,7 +153,7 @@ public class ReportFormData extends ALAbstractFormData {
     createDate.setFieldName("日時");
     // 報告書名
     report_name = new ALStringField();
-    report_name.setFieldName("表題");
+    report_name.setFieldName("タイトル");
     report_name.setTrim(true);
     report_name.setTrim(true);
     // メモ

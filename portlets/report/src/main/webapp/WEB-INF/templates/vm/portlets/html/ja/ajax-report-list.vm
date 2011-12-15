@@ -34,7 +34,7 @@
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('report_name' '表題' $result 'ReportListScreen')")
+#ALtdhead("#ALajaxsort('report_name' 'タイトル' $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('user_id' '作成者' $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('create_date' '作成日時' $result 'ReportListScreen')")
 </tr>
@@ -46,7 +46,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$!record.ClientName</div>")
-#ALtdcell("<div>$!record.CreateDateTime</div>")
+#ALtdcellAtt("<div>$!record.CreateDateTime</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()

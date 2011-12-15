@@ -26,7 +26,7 @@
 #ALtableheaderWide()
 #ALtdcaption('名前')
 #ALtditem($!result.Detail.ClientName)
-#ALtdcaption('表題')
+#ALtdcaption('タイトル')
 #ALtditem($!result.Detail.ReportName)
 #ALtdcaption('社内参加者')
 #ALtditemheader()

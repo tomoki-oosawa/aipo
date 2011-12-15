@@ -521,7 +521,7 @@ public class ReportUtils {
       .append(CR)
       .append(CR);
     body
-      .append("[表題]")
+      .append("[タイトル]")
       .append(CR)
       .append(report.getReportName().toString())
       .append(CR);
@@ -615,7 +615,7 @@ public class ReportUtils {
       .append(CR)
       .append(CR);
     body
-      .append("[表題]")
+      .append("[タイトル]")
       .append(CR)
       .append(report.getReportName().toString())
       .append(CR);
