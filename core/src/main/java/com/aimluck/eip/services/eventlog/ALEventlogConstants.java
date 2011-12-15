@@ -113,4 +113,6 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_EXTTIMECARD_SYSTEM = 311;
 
+  public static final int PORTLET_TYPE_REPORT = 320;
+
 }

@@ -171,6 +171,12 @@ public class ALAccessControlConstants {
   public static final String POERTLET_FEATURE_PORTLET_CUSTOMIZE =
     "portlet_customize";
 
+  /** アクセス権限の機能名（報告書（自分の報告書）） */
+  public static final String POERTLET_FEATURE_REPORT_SELF = "report_self";
+
+  /** アクセス権限の機能名（報告書（他人の報告書）） */
+  public static final String POERTLET_FEATURE_REPORT_OTHER = "report_other";
+
   /** 現在のロール総数 */
-  public static final int ROLE_NUM = 30;
+  public static final int ROLE_NUM = 32;
 }
