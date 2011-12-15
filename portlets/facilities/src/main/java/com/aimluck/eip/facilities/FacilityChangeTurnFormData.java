@@ -34,6 +34,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -53,7 +54,9 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   private String[] facilityIds = null;
 
   /** 設備情報のリスト */
-  private List<EipMFacility> facilityList = null;
+  private List<FacilityResultData> facilityList = null;
+
+  private List<EipMFacility> rawFacilityList = null;
 
   /**
    * 初期化します。
@@ -67,7 +70,8 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    facilityList = new ArrayList<EipMFacility>();
+    facilityList = new ArrayList<FacilityResultData>();
+    rawFacilityList = new ArrayList<EipMFacility>();
   }
 
   /**
@@ -100,7 +104,8 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
         if (positions.getValue() == null || positions.getValue().equals("")) {// 初期
           SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
           query.orderAscending(EipMFacility.SORT_PROPERTY);
-          facilityList = query.fetchList();
+          facilityList =
+            FacilitiesUtils.getFacilityResultList(query.fetchList());
         } else {// データ送信時
           StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
           facilityIds = new String[st.countTokens()];
@@ -111,10 +116,12 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
           }
           SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
           List<EipMFacility> list = query.fetchList();
+
           for (int i = 0; i < facilityIds.length; i++) {
             EipMFacility facility =
               getEipMFacilityFromFacilityId(list, facilityIds[i]);
-            facilityList.add(facility);
+            facilityList.add(FacilitiesUtils.getFacilityResultData(facility));
+            rawFacilityList.add(facility);
           }
         }
       }
@@ -142,33 +149,6 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    // if (positions.getValue() != null && (!positions.getValue().equals(""))) {
-    // 受信したユーザ ID の検証
-    // StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
-    // ALStringField field = null;
-    // while (st.hasMoreTokens()) {
-    // field = new ALStringField();
-    // field.setTrim(true);
-    // field.setValue(st.nextToken());
-    // field.limitMaxLength(16); // ユーザ名の最大文字数が 16 文字．クラス AccountFormData を参照．
-    // field.setCharacterType(ALStringField.TYPE_ASCII);
-    // field.validate(msgList);
-    // String unameValue = field.getValue();
-    // int length = unameValue.length();
-    // for (int i1 = 0; i1 < length; i1++) {
-    // if (isSymbol(unameValue.charAt(i1))) {
-    // // 使用されているのが妥当な記号であるかの確認
-    // if (!(unameValue.charAt(i1) == "_".charAt(0)
-    // || unameValue.charAt(i1) == "-".charAt(0) || unameValue
-    // .charAt(i1) == ".".charAt(0))) {
-    // msgList
-    // .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
-    // break;
-    // }
-    // }
-    // }
-    // }
-    // }
     return (msgList.size() == 0);
   }
 
@@ -219,7 +199,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
     boolean res = true;
     try {
       int newPosition = 1;
-      for (EipMFacility facility : facilityList) {
+      for (EipMFacility facility : rawFacilityList) {
         facility.setSort(newPosition);
         newPosition++;
       }
@@ -295,7 +275,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public List<EipMFacility> getFacilityList() {
+  public List<FacilityResultData> getFacilityList() {
     return facilityList;
   }
 

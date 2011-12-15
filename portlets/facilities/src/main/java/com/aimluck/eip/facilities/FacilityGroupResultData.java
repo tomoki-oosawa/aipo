@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.facilities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -99,24 +98,8 @@ public class FacilityGroupResultData implements ALData {
    * @return
    */
   public List<FacilityResultData> getFacilityListByGroupId(String groupid) {
-
-    List<FacilityResultData> list = new ArrayList<FacilityResultData>();
-
     List<EipMFacility> result =
       FacilitiesUtils.getFacilityListByGroupId(Integer.parseInt(groupid));
-
-    for (EipMFacility model : result) {
-      FacilityResultData data = new FacilityResultData();
-      data.initField();
-      data.setFacilityId(model.getFacilityId());
-      data.setFacilityName(model.getFacilityName());
-      data.setNote(model.getNote());
-      data.setUpdateDate(model.getUpdateDate());
-      data.setCreateDate(model.getCreateDate());
-      data.setUserId(model.getUserId());
-      list.add(data);
-    }
-
-    return list;
+    return FacilitiesUtils.getFacilityResultList(result);
   }
 }

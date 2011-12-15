@@ -456,4 +456,25 @@ public class FacilitiesUtils {
       return null;
     }
   }
+
+  public static List<FacilityResultData> getFacilityResultList(
+      List<EipMFacility> result) {
+    List<FacilityResultData> list = new ArrayList<FacilityResultData>();
+    for (EipMFacility model : result) {
+      list.add(getFacilityResultData(model));
+    }
+    return list;
+  }
+
+  public static FacilityResultData getFacilityResultData(EipMFacility model) {
+    FacilityResultData data = new FacilityResultData();
+    data.initField();
+    data.setFacilityId(model.getFacilityId());
+    data.setFacilityName(model.getFacilityName());
+    data.setNote(model.getNote());
+    data.setUpdateDate(model.getUpdateDate());
+    data.setCreateDate(model.getCreateDate());
+    data.setUserId(model.getUserId());
+    return data;
+  }
 }
