@@ -360,6 +360,37 @@
 		<db-attribute name="NOTE_STAT" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="VARCHAR" isMandatory="true" length="99"/>
 	</db-entity>
+	<db-entity name="eip_t_report">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="NOTE" type="VARCHAR"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="REPORT_NAME" type="VARCHAR" length="64"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_report_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="VARCHAR" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="REPORT_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_t_report_map">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_report_member_map">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="eip_t_schedule">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
@@ -823,6 +854,33 @@
 		<obj-attribute name="noteStat" type="java.lang.String" db-attribute-path="NOTE_STAT"/>
 		<obj-attribute name="userId" type="java.lang.String" db-attribute-path="USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipTReport" className="com.aimluck.eip.cayenne.om.portlet.EipTReport" dbEntityName="eip_t_report">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="reportName" type="java.lang.String" db-attribute-path="REPORT_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTReportFile" className="com.aimluck.eip.cayenne.om.portlet.EipTReportFile" dbEntityName="eip_t_report_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="reportId" type="java.lang.Integer" db-attribute-path="REPORT_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTReportMap" className="com.aimluck.eip.cayenne.om.portlet.EipTReportMap" dbEntityName="eip_t_report_map">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="reportId" type="java.lang.Integer" db-attribute-path="REPORT_ID"/>
+		<obj-attribute name="status" type="java.lang.String" db-attribute-path="STATUS"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTReportMemberMap" className="com.aimluck.eip.cayenne.om.portlet.EipTReportMemberMap" dbEntityName="eip_t_report_member_map">
+		<obj-attribute name="reportId" type="java.lang.Integer" db-attribute-path="REPORT_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
 	<obj-entity name="EipTSchedule" className="com.aimluck.eip.cayenne.om.portlet.EipTSchedule" dbEntityName="eip_t_schedule">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
@@ -1099,6 +1157,27 @@
 	<db-relationship name="eipTNote" source="eip_t_note_map" target="eip_t_note" toMany="false">
 		<db-attribute-pair source="NOTE_ID" target="NOTE_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTMsgboardFiles" source="eip_t_report" target="eip_t_report_file" toMany="true">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTReportMap" source="eip_t_report" target="eip_t_report_map" toMany="true">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTReportMemberMap" source="eip_t_report" target="eip_t_report_member_map" toMany="true">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_report" target="turbine_user" toMany="false">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTReport" source="eip_t_report_file" target="eip_t_report" toMany="false">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTReport" source="eip_t_report_map" target="eip_t_report" toMany="false">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTReport" source="eip_t_report_member_map" target="eip_t_report" toMany="false">
+		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTScheduleMaps" source="eip_t_schedule" target="eip_t_schedule_map" toMany="true">
 		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
 	</db-relationship>
@@ -1196,6 +1275,10 @@
 	<obj-relationship name="eipTMsgboardFileArray" source="EipTMsgboardTopic" target="EipTMsgboardFile" db-relationship-path="eipTMsgboardFiles"/>
 	<obj-relationship name="eipTNoteMaps" source="EipTNote" target="EipTNoteMap" db-relationship-path="eipTNoteMaps"/>
 	<obj-relationship name="eipTNote" source="EipTNoteMap" target="EipTNote" db-relationship-path="eipTNote"/>
+	<obj-relationship name="turbineUser" source="EipTReport" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTReport" source="EipTReportFile" target="EipTReport" db-relationship-path="eipTReport"/>
+	<obj-relationship name="eipTReport" source="EipTReportMap" target="EipTReport" db-relationship-path="eipTReport"/>
+	<obj-relationship name="eipTReport" source="EipTReportMemberMap" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTScheduleMaps" source="EipTSchedule" target="EipTScheduleMap" db-relationship-path="eipTScheduleMaps"/>
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>

@@ -212,4 +212,6 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_EXTTIMECARD_SYSTEM = "タイムカード管理";
 
+  public static final String PORTLET_TYPE_STR_REPORT = "報告書";
+
 }

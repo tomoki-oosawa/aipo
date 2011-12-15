@@ -55,3 +55,49 @@ UPDATE `eip_t_acl_role` SET `note` = '＊詳細表示、編集、削除は一覧
 ALTER TABLE eip_t_todo MODIFY COLUMN `create_user_id` INTEGER NOT NULL;
 ALTER TABLE eip_t_todo_category MODIFY COLUMN `update_user_id` INTEGER NOT NULL;
 -- 20111124
+
+-- 20111214
+CREATE TABLE `eip_t_report` (
+  `report_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `report_name` varchar(64) COLLATE utf8_unicode_ci,
+  `note` text COLLATE utf8_unicode_ci,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`report_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_report_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `report_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `file_path` text COLLATE utf8_unicode_ci NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_report_member_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `report_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_report_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `report_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `status` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+INSERT INTO eip_m_mail_notify_conf VALUES(null,1,26,3,NULL,now(),now());
+INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_self','報告書（自分の報告書）操作',31);
+INSERT INTO eip_t_acl_role VALUES(null, '報告書（自分の報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_self' limit 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', null, null);
+INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_other','報告書（他ユーザーの報告書）操作',3);
+INSERT INTO eip_t_acl_role VALUES(null, '報告書（他ユーザーの報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_other' limit 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', null, null);
+-- 20111214

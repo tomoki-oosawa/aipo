@@ -1257,6 +1257,68 @@ CREATE TABLE eip_m_inactive_application (
 ;
 
 -----------------------------------------------------------------------------
+-- EIP_T_REPORT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT
+(
+    REPORT_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    REPORT_NAME VARCHAR (64),
+    NOTE TEXT,
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY(REPORT_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    REPORT_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_MEMBER_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_MEMBER_MAP
+(
+   ID INTEGER NOT NULL,
+   REPORT_ID INTEGER NOT NULL,
+   USER_ID INTEGER NOT NULL,
+   FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+   PRIMARY KEY(ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_MAP
+(
+   ID INTEGER NOT NULL,
+   REPORT_ID INTEGER NOT NULL,
+   USER_ID INTEGER NOT NULL,
+   STATUS VARCHAR (1),
+   CREATE_DATE DATE,
+   UPDATE_DATE TIMESTAMP,
+   FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+   PRIMARY KEY(ID)
+);
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 
@@ -1334,6 +1396,10 @@ CREATE SEQUENCE pk_module_id INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_consumer INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_token INCREMENT 20 START 200;
 CREATE SEQUENCE pk_oauth_entry INCREMENT 20 START 200;
+CREATE SEQUENCE pk_eip_t_report INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_member_map INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_map INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1398,6 +1464,10 @@ ALTER SEQUENCE pk_eip_t_acl_portlet_feature OWNED BY EIP_T_ACL_PORTLET_FEATURE.F
 ALTER SEQUENCE pk_eip_t_acl_user_role_map OWNED BY EIP_T_ACL_USER_ROLE_MAP.ID;
 ALTER SEQUENCE pk_eip_m_facility_group OWNED BY EIP_M_FACILITY_GROUP.GROUP_ID;
 ALTER SEQUENCE pk_eip_m_facility_group_map OWNED BY EIP_M_FACILITY_GROUP_MAP.ID;
+ALTER SEQUENCE pk_eip_t_report OWNED BY EIP_T_REPORT.REPORT_ID;
+ALTER SEQUENCE pk_eip_t_report_file OWNED BY EIP_T_REPORT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
+ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
@@ -1475,7 +1545,8 @@ INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(3,1,22,3,NULL,now(),now());
 INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(4,1,23,3,NULL,now(),now());
 INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(5,1,24,3,NULL,now(),now());
 INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(6,1,25,3,NULL,now(),now());
-SELECT setval('pk_eip_m_mail_notify_conf',6);
+INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(7,1,26,3,NULL,now(),now());
+SELECT setval('pk_eip_m_mail_notify_conf',7);
 
 INSERT INTO EIP_T_TIMECARD_SETTINGS VALUES(1,1,9,0,18,0,360,60,360,60);
 SELECT setval('pk_eip_t_timecard_settings',1);
@@ -1512,8 +1583,11 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(192,'manhour_summary_other','プロ
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(193,'manhour_common_category','プロジェクト管理（自分の共有カテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(194,'manhour_common_category_other','プロジェクト管理（他ユーザーの共有カテゴリ）操作',27);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','ポートレット操作',29);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(211,'report_self','報告書（自分の報告書）操作',31);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(212,'report_other','報告書（他ユーザーの報告書）操作',3);
 
-SELECT setval('pk_eip_t_acl_portlet_feature',210);
+
+SELECT setval('pk_eip_t_acl_portlet_feature',230);
 
 -- schedule
 INSERT INTO EIP_T_ACL_ROLE VALUES(1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
@@ -1564,7 +1638,12 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(28,'プロジェクト管理（他ユーザー
 --portlet
 INSERT INTO EIP_T_ACL_ROLE VALUES(29,'ポートレット管理者',201,29,NULL);
 
-SELECT setval('pk_eip_t_acl_role',31);
+--report
+INSERT INTO EIP_T_ACL_ROLE VALUES(30, '報告書（自分の報告書）管理者',211,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(31,'報告書（他ユーザーの報告書）管理者',212,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+-
+
+SELECT setval('pk_eip_t_acl_role',32);
 
 INSERT INTO EIP_T_BLOG_THEMA VALUES(1,'未分類','',0,0,NULL ,NULL);
 SELECT setval('pk_eip_t_blog_thema',1);

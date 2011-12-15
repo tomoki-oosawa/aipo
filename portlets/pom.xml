@@ -42,6 +42,7 @@
     <module>note</module>
     <module>page</module>
     <module>psml</module>
+    <module>report</module>
     <module>schedule</module>
     <module>system</module>
     <module>timecard</module>

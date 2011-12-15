@@ -94,6 +94,8 @@
 	<classpathentry kind="src" output="target/test-classes" path="portlets/deletesample/src/test/java"/>
 	<classpathentry kind="src" path="portlets/note/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/note/src/test/java"/>
+	<classpathentry kind="src" path="portlets/report/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/report/src/test/java"/>
 	<classpathentry kind="src" path="portlets/system/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/gadgets/src/test/java"/>
 	<classpathentry kind="src" path="portlets/gadgets/src/main/java"/>

@@ -60,3 +60,98 @@ ALTER TABLE EIP_T_TODO ALTER COLUMN CREATE_USER_ID SET DEFAULT NULL;
 ALTER TABLE EIP_T_TODO_CATEGORY ALTER COLUMN UPDATE_USER_ID SET NOT NULL;
 ALTER TABLE EIP_T_TODO_CATEGORY ALTER COLUMN UPDATE_USER_ID SET DEFAULT NULL;
 -- 20111124
+
+-- 20111214
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT
+(
+    REPORT_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    REPORT_NAME VARCHAR (64),
+    NOTE TEXT,
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY(REPORT_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    REPORT_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_MEMBER_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_MEMBER_MAP
+(
+   ID INTEGER NOT NULL,
+   REPORT_ID INTEGER NOT NULL,
+   USER_ID INTEGER NOT NULL,
+   FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+   PRIMARY KEY(ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_REPORT_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_REPORT_MAP
+(
+   ID INTEGER NOT NULL,
+   REPORT_ID INTEGER NOT NULL,
+   USER_ID INTEGER NOT NULL,
+   STATUS VARCHAR (1),
+   CREATE_DATE DATE,
+   UPDATE_DATE TIMESTAMP,
+   FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
+   PRIMARY KEY(ID)
+);
+
+-----------------------------------------------------------------------------
+-- CREATE SEQUENCE
+-----------------------------------------------------------------------------
+
+CREATE SEQUENCE pk_eip_t_report INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_member_map INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_report_map INCREMENT 20;
+
+
+-----------------------------------------------------------------------------
+-- ALTER SEQUENCE
+-----------------------------------------------------------------------------
+
+INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(NEXTVAL('pk_eip_m_mail_notify_conf'),1,26,3,NULL,now(),now());
+
+
+-----------------------------------------------------------------------------
+-- ALTER SEQUENCE
+-----------------------------------------------------------------------------
+
+ALTER SEQUENCE pk_eip_t_report OWNED BY EIP_T_REPORT.REPORT_ID;
+ALTER SEQUENCE pk_eip_t_report_file OWNED BY EIP_T_REPORT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
+ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
+
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_self','報告書（自分の報告書）操作',31);
+INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), '報告書（自分の報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_self' LIMIT 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_other','報告書（他ユーザーの報告書）操作',3);
+INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'),'報告書（他ユーザーの報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_other' LIMIT 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+-- 20111214

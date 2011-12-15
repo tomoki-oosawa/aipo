@@ -1,0 +1,51 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportFormScreen").addQueryData("entityid","new")))
+## ---------------------------------------------------------------------------
+<div id="auiWidgetsArea">
+<div class="auiWidget clearfix">
+#AUIbuttonAction("報告書を作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.report.onLoadReportDialog);")
+</div>
+
+<div class="auiWidget clearfix"><ul>
+
+<ul>
+<li #if(($!result.currentSubMenu == 'created'))class="active"#end>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen").addQueryData("submenu", "created").addQueryData("reset_params","true"))','$!portlet.ID');">送信した報告書</a></li>
+</ul>
+
+
+<ul>
+<li #if($!result.currentSubMenu == 'requested')class="active"#end>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen").addQueryData("submenu", "requested").addQueryData("reset_params","true"))','$!portlet.ID');">受信した報告書</a></li>
+</ul>
+
+
+#if($!result.hasAuthorityOther())
+<ul>
+<li #if(($!result.currentSubMenu == 'all'))class="active"#end>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen").addQueryData("submenu", "all").addQueryData("reset_params","true"))','$!portlet.ID');">すべての報告書</a></li>
+</ul>
+#end
+</ul></div>
+
+</div>
+

@@ -137,6 +137,9 @@
 	<db-relationship name="eipTMsgboardCategory" source="turbine_user" target="eip_t_msgboard_category" toMany="true">
 		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTReport" source="turbine_user" target="eip_t_report" toMany="true">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTTodo" source="turbine_user" target="eip_t_todo" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
