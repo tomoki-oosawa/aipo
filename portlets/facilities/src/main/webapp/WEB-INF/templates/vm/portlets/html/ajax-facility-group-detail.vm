@@ -20,29 +20,23 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("設備詳細")
+#ALdialogheader("設備グループ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("設備")
+#ALajaxdetailformheader("設備グループ")
 #ALtableheaderWide()
-#ALtdcaption('設備詳細')
+#ALtdcaption('設備グループ名')
 #ALtditemheader()
-$!result.Detail.FacilityName
+$!result.Detail.GroupName
 #ALtditemfooter()
-#ALtdcaption('メモ')
-#ALtditem($!result.Detail.Note)
-#ALtdcaption('登録日')
-#ALtditem($!result.Detail.CreateDate.toString('yyyy年MM月dd日'))
-#ALtdcaption('更新日')
-#ALtditem($!result.Detail.UpdateDate.toString('yyyy年MM月dd日'))
-#ALtdcaption('設備グループ')
+#ALtdcaption('設備リスト')
 #ALtditemheader()
-#foreach($record in $!result.Detail.getFacilityGroupListByFacilityId($!{result.Detail.FacilityId.toString()}))
-$!record.GroupName<br />
+#foreach($record in $!result.Detail.getFacilityListByGroupId($!{result.Detail.GroupId.toString()}))
+$!record.FacilityName<br />
 #end
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.facility.onLoadFacilityDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.facility.onReceiveMessage")#ALajaxbuttonClose()
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.facility.onLoadFacilityGroupDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.facility.onReceiveMessage")#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

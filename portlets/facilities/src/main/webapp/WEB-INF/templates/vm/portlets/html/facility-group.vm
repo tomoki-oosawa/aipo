@@ -23,8 +23,8 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-    ptConfig['$!portlet.ID'] = { group:"facility", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"facility", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupListScreen"))', reloadFunction:aipo.reloadPage };
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-facility.vm")
+#parse("/portlets/html/ja/ajax-facility-group.vm")

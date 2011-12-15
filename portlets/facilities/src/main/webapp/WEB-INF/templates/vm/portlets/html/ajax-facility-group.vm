@@ -1,0 +1,90 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+
+#set ($addFacilityGroup = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupFormScreen").addQueryData("entityid","new")))
+## ---------------------------------------------------------------------------
+#AUIwideAreaHeader()
+#AUISummaryDiv()
+<div class="floatRight">
+<div class="auiSelectButton">
+<ul>
+#set($tab = ["設備", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["設備グループ", "group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:8em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+</div>
+</div>
+#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+</div>
+<div id="listMessageDiv"></div>
+#ALajaxlistformheader('設備グループ')
+#if($result.List.size() == 0)
+指定された条件に該当する設備グループはありません。<br />
+#else
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+</div>
+#AUIajaxpageview('FacilityGroupListScreen' $result)
+#AUISummaryDivfooter()
+<table class="auiRowTable wide">
+<colgroup style="width:20px;">
+</colgroup><colgroup style="width:30em;">
+</colgroup><colgroup style="">
+</colgroup>
+<tbody>
+<tr>
+#ALtdhead("#ALswitchCheckbox()")
+#ALtdhead("#ALajaxsort('group_name' '設備グループ名' $result 'FacilityGroupListScreen')")
+#ALtdhead("設備名")
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellAtt("<input name='check$!record.GroupId' type='checkbox' value='$!record.GroupId'/>" 'class="center"')
+#ALtdcellheader()
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupDetailScreen").addQueryData("entityid",$record.GroupId))');">$!record.GroupName</a>
+</div>
+#ALtdcellfooter()
+#ALtdcellheader()
+#set($fcount = 0)
+<div>
+#foreach($group in $!record.getFacilityListByGroupId($!record.GroupId.toString()))
+#if($fcount != 0)、&nbsp;#end
+$!group.FacilityName
+#set($fcount = $fcount + 1)
+#end
+</div>
+#ALtdcellfooter()
+</tr>
+#end
+#ALtablefooter()
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+</div>
+#AUIajaxpageview('FacilityGroupListScreen' $result)
+#AUISummaryDivfooter()
+#ALformfooter()
+#end
+#AUIcontentsAreaFooter()

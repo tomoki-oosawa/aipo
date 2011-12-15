@@ -22,19 +22,14 @@ package com.aimluck.eip.facilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
-import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 
 /**
  * 設備グループのResultDataです。 <BR>
@@ -103,34 +98,25 @@ public class FacilityGroupResultData implements ALData {
    * @param postid
    * @return
    */
-  public List<EipMFacility> getFacilityListByGroupId(String groupid) {
-    try {
-      SelectQuery<EipMFacilityGroupMap> query =
+  public List<FacilityResultData> getFacilityListByGroupId(String groupid) {
 
-      Database.query(EipMFacilityGroupMap.class);
-      query.where(Operations.eq(EipMFacilityGroupMap.GROUP_ID_PROPERTY, Integer
-        .valueOf(groupid)));
-      List<EipMFacilityGroupMap> maps = query.fetchList();
-      List<Integer> faclityIdList = new ArrayList<Integer>();
-      for (EipMFacilityGroupMap map : maps) {
-        faclityIdList.add(map.getFacilityId());
-      }
-      if (faclityIdList.size() > 0) {
-        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
-        Expression exp =
-          ExpressionFactory.inDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN,
-            faclityIdList);
-        fquery.setQualifier(exp);
-        fquery.orderAscending(EipMFacility.SORT_PROPERTY);
-        return fquery.fetchList();
-      } else {
-        return null;
-      }
-    } catch (Exception ex) {
-      Database.rollback();
-      logger.error("Exception", ex);
-      return null;
+    List<FacilityResultData> list = new ArrayList<FacilityResultData>();
+
+    List<EipMFacility> result =
+      FacilitiesUtils.getFacilityListByGroupId(Integer.parseInt(groupid));
+
+    for (EipMFacility model : result) {
+      FacilityResultData data = new FacilityResultData();
+      data.initField();
+      data.setFacilityId(model.getFacilityId());
+      data.setFacilityName(model.getFacilityName());
+      data.setNote(model.getNote());
+      data.setUpdateDate(model.getUpdateDate());
+      data.setCreateDate(model.getCreateDate());
+      data.setUserId(model.getUserId());
+      list.add(data);
     }
+
+    return list;
   }
 }

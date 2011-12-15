@@ -30,9 +30,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -61,7 +59,7 @@ public class FacilitySelectData extends
   private int facilitySum;
 
   /** 全設備グループの一覧 */
-  private List<EipMFacilityGroup> AllFacilitygroup;
+  private List<FacilityGroupResultData> AllFacilitygroup;
 
   /** <code>viewtype</code> 表示タイプ */
   protected String viewtype;
@@ -82,9 +80,7 @@ public class FacilitySelectData extends
         .getPortletConfig()
         .getInitParameter("p2a-sort"));
     }
-    SelectQuery<EipMFacilityGroup> query =
-      Database.query(EipMFacilityGroup.class);
-    AllFacilitygroup = query.fetchList();
+    AllFacilitygroup = FacilitiesUtils.getFacilityGroupAllList();
     super.init(action, rundata, context);
     viewtype = "facility";
   }
@@ -229,8 +225,8 @@ public class FacilitySelectData extends
       rd.setFacilityName(record.getFacilityName());
       rd.setFacilityId(record.getFacilityId().longValue());
       rd.setNote(record.getNote());
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(record.getCreateDate());
+      rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -278,7 +274,7 @@ public class FacilitySelectData extends
     return id1 == (int) id2;
   }
 
-  public List<EipMFacilityGroup> getAllFacilityGroup() {
+  public List<FacilityGroupResultData> getAllFacilityGroup() {
     return AllFacilitygroup;
   }
 }

@@ -33,9 +33,12 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.facilities.FacilityGroupResultData;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -365,5 +368,92 @@ public class FacilitiesUtils {
       }
     }
     return false;
+  }
+
+  public static List<EipMFacilityGroup> getFacilityGroupListByFacilityId(
+      String facilityid) {
+    try {
+      SelectQuery<EipMFacilityGroupMap> query =
+
+      Database.query(EipMFacilityGroupMap.class);
+      query.where(Operations.eq(
+        EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
+        Integer.valueOf(facilityid)));
+      List<EipMFacilityGroupMap> maps = query.fetchList();
+      List<Integer> faclityGroupIdList = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap map : maps) {
+        faclityGroupIdList.add(map.getGroupId());
+      }
+      if (faclityGroupIdList.size() > 0) {
+        SelectQuery<EipMFacilityGroup> fquery =
+          Database.query(EipMFacilityGroup.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(
+            EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+            faclityGroupIdList);
+        fquery.setQualifier(exp);
+        return fquery.fetchList();
+      } else {
+        return null;
+      }
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  public static List<FacilityGroupResultData> getFacilityGroupAllList() {
+    List<FacilityGroupResultData> facilityAllList =
+      new ArrayList<FacilityGroupResultData>();
+
+    try {
+      List<EipMFacilityGroup> result =
+        Database.query(EipMFacilityGroup.class).orderAscending(
+          EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+
+      for (EipMFacilityGroup group : result) {
+        FacilityGroupResultData data = new FacilityGroupResultData();
+        data.initField();
+        data.setGroupId(group.getGroupId());
+        data.setGroupName(group.getGroupName());
+        facilityAllList.add(data);
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+
+    return facilityAllList;
+  }
+
+  public static List<EipMFacility> getFacilityListByGroupId(int groupid) {
+    try {
+      SelectQuery<EipMFacilityGroupMap> query =
+
+      Database.query(EipMFacilityGroupMap.class);
+      query.where(Operations.eq(EipMFacilityGroupMap.GROUP_ID_PROPERTY, Integer
+        .valueOf(groupid)));
+      List<EipMFacilityGroupMap> maps = query.fetchList();
+      List<Integer> faclityIdList = new ArrayList<Integer>();
+      for (EipMFacilityGroupMap map : maps) {
+        faclityIdList.add(map.getFacilityId());
+      }
+      if (faclityIdList.size() > 0) {
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            faclityIdList);
+        fquery.setQualifier(exp);
+        fquery.orderAscending(EipMFacility.SORT_PROPERTY);
+        return fquery.fetchList();
+      } else {
+        return null;
+      }
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return null;
+    }
   }
 }

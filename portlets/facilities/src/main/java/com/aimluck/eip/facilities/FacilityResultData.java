@@ -20,21 +20,18 @@
 package com.aimluck.eip.facilities;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
-import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -60,13 +57,13 @@ public class FacilityResultData implements ALData {
   private ALStringField note;
 
   /** 登録日 */
-  private ALStringField create_date;
+  private ALDateTimeField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
 
   /** 設備グループリスト */
-  private List<EipMFacilityGroup> facility_group_list;
+  private List<FacilityGroupResultData> facilityGroupList;
 
   /**
    *
@@ -79,8 +76,9 @@ public class FacilityResultData implements ALData {
     facility_name = new ALStringField();
     note = new ALStringField();
     note.setTrim(false);
-    create_date = new ALStringField();
-    update_date = new ALStringField();
+    create_date = new ALDateTimeField();
+    update_date = new ALDateTimeField();
+    facilityGroupList = new ArrayList<FacilityGroupResultData>();
   }
 
   /**
@@ -118,6 +116,10 @@ public class FacilityResultData implements ALData {
     facility_id.setValue(i);
   }
 
+  public void setUserId(long value) {
+    user_id.setValue(value);
+  }
+
   /**
    * @param string
    */
@@ -142,29 +144,29 @@ public class FacilityResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getCreateDate() {
+  public ALDateTimeField getCreateDate() {
     return create_date;
   }
 
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
+  public ALDateTimeField getUpdateDate() {
     return update_date;
   }
 
   /**
    * @param string
    */
-  public void setCreateDate(String string) {
-    create_date.setValue(string);
+  public void setCreateDate(Date date) {
+    create_date.setValue(date);
   }
 
   /**
    * @param string
    */
-  public void setUpdateDate(String string) {
-    update_date.setValue(string);
+  public void setUpdateDate(Date date) {
+    update_date.setValue(date);
   }
 
   /**
@@ -173,40 +175,27 @@ public class FacilityResultData implements ALData {
    * @param postid
    * @return
    */
-  public List<EipMFacilityGroup> getFacilityGroupListByFacilityId(
+  public List<FacilityGroupResultData> getFacilityGroupListByFacilityId(
       String facilityid) {
-    try {
-      SelectQuery<EipMFacilityGroupMap> query =
+    List<EipMFacilityGroup> _facilityGroupList =
+      FacilitiesUtils.getFacilityGroupListByFacilityId(facilityid);
 
-      Database.query(EipMFacilityGroupMap.class);
-      query.where(Operations.eq(
-        EipMFacilityGroupMap.FACILITY_ID_PROPERTY,
-        Integer.valueOf(facilityid)));
-      List<EipMFacilityGroupMap> maps = query.fetchList();
-      List<Integer> faclityGroupIdList = new ArrayList<Integer>();
-      for (EipMFacilityGroupMap map : maps) {
-        faclityGroupIdList.add(map.getGroupId());
-      }
-      if (faclityGroupIdList.size() > 0) {
-        SelectQuery<EipMFacilityGroup> fquery =
-          Database.query(EipMFacilityGroup.class);
-        Expression exp =
-          ExpressionFactory.inDbExp(
-            EipMFacilityGroup.GROUP_ID_PK_COLUMN,
-            faclityGroupIdList);
-        fquery.setQualifier(exp);
-        return facility_group_list = fquery.fetchList();
-      } else {
-        return null;
-      }
-    } catch (Exception ex) {
-      Database.rollback();
-      logger.error("Exception", ex);
-      return null;
+    if (_facilityGroupList == null) {
+      return facilityGroupList;
     }
+
+    for (EipMFacilityGroup group : _facilityGroupList) {
+      FacilityGroupResultData data = new FacilityGroupResultData();
+      data.initField();
+      data.setGroupId(group.getGroupId());
+      data.setGroupName(group.getGroupName());
+      facilityGroupList.add(data);
+    }
+
+    return facilityGroupList;
   }
 
-  public List<EipMFacilityGroup> getFacilityGroupList() {
-    return facility_group_list;
+  public List<FacilityGroupResultData> getFacilityGroupList() {
+    return facilityGroupList;
   }
 }

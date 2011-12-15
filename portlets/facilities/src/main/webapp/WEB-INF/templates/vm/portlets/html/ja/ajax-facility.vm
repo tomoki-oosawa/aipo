@@ -90,7 +90,7 @@ $!group.GroupName
 #ALtdcellfooter()
 </tr>
 #end
-#ALtablefooter()
+</table>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
@@ -98,6 +98,6 @@ $!group.GroupName
 </div>
 #AUIajaxpageview('FacilityListScreen' $result)
 #AUISummaryDivfooter()
-#ALformfooter()
+</form>
 #end
 #AUIcontentsAreaFooter()
