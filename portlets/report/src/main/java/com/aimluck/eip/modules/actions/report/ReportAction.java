@@ -54,6 +54,7 @@ public class ReportAction extends ALBaseAction {
 
     // セッション情報をクリア
     ReportUtils.clearReportSession(rundata, context);
+    ALEipUtils.setTemp(rundata, context, "Report_Maximize", "false");
 
     ReportSelectData listData = new ReportSelectData();
     listData.initField();
@@ -77,6 +78,7 @@ public class ReportAction extends ALBaseAction {
 
     // セッション情報をクリア
     ReportUtils.clearReportSession(rundata, context);
+    ALEipUtils.setTemp(rundata, context, "Report_Maximize", "true");
 
     ReportSelectData listData = new ReportSelectData();
     listData.initField();

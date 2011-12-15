@@ -24,6 +24,7 @@ dojo.require("dijit.form.ComboBox");
 dojo.require("aipo.widget.DropdownDatepicker");
 
 aipo.report.onLoadReportDetail = function(portlet_id){
+    aipo.portletReload('report');
     aipo.portletReload('whatsnew');
 }
 

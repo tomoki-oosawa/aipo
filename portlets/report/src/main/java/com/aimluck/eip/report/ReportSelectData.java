@@ -179,8 +179,40 @@ public class ReportSelectData extends
     Integer login_user_id =
       Integer.valueOf((int) login_user.getUserId().getValue());
 
-    // 送信
-    if (SUBMENU_CREATED.equals(currentSubMenu)) {
+    if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
+      // 通常画面
+      // 受信したもので未読
+      SelectQuery<EipTReportMap> q = Database.query(EipTReportMap.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTReportMap.USER_ID_PROPERTY,
+          login_user_id);
+      q.andQualifier(exp1);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTReportMap.STATUS_PROPERTY,
+          ReportUtils.DB_STATUS_UNREAD);
+      q.andQualifier(exp2);
+      List<EipTReportMap> queryList = q.fetchList();
+
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTReportMap item : queryList) {
+        if (item.getReportId() != 0 && !resultid.contains(item.getReportId())) {
+          resultid.add(item.getReportId());
+        } else if (!resultid.contains(item.getReportId())) {
+          resultid.add(item.getReportId());
+        }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+
+    } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
+      // 送信
       Expression exp1 =
         ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
       query.setQualifier(exp1);
@@ -209,7 +241,7 @@ public class ReportSelectData extends
       Expression ex =
         ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
       query.andQualifier(ex);
-    } else {
+    } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
     }
 
