@@ -363,14 +363,14 @@
 	<db-entity name="eip_t_report">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="NOTE" type="VARCHAR"/>
-		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="REPORT_NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_t_report_file">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="VARCHAR" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
@@ -380,14 +380,14 @@
 	</db-entity>
 	<db-entity name="eip_t_report_map">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="REPORT_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_t_report_member_map">
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="REPORT_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 	</db-entity>

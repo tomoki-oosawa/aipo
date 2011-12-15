@@ -37,6 +37,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TACL_USER_ROLE_MAPS_PROPERTY = "eipTAclUserRoleMaps";
     public static final String EIP_TEVENTLOG_PROPERTY = "eipTEventlog";
     public static final String EIP_TMSGBOARD_CATEGORY_PROPERTY = "eipTMsgboardCategory";
+    public static final String EIP_TREPORT_PROPERTY = "eipTReport";
     public static final String EIP_TTODO_PROPERTY = "eipTTodo";
     public static final String EIP_TTODO_CATEGORY_PROPERTY = "eipTTodoCategory";
     public static final String TURBINE_USER_GROUP_ROLE_PROPERTY = "turbineUserGroupRole";
@@ -274,6 +275,17 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTMsgboardCategory() {
         return (List)readProperty("eipTMsgboardCategory");
+    }
+    
+    
+    public void addToEipTReport(com.aimluck.eip.cayenne.om.portlet.EipTReport obj) {
+        addToManyTarget("eipTReport", obj, true);
+    }
+    public void removeFromEipTReport(com.aimluck.eip.cayenne.om.portlet.EipTReport obj) {
+        removeToManyTarget("eipTReport", obj, true);
+    }
+    public List getEipTReport() {
+        return (List)readProperty("eipTReport");
     }
     
     
