@@ -103,4 +103,6 @@ INSERT INTO eip_t_acl_role VALUES(null, '報告書（他ユーザーの報告書
 ALTER TABLE `eip_t_report_file` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+ALTER TABLE eip_t_acl_portlet_feature AUTO_INCREMENT = 10000;
+ALTER TABLE eip_t_acl_role AUTO_INCREMENT = 10000;
 -- 20111214
