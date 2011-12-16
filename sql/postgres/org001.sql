@@ -1587,7 +1587,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(211,'report_self','報告書（自�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(212,'report_other','報告書（他ユーザーの報告書）操作',3);
 
 
-SELECT setval('pk_eip_t_acl_portlet_feature',10000);
+SELECT setval('pk_eip_t_acl_portlet_feature',300);
 
 -- schedule
 INSERT INTO EIP_T_ACL_ROLE VALUES(1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
