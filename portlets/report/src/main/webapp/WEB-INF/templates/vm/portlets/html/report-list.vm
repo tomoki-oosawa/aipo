@@ -33,4 +33,3 @@
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #parse("/portlets/html/ja/ajax-report-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/workflow-menu.vm")

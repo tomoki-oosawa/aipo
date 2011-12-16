@@ -28,8 +28,8 @@
 
 //]]>
 </script>
-#if($!result.hasAuthority())
+##if($!result.hasAuthority())
 #parse("/portlets/html/ja/ajax-report.vm")
-#else
-#parse("/portlets/html/PermissionError.vm")
-#end
+##else
+##parse("/portlets/html/PermissionError.vm")
+##end
