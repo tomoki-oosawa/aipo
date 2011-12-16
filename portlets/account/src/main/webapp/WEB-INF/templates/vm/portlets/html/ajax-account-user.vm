@@ -38,9 +38,9 @@
 #AUIbuttonAction("ユーザーを追加する" "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
 </div>
 
-#AUIconfigheader($!{portlet.ID} "13em")
-#AUIconfigitem("ユーザーの順番を変更する" $orderUser)
-#AUIconfigfooter()
+##AUIconfigheader($!{portlet.ID} "13em")
+##AUIconfigitem("ユーザーの順番を変更する" $orderUser)
+##AUIconfigfooter()
 
 #AUISummaryDivfooter()
 #AUISummaryDiv()
