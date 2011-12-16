@@ -90,7 +90,7 @@
 #AUIrowTableWide()
 <tr>
 <th class="w20">日時</th>
-<th class="w33">予定</th>
+<th class="w33">タイトル</th>
 <th class="w33">内容</th>
 <th class="w20">登録者</th>
 </tr>
