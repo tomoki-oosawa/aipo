@@ -24,7 +24,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メモ")
 #ALtableheaderWide()
-#ALtdcaption('メモ名')
+#ALtdcaption('タイトル')
 #ALtditem($!result.Detail.MemoName)
 #ALtdcaption('内容')
 #ALtditem("$!result.Detail.NoteStr")

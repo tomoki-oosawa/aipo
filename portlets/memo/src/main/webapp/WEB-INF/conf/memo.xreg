@@ -51,11 +51,11 @@
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort.style.items" value="memo_name,update_date,create_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="メモ名,更新日,作成日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="タイトル,更新日,作成日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="memo.MemoAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="function_mode1" value="MemoFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>    
+        <parameter name="function_mode1" value="MemoFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>        
+        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="メモ追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.memo.onLoadMemoDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>

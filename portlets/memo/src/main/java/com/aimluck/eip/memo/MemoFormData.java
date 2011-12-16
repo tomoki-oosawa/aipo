@@ -42,7 +42,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MemoFormData extends ALAbstractFormData {
 
@@ -57,12 +57,12 @@ public class MemoFormData extends ALAbstractFormData {
   private ALStringField note;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -72,14 +72,14 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
     // Memo名
     memo_name = new ALStringField();
-    memo_name.setFieldName("メモ名");
+    memo_name.setFieldName("タイトル");
     memo_name.setTrim(true);
     // メモ
     note = new ALStringField();
@@ -90,8 +90,8 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -105,10 +105,10 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -121,7 +121,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -150,7 +150,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -198,7 +198,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -246,7 +246,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているmemoを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -294,7 +294,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -303,7 +303,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memo名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getMemoName() {
