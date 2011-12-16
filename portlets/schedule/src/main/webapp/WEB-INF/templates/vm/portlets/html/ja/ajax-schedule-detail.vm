@@ -74,7 +74,7 @@ $!{result.Detail.Date2}
 <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
 #end
 #ALtditemfooter()
-#ALtdcaption('予定')
+#ALtdcaption('タイトル')
 #ALtditem($!{result.Detail.Name})
 
 #* 共有カテゴリ連携（ここから）  *#
