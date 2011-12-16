@@ -51,7 +51,7 @@ $!{result.Detail.DateForCell}
 (仮)
 #end
 #ALcell_dd_footer($career)
-#ALcell_dt($career '予定')#ALcell_dd($career "$!{result.Detail.Name}")
+#ALcell_dt($career 'タイトル')#ALcell_dd($career "$!{result.Detail.Name}")
 #ALcell_dt($career '場所')#ALcell_dd($career "$!{result.Detail.Place}")
 #ALcell_dt($career '内容')#ALcell_dd($career "$!{result.Detail.Note}")
 #ALcell_dt($career '公開区分')#ALcell_dd_header($career)
@@ -69,7 +69,7 @@ $!{result.Detail.DateForCell}
 #foreach($record in $!result.MemberList)
 #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
 #ALcell_dd_header($career)
-$!record.AliasName 
+$!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "T")
 (仮)
 #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")

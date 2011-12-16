@@ -61,7 +61,7 @@ $!{result.Detail.DateForCell}
 </td>
 </tr>
 <tr>
-#ALtdhead('予定')
+#ALtdhead('タイトル')
 #ALtdcell("$!{result.Detail.Name}")
 </tr>
 <tr>
