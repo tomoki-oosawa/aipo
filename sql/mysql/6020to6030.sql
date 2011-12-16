@@ -56,7 +56,7 @@ ALTER TABLE eip_t_todo MODIFY COLUMN `create_user_id` INTEGER NOT NULL;
 ALTER TABLE eip_t_todo_category MODIFY COLUMN `update_user_id` INTEGER NOT NULL;
 -- 20111124
 
--- 20111214
+-- 20111216
 CREATE TABLE `eip_t_report` (
   `report_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -96,12 +96,12 @@ CREATE TABLE `eip_t_report_map` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 INSERT INTO eip_m_mail_notify_conf VALUES(null,1,26,3,NULL,now(),now());
-INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_self','報告書（自分の報告書）操作',31);
-INSERT INTO eip_t_acl_role VALUES(null, '報告書（自分の報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_self' limit 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', null, null);
-INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_other','報告書（他ユーザーの報告書）操作',3);
-INSERT INTO eip_t_acl_role VALUES(null, '報告書（他ユーザーの報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_other' limit 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', null, null);
+--INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_self','報告書（自分の報告書）操作',31);
+--INSERT INTO eip_t_acl_role VALUES(null, '報告書（自分の報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_self' limit 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', null, null);
+--INSERT INTO eip_t_acl_portlet_feature VALUES(null,'report_other','報告書（他ユーザーの報告書）操作',3);
+--INSERT INTO eip_t_acl_role VALUES(null, '報告書（他ユーザーの報告書）管理者', (SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'report_other' limit 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', null, null);
 ALTER TABLE `eip_t_report_file` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
-ALTER TABLE eip_t_acl_role AUTO_INCREMENT = 10000;
--- 20111214
+--ALTER TABLE eip_t_acl_role AUTO_INCREMENT = 10000;
+-- 20111216

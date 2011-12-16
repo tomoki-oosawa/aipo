@@ -150,9 +150,9 @@ ALTER SEQUENCE pk_eip_t_report_file OWNED BY EIP_T_REPORT_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
 ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
 
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_self','報告書（自分の報告書）操作',31);
-INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), '報告書（自分の報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_self' LIMIT 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_other','報告書（他ユーザーの報告書）操作',3);
-INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'),'報告書（他ユーザーの報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_other' LIMIT 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
-SELECT setval('pk_eip_t_acl_role',10000);
+--INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_self','報告書（自分の報告書）操作',31);
+--INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), '報告書（自分の報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_self' LIMIT 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
+--INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_other','報告書（他ユーザーの報告書）操作',3);
+--INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'),'報告書（他ユーザーの報告書）管理者', (SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'report_other' LIMIT 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+--SELECT setval('pk_eip_t_acl_role',10000);
 -- 20111214
