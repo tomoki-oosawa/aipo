@@ -58,7 +58,7 @@ $!{result.Detail.DateForCell}
 (仮)
 #end
 </dd>
-<dt>予定</dt>
+<dt>タイトル</dt>
 <dd>$!{result.Detail.Name}</dd>
 
 <dt>場所</dt>
