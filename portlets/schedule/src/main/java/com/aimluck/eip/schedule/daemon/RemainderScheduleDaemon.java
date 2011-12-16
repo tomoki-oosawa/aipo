@@ -564,7 +564,7 @@ public class RemainderScheduleDaemon implements Daemon {
       rd.setScheduleId(record.getScheduleId().intValue());
       // 親スケジュール ID
       rd.setParentId(record.getParentId().intValue());
-      // 予定
+      // タイトル
       rd.setName(record.getName());
       // 開始時間
       rd.setStartDate(record.getStartDate());
@@ -621,7 +621,7 @@ public class RemainderScheduleDaemon implements Daemon {
       .append(" ---")
       .append(CR)
       .append(CR);
-    body.append("[予定]").append(CR);
+    body.append("[タイトル]").append(CR);
 
     if (schelist != null && schelist.size() > 0) {
       CellScheduleResultData rd = null;

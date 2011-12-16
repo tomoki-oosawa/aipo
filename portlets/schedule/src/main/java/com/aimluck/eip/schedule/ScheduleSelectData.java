@@ -376,7 +376,7 @@ public class ScheduleSelectData extends
       rd.setOwner(record.getOwnerId().intValue() == loginuserid);
       // 終了日時
       rd.setEndDate(record.getEndDate());
-      // 予定
+      // タイトル
       rd.setName(record.getName());
       // ID
       rd.setScheduleId(record.getScheduleId().intValue());

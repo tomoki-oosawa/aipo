@@ -223,7 +223,7 @@ public class CellScheduleOnedaySelectByMemberData extends
       rd.setScheduleId(record.getScheduleId().intValue());
       // 親スケジュール ID
       rd.setParentId(record.getParentId().intValue());
-      // 予定
+      // タイトル
       rd.setName(record.getName());
       // 開始時間
       rd.setStartDate(record.getStartDate());

@@ -111,7 +111,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>end_date</code> 終了日時 */
   private ALDateTimeField end_date;
 
-  /** <code>name</code> 予定 */
+  /** <code>name</code> タイトル */
   private ALStringField name;
 
   /** <code>place</code> 場所 */
@@ -511,9 +511,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     all_day_flag.setFieldName("終日");
     all_day_flag.setTrim(true);
     all_day_flag.setValue("OFF");
-    // 予定
+    // タイトル
     name = new ALStringField();
-    name.setFieldName("予定");
+    name.setFieldName("タイトル");
     name.setTrim(true);
     // 場所
     place = new ALStringField();
@@ -652,7 +652,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
-    // 予定
+    // タイトル
     name.setNotNull(true);
     name.limitMaxLength(50);
     // 場所
@@ -700,7 +700,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       throw new ALPageNotFoundException();
     }
 
-    // 予定
+    // タイトル
     name.validate(msgList);
     // 場所
     place.validate(msgList);
@@ -738,7 +738,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           ? true
           : false;
 
-      // 予定
+      // タイトル
       name.setValue(record.getName());
       // 場所
       place.setValue(record.getPlace());
@@ -981,7 +981,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       schedule = Database.create(EipTSchedule.class);
       // 親スケジュール ID
       schedule.setParentId(Integer.valueOf(0));
-      // 予定
+      // タイトル
       schedule.setName(name.getValue());
       // 場所
       schedule.setPlace(place.getValue());
@@ -1331,7 +1331,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         newSchedule = Database.create(EipTSchedule.class);
         // 繰り返しの親スケジュール ID
         newSchedule.setParentId(schedule.getScheduleId());
-        // 予定
+        // タイトル
         newSchedule.setName(name.getValue());
         // 場所
         newSchedule.setPlace(place.getValue());
@@ -1483,7 +1483,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           .getValue(), view_date.getValue(), memberIds, facilityIds);
         tmpSchedule = newSchedule;
       } else {
-        // 予定
+        // タイトル
         schedule.setName(name.getValue());
         // 場所
         schedule.setPlace(place.getValue());
@@ -2409,7 +2409,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 予定を取得します。
+   * タイトルを取得します。
    * 
    * @return
    */

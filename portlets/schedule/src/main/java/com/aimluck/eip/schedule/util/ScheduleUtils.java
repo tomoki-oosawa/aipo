@@ -740,7 +740,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1177,7 +1177,7 @@ public class ScheduleUtils {
 
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
-    // 予定
+    // タイトル
     dummySchedule.setName("dummy");
     // 場所
     dummySchedule.setPlace("");
@@ -1258,7 +1258,7 @@ public class ScheduleUtils {
     EipTSchedule dummySchedule = Database.create(EipTSchedule.class);
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
-    // 予定
+    // タイトル
     dummySchedule.setName("dummy");
     // 場所
     dummySchedule.setPlace("");
@@ -1314,7 +1314,7 @@ public class ScheduleUtils {
 
     // 親スケジュール ID
     dummySchedule.setParentId(schedule.getScheduleId());
-    // 予定
+    // タイトル
     dummySchedule.setName("dummy");
     // 場所
     dummySchedule.setPlace("");
@@ -1480,7 +1480,7 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
         || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+        .equals("weekly-group"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
@@ -2662,7 +2662,7 @@ public class ScheduleUtils {
     }
     body.append("さんが予定を追加しました。").append(CR).append(CR);
     body
-      .append("[予定]")
+      .append("[タイトル]")
       .append(CR)
       .append(schedule.getName().toString())
       .append(CR);
@@ -2746,7 +2746,7 @@ public class ScheduleUtils {
     }
     body.append("さんが予定を追加しました。").append(CR).append(CR);
     body
-      .append("[予定]")
+      .append("[タイトル]")
       .append(CR)
       .append(schedule.getName().toString())
       .append(CR);

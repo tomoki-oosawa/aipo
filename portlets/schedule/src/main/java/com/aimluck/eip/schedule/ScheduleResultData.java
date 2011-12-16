@@ -52,7 +52,7 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   private int end_date_time;
 
-  /** <code>name</code> 予定 */
+  /** <code>name</code> タイトル */
   private ALStringField name;
 
   /** 場所 */
@@ -181,7 +181,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 予定を取得します。
+   * タイトルを取得します。
    * 
    * @return
    */
@@ -194,7 +194,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 予定を取得します。
+   * 場所を取得します。
    * 
    * @return
    */
@@ -212,7 +212,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 予定を設定します。
+   * タイトルを設定します。
    * 
    * @param string
    */

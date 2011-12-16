@@ -571,7 +571,7 @@ public class ScheduleWeeklyJSONFormData {
         EipTSchedule newSchedule = Database.create(EipTSchedule.class);
         // 繰り返しの親スケジュール ID
         newSchedule.setParentId(schedule.getScheduleId());
-        // 予定
+        // タイトル
         newSchedule.setName(schedule.getName());
         // 場所
         newSchedule.setPlace(schedule.getPlace());

@@ -55,7 +55,7 @@ public class ScheduleBean implements ALData, Cloneable {
   /** <code>end_date</code> 終了時間 */
   private ALDateTimeField end_date;
 
-  /** <code>name</code> 予定 */
+  /** <code>name</code> タイトル */
   private ALStringField name;
 
   /** <code>date</code> 場所 */
@@ -256,7 +256,7 @@ public class ScheduleBean implements ALData, Cloneable {
   }
 
   /**
-   * 予定を取得します。
+   * タイトルを取得します。
    * 
    * @return
    */
@@ -283,7 +283,7 @@ public class ScheduleBean implements ALData, Cloneable {
   }
 
   /**
-   * 予定を設定します。
+   * タイトルを設定します。
    * 
    * @param string
    */

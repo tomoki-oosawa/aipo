@@ -76,7 +76,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellScheduleFormNoteData.class.getName());
 
-  /** <code>name</code> 予定 */
+  /** <code>name</code> タイトル */
   private ALStringField name;
 
   /** <code>place</code> 場所 */
@@ -296,9 +296,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
    */
   @Override
   public void initField() {
-    // 予定
+    // タイトル
     name = new ALStringField();
-    name.setFieldName("予定");
+    name.setFieldName("タイトル");
     name.setTrim(true);
     // 場所
     place = new ALStringField();
@@ -338,7 +338,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   @Override
   protected void setValidator() {
 
-    // 予定
+    // タイトル
     getName().setNotNull(true);
     getName().limitMaxLength(50);
 
@@ -361,7 +361,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   @Override
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
-    // 予定
+    // タイトル
     getName().validate(msgList);
 
     // 場所
@@ -375,7 +375,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   @Override
   protected void loadCustomFormData(EipTSchedule record) {
-    // 予定
+    // タイトル
     name.setValue(record.getName());
 
     // 場所
@@ -466,7 +466,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       schedule = Database.create(EipTSchedule.class);
       // 親スケジュール ID
       schedule.setParentId(Integer.valueOf(0));
-      // 予定
+      // タイトル
       schedule.setName(getName().getValue());
       // 場所
       schedule.setPlace(getPlace().getValue());
@@ -817,7 +817,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         EipTSchedule newSchedule = Database.create(EipTSchedule.class);
         // 繰り返しの親スケジュール ID
         newSchedule.setParentId(schedule.getScheduleId());
-        // 予定
+        // タイトル
         newSchedule.setName(name.getValue());
         // 場所
         newSchedule.setPlace(place.getValue());
@@ -924,7 +924,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           .getViewDate()
           .getValue(), form_data.getViewDate().getValue(), memberIds);
       } else {
-        // 予定
+        // タイトル
         schedule.setName(name.getValue());
         // 場所
         schedule.setPlace(place.getValue());
@@ -1438,7 +1438,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 予定を取得します。
+   * タイトルを取得します。
    * 
    * @return
    */

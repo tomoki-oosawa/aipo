@@ -63,9 +63,8 @@ public class ScheduleTooltipSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleTooltipSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleTooltipSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
@@ -156,7 +155,8 @@ public class ScheduleTooltipSelectData extends
     }
 
     // 自分に関係のある予定なのかどうか判断する
-    int scheduleId = Integer.valueOf(rundata.getParameters().getString("scheduleid"));
+    int scheduleId =
+      Integer.valueOf(rundata.getParameters().getString("scheduleid"));
     if (!ScheduleUtils.hasRelation(rundata, scheduleId)) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
@@ -350,7 +350,7 @@ public class ScheduleTooltipSelectData extends
       rd.setOwner(record.getOwnerId().intValue() == loginuserid);
       // 終了日時
       rd.setEndDate(record.getEndDate());
-      // 予定
+      // タイトル
       rd.setName(record.getName());
       // ID
       rd.setScheduleId(record.getScheduleId().intValue());
@@ -446,7 +446,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /*
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
