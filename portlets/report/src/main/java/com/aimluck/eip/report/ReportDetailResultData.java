@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.report;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.util.ALEipUtils;
@@ -36,7 +39,7 @@ public class ReportDetailResultData extends ReportResultData {
   private ALStringField note;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
 
   /**
    *
@@ -48,7 +51,7 @@ public class ReportDetailResultData extends ReportResultData {
     user_id = new ALNumberField();
     note = new ALStringField();
     note.setTrim(false);
-    update_date = new ALStringField();
+    update_date = new ALDateTimeField();
   }
 
   /**
@@ -82,15 +85,15 @@ public class ReportDetailResultData extends ReportResultData {
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
+  public ALDateTimeField getUpdateDate() {
     return update_date;
   }
 
-  /**
-   * @param string
-   */
-  public void setUpdateDate(String string) {
-    update_date.setValue(string);
+  public void setUpdateDate(Date date) {
+    if (date == null) {
+      return;
+    }
+    this.update_date.setValue(date);
   }
 
 }

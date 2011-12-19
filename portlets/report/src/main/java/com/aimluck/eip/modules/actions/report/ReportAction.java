@@ -19,13 +19,18 @@
 
 package com.aimluck.eip.modules.actions.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
+import com.aimluck.eip.report.ReportReplyFormData;
 import com.aimluck.eip.report.ReportSelectData;
 import com.aimluck.eip.report.util.ReportUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -35,6 +40,19 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ReportAction extends ALBaseAction {
+
+  /** 返信用キー */
+  private final String RESULT_ON_REPORT_DETAIL = "resultOnReportDetail";
+
+  /** 返信用エラーメッセージキー */
+  private final String ERROR_MESSAGE_LIST_ON_REPORT_DETAIL =
+    "errmsgsOnReportDetail";
+
+  /** 返信用 result */
+  private Object resultOnReportDetail;
+
+  /** 返信用異常系のメッセージを格納するリスト */
+  private List<String> errmsgListOnReportDetail;
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -90,6 +108,106 @@ public class ReportAction extends ALBaseAction {
       .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "report-list");
+  }
+
+  /**
+   * 
+   * @param obj
+   */
+  public void setResultDataOnReportDetail(Object obj) {
+    resultOnReportDetail = obj;
+  }
+
+  /**
+   * 
+   * @param msg
+   */
+  public void addErrorMessagesOnReportDetail(List<String> msgs) {
+    if (errmsgListOnReportDetail == null) {
+      errmsgListOnReportDetail = new ArrayList<String>();
+    }
+    errmsgListOnReportDetail.addAll(msgs);
+  }
+
+  /**
+   * トピックに返信します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doReport_reply(RunData rundata, Context context) throws Exception {
+    ReportReplyFormData formData = new ReportReplyFormData();
+    formData.initField();
+    if (formData.doInsert(this, rundata, context)) {
+      // データ登録が成功したとき
+      doReport_detail(rundata, context);
+    } else {
+      // トピック詳細表示用の情報を再取得
+      ReportSelectData detailData = new ReportSelectData();
+      detailData.initField();
+      if (detailData.doViewDetail(this, rundata, context)) {
+        setTemplate(rundata, "report-detail");
+      } else {
+        doReport_list(rundata, context);
+      }
+    }
+  }
+
+  /**
+   * トピックを一覧表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doReport_list(RunData rundata, Context context) throws Exception {
+    ReportSelectData listData = new ReportSelectData();
+    listData.initField();
+    // PSMLからパラメータをロードする
+    // 最大表示件数（最大化時）
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
+    listData.doViewList(this, rundata, context);
+    setTemplate(rundata, "report-list");
+  }
+
+  /**
+   * トピックを詳細表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doReport_detail(RunData rundata, Context context)
+      throws Exception {
+    ReportSelectData detailData = new ReportSelectData();
+    detailData.initField();
+    if (detailData.doViewDetail(this, rundata, context)) {
+      if (detailData.showReplyForm()) {
+        ReportReplyFormData formData = new ReportReplyFormData();
+        formData.initField();
+        formData.doViewForm(this, rundata, context);
+      }
+      setTemplate(rundata, "report-detail");
+    } else {
+      doReport_list(rundata, context);
+    }
+  }
+
+  /**
+   * 
+   * @param context
+   */
+  public void putDataOnReportDetail(RunData rundata, Context context) {
+    context.put(RESULT_ON_REPORT_DETAIL, resultOnReportDetail);
+    context.put(ERROR_MESSAGE_LIST_ON_REPORT_DETAIL, errmsgListOnReportDetail);
+
+    // For security
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
   }
 
 }

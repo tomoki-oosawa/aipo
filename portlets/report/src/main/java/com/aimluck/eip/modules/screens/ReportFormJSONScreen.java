@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.report.ReportFormData;
+import com.aimluck.eip.report.ReportReplyFormData;
 
 /**
  * 報告書をJSONデータとして出力するクラスです。 <br />
@@ -71,6 +72,26 @@ public class ReportFormJSONScreen extends ALJSONScreen {
         ReportFormData formData = new ReportFormData();
         formData.initField();
 
+        if (formData.doDelete(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if ("report_reply".equals(mode)) {
+        ReportReplyFormData formData = new ReportReplyFormData();
+        formData.initField();
+        if (formData.doInsert(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if ("delete_reply".equals(mode)) {
+        ReportReplyFormData formData = new ReportReplyFormData();
+        formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json =

@@ -35,6 +35,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
@@ -101,6 +102,9 @@ public class ReportFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
+  /** 親 報告書 ID */
+  private ALNumberField parent_id;
+
   private String orgId;
 
   private int uid;
@@ -129,7 +133,6 @@ public class ReportFormData extends ALAbstractFormData {
     uid = ALEipUtils.getUserId(rundata);
     orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
-
     // アクセス権
     /*
      * int view_uid = ReportUtils.getViewId(rundata, context, uid); if (view_uid
@@ -430,6 +433,8 @@ public class ReportFormData extends ALAbstractFormData {
       // ユーザーID
       report.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
         .getUserId(rundata)));
+      // 親レポート
+      report.setParentId(0);
 
       // 社内参加者
       for (ALEipUser user : memberList) {

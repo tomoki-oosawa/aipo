@@ -363,7 +363,8 @@
 	<db-entity name="eip_t_report">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="NOTE" type="VARCHAR"/>
-		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="PARENT_ID" type="INTEGER"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="REPORT_NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
@@ -857,6 +858,7 @@
 	<obj-entity name="EipTReport" className="com.aimluck.eip.cayenne.om.portlet.EipTReport" dbEntityName="eip_t_report">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
 		<obj-attribute name="reportName" type="java.lang.String" db-attribute-path="REPORT_NAME"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
@@ -1275,6 +1277,9 @@
 	<obj-relationship name="eipTMsgboardFileArray" source="EipTMsgboardTopic" target="EipTMsgboardFile" db-relationship-path="eipTMsgboardFiles"/>
 	<obj-relationship name="eipTNoteMaps" source="EipTNote" target="EipTNoteMap" db-relationship-path="eipTNoteMaps"/>
 	<obj-relationship name="eipTNote" source="EipTNoteMap" target="EipTNote" db-relationship-path="eipTNote"/>
+	<obj-relationship name="eipTReportFiles" source="EipTReport" target="EipTReportFile" db-relationship-path="eipTReportFiles"/>
+	<obj-relationship name="eipTReportMap" source="EipTReport" target="EipTReportMap" db-relationship-path="eipTReportMap"/>
+	<obj-relationship name="eipTReportMemberMap" source="EipTReport" target="EipTReportMemberMap" db-relationship-path="eipTReportMemberMap"/>
 	<obj-relationship name="turbineUser" source="EipTReport" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTReport" source="EipTReportFile" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTReport" source="EipTReportMap" target="EipTReport" db-relationship-path="eipTReport"/>

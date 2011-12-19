@@ -105,3 +105,7 @@ ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCE
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 --ALTER TABLE eip_t_acl_role AUTO_INCREMENT = 10000;
 -- 20111216
+
+-- 20111219
+ALTER TABLE `eip_t_report` ADD `parent_id` INTEGER NOT NULL DEFAULT 0;
+-- 20111219

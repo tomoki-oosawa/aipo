@@ -957,6 +957,7 @@ CREATE TABLE `eip_m_inactive_application` (
 
 CREATE TABLE `eip_t_report` (
   `report_id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `report_name` varchar(64) COLLATE utf8_unicode_ci,
   `note` text COLLATE utf8_unicode_ci,

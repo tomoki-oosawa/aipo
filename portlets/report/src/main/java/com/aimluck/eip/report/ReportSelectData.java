@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -49,6 +50,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.report.util.ReportUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -71,8 +73,17 @@ public class ReportSelectData extends
   /** サブメニュー（全て） */
   public static final String SUBMENU_ALL = "all";
 
+  /** 親レポートオブジェクト */
+  private Object parentReport;
+
+  /** 子レポートオブジェクト */
+  private List<ReportResultData> coReportList;
+
   /** 現在選択されているサブメニュー */
   private String currentSubMenu;
+
+  /** 返信フォーム表示の有無（トピック詳細表示） */
+  private boolean showReplyForm = false;
 
   private ALEipUser login_user;
 
@@ -133,6 +144,7 @@ public class ReportSelectData extends
      * ALAccessControlConstants.VALUE_ACL_LIST);
      */
     hasAuthorityOther = true;
+    showReplyForm = true;
 
     super.init(action, rundata, context);
 
@@ -231,6 +243,9 @@ public class ReportSelectData extends
         } else if (!resultid.contains(item.getReportId())) {
           resultid.add(item.getReportId());
         }
+        Expression ex =
+          ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
+        query.andQualifier(ex);
       }
       if (resultid.size() == 0) {
         // 検索結果がないことを示すために-1を代入
@@ -242,6 +257,11 @@ public class ReportSelectData extends
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
     }
+
+    // replyを除く
+    Expression ex =
+      ExpressionFactory.noMatchExp(EipTReport.REPORT_NAME_PROPERTY, "");
+    query.andQualifier(ex);
 
     return query;
   }
@@ -259,9 +279,7 @@ public class ReportSelectData extends
       rd.initField();
       rd.setReportId(record.getReportId().intValue());
       rd.setReportName(record.getReportName());
-      rd.setUpdateDateTime(record.getUpdateDate());
-
-      rd.setCreateDateTime(record.getCreateDate());
+      rd.setCreateDate(record.getCreateDate());
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
       // 自身の報告書かを設定する
@@ -288,6 +306,113 @@ public class ReportSelectData extends
     EipTReport request = ReportUtils.getEipTReport(rundata, context);
 
     return request;
+  }
+
+  /**
+   * 詳細表示します。
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
+  @Override
+  public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
+      action.setMode(ALEipConstants.MODE_DETAIL);
+      List<EipTReport> aList = selectDetailList(rundata, context);
+      if (aList != null) {
+        coReportList = new ArrayList<ReportResultData>();
+        int size = aList.size();
+        for (int i = 0; i < size; i++) {
+          coReportList
+            .add((ReportResultData) getResultDataDetail(aList.get(i)));
+        }
+      }
+
+      action.setResultData(this);
+      action.putData(rundata, context);
+      return true;
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+  }
+
+  /**
+   * 詳細データを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public List<EipTReport> selectDetailList(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    String reportid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+
+    if (reportid == null || Integer.valueOf(reportid) == null) {
+      // トピック ID が空の場合
+      logger.debug("[ReportTopic] Empty ID...");
+      throw new ALPageNotFoundException();
+    }
+
+    String coreportsort =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2b-sort");
+
+    try {
+      parentReport =
+        getResultDataDetail(ReportUtils.getEipTReportParentReply(
+          rundata,
+          context,
+          false));
+
+      SelectQuery<EipTReport> query =
+        getSelectQueryForCoreport(rundata, context, reportid, coreportsort);
+      /** 詳細画面は全件表示する */
+      // buildSelectQueryForListView(query);
+      if ("response_new".equals(coreportsort)) {
+        query.orderDesending(EipTReport.CREATE_DATE_PROPERTY);
+      } else {
+        query.orderAscending(EipTReport.CREATE_DATE_PROPERTY);
+      }
+
+      List<EipTReport> resultList = query.fetchList();
+
+      // 表示するカラムのみデータベースから取得する．
+      return resultList;
+    } catch (ALPageNotFoundException pageNotFound) {
+      logger.error(pageNotFound);
+      throw pageNotFound;
+    } catch (Exception ex) {
+      logger.error("[MsgboardTopicSelectData]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  private SelectQuery<EipTReport> getSelectQueryForCoreport(RunData rundata,
+      Context context, String reportid, String coreportsort) {
+    SelectQuery<EipTReport> query = Database.query(EipTReport.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTReport.PARENT_ID_PROPERTY, Integer
+        .valueOf(reportid));
+    query.setQualifier(exp);
+    query.distinct(true);
+    return query;
   }
 
   /**
@@ -320,38 +445,41 @@ public class ReportSelectData extends
       EipTReportMap map = null;
       List<EipTReportMap> tmp_maps = ReportUtils.getEipTReportMap(record);
       HashMap<Integer, String> statusList = new HashMap<Integer, String>();
-      int size = tmp_maps.size();
-      for (int i = 0; i < size; i++) {
-        map = tmp_maps.get(i);
-        users.add(map.getUserId());
-        if (map.getUserId().intValue() == login_user_id) {
-          // 既読に変更する
-          map.setStatus(ReportUtils.DB_STATUS_READ);
-          Database.commit();
-        }
-        statusList.put(map.getUserId(), map.getStatus());
-      }
-      rd.setStatusList(statusList);
-      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-      Expression exp =
-        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
-      query.setQualifier(exp);
-      rd.setMapList(ALEipUtils.getUsersFromSelectQuery(query));
 
-      List<Integer> users1 = new ArrayList<Integer>();
-      EipTReportMemberMap map1 = null;
-      List<EipTReportMemberMap> tmp_maps1 =
-        ReportUtils.getEipTReportMemberMap(record);
-      int size1 = tmp_maps1.size();
-      for (int i = 0; i < size1; i++) {
-        map1 = tmp_maps1.get(i);
-        users1.add(map1.getUserId());
+      if (record.getParentId().intValue() == 0) {
+        int size = tmp_maps.size();
+        for (int i = 0; i < size; i++) {
+          map = tmp_maps.get(i);
+          users.add(map.getUserId());
+          if (map.getUserId().intValue() == login_user_id) {
+            // 既読に変更する
+            map.setStatus(ReportUtils.DB_STATUS_READ);
+            Database.commit();
+          }
+          statusList.put(map.getUserId(), map.getStatus());
+        }
+        rd.setStatusList(statusList);
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
+        query.setQualifier(exp);
+        rd.setMapList(ALEipUtils.getUsersFromSelectQuery(query));
+
+        List<Integer> users1 = new ArrayList<Integer>();
+        EipTReportMemberMap map1 = null;
+        List<EipTReportMemberMap> tmp_maps1 =
+          ReportUtils.getEipTReportMemberMap(record);
+        int size1 = tmp_maps1.size();
+        for (int i = 0; i < size1; i++) {
+          map1 = tmp_maps1.get(i);
+          users1.add(map1.getUserId());
+        }
+        SelectQuery<TurbineUser> query1 = Database.query(TurbineUser.class);
+        Expression exp1 =
+          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users1);
+        query1.setQualifier(exp1);
+        rd.setMemberList(ALEipUtils.getUsersFromSelectQuery(query1));
       }
-      SelectQuery<TurbineUser> query1 = Database.query(TurbineUser.class);
-      Expression exp1 =
-        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users1);
-      query1.setQualifier(exp1);
-      rd.setMemberList(ALEipUtils.getUsersFromSelectQuery(query1));
 
       // ファイルリスト
       List<EipTReportFile> list =
@@ -379,13 +507,14 @@ public class ReportSelectData extends
         }
         rd.setAttachmentFiles(attachmentFileList);
       }
-
-      rd.setCreateDate(ReportUtils.translateDate(
-        record.getCreateDate(),
-        "yyyy年M月d日H時m分"));
-      rd.setUpdateDate(ReportUtils.translateDate(
-        record.getUpdateDate(),
-        "yyyy年M月d日H時m分"));
+      rd.setCreateDate(record.getCreateDate());
+      rd.setUpdateDate(record.getUpdateDate());
+      // rd.setCreateDate(ReportUtils.translateDate(
+      // record.getCreateDate(),
+      // "yyyy年M月d日H時m分"));
+      // rd.setUpdateDate(ReportUtils.translateDate(
+      // record.getUpdateDate(),
+      // "yyyy年M月d日H時m分"));
 
       return rd;
     } catch (Exception ex) {
@@ -404,6 +533,7 @@ public class ReportSelectData extends
     map.putValue("report_name", EipTReport.REPORT_NAME_PROPERTY);
     map.putValue("create_date", EipTReport.CREATE_DATE_PROPERTY);
     map.putValue("user_id", EipTReport.USER_ID_PROPERTY);
+    map.putValue("parent_id", EipTReport.PARENT_ID_PROPERTY);
     return map;
   }
 
@@ -418,6 +548,18 @@ public class ReportSelectData extends
 
   public ALEipUser getLoginUser() {
     return login_user;
+  }
+
+  public boolean showReplyForm() {
+    return showReplyForm;
+  }
+
+  public List<ReportResultData> getCoReportList() {
+    return coReportList;
+  }
+
+  public Object getParentReport() {
+    return parentReport;
   }
 
   /**

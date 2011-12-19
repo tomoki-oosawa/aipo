@@ -19,27 +19,45 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.report.ReportReplyFormData;
 import com.aimluck.eip.report.ReportSelectData;
 import com.aimluck.eip.report.util.ReportUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書の詳細画面を処理するクラスです。 <br />
- *
+ * 
  */
 public class ReportDetailScreen extends ALVelocityScreen {
+
+  /** 返信用キー */
+  private final String RESULT_ON_REPORT_DETAIL = "resultOnReportDetail";
+
+  /** 返信用エラーメッセージキー */
+  private final String ERROR_MESSAGE_LIST_ON_REPORT_DETAIL =
+    "errmsgsOnReportDetail";
+
+  /** 返信用 result */
+  private Object resultOnReportDetail;
+
+  /** 返信用異常系のメッセージを格納するリスト */
+  private List<String> errmsgListOnReportDetail;
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ReportDetailScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -51,6 +69,13 @@ public class ReportDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
+      if (detailData.showReplyForm()) {
+        ReportReplyFormData formData = new ReportReplyFormData();
+        formData
+          .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY);
+        formData.initField();
+        formData.doViewForm(this, rundata, context);
+      }
       String layout_template = "portlets/html/ja/ajax-report-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
@@ -60,11 +85,39 @@ public class ReportDetailScreen extends ALVelocityScreen {
   }
 
   /**
+   * 
+   * @param msg
+   */
+  public void addErrorMessagesOnReportDetail(List<String> msgs) {
+    if (errmsgListOnReportDetail == null) {
+      errmsgListOnReportDetail = new ArrayList<String>();
+    }
+    errmsgListOnReportDetail.addAll(msgs);
+  }
+
+  /**
+   * 
+   * @param context
+   */
+  public void putDataOnReportDetail(RunData rundata, Context context) {
+    context.put(RESULT_ON_REPORT_DETAIL, resultOnReportDetail);
+    context.put(ERROR_MESSAGE_LIST_ON_REPORT_DETAIL, errmsgListOnReportDetail);
+  }
+
+  /**
    * @return
    */
   @Override
   protected String getPortletName() {
     return ReportUtils.REPORT_PORTLET_NAME;
+  }
+
+  /**
+   * 
+   * @param obj
+   */
+  public void setResultDataOnReportDetail(Object obj) {
+    resultOnReportDetail = obj;
   }
 
 }

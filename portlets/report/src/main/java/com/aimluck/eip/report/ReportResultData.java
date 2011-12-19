@@ -46,8 +46,11 @@ public class ReportResultData implements ALData {
   /** 報告書名 */
   protected ALStringField report_name;
 
+  /** 親 報告書 ID */
+  private ALNumberField parent_id;
+
   /** 登録日 */
-  protected ALStringField create_date;
+  private ALDateTimeField create_date;
 
   /** 登録日 */
   protected ALDateTimeField createDate;
@@ -80,7 +83,8 @@ public class ReportResultData implements ALData {
   public void initField() {
     report_id = new ALNumberField();
     report_name = new ALStringField();
-    create_date = new ALStringField();
+    create_date = new ALDateTimeField();
+    parent_id = new ALNumberField();
 
     attachmentFileList = new ArrayList<FileuploadBean>();
 
@@ -123,17 +127,24 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * @return
+   * @param i
    */
-  public ALStringField getCreateDate() {
-    return create_date;
+  public void setParentId(long i) {
+    parent_id.setValue(i);
   }
 
   /**
-   * @param string
+   * @param i
    */
-  public void setCreateDate(String string) {
-    create_date.setValue(string);
+  public ALNumberField getParentId() {
+    return parent_id;
+  }
+
+  /**
+   * @return
+   */
+  public ALDateTimeField getCreateDate() {
+    return ALEipUtils.getFormattedTime(create_date);
   }
 
   /**
@@ -192,21 +203,11 @@ public class ReportResultData implements ALData {
     mapList = list;
   }
 
-  /**
-   * @param field
-   */
-  public void setUpdateDateTime(Date date) {
-    if (date == null) {
-      return;
-    }
-    this.updateDate.setValue(date);
-  }
-
   public ALDateTimeField getUpdateDateTime() {
     return ALEipUtils.getFormattedTime(updateDate);
   }
 
-  public void setCreateDateTime(Date date) {
+  public void setCreateDate(Date date) {
     if (date == null) {
       return;
     }

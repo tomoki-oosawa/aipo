@@ -23,9 +23,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -108,6 +111,203 @@ public class ReportUtils {
 
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
+
+  /**
+   * トピックオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isJoin
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
+  public static EipTReport getEipTReportParentReply(RunData rundata,
+      Context context, boolean isJoin) throws ALPageNotFoundException,
+      ALDBErrorException {
+    String reportid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    try {
+      if (reportid == null || Integer.valueOf(reportid) == null) {
+        // トピック ID が空の場合
+        logger.debug("[EipTReport] Empty ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      int userid = ALEipUtils.getUserId(rundata);
+
+      SelectQuery<EipTReport> query = Database.query(EipTReport.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTReport.REPORT_ID_PK_COLUMN, Integer
+          .valueOf(reportid));
+      query.setQualifier(exp1);
+      query.distinct(true);
+
+      List<EipTReport> reports = query.fetchList();
+      if (reports == null || reports.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[ReportTopic] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      EipTReport report = reports.get(0);
+
+      // アクセス権限チェック
+
+      return report;
+    } catch (ALPageNotFoundException pageNotFound) {
+      logger.error(pageNotFound);
+      throw pageNotFound;
+    } catch (Exception ex) {
+      logger.error("[ReportUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
+  }
+
+  /**
+   * 返信記事オブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isSuperUser
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
+  public static EipTReport getEipTReportParentReply(RunData rundata,
+      Context context, String reportid, boolean isSuperUser)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      if (reportid == null || Integer.valueOf(reportid) == null) {
+        // トピック ID が空の場合
+        logger.debug("[ReportTopic] Empty ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      SelectQuery<EipTReport> query = Database.query(EipTReport.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTReport.REPORT_ID_PK_COLUMN, Integer
+          .valueOf(reportid));
+      query.setQualifier(exp1);
+
+      if (!isSuperUser) {
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
+        query.andQualifier(exp2);
+      }
+
+      List<EipTReport> reports = query.fetchList();
+      if (reports == null || reports.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[EipTReport] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return reports.get(0);
+    } catch (Exception ex) {
+      logger.error("[EipUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
+  }
+
+  public static boolean insertFileDataDelegate(RunData rundata,
+      Context context, EipTReport report,
+      List<FileuploadLiteBean> fileuploadList, String folderName,
+      List<String> msgList) {
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      fileuploadList = new ArrayList<FileuploadLiteBean>();
+    }
+
+    int uid = ALEipUtils.getUserId(rundata);
+    String orgId = Database.getDomainName();
+
+    List<Integer> hadfileids = new ArrayList<Integer>();
+    for (FileuploadLiteBean file : fileuploadList) {
+      if (!file.isNewFile()) {
+        hadfileids.add(file.getFileId());
+      }
+    }
+
+    SelectQuery<EipTReportFile> dbquery = Database.query(EipTReportFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTReportFile.EIP_TREPORT_PROPERTY,
+      report.getReportId()));
+    List<EipTReportFile> existsFiles = dbquery.fetchList();
+    List<EipTReportFile> delFiles = new ArrayList<EipTReportFile>();
+    for (EipTReportFile file : existsFiles) {
+      if (!hadfileids.contains(file.getFileId())) {
+        delFiles.add(file);
+      }
+    }
+
+    // ローカルファイルに保存されているファイルを削除する．
+    if (delFiles.size() > 0) {
+      int delsize = delFiles.size();
+      for (int i = 0; i < delsize; i++) {
+        ALStorageService.deleteFile(ReportUtils.getSaveDirPath(orgId, uid)
+          + (delFiles.get(i)).getFilePath());
+      }
+      // データベースから添付ファイルのデータ削除
+      Database.deleteAll(delFiles);
+    }
+
+    // ファイル追加処理
+    try {
+      for (FileuploadLiteBean filebean : fileuploadList) {
+        if (!filebean.isNewFile()) {
+          continue;
+        }
+
+        // サムネイル処理
+        String[] acceptExts = ImageIO.getWriterFormatNames();
+        byte[] fileThumbnail =
+          FileuploadUtils.getBytesShrinkFilebean(
+            orgId,
+            folderName,
+            uid,
+            filebean,
+            acceptExts,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+            msgList);
+
+        String filename = "0_" + String.valueOf(System.nanoTime());
+
+        // 新規オブジェクトモデル
+        EipTReportFile file = Database.create(EipTReportFile.class);
+        // 所有者
+        file.setOwnerId(Integer.valueOf(uid));
+        // トピックID
+        file.setEipTReport(report);
+        // ファイル名
+        file.setFileName(filebean.getFileName());
+        // ファイルパス
+        file.setFilePath(ReportUtils.getRelativePath(filename));
+        // サムネイル画像
+        if (fileThumbnail != null) {
+          file.setFileThumbnail(fileThumbnail);
+        }
+        // 作成日
+        file.setCreateDate(Calendar.getInstance().getTime());
+        // 更新日
+        file.setUpdateDate(Calendar.getInstance().getTime());
+
+        // ファイルの移動
+        ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+          .getFileId()), FOLDER_FILEDIR_REPORT, CATEGORY_KEY
+          + ALStorageService.separator()
+          + uid, filename);
+      }
+
+      // 添付ファイル保存先のフォルダを削除
+      ALStorageService.deleteTmpFolder(uid, folderName);
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("Exception", e);
+      return false;
+    }
+    return true;
+  }
 
   /**
    * Report オブジェクトモデルを取得します。 <BR>
@@ -423,6 +623,22 @@ public class ReportUtils {
   }
 
   /**
+   * 子のレポート検索のクエリを返します
+   * 
+   * @param requestid
+   *          レポートを検索するリクエストのid
+   * @return query
+   */
+  public static SelectQuery<EipTReport> getSelectQueryForCoReports(int requestid) {
+    SelectQuery<EipTReport> query = Database.query(EipTReport.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTReport.PARENT_ID_PROPERTY, Integer
+        .valueOf(requestid));
+    query.setQualifier(exp);
+    return query;
+  }
+
+  /**
    * 添付ファイルを取得します。
    * 
    * @param uid
@@ -566,6 +782,52 @@ public class ReportUtils {
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
     sdf.setTimeZone(TimeZone.getDefault());
     return sdf.format(date);
+  }
+
+  /**
+   * 返信記事オブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isSuperUser
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
+  public static EipTReport getEipTReportReply(RunData rundata, Context context,
+      String reportid, boolean isSuperUser) throws ALPageNotFoundException,
+      ALDBErrorException {
+    try {
+      if (reportid == null || Integer.valueOf(reportid) == null) {
+        // トピック ID が空の場合
+        logger.debug("[ReportTopic] Empty ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      SelectQuery<EipTReport> query = Database.query(EipTReport.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(EipTReport.REPORT_ID_PK_COLUMN, Integer
+          .valueOf(reportid));
+      query.setQualifier(exp1);
+
+      if (!isSuperUser) {
+        Expression exp2 =
+          ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
+        query.andQualifier(exp2);
+      }
+
+      List<EipTReport> reports = query.fetchList();
+      if (reports == null || reports.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[Report] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return reports.get(0);
+    } catch (Exception ex) {
+      logger.error("[ReportUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
   }
 
   /**

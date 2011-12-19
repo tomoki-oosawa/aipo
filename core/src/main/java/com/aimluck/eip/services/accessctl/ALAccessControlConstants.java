@@ -177,6 +177,9 @@ public class ALAccessControlConstants {
   /** アクセス権限の機能名（報告書（他人の報告書）） */
   public static final String POERTLET_FEATURE_REPORT_OTHER = "report_other";
 
+  /** アクセス権限の機能名（報告書（報告書返信）） */
+  public static final String POERTLET_FEATURE_REPORT_REPLY = "report_reply";
+
   /** 現在のロール総数 */
   public static final int ROLE_NUM = 32;
 }
