@@ -70,6 +70,23 @@ aipo.reloadPage = function(portletId) {
     }
 };
 
+var setMouseListener=function(){
+    dojo.query('.customizeMenuIcon').forEach(function(element) {
+        dojo.connect(element, 'onmouseenter', null, function(){
+            dojo.addClass(this, 'customizeMenuIconMouseenter');
+        });
+        dojo.connect(element, 'onmouseleave', null, function(){
+            dojo.removeClass(this, 'customizeMenuIconMouseenter');
+        });
+    });
+
+    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
+        	dojo.query('div.menubar').style('display', 'none');
+        }
+    });
+}
+
 aipo.viewPage = function(url, portletId, params) {
      var portlet = dijit.byId('portlet_' + portletId);
      if(! portlet){
@@ -85,6 +102,7 @@ aipo.viewPage = function(url, portletId, params) {
        	 }
        }
        
+       portlet.onLoad=dojo.hitch(portlet.onLoad, setMouseListener);
        portlet.viewPage(url);
      }
 };
