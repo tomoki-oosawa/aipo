@@ -111,6 +111,8 @@ ALTER TABLE `eip_t_report` ADD `parent_id` INTEGER NOT NULL DEFAULT 0;
 -- 20111219
 
 -- 20111219
-ALTER TABLE `eip_t_report` ADD `start_date` datetime DEFAULT NULL;
-ALTER TABLE `eip_t_report` ADD `end_date` datetime DEFAULT NULL;
+ALTER TABLE `eip_t_report` ADD `start_date` datetime;
+ALTER TABLE `eip_t_report` ADD `end_date` datetime;
+UPDATE `eip_t_report` SET `start_date`=now();
+UPDATE `eip_t_report` SET `end_date`=now();
 -- 20111219
