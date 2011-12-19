@@ -102,8 +102,8 @@ function onChg2(obj){
 
 //-->
 </script>
-#set($tabs = [["インポート", "",""]])
-#ALtabheader($tabs "")
+
+#AUIwideAreaHeader()
 #if((! $result.List || $result.List.size() == 0) && !$!validateError)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.ScheduleCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
@@ -111,7 +111,7 @@ function onChg2(obj){
 #end
 #end
 
-<form name="io_select" action="" method="post" enctype="multipart/form-data">
+<form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
 <input type="hidden" name="secid" value="$secid" />
 <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
@@ -138,37 +138,15 @@ function onChg2(obj){
 <td width="150" class="caption">CSVファイルの指定</td>
 
 <td nowrap="nowrap">
-<input class="text" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
+<input class="" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
 </td>
 
 </tr>
 
-<!--
-<tr>
-<th class="head">順序</th>
-<th class="head">
-<select name="SelectMenu1" size="1" onChange="onChg1(this)">
-<option value="-1">-使用しない-</option>
-<option value="0">名前</option>
-<option value="1">予定</option>
-<option value="2">場所</option>
-<option value="3">内容</option>
-<option value="4" selected>開始日</option>
-<option value="5">終了日</option>
-<option value="6">開始時刻</option>
-<option value="7">終了時刻</option>
-<option value="8">ログインID</option>
-<option value="9">開始日時</option>
-<option value="10">終了日時</option>
-</select>
-</th>
-</tr>
-//-->
 <tr>
 #ALtdcellAtt("#ALsubmit('send' '読み込む')" 'colspan="9" align="center"')
 </tr>
 #ALtablefooter()
-
 
 #if($result.List && $result.getPageCount() > 0)
 #set($plist = [1..$result.getPageCount()])
@@ -242,7 +220,6 @@ function onChg2(obj){
 #end
 
 #if($result.getErrorCount() > 0)
-## #if($result.getErrorCount() >= $result.getErrorCountMax())<span class="caution">${result.getLineCount()}件中${result.getErrorCountMax()}件以上エラーが発生しました。読み込みを中止します。</span> #else<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span> #end
 <span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span>
 #end
 #if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
@@ -339,7 +316,3 @@ $!record.EndDate.toString('yyyy年MM月dd日 HH時mm分')
 #end
 #end
 </form>
-
-
-
-#ALtabfooter()

@@ -18,8 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["インポート", "",""]])
-## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/JavaScript">
 <!--
 
@@ -46,7 +44,7 @@ function event_account_csv_regist(button) {
 
 //-->
 </script>
-#ALtabheader($tabs "")
+
 #if((! $result.List || $result.List.size() == 0) && !$!validateError)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
@@ -55,15 +53,12 @@ function event_account_csv_regist(button) {
 #if($result.overMaxUser())
 <li><span class="caution">ユーザー数がライセンス数を超えています。</span></li>
 #end
-###if($result.repeatUsers())
-##<li><span class="caution">同じログイン名を複数追加できません。指定されたCSVファイルをご確認のうえ、ログイン名を変更してください。</span></li>
-###end
 </ul>
 #end
 #end
 #end
 
-<form name="io_select" action="" method="post" enctype="multipart/form-data">
+<form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
 <input type="hidden" name="secid" value="$secid" />
 <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
 <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')" selsected>ユーザーアカウント</option>
@@ -80,7 +75,7 @@ function event_account_csv_regist(button) {
 ボタン [読み込む] を押してください。
 確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
 </div>
-###ALerrmsg($errmsgs)
+
 <form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" method="post" enctype="multipart/form-data">
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="temp_folder" value="$temp_folder"/>
@@ -88,7 +83,8 @@ function event_account_csv_regist(button) {
 <tr>
 <td width="150" class="caption">CSVファイルの指定</td>
 <td nowrap="nowrap">
-<input class="text" type="file" name="attachment" value="" size="30" style="ime-mode:disable" />
+
+<input class="" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
 </td>
 </tr>
 <tr>
@@ -199,7 +195,6 @@ function event_account_csv_regist(button) {
 #end
 
 #if($result.getErrorCount() > 0)
-## #if($result.getErrorCount() >= $result.getErrorCountMax())<span class="caution">${result.getLineCount()}件中${result.getErrorCountMax()}件以上エラーが発生しました。読み込みを中止します。</span> #else<span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span> #end
 <span class="caution">${result.getLineCount()}件中${result.getErrorCount()}件エラーが発生しました。</span>
 #end
 #if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
@@ -280,7 +275,6 @@ $!rec
 #else
 <span class="caution">※12</span>
 #end
-##if($!record.PostName)$!{record.PostName}#else <span class="caution">※12</span> #end
 #if($!record.getPostNotFound())<span class="caution">※14</span> #end
 </td>
 <td nowrap="nowrap" class="item">
@@ -299,7 +293,6 @@ $!rec
 #if($result.isError() || $result.overMaxUser())
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' '戻る' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
-##($result.getErrorCount() >= $result.getErrorCountMax())||
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
@@ -309,18 +302,12 @@ $!rec
 </tr>
 #ALtablefooter()
 
-###ALbuttonheader()
-###if(!$showErrmsg)
-###ALbutton('eventSubmit_doAccount_insert_csv' '登録する' 'event_account_csv_regist(this)')#end#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')
-###ALbuttonfooter()
-
 #end
 </form>
 
 <div style="margin:5px 0px 5px 0px">
-##<span class="caution">はじめに、Aipoマネージャーのタブ [バックアップ/修復] で、現在のデータをバックアップすることをお薦めいたします。</span><br>
 ログイン名、パスワード、名前（姓）、名前（名）、名前（姓・フリガナ）、名前（名・フリガナ）は必須項目です。
 パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
 登録されているログイン名と同じログイン名を指定した場合には、情報が上書きされます。部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
 </div>
-#ALtabfooter()
+
