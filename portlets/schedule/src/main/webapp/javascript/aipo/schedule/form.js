@@ -637,7 +637,7 @@ aipo.schedule.shrinkFacility = function(){
             var t_o = f_t.options;
             to_size = t_o.length;
             for(i = 0 ; i < to_size; i++ ) {
-              HTML += "<span>" +  t_o[i].text + "</span>";
+              HTML += "<span>" +  aipo.escapeHTML(t_o[i].text) + "</span>";
               if(i < to_size - 1){
                   HTML += ",<wbr/>";
               }
