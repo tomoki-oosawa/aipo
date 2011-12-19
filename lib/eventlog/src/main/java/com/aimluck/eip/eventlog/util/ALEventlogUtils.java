@@ -79,6 +79,8 @@ public class ALEventlogUtils {
     } else if (ALActionEventlogConstants.EVENT_MODE_UPDATE_PASSWORD
       .equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_UPDATE_PASSWORD;
+    } else if (ALActionEventlogConstants.EVENT_MODE_DOWNLOAD.equals(mode)) {
+      return ALActionEventlogConstants.EVENT_TYPE_DOWNLOAD;
     }
     return ALActionEventlogConstants.EVENT_TYPE_NONE;
   }
@@ -185,6 +187,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTTIMECARD;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_EXTTIMECARD_SYSTEM;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_REPORT) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_REPORT;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_REPORT) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_REPORT;
     } else {

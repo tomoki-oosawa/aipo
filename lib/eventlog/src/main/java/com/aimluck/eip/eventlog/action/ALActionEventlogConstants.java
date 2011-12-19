@@ -70,6 +70,8 @@ public class ALActionEventlogConstants {
 
   public static final int EVENT_TYPE_UPDATE_PASSWORD = 18;
 
+  public static final int EVENT_TYPE_DOWNLOAD = 19;
+
   /* EVENT_NUMBER */
   public static final String EVENT_MODE_UPDATE = ALEipConstants.MODE_UPDATE;
 
@@ -110,6 +112,8 @@ public class ALActionEventlogConstants {
   public static final String EVENT_MODE_UPDATE_PASSWORD =
     ALEipConstants.MODE_UPDATE_PASSWD;
 
+  public static final String EVENT_MODE_DOWNLOAD = "download";
+
   /**
    * EVENT_ALIAS_NAME
    */
@@ -132,7 +136,8 @@ public class ALActionEventlogConstants {
     "退勤",
     "参加・キャンセル",
     "Excelファイルとしてダウンロード",
-    "パスワード変更" };
+    "パスワード変更",
+    "ダウンロード" };
 
   public static final String PORTLET_TYPE_STR_STR_NONE = "その他の機能";
 

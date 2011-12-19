@@ -31,8 +31,11 @@ import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -90,6 +93,13 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
 
       cabinetfile.setCounter(cabinetfile.getCounter() + 1);
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        cabinetfile.getFileId(),
+        ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+        cabinetfile.getFileTitle() + "  (" + cabinetfile.getFileName() + ")",
+        ALActionEventlogConstants.EVENT_MODE_DOWNLOAD);
 
     } catch (ALPermissionException e) {
       throw new Exception();
