@@ -1638,7 +1638,7 @@ $item.get(0)
 <ul>
 #foreach ( $menu in $menues )
   <li#if ($menu.get(1) == $active) class="active"#end>
-    <div class="menuTitle"><a href="$!utils.escapeXML($menu.get(2))">$menu.get(0)</a></div>
+    <a href="$!utils.escapeXML($menu.get(2))">$menu.get(0)</a>
   </li>
 #end
 </ul>
