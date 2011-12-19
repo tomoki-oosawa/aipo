@@ -49,6 +49,12 @@ public class ReportResultData implements ALData {
   /** 親 報告書 ID */
   private ALNumberField parent_id;
 
+  /** 開始時間 */
+  private ALDateTimeField start_date;
+
+  /** 開始時間 */
+  private ALDateTimeField end_date;
+
   /** 登録日 */
   private ALDateTimeField create_date;
 
@@ -83,6 +89,8 @@ public class ReportResultData implements ALData {
   public void initField() {
     report_id = new ALNumberField();
     report_name = new ALStringField();
+    start_date = new ALDateTimeField();
+    end_date = new ALDateTimeField();
     create_date = new ALDateTimeField();
     parent_id = new ALNumberField();
 
@@ -224,6 +232,38 @@ public class ReportResultData implements ALData {
 
   public void setIsSelfReport(boolean is_self_report) {
     this.is_self_report = is_self_report;
+  }
+
+  /**
+   * 
+   * @param date
+   */
+  public void setStartDate(Date date) {
+    start_date.setValue(date);
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public ALDateTimeField getStartDate() {
+    return start_date;
+  }
+
+  /**
+   * 
+   * @param date
+   */
+  public void setEndDate(Date date) {
+    end_date.setValue(date);
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public ALDateTimeField getEndDate() {
+    return end_date;
   }
 
   /**

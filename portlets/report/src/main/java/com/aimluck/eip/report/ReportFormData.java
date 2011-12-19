@@ -84,6 +84,12 @@ public class ReportFormData extends ALAbstractFormData {
   /** 日時 */
   private ALDateTimeField createDate;
 
+  /** 開始時間 */
+  private ALDateTimeField startDate;
+
+  /** 終了時間 */
+  private ALDateTimeField endDate;
+
   /** 通知先ユーザIDリスト */
   private ALStringField positions;
 
@@ -153,6 +159,9 @@ public class ReportFormData extends ALAbstractFormData {
     // 更新日時
     createDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
     createDate.setFieldName("日時");
+    // 報告時間
+    startDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
+    endDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
     // 報告書名
     report_name = new ALStringField();
     report_name.setFieldName("タイトル");
@@ -193,11 +202,27 @@ public class ReportFormData extends ALAbstractFormData {
 
     if (res) {
       try {
-
-        // 日時
-        if (createDate.toString().equals("")) {
-          createDate.setValue(Calendar.getInstance().getTime());
+        // 終了時間
+        if (startDate.toString().equals("")) {
+          Calendar cal = Calendar.getInstance();
+          cal.set(Calendar.MINUTE, (int) Math
+            .floor(cal.get(Calendar.MINUTE) / 5) * 5); // 5分刻みに調整
+          startDate.setValue(cal.getTime());
+          endDate.setValue(cal.getTime());
+        } else {
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(startDate.getValue());
+          cal.set(Calendar.HOUR_OF_DAY, rundata.getParameters().getInt(
+            "endDate_hour"));
+          cal.set(Calendar.MINUTE, rundata.getParameters().getInt(
+            "endDate_minute"));
+          cal.set(Calendar.SECOND, 0);
+          cal.set(Calendar.MILLISECOND, 0);
+          endDate.setValue(cal.getTime());
         }
+        // 日時
+        createDate.setValue(Calendar.getInstance().getTime());
+
         String memberNames[] = rundata.getParameters().getStrings("members");
         if (memberNames != null && memberNames.length > 0) {
           SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
@@ -234,6 +259,9 @@ public class ReportFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
+    // 時間
+    startDate.setNotNull(true);
+    endDate.setNotNull(true);
     // 報告書名の文字数制限
     report_name.setNotNull(true);
     report_name.limitMaxLength(50);
@@ -253,12 +281,21 @@ public class ReportFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+    // 開始時間
+    startDate.validate(msgList);
+    // 終了時間
+    endDate.validate(msgList);
     // 報告書名
     report_name.validate(msgList);
     // メモ
     note.validate(msgList);
     // 日付
     createDate.validate(msgList);
+
+    // 時間
+    if (startDate.getValue().compareTo(endDate.getValue()) > 0) {
+      msgList.add("『 終了日時 』は『 開始日時 』以降の時間を指定してください。");
+    }
 
     // 社内参加者
     if (memberList == null || memberList.size() <= 0) {
@@ -296,6 +333,10 @@ public class ReportFormData extends ALAbstractFormData {
         return false;
       }
 
+      // 開始日時
+      startDate.setValue(report.getStartDate());
+      // 終了日時
+      endDate.setValue(report.getEndDate());
       // 報告書名
       report_name.setValue(report.getReportName());
       // メモ
@@ -424,6 +465,10 @@ public class ReportFormData extends ALAbstractFormData {
       // ユーザーID
       report
         .setUserId(Integer.valueOf((int) login_user.getUserId().getValue()));
+      // 開始時間
+      report.setStartDate(startDate.getValue());
+      // 終了時間
+      report.setEndDate(endDate.getValue());
       // メモ
       report.setNote(note.getValue());
       // 作成日
@@ -563,6 +608,10 @@ public class ReportFormData extends ALAbstractFormData {
       // ユーザーID
       report
         .setUserId(Integer.valueOf((int) login_user.getUserId().getValue()));
+      // 開始時間
+      report.setStartDate(startDate.getValue());
+      // 終了時間
+      report.setEndDate(endDate.getValue());
       // メモ
       report.setNote(note.getValue());
       // 作成日
@@ -893,6 +942,24 @@ public class ReportFormData extends ALAbstractFormData {
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
+  }
+
+  /**
+   * 開始時間
+   * 
+   * @return
+   */
+  public ALDateTimeField getStartDate() {
+    return startDate;
+  }
+
+  /**
+   * 終了時間
+   * 
+   * @return
+   */
+  public ALDateTimeField getEndDate() {
+    return endDate;
   }
 
   /**

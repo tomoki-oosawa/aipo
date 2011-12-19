@@ -10,9 +10,11 @@ import java.util.List;
 public class _EipTReport extends org.apache.cayenne.CayenneDataObject {
 
     public static final String CREATE_DATE_PROPERTY = "createDate";
+    public static final String END_DATE_PROPERTY = "endDate";
     public static final String NOTE_PROPERTY = "note";
     public static final String PARENT_ID_PROPERTY = "parentId";
     public static final String REPORT_NAME_PROPERTY = "reportName";
+    public static final String START_DATE_PROPERTY = "startDate";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TREPORT_FILES_PROPERTY = "eipTReportFiles";
@@ -27,6 +29,14 @@ public class _EipTReport extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getCreateDate() {
         return (java.util.Date)readProperty("createDate");
+    }
+    
+    
+    public void setEndDate(java.util.Date endDate) {
+        writeProperty("endDate", endDate);
+    }
+    public java.util.Date getEndDate() {
+        return (java.util.Date)readProperty("endDate");
     }
     
     
@@ -51,6 +61,14 @@ public class _EipTReport extends org.apache.cayenne.CayenneDataObject {
     }
     public String getReportName() {
         return (String)readProperty("reportName");
+    }
+    
+    
+    public void setStartDate(java.util.Date startDate) {
+        writeProperty("startDate", startDate);
+    }
+    public java.util.Date getStartDate() {
+        return (java.util.Date)readProperty("startDate");
     }
     
     

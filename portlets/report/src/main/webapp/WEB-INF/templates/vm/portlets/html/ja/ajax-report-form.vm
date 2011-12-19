@@ -80,15 +80,29 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('createDate'))")
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="日付" hiddenId="createDate" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="input_date" dateId="createDate" displayCheck="none"></div>
-<select name="createDate_hour" size="1">
+<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="日付" hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
+<br />
+<select name="startDate_hour" size="1">
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.CreateDate.Hour == "$num") selected #end>$num時</option>
+<option value="$num" #if ($!result.StartDate.Hour == "$num") selected #end>$num時</option>
 #end
 </select>
-<select name="createDate_minute" size="1">
-#foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>$num分</option>
+<select name="startDate_minute" size="1">
+#foreach ( $num in [0..12] )
+#set($num2 = $num * 5)
+<option value="${num2}" #if ($!result.StartDate.Minute == "${num2}") selected #end>${num2}分</option>
+#end
+</select>
+～
+<select name="endDate_hour" size="1">
+#foreach ( $num in [0..23] )
+<option value="$num" #if ($!result.EndDate.Hour == "$num") selected #end>$num時</option>
+#end
+</select>
+<select name="endDate_minute" size="1">
+#foreach ( $num in [0..12] )
+#set($num2 = $num * 5)
+<option value="${num2}" #if ($!result.EndDate.Minute == "${num2}") selected #end>${num2}分</option>
 #end
 </select>
 #ALtditemfooter()

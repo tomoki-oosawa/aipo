@@ -431,6 +431,8 @@ public class ReportSelectData extends
       ReportDetailResultData rd = new ReportDetailResultData();
       rd.initField();
       rd.setUserId(record.getUserId().longValue());
+      rd.setStartDate(record.getStartDate());
+      rd.setEndDate(record.getEndDate());
       rd.setReportName(record.getReportName());
       rd.setReportId(record.getReportId().longValue());
       rd.setNote(record.getNote());

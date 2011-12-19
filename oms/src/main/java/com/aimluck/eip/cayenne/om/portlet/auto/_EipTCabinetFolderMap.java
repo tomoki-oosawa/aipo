@@ -14,14 +14,14 @@ public class _EipTCabinetFolderMap extends org.apache.cayenne.CayenneDataObject 
 
     public static final String ID_PK_COLUMN = "ID";
 
-    public void setFolderId(Integer categoryId) {
-      writeProperty("folderId", categoryId);
+    public void setFolderId(Integer folderId) {
+        writeProperty("folderId", folderId);
     }
-
     public Integer getFolderId() {
-      return (Integer) readProperty("folderId");
+        return (Integer)readProperty("folderId");
     }
-
+    
+    
     public void setStatus(String status) {
         writeProperty("status", status);
     }

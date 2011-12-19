@@ -109,3 +109,8 @@ ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip
 -- 20111219
 ALTER TABLE `eip_t_report` ADD `parent_id` INTEGER NOT NULL DEFAULT 0;
 -- 20111219
+
+-- 20111219
+ALTER TABLE `eip_t_report` ADD `start_date` datetime DEFAULT NULL;
+ALTER TABLE `eip_t_report` ADD `end_date` datetime DEFAULT NULL;
+-- 20111219
