@@ -19,8 +19,13 @@
 
 package com.aimluck.eip.gadgets;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.registry.PortletEntry;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -29,12 +34,15 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  *
@@ -42,11 +50,84 @@ import com.aimluck.eip.util.ALEipUtils;
 public class GadgetsAdminSelectData extends
     ALAbstractSelectData<ALApplication, ALApplication> {
 
+  /** 一覧データ */
+  private List<Object> list;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
+  }
+
+  /**
+   * 一覧表示します。
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      action.setMode(ALEipConstants.MODE_LIST);
+
+      ResultList<PortletEntry> resultList =
+        selectListPortletEntry(rundata, context);
+
+      if (resultList != null) {
+        list = new ArrayList<Object>();
+        for (PortletEntry model : resultList) {
+          Object object = model;
+          if (object != null) {
+            list.add(object);
+          }
+        }
+      }
+
+      action.setResultData(this);
+      action.putData(rundata, context);
+      ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      return (list != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+
+  }
+
+  /**
+   * ページング結果のリストを取得します。
+   * 
+   * @param records
+   *          検索結果
+   */
+  protected List<PortletEntry> buildPaginatedListPortletEntry(
+      List<PortletEntry> records) {
+    List<PortletEntry> aList = new ArrayList<PortletEntry>();
+
+    setPageParam(records.size());
+
+    int size = records.size();
+    int end =
+      (getStart() + getRowsNum() <= size) ? getStart() + getRowsNum() : size;
+    for (int i = getStart(); i < end; i++) {
+      aList.add(records.get(i));
+    }
+
+    return aList;
   }
 
   /**
@@ -59,8 +140,24 @@ public class GadgetsAdminSelectData extends
   @Override
   protected ResultList<ALApplication> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
+    return new ResultList<ALApplication>();
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  protected ResultList<PortletEntry> selectListPortletEntry(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
     Status status = Status.ALL;
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    Profile profile = jdata.getProfile();
+    String mediaType = profile.getMediaType();
+
     if ("1".equals(filter)) {
       status = Status.ACTIVE;
       current_filter = filter;
@@ -71,10 +168,19 @@ public class GadgetsAdminSelectData extends
       status = Status.ALL;
       current_filter = filter;
     }
-    return ALApplicationService.getList(new ALApplicationGetRequest()
-      .withLimit(getRowsNum())
-      .withPage(current_page)
-      .withStatus(status));
+    List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
+    List<PortletEntry> portlets =
+      CustomizeUtils.buildPortletListWithStatus(
+        rundata,
+        mediaType,
+        allPortlets,
+        status);
+
+    return new ResultList<PortletEntry>(
+      buildPaginatedListPortletEntry(portlets),
+      current_page,
+      getRowsNum(),
+      portlets.size());
   }
 
   /**
@@ -117,6 +223,20 @@ public class GadgetsAdminSelectData extends
   protected Object getResultDataDetail(ALApplication model)
       throws ALPageNotFoundException, ALDBErrorException {
     return model;
+  }
+
+  public String getStringNumber(String str) {
+    return str.replace("GadgetsTemplate::", "");
+  }
+
+  /**
+   * 一覧データを取得します。
+   * 
+   * @return
+   */
+  @Override
+  public List<Object> getList() {
+    return list;
   }
 
   /**

@@ -30,4 +30,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-gadgets-admin-list.vm")
-#parse("/portlets/html/ja/gadgets-admin-menu.vm")
