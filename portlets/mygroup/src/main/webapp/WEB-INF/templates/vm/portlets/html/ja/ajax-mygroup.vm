@@ -46,7 +46,7 @@
 		#ALtdhead("#ALajaxsort('group_alias_name' 'グループ名' $result 'MyGroupListScreen')")
 		#ALtdhead('ユーザー')
 		#ALtdhead('設備')
-		
+
 		</tr>
 		#foreach ($record in $result.List)
 			<tr>
@@ -55,18 +55,10 @@
 			#ALtdcellfooter()
 			#ALtdcellheader()
 			<div>
-			#foreach ($member in $result.getMemberList($record.GroupName.Value))
-				#if($velocityCount > 1)、&nbsp;#end
-				$!{member.AliasName}
-			#end
-			</div>
+			#foreach ($member in $result.getMemberList($record.GroupName.Value))#if($velocityCount > 1)、#end$!{member.AliasName}#end</div>
 			#ALtdcellfooter()
 			#ALtdcellheader()<div>
-			#foreach ($facility in $result.getFacilityList($record.GroupName.Value))
-				#if($velocityCount > 1)、&nbsp;#end
-				$facility.FacilityName
-			#end
-			</div>
+			#foreach ($facility in $result.getFacilityList($record.GroupName.Value))#if($velocityCount > 1)、#end$facility.FacilityName#end</div>
 			#ALtdcellfooter()
 			</tr>
 		#end
