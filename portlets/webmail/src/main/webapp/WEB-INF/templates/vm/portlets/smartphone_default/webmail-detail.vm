@@ -47,6 +47,13 @@
 #ALtdhead($person)
 #ALtdcell("$person_value")
 </tr>
+<tr><th>添付ファイル</th>
+<td>
+#set($count = 0)
+#foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
+<a href="$jslink.getTemplate("WebMailFileScreen").addQueryData("accountid", $accountid).addQueryData("tab", $!result.currentTab).addQueryData("entityid", $entityid).addQueryData("attachmentIndex", $count)">$result.getStringCR($attachmentFileName)</a><br>
+#set( $count = $count + 1 )
+#end
 
 </table><br>
 $!{result.Detail.Body}<br>
