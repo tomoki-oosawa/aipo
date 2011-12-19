@@ -43,7 +43,7 @@
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
 #ALtdhead("#ALajaxsort('event_date' '発生日時' $result 'EventlogScreen')")
-#ALtdhead("#ALajaxsort('user_name' 'ユーザー名' $result 'EventlogScreen')")
+#ALtdhead("#ALajaxsort('user_name' '名前' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('event_type' '操作' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('ip_addr' '接続IP' $result 'EventlogScreen')")

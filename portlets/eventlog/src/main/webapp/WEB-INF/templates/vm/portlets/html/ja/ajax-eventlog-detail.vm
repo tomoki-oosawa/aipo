@@ -26,7 +26,7 @@
 #ALtableheaderWide()
 #ALtdcaption('イベント発生日時')
 #ALtditem($!result.detail.EventDate)
-#ALtdcaption('操作ユーザー')
+#ALtdcaption('名前')
 #ALtditem($!result.detail.UserFullName)
 #if($!result.detail.DataNameFlag)
 #ALtdcaption('件名')

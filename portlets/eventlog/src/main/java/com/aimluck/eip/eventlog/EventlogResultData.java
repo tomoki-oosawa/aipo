@@ -32,7 +32,7 @@ public class EventlogResultData implements ALData {
   /** Eventlog ID */
   private ALNumberField eventlog_id;
 
-  /** ユーザー名 */
+  /** 名前 */
   private ALStringField user_full_name;
 
   /** イベント発生日 */
@@ -63,6 +63,7 @@ public class EventlogResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     eventlog_id = new ALNumberField();
     user_full_name = new ALStringField();
