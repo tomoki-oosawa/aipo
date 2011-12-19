@@ -100,17 +100,21 @@ function onChg2(obj){
 #end
 #end
 
-<form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
-<input type="hidden" name="secid" value="$secid" />
-<select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')" selected>アドレス(会社)帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
-</select>
-を一括登録します。
-</form>
+<div class="auiSummaryMeta clearfix">
+  <div class="floatLeft">
+    <form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="secid" value="$secid" />
+    <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')" selected>アドレス(会社)帳</option>
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
+    </select>
+    を一括登録します。
+    </form>
+  </div>
+</div>
 
 <div style="margin:0px 0px 5px 0px">
 アドレス帳の内容を会社情報のみファイルから一括して登録できます。
