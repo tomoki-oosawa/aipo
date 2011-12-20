@@ -18,7 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-##parse("/portlets/cell_default/ja/todo-detail.vm")
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2008 Aimluck,Inc.
@@ -46,50 +45,50 @@
 
 <table border="1">
 <tr>
-#ALtdheadW25('ToDo名')
+#ALtdhead('タイトル')
 #ALtdcell("$!{result.Detail.TodoName}")
 </tr>
 <tr>
-#ALtdheadW25('カテゴリ')
+#ALtdhead('カテゴリ')
 #ALtdcell("$!{result.Detail.CategoryName}")
 </tr>
 <tr>
-#ALtdheadW25('開始日')
+#ALtdhead('開始日')
 #ALtdcell("$!{result.Detail.StartDate}")
 </tr>
 <tr>
-#ALtdheadW25('締切日')
+#ALtdhead('締切日')
 #ALtdcell("$!{result.Detail.EndDate}")
 </tr>
 <tr>
-#ALtdheadW25('進捗')
+#ALtdhead('進捗')
 #ALtdcell("$!{result.Detail.StateString}")
 </tr>
 <tr>
-#ALtdheadW25('優先度')
+#ALtdhead('優先度')
 #ALtdcell("$!{result.Detail.PriorityString}")
 </tr>
 <tr>
-#ALtdheadW25('登録日')
+#ALtdhead('登録日')
 #ALtdcell("$!{result.Detail.CreateDate}")
 </tr>
 <tr>
-#ALtdheadW25('更新日')
+#ALtdhead('更新日')
 #ALtdcell("$!{result.Detail.UpdateDate}")
 </tr>
 <tr>
-#ALtdheadW25('メモ')
+#ALtdhead('メモ')
 #ALtdcell("$!{result.Detail.Note}")
 </tr>
 <tr>
-#ALtdheadW25('公開区分')
+#ALtdhead('公開区分')
 #if(${result.Detail.isPublic()})
 <td>公開</td>
 #else<td>非公開</td>
 </tr>
 #end
 <tr>
-#ALtdheadW25('スケジュール<br />への表示')
+#ALtdhead('スケジュールへの表示')
 #ALtdcell("#if($!{result.Detail.addonScheduleFlg()}) 表示 #else 非表示 #end")
 </tr>
 </table>

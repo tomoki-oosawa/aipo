@@ -75,7 +75,7 @@ public class ToDoFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ToDoFormData.class.getName());
 
-  /** ToDo名 */
+  /** タイトル */
   private ALStringField todo_name;
 
   /** カテゴリID */
@@ -197,9 +197,9 @@ public class ToDoFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // ToDo名
+    // タイトル
     todo_name = new ALStringField();
-    todo_name.setFieldName("ToDo名");
+    todo_name.setFieldName("タイトル");
     todo_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
@@ -265,9 +265,9 @@ public class ToDoFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
-    // ToDo名必須項目
+    // Tタイトル必須項目
     todo_name.setNotNull(true);
-    // ToDo名の文字数制限
+    // タイトルの文字数制限
     todo_name.limitMaxLength(50);
     // メモの文字数制限
     note.limitMaxLength(1000);
@@ -318,7 +318,7 @@ public class ToDoFormData extends ALAbstractFormData {
     }
 
     boolean isStartDate = false;
-    // ToDo名
+    // タイトル
     todo_name.validate(msgList);
     // 開始日指定フラグが設定されている場合は開始日入力フォームチェックを行いません。
     if (start_date_check.getValue() == null) {
@@ -369,7 +369,7 @@ public class ToDoFormData extends ALAbstractFormData {
       if (todo == null) {
         return false;
       }
-      // ToDo名
+      // タイトル
       todo_name.setValue(todo.getTodoName());
       // カテゴリID
       category_id.setValue(todo
@@ -430,7 +430,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
       // entityIdの取得
       int entityId = todo.getTodoId();
-      // todo名の取得
+      // タイトルの取得
       String todoName = todo.getTodoName();
 
       // Todoを削除
@@ -476,7 +476,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // 新規オブジェクトモデル
       EipTTodo todo = Database.create(EipTTodo.class);
 
-      // Todo名
+      // タイトル
       todo.setTodoName(todo_name.getValue());
       // カテゴリID
       todo.setEipTTodoCategory(category);
@@ -672,7 +672,7 @@ public class ToDoFormData extends ALAbstractFormData {
           ToDoUtils.getEipTTodoCategory(Long.valueOf(category_id.getValue()));
       }
 
-      // Todo名
+      // タイトル
       todo.setTodoName(todo_name.getValue());
       // カテゴリID
       todo.setEipTTodoCategory(category);
@@ -828,7 +828,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   * ToDo名を取得します。 <BR>
+   * タイトルを取得します。 <BR>
    * 
    * @return
    */

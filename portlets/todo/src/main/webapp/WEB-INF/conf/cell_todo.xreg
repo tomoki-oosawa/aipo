@@ -63,7 +63,7 @@
         <parameter name="p3b-sort.style.values" value="ユーザー名,優先度,締め切り日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>Todo名表示文字数</title>
+                <title>タイトル表示文字数</title>
             </meta-info>
         </parameter>
         <parameter name="p4a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>

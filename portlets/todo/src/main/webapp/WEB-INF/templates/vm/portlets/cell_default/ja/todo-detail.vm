@@ -26,7 +26,7 @@
 #ALcell_dd_header($career)
 #if ($!result.Detail.CategoryId.toString() != "1") <a href="$!jslink.getPortletById($!portlet.ID).addQueryData("eventSubmit_doTodo_category_detail","1").addQueryData("entityid",$!result.Detail.CategoryId)">$!result.Detail.CategoryName</a> #else $!result.Detail.CategoryName #end
 #ALcell_dd_footer($career)
-#ALcell_dt($career 'ToDo名')
+#ALcell_dt($career 'タイトル')
 #ALcell_dd_header($career)
 $!result.Detail.TodoName
 #if(! ${result.Detail.isPublic()})

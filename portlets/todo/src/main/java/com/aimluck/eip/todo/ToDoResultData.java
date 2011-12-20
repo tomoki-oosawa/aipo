@@ -51,7 +51,7 @@ public class ToDoResultData implements ALData {
   /** 作成者 */
   private ALStringField create_user_name;
 
-  /** Todo名 */
+  /** タイトル */
   private ALStringField todo_name;
 
   /** カテゴリ名 */
