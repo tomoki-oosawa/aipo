@@ -88,8 +88,7 @@ function event_account_csv_regist(button) {
 <tr>
 <td width="150" class="caption">CSVファイルの指定</td>
 <td nowrap="nowrap">
-
-<input class="" type="file" name="attachment" value="" size="30" style="ime-mode:disable">
+<input class="" type="file" name="attachment" value="" size="30" style="ime-mode:disable" />
 </td>
 </tr>
 <tr>
@@ -209,7 +208,6 @@ function event_account_csv_regist(button) {
 #end
 
 <div style="width:100%; overflow:auto;">
-
 <table class="tableWrapper" style="margin: 1px"><tbody><tr><td>
 #ALtableheaderWide()
 <tr>
@@ -268,8 +266,6 @@ function event_account_csv_regist(button) {
 #if($!record.User.CellularMail.toString())$!{record.User.CellularMail}#else <span class="caution">※11</span> #end
 </td>
 <td nowrap="nowrap" class="item">
-
-
 #if($!record.PostNameList)
 #set($pcount = 0)
 #foreach($rec in $!record.PostNameList)
@@ -306,7 +302,6 @@ $!rec
 #end
 </tr>
 #ALtablefooter()
-
 #end
 </form>
 
@@ -315,4 +310,3 @@ $!rec
 パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
 登録されているログイン名と同じログイン名を指定した場合には、情報が上書きされます。部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
 </div>
-
