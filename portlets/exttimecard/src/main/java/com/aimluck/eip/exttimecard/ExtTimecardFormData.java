@@ -67,8 +67,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ExtTimecardFormData.class.getName());
 
-  /** ToDo名 */
-
   private ALNumberField timecard_id;
 
   private ALNumberField user_id;

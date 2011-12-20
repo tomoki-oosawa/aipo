@@ -58,8 +58,6 @@ public class TimecardFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimecardFormData.class.getName());
 
-  /** ToDo名 */
-
   private ALNumberField timecard_id;
 
   private ALNumberField user_id;
@@ -98,6 +96,7 @@ public class TimecardFormData extends ALAbstractFormData {
    * 各フィールドを初期化します。
    * 
    */
+  @Override
   public void initField() {
     timecard_id = new ALNumberField();
 
@@ -319,7 +318,7 @@ public class TimecardFormData extends ALAbstractFormData {
       if (timecard == null) {
         return false;
       }
-      // ToDo名
+
       timecard_id.setValue(timecard.getTimecardId().longValue());
       user_id.setValue(timecard.getUserId().intValue());
       work_flag.setValue(timecard.getWorkFlag());
