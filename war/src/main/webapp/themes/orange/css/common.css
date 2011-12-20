@@ -603,161 +603,6 @@ left:0;
 }
 
 
-/***************************************************
-	width
---------------------------------------------------*/
-.thin {width:2%;}
-.wide, .w100 {width:100%;}
-.w99 {width:99%;}
-.w95 {width:95%;}
-.w90 {width:90%;}
-.w85 {width:85%;}
-.w80 {width:80%;}
-.w75 {width:75%;}
-.w70 {width:70%;}
-.w65 {width:65%;}
-.w60 {width:60%;}
-.w55 {width:55%;}
-.w50 {width:50%;}
-.w45 {width:45%;}
-.w40 {width:40%;}
-.w35 {width:35%;}
-.w33 {width:33.333333%;}
-.w30 {width:30%;}
-.w25 {width:25%;}
-.w20 {width:20%;}
-.w15 {width:15%;}
-.w10 {width:10%;}
-.w5 {width:5%;}
-
-/***************************************************
-	margin&padding
---------------------------------------------------*/
-.noMP {margin:0;padding:0;}
-.noMargin {margin:0px;}
-.mt0 {margin-top:0px !important;}
-.mr0 {margin-right:0px !important;}
-.mb0 {margin-bottom:0px !important;}
-.ml0 {margin-left:0px !important;}
-.ma0 {margin:0px !important;}
-
-.mt5 {margin-top:5px !important;}
-.mr5 {margin-right:5px !important;}
-.mb5 {margin-bottom:5px !important;}
-.ml5 {margin-left:5px !important;}
-.ma5 {margin:5px !important;}
-
-.mt10 {margin-top:10px !important;}
-.mr10 {margin-right:10px !important;}
-.mb10 {margin-bottom:10px !important;}
-.ml10 {margin-left:10px !important;}
-.ma10 {margin:10px !important;}
-
-.mt15 {margin-top:15px !important;}
-.mr15 {margin-right:15px !important;}
-.mb15 {margin-bottom:15px !important;}
-.ml15 {margin-left:15px !important;}
-.ma15 {margin:15px !important;}
-
-.mt20 {margin-top:20px !important;}
-.mr20 {margin-right:20px !important;}
-.mb20 {margin-bottom:20px !important;}
-.ml20 {margin-left:20px !important;}
-.ma20 {margin:20px !important;}
-
-.mt25 {margin-top:25px !important;}
-.mr25 {margin-right:25px !important;}
-.mb25 {margin-bottom:25px !important;}
-.ml25 {margin-left:25px !important;}
-.ma25 {margin:25px !important;}
-
-.mt30 {margin-top:30px !important;}
-.mr30 {margin-right:30px !important;}
-.mb30 {margin-bottom:30px !important;}
-.ml30 {margin-left:30px !important;}
-.ma30 {margin:30px !important;}
-
-.mt40 {margin-top:40px !important;}
-.mr40 {margin-right:40px !important;}
-.mb40 {margin-bottom:40px !important;}
-.ml40 {margin-left:40px !important;}
-.ma40 {margin:40px !important;}
-
-.mt50 {margin-top:50px !important;}
-.mr50 {margin-right:50px !important;}
-.mb50 {margin-bottom:50px !important;}
-.ml50 {margin-left:50px !important;}
-.ma50 {margin:50px !important;}
-
-.mt60 {margin-top:60px !important;}
-.mr60 {margin-right:60px !important;}
-.mb60 {margin-bottom:60px !important;}
-.ml60 {margin-left:60px !important;}
-.ma60 {margin:60px !important;}
-
-.mt80 {margin-top:80px !important;}
-.mr80 {margin-right:80px !important;}
-.mb80 {margin-bottom:80px !important;}
-.ml80 {margin-left:80px !important;}
-.ma80 {margin:80px !important;}
-
-.mh0 {margin-top:0px !important; margin-bottom:0px !important}
-.mh5 {margin-top:5px !important; margin-bottom:5px !important}
-.mh10 {margin-top:10px !important; margin-bottom:10px !important}
-.mh15 {margin-top:15px !important; margin-bottom:15px !important}
-.mh20 {margin-top:20px !important; margin-bottom:20px !important}
-
-.noPadding {
-	padding:0px;
-}
-.pt0 {padding-top:0px !important;}
-.pr0 {padding-right:0px !important;}
-.pb0 {padding-bottom:0px !important;}
-.pl0 {padding-left:0px !important;}
-.pa0 {padding:0px !important;}
-
-.pt5 {padding-top:5px !important;}
-.pr5 {padding-right:5px !important;}
-.pb5 {padding-bottom:5px !important;}
-.pl5 {padding-left:5px !important;}
-.pa5 {padding:5px !important;}
-
-.pt10 {padding-top:10px !important;}
-.pr10 {padding-right:10px !important;}
-.pb10 {padding-bottom:10px !important;}
-.pl10 {padding-left:10px !important;}
-.pa10 {padding:10px !important;}
-
-.pt15 {padding-top:15px !important;}
-.pr15 {padding-right:15px !important;}
-.pb15 {padding-bottom:15px !important;}
-.pl15 {padding-left:15px !important;}
-.pa15 {padding:15px !important;}
-
-.pt20 {padding-top:20px !important;}
-.pr20 {padding-right:20px !important;}
-.pb20 {padding-bottom:20px !important;}
-.pl20 {padding-left:20px !important;}
-.pa20 {padding:20px !important;}
-
-.pt25 {padding-top:25px !important;}
-.pr25 {padding-right:25px !important;}
-.pb25 {padding-bottom:25px !important;}
-.pl25 {padding-left:25px !important;}
-.pa25 {padding:25px !important;}
-
-.pt30 {padding-top:30px !important;}
-.pr30 {padding-right:30px !important;}
-.pb30 {padding-bottom:30px !important;}
-.pl30 {padding-left:30px !important;}
-.pa30 {padding:30px !important;}
-
-.pt40 {padding-top:40px !important;}
-.pr40 {padding-right:40px !important;}
-.pb40 {padding-bottom:40px !important;}
-.pl40 {padding-left:40px !important;}
-
-.pa40 {padding:40px !important;}
 
 
 .relativeBlock table {
@@ -2898,13 +2743,13 @@ div.userInfo {
 	background:url(../../../images/account/company_info.gif) no-repeat;
 }
 .menuBarIconAccountUser {
-	background:url(../../../images/account/account_user.gif) no-repeat;
+	background:url(../images/icon/account_user.gif) no-repeat;
 }
 .menuBarIconAccountUserAdd {
-background:url(../../../images/account/account_user_add.gif) no-repeat;
+background:url(../images/icon/account_user_add.gif) no-repeat;
 }
 .menuBarIconAccountChangeTurn {
-	background:url(../../../images/account/account_change_turn.gif) no-repeat;
+	background:url(../images/icon/account_change_turn.gif) no-repeat;
 }
 .menuBarIconAccountPasswd {
 	background:url(../../../images/account/passwd.gif) no-repeat;
@@ -2973,36 +2818,43 @@ background:url(../../../images/account/account_user_add.gif) no-repeat;
 }
 .menubar {
 	position:absolute;
-	background:#FFF;
-	border:1px solid #B5B5B5;
 	padding:0;
+	border:1px solid #B5B5B5;
+	border-radius:3px;
+	-ms-border-radius:3px;
+	background:#FFF;
 	z-index:11;
+	overflow:hidden;
+	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+	zoom:1;
 }
 .menubar ul {
+	width:100%;
 	margin:0;
 	padding:0;
 }
 .menubar ul li {
-	display:block;
+	width:100%;
 	margin:0;
 	padding:0;
-	background-image:none!important;
+	border-top:solid 1px #eee;
+	background:none;
+}
+.menubar ul li:first-child {
+	border:none;
 }
 .menubar ul li a {
-	width:30px;
 	display:block;
-	padding:5px!important;
-	color:#313131!important;
+	padding:5px !important;
 	margin:0;
-	background:url(../images/common/bg_line.gif) left bottom repeat-x!important;
+	text-decoration:none;
 }
 .menubar ul li.last a {
 	background-image:none!important;
 }
 .menubar ul li a:hover {
-	padding:4px!important;
-	background-image:none!important;
-	background-color:#FFFFE5!important;
+	color:#000;
+	background:#f0f0f0;
 }
 .dijitPopup {
 	display:block;
@@ -3179,13 +3031,15 @@ float:left;
 --------------------------------------------------*/
 /* auiSelectButton ********************/
 .auiSelectButton {
+	padding-right:1px;
 	background:#FFF;
 }
 .auiSelectButton ul {
 	margin:0;
 	padding:0;
 }
-.auiSelectButton li {
+.auiSelectButton li,
+.auiSelectButton div {
 	height:24px;
 	overflow:hidden;
 	float:left;
@@ -3281,7 +3135,7 @@ float:left;
 .auiSelectButton li.active,
 .auiSelectButton li.active a,
 .auiSelectButton li.active span{
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x !important;
+	background:url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x;
 }
 .auiSelectButton li.active a {
 	cursor:default;
@@ -3313,7 +3167,7 @@ float:left;
 	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
 }
 .auiSelectButton .arrow {
-	width:30px;
+	width:25px;
 }
 
 /* Widgets Area ********************/
@@ -3360,7 +3214,7 @@ float:left;
 	color:#000;
 	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
-.auiWidget li.active a {
+.auiWidget li.active>a {
 	font-weight:bold;
 	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
@@ -3384,6 +3238,12 @@ float:left;
 #auiContentsAreaInner {
 	margin-left:200px;
 }
+#auiContentsArea h2 {
+	margin:0 0 0.8em 0;
+	padding:1em 0;
+	font-size:1.2em;
+	border-bottom:solid 1px #eee;
+}
 #auiThreeClumns {
 	float:left;
 	width:100%;
@@ -3397,14 +3257,22 @@ float:left;
 	width:180px;
 }
 
+/* Wide Area ********************/
+#auiWideArea,
+#auiWideAreaInner {
+	width:100%;
+	height:100%;
+}
+
 
 /* auiButton ********************/
 .auiButton,
-.auiButtonSmall {
+.auiButtonSmall,
+.modalDialog input[type=submit],
+.modalDialog input[type=button],
+.modalDialog input[type=reset],
+.modalDialog button {
 	display:inline-block;
-	line-height:2em;
-	height:2em;
-	padding:0 0.7em;
 	color:#000;
 	text-decoration:none;
 	text-align:center;
@@ -3413,30 +3281,53 @@ float:left;
 	cursor:pointer;
 	border:solid 1px #ccc;
 	border-radius:2px;
+	-ms-border-radius:2px;
 	background:#f0f0f0;
-	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
+	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;/*IE*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));/*Ch*/
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);/*Fx*/
+}
+.auiButton {
+	line-height:1.85em;
+	height:1.85em;
+	padding:0 0.7em;
+}
+.auiButtonSmall {
+	padding:0 5px;
+	font-size:8pt;
+	white-space:nowrap;
 }
 input[type='submit'].auiButton,
 input[type='submit'].auiButtonSmall,
 input[type='button'].auiButton,
 input[type='button'].auiButtonSmall,
 input[type='reset'].auiButton,
-input[type='reset'].auiButtonSmall {
-	line-height:1.5em;
-	>line-height:1.8em;/*IE*/
-	padding:0 0.7em;
-	>padding:0 0.22em;/*IE*/
+input[type='reset'].auiButtonSmall,
+.modalDialog input[type=submit],
+.modalDialog input[type=button],
+.modalDialog input[type=reset],
+.modalDialog button {
+	height:2em;
+	>line-height:1.7em;/*IE*/
+	padding:0 0.5em;
+	>padding:0 0.1em;/*IE*/
 }
 button.auiButton,
-button.auiButtonSmall {
+.modalDialog button {
 	line-height:1.8em;
 	padding:0 0.55em;
 	>padding:0 0.15em;/*IE*/
 }
+button.auiButtonSmall {
+	padding:0 0.55em;
+	>padding:0 0.15em;/*IE*/
+}
 .auiButton:hover,
-.auiButtonSmall:hover {
+.auiButtonSmall:hover,
+.modalDialog input[type=submit]:hover,
+.modalDialog input[type=button]:hover,
+.modalDialog input[type=reset],
+.modalDialog button:hover {
 	color:#000;
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
@@ -3445,39 +3336,45 @@ button.auiButtonSmall {
 	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
 }
 .auiButton:active,
-.auiButtonSmall:active {
+.auiButtonSmall:active,
+.modalDialog input[type=submit]:active,
+.modalDialog input[type=button]:active,
+.modalDialog input[type=reset],
+.modalDialog button:active {
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
 	background:#ccc;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
-input.auiButton {
+input.auiButton,
+.modalDialog input[type=submit],
+.modalDialog input[type=button],
+.modalDialog input[type=reset] {
 	padding:0 0.4em;
 }
-.auiButtonSmall {
-	padding:0 0.5em;
-	font-size:8pt;
-	white-space:nowrap;
-}
-.auiButton span,
-.auiButtonSmall span {
+.auiButton span {
 	display:table-cell;
-	*display:block;/*IE*/
-	width:18px;
-	height:2em;
-	line-height:2em;
+	>display:block;
+	height:1.85em;
+	line-height:1.85em;
 	text-align:center;
 	vertical-align:middle;
-	layout-grid-line:2em;/*IE*/
+}
+.auiButtonSmall span {
+	display:table-cell;
+	>display:block;
+	text-align:center;
+	vertical-align:middle;
 }
 .auiButton img,
 .auiButtonSmall img {
+	>padding:2px 0;
+	display:inline;
 	vertical-align:middle;
 }
 
-
-/*.auiButtonAction,*/
+.auiButtonAction,
 .auiButtonBold {
 	display:inline-block;
 	line-height:2.2em;
@@ -3489,19 +3386,12 @@ input.auiButton {
 	-ms-border-radius:3px;
 }
 .auiButtonAction {
-	display:inline-block;
-	line-height:2.2em;
-	padding:0 1em;
 	color:#fff;
-	text-decoration:none;
-	text-align:center;
 	font-weight:bold;
 	text-shadow:0 1px 0 #f09000;
-	cursor:pointer;
 	border:solid 1px #f09000;
-	border-radius:3px;
 	background:#ff9900;
-	>background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x;
+	background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
 	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
 }
@@ -3520,8 +3410,9 @@ input[type='button'].auiButtonAction,
 input[type='submit'].auiButtonBold,
 input[type='reset'].auiButtonBold,
 input[type='button'].auiButtonBold {
-	height:2.5em;
+	height:2.4em;
 	line-height:auto;
+	padding:0 0.7em;
 	>padding:0;
 }
 button.auiButtonAction,
@@ -3545,7 +3436,6 @@ button.auiButtonBold {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22));/*Ch*/
 	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
 }
-
 .auiButtonBold:hover {
 	color:#000;
 	border:solid 1px #999;
@@ -3564,7 +3454,11 @@ button.auiButtonBold {
 }
 
 /* auiSearch ********************/
+.auiSearch {
+	position:relative;
+}
 .auiSearch input.text,
+.auiSearch input[type='text'],
 .auiSearch input.date {
 	height:2.1em;
 	*height:2.0em;/*IE*/
@@ -3573,6 +3467,7 @@ button.auiButtonBold {
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
+	-ms-border-radius:3px;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	background-color:#fff;
@@ -3580,6 +3475,8 @@ button.auiButtonBold {
 }
 .auiSearch input.text:hover,
 .auiSearch input.text:focus,
+.auiSearch input[type='text']:hover,
+.auiSearch input[type='text']:focus,
 .auiSearch input.date:hover,
 .auiSearch input.date:focus {
 	border:solid 1px #999;
@@ -3606,14 +3503,20 @@ button.auiButtonBold {
 	cursor:pointer;
 	border:solid 1px #d0d0d0;
 	border-radius:3px;
+	-ms-border-radius:3px;
 	background:#ddd;
-	>background:#ddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
+	background:#ddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd));/*Ch*/
 	background: -moz-linear-gradient(top, #eee, #ddd);/*Fx*/
 }
 input[type='submit'].auiButtonSearch,
 input[type='button'].auiButtonSearch,
 button.auiButtonSearch {
+	height:2.1em;
+	>height:2.2em;/*IE*/
+	line-height:auto;
+	padding:0 0.75em;
+	>padding:0 0.4em;
 }
 .auiButtonSearch:hover {
 	color:#000;
@@ -3631,25 +3534,55 @@ button.auiButtonSearch {
 	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
 }
 .auiSearchOption {
-	float:left;
-	position:relative;
-	line-height:28px;
+	position:absolute;
+	top:28px;
+	left:0px;
+	width:360px;
+	padding:10px;
+	border:solid 1px #ccc;
+	border-radius:3px;
+	-ms-border-radius:3px;
+	background:#fff;
+	overflow:hidden;
+	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+}
+.auiSearchOption .close {
+	float:right;
+}
+.auiSearchOption .element {
+	margin-bottom:10px;
+	padding-bottom:5px;
+	border-bottom:solid 1px #eee;
+}
+.auiSearchOption label {
+	line-height:2em;
+	cursor:default;
 }
 .auiSearchResult {
 	clear:both;
 	font-weight:bold;
 }
+.auiSearchMore {
+	line-height:2em;
+	margin-bottom:2em;
+}
 
 /* auiSummaryMeta ********************/
 .auiSummaryMeta {
 	width:100%;
+	line-height:2em;
 	margin:0.8em 0;
+	vertical-align:middle;
 }
 .auiSummaryMeta .count {
 	float:left;
 	height:24px;
 	line-height:24px;
 	padding-right:1em;
+}
+.auiSummaryTitle {
+	line-height:2em;
+	font-weight:bold;
 }
 
 /* auiGridTable ********************/
@@ -3721,8 +3654,6 @@ table.auiRowTable tr.today td {
 table.auiRowTable tr:hover td {
 	background:#f5f5f5;
 }
-
-
 
 /* auiDirectoryList ********************/
 .auiDirectoryList {
@@ -3810,10 +3741,11 @@ table.auiRowTable tr:hover td {
 
 /* auiCalendar ********************/
 table.auiCalendar {
+	width:100%;
+	border-collapse:collapse;
 }
 table.auiCalendar th {
 	font-weight:normal;
-	text-align:center;
 }
 table.auiCalendar th div {
 	line-height:24px;
@@ -3831,20 +3763,24 @@ table.auiCalendar .saturday {
 	background:#f0ffff;
 }
 table.auiCalendar td a {
+	padding:1px;
 	display:block;
 	color:#000;
 	text-decoration:none;
 }
+table.auiCalendar td a:hover {
+	background:#ffffe0;
+}
 table.auiCalendar .out a {
 	color:#999;
 }
-table.auiCalendar .today {
+table.auiCalendar .today a {
 	background:#e0ffe0;
 }
-table.auiCalendar td:hover {
-	background:#ffffe0;
+table.auiCalendar .selected a {
+	padding:0;
+	border:solid 1px #000;
 }
-
 
 /* auiAvatarBlock ********************/
 .auiAvatarBlock {
@@ -3925,6 +3861,7 @@ table.auiCalendar td:hover {
 .auiForm select {
 	border:solid 1px #ccc;
 	border-radius:2px;
+	-ms-border-radius:2px;
 }
 .auiForm input[type=text],
 .auiForm input[type=password] {
@@ -3935,6 +3872,7 @@ table.auiCalendar td:hover {
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
+	-ms-border-radius:3px;
 	border:1px solid #c9c9c9;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
@@ -3946,6 +3884,7 @@ table.auiCalendar td:hover {
 }
 .auiForm textarea {
 	border-radius:3px;
+	-ms-border-radius:3px;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	background-color:#fff;
@@ -4018,39 +3957,6 @@ table.auiCalendar td:hover {
 	background-position:23px 1em;
 }
 
-.auiDropDown {
-	position:relative;
-}
-.dropButton {
-	text-decoration:none;
-}
-.auiDropDown div.auiMenuList {
-	position:absolute;
-	margin:0;
-	border:solid 1px #ccc;
-	border-radius:3px;
-	-ms-border-radius:3px;
-	background:#fff;
-	overflow:hidden;
-	z-index:999;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
-}
-.auiDropDown div.auiMenuListItem {
-	margin:0;
-	padding:0;
-	background:none;
-}
-.auiDropDown li:first-child {
-}
-.auiDropDown div.auiMenuListItem a {
-	display:block;
-	padding:5px;
-	text-decoration:none;
-}
-.auiDropDown div.auiMenuListItem a:hover {
-	color:#000;
-	background:#f0f0f0;
-}
 /* auiIcon ********************/
 /*
 auiIconは「class="auiIcon auiIconSetting"」と
@@ -4072,6 +3978,7 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 	height:16px;
 	overflow:hidden;
 	border-radius:2px;
+	-ms-border-radius:2px;
 	vertical-align:text-bottom;
 	background:url(../images/icon/auiIconSprites.png) no-repeat;
 }
@@ -4157,13 +4064,187 @@ a.auiIconUsers:hover {background-position:0px -544px;}
 	background:#fff;
 	border:solid 1px #c9c9c9;
 	border-radius:3px;
+	-ms-border-radius:3px;
 	z-index:999;
 }
 .auiAbsLayer:hover {
 	border:solid 1px #999;
+}
+.relative {
+	position:relative;
 }
 
 /* auiNoData ********************/
 .auiNoData {
 	text-align:center;
 }
+
+/***************************************************
+	width
+--------------------------------------------------*/
+.thin {width:2%;}
+.wide, .w100 {width:100%;}
+.w99 {width:99%;}
+.w95 {width:95%;}
+.w90 {width:90%;}
+.w85 {width:85%;}
+.w80 {width:80%;}
+.w75 {width:75%;}
+.w70 {width:70%;}
+.w65 {width:65%;}
+.w60 {width:60%;}
+.w55 {width:55%;}
+.w50 {width:50%;}
+.w45 {width:45%;}
+.w40 {width:40%;}
+.w35 {width:35%;}
+.w33 {width:33.333333%;}
+.w30 {width:30%;}
+.w25 {width:25%;}
+.w20 {width:20%;}
+.w15 {width:15%;}
+.w10 {width:10%;}
+.w5 {width:5%;}
+
+/***************************************************
+	cell data width
+--------------------------------------------------*/
+.wName {width:7.5em}
+.wDate {width:5.5em}
+.wDateWeak {width:8em}
+.wDateFull {width:10em}
+.wCategory {width:10em}
+.wCopname {width:20em}
+.wCheckbox {width:28px}
+.wIcon {width:22px}
+.wMail {width:20em}
+.wPosition {width:10em}
+.wTel {width:9em}
+
+/***************************************************
+	margin&padding
+--------------------------------------------------*/
+.noMP {margin:0;padding:0;}
+.noMargin {margin:0px;}
+.mt0 {margin-top:0px !important;}
+.mr0 {margin-right:0px !important;}
+.mb0 {margin-bottom:0px !important;}
+.ml0 {margin-left:0px !important;}
+.ma0 {margin:0px !important;}
+
+.mt5 {margin-top:5px !important;}
+.mr5 {margin-right:5px !important;}
+.mb5 {margin-bottom:5px !important;}
+.ml5 {margin-left:5px !important;}
+.ma5 {margin:5px !important;}
+
+.mt10 {margin-top:10px !important;}
+.mr10 {margin-right:10px !important;}
+.mb10 {margin-bottom:10px !important;}
+.ml10 {margin-left:10px !important;}
+.ma10 {margin:10px !important;}
+
+.mt15 {margin-top:15px !important;}
+.mr15 {margin-right:15px !important;}
+.mb15 {margin-bottom:15px !important;}
+.ml15 {margin-left:15px !important;}
+.ma15 {margin:15px !important;}
+
+.mt20 {margin-top:20px !important;}
+.mr20 {margin-right:20px !important;}
+.mb20 {margin-bottom:20px !important;}
+.ml20 {margin-left:20px !important;}
+.ma20 {margin:20px !important;}
+
+.mt25 {margin-top:25px !important;}
+.mr25 {margin-right:25px !important;}
+.mb25 {margin-bottom:25px !important;}
+.ml25 {margin-left:25px !important;}
+.ma25 {margin:25px !important;}
+
+.mt30 {margin-top:30px !important;}
+.mr30 {margin-right:30px !important;}
+.mb30 {margin-bottom:30px !important;}
+.ml30 {margin-left:30px !important;}
+.ma30 {margin:30px !important;}
+
+.mt40 {margin-top:40px !important;}
+.mr40 {margin-right:40px !important;}
+.mb40 {margin-bottom:40px !important;}
+.ml40 {margin-left:40px !important;}
+.ma40 {margin:40px !important;}
+
+.mt50 {margin-top:50px !important;}
+.mr50 {margin-right:50px !important;}
+.mb50 {margin-bottom:50px !important;}
+.ml50 {margin-left:50px !important;}
+.ma50 {margin:50px !important;}
+
+.mt60 {margin-top:60px !important;}
+.mr60 {margin-right:60px !important;}
+.mb60 {margin-bottom:60px !important;}
+.ml60 {margin-left:60px !important;}
+.ma60 {margin:60px !important;}
+
+.mt80 {margin-top:80px !important;}
+.mr80 {margin-right:80px !important;}
+.mb80 {margin-bottom:80px !important;}
+.ml80 {margin-left:80px !important;}
+.ma80 {margin:80px !important;}
+
+.mh0 {margin-top:0px !important; margin-bottom:0px !important}
+.mh5 {margin-top:5px !important; margin-bottom:5px !important}
+.mh10 {margin-top:10px !important; margin-bottom:10px !important}
+.mh15 {margin-top:15px !important; margin-bottom:15px !important}
+.mh20 {margin-top:20px !important; margin-bottom:20px !important}
+
+.noPadding {
+	padding:0px;
+}
+.pt0 {padding-top:0px !important;}
+.pr0 {padding-right:0px !important;}
+.pb0 {padding-bottom:0px !important;}
+.pl0 {padding-left:0px !important;}
+.pa0 {padding:0px !important;}
+
+.pt5 {padding-top:5px !important;}
+.pr5 {padding-right:5px !important;}
+.pb5 {padding-bottom:5px !important;}
+.pl5 {padding-left:5px !important;}
+.pa5 {padding:5px !important;}
+
+.pt10 {padding-top:10px !important;}
+.pr10 {padding-right:10px !important;}
+.pb10 {padding-bottom:10px !important;}
+.pl10 {padding-left:10px !important;}
+.pa10 {padding:10px !important;}
+
+.pt15 {padding-top:15px !important;}
+.pr15 {padding-right:15px !important;}
+.pb15 {padding-bottom:15px !important;}
+.pl15 {padding-left:15px !important;}
+.pa15 {padding:15px !important;}
+
+.pt20 {padding-top:20px !important;}
+.pr20 {padding-right:20px !important;}
+.pb20 {padding-bottom:20px !important;}
+.pl20 {padding-left:20px !important;}
+.pa20 {padding:20px !important;}
+
+.pt25 {padding-top:25px !important;}
+.pr25 {padding-right:25px !important;}
+.pb25 {padding-bottom:25px !important;}
+.pl25 {padding-left:25px !important;}
+.pa25 {padding:25px !important;}
+
+.pt30 {padding-top:30px !important;}
+.pr30 {padding-right:30px !important;}
+.pb30 {padding-bottom:30px !important;}
+.pl30 {padding-left:30px !important;}
+.pa30 {padding:30px !important;}
+
+.pt40 {padding-top:40px !important;}
+.pr40 {padding-right:40px !important;}
+.pb40 {padding-bottom:40px !important;}
+.pl40 {padding-left:40px !important;}
+.pa40 {padding:40px !important;}
