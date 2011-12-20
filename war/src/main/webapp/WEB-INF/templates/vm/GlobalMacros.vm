@@ -1628,7 +1628,7 @@ $item.get(0)
 <ul>
 #foreach ( $menu in $menues )
   <li#if ($menu.get(1) == $active) class="active"#end>
-    <div class="menuTitle"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($menu.get(2))', '$!portlet.ID');">$menu.get(0)</a></div>
+    <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($menu.get(2))', '$!portlet.ID');">$menu.get(0)</a>
   </li>
 #end
 </ul>
@@ -1712,18 +1712,18 @@ $item.get(0)
 #end
 
 #macro(AUIconfigheader $portlet_id $width)
-<div class="floatRight auiDropDown clearfix">
+<div class="floatRight clearfix relative">
 <div><a href="javascript:void(0);" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting"></span> 設定</a></div>
-<div class="menubar" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; border: 0px; display: none; ">
-<div class="auiMenuList">
+<div class="menubar" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; display: none; ">
+<ul>
 #end
 
 #macro(AUIconfigitem $text $link)
-<div class="auiMenuListItem"><a style="width: 100%; " href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($link)');">$text</a></div>
+<li><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($link)');">$text</a></li>
 #end
 
 #macro(AUIconfigfooter)
-</div>
+</ul>
 </div>
 </div>
 #end
