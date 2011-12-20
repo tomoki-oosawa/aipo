@@ -33,9 +33,9 @@
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)
 <input type="hidden" id="topic" value="2">
 <ul>
-<li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">すべてのカテゴリ</a></div></li>
+<li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">すべてのカテゴリ</a></li>
 #foreach($record in $!result.CategoryList )
-<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><div class="menuTitle"><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$!{record.CategoryName}</a></div></li>
+<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 <div style="margin:0.5em 0;">
