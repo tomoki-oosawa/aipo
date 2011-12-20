@@ -21,9 +21,7 @@
 #set($linkCompany = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemCompanyFormScreen").addQueryData("entityid","1"))
 #set($linkWebmailOption = $!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemWebMailSettingsFormScreen').addQueryData('entityid', 'edit'))
 #set($linkWebmailAccount = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen'))
-##set($linkWebmailAccountEdit = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen').addQueryData('entityid', 'edit'))
 ## ---------------------------------------------------------------------------
-#ALspacebothheader()
 
 #AUISummaryDiv()
 #AUIconfigheader($!{portlet.ID} "14em")
@@ -32,6 +30,7 @@
 #AUIconfigitem("メールアカウントを設定する" $linkWebmailAccount)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
+
 #if((!$config.getString("aipo.asp")) || ($config.getString("aipo.asp") != "true"))
 <div style="p">
 <h3>社内からのアクセス</h3>
@@ -65,5 +64,3 @@ ${alias}サイト（社外）
 </tr>
 #ALtablefooter()
 #ALformfooter()
-#ALspacebothfooter()
-#ALajaxtabfooter()
