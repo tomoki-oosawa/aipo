@@ -47,19 +47,19 @@
 <div class="clearfix">
 <div class="auiSelectButton">
 <ul>
-<li style="width:4em;margin-right:10px;">
+<li style="width:4em;margin-right:10px;" title="今月へ">
 <a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');"><span>今月</span></a>
 </li>
-<li style="margin-right:5px;">
+<li style="margin-right:5px;" title="前年へ">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevYear.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前年へ"></span></a>
 </li>
-<li>
+<li title="前月へ">
 <a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前月へ"></span></a>
 </li>
-<li style="margin-right:5px;">
+<li style="margin-right:5px;" title="翌月へ">
 <a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="翌月へ"></span></a>
 </li>
-<li style="margin-right:10px;">
+<li style="margin-right:10px;" title="翌年へ">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextYear.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="翌年へ"></span></a>
 </li>
 </ul>

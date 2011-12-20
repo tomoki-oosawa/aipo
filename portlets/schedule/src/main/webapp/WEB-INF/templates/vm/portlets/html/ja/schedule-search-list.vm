@@ -42,19 +42,19 @@
 <div class="clearfix">
 <div class="auiSelectButton">
 <ul>
-<li style="width:4em;margin-right:10px;">
+<li style="width:4em;margin-right:10px;" title="今日へ">
 <a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');"\><span>今日</span></a>
 </li>
-<li style="margin-right:5px;">
+<li style="margin-right:5px;" title="前の週へ">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ"></span></a>
 </li>
-<li>
+<li title="前の日へ">
 <a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ"></span></a>
 </li>
-<li style="margin-right:5px;">
+<li style="margin-right:5px;" title="次の日へ">
 <a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ"></span></a>
 </li>
-<li style="margin-right:10px;">
+<li style="margin-right:10px;" title="次の週へ">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ"></span></a>
 </li>
 </ul>
