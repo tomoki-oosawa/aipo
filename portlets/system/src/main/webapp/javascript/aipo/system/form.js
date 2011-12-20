@@ -19,30 +19,43 @@
 
 dojo.provide("aipo.system");
 
-aipo.system.onLoadNetworkInfoDialog = function(portlet_id){
-    var obj = dojo.byId("ipaddress");
-    if(obj){
-        obj.focus();
-    }
+aipo.system.onLoadNetworkInfoDialog = function(portlet_id) {
+	var obj = dojo.byId("ipaddress");
+	if (obj) {
+		obj.focus();
+	}
 }
 
-aipo.system.onReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('system');
-    }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
-    }
+aipo.system.onReceiveMessage = function(msg) {
+	if (!msg) {
+		var arrDialog = dijit.byId("modalDialog");
+		if (arrDialog) {
+			arrDialog.hide();
+		}
+		aipo.portletReload('system');
+	}
+	if (dojo.byId('messageDiv')) {
+		dojo.byId('messageDiv').innerHTML = msg;
+	}
 }
 
 aipo.system.hideDialog = function() {
-    var arrDialog = dijit.byId("modalDialog");
-    if(arrDialog){
-       arrDialog.hide();
-    }
-    aipo.portletReload('system');
+	var arrDialog = dijit.byId("modalDialog");
+	if (arrDialog) {
+		arrDialog.hide();
+	}
+	aipo.portletReload('system');
+}
+
+aipo.system.switchAuthSendAdmin = function(check) {
+	if (check.value == 2) {
+		dojo.byId('smtp_auth_field').style.display = "";
+		dojo.byId('pop_auth_field').style.display = "none";
+	} else if (check.value == 1) {
+		dojo.byId('smtp_auth_field').style.display = "none";
+		dojo.byId('pop_auth_field').style.display = "";
+	} else {
+		dojo.byId('smtp_auth_field').style.display = "none";
+		dojo.byId('pop_auth_field').style.display = "none";
+	}
 };

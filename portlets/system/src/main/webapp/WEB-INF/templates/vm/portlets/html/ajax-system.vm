@@ -18,18 +18,35 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["ネットワーク情報", "",""]])
+#set($linkCompany = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemCompanyFormScreen").addQueryData("entityid","1"))
+#set($linkWebmailOption = $!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemWebMailSettingsFormScreen').addQueryData('entityid', 'edit'))
+#set($linkWebmailAccount = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen'))
+##set($linkWebmailAccountEdit = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen').addQueryData('entityid', 'edit'))
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
 #ALspacebothheader()
+
+#AUISummaryDiv()
+#AUIconfigheader($!{portlet.ID} "14em")
+#AUIconfigitem("会社情報を変更する" $linkCompany)
+#AUIconfigitem("メール通知を設定する" $linkWebmailOption)
+#AUIconfigitem("メールアカウントを設定する" $linkWebmailAccount)
+#AUIconfigfooter()
+#AUISummaryDivfooter()
 #if((!$config.getString("aipo.asp")) || ($config.getString("aipo.asp") != "true"))
 <div style="p">
 <h3>社内からのアクセス</h3>
-『${alias}』 にアクセスするためのアドレスです。社内のユーザーには、このアドレスをご連絡ください。
+社内から『${alias}』 にアクセスするためのアドレスです。社内のユーザーには、このアドレスをご連絡ください。
+#ALformheader('internal' $jslink $portlet)
 #ALtableheaderWide()
-#ALtdcaption('Aipoサイト（社内）')
+#ALtdcaptionheader()
+${alias}サイト（社内）
+#ALtdcaptionfooter()
 #ALtditem("$!result.Detail.LocalUrl")
+#ALtdcellheaderAtt("align='center' colspan='2'")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen').addQueryData('mode','local')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
+#ALtdcellfooter()
 #ALtablefooter()
+#ALformfooter()
 </div>
 #end
 <br />
@@ -43,7 +60,7 @@ ${alias}サイト（社外）
 #ALtditem("$!result.Detail.GlobalUrl")
 <tr>
 #ALtdcellheaderAtt("align='center' colspan='2'")
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen').addQueryData('mode','global')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
 #ALtdcellfooter()
 </tr>
 #ALtablefooter()

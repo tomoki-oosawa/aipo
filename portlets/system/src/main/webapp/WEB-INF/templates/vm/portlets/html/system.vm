@@ -18,14 +18,5 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
 #ALjavascript("javascript/aipo/system/form.js")
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-
-    ptConfig['$!portlet.ID'] = { group:"system", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.system.menuSelected = 0;  
-//]]>
-</script>
 #parse("/portlets/html/ja/ajax-system.vm")
-#parse("/portlets/html/ja/system-menu.vm")
