@@ -393,7 +393,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // entityIdの取得
       int entityId = file.getFileId();
-      // todo名の取得
+      // todoタイトルの取得
       String fileName = file.getFileTitle();
 
       // ファイルを削除
