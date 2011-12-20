@@ -107,7 +107,7 @@ public class CabinetSelectData extends
           .getInitParameter("p1c-sort"));
     }
 
-    int fid = CabinetUtils.ROOT_FODLER_ID;
+    int fid = 0;
     if (isNormalContext) {
       // フォルダ選択のリクエスト
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
@@ -174,6 +174,14 @@ public class CabinetSelectData extends
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
+      } else {
+        String id =
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3a-folder");
+        fid = Integer.parseInt(id);
+
       }
     }
 
@@ -187,6 +195,7 @@ public class CabinetSelectData extends
           break;
         }
       }
+
       /*
        * if (selected_folderinfo == null) { selected_folderinfo =
        * folder_hierarchy_list.get(0); }
