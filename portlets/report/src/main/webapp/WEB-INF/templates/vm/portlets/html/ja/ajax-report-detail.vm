@@ -70,6 +70,7 @@ $!record.AliasName
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
+#ALbuttonfooter()
 #if($!result.CoReportList && $!result.CoReportList.size() > 0)
 ##pageview($link $result)
 #ALtableheaderWide()

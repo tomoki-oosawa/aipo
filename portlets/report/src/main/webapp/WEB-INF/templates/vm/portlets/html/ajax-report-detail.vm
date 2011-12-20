@@ -26,7 +26,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader("報告書詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("報告書")
+#ALajaxdetailformheader("書き込み")##delete時メッセージ
 #ALtableheaderWide()
 #ALtdcaption('名前')
 #ALtditem($!result.ParentReport.ClientName)
@@ -38,8 +38,10 @@
 $!record.AliasName<br />
 #end
 #ALtditemfooter()
+#ALtdcaption('作成日時')
+#ALtditem($!{result.ParentReport.UpdateDate.toString('yyyy年MM月dd日HH時mm分')})
 #ALtdcaption('日時')
-#ALtditem($!{result.ParentReport.UpdateDate})
+#ALtditem("$!{result.ParentReport.StartDate.toString('yyyy年MM月dd日HH時mm分')}～$!{result.ParentReport.EndDate.toString('HH時mm分')}")
 #ALtdcaption('内容')
 #ALtditem($!{result.ParentReport.Note})
 #if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
@@ -53,7 +55,7 @@ $!record.AliasName<br />
 #ALtdcaption('通知先')
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MapList)
-#if($result.Detail.getStatus($record.UserId.Value) == "R")
+#if($result.ParentReport.getStatus($record.UserId.Value) == "R")
 <img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt="既読" title="既読"/>
 #else
 <img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt="未読" title="未読"/>
@@ -68,6 +70,7 @@ $!record.AliasName
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
+#ALbuttonfooter()
 #if($!result.CoReportList && $!result.CoReportList.size() > 0)
 ##pageview($link $result)
 #ALtableheaderWide()
@@ -81,10 +84,10 @@ $!record.AliasName
 #ALtditemheader()
 <div class="clearfix">
 <div class="alignleft">
-投稿者：$!{record.ClientName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分
+投稿者：$!{record.ClientName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDate.toString('yyyy年MM月dd日HH時mm分')}
 </div>
 <div class="alignright">
-#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteReportOthers())
+#if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
 </div>
@@ -118,7 +121,6 @@ ${record.Note}
 #if($!resultOnReportDetail)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-##<form name="msgboardForm$!portlet.ID" id="msgboardForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply').addQueryData('entityid', ${result.ParentTopic.TopicId})" method="post" onsubmit="aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage);return false;">
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
 <input type="hidden" name="mode" value="report_reply" />
 <input type="hidden" name="entityid" value="$!result.ParentReport.ReportId" />

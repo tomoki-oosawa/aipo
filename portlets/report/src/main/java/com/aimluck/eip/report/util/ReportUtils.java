@@ -112,6 +112,9 @@ public class ReportUtils {
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
 
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
    * 
@@ -1071,5 +1074,39 @@ public class ReportUtils {
     body.append("---------------------").append(CR);
     body.append(ALOrgUtilsService.getAlias()).append(CR);
     return body.toString();
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetFilter(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
   }
 }

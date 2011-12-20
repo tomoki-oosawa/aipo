@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
@@ -90,6 +91,9 @@ public class ReportSelectData extends
   /** 他ユーザーの報告書の閲覧権限 */
   private boolean hasAuthorityOther;
 
+  /** 検索ワード */
+  private ALStringField target_keyword;
+
   /**
    * 
    * @param action
@@ -145,6 +149,7 @@ public class ReportSelectData extends
      */
     hasAuthorityOther = true;
     showReplyForm = true;
+    target_keyword = new ALStringField();
 
     super.init(action, rundata, context);
 
@@ -160,7 +165,12 @@ public class ReportSelectData extends
   @Override
   public ResultList<EipTReport> selectList(RunData rundata, Context context) {
     try {
-
+      if (ReportUtils.hasResetFlag(rundata, context)) {
+        ReportUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(ReportUtils.getTargetKeyword(rundata, context));
+      }
       SelectQuery<EipTReport> query = getSelectQuery(rundata, context);
       buildSelectQueryForFilter(query, rundata, context);
       buildSelectQueryForListView(query);
@@ -188,6 +198,12 @@ public class ReportSelectData extends
 
     Integer login_user_id =
       Integer.valueOf((int) login_user.getUserId().getValue());
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
 
     if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
       // 通常画面
@@ -225,7 +241,8 @@ public class ReportSelectData extends
       // 送信
       Expression exp1 =
         ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
-      query.setQualifier(exp1);
+      query.andQualifier(exp1);
+
     } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
       // 受信
       SelectQuery<EipTReportMap> q = Database.query(EipTReportMap.class);
@@ -243,10 +260,10 @@ public class ReportSelectData extends
         } else if (!resultid.contains(item.getReportId())) {
           resultid.add(item.getReportId());
         }
-        Expression ex =
-          ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-        query.andQualifier(ex);
       }
+      Expression exp2 =
+        ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
+      query.andQualifier(exp2);
       if (resultid.size() == 0) {
         // 検索結果がないことを示すために-1を代入
         resultid.add(-1);
@@ -258,12 +275,44 @@ public class ReportSelectData extends
       // 全て
     }
 
+    // 検索
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTReport.REPORT_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTReport.NOTE_PROPERTY, "%" + search + "%");
+      SelectQuery<EipTReport> q = Database.query(EipTReport.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTReport> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTReport item : queryList) {
+        if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
+          resultid.add(item.getParentId());
+        } else if (!resultid.contains(item.getReportId())) {
+          resultid.add(item.getReportId());
+        }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex3 =
+        ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex3);
+    }
+
     // replyを除く
     Expression ex =
       ExpressionFactory.noMatchExp(EipTReport.REPORT_NAME_PROPERTY, "");
     query.andQualifier(ex);
-
     return query;
+
   }
 
   /**
@@ -578,5 +627,12 @@ public class ReportSelectData extends
 
   public boolean hasAuthorityOther() {
     return hasAuthorityOther;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
   }
 }
