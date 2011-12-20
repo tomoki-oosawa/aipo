@@ -53,7 +53,7 @@
 </select>&nbsp;
 <label for="adminfiltercheckbox"><input type="checkbox" onchange="aipo.viewPage(this.value, '$!portlet.ID')" id="adminfiltercheckbox"
 value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filtertype","$!result.CurrentFilter").addQueryData("adminfiltered", $adminfiltered2 ))" #if($!result.AdminFiltered) checked="checked" #end />&nbsp;管理権限者のみ表示</label>
-#ALformfooter()
+</form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
@@ -70,13 +70,12 @@ value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("tem
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
 <table class="auiRowTable wide">
-<colgroup style="width:20px;">
-</colgroup><colgroup style="width:3em;">
-</colgroup><colgroup style="">
-</colgroup><colgroup style="width:8em;">
-</colgroup><colgroup style="width:10em;">
-</colgroup><colgroup style="width:10em;">
-</colgroup>
+<colgroup style="width:20px;"></colgroup>
+<colgroup style="width:3em;"></colgroup>
+<colgroup style=""></colgroup>
+<colgroup style="width:8em;"></colgroup>
+<colgroup style="width:10em;"></colgroup>
+<colgroup style="width:10em;"></colgroup>
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
@@ -106,7 +105,7 @@ value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("tem
 <div>
 #foreach($postname in $!record.getPostNameList())
 #if($pcount != 0)、&nbsp;#end
-$postname
+$!postname
 #set($pcount = $pcount + 1)
 #end
 </div>
@@ -114,7 +113,7 @@ $postname
 #ALtdcell("<div>$!record.PositionName</div>")
 </tr>
 #end
-#ALtablefooter()
+</table>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
