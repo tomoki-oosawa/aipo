@@ -829,8 +829,6 @@ table.listTable {
 	margin-bottom:10px;
 	margin-top:5px;
 	border-top:solid 1px #ddd;
-	border-right:solid 1px #ddd;
-	border-left:solid 1px #ddd;
 	border-spacing:0;
 	border-collapse:collapse;
 	padding:0;
@@ -842,11 +840,11 @@ table.subTable {
 }
 table.listTable td, table.subTable td {
 	border-bottom:solid 1px #ddd;
-	padding:3px;
+	padding:5px 3px;
 }
 table.listTable th, table.listTable thead td, table.subTable th, table.subTable thead td {
 	border-bottom:solid 1px #ddd;
-	padding:3px;
+	padding:5px 3px;
 	background:#f0f0f0;
 	white-space:nowrap;
 	text-align:center;
