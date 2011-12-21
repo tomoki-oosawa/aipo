@@ -97,6 +97,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // 会社名
     company_name = new ALStringField();

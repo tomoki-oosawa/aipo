@@ -48,6 +48,8 @@ public class SystemUtils {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SystemUtils.class.getName());
+	
+  public static final String COMPANY_PORTLET_NAME = "Company";
 
   /** Webアプリケーションサーバのポート番号 */
   private static final int WEBAPPSERVER_PORT = JetspeedResources.getInt(

@@ -20,13 +20,10 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/account_company/form.js")
-
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"account_company", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPositionListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.account_company.menuSelected = 1;
 //]]>
 </script>
-
 #parse("/portlets/html/ja/ajax-account-position-list.vm")
-#parse("/portlets/html/ja/account-company-menu.vm")

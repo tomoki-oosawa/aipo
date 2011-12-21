@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * システム管理画面にて、会社情報を管理するアクションクラスです。
- *
+ * 
  */
 public class AccountCompanyAction extends ALSecureBaseAction {
 
@@ -69,14 +69,16 @@ public class AccountCompanyAction extends ALSecureBaseAction {
 
     context.put("chg_adminpasswd", chg_adminpasswd);
 
-    if (getMode() == null) {
+    if (getTemplate(context).equals("account-position-list")) {
+      doAccount_position_list(rundata, context);
+    } else {
       doAccount_post_list(rundata, context);
     }
 
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -90,7 +92,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -115,7 +117,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -129,7 +131,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -153,7 +155,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -175,7 +177,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -200,7 +202,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -217,7 +219,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -235,7 +237,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
 
   /**
    * 部署を削除します（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -254,7 +256,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -268,7 +270,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -292,7 +294,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -314,7 +316,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -338,7 +340,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -355,7 +357,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -373,7 +375,7 @@ public class AccountCompanyAction extends ALSecureBaseAction {
 
   /**
    * 役職を削除します（複数） <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

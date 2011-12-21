@@ -28,9 +28,9 @@
 <div class="floatLeft">
 #AUIbuttonAction("アプリを追加する" "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
-#AUIconfigheader($!{portlet.ID} "10em")
-#AUIconfigitem("コンテナ管理" $linkContainer)
-#AUIconfigitem("アプリ初期配置管理" $linkPsml)
+#AUIconfigheader($!{portlet.ID} "14em")
+#AUIconfigitem("アプリの初期配置を設定する" $linkPsml)
+#AUIconfigitem("コンテナを設定する" $linkContainer)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
 

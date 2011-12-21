@@ -27,4 +27,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-account-post-list.vm")
-#parse("/portlets/html/ja/account-company-menu.vm")
