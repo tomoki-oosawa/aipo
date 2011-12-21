@@ -54,11 +54,11 @@ import com.aimluck.eip.util.ALEipUtils;
  * 『テンプレート更新』のフォームデータを管理するクラス．
  * 
  */
-public class PsmlFormData extends ALAbstractFormData {
+public class GagetsPsmlFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(PsmlFormData.class.getName());
+    .getLogger(GagetsPsmlFormData.class.getName());
 
   private ALStringField note;
 

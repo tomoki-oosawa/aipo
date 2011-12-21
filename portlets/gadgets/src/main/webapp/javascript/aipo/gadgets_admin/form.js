@@ -97,10 +97,19 @@ aipo.gadgets_admin.beforeSubmit = function(button,portlet_id, mode) {
 
 
 aipo.gadgets_admin.onReceiveMessageUpdate = function(msg){
-	dojo.byId('caution_update').innerHTML
-	=dojo.byId('caution_default').innerHTML
-	=dojo.byId('caution_all_user').innerHTML
-	="";
+	var update = dojo.byId('caution_update');
+	if(update){
+		update.innerHTML = "";
+	}
+	var _default = dojo.byId('caution_default');
+	if(_default){
+		_default.innerHTML = "";
+	}
+	var all_user = dojo.byId('caution_all_user');
+	if(all_user){
+		all_user.innerHTML = "";
+	}
+
 	if (dojo.byId('caution_'+Mode)) {
 		dojo.byId('caution_'+Mode).innerHTML =!msg?"更新が完了しました。":"設定に失敗しました。時間をおいてから再度試してください。";
 		aimluck.io.disableForm(form,false);

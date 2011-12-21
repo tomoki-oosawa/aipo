@@ -22,7 +22,7 @@ package com.aimluck.eip.modules.screens;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.gadgets.PsmlFormData;
+import com.aimluck.eip.gadgets.GagetsPsmlFormData;
 import com.aimluck.eip.gadgets.util.GadgetsUtils;
 
 /**
@@ -38,7 +38,7 @@ public class GadgetsPsmlFormScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
-    PsmlFormData formData = new PsmlFormData();
+    GagetsPsmlFormData formData = new GagetsPsmlFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
 

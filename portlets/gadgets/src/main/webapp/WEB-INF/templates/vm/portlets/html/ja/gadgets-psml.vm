@@ -23,8 +23,8 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-    ptConfig['$!portlet.ID'] = { group:"psml", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PsmlScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.psml.menuSelected = 0;
+    ptConfig['$!portlet.ID'] = { group:"gadgets_admin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsPsmlFormScreen"))', reloadFunction:aipo.reloadPage };
+
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-gadgets-psml.vm")
