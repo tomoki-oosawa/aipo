@@ -19,18 +19,21 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($addApp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")))
+#set ($linkContainer = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsContainerAdminFormScreen').addQueryData('entityid','edit'))
+#set ($linkPsml = $!jslink.getPortletById($!portlet.ID).addQueryData('template','PsmlFormScreen'))
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
-#AUISummaryDiv()
 
+#AUISummaryDiv()
 <div class="floatLeft">
 #AUIbuttonAction("アプリを追加する" "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
 #AUIconfigheader($!{portlet.ID} "10em")
-#AUIconfigitem("アプリ初期配置管理" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','PsmlFormScreen')")
+#AUIconfigitem("コンテナ管理" $linkContainer)
+#AUIconfigitem("アプリ初期配置管理" $linkPsml)
 #AUIconfigfooter()
-
 #AUISummaryDivfooter()
+
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
 #if($!{result.getAttachStatus().equals("success")}||$!{result.getDefaultStatus().equals("success")}||$!{result.getAllUserStatus().equals("success")})
