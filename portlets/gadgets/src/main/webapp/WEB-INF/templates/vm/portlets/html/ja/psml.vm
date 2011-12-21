@@ -18,15 +18,13 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["アプリ一覧", ""]])
-## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/gadgets_admin/form.js")
+##ALjavascript("javascript/aipo/psml/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-    ptConfig['$!portlet.ID'] = { group:"gadgets_admin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen"))', reloadFunction:aipo.reloadPage };
-
+    ptConfig['$!portlet.ID'] = { group:"psml", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PsmlScreen"))', reloadFunction:aipo.reloadPage };
+    aipo.psml.menuSelected = 0;
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-gadgets-admin-list.vm")
+#parse("/portlets/html/ja/ajax-psml.vm")

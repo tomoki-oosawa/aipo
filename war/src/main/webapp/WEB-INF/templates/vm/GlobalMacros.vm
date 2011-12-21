@@ -1722,6 +1722,10 @@ $item.get(0)
 <li><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($link)');">$text</a></li>
 #end
 
+#macro(AUIconfigitemsubmitJS $title $text $script)
+<div class="auiMenuListItem"><a style="width: 100%; " title="$title" href="javascript:void(0);" onclick="aimluck.io.setHiddenValue(this);$script">$text</a></div>
+#end
+
 #macro(AUIconfigfooter)
 </ul>
 </div>

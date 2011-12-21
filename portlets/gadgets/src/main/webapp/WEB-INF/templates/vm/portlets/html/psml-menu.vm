@@ -27,13 +27,16 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-            {   caption: "アプリ一覧を表示する", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doGadgets_admin_list','1')"    },
-			{   caption: "アプリをインストールする", iconClass: "menuBarIconList", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")','$!portlet.ID', aipo.gadgets_admin.onLoadDialog);"    }
+		    {   caption: "テンプレートを更新する", iconClass:"menuBarIconNetworkInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_editTemplate','1')"    }
 		];
 
-    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
+	if(aipo.psml.menuSelected == "undefined"){
+       aipo.psml.menuSelected = -1;
+    }
+    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex: aipo.psml.menuSelected}, "portletMenu");
 
 });
 
 //]]>
 </script>
+
