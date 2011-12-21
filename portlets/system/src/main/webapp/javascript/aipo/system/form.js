@@ -24,6 +24,10 @@ aipo.system.onLoadNetworkInfoDialog = function(portlet_id) {
 	if (obj) {
 		obj.focus();
 	}
+	var forms = document.forms;
+	for(var i=0;i<forms.length;i++){
+		aimluck.io.disableForm(forms[i], false);
+	}
 }
 
 aipo.system.onReceiveMessage = function(msg) {

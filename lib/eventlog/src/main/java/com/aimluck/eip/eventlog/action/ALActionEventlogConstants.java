@@ -23,7 +23,7 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ログ保存用ライブラリの定数です。
- * 
+ *
  */
 public class ALActionEventlogConstants {
 
@@ -146,6 +146,8 @@ public class ALActionEventlogConstants {
   public static final String PORTLET_TYPE_STR_LOGOUT = "ログアウト";
 
   public static final String PORTLET_TYPE_STR_ACCOUNT = "アカウント";
+
+  public static final String PORTLET_TYPE_STR_SYSTEM = "システム";
 
   public static final String PORTLET_TYPE_STR_AJAXSCHEDULEWEEKLY = "カレンダー";
 
