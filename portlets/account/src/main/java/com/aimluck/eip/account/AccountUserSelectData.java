@@ -118,7 +118,7 @@ public class AccountUserSelectData extends
    * @param context
    * @return
    */
-  private SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
+  protected SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
 
     ObjectId oid =
@@ -133,8 +133,13 @@ public class AccountUserSelectData extends
         Operations.eq(TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1)),
         Operations.ne(TurbineUser.DISABLED_PROPERTY, "T"));
 
-    adminFilter = rundata.getParameters().getBoolean("adminfiltered");
-    if (adminFilter) {
+    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filtertype =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    current_filter = filter;
+
+    Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
+    if ("role".equals(filtertype) && "admin".equals(filter)) {
       try {
         Group group = JetspeedSecurity.getGroup("LoginUser");
         Role adminrole = JetspeedSecurity.getRole("admin");
@@ -161,13 +166,9 @@ public class AccountUserSelectData extends
       } catch (Exception ex) {
         logger.error("Exception", ex);
       }
-    }
-
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    current_filter = filter;
-
-    Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
-    if (filter == null
+      return query;
+    } else if (!"post".equals(filtertype)
+      || filter == null
       || "".equals(filter)
       || !gMap.containsKey(Integer.valueOf(filter))) {
       return query;
