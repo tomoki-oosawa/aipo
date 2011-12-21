@@ -33,11 +33,11 @@ import com.aimluck.eip.gadgets.PsmlFormData;
  * メモ帳をJSONデータとして出力するクラスです。 <br />
  * 
  */
-public class PsmlFormJSONScreen extends ALJSONScreen {
+public class GadgetsPsmlFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(PsmlFormJSONScreen.class.getName());
+    .getLogger(GadgetsPsmlFormJSONScreen.class.getName());
 
   /**
    *

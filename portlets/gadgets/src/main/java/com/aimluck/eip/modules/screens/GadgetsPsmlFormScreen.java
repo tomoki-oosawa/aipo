@@ -28,7 +28,7 @@ import com.aimluck.eip.gadgets.util.GadgetsUtils;
 /**
  *
  */
-public class PsmlFormScreen extends ALVelocityScreen {
+public class GadgetsPsmlFormScreen extends ALVelocityScreen {
 
   /**
    * @param rundata
@@ -42,7 +42,7 @@ public class PsmlFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String template = "portlets/html/ja/psml.vm";
+    String template = "portlets/html/ja/gadgets-psml.vm";
     setTemplate(rundata, context, template);
   }
 

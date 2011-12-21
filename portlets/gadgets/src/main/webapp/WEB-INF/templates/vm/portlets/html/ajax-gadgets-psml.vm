@@ -27,7 +27,7 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALerrmsg($errmsgs)
-#ALajaxscreenformheader("psmlForm" $jslink $portlet "PsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gadgets_admin.onReceiveMessageUpdate)")
+#ALajaxscreenformheader("psmlForm" $jslink $portlet "GadgetsPsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gadgets_admin.onReceiveMessageUpdate)")
 <div class="p">
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>

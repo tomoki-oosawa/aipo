@@ -18,25 +18,13 @@
  *#
 
 ## ---------------------------------------------------------------------------
+
+##ALjavascript("javascript/aipo/psml/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-dojo.require("aimluck.widget.Menu");
-
-dojo.addOnLoad(function () {
-
-    var subMenu =
-		[
-		    {   caption: "テンプレートを更新する", iconClass:"menuBarIconNetworkInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_editTemplate','1')"    }
-		];
-
-	if(aipo.psml.menuSelected == "undefined"){
-       aipo.psml.menuSelected = -1;
-    }
-    var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu, selectedIndex: aipo.psml.menuSelected}, "portletMenu");
-
-});
-
+    ptConfig['$!portlet.ID'] = { group:"psml", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PsmlScreen"))', reloadFunction:aipo.reloadPage };
+    aipo.psml.menuSelected = 0;
 //]]>
 </script>
-
+#parse("/portlets/html/ja/ajax-gadgets-psml.vm")
