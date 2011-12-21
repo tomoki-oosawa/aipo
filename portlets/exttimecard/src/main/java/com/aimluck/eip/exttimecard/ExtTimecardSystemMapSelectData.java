@@ -185,7 +185,7 @@ public class ExtTimecardSystemMapSelectData extends
       ExpressionFactory.matchExp(TurbineUser.COMPANY_ID_PROPERTY, Integer
         .valueOf(1));
     Expression exp3 =
-      ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
 
     query.setQualifier(exp1);
     query.andQualifier(exp2);
