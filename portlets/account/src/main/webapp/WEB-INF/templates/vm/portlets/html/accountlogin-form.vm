@@ -229,9 +229,10 @@ $!data.Message
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
 <input name="org" type="hidden" value="$!result.OrgId" />
 <input name="username" type="hidden" value="" />
-#ALtableheader('500')
-#ALtdcaptionAtt("ユーザー名" 'align="left" width="150" nowrap')
-<td class="item" align="left">
+<table class="listTable left" width="500">
+<tbody>
+#ALtdcaptionAtt("ユーザー名" 'width="150" nowrap')
+<td>
 <span id="login_username_field">
 <input class='text w75' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' />
 </span>
@@ -251,26 +252,27 @@ $!data.Message
 </span>
 #end
 </td>
-#ALtdcaptionAtt("パスワード" 'align="left"')
-<td class="item" align="left">
+#ALtdcaptionAtt("パスワード" '')
+<td>
 <input class="text w75" name="password" value="" type="password" maxlength="50" style="ime-mode:disabled" />
 </td>
 #if($enable_userlist)
 #ALtdcaption("")
-<td class="item" align="left">
+<td>
 <input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" />
 <label for="usr_list">ユーザー一覧から選択する</label>
 </td>
 #end
 #ALtdcaption("")
-<td class="item" align="left">
+<td>
 <input name="save_password" type="checkbox" value="save" id="pass" />
 <label for="pass">パスワードを保存する</label>
 </td>
 <tr>
 #ALtdcellAtt("#ALsubmitJS('login_submit' 'ログイン' 'setHiddenValue(this)')" 'colspan="2" align="center"')
 </tr>
-#ALtablefooter()
+</tbody>
+</table>
 </form>
 </div>
 <script language="JavaScript" type="text/JavaScript">
