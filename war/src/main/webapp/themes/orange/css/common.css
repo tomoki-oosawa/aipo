@@ -822,13 +822,15 @@ td.item {
 table.outer td.f08 {
 	border:solid #C9C9C9 1px;
 	padding:5px;
-	background-color:#FFF5D8;
+	background-color:#f6f6f6;
 	vertical-align:middle;
 }
 table.listTable {
-	border:1px solid #F90;
 	margin-bottom:10px;
 	margin-top:5px;
+	border-top:solid 1px #ddd;
+	border-right:solid 1px #ddd;
+	border-left:solid 1px #ddd;
 	border-spacing:0;
 	border-collapse:collapse;
 	padding:0;
@@ -839,23 +841,21 @@ table.subTable {
 	border-collapse:collapse;
 }
 table.listTable td, table.subTable td {
-	border:1px solid #F90;
+	border-bottom:solid 1px #ddd;
 	padding:3px;
 }
 table.listTable th, table.listTable thead td, table.subTable th, table.subTable thead td {
-	border:1px solid #F90;
+	border-bottom:solid 1px #ddd;
 	padding:3px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
+	background:#f0f0f0;
 	white-space:nowrap;
 	text-align:center;
 	font-weight:normal;
-	color:#333;
 }
 table.listTable th a, table.listTable thead td a, table.subTable th a, table.subTable thead td a {
 	padding-right:10px;
 	padding-left:10px;
 	display:block;
-	color:#333;
 }
 table.listTable th a.headDown, table.listTable thead td.headDown a, table.subTable th a.headDown, table.subTable thead td.headDown a {
 	padding:3px 20px 1px 0;
@@ -866,13 +866,12 @@ table.listTable th a.headUp, table.listTable thead td.headUp a, table.subTable t
 	background:transparent url(../images/common/btn_down.gif) no-repeat right 8px;
 }
 table.listTable td.caption, table.subTable td.caption {
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
+	background:#f0f0f0;
 	min-width:135px;
 	min-width:-moz-intrinsic;
 	width:135px;
 	white-space:nowrap;
 	font-weight:normal;
-	color:#333;
 }
 table.listTable .selected, table.subTable .selected {
 	background-color:#FFFFE5;
@@ -3670,6 +3669,9 @@ table.auiRowTable tr:hover td {
 	text-decoration:none;
 	overflow:hidden;
 }
+.auiDirectoryList a span {
+	cursor:pointer;
+}
 .auiDirectoryList a:hover {
 	background:#f6f6f6;
 }
@@ -3987,11 +3989,14 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 
 a.auiIcon:hover {background-color:#999;}
 *html a.auiIcon:hover {background-color:transparent;}/*IE6*/
+.selectedMenu a.auiIcon:hover {background-color:#fff;}
 
 .auiIconSetting {background-position:0px 0px;}
 a.auiIconSetting:hover {background-position:0px -16px;}
 *html .auiIconSetting {background-position:0px 0px;}/*IE6*/
 *html a.auiIconSetting:hover {background-position:0px 0px;}/*IE6*/
+.selectedMenu .auiIconSetting {background-position:0px -16px;}
+.selectedMenu .auiIconSetting:hover {background-position:0px 0px;}
 
 .auiIconFile {background-position:0px -32px;}
 a.auiIconFile:hover {background-position:0px -48px;}
