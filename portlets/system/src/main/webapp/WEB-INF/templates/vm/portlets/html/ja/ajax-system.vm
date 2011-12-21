@@ -21,6 +21,7 @@
 #set($linkCompany = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemCompanyFormScreen").addQueryData("entityid","1"))
 #set($linkWebmailOption = $!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemWebMailSettingsFormScreen').addQueryData('entityid', 'edit'))
 #set($linkWebmailAccount = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen'))
+#set($linkSampleDelete = $!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemDeleteSampleFormScreen').addQueryData('portlet_id',$!{portlet.ID}))
 ## ---------------------------------------------------------------------------
 
 #AUISummaryDiv()
@@ -28,6 +29,7 @@
 #AUIconfigitem("会社情報を変更する" $linkCompany)
 #AUIconfigitem("メール通知を設定する" $linkWebmailOption)
 #AUIconfigitem("メールアカウントを設定する" $linkWebmailAccount)
+#AUIconfigitem("サンプルデータを削除する" $linkSampleDelete)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
 

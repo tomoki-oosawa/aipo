@@ -1,0 +1,73 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($action_str = "削除する")
+#set ($subtitle = 'サンプルデータの削除')
+#set ($event_submit = "eventSubmit_doDeletesample_form")
+#ALdialogheader($subtitle)
+##ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+
+#if(${desa}=="1")
+サンプルデータはすでに削除されています。
+#ALbuttonheader()
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#else
+
+#ALajaxscreenformheader("systemdeletesampleForm" $jslink $portlet "SystemDeleteSampleFormJSONScreen" "aimluck.io.submit(this,'$indicator_id', '$!portlet.ID', aipo.system.onReceiveMessage)")
+<input type="hidden" name="mode" value="update" />
+<input type="hidden" name="secid" value="$secid" />
+<div class="caution">（注意）</div>
+<div class="message small">『削除する』ボタンをクリックしていただくことで下記のサンプルデータが削除されます。<br />一度データを削除なさいますと復旧はできませんので、万が一のため必ず${alias}のバックアップを取っていただいた上で実行してください。
+${alias}のバックアップにつきましては<a target="_blank" href="http://aipostyle.com/">こちらのホームページ</a>をご参照いただけますと幸いでございます。</div>
+#ALtableheaderWide()
+#ALtdcaption("この機能で削除されるデータ")
+#ALtditemheader()
+<ul class="small">
+<li>サンプルユーザーアカウント（木村 一郎/sample1、田村 涼子/sample2、山田 太郎/sample3）</li>
+<li>サンプルユーザーのブログ記事及びそれに対するすべてのコメントと添付ファイル、またそれらのブログ記事の所属するブログテーマ（イベント、日記）</li>
+<li>サンプルユーザーのブログコメント</li>
+<li>サンプルユーザーの掲示板トピック及びそれに対するすべての返信と添付ファイル、またそれらの掲示板トピックの属するカテゴリ（お知らせ）</li>
+<li>サンプルのアドレス帳データ</li>
+<li>サンプルユーザーのWebメールアカウント</li>
+<li>サンプルユーザーのWebメールでの送受信メール及びそれらの添付ファイル</li>
+<li>サンプルユーザーのメモ帳データ</li>
+<li>サンプルユーザーのタイムカード打刻データ</li>
+<li>サンプルユーザーのToDo</li>
+<li>サンプルユーザーのスケジュール、およびそれらで使用されている設備（会議室）、共有カテゴリ（清掃）</li>
+<li>サンプルユーザーによって申請されたワークフロー</li>
+<li>サンプルユーザーの所属する部署（商品開発部、営業部）</li>
+<li>サンプルユーザーの所属する役職（主任、部長）</li>
+<li>共有フォルダ中のサンプルフォルダ（商品開発部、営業部）と、その中に保存されているファイル。<br />（これらフォルダ中の、ユーザーが追加したファイルやフォルダも削除されます）</li>
+</ul>
+#ALtditemfooter()
+#ALtablefooter()
+
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+
+#end
+
+#ALdialogfooter()

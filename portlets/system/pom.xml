@@ -49,4 +49,17 @@
     </plugins>
   </build>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-portlet-blog</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-portlet-cabinet</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
+  </dependencies>
+
 </project>
