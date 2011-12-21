@@ -180,8 +180,13 @@ public class CabinetSelectData extends
             .getPortlet(rundata, context)
             .getPortletConfig()
             .getInitParameter("p3a-folder");
-        fid = Integer.parseInt(id);
-
+        if (id != null && !"".equals(id)) {
+          try {
+            fid = Integer.parseInt(id);
+          } catch (Exception e) {
+            fid = CabinetUtils.ROOT_FODLER_ID;
+          }
+        }
       }
     }
 
