@@ -365,7 +365,7 @@
 		<db-attribute name="END_DATE" type="TIMESTAMP"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="REPORT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="REPORT_NAME" type="VARCHAR" length="64"/>
 		<db-attribute name="START_DATE" type="TIMESTAMP"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
