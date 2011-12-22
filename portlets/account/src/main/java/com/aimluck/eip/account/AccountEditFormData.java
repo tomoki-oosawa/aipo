@@ -63,6 +63,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
 
+  /** ログイン名 */
+  private ALStringField loginname;
+
   /** 名前（名） */
   private ALStringField firstname;
 
@@ -154,6 +157,10 @@ public class AccountEditFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
+    // ログイン名
+    loginname = new ALStringField();
+    loginname.setFieldName("ログイン名");
+    loginname.setTrim(true);
     // 名
     firstname = new ALStringField();
     firstname.setFieldName("名前（名）");
@@ -164,12 +171,12 @@ public class AccountEditFormData extends ALAbstractFormData {
     lastname.setTrim(true);
     // 新しいパスワード
     new_password = new ALStringField();
-    new_password.setFieldName("新しいパスワード");
+    new_password.setFieldName("パスワード");
     new_password.setTrim(true);
 
     // 新しいパスワード（確認用）
     new_password_confirm = new ALStringField();
-    new_password_confirm.setFieldName("新しいパスワード（確認用）");
+    new_password_confirm.setFieldName("パスワード<br />（確認用）");
     new_password_confirm.setTrim(true);
 
     // メールアドレス
@@ -433,6 +440,7 @@ public class AccountEditFormData extends ALAbstractFormData {
           .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
         return false;
       }
+      loginname.setValue(user.getUserName());
       firstname.setValue(user.getFirstName());
       lastname.setValue(user.getLastName());
       email.setValue(user.getEmail());
@@ -788,5 +796,20 @@ public class AccountEditFormData extends ALAbstractFormData {
     List<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;
+  }
+
+  /**
+   * @param loginname
+   *          セットする loginname
+   */
+  public void setLoginName(ALStringField loginname) {
+    this.loginname = loginname;
+  }
+
+  /**
+   * @return loginname
+   */
+  public ALStringField getLoginName() {
+    return loginname;
   }
 }
