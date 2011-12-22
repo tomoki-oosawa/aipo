@@ -189,14 +189,14 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
     rd2.initField();
     try {
       if ("R".equals(record.getStatus())) {
-        return rd;
+        return null;
       }
       if (!ScheduleUtils.isView(
         getViewDate(),
         record.getRepeatPattern(),
         record.getStartDate(),
         record.getEndDate())) {
-        return rd;
+        return null;
       }
       // ID
       rd.setScheduleId(record.getScheduleId().intValue());
