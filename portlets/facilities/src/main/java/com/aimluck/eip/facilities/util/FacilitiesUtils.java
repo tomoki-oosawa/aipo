@@ -334,6 +334,8 @@ public class FacilitiesUtils {
         rd.initField();
         rd.setFacilityName(record.getFacilityName());
         rd.setFacilityId(record.getFacilityId().longValue());
+        rd.setCreateDate(record.getCreateDate());
+        rd.setUpdateDate(record.getUpdateDate());
         list.add(rd);
       }
     } catch (Exception ex) {
