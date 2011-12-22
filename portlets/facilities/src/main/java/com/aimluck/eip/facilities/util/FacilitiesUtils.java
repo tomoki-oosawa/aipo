@@ -450,12 +450,14 @@ public class FacilitiesUtils {
         fquery.orderAscending(EipMFacility.SORT_PROPERTY);
         return fquery.fetchList();
       } else {
-        return null;
+        List<EipMFacility> list = new ArrayList<EipMFacility>();
+        return list;
       }
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
-      return null;
+      List<EipMFacility> list = new ArrayList<EipMFacility>();
+      return list;
     }
   }
 
