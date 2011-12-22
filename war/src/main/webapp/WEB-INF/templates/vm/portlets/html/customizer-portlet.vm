@@ -30,7 +30,6 @@
 #set ($tabs = [["表示カスタマイズ", "",""]])
 ## ---------------------------------------------------------------------------
 #ALcontentheader($!{portlet.Title} $navilist)
-#ALtabheader($tabs "")
 #ALspacebothheader()
 #if ($!mtype)
 <form name="DefaultCustomizer" action="$jslink.Template.addQueryData('mtype', $mtype)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
@@ -80,5 +79,4 @@ $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()
-#ALtabfooter()
 #ALcontentfooter()
