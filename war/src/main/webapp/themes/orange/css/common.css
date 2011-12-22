@@ -262,8 +262,6 @@ div.outer {
 	margin-bottom:5px;
 }
 .caution {
-	color:#DC0033;
-	font-weight:bold;
 	font-size:.96em;
 }
 * html .caution {
@@ -3847,24 +3845,33 @@ table.auiCalendar .selected a {
 }
 
 /* auiForm ********************/
-.auiForm {
+.auiForm,
+form {
 	margin:0;
 	padding:0;
 }
 .auiForm input,
 .auiForm textarea,
-.auiForm select {
+.auiForm select,
+form input,
+form textarea,
+form select {
 	margin:0;
 	vertical-align:middle;
 }
 .auiForm textarea,
-.auiForm select {
+.auiForm select,
+form textarea,
+form select {
+	margin:1px 0;
 	border:solid 1px #ccc;
 	border-radius:2px;
 	-ms-border-radius:2px;
 }
 .auiForm input[type=text],
-.auiForm input[type=password] {
+.auiForm input[type=password],
+form input[type=text],
+form input[type=password] {
 	height:2.1em;
 	*height:2.0em;/*IE*/
 	line-height:2.1em;
@@ -3878,11 +3885,13 @@ table.auiCalendar .selected a {
 	-moz-box-sizing:border-box;
 	background-color:#fff;
 }
-.auiForm select {
-	height:2.1em;
+.auiForm select,
+form select {
 	padding:0.25em;
 }
-.auiForm textarea {
+
+.auiForm textarea,
+form textarea {
 	border-radius:3px;
 	-ms-border-radius:3px;
 	box-sizing:border-box;
@@ -3896,25 +3905,42 @@ table.auiCalendar .selected a {
 .auiForm select:hover,
 .auiForm select:focus,
 .auiForm textarea:hover,
-.auiForm textarea:focus {
+.auiForm textarea:focus,
+form input[type=text]:hover,
+form input[type=text]:focus,
+form input[type=password]:hover,
+form input[type=password]:focus,
+form select:hover,
+form select:focus,
+form textarea:hover,
+form textarea:focus {
 	border:solid 1px #999;
 }
 .auiForm input[type=text]:focus,
 .auiForm input[type=password]:focus,
-.auiForm textarea:focus {
+.auiForm textarea:focus,
+form input[type=text]:focus,
+form input[type=password]:focus,
+form textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
 .auiForm input[disabled],
-.auiForm textarea[disabled] {
+.auiForm textarea[disabled],
+form input[disabled],
+form textarea[disabled] {
 	color:#999;
 	background:#eee;
 }
 .auiForm input[disabled]:hover,
-.auiForm textarea[disabled]:hover {
+.auiForm textarea[disabled]:hover,
+form input[disabled]:hover,
+form textarea[disabled]:hover {
 	border-color:#c9c9c9;
 }
 .auiForm input[type=checkbox],
-.auiForm input[type=radio] {
+.auiForm input[type=radio],
+form input[type=checkbox],
+form input[type=radio] {
 	height:auto;
 }
 
