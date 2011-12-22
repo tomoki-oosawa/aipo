@@ -253,6 +253,10 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   private boolean updateAllUserFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+      if (isAdminUser()) {
+        return false;
+      }
+
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
       psml = PsmlUtils.ParsePsml(psml);

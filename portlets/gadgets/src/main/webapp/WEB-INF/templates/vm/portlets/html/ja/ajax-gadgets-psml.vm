@@ -82,7 +82,9 @@
 #end
 </div>
 #ALbuttonheader()
+#if(!$!{result.isAdminUser()})
 #ALsubmitJS($event_submit $all_user_str "aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')")
+#end
 ##<input type="button" disabled="disabled" value="$all_user_str">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
