@@ -34,7 +34,7 @@ aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename) {
 
 aipo.fileupload.openAttachment = function(url){
     var wx = 430;
-    var wy = 175;
+    var wy = 130;
     var x = (screen.width  - wx) / 2;
     var y = (screen.height - wy) / 2;
 
