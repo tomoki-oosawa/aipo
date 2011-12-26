@@ -54,10 +54,10 @@
 #ALtditemheaderAtt("nowrap='nowrap'")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogDetailScreen").addQueryData("entityid",$record.EventlogId))');">$!record.EventDate</a>
 #ALtdcellfooter()
-#ALtdcell("$!record.UserFullName")
-#ALtdcell("$!record.PortletName")
-#ALtdcell("$!record.EventName")
-#ALtdcell("$!record.IpAddr")
+#ALtdcellAtt("<div>$!record.UserFullName</div>"'')
+#ALtdcellAtt("<div>$!record.PortletName</div>"'')
+#ALtdcellAtt("<div>$!record.EventName</div>"'')
+#ALtdcellAtt("<div>$!record.IpAddr</div>"'')
 </tr>
 #end
 #ALtablefooter()
