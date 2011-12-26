@@ -837,16 +837,15 @@ table.subTable {
 	border-collapse:collapse;
 }
 table.listTable td, table.subTable td {
-	border-bottom:solid 1px #ddd;
 	padding:5px 3px;
+	border-bottom:solid 1px #ddd;
 }
 table.listTable th, table.listTable thead td, table.subTable th, table.subTable thead td {
-	border-bottom:solid 1px #ddd;
 	padding:5px 3px;
-	background:#f0f0f0;
 	white-space:nowrap;
 	text-align:center;
-	font-weight:normal;
+	font-weight:bold;
+	border-bottom:solid 1px #ddd;
 }
 table.listTable th a, table.listTable thead td a, table.subTable th a, table.subTable thead td a {
 	padding-right:10px;
@@ -862,12 +861,11 @@ table.listTable th a.headUp, table.listTable thead td.headUp a, table.subTable t
 	background:transparent url(../images/common/btn_down.gif) no-repeat right 8px;
 }
 table.listTable td.caption, table.subTable td.caption {
-	background:#f0f0f0;
 	min-width:135px;
 	min-width:-moz-intrinsic;
 	width:135px;
 	white-space:nowrap;
-	font-weight:normal;
+	font-weight:bold;
 }
 table.listTable .selected, table.subTable .selected {
 	background-color:#FFFFE5;
@@ -3263,10 +3261,10 @@ float:left;
 /* auiButton ********************/
 .auiButton,
 .auiButtonSmall,
-.modalDialog input[type=submit],
-.modalDialog input[type=button],
-.modalDialog input[type=reset],
-.modalDialog button {
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
 	display:inline-block;
 	color:#000;
 	text-decoration:none;
@@ -3292,23 +3290,17 @@ float:left;
 	font-size:8pt;
 	white-space:nowrap;
 }
-input[type='submit'].auiButton,
-input[type='submit'].auiButtonSmall,
-input[type='button'].auiButton,
-input[type='button'].auiButtonSmall,
-input[type='reset'].auiButton,
-input[type='reset'].auiButtonSmall,
-.modalDialog input[type=submit],
-.modalDialog input[type=button],
-.modalDialog input[type=reset],
-.modalDialog button {
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
 	height:2em;
 	>line-height:1.7em;/*IE*/
 	padding:0 0.5em;
 	>padding:0 0.1em;/*IE*/
 }
 button.auiButton,
-.modalDialog button {
+button {
 	line-height:1.8em;
 	padding:0 0.55em;
 	>padding:0 0.15em;/*IE*/
@@ -3319,10 +3311,10 @@ button.auiButtonSmall {
 }
 .auiButton:hover,
 .auiButtonSmall:hover,
-.modalDialog input[type=submit]:hover,
-.modalDialog input[type=button]:hover,
-.modalDialog input[type=reset],
-.modalDialog button:hover {
+input[type=submit]:hover,
+input[type=button]:hover,
+input[type=reset],
+button:hover {
 	color:#000;
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
@@ -3332,10 +3324,10 @@ button.auiButtonSmall {
 }
 .auiButton:active,
 .auiButtonSmall:active,
-.modalDialog input[type=submit]:active,
-.modalDialog input[type=button]:active,
-.modalDialog input[type=reset],
-.modalDialog button:active {
+input[type=submit]:active,
+input[type=button]:active,
+input[type=reset],
+button:active {
 	border:solid 1px #999;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
 	background:#ccc;
@@ -3343,9 +3335,9 @@ button.auiButtonSmall {
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
 }
 input.auiButton,
-.modalDialog input[type=submit],
-.modalDialog input[type=button],
-.modalDialog input[type=reset] {
+input[type=submit],
+input[type=button],
+input[type=reset] {
 	padding:0 0.4em;
 }
 .auiButton span {
@@ -4020,7 +4012,7 @@ a.auiIconSetting:hover {background-position:0px -16px;}
 *html .auiIconSetting {background-position:0px 0px;}/*IE6*/
 *html a.auiIconSetting:hover {background-position:0px 0px;}/*IE6*/
 .selectedMenu .auiIconSetting {background-position:0px -16px;}
-.selectedMenu .auiIconSetting:hover {background-position:0px 0px;}
+.selectedMenu a.auiIconSetting:hover {background-position:0px 0px;}
 
 .auiIconFile {background-position:0px -32px;}
 a.auiIconFile:hover {background-position:0px -48px;}
