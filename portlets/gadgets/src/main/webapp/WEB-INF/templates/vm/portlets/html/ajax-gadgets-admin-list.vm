@@ -28,24 +28,28 @@
 <div class="floatLeft">
 #AUIbuttonAction("アプリを追加する" "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
-#AUIconfigheader($!{portlet.ID} "10em")
-#AUIconfigitem("コンテナ管理" $linkContainer)
-#AUIconfigitem("アプリ初期配置管理" $linkPsml)
+#AUIconfigheader($!{portlet.ID} "14em")
+#AUIconfigitem("アプリの初期配置を設定する" $linkPsml)
+#AUIconfigitem("コンテナを設定する" $linkContainer)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
 
-<div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
 #if($!{result.getAttachStatus().equals("success")}||$!{result.getDefaultStatus().equals("success")}||$!{result.getAllUserStatus().equals("success")})
+<div class="p spaceBottom">
 #ALcaution("設定が完了しました。")
+</div>
 #elseif($!{result.getAttachStatus().equals("error")}||$!{result.getDefaultStatus().equals("error")}||$!{result.getAllUserStatus().equals("error")})
+<div class="p spaceBottom">
 #ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+</div>
 #end
 #else
+<div class="p spaceBottom">
 <input type="button" disabled="disabled" value="$action_str">
 <div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
-#end
 </div>
+#end
 
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
