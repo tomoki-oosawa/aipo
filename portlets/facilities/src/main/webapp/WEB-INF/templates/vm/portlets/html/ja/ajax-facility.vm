@@ -50,6 +50,7 @@
 #ALajaxlistformheader('設備')
 #if($result.List.size() == 0)
 指定された条件に該当する設備はありません。<br />
+#ALformfooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
