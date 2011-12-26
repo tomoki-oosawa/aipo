@@ -158,7 +158,7 @@ public class MsgboardTopicSelectData extends
     // カテゴリの初期値を取得する
     try {
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-      if ("0".equals(filter) || filter == null) {
+      if (filter == null) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
@@ -301,15 +301,15 @@ public class MsgboardTopicSelectData extends
     String crt_key = null;
     Attributes map = getColumnMap();
     crt_key = map.getValue(filter_type);
-    if (filter != null
+    if ("0".equals(filter)) {
+      current_filter = filter;
+      current_filter_type = filter_type;
+    } else if (filter != null
       && filter_type != null
       && !filter.equals("")
       && crt_key != null) {
       Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
       query.andQualifier(exp);
-      current_filter = filter;
-      current_filter_type = filter_type;
-    } else if ("0".equals(filter)) {
       current_filter = filter;
       current_filter_type = filter_type;
     }
