@@ -53,13 +53,14 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">----------</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","admin").addQueryData("filtertype","role"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "admin") selected="selected" #end>管理者権限を持つユーザー</option>
 </select>
-</form>
+#ALformfooter()
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('ユーザー')
 #if($result.List.size() == 0)
 指定された条件に該当するユーザーはありません。<br />
+#ALformfooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
