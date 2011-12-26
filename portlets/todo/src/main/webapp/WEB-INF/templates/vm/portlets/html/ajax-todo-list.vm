@@ -33,7 +33,7 @@
 </div>
 
 <div class="auiSummaryMeta clearfix">
-<div class="floatLeft">
+<div class="auiForm">
 #ALselectpdheader("target_group_name" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "all").addQueryData("target_user_id","all"))'>すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )
