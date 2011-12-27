@@ -1341,12 +1341,10 @@ table.simpleTable td.caption {
 .datePickerContainer {
 	display:block;
 }
-/* End hides from IE-mac */;
-}
 .calendarBodyContainer {
 	width:100%;
 	background:#fff;
-	border:1px solid #f90;
+	border:1px solid #ddd;
 	border-collapse:collapse;
 	border-spacing:0;
 	border-top:2px solid #f90;
@@ -1356,7 +1354,7 @@ table.simpleTable td.caption {
 	font-size:.8em;
 	text-align:center;
 	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	border:1px solid #f90;
+	border:1px solid #ddd;
 	border-bottom:2px solid #f90;
 	padding:.1em .2em .1em .2em;
 }
@@ -1366,7 +1364,7 @@ table.simpleTable td.caption {
 	background:#fff;
 	cursor:pointer;
 	cursor:hand;
-	border:1px solid #f90;
+	border:1px solid #ddd;
 	padding:.1em .2em .1em .2em;
 }
 * html .calendarBodyContainer thead tr td, * html .calendarBodyContainer tbody tr td {
@@ -1421,7 +1419,7 @@ table.simpleTable td.caption {
 	font-weight:bold;
 }
 .calendarBodyContainer tbody tr td.selectedDate {
-	background:#f90;
+	background:#ddd;
 	color:#FFF;
 	font-weight:bold;
 }
@@ -1461,26 +1459,26 @@ table.simpleTable td.caption {
 /* End hides from IE-mac */ .timeContainer {
 	border-collapse:collapse;
 	border-spacing:0;
-	border-top:2px solid #f90;
+	border-top:2px solid #ddd;
 }
 .timeContainer .timeLabelContainer {
 	font-weight:bold;
 	font-size:.8em;
 	text-align:center;
 	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	border:1px solid #f90;
-	border-bottom:2px solid #f90;
+	border:1px solid #ddd;
+	border-bottom:2px solid #ddd;
 	padding:0 .2em 0 .2em;
 }
 * html .timeContainer .timeLabelContainer {
 	font-size:.7em;
-	border-bottom:1px solid #f90;
+	border-bottom:1px solid #ddd;
 	padding:.2em .25em .2em .25em;
 	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 *+html .timeContainer .timeLabelContainer {
 	font-size:.7em;
-	border-bottom:1px solid #f90;
+	border-bottom:1px solid #ddd;
 	padding:.2em .25em .2em .25em;
 	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
@@ -1490,7 +1488,7 @@ table.simpleTable td.caption {
 	padding:.1em .2em .1em .2em;
 }
 .timeContainer .timeHoursContainer td, .timeContainer .timeMnituesContainer td {
-	border:1px solid #f90;
+	border:1px solid #ddd;
 	text-align:center;
 	font-size:.8em;
 	background:#fff;
@@ -1509,7 +1507,7 @@ table.simpleTable td.caption {
 	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 .timeContainer .timeHoursContainer td.selectedItem, .timeContainer .timeMnituesContainer td.selectedItem {
-	background:#f90;
+	background:#ddd;
 	color:#FFF;
 	font-weight:bold;
 }
@@ -1596,7 +1594,7 @@ div.weeklyScrollPane {
 	position:relative;
 	overflow:scroll;
 	overflow-x:hidden;
-	border-bottom:solid #F90 1px;
+	border-bottom:solid #ddd 1px;
 }
 * html .scroll_width {
 	width:18px;
@@ -1606,19 +1604,17 @@ div.weeklyScrollPane {
 }
 div.weeklyHeadLeft {
 	width:50px;
-	border:solid #F90;
+	border:solid #ddd;
 	border-width:0 0 0 1px;
 	float:left;
 }
 div.weeklyHeadLeft div.weeklyHeadLeftTop {
 	width:100%;
 	height:17px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyHeadLeft div.weeklyHeadLeftBottom {
 	width:100%;
 	height:17px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyHeadRights {
 	position:relative;
@@ -1630,8 +1626,7 @@ div.weeklyHeadRights div.weeklyHeadRight {
 	position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #F90;
+	border:solid #ddd;
 	border-width:0 0 0 1px;
 	overflow:hidden;
 }
@@ -1639,8 +1634,7 @@ div.weeklyHeadRights div.weeklyHeadRightR {
 	position:absolute;
 	width:14.2857%;
 	text-align:center;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
-	border:solid #F90;
+	border:solid #ddd;
 	border-width:0 1px 0 1px;
 	overflow:hidden;
 }
@@ -1652,19 +1646,17 @@ div.weeklyHeadRights div.weeklyHeadRight div.weeklyHeadRightBottom, div.weeklyHe
 }
 div.weeklyTermLeft {
 	width:50px;
-	border:solid #F90;
+	border:solid #ddd;
 	border-width:0 0 0 1px;
 	float:left;
 }
 div.weeklyTermLeft div.weeklyTermLeftTop {
 	width:100%;
 	height:18px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyTermLeft div.weeklyTermLeftBottom {
 	width:100%;
 	height:18px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyTermRights {
 	position:relative;
@@ -1673,13 +1665,13 @@ div.weeklyTermRights {
 	float:left;
 }
 div.weeklyTermRights div.weeklyTermRightL {
-	border-left:solid #F90!important;
-	border-width:1px 0 0 1px!important;
+	border-left:solid #ddd !important;
+	border-width:1px 0 0 1px !important;
 }
 div.weeklyTermRights div.weeklyTermRight {
 	position:absolute;
 	width:14.2857%;
-	border:solid #F90;
+	border:solid #ddd;
 	border-left:solid #C9C9C9;
 	border-width:1px 0 0 1px;
 }
@@ -1697,29 +1689,25 @@ div.weeklyTermRights div.weeklyTermRight div.weeklyTermRightBottom, div.weeklyTe
 div.weeklyTermTail {
 	width:18px;
 	height:17px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.weeklyLeft {
 	width:50px;
-	border-top:solid #F90;
-	border-left:solid #F90;
+	border-top:solid #ddd;
+	border-left:solid #ddd;
 	border-width:1px 0 0 1px;
 	float:left;
 }
 div.weeklyLeft div.leftMinute {
 	height:17px;
 	border:none;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	padding:0 3px 1px 0;
 	text-align:right;
-	color:#be6d00;
 	line-height:1;
 }
 div.weeklyLeft div.leftMinuteBottom {
 	height:17px;
 	border:solid #C9C9C9;
 	border-width:0 0 1px 0;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	font-size:1px;
 	line-height:1;
 }
@@ -1882,31 +1870,30 @@ div.termScheduleDivTgt {
 }
 table.weeklyTableHead {
 	margin-top:5px;
-	border-top:solid 1px #F90;
-	border-right:solid 1px #F90;
+	border-top:solid 1px #ddd;
+	border-right:solid 1px #ddd;
 }
 div.weeklyBorder {
 	width:100%;
 	height:2px;
-	border-right:solid #F90 1px;
-	background-color:#F90;
+	border-right:solid #ddd 1px;
+	background-color:#ddd;
 	font-size:1px;
 	line-height:1px;
 }
 div.weeklySpan {
 	width:18px;
 	height:17px;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.tableBorder {
-	background-color:#f90;
+	background-color:#ddd;
 	width:100%;
 	height:4px;
 	font-size:1px;
 	line-height:1px;
 }
 div.tableBorderM {
-	background-color:#F90;
+	background-color:#ddd;
 	width:100%;
 	height:2px;
 	font-size:1px;
@@ -1932,34 +1919,32 @@ table.calendar {
 	margin-bottom:5px;
 	border-collapse:collapse;
 	border-spacing:0;
-	border:1px solid #F90;
-	border-top:2px solid #F90;
+	border:1px solid #ddd;
+	border-top:2px solid #ddd;
 }
 table.calendar td.calendarHeader {
-	background:#f90;
+	background:#ddd;
 }
 table.calendar td {
-	border:1px solid #f90;
+	border:1px solid #ddd;
 	padding:2px;
 	vertical-align:top;
 }
 table.calendar th {
-	border:1px solid #F90;
+	border:1px solid #ddd;
 	padding:0;
 	font-weight:normal;
 	text-align:center;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	font-size:0.9em;
 }
 table.calendar th.groupOneday {
 	width:auto;
 }
 table.calendar th.groupWeekly {
-	border:1px solid #F90;
+	border:1px solid #ddd;
 	padding:0;
 	font-weight:normal;
 	text-align:center;
-	background:#FFECB4 url(../images/common/bg_slash.gif) repeat left top;
 	width:12.5%;
 }
 table.calendar th.sunday {
@@ -2051,7 +2036,7 @@ div.calerndarTermScheduleDiv a:link, div.calerndarTermScheduleDiv a:visited {
 }
 div.calerndarTermScheduleDiv a:hover {
 	background-color:#FFFFE5;
-	border:1px solid #F90;
+	border:1px solid #ddd;
 	text-decoration:none;
 	padding:0;
 }
@@ -2068,7 +2053,7 @@ div.calerndarTodoDiv a:link, div.calerndarTodoDiv a:visited {
 }
 div.calerndarTodoDiv a:hover {
 	background-color:#FFFFE5;
-	border:1px solid #F90;
+	border:1px solid #ddd;
 	text-decoration:none;
 	padding:0;
 }
