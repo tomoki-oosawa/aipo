@@ -60,7 +60,7 @@
             </meta-info>
         </parameter>
         <parameter name="p3a-folder.style" value="CabinetFolderListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-folder.style.initialvalue" value="（初期表示フォルダの選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-folder.style.initialvalue" value="すべてのフォルダ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="p4c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
