@@ -485,7 +485,7 @@ table.roundBlockWrapperTop td.roundBlockNavi {
 	padding:0 2px 0 10px;
 }
 table.roundBlockWrapperTop td.last {
-	padding-right:10px;
+	padding-right:15px;
 }
 table.roundBlockWrapperTop td.endcap {
 	white-space:nowrap;
@@ -497,7 +497,7 @@ table.roundBlockWrapperTop td.endcap {
 	padding-left:5px;
 	padding-right:5px;
 }
-.roundBlockMenu a:link, .roundBlockMenu a:visited, .roundBlockIcon a:link, .roundBlockIcon a:visited {
+.roundBlockMenu a:link, .roundBlockMenu a:visited {
 	color:#5D6A70;
 	display:block;
 	padding:2px;
@@ -506,7 +506,7 @@ table.roundBlockWrapperTop td.endcap {
 	text-decoration:none;
 	line-height:1.2;
 }
-.roundBlockMenu a:active, .roundBlockIcon a:active {
+.roundBlockMenu a:active {
 	color:#5D6A70;
 	display:block;
 	padding:2px;
@@ -515,7 +515,7 @@ table.roundBlockWrapperTop td.endcap {
 	text-decoration:none;
 	line-height:1.2;
 }
-.roundBlockMenu a:hover, .roundBlockIcon a:hover {
+.roundBlockMenu a:hover {
 	color:#5D6A70;
 	display:block;
 	padding:1px;
