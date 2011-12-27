@@ -22,13 +22,20 @@
 #set($tabs = [["ページ一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+#if($result.List.size()<=0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>アプリを自由に配置できるページを作成できます。 </p>
+<p>『ページを追加する』 ボタンを押して、追加してください。 </p>
+<p class="mh10">
+	#AUIbuttonAction("ページを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','PageFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.page.onLoadPageDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
+#else
 #AUISummaryDiv()
     #AUIbuttonAction("ページを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','PageFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.page.onLoadPageDialog);")
 #AUISummaryDivfooter()
-#if($result.List.size()<=0)
-<div class="message">スケジュールや ToDo などのアプリを自由に配置できる画面を作成します。</div>
-<div class="message">『ページ追加』 ボタンを押して、追加してください。 </div>
-#else
 #ALformheader('ページ' $jslink $portlet)
 #AUISummaryDiv()
 #AUIajaxpageview('PageListScreen' $result)
