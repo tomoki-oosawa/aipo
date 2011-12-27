@@ -37,6 +37,17 @@
 </ul>
 </div>
 </div>
+#if($result.List.size() <= 0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>申請経路を設定すると、ワークフローの申請時に申請経路が選択できます。 </p>
+<p>『申請経路を追加する』 ボタンを押して、追加してください。 </p>
+<p class="mh10">
+	#AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+</p>
+</td></tr>
+#AUItablefooter()
+#else
 #AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 #AUISummaryDivfooter()
 #AUISummaryDiv()
@@ -44,9 +55,6 @@
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('申請経路')
-#if($result.List.size() <= 0)
-<div class="message">『申請経路を追加する』 ボタンを押して、追加してください。 </div>
-#else
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
