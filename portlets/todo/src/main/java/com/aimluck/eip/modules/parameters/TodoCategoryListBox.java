@@ -31,7 +31,7 @@ public class TodoCategoryListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  public static final String DEF_INITIAL_VALUE = "（初期表示カテゴリーの選択）";
+  public static final String DEF_INITIAL_VALUE = "すべてのカテゴリ";
 
   /**
    * Initialize options
@@ -43,19 +43,15 @@ public class TodoCategoryListBox extends ListBox {
     try {
       ArrayList<ToDoCategoryResultData> categoryList =
         ToDoUtils.getCategoryList(data);
-      String[] categoryKeys = new String[categoryList.size() + 2];
-      String[] categoryValues = new String[categoryList.size() + 2];
+      String[] categoryKeys = new String[categoryList.size() + 1];
+      String[] categoryValues = new String[categoryList.size() + 1];
 
       // ヘッダ
       categoryKeys[0] = "";
       categoryValues[0] =
         (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
 
-      // すべてのカテゴリ
-      categoryKeys[1] = "";
-      categoryValues[1] = "すべてのカテゴリ";
-
-      int i = 2;
+      int i = 1;
       for (ToDoCategoryResultData category : categoryList) {
         categoryKeys[i] = category.getCategoryId().toString();
         categoryValues[i] = category.getCategoryName().toString();
