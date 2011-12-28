@@ -36,9 +36,9 @@ $portlet.getContent($data)
                                   <div class="menuIcon">
                                   #if ($!tab.Authority)#foreach ($action in $tab.Actions)
                                         #if (${client} == "IPAD")
-                                        <a href="${action.Link}"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>
+                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #else
-                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{tab.Link}&template=CustomizeFormScreen')"><img class="img_icon" title="${action.Alt}" alt="${action.Alt}" src="${skin.getImage($action.Name,"images/${action.Name}.gif")}"/></a>
+                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{tab.Link}&template=CustomizeFormScreen')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
                                   </div>
