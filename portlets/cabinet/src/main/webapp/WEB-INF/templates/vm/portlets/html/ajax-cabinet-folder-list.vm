@@ -19,9 +19,14 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderFormScreen").addQueryData("entityid","new").addQueryData("mode","new")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+<h2>フォルダの管理</h2>
 
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("フォルダを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
+</p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('フォルダー' $jslink $portlet)

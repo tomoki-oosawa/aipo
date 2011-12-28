@@ -24,7 +24,7 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("ファイルを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);")
+<a title="ファイルを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);" class="auiButtonBold">ファイルを追加する</a>
 </div>
 <div class="auiWidget clearfix">
 <div class="auiDirectoryList">
@@ -44,7 +44,7 @@
 #end
 </div>
 <div style="margin:0.5em 0;">
-#AUIbutton("フォルダを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFolderListScreen')', '$!portlet.ID');">フォルダの管理</a>
 </div>
 </div>
 </div>

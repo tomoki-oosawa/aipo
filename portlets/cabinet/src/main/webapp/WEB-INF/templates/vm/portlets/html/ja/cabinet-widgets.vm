@@ -55,10 +55,7 @@
 #end
 #end
 </div>
-<div style="margin:0.5em 0;">
-#AUIbutton("フォルダを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
-</div>
-<p><a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFolderListScreen')', '$!portlet.ID');">フォルダの管理・削除</a></p>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFolderListScreen')', '$!portlet.ID');">フォルダの管理</a>
 </div>
 </div>
 
