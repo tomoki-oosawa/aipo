@@ -1672,7 +1672,7 @@ div.weeklyTermRights div.weeklyTermRight {
 	position:absolute;
 	width:14.2857%;
 	border:solid #ddd;
-	border-left:solid #C9C9C9;
+	border-left:solid #ddd;
 	border-width:1px 0 0 1px;
 }
 div.weeklyTermRights div.weeklyTermRightR {
@@ -1706,7 +1706,7 @@ div.weeklyLeft div.leftMinute {
 }
 div.weeklyLeft div.leftMinuteBottom {
 	height:17px;
-	border:solid #C9C9C9;
+	border:solid #ddd;
 	border-width:0 0 1px 0;
 	font-size:1px;
 	line-height:1;
@@ -1720,24 +1720,24 @@ div.weeklyRights {
 div.weeklyRights div.weeklyRight {
 	position:absolute;
 	width:14.2857%;
-	border:solid #C9C9C9;
+	border:solid #ddd;
 	border-width:1px 0 0 1px;
 }
 div.weeklyRights div.weeklyRightR {
 	position:absolute;
 	width:14.2857%;
-	border:solid #C9C9C9;
+	border:solid #ddd;
 	border-width:1px 1px 0 1px;
 }
 div.weeklyRights div.weeklyRight div.rightMinute, div.weeklyRights div.weeklyRightR div.rightMinute {
 	height:17px;
-	border:dotted #C9C9C9;
+	border:dotted #ddd;
 	border-width:0 0 1px 0;
 	font-size:1px;
 }
 div.weeklyRights div.weeklyRight div.rightMinuteBottom, div.weeklyRights div.weeklyRightR div.rightMinuteBottom {
 	height:17px;
-	border:solid #C9C9C9;
+	border:solid #ddd;
 	border-width:0 0 1px 0;
 	font-size:1px;
 }
