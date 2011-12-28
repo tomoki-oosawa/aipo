@@ -48,8 +48,7 @@
 #end
 </ul>
 <div style="margin:0.5em 0;">
-#AUIbutton("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+<a href="javascript:void(0);" onclick="aipo.viewPage('$themaEditUrl', '$!portlet.ID');">テーマの管理</a>
 </div>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$themaEditUrl', '$!portlet.ID');">テーマの管理・削除</a>
 </div>
 </div>

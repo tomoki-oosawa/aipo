@@ -19,8 +19,13 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+<h2>テーマの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+</p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('テーマ' $jslink $portlet)
@@ -58,4 +63,4 @@
 #end
 #ALformfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/blog-widgets.vm")
+#parse("/portlets/html/ja/blog-thema-widgets.vm")

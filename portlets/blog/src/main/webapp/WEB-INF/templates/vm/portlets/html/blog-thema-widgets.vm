@@ -22,7 +22,7 @@
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("記事を作成する" "javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);")
+<a title="記事を作成する" href="javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);" class="auiButtonBold">記事を作成する</a>
 </div>
 <div class="auiWidget clearfix">
 <ul>
