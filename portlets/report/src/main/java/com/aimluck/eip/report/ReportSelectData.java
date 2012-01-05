@@ -261,9 +261,6 @@ public class ReportSelectData extends
           resultid.add(item.getReportId());
         }
       }
-      Expression exp2 =
-        ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-      query.andQualifier(exp2);
       if (resultid.size() == 0) {
         // 検索結果がないことを示すために-1を代入
         resultid.add(-1);

@@ -99,13 +99,6 @@ ${record.Note}
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <div style="padding-top:5px;">
 <img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
-#if($attachmentFile.isImage())
-<div style="padding-top:3px;padding-left:12px;">
-<div id='popc' style='position:absolute'></div>
-<a href="javascript:aipo.msgboard.popupCenter('$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", $!{record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-&nbsp;（マウスのクリックで画像を拡大縮小できます）
-</div>
-#end
 </div>
 #end
 </div>
