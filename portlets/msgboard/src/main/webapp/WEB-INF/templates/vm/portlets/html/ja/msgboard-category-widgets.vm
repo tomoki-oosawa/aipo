@@ -27,9 +27,8 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("トピックを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
+<a title="トピックを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);" class="auiButtonBold">トピックを追加する</a>
 </div>
-
 <div class="auiWidget clearfix">
 
 <input type="hidden" id="topic" value="$!result.CurrentFilter"/>

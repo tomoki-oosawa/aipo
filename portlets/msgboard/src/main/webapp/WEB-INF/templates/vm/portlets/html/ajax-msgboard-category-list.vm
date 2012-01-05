@@ -33,6 +33,10 @@
 ## ---------------------------------------------------------------------------
 <div id="auiContentsArea">
 <div id="auiContentsAreaInner">
+<h2>カテゴリの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+</p></div>
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -80,4 +84,4 @@
 #ALspacebothfooter()
 </div>
 </div>
-#parse("/portlets/html/ja/msgboard-widgets.vm")
+#parse("/portlets/html/ja/msgboard-category-widgets.vm")

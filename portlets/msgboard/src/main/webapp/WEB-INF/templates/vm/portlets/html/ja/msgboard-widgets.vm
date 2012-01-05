@@ -42,9 +42,8 @@
 </ul>
 
 <div style="margin:0.5em 0;">
-#AUIbutton("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+<a href="javascript:void(0);" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID');">カテゴリの管理</a>
 </div>
-<p><a href="javascript:void(0);" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID');">カテゴリの管理・削除</a></p>
 </div>
 
 </div>
