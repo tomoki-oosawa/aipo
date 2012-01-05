@@ -1,0 +1,639 @@
+@charset"utf-8";
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.dijitReset {
+    /* Use this style to null out padding, margin, border in your template elements
+        so that page specific styles don't break them.
+        - Use in all TABLE, TR and TD tags.
+        - If there is more than one class on the tag, place this first so other classes override.
+    */
+    margin:0px;
+    border:0px;
+    padding:0px;
+    line-height:normal;
+}
+
+.dijitInline {
+    /*  To inline block elements.
+        Similar to InlineBox below, but this has fewer side-effects in Moz.
+        Also, apparently works on a DIV as well as a FIELDSET.
+    */
+/*  display:-moz-inline-box;        /* FF2 */
+    display:inline-block;           /* webkit and FF3 */
+    border:0px;
+    padding:0px;
+    vertical-align:middle;
+}
+
+.moz-inline-box {
+    display:-moz-inline-box;        /* FF2 */
+}
+
+.dj_ie .dijitInline {
+    zoom: 1; /* set hasLayout:true to mimic inline-block */
+    #display:inline;
+}
+
+/*
+ * Popup items have a wrapper div (dijitPopup)
+ * with the real popup inside, and maybe an iframe too
+ */
+.dijitPopup {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+}
+
+.dijit_a11y .dijitPopup,
+.dijit_ally .dijitPopup div,
+.dijit_a11y .dijitPopup table,
+.dijit_a11y .dijitTooltipContainer {
+    opacity: 1 !important;
+    background-color: white !important;
+}
+.dj_ie .dijit_a11y .dijitPopup * {
+    filter: none;
+}
+
+/****
+        A11Y
+ ****/
+.dijit_a11y * {
+    background-image:none !important;
+    background-color:transparent !important;
+}
+
+.dijitToolbar .dijitDropDownButton .dijitA11yDownArrow{
+    /*make the arrow smaller in toolbar*/
+    padding:0;
+    margin:0;
+}
+.dj_ie6 .dijitToolbar .dijitDropDownButton .dijitA11yDownArrow{
+    /*vertical-align: middle does not place the arrow in the middle of the toolbar in IE*/
+    vertical-align: bottom;
+}
+
+
+/****
+        3-element borders:  ( dijitLeft + dijitStretch + dijitRight )
+ ****/
+.dijitLeft {
+    /* Left part of a 3-element border */
+    background-position:left top;
+    background-repeat:no-repeat;
+}
+
+.dijitStretch {
+    /* Middle (stretchy) part of a 3-element border */
+    white-space:nowrap;         /* MOW: move somewhere else */
+    background-repeat:repeat-x;
+}
+
+.dijitRight {
+    /* Right part of a 3-element border */
+    #display:inline;                /* IE7 sizes to outer size w/o this */
+    background-position:right top;
+    background-repeat:no-repeat;
+}
+
+/****
+        dijit.form.Button
+        dijit.form.DropDownButton
+        dijit.form.ComboButton
+        dijit.form.ComboBox (partial)
+ ****/
+
+.dijitButtonNode {
+    /* Node that is acting as a button -- may or may not be a BUTTON element */
+    border:1px solid gray;
+    margin:0px;
+    padding:.2em .2em .1em .2em;
+    overflow:visible;
+    line-height:normal;
+    font-family:inherit;
+    font-size:inherit;
+    color: inherit;
+    cursor:pointer;
+    vertical-align:middle;
+    text-align:center;
+    white-space: nowrap;
+}
+
+.dijitButtonContents {
+    color:inherit;
+}
+
+.dijitButtonNode IMG {
+    /* make text and images line up cleanly */
+    vertical-align:middle;
+    margin-bottom:.2em;
+}
+
+
+/* ContentPane */
+.dijitContentPane {
+    display: block;
+    /* overflow: auto; */   /* if we don't have this (or overflow:hidden), then Widget.resizeTo() doesn't make sense for ContentPane */
+}
+
+/* Menu */
+
+.dijitMenuItem{
+    white-space: nowrap;
+    padding:.1em .2em;
+}
+
+.dijitMenuItem td{
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-bottom: 2px;
+    padding-top: 2px
+}
+
+.dijitMenuItemHover {
+    cursor:pointer;
+    cursor:hand;
+    background-color:#FFF5D8;
+    color:white;
+}
+
+.dijitMenuItemIcon {
+    position: relative;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.dijitMenuItemDisabled * {
+    /* for a disabled menu item, just set it to mostly transparent */
+    opacity:0.3;
+    cursor:default;
+}
+
+.dijitMenuTable {
+    margin:1px 0px;
+    border-collapse:collapse;
+    border-width:2px !important;
+    border-style:outset;
+    border-color:#eeeeee;
+    background-color:white;
+}
+
+.dj_ie .dijit_a11y .dijitMenuItemDisabled td,
+.dj_ie .dijitMenuItemDisabled *,
+.dj_ie .dijitMenuItemDisabled td {
+    color:gray !important;
+    filter: alpha(opacity=35);
+}
+
+.dijitMenuItemLabel {
+    position: relative;
+    vertical-align: middle;
+}
+
+.dijit_a11y .dijitMenuItemHover .dijitMenuItemLabel {
+    border-width: 1px;
+    border-style: solid;
+}
+.dijit_a11y .dijitMenuItemHover {
+    border: 1px #fff dotted !important;
+}
+
+.dijit_a11y .dijitMenuExpandInner {
+    display:block !important;
+}
+
+/*
+ * Control opacity of popups
+ */
+.tundra .dijitPopup div,
+.tundra .dijitPopup table {
+    opacity: 0.95;
+}
+
+.dj_ie .tundra .dijitButtonNode {
+    zoom: 1;
+    padding-bottom: 0.1em;
+}
+
+/* button inner contents - labels, icons etc. */
+.tundra .dijitButtonNode * {
+    display: -moz-inline-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+.dj_ie .tundra .dijitButtonNode * {
+    zoom: 1;
+    display:inline;
+}
+.tundra .dijitButtonText {
+    padding: 0 0.3em;
+}
+
+
+.tundra .dijitA11yDownArrow,
+.tundra .dijitDownArrowButton,
+.tundra .dijitUpArrowButton {
+    font-size: 0.75em;
+    color: #848484;
+}
+
+
+.tundra .dijitToolbar {
+
+}
+
+.tundra .dijitToolbar * {
+    padding: 0px;
+    margin: 0px;
+    /* #margin-top: -1px; */
+    /*IE*/
+}
+.dj_ie .tundra .dijitToolbar {
+    padding-bottom: 1px;
+}
+
+.tundra .dijitToolbar .dijitButtonNode {
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid transparent;
+    background: none;
+    _margin: 1px;
+    _padding: 0px 1px 0px 1px;
+    _border: 0px;
+}
+
+.dj_ie6 .tundra .dijitToolbar .dijitButtonNode {
+    /* workaround no transparent border support in IE6*/
+    border-color: #e9e9e9;
+}
+
+.dijitToolbarSeparator {
+    background: url('images/editor.gif');
+    height: 18px;
+    width: 5px;
+    padding: 0px 1px 0px 1px;
+    margin: 0px;
+}
+
+.tundra .dijitToolbar .dijitToolbarSeparator {
+    background: url('images/editor.gif');
+}
+
+
+
+/* Calendar*/
+
+.dijitCalendarContainer {
+    font-size: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 7px 0 5px;
+    border: 3px solid #b5b5b5;
+    background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
+    width: 200px;
+}
+
+.dijitCalendarIncrementControl {
+    /* next/prev month buttons */
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+.dj_ie6 .dijitCalendarIncrementControl {
+    padding:.1em;
+}
+
+.dijitCalendarIncreaseInner,
+.dijitCalendarDecreaseInner {
+    visibility:hidden;
+}
+
+.dijitCalendarDecrease {
+    background:url("../images/common/btn_left.gif") no-repeat center center;
+}
+.dj_ie6 .dijitCalendarDecrease {
+    background-image:url("../images/common/btn_left.gif");
+}
+
+.dijitCalendarIncrease {
+    background:url("../images/common/btn_right.gif") no-repeat center center;
+}
+.dj_ie6 .dijitCalendarIncrease {
+    background-image:url("../images/common/btn_right.gif");
+}
+
+
+
+.dijitCalendarMonthContainer th {
+    /* month header cell */
+    /*background:#EEEEEE url(../images/common/bg_btn.gif) repeat left top;*/
+    padding-top:.3em;
+    padding-bottom:.1em;
+    text-align:center;
+}
+.dj_ie6 .dijitCalendarMonthContainer th {
+    padding-top:.1em;
+    padding-bottom:0em;
+}
+
+.dijitCalendarDayLabelTemplate {
+    /* day of week labels */
+    background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+    font-weight:normal;
+    padding-top:.15em;
+    padding-bottom:0em;
+    /*border-top: 1px solid #eeeeee;*/
+    color:#293a4b;
+    text-align:center;
+    /*border:1px solid #b5b5b5;*/
+}
+
+.dijitCalendarMonthLabel {
+    /* day of week labels */
+    color:#293a4b;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-align:center;
+    background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+}
+
+.dj_ie7 .dijitCalendarDateTemplate,
+.dj_ie6 .dijitCalendarDateTemplate {
+    font-size: 0.8em;
+}
+
+.dijitCalendarDateTemplate {
+    /* style for each day cell */
+    font-size: 0.9em;
+    font-weight: normal;
+    text-align: center;
+    padding: 0.3em 0.3em 0.05em 0.3em;
+    letter-spacing: 1px;
+}
+
+.dijitCalendarPreviousMonth,
+.dijitCalendarNextMonth         {
+    /* days that are part of the previous or next month */
+    color:#999999;
+    background-color:#f8f8f8 !important;
+    cursor:pointer;
+}
+
+.dijitCalendarPreviousMonthDisabled,
+.dijitCalendarNextMonthDisabled {
+    /* days that are part of the previous or next month - disabled*/
+    background-color:#a4a5a6 !important;
+}
+
+.dijitCalendarCurrentMonth {
+    /* days that are part of this month */
+    background-color:white !important;
+    cursor:pointer;
+}
+
+.dijitCalendarCurrentMonthDisabled {
+    /* days that are part of this month - disabled */
+    background-color:#b5b5b5 !important;
+}
+
+.dijitCalendarDisabledDate {
+    /* one or the other? */
+    text-decoration:line-through !important;
+    cursor:default !important;
+}
+
+.dijitCalendarCurrentDate {
+    /* cell for today's date */
+    text-decoration:underline;
+    font-weight:bold;
+}
+
+.dijitCalendarSelectedDate {
+    /* cell for the selected date */
+    background-color:#bbc4d0 !important;
+    color:black !important;
+}
+
+
+.dijitCalendarYearContainer {
+    /* footer of the table that contains the year display/selector */
+    background:white url("images/calendarYearLabel.png") repeat-x bottom;
+    border-top:1px solid #ccc;
+}
+
+.dijitCalendarYearLabel {
+    /* container for all of 3 year labels */
+    margin:0;
+    padding:0.4em 0 0.25em 0;
+    text-align:center;
+}
+
+.dijitCalendarSelectedYear {
+    /* label for selected year */
+    color:black;
+    padding:0.2em;
+    padding-bottom:0.1em;
+    background-color:#bbc4d0 !important;
+}
+
+.dijitCalendarNextYear,
+.dijitCalendarPreviousYear {
+    /* label for next/prev years */
+    color:black !important;
+    font-weight:normal;
+    cursor:pointer;
+}
+
+.dijitCalendarMonthLabelSpacer {
+    /* don't display it, but make it affect the width */
+    position: relative;
+    height: 1px;
+    overflow: hidden;
+    visibility: hidden;
+}
+
+/****
+        dijit.Tooltip
+ ****/
+.dijitTooltip {
+    position: absolute;
+    z-index: 2000;
+    display: block;
+    /* make visible but off screen */
+    left: 50%;
+    top: -10000px;
+    overflow: visible;
+}
+
+.dijitTooltipFocusNode {
+    padding: 2px 2px 2px 2px;
+}
+
+.dijitTooltipDialog {
+    /* the outermost dom node, holding the connector and container */
+    opacity: 0.95;
+    background: transparent;    /* make the area on the sides of the arrow transparent */
+}
+
+.dijitTooltipBelow {
+    /* leave room for arrow above content */
+    padding-top: 13px;
+}
+
+.dijitTooltipAbove {
+    /* leave room for arrow below content */
+    padding-bottom: 13px;
+}
+
+.dijitTooltipContainer {
+    color: black;
+    font-size: small;
+    background-color: #fafafa;
+    border:1px solid #b6c7d5;
+    padding:0.45em;
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+
+
+/* Cabinet */
+.explorer_box {
+	padding:2px;
+	width:150px;
+	overflow:auto;
+	overflow-y:hidden;
+	padding-bottom:18px;
+}
+
+/* Cabinet Tree */
+.dijitTreeNode {
+background-image:url(../../../javascript/dijit/themes/tundra/images/i.gif);
+background-position:left top;
+background-repeat:repeat-y;
+margin-left:19px;
+}
+
+.dijitTreeIsLast {
+background-image:url(../../../javascript/dijit/themes/tundra/images/i_half.gif);
+background-repeat:no-repeat;
+}
+
+.dijitTreeIsRoot {
+    margin-left:0pt;
+    background-image: none;
+}
+
+.dijitTreeContent {
+    cursor:default;
+    margin-left:18px;
+    min-height:18px;
+    min-width:18px;
+}
+
+.dijitTreeExpando {
+    background-repeat:no-repeat;
+    float:left;
+    height:18px;
+    width:18px;
+    clear:both;
+    display:inline;
+    float:left;
+}
+
+.dijitTreeNodeEmphasized {
+    background-color:highlight;
+    color:highlighttext;
+}
+
+.dijitTreeLabelFocused {
+    outline-color:invert;
+    outline-style:dotted;
+    outline-width:1px;
+}
+
+.dijitTreeExpandoOpened{
+    background-image:url(../../../javascript/dijit/themes/tundra/images/treeExpand_minus.gif);
+}
+.dijitTreeExpandoClosed {
+    background-image:url(../../../javascript/dijit/themes/tundra/images/treeExpand_plus.gif);
+}
+.dijitTreeExpandoLeaf {
+    background-image:url(../../../javascript/dijit/themes/tundra/images/treeExpand_leaf.gif);
+}
+.dijitTreeExpandoLoading {
+    background-image:url(../../../javascript/dijit/themes/tundra/images/treeExpand_loading.gif);
+    background-repeat:no-repeat;
+    display:inline;
+    float:left;
+    height:18px;
+    width:18px;
+}
+
+.dijitTreeIEContent {
+    height:18px;
+}
+
+
+.dijitTreeContent .RichTextEditable, .dijitTreeContent .RichTextEditable iframe {
+    background-color:#FFFFCC;
+    color:black;
+}
+
+.dijitExpandoText {
+    display:none;
+}
+
+
+.container {
+    cursor: default;
+}
+.dojoDndContainerOver.dojoDndContainerItemOver {
+}
+.dojoDndTargetDisabled {
+}
+.dojoDndItem { 
+}
+.dojoDndItemOver {
+}
+.dojoDndItemOver .dojoDndHandle {
+    cursor: pointer;
+}
+.dojoDndItemSelected {
+}
+.dojoDndItemAnchor {
+}
+.dojoDndItemOver .dojoDndItemSelected {
+}
+.dojoDndItemOver .dojoDndItemAnchor {
+}
+.dojoDndItemBefore {
+    border-top: 5px solid #b5b5b5;
+}
+.dojoDndItemAfter {
+    border-bottom: 5px solid #b5b5b5;
+}
+.dojoDndAvatar {
+    font-size: 75%;
+}
+.dojoDndAvatarHeader {
+    display: none;
+}
+.dojoDndAvatarItem {
+}

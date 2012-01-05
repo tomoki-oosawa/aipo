@@ -20,25 +20,28 @@
 ## ---------------------------------------------------------------------------
 							<!-- HEADER -->
 #if ($data.User.hasLoggedIn())
-                            <div id="header" class="clearfix">
-							  <input type="image" style="position: absolute; top: -9999px; "/>
-                              <div id="logo"></div>
-                              <div id="topField" class="clearfix">
-                                <div id="nameField">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString()) さま<span id="btnLogout">
-                                  <input type="image" alt="ログアウト" name="logout" src="images/common/dot.gif" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">
-                                  </span>
-                                </div>
-                                <div class="activityField">
-                                <div class="dijitRight">
-                                <span id="activitycheckerContainer"></span></div></div>
-                              </div>
-                            </div>
+							<div id="header" class="clearfix"><div class="inner">
+								<div class="hdSign">
+									<div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo"></div>
+							   </div>
+							   <div class="hdNavi">
+									<div class="hdActivity" title="あなた宛のお知らせ">
+										<div class="activityField">
+											<div class="dijitRight">
+												<span id="activitycheckerContainer"></span></div></div>
+									</div>
+										<div class="hdUserName">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString()) さま</div>
+										<div class="hdLogout"><input type="submit" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"></div>
+								</div>
+							</div></div>
 #else
-                            <div id="header" class="clearfix">
-                              <div id="logo"></div>
+                            <div id="header" class="clearfix"><div class="inner">
+                             <div class="hdSign">
+								<div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo"></div>
+							   </div>
                               <div class="alignright">
                               </div>
-                            </div>
+                            </div></div>
 #end
                             <!-- /HEADER -->
 <script language="JavaScript" type="text/javascript">

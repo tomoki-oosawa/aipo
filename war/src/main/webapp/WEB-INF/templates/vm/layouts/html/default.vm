@@ -35,9 +35,10 @@
 <meta name="robots" content="noindex,follow" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
 <link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/aipoUI/css/extend.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/aipoUI/css/common.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/aipoUI/css/aui.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/aipoUI/css/print.css" media="print" />
 #if($isXDomain == "true")
 <script type="text/javascript">
   djConifg = {
@@ -173,21 +174,21 @@ dojo.addOnLoad(function() {
                     if (rows.length >= 2) {
                         var top = rows[0];
                         var bottom = rows[rows.length - 1];
-                        
+
                         var _top = dojo._abs(top);
                         var _bottom = dojo._abs(bottom);
-                        
+
                         while (_top && _bottom && _top.y == _bottom.y) {
                             top = top.offsetParent;
                             bottom = bottom.offsetParent;
                             _top = dojo._abs(top);
                             _bottom = dojo._abs(bottom);
                         }
-                        
+
                         if (_top.y > _bottom.y) {
                             reverse = true;
                         }
-                            
+
                     }
                     for (var r = 0 ; r < rows.length ; r++) {
                         var pid = rows[r].id.split("portlet_")[1];

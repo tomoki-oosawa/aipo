@@ -19,6 +19,7 @@
 
 ## ---------------------------------------------------------------------------
                             <!-- MAIN TAB -->
+#set($beforeselected =false)
 #foreach ( $c in $css )
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/css/$c.Path" media="$c.Media" />
 #end
@@ -28,12 +29,16 @@
 #if($!showTab == "false")
 $portlet.getContent($data)
 #else
-                            <div id="mainTab" class="clearfix">
-                              <ul class="tabContainer">
+
+
+                            <div id="auiTabs" class="clearfix">
+                              <ul>
 #foreach ( $tab in $tabs )
-                               <li#if ($tab.Link && ($tab.isSelected() == true)) class="selectedMenu" #end>
-                                  <div class="menuTitle"><a class="menuList" title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-                                  <div class="menuIcon">
+#set($selected = $tab.Link && ($tab.isSelected() == true))
+                               <li class="#if($velocityCount==1)first#end">
+                                  <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
+                                  <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
+                                  <div class="setting">
                                   #if ($!tab.Authority)#foreach ($action in $tab.Actions)
                                         #if (${client} == "IPAD")
                                         <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
@@ -43,13 +48,14 @@ $portlet.getContent($data)
                                   #end#end
                                   </div>
                                 </li>
+#set($beforeselected =$selected)
 #end
-                               <li class="tooltip_box">
-                                 <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
-                                 <a href="http://store.aipo.com/" target="_blank">
-                                   <img src="images/common/img_aipostore.gif" alt="" />
-                                 </a>
-                               </li>
+								<li class="last store">
+						        	<div class="tab#if($beforeselected) activeNext#end">
+						                <div class="title"><a href="http://store.aipo.com/" target="_blank">Aipo Store</a></div>
+						            </div>
+						            <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
+						        </li>
                               </ul>
                             </div>
                             <!-- /MAIN TAB -->
