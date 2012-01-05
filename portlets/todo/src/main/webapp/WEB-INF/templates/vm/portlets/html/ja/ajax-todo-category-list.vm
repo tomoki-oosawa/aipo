@@ -20,10 +20,14 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryFormScreen").addQueryData("entityid","new")))
-
+#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryFormScreen").addQueryData("entityid","new")))
 #set ($categoryEtc = true) ## msgboard-widgets.vmでのカテゴリ表示の判断用
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+<h2>カテゴリの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+</p></div>
 #ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALformheader('カテゴリ' $jslink $portlet)
@@ -72,4 +76,4 @@
 #ALspacebothfooter()
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/todo-widgets.vm")
+#parse("/portlets/html/ja/todo-category-widgets.vm")
