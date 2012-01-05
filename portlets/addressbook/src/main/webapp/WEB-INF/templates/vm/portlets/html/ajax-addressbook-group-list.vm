@@ -26,6 +26,11 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+
+<h2>グループの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
+</p></div>
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('グループ')
 #if($result.List.size() ==0)
@@ -71,5 +76,5 @@
 ##ALspacebothfooter()
 ##ALajaxtabfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/addressbook-widgets.vm")
+#parse("/portlets/html/ja/addressbook-nonaction-widgets.vm")
 

@@ -40,20 +40,14 @@
 </ul>
 
 <div style="margin:0.5em 0;">
-#AUIbutton("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
-</div>
-<div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_group_list','1')">グループの管理・削除</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_group_list','1')">グループの管理</a>
 </div>
 </div>
 
 <div class="auiWidget clearfix">
 
 <div style="margin:0.5em 0;">
-#AUIbutton("会社情報を追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
-</div>
-<div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doaddressbook_company_list','1')">会社情報の管理・削除</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doaddressbook_company_list','1')">会社情報の管理</a>
 </div>
 </div>
 

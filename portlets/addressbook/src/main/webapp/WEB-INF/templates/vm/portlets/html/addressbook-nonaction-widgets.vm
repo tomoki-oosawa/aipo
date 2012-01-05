@@ -21,7 +21,7 @@
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("アドレスを追加する" "javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);")
+<a title="アドレスを追加する" href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">アドレスを追加する</a>
 </div>
 <div class="auiWidget clearfix">
 <ul>
