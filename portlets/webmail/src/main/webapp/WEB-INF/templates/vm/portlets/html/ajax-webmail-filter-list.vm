@@ -25,7 +25,10 @@
 #set ($type = "filter")
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-
+<h2>フィルタの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+</p></div>
 #if($!result.AccountId == 0)
 <a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
 
@@ -81,4 +84,4 @@ $!{record.FilterType}が$!{record.FilterString}を含む
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-widgets.vm")
+#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")

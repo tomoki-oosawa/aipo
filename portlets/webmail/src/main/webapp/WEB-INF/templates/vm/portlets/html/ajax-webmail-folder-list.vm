@@ -23,6 +23,10 @@
 #set ($type = "folder")
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+<h2>フォルダの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("フォルダを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen')');")
+</p></div>
 #if($result.List.size() <= 0)
 <div class="message">フォルダが登録されていません。</div>
 #else
@@ -50,6 +54,6 @@
 ##ALspacebothfooter()
 ##ALajaxtabfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-widgets.vm")
+#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
 
 

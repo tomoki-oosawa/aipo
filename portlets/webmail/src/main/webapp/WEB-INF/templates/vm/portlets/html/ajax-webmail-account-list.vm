@@ -23,6 +23,10 @@
 #set($tabs = [["メールアカウント一覧", "",""]])
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+<h2>アカウントの管理</h2>
+<div class="auiSummaryMeta clearfix"><p>
+#AUIbuttonAction("アカウントを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+</p></div>
 #if($result.List.size() <= 0)
 <a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
 #else
@@ -59,6 +63,6 @@
 #AUISummaryDivfooter()
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-widgets.vm")
+#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
 
 

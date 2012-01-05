@@ -55,9 +55,8 @@
 #end
 </ul>
 <div style="margin:0.5em 0;">
-#AUIbutton("フォルダを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen')');")
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">フォルダの管理</a>
 </div>
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">フォルダの管理・削除</a>
 </div>
 #end
 
@@ -72,17 +71,15 @@
 #end
 </ul>
 <div style="margin:0.5em 0;">
-#AUIbutton("アカウントを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">アカウントの管理</a>
 </div>
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">アカウントの管理・削除</a>
 </div>
 
 #if($result.MailAccountList.size() != 0)
 <div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
-#AUIbutton("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')">フィルタの管理</a>
 </div>
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')">フィルタの管理・削除</a>
 </div>
 #end
 </div>
