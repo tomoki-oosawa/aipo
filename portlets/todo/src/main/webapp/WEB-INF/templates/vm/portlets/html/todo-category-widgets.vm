@@ -27,7 +27,7 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("ToDoを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);")
+<a title="ToDoを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);" class="auiButtonBold">ToDoを追加する</a>
 </div>
 <div class="auiWidget clearfix">
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)
