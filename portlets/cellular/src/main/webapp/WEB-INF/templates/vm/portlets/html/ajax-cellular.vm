@@ -19,17 +19,19 @@
 
 ## ---------------------------------------------------------------------------
 #set($tabs = [["簡易アクセス情報", "",""]])
+#set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
-#ALspacebothheader()
 #ALerrmsg($errmsgs)
+#ALajaxIndicator("${indicator_id}" "$!portlet.ID" "")
 #if($finishedSendmail)
+<div style="padding:0px 0px 5px 0px;">
 <ul>
-<li>設定された携帯電話のメールアドレスにメールしました。</li>
+<li style="color:#f00;">設定された携帯電話のメールアドレスにメールしました。</li>
 </ul>
+</div>
 #end
 <div style="padding:0px 0px 5px 0px">携帯電話から 『${alias}』 を利用する際には、以下のアドレスでアクセスしてください。</div>
-<form name="cellular$!portlet.ID" id="cellular$!portlet.ID" action="#" method="post" onsubmit="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CellularScreen").addQueryData("mode","sendmail").addQueryData("secid","$secid"))','$!portlet.ID');return false;">
+<form name="cellular$!portlet.ID" id="cellular$!portlet.ID" action="#" method="post" onsubmit="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CellularScreen").addQueryData("mode","sendmail").addQueryData("secid","$secid"))','$!portlet.ID');aipo.cellular.displayIndicator('${indicator_id}', '$!portlet.ID');return false;">
 #ALtableheaderWide()
 #ALtdcaptionheader()
 ${alias}サイトのアドレス
@@ -44,5 +46,3 @@ ${alias}サイトのアドレス
 ${alias}サイトのアドレスを携帯電話に#ALsubmit('eventSubmit_doCellular_sendmail' 'メールする')
 #ALbuttonfooterRight()
 </form>
-#ALspacebothfooter()
-#ALtabfooter()
