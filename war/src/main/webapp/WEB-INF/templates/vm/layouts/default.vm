@@ -31,12 +31,13 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
-<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
+<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
 <link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
 #if($isXDomain == "true")
 <script type="text/javascript">
@@ -52,6 +53,7 @@
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
@@ -107,8 +109,127 @@ dojo.addOnLoad(function() {
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
+    if(window.webkitNotifications) {
+    　　aipo.container.gadgetService.requestDesktopNotifyEnable();
+    }
 #end
 });
+
+#if (${client} != "IPAD")
+scheduleTooltipEnable = true;
+#else
+scheduleTooltipEnable = false;
+#end
+
+#if (${client} != "IPAD")
+dojo.require("dojo.dnd.Source");
+
+dojo.addOnLoad(function() {
+    dojo.query('.customizeMenuIcon').forEach(function(element) {
+        dojo.connect(element, 'onmouseenter', null, function(){
+            dojo.addClass(this, 'customizeMenuIconMouseenter');
+        });
+        dojo.connect(element, 'onmouseleave', null, function(){
+            dojo.removeClass(this, 'customizeMenuIconMouseenter');
+        });
+    });
+
+    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
+            aipo.customize.hideMenu();
+        }
+    });
+
+    var containers = dojo.query('.container');
+    var containerSources = [];
+    for(var c = 0; c < containers.length ; c++){
+        var container = new dojo.dnd.Source(containers[c], {
+            withHandles: true,
+            copyOnly: false
+        });
+        containerSources.push(container);
+    }
+
+
+    for(var c = 0; c < containers.length ; c++){
+        dojo.connect(containerSources[c], "onDndStart", containers[c], function(){
+            dojo.addClass(this, 'dojoDndContainerItemOver');
+            aipo.customize.hideMenu();
+        });
+
+        dojo.connect(containerSources[c], "onDndCancel", containers[c], function(){
+            dojo.removeClass(this, 'dojoDndContainerItemOver');
+        });
+
+        dojo.connect(container, "onDndDrop", containerSources[c], function(source, nodes, copy, target){
+            if (this == target) {
+                if (copy) {
+                    nodes.orphan();
+                }
+                var params = '';
+                var cols = dojo.query('.container');
+                for(var c = 0; c < cols.length ; c++){
+                    var rows = dojo.query('.dojoDndItem .roundBlockContent > div', cols[c]);
+                    var reverse = false;
+                    if (rows.length >= 2) {
+                        var top = rows[0];
+                        var bottom = rows[rows.length - 1];
+
+                        var _top = dojo._abs(top);
+                        var _bottom = dojo._abs(bottom);
+
+                        while (_top && _bottom && _top.y == _bottom.y) {
+                            top = top.offsetParent;
+                            bottom = bottom.offsetParent;
+                            _top = dojo._abs(top);
+                            _bottom = dojo._abs(bottom);
+                        }
+
+                        if (_top.y > _bottom.y) {
+                            reverse = true;
+                        }
+
+                    }
+                    for (var r = 0 ; r < rows.length ; r++) {
+                        var pid = rows[r].id.split("portlet_")[1];
+                        if (reverse) {
+                            params = params + '&' + pid + '_row=' + (rows.length - r - 1);
+                        } else {
+                            params = params + '&' + pid + '_row=' + r;
+                        }
+                        params = params + '&' + pid + '_col=' + c;
+                    }
+                }
+
+                url = "$!jslink.getPage().addQueryData('template', 'CustomizeFormJSONScreen').addQueryData('mode', 'layout')" + params;
+                aipo.customize.submit(url, '$!portlet.ID', function(){
+                });
+
+                var iframe = dojo.query('.gadgets-gadget-content iframe', nodes[0]);
+                if(iframe && iframe.length == 1) {
+                  var pid = iframe[0].id.split("remote_iframe_")[1].split("_NN_")[0];
+                  var gadgets_ = aipo.container.gadgets_;
+                  for(var i in gadgets_) {
+                     var gadget = gadgets_[i];
+                     if(gadget.portletId == pid) {
+                       aipo.container.renderGadget(gadget);
+                       break;
+                     }
+                  }
+                }
+
+                dojo.removeClass(this.node, 'dojoDndContainerItemOver');
+            }
+        });
+    }
+
+    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div dojoAttachPoint='node'></div></div>" });
+    dojo.connect(underlay.domNode, "onmousemove", underlay.domNode, function(){
+        underlay.hide();
+    });
+    underlay.show();
+});
+#end
 
 //]]>
 </script>

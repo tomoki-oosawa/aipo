@@ -32,7 +32,7 @@
 </form>
 </div>
 <div class="floatLeft pl5">
-<a class="auiButton" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/orange/images/icon/icon_reload.gif" width="18" height="18" alt="再読み込み" /></span></a>
+<a class="auiButton" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/$!theme/images/icon/icon_reload.gif" width="18" height="18" alt="再読み込み" /></span></a>
 </div>
 #if($!result.List && $!result.List.size() > 0)
 #AUIajaxpageview('WebMailScreen' $result)
