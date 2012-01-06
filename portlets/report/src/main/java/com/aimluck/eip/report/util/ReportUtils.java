@@ -867,6 +867,38 @@ public class ReportUtils {
   }
 
   /**
+   * アクティビティを通知先・社内参加者の「あなた宛のお知らせ」に表示させる（返信用）
+   * 
+   * @param report
+   * @param loginName
+   * @param recipients
+   * @param type
+   */
+  public static void createReportReplyActivity(EipTReport report,
+      String loginName, String recipient) {
+    if (recipient != null) {
+
+      StringBuilder b = new StringBuilder("報告書「");
+
+      b.append(report.getReportName()).append("」").append("に返信しました。");
+
+      String portletParams =
+        new StringBuilder("?template=ReportDetailScreen")
+          .append("&entityid=")
+          .append(report.getReportId())
+          .toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Report")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipient)
+        .withTile(b.toString())
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(report.getReportId())));
+    }
+  }
+
+  /**
    * アクティビティが公開である場合、「更新情報」に表示させる。
    * 
    * @param report
@@ -881,6 +913,35 @@ public class ReportUtils {
 
     b.append(report.getReportName()).append("」").append(
       type ? "を追加しました。" : "を編集しました。");
+
+    String portletParams =
+      new StringBuilder("?template=ReportDetailScreen")
+        .append("&entityid=")
+        .append(report.getReportId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("Report")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withTile(b.toString())
+      .witchPriority(0f)
+      .withExternalId(String.valueOf(report.getReportId())));
+  }
+
+  /**
+   * アクティビティが公開である場合、「更新情報」に表示させる（返信用）。
+   * 
+   * @param report
+   * @param loginName
+   * @param recipients
+   * @param type
+   */
+  public static void createNewReportReplyActivity(EipTReport report,
+      String loginName) {
+
+    StringBuilder b = new StringBuilder("報告書「");
+
+    b.append(report.getReportName()).append("」").append("に返信しました。");
 
     String portletParams =
       new StringBuilder("?template=ReportDetailScreen")
@@ -1055,6 +1116,116 @@ public class ReportUtils {
       }
       body.append(CR);
     }
+    body.append(CR);
+
+    ALEipUser destUser;
+    try {
+      destUser = ALEipUtils.getALEipUser(destUserID);
+    } catch (ALDBErrorException ex) {
+      logger.error("Exception", ex);
+      return "";
+    }
+    body
+      .append("[")
+      .append(ALOrgUtilsService.getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
+      ALCellularUtils.getCellularKey(destUser)).append(CR);
+    body.append("---------------------").append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
+    return body.toString();
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する（返信用）．
+   * 
+   * @return
+   */
+  public static String createReplyMsgForPc(RunData rundata, EipTReport report,
+      EipTReport reportparentreport) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    String CR = System.getProperty("line.separator");
+    StringBuffer body = new StringBuffer("");
+    body.append(loginUser.getAliasName().toString());
+    if (!"".equals(user.getEmail())) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+    body.append("さんが報告書").append("に返信しました。").append(CR).append(CR);
+    body.append("[タイトル]").append(CR).append(
+      reportparentreport.getReportName().toString()).append(CR);
+    body.append("[返信日時]").append(CR).append(
+      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
+
+    if (report.getNote().toString().length() > 0) {
+      body
+        .append("[返信内容]")
+        .append(CR)
+        .append(report.getNote().toString())
+        .append(CR);
+    }
+    body.append(CR);
+    body
+      .append("[")
+      .append(ALOrgUtilsService.getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    if (enableAsp) {
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+    } else {
+      body.append("・社外").append(CR);
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+      body.append("・社内").append(CR);
+      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    }
+
+    body.append("---------------------").append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
+
+    return body.toString();
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する（返信用）．
+   * 
+   * @return
+   */
+  public static String createReplyMsgForCellPhone(RunData rundata,
+      EipTReport report, EipTReport reportparentreport, int destUserID) {
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    String CR = System.getProperty("line.separator");
+    StringBuffer body = new StringBuffer("");
+    body.append(loginUser.getAliasName().toString());
+    if (!"".equals(user.getEmail())) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+    body.append("さんが報告書").append("に返信しました。").append(CR).append(CR);
+    body.append("[タイトル]").append(CR).append(
+      reportparentreport.getReportName().toString()).append(CR);
+    body.append("[返信日時]").append(CR).append(
+      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
     body.append(CR);
 
     ALEipUser destUser;

@@ -43,6 +43,11 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.actions.report.ReportAction;
 import com.aimluck.eip.modules.screens.ReportDetailScreen;
@@ -54,6 +59,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -327,6 +333,53 @@ public class ReportReplyFormData extends ALAbstractFormData {
         report.getReportId(),
         ALEventlogConstants.PORTLET_TYPE_REPORT,
         report.getReportName());
+
+      // 「更新情報」に表示させる。
+      String loginName = login_user.getName().getValue();
+      ReportUtils.createNewReportReplyActivity(parentreport, loginName);
+
+      String recipient =
+        ALEipUtils.getALEipUser(parentreport.getUserId()).getName().getValue();
+      ReportUtils.createReportReplyActivity(parentreport, loginName, recipient);
+
+      try {
+        // メール送信
+        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+        memberList.add(ALEipUtils.getALEipUser(parentreport.getUserId()));
+        List<ALEipUserAddr> destMemberList =
+          ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+            .getUserId(rundata), false);
+
+        String subject = "[" + ALOrgUtilsService.getAlias() + "]報告書への返信";
+        String orgId = Database.getDomainName();
+
+        // パソコン、携帯電話へメールを送信
+        List<ALAdminMailMessage> messageList =
+          new ArrayList<ALAdminMailMessage>();
+        for (ALEipUserAddr destMember : destMemberList) {
+          ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+          message.setPcSubject(subject);
+          message.setPcBody(ReportUtils.createReplyMsgForPc(
+            rundata,
+            report,
+            parentreport));
+          message.setCellularSubject(subject);
+          message.setCellularBody(ReportUtils.createReplyMsgForCellPhone(
+            rundata,
+            report,
+            parentreport,
+            destMember.getUserId()));
+          messageList.add(message);
+        }
+
+        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
+          .getUserId(rundata), messageList, ALMailUtils
+          .getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
+
+      } catch (Exception ex) {
+        logger.error("Exception", ex);
+        return false;
+      }
 
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
