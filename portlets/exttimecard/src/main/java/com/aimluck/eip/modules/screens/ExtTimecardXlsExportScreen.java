@@ -330,11 +330,12 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
      * addFooter(sheet.createRow(rowcount), cell_enc_types, rows);
      */
 
+    // イベントログ
     int uid = ALEipUtils.getUserId(rundata);
     ALEventlogFactoryService.getInstance().getEventlogHandler().logXlsScreen(
       uid,
       "タイムカード出力",
-      ALEventlogConstants.PORTLET_TYPE_TIMECARD_XLS_SCREEN);
+      ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD);
   }
 
   @Override

@@ -840,7 +840,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         timecard.getExtTimecardId(),
-        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD,
         null);
 
     } catch (Exception ex) {
@@ -947,7 +947,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         timecard.getExtTimecardId(),
-        ALEventlogConstants.PORTLET_TYPE_TIMECARD,
+        ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD,
         null);
 
     } catch (Exception ex) {
