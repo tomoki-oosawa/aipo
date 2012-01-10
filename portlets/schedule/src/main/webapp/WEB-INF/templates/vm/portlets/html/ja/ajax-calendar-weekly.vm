@@ -574,7 +574,7 @@
                               </div>
                             </td>
                             <td>
-                              <div class="scroll_width">&nbsp;</div>
+                              <div class="scroll_width"></div>
                             </td>
                           </tr>
                         </tbody>

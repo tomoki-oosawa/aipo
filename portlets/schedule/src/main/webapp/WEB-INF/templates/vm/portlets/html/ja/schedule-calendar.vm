@@ -591,7 +591,7 @@
                               </div>
                             </td>
                             <td>
-                              <div class="scroll_width">&nbsp;</div>
+                              <div class="scroll_width"></div>
                             </td>
                           </tr>
                         </tbody>
@@ -611,6 +611,10 @@
 //<![CDATA[
 
 dojo.addOnLoad(function () {
+#if (${client} == "IPAD")
+dojo.query(".scroll_width").style("width", "19px");
+dojo.query(".scroll_width").style("padding-right", "0");
+#end
   initCalendar['$!{portlet.ID}'](false);
 
 });
