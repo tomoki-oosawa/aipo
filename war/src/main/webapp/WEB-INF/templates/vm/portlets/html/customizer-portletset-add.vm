@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($tabs = [["アプリ追加", "",""]])
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
+##ALtabheader($tabs "")
 #ALspacebothheader()
 <form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}/${action}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 <input type="hidden" name="secid" value="$secid" />
@@ -69,7 +69,7 @@
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()
-#ALtabfooter()
+##ALtabfooter()
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

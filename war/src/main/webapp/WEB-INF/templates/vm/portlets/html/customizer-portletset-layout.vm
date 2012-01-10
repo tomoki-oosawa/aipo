@@ -21,7 +21,7 @@
 #if($!set) #set($portletsum = $!set.size()) #else #set($portletsum = 0) #end
 #set($tabs = [["レイアウト設定", "",""]])
 ## ---------------------------------------------------------------------------
-#ALtabheader($tabs "")
+##ALtabheader($tabs "")
 #ALspacebothheader()
 #if($portletsum <= 0)
 <div class="message">「アプリ追加」ボタンでアプリを追加してください。</div>
@@ -53,7 +53,7 @@ $!set.Controller.getContent($data)
 </table>
 #end
 #ALspacebothfooter()
-#ALtabfooter()
+##ALtabfooter()
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
