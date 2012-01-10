@@ -590,7 +590,7 @@
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
                               </div>
                             </td>
-                            <td class="scroll_width">
+                            <td class="scrollRight">
                               <div class="scroll_width"></div>
                             </td>
                           </tr>

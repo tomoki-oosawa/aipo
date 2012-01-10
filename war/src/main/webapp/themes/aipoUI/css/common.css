@@ -1469,16 +1469,21 @@ div.weeklyScrollPane {
 	overflow-x:hidden;
 	border-bottom:solid #ddd 1px;
 }
-.scroll_width {
+.scrollRight{
 	border-right:1px solid #ddd;
+}
+.scroll_width {
+	padding-right:1px;
 }
 * html .scroll_width {
 	width:19px;
 	border:none;
+	padding-right:0;
 }
 *+html .scroll_width {
 	width:19px;
 	border:none;
+	padding-right:0;
 }
 div.weeklyHeadLeft {
 	width:50px;
