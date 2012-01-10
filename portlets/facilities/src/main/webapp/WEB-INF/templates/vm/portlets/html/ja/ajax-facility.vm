@@ -34,8 +34,11 @@
 </ul>
 </div>
 </div>
+#if($result.getAllFacilitySum() != 0)
 #AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#end
 #AUISummaryDivfooter()
+#if($result.getAllFacilitySum() != 0)
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
@@ -46,11 +49,21 @@
 </select>&nbsp;
 #ALformfooter()
 #AUISummaryDivfooter()
+#end
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('設備')
-#if($result.List.size() == 0)
+#if($result.getAllFacilitySum() == 0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>会議室や社用車、パソコンなどの設備を設定できます。</p>
+<p>『設備を追加する』ボタンを押して、追加してください。</p>
+<p class="mh10">
+#AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
+#elseif($result.List.size() == 0)
 指定された条件に該当する設備はありません。<br />
-#ALformfooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -99,6 +112,6 @@ $!group.GroupName
 </div>
 #AUIajaxpageview('FacilityListScreen' $result)
 #AUISummaryDivfooter()
-</form>
 #end
+#ALformfooter()
 #AUIcontentsAreaFooter()

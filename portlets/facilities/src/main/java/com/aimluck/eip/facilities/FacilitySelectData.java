@@ -46,7 +46,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilitySelectData extends
     ALAbstractSelectData<EipMFacility, EipMFacility> implements ALData {
@@ -64,8 +64,12 @@ public class FacilitySelectData extends
   /** <code>viewtype</code> 表示タイプ */
   protected String viewtype;
 
+  /** フィルターなしの全設備リスト */
+  private List<FacilityResultData> facilityAllList;
+
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -73,6 +77,8 @@ public class FacilitySelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+
+    loadFacilityAllList(rundata,context);
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
@@ -87,7 +93,7 @@ public class FacilitySelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -113,7 +119,7 @@ public class FacilitySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -126,7 +132,7 @@ public class FacilitySelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -146,7 +152,7 @@ public class FacilitySelectData extends
 
   /**
    * queryにFilterをセットします。
-   * 
+   *
    * @param query
    * @param rundata
    * @param context
@@ -201,7 +207,7 @@ public class FacilitySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -213,7 +219,7 @@ public class FacilitySelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -236,7 +242,7 @@ public class FacilitySelectData extends
 
   /**
    * 設備の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getFacilitySum() {
@@ -245,7 +251,7 @@ public class FacilitySelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -254,7 +260,7 @@ public class FacilitySelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -266,7 +272,7 @@ public class FacilitySelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -276,5 +282,21 @@ public class FacilitySelectData extends
 
   public List<FacilityGroupResultData> getAllFacilityGroup() {
     return AllFacilitygroup;
+  }
+
+  /**
+   *
+   * @param rundata
+   * @param context
+   */
+  public void loadFacilityAllList(RunData rundata, Context context) {
+    facilityAllList = new ArrayList<FacilityResultData>();
+    facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+  }
+
+
+
+  public int getAllFacilitySum() {
+    return facilityAllList.size();
   }
 }
