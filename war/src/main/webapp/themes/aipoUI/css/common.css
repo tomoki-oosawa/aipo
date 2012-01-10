@@ -1470,15 +1470,15 @@ div.weeklyScrollPane {
 	border-bottom:solid #ddd 1px;
 }
 .scroll_width {
-	padding-right:2px;
+	border-right:1px solid #ddd;
 }
 * html .scroll_width {
 	width:19px;
-	padding-right:0;
+	border:none;
 }
 *+html .scroll_width {
 	width:19px;
-	padding-right:0;
+	border:none;
 }
 div.weeklyHeadLeft {
 	width:50px;
