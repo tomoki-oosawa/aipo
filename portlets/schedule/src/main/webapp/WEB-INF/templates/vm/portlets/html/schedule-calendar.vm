@@ -119,10 +119,12 @@
                               </div>
                             </div>
                           </td>
+#if (${client} != "IPAD")
                           <td width="18">
                             <div class="weeklySpan">&nbsp;</div>
                             <div class="weeklySpan">&nbsp;</div>
                           </td>
+#end
                         </tr>
 
                         <tr>
@@ -158,9 +160,11 @@
                               ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
+#if (${client} != "IPAD")
                           <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
                           </td>
+#end
                         </tr>
 						<tr>
 						<td colspan="9">
@@ -590,9 +594,11 @@
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
                               </div>
                             </td>
+#if (${client} != "IPAD")
                             <td>
                               <div class="scroll_width"></div>
                             </td>
+#end
                           </tr>
                         </tbody>
                       </table>
@@ -612,8 +618,7 @@
 
 dojo.addOnLoad(function () {
 #if (${client} == "IPAD")
-dojo.query(".scroll_width").style("width", "19px");
-dojo.query(".scroll_width").style("padding-right", "0");
+dojo.query(".weeklyScrollPane").style("border-right", "solid #ddd 1px;");
 #end
   initCalendar['$!{portlet.ID}'](false);
 
