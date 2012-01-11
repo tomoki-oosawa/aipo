@@ -28,8 +28,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.AddressBookFilterdSelectData;
 import com.aimluck.eip.addressbook.AddressBookResultData;
-import com.aimluck.eip.addressbook.AddressBookWordSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -42,8 +42,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookWordXlsExportScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookWordXlsExportScreen.class
+      .getName());
 
   public static final String FILE_NAME = "addressbook.xls";
 
@@ -102,12 +103,13 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
   private void setupAddressBookSheet(RunData rundata, Context context,
       HSSFWorkbook wb) throws Exception {
 
-    AddressBookWordSelectData listData;
-    listData = new AddressBookWordSelectData();
+    AddressBookFilterdSelectData listData;
+    listData = new AddressBookFilterdSelectData();
 
     listData.initField();
     listData.setRowsNum(1000);
     listData.doSelectList(this, rundata, context);
+    listData.loadGroups(rundata, context);
 
     String sheet_name = "アドレスブック";
     // ヘッダ部作成

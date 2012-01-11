@@ -31,6 +31,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDateUtil;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
@@ -54,8 +55,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookFilterdSelectData extends
     AbstractAddressBookFilterdSelectData<EipMAddressbook, EipMAddressbook> {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AddressBookFilterdSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
+      .getName());
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
@@ -274,16 +276,125 @@ public class AddressBookFilterdSelectData extends
    */
   protected SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
-    SelectQuery<EipMAddressbook> query = Database.query(EipMAddressbook.class);
+    SelectQuery<EipMAddressbook> query;
+    String word = searchWord.getValue();
+    String transWord =
+      ALStringUtil.convertHiragana2Katakana(ALStringUtil
+        .convertH2ZKana(searchWord.getValue()));
+    query = Database.query(EipMAddressbook.class);
 
-    Expression exp21 =
+    Expression exp01 =
       ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
-    Expression exp22 =
+    Expression exp02 =
       ExpressionFactory.matchExp(EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils
         .getUserId(rundata));
-    Expression exp23 =
+    Expression exp03 =
       ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
-    query.setQualifier(exp21.orExp(exp22.andExp(exp23)));
+    query.setQualifier(exp01.orExp(exp02.andExp(exp03)));
+
+    Expression exp11 =
+      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp12 =
+      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp13 =
+      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_KANA_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp14 =
+      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_KANA_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp15 =
+      ExpressionFactory.likeExp(EipMAddressbook.EMAIL_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp16 =
+      ExpressionFactory.likeExp(EipMAddressbook.TELEPHONE_PROPERTY, "%"
+        + word
+        + "%");
+    Expression exp17 =
+      ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_PHONE_PROPERTY, "%"
+        + word
+        + "%");
+
+    Expression exp21 =
+      ExpressionFactory.likeExp(
+        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+          + "."
+          + EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+        "%" + word + "%");
+    Expression exp22 =
+      ExpressionFactory.likeExp(
+        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+          + "."
+          + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
+        "%" + word + "%");
+    Expression exp23 =
+      ExpressionFactory.likeExp(
+        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+          + "."
+          + EipMAddressbookCompany.TELEPHONE_PROPERTY,
+        "%" + word + "%");
+
+    Expression exp31 =
+      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_PROPERTY, "%"
+        + transWord
+        + "%");
+    Expression exp32 =
+      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_PROPERTY, "%"
+        + transWord
+        + "%");
+    Expression exp33 =
+      ExpressionFactory.likeExp(EipMAddressbook.FIRST_NAME_KANA_PROPERTY, "%"
+        + transWord
+        + "%");
+    Expression exp34 =
+      ExpressionFactory.likeExp(EipMAddressbook.LAST_NAME_KANA_PROPERTY, "%"
+        + transWord
+        + "%");
+    Expression exp35 =
+      ExpressionFactory.likeExp(
+        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+          + "."
+          + EipMAddressbookCompany.COMPANY_NAME_PROPERTY,
+        "%" + transWord + "%");
+    Expression exp36 =
+      ExpressionFactory.likeExp(
+        EipMAddressbook.EIP_MADDRESSBOOK_COMPANY_PROPERTY
+          + "."
+          + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
+        "%" + transWord + "%");
+
+    Expression exp41 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "T");
+    Expression exp42 =
+      ExpressionFactory.matchExp(EipMAddressbook.OWNER_ID_PROPERTY, ALEipUtils
+        .getUserId(rundata));
+    Expression exp43 =
+      ExpressionFactory.matchExp(EipMAddressbook.PUBLIC_FLAG_PROPERTY, "F");
+    if (word != null && !"".equals(word)) {
+      query.andQualifier((exp11
+        .orExp(exp12)
+        .orExp(exp13)
+        .orExp(exp14)
+        .orExp(exp15)
+        .orExp(exp16)
+        .orExp(exp17)
+        .orExp(exp21)
+        .orExp(exp22)
+        .orExp(exp23)
+        .orExp(exp31)
+        .orExp(exp32)
+        .orExp(exp33)
+        .orExp(exp34)
+        .orExp(exp35).orExp(exp36)).andExp(exp41.orExp(exp42.andExp(exp43))));
+    }
+
+    // query.setQualifier(exp41.orExp(exp42.andExp(exp43)));
 
     return getSelectQueryForIndex(query, rundata, context);
   }

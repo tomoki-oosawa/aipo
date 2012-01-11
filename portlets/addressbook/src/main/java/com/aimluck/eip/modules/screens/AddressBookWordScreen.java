@@ -26,13 +26,14 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.addressbook.AbstractAddressBookWordSelectData;
+import com.aimluck.eip.addressbook.AddressBookFilterdSelectData;
 import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳検索ボックスを処理するクラスです。
- * 
+ *
  */
 public class AddressBookWordScreen extends ALVelocityScreen {
 
@@ -43,7 +44,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
   private String mode = null;
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -71,21 +72,21 @@ public class AddressBookWordScreen extends ALVelocityScreen {
 
         setTemplate(rundata, context, listData.getTemplateFilePath());
       } else {
-        AbstractAddressBookWordSelectData<?, ?> listData =
-          AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
-            rundata,
-            context);
-
+        AddressBookFilterdSelectData listData =
+          new AddressBookFilterdSelectData();
         listData.setRowsNum(Integer.parseInt(portlet
           .getPortletConfig()
-          .getInitParameter("p1a-rows")));
+          .getInitParameter("p1b-rows")));
         listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
           rundata,
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
 
-        setTemplate(rundata, context, listData.getTemplateFilePath());
+        setTemplate(
+          rundata,
+          context,
+          "portlets/html/ja/ajax-addressbook-list.vm");
       }
     } catch (Exception ex) {
       logger.error("[AddressBookWordScreen] Exception.", ex);

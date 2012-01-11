@@ -34,7 +34,6 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳の一覧を処理するクラスです。
- * 
  */
 public class AddressBookListScreen extends AddressBookScreen {
 

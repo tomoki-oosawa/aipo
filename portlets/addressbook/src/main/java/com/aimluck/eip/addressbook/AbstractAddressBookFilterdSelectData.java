@@ -29,6 +29,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -50,8 +51,9 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AbstractAddressBookFilterdSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService
+      .getLogger(AbstractAddressBookFilterdSelectData.class.getName());
 
   /** 「全て」を意味する検索用インデックス */
   private static final String INDEX_STR_ALL = "-1";
@@ -61,6 +63,9 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /** 現在選択されているインデックス */
   private String index;
+
+  /** 検索ワード */
+  protected ALStringField searchWord;
 
   private boolean hasAuthorityList;
 
@@ -76,6 +81,20 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+
+    // ページャからきた場合に検索ワードをセッションへ格納する
+    if (!rundata.getParameters().containsKey(ALEipConstants.LIST_START)
+      && !rundata.getParameters().containsKey(ALEipConstants.LIST_SORT)) {
+      ALEipUtils.setTemp(rundata, context, "AddressBooksword", rundata
+        .getParameters()
+        .getString("sword"));
+    }
+
+    // 検索ワードの設定
+    searchWord = new ALStringField();
+    searchWord.setTrim(true);
+    searchWord.setValue(ALEipUtils
+      .getTemp(rundata, context, "AddressBooksword"));
 
     // 現在選択されているタブをセッションとパラメータから読み込みます。
     String tabParam = rundata.getParameters().getString("tab");
@@ -136,6 +155,15 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
    */
   public String getCurrentTab() {
     return currentTab;
+  }
+
+  /**
+   * 検索ワードを取得します。
+   * 
+   * @return
+   */
+  public ALStringField getSearchWord() {
+    return searchWord;
   }
 
   /**

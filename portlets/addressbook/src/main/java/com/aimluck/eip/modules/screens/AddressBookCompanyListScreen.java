@@ -31,7 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳の会社情報の一覧を処理するクラスです。
- * 
+ *
  */
 public class AddressBookCompanyListScreen extends AddressBookScreen {
 
@@ -40,7 +40,7 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
     .getLogger(AddressBookCompanyListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -48,9 +48,8 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
-    String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
-      if ("ajaxsearch".equals(mode)) {
+
         // 会社情報検索
         AddressBookCompanyWordSelectData listData =
           new AddressBookCompanyWordSelectData();
@@ -65,22 +64,8 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
           rundata,
           context,
           "portlets/html/ja/ajax-addressbook-company-list.vm");
-      } else {
-        // 会社情報一覧
-        AddressBookCompanySelectData listData =
-          new AddressBookCompanySelectData();
-        listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
-          rundata,
-          context).getPortletConfig().getInitParameter("p1a-rows")));
-        listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-          rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
-        listData.doViewList(this, rundata, context);
-        setTemplate(
-          rundata,
-          context,
-          "portlets/html/ja/ajax-addressbook-company-list.vm");
-      }
+
+
 
     } catch (Exception ex) {
       logger.error("[AddressBookCompanyListScreen] Exception.", ex);

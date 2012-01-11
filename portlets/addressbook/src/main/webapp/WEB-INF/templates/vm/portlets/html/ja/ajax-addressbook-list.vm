@@ -31,12 +31,12 @@
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1')")
 #set($pageviewscreen = "AddressBookListScreen")
 #end
+#set ($button_flag = "true")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #AUISummaryDiv()
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="AddressBookListScreen"/>
-<input type="hidden" name="mode" value="ajaxsearch"/>
 <input class="text floatLeft" type="text" name="sword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.SearchWord"/>
 <a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
 </form>
@@ -54,8 +54,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
-#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData("tab", "$!result.currentTab")))
-#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData('filter', "$!result.getCurrentFilter()").addQueryData('filtertype', 'group').addQueryData("tab", "$!result.currentTab")))#AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
@@ -94,7 +93,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
-#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData("tab", "$!result.currentTab")))
+#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData('filter', "$!result.getCurrentFilter()").addQueryData('filtertype', 'group').addQueryData("tab", "$!result.currentTab")))
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #AUISummaryDivfooter()
