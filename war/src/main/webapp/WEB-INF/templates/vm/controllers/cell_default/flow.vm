@@ -30,7 +30,7 @@
 ##</ul>
 ## add Logout link
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
-<div style="background:#005699;"><img src="themes/orange/images/common/dot.gif" width="1" height="1" /></div>
+<div style="background:#005699;"><img src="themes/default/images/common/dot.gif" width="1" height="1" /></div>
 <div style="background:#cccccc; text-align:center;"><a href="$jslink.setAction($config.getString('action.logout'))">ﾛｸﾞｱｳﾄ</a></div>
 #else
 
