@@ -255,54 +255,65 @@ table.activityTable tr.unread td {
 #auiTabs .tab {
         height:100%;
 }
+/* basic */
 #auiTabs .title {
         float:left;
         height:25px;
         line-height:25px;
         padding-left:20px;
-        background:url(../images/tab.png) left -150px no-repeat;
+        background:url(../images/tab.png) left -180px no-repeat;
 }
 #auiTabs .setting {
         float:left;
         height:25px;
-        background:url(../images/tab.png) left -225px no-repeat;
+        background:url(../images/tab.png) left -270px no-repeat;
 }
+#auiTabs .setting a {
+        margin-top:4px;
+}
+/* first */
 #auiTabs .first .title {
-        background:url(../images/tab.png) left -100px no-repeat;
+        background:url(../images/tab.png) left -120px no-repeat;
 }
-#auiTabs .last {
+/* last */
+#auiTabs .last .setting {
         padding-right:20px;
-        background:url(../images/tab.png) right -125px no-repeat;
+        background:url(../images/tab.png) right -150px no-repeat;
 }
+/* active */
 #auiTabs .active .title {
-        background:url(../images/tab.png) left -50px no-repeat;
+        background:url(../images/tab.png) left -60px no-repeat;
 }
 #auiTabs .active .setting {
-        background:url(../images/tab.png) left -200px no-repeat;
+        background:url(../images/tab.png) left -240px no-repeat;
 }
 #auiTabs .activeNext {
         padding-left:20px;
-        background:url(../images/tab.png) left -75px no-repeat;
+        background:url(../images/tab.png) left -90px no-repeat;
 }
 #auiTabs .activeNext .title {
         padding-left:0;
-        background:url(../images/tab.png) left -225px no-repeat;
+        background:url(../images/tab.png) left -270px no-repeat;
 }
 #auiTabs .first .active .title {
         background:url(../images/tab.png) left -0px no-repeat;
 }
 #auiTabs .last .active {
-        background:url(../images/tab.png) right -25px no-repeat;
+        padding-right:20px;
+        background:url(../images/tab.png) right -30px no-repeat;
+}
+#auiTabs .last .active .setting {
+        padding-right:0;
 }
 #auiTabs .last .activeNext {
-        background:url(../images/tab.png) left -75px no-repeat;
+        background:url(../images/tab.png) left -90px no-repeat;
 }
 
-
-
-#auiTabs .setting a {
-        margin-top:4px;
+#auiTabs .store {
+        padding-right:20px;
+        background:url(../images/tab.png) right -150px no-repeat;
 }
+
 #auiTabs li.selectedMenu {
         height:25px;
         background:url(../images/tab.png) right -25px no-repeat;
@@ -329,22 +340,16 @@ table.activityTable tr.unread td {
         height:25px;
         background:url(../images/tab.png) right -0px no-repeat;
 }
-#auiTabs .store {
-        position:relative;
-}
 .tooltip_gray {
         display:none;
 }
-#auiTabs .store:hover .tooltip_gray {
-        display:block;
-        height:14px;
-        width:190px;
-        background:url(../images/common/bg_tooltip_gray.gif) top left no-repeat;
-        position:absolute;
-        top:-30px;
-        padding:3px 0 8px;
-        font-size:10px;
-        text-align:center;
+#auiTabs .singleTab {
+        height:25px;
+        line-height:25px;
+        background:url(../images/tab.png) left -100px no-repeat;
+}
+#auiTabs .singleTab a {
+        text-decoration:none;
 }
 
 

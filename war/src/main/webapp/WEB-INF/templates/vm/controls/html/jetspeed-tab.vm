@@ -31,11 +31,16 @@ $portlet.getContent($data)
 #else
 
 
-                            <div id="auiTabs" class="clearfix">
-                              <ul>
-#foreach ( $tab in $tabs )
+#set($len = $tabs.size())
+#set($count = 0)
+
+	<div id="auiTabs">
+    <ul>
+    #foreach ( $tab in $tabs )
 #set($selected = $tab.Link && ($tab.isSelected() == true))
-                               <li class="#if($velocityCount==1)first#end">
+
+#set($count = $count + 1)
+                               <li class="#if($velocityCount==1)first#end #if($len==$count)last#end ">
                                   <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
                                   <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
                                   <div class="setting">
@@ -46,18 +51,23 @@ $portlet.getContent($data)
                                         <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{tab.Link}&template=CustomizeFormScreen')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
-                                  </div>
+                                  </div></div>
                                 </li>
 #set($beforeselected =$selected)
 #end
-								<li class="last store">
-						        	<div class="tab#if($beforeselected) activeNext#end">
-						                <div class="title"><a href="http://store.aipo.com/" target="_blank">Aipo Store</a></div>
-						            </div>
-						            <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
-						        </li>
-                              </ul>
-                            </div>
+
+    </ul>
+    <div class="floatRight">
+        <ul>
+            <li class="first store">
+                <div class="tab">
+                <div class="title"><a href="http://store.aipo.com" target="_blank">Aipo Store</a></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
                             <!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
                             <table class="tableWrapper">
