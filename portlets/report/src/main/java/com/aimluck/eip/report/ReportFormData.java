@@ -59,6 +59,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.report.util.ReportUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -119,7 +120,7 @@ public class ReportFormData extends ALAbstractFormData {
   private ALEipUser login_user;
 
   /** アクセス権限の機能名 */
-  private final String aclPortletFeature = null;
+  private String aclPortletFeature = null;
 
   /**
    * 
@@ -140,13 +141,15 @@ public class ReportFormData extends ALAbstractFormData {
     orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
     // アクセス権
-    /*
-     * int view_uid = ReportUtils.getViewId(rundata, context, uid); if (view_uid
-     * == uid) { aclPortletFeature =
-     * ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF; } else {
-     * aclPortletFeature =
-     * ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER; }
-     */
+
+    int view_uid = ReportUtils.getViewId(rundata, context, uid);
+    if (view_uid == uid) {
+      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER;
+    }
+
   }
 
   /**

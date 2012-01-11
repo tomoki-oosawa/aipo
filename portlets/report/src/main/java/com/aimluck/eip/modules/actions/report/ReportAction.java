@@ -79,8 +79,10 @@ public class ReportAction extends ALBaseAction {
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "report");
+    if (listData.doViewList(this, rundata, context)) {
+      setTemplate(rundata, "report");
+    }
+
   }
 
   /**

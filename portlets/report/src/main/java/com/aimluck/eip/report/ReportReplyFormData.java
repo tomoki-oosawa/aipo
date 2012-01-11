@@ -100,10 +100,16 @@ public class ReportReplyFormData extends ALAbstractFormData {
   private boolean hasAclCategoryList;
 
   /** 他ユーザーの作成したトピックの編集権限 */
-  private boolean hasAclUpdatereportOthers;
+  private boolean hasAclUpdateReportOthers;
+
+  /** 記事への返信権限 */
+  private boolean hasAclInsertReportReply;
+
+  /** 記事への返信権限 */
+  private boolean hasAclDeleteReportReply;
 
   /** 他ユーザーの作成したトピックの削除権限 */
-  private boolean hasAclDeletereportOthers;
+  private boolean hasAclDeleteReportOthers;
 
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser login_user;
@@ -132,17 +138,28 @@ public class ReportReplyFormData extends ALAbstractFormData {
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    hasAclDeletereportOthers =
+    hasAclDeleteReportOthers =
       aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
         ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    hasAclUpdatereportOthers =
+    hasAclUpdateReportOthers =
       aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
+
+    hasAclInsertReportReply =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+    hasAclDeleteReportReply =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
   }
 
   /**
@@ -229,7 +246,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
       // オブジェクトモデルを取得
       EipTReport report;
 
-      if (this.hasAclDeletereportOthers) {
+      if (this.hasAclDeleteReportReply) {
         report =
           ReportUtils.getEipTReportReply(rundata, context, reportid, true);
       } else {
@@ -566,12 +583,11 @@ public class ReportReplyFormData extends ALAbstractFormData {
    */
   @Override
   public String getAclPortletFeature() {
-    // if (aclPortletFeature == null || "".equals(aclPortletFeature)) {
-    // return ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY;
-    // } else {
-    // return aclPortletFeature;
-    // }
-    return aclPortletFeature;
+    if (aclPortletFeature == null || "".equals(aclPortletFeature)) {
+      return ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY;
+    } else {
+      return aclPortletFeature;
+    }
   }
 
   /**
@@ -651,7 +667,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
   }
 
   public boolean hasAclUpdatereportOthers() {
-    return hasAclUpdatereportOthers;
+    return hasAclUpdateReportOthers;
   }
 
   /**
@@ -659,7 +675,25 @@ public class ReportReplyFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public boolean hasAclDeletereportOthers() {
-    return hasAclDeletereportOthers;
+  public boolean hasAclDeleteReportOthers() {
+    return hasAclDeleteReportOthers;
+  }
+
+  /**
+   * 報告書の返信を削除する権限があるかどうかを返します。
+   * 
+   * @return
+   */
+  public boolean hasAclDeleteReportReply() {
+    return hasAclDeleteReportReply;
+  }
+
+  /**
+   * 他ユーザのトピックを追加する権限があるかどうかを返します。
+   * 
+   * @return
+   */
+  public boolean hasAclInsertReportReply() {
+    return hasAclInsertReportReply;
   }
 }

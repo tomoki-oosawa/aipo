@@ -28,6 +28,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -52,6 +53,8 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.report.util.ReportUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -137,17 +140,18 @@ public class ReportSelectData extends
     }
 
     // アクセス権限
-    /*
-     * ALAccessControlFactoryService aclservice =
-     * (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-     * .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
-     * ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-     * hasAuthorityOther = aclhandler.hasAuthority(
-     * ALEipUtils.getUserId(rundata),
-     * ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
-     * ALAccessControlConstants.VALUE_ACL_LIST);
-     */
-    hasAuthorityOther = true;
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    hasAuthorityOther =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    // hasAuthorityOther = true;
     showReplyForm = true;
     target_keyword = new ALStringField();
 
@@ -265,9 +269,9 @@ public class ReportSelectData extends
         // 検索結果がないことを示すために-1を代入
         resultid.add(-1);
       }
-      Expression ex =
+      Expression exp3 =
         ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-      query.andQualifier(ex);
+      query.andQualifier(exp3);
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
     }
@@ -618,8 +622,7 @@ public class ReportSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    // return ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
-    return null;
+    return ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
   }
 
   public boolean hasAuthorityOther() {
