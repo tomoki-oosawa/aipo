@@ -29,6 +29,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMAddressbook;
+import com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -75,12 +76,24 @@ public class AddressBookMultiDelete extends ALAbstractCheckList {
         name.append(" ");
         name.append(record.getLastName());
         Database.delete(record);
+        // mapから削除
+        SelectQuery<EipTAddressbookGroupMap> query2 =
+          Database.query(EipTAddressbookGroupMap.class);
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTAddressbookGroupMap.ADDRESS_ID_PROPERTY,
+            Integer.valueOf(entityId));
+        query2.setQualifier(exp2);
+
+        List<EipTAddressbookGroupMap> maps = query2.fetchList();
+        Database.deleteAll(maps);
         // ログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           entityId,
           ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_COMPANY,
           name.toString());
       }
+
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
