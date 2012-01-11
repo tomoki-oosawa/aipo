@@ -65,9 +65,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MsgboardTopicReplyFormData.class.getName());
 
-  /** トピック名 */
-  private ALStringField topic_name;
-
   /** メモ */
   private ALStringField note;
 
@@ -146,10 +143,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // トピック名
-    topic_name = new ALStringField();
-    topic_name.setFieldName("タイトル");
-    topic_name.setTrim(true);
     // メモ
     note = new ALStringField();
     note.setFieldName("内容");
@@ -169,10 +162,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
-    // トピック名必須項目
-    topic_name.setNotNull(true);
-    // トピック名の文字数制限
-    topic_name.limitMaxLength(50);
     // メモ必須項目
     note.setNotNull(true);
     // メモの文字数制限
@@ -188,8 +177,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    // トピック名
-    topic_name.validate(msgList);
     // メモ
     note.validate(msgList);
     return (msgList.size() == 0);
@@ -304,7 +291,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         throw new ALPageNotFoundException();
       }
 
-      if (!MsgboardUtils.hasAuthorityToReply(uid, parenttopic.getEipTMsgboardCategory())) {
+      if (!MsgboardUtils.hasAuthorityToReply(uid, parenttopic
+        .getEipTMsgboardCategory())) {
         // 返信権限がない場合弾く
         msgList.add(" このトピックに返信する権限がありません。 ");
         return false;
@@ -314,10 +302,10 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       // 新規オブジェクトモデル
       EipTMsgboardTopic topic = Database.create(EipTMsgboardTopic.class);
-      // トピック名
-      topic.setTopicName(topic_name.getValue());
       // カテゴリID
       topic.setEipTMsgboardCategory(parenttopic.getEipTMsgboardCategory());
+      // トピック名
+      topic.setTopicName("");
       // 親トピック ID
       topic.setParentId(parenttopic.getTopicId());
       // ユーザーID
@@ -354,7 +342,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         topic.getTopicId(),
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
-        topic.getTopicName());
+        parenttopic.getTopicName());
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
@@ -539,15 +527,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   public void setAclPortletFeature(String featureName) {
     aclPortletFeature = featureName;
-  }
-
-  /**
-   * トピック名を取得します。 <BR>
-   * 
-   * @return
-   */
-  public ALStringField getTopicName() {
-    return topic_name;
   }
 
   /**

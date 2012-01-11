@@ -92,7 +92,7 @@ $!{result.ParentTopic.Note}
 #ALtditemheader()
 <div class="clearfix">
 <div class="alignleft">
-$!{record.TopicName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;投稿者：$!{record.OwnerName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
+投稿者：$!{record.OwnerName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
 </div>
 <div class="alignright">
 #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
@@ -135,11 +135,6 @@ ${record.Note}
 <input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
 <input type="hidden" name="mode" value="topic_reply" />
 <input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}" />
-#if($mode=="new_form")
-<input type="hidden" name="mode" value="insert" />
-#else
-<input type="hidden" name="mode" value="update" />
-#end
 #ALtableheaderWide()
 
 #if($mode=="new_form")
@@ -162,8 +157,6 @@ ${record.Note}
 #ALtditemfooter()
 #end
 
-#ALtdcaption("#ALrequired($!resultOnTopicDetail.getFieldName('topic_name'))")
-#ALtditem("#ALtextfield('topic_name' $!resultOnTopicDetail.TopicName '60%' 50 'active')")
 #ALtdcaption("#ALrequired($!resultOnTopicDetail.getFieldName('note'))")
 #ALtditemheader()
 #ALtextarea('note' $!resultOnTopicDetail.Note 10 40)
