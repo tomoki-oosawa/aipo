@@ -16,12 +16,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
+## ---------------------------------------------------------------------------
 #set ($addAddress = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
+#set ($groupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupListScreen")))
+#set ($companyUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyListScreen")))
+## ---------------------------------------------------------------------------
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
+#if($button_flag=="true")
 #AUIbuttonAction("アドレスを追加する" "javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);")
+#else
+<a title="アドレスを追加する" href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">アドレスを追加する</a>
+#end
 </div>
 <div class="auiWidget clearfix">
 <ul>
@@ -40,14 +47,14 @@
 </ul>
 
 <div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_group_list','1')">グループの管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$groupUrl', '$!portlet.ID')">グループの管理</a>
 </div>
 </div>
 
 <div class="auiWidget clearfix">
 
 <div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doaddressbook_company_list','1')">会社情報の管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$companyUrl', '$!portlet.ID')">会社情報の管理</a>
 </div>
 </div>
 

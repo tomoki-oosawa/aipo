@@ -76,5 +76,5 @@
 ##ALspacebothfooter()
 ##ALajaxtabfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/addressbook-nonaction-widgets.vm")
+#parse("/portlets/html/ja/addressbook-widgets.vm")
 
