@@ -572,8 +572,9 @@ public class ScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
-          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          || tmpCurrentTab.equals("oneday-group")
+          || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab
+            .equals("list"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
@@ -624,6 +625,12 @@ public class ScheduleAction extends ALBaseAction {
       } else if (currentTab.equals("oneday-group")) {
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
+        // ブラウザ名を受け渡す．
+        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        context.put("isMeie", Boolean.valueOf(isMsie));
+      } else if (currentTab.equals("list")) {
+        listData = new ScheduleListSelectData();
+        ((ScheduleListSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));

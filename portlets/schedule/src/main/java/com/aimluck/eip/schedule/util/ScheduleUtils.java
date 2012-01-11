@@ -740,7 +740,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1479,8 +1479,8 @@ public class ScheduleUtils {
         || tmpCurrentTab.equals("oneday")
         || tmpCurrentTab.equals("weekly")
         || tmpCurrentTab.equals("monthly")
-        || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-        .equals("weekly-group"))) {
+        || tmpCurrentTab.equals("oneday-group")
+        || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab.equals("list"))) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;
