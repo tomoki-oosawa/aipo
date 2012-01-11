@@ -31,7 +31,7 @@
 												<span id="activitycheckerContainer"></span></div></div>
 									</div>
 										<div class="hdUserName">#if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString()) さま</div>
-										<div class="hdLogout"><input type="submit" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"></div>
+										<div class="hdLogout"><input type="button" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"></div>
 								</div>
 							</div></div>
 #else
