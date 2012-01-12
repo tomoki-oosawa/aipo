@@ -150,6 +150,71 @@ public class PsmlUtils {
     }
   }
 
+  public static String parsePsmlForAllUser(String psml) throws Exception {
+    try {
+      Document dom = loadXMLFrom(psml);
+
+      // remove admin portlets
+      NodeList portlets = dom.getElementsByTagName("portlets");
+      for (int i = 0; i < portlets.getLength(); i++) {
+        Node node = portlets.item(i);
+        if (node
+          .getAttributes()
+          .getNamedItem(PsmlUtils.ATTRIBUTE_ID)
+          .getNodeValue()
+          .equals(PsmlUtils.ADMIN_PORTRET_ID)) {
+          Node parent = node.getParentNode();
+          parent.removeChild(node);
+        } else {
+          node.getAttributes().removeNamedItem(PsmlUtils.ATTRIBUTE_ID);// idの除去
+        }
+      }
+
+      // remove entryId
+      NodeList entry = dom.getElementsByTagName(PsmlUtils.ELEMENT_ENTRY);
+      for (int i = 0; i < entry.getLength(); i++) {
+        Node node = entry.item(i);
+        node.getAttributes().removeNamedItem(PsmlUtils.ATTRIBUTE_ID);// idの除去
+      }
+
+      NodeList params = dom.getElementsByTagName(PsmlUtils.ELEMENT_PARAMETER);
+
+      for (int i = 0; i < params.getLength(); i++) {
+        Node node = params.item(i);
+        Node parent = node.getParentNode();
+
+        if (parent.getAttributes().getNamedItem("parent") != null) {
+
+          if (parent
+            .getAttributes()
+            .getNamedItem("parent")
+            .getNodeValue()
+            .equals("GadgetsTemplate")) {
+
+            if (node
+              .getAttributes()
+              .getNamedItem("name")
+              .getNodeValue()
+              .equals("mid")) {
+              parent.removeChild(node);
+              i--;
+            }
+
+          }
+        }
+
+      }
+
+      StringWriter sw = new StringWriter();
+      TransformerFactory tfactory = TransformerFactory.newInstance();
+      Transformer transformer = tfactory.newTransformer();
+      transformer.transform(new DOMSource(dom), new StreamResult(sw));
+      return sw.toString();
+    } catch (Exception ex) {
+      throw ex;
+    }
+  }
+
   public static org.w3c.dom.Document loadXMLFrom(java.io.InputStream is)
       throws org.xml.sax.SAXException, java.io.IOException {
     javax.xml.parsers.DocumentBuilderFactory factory =

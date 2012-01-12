@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.PSMLDocument;
+import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -259,7 +261,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsmlForAllUser(psml);
       psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
@@ -275,7 +277,30 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
         PsmlDBUtils.checkAndFixInconsistency(profile.getUserName());
         if (!profile.getUserName().equals(ALEipUtils.getLoginName(rundata))) {
           org.apache.jetspeed.util.PortletUtils.regenerateIds(portlets);
-          profile.setProfile(DBUtils.portletsToBytes(portlets, mapping));
+          Portlets myportlets = (Portlets) portlets.clone();
+
+          Portlets[] portletList = myportlets.getPortletsArray();
+
+          int length = portletList.length;
+          for (int i = 0; i < length; i++) {
+            Entry[] entries = portletList[i].getEntriesArray();
+            if (entries == null || entries.length <= 0) {
+              continue;
+            }
+
+            int ent_length = entries.length;
+            for (int j = 0; j < ent_length; j++) {
+              if (entries[j].getParent().equals("Schedule")) {
+                Parameter scheduleParameter =
+                  entries[j].getParameter("p6a-uids");
+
+                scheduleParameter.setValue("");
+                entries[j].setParameter(0, scheduleParameter);
+              }
+            }
+          }
+
+          profile.setProfile(DBUtils.portletsToBytes(myportlets, mapping));
         }
       }
 
