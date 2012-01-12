@@ -31,6 +31,7 @@
 <div class="p">
 <input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
 </div>
+#*
 <div class="p spaceTop spaceBottom">
 あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。
 </div>
@@ -63,24 +64,28 @@
 ##end
 </div>
 <hr />
+*#
 <div class="p spaceTop spaceBottom">
 あなたのレイアウトで、すべてユーザーのレイアウトを変更できます。
 </div>
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
-#ALsubmitJS($event_submit $all_user_str "aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')")
-<span id="caution_all_user" class="caution"></span>
+##ALsubmitJS($event_submit $all_user_str "aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')")
+<div class="spaceTop caution"><span id="caution_all_user" class="small em"></span></div>
 ##if($!{result.getAllUserStatus().equals("success")})
 ##ALcaution("設定が完了しました。")
 ##elseif($!{result.getAllUserStatus().equals("error")})
 ##ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
 ##end
 #else
-<input type="button" disabled="disabled" value="$all_user_str">
 <div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
 #end
 </div>
 #ALbuttonheader()
+#if(!$!{result.isAdminUser()})
+#ALsubmitJS($event_submit $all_user_str "aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')")
+#end
+##<input type="button" disabled="disabled" value="$all_user_str">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

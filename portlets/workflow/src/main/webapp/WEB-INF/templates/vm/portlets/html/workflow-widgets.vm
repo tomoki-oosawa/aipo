@@ -28,16 +28,15 @@
 <div class="auiWidget clearfix"><ul>
 
 <ul>
-<li #if(($!result.currentTab == 'unfinished') && !(${all_flg}))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">送信依頼</a></li>
-</ul>
-
-
-<ul>
 <li #if($!result.currentTab == 'unconfirmed')class="active"#end>
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unconfirmed"))','$!portlet.ID');">受信依頼</a></li>
 </ul>
 
+
+<ul>
+<li #if(($!result.currentTab == 'unfinished') && !(${all_flg}))class="active"#end>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">送信依頼</a></li>
+</ul>
 
 #if($!result.hasAuthorityOther())
 <ul>

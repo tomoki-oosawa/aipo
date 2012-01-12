@@ -54,7 +54,7 @@ function checkFile(){
 //-->
 </script>
 <div class="spaceAll roundBlockContent">
-#ALajaxtabheader($tabs "")
+##ALajaxtabheader($tabs "")
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
@@ -78,5 +78,5 @@ function checkFile(){
 </div>
 </form>
 #ALspacebothfooter()
-#ALajaxtabfooter()
+##ALajaxtabfooter()
 </div>
