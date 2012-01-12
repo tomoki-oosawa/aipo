@@ -294,10 +294,11 @@ public class AddressBookFilterdSelectData extends
   protected SelectQuery<EipMAddressbook> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipMAddressbook> query;
-    String word = searchWord.getValue();
+    String word = searchWord.toString();
+
     String transWord =
       ALStringUtil.convertHiragana2Katakana(ALStringUtil
-        .convertH2ZKana(searchWord.getValue()));
+        .convertH2ZKana(searchWord.toString()));
     query = Database.query(EipMAddressbook.class);
 
     Expression exp01 =
