@@ -271,19 +271,27 @@
   </td></tr>
   <tr><td>
 #if($!{result.Owner} || $!{result.EditFlag.toString()} == "T")
-    <div class="p"><h3>参加ユーザーによるこのスケジュールの 『編集／削除』 の可否を設定します。</h3>
-    <input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">可（参加ユーザーは、このスケジュールを編集／削除できます）</label><br/>
-    <input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">不可（参加ユーザーは、このスケジュールを編集／削除できません）</label></div>
+    <div class="p">
+    	<div id="edit_control_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">参加ユーザーによる予定の編集権限を設定する</div>
+    	<div id="edit_control_context_$!{portlet.ID}" style="display:none;">
+ 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">可（参加ユーザーは、この予定を編集／削除できます）</label><br/>
+  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">不可（参加ユーザーは、この予定を編集／削除できません）</label></div>
+	</div>
 #end
 #if($mode!="new_form" && $!result.Member)
-    <div class="p"><h3>確定したスケジュールを仮スケジュールに戻すかを設定します。</h3>
-    <input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">戻す（確定したスケジュールを仮スケジュールに戻します）</label><br/>
-    <input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">戻さない（確定したスケジュールを仮スケジュールに戻しません）</label></div>
+    <div class="p">
+    	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">確定した予定を仮スケジュールに戻すかを設定する</div>
+    	<div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
+   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">戻す（確定した予定を仮スケジュールに戻します）</label><br/>
+    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">戻さない（確定した予定を仮スケジュールに戻しません）</label></div>
+    </div>
 #end
 <div class="p">
-    <h3>更新時に参加ユーザーにメール通知をおこなうか設定します。</h3>
-    <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">通知する</label><br />
-    <input name="mail_flag" type="radio" value="I" id="mail_flag_I" #if($!{result.MailFlag}=="I")checked="checked" #end><label for="mail_flag_I">通知しない</label>
+    	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">参加ユーザーへのメール通知を設定する</div>
+    	<div id="mail_context_$!{portlet.ID}" style="display:none;">
+	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">通知する</label><br />
+	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if($!{result.MailFlag}=="N")checked="checked" #end><label for="mail_flag_N">通知しない</label>
+	   	</div>
 </div>
   </td></tr>
 </table>

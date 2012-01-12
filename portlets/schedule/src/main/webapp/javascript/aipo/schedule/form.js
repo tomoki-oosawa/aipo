@@ -250,6 +250,23 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
             aipo.schedule.spanLength = 0;
         }
     }
+
+    //参加ユーザー設定のtoggleイベント
+    var setToggleClickEvent=function (id_head,displayedstyle){
+    	if(dojo.byId(id_head+"_title_"+portlet_id)!=null){
+    	 dojo.connect(dojo.byId(id_head+"_title_"+portlet_id), "onclick", function(){
+    	    	var defaultstyle=displayedstyle;//変更
+    	    	var f=function(){
+    	    		var item=dojo.byId(id_head+"_context_"+portlet_id);
+    	    		item.style.display=(item.style.display!="none")?"none":defaultstyle;
+    	    	}
+    	    	f();
+    	     });
+    	}
+    };
+    setToggleClickEvent("edit_control","block");
+    setToggleClickEvent("change_tmpreserve","block");
+    setToggleClickEvent("mail","block");
 }
 
 aipo.schedule.formPreSubmit = function (form) {

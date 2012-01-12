@@ -120,7 +120,11 @@ public class ScheduleUtils {
 
   public static final String MAIL_FOR_DELETE = "D";
 
+  /** すべての人にメール送信 */
   public static final String MAIL_FOR_ALL = "A";
+
+  /** すべての人にメール送信しない */
+  public static final String MAIL_FOR_NONE = "N";
 
   public static final String FLAG_CHANGE_TURN_STR = "flagchangeturn";
 
@@ -740,7 +744,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;

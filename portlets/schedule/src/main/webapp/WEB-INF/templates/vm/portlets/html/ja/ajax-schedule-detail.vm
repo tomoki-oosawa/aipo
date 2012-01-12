@@ -123,9 +123,11 @@ $!{result.Detail.Date2}
 
 <div>
 #if($!{result.Detail.MailFlag} == "A")
-更新時に参加ユーザーにメール通知をおこないます。
+参加ユーザーにメール通知をおこないます。
+#elseif($!{result.Detail.MailFlag} == "I")
+更新時は参加ユーザーにメール通知をおこないません。
 #else
-更新時に参加ユーザーにメール通知をおこないません。
+参加ユーザーにメール通知をおこないません。
 #end
 </div>
 #end
