@@ -42,9 +42,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookWordXlsExportScreen.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookWordXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "addressbook.xls";
 
@@ -122,10 +121,24 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
         "電話番号（携帯）",
         "携帯メールアドレス",
         "会社名",
+        "会社名（フリガナ）",
+        "部署名",
+        "郵便番号",
+        "住所",
+        "電話番号",
+        "FAX番号",
+        "URL",
         "役職名" };
     // 0：日本語，1：英数字
     short[] cell_enc_types =
       {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
@@ -156,6 +169,13 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
           rd.getCellularPhone().getValue(),
           rd.getCellularMail().getValue(),
           rd.getCompanyName().getValue(),
+          rd.getCompanyNameKana().getValue(),
+          rd.getPostName().getValue(),
+          rd.getZipcode().getValue(),
+          rd.getCompanyAddress().getValue(),
+          rd.getCompanyTelephone().getValue(),
+          rd.getCompanyFaxNumber().getValue(),
+          rd.getCompanyUrl().getValue(),
           rd.getPositionName().getValue() };
 
       rowcount = rowcount + 1;

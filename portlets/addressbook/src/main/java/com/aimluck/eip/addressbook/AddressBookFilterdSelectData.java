@@ -55,9 +55,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AddressBookFilterdSelectData extends
     AbstractAddressBookFilterdSelectData<EipMAddressbook, EipMAddressbook> {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AddressBookFilterdSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AddressBookFilterdSelectData.class.getName());
 
   /** フィルタに利用するグループリスト */
   private List<AddressBookGroupResultData> groupList;
@@ -155,6 +154,24 @@ public class AddressBookFilterdSelectData extends
         rd.setCompanyId(company.getCompanyId().toString());
         rd.setPostName(ALCommonUtils.compressString(
           company.getPostName(),
+          getStrLength()));
+        rd.setCompanyNameKana(ALCommonUtils.compressString(company
+          .getCompanyNameKana(), getStrLength()));
+        rd.setPostName(ALCommonUtils.compressString(
+          company.getPostName(),
+          getStrLength()));
+        rd.setZipcode(ALCommonUtils.compressString(
+          company.getZipcode(),
+          getStrLength()));
+        rd.setCompanyAddress(ALCommonUtils.compressString(
+          company.getAddress(),
+          getStrLength()));
+        rd.setCompanyTelephone(ALCommonUtils.compressString(company
+          .getTelephone(), getStrLength()));
+        rd.setCompanyFaxNumber(ALCommonUtils.compressString(company
+          .getFaxNumber(), getStrLength()));
+        rd.setCompanyUrl(ALCommonUtils.compressString(
+          company.getUrl(),
           getStrLength()));
       }
       rd.setPositionName(ALCommonUtils.compressString(
