@@ -110,9 +110,9 @@ $!{record.StatusString}
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALtextarea('comment' $!record.NoteR 10 40)
 <div class="alignleft">
-<div class="alignleft">#ALsubmitJS('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');")／</div>
+<div class="alignleft">#ALsubmitJS('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');")</div>
 #if(!($!result.Detail.CanRemandApplicant) && $!result.Detail.RemandingRecords.size() == 0)
-#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');")
+&nbsp;
 #else
 <div class="alignleft">
 <span id="order_field">
