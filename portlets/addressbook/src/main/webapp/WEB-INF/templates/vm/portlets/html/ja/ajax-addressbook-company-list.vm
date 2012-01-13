@@ -22,6 +22,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>会社情報の管理</h2>
+#if($result.List.size() != 0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("会社情報を追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
 </p></div>
@@ -31,7 +32,7 @@
 <input type="hidden" name="user_id" value="$!result.UserId"/>
 <input type="hidden" name="idx" value="$!result.Index"/>
 </form>
-
+#end
 #if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 <form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
@@ -55,7 +56,7 @@
 <p>会社情報を登録しておくことで、アドレスを会社単位で管理することが可能となります。</p>
 <p>『会社情報を追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);" class="auiButton">会社情報を追加する</a>
+#AUIbuttonAction("会社情報を追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
 </p>
 </td></tr>
 #AUItablefooter()

@@ -28,18 +28,20 @@
 #AUIcontentsAreaHeader()
 
 <h2>グループの管理</h2>
+#if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p></div>
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('グループ')
+#end
 #if($result.List.size() ==0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p>グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</p>
 <p>『グループを追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);" class="auiButton">グループを追加する</a>
+#AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
