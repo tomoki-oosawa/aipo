@@ -308,6 +308,8 @@ div.outer {
 }
 .roundMainWrapper {
 	padding:10px;
+	border-bottom:solid 1px #ccc;
+	box-shadow:0 1px 1px rgba(0,0,0,0.1);
 }
 .roundTopMain {
 	background:#FFF;
@@ -349,10 +351,8 @@ table.roundBlockWrapperTop {
 }
 table.roundBlockWrapperTop td.roundBlockTitle {
 	white-space:nowrap;
-	padding:12px 20px 0 30px;
+	padding:12px 20px 0 15px;
 	vertical-align:top;
-	background:transparent url(../images/common/icon_p.gif) no-repeat 12px 13px;
-	font-weight:bold;
 	text-shadow:#F4F4F4 0 1px;
 }
 table.roundBlockWrapperTop td.roundBlockTitle a {
@@ -362,7 +362,7 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {
 	color:#666;
 }
 table.roundBlockWrapperTop td.roundBlockIcon {
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
 	white-space:nowrap;
 	padding:11px 5px 0 5px;
 	vertical-align:top;
@@ -372,7 +372,7 @@ table.roundBlockWrapperTop td.roundBlockIcon img {
 	vertical-align:middle;
 }
 table.roundBlockWrapperTop td.roundBlockMenu {
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
 	white-space:nowrap;
 	padding:11px 5px 0 5px;
 	vertical-align:top;
@@ -382,12 +382,12 @@ table.roundBlockWrapperTop td.roundBlockMenu img {
 	vertical-align:middle;
 }
 table.roundBlockWrapperTop td.roundBlockNavi {
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
 	white-space:nowrap;
 	padding:0 2px 0 10px;
 }
 table.roundBlockWrapperTop td.last {
-	padding-right:10px;
+	padding-right:15px;
 }
 table.roundBlockWrapperTop td.endcap {
 	white-space:nowrap;
@@ -1088,16 +1088,16 @@ table.simpleTable td.caption {
 	padding:2px;
 	display:inline;
 	display:-moz-inline-box;
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat center -8px;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat center -8px;
 	vertical-align:top;
 }
 * html .menuBarSeparator {
 	vertical-align:baseline;
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat 2px -6px;
 }
 *+html .menuBarSeparator {
 	vertical-align:baseline;
-	background:transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
+	background:transparent url(../images/portlet/frame_divider.png) no-repeat 2px -6px;
 }
 .menuSeparator {
 	font-size:1px;
@@ -1760,7 +1760,7 @@ div.holiday, td.holiday {
 	background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
 }
 div.today, td.today {
-	background:#F4FFD5 url(../images/common/bg_slash.gif) repeat left top;
+	background:#ddffdd url(../images/common/bg_slash.gif) repeat left top;
 }
 div.off, td.off {
 	background:#EFEFEF url(../images/common/bg_slash.gif) repeat left top;
@@ -1808,7 +1808,7 @@ table.calendar th.holiday {
 	background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
 }
 table.calendar th.today {
-	background:#FFF5D8 url(../images/common/bg_slash.gif) repeat left top;
+	background:#ddffdd url(../images/common/bg_slash.gif) repeat left top;
 }
 table.calendar div.calendarDay {
 	color:#666;
