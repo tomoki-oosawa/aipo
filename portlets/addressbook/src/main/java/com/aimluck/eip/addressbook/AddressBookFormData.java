@@ -226,7 +226,7 @@ public class AddressBookFormData extends ALAbstractFormData {
     company_name.setFieldName("会社名");
     company_name.setTrim(true);
     company_name_kana = new ALStringField();
-    company_name_kana.setFieldName("会社名(フリガナ)");
+    company_name_kana.setFieldName("会社名（フリガナ）");
     company_name_kana.setTrim(true);
     post_name = new ALStringField();
     post_name.setFieldName("部署名");
