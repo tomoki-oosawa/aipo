@@ -64,7 +64,7 @@
 #end
 </select>
 が
-#ALtextfield('filter_string' $!result.FilterString '50%' 50 'auto')
+#ALtextfield('filter_string' $!result.FilterString '45%' 50 'auto')
 を含む
 #ALtdcellfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('dst_folder_id'))")
