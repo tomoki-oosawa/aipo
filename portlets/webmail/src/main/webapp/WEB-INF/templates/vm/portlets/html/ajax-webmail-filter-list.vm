@@ -26,15 +26,25 @@
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>フィルタの管理</h2>
+#if($result.List.size() > 0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
 </p></div>
+#end
 #if($!result.AccountId == 0)
 <a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
 
 #else
 #if($result.List.size() <= 0)
-<div class="message">フィルタが登録されていません。</div>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>フィルタを登録しておくことで、受信したメールを自動振り分けできます。</p>
+<p>『フィルタを追加する』 ボタンを押して、追加してください。</p>
+<p class="mh10">
+#AUIbuttonAction("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+</p>
+</td></tr>
+#ALtablefooter()
 #else
 #ALajaxlistformheader('フィルタ')
 #AUISummaryDiv()
