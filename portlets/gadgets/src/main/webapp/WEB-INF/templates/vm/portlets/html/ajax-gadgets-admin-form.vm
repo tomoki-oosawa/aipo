@@ -90,7 +90,7 @@ $!service.AccessUrlCR<br/>
 #end
 #ALtablefooter()
 #if($mode=="new_form")
-<p class="center"><label for="sendActivity"><input type="checkbox" id="sendActivity" name="sendActivity" value="true" checked="true"/>全員の更新情報へ通知する</label></p>
+<p class="center"><label for="sendActivity"><input type="checkbox" id="sendActivity" name="sendActivity" value="true" checked="true"/>&nbsp;全員の更新情報へ通知する</label></p>
 <br/>
 #end
 #if($mode!="new_form")
