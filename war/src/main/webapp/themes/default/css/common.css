@@ -932,6 +932,10 @@ table.simpleTable td.caption {
 .dijit_a11y .modalDialog .closeText {
 	display:inline;
 }
+.modalDialog input[type=checkbox],
+.modalDialog input[type=radio] {
+	margin:3px 0;
+}
 .fileuploadDialog {
 	border:5px solid #ddd;
 	background-color:#fff;
