@@ -46,7 +46,7 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
-<input type="hidden" name="mode" value="$!modesrv" />
+<input type="hidden" name="mode" id="mode_$!portlet.ID" value="$!modesrv" />
 
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('request_name'))")
