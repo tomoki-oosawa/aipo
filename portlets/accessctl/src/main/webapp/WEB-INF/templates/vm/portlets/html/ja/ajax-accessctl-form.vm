@@ -38,9 +38,8 @@
 #ALtditem("#ALtextfield('acl_role_name' $!result.AclRoleName '90%' 50 'active')")
 #ALtdcaption("#ALrequired('アクセス権限')")
 #ALtditemheader()
-#ALtableheaderSimpleWide()
-#ALtdcaption('機能')
-#ALtditemheader()
+
+
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','PortletFeatureLiteJSONScreen')")
 <select style="width: 90%;" name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
 #foreach( $record in $result.PortletFeatureList )
@@ -53,8 +52,9 @@
 #end
 #end
 </select>
-#ALtditemfooter()
-#ALtablefooter()
+
+
+
 <div id="aclsDiv"></div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired('所属メンバー')")

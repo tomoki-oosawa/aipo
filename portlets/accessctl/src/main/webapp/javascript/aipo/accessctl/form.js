@@ -26,7 +26,7 @@ aipo.accessctl.onLoadAccessctlDialog = function(portlet_id){
     if(obj){
         obj.focus();
     }
-    
+
 	var mpicker = dijit.byId("membernormalselect");
 	if(mpicker){
 	  var select = dojo.byId('init_memberlist');
@@ -37,10 +37,10 @@ aipo.accessctl.onLoadAccessctlDialog = function(portlet_id){
 	      mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
 	  }
 	}
-	
+
 	var url_acls = dojo.byId('urlacls'+portlet_id).value;
     var featureid = dojo.byId('initfeature'+portlet_id).value;
-    aipo.accessctl.changeAcls(portlet_id, url_acls, featureid);   
+    aipo.accessctl.changeAcls(portlet_id, url_acls, featureid);
 }
 
 aipo.accessctl.onReceiveMessage = function(msg){
@@ -67,21 +67,22 @@ aipo.accessctl.createCheckbox = function(portlet_id, selectid, divid, url, key, 
     timeout: 5000,
     encoding: "utf-8",
     handleAs: "json-comment-filtered",
-    headers: { X_REQUESTED_WITH: "XMLHttpRequest" }, 
+    headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
     load: function (respodatanse, ioArgs){
       var html = "";
       dojo.forEach(respodatanse, function(p) {
         if(typeof p[key] == "undefined" || typeof p[value] == "undefined") {
         } else {
           if (p[checked] == "true") {
-            html += "<input name='"+p[key]+"' id='"+p[key]+"' type='checkbox' value='1' checked='checked'/><label for='"+p[key]+"'>"+p[value]+"</label>";
+            html += "<input name='"+p[key]+"' id='"+p[key]+"' type='checkbox' value='1' checked='checked'/><label for='"+p[key]+"'>&nbsp;"+p[value]+"</label>";
           } else {
-            html += "<input name='"+p[key]+"' id='"+p[key]+"' type='checkbox' value='1'/><label for='"+p[key]+"'>"+p[value]+"</label>";
+            html += "<input name='"+p[key]+"' id='"+p[key]+"' type='checkbox' value='1'/><label for='"+p[key]+"'>&nbsp;"+p[value]+"</label>";
           }
+          html += "&nbsp;";
         }
       });
       dojo.byId(divid).innerHTML = html;
-      
+
       // initialize acl check
       aipo.accessctl.setupAcl(portlet_id, 'acllist');
       aipo.accessctl.setupAcl(portlet_id, 'acldetail');
