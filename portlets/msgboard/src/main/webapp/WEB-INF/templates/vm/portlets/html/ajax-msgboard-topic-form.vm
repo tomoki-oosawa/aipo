@@ -53,13 +53,11 @@
 #ALtableheaderWide()
 
 #if($mode=="new_form"||$mode=="edit_form")
-#ALtdcaption($!result.getFieldName("category_id"))
+#ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="msgboardCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-#ALtableheaderSubWide()
-#ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
-#ALtablefooter()
+#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
+
 </div>
 <div id="msgboardCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
 #ALselectpdheader("category_id" "90%" "")
