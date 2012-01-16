@@ -66,13 +66,13 @@
 #ALtditem("#ALtextfield('email' $!result.Email '60%' 50 'disabled')#ALcaution('（半角英数字）')")
 #ALtdcaption($!result.getFieldName("out_telephone1"))
 #ALtditemheader()
-#ALtextfield('out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')-#ALtextfield('out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')-#ALtextfield('out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
+#ALtextfield('out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')-&nbsp;#ALtextfield('out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')-&nbsp;#ALtextfield('out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("in_telephone"))
 #ALtditem("#ALtextfield('in_telephone' $!result.InTelephone '30%' 13 'disabled')#ALcaution('（ハイフン（-）または半角数字）')")
 #ALtdcaption($!result.getFieldName("cellular_phone1"))
 #ALtditemheader()
-#ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')-#ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')-#ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
+#ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')-&nbsp;#ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')-&nbsp;#ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("cellular_mail"))
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')#ALcaution('（半角英数字）')")
@@ -125,7 +125,7 @@
 #ALtditemfooter()
 #ALtdcaption("管理者権限")
 #ALtditemheader()
-<input name="is_admin_checkbox" type="checkbox" value="" id="$!{portlet.ID}is_admin_id" #if($!result.IsAdmin.toString() == "true") checked="checked" #end onchange="aipo.account_user.formAdminToggle(this);"/><label for="$!{portlet.ID}is_admin_id">$!result.getFieldName("is_admin")</label>
+<input name="is_admin_checkbox" type="checkbox" value="" id="$!{portlet.ID}is_admin_id" #if($!result.IsAdmin.toString() == "true") checked="checked" #end onchange="aipo.account_user.formAdminToggle(this);"/>&nbsp;<label for="$!{portlet.ID}is_admin_id">$!result.getFieldName("is_admin")</label>
 <input name="is_admin" type="hidden" id="is_admin" value="$!result.IsAdmin.toString()" />
 #ALtditemfooter()
 #ALtablefooter()
