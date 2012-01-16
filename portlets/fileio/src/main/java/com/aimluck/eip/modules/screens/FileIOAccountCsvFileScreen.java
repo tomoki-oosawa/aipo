@@ -140,7 +140,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
         } catch (Exception e) {
 
           position = "";
-          logger.error(e);
+          logger.error("[FileIOAccountCsvFileScreen]", e);
         }
         sb
           .append(record.getLoginName())

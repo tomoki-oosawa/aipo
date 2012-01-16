@@ -446,10 +446,10 @@ public class ReportSelectData extends
       // 表示するカラムのみデータベースから取得する．
       return resultList;
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error(pageNotFound);
+      logger.error("[ReportSelectData]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("[MsgboardTopicSelectData]", ex);
+      logger.error("[ReportSelectData]", ex);
       throw new ALDBErrorException();
     }
   }

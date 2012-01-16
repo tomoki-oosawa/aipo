@@ -296,7 +296,7 @@ public class ScheduleWeeklySelectData extends
       return new ResultList<VEipTScheduleList>(ScheduleUtils
         .sortByDummySchedule(list));
     } catch (Exception e) {
-      logger.error("[ScheduleWeeklySelectData] TorqueException");
+      logger.error("[ScheduleWeeklySelectData] TorqueException", e);
       throw new ALDBErrorException();
 
     }

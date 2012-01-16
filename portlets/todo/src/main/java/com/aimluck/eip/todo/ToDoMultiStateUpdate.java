@@ -121,7 +121,7 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoMultiStateUpdate]", t);
       return false;
     }
     return true;

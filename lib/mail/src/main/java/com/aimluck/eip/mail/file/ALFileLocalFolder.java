@@ -108,7 +108,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       return msg;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALFileLocalFolder]", t);
       return null;
     }
   }
@@ -289,7 +289,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALFileLocalFolder]", t);
       return false;
     }
     return true;
@@ -329,7 +329,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALFileLocalFolder]", t);
       return false;
     }
     return true;
@@ -433,7 +433,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALFileLocalFolder]", t);
       return false;
     }
     return true;

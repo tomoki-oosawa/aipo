@@ -112,7 +112,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
       return wb;
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ALXlsScreen]", e);
       return null;
     }
   }

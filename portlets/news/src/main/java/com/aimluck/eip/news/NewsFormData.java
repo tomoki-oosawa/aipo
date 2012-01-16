@@ -72,6 +72,7 @@ public class NewsFormData extends ALAbstractFormData {
 
   private String latest_version;
 
+  @Override
   public void initField() {
     company_name = new ALStringField();
     company_name.setFieldName("御社名");
@@ -184,13 +185,13 @@ public class NewsFormData extends ALAbstractFormData {
       is.close();
 
     } catch (MalformedURLException e) {
-      logger.error(e);
+      logger.error("[NewsFormData]", e);
     } catch (UnknownHostException e) {
-      logger.error(e);
+      logger.error("[NewsFormData]", e);
     } catch (SocketException e) {
-      logger.error(e);
+      logger.error("[NewsFormData]", e);
     } catch (IOException e) {
-     logger.error(e);
+      logger.error("[NewsFormData]", e);
     }
   }
 

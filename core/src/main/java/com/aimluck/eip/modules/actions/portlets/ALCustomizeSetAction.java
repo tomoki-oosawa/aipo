@@ -990,7 +990,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         }
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ALCustomizeSetAction]", e);
     }
   }
 
@@ -1044,7 +1044,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))
+          .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")
         && ALPortalApplicationService.isActive(entry.getName())) {
         list.add(entry);
@@ -1217,7 +1217,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-              .hasMediaType(mediaType))) {
+            .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();

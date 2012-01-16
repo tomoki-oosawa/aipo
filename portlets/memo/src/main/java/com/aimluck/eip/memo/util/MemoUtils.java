@@ -176,9 +176,9 @@ public class MemoUtils {
       profile.store();
       return true;
     } catch (IndexOutOfBoundsException e) {
-      logger.error(e);
+      logger.error("[MemoUtils]", e);
     } catch (ProfileException e) {
-      logger.error(e);
+      logger.error("[MemoUtils]", e);
     }
     return false;
   }

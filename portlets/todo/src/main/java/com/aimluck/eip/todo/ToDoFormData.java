@@ -445,7 +445,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoFormData]", t);
       return false;
     }
     return true;
@@ -593,7 +593,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoFormData]", t);
       return false;
     }
     return true;
@@ -784,7 +784,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoFormData]", t);
       return false;
     }
 

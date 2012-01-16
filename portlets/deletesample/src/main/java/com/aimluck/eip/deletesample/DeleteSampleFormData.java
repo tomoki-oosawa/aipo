@@ -804,7 +804,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[DeleteSampleFormData]", e);
       return false;
     }
     return flag;

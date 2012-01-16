@@ -563,7 +563,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
             ALEipUser user = ALEipUtils.getALEipUser(requestMap.getUserId());
             recipients.add(user.getName().getValue());
           } catch (ALDBErrorException e) {
-            logger.error(e);
+            logger.error("[WorkflowConfirmFormData]", e);
           }
         }
       }
@@ -574,7 +574,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         ALEipUser user = ALEipUtils.getALEipUser(requestMap.getUserId());
         recipients.add(user.getName().getValue());
       } catch (ALDBErrorException e) {
-        logger.error(e);
+        logger.error("[WorkflowConfirmFormData]", e);
       }
     }
 

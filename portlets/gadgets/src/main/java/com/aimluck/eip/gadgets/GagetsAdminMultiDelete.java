@@ -57,7 +57,7 @@ public class GagetsAdminMultiDelete extends ALAbstractCheckList {
 
       ALApplicationService.delete(values);
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error(t, t);
       return false;
     }
     return true;

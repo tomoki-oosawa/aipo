@@ -143,7 +143,7 @@ public class NoteGroupScreen extends ALVelocityScreen {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error(ex);
+      logger.error("[NoteGroupScreen]", ex);
       return;
     }
   }

@@ -73,9 +73,8 @@ public class TimecardSummaryListSelectData extends
     ALAbstractSelectData<EipTTimecard, EipTTimecard> implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(TimecardSummaryListSelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(TimecardSummaryListSelectData.class.getName());
 
   /** <code>target_group_name</code> 表示対象の部署名 */
   private String target_group_name;
@@ -589,7 +588,7 @@ public class TimecardSummaryListSelectData extends
       }
       return list;
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[TimecardSummaryListSelectData]", e);
       return null;
     }
   }

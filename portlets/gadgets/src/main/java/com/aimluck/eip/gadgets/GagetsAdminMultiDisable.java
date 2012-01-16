@@ -57,7 +57,7 @@ public class GagetsAdminMultiDisable extends ALAbstractCheckList {
 
       ALApplicationService.disable(values);
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error(t, t);
       return false;
     }
     return true;

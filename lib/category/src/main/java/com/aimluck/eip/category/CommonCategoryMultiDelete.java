@@ -128,7 +128,7 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[CommonCategoryMultiDelete]", t);
       return false;
     }
     return true;

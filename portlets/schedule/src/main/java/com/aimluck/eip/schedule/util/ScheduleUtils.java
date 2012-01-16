@@ -2507,7 +2507,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleUtils]", e);
     }
     return "F";
   }
@@ -2526,7 +2526,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleUtils]", e);
     }
     return "F";
   }
@@ -2545,7 +2545,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleUtils]", e);
     }
     return "F";
   }
@@ -2564,7 +2564,7 @@ public class ScheduleUtils {
         return "T";
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleUtils]", e);
     }
     return "F";
   }

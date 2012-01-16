@@ -229,7 +229,7 @@ public class CabinetUtils {
 
       return result;
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[CabinetUtils]", e);
       return null;
     }
   }

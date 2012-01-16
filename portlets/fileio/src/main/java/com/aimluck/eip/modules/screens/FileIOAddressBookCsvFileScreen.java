@@ -118,7 +118,7 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
         } catch (Exception e) {
           sb.append(",,,,,,,");
           sb.append(LINE_SEPARATOR);
-          logger.error(e);
+          logger.error("[FileIOAddressBookCsvFileScreen]", e);
           continue;
         }
         if (rec1 != null) {
@@ -156,7 +156,6 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return ALOrgUtilsService.getAlias()
-      + "_addressbook.csv";
+    return ALOrgUtilsService.getAlias() + "_addressbook.csv";
   }
 }

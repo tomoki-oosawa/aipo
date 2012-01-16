@@ -679,7 +679,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[SystemWebMailAccountFormData]", t);
       return false;
     }
     return true;
@@ -770,7 +770,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
         account.getAccountName());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[SystemWebMailAccountFormData]", t);
       return false;
     }
     return true;

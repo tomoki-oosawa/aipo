@@ -163,7 +163,7 @@ public class PsmlDBUtils {
         Database.commit();
       } catch (Exception e) {
         Database.rollback();
-        logger.error(e);
+        logger.error("[PsmlDBUtils]", e);
       }
     }
 

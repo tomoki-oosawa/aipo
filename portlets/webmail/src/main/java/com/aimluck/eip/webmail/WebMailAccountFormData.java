@@ -557,7 +557,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
       // オブジェクトモデルを取得
       EipMMailAccount mailAccount =
-        ALMailUtils.getMailAccount( userId, accountId);
+        ALMailUtils.getMailAccount(userId, accountId);
       if (mailAccount == null) {
         return false;
       }
@@ -615,7 +615,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailAccountFormData]", t);
       return false;
     }
     return true;
@@ -671,7 +671,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
         account.getAccountName());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailAccountFormData]", t);
       return false;
     }
     return true;

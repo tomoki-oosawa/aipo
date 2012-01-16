@@ -715,7 +715,7 @@ public class RemainderScheduleDaemon implements Daemon {
       }
       localurl = ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
     } catch (SocketException e) {
-      logger.error(e);
+      logger.error("[RemainderScheduleDaemon]", e);
     }
 
     // // Aipoサイト情報の取得

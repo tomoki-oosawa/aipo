@@ -128,7 +128,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
       }
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoMultiDelete]", t);
       return false;
     }
     return true;

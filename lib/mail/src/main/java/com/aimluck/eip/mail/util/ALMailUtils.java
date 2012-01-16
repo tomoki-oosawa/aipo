@@ -1117,7 +1117,7 @@ public class ALMailUtils {
         mailAccount.getAccountName());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALMailUtils]", t);
       return false;
     }
     return true;
@@ -1469,7 +1469,7 @@ public class ALMailUtils {
 
       return userAddress;
     } catch (ALDBErrorException e) {
-      logger.error(e);
+      logger.error("[ALMailUtils]", e);
       return null;
     }
 
@@ -1574,7 +1574,7 @@ public class ALMailUtils {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALMailUtils]", t);
       return false;
     }
     return true;
@@ -1615,7 +1615,7 @@ public class ALMailUtils {
       }
       localurl = ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
     } catch (SocketException e) {
-      logger.error(e);
+      logger.error("[ALMailUtils]", e);
     }
     return localurl;
   }
@@ -1665,7 +1665,7 @@ public class ALMailUtils {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALMailUtils]", t);
       return false;
     }
   }

@@ -92,6 +92,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // 共有カテゴリ名
     name = new ALStringField();
@@ -218,7 +219,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         name.getValue());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[CommonCategoryFormData]", t);
       return false;
     }
     return true;
@@ -279,7 +280,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         name.getValue());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[CommonCategoryFormData]", t);
       return false;
     }
     return true;
@@ -340,7 +341,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         categoryName);
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[CommonCategoryFormData]", t);
       return false;
     }
     return true;

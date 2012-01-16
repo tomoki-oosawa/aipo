@@ -271,7 +271,7 @@ public class ScheduleWeeklyJSONFormData {
       ALEipUtils.redirectPermissionError(rundata);
       return null;
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleWeeklyJSONFormData]", e);
       return null;
     }
   }

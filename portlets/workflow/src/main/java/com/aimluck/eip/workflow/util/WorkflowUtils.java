@@ -216,7 +216,7 @@ public class WorkflowUtils {
       }
       return requests.get(0);
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error(pageNotFound);
+      logger.error("[WorkflowUtils]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -1083,7 +1083,7 @@ public class WorkflowUtils {
       msgList.addAll(errors);
 
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       return false;
     }
 
@@ -1130,7 +1130,7 @@ public class WorkflowUtils {
           .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW), msgList);
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       return false;
     }
 
@@ -1144,7 +1144,7 @@ public class WorkflowUtils {
     try {
       user = ALEipUtils.getALEipUser(request.getUserId());
     } catch (ALDBErrorException e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       user = new ALEipUser();
     }
 
@@ -1155,7 +1155,7 @@ public class WorkflowUtils {
       body.append(getMessageContent(request, ALMailUtils.CR, false, mailBean));
       return body.toString();
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       return "";
     }
 
@@ -1168,7 +1168,7 @@ public class WorkflowUtils {
     try {
       user = ALEipUtils.getALEipUser(request.getUserId());
     } catch (ALDBErrorException e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       user = new ALEipUser();
     }
 
@@ -1179,7 +1179,7 @@ public class WorkflowUtils {
       body.append(getMessageContent(request, ALMailUtils.CR, true, mailBean));
       return body.toString();
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[WorkflowUtils]", e);
       return "";
     }
   }

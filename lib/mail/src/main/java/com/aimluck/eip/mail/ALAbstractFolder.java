@@ -301,7 +301,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALAbstractFolder]", t);
       return false;
     }
     return true;

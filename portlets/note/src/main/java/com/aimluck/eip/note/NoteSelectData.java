@@ -370,7 +370,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       return rd;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[NoteSelectData]", t);
       return null;
     }
   }

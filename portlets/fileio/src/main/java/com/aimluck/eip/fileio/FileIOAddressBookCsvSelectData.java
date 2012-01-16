@@ -297,7 +297,7 @@ public class FileIOAddressBookCsvSelectData extends
           break;
         }
       } catch (Exception e) {
-        logger.error("readError");
+        logger.error("readError", e);
       }
       if (reader.eof == -1) {
         break;
@@ -414,7 +414,7 @@ public class FileIOAddressBookCsvSelectData extends
           list.add(data);
         }
       } catch (Exception e) {
-        logger.error("readError");
+        logger.error("readError", e);
       }
       if (reader.eof == -1) {
         break;

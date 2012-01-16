@@ -661,7 +661,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
       }
 
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ReportReplyFormData]", e);
     }
     return true;
   }

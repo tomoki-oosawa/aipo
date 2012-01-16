@@ -135,7 +135,7 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ToDoStateUpdateData]", t);
       return false;
     }
     return true;

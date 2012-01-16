@@ -247,7 +247,7 @@ public class WhatsNewUtils {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WhatsNewUtils]", t);
     }
   }
 
@@ -797,7 +797,7 @@ public class WhatsNewUtils {
         }
       } catch (Throwable t) {
         Database.rollback();
-        logger.error(t);
+        logger.error("[WhatsNewUtils]", t);
       }
     }
   }
@@ -822,7 +822,7 @@ public class WhatsNewUtils {
       }
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WhatsNewUtils]", t);
     }
   }
 }

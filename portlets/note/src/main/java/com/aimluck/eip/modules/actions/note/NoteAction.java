@@ -39,7 +39,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 伝言メモの取り扱いに関するアクションクラスです。 
+ * 伝言メモの取り扱いに関するアクションクラスです。
  */
 public class NoteAction extends ALBaseAction {
 
@@ -88,7 +88,7 @@ public class NoteAction extends ALBaseAction {
         doNote_list(rundata, context);
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[NoteAction]", e);
     }
   }
 

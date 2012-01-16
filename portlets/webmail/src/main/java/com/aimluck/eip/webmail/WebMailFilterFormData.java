@@ -370,7 +370,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
         filter.getFilterName());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailFilterFormData]", t);
       return false;
     }
     return true;
@@ -427,7 +427,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailFilterFormData]", t);
       return false;
     }
   }
@@ -482,7 +482,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
         filter_name.getValue());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailFilterFormData]", t);
       return false;
     }
     return true;

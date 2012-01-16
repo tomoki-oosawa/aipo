@@ -350,7 +350,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailFolderFormData]", t);
       return false;
     }
   }
@@ -389,7 +389,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         folder_name.getValue());
       return true;
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error("[WebMailFolderFormData]", t);
       return false;
     }
   }
@@ -430,7 +430,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[WebMailFolderFormData]", t);
       return false;
     }
   }

@@ -141,7 +141,7 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error(ex);
+      logger.error("[MsgboardTopicScreen]", ex);
       return;
     }
   }

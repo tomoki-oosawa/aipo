@@ -126,7 +126,7 @@ public class SystemNetworkSelectData extends
       rd.setGlobalUrl(globalurl);
 
     } catch (SocketException e) {
-      logger.error(e);
+      logger.error("[SystemNetworkSelectData]", e);
     }
     return rd;
   }

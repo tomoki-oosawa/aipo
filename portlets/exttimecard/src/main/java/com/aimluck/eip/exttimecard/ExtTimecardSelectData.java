@@ -854,7 +854,7 @@ public class ExtTimecardSelectData extends
 
       return list;
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ExtTimecardSelectData]", e);
       return null;
     }
   }

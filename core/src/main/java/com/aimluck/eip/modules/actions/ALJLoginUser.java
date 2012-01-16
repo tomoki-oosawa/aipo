@@ -368,7 +368,7 @@ public class ALJLoginUser extends ActionEvent {
       }
 
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ALJLoginUser]", e);
     }
 
   }

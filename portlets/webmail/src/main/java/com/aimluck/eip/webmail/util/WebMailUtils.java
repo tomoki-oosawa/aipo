@@ -488,7 +488,7 @@ public class WebMailUtils {
       res = handler.getNewMailSum(rcontext);
     } catch (Exception e) {
       res = -1;
-      logger.error(e);
+      logger.error("[WebMailUtils]", e);
     }
     return (res > 0 ? true : false);
   }

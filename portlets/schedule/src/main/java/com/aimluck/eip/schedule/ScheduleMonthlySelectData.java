@@ -926,7 +926,7 @@ public class ScheduleMonthlySelectData extends
         target_user_name = tempuser.getName().getValue();
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("[ScheduleMonthlySelectData]", e);
       target_user_name = null;
     }
 

@@ -94,7 +94,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
       return msg;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALDbLocalFolder]", t);
       return null;
     }
   }
@@ -191,7 +191,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error(t);
+      logger.error("[ALDbLocalFolder]", t);
       return false;
     }
     return true;

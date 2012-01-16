@@ -403,7 +403,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error("[ALEipUtils]", t);
     }
 
     return list;
@@ -445,7 +445,7 @@ public class ALEipUtils {
         list.add(tuser.getUserId());
       }
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error("[ALEipUtils]", t);
     }
 
     return list;
@@ -495,7 +495,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error("[ALEipUtils]", t);
     }
 
     return list;
@@ -526,7 +526,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error(t);
+      logger.error("[ALEipUtils]", t);
     }
     return list;
   }
@@ -1761,7 +1761,7 @@ public class ALEipUtils {
       registeredUserNum = size - 2;
     } catch (Exception ex) {
       logger.error("ユーザー情報をDBから取得できませんでした。");
-      logger.error(ex);
+      logger.error("[ALEipUtils]", ex);
       return -1;
     }
     return registeredUserNum;
@@ -1793,7 +1793,7 @@ public class ALEipUtils {
       registeredUserNum = size - 2;
     } catch (Exception ex) {
       logger.error("ユーザー情報をDBから取得できませんでした。");
-      logger.error(ex);
+      logger.error("[ALEipUtils]", ex);
       return -1;
     }
     return registeredUserNum;
@@ -1820,7 +1820,7 @@ public class ALEipUtils {
       res = role != null;
     } catch (JetspeedSecurityException e) {
       logger.error("管理者ロールが存在しません。");
-      logger.error(e);
+      logger.error("[ALEipUtils]", e);
     }
     return res;
   }
