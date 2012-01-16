@@ -473,6 +473,10 @@ public class WebMailSelectData extends
     return accountId;
   }
 
+  public boolean isTheMailAccountSelected(WebmailAccountLiteBean record) {
+    return accountId == record.getAccountId().getValue();
+  }
+
   /**
    * 現在選択中のフォルダIDを取得します。
    * 

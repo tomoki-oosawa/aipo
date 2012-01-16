@@ -63,10 +63,9 @@
 <div class="auiWidget clearfix">
 <ul>
 #foreach( $record in $result.MailAccountList )
-<li#if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="active"#end>
-<div class="menuTitle">
+
+<li#if ($result.isTheMailAccountSelected($record)) class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$screen).addQueryData('accountid',$!record.AccountId))', '$!portlet.ID');">$!record.AccountName</a>
-</div>
 </li>
 #end
 </ul>
