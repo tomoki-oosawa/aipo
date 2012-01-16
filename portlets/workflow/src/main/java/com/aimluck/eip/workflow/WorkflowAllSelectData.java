@@ -305,12 +305,19 @@ public class WorkflowAllSelectData extends
         ExpressionFactory.likeExp(
           EipTWorkflowRequest.REQUEST_NAME_PROPERTY,
           "%" + search + "%");
+      Expression ex3 =
+        ExpressionFactory.likeExp(
+          EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY
+            + "."
+            + EipTWorkflowCategory.CATEGORY_NAME_PROPERTY,
+          "%" + search + "%");
+
       SelectQuery<EipTWorkflowRequest> q =
         Database.query(EipTWorkflowRequest.class);
       SelectQuery<EipTWorkflowRequestMap> qm =
         Database.query(EipTWorkflowRequestMap.class);
-      // q.andQualifier(ex1.orExp(ex2.orExp(ex11)));
-      q.andQualifier(ex1.orExp(ex2));
+
+      q.andQualifier(ex1.orExp(ex2).orExp(ex3));
       qm.andQualifier(ex11);
 
       List<EipTWorkflowRequest> queryList = q.fetchList();
