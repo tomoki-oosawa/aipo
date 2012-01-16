@@ -33,7 +33,7 @@ aipo.addressbook.onLoadAddressbookDialog = function(portlet_id){
         for(i = 0 ; i < s_o.length; i ++ ) {
             fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
         }
-    }     
+    }
 
     var obj = dojo.byId("lastname");
     if(obj){
@@ -47,7 +47,7 @@ aipo.addressbook.onLoadAddressbookCompanyDialog = function(portlet_id){
     if(obj){
         obj.focus();
     }
-    
+
 }
 
 aipo.addressbook.onLoadAddressbookGroupDialog = function(portlet_id){
@@ -62,7 +62,7 @@ aipo.addressbook.onLoadAddressbookGroupDialog = function(portlet_id){
             mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
         }
     }
-    
+
     var obj = dojo.byId("group_name");
     if(obj){
         obj.focus();
@@ -71,10 +71,10 @@ aipo.addressbook.onLoadAddressbookGroupDialog = function(portlet_id){
 
 aipo.addressbook.formSwitchCompanyInput = function(button) {
     if(button.form.is_new_company.value == 'TRUE' || button.form.is_new_company.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = dojo.byId('addressbook_val_switch1').innerText;
         aipo.addressbook.formCompanyInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = dojo.byId('addressbook_val_switch2').innerText;
         aipo.addressbook.formCompanyInputOn(button.form);
     }
 }
@@ -89,10 +89,10 @@ aipo.addressbook.formCompanyInputOn = function(form) {
 aipo.addressbook.formCompanyInputOff = function(form) {
     dojo.byId('AddressBookCompanyInputField').style.display = "none";
     dojo.byId('AddressBookCompanySelectField').style.display = "";
-    
+
     form.is_new_company.value = 'FALSE';
-    
-    
+
+
 }
 
 aipo.addressbook.onSubmitSerchButton = function(form,url,p_id,tab){
@@ -108,10 +108,10 @@ aipo.addressbook.onSubmitSerchButton = function(form,url,p_id,tab){
 	       }
         }
      }
-     
+
      var search_params = [["sword",form.sword.value],["tab",tab],["mode",form.mode.value]];
      aipo.viewPage(exec_url, p_id, search_params);
-     
+
 }
 
 aipo.addressbook.onReceiveMessage = function(msg){

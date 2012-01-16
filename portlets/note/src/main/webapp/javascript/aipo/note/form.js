@@ -62,7 +62,11 @@ aipo.note.formCategoryInputOff = function(form) {
 }
 
 aipo.note.changeGroup = function(link, group, sel) {
-    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">（選択してください）<\/option><option value="all">（ユーザー全員）<\/option>');
+	// IE文字化け対策
+	var val1 = dojo.byId('note_val_destuser1').innerText;
+	var val2 = dojo.byId('note_val_destuser2').innerText;
+
+    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">'+val1+'<\/option><option value="all">'+val2+'<\/option>');
 }
 
 aipo.note.onReceiveMessage = function(msg){

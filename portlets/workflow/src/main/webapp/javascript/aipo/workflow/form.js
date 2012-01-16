@@ -45,8 +45,8 @@ aipo.workflow.onLoadWorkflowDialog = function(portlet_id){
     if(obj){
        obj.focus();
     }
-    
-    if(dojo.byId("mode_"+portlet_id).value=="insert")   
+
+    if(dojo.byId("mode_"+portlet_id).value=="insert")
     	dojo.byId("category_id").onchange();
 }
 
@@ -63,7 +63,7 @@ aipo.workflow.onChangeSelecter = function(portletId , url , values, named , flgN
 }
 
 aipo.workflow.setTemplate = function(array,rtnData){
-	
+
         var jsonData = aipo.workflow.getJsonDataOne(rtnData);
         var routeH = jsonData.route_h;
         var route = jsonData.route;
@@ -154,7 +154,7 @@ aipo.workflow.categorySetTemplate = function(array,rtnData){
             }
             dojo.byId(array["namedRoute"]).value = routeH;
 
-            dojo.byId('is_saved_route_button').value = 'ユーザー一覧から選択する';
+            dojo.byId('is_saved_route_button').value = dojo.byId('workflow_val_route1').innerText;
             dojo.byId('workflowRouteSelectField').style.display = "";
             dojo.byId('workflowRouteInputField').style.display = "none";
             dojo.byId('is_saved_route').value = 'TRUE';
@@ -187,7 +187,7 @@ aipo.workflow.onChangeNote = function(){
 aipo.workflow.NoteChangeConfirm = function(flgName){
 
     if(dojo.byId(flgName).checked){
-      if(!confirm( '申請内容は変更されています\n分類を変更すると内容が消えてしまいますがよろしいですか？')){
+      if(!confirm(dojo.byId('workflow_val_confirm1').innerText)){
         return false;
       }
     }
@@ -247,10 +247,10 @@ aipo.workflow.submit_list = function(form) {
 
 aipo.workflow.formSwitchRouteSelect = function(button) {
     if(button.form.is_saved_route.value == 'TRUE' || button.form.is_saved_route.value == 'true') {
-        button.value = '申請経路一覧から選択する';
+        button.value = dojo.byId('workflow_val_route2').innerText;
         aipo.workflow.formRouteSelectOff(button.form);
     } else {
-        button.value = 'ユーザー一覧から選択する';
+        button.value = dojo.byId('workflow_val_route1').innerText;
         aipo.workflow.formRouteSelectOn(button.form);
     }
 }
@@ -270,17 +270,17 @@ aipo.workflow.formRouteSelectOff = function(form) {
 }
 
 aipo.workflow.getJsonDataOne = function(rtnData) {
-	
+
 	var cStartIdx = rtnData["type"].indexOf("\/*");
     var cEndIdx = rtnData["type"].lastIndexOf("*\/");
     var rawData = dojo.eval(rtnData["type"].substring(cStartIdx+2, cEndIdx));
-        
+
     var jsonData = "";
-        
+
     if(dojo.isArray(rawData) && rawData.length > 0) {
         jsonData = rawData[0];
     }
-	
+
 	return jsonData;
 }
 

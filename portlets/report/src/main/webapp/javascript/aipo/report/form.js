@@ -133,7 +133,7 @@ aipo.report.shrinkMember = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"参加ユーザー選択\" onclick=\"aipo.report.expandMember();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('report_val_member1').innerText+'\" onclick=\"aipo.report.expandMember();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -163,7 +163,7 @@ aipo.report.shrinkMap = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"通知先選択\" onclick=\"aipo.report.expandMap();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('report_val_member2').innerText+'\" onclick=\"aipo.report.expandMap();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -192,7 +192,7 @@ aipo.report.expandMember = function(){
             }
        }
        HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"選択画面を隠す\" onclick=\"aipo.report.shrinkMember();\" />'
+       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('report_val_member3').innerText+'\" onclick=\"aipo.report.shrinkMember();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }

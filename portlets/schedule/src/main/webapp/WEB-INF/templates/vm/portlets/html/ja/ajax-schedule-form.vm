@@ -37,6 +37,17 @@
 #set($tabs = [[$subtitle , "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
+## IE文字化け対策
+<span id="schedule_val_category1" style="display:none;">（未分類）</span>
+<span id="schedule_val_repeat1" style="display:none">繰り返す</span>
+<span id="schedule_val_repeat2" style="display:none">繰り返さない</span>
+<span id="schedule_val_span1" style="display:none">期間で指定する</span>
+<span id="schedule_val_span2" style="display:none">時間で指定する</span>
+<span id="schedule_val_confirm1" style="display:none">既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？</span>
+<span id="schedule_val_member1" style="display:none">参加ユーザー選択</span>
+<span id="schedule_val_member2" style="display:none">選択画面を隠す</span>
+<span id="schedule_val_facility1" style="display:none">設備選択</span>
+## ---------------------------------------------------------------------------
 #ALdialogheaderCloseJS($subtitle "aipo.schedule.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>

@@ -107,10 +107,10 @@ aipo.blog.popupCenterHide = function() {
 
 aipo.blog.formSwitchThemaInput = function(button) {
     if(button.form.is_new_thema.value == 'TRUE' || button.form.is_new_thema.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = dojo.byId('blog_val_switch1').innerText;
         aipo.blog.formThemaInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = dojo.byId('blog_val_switch2').innerText;
         aipo.blog.formThemaInputOn(button.form);
     }
 }
@@ -167,7 +167,7 @@ aipo.blog.onSubmitSerchButton = function(form,url,p_id){
 }
 
 aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
-  if(confirm('このコメントを削除してもよろしいですか？')) {
+  if(confirm(dojo.byId('blog_val_confirm1').innerText)) {
     disableButton(button.form);
     var url = button.form.action + '&mode=commentdel&' + button.name + '=1&comment_id='+id;
     aimluck.io.disableForm(button.form, true);
@@ -178,7 +178,7 @@ aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
 }
 
 aipo.blog.delBlogEntry = function(button, indicator_id, p_id) {
-  if(confirm('この記事を削除してもよろしいですか？\nなお、このブログに含まれるコメントもすべて削除されます。')) {
+  if(confirm(dojo.byId('blog_val_confirm2').innerText)) {
     disableButton(button.form);
     var url = button.form.action + '&mode=delete&' + button.name + '=1';
     aimluck.io.disableForm(button.form, true);

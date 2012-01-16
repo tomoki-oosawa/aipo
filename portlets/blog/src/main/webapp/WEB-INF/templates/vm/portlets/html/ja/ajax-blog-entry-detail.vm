@@ -20,6 +20,10 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
+## IE文字化け対策
+<span id="blog_val_confirm1" style="display:none">このコメントを削除してもよろしいですか？</span>
+<span id="blog_val_confirm2" style="display:none">この記事を削除してもよろしいですか？<br>なお、このブログに含まれるコメントもすべて削除されます。</span>
+## ---------------------------------------------------------------------------
 #ALdialogheader("記事詳細（${result.Detail.OwnerName}）")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>

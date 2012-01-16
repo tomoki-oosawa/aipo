@@ -40,6 +40,11 @@
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
+## IE文字化け対策
+<span id="workflow_val_route1" style="display:none">ユーザー一覧から選択する</span>
+<span id="workflow_val_route2" style="display:none">申請経路一覧から選択する</span>
+<span id="workflow_val_confirm1" style="display:none">申請内容は変更されています。<br>分類を変更すると内容が消えてしまいますがよろしいですか？</span>
+## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

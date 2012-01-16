@@ -31,6 +31,11 @@
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
+## IE文字化け対策
+<span id="report_val_member1" style="display:none">参加ユーザー選択</span>
+<span id="report_val_member2" style="display:none">通知先選択</span>
+<span id="report_val_member3" style="display:none">選択画面を隠す</span>
+## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

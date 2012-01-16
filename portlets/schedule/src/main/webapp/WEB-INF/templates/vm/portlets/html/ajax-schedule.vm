@@ -16,7 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
+## ---------------------------------------------------------------------------
+## IE文字化け対策
+<span id="schedule_val_tooltip1" style="display:none;">読み込み中...</span>
+<span id="schedule_val_tooltip2" style="display:none;">場所</span>
+<span id="schedule_val_tooltip3" style="display:none;">参加者</span>
+<span id="schedule_val_tooltip4" style="display:none;">設備</span>
+## ---------------------------------------------------------------------------
 #set($schedulescreen = "ScheduleScreen")
 #set($tabs = [["個人・1日", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["個人・週間", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["個人・月間", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["グループ・1日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["グループ・週間", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
 

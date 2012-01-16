@@ -29,6 +29,10 @@
 #set ($event_submit = "eventSubmit_doMemo_update")
 #end
 ##-------------------------------------------------------------
+## IE文字化け対策
+<span id="addressbook_val_switch1" style="display:none">新しく入力する</span>
+<span id="addressbook_val_switch2" style="display:none">一覧から選択する</span>
+## ---------------------------------------------------------------------------
 
 ##;aimluck.io.selectAllOptions(this.group_to);
 

@@ -60,7 +60,7 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
         });
 
         var tooltipObject = new aipo.widget.ToolTip({
-            label: "<div class='indicator'>読み込み中...</div>",
+            label: "<div class='indicator'>"+dojo.byId('schedule_val_tooltip1').innerText+"</div>",
             connectId: nodeList
         }, portlet_id, function(containerNode, node){
             var regExp = new RegExp("schedule-" + portlet_id + "-([0-9]+)");
@@ -121,15 +121,15 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
             }
 
             if(schedule.place != ""){
-                placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + schedule.place + "</li></ul>";
+                placehtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip2').innerText+"</span><br/><ul><li>" + schedule.place + "</li></ul>";
             }
 
             if(mbhtml != ""){
-                mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+                mbhtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip3').innerText+"</span><br/><ul>" + mbhtml + "</ul>";
             }
 
             if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">設備</span><br/><ul>" + mbfhtml + "</ul>";
+                mbfhtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip4').innerText+"</span><br/><ul>" + mbfhtml + "</ul>";
             }
 
             var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
@@ -161,12 +161,13 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
     var common_url = dojo.byId('commonUrl'+portlet_id);
     if(common_url){
         var common_category_id = dojo.byId('commonCategoryid'+portlet_id);
+        var val1 = dojo.byId('schedule_val_category1').innerText;
         params = {
             url:common_url.value,
             key:"categoryId",
             value:"categoryName",
             selectedId:common_category_id.value,
-            preOptions: { key:'1', value:'（未分類）' }
+            preOptions: { key:'1', value:val1 }
         };
         aimluck.io.createOptions("common_category_id", params);
 
@@ -298,10 +299,12 @@ aipo.schedule.formPreSubmit = function (form) {
 
 aipo.schedule.formSwitchRepeat = function(button) {
     if(button.form.is_repeat.value == 'TRUE' || button.form.is_repeat.value == 'true') {
-        button.value = '繰り返す';
+    	var val = dojo.byId('schedule_val_repeat1').innerText;
+        button.value = val;
         aipo.schedule.formRepeatOff(button.form);
     } else {
-        button.value = '繰り返さない';
+    	var val = dojo.byId('schedule_val_repeat2').innerText;
+        button.value = val;
         aipo.schedule.formRepeatOn(button.form);
     }
 }
@@ -327,17 +330,17 @@ aipo.schedule.formSwitchAllDay = function(checkbox) {
 
 aipo.schedule.formSwitchSpan = function(button) {
     if(button.form.is_span.value == 'TRUE' || button.form.is_span.value == 'true') {
-        button.value = '期間で指定する';
+        button.value = dojo.byId('schedule_val_span1').innerText;
         if(button.form.is_repeat.value != 'TRUE' && button.form.is_repeat.value != 'true') {
-            button.form.repeat_button.value = '繰り返す';
+            button.form.repeat_button.value = dojo.byId('schedule_val_repeat1').innerText;
             aipo.schedule.formRepeatOff(button.form);
         } else {
-            button.form.repeat_button.value = '繰り返さない';
+            button.form.repeat_button.value = dojo.byId('schedule_val_repeat2').innerText;
             aipo.schedule.formRepeatOn(button.form);
         }
         aipo.schedule.formSpanOff(button.form);
     } else {
-        button.value = '時間で指定する';
+        button.value = dojo.byId('schedule_val_span2').innerText;
         aipo.schedule.formSpanOn(button.form);
     }
 }
@@ -411,7 +414,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
     dojo.byId('spanField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatField').style.display = "";
-    dojo.byId('repeatField').text = '繰り返さない';
+    dojo.byId('repeatField').text = dojo.byId('schedule_val_repeat2').innerText;
     dojo.byId('repeatButtonField').style.display = "";
     dojo.byId('allDayField').style.display = "none";
 
@@ -560,7 +563,7 @@ aipo.schedule.onReceiveMessage = function(msg){
 
     if(msg != null && msg.match(/duplicate_facility/)){
 
-        if(confirm('既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？')) {
+        if(confirm(dojo.byId('schedule_val_confirm1').innerText)) {
 		    var form = dojo.byId('_scheduleForm');
 		    if(form){
 		      form.ignore_duplicate_facility.value = "true";
@@ -604,7 +607,7 @@ aipo.schedule.shrinkMember = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"参加ユーザー選択\" onclick=\"aipo.schedule.expandMember();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member1').innerText+'\" onclick=\"aipo.schedule.expandMember();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -633,7 +636,7 @@ aipo.schedule.expandMember = function(){
             }
        }
        HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"選択画面を隠す\" onclick=\"aipo.schedule.shrinkMember();\" />'
+       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member2').innerText+'\" onclick=\"aipo.schedule.shrinkMember();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -661,7 +664,7 @@ aipo.schedule.shrinkFacility = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"設備予約\" onclick=\"aipo.schedule.expandFacility();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_facility1').innerText+'\" onclick=\"aipo.schedule.expandFacility();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -690,7 +693,7 @@ aipo.schedule.expandFacility = function(){
             }
        }
        HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"選択画面を隠す\" onclick=\"aipo.schedule.shrinkFacility();\" />'
+       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member2').innerText+'\" onclick=\"aipo.schedule.shrinkFacility();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }

@@ -49,10 +49,10 @@ aipo.todo.onLoadCategoryDialog = function(portlet_id){
 
 aipo.todo.formSwitchCategoryInput = function(button) {
     if(button.form.is_new_category.value == 'TRUE' || button.form.is_new_category.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = dojo.byId('todo_val_switch1').innerText;
         aipo.todo.formCategoryInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = dojo.byId('todo_val_switch2').innerText;
         aipo.todo.formCategoryInputOn(button.form);
     }
 }

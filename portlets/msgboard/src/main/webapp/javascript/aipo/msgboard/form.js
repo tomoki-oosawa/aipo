@@ -85,10 +85,10 @@ aipo.msgboard.expandImageWidth = function(img) {
 
 aipo.msgboard.formSwitchCategoryInput = function(button) {
     if(button.form.is_new_category.value == 'TRUE' || button.form.is_new_category.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = dojo.byId('msgboard_val_switch1').innerText;
         aipo.msgboard.formCategoryInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = dojo.byId('msgboard_val_switch2').innerText;
         aipo.msgboard.formCategoryInputOn(button.form);
     }
 }
