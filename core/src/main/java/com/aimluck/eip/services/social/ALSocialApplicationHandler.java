@@ -243,6 +243,11 @@ public abstract class ALSocialApplicationHandler {
       Map<String, Class<?>> classMap = new HashMap<String, Class<?>>();
       classMap.put("oauthService", ALOAuthService.class);
       classMap.put("userPrefs", HashMap.class);
+
+      if (jsonArray == null) {
+        return maps;
+      }
+
       int size = jsonArray.size();
       for (int i = 0; i < size; i++) {
         try {

@@ -87,9 +87,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Static initialization of the logger for this class
    */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CayenneDatabasePsmlManagerService.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CayenneDatabasePsmlManagerService.class.getName());
 
   private final Map<String, PSMLDocument> psmlCache =
     new HashMap<String, PSMLDocument>();
@@ -217,9 +216,8 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
           "PsmlImportManager");
 
       PsmlImporter importer = new PsmlImporter();
-      if (!importer.run(exporterService, this)) {
-        throw new Exception("Psml import failed.");
-      }
+      importer.run(exporterService, this);
+
     } catch (Exception e) {
       logger.warn(
         "CayenneDatabasePsmlManagerService.init: exception while importing:",
