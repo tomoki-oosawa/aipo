@@ -83,7 +83,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       setupLists(rundata, context);
       return getScheduleList(rundata, context);
     } catch (Exception e) {
-      logger.error("[ScheduleOnedaySelectData]", e);
+      logger.error("[ScheduleSearchSelectData]", e);
       throw new ALDBErrorException();
     }
   }

@@ -147,7 +147,7 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
 
       return new ResultList<VEipTScheduleList>(list);
     } catch (Exception e) {
-      logger.error("[ScheduleOnedaySelectData]", e);
+      logger.error("[CellScheduleOnedaySelectData]", e);
       throw new ALDBErrorException();
     }
   }
@@ -238,7 +238,7 @@ public class CellScheduleOnedaySelectData extends ScheduleOnedaySelectData {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("[CellScheduleOnedaySelectData]", e);
 
       return null;
     }

@@ -174,7 +174,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
       return new ResultList<VEipTScheduleList>(resultList);
     } catch (Exception e) {
-      logger.error("[ScheduleOnedaySelectData]", e);
+      logger.error("[ScheduleListSelectData]", e);
       throw new ALDBErrorException();
     }
   }
@@ -276,7 +276,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       con.addResultData(rd);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("[ScheduleListSelectData]", e);
       return null;
     }
     return rd;

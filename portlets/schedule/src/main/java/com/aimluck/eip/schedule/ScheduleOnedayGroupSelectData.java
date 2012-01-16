@@ -190,7 +190,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
           ALAccessControlConstants.VALUE_ACL_INSERT);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("[ScheduleOnedayGroupSelectData]", ex);
     }
   }
 
@@ -291,7 +291,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
       return new ResultList<VEipTScheduleList>(list);
     } catch (Exception e) {
-      logger.error("[ScheduleOnedaySelectData]", e);
+      logger.error("[ScheduleOnedayGroupSelectData]", e);
       throw new ALDBErrorException();
     }
   }
