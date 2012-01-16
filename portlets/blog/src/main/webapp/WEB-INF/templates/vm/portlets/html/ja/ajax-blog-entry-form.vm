@@ -40,8 +40,9 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
+
 #ALtableheaderWide()
-#ALtdcaption("$!result.getFieldName('createDate')")
+#ALtdcaption("#ALrequired($!result.getFieldName('createDate'))")
 #ALtditemheader()
 <div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="日付" hiddenId="date" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="input_date" dateId="date" displayCheck="none"></div>
 <select name="date_hour" size="1">
@@ -55,13 +56,12 @@
 #end
 </select>
 #ALtditemfooter()
-#ALtdcaption("$!result.getFieldName('thema_id')")
+#ALtdcaption("#ALrequired($!result.getFieldName('thema_id'))")
 #ALtditemheader()
 <div id="blogThemaInputField" #if(!$!{result.isNewThema})style="display:none"#end>
-#ALtableheaderSubWide()
-#ALtdcaption("#ALrequired($!result.getBlogThema().getFieldName('thema_name'))")
-#ALtditem("#ALtextfield('thema_name' $!result.BlogThema.ThemaName '90%' 50 'active')")
-#ALtablefooter()
+
+#ALtextfield('thema_name' $!result.BlogThema.ThemaName '90%' 50 'active')
+
 </div>
 <div id="blogThemaSelectField" #if($!{result.isNewThema})style="display:none"#end>
 #ALselectpdheader("thema_id" "99%" "")
