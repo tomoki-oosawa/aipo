@@ -16,7 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
+## ---------------------------------------------------------------------------
+#macro(ALtdcaptionAttWebmail $title)
+<tr>
+<td class="caption" style="width:160px;">
+<span class="required">
+<div style="white-space:normal;width:110px;">
+${title}
+</div>
+</span>
+</td>
+#end
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
 #set ($action_str = "追加する")
@@ -36,7 +46,6 @@
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #else
-
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
@@ -47,27 +56,27 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('account_name'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('account_name'))
 #ALtditem("#ALtextfield('account_name' $!result.AccountName '60%' 20 'active')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('smtpserver_name'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('smtpserver_name') )
 #ALtditem("#ALtextfield('smtpserver_name' $!result.SmtpserverName '60%' 50 'disabled')#ALcaution('（半角英数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3server_name'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('pop3server_name') )
 #ALtditem("#ALtextfield('pop3server_name' $!result.Pop3serverName '60%' 50 'disabled')#ALcaution('（半角英数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3user_name'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('pop3user_name') )
 #ALtditem("#ALtextfield('pop3user_name' $!result.Pop3userName '60%' 50 'disabled')#ALcaution('（半角英数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3_password'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('pop3_password') )
 #ALtditemheader()
 <input class="text" name="pop3_password" value="$!result.Pop3Password" type="password" size="20" maxlength="50" >#ALcaution('（半角英数字）')
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('mail_user_name'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('mail_user_name') )
 #ALtditem("#ALtextfield('mail_user_name' $!result.MailUserName '60%' 50 'active')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('mail_address'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('mail_address') )
 #ALtditem("#ALtextfield('mail_address' $!result.MailAddress '60%' 50 'disabled')#ALcaution('（半角英数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('smtp_port'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('smtp_port') )
 #ALtditem("#ALtextfield('smtp_port' $!result.SmtpPort '60%' 5 'disabled')#ALcaution('（半角数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3_port'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('pop3_port') )
 #ALtditem("#ALtextfield('pop3_port' $!result.Pop3Port '60%' 5 'disabled')#ALcaution('（半角数字）')")
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('auth_send_flg'))" "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName('auth_send_flg'))
 #ALtditemheader()
 <input name="auth_send_flg" type="radio" value="0" id="$!{portlet.ID}auth_send_id0" #if ($!result.AuthSendFlg.toString() == "0") checked="checked" #end onclick="aipo.webmail.switchAuthSend(this)" />
 <label for="$!{portlet.ID}auth_send_id0">認証なし</label>
@@ -84,29 +93,29 @@
 </div>
 </span>
 #ALtditemfooter()
-#ALtdcaptionAtt("$!result.getFieldName('auth_receive_flag')" "style='width:210px;'")
+#ALtdcaptionAttWebmail("$!result.getFieldName('auth_receive_flag')" )
 #ALtditemheader()
 <input name="auth_receive_flag" type="radio" value="0" id="$!{portlet.ID}auth_receive_id0" #if ($!result.AuthReceiveFlg.toString() == "0") checked="checked" #end>
 <label for="$!{portlet.ID}auth_receive_id0">標準</label>
 <input name="auth_receive_flag" type="radio" value="1" id="$!{portlet.ID}auth_receive_id1" #if ($!result.AuthReceiveFlg.toString() == "1") checked="checked" #end>
 <label for="$!{portlet.ID}auth_receive_id1">APOP</label>
 #ALtditemfooter()
-#ALtdcaptionAtt("$!result.getFieldName('smtp_encryption_flag')" "style='width:210px;'")
+#ALtdcaptionAttWebmail("$!result.getFieldName('smtp_encryption_flag')" )
 #ALtditemheader()
 <input name="smtp_encryption_flag" type="radio" value="0" id="$!{portlet.ID}smtp_encryption_id0" #if ($!result.SmtpEncryptionFlag.toString() == "0") checked="checked" #end>
 <label for="$!{portlet.ID}smtp_encryption_id0">暗号化しない</label>
 <input name="smtp_encryption_flag" type="radio" value="1" id="$!{portlet.ID}smtp_encryption_id1" #if ($!result.SmtpEncryptionFlag.toString() == "1") checked="checked" #end>
 <label for="$!{portlet.ID}smtp_encryption_id1">SSL暗号化</label>
 #ALtditemfooter()
-#ALtdcaptionAtt("$!result.getFieldName('pop3_encryption_flag')" "style='width:210px;'")
+#ALtdcaptionAttWebmail("$!result.getFieldName('pop3_encryption_flag')" )
 #ALtditemheader()
 <input name="pop3_encryption_flag" type="radio" value="0" id="$!{portlet.ID}pop3_encryption_id0" #if ($!result.Pop3EncryptionFlag.toString() == "0") checked="checked" #end>
 <label for="$!{portlet.ID}pop3_encryption_id0">暗号化しない</label>
 <input name="pop3_encryption_flag" type="radio" value="1" id="$!{portlet.ID}pop3_encryption_id1" #if ($!result.Pop3EncryptionFlag.toString() == "1") checked="checked" #end>
 <label for="$!{portlet.ID}pop3_encryption_id1">SSL暗号化</label>
 #ALtditemfooter()
-#ALtdcaptionAtt($!result.getFieldName("del_at_pop3_flg") "style='width:210px;'")
-<td class="item" nowrap="nowrap">
+#ALtdcaptionAttWebmail($!result.getFieldName("del_at_pop3_flg") )
+<td nowrap="nowrap">
 <input name="del_at_pop3_flg" type="radio" value="1" id="$!{portlet.ID}del_at_pop3_flg_enable_id" #if ($!result.DelAtPop3Flg.toString() == "1") checked="checked" #end onclick="aipo.webmail.switchDelAtPop3(this)">
 <label for="$!{portlet.ID}del_at_pop3_flg_enable_id">有効</label>
 <input name="del_at_pop3_flg" type="radio" value="0" id="$!{portlet.ID}del_at_pop3_flg_disable_id" #if ($!result.DelAtPop3Flg.toString() == "0") checked="checked" #end onclick="aipo.webmail.switchDelAtPop3(this)">
@@ -126,14 +135,14 @@
 　メールが削除されないことがございます。
 </div>
 </td>
-#ALtdcaptionAtt($!result.getFieldName("non_received_flg") "style='width:210px;'")
+#ALtdcaptionAttWebmail($!result.getFieldName("non_received_flg") )
 #ALtditemheader()
 <input name="non_received_flg" type="radio" value="1" id="$!{portlet.ID}non_received_flg_enable_id" #if ($!result.NonReceivedFlg.toString() == "1") checked="checked" #end>
 <label for="$!{portlet.ID}non_received_flg_enable_id">有効</label>
 <input name="non_received_flg" type="radio" value="0" id="$!{portlet.ID}non_received_flg_disable_id" #if ($!result.NonReceivedFlg.toString() == "0") checked="checked" #end>
 <label for="$!{portlet.ID}non_received_flg_disable_id">無効</label>
 #ALtditemfooter()
-#ALtdcaptionAtt("$!result.getFieldName('signature')" "style='width:210px;'")
+#ALtdcaptionAttWebmail("$!result.getFieldName('signature')" )
 #ALtditem("#ALtextarea('signature' $!result.Signature 10 20)")
 #ALtablefooter()
 #ALbuttonheader()
