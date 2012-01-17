@@ -100,13 +100,22 @@ function set_input_value(form) {
   	form.member_username_list.options[form.member_username_list.selectedIndex].value = usernameStr;
   }else{
   	form.member_username.value = usernameStr;
+  	if(form.member_username.value!=''){
+  	  form.member_username.nextSibling.style.display = "none";
+  	}
   }
 #else
   form.member_username.value = usernameStr;
+  if(form.member_username.value!=''){
+    form.member_username.nextSibling.style.display = "none";
+  }
 #end
 
   if (form.save_password.checked) {
     form.password.value = get_cookie("password");
+    if(form.password.value!=''){
+  	  form.password.nextSibling.style.display = "none";
+  	}
   }
 }
 
@@ -128,6 +137,9 @@ function set_select_value(form) {
 #end
   if (form.save_password.checked) {
     form.password.value = get_cookie("password");
+    if(form.password.value!=''){
+  	  form.password.nextSibling.style.display = "none";
+  	}
   }
 }
 
@@ -223,27 +235,26 @@ function change_group(form, value) {
 
 //-->
 </script>
-<div align="center" style="padding:5px 0px 0px 0px;">
+<!-- auiLoginBox -->
+<div id="auiLoginBox"><div id="auiLoginInner">
+<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="280" height="105" alt="Aipo6" /></div>
 $!data.Message
 <form name="frm" action="" onSubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
 <input name="org" type="hidden" value="$!result.OrgId" />
 <input name="username" type="hidden" value="" />
-<table class="listTable left" width="500">
-<tbody>
-#ALtdcaptionAtt("ユーザー名" 'width="150" nowrap')
-<td>
+<div class="field clearfix">
 <span id="login_username_field">
-<input class='text w75' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' />
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('member_username').focus();">ユーザー名</span>
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
-<select name='login_member' onChange='change_group(this.form, this.options[this.selectedIndex].value)'>
+<select name='login_member' onChange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
 <option value='all'>（部署全体）</option>
 #foreach( $record in $!result.PostMap )
 <option value='$!{record.PostId}'>$!record.PostName</option>
 #end
-</select><select name='member_username_list'>
+</select><select name='member_username_list' class="select2" tabindex="2">
 <option value=''>（選択してください）</option>
 #foreach($record in $!result.getUsers('LoginUser'))
 <option value='$!record.Name'>$!record.AliasName</option>
@@ -251,30 +262,25 @@ $!data.Message
 </select>
 </span>
 #end
-</td>
-#ALtdcaptionAtt("パスワード" '')
-<td>
-<input class="text w75" name="password" value="" type="password" maxlength="50" style="ime-mode:disabled" />
-</td>
-#if($enable_userlist)
-#ALtdcaption("")
-<td>
-<input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" />
-<label for="usr_list">ユーザー一覧から選択する</label>
-</td>
-#end
-#ALtdcaption("")
-<td>
-<input name="save_password" type="checkbox" value="save" id="pass" />
-<label for="pass">パスワードを保存する</label>
-</td>
-<tr>
-#ALtdcellAtt("#ALsubmitJS('login_submit' 'ログイン' 'setHiddenValue(this)')" 'colspan="2" align="center"')
-</tr>
-</tbody>
-</table>
-</form>
 </div>
+<div class="field">
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('password').focus();">パスワード</span>
+</div>
+<div class="clearfix">
+<div class="floatLeft">
+#if($enable_userlist)
+<input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list">ユーザー一覧から選択する</label><br />
+#end
+<input name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass">パスワードを保存する</label>
+</div>
+<div class="floatRight">
+<input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
+</div>
+</div>
+</form>
+</div></div>
+<!-- /auiLoginBox -->
+
 <script language="JavaScript" type="text/JavaScript">
 <!--
 init();

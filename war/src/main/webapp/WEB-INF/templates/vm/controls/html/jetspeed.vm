@@ -80,6 +80,9 @@ $portlet.getContent($data)
                             </table>
                             <!-- /MAIN OUTER  -->
 #else
+#if (!$data.User.hasLoggedIn())
+$!portlet.getContent($data)
+#else
                                                               <!-- PORTLET OUTER -->
                                                               <div class="dojoDndItem $!portlet.ID">
                                                               <div class="roundTopBlock clearfix">
@@ -146,4 +149,6 @@ $!portlet.getContent($data)
                                                               </div>
                                                               <!-- /PORTLET OUTER -->
 #end
+#end
+
 #end

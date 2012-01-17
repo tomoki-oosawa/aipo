@@ -18,19 +18,4 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALcontentheader("" "")
-<center>
-<div class="center" style="width:500px;">
-<br />
-<div style="text-align:left">
-<h3>セッションがタイムアウトしました。</h3>
-<br />
-ログインした状態で長時間操作をしなかったため、サーバとの接続が切断されました。<br />
-下のログインフォームから再度ログインしてください。
-
 #parse("/screens/html/TimeoutLoginForm.vm")
-
-</div>
-</div>
-</center>
-#ALcontentfooter()

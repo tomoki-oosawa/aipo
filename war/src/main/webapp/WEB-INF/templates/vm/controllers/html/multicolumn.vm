@@ -18,6 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if ($data.User.hasLoggedIn())
                                                       <!-- LAYOUT -->
                                                       <table class="tableWrapper">
                                                         <tbody>
@@ -37,3 +38,16 @@ $!portlet.getContent($data)
                                                         </tbody>
                                                       </table>
                                                       <!-- /LAYOUT -->
+#else
+#foreach ( $column in $portlets )
+#if ($!sizes.size() >= $velocityCount)
+#set ($idx = $velocityCount - 1 )
+#set ($width = $!sizes.elementAt($idx))
+#end
+                                                            <div dojoType="dojo.dnd.Source" withHandles="true">
+#foreach ( $portlet in $column )
+$!portlet.getContent($data)
+#end
+                                                            </div>
+#end
+#end

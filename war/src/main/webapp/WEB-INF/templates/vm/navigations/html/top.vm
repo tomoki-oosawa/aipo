@@ -34,14 +34,6 @@
 										<div class="hdLogout"><input type="button" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"></div>
 								</div>
 							</div></div>
-#else
-                            <div id="header" class="clearfix"><div class="inner">
-                             <div class="hdSign">
-								<div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo"></div>
-							   </div>
-                              <div class="alignright">
-                              </div>
-                            </div></div>
 #end
                             <!-- /HEADER -->
 <script language="JavaScript" type="text/javascript">
