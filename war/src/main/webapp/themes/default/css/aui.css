@@ -1,5 +1,5 @@
 * {
-	font-family:'���C���I', Meiryo, Verdana, sans-serif;
+	font-family:'メイリオ', Meiryo, Verdana, sans-serif;
 }
 html, body {
 	margin:0;
@@ -1503,17 +1503,17 @@ form input[type=radio] {
 
 /* auiIcon ********************/
 /*
-auiIcon�́uclass="auiIcon auiIconSetting"�v��
-�x�[�X�N���X�ƃT�u�N���X�𓯎��ɕt�^�����邱�ƁB
+auiIconは「class="auiIcon auiIconSetting"」と
+ベースクラスとサブクラスを同時に付与させること。
 
-��{�`�i�����N�Łj�F<a href="#" class="auiIcon auiIconSetting"><span>�ݒ�</span></a>
-��{�`�ispan�Łj�F<span class="auiIcon auiIconSetting"><span>�ݒ�</span></span>
+基本形（リンク版）：<a href="#" class="auiIcon auiIconSetting"><span>設定</span></a>
+基本形（span版）：<span class="auiIcon auiIconSetting"><span>設定</span></span>
 
-auiIcon�ŃA�C�R���̌`��S�Ă��ꌳ�Ǘ���
-�T�u�N���X�͂����܂Ŕw�i�ʒu�̕ύX�݂̂��s���B
+auiIconでアイコンの形状全てを一元管理し
+サブクラスはあくまで背景位置の変更のみを行う。
 
-IE6�͓���PNG�����p�ł��Ȃ����ߓ���GIF�֒u�������Ă���B
-���̂��߃o����\�������Ȃ�����hover�A�N�V�����𕕂���B
+IE6は透過PNGが利用できないため透過GIFへ置き換えている。
+そのためバリを表示させないためhoverアクションを封じる。
 */
 .auiIcon {
 	display:block;
