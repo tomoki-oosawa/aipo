@@ -47,7 +47,7 @@ public class UserListUtils {
       ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
       keyword = "";
     } else if (keywordParm != null) {
-      keywordParm.trim();
+      keywordParm = keywordParm.trim();
       ALEipUtils.setTemp(rundata, context, SEARCH_WORD, keywordParm);
       keyword = keywordParm;
     }

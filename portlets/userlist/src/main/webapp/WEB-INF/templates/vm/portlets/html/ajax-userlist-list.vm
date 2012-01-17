@@ -1,0 +1,77 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#AUIcontentsAreaHeader()
+
+#AUISummaryDiv()
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="UserListListScreen"/>
+<input type="hidden" name="mode" value="ajaxsearch"/>
+<input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
+<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+</form>
+#AUISummaryDivfooter()
+
+#if($result.List.size() == 0)
+指定された条件に該当するアドレスはありません。<br />
+#else
+#ALajaxlistformheader('AddressBook')
+#AUISummaryDiv()
+#AUIajaxpageview("UserListListScreen" $result)
+#AUIsearchresult($result.SearchWord.toString())
+#AUISummaryDivfooter()
+#AUIrowTableWide()
+<tr>
+#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'UserListListScreen')")
+#ALtdhead('部署名')
+#ALtdhead('役職')
+#ALtdheadW25('メールアドレス')
+#ALtdheadThin('電話番号（外線）')
+#ALtdheadThin('電話番号（内線）')
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellheader()
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserDetailScreen").addQueryData("entityid",$record.UserName))');">$result.getStringCR($!record.Name)</a>
+</div>
+</td>
+#ALtdcellheader()
+<div>
+#set($pcount = 0)
+#foreach($post in $record.getPostNameList())
+#if($pcount != 0)、&nbsp;#end
+$post
+#set($pcount = $pcount + 1)
+#end
+</div>
+#ALtdcellfooter()
+#ALtdcellAtt($result.getStringCR($!record.PositionName) "nowrap='nowrap'")
+#ALtdcell("$!record.Email")
+#ALtdcellAtt("$!record.OutTelephone" "nowrap='nowrap'")
+#ALtdcellAtt("$!record.InTelephone" "nowrap='nowrap'")
+</tr>
+#end
+#AUItablefooter()
+#end
+#ALformfooter()
+#AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/userlist-widgets.vm")
+
