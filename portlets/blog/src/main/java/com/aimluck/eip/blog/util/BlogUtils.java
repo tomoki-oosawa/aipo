@@ -915,7 +915,7 @@ public class BlogUtils {
       ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
       keyword = "";
     } else if (keywordParm != null) {
-      keywordParm.trim();
+      keywordParm = keywordParm.trim();
       ALEipUtils.setTemp(rundata, context, SEARCH_WORD, keywordParm);
       keyword = keywordParm;
     }
@@ -937,7 +937,7 @@ public class BlogUtils {
       ALEipUtils.setTemp(rundata, context, THEME_ID, "all");
       themeId = "all";
     } else if (themeIdParam != null) {
-      themeIdParam.trim();
+      themeIdParam = themeIdParam.trim();
       ALEipUtils.setTemp(rundata, context, THEME_ID, themeIdParam);
       themeId = themeIdParam;
       // 検索キーワードをクリア
@@ -961,7 +961,7 @@ public class BlogUtils {
       ALEipUtils.setTemp(rundata, context, GROUP_ID, "LoginUser");
       groupId = "LoginUser";
     } else if (groupIdParam != null) {
-      groupIdParam.trim();
+      groupIdParam = groupIdParam.trim();
       ALEipUtils.setTemp(rundata, context, GROUP_ID, groupIdParam);
       groupId = groupIdParam;
     }
