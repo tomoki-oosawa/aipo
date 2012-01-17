@@ -253,7 +253,11 @@ table.activityTable tr.unread td {
 #footer {
 	padding:20px 0 0;
 	margin:0;
+	color:#888;
 	text-shadow:0 1px 0 rgba(255,255,255,1);
+}
+#footer a {
+	color:#888;
 }
 .copyright {
 	text-align:center;
@@ -478,7 +482,7 @@ table.activityTable tr.unread td {
 #auiLoginBox {
 	width:480px;
 	margin:85px auto 0 auto;
-	padding-bottom:35px;
+	padding-bottom:60px;
 	background:url(../images/login_foot.png) left bottom no-repeat;
 }
 #auiLoginInner {
@@ -523,7 +527,7 @@ table.activityTable tr.unread td {
 	width:58%;
 }
 #auiLoginBox input.button {
-	width:150px;
+	width:152px;
 	height:43px;
 	color:#fff;
 	font-size:1.2em;
