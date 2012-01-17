@@ -101,6 +101,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
             context,
             WebMailUtils.ACCOUNT_ID));
       } catch (Exception e) {
+        logger.error("[WebMailFolderFormData]", e);
         return;
       }
 
