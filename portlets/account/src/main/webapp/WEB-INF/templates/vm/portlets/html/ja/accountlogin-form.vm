@@ -43,13 +43,14 @@ function set_username(form){
 function submit2(form) {
   set_username(form);
 
-  set_cookie("username", form.username.value);
 #if($enable_userlist)
   set_cookie("login_type", form.login_type.checked);
 #end
   if (form.save_password.checked) {
+    set_cookie("username", form.username.value);
     set_cookie("password", form.password.value);
   } else {
+    remove_cookie("username");
     remove_cookie("password");
   }
   set_cookie("save_password", form.save_password.checked);
@@ -89,7 +90,9 @@ function init() {
 function set_input_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    usernameStr = get_cookie("username");
+    if (form.save_password.checked) {
+      usernameStr = get_cookie("username");
+  	}
   } else {
     usernameStr = tmpUsername;
   }
@@ -122,7 +125,9 @@ function set_input_value(form) {
 function set_select_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    usernameStr = get_cookie("username");
+    if (form.save_password.checked) {
+      usernameStr = get_cookie("username");
+  	}
   } else {
     usernameStr = tmpUsername;
   }
@@ -271,7 +276,7 @@ $!data.Message
 #if($enable_userlist)
 <input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list">ユーザー一覧から選択する</label><br />
 #end
-<input name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass">パスワードを保存する</label>
+<input name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass">保存する</label>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
