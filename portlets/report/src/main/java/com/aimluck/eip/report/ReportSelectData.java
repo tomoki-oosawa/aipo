@@ -335,7 +335,8 @@ public class ReportSelectData extends
       // 自身の報告書かを設定する
       Integer login_user_id =
         Integer.valueOf((int) login_user.getUserId().getValue());
-      rd.setIsSelfReport(record.getUserId() == login_user_id);
+      rd.setIsSelfReport(record.getUserId().intValue() == login_user_id
+        .intValue());
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

@@ -268,7 +268,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     Expression exp5 =
       ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
     if (target_user_id != null
-      && (target_user_id.equals("all") || target_user_id.equals(login_user_id))) {
+      && (target_user_id.equals("all") || target_user_id.equals(String
+        .valueOf(login_user_id)))) {
       Expression exp6 =
         ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "F");
       Expression exp7 =

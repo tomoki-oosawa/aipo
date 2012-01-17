@@ -131,7 +131,7 @@ public class WebPageSelectData extends
         Integer.parseInt(portlet.getPortletConfig().getInitParameter(
           "p1c-maximizedheight"));
 
-      if (url == null || url.toString() == "") {
+      if (url == null || url.toString().equals("")) {
         rd.setWebPageFlag(false);
       } else {
         rd.setWebPageFlag(true);
