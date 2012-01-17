@@ -363,7 +363,7 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {
 	color:#666;
 }
 table.roundBlockWrapperTop td.roundBlockIcon {
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
 	white-space:nowrap;
 	padding:11px 5px 0 5px;
 	vertical-align:top;
@@ -373,7 +373,7 @@ table.roundBlockWrapperTop td.roundBlockIcon img {
 	vertical-align:middle;
 }
 table.roundBlockWrapperTop td.roundBlockMenu {
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
 	white-space:nowrap;
 	padding:11px 5px 0 5px;
 	vertical-align:top;
@@ -383,7 +383,7 @@ table.roundBlockWrapperTop td.roundBlockMenu img {
 	vertical-align:middle;
 }
 table.roundBlockWrapperTop td.roundBlockNavi {
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat left top;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
 	white-space:nowrap;
 	padding:0 2px 0 10px;
 }
@@ -1089,16 +1089,16 @@ table.simpleTable td.caption {
 	padding:2px;
 	display:inline;
 	display:-moz-inline-box;
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat center -8px;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat center -8px;
 	vertical-align:top;
 }
 * html .menuBarSeparator {
 	vertical-align:baseline;
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat 2px -6px;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
 }
 *+html .menuBarSeparator {
 	vertical-align:baseline;
-	background:transparent url(../images/portlet/frame_divider.png) no-repeat 2px -6px;
+	background:transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
 }
 .menuSeparator {
 	font-size:1px;

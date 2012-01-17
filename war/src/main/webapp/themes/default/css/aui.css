@@ -714,19 +714,19 @@ table.activityTable tr.unread td {
 .auiWidget li a {
 	display:block;
 	line-height:1.8em;
-	padding:0.3em 0 0.3em 18px;
+	padding:0.3em 0 0.3em 10px;
 	text-decoration:none;
-	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+	background:none;
 	white-space:nowrap;
 	overflow:hidden;
 }
 .auiWidget li a:hover {
 	color:#000;
-	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+	background:#f6f6f6;
 }
 .auiWidget li.active>a {
 	font-weight:bold;
-	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+	background:#f0f0f0;
 }
 .auiWidget li ul {
 	margin:0;
