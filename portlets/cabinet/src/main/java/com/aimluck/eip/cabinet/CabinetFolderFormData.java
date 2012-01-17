@@ -207,7 +207,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         /** ログインユーザが含まれていなかった場合は追加 */
         boolean login_user_exists = false;
         for (int i = 0; i < memberList.size(); i++) {
-          if (member[i].equals(login_user.getName())) {
+          if (member[i].equals(login_user.getName().getValue())) {
             login_user_exists = true;
             break;
           }
