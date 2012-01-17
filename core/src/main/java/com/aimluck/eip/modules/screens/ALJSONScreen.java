@@ -230,18 +230,29 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
   protected String getPayload(RunData rundata) {
     StringBuilder str = new StringBuilder();
     ServletInputStream in = null;
+    BufferedReader r = null;
     try {
       in = rundata.getRequest().getInputStream();
-      BufferedReader r = new BufferedReader(new InputStreamReader(in));
+      r = new BufferedReader(new InputStreamReader(in));
       String sLine;
       while ((sLine = r.readLine()) != null) {
         str.append(sLine);
       }
+
     } catch (IOException e) {
       logger.warn("[ALJSONScreen]", e);
     } finally {
+      if (r != null) {
+        try {
+          r.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+
       if (in != null) {
         try {
+
           in.close();
         } catch (IOException e) {
           // ignore
