@@ -973,6 +973,8 @@ table.simpleTable td.caption {
 .dijit_a11y .fileuploadDialog .closeText {
 	display:inline;
 }
+
+/* addressbookDialog */
 .addressbookDialog {
 	border:5px solid #ddd;
 	background-color:#fff;
@@ -1009,6 +1011,8 @@ table.simpleTable td.caption {
 .dijit_a11y .addressbookDialog .closeText {
 	display:inline;
 }
+/* END addressbookDialog */
+
 .popupMenu {
 	position:absolute;
 	border-top:1px solid #eee;

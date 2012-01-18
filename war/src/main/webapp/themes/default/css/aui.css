@@ -543,6 +543,23 @@ table.activityTable tr.unread td {
 	background:url(../images/login_btn_back.png) 0px -100px no-repeat;
 }
 /***************************************************
+	dialogTable
+--------------------------------------------------*/
+.dialogTable {
+	margin:15px 0;
+	border-top:solid 1px #eee;
+	border-collapse:collapse;
+}
+.dialogTable th,
+.dialogTable td {
+	padding:10px;
+	border-bottom:solid 1px #eee;
+}
+
+.dialogTable .caption {
+	font-weight:bold;
+}
+/***************************************************
 	AUI Generic Class - Undermost
 --------------------------------------------------*/
 /* auiSelectButton ********************/
