@@ -244,6 +244,7 @@ function change_group(form, value) {
 <div id="auiLoginBox"><div id="auiLoginInner">
 <div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
 <h3>セッションがタイムアウトしました。</h3>
+<div class="loginAlert">
 ログインした状態で長時間操作をしなかったため、サーバとの接続が切断されました。
 下のログインフォームから再度ログインしてください。
 #if(!$!data.getMessage().toString().startsWith("__errLicenseType:"))
@@ -251,6 +252,7 @@ $!data.getMessage().toString()
 #else
 一般ユーザーではログインできません
 #end
+</div>
 <form name="frm" action="${context_path}/portal/?${jslink.ActionKey}=${config.getString("action.login")}" onsubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
 #if($!data.getUser().getTemp("company_id"))

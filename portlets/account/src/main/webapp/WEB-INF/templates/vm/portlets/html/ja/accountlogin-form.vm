@@ -243,7 +243,9 @@ function change_group(form, value) {
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
 <div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
+<div class="loginAlert">
 $!data.Message
+</div>
 <form name="frm" action="" onSubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
 <input name="org" type="hidden" value="$!result.OrgId" />
