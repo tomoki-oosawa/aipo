@@ -242,7 +242,7 @@ function change_group(form, value) {
 </script>
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
-<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="280" height="105" alt="Aipo6" /></div>
+<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
 <h3>セッションがタイムアウトしました。</h3>
 ログインした状態で長時間操作をしなかったため、サーバとの接続が切断されました。
 下のログインフォームから再度ログインしてください。
@@ -286,9 +286,9 @@ $!data.getMessage().toString()
 <div class="clearfix">
 <div class="floatLeft">
 #if($enable_userlist)
-<input name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list">ユーザー一覧から選択する</label><br />
+<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
 #end
-<input name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass">保存する</label>
+<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ログイン情報を保存する</label></p>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
