@@ -28,17 +28,12 @@ import javax.sql.DataSource;
 import org.apache.cayenne.access.CustomDataSourceUtil;
 import org.apache.commons.dbcp.ThreadPoolingDataSource;
 import org.apache.commons.pool.ObjectPool;
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 /**
  * 
  */
 public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
     implements DataSourceFactoryDelegate {
-
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(CustomDBCPDataSourceFactory.class.getName());
 
   @Override
   public DataSource getDataSource(String location) throws Exception {
@@ -53,8 +48,8 @@ public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
         Properties p = new Properties();
         p.load(in);
         properties = new DBCPDataSourceProperties(p);
-      } catch (Throwable t) {
-        logger.warn("[CustomDBCPDataSourceFactory]", t);
+      } catch (Throwable ignore) {
+        // ignore
       } finally {
         if (in != null) {
           try {
