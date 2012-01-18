@@ -1,5 +1,5 @@
 * {
-	font-family:'ãƒ¡ã‚¤ãƒªã‚ª', Meiryo, Verdana, sans-serif;
+	font-family:'ƒƒCƒŠƒI', Meiryo, Verdana, sans-serif;
 }
 html, body {
 	margin:0;
@@ -1478,6 +1478,16 @@ form input[type=checkbox],
 form input[type=radio] {
 	height:auto;
 }
+.inlineCheckbox,
+.inlineRadio {
+	line-height:1em;
+	margin-bottom:1px
+}
+.inlineLabel {
+	line-height:1em;
+	vertical-align:baseline;
+}
+
 
 /* auiSubmenu ********************/
 .auiSubmenu {
@@ -1520,17 +1530,17 @@ form input[type=radio] {
 
 /* auiIcon ********************/
 /*
-auiIconã¯ã€Œclass="auiIcon auiIconSetting"ã€ã¨
-ãƒ™ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã¨ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’åŒæ™‚ã«ä»˜ä¸ã•ã›ã‚‹ã“ã¨ã€‚
+auiIcon‚Íuclass="auiIcon auiIconSetting"v‚Æ
+ƒx[ƒXƒNƒ‰ƒX‚ÆƒTƒuƒNƒ‰ƒX‚ğ“¯‚É•t—^‚³‚¹‚é‚±‚ÆB
 
-åŸºæœ¬å½¢ï¼ˆãƒªãƒ³ã‚¯ç‰ˆï¼‰ï¼š<a href="#" class="auiIcon auiIconSetting"><span>è¨­å®š</span></a>
-åŸºæœ¬å½¢ï¼ˆspanç‰ˆï¼‰ï¼š<span class="auiIcon auiIconSetting"><span>è¨­å®š</span></span>
+Šî–{Œ`iƒŠƒ“ƒN”ÅjF<a href="#" class="auiIcon auiIconSetting"><span>İ’è</span></a>
+Šî–{Œ`ispan”ÅjF<span class="auiIcon auiIconSetting"><span>İ’è</span></span>
 
-auiIconã§ã‚¢ã‚¤ã‚³ãƒ³ã®å½¢çŠ¶å…¨ã¦ã‚’ä¸€å…ƒç®¡ç†ã—
-ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã¯ã‚ãã¾ã§èƒŒæ™¯ä½ç½®ã®å¤‰æ›´ã®ã¿ã‚’è¡Œã†ã€‚
+auiIcon‚ÅƒAƒCƒRƒ“‚ÌŒ`ó‘S‚Ä‚ğˆêŒ³ŠÇ—‚µ
+ƒTƒuƒNƒ‰ƒX‚Í‚ ‚­‚Ü‚Å”wŒiˆÊ’u‚Ì•ÏX‚Ì‚İ‚ğs‚¤B
 
-IE6ã¯é€éPNGãŒåˆ©ç”¨ã§ããªã„ãŸã‚é€éGIFã¸ç½®ãæ›ãˆã¦ã„ã‚‹ã€‚
-ãã®ãŸã‚ãƒãƒªã‚’è¡¨ç¤ºã•ã›ãªã„ãŸã‚hoverã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å°ã˜ã‚‹ã€‚
+IE6‚Í“§‰ßPNG‚ª—˜—p‚Å‚«‚È‚¢‚½‚ß“§‰ßGIF‚Ö’u‚«Š·‚¦‚Ä‚¢‚éB
+‚»‚Ì‚½‚ßƒoƒŠ‚ğ•\¦‚³‚¹‚È‚¢‚½‚ßhoverƒAƒNƒVƒ‡ƒ“‚ğ••‚¶‚éB
 */
 .auiIcon {
 	display:block;
