@@ -542,6 +542,13 @@ table.activityTable tr.unread td {
 #auiLoginBox input.button:active {
 	background:url(../images/login_btn_back.png) 0px -100px no-repeat;
 }
+.loginAlert {
+	margin-bottom:10px;
+	padding:10px;
+	background:#ffcccc;
+	-webkit-animation-name: fadeIn;
+	-webkit-animation-duration: 1s;
+}
 /***************************************************
 	dialogTable
 --------------------------------------------------*/
@@ -1648,4 +1655,18 @@ a.auiIconUsers:hover {background-position:0px -544px;}
 /* auiNoData ********************/
 .auiNoData {
 	text-align:center;
+}
+
+/* CSS3 transition ********************/
+@-webkit-keyframes fadeIn {
+	0% {
+		filter: alpha(opacity=0);
+		-moz-opacity:0;
+		opacity:0;
+	}
+	100% {
+		filter: alpha(opacity=100);
+		-moz-opacity:1;
+		opacity:1;
+	}
 }
