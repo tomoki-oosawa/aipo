@@ -37,7 +37,6 @@
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
 </p></div>
-#ALspacebothheader()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('カテゴリ' $jslink $portlet)
@@ -81,7 +80,6 @@
 </div>
 #end
 #ALformfooter()
-#ALspacebothfooter()
 </div>
 </div>
 #parse("/portlets/html/ja/msgboard-category-widgets.vm")
