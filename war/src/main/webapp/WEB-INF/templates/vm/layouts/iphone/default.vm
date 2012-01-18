@@ -27,7 +27,7 @@
 <meta http-equiv="cache-control" content="must-revalidate" />
 <meta http-equiv="cache-control" content="max-age=0" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/iphone/css/style.css" media="screen" />
-<link rel="apple-touch-icon" href="${external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
+<link rel="apple-touch-icon-precomposed" href="${external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 ##if($config.getString("portal.title")) #set ($titlePrefix = $config.getString("portal.title")) #else#set ($titlePrefix = "") #end
 ##set ($titlePrefix = $config.getString("portal.title"))
 <title>${alias}</title>
