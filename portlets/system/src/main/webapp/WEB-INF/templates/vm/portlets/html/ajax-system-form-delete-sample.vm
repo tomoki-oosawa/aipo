@@ -39,7 +39,7 @@
 <input type="hidden" name="secid" value="$secid" />
 <div class="caution">（注意）</div>
 <div class="message small">『削除する』ボタンをクリックしていただくことで下記のサンプルデータが削除されます。<br />一度データを削除なさいますと復旧はできませんので、万が一のため必ず${alias}のバックアップを取っていただいた上で実行してください。
-${alias}のバックアップにつきましては<a target="_blank" href="http://aipostyle.com/">こちらのホームページ</a>をご参照いただけますと幸いでございます。</div>
+${alias}のバックアップにつきましては<a target="_blank" href="http://www.aipo.com/">こちらのホームページ</a>をご参照いただけますと幸いでございます。</div>
 #ALtableheaderWide()
 #ALtdcaption("この機能で削除されるデータ")
 #ALtditemheader()
