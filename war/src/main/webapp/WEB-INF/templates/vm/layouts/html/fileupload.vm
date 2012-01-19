@@ -35,6 +35,7 @@
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css" media="screen,tv,print" />
 #if($isXDomain == "true")
 <script type="text/javascript">
   djConifg = {
