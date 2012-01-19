@@ -120,7 +120,7 @@ aipo.webmail.reloadMail = function(){
 
 aipo.webmail.open_help = function(url){
     wx = 400;
-    wy = 232;
+    wy = 250;
     x = (screen.width  - wx) / 2;
     y = (screen.height - wy) / 2;
 
