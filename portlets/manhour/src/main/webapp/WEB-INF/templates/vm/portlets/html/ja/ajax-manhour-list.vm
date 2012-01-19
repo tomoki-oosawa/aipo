@@ -19,10 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourListScreen')")
-#set ($tabs = [["工数集計", "",""]])
 ## ---------------------------------------------------------------------------
-#ALajaxtabheader($tabs "")
-#ALspacebothheader()
 #ALajaxlistformheader('ManHour')
 <div class="spaceBottom">
 #ALtableheaderSimpleWide()
@@ -132,5 +129,3 @@ $!record.Name
 <input type="hidden" id="commonUrl$!portlet.ID" name="commonUrl$!portlet.ID" value="$!jslink.getPortletById($!portlet.ID).addPathInfo('template','CommonCategoryLiteJSONScreen')" />
 <input type="hidden" id="commonCategoryid$!portlet.ID" name="commonCategoryid$!portlet.ID" value="$!result.CategoryId.toString()" />
 #ALformfooter()
-#ALspacebothfooter()
-#ALajaxtabfooter()
