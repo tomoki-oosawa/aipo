@@ -93,10 +93,16 @@
 				<property name="row" value="1" />
 			</layout>
 		</entry>
-		<entry parent="Cabinet">
+		<entry parent="ToDo">
 			<layout position="-1" size="-1">
 				<property name="column" value="1" />
 				<property name="row" value="2" />
+			</layout>
+		</entry>
+		<entry parent="Cabinet">
+			<layout position="-1" size="-1">
+				<property name="column" value="1" />
+				<property name="row" value="3" />
 			</layout>
 		</entry>
 	</portlets>
