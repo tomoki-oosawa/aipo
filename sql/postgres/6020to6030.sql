@@ -150,7 +150,7 @@ ALTER SEQUENCE pk_eip_t_report_file OWNED BY EIP_T_REPORT_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
 ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
 
-UPDATE eip_t_acl_user_role_map SET role_id = role_id + 10000 
+UPDATE eip_t_acl_user_role_map SET role_id = role_id + 10000
 WHERE role_id IN (SELECT role_id FROM eip_t_acl_role WHERE create_date IS NOT NULL and role_id < 10000);
 UPDATE eip_t_acl_role SET role_id = role_id + 10000 WHERE create_date IS NOT NULL and role_id < 10000;
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'report_self','報告書（自分の報告書）操作',31);
@@ -173,3 +173,7 @@ ALTER TABLE EIP_T_REPORT ADD END_DATE TIMESTAMP DEFAULT now();
 -- 20120113
 UPDATE EIP_T_SCHEDULE SET MAIL_FLAG = 'N' WHERE MAIL_FLAG = 'I';
 -- 20120113
+
+--20120120
+INSERT INTO EIP_M_MAIL_NOTIFY_CONF VALUES(8,1,27,3,NULL,now(),now());
+--20120120

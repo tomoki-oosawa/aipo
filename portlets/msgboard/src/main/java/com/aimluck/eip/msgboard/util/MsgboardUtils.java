@@ -29,6 +29,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -41,6 +43,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -48,15 +51,18 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.msgboard.MsgboardCategoryResultData;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
@@ -1162,6 +1168,51 @@ public class MsgboardUtils {
     }
   }
 
+  /**
+   * アクティビティを通知先・社内参加者の「あなた宛のお知らせ」に表示させる（返信用）
+   * 
+   * @param topic
+   * @param loginName
+   * @param recipients
+   */
+  public static void createNewTopicActivity(EipTMsgboardTopic topic,
+      String loginName, String recipient) {
+    if (recipient != null && !loginName.equals(recipient)) {
+      StringBuilder b = new StringBuilder("掲示板「");
+
+      b.append(ALCommonUtils.compressString(topic.getTopicName(), 30)).append(
+        "」").append("に返信しました。");
+
+      String portletParams =
+        new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+          "&entityid=").append(topic.getTopicId()).toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipient)
+        .withTile(b.toString())
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    } else if (recipient == null && !loginName.equals(recipient)) {
+      StringBuilder b = new StringBuilder("掲示板「");
+
+      b.append(ALCommonUtils.compressString(topic.getTopicName(), 30)).append(
+        "」").append("に返信しました。");
+
+      String portletParams =
+        new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+          "&entityid=").append(topic.getTopicId()).toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTile(b.toString())
+        .witchPriority(1f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    }
+  }
+
   public static void createNewCommentActivity(EipTMsgboardTopic topic,
       String loginName) {
     createNewCommentActivity(topic, loginName, null);
@@ -1197,6 +1248,112 @@ public class MsgboardUtils {
         .witchPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する（返信用）．
+   * 
+   * @return
+   */
+  public static String createReplyMsgForPc(RunData rundata,
+      EipTMsgboardTopic topic, EipTMsgboardTopic parenttopic) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    String CR = System.getProperty("line.separator");
+    StringBuffer body = new StringBuffer("");
+    body.append(loginUser.getAliasName().toString());
+    if (!"".equals(user.getEmail())) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+    body.append("さんが掲示板").append("に返信しました。").append(CR).append(CR);
+    body.append("[タイトル]").append(CR).append(
+      parenttopic.getTopicName().toString()).append(CR);
+
+    if (topic.getNote().toString().length() > 0) {
+      body
+        .append("[返信内容]")
+        .append(CR)
+        .append(topic.getNote().toString())
+        .append(CR);
+    }
+    body.append(CR);
+    body
+      .append("[")
+      .append(ALOrgUtilsService.getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    if (enableAsp) {
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+    } else {
+      body.append("・社外").append(CR);
+      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
+      body.append("・社内").append(CR);
+      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    }
+
+    body.append("---------------------").append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
+
+    return body.toString();
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する（返信用）．
+   * 
+   * @return
+   */
+  public static String createReplyMsgForCellPhone(RunData rundata,
+      EipTMsgboardTopic topic, EipTMsgboardTopic parenttopic, int destUserID) {
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    String CR = System.getProperty("line.separator");
+    StringBuffer body = new StringBuffer("");
+    body.append(loginUser.getAliasName().toString());
+    if (!"".equals(user.getEmail())) {
+      body.append("(").append(user.getEmail()).append(")");
+    }
+    body.append("さんが掲示板").append("に返信しました。").append(CR).append(CR);
+    body.append("[タイトル]").append(CR).append(
+      parenttopic.getTopicName().toString()).append(CR);
+    body.append(CR);
+
+    ALEipUser destUser;
+    try {
+      destUser = ALEipUtils.getALEipUser(destUserID);
+    } catch (ALDBErrorException ex) {
+      logger.error("Exception", ex);
+      return "";
+    }
+    body
+      .append("[")
+      .append(ALOrgUtilsService.getAlias())
+      .append("へのアクセス]")
+      .append(CR);
+    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
+      ALCellularUtils.getCellularKey(destUser)).append(CR);
+    body.append("---------------------").append(CR);
+    body.append(ALOrgUtilsService.getAlias()).append(CR);
+    return body.toString();
   }
 
   /**

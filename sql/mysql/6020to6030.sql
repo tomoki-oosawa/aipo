@@ -119,7 +119,7 @@ UPDATE `eip_t_report` SET `parent_id`=0;
 -- 20111219
 
 -- 20120113
-UPDATE `eip_t_acl_user_role_map` SET `role_id` = `role_id` + 10000 
+UPDATE `eip_t_acl_user_role_map` SET `role_id` = `role_id` + 10000
  WHERE `role_id` IN (SELECT `role_id` FROM `eip_t_acl_role` WHERE `create_date` IS NOT NULL AND `role_id` < 10000);
 UPDATE `eip_t_acl_role` SET `role_id` = `role_id` + 10000
  WHERE `create_date` IS NOT NULL AND `role_id` < 10000;
@@ -134,3 +134,7 @@ ALTER TABLE `eip_t_acl_role` AUTO_INCREMENT = 1;
 
 UPDATE `eip_t_schedule` SET `mail_flag` = 'N' WHERE `mail_flag` = 'I';
 -- 20120113
+
+--20120120
+INSERT INTO eip_m_mail_notify_conf VALUES(null,1,27,3,NULL,now(),now());
+--20120120

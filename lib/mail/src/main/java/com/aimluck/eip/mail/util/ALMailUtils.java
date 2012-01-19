@@ -139,6 +139,9 @@ public class ALMailUtils {
   /** メール通知のキー（報告書用） */
   public static final int KEY_MSGTYPE_REPORT = 26;
 
+  /** メール通知のキー（掲示板用） */
+  public static final int KEY_MSGTYPE_MSGBOARD = 27;
+
   /** メール通知の値（送信先なし） */
   public static final int VALUE_MSGTYPE_DEST_NONE = 0;
 

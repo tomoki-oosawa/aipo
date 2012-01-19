@@ -41,6 +41,11 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.actions.msgboard.MsgboardAction;
 import com.aimluck.eip.modules.screens.MsgboardTopicDetailScreen;
@@ -52,6 +57,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -346,12 +352,19 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
-
         // アクティビティ
         ALEipUser user = ALEipUtils.getALEipUser(uid);
+        // 更新情報
         MsgboardUtils.createNewCommentActivity(parenttopic, user
           .getName()
           .getValue());
+        // あなた宛のお知らせ
+        MsgboardUtils.createNewTopicActivity(parenttopic, user
+          .getName()
+          .toString(), ALEipUtils
+          .getALEipUser(parenttopic.getOwnerId())
+          .getName()
+          .toString());
       } else {
         List<Integer> userIds =
           MsgboardUtils.getWhatsNewInsertList(rundata, topic
@@ -372,13 +385,61 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         // アクティビティ
         if (recipients.size() > 0) {
           ALEipUser user = ALEipUtils.getALEipUser(uid);
+          // 更新情報
           MsgboardUtils.createNewCommentActivity(parenttopic, user
             .getName()
             .getValue(), recipients);
+          // あなた宛のお知らせ
+          MsgboardUtils.createNewTopicActivity(parenttopic, user
+            .getName()
+            .toString(), ALEipUtils
+            .getALEipUser(parenttopic.getOwnerId())
+            .getName()
+            .toString());
         }
       }
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
+
+      // メール送信
+      try {
+        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+        memberList.add(ALEipUtils.getALEipUser(parenttopic.getOwnerId()));
+        int msgType =
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD);
+        if (msgType > 0) {
+          // パソコンへメールを送信
+          List<ALEipUserAddr> destMemberList =
+            ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+              .getUserId(rundata), false);
+          String subject = "[" + ALOrgUtilsService.getAlias() + "]Msgboard";
+          String orgId = Database.getDomainName();
+
+          List<ALAdminMailMessage> messageList =
+            new ArrayList<ALAdminMailMessage>();
+          for (ALEipUserAddr destMember : destMemberList) {
+            ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+            message.setPcSubject(subject);
+            message.setCellularSubject(subject);
+            message.setPcBody(MsgboardUtils.createReplyMsgForPc(
+              rundata,
+              topic,
+              parenttopic));
+            message.setCellularBody(MsgboardUtils.createReplyMsgForPc(
+              rundata,
+              topic,
+              parenttopic));
+            messageList.add(message);
+          }
+          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
+            .getUserId(rundata), messageList, ALMailUtils
+            .getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+        }
+      } catch (Exception ex) {
+        msgList.add("メールを送信できませんでした。");
+        logger.error("Exception", ex);
+        return false;
+      }
     } catch (Exception e) {
       logger.error("[MsgboardTopicReplyFormData]", e);
       throw new ALDBErrorException();
