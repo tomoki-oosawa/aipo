@@ -63,7 +63,6 @@ function onCommentDelete(form) {
 <p class="center">コメントはありません。</p>
 #else
     #foreach ($record in $result.CoTopicList)
-    <h4>$!{record.TopicName}</h4>
     #ALcell_msgboard_comment($career $!{record})
         #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
         <p>

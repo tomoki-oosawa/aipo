@@ -64,8 +64,6 @@
 #else
 #foreach ($record in $result.CoTopicList)
 #ALcell_dl_header($career)
-#ALcell_dt($career "ﾀｲﾄﾙ")
-<dd>$!{record.TopicName}</dd>
 #ALcell_dt($career "投稿者")
 <dd>$!{record.OwnerName}</dd>
 #ALcell_dt($career "投稿日")

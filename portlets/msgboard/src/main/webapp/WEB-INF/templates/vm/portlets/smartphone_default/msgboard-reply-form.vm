@@ -29,8 +29,6 @@
 #ALcell_contents_header($career)
 #ALcell_errmsg($career $errmsgsOnTopicDetail)
 #ALcell_formheader($career $jslink $portlet)
-<h3>タイトル#ALcell_must()</h3>
-#ALtextfield('topic_name' $!resultOnTopicDetail.TopicName '90%' 50 'active')
 <h3>$!resultOnTopicDetail.getFieldName('note')#ALcell_must()</h3>
 #ALtextarea('note' $!resultOnTopicDetail.Note 5 34)
 #ALcell_submit($career $event_submit $action_str)
