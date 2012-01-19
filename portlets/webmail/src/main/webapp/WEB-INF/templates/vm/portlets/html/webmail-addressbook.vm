@@ -27,18 +27,19 @@
 <div class="spaceAll"><h4>$subtitle</h4>
 <div class="spaceLeft">メールアドレスを選択してください。<br>Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
 #ALajaxdetailformheader("webmailAddressbookForm")
-#ALtableheaderWide()
+#ALdialogtableheaderWide()
 <tr>
-<td width="40%" rowspan="3" class="item" valign="top">
+<td width="40%" rowspan="3" valign="top">
 <div style="width: 250px;">
+<p style="line-height:1" class="mb5">
 <input name="type_company" type="radio" value="1" id="corpId$!{portlet.ID}" #if($DefTypeCompany == "1") checked="checked" #end onclick="aipo.webmail.switchTypeCompany(this)">
-<label for="corpId$!{portlet.ID}">社内アドレス</label>
+<label for="corpId$!{portlet.ID}">ユーザー名簿</label>
 <input name="type_company" type="radio" value="0" id="syagaiId$!{portlet.ID}" #if($DefTypeCompany == "0") checked="checked" #end onclick="aipo.webmail.switchTypeCompany(this)">
-<label for="syagaiId$!{portlet.ID}">社外アドレス</label>
-<br>
-<div id="Block_Internal_Group" #if($DefTypeCompany == "0") style="display:none;" #end>
-グループ&nbsp;<select name="currentInternalGroupName" id="currentInternalGroupName" style="width: 180px" onchange="aipo.webmail.changeInternalGroup('$internalScreenlink', this.options[this.selectedIndex].value)">
-<option value="LoginUser" #if ($!result.CurrentInternalGroupName.toString()== "all") selected="selected" #end>（全体）</option>
+<label for="syagaiId$!{portlet.ID}">アドレス帳</label>
+</p>
+<div id="Block_Internal_Group" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end>
+<select name="currentInternalGroupName" id="currentInternalGroupName" style="width: 99%" onchange="aipo.webmail.changeInternalGroup('$internalScreenlink', this.options[this.selectedIndex].value)">
+<option value="LoginUser" #if ($!result.CurrentInternalGroupName.toString()== "all") selected="selected" #end>すべてのグループ</option>
 #foreach( $record in $!result.InternalGroupList )
 <option value="$!record.Name" #if ($!result.CurrentInternalGroupName.toString()== $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
@@ -50,16 +51,16 @@
 #end
 </select>
 </div>
-<div id="userDiv" #if($DefTypeCompany == "0") style="display:none;" #end></div>
-<div id="Block_External_Group" #if($DefTypeCompany == "1") style="display:none;" #end>
-グループ&nbsp;<select name="currentExternalGroupName" id="currentExternalGroupName" style="width: 80%" onchange="aipo.webmail.changeExternalGroup('$externalScreenlink', this.options[this.selectedIndex].value)">
-<option value="" #if ($!result.CurrentExternalGroupName.toString()== "") selected="selected" #end>（全体）</option>
+<div id="userDiv" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end></div>
+<div id="Block_External_Group" class="mb5" #if($DefTypeCompany == "1") style="display:none;" #end>
+<select name="currentExternalGroupName" id="currentExternalGroupName" style="width: 99%" onchange="aipo.webmail.changeExternalGroup('$externalScreenlink', this.options[this.selectedIndex].value)">
+<option value="" #if ($!result.CurrentExternalGroupName.toString()== "") selected="selected" #end>すべてのグループ</option>
 #foreach( $record in $!result.ExternalGroupList )
 <option value="$!record.GroupId" #if ($!result.CurrentExternalGroupName.toString() == $!record.GroupId.toString()) selected="selected" #end>$!record.Name</option>
 #end
 </select>
 </div>
-<div id="addrDiv" #if($DefTypeCompany == "1") style="display:none;" #end></div>
+<div id="addrDiv" class="mb5" #if($DefTypeCompany == "1") style="display:none;" #end></div>
 #ALbutton('add_to' '宛先に追加' "aipo.webmail.exAddMember(this.form, this.form.detail_to_recipients, '${portlet.ID}')")
 #ALbutton('add_cc' 'CCに追加' "aipo.webmail.exAddMember(this.form, this.form.detail_cc_recipients, '${portlet.ID}')")
 #ALbutton('add_bcc' 'BCCに追加' "aipo.webmail.exAddMember(this.form, this.form.detail_bcc_recipients, '${portlet.ID}')")

@@ -75,6 +75,11 @@
   <tbody>
 #end
 
+#macro(ALdialogtableheaderWide)
+<table class="dialogTable wide">
+  <tbody>
+#end
+
 #macro(ALtableheaderSub $width)
 <table class="subTable" width="$width">
   <tbody>
