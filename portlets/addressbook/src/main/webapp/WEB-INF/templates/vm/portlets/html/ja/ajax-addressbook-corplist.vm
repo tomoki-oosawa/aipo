@@ -18,6 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
@@ -43,9 +45,10 @@
 
 
 #AUISummaryDiv()
-<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen')) method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))','$!portlet.ID','$!result.currentTab'); return false;">
+<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen')) method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;">
 <input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
 <a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">検索</a>
+<div class="floatLeft"><div class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;">&nbsp;</div></div>
 <input name="mode" type="hidden" value="ajaxsearch" />
 </form>
 #AUISummaryDivfooter()

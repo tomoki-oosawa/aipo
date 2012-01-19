@@ -28,10 +28,13 @@
 
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
 <input type="hidden" name="template" value="CabinetListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<div class="floatLeft ml10" style="padding-top: 0.4em;">
+<div class="indicator" id="search-indicator-list-$!{portlet.ID}" style="display:none;">&nbsp;</div>
+</div>
 </a>
 </form>
 </div>

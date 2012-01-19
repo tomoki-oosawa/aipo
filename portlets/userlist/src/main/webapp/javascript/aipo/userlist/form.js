@@ -95,7 +95,12 @@ dojo.provide("aipo.userlist");
 //
 //}
 
-aipo.userlist.onSubmitSearchButton = function(form,url,p_id,tab){
+aipo.userlist.onSubmitSearchButton = function(form,url,p_id,tab,indicator_id){
+
+    var obj_indicator = dojo.byId(indicator_id + p_id);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
 
      var exec_url = url;
 
@@ -111,6 +116,7 @@ aipo.userlist.onSubmitSearchButton = function(form,url,p_id,tab){
 
      var search_params = [["sword",form.sword.value],["tab",tab],["mode",form.mode.value]];
      aipo.viewPage(exec_url, p_id, search_params);
+
 
 }
 

@@ -95,7 +95,12 @@ aipo.addressbook.formCompanyInputOff = function(form) {
 
 }
 
-aipo.addressbook.onSubmitSerchButton = function(form,url,p_id,tab){
+aipo.addressbook.onSubmitSerchButton = function(form,url,portlet_id,tab,indicator_id){
+
+    var obj_indicator = dojo.byId(indicator_id + portlet_id);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
 
      var exec_url = url;
 
@@ -110,7 +115,7 @@ aipo.addressbook.onSubmitSerchButton = function(form,url,p_id,tab){
      }
 
      var search_params = [["sword",form.sword.value],["tab",tab],["mode",form.mode.value]];
-     aipo.viewPage(exec_url, p_id, search_params);
+     aipo.viewPage(exec_url, portlet_id, search_params);
 
 }
 

@@ -35,9 +35,10 @@
 #end
 #if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
-<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab'); return false;">
+<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;">
 <input class="text floatLeft" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
 <a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">検索</a>
+<div class="floatLeft"><div class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;">&nbsp;</div></div>
 <input name="mode" type="hidden" value="ajaxsearch" />
 </form>
 #AUISummaryDivfooter()
