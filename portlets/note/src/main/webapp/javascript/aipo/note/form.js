@@ -63,8 +63,21 @@ aipo.note.formCategoryInputOff = function(form) {
 
 aipo.note.changeGroup = function(link, group, sel) {
 	// IE文字化け対策
-	var val1 = dojo.byId('note_val_destuser1').innerText;
-	var val2 = dojo.byId('note_val_destuser2').innerText;
+
+	if (typeof(dojo.byId('note_val_destuser1').value) != 'undefined' && typeof(dojo.byId('note_val_destuser2').value) != 'undefined'){
+		var val1 = dojo.byId('note_val_destuser1').value;
+		var val2 = dojo.byId('note_val_destuser2').value;
+	}
+	else if (typeof(dojo.byId('note_val_destuser1').innerText) != 'undefined' && typeof(dojo.byId('note_val_destuser2').innerText) != 'undefined'){
+		var val1 = dojo.byId('note_val_destuser1').innerText;
+		var val2 = dojo.byId('note_val_destuser2').innerText;
+	}
+	else if (typeof(dojo.byId('note_val_destuser1').textContent) != 'undefined' && typeof(dojo.byId('note_val_destuser2').textContent) != 'undefined'){
+		var val1 = dojo.byId('note_val_destuser1').textContent;
+		var val2 = dojo.byId('note_val_destuser2').textContent;
+
+	}
+
 
     aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">'+val1+'<\/option><option value="all">'+val2+'<\/option>');
 }
