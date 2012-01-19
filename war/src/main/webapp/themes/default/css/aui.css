@@ -11,8 +11,11 @@ body {
 	padding:0;
 	margin:0;
 	font-size:.75em;
-	background:#eee url(../images/body.png) left top repeat-x;
 	line-height:1.4;
+	background:#fff;
+}
+body#login {
+	background:#eee url(../images/body.png) left top repeat-x;
 }
 * html body {
 	font-size:.8em;
@@ -251,20 +254,76 @@ table.activityTable tr.unread td {
 	footer
 --------------------------------------------------*/
 #footer {
-	padding:20px 0 0;
+	position:fixed;
+	bottom:0;
+	width:100%;
 	margin:0;
-	color:#888;
+	font-size:0.9em;
+	text-align:center;
+	border-top:solid 1px #ccc;
 	text-shadow:0 1px 0 rgba(255,255,255,1);
+	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.1);
+	background:#eee;
+	overflow:hidden;
+}
+#login #footer {
+	position:static;
+	border-top:none;
+	box-shadow:none;
+}
+#footer div {
 }
 #footer a {
+	text-decoration:none;
+}
+#footText {
+	height:40px;
+	line-height:40px;
 	color:#888;
 }
-.copyright {
-	text-align:center;
-	padding:0;
-	margin:0;
+#footText a {
+	color:#888;
 }
-
+#footText a:hover {
+	text-decoration:underline;
+}
+#footText div {
+	display:inline;
+	padding:0 1em;
+	border-left:solid 1px #ccc;
+}
+#footer div.copyright {
+	text-align:center;
+	border-left:none;
+}
+/***************************************************
+	startGuide
+--------------------------------------------------*/
+#startGuide {
+	/*display:none;*/
+	width:100%;
+	height:130px;
+	overflow:hidden;
+	-webkit-animation-name: fadeIn;
+	-webkit-animation-duration: 1s;
+}
+#startGuide a {
+	text-decoration:none;
+}
+#startGuide .close {
+	float:right;
+	padding:20px 20px 0 0;
+}
+.guideContents {
+	float:left;
+	padding:20px;
+	text-align:center;
+	border-left:solid 1px #fff;
+	border-right:solid 1px #ccc;
+}
+.guideContents p {
+	margin:20px 0;
+}
 /***************************************************
 	auiTabs
 --------------------------------------------------*/

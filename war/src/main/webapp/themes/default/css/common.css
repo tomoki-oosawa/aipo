@@ -261,6 +261,12 @@ div.outer {
 #wrapper {
 	padding:0;
 }
+html > body #wrapper {/*ExceptIE6*/
+	margin-bottom:170px;
+}
+#login #wrapper {
+	margin-bottom:0;
+}
 
 #topNavi {
 	padding-left:5px;
@@ -308,8 +314,6 @@ div.outer {
 }
 .roundMainWrapper {
 	padding:10px;
-	border-bottom:solid 1px #ccc;
-	box-shadow:0 1px 1px rgba(0,0,0,0.1);
 }
 .roundTopMain {
 	background:#FFF;
