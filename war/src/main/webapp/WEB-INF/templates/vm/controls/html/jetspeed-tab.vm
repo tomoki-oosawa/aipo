@@ -43,7 +43,8 @@ $portlet.getContent($data)
                                         #if (${client} == "IPAD")
                                         <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #else
-                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!{tab.Link}&template=CustomizeFormScreen')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
+                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
                                   </div>
