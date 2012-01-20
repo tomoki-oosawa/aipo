@@ -270,11 +270,7 @@ table.activityTable tr.unread td {
 	padding:10px 0;
 	font-size:0.9em;
 	text-align:center;
-	border-top:solid 1px #ccc;
 	text-shadow:0 1px 0 rgba(255,255,255,1);
-	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.1);
-	background:#eee;
-	overflow:hidden;
 }
 /* start guide reserved
 #footer {
@@ -284,11 +280,12 @@ table.activityTable tr.unread td {
 	margin:0;
 	font-size:0.9em;
 	text-align:center;
-	border-top:solid 1px #ccc;
 	text-shadow:0 1px 0 rgba(255,255,255,1);
+	border-top:solid 1px #ccc;
 	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.1);
 	background:#eee;
 	overflow:hidden;
+	z-index:9999;
 }
 #login #footer {
 	position:static;
