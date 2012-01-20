@@ -135,6 +135,11 @@ ALTER TABLE `eip_t_acl_role` AUTO_INCREMENT = 1;
 UPDATE `eip_t_schedule` SET `mail_flag` = 'N' WHERE `mail_flag` = 'I';
 -- 20120113
 
+-- 20120113
+UPDATE `eip_t_acl_role` SET `acl_type`=20, `role_name`='報告書（報告書への返信）管理者' WHERE  `role_name` =  '報告書（返信）管理者' LIMIT 1;
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type`=20, `feature_alias_name`='報告書（報告書への返信）操作' WHERE  `feature_alias_name` =  '報告書（返信）操作' LIMIT 1;
+-- 20120113
+
 --20120120
 INSERT INTO eip_m_mail_notify_conf VALUES(null,1,27,3,NULL,now(),now());
 --20120120
