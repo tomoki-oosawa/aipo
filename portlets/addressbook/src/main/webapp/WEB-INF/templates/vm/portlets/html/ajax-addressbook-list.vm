@@ -50,11 +50,14 @@
 #AUIsearchresult($!result.SearchWord.toString())
 指定された条件に該当するアドレスはありません。<br />
 #else
+    
 #ALajaxlistformheader('アドレス')
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
-#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData('filter', "$!result.getCurrentFilter()").addQueryData('filtertype', 'group').addQueryData("tab", "$!result.currentTab")))#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData('filter', "$!result.getCurrentFilter()").addQueryData('filtertype', 'group').addQueryData("tab", "$!result.currentTab")))
+<a class="auiButton" title="表示中の一覧をダウンロード" href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >表示中の一覧をダウンロード</a>
+<input type="hidden" name="sword" value="$!result.searchWord"/>
 </div>
 #AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
@@ -97,8 +100,9 @@
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #AUISummaryDivfooter()
+</form>
 #end
-#ALformfooter()
+
 #end
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/addressbook-widgets.vm")

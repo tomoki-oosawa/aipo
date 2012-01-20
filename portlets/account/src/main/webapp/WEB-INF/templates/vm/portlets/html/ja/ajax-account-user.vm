@@ -123,6 +123,6 @@ $!postname
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
-#ALformfooter()
+</form>
 #end
 #AUIcontentsAreaFooter()

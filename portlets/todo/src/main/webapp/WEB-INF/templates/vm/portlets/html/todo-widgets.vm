@@ -31,7 +31,7 @@
 </div>
 <div class="auiWidget clearfix">
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)
-<input type="hidden" id="topic" value="2">
+<input type="hidden" id="topic" value="2" />
 <ul>
 <li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">すべてのカテゴリ</a></li>
 #foreach($record in $!result.CategoryList )

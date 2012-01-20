@@ -46,7 +46,6 @@
 <input type="hidden" name="template" value="NoteListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
-</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -134,7 +133,7 @@ style="font-weight:bold"
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-  <a title="伝言メモを作成する" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.note.onLoadNoteDialog);">伝言メモを作成する</a>
+  <a title="伝言メモを作成する" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new"))','$!portlet.ID',aipo.note.onLoadNoteDialog);">伝言メモを作成する</a>
 </div>
 
 <div class="auiWidget clearfix">

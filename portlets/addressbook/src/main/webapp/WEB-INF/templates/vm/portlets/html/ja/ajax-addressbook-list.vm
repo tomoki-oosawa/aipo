@@ -50,6 +50,7 @@
 #AUIsearchresult($!result.SearchWord.toString())
 指定された条件に該当するアドレスはありません。<br />
 #else
+    
 #ALajaxlistformheader('アドレス')
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -99,8 +100,9 @@
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #AUISummaryDivfooter()
+</form>
 #end
-#ALformfooter()
+
 #end
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/addressbook-widgets.vm")

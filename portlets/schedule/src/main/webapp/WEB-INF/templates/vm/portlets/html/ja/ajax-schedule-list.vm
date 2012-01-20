@@ -24,7 +24,7 @@
 
 
 <div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','search')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','search'))" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!{result.targetKeyword}"/>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
 </form>

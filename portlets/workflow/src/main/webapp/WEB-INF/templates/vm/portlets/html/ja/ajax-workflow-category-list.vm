@@ -38,15 +38,14 @@
 </div>
 #AUIbuttonAction("分類を追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
 #AUISummaryDivfooter()
-#AUISummaryDiv()
-#ALspacebothheader()
-#AUISummaryDivfooter()
+
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('分類')
 #if($result.List.size() <= 0)
 <div class="message">複数の依頼をグループ化することで、ワークフローを分類することができます。</div>
 <div class="message">『分類追加』 ボタンを押して、追加してください。 </div>
 #else
+
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
@@ -65,7 +64,7 @@
 #foreach ($record in $result.List)
 <tr>
 #if($!record.CategoryId.toString() == "1")
-#ALtdcellAtt("<input type='checkbox' disabled='disabled' />" 'align="center" disabled')
+#ALtdcellAtt("<input type='checkbox' disabled='disabled' />" 'align="center"')
 #else
 #ALtdcellAtt("<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId'/>" 'align="center"')
 #end
@@ -76,13 +75,15 @@
 #ALtdcellfooter()
 </tr>
 #end
-#ALtablefooter()
+</tbody>
+</table>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")<span class="caution">（カテゴリに含まれるワークフローはすべて「未分類」に変更されます。）</span>
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()
-#ALformfooter()
+
 #end
+#ALformfooter()
 #AUIcontentsAreaFooter()

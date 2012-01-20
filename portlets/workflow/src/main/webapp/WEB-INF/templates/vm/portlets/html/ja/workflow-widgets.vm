@@ -25,13 +25,12 @@
 #AUIbuttonAction("依頼を作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.workflow.onLoadWorkflowDialog);")
 </div>
 
-<div class="auiWidget clearfix"><ul>
+<div class="auiWidget clearfix">
 
 <ul>
 <li #if($!result.currentTab == 'unconfirmed')class="active"#end>
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unconfirmed"))','$!portlet.ID');">受信依頼</a></li>
 </ul>
-
 
 <ul>
 <li #if(($!result.currentTab == 'unfinished') && !(${all_flg}))class="active"#end>
@@ -44,7 +43,8 @@
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true"))','$!portlet.ID');">すべての依頼</a></li>
 </ul>
 #end
-</ul></div>
+
+</div>
 
 </div>
 

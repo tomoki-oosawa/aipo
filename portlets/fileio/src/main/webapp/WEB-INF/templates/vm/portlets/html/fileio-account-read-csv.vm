@@ -63,7 +63,7 @@ function event_account_csv_regist(button) {
     <form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
     <input type="hidden" name="secid" value="$secid" />
     <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')" selsected>ユーザーアカウント</option>
+    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')" selected>ユーザーアカウント</option>
     <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
     <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
     <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>

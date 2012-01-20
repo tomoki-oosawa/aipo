@@ -45,9 +45,11 @@
 ${alias}サイト（社内）
 #ALtdcaptionfooter()
 #ALtditem("$!result.Detail.LocalUrl")
+<tr>
 #ALtdcellheaderAtt("align='center' colspan='2'")
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen').addQueryData('mode','local')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
 #ALtdcellfooter()
+</tr>
 #ALtablefooter()
 #ALformfooter()
 </div>

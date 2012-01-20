@@ -37,6 +37,7 @@
 </ul>
 </div>
 </div>
+
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
@@ -47,11 +48,9 @@
 </p>
 </td></tr>
 #AUItablefooter()
+#AUISummaryDivfooter()
 #else
 #AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
-#AUISummaryDivfooter()
-#AUISummaryDiv()
-#ALspacebothheader()
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('申請経路')
@@ -88,7 +87,8 @@ $!record.RouteH
 #ALtdcellfooter()
 </tr>
 #end
-#ALtablefooter()
+</tbody>
+</table>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
