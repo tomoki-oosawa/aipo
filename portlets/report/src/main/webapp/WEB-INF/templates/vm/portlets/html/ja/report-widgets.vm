@@ -25,7 +25,7 @@
 #AUIbuttonAction("報告書を作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.report.onLoadReportDialog);")
 </div>
 
-<div class="auiWidget clearfix"><ul>
+<div class="auiWidget clearfix">
 
 <ul>
 <li #if($!result.currentSubMenu == 'requested')class="active"#end>
@@ -45,7 +45,7 @@
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen").addQueryData("submenu", "all").addQueryData("reset_params","true"))','$!portlet.ID');">すべての報告書</a></li>
 </ul>
 ##end
-</ul></div>
+</div>
 
 </div>
 
