@@ -707,6 +707,24 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
     var mbfhtml = "";
     var placehtml = "";
 
+    var escapeHTML = function(value) {
+        var replaceChars = function(ch) {
+            switch (ch) {
+                case "<":
+                    return "&lt;";
+                case ">":
+                    return "&gt;";
+                case "&":
+                    return "&amp;";
+                case "'":
+                    return "&#39;";
+                case '"':
+                    return "&quot;";
+            }
+            return "?";
+         };
+         return String(value).replace(/[<>&"']/g, replaceChars);
+    };
     dojo.style(containerNode, "display", "block");
     dojo.xhrGet({
         portletId: portlet_id,
@@ -723,17 +741,18 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
                 datehtml = "<span style=\"font-size: 0.90em;\">" + data.date + "</span><br/>";
             }
 
+
             if (data.memberList) {
                 var memberSize = data.memberList.length;
                 for (var i = 0 ; i < memberSize ; i++) {
-                    mbhtml += "<li>" + data.memberList[i].aliasName.value + "</li>";
+                    mbhtml += "<li>" + escapeHTML(data.memberList[i].aliasName.value) + "</li>";
                 }
             }
 
             if (data.facilityList) {
                 var facilitySize = data.facilityList.length;
                 for (var i = 0 ; i < facilitySize ; i++) {
-                    mbfhtml += "<li>" + data.facilityList[i].facilityName.value + "</li>";
+                    mbfhtml += "<li>" + escapeHTML(data.facilityList[i].facilityName.value) + "</li>";
                 }
             }
 

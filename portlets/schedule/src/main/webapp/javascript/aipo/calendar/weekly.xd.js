@@ -264,7 +264,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 if(item.tmpreserve) {
                     name += '<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" alt="仮スケジュール" title="仮スケジュール" align="top" class="icon" />';
                 }
-                
+
                 html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ height + 'px; width: '+ width + '%; z-index: 0; visibility: hidden;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
                 count++;
             });
@@ -714,6 +714,24 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
     var mbfhtml = "";
     var placehtml = "";
 
+    var escapeHTML = function(value) {
+        var replaceChars = function(ch) {
+            switch (ch) {
+                case "<":
+                    return "&lt;";
+                case ">":
+                    return "&gt;";
+                case "&":
+                    return "&amp;";
+                case "'":
+                    return "&#39;";
+                case '"':
+                    return "&quot;";
+            }
+            return "?";
+        };
+        return String(value).replace(/[<>&"']/g, replaceChars);
+    };
     dojo.style(containerNode, "display", "block");
     dojo.xhrGet({
         portletId: portlet_id,
@@ -733,14 +751,14 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
             if (data.memberList) {
                 var memberSize = data.memberList.length;
                 for (var i = 0 ; i < memberSize ; i++) {
-                    mbhtml += "<li>" + data.memberList[i].aliasName.value + "</li>";
+                    mbhtml += "<li>" + escapeHTML(data.memberList[i].aliasName.value) + "</li>";
                 }
             }
 
             if (data.facilityList) {
                 var facilitySize = data.facilityList.length;
                 for (var i = 0 ; i < facilitySize ; i++) {
-                    mbfhtml += "<li>" + data.facilityList[i].facilityName.value + "</li>";
+                    mbfhtml += "<li>" + escapeHTML(data.facilityList[i].facilityName.value) + "</li>";
                 }
             }
 
