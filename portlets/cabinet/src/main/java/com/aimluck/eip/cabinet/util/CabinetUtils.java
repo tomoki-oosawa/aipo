@@ -687,6 +687,28 @@ public class CabinetUtils {
     }
   }
 
+  // testtest
+  /**
+   * 上位でアクセスコントロールを行っているフォルダを再帰的に検索し、その権限を返します。
+   * 
+   * @param parentId
+   * @return
+   */
+  public static String getAccessControlFolderFlag(Integer parentId) {
+    if (parentId == CabinetUtils.ROOT_FODLER_ID) {
+      /** ルートまでさかのぼってもアクセスコントロールがされていない場合 */
+      return null;
+    }
+    EipTCabinetFolder folder = getFolderByPK(parentId);
+    if (Integer.valueOf(folder.getPublicFlag()) == CabinetUtils.ACCESS_PUBLIC_ALL) {
+      /** さらに上位のフォルダでアクセスコントロールが設定されている可能性がある */
+      return CabinetUtils.getAccessControlFolderFlag(folder.getParentId());
+    } else {
+      /** このフォルダでアクセスコントロールが設定されている */
+      return folder.getPublicFlag();
+    }
+  }
+
   public static List<EipTCabinetFolder> getChildFolders(EipTCabinetFolder folder) {
     List<EipTCabinetFolder> list = new ArrayList<EipTCabinetFolder>();
     List<EipTCabinetFolder> children =
