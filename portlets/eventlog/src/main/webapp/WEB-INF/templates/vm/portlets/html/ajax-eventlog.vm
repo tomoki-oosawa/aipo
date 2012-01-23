@@ -21,10 +21,10 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('イベントログ')
 #if($result.List.size() == 0)
 指定された条件に該当するイベントログはありません。<br />
 #else
+#ALajaxlistformheader('イベントログ')
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
@@ -60,7 +60,8 @@
 #ALtdcellAtt("<div>$!record.IpAddr</div>"'')
 </tr>
 #end
-#ALtablefooter()
+</tbody>
+</table>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
