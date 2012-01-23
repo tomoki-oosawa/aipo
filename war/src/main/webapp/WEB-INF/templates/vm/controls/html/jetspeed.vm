@@ -34,7 +34,7 @@
                                         #if (${client} == "IPAD")
                                         <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #else
-                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
+                                        #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
                                         <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
