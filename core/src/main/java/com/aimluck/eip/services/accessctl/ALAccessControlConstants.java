@@ -180,6 +180,6 @@ public class ALAccessControlConstants {
   /** アクセス権限の機能名（報告書（報告書返信）） */
   public static final String POERTLET_FEATURE_REPORT_REPLY = "report_reply";
 
-  /** 現在のロール総数 */
-  public static final int ROLE_NUM = 32;
+  /** デフォルトで登録したいロールのIDの上限値 */
+  public static final int ROLE_NUM = 10000;
 }

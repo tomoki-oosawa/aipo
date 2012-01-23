@@ -293,7 +293,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
    */
   @Override
   public void insertDefaultRole(int uid) throws Exception {
-    // 現在のロール27種
+
     int role = ALAccessControlConstants.ROLE_NUM;
     TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
     List<Integer> integerList = new ArrayList<Integer>(role);
