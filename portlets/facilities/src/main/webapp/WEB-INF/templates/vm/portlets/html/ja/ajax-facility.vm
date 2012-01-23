@@ -34,9 +34,7 @@
 </ul>
 </div>
 </div>
-#if($result.getAllFacilitySum() != 0)
 #AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
-#end
 #AUISummaryDivfooter()
 #if($result.getAllFacilitySum() != 0)
 #AUISummaryDiv()

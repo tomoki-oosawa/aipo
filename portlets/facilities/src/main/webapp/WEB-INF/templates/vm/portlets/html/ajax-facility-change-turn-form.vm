@@ -33,27 +33,18 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 #ALajaxscreenformheader("FacilityChangeTurnForm" $jslink $portlet "FacilityChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.facility.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
-#ALtableheaderWide()
-#ALtdcaptionAtt('設備一覧' 'width="200" nowrap')
-<td class="item" width="100%" >
-<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
-<td width="23" style="border-width:0; padding: 0px;"><table border="0" style="padding: 0px;">
-<tr><td valign="top" style="border-width:0;">
-<a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></td>
-</tr>
-<tr><td valign="top" style="border-width:0;">
-<a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></td>
-</tr>
-<tr><td style="border:0;">&nbsp;</td></tr>
+<table class="dialogTable wide">
+<tbody>
 <tr>
-<td valign="bottom" style="border-width:0;"><a href="javascript:doDownOptions(dojo.byId('member_so_$!portlet.ID'))" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></td>
-</tr>
-<tr>
-<td valign="bottom" style="border-width:0;"><a href="javascript:doDownOptions10(dojo.byId('member_so_$!portlet.ID'))" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></td>
-</tr>
-</table></td>
-<td width="99%" style="border-width:0;"><select id="member_so_$!portlet.ID" name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">
-#if($!result.FacilityList.size() <= 0)
+<td class="caption" width="30%" nowrap="">設備一覧</td>
+<td width="5%">
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('member_so_$!portlet.ID'))" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('member_so_$!portlet.ID'))" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
+</td>
+<td width="65%"><select id="member_so_$!portlet.ID" name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">
+#if($!result.UserList.size() <= 0)
 <option value=""></option>
 #else
 #foreach($record in $!result.FacilityList)
@@ -63,8 +54,8 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 </select>
 </td>
 </tr>
+</tbody>
 </table>
-</td>
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmitJS('eventSubmit_doFacility_change_turn_update' '更新する' 'setHiddenValue(this);aipo.facility.sortsubmit(this.form)')
