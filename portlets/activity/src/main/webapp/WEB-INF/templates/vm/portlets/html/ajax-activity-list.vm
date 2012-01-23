@@ -27,17 +27,7 @@
 #if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">デスクトップ通知を#if($!desktopNotification && $!notifyPermission)無効#else有効#endにする</a>&nbsp;#end
 </p>
 #else
-<ul class="activityList">
-#foreach ($record in $result.List)
-<li #if(!$record.isRead()) class="unread" #end>
-<div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
-#if($!$record.Icon.toString() != "")
-<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
-#end
-<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
-</li>
-#end
-</ul>
+
 #set($pageRange = 5)
 #set($pageTrimRange = 2)
 #set($pages = $result.PagesNum)
@@ -76,43 +66,40 @@
 #end
 #end
 #end
-#if ($pages > 1)
-<div class="clearfix">
-  <div class="alignleft small">
 
-    <div class="pagination">
+<div class="auiSummaryMeta clearfix">
+<div class="floatRight">
+	<div class="count">$from ～ $to 件 / 計 $count 件</div>
+#if ($pages > 1)
+    <div class="auiSelectButton floatLeft">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="small">前へ</a></li>
+	    <li title="前へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_l.gif"/></span></a></li>
 #else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+	    <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_l.gif" alt=""/></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="small">次へ</a></li>
+        <li title="次へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_r.gif"/></span></a></li>
 #else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
-#end
-        <li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-        <li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$page');" class="small">$page</a></li>
-#end
+	    <li title="次へ"><a href="javascript:void(0);" class="last arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_r.gif" alt=""/></span></a></li>
 #end
       </ul>
     </div>
-  </div>
-</div>
 #end
+</div>
+</div>
+
+<ul class="activityList">
+#foreach ($record in $result.List)
+<li #if(!$record.isRead()) class="unread" #end>
+<div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
+#if($!$record.Icon.toString() != "")
+<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
+#end
+<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+</li>
+#end
+</ul>
 
 <p class="rightBtn">
 #if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">デスクトップ通知を#if($!desktopNotification && $!notifyPermission)無効#else有効#endにする</a>&nbsp;#end<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
