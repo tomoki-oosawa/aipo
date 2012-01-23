@@ -26,6 +26,9 @@
 #ALformheader('noteForm' $jslink $portlet)
 <table class="activityTable">
 <tbody>
+#AUISummaryDiv()
+#AUIajaxpageview('NoteScreen' $result)
+#AUISummaryDivfooter()
 #foreach ($record in $result.List)
 <tr>
 <td>
@@ -37,6 +40,5 @@ $!record.getCompanyName() $!record.ClientName 様より伝言 「$!record.Subjec
 </tr>
 #end
 </tbody></table>
-#ALajaxpageviewFooter('NoteScreen' $result)
 #ALformfooter()
 #end
