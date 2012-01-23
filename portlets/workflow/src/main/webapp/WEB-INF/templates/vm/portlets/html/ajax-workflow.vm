@@ -24,6 +24,9 @@
 #ALformheader('Workflow' $jslink $portlet)
 <table class="activityTable">
 <tbody>
+#AUISummaryDiv()
+#AUIajaxpageview('WorkflowScreen' $result)
+#AUISummaryDivfooter()
 #foreach ($record in $result.List)
 <tr>
 <td>
@@ -41,6 +44,5 @@
 </tr>
 #end
 </tbody></table>
-#ALajaxpageviewFooter('WorkflowScreen' $result)
 #ALformfooter()
 #end
