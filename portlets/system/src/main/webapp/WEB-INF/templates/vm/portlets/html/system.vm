@@ -19,4 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/system/form.js")
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+    ptConfig['$!portlet.ID'] = { group:"system", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemScreen"))', reloadFunction:aipo.reloadPage };
+
+//]]>
+</script>
 #parse("/portlets/html/ja/ajax-system.vm")

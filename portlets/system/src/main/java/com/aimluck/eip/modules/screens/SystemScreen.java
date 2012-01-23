@@ -71,7 +71,9 @@ public class SystemScreen extends ALVelocityScreen {
     SystemNetworkSelectData detailData = new SystemNetworkSelectData();
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
-    setTemplate(rundata, context, "portlets/html/ja/ajax-system.vm");
+
+    String layout_template = "portlets/html/ja/ajax-system.vm";
+    setTemplate(rundata, context, layout_template);
   }
 
   /**
