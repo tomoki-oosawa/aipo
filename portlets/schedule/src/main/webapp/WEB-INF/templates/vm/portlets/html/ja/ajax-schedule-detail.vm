@@ -154,7 +154,7 @@ ${record.FacilityName}<br/>
         <h3>削除する場合の条件</h3>
         #set($prestr = "$!{result.Detail.User.AliasName} の")
 
-            #if($hasMember && $!{result.Detail.isRepeat()})
+            #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
             <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
@@ -165,7 +165,7 @@ ${record.FacilityName}<br/>
             <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
-            #elseif($hasMember && ! $!{result.Detail.isRepeat()})
+            #elseif(($hasMember || $!{result.Detail.Type}=="F") && ! $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
             <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
             <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
