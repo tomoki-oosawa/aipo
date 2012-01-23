@@ -58,7 +58,6 @@
 <br/>
 
 <h3>追加アプリの選択</h3>
-<div style="margin-bottom:10px;"><a href="http://store.aipo.com/" target="_blank"><strong>Aipoストア</strong></a>でアプリを探すことができます。</div>
 <div style="height:300px;overflow:scroll;overflow-x:hidden;">
 <table class="listTable" style="margin-top:0">
 <tr>
@@ -98,11 +97,11 @@
 #ALtdcellfooter()
 </tr>
 #end
-#ALtablefooter()
+</table>
 </div>
 <input type="hidden" name="size" value="30"/>
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
-#ALformfooter()
+</form>
 #ALdialogfooter()
