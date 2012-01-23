@@ -412,7 +412,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
           List<ALEipUserAddr> destMemberList =
             ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
               .getUserId(rundata), false);
-          String subject = "[" + ALOrgUtilsService.getAlias() + "]Msgboard";
+          String subject = "[" + ALOrgUtilsService.getAlias() + "]掲示板";
           String orgId = Database.getDomainName();
 
           List<ALAdminMailMessage> messageList =
