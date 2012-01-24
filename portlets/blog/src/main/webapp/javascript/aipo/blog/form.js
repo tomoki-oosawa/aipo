@@ -107,10 +107,11 @@ aipo.blog.popupCenterHide = function() {
 
 aipo.blog.formSwitchThemaInput = function(button) {
     if(button.form.is_new_thema.value == 'TRUE' || button.form.is_new_thema.value == 'true') {
-        button.value = dojo.byId('blog_val_switch1').innerText;
+
+    	button.value = aimluck.io.escapeText("blog_val_switch1");
         aipo.blog.formThemaInputOff(button.form);
     } else {
-        button.value = dojo.byId('blog_val_switch2').innerText;
+		button.value = aimluck.io.escapeText("blog_val_switch2");
         aipo.blog.formThemaInputOn(button.form);
     }
 }
@@ -167,7 +168,11 @@ aipo.blog.onSubmitSerchButton = function(form,url,p_id){
 }
 
 aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
-  if(confirm(dojo.byId('blog_val_confirm1').innerText)) {
+
+	var val1 = aimluck.io.escapeText("blog_val_confirm1");
+
+
+  if(confirm(val1)) {
     disableButton(button.form);
     var url = button.form.action + '&mode=commentdel&' + button.name + '=1&comment_id='+id;
     aimluck.io.disableForm(button.form, true);
@@ -178,7 +183,9 @@ aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
 }
 
 aipo.blog.delBlogEntry = function(button, indicator_id, p_id) {
-  if(confirm(dojo.byId('blog_val_confirm2').innerText)) {
+
+	var val2 = aimluck.io.escapeText("blog_val_confirm2");
+  if(confirm(val2)) {
     disableButton(button.form);
     var url = button.form.action + '&mode=delete&' + button.name + '=1';
     aimluck.io.disableForm(button.form, true);

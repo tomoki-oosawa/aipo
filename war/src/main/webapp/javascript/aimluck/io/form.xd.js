@@ -126,7 +126,19 @@ aimluck.io.sendRawData = function(url, params,callback, callbackArgs) {
 }
 
 
-
+aimluck.io.escapeText = function(Text){
+	var val;
+	if (typeof(dojo.byId(Text).innerText) != 'undefined'){
+		val = dojo.byId(Text).innerText;
+	}
+	else if (typeof(dojo.byId(Text).value) != 'undefined'){
+		val = dojo.byId(Text).value;
+	}
+	else if (typeof(dojo.byId(Text).textContent) != 'undefined'){
+		val = dojo.byId(Text).textContent;
+	}
+	return val;
+}
 
 aimluck.io.disableForm = function(form, bool) {
   var elements = form.elements;

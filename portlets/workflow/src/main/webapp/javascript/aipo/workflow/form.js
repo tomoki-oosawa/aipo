@@ -154,7 +154,7 @@ aipo.workflow.categorySetTemplate = function(array,rtnData){
             }
             dojo.byId(array["namedRoute"]).value = routeH;
 
-            dojo.byId('is_saved_route_button').value = dojo.byId('workflow_val_route1').innerText;
+            dojo.byId('is_saved_route_button').value = aimluck.io.escapeText("workflow_val_route1");
             dojo.byId('workflowRouteSelectField').style.display = "";
             dojo.byId('workflowRouteInputField').style.display = "none";
             dojo.byId('is_saved_route').value = 'TRUE';
@@ -187,7 +187,7 @@ aipo.workflow.onChangeNote = function(){
 aipo.workflow.NoteChangeConfirm = function(flgName){
 
     if(dojo.byId(flgName).checked){
-      if(!confirm(dojo.byId('workflow_val_confirm1').innerText)){
+      if(!confirm(aimluck.io.escapeText("workflow_val_confirm1"))){
         return false;
       }
     }
@@ -247,10 +247,10 @@ aipo.workflow.submit_list = function(form) {
 
 aipo.workflow.formSwitchRouteSelect = function(button) {
     if(button.form.is_saved_route.value == 'TRUE' || button.form.is_saved_route.value == 'true') {
-        button.value = dojo.byId('workflow_val_route2').innerText;
+        button.value = aimluck.io.escapeText("workflow_val_route2");
         aipo.workflow.formRouteSelectOff(button.form);
     } else {
-        button.value = dojo.byId('workflow_val_route1').innerText;
+        button.value = aimluck.io.escapeText("workflow_val_route1");
         aipo.workflow.formRouteSelectOn(button.form);
     }
 }

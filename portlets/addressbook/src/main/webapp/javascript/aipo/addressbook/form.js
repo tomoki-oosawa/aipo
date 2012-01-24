@@ -71,10 +71,10 @@ aipo.addressbook.onLoadAddressbookGroupDialog = function(portlet_id){
 
 aipo.addressbook.formSwitchCompanyInput = function(button) {
     if(button.form.is_new_company.value == 'TRUE' || button.form.is_new_company.value == 'true') {
-        button.value = dojo.byId('addressbook_val_switch1').innerText;
+    	button.value = aimluck.io.escapeText("addressbook_val_switch1");
         aipo.addressbook.formCompanyInputOff(button.form);
     } else {
-        button.value = dojo.byId('addressbook_val_switch2').innerText;
+    	button.value = aimluck.io.escapeText("addressbook_val_switch2");
         aipo.addressbook.formCompanyInputOn(button.form);
     }
 }

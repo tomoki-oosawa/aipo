@@ -85,10 +85,10 @@ aipo.msgboard.expandImageWidth = function(img) {
 
 aipo.msgboard.formSwitchCategoryInput = function(button) {
     if(button.form.is_new_category.value == 'TRUE' || button.form.is_new_category.value == 'true') {
-        button.value = dojo.byId('msgboard_val_switch1').innerText;
+        button.value = aimluck.io.escapeText("msgboard_val_switch1");
         aipo.msgboard.formCategoryInputOff(button.form);
     } else {
-        button.value = dojo.byId('msgboard_val_switch2').innerText;
+        button.value = aimluck.io.escapeText("msgboard_val_switch2");
         aipo.msgboard.formCategoryInputOn(button.form);
     }
 }

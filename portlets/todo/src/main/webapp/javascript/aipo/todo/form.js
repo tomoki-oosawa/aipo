@@ -49,10 +49,10 @@ aipo.todo.onLoadCategoryDialog = function(portlet_id){
 
 aipo.todo.formSwitchCategoryInput = function(button) {
     if(button.form.is_new_category.value == 'TRUE' || button.form.is_new_category.value == 'true') {
-        button.value = dojo.byId('todo_val_switch1').innerText;
+        button.value = aimluck.io.escapeText("todo_val_switch1");
         aipo.todo.formCategoryInputOff(button.form);
     } else {
-        button.value = dojo.byId('todo_val_switch2').innerText;
+        button.value = aimluck.io.escapeText("todo_val_switch2");
         aipo.todo.formCategoryInputOn(button.form);
     }
 }

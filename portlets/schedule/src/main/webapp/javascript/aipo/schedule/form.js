@@ -60,7 +60,7 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
         });
 
         var tooltipObject = new aipo.widget.ToolTip({
-            label: "<div class='indicator'>"+dojo.byId('schedule_val_tooltip1').innerText+"</div>",
+            label: "<div class='indicator'>"+aimluck.io.escapeText("schedule_val_tooltip1")+"</div>",
             connectId: nodeList
         }, portlet_id, function(containerNode, node){
             var regExp = new RegExp("schedule-" + portlet_id + "-([0-9]+)");
@@ -121,15 +121,15 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
             }
 
             if(schedule.place != ""){
-                placehtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip2').innerText+"</span><br/><ul><li>" + schedule.place + "</li></ul>";
+                placehtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip2")+"</span><br/><ul><li>" + schedule.place + "</li></ul>";
             }
 
             if(mbhtml != ""){
-                mbhtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip3').innerText+"</span><br/><ul>" + mbhtml + "</ul>";
+                mbhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip3")+"</span><br/><ul>" + mbhtml + "</ul>";
             }
 
             if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">"+dojo.byId('schedule_val_tooltip4').innerText+"</span><br/><ul>" + mbfhtml + "</ul>";
+                mbfhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip4")+"</span><br/><ul>" + mbfhtml + "</ul>";
             }
 
             var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
@@ -161,7 +161,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
     var common_url = dojo.byId('commonUrl'+portlet_id);
     if(common_url){
         var common_category_id = dojo.byId('commonCategoryid'+portlet_id);
-        var val1 = dojo.byId('schedule_val_category1').innerText;
+        var val1 = aimluck.io.escapeText("schedule_val_category1");
         params = {
             url:common_url.value,
             key:"categoryId",
@@ -299,11 +299,11 @@ aipo.schedule.formPreSubmit = function (form) {
 
 aipo.schedule.formSwitchRepeat = function(button) {
     if(button.form.is_repeat.value == 'TRUE' || button.form.is_repeat.value == 'true') {
-    	var val = dojo.byId('schedule_val_repeat1').innerText;
+    	var val = aimluck.io.escapeText("schedule_val_repeat1");
         button.value = val;
         aipo.schedule.formRepeatOff(button.form);
     } else {
-    	var val = dojo.byId('schedule_val_repeat2').innerText;
+    	var val = aimluck.io.escapeText("schedule_val_repeat2");
         button.value = val;
         aipo.schedule.formRepeatOn(button.form);
     }
@@ -330,17 +330,17 @@ aipo.schedule.formSwitchAllDay = function(checkbox) {
 
 aipo.schedule.formSwitchSpan = function(button) {
     if(button.form.is_span.value == 'TRUE' || button.form.is_span.value == 'true') {
-        button.value = dojo.byId('schedule_val_span1').innerText;
+        button.value = aimluck.io.escapeText("schedule_val_span1");
         if(button.form.is_repeat.value != 'TRUE' && button.form.is_repeat.value != 'true') {
-            button.form.repeat_button.value = dojo.byId('schedule_val_repeat1').innerText;
+            button.form.repeat_button.value = aimluck.io.escapeText("schedule_val_repeat1");
             aipo.schedule.formRepeatOff(button.form);
         } else {
-            button.form.repeat_button.value = dojo.byId('schedule_val_repeat2').innerText;
+            button.form.repeat_button.value = aimluck.io.escapeText("schedule_val_repeat2");
             aipo.schedule.formRepeatOn(button.form);
         }
         aipo.schedule.formSpanOff(button.form);
     } else {
-        button.value = dojo.byId('schedule_val_span2').innerText;
+        button.value = aimluck.io.escapeText("schedule_val_span2");
         aipo.schedule.formSpanOn(button.form);
     }
 }
@@ -563,7 +563,7 @@ aipo.schedule.onReceiveMessage = function(msg){
 
     if(msg != null && msg.match(/duplicate_facility/)){
 
-        if(confirm(dojo.byId('schedule_val_confirm1').innerText)) {
+        if(confirm(aimluck.io.escapeText("schedule_val_confirm1"))) {
 		    var form = dojo.byId('_scheduleForm');
 		    if(form){
 		      form.ignore_duplicate_facility.value = "true";
@@ -607,7 +607,7 @@ aipo.schedule.shrinkMember = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member1').innerText+'\" onclick=\"aipo.schedule.expandMember();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("schedule_val_member1")+'\" onclick=\"aipo.schedule.expandMember();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -636,7 +636,7 @@ aipo.schedule.expandMember = function(){
             }
        }
        HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member2').innerText+'\" onclick=\"aipo.schedule.shrinkMember();\" />'
+       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("schedule_val_member2")+'\" onclick=\"aipo.schedule.shrinkMember();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
@@ -664,7 +664,7 @@ aipo.schedule.shrinkFacility = function(){
             }
         }
         HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_facility1').innerText+'\" onclick=\"aipo.schedule.expandFacility();\" />'
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("schedule_val_facility1")+'\" onclick=\"aipo.schedule.expandFacility();\" />'
         HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
