@@ -172,6 +172,18 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     context.put("skin", portlet.getPortletConfig().getPortletSkin());
     context.put("utils", new ALCommonUtils());
 
+    // アクセス権限がなかった場合の削除表示フラグ
+    boolean hasAuthority =
+      ALEipUtils.getHasAuthority(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
+    String showDelete = "false";
+    if (hasAuthority) {
+      showDelete = "true";
+    }
+    context.put("accessControl", showDelete);
+
     String useragent = rundata.getUserAgent();
     useragent = useragent.trim();
     ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);

@@ -68,7 +68,9 @@
                                               <tbody>
                                                 <tr>
                                                   <td nowrap="nowrap" class="top right">
+#if($accessControl == "true")
                                                     <input type="image" src="images/close.gif" alt="$l10n.CUSTOMIZER_REMOVE" title="$l10n.CUSTOMIZER_REMOVE" name="eventSubmit_doDelete" />
+#end
 #if ($col == 0)
                                                     <img src="images/common/dot.gif" width="19" alt=""/>
 #else

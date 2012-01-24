@@ -34,7 +34,9 @@ import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet controller implementation
@@ -67,6 +69,18 @@ public class ALVelocityPortletController extends AbstractPortletController {
     context.put("config", this.getConfig());
     context.put("skin", this.getPortlets().getPortletConfig().getPortletSkin());
     context.put("template", getConfig().getInitParameter("template"));
+
+    // アクセス権限がなかった場合の削除表示フラグ
+    boolean hasAuthority =
+      ALEipUtils.getHasAuthority(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
+    String showDelete = "false";
+    if (hasAuthority) {
+      showDelete = "true";
+    }
+    context.put("accessControl", showDelete);
 
     Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
