@@ -827,9 +827,7 @@ $item.get(0)
                     <tr>
 #if($portlet_id!="")
                       <td class="roundBlockTitle" style="width:89%">$title</td>
-                      <td class="roundBlockIcon last">
-                        <div style="float:left"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /></div>
-                        <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+                      <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
                       </td>
 #else
                       <td class="roundBlockTitle wide">$title</td>
