@@ -693,7 +693,7 @@ aipo.schedule.expandFacility = function(){
             }
        }
        HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+dojo.byId('schedule_val_member2').innerText+'\" onclick=\"aipo.schedule.shrinkFacility();\" />'
+       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("schedule_val_member2")+'\" onclick=\"aipo.schedule.shrinkFacility();\" />'
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
