@@ -196,50 +196,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       /** メンバーリストの処理 */
       int tmp_access_flag = (int) access_flag.getValue();
-
-      // 親の権限を持っているメンバーを継承する
-      if ((int) parent_id.getValue() != 1) {
-        if (CabinetUtils.getAccessControlFolderId((int) parent_id.getValue()) != 1) {
-          String parent_access_flag =
-            CabinetUtils.getAccessControlFolderFlag((int) parent_id.getValue());
-          if (Integer.parseInt(parent_access_flag) == CabinetUtils.ACCESS_PUBLIC_MEMBER
-            || Integer.parseInt(parent_access_flag) == CabinetUtils.ACCESS_SECRET_MEMBER) {
-            List<String> member_id = new ArrayList<String>();
-            SelectQuery<EipTCabinetFolderMap> query =
-              Database.query(EipTCabinetFolderMap.class);
-            Expression exp1 =
-              ExpressionFactory.matchExp(
-                EipTCabinetFolderMap.FOLDER_ID_PROPERTY,
-                (int) parent_id.getValue());
-            query.setQualifier(exp1);
-            List<EipTCabinetFolderMap> list = query.fetchList();
-            for (int i = 0; i < list.size(); i++) {
-              member_id.add(list.get(i).getUserId().toString());
-            }
-
-            SelectQuery<TurbineUser> query2 = Database.query(TurbineUser.class);
-            Expression exp2 =
-              ExpressionFactory.inDbExp(
-                TurbineUser.USER_ID_PK_COLUMN,
-                member_id.toArray());
-            query2.setQualifier(exp2);
-            memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query2));
-            /** ログインユーザが含まれていなかった場合は追加 */
-            boolean login_user_exists = false;
-            for (int i = 0; i < memberList.size(); i++) {
-              if (member_id.get(i).equals(login_user.getUserId().toString())) {
-                login_user_exists = true;
-                break;
-              }
-            }
-            if (!login_user_exists) {
-              memberList.add(login_user);
-            }
-          }
-        }
-      }
-
-      // ルートフォルダ下のときの絞り込みメンバー
       if (tmp_access_flag == CabinetUtils.ACCESS_PUBLIC_MEMBER
         || tmp_access_flag == CabinetUtils.ACCESS_SECRET_MEMBER) {
         String member[] = rundata.getParameters().getStrings("member_to");
@@ -652,16 +608,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       folder.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
       folder.setUpdateDate(Calendar.getInstance().getTime());
-
-      // 親アクセス権限継承
-      if ((int) parent_id.getValue() != 1
-        && !CabinetUtils
-          .getFolderByPK((int) parent_id.getValue())
-          .getPublicFlag()
-          .equals("0")) {
-        access_flag.setValue(CabinetUtils
-          .getAccessControlFolderFlag((int) parent_id.getValue()));
-      }
 
       // アクセス権限
       int accessFlag = (int) access_flag.getValue();
