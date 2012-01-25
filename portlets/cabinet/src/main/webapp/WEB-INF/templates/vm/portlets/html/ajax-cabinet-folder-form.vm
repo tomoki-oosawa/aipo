@@ -68,7 +68,10 @@
 #if($!result.showAclForm())
 #ALtdcaption("#ALrequired($!result.getFieldName('access_flag'))")
 #ALtditemheader()
-<div class="spaceBottom">
+#else
+#ALtablefooter()
+#end
+<div class="spaceBottom" #if(!$!result.showAclForm())style="display:none;"#end>
 <input name="access_flag" type="radio" value="0" id="$!{portlet.ID}access_flag_0_id" onclick="aipo.cabinet.hideMember(form)" #if(${result.getAccessFlag().toString()} == "0") checked="checked" #end>
 <label for="$!{portlet.ID}access_flag_0_id"> 全てのユーザーが閲覧／追加／編集／削除可</label><br />
 <input name="access_flag" type="radio" value="1"  id="$!{portlet.ID}access_flag_1_id" onclick="aipo.cabinet.showMember(this)" #if(${result.getAccessFlag().toString()} == "1") checked="checked" #end>
@@ -104,9 +107,10 @@
 <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $result.getMemberList() )<option value="$!record.Name">$!record.AliasName</option>#end</select>
 </div>
 </div>
+#if($!result.showAclForm())
 #ALtditemfooter()
-#end
 #ALtablefooter()
+#end
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
