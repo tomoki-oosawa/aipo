@@ -21,7 +21,7 @@
 -->
 
 <registry>
-    <portlet-entry name="MyLink" hidden="false" type="ref" parent="Velocity" application="false">
+    <portlet-entry name="MyLink" hidden="true" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Myリンク</title>

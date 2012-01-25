@@ -21,7 +21,7 @@
 -->
 
 <registry>
-    <portlet-entry name="WebPage" hidden="false" type="ref" parent="Velocity" application="false">
+    <portlet-entry name="WebPage" hidden="true" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Webページ</title>
