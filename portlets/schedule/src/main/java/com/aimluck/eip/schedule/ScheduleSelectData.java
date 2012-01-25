@@ -27,6 +27,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -591,6 +592,10 @@ public class ScheduleSelectData extends
 
   public boolean isActivity() {
     return activity;
+  }
+
+  public boolean isDisplayManHour() {
+    return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
 }

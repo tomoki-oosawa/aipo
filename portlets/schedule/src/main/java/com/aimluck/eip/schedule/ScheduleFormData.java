@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -327,7 +328,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     }
-
     /*
      */
     // スーパークラスのメソッドを呼び出す。
@@ -2759,6 +2759,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
+  }
+
+  public boolean isDisplayManHour() {
+    return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
 }

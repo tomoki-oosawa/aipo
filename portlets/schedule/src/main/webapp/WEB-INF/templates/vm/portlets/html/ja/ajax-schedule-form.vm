@@ -233,11 +233,13 @@
 #ALtditem("#ALtextfield('name' $!result.Name '95%' 50 'active')")
 
 #* 共有カテゴリ連携（ここから） *#
+#if($!result.isDisplayManHour())
 #ALtdcaption("共有カテゴリ")
 #ALtditemheader()
 #ALselectpdheader("common_category_id" '90%' "");
 #ALselectfooter()
 #ALtditemfooter()
+#end
 #* 共有カテゴリ連携（ここまで） *#
 
 #ALtdcaption("$!result.getFieldName('place')")

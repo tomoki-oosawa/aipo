@@ -78,10 +78,10 @@ $!{result.Detail.Date2}
 #ALtditem($!{result.Detail.Name})
 
 #* 共有カテゴリ連携（ここから）  *#
-
+#if($!result.isDisplayManHour())
 #ALtdcaption('共有カテゴリ')
 #ALtditem($!{result.Detail.CommonCategoryName})
-
+#end
 #* 共有カテゴリ連携（ここまで）  *#
 
 #ALtdcaption('場所')
