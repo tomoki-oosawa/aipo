@@ -35,7 +35,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
-import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
@@ -242,6 +241,7 @@ public class CabinetSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
 
       ResultList<EipTCabinetFile> list = query.getResultList();
+
       // ファイル総数をセットする．
       if (list == null) {
         return new ResultList<EipTCabinetFile>(new ArrayList<EipTCabinetFile>());
@@ -274,41 +274,11 @@ public class CabinetSelectData extends
       query.setQualifier(exp);
     } else {
       // アクセス制御
-      Expression exp01 =
-        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-          + "."
-          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
-          .valueOf(CabinetUtils.ACCESS_PUBLIC_ALL));
-
-      Expression exp02 =
-        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-          + "."
-          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
-          .valueOf(CabinetUtils.ACCESS_PUBLIC_MEMBER));
-
-      Expression exp11 =
-        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-          + "."
-          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
-          .valueOf(CabinetUtils.ACCESS_SECRET_MEMBER));
-
-      Expression exp12 =
-        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-          + "."
-          + EipTCabinetFolder.PUBLIC_FLAG_PROPERTY, Integer
-          .valueOf(CabinetUtils.ACCESS_SECRET_SELF));
-
-      Expression exp13 =
-        ExpressionFactory.matchExp(EipTCabinetFile.EIP_TCABINET_FOLDER_PROPERTY
-          + "."
-          + EipTCabinetFolder.EIP_TCABINET_FOLDER_MAP_PROPERTY
-          + "."
-          + EipTCabinetFolderMap.USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
-          .getUserId(rundata)));
-
-      Expression publicExp = exp01.orExp(exp02);
-      Expression privateExp = (exp11.andExp(exp13)).orExp(exp12.andExp(exp13));
-      query.setQualifier(publicExp).orQualifier(privateExp);
+      Expression exp =
+        ExpressionFactory.inExp(
+          EipTCabinetFile.FOLDER_ID_PROPERTY,
+          CabinetUtils.getAuthorizedVisibleFolderIds(rundata));
+      query.andQualifier(exp);
 
     }
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {

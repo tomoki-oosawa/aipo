@@ -506,12 +506,13 @@ public class CabinetUtils {
         /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
         return isAccessibleFolder(folder.getParentId(), rundata);
       } else if (public_flag == CabinetUtils.ACCESS_PUBLIC_MEMBER) {
-        /** 上位フォルダでのアクセス制限は無い。 */
-        return true;
+        /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
+        return isAccessibleFolder(folder.getParentId(), rundata);
       } else if (public_flag == CabinetUtils.ACCESS_SECRET_SELF) {
         /** 作成者本人のみ閲覧可能 */
         if (folder.getCreateUserId() == current_user_id) {
-          return true;
+          /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
+          return isAccessibleFolder(folder.getParentId(), rundata);
         }
       } else {
         /** 閲覧権限があるユーザーか確認する */
@@ -529,7 +530,8 @@ public class CabinetUtils {
         query.andQualifier(exp2);
         List<EipTCabinetFolderMap> list = query.fetchList();
         if (list != null && list.size() != 0) {
-          return true;
+          /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
+          return isAccessibleFolder(folder.getParentId(), rundata);
         }
       }
       return false;
@@ -586,7 +588,8 @@ public class CabinetUtils {
       } else if (public_flag == CabinetUtils.ACCESS_SECRET_SELF) {
         /** 作成者本人のみ編集可能 */
         if (folder.getCreateUserId() == current_user_id) {
-          return true;
+          /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
+          return isEditableFolder(folder.getParentId(), rundata);
         }
       } else {
         /** 編集権限があるユーザーか確認する */
@@ -604,7 +607,8 @@ public class CabinetUtils {
         query.andQualifier(exp2);
         List<EipTCabinetFolderMap> list = query.fetchList();
         if (list != null && list.size() != 0) {
-          return true;
+          /** 上位フォルダでアクセス制限がかかっている可能性あり。再帰的に調査する */
+          return isEditableFolder(folder.getParentId(), rundata);
         }
       }
       return false;

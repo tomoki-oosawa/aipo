@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -28,7 +26,6 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
-import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
@@ -36,7 +33,6 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイルの一覧を処理するクラスです。 <br />
@@ -47,8 +43,6 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileRawScreen.class.getName());
-
-  private int userid;
 
   private EipTCabinetFolder cabinetfolder;
 
@@ -111,42 +105,12 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
 
   private boolean doFileCheckView(RunData rundata, EipTCabinetFile cabinetfile)
       throws ALPermissionException {
-    userid = ALEipUtils.getUserId(rundata);
     cabinetfolder = cabinetfile.getEipTCabinetFolder();
 
-    switch (Integer.parseInt(cabinetfolder.getPublicFlag())) {
-      case 0:
-        return true;
-      case 1:
-        return true;
-      case 2:
-        if (checkFolderMap()) {
-          return true;
-        } else {
-          throw new ALPermissionException();
-        }
-      case 3:
-        if (checkFolderMap()) {
-          return true;
-        } else {
-          throw new ALPermissionException();
-        }
-      default:
-        throw new ALPermissionException();
+    if (CabinetUtils.isAccessibleFolder(cabinetfolder.getFolderId(), rundata)) {
+      return true;
+    } else {
+      throw new ALPermissionException();
     }
-  }
-
-  private boolean checkFolderMap() {
-    @SuppressWarnings("unchecked")
-    List<EipTCabinetFolderMap> folderMap =
-      cabinetfolder.getEipTCabinetFolderMap();
-
-    for (EipTCabinetFolderMap map : folderMap) {
-      if (map.getUserId().intValue() == userid) {
-        return true;
-      }
-    }
-
-    return false;
   }
 }
