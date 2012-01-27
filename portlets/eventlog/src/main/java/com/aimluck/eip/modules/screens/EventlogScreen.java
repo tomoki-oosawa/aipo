@@ -47,7 +47,6 @@ public class EventlogScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-
       EventlogSelectData listData = new EventlogSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(

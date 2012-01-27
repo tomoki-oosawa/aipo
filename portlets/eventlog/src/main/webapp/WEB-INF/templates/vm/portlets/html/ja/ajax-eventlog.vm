@@ -18,16 +18,58 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogScreen')")
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 <div id="listMessageDiv"></div>
-#if($result.List.size() == 0)
-指定された条件に該当するイベントログはありません。<br />
-#else
 #ALajaxlistformheader('イベントログ')
+
+<div class="clearfix">
+<select id="start_date_year" name="start_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach ( $num in [2006..$!result.ViewDateMaxYear] )
+<option value="$num" #if ($!result.StartDate.Year == "$num") selected="selected" #end>$!{num}年</option>
+#end
+</select>
+<select id="start_date_month" name="start_date_month" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach ( $num in [1..12] )
+<option value="$num" #if ($!result.StartDate.Month == "$num") selected="selected" #end>$!{num}月</option>
+#end
+</select>
+<select id="start_date_day" name="start_date_day" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach($num in [1..$!result.StartDateMaxDay])
+<option value="$num" #if ($!result.StartDate.Day == "$num") selected="selected" #end>$!{num}日</option>
+#end
+</select>
+～
+<select id="end_date_year" name="end_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach ( $num in [2006..$!result.ViewDateMaxYear] )
+<option value="$num" #if ($!result.EndDate.Year == "$num") selected="selected" #end>$!{num}年</option>
+#end
+</select>
+<select id="end_date_month" name="end_date_month" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach ( $num in [1..12] )
+<option value="$num" #if ($!result.EndDate.Month == "$num") selected="selected" #end>$!{num}月</option>
+#end
+</select>
+<select id="end_date_day" name="end_date_day" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
+#foreach($num in [1..$!result.EndDateMaxDay])
+<option value="$num" #if ($!result.EndDate.Day == "$num") selected="selected" #end>$!{num}日</option>
+#end
+</select>
+
+#if($result.List.size() == 0)
+<div class="auiSummaryMeta clearfix">指定された条件に該当するイベントログはありません。</div>
+#ALformfooter()
+#else
+</div>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCvsExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+
+#set($title = "表示中の一覧をダウンロード")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
+
 </div>
 #AUIajaxpageview('EventlogScreen' $result)
 #AUISummaryDivfooter()
@@ -42,6 +84,7 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
+##ヘッダー名を変更する場合はEventlogCvsExportScreenも変更してください
 #ALtdhead("#ALajaxsort('event_date' '発生日時' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('user_name' '名前' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')")
@@ -57,7 +100,7 @@
 #ALtdcellAtt("<div>$!record.UserFullName</div>"'')
 #ALtdcellAtt("<div>$!record.PortletName</div>"'')
 #ALtdcellAtt("<div>$!record.EventName</div>"'')
-#ALtdcellAtt("<div>$!record.IpAddr</div>"'')
+#ALtdcellAtt("<div>$!record.IpAddr $!record</div>"'')
 </tr>
 #end
 </tbody>

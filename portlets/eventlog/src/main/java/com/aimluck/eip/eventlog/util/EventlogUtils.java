@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.eventlog.util;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -65,7 +66,69 @@ public class EventlogUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(EventlogUtils.class.getName());
 
+  public static final String VIEW_DATE_YEAR = "view_date_year";
+
+  public static final String VIEW_DATE_MONTH = "view_date_month";
+
+  public static final String VIEW_DATE_DAY = "view_date_day";
+
   public static final String EVENTLOG_PORTLET_NAME = "Eventlog";
+
+  /**
+   * @param start_end
+   *          true=>start, false =>end
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static Calendar getViewCalendar(boolean start_end, RunData rundata,
+      Context context) {
+    Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.HOUR_OF_DAY, 0);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    if (start_end) {
+      cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1);
+    }
+    int[] par = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH };
+    String[] str = { "_date_year", "_date_month", "_date_day" };
+    String head = (start_end) ? "start" : "end";
+    for (int i = 0; i < str.length; i++) {
+      str[i] = head.concat(str[i]);
+      setCalendar(cal, par[i], str[i], rundata, context);
+    }
+    return cal;
+  }
+
+  /**
+   * @param cal
+   * @param par
+   * @param viewdate
+   * @param rundata
+   * @param context
+   */
+  private static void setCalendar(Calendar cal, int par, String viewdate,
+      RunData rundata, Context context) {
+    String temp = ALEipUtils.getTemp(rundata, context, viewdate);
+    String idParam = rundata.getParameters().getString(viewdate);
+    if (idParam == null && temp == null) {
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, viewdate, idParam);
+      int i = Integer.parseInt(idParam);
+      if (par == Calendar.MONTH) {
+        i--;
+      }
+      cal.set(par, i);
+    } else if (temp != null) {
+      ALEipUtils.setTemp(rundata, context, viewdate, temp);
+      int i = Integer.parseInt(temp);
+      if (par == Calendar.MONTH) {
+        i--;
+      }
+      cal.set(par, i);
+
+    }
+  }
 
   /**
    * イベントログオブジェクトモデルを取得します。 <BR>

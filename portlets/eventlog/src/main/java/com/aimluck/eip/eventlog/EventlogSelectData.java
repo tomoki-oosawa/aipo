@@ -21,13 +21,17 @@ package com.aimluck.eip.eventlog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
@@ -54,8 +58,17 @@ public class EventlogSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(EventlogSelectData.class.getName());
 
+  /** イベントログの書き出し可能最大数 */
+  private static final int MAX_SIZE = 50000;
+
   /** イベントログの総数 */
   private int eventlogSum;
+
+  private ALDateTimeField start_date, end_date;
+
+  private int start_date_max_day, end_date_max_day;
+
+  private int view_date_max_year;
 
   /**
    * 
@@ -82,7 +95,44 @@ public class EventlogSelectData extends
         LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
+    Calendar cal = Calendar.getInstance();
+    view_date_max_year = cal.get(Calendar.YEAR);
+
+    start_date = new ALDateTimeField();
+    cal = EventlogUtils.getViewCalendar(true, rundata, context);
+    start_date.setValue(cal.getTime());
+    start_date_max_day = cal.getActualMaximum(Calendar.DATE);
+
+    end_date = new ALDateTimeField();
+    cal = EventlogUtils.getViewCalendar(false, rundata, context);
+    end_date.setValue(cal.getTime());
+    end_date_max_day = cal.getActualMaximum(Calendar.DATE);
+
     super.init(action, rundata, context);
+  }
+
+  public ALDateTimeField getStartDate() {
+    return start_date;
+  }
+
+  public int getMaxSize() {
+    return MAX_SIZE;
+  }
+
+  public ALDateTimeField getEndDate() {
+    return end_date;
+  }
+
+  public int getStartDateMaxDay() {
+    return start_date_max_day;
+  }
+
+  public int getEndDateMaxDay() {
+    return end_date_max_day;
+  }
+
+  public int getViewDateMaxYear() {
+    return view_date_max_year;
   }
 
   /**
@@ -99,6 +149,7 @@ public class EventlogSelectData extends
       SelectQuery<EipTEventlog> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
+      buildSelectQueryForDate(query, rundata, context);
 
       ResultList<EipTEventlog> list = query.getResultList();
       // イベントログの総数をセットする．
@@ -109,6 +160,30 @@ public class EventlogSelectData extends
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * @param query
+   * @param rundata
+   * @param context
+   */
+  private void buildSelectQueryForDate(SelectQuery<EipTEventlog> query,
+      RunData rundata, Context context) {
+    Expression exp1 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTEventlog.EVENT_DATE_PROPERTY,
+        start_date.getValue());
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(end_date.getValue());
+    cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+    Expression exp2 =
+      ExpressionFactory
+        .lessExp(EipTEventlog.EVENT_DATE_PROPERTY, cal.getTime());
+    query.andQualifier(exp1.andExp(exp2));
+  }
+
+  public boolean isOverSize() {
+    return getCount() > MAX_SIZE;
   }
 
   /**
