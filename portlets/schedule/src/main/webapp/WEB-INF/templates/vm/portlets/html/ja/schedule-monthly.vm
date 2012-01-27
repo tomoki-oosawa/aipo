@@ -118,34 +118,9 @@
 #else
 #ALtableheaderCalendar("100%")
 <tr>
-<th class='sunday'>
-日<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th>
-月<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th>
-火<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th>
-水<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th>
-木<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th>
-金<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
-<th class='saturday'>
-土<br />
-<img src="images/common/dot.gif" width="50" height="1" alt="" />
-</th>
+#foreach($test in ["日","月","火","水","木","金","土"])
+<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+#end
 </tr>
 #set($entityids = "")
 #set($weekListSize = $result.Container.WeekList.size())

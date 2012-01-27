@@ -142,7 +142,6 @@
 #else
 #ALOnedayLink($!portlet.ID $filter $record 'groupWeekly')
 #end
-<br/><img src="images/common/dot.gif" width="50" height="1" alt="" />
 #ALtdheadfooter()
 #end
 </tr>
