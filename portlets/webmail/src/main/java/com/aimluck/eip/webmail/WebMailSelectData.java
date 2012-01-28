@@ -509,7 +509,14 @@ public class WebMailSelectData extends
    * @return
    */
   public int getUnReadMailSumByFolderId(int folder_id) {
-    return unreadMailSumMap.get(folder_id);
+    int result;
+    try {
+      result = unreadMailSumMap.get(folder_id);
+    } catch (Exception e) {
+      logger.error("[WebMailSelectData]", e);
+      result = 0;
+    }
+    return result;
   }
 
   public String getFinalAccessDate() {

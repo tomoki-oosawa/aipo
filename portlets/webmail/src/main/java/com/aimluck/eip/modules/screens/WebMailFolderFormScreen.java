@@ -49,8 +49,8 @@ public class WebMailFolderFormScreen extends ALVelocityScreen {
     // String mode = rundata.getParameters().getString(ALEipConstants.MODE);
 
     try {
-
       doWebMail_folder_form(rundata, context);
+      ALEipUtils.removeTemp(rundata, context, WebMailUtils.UNREAD_MAIL);
     } catch (Exception ex) {
       logger.error("[WebMailFolderFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
