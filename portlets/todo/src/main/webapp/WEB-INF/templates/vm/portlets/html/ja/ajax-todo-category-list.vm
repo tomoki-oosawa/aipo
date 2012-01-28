@@ -25,22 +25,24 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>カテゴリの管理</h2>
+#if($result.List.size() <= 0)
+  #AUIrowTableWide()
+  <tr>
+  <td colspan="4" class="auiNoData">
+  <p>カテゴリが登録されていません。</p>
+  <p>カテゴリを追加することで、ToDo を分類することができます。</p>
+  <p class="mh10">#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
+  </td>
+  </tr>
+  #AUItablefooter()
+#else
+
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALformheader('カテゴリ' $jslink $portlet)
-#if($result.List.size() <= 0)
-#AUIrowTableWide()
-<tr>
-<td colspan="4" class="auiNoData">
-<p>カテゴリが登録されていません。</p>
-<p>カテゴリを追加することで、ToDo を分類することができます。</p>
-<p class="mh10">#AUIbutton("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
-</td>
-</tr>
-#AUItablefooter()
-#else
+
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
@@ -70,8 +72,8 @@
 </div>
 #AUIajaxpageview('ToDoCategoryListScreen' $result)
 </div>
-#end
 #ALformfooter()
+#end
 #AUIcontentsAreaFooter()
 
 #parse("/portlets/html/ja/todo-category-widgets.vm")

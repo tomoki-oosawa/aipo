@@ -30,7 +30,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
@@ -106,18 +105,12 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList) {
     try {
       Expression exp1 =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      Expression exp2 =
         ExpressionFactory.inDbExp(
           EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
           values);
 
       List<EipTTodoCategory> categoryList =
-        Database
-          .query(EipTTodoCategory.class, exp1)
-          .andQualifier(exp2)
-          .fetchList();
+        Database.query(EipTTodoCategory.class, exp1).fetchList();
       if (categoryList == null || categoryList.size() == 0) {
         return false;
       }
