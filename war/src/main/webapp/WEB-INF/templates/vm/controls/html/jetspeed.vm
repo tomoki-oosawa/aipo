@@ -35,7 +35,10 @@
                                         <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #else
                                         #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
-                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+                                        #if ($tab.isSelected() == true)
+											#set($activeurlselected=$clink)
+										#end
+										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
                                   </div>
@@ -51,7 +54,12 @@
 						        </li>
                               </ul>
                             </div>
-                            <!-- /MAIN TAB -->
+							#if($activeurlselected!="")
+							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected">
+                            #else
+                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")">
+							#end
+							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
                             <table class="tableWrapper">
                               <tbody>

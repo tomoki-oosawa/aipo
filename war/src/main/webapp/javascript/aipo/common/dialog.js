@@ -21,13 +21,13 @@ dojo.provide("aipo.common");
 
 aipo.common.showDialog = function(url, portlet_id, callback) {
     var arrDialog = dijit.byId("modalDialog");
-    
+
     if(! arrDialog){
        arrDialog = new aimluck.widget.Dialog({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback}, "modalDialog");
     }else{
        arrDialog.setCallback(portlet_id, callback);
     }
-     
+
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
@@ -40,3 +40,10 @@ aipo.common.hideDialog = function() {
       arrDialog.hide();
     }
 };
+
+aipo.common.customizeDialog=function(){
+	if(dojo.byId("data-activecustomizeurl") != undefined && dojo.byId("data-activecustomizeurl") !=""){
+		var url=dojo.byId("data-activecustomizeurl").value;
+		aipo.common.showDialog(url);
+	}
+}

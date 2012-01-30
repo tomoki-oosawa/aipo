@@ -30,7 +30,6 @@
 $portlet.getContent($data)
 #else
 
-
                             <div id="auiTabs" class="clearfix">
                               <ul>
 #foreach ( $tab in $tabs )
@@ -44,6 +43,9 @@ $portlet.getContent($data)
                                         <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #else
                                         #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
+										#if ($tab.isSelected() == true)
+											#set($activeurlselected=$clink)
+										#end
                                         <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
                                         #end
                                   #end#end
@@ -60,7 +62,12 @@ $portlet.getContent($data)
 						        </li>
                               </ul>
                             </div>
-                            <!-- /MAIN TAB -->
+							#if($activeurlselected!="")
+							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected">
+                            #else
+                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")">
+							#end
+							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
                             <table class="tableWrapper">
                               <tbody>
@@ -75,7 +82,19 @@ $portlet.getContent($data)
                                                 <div class="roundBottomRightMain">
                                                   <div class="roundBottomLeftMain">
                                                     <div class="roundMainWrapper">
-$portlet.getContent($data)
+													#if($runs.size()==0)
+													#AUIrowTableWide()
+													<tr><td colspan="4" class="auiNoData">
+													<p>利用したいアプリを自由に追加できます。</p>
+													<p>『アプリを追加する』 ボタンを押して、追加してください。</p>
+													<p class="mh10">
+													<a title="アプリを追加する" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">アプリを追加する</a>
+													</p>
+													</td></tr>
+													#AUItablefooter()
+													#else
+														$portlet.getContent($data)
+													#end
                                                     </div>
                                                   </div>
                                                 </div>

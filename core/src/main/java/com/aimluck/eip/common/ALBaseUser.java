@@ -26,6 +26,8 @@ import java.util.Map;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.util.ALEipUtils;
+
 /**
  * ユーザー情報を表すクラスです。 <br />
  * 
@@ -356,4 +358,12 @@ public class ALBaseUser extends
       .toString();
   }
 
+  /**
+   * 指定されたユーザが管理者権限を持っているかを返します。
+   * 
+   * @return
+   */
+  public boolean isAdmin() {
+    return ALEipUtils.isAdmin(Integer.parseInt(this.getUserId()));
+  }
 }

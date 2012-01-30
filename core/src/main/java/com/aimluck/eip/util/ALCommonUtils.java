@@ -23,9 +23,16 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.util.template.JetspeedLink;
+import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.util.RunData;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
@@ -270,4 +277,121 @@ public class ALCommonUtils {
     }
     return res;
   }
+
+  /**
+   * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
+   * 
+   * @param rundata
+   * @param portletEntryName
+   *          PSML ファイルに記述されているタグ entry の要素 parent
+   * @return
+   */
+  public static DynamicURI getPortletURIinPersonalConfigPane(RunData rundata,
+      String portletEntryName) {
+    try {
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
+        return null;
+      }
+
+      Portlets[] portletList = portlets.getPortletsArray();
+      if (portletList == null) {
+        return null;
+      }
+
+      int length = portletList.length;
+      for (int i = 0; i < length; i++) {
+        Entry[] entries = portletList[i].getEntriesArray();
+        if (entries == null || entries.length <= 0) {
+          continue;
+        }
+
+        int ent_length = entries.length;
+        for (int j = 0; j < ent_length; j++) {
+          if (entries[j].getParent().equals(portletEntryName)) {
+            JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri
+                .addPathInfo(
+                  JetspeedResources.PATH_PANEID_KEY,
+                  portletList[i].getId() + "," + entries[j].getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Restore");
+            return duri;
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return null;
+  }
+
+  /**
+   * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
+   * 
+   * @param rundata
+   * @param portletEntryName
+   *          PSML ファイルに記述されているタグ entry の要素 parent
+   * @return
+   */
+  // これで本当に合ってるかはよくわかってない
+  public static DynamicURI getPortletURIinPersonalConfigPeid(RunData rundata,
+      String portletEntryName) {
+    try {
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
+        return null;
+      }
+
+      Portlets[] portletList = portlets.getPortletsArray();
+      if (portletList == null) {
+        return null;
+      }
+
+      int length = portletList.length;
+      for (int i = 0; i < length; i++) {
+        Entry[] entries = portletList[i].getEntriesArray();
+        if (entries == null || entries.length <= 0) {
+          continue;
+        }
+
+        int ent_length = entries.length;
+        for (int j = 0; j < ent_length; j++) {
+          if (entries[j].getParent().equals(portletEntryName)) {
+            JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            duri =
+              duri.addPathInfo(JetspeedResources.PATH_PORTLETID_KEY, entries[j]
+                .getId());
+            return duri;
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return null;
+  }
+
 }

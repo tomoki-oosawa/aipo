@@ -32,7 +32,9 @@ import java.util.Vector;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.registry.ClientEntry;
 import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -137,6 +139,20 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     return false;
   }
 
+  private List<Entry> getPortletList(RunData rundata)
+      throws NullPointerException {
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    Profile profile = jdata.getProfile();
+    List<Entry> portletList = new ArrayList<Entry>();
+    String pid = rundata.getParameters().get("js_pane");
+    Portlets tabPortlets = profile.getDocument().getPortletsById(pid);
+    Entry[] currentPortletEntries = tabPortlets.getEntriesArray();
+    for (Entry entry : currentPortletEntries) {
+      portletList.add(entry);
+    }
+    return portletList;
+  }
+
   /**
    * Handles the content generation for this control using Velocity
    */
@@ -171,6 +187,11 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     context.put("conf", getConfig());
     context.put("skin", portlet.getPortletConfig().getPortletSkin());
     context.put("utils", new ALCommonUtils());
+    try {
+      context.put("runs", getPortletList(rundata));
+    } catch (NullPointerException e) {
+
+    }
 
     // アクセス権限がなかった場合の削除表示フラグ
     boolean hasAuthority =

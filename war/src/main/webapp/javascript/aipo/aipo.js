@@ -51,6 +51,50 @@ aipo.onReceiveMessage = function(msg, group){
         dojo.byId('messageDiv').innerHTML = msg;
     }
 }
+aipo.getCookie=function (strName) {
+  var strReturn = "";
+  var nLoop = 0;
+  var nLength = 0;
+  var strNameEx = strName + "=";
+  var strTemp = "";
+  while (nLoop < document.cookie.length) {
+    nLength = nLoop + strNameEx.length;
+    if (document.cookie.substring(nLoop, nLength) == strNameEx) {
+      strTemp = document.cookie.indexOf(";", nLength);
+      if (strTemp == -1) {
+        strReturn = document.cookie.substring(nLength, document.cookie.length);
+      } else {
+        strReturn = document.cookie.substring(nLength, strTemp);
+      }
+      break;
+   }
+   nLoop = document.cookie.indexOf(" ", nLoop) + 1;
+   if (nLoop == 0) {
+     break;
+    }
+  }
+  return strReturn;
+}
+
+aipo.setCookie =function(strName, strValue,path) {
+  var dtExpire = new Date();
+  dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
+  if(typeof path =='undefined')
+	  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+  else
+	  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path="+path;
+}
+
+aipo.removeCookie =function remove_cookie(strName,path) {
+	  var strValue;
+	  var dtExpire = new Date();
+	  dtExpire.setTime(dtExpire.getTime() - 1);
+	  strValue = get_cookie(strName);
+	  if(typeof path =='undefined')
+		  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+	  else
+		  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path="+path;
+}
 
 aipo.portletReload = function(group, portletId) {
     for(var index in ptConfig) {
@@ -92,16 +136,16 @@ aipo.viewPage = function(url, portletId, params) {
      if(! portlet){
        portlet = new aimluck.widget.Contentpane({},'portlet_' + portletId);
      }
-     
+
      if(portlet){
        ptConfig[portletId].reloadUrl= url;
-       
+
        if(params){
        	 for(i = 0 ; i < params.length; i++ ) {
        		portlet.setParam(params[i][0], params[i][1]);
        	 }
        }
-       
+
        portlet.onLoad=dojo.hitch(portlet.onLoad, setMouseListener);
        portlet.viewPage(url);
      }
@@ -121,12 +165,12 @@ aipo.errorTreatment = function(jsondata, url) {
 };
 
 var favicon = {
-		 
+
 		change: function(iconURL) {
 		  this.addLink(iconURL, "icon");
 		  this.addLink(iconURL, "shortcut icon");
 		},
-		 
+
 		addLink: function(iconURL, relValue) {
 		  var link = document.createElement("link");
 		  link.type = "image/x-icon";
@@ -135,7 +179,7 @@ var favicon = {
 		  this.removeLinkIfExists(relValue);
 		  this.docHead.appendChild(link);
 		},
-		 
+
 		removeLinkIfExists: function(relValue) {
 		  var links = this.docHead.getElementsByTagName("link");
 		  for (var i=0; i<links.length; i++) {
@@ -146,7 +190,7 @@ var favicon = {
 		    }
 		  }
 		},
-		 
+
 		docHead:document.getElementsByTagName("head")[0]
 
 };
