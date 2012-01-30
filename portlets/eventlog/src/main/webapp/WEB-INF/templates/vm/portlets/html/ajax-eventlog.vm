@@ -56,12 +56,12 @@
 <option value="$num" #if ($!result.EndDate.Day == "$num") selected="selected" #end>$!{num}日</option>
 #end
 </select>
+</div>
 
 #if($result.List.size() == 0)
 <div class="auiSummaryMeta clearfix">指定された条件に該当するイベントログはありません。</div>
 #ALformfooter()
 #else
-</div>
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
