@@ -1048,9 +1048,25 @@ public class WorkflowUtils {
       return false;
     }
 
-    for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
-      userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(requestMap
-        .getUserId()));
+    switch (flowStatus) {
+      case REQUEST:
+        for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
+          userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(requestMap
+            .getUserId()));
+        }
+        break;
+      case DENAIL:
+        for (EipTWorkflowRequestMap requestMap : sendMailMaps) {
+          userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(requestMap
+            .getUserId()));
+        }
+        break;
+      case ACCEPT:
+        userAddressList.add(ALMailUtils.getALEipUserAddrByUserId(request
+          .getUserId()));
+        break;
+      default:
+
     }
 
     try {
