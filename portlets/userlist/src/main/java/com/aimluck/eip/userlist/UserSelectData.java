@@ -91,6 +91,8 @@ public class UserSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     tab = new ALStringField(ALEipUtils.getTemp(rundata, context, "tab"));
     searchWord = new ALStringField();
+    ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "userposition");
+
     super.init(action, rundata, context);
   }
 
