@@ -43,11 +43,11 @@ import com.aimluck.eip.orm.query.SelectQuery;
  *
  *
  */
-public class EventlogCvsExportScreen extends ALCSVScreen {
+public class EventlogCsvExportScreen extends ALCSVScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(EventlogCvsExportScreen.class.getName());
+    .getLogger(EventlogCsvExportScreen.class.getName());
 
   /**
    * 

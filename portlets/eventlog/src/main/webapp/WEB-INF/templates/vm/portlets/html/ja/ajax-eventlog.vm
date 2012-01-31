@@ -65,7 +65,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCvsExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
 
 #set($title = "表示中の一覧をダウンロード")
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
@@ -84,7 +84,7 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-##ヘッダー名を変更する場合はEventlogCvsExportScreenも変更してください
+##ヘッダー名を変更する場合はEventlogCsvExportScreenも変更してください
 #ALtdhead("#ALajaxsort('event_date' '発生日時' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('user_name' '名前' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')")
@@ -100,7 +100,7 @@
 #ALtdcellAtt("<div>$!record.UserFullName</div>"'')
 #ALtdcellAtt("<div>$!record.PortletName</div>"'')
 #ALtdcellAtt("<div>$!record.EventName</div>"'')
-#ALtdcellAtt("<div>$!record.IpAddr $!record</div>"'')
+#ALtdcellAtt("<div>$!record.IpAddr</div>"'')
 </tr>
 #end
 </tbody>
