@@ -50,10 +50,7 @@
 #ALtdcaption($!result.getFieldName("category_id"))
 #ALtditemheader()
 <div id="todoCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-#ALtableheaderSubWide()
-#ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
-#ALtablefooter()
+#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
 </div>
 <div id="todoCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
 #ALselectpdheader("category_id" "99%" "")
