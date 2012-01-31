@@ -63,9 +63,9 @@ $portlet.getContent($data)
                               </ul>
                             </div>
 							#if($activeurlselected!="")
-							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected">
+							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
                             #else
-                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")">
+                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
 							#end
 							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->

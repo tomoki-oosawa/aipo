@@ -35,6 +35,7 @@
 <li#if($result.currentTab == "syagai" && ! $!result.CurrentFilter ) class="active"#end>
 #set($all = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData("eventSubmit_doAddressbook_list", "1").addQueryData("filter", "").addQueryData("filtertype", "group").addQueryData('tab','syagai')))
 <a href="javascript:void(0);" onclick="aipo.viewPage('$all', '$!portlet.ID');" >すべてのアドレス</a>
+</li>
 #if($result.GroupList.size()!=0)
 #foreach($record in $result.GroupList)
 <li#if($result.currentTab == "syagai" && $!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) class="active"#end>
@@ -42,7 +43,7 @@
 </li>
 #end
 #end
-</li>
+
 
 </ul>
 

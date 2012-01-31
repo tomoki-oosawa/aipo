@@ -57,7 +57,7 @@ $result.getStringCR($!record.CompanyName)
 #ALtdcellfooter()
 </tr>
 #end
-#ALtablefooter()
+</tbody></table>
 #end
 #end
 </form>
