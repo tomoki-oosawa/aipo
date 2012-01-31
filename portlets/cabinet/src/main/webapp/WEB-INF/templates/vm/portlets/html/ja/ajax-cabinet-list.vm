@@ -98,7 +98,7 @@
 ##ダウンロード数
 #ALtdcellAtt("$!{record.Counter}" 'class="center" nowrap="nowrap"')
 ##サイズ
-#ALtdcellAtt("$!{record.FileSize}" 'class="center" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.FileSize}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #ALtablefooter()
