@@ -239,5 +239,6 @@ dojo.addOnLoad(function() {
 #ALjavascript("javascript/aipo/blog/form.js")
 #ALjavascript("javascript/aipo/msgboard/form.js")
 #ALjavascript("javascript/aipo/note/form.js")
+#ALjavascript("javascript/aipo/report/form.js")
 </body>
 </html>
