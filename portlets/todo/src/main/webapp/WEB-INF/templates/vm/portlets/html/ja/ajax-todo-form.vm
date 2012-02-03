@@ -47,7 +47,7 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
-#ALtdcaption($!result.getFieldName("category_id"))
+#ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="todoCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
 #ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
