@@ -117,6 +117,7 @@
                 <include>../../../../target/aipo/javascript/aipo/msgboard/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/note/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/report/form.js</include>
               </includes>
             </aggregation>
           </aggregations>
