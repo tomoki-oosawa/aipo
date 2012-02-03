@@ -1285,12 +1285,6 @@ public class WorkflowUtils {
     StringBuilder body = new StringBuilder("");
 
     if (isCell) {
-      body.append(CR);
-      body
-        .append("[")
-        .append(mailBean.getAipoAlias())
-        .append("へのアクセス]")
-        .append(CR);
       body.append("　").append(mailBean.getGlobalUrl()).append("?key=").append(
         ALCellularUtils.getCellularKey(user)).append(CR);
     } else {
