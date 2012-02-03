@@ -1,5 +1,6 @@
+@charset "utf-8";
 * {
-	font-family:'ƒƒCƒŠƒI', Meiryo, Verdana, sans-serif;
+	font-family:'ãƒ¡ã‚¤ãƒªã‚ª', Meiryo, Verdana, sans-serif;
 }
 html, body {
 	margin:0;
@@ -12,21 +13,11 @@ body {
 	margin:0;
 	font-size:.75em;
 	line-height:1.4;
-	background:#eee url(../images/body.png) left top repeat-x;
-}
-/* start guide reserved
-body {
-	width:100%;
-	padding:0;
-	margin:0;
-	font-size:.75em;
-	line-height:1.4;
 	background:#fff;
 }
 body#login {
 	background:#eee url(../images/body.png) left top repeat-x;
 }
-*/
 
 * html body {
 	font-size:.8em;
@@ -170,7 +161,7 @@ form.searchbox input.submit:active {
 --------------------------------------------------*/
 .dijitPopup {
 	display:block;
-	z-index:9999!important;
+	z-index:9999 !important;
 	background:#FFF;
 }
 .activityPopup {
@@ -265,15 +256,6 @@ table.activityTable tr.unread td {
 	footer
 --------------------------------------------------*/
 #footer {
-	width:100%;
-	margin:0;
-	padding:10px 0;
-	font-size:0.9em;
-	text-align:center;
-	text-shadow:0 1px 0 rgba(255,255,255,1);
-}
-/* start guide reserved
-#footer {
 	position:fixed;
 	bottom:0;
 	width:100%;
@@ -285,7 +267,7 @@ table.activityTable tr.unread td {
 	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.1);
 	background:#eee;
 	overflow:hidden;
-	z-index:9999;
+	z-index:995;
 }
 #login #footer {
 	position:static;
@@ -294,15 +276,10 @@ table.activityTable tr.unread td {
 }
 #footer div {
 }
-*/
 #footer a {
 	text-decoration:none;
 }
-#footText {
-	height:40px;
-	line-height:40px;
-	color:#888;
-}
+#footText,
 #footText a {
 	color:#888;
 }
@@ -311,6 +288,8 @@ table.activityTable tr.unread td {
 }
 #footText div {
 	display:inline;
+	height:40px;
+	line-height:40px;
 	padding:0 1em;
 	border-left:solid 1px #ccc;
 }
@@ -322,7 +301,6 @@ table.activityTable tr.unread td {
 	startGuide
 --------------------------------------------------*/
 #startGuide {
-	/*display:none;*/
 	width:100%;
 	height:130px;
 	overflow:hidden;
@@ -1618,17 +1596,17 @@ form input[type=radio] {
 
 /* auiIcon ********************/
 /*
-auiIcon‚Íuclass="auiIcon auiIconSetting"v‚Æ
-ƒx[ƒXƒNƒ‰ƒX‚ÆƒTƒuƒNƒ‰ƒX‚ğ“¯‚É•t—^‚³‚¹‚é‚±‚ÆB
+auiIconã¯ã€Œclass="auiIcon auiIconSetting"ã€ã¨
+ãƒ™ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹ã¨ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã‚’åŒæ™‚ã«ä»˜ä¸ã•ã›ã‚‹ã“ã¨ã€‚
 
-Šî–{Œ`iƒŠƒ“ƒN”ÅjF<a href="#" class="auiIcon auiIconSetting"><span>İ’è</span></a>
-Šî–{Œ`ispan”ÅjF<span class="auiIcon auiIconSetting"><span>İ’è</span></span>
+åŸºæœ¬å½¢ï¼ˆãƒªãƒ³ã‚¯ç‰ˆï¼‰ï¼š<a href="#" class="auiIcon auiIconSetting"><span>è¨­å®š</span></a>
+åŸºæœ¬å½¢ï¼ˆspanç‰ˆï¼‰ï¼š<span class="auiIcon auiIconSetting"><span>è¨­å®š</span></span>
 
-auiIcon‚ÅƒAƒCƒRƒ“‚ÌŒ`ó‘S‚Ä‚ğˆêŒ³ŠÇ—‚µ
-ƒTƒuƒNƒ‰ƒX‚Í‚ ‚­‚Ü‚Å”wŒiˆÊ’u‚Ì•ÏX‚Ì‚İ‚ğs‚¤B
+auiIconã§ã‚¢ã‚¤ã‚³ãƒ³ã®å½¢çŠ¶å…¨ã¦ã‚’ä¸€å…ƒç®¡ç†ã—
+ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã¯ã‚ãã¾ã§èƒŒæ™¯ä½ç½®ã®å¤‰æ›´ã®ã¿ã‚’è¡Œã†ã€‚
 
-IE6‚Í“§‰ßPNG‚ª—˜—p‚Å‚«‚È‚¢‚½‚ß“§‰ßGIF‚Ö’u‚«Š·‚¦‚Ä‚¢‚éB
-‚»‚Ì‚½‚ßƒoƒŠ‚ğ•\¦‚³‚¹‚È‚¢‚½‚ßhoverƒAƒNƒVƒ‡ƒ“‚ğ••‚¶‚éB
+IE6ã¯é€éPNGãŒåˆ©ç”¨ã§ããªã„ãŸã‚é€éGIFã¸ç½®ãæ›ãˆã¦ã„ã‚‹ã€‚
+ãã®ãŸã‚ãƒãƒªã‚’è¡¨ç¤ºã•ã›ãªã„ãŸã‚hoverã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å°ã˜ã‚‹ã€‚
 */
 .auiIcon {
 	display:block;
