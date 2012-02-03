@@ -214,7 +214,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -579,7 +579,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -978,7 +978,7 @@ public class NoteFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   public void enableAddDestTypes() {
     // 追加送信先タイプ（パソコンのメールアドレスに送信）

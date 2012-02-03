@@ -38,6 +38,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTNote;
 import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -51,6 +52,7 @@ import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -97,7 +99,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   private ALStringField target_keyword;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -175,7 +177,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -214,7 +216,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * ソート用の <code>SelectQuery</code> を構築します。
-   * 
+   *
    * @param crt
    * @return
    */
@@ -246,7 +248,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -285,7 +287,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param map
    * @return
    */
@@ -376,7 +378,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -459,6 +461,22 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
           // 確認日時
           map.setConfirmDate(nowDate);
           rd.setConfirmDate(nowDate);
+
+          Expression exp2 =
+            ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, rd
+              .getNoteId());
+          Expression exp3 =
+            ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "Note");
+          Expression exp4 = exp2.andExp(exp3);
+          List<Activity> list2 =
+            Database.query(Activity.class, exp4).fetchList();
+
+          for (Activity activity : list2) {
+            ALActivityService.setRead(activity.getId(), ALEipUtils
+              .getTurbineUser(Integer.valueOf(map.getUserId()))
+              .getLoginName());
+
+          }
         } else {
           rd.setConfirmDate(map.getConfirmDate());
         }
@@ -490,7 +508,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -520,7 +538,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -618,7 +636,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -630,7 +648,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -696,7 +714,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 現在選択されているタブを取得します。
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -704,7 +722,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -712,7 +730,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getTargetGroupName() {
@@ -720,7 +738,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getTargetUserId() {
@@ -728,7 +746,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param userId
    * @return
    */
@@ -737,7 +755,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param userId
    * @return
    */
@@ -753,7 +771,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param userName
    * @return
    */
@@ -762,7 +780,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -775,7 +793,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getUnreadNotesAllSum() {
@@ -783,7 +801,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -791,7 +809,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -800,7 +818,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 状態を取得する．
-   * 
+   *
    * @param id
    * @return
    */
@@ -810,7 +828,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
   /**
    * 送信先メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -818,7 +836,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getMailAccountURI() {
@@ -826,7 +844,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getUserAccountURI() {

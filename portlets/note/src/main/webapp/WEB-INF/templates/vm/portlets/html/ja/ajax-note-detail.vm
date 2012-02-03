@@ -96,4 +96,6 @@ $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.note.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
+<img src="images/common/dot.gif" width="0" height="0"
+onload="console.dir  ;aipo.IfrGadgetService.prototype.requestCheckActivity();"/>
 #ALdialogfooter()
