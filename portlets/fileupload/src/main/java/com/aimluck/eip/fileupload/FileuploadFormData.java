@@ -42,7 +42,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルアップロードのフォームデータを管理するクラスです。 <br />
- * 
+ *
  */
 public class FileuploadFormData extends ALAbstractFormData {
 
@@ -57,7 +57,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   private final int FIELD_ATTACHMENT_MAX_LEN = 128;
 
   /** 添付フォルダ名 */
-  private String folderName = null;
+  private ALStringField folderName = null;
 
   /** 新規追加の添付ファイル */
   private FileuploadBean filebean = null;
@@ -86,18 +86,17 @@ public class FileuploadFormData extends ALAbstractFormData {
 
     userId = ALEipUtils.getUserId(rundata);
     this.rundata = rundata;
-
-    folderName =
-      rundata.getParameters().getString(
-        FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
-    if (folderName == null || "".equals(folderName)) {
-      folderName = "0_" + String.valueOf(System.nanoTime());
+    folderName = new ALStringField();
+    folderName.setValue(rundata.getParameters().getString(
+      FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME));
+    if (folderName.getValue() == null || "".equals(folderName.getValue())) {
+      folderName.setValue("0_" + String.valueOf(System.nanoTime()));
     }
   }
 
   /**
    * データに値をセットする． <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -125,7 +124,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -135,7 +134,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -144,7 +143,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     if (attachmentItem != null) {
       if (attachmentItem.getSize() > 0) {
         long fileSizeSum =
-          ALStorageService.getTmpFolderSize(userId, folderName);
+          ALStorageService.getTmpFolderSize(userId, folderName.getValue());
         fileSizeSum += attachmentItem.getSize();
         if (fileSizeSum > TurbineUpload.getSizeMax()) {
           msgList.add("追加したファイルの全容量が "
@@ -188,7 +187,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -201,7 +200,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -214,7 +213,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -234,12 +233,12 @@ public class FileuploadFormData extends ALAbstractFormData {
       ALStorageService.createNewTmpFile(
         attachmentItem.getInputStream(),
         userId,
-        folderName,
+        folderName.getValue(),
         newAttachmentFileName,
         realfilename);
 
       filebean = new FileuploadBean();
-      filebean.setFolderName(folderName);
+      filebean.setFolderName(folderName.getValue());
       filebean.setFileId(fileId);
       filebean.setFileName(realfilename);
     } catch (Exception ex) {
@@ -250,7 +249,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -263,7 +262,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -276,7 +275,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     return filebean;
   }
 
-  public String getFolderName() {
+  public ALStringField getFolderName() {
     return folderName;
   }
 
