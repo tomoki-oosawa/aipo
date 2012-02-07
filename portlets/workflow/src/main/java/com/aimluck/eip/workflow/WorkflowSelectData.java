@@ -648,6 +648,7 @@ public class WorkflowSelectData extends
     map.putValue("priority", EipTWorkflowRequest.PRIORITY_PROPERTY);
     map.putValue("price", EipTWorkflowRequest.PRICE_PROPERTY);
     map.putValue("create_date", EipTWorkflowRequest.CREATE_DATE_PROPERTY);
+    map.putValue("progress", EipTWorkflowRequest.PROGRESS_PROPERTY);
     map.putValue(
       "category",
       EipTWorkflowRequest.EIP_TWORKFLOW_CATEGORY_PROPERTY

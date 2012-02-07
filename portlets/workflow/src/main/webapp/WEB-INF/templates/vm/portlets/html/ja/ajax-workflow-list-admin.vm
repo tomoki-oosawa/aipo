@@ -61,7 +61,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowAllListScreen')")
-#ALtdheadAtt("状況" 'style="width:6em"')
+#ALtdheadAtt("#ALajaxsort('progress' '状況' $result 'WorkflowAllListScreen')" 'style="width:6em"')
 #ALtdheadAtt("申請者" 'style="width:12em"')
 #ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowAllListScreen')" 'style="width:6em"')
 </tr>

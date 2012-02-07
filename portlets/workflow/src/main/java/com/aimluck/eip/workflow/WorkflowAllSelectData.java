@@ -489,6 +489,7 @@ public class WorkflowAllSelectData extends
     map.putValue("priority", EipTWorkflowRequest.PRIORITY_PROPERTY);
     map.putValue("price", EipTWorkflowRequest.PRICE_PROPERTY);
     map.putValue("create_date", EipTWorkflowRequest.CREATE_DATE_PROPERTY);
+    map.putValue("progress", EipTWorkflowRequest.PROGRESS_PROPERTY);
     // map.putValue("category_name", EipTTodo.EIP_TTODO_CATEGORY_PROPERTY + "."
     // + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("category", EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN);
