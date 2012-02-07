@@ -20,6 +20,8 @@
 ## ---------------------------------------------------------------------------
                             <!-- FOOTER -->
                             <div id="footer" class="clearfix">
-                              <div class="copyright small">$!{alias_copyright} $!{version} $!{copyright}</div>
-                            </div>
+							<div id="footText">
+                            	<div class="copyright">$!{alias_copyright} $!{version} $!{copyright}</div>
+                           </div>
+                           </div>
                             <!-- /FOOTER -->
