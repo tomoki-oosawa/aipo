@@ -90,7 +90,7 @@ $!service.ConsumerSecret<br/>
 #end
 #ALtablefooter()
 #if(!$!isAdmin)
-<p class="center">「メニュータブのスパナボタンよりアプリを追加できます。」</p>
+<p class="center">「ページタブの歯車ボタンでアプリを追加できます。」</p>
 #end
 #ALbuttonheader()
 #if($!isAdmin)
