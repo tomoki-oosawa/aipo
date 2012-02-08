@@ -53,7 +53,9 @@ ${result.Detail.StartHour}時${result.Detail.StartMinute}分 ～ $!{result.Detai
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-##ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormScreen')")
+#if($!{result.PortletName} == "ExtTimecardSystem")
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormScreen').addQueryData('entityid',$entityid)")
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

@@ -21,6 +21,7 @@ package com.aimluck.eip.exttimecard;
 
 import java.util.jar.Attributes;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -32,6 +33,7 @@ import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
@@ -49,6 +51,8 @@ public class ExtTimecardSystemSelectData extends
 
   /** <code>viewtype</code> 表示タイプ */
   protected String viewtype = "system";
+
+  private String portletName;
 
   /**
    * 
@@ -99,6 +103,10 @@ public class ExtTimecardSystemSelectData extends
    */
   @Override
   protected EipTExtTimecardSystem selectDetail(RunData rundata, Context context) {
+    // ポートレット名を取得します。
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    setPortletName(portlet.getPortletConfig().getName());
+
     return ExtTimecardUtils.getEipTExtTimecardSystem(rundata, context);
   }
 
@@ -191,4 +199,20 @@ public class ExtTimecardSystemSelectData extends
     return viewtype;
   }
 
+  /**
+   * ポートレット名を取得します。
+   * 
+   * @return portletName
+   */
+  public String getPortletName() {
+    return portletName;
+  }
+
+  /**
+   * @param portletName
+   * 
+   */
+  public void setPortletName(String portletName) {
+    this.portletName = portletName;
+  }
 }
