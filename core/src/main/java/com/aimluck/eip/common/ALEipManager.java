@@ -19,11 +19,11 @@
 
 package com.aimluck.eip.common;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
 
 /**
@@ -46,27 +47,16 @@ public class ALEipManager {
   /** Singleton */
   private static ALEipManager manager = new ALEipManager();
 
-  /** 会社リスト */
-  private final Map<String, Map<Integer, ALEipCompany>> companysMap =
-    new LinkedHashMap<String, Map<Integer, ALEipCompany>>();
+  /** 会社キー */
+  private static String COMPANIES_KEY =
+    "com.aimluck.eip.common.ALEipManager.companies";
 
-  /** 部署リスト */
-  private final Map<String, Map<Integer, ALEipPost>> postsMap =
-    new LinkedHashMap<String, Map<Integer, ALEipPost>>();
+  /** 部署キー */
+  private static String POSTS_KEY = "com.aimluck.eip.common.ALEipManager.posts";
 
-  /** 役職リスト */
-  private final Map<String, Map<Integer, ALEipPosition>> positionsMap =
-    new LinkedHashMap<String, Map<Integer, ALEipPosition>>();
-
-  /**
-   *
-   *
-   */
-  private ALEipManager() {
-    initCompany();
-    initPost();
-    initPosition();
-  }
+  /** 役職キー */
+  private static String POSITIONS_KEY =
+    "com.aimluck.eip.common.ALEipManager.positions";
 
   /**
    * 
@@ -77,182 +67,147 @@ public class ALEipManager {
   }
 
   /**
-   *
-   */
-  private void initCompany() {
-    companysMap.clear();
-  }
-
-  /**
-   *
-   *
-   */
-  private void initPost() {
-    postsMap.clear();
-  }
-
-  /**
-   *
-   *
-   */
-  private void initPosition() {
-    positionsMap.clear();
-  }
-
-  /**
-   *
+   * 会社情報を更新します。
    */
   public void reloadCompany() {
-    String orgId = Database.getDomainName();
-    synchronized (companysMap) {
-      try {
-        List<EipMCompany> list = Database.query(EipMCompany.class).fetchList();
-        Map<Integer, ALEipCompany> companyMap = companysMap.remove(orgId);
-        if (companyMap == null) {
-          companyMap = new LinkedHashMap<Integer, ALEipCompany>();
-        } else {
-          companyMap.clear();
-        }
-        for (EipMCompany record : list) {
-          ALEipCompany company = new ALEipCompany();
-          company.initField();
-          company.setCompanyId(record.getCompanyId().intValue());
-          company.setCompanyName(record.getCompanyName());
-          companyMap.put(record.getCompanyId(), company);
-        }
-
-        companysMap.put(orgId, companyMap);
-      } catch (Exception e) {
-        logger.error("[" + orgId + ":ALEipManager]", e);
-      }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(COMPANIES_KEY, null);
     }
   }
 
   /**
-   * @param orgId
-   * 
-   * 
+   * 部署情報を更新します。
    */
   public void reloadPost() {
-    String orgId = Database.getDomainName();
-    synchronized (postsMap) {
-      try {
-        List<EipMPost> list = Database.query(EipMPost.class).fetchList();
-        Collections.sort(list, new Comparator<EipMPost>() {
-          public int compare(EipMPost l1, EipMPost l2) {
-            return (l1).getPostName().compareTo((l2).getPostName());
-          }
-        });
-        Map<Integer, ALEipPost> postMap = postsMap.remove(orgId);
-        if (postMap == null) {
-          postMap = new LinkedHashMap<Integer, ALEipPost>();
-        } else {
-          postMap.clear();
-        }
-        for (EipMPost record : list) {
-          ALEipPost post = new ALEipPost();
-          post.initField();
-          post.setPostId(record.getPostId().intValue());
-          post.setPostName(record.getPostName());
-          post.setGroupName(record.getGroupName());
-          postMap.put(record.getPostId(), post);
-        }
-
-        postsMap.put(orgId, postMap);
-      } catch (Exception e) {
-        logger.error("[" + orgId + ":ALEipManager]", e);
-      }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(POSTS_KEY, null);
     }
   }
 
   /**
-   * @param orgId
-   * 
-   * 
+   * 役職情報を更新します。
    */
   public void reloadPosition() {
-    String orgId = Database.getDomainName();
-    synchronized (positionsMap) {
-      try {
-        List<EipMPosition> list =
-          Database.query(EipMPosition.class).fetchList();
-
-        Map<Integer, ALEipPosition> positionMap = positionsMap.remove(orgId);
-        if (positionMap == null) {
-          positionMap = new LinkedHashMap<Integer, ALEipPosition>();
-        } else {
-          positionMap.clear();
-        }
-        for (EipMPosition record : list) {
-          ALEipPosition position = new ALEipPosition();
-          position.initField();
-          position.setPositionId(record.getPositionId().intValue());
-          position.setPositionName(record.getPositionName());
-          positionMap.put(record.getPositionId(), position);
-        }
-
-        positionsMap.put(orgId, positionMap);
-      } catch (Exception e) {
-        logger.error("[" + orgId + ":ALEipManager]", e);
-      }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(POSITIONS_KEY, null);
     }
   }
 
   /**
+   * 会社情報を返します。
    * 
    * @return
    */
   public Map<Integer, ALEipCompany> getCompanyMap() {
-    synchronized (companysMap) {
-      String orgId = Database.getDomainName();
-      if (!companysMap.containsKey(orgId)) {
-        reloadCompany();
-        if (!companysMap.containsKey(orgId)) {
-          return null;
-        } else {
-          return companysMap.get(orgId);
-        }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      // requestから取得
+      @SuppressWarnings("unchecked")
+      Map<Integer, ALEipCompany> map =
+        (Map<Integer, ALEipCompany>) request.getAttribute(COMPANIES_KEY);
+      if (map != null) {
+        return map;
       }
-      return companysMap.get(orgId);
     }
+    // データベースから新規取得
+    Map<Integer, ALEipCompany> companyMap =
+      new LinkedHashMap<Integer, ALEipCompany>();
+    try {
+      List<EipMCompany> list = Database.query(EipMCompany.class).fetchList();
+      for (EipMCompany record : list) {
+        ALEipCompany company = new ALEipCompany();
+        company.initField();
+        company.setCompanyId(record.getCompanyId().intValue());
+        company.setCompanyName(record.getCompanyName());
+        companyMap.put(record.getCompanyId(), company);
+      }
+    } catch (Exception e) {
+      logger.error("[" + Database.getDomainName() + ":ALEipManager]", e);
+    }
+    // requestに登録
+    if (request != null) {
+      request.setAttribute(COMPANIES_KEY, companyMap);
+    }
+    return companyMap;
   }
 
   /**
+   * 部署情報を返します。
    * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
-    synchronized (postsMap) {
-      String orgId = Database.getDomainName();
-      if (!postsMap.containsKey(orgId)) {
-        reloadPost();
-        if (!postsMap.containsKey(orgId)) {
-          return null;
-        } else {
-          return postsMap.get(orgId);
-        }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      // requestから取得
+      @SuppressWarnings("unchecked")
+      Map<Integer, ALEipPost> map =
+        (Map<Integer, ALEipPost>) request.getAttribute(POSTS_KEY);
+      if (map != null) {
+        return map;
       }
-      return postsMap.get(orgId);
     }
+    // データベースから新規取得
+    Map<Integer, ALEipPost> postMap = new LinkedHashMap<Integer, ALEipPost>();
+    try {
+      List<EipMPost> list = Database.query(EipMPost.class).fetchList();
+      for (EipMPost record : list) {
+        ALEipPost post = new ALEipPost();
+        post.initField();
+        post.setPostId(record.getPostId().intValue());
+        post.setPostName(record.getPostName());
+        post.setGroupName(record.getGroupName());
+        postMap.put(record.getPostId(), post);
+      }
+    } catch (Exception e) {
+      logger.error("[" + Database.getDomainName() + ":ALEipManager]", e);
+    }
+    // requestに登録
+    if (request != null) {
+      request.setAttribute(POSTS_KEY, postMap);
+    }
+    return postMap;
   }
 
   /**
+   * 役職情報を返します。
    * 
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
-    synchronized (positionsMap) {
-      String orgId = Database.getDomainName();
-      if (!positionsMap.containsKey(orgId)) {
-        reloadPosition();
-        if (!positionsMap.containsKey(orgId)) {
-          return null;
-        } else {
-          return positionsMap.get(orgId);
-        }
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      // requestから取得
+      @SuppressWarnings("unchecked")
+      Map<Integer, ALEipPosition> map =
+        (Map<Integer, ALEipPosition>) request.getAttribute(POSITIONS_KEY);
+      if (map != null) {
+        return map;
       }
-      return positionsMap.get(orgId);
     }
+    // データベースから新規取得
+    Map<Integer, ALEipPosition> positionMap =
+      new LinkedHashMap<Integer, ALEipPosition>();
+    try {
+      List<EipMPosition> list = Database.query(EipMPosition.class).fetchList();
+      for (EipMPosition record : list) {
+        ALEipPosition position = new ALEipPosition();
+        position.initField();
+        position.setPositionId(record.getPositionId().intValue());
+        position.setPositionName(record.getPositionName());
+        positionMap.put(record.getPositionId(), position);
+      }
+    } catch (Exception e) {
+      logger.error("[" + Database.getDomainName() + ":ALEipManager]", e);
+    }
+    // requestに登録
+    if (request != null) {
+      request.setAttribute(POSITIONS_KEY, positionMap);
+    }
+    return positionMap;
   }
 
 }
