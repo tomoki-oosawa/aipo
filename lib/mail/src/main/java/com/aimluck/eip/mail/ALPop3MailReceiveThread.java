@@ -104,6 +104,9 @@ public class ALPop3MailReceiveThread implements Runnable {
     this.processType = processType;
 
     userId = user.getUserId();
+
+    ALStaticObject ob = ALStaticObject.getInstance();
+    ob.addAccountId(mailAccountId);
   }
 
   /**
