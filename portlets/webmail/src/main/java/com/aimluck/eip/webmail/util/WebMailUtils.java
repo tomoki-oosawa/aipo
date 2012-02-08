@@ -46,6 +46,7 @@ import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.mail.util.ALStaticObject;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -350,9 +351,8 @@ public class WebMailUtils {
             ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);
         Thread mailthread = new Thread(receiver);
 
-        // ALStaticObject ob = ALStaticObject.getInstance();
-        // ob.updateAccountStat(accountId, ALPop3MailReceiveThread.KEY_THREAD,
-        // mailthread);
+        ALStaticObject ob = ALStaticObject.getInstance();
+        ob.addAccountId(accountId);
         mailthread.start();
       }
     }

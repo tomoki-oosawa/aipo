@@ -113,7 +113,6 @@ public class ALPop3MailReceiveThread implements Runnable {
   @Override
   public void run() {
     ALStaticObject ob = ALStaticObject.getInstance();
-    ob.addAccountId(mailAccountId);
 
     try {
 
@@ -132,8 +131,6 @@ public class ALPop3MailReceiveThread implements Runnable {
             + mailAccountId
             + ")");
 
-        ob.updateAccountStat(mailAccountId, KEY_RECEIVE_MAIL_NUM, Integer
-          .valueOf(0));
         // メール受信
         int res = receiveMail(orgId, account);
 
@@ -164,6 +161,7 @@ public class ALPop3MailReceiveThread implements Runnable {
         mailAccountId,
         KEY_RECEIVE_STAT,
         PROCESS_STAT_FINISHED);
+      ALStaticObject.getInstance().removeAccountId(mailAccountId);
     }
   }
 
@@ -334,6 +332,7 @@ public class ALPop3MailReceiveThread implements Runnable {
 
     if (res == PROCESS_STAT_NONPROCESSING) {
       msg = "";
+      return msg;
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL) {
       msg = "メールを受信できませんでした。メールアカウントの設定をご確認ください。";
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL_LOCKED) {
