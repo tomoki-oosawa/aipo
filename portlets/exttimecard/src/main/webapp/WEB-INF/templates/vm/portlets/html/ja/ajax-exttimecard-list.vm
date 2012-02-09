@@ -23,6 +23,7 @@
 #if($result.DateListKeys.size() == 0)
 <div class="message">指定された条件に該当するタイムカードはありません。</div>
 #else
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '${indicator_id}','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #if($!result.TargetUserId != "")
 <div class="auiSummaryMeta clearfix">
 <div class="auiSelectButton floatLeft">
@@ -98,7 +99,6 @@
 #else
 #set($entityid = "new")
 #end
-
 #set($class = "")
 #if($saturday_sunday_holiday == 1)
 #set($class = "saturday")
@@ -197,7 +197,11 @@
 #else
 #if($saturday_sunday_holiday == 0)
 #if($!result.TargetUserId == $!result.UserId)
+#if($class == "today")
+<td nowrap="nowrap"><a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();">出勤</a></td>
+#else
 #ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+#end
 #else
 #ALtdcellAtt('' "")
 #end
@@ -209,9 +213,13 @@
 #if($rdlist.IsNotNullClockOutTime)
     #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' ")
 #else
-#if($saturday_sunday_holiday == 0)
+#if($saturday_sunday_holiday == 0)$class
 #if($!result.TargetUserId == $!result.UserId)
+#if($class == "today")
+<td nowrap="nowrap"><a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();">退勤</a></td>
+#else
 #ALtdcellAtt("#AUIajaxbuttonLinkCallback('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+#end
 #else
 #ALtdcellAtt('' "")
 #end
@@ -224,8 +232,16 @@
 #set($first = 0)
 #foreach ($outcome in $outcomes)
 #if($first == 0)
+#if($class == "today" && $!result.TargetUserId == $!result.UserId && !($rdlist.IsNotNullClockOutTime))
+#set($q = '"')
+#set($outgoings = "<a class=${q}auiButton${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>外出</a>")
+#set($comebacks = "<a class=${q}auiButton${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q}>復帰</a>")
+#set($outgoings = "$outgoings<br>$outcome.get('outgoing')")
+#set($comebacks = "$comebacks<br>$outcome.get('comeback')")
+#else
 #set($outgoings = $outcome.get('outgoing'))
 #set($comebacks = $outcome.get('comeback'))
+#end
 #set($first = 1)
 #else
 #set($outgoings = "$outgoings<br>$outcome.get('outgoing')")
