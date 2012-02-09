@@ -142,7 +142,14 @@ ${title}
 <input name="non_received_flg" type="radio" value="0" id="$!{portlet.ID}non_received_flg_disable_id" #if ($!result.NonReceivedFlg.toString() == "0") checked="checked" #end>
 <label for="$!{portlet.ID}non_received_flg_disable_id">無効</label>
 #ALtditemfooter()
-#ALtdcaptionAttWebmail("$!result.getFieldName('signature')" )
+<tr>
+<td class="caption" style="width:160px;">
+<span class="">
+<div style="white-space:normal;width:110px;">
+$!result.getFieldName('signature')
+</div>
+</span>
+</td>
 #ALtditem("#ALtextarea('signature' $!result.Signature 10 20)")
 #ALtablefooter()
 #ALbuttonheader()
