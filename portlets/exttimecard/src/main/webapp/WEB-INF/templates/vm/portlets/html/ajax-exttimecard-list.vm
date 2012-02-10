@@ -213,7 +213,7 @@
 #if($rdlist.IsNotNullClockOutTime)
     #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' ")
 #else
-#if($saturday_sunday_holiday == 0)$class
+#if($saturday_sunday_holiday == 0)
 #if($!result.TargetUserId == $!result.UserId)
 #if($class == "today")
 <td nowrap="nowrap"><a class="auiButton" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();">退勤</a></td>
