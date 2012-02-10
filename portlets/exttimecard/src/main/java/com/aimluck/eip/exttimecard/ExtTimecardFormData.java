@@ -130,6 +130,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /** タイムカードの設定 */
   private EipTExtTimecardSystem timecard_system;
 
+  private int current_clock_out_time_hour;
+
+  private int current_clock_out_time_minute;
+
   /**
    * 
    * @param action
@@ -340,13 +344,26 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         }
 
         /** 勤怠時間は必須項目 */
+        boolean out_flag = false;
+        if (!(old_clock_out_time_hour.isEmpty())
+          || !(old_clock_out_time_minute.isEmpty())) {
+          out_flag = true;
+        } else {
+          out_flag = false;
+        }
+
         if (getIsPast() && "P".equals(type.getValue())) {
           if (!clock_in_time.isNotNullValue()
-            || !clock_out_time.isNotNullValue()) {
+            || (!clock_out_time.isNotNullValue() && out_flag)
+            || current_clock_out_time_hour == -1
+            && current_clock_out_time_minute != -1
+            || current_clock_out_time_hour != -1
+            && current_clock_out_time_minute == -1) {
             msgList.add("『 <span class='em'>"
               + clock_in_time.getFieldName()
               + "</span> 』を入力してください。");
           }
+
           /** 外出復帰時間が適切に入力されているかチェック */
           Field field_out, field_come;
           for (int i = 1; i <= Integer.parseInt(rest_num.getValue()); i++) {
@@ -568,6 +585,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    setClockOutTime(rundata);
     boolean res = super.setFormData(rundata, context, msgList);
 
     if (res) {
@@ -801,7 +819,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           } else {
             // 出退勤時間
             timecard.setClockInTime(clock_in_time.getValue());
-            timecard.setClockOutTime(clock_out_time.getValue());
+            if (clock_out_time.getFieldName() != null) {
+              timecard.setClockOutTime(clock_out_time.getValue());
+            }
 
             // 外出・復帰時間
             Field field_out, field_come;
@@ -915,7 +935,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           } else {
             // 出退勤時間
             timecard.setClockInTime(clock_in_time.getValue());
-            timecard.setClockOutTime(clock_out_time.getValue());
+            if (!clock_out_time.getHour().equals("")
+              && !clock_out_time.getMinute().equals("")) {
+              timecard.setClockOutTime(clock_out_time.getValue());
+            } else {
+              // 初期化
+              timecard.setClockOutTime(null);
+            }
 
             // 外出・復帰時間
             Field field_out, field_come;
@@ -1285,4 +1311,37 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     // }
 
   }
+
+  /**
+   * 編集のとき、フォームに入力されている退勤時間を取得します。
+   * */
+  public void setClockOutTime(RunData rundata) {
+    try {
+      Field[] fields = this.getClass().getDeclaredFields();
+      int length = fields.length;
+      for (int i = 0; i < length; i++) {
+        fields[i].setAccessible(true);
+        String name = fields[i].getName();
+        Object obj = fields[i].get(this);
+        if (name.equals("clock_out_time")) {
+          // フィールドが ALDateTimeField の場合
+          if (obj instanceof ALDateTimeField) {
+            String hourString =
+              new StringBuffer().append(name).append(
+                ALEipConstants.POST_DATE_HOUR).toString();
+            String minitusString =
+              new StringBuffer().append(name).append(
+                ALEipConstants.POST_DATE_MINUTE).toString();
+            current_clock_out_time_hour =
+              rundata.getParameters().getInt(hourString);
+            current_clock_out_time_minute =
+              rundata.getParameters().getInt(minitusString);
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+  }
+
 }
