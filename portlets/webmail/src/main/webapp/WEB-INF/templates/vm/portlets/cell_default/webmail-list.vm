@@ -61,7 +61,7 @@ ${StatStr}
 #ALcell_li_header($career)
 <img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />
 <a href="$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab)">$MailSubject</a>
-（$!record.Person、$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}時$!{record.Date.Minute}分、$!{record.FileVolume}KB）
+（$!record.Person、$!{record.Date.Year}年$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}時$!{record.Date.Minute}分、$!{record.FileVolume}KB）
 ##tdcell2("#menu('返信' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1') 'images/webmail/webmail_reply_mail.gif')" 'nowrap')
 ##tdcell2("#menu('転送' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2') 'images/webmail/webmail_forward_mail.gif')" 'nowrap')
 

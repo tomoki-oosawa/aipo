@@ -1872,7 +1872,7 @@ public class ALEipUtils {
         .get(Calendar.MONTH) == Time.get(Calendar.MONTH)
         && Now.get(Calendar.DATE) == Time.get(Calendar.DATE)
         ? new ALDateTimeField("H:mm")
-        : new ALDateTimeField("M月d日")) : new ALDateTimeField("yy/MM/dd");
+        : new ALDateTimeField("M月d日")) : new ALDateTimeField("yyyy年MM月dd日");
     rtn.setValue(date);
     return rtn;
   }

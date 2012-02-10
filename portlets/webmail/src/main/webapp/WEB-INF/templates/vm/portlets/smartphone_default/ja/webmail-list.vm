@@ -58,7 +58,7 @@ ${StatStr}
 #end
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab)">$MailSubject<br /><small>
-$!record.Person&nbsp;$!{record.Date.Month}/$!{record.Date.Day}/ $!{record.Date.Hour}:$!{record.Date.Minute}</small></a>
+$!record.Person&nbsp;$!{record.Date.Year}年$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}:$!{record.Date.Minute}</small></a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)

@@ -60,6 +60,12 @@ public class WebMailIndexRowResultData {
   /** 日付 */
   private ALDateTimeField date = null;
 
+  /** 日付 */
+  private ALDateTimeField dateYear = null;
+
+  /** 日付 */
+  private ALDateTimeField dateDateYear = null;
+
   /** 日付時刻 */
   private ALDateTimeField date_time = null;
 
@@ -75,6 +81,8 @@ public class WebMailIndexRowResultData {
     person = new ALStringField();
     date = new ALDateTimeField("M月d日");
     date_time = new ALDateTimeField("H:mm");
+    dateYear = new ALDateTimeField("yyyy年");
+    dateDateYear = new ALDateTimeField("yyyy年M月d日");
     file_volume = new ALStringField();
     file_name = new ALStringField();
   }
@@ -86,11 +94,17 @@ public class WebMailIndexRowResultData {
    */
   public ALDateTimeField getDate() {
     ALDateTimeField today = new ALDateTimeField("M月d日");
+    ALDateTimeField thisYear = new ALDateTimeField("yyyy年");
     today.setValue(new Date());
-    if (date.toString().equals(today.toString())) {
+    thisYear.setValue(new Date());
+    if (date.toString().equals(today.toString())
+      && dateYear.toString().equals(thisYear.toString())) {
       return date_time;
-    } else {
+    } else if (!date.toString().equals(today.toString())
+      && dateYear.toString().equals(thisYear.toString())) {
       return date;
+    } else {
+      return dateDateYear;
     }
   }
 
@@ -155,6 +169,8 @@ public class WebMailIndexRowResultData {
     if (nDate == null) {
       return;
     }
+    this.dateYear.setValue(nDate);
+    this.dateDateYear.setValue(nDate);
     this.date.setValue(nDate);
     this.date_time.setValue(nDate);
   }

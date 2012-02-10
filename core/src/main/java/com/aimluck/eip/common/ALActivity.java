@@ -48,6 +48,10 @@ public class ALActivity implements ALData, Serializable {
 
   private ALDateTimeField updateDateTime;
 
+  private ALDateTimeField updateYear;
+
+  private ALDateTimeField updateDateYear;
+
   private ALStringField externalId;
 
   private ALStringField portletParams;
@@ -75,6 +79,8 @@ public class ALActivity implements ALData, Serializable {
     portletParams = new ALStringField();
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
+    updateYear = new ALDateTimeField("yyyy年");
+    updateDateYear = new ALDateTimeField("yyyy年M月d日");
     icon = new ALStringField();
     moduleId = new ALNumberField();
     isRead = true;
@@ -119,17 +125,25 @@ public class ALActivity implements ALData, Serializable {
   }
 
   public void setUpdateDate(Date updateDate) {
+    this.updateYear.setValue(updateDate);
+    this.updateDateYear.setValue(updateDate);
     this.updateDate.setValue(updateDate);
     this.updateDateTime.setValue(updateDate);
   }
 
   public ALDateTimeField getUpdateDate() {
     ALDateTimeField today = new ALDateTimeField("M月d日");
+    ALDateTimeField thisYear = new ALDateTimeField("yyyy年");
     today.setValue(new Date());
-    if (updateDate.toString().equals(today.toString())) {
+    thisYear.setValue(new Date());
+    if (updateDate.toString().equals(today.toString())
+      && updateYear.toString().equals(thisYear.toString())) {
       return updateDateTime;
-    } else {
+    } else if (!updateDate.toString().equals(today.toString())
+      && updateYear.toString().equals(thisYear.toString())) {
       return updateDate;
+    } else {
+      return updateDateYear;
     }
   }
 

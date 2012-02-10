@@ -37,7 +37,7 @@
 <strong>${record.TopicName}&nbsp;#if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</strong><br/>
 <small>
 ${record.OwnerName}&nbsp;
-($!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分)
+($!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分)
 </small>
 </a>
 #ALcell_li_footer($career)

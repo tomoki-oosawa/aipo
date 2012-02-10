@@ -71,6 +71,12 @@ public class WorkflowResultData implements ALData {
   protected ALStringField create_date;
 
   /** 登録日 */
+  protected ALDateTimeField createYear;
+
+  /** 登録日 */
+  protected ALDateTimeField createDateYear;
+
+  /** 登録日 */
   protected ALDateTimeField createDate;
 
   /** 登録日 */
@@ -116,6 +122,8 @@ public class WorkflowResultData implements ALData {
     updateDate = new ALDateTimeField("M月d日");
     updateDateTime = new ALDateTimeField("H:mm");
 
+    createYear = new ALDateTimeField("yyyy年");
+    createDateYear = new ALDateTimeField("yyyy年M月d日");
     createDate = new ALDateTimeField("M月d日");
     createDateTime = new ALDateTimeField("H:mm");
   }
@@ -338,17 +346,25 @@ public class WorkflowResultData implements ALData {
     if (date == null) {
       return;
     }
+    this.createYear.setValue(date);
+    this.createDateYear.setValue(date);
     this.createDate.setValue(date);
     this.createDateTime.setValue(date);
   }
 
   public ALDateTimeField getCreateDateTime() {
     ALDateTimeField today = new ALDateTimeField("M月d日");
+    ALDateTimeField thisYear = new ALDateTimeField("yyyy年");
     today.setValue(new Date());
-    if (createDate.toString().equals(today.toString())) {
+    thisYear.setValue(new Date());
+    if (createDate.toString().equals(today.toString())
+      && createYear.toString().equals(thisYear.toString())) {
       return createDateTime;
-    } else {
+    } else if (!createDate.toString().equals(today.toString())
+      && createYear.toString().equals(thisYear.toString())) {
       return createDate;
+    } else {
+      return createDateYear;
     }
   }
 }
