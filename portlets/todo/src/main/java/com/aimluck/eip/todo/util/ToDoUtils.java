@@ -581,9 +581,9 @@ public class ToDoUtils {
           rd.initField();
           rd.setCategoryId(record.getCategoryId().longValue());
           title = new StringBuffer(record.getCategoryName());
-          title.append(" （");
-          title.append(user.getAliasName());
-          title.append("）");
+          // title.append(" （");
+          // title.append(user.getAliasName());
+          // title.append("）");
           rd.setCategoryName(title.toString());
           categoryList.add(rd);
         }
