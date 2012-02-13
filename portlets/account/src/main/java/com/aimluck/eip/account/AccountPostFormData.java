@@ -651,7 +651,8 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
 
       // グループからユーザーを削除
-      List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
+      List<ALEipUser> users =
+        ALEipUtils.getUsersIncludingN(record.getGroupName());
       int size = users.size();
       for (int i = 0; i < size; i++) {
         JetspeedSecurity.unjoinGroup(users.get(i).getName().getValue(), record

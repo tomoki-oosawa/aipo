@@ -359,7 +359,8 @@ public class ALEipUtils {
   }
 
   /**
-   * 指定されたグループに所属するユーザーを取得します。
+   * 指定されたグループに所属するユーザーを取得します。<br/>
+   * DISABLEDがNのユーザー（即ち無効化されたユーザー）は取得しないことに注意してください。
    * 
    * @param groupname
    *          グループ名
@@ -381,6 +382,58 @@ public class ALEipUtils {
     statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
     statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    statement.append(" AND C.GROUP_NAME = #bind($groupName) ");
+    statement.append("ORDER BY D.POSITION");
+
+    String query = statement.toString();
+
+    try {
+      List<TurbineUser> list2 =
+        Database
+          .sql(TurbineUser.class, query)
+          .param("groupName", groupname)
+          .fetchList();
+
+      ALEipUser user;
+      for (TurbineUser tuser : list2) {
+        user = new ALEipUser();
+        user.initField();
+        user.setUserId(tuser.getUserId());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        list.add(user);
+      }
+    } catch (Throwable t) {
+      logger.error("[ALEipUtils]", t);
+    }
+
+    return list;
+  }
+
+  /**
+   * 指定されたグループに所属するユーザーを取得します。<br/>
+   * DISABLEDがNのユーザー（即ち無効化されたユーザー）も取得します。
+   * 
+   * @param groupname
+   *          グループ名
+   * @return ALEipUser の List
+   */
+  public static List<ALEipUser> getUsersIncludingN(String groupname) {
+    List<ALEipUser> list = new ArrayList<ALEipUser>();
+
+    // SQLの作成
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT ");
+    statement
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
+    statement.append("  on A.USER_ID = B.USER_ID ");
+    statement.append("LEFT JOIN turbine_group as C ");
+    statement.append("  on A.GROUP_ID = C.GROUP_ID ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
+    statement.append("  on A.USER_ID = D.USER_ID ");
+    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED != 'T'");
     statement.append(" AND C.GROUP_NAME = #bind($groupName) ");
     statement.append("ORDER BY D.POSITION");
 

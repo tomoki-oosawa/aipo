@@ -95,6 +95,7 @@ public class MyGroupFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // グループ名
     group_alias_name = new ALStringField();
@@ -507,7 +508,8 @@ public class MyGroupFormData extends ALAbstractFormData {
       }
 
       // グループからユーザーを削除
-      List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
+      List<ALEipUser> users =
+        ALEipUtils.getUsersIncludingN(record.getGroupName());
       int size = users.size();
       for (int i = 0; i < size; i++) {
         JetspeedSecurity.unjoinGroup(

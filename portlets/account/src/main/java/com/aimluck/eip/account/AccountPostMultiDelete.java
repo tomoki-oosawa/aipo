@@ -70,7 +70,8 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
       for (int i = 0; i < listsize; i++) {
         EipMPost record = list.get(i);
         // グループからユーザーを削除
-        List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
+        List<ALEipUser> users =
+          ALEipUtils.getUsersIncludingN(record.getGroupName());
         int size = users.size();
         for (int j = 0; j < size; j++) {
           JetspeedSecurity.unjoinGroup(
