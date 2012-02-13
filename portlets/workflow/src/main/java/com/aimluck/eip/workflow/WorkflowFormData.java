@@ -589,8 +589,9 @@ public class WorkflowFormData extends ALAbstractFormData {
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
-      request.setUserId(Integer
-        .valueOf((int) login_user.getUserId().getValue()));
+      TurbineUser tuser =
+        ALEipUtils.getTurbineUser((int) login_user.getUserId().getValue());
+      request.setTurbineUser(tuser);
       // 優先度
       request.setPriority(Short.valueOf((short) priority.getValue()));
       // メモ
@@ -747,8 +748,9 @@ public class WorkflowFormData extends ALAbstractFormData {
         request.setEipTWorkflowRoute(route);
       }
       // ユーザーID
-      request.setUserId(Integer
-        .valueOf((int) login_user.getUserId().getValue()));
+      TurbineUser tuser =
+        ALEipUtils.getTurbineUser((int) login_user.getUserId().getValue());
+      request.setTurbineUser(tuser);
       // 優先度
       request.setPriority(Short.valueOf((short) priority.getValue()));
       // メモ

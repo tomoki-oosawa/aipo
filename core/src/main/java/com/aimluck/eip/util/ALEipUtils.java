@@ -609,8 +609,18 @@ public class ALEipUtils {
    * @return
    */
   public static ALEipUser getALEipUser(int id) throws ALDBErrorException {
-
     TurbineUser tuser = Database.get(TurbineUser.class, id);
+    return getALEipUser(tuser);
+  }
+
+  /**
+   * 指定したユーザーIDの簡易オブジェクトを取得します。
+   * 
+   * @param id
+   * @return
+   */
+  public static ALEipUser getALEipUser(TurbineUser tuser)
+      throws ALDBErrorException {
     if (tuser == null) {
       return null;
     }
@@ -619,7 +629,6 @@ public class ALEipUtils {
     user.setUserId(tuser.getUserId().intValue());
     user.setName(tuser.getLoginName());
     user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-
     return user;
   }
 

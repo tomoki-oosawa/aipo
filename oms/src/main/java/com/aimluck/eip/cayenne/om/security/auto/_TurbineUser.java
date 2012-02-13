@@ -40,6 +40,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TREPORT_PROPERTY = "eipTReport";
     public static final String EIP_TTODO_PROPERTY = "eipTTodo";
     public static final String EIP_TTODO_CATEGORY_PROPERTY = "eipTTodoCategory";
+    public static final String EIP_TWORKFLOW_REQUEST_PROPERTY = "eipTWorkflowRequest";
     public static final String TURBINE_USER_GROUP_ROLE_PROPERTY = "turbineUserGroupRole";
 
     public static final String USER_ID_PK_COLUMN = "USER_ID";
@@ -308,6 +309,17 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTTodoCategory() {
         return (List)readProperty("eipTTodoCategory");
+    }
+    
+    
+    public void addToEipTWorkflowRequest(com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest obj) {
+        addToManyTarget("eipTWorkflowRequest", obj, true);
+    }
+    public void removeFromEipTWorkflowRequest(com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest obj) {
+        removeToManyTarget("eipTWorkflowRequest", obj, true);
+    }
+    public List getEipTWorkflowRequest() {
+        return (List)readProperty("eipTWorkflowRequest");
     }
     
     

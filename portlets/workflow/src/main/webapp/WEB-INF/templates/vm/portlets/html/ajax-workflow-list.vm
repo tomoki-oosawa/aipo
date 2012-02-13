@@ -67,7 +67,7 @@
 <tr>
 #ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowListScreen')")
 #ALtdheadAtt("#ALajaxsort('progress' '状況' $result 'WorkflowListScreen')" 'style="width:6em"')
-#ALtdheadAtt("$title" 'style="width:12em"')
+#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'style="width:12em"')#else#ALtdheadAtt("$title" 'style="width:12em"')#end
 #ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)

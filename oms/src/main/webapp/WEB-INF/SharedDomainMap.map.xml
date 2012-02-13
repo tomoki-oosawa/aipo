@@ -1229,6 +1229,9 @@
 	<db-relationship name="eipTWorkflowRoute" source="eip_t_workflow_request" target="eip_t_workflow_route" toMany="false">
 		<db-attribute-pair source="ROUTE_ID" target="ROUTE_ID"/>
 	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_workflow_request" target="turbine_user" toMany="false">
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTWorkflowRequest" source="eip_t_workflow_request_map" target="eip_t_workflow_request" toMany="false">
 		<db-attribute-pair source="REQUEST_ID" target="REQUEST_ID"/>
 	</db-relationship>
@@ -1303,6 +1306,7 @@
 	<obj-relationship name="eipTWorkflowFile" source="EipTWorkflowRequest" target="EipTWorkflowFile" db-relationship-path="eipTWorkflowFile"/>
 	<obj-relationship name="eipTWorkflowRequestMap" source="EipTWorkflowRequest" target="EipTWorkflowRequestMap" db-relationship-path="eipTWorkflowRequestMap"/>
 	<obj-relationship name="eipTWorkflowRoute" source="EipTWorkflowRequest" target="EipTWorkflowRoute" db-relationship-path="eipTWorkflowRoute"/>
+	<obj-relationship name="turbineUser" source="EipTWorkflowRequest" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowRequestMap" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>
 	<obj-relationship name="eipTWorkflowCategory" source="EipTWorkflowRoute" target="EipTWorkflowCategory" db-relationship-path="eipTWorkflowCategory"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowRoute" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>

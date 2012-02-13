@@ -36,6 +36,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -384,10 +385,10 @@ public class WorkflowAllSelectData extends
         .intValue()));
       rd.setProgress(record.getProgress());
       rd.setPrice(record.getPrice().longValue());
-      // test
-
-      ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
-      rd.setClientName(client.getAliasName().getValue());
+      rd.setClientName(ALEipUtils
+        .getALEipUser(record.getTurbineUser())
+        .getAliasName()
+        .getValue());
 
       String state = new String();
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
@@ -490,9 +491,10 @@ public class WorkflowAllSelectData extends
     map.putValue("price", EipTWorkflowRequest.PRICE_PROPERTY);
     map.putValue("create_date", EipTWorkflowRequest.CREATE_DATE_PROPERTY);
     map.putValue("progress", EipTWorkflowRequest.PROGRESS_PROPERTY);
-    // map.putValue("category_name", EipTTodo.EIP_TTODO_CATEGORY_PROPERTY + "."
-    // + EipTTodoCategory.CATEGORY_NAME_PROPERTY);
     map.putValue("category", EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN);
+    map.putValue("user_name", EipTWorkflowRequest.TURBINE_USER_PROPERTY
+      + "."
+      + TurbineUser.LAST_NAME_KANA_PROPERTY);
     return map;
   }
 

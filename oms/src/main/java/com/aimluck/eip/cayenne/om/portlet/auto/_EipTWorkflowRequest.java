@@ -22,6 +22,7 @@ public class _EipTWorkflowRequest extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TWORKFLOW_FILE_PROPERTY = "eipTWorkflowFile";
     public static final String EIP_TWORKFLOW_REQUEST_MAP_PROPERTY = "eipTWorkflowRequestMap";
     public static final String EIP_TWORKFLOW_ROUTE_PROPERTY = "eipTWorkflowRoute";
+    public static final String TURBINE_USER_PROPERTY = "turbineUser";
 
     public static final String REQUEST_ID_PK_COLUMN = "REQUEST_ID";
 
@@ -134,6 +135,15 @@ public class _EipTWorkflowRequest extends org.apache.cayenne.CayenneDataObject {
 
     public com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute getEipTWorkflowRoute() {
         return (com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute)readProperty("eipTWorkflowRoute");
+    } 
+    
+    
+    public void setTurbineUser(com.aimluck.eip.cayenne.om.security.TurbineUser turbineUser) {
+        setToOneTarget("turbineUser", turbineUser, true);
+    }
+
+    public com.aimluck.eip.cayenne.om.security.TurbineUser getTurbineUser() {
+        return (com.aimluck.eip.cayenne.om.security.TurbineUser)readProperty("turbineUser");
     } 
     
     
