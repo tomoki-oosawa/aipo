@@ -27,7 +27,7 @@ import com.aimluck.eip.orm.query.Operations;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- *
+ * 
  */
 public class ScheduleCsvUser {
 
@@ -97,7 +97,7 @@ public class ScheduleCsvUser {
   }
 
   /**
-   *
+   * 
    * @param string
    */
   public void setName(String string) {
@@ -105,7 +105,7 @@ public class ScheduleCsvUser {
   }
 
   /**
-   *
+   * 
    * @param firstName
    * @param lastName
    */
@@ -115,7 +115,7 @@ public class ScheduleCsvUser {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getName() {
@@ -123,7 +123,7 @@ public class ScheduleCsvUser {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public ALStringField getAliasName() {
@@ -166,11 +166,12 @@ public class ScheduleCsvUser {
       user =
         Database
           .query(TurbineUser.class)
-          .where(
-            Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
+          .where(Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
           .fetchSingle();
       if (user == null) {
         throw new Exception();
+      } else {
+        this.name.limitMaxLength(50);
       }
     }
 
