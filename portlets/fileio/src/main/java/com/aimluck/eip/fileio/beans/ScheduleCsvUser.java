@@ -159,14 +159,15 @@ public class ScheduleCsvUser {
     TurbineUser user =
       Database
         .query(TurbineUser.class)
-        .where(Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, name.getValue()))
+        .where(Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
         .fetchSingle();
 
     if (user == null) {
       user =
         Database
           .query(TurbineUser.class)
-          .where(Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
+          .where(
+            Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, name.getValue()))
           .fetchSingle();
       if (user == null) {
         throw new Exception();
