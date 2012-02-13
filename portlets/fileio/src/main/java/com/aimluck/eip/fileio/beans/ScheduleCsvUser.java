@@ -163,7 +163,14 @@ public class ScheduleCsvUser {
         .fetchSingle();
 
     if (user == null) {
-      throw new Exception();
+      user =
+        Database
+          .query(TurbineUser.class)
+          .where(Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
+          .fetchSingle();
+      if (user == null) {
+        throw new Exception();
+      }
     }
 
     user_id.setValue(user.getUserId());
@@ -185,6 +192,6 @@ public class ScheduleCsvUser {
     }
 
     user_id.setValue(user.getUserId());
-    name.setValue(user.getLoginName());
+    name.setValue("");
   }
 }
