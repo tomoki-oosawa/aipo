@@ -56,7 +56,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.ALUserContextLocator;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
@@ -288,14 +287,14 @@ public class BlogEntrySelectData extends
 
       int userId = record.getOwnerId().intValue();
       rd.setHasPhoto(false);
+
+      ALEipManager manager = ALEipManager.getInstance();
       List<BlogUserResultData> userDataList =
-        (List<BlogUserResultData>) ALUserContextLocator
-          .getAttribute("com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList");
+        (List<BlogUserResultData>) manager.getUserDataList();
+
       if (userDataList == null) {
         userDataList = BlogUtils.getBlogUserResultDataList("LoginUser");
-        ALUserContextLocator.setAttribute(
-          "com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList",
-          userDataList);
+        manager.setUserDataList(userDataList);
       }
       for (BlogUserResultData userData : userDataList) {
         if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {

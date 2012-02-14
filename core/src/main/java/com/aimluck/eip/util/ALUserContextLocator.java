@@ -21,12 +21,6 @@ package com.aimluck.eip.util;
 
 import java.util.Map;
 
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.rundata.RunDataService;
-import org.apache.turbine.util.RunData;
-
 /**
  * 
  */
@@ -34,10 +28,8 @@ public final class ALUserContextLocator {
 
   private static ThreadLocal<Map<String, Object>> UserContexts;
 
-  public final static String KEY_ACL = "key_acl";
-
   public static Map<String, Object> get() {
-    if (UserContexts == null) {
+    if (UserContexts == null || UserContexts.get() == null) {
       UserContexts = new ThreadLocal<Map<String, Object>>();
     }
     return UserContexts.get();
@@ -53,32 +45,4 @@ public final class ALUserContextLocator {
     }
   }
 
-  public static RunData getRunData() {
-    JetspeedRunData rundata = null;
-
-    JetspeedRunDataService runDataService =
-      (JetspeedRunDataService) TurbineServices.getInstance().getService(
-        RunDataService.SERVICE_NAME);
-
-    if (runDataService != null) {
-      rundata = runDataService.getCurrentRunData();
-    }
-
-    return rundata;
-  }
-
-  public static Object getAttribute(String key) {
-    return ALUserContextLocator.getRunData().getRequest().getAttribute(key);
-  }
-
-  public static void setAttribute(String key, Object obj) {
-    ALUserContextLocator.getRunData().getRequest().setAttribute(key, obj);
-  }
-
-  public static void removeAttribute(String key) {
-    RunData rundata = ALUserContextLocator.getRunData();
-    if (rundata != null && rundata.getUser() != null) {
-      rundata.getRequest().removeAttribute(key);
-    }
-  }
 }

@@ -19,18 +19,25 @@
 
 package com.aimluck.eip.common;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature;
+import com.aimluck.eip.cayenne.om.account.EipTAclRole;
+import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
 
@@ -57,6 +64,13 @@ public class ALEipManager {
   /** 役職キー */
   private static String POSITIONS_KEY =
     "com.aimluck.eip.common.ALEipManager.positions";
+
+  /** ACLキー */
+  private static String ACL_KEY = "com.aimluck.eip.common.ALEipManager.acls";
+
+  /** BlogResultDataキー */
+  private static String BLOG_USER_LIST_KEY =
+    "com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList";
 
   /**
    * 
@@ -208,6 +222,72 @@ public class ALEipManager {
       request.setAttribute(POSITIONS_KEY, positionMap);
     }
     return positionMap;
+  }
+
+  public Map<String, EipTAclRole> getAclRoleMap(int userId) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      // requestから取得
+      @SuppressWarnings("unchecked")
+      Map<String, EipTAclRole> map =
+        (Map<String, EipTAclRole>) request.getAttribute(ACL_KEY);
+      if (map != null) {
+        return map;
+      }
+    }
+    // データベースから新規取得
+    Map<String, EipTAclRole> roleMap = new HashMap<String, EipTAclRole>();
+
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
+        + "."
+        + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
+        + "."
+        + TurbineUser.USER_ID_PK_COLUMN, userId);
+
+    List<EipTAclRole> roleList =
+      Database.query(EipTAclRole.class, exp).fetchList();
+
+    List<EipTAclPortletFeature> featureList =
+      Database.query(EipTAclPortletFeature.class).fetchList();
+
+    Map<Integer, String> _map = new HashMap<Integer, String>();
+
+    for (EipTAclPortletFeature feature : featureList) {
+      _map.put(feature.getFeatureId(), feature.getFeatureName());
+    }
+
+    roleMap = new HashMap<String, EipTAclRole>();
+    String _featureName;
+    for (EipTAclRole _role : roleList) {
+      _featureName = _map.get(_role.getFeatureId().intValue());
+      roleMap.put(_featureName, _role);
+    }
+
+    // requestに登録
+    if (request != null) {
+      request.setAttribute(ACL_KEY, roleMap);
+    }
+    return roleMap;
+  }
+
+  public Object getUserDataList() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      // requestから取得
+      Object obj = request.getAttribute(BLOG_USER_LIST_KEY);
+      if (obj != null) {
+        return obj;
+      }
+    }
+    return null;
+  }
+
+  public void setUserDataList(Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(BLOG_USER_LIST_KEY, obj);
+    }
   }
 
 }
