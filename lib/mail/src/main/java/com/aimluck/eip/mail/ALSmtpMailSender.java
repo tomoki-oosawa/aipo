@@ -94,9 +94,6 @@ public abstract class ALSmtpMailSender implements ALMailSender {
   /** メール送信時の処理結果（管理者のメールアカウントが設定されていないために送信に失敗した） */
   public static final int SEND_MSG_FAIL_NO_ACCOUNT = 6;
 
-  /** 送信可能なメール容量（7MB）．Base64 処理後のサイズ */
-  public static final int MAIL_MAX_SIZE = 10485760; // 2097152;
-
   /** 接続時のタイムアウト時間 */
   private final String CONNECTION_TIMEOUT = "120000";
 
@@ -325,7 +322,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       }
 
       int mailSize = msg.getSize();
-      if (mailSize > MAIL_MAX_SIZE) {
+      if (mailSize > ALMailUtils.getMaxMailSize()) {
         // メール容量のチェック
         return SEND_MSG_OVER_MAIL_MAX_SIZE;
       }

@@ -379,7 +379,8 @@ public class WebMailFormData extends ALAbstractFormData {
         if (success_send == ALSmtpMailSender.SEND_MSG_FAIL) {
           msgList.add("メールを送信できませんでした。アカウント設定が間違っている可能性があります。");
         } else if (success_send == ALSmtpMailSender.SEND_MSG_OVER_MAIL_MAX_SIZE) {
-          msgList.add("7MB を超えるサイズのメールは送信できません。");
+          msgList.add(String.valueOf(FileuploadUtils.getMaxFileSize()).concat(
+            "MB を超えるサイズのメールは送信できません。"));
         } else if (success_send == ALSmtpMailSender.SEND_MSG_FAIL_SMTP_AUTH) {
           msgList.add("メールを送信できませんでした。SMTP認証の認証に失敗しました。");
         }
@@ -620,6 +621,10 @@ public class WebMailFormData extends ALAbstractFormData {
    */
   public ALNumberField getMailType() {
     return mailType;
+  }
+
+  public int getMaxFileSize() {
+    return FileuploadUtils.getMaxFileSize();
   }
 
   /**

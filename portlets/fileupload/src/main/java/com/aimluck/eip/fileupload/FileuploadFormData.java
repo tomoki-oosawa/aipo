@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.upload.FileItem;
@@ -42,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルアップロードのフォームデータを管理するクラスです。 <br />
- *
+ * 
  */
 public class FileuploadFormData extends ALAbstractFormData {
 
@@ -96,7 +95,7 @@ public class FileuploadFormData extends ALAbstractFormData {
 
   /**
    * データに値をセットする． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -139,15 +138,14 @@ public class FileuploadFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
 
-    int maxFileSize = TurbineUpload.getSizeMax() / 1024 / 1024;
     if (attachmentItem != null) {
       if (attachmentItem.getSize() > 0) {
         long fileSizeSum =
           ALStorageService.getTmpFolderSize(userId, folderName.getValue());
         fileSizeSum += attachmentItem.getSize();
-        if (fileSizeSum > TurbineUpload.getSizeMax()) {
+        if (fileSizeSum > FileuploadUtils.getMaxFileSize("B")) {
           msgList.add("追加したファイルの全容量が "
-            + maxFileSize
+            + FileuploadUtils.getMaxFileSize()
             + "MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
         } else {
           attachmentName.validate(msgList);
@@ -157,7 +155,7 @@ public class FileuploadFormData extends ALAbstractFormData {
       }
     } else {
       msgList.add("追加したファイルの全容量が "
-        + maxFileSize
+        + FileuploadUtils.getMaxFileSize()
         + "MB よりも大きくなりました。これ以上、ファイルを追加することはできません。");
     }
 
@@ -187,7 +185,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -200,7 +198,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -213,7 +211,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -249,7 +247,7 @@ public class FileuploadFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList

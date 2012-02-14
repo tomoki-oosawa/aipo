@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
@@ -353,7 +354,8 @@ public class SystemWebMailFormData extends ALAbstractFormData {
         if (success_send == ALSmtpMailSender.SEND_MSG_FAIL) {
           msgList.add("メールを送信できませんでした。アカウント設定が間違っている可能性があります。");
         } else if (success_send == ALSmtpMailSender.SEND_MSG_OVER_MAIL_MAX_SIZE) {
-          msgList.add("7MB を超えるサイズのメールは送信できません。");
+          msgList.add(String.valueOf(FileuploadUtils.getMaxFileSize()).concat(
+            "MB を超えるサイズのメールは送信できません。"));
         } else if (success_send == ALSmtpMailSender.SEND_MSG_FAIL_SMTP_AUTH) {
           msgList.add("メールを送信できませんでした。SMTP認証の認証に失敗しました。");
         }

@@ -82,9 +82,6 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
   /** メール受信時の処理結果（OutOfMemory のエラーが発生し，受信に失敗した） */
   public static final int RECEIVE_MSG_FAIL_OUTOFMEMORY = -7;
 
-  /** 受信可能なメール容量（7MB）．Base64 処理後のサイズ */
-  public static final int MAIL_MAX_SIZE = 10485760; // 2097152;
-
   /** 接続時のタイムアウト時間 */
   private static final String CONNECTION_TIMEOUT = "60000";
 
@@ -128,6 +125,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
    *          受信時の認証方式
    * @throws Exception
    */
+  @Override
   public int receive(String orgId) throws Exception {
 
     // POP3 サーバ上のストア
@@ -260,7 +258,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
           // （新着メール）メールを受信し保存する．
           alPop3MailMessage =
             new ALPop3Message((POP3Message) tmpMessage, i + 1);
-          if (tmpMessage.getSize() <= MAIL_MAX_SIZE) {
+          if (tmpMessage.getSize() <= ALMailUtils.getMaxMailSize()) {
             // 受信可能なメール容量以下であれば，登録する．
             receiveFolder.saveMail(alPop3MailMessage, orgId);
             if (rcontext.getDelete()) {
@@ -472,6 +470,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
    *          受信時の認証方式
    * @return
    */
+  @Override
   public int getNewMailSum() {
     // POP3 サーバ上のストア
     Store pop3Store = null;

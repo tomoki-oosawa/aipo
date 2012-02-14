@@ -62,6 +62,7 @@ import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.utils.ALStringUtil;
@@ -1896,5 +1897,10 @@ public class ALMailUtils {
     } catch (UnsupportedEncodingException e) {
       return MailUtility.decodeText(subject);
     }
+  }
+
+  /** 送受信可能なメール容量．Base64 処理後のサイズ */
+  public static int getMaxMailSize() {
+    return (int) (TurbineUpload.getSizeMax() * 1.37);
   }
 }
