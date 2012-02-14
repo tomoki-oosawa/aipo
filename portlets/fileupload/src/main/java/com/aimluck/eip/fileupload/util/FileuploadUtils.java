@@ -304,7 +304,7 @@ public class FileuploadUtils {
 
       BufferedImage orgImage = ImageIO.read(is);
       BufferedImage shrinkImage =
-        FileuploadUtils.shrinkImage(orgImage, width, height);
+        FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
       ImageWriter writer = writers.next();
 
@@ -411,6 +411,50 @@ public class FileuploadUtils {
     g.drawImage(targetImage, 0, 0, null);
 
     return tmpImage;
+  }
+
+  /**
+   * アスペクト比を保存する。（縦横を切り取る）
+   * 
+   * @param imgfile
+   * @param width
+   * @param height
+   * @return
+   */
+  public static BufferedImage shrinkAndTrimImage(BufferedImage imgfile,
+      int width, int height) {
+    int iwidth = imgfile.getWidth();
+    int iheight = imgfile.getHeight();
+    double ratio =
+      Math.max((double) width / (double) iwidth, (double) height
+        / (double) iheight);
+    int shrinkedWidth = (int) (iwidth * ratio);
+    int shrinkedHeight = (int) (iheight * ratio);
+
+    // イメージデータを縮小する
+    Image targetImage =
+      imgfile.getScaledInstance(
+        shrinkedWidth,
+        shrinkedHeight,
+        Image.SCALE_AREA_AVERAGING);
+    BufferedImage tmpImage =
+      new BufferedImage(
+        targetImage.getWidth(null),
+        targetImage.getHeight(null),
+        BufferedImage.TYPE_INT_RGB);
+    Graphics2D g = tmpImage.createGraphics();
+    g.drawImage(targetImage, 0, 0, null);
+    int _iwidth = tmpImage.getWidth();
+    int _iheight = tmpImage.getHeight();
+    BufferedImage _tmpImage;
+    if (_iwidth > _iheight) {
+      int diff = _iwidth - width;
+      _tmpImage = tmpImage.getSubimage(diff / 2, 0, width, height);
+    } else {
+      int diff = _iheight - height;
+      _tmpImage = tmpImage.getSubimage(0, diff / 2, width, height);
+    }
+    return _tmpImage;
   }
 
   /**
