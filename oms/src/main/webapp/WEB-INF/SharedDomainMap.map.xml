@@ -1103,6 +1103,9 @@
 	<db-relationship name="eipTCabinetFolder" source="eip_t_cabinet_file" target="eip_t_cabinet_folder" toMany="false">
 		<db-attribute-pair source="FOLDER_ID" target="FOLDER_ID"/>
 	</db-relationship>
+	<db-relationship name="turbineUserl" source="eip_t_cabinet_file" target="turbine_user" toMany="false">
+		<db-attribute-pair source="UPDATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTCabinetFiles" source="eip_t_cabinet_folder" target="eip_t_cabinet_file" toMany="true">
 		<db-attribute-pair source="FOLDER_ID" target="FOLDER_ID"/>
 	</db-relationship>
@@ -1265,6 +1268,7 @@
 	<obj-relationship name="eipTBlog" source="EipTBlogFootmarkMap" target="EipTBlog" db-relationship-path="eipTBlog"/>
 	<obj-relationship name="eipTBlogEntrys" source="EipTBlogThema" target="EipTBlogEntry" deleteRule="Cascade" db-relationship-path="eipTBlogEntrys"/>
 	<obj-relationship name="eipTCabinetFolder" source="EipTCabinetFile" target="EipTCabinetFolder" db-relationship-path="eipTCabinetFolder"/>
+	<obj-relationship name="turbineUser" source="EipTCabinetFile" target="TurbineUser" db-relationship-path="turbineUserl"/>
 	<obj-relationship name="eipTCabinetFiles" source="EipTCabinetFolder" target="EipTCabinetFile" db-relationship-path="eipTCabinetFiles"/>
 	<obj-relationship name="eipTCabinetFolderMap" source="EipTCabinetFolder" target="EipTCabinetFolderMap" db-relationship-path="eipTCabinetFolderMap"/>
 	<obj-relationship name="eipTCabinetFolder" source="EipTCabinetFolderMap" target="EipTCabinetFolder" db-relationship-path="eipTCabinetFolder"/>

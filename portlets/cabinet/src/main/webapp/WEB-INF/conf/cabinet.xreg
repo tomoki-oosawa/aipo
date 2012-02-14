@@ -51,8 +51,8 @@
             </meta-info>
         </parameter>
         <parameter name="p1c-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1c-sort.style.items" value="file_title,file_name,update_user,update_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1c-sort.style.values" value="タイトル,ファイル名,更新者,更新日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-sort.style.items" value="update_date,file_title,update_user" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1c-sort.style.values" value="更新日時,タイトル,更新者" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="p3a-folder" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>

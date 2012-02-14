@@ -35,8 +35,10 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -238,6 +240,15 @@ public class CabinetSelectData extends
 
       SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
+      if (ALEipUtils.getTemp(rundata, context, LIST_SORT_STR).equals(
+        "update_date")
+        && ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR) == null) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          LIST_SORT_TYPE_STR,
+          ALEipConstants.LIST_SORT_TYPE_DESC);
+      }
       buildSelectQueryForListViewSort(query, rundata, context);
 
       ResultList<EipTCabinetFile> list = query.getResultList();
@@ -417,6 +428,10 @@ public class CabinetSelectData extends
     map.putValue("update_date", EipTCabinetFile.UPDATE_DATE_PROPERTY);
     map.putValue("file_size", EipTCabinetFile.FILE_SIZE_PROPERTY);
     map.putValue("counter", EipTCabinetFile.COUNTER_PROPERTY);
+    map.putValue("update_user", EipTCabinetFile.TURBINE_USER_PROPERTY
+      + "."
+      + TurbineUser.LAST_NAME_KANA_PROPERTY);
+
     return map;
   }
 

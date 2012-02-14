@@ -78,13 +78,10 @@ public class CabinetAction extends ALBaseAction {
     // セッション情報のクリア
     clearCabinetSession(rundata, context);
 
-    // デフォルトソート設定の適用
-    ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "update_date");
-    ALEipUtils.setTemp(
-      rundata,
-      context,
-      LIST_SORT_TYPE_STR,
-      ALEipConstants.LIST_SORT_TYPE_DESC);
+    // デフォルトソート設定の初期化
+
+    ALEipUtils.removeTemp(rundata, context, LIST_SORT_STR);
+    ALEipUtils.removeTemp(rundata, context, LIST_SORT_TYPE_STR);
 
     CabinetSelectData listData = new CabinetSelectData();
     listData.setIsNormalContext(true);
