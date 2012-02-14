@@ -434,7 +434,7 @@
 
 .dijitCalendarYearContainer {
     /* footer of the table that contains the year display/selector */
-    background:white url("../../../javascript/dijit/themes/tundra/images/calendarYearLabel.png") repeat-x bottom;
+    background:white url("images/calendarYearLabel.png") repeat-x bottom;
     border-top:1px solid #ccc;
 }
 

@@ -40,14 +40,13 @@ body#login {
 	padding:0 20px;
 }
 .hdSign {float:left;}
-.hdNavi {float:right;}
-.hdLogo,
+.hdNavi {float:right;padding-top:3px;}
 .hdActivity,
 .hdSearch,
 .hdUserName,
 .hdLogout {
 	float:left;
-	line-height:27px;
+	line-height:23px;
 	padding-right:8px;
 	padding-left:8px;
 	font-size:11px;
@@ -65,7 +64,6 @@ body#login {
 	filter: alpha(opacity=75);
 }
 .hdSearch {
-	padding-top:3px;
 }
 form.searchbox {
 	padding:0;
@@ -96,18 +94,34 @@ form.searchbox input.submit:active {
 	background:#eee url(../images/icon/search.png) no-repeat center center;
 }
 .hdActivity {
-	padding:3px 0 0 0 !important;
+	padding:0 !important;
 }
 .hdNavi .hdLogout {
 	padding-right:0;
-	padding-top:3px;
 	height:24px;
 }
 .hdLogout input {
-	height:21px;
+	height:23px !important;
+	line-height:23px !important;
 }
 .hdLogout input:hover {
 	box-shadow:none !important;
+}
+.hdUserName a {
+	display:block;
+	text-decoration:none;
+}
+.hdUserName a:hover .avatar {
+	border:solid 1px #999;
+}
+.hdUserName .avatar {
+	float:left;
+	width:21px;
+	height:21px;
+	margin:0 4px 0 0;
+	border:solid 1px #ccc;
+	border-radius:2px;
+	-ms-border-radius:2px;
 }
 
 /***************************************************

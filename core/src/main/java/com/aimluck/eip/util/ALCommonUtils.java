@@ -260,8 +260,17 @@ public class ALCommonUtils {
       logger.error("Exception", e);
       return null;
     }
-
     return random;
+  }
+
+  /**
+   * 画像表示用の整数をランダムで生成します。
+   * 
+   * @return
+   */
+  public int getImageRandomNumber() {
+    SecureRandom random = new SecureRandom();
+    return (random.nextInt() * 100);
   }
 
   /**
