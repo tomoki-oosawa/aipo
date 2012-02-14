@@ -19,12 +19,16 @@
 
 package com.aimluck.eip.modules.actions;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
@@ -36,6 +40,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.LoginException;
+import org.apache.jetspeed.util.Base64;
 import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.localization.LocalizationService;
@@ -45,6 +50,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
@@ -83,6 +89,62 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         org.apache.turbine.util.StringUtils.stackTrace(other),
         other);
       return;
+    }
+
+    if (data.getRequest().getAttribute(
+      ALDigestAuthenticationFilter.REQUIRE_DIGEST_AUTH) != null) {
+      JetspeedUser loginuser = (JetspeedUser) data.getUser();
+      HttpServletRequest hreq = data.getRequest();
+      HttpServletResponse hres = data.getResponse();
+      if (loginuser == null || !loginuser.hasLoggedIn()) {
+        String auth = hreq.getHeader("Authorization");
+
+        if (auth == null) {
+          requireAuth(hres);
+          return;
+
+        } else {
+          try {
+            String decoded = decodeAuthHeader(auth);
+
+            int pos = decoded.indexOf(":");
+            String username = decoded.substring(0, pos);
+            String password = decoded.substring(pos + 1);
+
+            try {
+              JetspeedUser juser = JetspeedSecurity.login(username, password);
+              if (juser != null && "F".equals(juser.getDisabled())) {
+                JetspeedSecurity.saveUser(juser);
+              } else {
+                requireAuth(hres);
+                return;
+              }
+            } catch (LoginException e) {
+              requireAuth(hres);
+              return;
+            }
+
+          } catch (Exception ex) {
+            requireAuth(hres);
+            return;
+
+          }
+        }
+      }
+
+      String contextPath = ServletContextLocator.get().getContextPath();
+      if ("/".equals(contextPath)) {
+        contextPath = "";
+      }
+      String requestURI = hreq.getRequestURI();
+
+      if (requestURI.equalsIgnoreCase(contextPath + "/ical/calendar.ics")) {
+        data.setScreenTemplate("ScheduleiCalScreen");
+        return;
+      } else {
+        hres.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
+      }
     }
 
     // for switching theme org by org
@@ -331,5 +393,27 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       context.put("rpctoken", rpctoken);
       context.put("checkUrl", checkUrl);
     }
+  }
+
+  protected void requireAuth(HttpServletResponse hres) throws IOException {
+    hres.setHeader("WWW-Authenticate", "BASIC realm=\"Aipo\"");
+    hres.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+  }
+
+  protected String decodeAuthHeader(String header)
+      throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    String ret = "";
+
+    try {
+      String encStr = header.substring(6);
+
+      byte[] dec = Base64.decodeAsByteArray(encStr);
+      ret = new String(dec);
+
+    } catch (Exception ex) {
+      ret = "";
+    }
+
+    return ret;
   }
 }

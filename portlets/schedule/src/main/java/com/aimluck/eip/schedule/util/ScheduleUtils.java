@@ -744,7 +744,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3733,7 +3733,7 @@ public class ScheduleUtils {
     if (page > 0 && limit > 0) {
       return new ResultList<VEipTScheduleList>(list, page, limit, countValue);
     } else {
-      return list;
+      return new ResultList<VEipTScheduleList>(list, -1, -1, list.size());
     }
 
   }

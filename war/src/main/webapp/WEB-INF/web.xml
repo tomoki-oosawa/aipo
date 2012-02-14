@@ -52,10 +52,15 @@
     </servlet>
 
     <filter>
-      <filter-name>baseFilter</filter-name>	
+      <filter-name>baseFilter</filter-name>
       <filter-class>com.aimluck.eip.filter.ALBaseFilter</filter-class>
     </filter>
-      
+
+    <filter>
+      <filter-name>authFilter</filter-name>
+      <filter-class>com.aimluck.eip.filter.ALDigestAuthenticationFilter</filter-class>
+    </filter>
+
     <servlet-mapping>
        <servlet-name>
           aipo
@@ -63,15 +68,29 @@
        <url-pattern>
          /portal/*
        </url-pattern>
+       <servlet-name>
+          aipo
+       </servlet-name>
+       <url-pattern>
+         /ical/*
+       </url-pattern>
     </servlet-mapping>
 
    <filter-mapping>
      <filter-name>baseFilter</filter-name>
      <url-pattern>/portal/*</url-pattern>
+     <url-pattern>/ical/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
      <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
-    
+
+   <filter-mapping>
+     <filter-name>authFilter</filter-name>
+     <url-pattern>/ical/*</url-pattern>
+     <dispatcher>REQUEST</dispatcher>
+     <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
     <welcome-file-list>
       <welcome-file>index.jsp</welcome-file>
       <welcome-file>index.wml</welcome-file>
