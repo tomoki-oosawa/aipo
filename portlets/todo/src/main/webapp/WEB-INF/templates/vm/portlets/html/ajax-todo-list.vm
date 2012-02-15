@@ -77,9 +77,9 @@
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
 #ALtdheadThin("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')")
-#ALtdheadW33("#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')")
-#ALtdheadW33("#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')")
-#ALtdheadW33("#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')")
+<th>#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')</th>
+<th class="wName">#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')</th>
+<th class="wCategory">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
 #ALtdheadThin("#ALajaxsort('end_date' '締め切り日' $result 'ToDoListScreen')")
 #ALtdheadThin("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')")
 </tr>
