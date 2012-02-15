@@ -111,17 +111,18 @@ form.searchbox input.submit:active {
 	display:block;
 	text-decoration:none;
 }
-.hdUserName a:hover .avatar {
-	border:solid 1px #999;
-}
 .hdUserName .avatar {
 	float:left;
-	width:21px;
-	height:21px;
+	width:23px;
+	height:23px;
 	margin:0 4px 0 0;
-	border:solid 1px #ccc;
-	border-radius:2px;
-	-ms-border-radius:2px;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+img.avatar,
+.avatar img {
+	border-radius:3px;
+	-ms-border-radius:3px;
 }
 
 /***************************************************
@@ -1415,6 +1416,8 @@ table.auiCalendar .selected a {
 .auiAvatarList li a img {
 	vertical-align:middle;
 	margin-right:5px;
+	border-radius:3px;
+	-ms-border-radius:3px;
 }
 
 /* auiBlogEntry ********************/
