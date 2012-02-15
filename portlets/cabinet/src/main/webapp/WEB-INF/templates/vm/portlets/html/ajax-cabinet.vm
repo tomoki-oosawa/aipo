@@ -45,6 +45,7 @@
 #if ($result.List.size() == 0)
 <div class="message">指定したフォルダにファイルはありません。</div>
 #else
+#if($result.TableColumNum == 4)
 #ALformheader('Cabinet' $jslink $portlet)
 <table class="auiRowTable wide">
 <colgroup />
@@ -64,4 +65,21 @@
 </tbody>
 </table>
 #ALformfooter()
+#else
+#ALformheader('Cabinet' $jslink $portlet)
+<table class="auiRowTable wide">
+<colgroup />
+<colgroup style="width:6em;" />
+<tbody>
+#foreach ($record in $result.List)
+#ALtdcellheader()
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a></div>
+#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
+</tr>
+#end
+</tbody>
+</table>
+#ALformfooter()
+#end
 #end

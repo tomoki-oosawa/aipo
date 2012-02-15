@@ -66,6 +66,15 @@
         <parameter name="p4c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
+        <parameter name="p1e-rows" value="2" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示項目</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1e-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1e-rows.style.items" value="2,4" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1e-rows.style.values" value="タイトル、更新日,タイトル、カテゴリ、作成者、更新日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="action" value="cabinet.CabinetAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="CabinetFileFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>

@@ -35,8 +35,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CabinetScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CabinetScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CabinetScreen.class.getName());
 
   /**
    * 
@@ -54,6 +54,9 @@ public class CabinetScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setTableColumNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1e-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-cabinet.vm";
