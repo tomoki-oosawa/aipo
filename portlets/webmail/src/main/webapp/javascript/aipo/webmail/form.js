@@ -54,6 +54,10 @@ aipo.webmail.onLoadMailFilterDialog = function(portlet_id){
 }
 
 aipo.webmail.onReceiveMessage = function(msg){
+    //送信時に作成した場合selectを削除。
+	var select=dojo.byId("attachments_select");
+	if(typeof select!="undefined"&& select!=null)
+		select.parentNode.removeChild(select);
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){

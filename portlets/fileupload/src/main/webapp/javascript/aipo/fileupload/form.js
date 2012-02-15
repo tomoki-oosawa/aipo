@@ -24,11 +24,12 @@ aipo.fileupload.getFolderName = function() {
 }
 
 aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename) {
-    var select = dojo.byId('attachments');
-    var value = fileid;
-    var text = filename;
-    aimluck.io.addOption(select, value, text, false);
-
+    var ul = dojo.byId('attachments');
+    
+    if(ul.nodeName.toLowerCase()=="ul")
+    	aimluck.io.addFileToList(ul,fileid,filename);
+    else
+    	aimluck.io.addOption(ul,fileid,filename, false);//MultipeによるSelectとの互換性維持
     dojo.byId('folderName').value =  foldername;
 }
 
@@ -38,13 +39,18 @@ aipo.fileupload.openAttachment = function(url){
     var x = (screen.width  - wx) / 2;
     var y = (screen.height - wy) / 2;
 
-    var select = dojo.byId('attachments');
-    var select_len = select.options.length;
-    if(select_len == 1 && select.options[0].value == ''){
-        select_len = 0;
-    }
+    var ul = dojo.byId('attachments');
+    
+    if(ul.nodeName.toLowerCase()=="ul")
+   	 var ullength=ul.children.length;
+   else{
+   	   	var ullength = ul.options.length;
+    	if(ullength == 1 && ul.options[0].value == ''){
+    		ullength = 0;
+    	}  
+   } 
     var folderName = dojo.byId('folderName').value;
-    var attachment_subwin = window.open(url+'&nsize='+select_len+'&folderName='+folderName,"attachment_window","left="+x+",top="+y+",width="+wx+",height="+wy+",resizable=yes,status=yes");
+    var attachment_subwin = window.open(url+'&nsize='+ullength+'&folderName='+folderName,"attachment_window","left="+x+",top="+y+",width="+wx+",height="+wy+",resizable=yes,status=yes");
     attachment_subwin.focus();
 }
 

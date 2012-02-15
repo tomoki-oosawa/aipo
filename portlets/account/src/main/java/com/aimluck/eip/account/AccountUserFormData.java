@@ -375,11 +375,11 @@ public class AccountUserFormData extends ALAbstractFormData {
     username.limitMaxLength(16);
     // パスワード
     password.setNotNull(true);
-    password.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    password.setCharacterType(ALStringField.TYPE_ASCII);
     password.limitMaxLength(16);
     // パスワード2
     password2.setNotNull(true);
-    password2.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    password2.setCharacterType(ALStringField.TYPE_ASCII);
     password2.limitMaxLength(16);
     // 名
     firstname.setNotNull(true);

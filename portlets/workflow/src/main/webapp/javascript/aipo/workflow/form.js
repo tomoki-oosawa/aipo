@@ -195,7 +195,12 @@ aipo.workflow.NoteChangeConfirm = function(flgName){
 }
 
 aipo.workflow.onReceiveMessage = function(msg){
-    if(!msg) {
+    //送信時に作成した場合selectを削除。
+	var select=dojo.byId("attachments_select");
+	if(typeof select!="undefined"&& select!=null)
+		select.parentNode.removeChild(select);
+
+	if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
             arrDialog.hide();

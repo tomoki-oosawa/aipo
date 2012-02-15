@@ -41,7 +41,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.selectAllOptions(this.members);aimluck.io.selectAllOptions(this.positions);aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage);aipo.report.onLoadReportDetail")
+#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this);aimluck.io.selectAllOptions(this.positions);aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage);aipo.report.onLoadReportDetail")
 <input type="hidden" name="mode" value="$!modesrv" />
 
 #ALtableheaderWide()
@@ -120,15 +120,14 @@
 
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
-<select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
-#foreach( $record in $!result.AttachmentFileNameList )
-<option value="s${record.FileId}">$record.FileName</option>
-#end
-</select>
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
 <input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
-選択したファイルを<input type="button" onclick="aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
-<input type="hidden" id="folderName" name="folderName" value="">
+<ul id="attachments">
+	#foreach($record in $!result.AttachmentFileNameList )
+	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+	#end
+</ul>
+<input type="hidden" id="folderName" name="folderName" value="$!result.FolderName">
 #ALtditemfooter()
 
 #ALtdcaption("#ALrequired('通知先')")

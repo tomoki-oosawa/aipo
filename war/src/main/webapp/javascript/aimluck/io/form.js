@@ -374,6 +374,47 @@ aimluck.io.createOptions = function(selectId, params) {
   });
 }
 
+aimluck.io.addFileToList =function(ul,fileid,filename){
+	if (document.all) {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+
+	   return ul.appendChild(li);
+  } else {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    return ul.appendChild(li);
+  }
+}
+aimluck.io.removeFileFromList = function(ul,li){
+	return ul.removeChild(li);
+}
+
+aimluck.io.createSelectFromFileList = function(form){
+    var ul = dojo.byId("attachments");
+    var select = document.createElement("select");
+    select.style.display="none";
+    select.id="attachments_select";
+    select.type="select";
+    select.multiple="multiple";
+    select.name ="attachments";
+
+    var lilist=ul.children;
+    for(var i=0;i<lilist.length;i++){
+    	var option =document.createElement("option");
+    	option.value=lilist[i].getAttribute("data-fileid");
+    	option.text=lilist[i].getAttribute("data-filename");
+    	option.selected=true;
+    	select.appendChild(option);
+    }
+    form.appendChild(select);
+}
+
 aimluck.io.addOption = function(select, value, text, is_selected) {
   if (document.all) {
     var option = document.createElement("OPTION");

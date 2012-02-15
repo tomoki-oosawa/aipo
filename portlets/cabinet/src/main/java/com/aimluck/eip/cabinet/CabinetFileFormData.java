@@ -268,11 +268,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
         }
       }
     }
-
-    if (fileids != null) {
-      if (fileids[0].equals("")) {
-        msgList.add("『 <span class='em'>ファイル名</span> 』を入力してください。");
-      }
+    if (ALEipConstants.MODE_UPDATE.equals(getMode()) && fileids == null) {
+      msgList.add("『 <span class='em'>ファイル名</span> 』を入力してください。");
     }
 
     // メモ

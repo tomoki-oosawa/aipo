@@ -290,12 +290,12 @@ public class AccountEditFormData extends ALAbstractFormData {
     last_name_kana.limitMaxLength(50);
     // 新しいパスワード
     new_password.setNotNull(true);
-    new_password.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_password.setCharacterType(ALStringField.TYPE_ASCII);
     new_password.limitMaxLength(16);
 
     // 新しいパスワード（確認用）
     new_password_confirm.setNotNull(true);
-    new_password_confirm.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
+    new_password_confirm.setCharacterType(ALStringField.TYPE_ASCII);
     new_password_confirm.limitMaxLength(16);
     // 内線
     in_telephone.setCharacterType(ALStringField.TYPE_ASCII);
