@@ -73,6 +73,9 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1a-rows")));
+      listData.setTableColumNum(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p1e-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-msgboard-topic.vm";

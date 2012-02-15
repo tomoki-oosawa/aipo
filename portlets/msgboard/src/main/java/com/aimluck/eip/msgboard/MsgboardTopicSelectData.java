@@ -98,6 +98,9 @@ public class MsgboardTopicSelectData extends
   /** 他ユーザーの作成したトピックの削除権限 */
   private boolean hasAclDeleteTopicOthers;
 
+  /** 初期表示 */
+  private int table_colum_num;
+
   private ALStringField target_keyword;
 
   /**
@@ -720,5 +723,20 @@ public class MsgboardTopicSelectData extends
    */
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  /**
+   * @return table_colum_num
+   */
+  public int getTableColumNum() {
+    return table_colum_num;
+  }
+
+  /**
+   * @param table_colum_num
+   *          セットする table_colum_num
+   */
+  public void setTableColumNum(int table_colum_num) {
+    this.table_colum_num = table_colum_num;
   }
 }
