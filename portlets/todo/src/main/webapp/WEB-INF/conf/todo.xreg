@@ -61,6 +61,15 @@
         <parameter name="p1d-categories.style" value="TodoCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1d-categories.style.initialvalue" value="すべてのカテゴリ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
+        <parameter name="p1e-rows" value="2" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示項目</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p1e-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1e-rows.style.items" value="2,4" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1e-rows.style.values" value="タイトル、更新日,タイトル、カテゴリ、作成者、更新日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="action" value="todo.ToDoAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="ToDoFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>

@@ -97,6 +97,8 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
 
   private boolean hasAclDeleteTodoOther;
 
+  private int table_colum_num;
+
   /**
    * 
    * @param action
@@ -566,5 +568,20 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    */
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  /**
+   * @return table_colum_num
+   */
+  public int getTableColumNum() {
+    return table_colum_num;
+  }
+
+  /**
+   * @param table_colum_num
+   *          セットする
+   */
+  public void setTableColumNum(int table_colum_num) {
+    this.table_colum_num = table_colum_num;
   }
 }
