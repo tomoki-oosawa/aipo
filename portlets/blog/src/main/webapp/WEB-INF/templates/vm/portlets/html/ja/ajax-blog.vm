@@ -44,7 +44,7 @@
 #if(${record.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="32" height="32" />
 #else
-<img src="images/common/nophoto.gif" alt="${record.OwnerName}" width="32" height="32" />
+<img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="32" height="32" />
 #end
 </a>
 </div>

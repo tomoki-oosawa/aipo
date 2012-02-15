@@ -49,7 +49,7 @@
 #if(${record.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
 #else
-<img src="images/common/nophoto.gif" alt="${record.OwnerName}" width="50" height="50" />
+<img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
 #end
 </a>
 </div>
@@ -94,7 +94,7 @@
 #if($user.hasPhoto())
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${user.UserId}))" width="32" height="32" alt="${user.AliasName}" />
 #else
-<img src="images/common/nophoto.gif" alt="${user.AliasName}" width="32" height="32" />
+<img src="images/common/avatar_default3.png" alt="${user.AliasName}" width="32" height="32" />
 #end
 ${user.AliasName}</a></li>
 #end
