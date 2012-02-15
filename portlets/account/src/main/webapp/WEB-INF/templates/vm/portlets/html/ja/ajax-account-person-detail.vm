@@ -49,7 +49,7 @@
 #ALtdcaption('顔写真')
 #ALtditemheader()
 #if($!{result.Detail.hasPhoto()})
-<img src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("r",$!{result.RandomNum}))" alt="顔写真" align="absmiddle" />
+<img class="avatar" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("r",$!{result.RandomNum}))" alt="顔写真" align="absmiddle" />
 #else
 未登録です。
 #end
