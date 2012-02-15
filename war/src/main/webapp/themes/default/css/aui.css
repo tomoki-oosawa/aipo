@@ -270,6 +270,7 @@ table.activityTable tr.unread td {
 /***************************************************
 	footer
 --------------------------------------------------*/
+/* White footer
 #footer {
 	position:fixed;
 	bottom:0;
@@ -283,6 +284,21 @@ table.activityTable tr.unread td {
 	background:#eee;
 	overflow:hidden;
 	z-index:995;
+}*/
+#footer {
+	position:fixed;
+	bottom:0;
+	width:100%;
+	margin:0;
+	font-size:0.9em;
+	text-align:center;
+	text-shadow:0 1px 0 rgba(0,0,0,0.5);
+	border-top:solid 1px #999;
+	box-shadow:inset 0 1px 5px rgba(0,0,0,0.2);
+	background:#666;
+	color:#fff;
+	overflow:hidden;
+	z-index:995;
 }
 #login #footer {
 	position:static;
@@ -294,9 +310,14 @@ table.activityTable tr.unread td {
 #footer a {
 	text-decoration:none;
 }
+/* White footer
 #footText,
 #footText a {
 	color:#888;
+}*/
+#footText,
+#footText a {
+	color:#fff;
 }
 #footText a:hover {
 	text-decoration:underline;
@@ -329,12 +350,22 @@ table.activityTable tr.unread td {
 	float:right;
 	padding:20px 20px 0 0;
 }
+#startGuide .close a {
+	color:#fff;
+}
+/* White footer
 .guideContents {
 	float:left;
 	padding:20px;
 	text-align:center;
 	border-left:solid 1px #fff;
 	border-right:solid 1px #ccc;
+}*/
+.guideContents {
+	float:left;
+	padding:20px;
+	text-align:center;
+	border-right:solid 1px #505050;
 }
 .guideContents p {
 	margin:20px 0;
