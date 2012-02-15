@@ -1571,6 +1571,25 @@ form input[type=radio] {
 	vertical-align:baseline;
 }
 
+/* fileupload **************************/
+ul#attachments{
+
+}
+ul#attachments >li{
+	list-style: none;
+	background:none;
+	padding:0;
+}
+ul#attachments span.deletebutton{
+	margin-left:10px;
+	cursor:pointer;
+	text-decoration: underline;
+	color: #1B1B1B;
+}
+ul#attachments span.deletebutton:hover{
+	text-decoration:none;
+	color: #F90;
+}
 
 /* auiSubmenu ********************/
 .auiSubmenu {
