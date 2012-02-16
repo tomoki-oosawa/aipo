@@ -299,9 +299,10 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
               if (entries[j].getParent().equals("Schedule")) {
                 Parameter scheduleParameter =
                   entries[j].getParameter("p6a-uids");
-
-                scheduleParameter.setValue("");
-                entries[j].setParameter(0, scheduleParameter);
+                if (scheduleParameter != null) {
+                  scheduleParameter.setValue("");
+                  entries[j].setParameter(0, scheduleParameter);
+                }
               }
             }
           }
