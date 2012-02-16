@@ -39,8 +39,10 @@
 
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
-</p></div>
+</p>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div id="listmessageDiv"></div>
 #ALformheader('カテゴリ' $jslink $portlet)
 
 <div class="auiSummaryMeta clearfix">
