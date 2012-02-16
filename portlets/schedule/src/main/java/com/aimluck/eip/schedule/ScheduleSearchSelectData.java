@@ -200,6 +200,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
       rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
       rd.setNote(record.getNote());
+      rd.setPlace(record.getPlace());
 
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);

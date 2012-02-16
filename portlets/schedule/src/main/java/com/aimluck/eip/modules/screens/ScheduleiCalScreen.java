@@ -38,6 +38,7 @@ import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ExDate;
+import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.RRule;
@@ -205,6 +206,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
 
       VEvent event = new VEvent(dStart, dEnd, rd.getName().getValue());
+
+      String place = rd.getPlace().getValue();
+      if (place != null && place.length() > 0) {
+        event.getProperties().add(new Location(place));
+      }
 
       event.getProperties().add(
         new UidGenerator(rd.getScheduleId().getValueAsString()).generateUid());
