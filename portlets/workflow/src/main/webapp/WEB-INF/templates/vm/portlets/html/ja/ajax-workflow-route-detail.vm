@@ -41,9 +41,9 @@ $!{result.Detail.RouteV}
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormScreen').addQueryData('entityid',$!{result.Detail.RouteId})" "$!portlet.ID" "aipo.workflow_route.onLoadWorkflowRouteDialog")
-#if(! ($!result.Detail.RouteId.toString() == "1"))
+## #if(! ($!result.Detail.RouteId.toString() == "1"))
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('entityid',$!{result.Detail.RouteId}).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
-#end
+## #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
