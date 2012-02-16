@@ -45,6 +45,7 @@ import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.gadgets.util.PsmlDBUtils;
 import com.aimluck.eip.gadgets.util.PsmlUtils;
@@ -274,14 +275,19 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
       List<JetspeedUserProfile> profiles = PsmlDBUtils.getAllUserHtmlProfile();
       for (JetspeedUserProfile profile : profiles) {
+        String userName = profile.getUserName();
         PsmlDBUtils.checkAndFixInconsistency(profile.getUserName());
         if (!profile.getUserName().equals(ALEipUtils.getLoginName(rundata))) {
+          ALEipUser alEipUser = ALEipUtils.getALEipUser(userName);
+          long userId = alEipUser.getUserId().getValue();
+          boolean isAdmin = ALEipUtils.isAdmin((int) userId);
           org.apache.jetspeed.util.PortletUtils.regenerateIds(portlets);
           Portlets myportlets = (Portlets) portlets.clone();
 
           Portlets[] portletList = myportlets.getPortletsArray();
 
           int length = portletList.length;
+
           for (int i = 0; i < length; i++) {
             Entry[] entries = portletList[i].getEntriesArray();
             if (entries == null || entries.length <= 0) {
@@ -299,8 +305,10 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
               }
             }
           }
-
           profile.setProfile(DBUtils.portletsToBytes(myportlets, mapping));
+          if (isAdmin == true) {
+            ALEipUtils.addAdminPage(userName);
+          }
         }
       }
 

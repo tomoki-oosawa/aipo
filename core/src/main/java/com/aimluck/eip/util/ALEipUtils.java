@@ -44,7 +44,11 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.Layout;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileLocator;
+import org.apache.jetspeed.om.profile.psml.PsmlLayout;
 import org.apache.jetspeed.om.registry.MediaTypeEntry;
 import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -53,6 +57,8 @@ import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.portal.security.portlets.PortletWrapper;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.PortletFactory;
+import org.apache.jetspeed.services.Profiler;
+import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -1944,5 +1950,55 @@ public class ALEipUtils {
       return null;
     }
     return getFormattedTime(timeField.getValue());
+  }
+
+  /**
+   * 指定したユーザのPSMLにシステム管理のページを追加します。
+   * 
+   * @param user_name
+   * @throws Exception
+   */
+  public static void addAdminPage(String user_name) throws Exception {
+    ProfileLocator locator = Profiler.createLocator();
+    locator.createFromPath(String.format("user/%s/media-type/html", user_name));
+    Profile profile = Profiler.getProfile(locator);
+    Portlets portlets = profile.getDocument().getPortlets();
+
+    if (portlets != null) {
+      // 既に配置されているかどうかを確認
+      long max_position = 0;
+      int portlet_size = portlets.getPortletsCount();
+      for (int i = 0; i < portlet_size; i++) {
+        Portlets p = portlets.getPortlets(i);
+        if (p.getSecurityRef().getParent().equals("admin-view")) {
+          return;
+        }
+        if (p.getLayout().getPosition() > max_position) {
+          max_position = p.getLayout().getPosition();
+        }
+      }
+      // レイアウトの作成
+      Layout newLayout = new PsmlLayout();
+      newLayout.setPosition(max_position + 1);
+      newLayout.setSize(-1);
+
+      ProfileLocator admin_locator = Profiler.createLocator();
+      admin_locator.createFromPath("user/admin/media-type/html");
+      Portlets admin_portlets =
+        Profiler.createProfile(admin_locator).getDocument().getPortlets();
+      admin_portlets = admin_portlets.getPortlets(0);
+      Entry[] entriesArray = admin_portlets.getEntriesArray();
+      int size = entriesArray.length;
+      for (int i = 0; i < size; i++) {
+        if (entriesArray[i].getParent().equals("DeleteSample")) {
+          admin_portlets.removeEntry(i);
+          break;
+        }
+      }
+      admin_portlets.setLayout(newLayout);
+      portlets.addPortlets(admin_portlets);
+
+      PsmlManager.store(profile);
+    }
   }
 }
