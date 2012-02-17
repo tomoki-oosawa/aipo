@@ -77,7 +77,7 @@
         <parameter name="p3a-category.style" value="MsgboardCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-category.style.initialvalue" value="すべてのカテゴリ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
-        <parameter name="p1e-rows" value="2" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1e-rows" value="4" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示項目</title>
             </meta-info>

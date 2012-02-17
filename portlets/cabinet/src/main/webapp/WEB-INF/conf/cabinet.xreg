@@ -66,7 +66,7 @@
         <parameter name="p4c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
-        <parameter name="p1e-rows" value="2" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1e-rows" value="4" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示項目</title>
             </meta-info>
