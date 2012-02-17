@@ -89,8 +89,10 @@
 #ALtditemheader()
 <input name="edit_repeat_flag" type="radio" value="0"  id="edit_repeat_flag0_$!{portlet.ID}" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 0) checked="checked" #end onclick="aipo.schedule.formEditRepeatAll(this.form)"/>
 <label onclick="aipo.schedule.formEditRepeatAll(this.form)" for="edit_repeat_flag0_$!{portlet.ID}">すべての予定</label>
+#if($!ignore_viewdate == "false")
 <input name="edit_repeat_flag" type="radio" value="1" id="edit_repeat_flag1_$!{portlet.ID}" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1) checked="checked" #end onclick="aipo.schedule.formEditRepeatOne(this.form)"/>
 <label onclick="aipo.schedule.formEditRepeatOne(this.form)" for="edit_repeat_flag1_$!{portlet.ID}">$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日の予定のみ</label><br/>
+#end
 #ALtditemfooter()
 #end
 #ALtdcaption("日時")

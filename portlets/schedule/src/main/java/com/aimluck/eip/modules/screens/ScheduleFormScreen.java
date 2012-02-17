@@ -38,6 +38,8 @@ public class ScheduleFormScreen extends ALVelocityScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleFormScreen.class.getName());
 
+  private final static String IGNORE_VIEWDATE = "ignore_viewdate";
+
   /**
    * 
    * @param rundata
@@ -63,6 +65,13 @@ public class ScheduleFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
+    String ignore_viewdate = rundata.getParameters().getString(IGNORE_VIEWDATE);
+    if (ignore_viewdate != null && ignore_viewdate.equals("true")) {
+      rundata.getParameters().remove(IGNORE_VIEWDATE);
+      context.put(IGNORE_VIEWDATE, "true");
+    } else {
+      context.put(IGNORE_VIEWDATE, "false");
+    }
     String layout_template = "portlets/html/ja/ajax-schedule-form.vm";
     setTemplate(rundata, context, layout_template);
   }

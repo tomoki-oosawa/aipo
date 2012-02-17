@@ -35,6 +35,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
@@ -113,6 +114,8 @@ public class ScheduleSelectData extends
   private String aclPortletFeature;
 
   private boolean activity = false;
+
+  private boolean ignoreViewdate = false;
 
   /**
    * 
@@ -223,6 +226,12 @@ public class ScheduleSelectData extends
       activity = true;
     }
 
+    option = rundata.getParameters().getString("ignore_viewdate");
+    if (option != null && option.equals("true")) {
+      ignoreViewdate = true;
+    } else {
+      ignoreViewdate = false;
+    }
   }
 
   /**
@@ -458,7 +467,18 @@ public class ScheduleSelectData extends
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());
       // ログインユーザーID
-      rd.setLoginuser(loginuserid == userid);
+      if (ignoreViewdate) {
+        rd.setLoginuser(false);
+        for (ALEipUser member : members) {
+          ALNumberField memberId = member.getUserId();
+          if (loginuserid == memberId.getValue()) {
+            rd.setLoginuser(true);
+            break;
+          }
+        }
+      } else {
+        rd.setLoginuser(loginuserid == userid);
+      }
       // Calendar cal = Calendar.getInstance();
       // cal.setTime(record.getStartDate());
       // cal.set(Calendar.HOUR, 0);

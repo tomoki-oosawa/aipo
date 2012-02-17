@@ -95,7 +95,7 @@
 <th class="w20">登録者</th>
 </tr>
 #foreach ($record in $result.List)
-#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('activityId','none').addQueryData('view_date', $!{record.ViewDate.toString()})")
+#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('view_date', $!{record.ViewDate.toString()}).addQueryData('ignore_viewdate', 'true')")
 #if(!$record.isStartDayEqualsEndDay())
 <tr>
 #elseif($record.isStartDayEqualsToday())

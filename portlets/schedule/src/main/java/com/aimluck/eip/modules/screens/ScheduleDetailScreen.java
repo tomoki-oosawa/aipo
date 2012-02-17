@@ -39,6 +39,8 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleDetailScreen.class.getName());
 
+  private final static String IGNORE_VIEWDATE = "ignore_viewdate";
+
   /**
    * 
    * @param rundata
@@ -56,8 +58,15 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
+      String ignore_viewdate =
+        rundata.getParameters().getString(IGNORE_VIEWDATE);
+      if (ignore_viewdate != null && ignore_viewdate.equals("true")) {
+        rundata.getParameters().remove(IGNORE_VIEWDATE);
+        context.put(IGNORE_VIEWDATE, "true");
+      } else {
+        context.put(IGNORE_VIEWDATE, "false");
+      }
       String layout_template = "portlets/html/ja/ajax-schedule-detail.vm";
-
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ScheduleDetailScreen] Exception.", ex);
