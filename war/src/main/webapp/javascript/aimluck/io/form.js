@@ -400,7 +400,6 @@ aimluck.io.createSelectFromFileList = function(form){
     var select = document.createElement("select");
     select.style.display="none";
     select.id="attachments_select";
-    select.type="select";
     select.multiple="multiple";
     select.name ="attachments";
 

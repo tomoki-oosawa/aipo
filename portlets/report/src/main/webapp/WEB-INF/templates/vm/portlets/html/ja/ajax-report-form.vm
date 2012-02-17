@@ -41,7 +41,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this);aimluck.io.selectAllOptions(this.positions);aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage);aipo.report.onLoadReportDetail")
+#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aipo.report.delaySelectAllOptions(this, aimluck.io.createSelectFromFileList(this));aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage);aipo.report.onLoadReportDetail")
 <input type="hidden" name="mode" value="$!modesrv" />
 
 #ALtableheaderWide()

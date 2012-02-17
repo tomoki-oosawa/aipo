@@ -282,3 +282,7 @@ aipo.report.formatNum = function(num) {
     if (cnt <= 0) return src;
     while (cnt-- > 0) src = "0" + src; return src;
 }
+aipo.report.delaySelectAllOptions = function(form, func)
+{
+    return function(form){aimluck.io.selectAllOptions(form.attachments)};
+}
