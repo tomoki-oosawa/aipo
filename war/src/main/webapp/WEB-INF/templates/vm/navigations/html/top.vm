@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="hdUserName">
-#if ($data.User.getPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("r",$!utils.ImageRandomNumber)))" class="avatar" alt="顔写真" />#end #if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+#if ($data.User.getPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("r",$!utils.ImageRandomNumber)))" class="avatar" alt="顔写真" />#else<img src="images/common/avatar_default3.png" class="avatar" alt="顔写真"/>#end #if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
     </div>
     <div class="hdLogout"><input type="button" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'" /></div>
   </div>
