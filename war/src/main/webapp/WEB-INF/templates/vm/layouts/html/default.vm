@@ -57,7 +57,7 @@
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
-<div id="wrapper">
+<div id="wrapper" style="margin-bottom:40px">
   <table class="tableWrapper">
     <tbody>
       <tr>
