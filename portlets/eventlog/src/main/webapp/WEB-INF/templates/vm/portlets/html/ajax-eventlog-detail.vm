@@ -24,7 +24,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("イベントログ")
 #ALtableheaderWide()
-#ALtdcaption('イベント発生日時')
+#ALtdcaption('日時')
 #ALtditem($!result.detail.EventDate)
 #ALtdcaption('名前')
 #ALtditem($!result.detail.UserFullName)
