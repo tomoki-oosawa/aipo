@@ -51,9 +51,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountChangeTurnFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AccountChangeTurnFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccountChangeTurnFormData.class.getName());
 
   // ユーザ名のリスト
   private ALStringField positions;
@@ -83,6 +82,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
@@ -184,7 +184,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
         field = new ALStringField();
         field.setTrim(true);
         field.setValue(st.nextToken());
-        field.limitMaxLength(16); // ユーザ名の最大文字数が 16 文字．クラス AccountFormData を参照．
+        field.limitMaxLength(30); // ユーザ名の最大文字数が 30 文字．クラス AccountFormData を参照．
         field.setCharacterType(ALStringField.TYPE_ASCII);
         field.validate(msgList);
         String unameValue = field.getValue();
@@ -194,7 +194,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
             // 使用されているのが妥当な記号であるかの確認
             if (!(unameValue.charAt(i1) == "_".charAt(0)
               || unameValue.charAt(i1) == "-".charAt(0) || unameValue
-              .charAt(i1) == ".".charAt(0))) {
+                .charAt(i1) == ".".charAt(0))) {
               msgList
                 .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
               break;

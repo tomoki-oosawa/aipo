@@ -372,7 +372,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     // ユーザー名
     username.setNotNull(true);
     username.setCharacterType(ALStringField.TYPE_ASCII);
-    username.limitMaxLength(16);
+    username.limitMaxLength(30);
     // パスワード
     password.setNotNull(true);
     password.setCharacterType(ALStringField.TYPE_ASCII);
