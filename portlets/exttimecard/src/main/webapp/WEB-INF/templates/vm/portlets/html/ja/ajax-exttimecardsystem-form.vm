@@ -54,7 +54,7 @@
 <option value="$num" #if ($!result.StartTimeMinute.toString() == "$num") selected="selected" #end>$num分</option>
 #end
 #end
-</select>～<select name="end_hour" size="1" >
+</select> ～ <select name="end_hour" size="1" >
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.EndTimeHour.toString() == "$num") selected="selected" #end>$num時</option>
 #end
@@ -78,7 +78,7 @@
 #ALtditemheader()
 <h3>勤務時間外の場合</h3>
 <input class="text" name="worktime_out" value="$!result.WorktimeOut" type="text" size="3" maxlength="3" style="ime-mode: disabled;">
-分の勤務に対して、休憩 時間は
+分の勤務に対して、休憩時間は
 <input class="text" name="resttime_out" value="$!result.ResttimeOut" type="text" size="3" maxlength="3" style="ime-mode: disabled;"> 分
 <div class="spaceTop">#ALcaution('休憩時間は0から480の間で半角英数字で入力してください。')</div>
 #ALtditemfooter()
