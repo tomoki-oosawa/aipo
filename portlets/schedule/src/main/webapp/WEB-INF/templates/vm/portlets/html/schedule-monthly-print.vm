@@ -286,7 +286,7 @@
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
-<div class="calendarScheduleDiv">
+<div class="calendarScheduleDiv"><div class="small">
 #if($!{result.hasAuthoritySelfInsert()} && (!$result.TargetUserId.startsWith('f') || $!{result.hasAuthorityFacilityInsert()}))
 #if($result.TargetUserId.startsWith('f'))
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $result.TargetUserId.substring(1))")
@@ -295,9 +295,9 @@
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
 #end
-##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img class="icon_schedule" src="images/icon/icon_edit.gif" alt="予定追加" /></a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 #end
-</div>
+</div></div>
 </div>
 #else
 #foreach($record2 in $record.ScheduleList)
@@ -335,7 +335,7 @@
 </div>
 #end
 #end
-<div class="calendarScheduleDiv">
+<div class="calendarScheduleDiv"><div class="small">
 #if($!{result.hasAuthoritySelfInsert()} && (!$result.TargetUserId.startsWith('f') || $!{result.hasAuthorityFacilityInsert()}))
 #if($result.TargetUserId.startsWith('f'))
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $result.TargetUserId.substring(1))")
@@ -344,9 +344,9 @@
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
 #end
-##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img class="icon_schedule" src="images/icon/icon_edit.gif" alt="予定追加" /></a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 #end
-</div>
+</div></div>
 #end
 <div class="calendarFooter"></div>
 </td>

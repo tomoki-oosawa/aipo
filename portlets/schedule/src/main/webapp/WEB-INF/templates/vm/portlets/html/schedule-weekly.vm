@@ -132,10 +132,10 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #if($record.ScheduleList.size() <= 0)
 	#if ($!{result.hasAuthoritySelfInsert()})
 <div class="calendarBody">
-<div class="calendarScheduleDiv">
+<div class="calendarScheduleDiv"><div class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img src="images/icon/icon_edit.gif" alt="予定追加" width="16" height="16" border="0" align="absmiddle" galleryimg="no" /></a>
-</div>
+<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+</div></div>
 </div>
 	#end
 #else
@@ -171,10 +171,10 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 #end
 #if ($!{result.hasAuthoritySelfInsert()})
-<div class="calendarScheduleDiv">
+<div class="calendarScheduleDiv"><div class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加"><img src="images/icon/icon_edit.gif" alt="予定追加" width="16" height="16" border="0" align="absmiddle" galleryimg="no" /></a>
-</div>
+<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+</div></div>
 #end
 #end
 <div class="calendarFooter"></div>
