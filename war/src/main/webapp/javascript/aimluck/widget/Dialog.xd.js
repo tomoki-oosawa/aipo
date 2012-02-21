@@ -34,7 +34,28 @@ dojo.declare(
     "aimluck.widget.DialogUnderlay",
     [dijit.DialogUnderlay],
     {
-       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node'></div></div>"
+       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node'></div></div>",
+       layout: function(){
+			// summary
+			//		Sets the background to the size of the viewport (rather than the size
+			//		of the document) since we need to cover the whole browser window, even
+			//		if the document is only a few lines long.
+
+			var viewport = "";//dijit.getViewport();
+			var is = "";//this.node.style,
+				os = "";//this.domNode.style;
+
+			os.top = "";//viewport.t + "px";
+			os.left = "";//viewport.l + "px";
+			is.width = "";//viewport.w + "px";
+			is.height = "";//viewport.h + "px";*/
+
+			// process twice since the scroll bar may have been removed
+			// by the previous resizing
+			var viewport2 = "";//dijit.getViewport();
+			//if(viewport.w != viewport2.w){ is.width = viewport2.w + "px"; }
+			//if(viewport.h != viewport2.h){ is.height = viewport2.h + "px"; }*/
+		}
     }
 
 );
@@ -71,24 +92,24 @@ dojo.declare(
             //      performance reasons)
 
             this._modalconnects = [];
-            
+
             if(this.titleBar){
                 this._moveable = new dojo.dnd.Moveable(this.domNode, { handle: this.titleBar });
                 var _tmpnode = this.domNode;
                 dojo.connect(this._moveable, "onMoving", function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
-                        
+
                         var viewport = dijit.getViewport();
                         var w1 = parseInt(dojo.getComputedStyle(_tmpnode).width);
 			            var w2 = parseInt(viewport.w);
 
 	                    if(leftTop.l < 0){
-	                       leftTop.l = 0; 
+	                       leftTop.l = 0;
 	                    }
-	                    
+
 	                    if(leftTop.l + w1 > w2){
 	                       leftTop.l = w2 - w1;
 	                    }
-	                   
+
 	                    if(leftTop.t < 0){
 	                       leftTop.t = 0
 	                    }
@@ -151,15 +172,15 @@ dojo.declare(
             this._position();
             dijit.Dialog.superclass.onLoad.call(this);
             this.isPositionLock = false;
-            
+
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
                 focusNode.focus();
-                
+
                 if (this._callback != null) {
                     this._callback.call(this._callback, this._portlet_id);
                 }
-            } 
+            }
         },
         setCallback: function(portlet_id, callback) {
             this._portlet_id = portlet_id;
@@ -184,7 +205,7 @@ dojo.declare(
         },
         _position: function(){
             // summary: position modal dialog in center of screen
-            
+
             if(dojo.hasClass(dojo.body(),"dojoMove")){ return; }
             var viewport = dijit.getViewport();
             var mb = dojo.marginBox(this.domNode);
@@ -205,14 +226,14 @@ dojo.declare(
         },
         _downloadExternalContent: function(){
             this._onUnloadHandler();
-    
+
             // display loading message
             // TODO: maybe we should just set a css class with a loading image as background?
-            
+
             this._setContent(
                 this.onDownloadStart.call(this)
             );
-            
+
             var self = this;
             var getArgs = {
                 preventCache: (this.preventCache || this.refreshOnShow),
@@ -224,9 +245,9 @@ dojo.declare(
             if(dojo.isObject(this.ioArgs)){
                 dojo.mixin(getArgs, this.ioArgs);
             }
-    
+
             var hand = this._xhrDfd = (this.ioMethod || dojo.xhrPost)(getArgs);
-    
+
             hand.addCallback(function(html){
                 self.clearParams();
                 self.clearReloadIds();
@@ -240,7 +261,7 @@ dojo.declare(
                 delete self._xhrDfd;
                 return html;
             });
-    
+
             hand.addErrback(function(err){
                 if(!hand.cancelled){
                     // show error message in the pane
@@ -249,7 +270,7 @@ dojo.declare(
                 delete self._xhrDfd;
                 return err;
             });
-        }    
+        }
     }
 );
 
