@@ -85,9 +85,9 @@
 #ALtditem("#ALtextfield('email_address' $!result.EmailAddress '90%' 50 'disabled')")
 #ALtdcaption($!result.getFieldName('add_dest_type_pc'))
 #ALtditemheader()
-<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;パソコン</label>
-<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">&nbsp;携帯電話</label>
-<div class="message small">この伝言メモをパソコンや携帯電話に送れます。<br/>ただし、宛先ユーザーのメールアドレスが未設定の場合、もしくは${alias}の管理者画面でメールアカウントを登録されていない場合には、伝言メモは送信できますが、そのメールアドレスには通知されません。</div>
+<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;メールアドレス &nbsp; </label>
+<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">&nbsp;携帯メールアドレス &nbsp; </label>
+
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('subject_type'))")
 #ALtditemheader()

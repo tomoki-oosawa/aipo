@@ -624,11 +624,11 @@ public class NoteFormData extends ALAbstractFormData {
     email_address.setTrim(true);
 
     add_dest_type_pc = new ALStringField();
-    add_dest_type_pc.setFieldName("追加送信先");
+    add_dest_type_pc.setFieldName("メール通知先");
     add_dest_type_pc.setTrim(true);
 
     add_dest_type_cellphone = new ALStringField();
-    add_dest_type_cellphone.setFieldName("追加送信先");
+    add_dest_type_cellphone.setFieldName("メール通知先");
     add_dest_type_cellphone.setTrim(true);
 
     subject_type = new ALStringField();
