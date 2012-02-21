@@ -39,9 +39,9 @@ $!record.AliasName<br />
 #end
 #ALtditemfooter()
 #ALtdcaption('作成日時')
-#ALtditem($!{result.ParentReport.UpdateDate.toString('yyyy年MM月dd日HH時mm分')})
+#ALtditem($!{result.ParentReport.UpdateDate.toString('yyyy年M月d日H時m分')})
 #ALtdcaption('日時')
-#ALtditem("$!{result.ParentReport.StartDate.toString('yyyy年MM月dd日HH時mm分')}～$!{result.ParentReport.EndDate.toString('HH時mm分')}")
+#ALtditem("$!{result.ParentReport.StartDate.toString('yyyy年M月d日H時m分')}～$!{result.ParentReport.EndDate.toString('H時m分')}")
 #ALtdcaption('内容')
 #ALtditem($!{result.ParentReport.Note})
 #if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
@@ -114,7 +114,7 @@ ${record.Note}
 #if($!resultOnReportDetail)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
+#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
 <input type="hidden" name="mode" value="report_reply" />
 <input type="hidden" name="entityid" value="$!result.ParentReport.ReportId" />
 <input type="hidden" name="report_name" value=" " />
@@ -130,14 +130,15 @@ ${record.Note}
 #ALtditemfooter()
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
+<select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
+#foreach( $record in $!resultOnReportDetail.AttachmentFileNameList )
+<option value="$record.FileId">$resultOnReportDetail.FileName</option>
+#end
+</select>
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
 <input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
-<ul id="attachments">
-	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
-	#end
-</ul>
-<input type="hidden" id="folderName" name="folderName" value="$!result.FolderName">
+選択したファイルを<input type="button" onclick="aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
+<input type="hidden" id="folderName" name="folderName" value="">
 #ALtditemfooter()
 #ALtablefooter()
 #end
