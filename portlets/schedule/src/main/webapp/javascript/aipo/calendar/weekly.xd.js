@@ -142,17 +142,37 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             var startEnd = data.startDate.substring(0,4) + "年" + parseInt(data.startDate.substring(5,7),10) + "月" + parseInt(data.startDate.substring(8,10),10) + "日" + data.dayOfWeek[0];
             dojo.byId('viewWeekly-' + _portletId).innerHTML = startEnd;
 
+            var simpleStyleFirst = "";
+            var simpleStyle = "";
+            if(dojo.byId("top_form").value=="simple"){
+                simpleStyleFirst = "width: 100%;";
+            	simpleStyle = "width: 0%;display: none;";
+            }
+
             termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>"
             dojo.forEach(data.termSchedule, function(itemList) {
+                var simpleDisplay = "";
+                var simpleDisplayR = "";
+                if(dojo.byId("top_form").value=="simple"){
+                  simpleDisplay = ' style="display: none;"';
+                  for (k = 0; k < itemList.length ; k++){
+                    item = itemList[k];
+                    if(item.index==0){
+                    	simpleDisplay = "";
+                    	simpleDisplayR = " weeklyTermRightR";
+                    	break;
+                    }
+                  }
+                }
                 var item = null;
-                termTableHtml += '<tr><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
-                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
+                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
                 termTableHtml += "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>"
                 l_count++;
@@ -338,6 +358,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     item = itemList[k];
                     var width = 100 / ptConfig[_portletId].scheduleDivDaySum * item.rowspan;
                     var left = 100 / ptConfig[_portletId].scheduleDivDaySum * item.index;
+                    var simpleDisplay = "";
+                    if(dojo.byId("top_form").value=="simple"){
+                    	width = 100;
+                        simpleDisplay = ((item.index==0) ? "" : "display: none;");
+                    }
                     var name = item.name;
                     var scheduleId = item.scheduleId;
 
@@ -384,7 +409,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         name += '<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" alt="仮スケジュール" title="仮スケジュール" align="top" class="icon" />';
                     }
                     if(width==100)width='99.99999';
-                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
+                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
                     count++;
                 }
                 dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;
@@ -487,7 +512,11 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
     var overlapNumArray = new Array(sum);
     var positionLeftArray = new Array(sum);
     var resizeWidthArray = new Array(sum);
-
+    var singleWidth = 1;
+    if(dojo.byId("top_form").value=="simple"){
+    	singleWidth = 7.2;
+    }
+    
     scheduleDiv.sort(aipo.calendar.sortByRegion);
 
 
@@ -523,16 +552,16 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
     for (i=0; i<sum; i++) {
         if (overlapNumArray[i] != 0) {
                if (positionLeftArray[i] < positionLeftArray[i+1])
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW + "%");
+                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW * singleWidth + "%");
             else if (resizeWidthArray[i]==0)
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW +"%");
+                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW * singleWidth +"%");
             else
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW +"%");
+                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW * singleWidth +"%");
         }
         else
-            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW +"%");
+            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW * singleWidth +"%");
 
-        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]))+"%");
+        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i])) * singleWidth+"%");
         dojo.style(scheduleDiv[i], "visibility", "visible" );
      }
 }
@@ -911,6 +940,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         if(!this.disableX) {
            mouseX = aipo.calendar.getCurrentMouseX(e);
            this.leftTop.l = mouseX.x;
+           if(dojo.byId("top_form").value=="simple"){
+             this.leftTop.l = 0;
+           }
            this.dragSource.schedule.index = mouseX.index;
         }
         dojo.marginBox(this.node, this.leftTop);
@@ -946,7 +978,10 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
     },
     onMouseUp: function (e) {
         ptConfig[this.portletId].isTooltipEnable = true;
-
+        if(dojo.byId("top_form").value=="simple"){
+          this.dragSource.schedule.index = 0;
+        }
+        
         if (dojo.isIE) {
             document.onkeydown = "";
             document.onkeyup = "";
@@ -1180,6 +1215,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
             }
             var width = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpW;
             var left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
+            if(dojo.byId("top_form").value=="simple"){
+            	width = 100 * tmpW;
+            	left = 100 * tmpL;
+            }
             dojo.style(scheduleNode, "left",  left + "%");
             dojo.style(scheduleNode, "width", width + "%");
         }
@@ -1222,6 +1261,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
                 endDate = aipo.calendar.getDate(viewStart, tmpSchedule.indexReal) + "-00-00";
 
             }
+        }
+        if(dojo.byId("top_form").value=="simple"){
+        	width = 100 * tmpW;
+        	left = 100 * tmpL;
         }
 
         this.positionFrom = -1;
@@ -1458,6 +1501,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
             }
             var width = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpW;
             var left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
+            if(dojo.byId("top_form").value=="simple"){
+            	width = 0;
+            	left = 0;
+            }
             dojo.style(this.node, "left",  left + "%");
             dojo.style(this.node, "width", width + "%");
 
@@ -1480,6 +1527,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
             } else {
                 left2 = this.positionFrom;
                 left1 = this.positionTo;
+            }
+            if(dojo.byId("top_form").value=="simple"){
+            	left1 = 0;
+            	left2 = 0;
             }
             var date1 = ptConfig[this.portletId].jsonData.date[left1];
             var date2 = ptConfig[this.portletId].jsonData.date[left2];

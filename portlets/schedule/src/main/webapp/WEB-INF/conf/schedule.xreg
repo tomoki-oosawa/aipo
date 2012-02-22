@@ -38,6 +38,14 @@
     	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="pba-template.style.items" value="schedule-calendar,schedule-oneday-group,schedule-weekly-group,schedule-monthly,schedule-search-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="pba-template.style.values" value="ブロック,日,週,月,一覧" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p19-rows" value="detail" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+	        <meta-info>
+                <title>表示形式（トップページ）</title>
+            </meta-info>
+    	</parameter>
+    	<parameter name="p19-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p19-rows.style.items" value="simple,detail" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p19-rows.style.values" value="簡易表示,詳細表示" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows" value="9" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示開始時間</title>

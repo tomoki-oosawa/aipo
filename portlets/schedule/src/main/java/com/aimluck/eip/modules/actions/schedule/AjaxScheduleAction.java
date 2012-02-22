@@ -71,6 +71,10 @@ public class AjaxScheduleAction extends ALBaseAction {
     try {
       context.put("theme", ALOrgUtilsService.getTheme());
 
+      // 表示形式（トップページ）を取得する．
+      String top_form = portlet.getPortletConfig().getInitParameter("p19-rows");
+      context.put("top_form", top_form);
+
       // 表示開始時間を取得する．
       String time_start =
         portlet.getPortletConfig().getInitParameter("p1a-rows");
