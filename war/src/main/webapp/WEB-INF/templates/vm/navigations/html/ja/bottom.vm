@@ -19,7 +19,11 @@
 
 ## ---------------------------------------------------------------------------
                             <!-- FOOTER -->
+#if (${client} != "IPAD")
                             <div id="footer" class="clearfix">
+#else
+                            <div id="footer" class="clearfix" style="position:static;">
+#end
 							<div id="footText">
                             	<div class="copyright">$!{alias_copyright} $!{version} $!{copyright}</div>
                            </div>

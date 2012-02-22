@@ -81,7 +81,11 @@ $portlet.getContent($data)
                                               <div class="roundTopRightMain">
                                                 <div class="roundBottomRightMain">
                                                   <div class="roundBottomLeftMain">
+                                                    #if (${client} != "IPAD") 
                                                     <div class="roundMainWrapper">
+													#else
+                                                    <div class="roundMainWrapper" style="min-height:1000px">
+													#end
 													#if($runs.size()==0)
 													#AUIrowTableWide()
 													<tr><td colspan="4" class="auiNoData">
