@@ -84,6 +84,64 @@
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
     document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
 
+if(document.all!=undefined){
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 期間スケジュールの表示切替
+    if(document.getElementById('print_term').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## ToDoの表示切替
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 祝日の表示切替
+    if(document.getElementById('print_holiday').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='alignleft'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='alignleft'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+}else{
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
@@ -124,7 +182,7 @@
         document.getElementById('printBody').getElementsByClassName('alignleft')[i].style.display = 'none';
       }
     }
-
+}
   }
   //]]>
 </script>
@@ -286,7 +344,7 @@
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
-<div class="calendarScheduleDiv"><div class="small">
+<div class="calendarScheduleDiv">
 #if($!{result.hasAuthoritySelfInsert()} && (!$result.TargetUserId.startsWith('f') || $!{result.hasAuthorityFacilityInsert()}))
 #if($result.TargetUserId.startsWith('f'))
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $result.TargetUserId.substring(1))")
@@ -297,7 +355,7 @@
 #end
 ##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 #end
-</div></div>
+</div>
 </div>
 #else
 #foreach($record2 in $record.ScheduleList)
@@ -335,7 +393,7 @@
 </div>
 #end
 #end
-<div class="calendarScheduleDiv"><div class="small">
+<div class="calendarScheduleDiv">
 #if($!{result.hasAuthoritySelfInsert()} && (!$result.TargetUserId.startsWith('f') || $!{result.hasAuthorityFacilityInsert()}))
 #if($result.TargetUserId.startsWith('f'))
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $result.TargetUserId.substring(1))")
@@ -346,7 +404,7 @@
 #end
 ##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 #end
-</div></div>
+</div>
 #end
 <div class="calendarFooter"></div>
 </td>

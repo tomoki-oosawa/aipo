@@ -78,6 +78,22 @@
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
     document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
 
+if(document.all!=undefined){
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+}else{
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
@@ -88,6 +104,7 @@
         document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = 'none';
       }
     }
+}
   }
   //]]>
 </script>
@@ -107,24 +124,24 @@
 $!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek} ～
 $!{result.Detail.EndDate.Year} 年 $!{result.Detail.EndDate.Month} 月 $!{result.Detail.EndDate.Day} 日 $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
 #end
-<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
 #else
 $!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})
-<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
 #end
 #ALtditemfooter()
 #ALtdcaption('タイトル')
@@ -158,10 +175,10 @@ $!{result.Detail.Date2}
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+        <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
-        <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
+        <img class="icon_schedule" src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
         #end
     <br/>
     #end

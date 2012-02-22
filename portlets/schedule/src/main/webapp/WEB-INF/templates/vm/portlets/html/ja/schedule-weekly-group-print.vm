@@ -84,6 +84,65 @@
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
     document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
 
+if(document.all!=undefined){
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 期間スケジュールの表示切替
+    if(document.getElementById('print_term').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## ToDoの表示切替
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 祝日の表示切替
+    if(document.getElementById('print_holiday').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='holiday small'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='holiday small'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+}else{
+### firefox用 ############################################
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
@@ -124,7 +183,7 @@
         document.getElementById('printBody').getElementsByClassName('holiday small')[i].style.display = 'none';
       }
     }
-
+}
   }
   //]]>
 </script>
