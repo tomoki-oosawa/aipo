@@ -45,16 +45,16 @@
 <a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');"><span>今日</span></a>
 </li>
 <li style="margin-right:5px;" title="前の週へ">
-<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ"></span></a>
+<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ" /></span></a>
 </li>
 <li title="前の日へ">
-<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ"></span></a>
+<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ" /></span></a>
 </li>
 <li style="margin-right:5px;" title="次の日へ">
-<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ"></span></a>
+<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ" /></span></a>
 </li>
 <li style="margin-right:10px;" title="次の週へ">
-<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ"></span></a>
+<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
 </li>
 </ul>
 </div>
@@ -264,7 +264,7 @@ $record.WbrName
 #end
 #ALtdcellheaderAtt("colspan='$colspan'")
 <div class="calendarScheduleDiv"><div class="small">
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+<a  class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 </div></div>
 #ALtdcellfooter()
 #else
@@ -423,7 +423,7 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
 #ALtdcellheaderAtt("colspan='$colspan'")
 <div class="calendarScheduleDiv"><div class="small">
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+<a  class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 </div></div>
 #ALtdcellfooter()
 #else
