@@ -108,7 +108,6 @@ form.searchbox input.submit:active {
 	box-shadow:none !important;
 }
 .hdUserName a {
-	display:block;
 	text-decoration:none;
 }
 .hdUserName .avatar {
