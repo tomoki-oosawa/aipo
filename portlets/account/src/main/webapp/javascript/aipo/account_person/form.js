@@ -47,7 +47,7 @@ aipo.account_person.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        aipo.portletReload('account_person');
+        location.reload();
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
