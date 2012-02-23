@@ -3669,7 +3669,8 @@ public class ScheduleUtils {
 
     StringBuilder last = new StringBuilder();
 
-    last.append(" ORDER BY eip_t_schedule.start_date, eip_t_schedule.end_date");
+    last
+      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC");
 
     SQLTemplate<VEipTScheduleList> countQuery =
       Database
