@@ -304,8 +304,8 @@ table.activityTable tr.unread td {
 }
 #footText div {
 	display:inline;
-	height:25px;
-	line-height:25px;
+	height:28px;
+	line-height:28px;
 	padding:0 1em;
 	border-left:solid 1px #ccc;
 }
@@ -909,12 +909,8 @@ button {
 	-ms-border-radius:2px;
 	background:#f0f0f0;
 	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;/*IE*/
-	/*
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);
-	*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e0e0e0));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #e0e0e0);/*Fx*/
 }
 .auiButton {
 	line-height:1.85em;
@@ -1024,12 +1020,8 @@ input[type=reset] {
 	border:solid 1px #c0c0c0;
 	background:#f0f0f0;
 	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
-	/*
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);
-	*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e0e0e0));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #e0e0e0);/*Fx*/
 }
 input[type='submit'].auiButtonAction,
 input[type='reset'].auiButtonAction,
