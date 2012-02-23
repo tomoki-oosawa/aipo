@@ -60,7 +60,7 @@
 #if (${client} == "IPAD")
 <div id="wrapper">
 #else
-<div id="wrapper" style="margin-bottom:25px">
+<div id="wrapper" style="margin-bottom:28px">
 #end
   <table class="tableWrapper">
     <tbody>
