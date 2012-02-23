@@ -29,7 +29,8 @@
 #set ($navilist = [["トップ", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["表示カスタマイズ", ""]])
 #set ($tabs = [["表示カスタマイズ", "",""]])
 ## ---------------------------------------------------------------------------
-#ALcontentheader($!{portlet.Title} $navilist)
+#set ($settingtitle = "$!{portlet.Title}設定")
+#ALcontentheader($!{settingtitle} $navilist)
 #ALspacebothheader()
 #if ($!mtype)
 <form name="DefaultCustomizer" action="$jslink.Template.addQueryData('mtype', $mtype)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
