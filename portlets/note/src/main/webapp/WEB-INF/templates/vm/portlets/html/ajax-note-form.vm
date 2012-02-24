@@ -27,8 +27,8 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="note_val_destuser1" style="display:none">（選択してください）</span>
-<span id="note_val_destuser2" style="display:none">（ユーザー全員）</span>
+<span id="note_val_destuser1" style="display:none">選択してください</span>
+<span id="note_val_destuser2" style="display:none">すべてのユーザー</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -55,7 +55,7 @@
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
 <select name="target_group_name" id="target_group_name" style="width:49%;float:left;" onchange="aipo.note.changeGroup('$screenlink', this.options[this.selectedIndex].value, '')">
-<option value="LoginUser">（グループ全体）</option>
+<option value="LoginUser">すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!{record.Name.toString()}" #if($!result.TargetGroupName == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
 #end
@@ -67,7 +67,6 @@
 #end
 </select>&nbsp;<span id="destuserDiv"></span>
 
-<div style="clear:both" class="message small">ユーザー全員を選択した場合、グループに属する全ユーザーに送信します。ユーザーを選択した場合、選択したユーザーだけに送信します。</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('client_name'))")
 #ALtditem("#ALtextfield('client_name' $!result.ClientName '90%' 50 'active')")
