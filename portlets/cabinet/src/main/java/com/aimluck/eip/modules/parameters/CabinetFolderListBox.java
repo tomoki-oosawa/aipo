@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.parameters;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,13 +48,12 @@ public class CabinetFolderListBox extends ListBox {
     // カテゴリ一覧を取得
     List<FolderInfo> folder_hierarchy_list = CabinetUtils.getFolderList();
 
-    int length = folder_hierarchy_list.size();
-    String[] folderKeys = new String[length + 1];
-    String[] folderValues = new String[length + 1];
+    List<String> folderKeys = new ArrayList<String>();
+    List<String> folderValues = new ArrayList<String>();
 
     // ヘッダ
-    folderKeys[0] = "0";
-    folderValues[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
+    folderKeys.add("0");
+    folderValues.add((String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE));
 
     int count = 1;
 
@@ -63,21 +63,25 @@ public class CabinetFolderListBox extends ListBox {
     while (iter.hasNext()) {
       folderinfo = iter.next();
 
+      if (!CabinetUtils.isAccessibleFolder(folderinfo.getFolderId(), data)) {
+        continue;
+      }
+
       StringBuffer nbsps = new StringBuffer();
       int len = folderinfo.getHierarchyIndex();
       for (int i = 0; i < len; i++) {
         nbsps.append("&nbsp;&nbsp;&nbsp;");
       }
 
-      folderKeys[count] = "" + folderinfo.getFolderId();
-      folderValues[count] = nbsps.toString() + folderinfo.getFolderName();
+      folderKeys.add("" + folderinfo.getFolderId());
+      folderValues.add(nbsps.toString() + folderinfo.getFolderName());
       count++;
     }
 
     this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
-    this.items = folderKeys;
-    this.values = folderValues;
-    this.size = Integer.toString(length);
+    this.items = folderKeys.toArray(new String[count]);
+    this.values = folderValues.toArray(new String[count]);
+    this.size = Integer.toString(count);
     this.multiple =
       Boolean
         .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))

@@ -37,11 +37,14 @@
 </select>
 </form>
 </div>
-#if ($result.List.size() != 0)
+#if ($result.List.size() != 0 && $result.isAccessible())
 #AUIajaxpageview('CabinetScreen' $result)
 #end
 </div>
 
+#if (!$result.isAccessible())
+<div class="message">このフォルダを表示する権限がありません。</div>
+#else
 #if ($result.List.size() == 0)
 <div class="message">指定したフォルダにファイルはありません。</div>
 #else
@@ -81,5 +84,6 @@
 </tbody>
 </table>
 #ALformfooter()
+#end
 #end
 #end
