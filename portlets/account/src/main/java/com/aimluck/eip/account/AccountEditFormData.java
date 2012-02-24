@@ -589,7 +589,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
       // 新しいパスワードをセットする
       if (!dontUpdatePasswd) {
-        JetspeedSecurity.forcePassword(user, new_password.toString());
+        JetspeedSecurity.forcePassword(user, new_password.getValue());
       } else {
         TurbineUser tuser = Database.get(TurbineUser.class, user.getUserId());
         user.setPassword(tuser.getPasswordValue());
