@@ -19,11 +19,6 @@
 
 package com.aimluck.eip.timeline;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -267,20 +262,6 @@ public class TimelineFormData extends ALAbstractFormData {
       return false;
     }
     return true;
-  }
-
-  protected void submitURL() throws IOException {
-    try {
-      URL urlPathtraq =
-        new URL("http://cdn-assist.appspot.com/channel?msg=" + parentId);
-      BufferedReader reader =
-        new BufferedReader(new InputStreamReader(urlPathtraq.openStream()));
-      String line;
-      while ((line = reader.readLine()) != null) {
-      }
-    } catch (MalformedURLException e) {
-      e.printStackTrace();
-    }
   }
 
   /**
