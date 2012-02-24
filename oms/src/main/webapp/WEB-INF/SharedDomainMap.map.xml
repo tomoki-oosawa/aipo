@@ -443,6 +443,14 @@
 		<db-attribute name="WORKTIME_IN" type="INTEGER"/>
 		<db-attribute name="WORKTIME_OUT" type="INTEGER"/>
 	</db-entity>
+	<db-entity name="eip_t_timeline">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="NOTE" type="CLOB"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
+		<db-attribute name="TIMELINE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+	</db-entity>
 	<db-entity name="eip_t_todo">
 		<db-attribute name="ADDON_SCHEDULE_FLG" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="CATEGORY_ID" type="INTEGER" length="4"/>
@@ -932,6 +940,13 @@
 		<obj-attribute name="worktimeIn" type="java.lang.Integer" db-attribute-path="WORKTIME_IN"/>
 		<obj-attribute name="worktimeOut" type="java.lang.Integer" db-attribute-path="WORKTIME_OUT"/>
 	</obj-entity>
+	<obj-entity name="EipTTimeline" className="com.aimluck.eip.cayenne.om.portlet.EipTTimeline" dbEntityName="eip_t_timeline">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
 	<obj-entity name="EipTTodo" className="com.aimluck.eip.cayenne.om.portlet.EipTTodo" dbEntityName="eip_t_todo">
 		<obj-attribute name="addonScheduleFlg" type="java.lang.String" db-attribute-path="ADDON_SCHEDULE_FLG"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1199,6 +1214,9 @@
 	<db-relationship name="turbineUserGroupRole" source="eip_t_schedule_map" target="turbine_user_group_role" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_timeline" target="turbine_user" toMany="false">
+		<db-attribute-pair source="OWNER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTTodoCategory" source="eip_t_todo" target="eip_t_todo_category" toMany="false">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
 	</db-relationship>
@@ -1299,6 +1317,7 @@
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>
+	<obj-relationship name="turbineUser" source="EipTTimeline" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTodoCategory" source="EipTTodo" target="EipTTodoCategory" db-relationship-path="eipTTodoCategory"/>
 	<obj-relationship name="turbineUser" source="EipTTodo" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTodoArray" source="EipTTodoCategory" target="EipTTodo" db-relationship-path="eipTTodo"/>

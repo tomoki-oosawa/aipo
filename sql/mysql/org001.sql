@@ -646,6 +646,18 @@ CREATE TABLE `eip_t_timecard` (
   PRIMARY KEY (`timecard_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_timeline` (
+   `timeline_id` int(11) NOT NULL AUTO_INCREMENT,
+   `parent_id` int(11) NOT NULL DEFAULT 0,
+   `owner_id` int(11),
+   `note` text,
+   `create_date` datetime DEFAULT NULL,
+   `update_date` datetime DEFAULT NULL,
+   PRIMARY KEY(`timeline_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY (  `owner_id` )
+REFERENCES  `turbine_user` (`user_id`);
+
 CREATE TABLE `eip_t_timecard_settings` (
   `timecard_settings_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,

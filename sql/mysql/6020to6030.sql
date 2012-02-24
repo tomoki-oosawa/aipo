@@ -143,3 +143,16 @@ UPDATE `eip_t_acl_portlet_feature` SET `acl_type`=20, `feature_alias_name`='ха▒х
 --20120120
 INSERT INTO eip_m_mail_notify_conf VALUES(null,1,27,3,NULL,now(),now());
 --20120120
+
+--20120214
+CREATE TABLE `eip_t_timeline` (
+   `timeline_id` int(11) NOT NULL AUTO_INCREMENT,
+   `parent_id` int(11) NOT NULL DEFAULT 0,
+   `owner_id` int(11),
+   `note` text,
+   `create_date` datetime DEFAULT NULL,
+   `update_date` datetime DEFAULT NULL,
+   PRIMARY KEY(`timeline_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY (  `owner_id` ) REFERENCES  `turbine_user` (`user_id`);
+--20120214

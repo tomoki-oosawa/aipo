@@ -46,6 +46,7 @@
     <module>schedule</module>
     <module>system</module>
     <module>timecard</module>
+    <module>timeline</module>
     <module>todo</module>
     <module>userlist</module>
     <module>webmail</module>
