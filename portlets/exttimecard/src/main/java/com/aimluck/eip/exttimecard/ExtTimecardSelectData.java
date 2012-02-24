@@ -29,7 +29,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -64,9 +63,6 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class ExtTimecardSelectData extends
     ALAbstractSelectData<EipTExtTimecard, EipTExtTimecard> implements ALData {
-
-  /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
-  private final String TARGET_GROUP_NAME = "target_group_name";
 
   /** <code>TARGET_USER_ID</code> ユーザによる表示切り替え用変数の識別子 */
   // private final String TARGET_USER_ID = "target_user_id";
@@ -246,28 +242,6 @@ public class ExtTimecardSelectData extends
       myGroupList.add(myGroups.get(i));
     }
 
-    try {
-      String groupFilter =
-        ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
-      if (groupFilter == null || groupFilter.equals("")) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
-        if (groupFilter != null) {
-          ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
-        }
-      }
-
-      // スケジュールを表示するユーザ ID をセッションに設定する．
-      // String userFilter = ALEipUtils.getTemp(rundata, context,
-      // TARGET_USER_ID);
-      // if (userFilter == null || userFilter.equals("")) {
-      // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-      // userFilter = portlet.getPortletConfig().getInitParameter("p3a-user");
-      // }
-
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
     // 指定グループや指定ユーザをセッションに設定する．
     setupLists(rundata, context);
 
