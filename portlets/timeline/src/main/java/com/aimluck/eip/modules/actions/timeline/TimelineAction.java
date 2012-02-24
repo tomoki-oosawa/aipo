@@ -64,12 +64,7 @@ public class TimelineAction extends ALBaseAction {
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();
 
-    ALTimelineFactoryService tlservice =
-      (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-    ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-    context.put("token", timelinehandler.getToken(rundata));
-    context.put("jsapiUrl", timelinehandler.getApiUrl());
+    prepareService(rundata, context);
 
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
@@ -91,13 +86,7 @@ public class TimelineAction extends ALBaseAction {
       Context context, RunData rundata) {
     try {
       doTimeline_list(rundata, context);
-
-      ALTimelineFactoryService tlservice =
-        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      context.put("token", timelinehandler.getToken(rundata));
-      context.put("jsapiUrl", timelinehandler.getApiUrl());
+      prepareService(rundata, context);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -148,5 +137,26 @@ public class TimelineAction extends ALBaseAction {
     list.add("entityid");
     ALEipUtils.removeTemp(rundata, context, list);
 
+  }
+
+  /**
+   * 
+   * 
+   */
+  public void prepareService(RunData rundata, Context context) {
+    ALTimelineFactoryService tlservice =
+      (ALTimelineFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
+    ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
+    String token = ALEipUtils.getTemp(rundata, context, "timelineToken");
+    if (token == null || "".equals(token)) {
+      token = timelinehandler.getToken(rundata);
+      if (token != null && !("".equals(token))) {
+        ALEipUtils.setTemp(rundata, context, "timelineToken", token);
+      }
+    }
+
+    context.put("token", token);
+    context.put("jsapiUrl", timelinehandler.getApiUrl());
   }
 }
