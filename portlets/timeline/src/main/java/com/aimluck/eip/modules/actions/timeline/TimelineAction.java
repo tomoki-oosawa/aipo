@@ -47,7 +47,7 @@ public class TimelineAction extends ALBaseAction {
     .getLogger(TimelineAction.class.getName());
 
   /**
-   * 通常表示の際の処理を記述します。 <BR>
+   * 通常表示の際の処理を記述します。
    * 
    * @param portlet
    * @param context
@@ -69,6 +69,7 @@ public class TimelineAction extends ALBaseAction {
         .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
     ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
     context.put("token", timelinehandler.getToken(rundata));
+    context.put("jsapiUrl", timelinehandler.getApiUrl());
 
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
@@ -96,6 +97,7 @@ public class TimelineAction extends ALBaseAction {
           .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
       ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
       context.put("token", timelinehandler.getToken(rundata));
+      context.put("jsapiUrl", timelinehandler.getApiUrl());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);

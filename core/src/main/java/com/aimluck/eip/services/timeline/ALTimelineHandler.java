@@ -37,4 +37,6 @@ public abstract class ALTimelineHandler {
 
   public abstract String pushToken(RunData rundata, String parentId);
 
+  public abstract String getApiUrl();
+
 }

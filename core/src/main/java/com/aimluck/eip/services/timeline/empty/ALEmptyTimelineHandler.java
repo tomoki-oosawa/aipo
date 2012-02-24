@@ -44,4 +44,12 @@ public class ALEmptyTimelineHandler extends ALTimelineHandler {
   public String pushToken(RunData rundata, String parentId) {
     return ("");
   }
+
+  /**
+   * @return
+   */
+  @Override
+  public String getApiUrl() {
+    return null;
+  }
 }
