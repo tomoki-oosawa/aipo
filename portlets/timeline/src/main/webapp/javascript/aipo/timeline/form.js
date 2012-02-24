@@ -47,7 +47,10 @@ aipo.timeline.addGood = function(form, name, value){
 
 aipo.timeline.showCommentField = function(tid){
 	dojo.byId('commentField' + tid).style.display = "";
-	dojo.byId('commentInputDummy' + tid).style.display = "none";
+	var dummy = dojo.byId('commentInputDummy' + tid);
+	if(typeof dummy != "undefined" && dummy != null){
+		dojo.byId('commentInputDummy' + tid).style.display = "none";	
+	}
 }
 
 aipo.timeline.showCommentAll = function(tid){
