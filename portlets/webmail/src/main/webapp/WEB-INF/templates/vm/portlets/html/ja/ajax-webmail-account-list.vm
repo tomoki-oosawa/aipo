@@ -24,12 +24,20 @@
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>アカウントの管理</h2>
+#if($result.List.size() <= 0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p>メールアカウントが登録されていません。</p>
+<p>Webメールの利用を開始するにはアカウントを追加してください。</p>
+<p class="mh10">
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">アカウントを追加する</a>
+</p>
+</td></tr>
+#AUItablefooter()
+#else
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("アカウントを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
 </p></div>
-#if($result.List.size() <= 0)
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');">こちらからメールアカウントを追加できます。</a>
-#else
 #AUISummaryDiv()
 #AUIajaxpageview('WebMailAccountListScreen' $result)
 #AUISummaryDivfooter()
