@@ -43,7 +43,7 @@
 <p>メールアカウントが登録されていません。</p>
 <p>Webメールの利用を開始するにはアカウントを追加してください。</p>
 <p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButton">アカウントを追加する</a>
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">アカウントを追加する</a>
 </p>
 </td></tr>
 #AUItablefooter()

@@ -29,7 +29,7 @@
 
 <div id="auiWidgetsArea">
 <div class="auiWidget clearfix">
-#AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
+#AUIbutton("メールを作成する" "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
 </div>
 
 #if($result.MailAccountList.size() != 0)
