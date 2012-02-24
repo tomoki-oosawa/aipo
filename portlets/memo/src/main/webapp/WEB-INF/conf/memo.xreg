@@ -31,7 +31,7 @@
         <parameter name="template" value="memo" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-memos" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>表示メモ（通常時）</title>
+                <title>初期選択メモ</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-memos.style" value="MemoIdListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
