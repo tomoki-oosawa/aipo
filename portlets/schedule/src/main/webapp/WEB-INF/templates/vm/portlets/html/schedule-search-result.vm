@@ -83,7 +83,7 @@
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else
-<div class="auiSummaryMeta clearfix">
+<div class="clearfix">
 <div class="floatLeft">#AUIsearchresult($!result.targetKeyword.toString())</div>
 #AUIajaxpageview('ScheduleListScreen' $result)
 </div>
@@ -95,7 +95,7 @@
 <th class="w20">登録者</th>
 </tr>
 #foreach ($record in $result.List)
-#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('view_date', $!{record.ViewDate.toString()}).addQueryData('schedule_search_result', 'true')")
+#set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('view_date', $!{record.ViewDate.toString()}).addQueryData('ignore_viewdate', 'true')")
 #if(!$record.isStartDayEqualsEndDay())
 <tr>
 #elseif($record.isStartDayEqualsToday())
