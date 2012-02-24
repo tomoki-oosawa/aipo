@@ -21,7 +21,7 @@
 #set ($indicator_str = "データを送信")
 #set ($action_str = "更新する")
 #set ($event_submit = "eventSubmit_doTodo_insert")
-#set ($subtitle = 'レイアウトの変更とアプリの追加')
+#set ($subtitle = '追加アプリの設定')
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
@@ -40,7 +40,7 @@
 -->
 <input type="hidden" name="secid" value="$secid" />
 
-<h3>レイアウトの選択</h3>
+<h3>配置の選択</h3>
 <input type="hidden" name="controller" value="$!controller" />
 <table class="tableWrapper controllerTable">
 <tbody>

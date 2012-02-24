@@ -26,7 +26,7 @@
 #if($portletsum <= 0)
 <div class="message">「アプリ追加」ボタンでアプリを追加してください。</div>
 #else
-<h3>レイアウトの選択</h3>
+<h3>配置の選択</h3>
 <div class="message">以下のボタンでレイアウトを選んでください。</div>
 <table class="tableWrapper">
 <tbody>
