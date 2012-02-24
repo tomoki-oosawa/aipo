@@ -76,7 +76,7 @@
         <parameter name="p2a-sort.style.values" value="件名,差出人,日付" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-accounts" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>初期選択メールカウント</title>
+                <title>初期選択メールアカウント</title>
             </meta-info>
         </parameter>
         <parameter name="p3a-accounts.style" value="WebMailAccountIdListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
