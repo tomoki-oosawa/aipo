@@ -21,7 +21,7 @@
 #set ($subtitle = 'アプリ配置の設定')
 #set ($action_str = "初期配置として設定する")
 #set ($default_str = "デフォルト設定に戻す" )
-#set ($all_user_str = "レイアウトを変更する" )
+#set ($all_user_str = "配置を変更する" )
 #set ($indicator_id = "indicator-form-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
@@ -66,7 +66,7 @@
 <hr />
 *#
 <div class="p spaceTop spaceBottom">
-あなたのレイアウトで、すべてユーザーのレイアウトを変更できます。
+あなたの配置で、すべてユーザーの配置を変更できます。
 </div>
 <div class="p spaceBottom">
 #if(!$!{result.isAdminUser()})
