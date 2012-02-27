@@ -96,7 +96,7 @@
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #end
-<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </li>
 #end
 </ul>
