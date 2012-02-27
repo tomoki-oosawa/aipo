@@ -2729,9 +2729,12 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 	border:2px solid #DCDCDC;
 }
 .addUser {
-	padding:1px 3px 1px 16px;
-	background:url(../images/icon/plus_black.gif) no-repeat left center #ccc;
 	cursor:pointer;
+	text-decoration:underline;
+}
+.addUser:hover {
+	color:#666666;
+	text-decoration:none;
 }
 .btn_gray {
 	text-decoration:none;
