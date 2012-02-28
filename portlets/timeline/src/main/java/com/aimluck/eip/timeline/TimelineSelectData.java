@@ -20,6 +20,9 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -225,6 +228,7 @@ public class TimelineSelectData extends
           coTopicList.add((TimelineResultData) getResultData(coTopic));
         }
       }
+      Collections.sort(coTopicList, getDateComparator());
 
       rd.setCoTopicList(coTopicList);
 
@@ -251,6 +255,28 @@ public class TimelineSelectData extends
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * @return
+   */
+  private Comparator<TimelineResultData> getDateComparator() {
+    Comparator<TimelineResultData> com = null;
+    com = new Comparator<TimelineResultData>() {
+      @Override
+      public int compare(TimelineResultData obj0, TimelineResultData obj1) {
+        Date date0 = (obj0).getUpdateDate().getValue();
+        Date date1 = (obj1).getUpdateDate().getValue();
+        if (date0.compareTo(date1) < 0) {
+          return 1;
+        } else if (date0.equals(date1)) {
+          return 0;
+        } else {
+          return -1;
+        }
+      }
+    };
+    return com;
   }
 
   /**
