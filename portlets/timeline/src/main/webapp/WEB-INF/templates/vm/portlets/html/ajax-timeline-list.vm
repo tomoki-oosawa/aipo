@@ -1,0 +1,129 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+#set ($nextrows = $result.RowsNum + 20)
+## ---------------------------------------------------------------------------
+<div id="timelineOuter" style="width: 840px; margin: 0 auto;">
+<div id="inputField">
+#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
+<div class="outer">
+<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', '0');"></textarea>
+</div>
+<div class="right">
+<span class="count" id="textCount_$!{portlet.ID}">500 文字</span> <a class="auiButton" onclick="aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');dojo.byId('form$!portlet.ID').onsubmit();">発言する</a>
+</div>
+#ALformfooter()
+</div>
+#if($result.List.size() == 0)
+<div class="message">発言はありません。</div>
+#else
+#if($result.ContentHeightMax == 0)
+<div id="timeline" class="timeline"  #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineListScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+#else
+<div id="timeline" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; " #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineListScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+#end
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
+<div id="content">
+#foreach ($record in $result.List)
+<div id="message$!{record.TimelineId}" class="message">
+<form name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
+<input type="hidden" name="_name" value="発言">
+<input type="hidden" name="secid" value="$secid" />
+<div class="floatLeft mr10">
+#if(${record.hasPhoto()})
+<img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
+#else
+<img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
+#end
+</div>
+<div class="name">$!record.OwnerName</div>
+<div class="body">$!record.Note</div>
+<div class="time">$!{record.CreateDate}&nbsp;<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField($!{record.TimelineId})">コメントする</a>
+#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
+#set ($deleteSubmit = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete')))
+&nbsp;
+<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessage);">削除する</a>
+<input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
+#end
+</form>
+</div>
+<div id="comments$!{record.TimelineId}" class="comments">
+#if($record.ReplyCountInteger > 2)
+<div id="commentCaption$!{record.TimelineId}">
+<span class="iconComment"></span>
+<a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll($!{record.TimelineId})">コメント${record.ReplyCount}件をすべて見る</a>
+</div>
+#end
+#foreach ($record2 in $record.CoTopicList)
+#if($velocityCount > 2)
+<div id="message$!{record2.TimelineId}" class="message" style="display:none">
+#else
+<div id="message$!{record2.TimelineId}" class="message">
+#end
+<form name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
+<input type="hidden" name="_name" value="コメント">
+<input type="hidden" name="secid" value="$secid" />
+<div class="floatLeft mr10">
+#if(${record2.hasPhoto()})
+<img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}))" alt="${record2.OwnerName}" width="32" height="32" />
+#else
+<img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
+#end
+</div>
+<div class="name">$!record2.OwnerName</div>
+<div class="body">$!record2.Note</div>
+<div class="time">$!{record2.CreateDate}
+#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}))
+#set ($deleteSubmit = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record2.TimelineId).addQueryData('mode', 'delete')))
+&nbsp;
+<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessage);">削除する</a>
+<input type="hidden" id="dummy_$!{portlet.ID}_$!{record2.TimelineId}" value="" />
+#end
+</div>
+</form>
+</div>
+#end
+#if($record.CoTopicList.size() > 0)
+<div onclick="aipo.timeline.showCommentField($!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy$!{record.TimelineId}">
+<span>コメントする</span>
+</div>
+#end
+</div>
+<div id="commentField$!{record.TimelineId}" class="commentField" style="display:none">
+<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)";return false;">
+<input type="hidden" name="secid" value="$secid" />
+<div class="outer">
+<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', '$!{record.TimelineId}')"></textarea>
+</div>
+<div class="right">
+<a class="auiButton" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment_$!{record.TimelineId}');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">コメントする</a>
+</div>
+</form>
+</div>
+</div>
+#end
+#if($result.Count > $result.RowsNum && $result.ContentHeightMax == 0)
+<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineListScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');">もっと見る</a></div>
+#end
+</div>
+</div>
+#end
+</div>
