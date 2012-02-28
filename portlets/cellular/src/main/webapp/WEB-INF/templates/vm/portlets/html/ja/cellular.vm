@@ -25,8 +25,10 @@
 
     ptConfig['$!portlet.ID'] = { group:"cellular", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CellularScreen"))', reloadFunction:aipo.reloadPage };
     aipo.cellular.menuSelected = 0;
-	
+
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-cellular.vm")
-#parse("/portlets/html/ja/cellular-menu.vm")
+
+##上部メニューを表示させない
+##parse("/portlets/html/ja/cellular-menu.vm")
