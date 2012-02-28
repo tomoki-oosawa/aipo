@@ -25,6 +25,7 @@ import java.security.SecureRandom;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -359,8 +360,12 @@ public class ALCommonUtils {
   public static DynamicURI getPortletURIinPersonalConfigPeid(RunData rundata,
       String portletEntryName) {
     try {
-      Portlets portlets =
-        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      Profile profile = ((JetspeedRunData) rundata).getProfile();
+      if (profile == null) {
+        return null;
+      }
+
+      Portlets portlets = profile.getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }

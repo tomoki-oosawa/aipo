@@ -406,7 +406,7 @@ public class ALDefaultSocialApplicationHanlder extends
       }
       return status.intValue() == 1;
     } catch (Throwable t) {
-      logger.warn(t);
+      logger.warn("[ALDefaultSocialApplicationHanlder]", t);
       return false;
     }
   }
@@ -602,7 +602,7 @@ public class ALDefaultSocialApplicationHanlder extends
         .execute();
     } catch (Throwable t) {
       Database.rollback();
-      logger.warn(t);
+      logger.warn("[ALDefaultSocialApplicationHanlder]", t);
     }
   }
 
@@ -646,7 +646,7 @@ public class ALDefaultSocialApplicationHanlder extends
         .execute();
     } catch (Throwable t) {
       Database.rollback();
-      logger.warn(t);
+      logger.warn("[ALDefaultSocialApplicationHanlder]", t);
     }
   }
 
@@ -670,7 +670,7 @@ public class ALDefaultSocialApplicationHanlder extends
       }
     } catch (Throwable t) {
       Database.rollback();
-      logger.warn(t);
+      logger.warn("[ALDefaultSocialApplicationHanlder]", t);
     }
     return true;
   }

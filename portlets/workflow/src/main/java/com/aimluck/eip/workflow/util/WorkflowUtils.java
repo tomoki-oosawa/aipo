@@ -32,12 +32,9 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.UserIdPrincipal;
-import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
@@ -50,7 +47,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -1324,22 +1320,20 @@ public class WorkflowUtils {
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
     mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
-    ALBaseUser user = null;
-    ALEipUser user2 = null;
+    TurbineUser tuser = null;
+    ALEipUser auser = null;
 
     try {
-      user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
-          .getUserId()
-          .toString()));
-      user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
-    } catch (Exception e) {
+      tuser = request.getTurbineUser();
+      auser = ALEipUtils.getALEipUser(tuser);
+    } catch (ALDBErrorException e) {
+      logger.error("[WorkflowUtils]", e);
       return "";
     }
     StringBuffer body = new StringBuffer("");
-    body.append(user2.getAliasName().toString());
-    if (!user.getEmail().equals("")) {
-      body.append("(").append(user.getEmail()).append(")");
+    body.append(auser.getAliasName().toString());
+    if (!tuser.getEmail().equals("")) {
+      body.append("(").append(tuser.getEmail()).append(")");
     }
 
     if ("D".equals(request.getProgress())) {
@@ -1357,7 +1351,7 @@ public class WorkflowUtils {
     }
 
     body.append(getMessageContent(request, CR, false, mailBean));
-    body.append(createMsgAtUpdateSuffix(user2, false, mailBean));
+    body.append(createMsgAtUpdateSuffix(auser, false, mailBean));
 
     return body.toString();
   }
@@ -1380,25 +1374,21 @@ public class WorkflowUtils {
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
     mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
-    ALBaseUser user = null;
-    ALEipUser user2 = null;
+    TurbineUser tuser = null;
+    ALEipUser auser = null;
 
     try {
-      user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(request
-          .getUserId()
-          .toString()));
-      user2 = ALEipUtils.getALEipUser(request.getUserId().intValue());
-    } catch (JetspeedSecurityException e) {
-      return "";
+      tuser = request.getTurbineUser();
+      auser = ALEipUtils.getALEipUser(tuser);
     } catch (ALDBErrorException e) {
+      logger.error("[WorkflowUtils]", e);
       return "";
     }
 
     StringBuffer body = new StringBuffer("");
-    body.append(user2.getAliasName().toString());
-    if (!user.getEmail().equals("")) {
-      body.append("(").append(user.getEmail()).append(")");
+    body.append(auser.getAliasName().toString());
+    if (!tuser.getEmail().equals("")) {
+      body.append("(").append(tuser.getEmail()).append(")");
     }
 
     if ("D".equals(request.getProgress())) {
@@ -1416,7 +1406,7 @@ public class WorkflowUtils {
     }
 
     body.append(getMessageContent(request, CR, true, mailBean));
-    body.append(createMsgAtUpdateSuffix(user2, true, mailBean));
+    body.append(createMsgAtUpdateSuffix(auser, true, mailBean));
 
     return body.toString();
   }

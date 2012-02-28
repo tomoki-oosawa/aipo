@@ -262,11 +262,11 @@ public abstract class ALSocialApplicationHandler {
             maps.put(spec.getUrl(), spec);
           }
         } catch (Throwable t) {
-          logger.warn(t);
+          logger.warn("[ALSocialApplicationHandler]", t);
         }
       }
     } catch (Throwable t) {
-      logger.warn(t);
+      logger.warn("[ALSocialApplicationHandler]", t);
     }
     return maps;
   }

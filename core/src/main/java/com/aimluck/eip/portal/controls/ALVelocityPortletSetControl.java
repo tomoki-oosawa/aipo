@@ -122,7 +122,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         portalResource.setOwner(jsLink.getUserName());
         JetspeedLinkFactory.putInstance(jsLink);
       } catch (Exception e) {
-        logger.warn(e.toString(), e);
+        logger.warn("[ALVelocityPortletSetControl]", e);
         portalResource.setOwner(null);
       }
       JetspeedRunData jdata = (JetspeedRunData) rundata;

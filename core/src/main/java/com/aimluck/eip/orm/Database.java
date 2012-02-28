@@ -331,7 +331,7 @@ public class Database {
     try {
       dataContext.rollbackChanges();
     } catch (Throwable t) {
-      logger.warn(t);
+      logger.warn("[Database] rollback", t);
     }
   }
 

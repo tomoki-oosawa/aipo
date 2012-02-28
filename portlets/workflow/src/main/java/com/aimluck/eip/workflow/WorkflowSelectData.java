@@ -128,10 +128,15 @@ public class WorkflowSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-sort"));
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      // when call from activity , there are no portlets
+      if (portlet != null) {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, portlet
+          .getPortletConfig()
+          .getInitParameter("p2a-sort"));
+      } else {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "create_date");
+      }
     }
 
     if ("create_date".equals(ALEipUtils

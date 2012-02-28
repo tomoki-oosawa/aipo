@@ -74,7 +74,7 @@ public class ALDefaultPortalApplicationHandler extends
           result = explode((String) attr, ",");
         }
       } catch (Throwable t) {
-        logger.warn(t.getMessage(), t);
+        logger.warn("[ALDefaultPortalApplicationHandler]", t);
       }
     }
     if (result == null) {
@@ -99,7 +99,7 @@ public class ALDefaultPortalApplicationHandler extends
         String value = implode(result, ",");
         request.setAttribute(KEY_INACTIVE_APPLICATIONS, value);
       } catch (Throwable t) {
-        logger.warn(t.getMessage(), t);
+        logger.warn("[ALDefaultPortalApplicationHandler]", t);
       }
     }
     return result;

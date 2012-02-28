@@ -168,7 +168,7 @@ public class Customize extends Action {
         portalResource.setOwner(jsLink.getUserName());
         JetspeedLinkFactory.putInstance(jsLink);
       } catch (Exception e) {
-        logger.warn(e.toString());
+        logger.warn("[Customize]", e);
         portalResource.setOwner(null);
       }
 
