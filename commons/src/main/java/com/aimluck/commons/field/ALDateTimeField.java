@@ -45,7 +45,7 @@ public class ALDateTimeField extends ALAbstractField {
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy/MM/dd HH:mm";
 
   /** 時刻の表示フォーマット */
-  public static final String DEFAULT_TIME_FORMAT = "H:m";
+  public static final String DEFAULT_TIME_FORMAT = "H:mm";
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
