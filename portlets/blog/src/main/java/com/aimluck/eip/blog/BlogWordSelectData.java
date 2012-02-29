@@ -162,7 +162,9 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         .getFromDataRow(dataRow, EipTBlogEntry.TITLE_COLUMN), getStrLength()));
       rd.setNote(((String) Database.getFromDataRow(
         dataRow,
-        EipTBlogEntry.NOTE_COLUMN)).replaceAll("\\n", " "));
+        EipTBlogEntry.NOTE_COLUMN)).replaceAll("\\r\\n", " ").replaceAll(
+        "\\n",
+        " ").replaceAll("\\r", " "));
 
       rd.setTitleDate((Date) Database.getFromDataRow(
         dataRow,
