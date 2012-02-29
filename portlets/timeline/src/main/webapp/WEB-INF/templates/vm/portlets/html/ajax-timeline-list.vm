@@ -58,13 +58,16 @@
       </div>
       <div class="name">$!record.OwnerName</div>
       <div class="body">$!record.Note</div>
-      <div class="time">$!{record.CreateDate}&nbsp;<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField($!{record.TimelineId})">コメントする</a></div>
+      <div class="time">$!{record.CreateDate}
+      &nbsp;
+	  <a href="javascript:void(0)" onclick="aipo.timeline.showCommentField($!{record.TimelineId})">コメントする</a>
       #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
         #set ($deleteSubmit = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete')))
         &nbsp;
         <a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessage);">削除する</a>
         <input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
-      #end
+	  #end
+	  </div>
     </form>
     </div>
     <div id="comments$!{record.TimelineId}" class="comments">
@@ -75,7 +78,7 @@
       </div>
     #end
     #foreach ($record2 in $record.CoTopicList)
-      #if($velocityCount > 2)
+      #if($velocityCount < $record.CoTopicList.size() - 1)
         <div id="message$!{record2.TimelineId}" class="message" style="display:none">
       #else
         <div id="message$!{record2.TimelineId}" class="message">

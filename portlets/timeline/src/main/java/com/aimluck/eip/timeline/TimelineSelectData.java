@@ -20,9 +20,6 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -35,12 +32,12 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -63,12 +60,6 @@ public class TimelineSelectData extends
 
   /** トピックの総数 */
   private int topicSum;
-
-  /** トピックの高さ（通常画面） */
-  private int contentHeight;
-
-  /** トピックの高さ（最大化画面） */
-  private int contentHeightMax;
 
   /** スクロールの位置 */
   private int scrollTop;
@@ -125,25 +116,11 @@ public class TimelineSelectData extends
       SelectQuery<EipTTimeline> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
+
       // 表示するカラムのみデータベースから取得する．
       ResultList<EipTTimeline> list = query.getResultList();
       // 件数をセットする．
       topicSum = list.getTotalCount();
-      // 表示する高さを調節する
-      contentHeight =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p1a-rows"));
-      context.put("contentHeight", contentHeight);
-
-      // 表示する高さを調節する
-      contentHeightMax =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-rows"));
-      context.put("contentHeightMax", contentHeightMax);
       return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -198,7 +175,6 @@ public class TimelineSelectData extends
    * @param obj
    * @return
    */
-  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTTimeline record) {
     try {
@@ -213,70 +189,30 @@ public class TimelineSelectData extends
         .getUserFullName(record.getOwnerId().intValue()));
 
       rd.setCreateDate(record.getCreateDate());
+
       rd.setUpdateDate(record.getUpdateDate());
 
       rd.setReplyCount(TimelineUtils.countReply(record.getTimelineId()));
 
       List<TimelineResultData> coTopicList =
         new ArrayList<TimelineResultData>();
-
       SelectQuery<EipTTimeline> query =
         getSelectQueryForCotopic(record.getTimelineId().toString());
+      query.orderAscending(EipTMsgboardTopic.CREATE_DATE_PROPERTY);
       List<EipTTimeline> aList = query.fetchList();
       if (aList != null) {
         for (EipTTimeline coTopic : aList) {
           coTopicList.add((TimelineResultData) getResultData(coTopic));
         }
       }
-      Collections.sort(coTopicList, getDateComparator());
 
       rd.setCoTopicList(coTopicList);
-
-      int userId = record.getOwnerId().intValue();
-      rd.setHasPhoto(false);
-
-      ALEipManager manager = ALEipManager.getInstance();
-      List<TimelineUserResultData> userDataList =
-        (List<TimelineUserResultData>) manager.getUserDataList();
-
-      if (userDataList == null) {
-        userDataList = TimelineUtils.getTimelineUserResultDataList("LoginUser");
-        manager.setUserDataList(userDataList);
-      }
-      for (TimelineUserResultData userData : userDataList) {
-        if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {
-          rd.setHasPhoto(true);
-          break;
-        }
-      }
 
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
-  }
-
-  /**
-   * @return
-   */
-  private Comparator<TimelineResultData> getDateComparator() {
-    Comparator<TimelineResultData> com = null;
-    com = new Comparator<TimelineResultData>() {
-      @Override
-      public int compare(TimelineResultData obj0, TimelineResultData obj1) {
-        Date date0 = (obj0).getUpdateDate().getValue();
-        Date date1 = (obj1).getUpdateDate().getValue();
-        if (date0.compareTo(date1) < 0) {
-          return 1;
-        } else if (date0.equals(date1)) {
-          return 0;
-        } else {
-          return -1;
-        }
-      }
-    };
-    return com;
   }
 
   /**
@@ -314,24 +250,6 @@ public class TimelineSelectData extends
    */
   public int getTopicSum() {
     return topicSum;
-  }
-
-  /**
-   * トピックの総数を返す． <BR>
-   * 
-   * @return
-   */
-  public int getContentHeight() {
-    return contentHeight;
-  }
-
-  /**
-   * トピックの総数を返す． <BR>
-   * 
-   * @return
-   */
-  public int getContentHeightMax() {
-    return contentHeightMax;
   }
 
   /**
