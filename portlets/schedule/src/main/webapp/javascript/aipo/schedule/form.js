@@ -169,9 +169,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
 //            preOptions: { key:'1', value:val1 }
 //        };
 //        aimluck.io.createOptions("common_category_id", params);
-	alert("test3");
     	var mpicker = dijit.byId("membernormalselect");
-    	alert(mpicker);
     	if(mpicker){
     	    var select = dojo.byId('init_memberlist');
     	    var i;
