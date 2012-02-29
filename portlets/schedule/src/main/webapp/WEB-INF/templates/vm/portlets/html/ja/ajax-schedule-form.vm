@@ -263,25 +263,13 @@
 <table class="none">
   <tr><td>
     <div class="spaceTop spaceLeft small">左側に参加ユーザーを追加してください。</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
-        id="membernormalselect"
-        widgetId="membernormalselect"
-        buttonAddId="button_member_add"
-        buttonRemoveId="button_member_remove"
-        memberFromId="tmp_member_from"
-        memberToTitle="参加ユーザー一覧"
-        memberToId="member_to"
+    <img src="images/common/dot.gif" width="1" height="1" onload='aipo.schedule.createMemberSelectList();'>
+    <div id="membernormalselect_value" style="display:none"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
-        memberFromOptionKey="name"
-        memberFromOptionValue="aliasName"
-        groupSelectId="tmp_group"
-        groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="（グループ全体）"
-        groupSelectOptionKey="groupId"
-        groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
     </div>
+    <div id="membernormalselect"></div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
   </td></tr>
   <tr><td>
@@ -317,26 +305,14 @@
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
     <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
-    id="facilityselect"
-    widgetId="facilityselect"
-    buttonAddId="button_facility_add"
-    buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択設備一覧"
-    memberFromId="tmp_facility_from"
-    memberToTitle="設備一覧"
-    memberToId="facility_to"
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
-    memberFromOptionKey="facilityId"
-    memberFromOptionValue="facilityName"
-    groupSelectId="tmp_facility_group"
-    groupSelectPreOptionKey="all"
-    groupSelectPreOptionValue="（グループ全体）"
-    groupSelectOptionKey="facilityGroupId"
-    groupSelectOptionValue="facilityGroupName"
-    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
-    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('mode','group')">
-</div>
+	<img src="images/common/dot.gif" width="1" height="1" onload='aipo.schedule.createFacilitySelectList();'>
+	<div id="facilityselect_value" style="display:none"
+		portletId="$!portlet.ID"
+	    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
+	    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
+	    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('mode','group')">
+    </div>
+    <div id="facilityselect"></div>
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
