@@ -302,7 +302,7 @@
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
-    <div class="spaceTop spaceLeft small">左側に設備を追加してください。<span id="test"></span></div>
+    <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
 	<div id="facilityselect"
 	    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
 	    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"

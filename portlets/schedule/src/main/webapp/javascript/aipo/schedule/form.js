@@ -877,17 +877,27 @@ aipo.schedule.onLoadWidgets = function(){
 	aipo.schedule.createFacilitySelectList();
 	// init widget value
 	aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
-	dojo.byId("test").innerText = "ロード完了。";
+	dojo.byId("messageDiv").innerText = "ロード完了。";
 }
 
 aipo.schedule.reloadWidgets = function(){
-	if(!dijit.byId("startDateSpan")){aipo.schedule.createSpanStartDatepicker();}
-	if(!dijit.byId("endDateSpan")){aipo.schedule.createSpanEndDatepicker();}
-	if(!dijit.byId("limitStartDateSpan")){aipo.schedule.createLimitStartDatepicker();}
-	if(!dijit.byId("limitEndDateSpan")){aipo.schedule.createLimitEndDatepicker();}
-	if(!dijit.byId("membernormalselect")){aipo.schedule.createMemberSelectList();}
-	if(!dijit.byId("facilityselect")){aipo.schedule.createFacilitySelectList();}
-	// init widget value
-	dojo.byId("test").innerText = "リロード完了。";
+	for(var i=0;i<1000;i++){
+		if(!dijit.byId("startDateSpan")){aipo.schedule.createSpanStartDatepicker();}
+		if(!dijit.byId("endDateSpan")){aipo.schedule.createSpanEndDatepicker();}
+		if(!dijit.byId("limitStartDateSpan")){aipo.schedule.createLimitStartDatepicker();}
+		if(!dijit.byId("limitEndDateSpan")){aipo.schedule.createLimitEndDatepicker();}
+		if(!dijit.byId("membernormalselect")){aipo.schedule.createMemberSelectList();}
+		if(!dijit.byId("facilityselect")){aipo.schedule.createFacilitySelectList();}
+		if(dijit.byId("startDateSpan") && dijit.byId("endDateSpan") && dijit.byId("limitStartDateSpan")
+				&& dijit.byId("limitEndDateSpan") && dijit.byId("membernormalselect") && dijit.byId("facilityselect")){
+			break;
+		}
+	}
+	if(!(dijit.byId("startDateSpan") && dijit.byId("endDateSpan") && dijit.byId("limitStartDateSpan")
+			&& dijit.byId("limitEndDateSpan") && dijit.byId("membernormalselect") && dijit.byId("facilityselect"))){
+		dojo.byId("messageDiv").innerText = "リロード失敗。";
+	}else{
+		dojo.byId("messageDiv").innerText = "リロード完了。";
+	}
 	//aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
 }
