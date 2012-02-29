@@ -157,18 +157,18 @@ aipo.schedule.onLoadScheduleDetail = function(portlet_id){
 
 aipo.schedule.onLoadScheduleDialog = function(portlet_id){
     // 共有カテゴリ連携
-//    var common_url = dojo.byId('commonUrl'+portlet_id);
-//    if(common_url){
-//        var common_category_id = dojo.byId('commonCategoryid'+portlet_id);
-//        var val1 = aimluck.io.escapeText("schedule_val_category1");
-//        params = {
-//            url:common_url.value,
-//            key:"categoryId",
-//            value:"categoryName",
-//            selectedId:common_category_id.value,
-//            preOptions: { key:'1', value:val1 }
-//        };
-//        aimluck.io.createOptions("common_category_id", params);
+    var common_url = dojo.byId('commonUrl'+portlet_id);
+    if(common_url){
+        var common_category_id = dojo.byId('commonCategoryid'+portlet_id);
+        var val1 = aimluck.io.escapeText("schedule_val_category1");
+        params = {
+            url:common_url.value,
+            key:"categoryId",
+            value:"categoryName",
+            selectedId:common_category_id.value,
+            preOptions: { key:'1', value:val1 }
+        };
+        aimluck.io.createOptions("common_category_id", params);
     	var mpicker = dijit.byId("membernormalselect");
     	if(mpicker){
     	    var select = dojo.byId('init_memberlist');
@@ -248,7 +248,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
         } else {
             aipo.schedule.spanLength = 0;
         }
-//    }
+    }
 
     //参加ユーザー設定のtoggleイベント
     var setToggleClickEvent=function (id_head,displayedstyle){
@@ -747,55 +747,131 @@ aipo.schedule.setIndicator = function(portlet_id) {
     obj_indicator = dojo.byId('indicator-'+portlet_id);
     dojo.style(obj_indicator, "display" , "");
 }
-
+/*
+ * create widgets
+ */
+aipo.schedule.createSpanStartDatepicker = function(){
+    var params = {
+		dojoType:"aipo.widget.DropdownDatepicker",
+		id:"startDateSpan",
+		widgetId:"startDateSpan",
+		iconURL:"images/icon/icon_date.gif",
+		iconAlt:"開始日",
+		hiddenId:"start_date",
+		initValue:dojo.byId("startDateSpan").getAttribute("initValue"),
+		checked:dojo.byId("startDateSpan").getAttribute("checked"),
+		inputId:"start_date_input",
+		dateId:"start_date",
+		displayCheck:"none",
+		callback:aipo.schedule.onSpanStartChange
+    };
+	new aipo.widget.DropdownDatepicker(params, "startDateSpan");
+}
+aipo.schedule.createSpanEndDatepicker = function(){
+    var params = {
+		dojoType:"aipo.widget.DropdownDatepicker",
+		id:"endDateSpan",
+		widgetId:"endDateSpan",
+		iconURL:"images/icon/icon_date.gif",
+		iconAlt:"終了日",hiddenId:"end_date",
+		initValue:dojo.byId("endDateSpan").getAttribute("initValue"),
+		checked:dojo.byId("endDateSpan").getAttribute("checked"),
+		inputId:"end_date_input",
+		dateId:"end_date",
+		displayCheck:"none",
+		callback:aipo.schedule.onSpanEndChange
+    };
+	new aipo.widget.DropdownDatepicker(params, "endDateSpan");
+}
+aipo.schedule.createLimitStartDatepicker = function(){
+    var params = {
+		dojoType:"aipo.widget.DropdownDatepicker",
+		id:"limitStartDateSpan",
+		widgetId:"limitStartDateSpan",
+		iconURL:"images/icon/icon_date.gif",
+		iconAlt:"開始日",
+		hiddenId:"limit_start_date",
+		initValue:dojo.byId("limitStartDateSpan").getAttribute("initValue"),
+		checked:dojo.byId("limitStartDateSpan").getAttribute("checked"),
+		inputId:"limit_start_date_input",
+		dateId:"limit_start_date",
+		displayCheck:"none"
+    };
+	new aipo.widget.DropdownDatepicker(params, "limitStartDateSpan");
+}
+aipo.schedule.createLimitEndDatepicker = function(){
+    var params = {
+		dojoType:"aipo.widget.DropdownDatepicker",
+		id:"limitEndDateSpan",
+		widgetId:"limitEndDateSpan",
+		iconURL:"images/icon/icon_date.gif",
+		iconAlt:"終了日",
+		hiddenId:"limit_end_date",
+		initValue:dojo.byId("limitEndDateSpan").getAttribute("initValue"),
+		checked:dojo.byId("limitEndDateSpan").getAttribute("checked"),
+		inputId:"limit_end_date_input",
+		dateId:"limit_end_date",
+		displayCheck:"none"
+    };
+	new aipo.widget.DropdownDatepicker(params, "limitEndDateSpan");
+}
 
 aipo.schedule.createMemberSelectList = function(){
     var params = {
-	    dojoType:"aipo.widget.MemberNormalSelectList",
-        id:"membernormalselect",
-        widgetId:"membernormalselect",
-        buttonAddId:"button_member_add",
-        buttonRemoveId:"button_member_remove",
-        memberFromId:"tmp_member_from",
-        memberToTitle:"参加ユーザー一覧",
-        memberToId:"member_to",
-        memberFromUrl:dojo.byId("membernormalselect_value").getAttribute("memberFromUrl"),
-        memberFromOptionKey:"name",
-        memberFromOptionValue:"aliasName",
-        groupSelectId:"tmp_group",
-        groupSelectPreOptionKey:"LoginUser",
-        groupSelectPreOptionValue:"（グループ全体）",
-        groupSelectOptionKey:"groupId",
-        groupSelectOptionValue:"name",
-        memberGroupUrl:dojo.byId("membernormalselect_value").getAttribute("memberGroupUrl"),
-        changeGroupUrl:dojo.byId("membernormalselect_value").getAttribute("changeGroupUrl")
+		dojoType:"aipo.widget.MemberNormalSelectList",
+		id:"membernormalselect",
+		widgetId:"membernormalselect",
+		buttonAddId:"button_member_add",
+		buttonRemoveId:"button_member_remove",
+		memberFromId:"tmp_member_from",
+		memberToTitle:"参加ユーザー一覧",
+		memberToId:"member_to",
+		memberFromUrl:dojo.byId("membernormalselect").getAttribute("memberFromUrl"),
+		memberFromOptionKey:"name",
+		memberFromOptionValue:"aliasName",
+		groupSelectId:"tmp_group",
+		groupSelectPreOptionKey:"LoginUser",
+		groupSelectPreOptionValue:"（グループ全体）",
+		groupSelectOptionKey:"groupId",
+		groupSelectOptionValue:"name",
+		memberGroupUrl:dojo.byId("membernormalselect").getAttribute("memberGroupUrl"),
+		changeGroupUrl:dojo.byId("membernormalselect").getAttribute("changeGroupUrl")
     };
 	new aipo.widget.MemberNormalSelectList(params, "membernormalselect");
-	//aipo.schedule.onLoadScheduleDialog();
 }
 
 aipo.schedule.createFacilitySelectList = function(){
     var params = {
-    		dojoType:"aipo.widget.MemberNormalSelectList",
-		    id:"facilityselect",
-		    widgetId:"facilityselect",
-		    buttonAddId:"button_facility_add",
-		    buttonRemoveId:"button_facility_remove",
-		    memberFromTitle:"選択設備一覧",
-		    memberFromId:"tmp_facility_from",
-		    memberToTitle:"設備一覧",
-		    memberToId:"facility_to",
-		    memberFromUrl:dojo.byId("facilityselect_value").getAttribute("memberFromUrl"),
-		    memberFromOptionKey:"facilityId",
-		    memberFromOptionValue:"facilityName",
-		    groupSelectId:"tmp_facility_group",
-		    groupSelectPreOptionKey:"all",
-		    groupSelectPreOptionValue:"（グループ全体）",
-		    groupSelectOptionKey:"facilityGroupId",
-		    groupSelectOptionValue:"facilityGroupName",
-		    memberGroupUrl:dojo.byId("facilityselect_value").getAttribute("memberGroupUrl"),
-		    changeGroupUrl:dojo.byId("facilityselect_value").getAttribute("changeGroupUrl")
+		dojoType:"aipo.widget.MemberNormalSelectList",
+		id:"facilityselect",
+		widgetId:"facilityselect",
+		buttonAddId:"button_facility_add",
+		buttonRemoveId:"button_facility_remove",
+		memberFromTitle:"選択設備一覧",
+		memberFromId:"tmp_facility_from",
+		memberToTitle:"設備一覧",
+		memberToId:"facility_to",
+		memberFromUrl:dojo.byId("facilityselect").getAttribute("memberFromUrl"),
+		memberFromOptionKey:"facilityId",
+		memberFromOptionValue:"facilityName",
+		groupSelectId:"tmp_facility_group",
+		groupSelectPreOptionKey:"all",
+		groupSelectPreOptionValue:"（グループ全体）",
+		groupSelectOptionKey:"facilityGroupId",
+		groupSelectOptionValue:"facilityGroupName",
+		memberGroupUrl:dojo.byId("facilityselect").getAttribute("memberGroupUrl"),
+		changeGroupUrl:dojo.byId("facilityselect").getAttribute("changeGroupUrl")
     };
 	new aipo.widget.MemberNormalSelectList(params, "facilityselect");
-	aipo.schedule.onLoadScheduleDialog(dojo.byId("facilityselect_value").getAttribute("portletId"));
+}
+
+aipo.schedule.onLoadWidgets = function(){
+	aipo.schedule.createSpanStartDatepicker();
+	aipo.schedule.createSpanEndDatepicker();
+	aipo.schedule.createLimitStartDatepicker();
+	aipo.schedule.createLimitEndDatepicker();
+	aipo.schedule.createMemberSelectList();
+	aipo.schedule.createFacilitySelectList();
+	// init widget value
+	aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
 }

@@ -99,9 +99,9 @@
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
     <div class="p">
-        <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
+        <span id="startDateSpan" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">～
-          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
+          <span id="endDateSpan" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end></span>
         </span>
       <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
         <input id="all_day_flag_checkbox" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag_checkbox" onclick="aipo.schedule.formSwitchAllDay(this)"/>
@@ -176,8 +176,8 @@
       <input id="limit_flagON" type="radio"  #if ($!{result.LimitFlag.toString()} == "ON") checked="checked" #end value="ON" name="limit_flag"/>
       <label for="limit_flagON">繰り返し期間を指定する</label>
       <br />
-      <span dojoType="aipo.widget.DropdownDatepicker" id="limitStartDateSpan" widgetId="limitStartDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="limit_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitStartDateSub}"checked="checked" #end inputId="limit_start_date_input" dateId="limit_start_date" displayCheck="none"></span>
-            ～<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
+      <span id="limitStartDateSpan" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitStartDateSub}" checked="checked" #end></span>
+         ～<span id="limitEndDateSpan" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}" checked="checked" #end></span>
     </div>
   </div>
   <div class="p">
@@ -263,22 +263,8 @@
 <table class="none">
   <tr><td>
     <div class="spaceTop spaceLeft small">左側に参加ユーザーを追加してください。</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
-        id="membernormalselect"
-        widgetId="membernormalselect"
-        buttonAddId="button_member_add"
-        buttonRemoveId="button_member_remove"
-        memberFromId="tmp_member_from"
-        memberToTitle="参加ユーザー一覧"
-        memberToId="member_to"
+    <div id="membernormalselect"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
-        memberFromOptionKey="name"
-        memberFromOptionValue="aliasName"
-        groupSelectId="tmp_group"
-        groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="（グループ全体）"
-        groupSelectOptionKey="groupId"
-        groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
     </div>
@@ -317,26 +303,11 @@
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
     <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
-    id="facilityselect"
-    widgetId="facilityselect"
-    buttonAddId="button_facility_add"
-    buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択設備一覧"
-    memberFromId="tmp_facility_from"
-    memberToTitle="設備一覧"
-    memberToId="facility_to"
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
-    memberFromOptionKey="facilityId"
-    memberFromOptionValue="facilityName"
-    groupSelectId="tmp_facility_group"
-    groupSelectPreOptionKey="all"
-    groupSelectPreOptionValue="（グループ全体）"
-    groupSelectOptionKey="facilityGroupId"
-    groupSelectOptionValue="facilityGroupName"
-    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
-    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('mode','group')">
-</div>
+	<div id="facilityselect"
+	    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
+	    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
+	    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('mode','group')">
+    </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
@@ -345,6 +316,7 @@
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
+<img id="onload_widgets" src="images/common/dot.gif" width="1" height="1" portletId="$!portlet.ID" onload='aipo.schedule.onLoadWidgets();'>
 <input type="hidden" id="commonUrl$!portlet.ID" name="commonUrl$!portlet.ID" value="$!jslink.getPortletById($!portlet.ID).addPathInfo('template','CommonCategoryLiteJSONScreen')" />
 <input type="hidden" id="commonCategoryid$!portlet.ID" name="commonCategoryid$!portlet.ID" value="$result.CommonCategoryId.Value" />
 #ALformfooter()
