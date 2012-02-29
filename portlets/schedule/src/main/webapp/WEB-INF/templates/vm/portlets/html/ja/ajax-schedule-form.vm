@@ -62,7 +62,7 @@
 #set($colspanmax = $colspanmax + 1)
 #end
 #if($result.SelectData.EndHour)#set($endHour = $!{result.SelectData.EndHour} - 1)#end
-##ALajaxscreenformheader("_scheduleForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
+##ALajaxscreenformheader("_scheduleForm" $jslink $portlet "ScheduleFormJSONScreen" "aipo.schedule.reloadWidgets();aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
 <form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
 <input type="hidden" name="ignore_duplicate_facility" value="false" />
 <input type="hidden" name="secid" value="$secid" />
@@ -302,7 +302,7 @@
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
 <div id="facilityField" style="none">
-    <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
+    <div class="spaceTop spaceLeft small">左側に設備を追加してください。<span id="test"></span></div>
 	<div id="facilityselect"
 	    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
 	    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"

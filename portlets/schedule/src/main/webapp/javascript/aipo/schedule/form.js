@@ -169,66 +169,10 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
             preOptions: { key:'1', value:val1 }
         };
         aimluck.io.createOptions("common_category_id", params);
-    	var mpicker = dijit.byId("membernormalselect");
-    	if(mpicker){
-    	    var select = dojo.byId('init_memberlist');
-    	    var i;
-    	    var s_o = select.options;
-    	    if (s_o.length == 1 && s_o[0].value == "") return;
-    	    for(i = 0 ; i < s_o.length; i ++ ) {
-    	        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
-    	    }
-        }
-
-        var fpicker = dijit.byId("facilityselect");
-        if(fpicker){
-            var select = dojo.byId('init_facilitylist');
-            var i;
-            var s_o = select.options;
-            if (s_o.length == 1 && s_o[0].value == "") return;
-            for(i = 0 ; i < s_o.length; i ++ ) {
-                fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
-            }
-        }
 
         var obj = dojo.byId("name");
         if(obj){
            obj.focus();
-        }
-
-        var btn_ma = dojo.byId("button_member_add");
-        if(btn_ma){
-           dojo.connect(btn_ma, "onclick", function(){
-              aipo.schedule.expandMember();
-           });
-        }
-
-        var btn_mr = dojo.byId("button_member_remove");
-        if(btn_mr){
-           dojo.connect(btn_mr, "onclick", function(){
-              var select = dojo.byId("member_to");
-              if(select.options.length == 0){
-                  if((mpicker) && (aipo.schedule.login_aliasname != "undefined")){
-                      var alias = aipo.schedule.login_aliasname.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-                      mpicker.addOptionSync(aipo.schedule.login_name, alias, true);
-                  }
-              }
-              aipo.schedule.expandMember();
-           });
-        }
-
-        var btn_fa = dojo.byId("button_facility_add");
-        if(btn_fa){
-           dojo.connect(btn_fa, "onclick", function(){
-              aipo.schedule.expandFacility();
-           });
-        }
-
-        var btn_fr = dojo.byId("button_facility_remove");
-        if(btn_fr){
-           dojo.connect(btn_fr, "onclick", function(){
-              aipo.schedule.expandFacility();
-           });
         }
 
         var form = dojo.byId('_scheduleForm');
@@ -238,16 +182,6 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
 
         aipo.schedule.shrinkMember();
         aipo.schedule.shrinkFacility();
-
-        var spanStart = dijit.byId('startDateSpan');
-        var spanEnd = dijit.byId('endDateSpan');
-        if (spanStart != null && spanEnd != null) {
-            var sDate = spanStart.dropDown.value;
-            var eDate = spanEnd.dropDown.value;
-            aipo.schedule.spanLength = (eDate - sDate)/86400000;
-        } else {
-            aipo.schedule.spanLength = 0;
-        }
     }
 
     //参加ユーザー設定のtoggleイベント
@@ -782,6 +716,16 @@ aipo.schedule.createSpanEndDatepicker = function(){
 		callback:aipo.schedule.onSpanEndChange
     };
 	new aipo.widget.DropdownDatepicker(params, "endDateSpan");
+	// initial value
+    var spanStart = dijit.byId('startDateSpan');
+    var spanEnd = dijit.byId('endDateSpan');
+    if (spanStart != null && spanEnd != null) {
+        var sDate = spanStart.dropDown.value;
+        var eDate = spanEnd.dropDown.value;
+        aipo.schedule.spanLength = (eDate - sDate)/86400000;
+    } else {
+        aipo.schedule.spanLength = 0;
+    }
 }
 aipo.schedule.createLimitStartDatepicker = function(){
     var params = {
@@ -838,6 +782,38 @@ aipo.schedule.createMemberSelectList = function(){
 		changeGroupUrl:dojo.byId("membernormalselect").getAttribute("changeGroupUrl")
     };
 	new aipo.widget.MemberNormalSelectList(params, "membernormalselect");
+	// initial value
+	var mpicker = dijit.byId("membernormalselect");
+	if(mpicker){
+	    var select = dojo.byId('init_memberlist');
+	    var i;
+	    var s_o = select.options;
+	    if (s_o.length == 1 && s_o[0].value == "") return;
+	    for(i = 0 ; i < s_o.length; i ++ ) {
+	        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+	    }
+    }
+
+    var btn_ma = dojo.byId("button_member_add");
+    if(btn_ma){
+       dojo.connect(btn_ma, "onclick", function(){
+          aipo.schedule.expandMember();
+       });
+    }
+
+    var btn_mr = dojo.byId("button_member_remove");
+    if(btn_mr){
+       dojo.connect(btn_mr, "onclick", function(){
+          var select = dojo.byId("member_to");
+          if(select.options.length == 0){
+              if((mpicker) && (aipo.schedule.login_aliasname != "undefined")){
+                  var alias = aipo.schedule.login_aliasname.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+                  mpicker.addOptionSync(aipo.schedule.login_name, alias, true);
+              }
+          }
+          aipo.schedule.expandMember();
+       });
+    }
 }
 
 aipo.schedule.createFacilitySelectList = function(){
@@ -863,6 +839,31 @@ aipo.schedule.createFacilitySelectList = function(){
 		changeGroupUrl:dojo.byId("facilityselect").getAttribute("changeGroupUrl")
     };
 	new aipo.widget.MemberNormalSelectList(params, "facilityselect");
+	// initial value
+    var fpicker = dijit.byId("facilityselect");
+    if(fpicker){
+        var select = dojo.byId('init_facilitylist');
+        var i;
+        var s_o = select.options;
+        if (s_o.length == 1 && s_o[0].value == "") return;
+        for(i = 0 ; i < s_o.length; i ++ ) {
+            fpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+        }
+    }
+
+    var btn_fa = dojo.byId("button_facility_add");
+    if(btn_fa){
+       dojo.connect(btn_fa, "onclick", function(){
+          aipo.schedule.expandFacility();
+       });
+    }
+
+    var btn_fr = dojo.byId("button_facility_remove");
+    if(btn_fr){
+       dojo.connect(btn_fr, "onclick", function(){
+          aipo.schedule.expandFacility();
+       });
+    }
 }
 
 aipo.schedule.onLoadWidgets = function(){
@@ -874,4 +875,16 @@ aipo.schedule.onLoadWidgets = function(){
 	aipo.schedule.createFacilitySelectList();
 	// init widget value
 	aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
+	dojo.byId("test").innerText = "ロード完了。";
+}
+
+aipo.schedule.reloadWidgets = function(){
+	if(!dijit.byId("startDateSpan")){aipo.schedule.createSpanStartDatepicker();}
+	if(!dijit.byId("endDateSpan")){aipo.schedule.createSpanEndDatepicker();}
+	if(!dijit.byId("limitStartDateSpan")){aipo.schedule.createLimitStartDatepicker();}
+	if(!dijit.byId("limitEndDateSpan")){aipo.schedule.createLimitEndDatepicker();}
+	if(!dijit.byId("membernormalselect")){aipo.schedule.createMemberSelectList();}
+	if(!dijit.byId("facilityselect")){aipo.schedule.createFacilitySelectList();}
+	// init widget value
+	//aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
 }
