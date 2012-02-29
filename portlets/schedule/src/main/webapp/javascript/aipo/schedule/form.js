@@ -324,6 +324,8 @@ aipo.schedule.formRepeatOff = function(form) {
 
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.reloadWidgets();
 }
 
 aipo.schedule.formEditRepeatOne = function(form) {
@@ -886,5 +888,6 @@ aipo.schedule.reloadWidgets = function(){
 	if(!dijit.byId("membernormalselect")){aipo.schedule.createMemberSelectList();}
 	if(!dijit.byId("facilityselect")){aipo.schedule.createFacilitySelectList();}
 	// init widget value
+	dojo.byId("test").innerText = "リロード完了。";
 	//aipo.schedule.onLoadScheduleDialog(dojo.byId("onload_widgets").getAttribute("portletId"));
 }
