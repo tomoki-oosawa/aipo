@@ -1678,9 +1678,10 @@ ul#attachments span.deletebutton:hover{
 	background:#f0f0f0;
 }
 #timelineOuter .commentCaption {
-	padding:5px;
-	font-size:80%;
-	*font-size:75%;
+	padding:3px 5px;
+	font-size:smaller;
+	border-top:solid 1px #fff;
+	border-bottom:solid 1px #e6e6e6;
 }
 #timelineOuter .comments .message {
 	margin:0;
