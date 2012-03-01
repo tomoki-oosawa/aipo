@@ -1944,7 +1944,8 @@ div.calerndarTodoDiv a:hover {
 	padding:0;
 }
 
-span span span {
+span span span,
+span.dispUser {
 	display:inline-block;
 	padding:2px 3px;
 	margin-bottom:2px;
