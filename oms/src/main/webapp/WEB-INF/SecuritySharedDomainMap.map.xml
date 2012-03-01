@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map project-version="2.0">
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+  project-version="3.0.0.1">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.security"/>
 	<db-entity name="turbine_group">
 		<db-attribute name="GROUP_ALIAS_NAME" type="VARCHAR" length="99"/>
@@ -125,6 +128,9 @@
 	<db-relationship name="turbineRole" source="turbine_role_permission" target="turbine_role" toMany="false">
 		<db-attribute-pair source="ROLE_ID" target="ROLE_ID"/>
 	</db-relationship>
+	<db-relationship name="EipTTimelineLike" source="turbine_user" target="eip_t_timeline_like" toMany="true">
+		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipMUserPosition" source="turbine_user" target="eip_m_user_position" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
@@ -144,6 +150,9 @@
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTTimeline" source="turbine_user" target="eip_t_timeline" toMany="true">
+		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTTimelineLike" source="turbine_user" target="eip_t_timeline_like" toMany="true">
 		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTTodo" source="turbine_user" target="eip_t_todo" toMany="true">
