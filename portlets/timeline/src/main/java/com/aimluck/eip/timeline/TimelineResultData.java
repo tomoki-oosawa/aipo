@@ -70,8 +70,14 @@ public class TimelineResultData implements ALData {
   /** 子トピックオブジェクト */
   private List<TimelineResultData> coTopicList;
 
+  /** いいねオブジェクト */
+  private List<TimelineLikeResultData> likeList;
+
   /** 顔写真の有無 */
   private boolean has_photo;
+
+  /** いいねをしたか */
+  private boolean like;
 
   /**
    *
@@ -94,6 +100,7 @@ public class TimelineResultData implements ALData {
     is_public = true;
     new_topic = false;
     has_photo = false;
+    like = false;
   }
 
   /**
@@ -246,6 +253,21 @@ public class TimelineResultData implements ALData {
     this.coTopicList = coTopicList;
   }
 
+  /**
+   * @return likeList
+   */
+  public List<TimelineLikeResultData> getLikeList() {
+    return likeList;
+  }
+
+  /**
+   * @param likeList
+   *          セットする likeList
+   */
+  public void setLikeList(List<TimelineLikeResultData> likeList) {
+    this.likeList = likeList;
+  }
+
   public Integer getReplyCountInteger() {
     return Integer.valueOf((int) reply_count.getValue());
   }
@@ -260,6 +282,21 @@ public class TimelineResultData implements ALData {
 
   public boolean hasPhoto() {
     return has_photo;
+  }
+
+  /**
+   * @return like
+   */
+  public boolean isLike() {
+    return like;
+  }
+
+  /**
+   * @param like
+   *          セットする like
+   */
+  public void setLike(boolean like) {
+    this.like = like;
   }
 
 }

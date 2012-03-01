@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.timeline.TimelineFormData;
+import com.aimluck.eip.timeline.TimelineLikeFormData;
 
 /**
  * タイムラインをJSONデータとして出力するクラスです。
@@ -44,7 +45,7 @@ public class TimelineJSONScreen extends ALJSONScreen {
       throws Exception {
     String result = new JSONArray().toString();
     String mode = this.getMode();
-    String[] splitMode = mode.split("_");
+    Integer entityId = rundata.getParameters().getInt("entityid");
     try {
       if (ALEipConstants.MODE_INSERT.equals(mode)) {
         //
@@ -69,11 +70,35 @@ public class TimelineJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
-      } else if (splitMode[0].equals("comment")) {
+      } else if (mode.equals("comment")) {
         TimelineFormData formData = new TimelineFormData();
         formData.initField();
-        formData.setParentId(Integer.valueOf(splitMode[1]));
+        formData.setParentId(entityId);
         if (formData.doInsert(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if (mode.equals("like")) {
+        TimelineLikeFormData formData = new TimelineLikeFormData();
+        formData.initField();
+        formData.setTimeline_id(entityId);
+
+        if (formData.doInsert(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if (mode.equals("dislike")) {
+        TimelineLikeFormData formData = new TimelineLikeFormData();
+        formData.initField();
+        formData.setTimeline_id(entityId);
+
+        if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray

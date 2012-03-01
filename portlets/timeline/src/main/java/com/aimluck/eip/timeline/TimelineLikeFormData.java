@@ -20,19 +20,17 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -42,8 +40,6 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
-import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -51,35 +47,17 @@ import com.aimluck.eip.util.ALEipUtils;
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
  * 
  */
-public class TimelineFormData extends ALAbstractFormData {
+public class TimelineLikeFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineFormData.class.getName());
 
-  /** メモ */
-  private ALStringField note;
+  /** いいね！を押したユーザーID */
+  private int user_id;
 
-  private int parentId;
-
-  private int uid;
-
-  private String orgId;
-
-  private String aclPortletFeature = null;
-
-  /** 閲覧権限の有無 */
-  @SuppressWarnings("unused")
-  private boolean hasAclCategoryList;
-
-  /** 他ユーザーの作成したトピックの編集権限 */
-  private boolean hasAclUpdateTopicOthers;
-
-  /** 他ユーザーの作成したトピックの削除権限 */
-  private boolean hasAclDeleteTopicOthers;
-
-  /** 顔写真の有無 */
-  private boolean has_photo;
+  /** いいね！が押されたトピック */
+  private int timeline_id;
 
   /**
    * 
@@ -93,11 +71,7 @@ public class TimelineFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    uid = ALEipUtils.getUserId(rundata);
-    orgId = Database.getDomainName();
-    has_photo = false;
-
+    user_id = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -107,24 +81,15 @@ public class TimelineFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // メモ
-    note = new ALStringField();
-    note.setFieldName("内容");
-    note.setTrim(false);
-
   }
 
   /**
-   * タイムラインの各フィールドに対する制約条件を設定します。 <BR>
-   * 
+   * いいね！の各フィールドに対する制約条件を設定します。 <BR>
+   * →なし
    * 
    */
   @Override
   protected void setValidator() {
-    // メモ必須項目
-    note.setNotNull(true);
-    // メモの文字数制限
-    note.limitMaxLength(500);
   }
 
   /**
@@ -136,10 +101,7 @@ public class TimelineFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    // メモ
-    note.validate(msgList);
-    return (msgList.size() == 0);
-
+    return true;
   }
 
   /**
@@ -165,10 +127,13 @@ public class TimelineFormData extends ALAbstractFormData {
       EipTTimeline parent = Database.get(EipTTimeline.class, (long) parentid);
 
       // オブジェクトモデルを取得
-      List<EipTTimeline> list;
+      List<EipTTimelineLike> list;
 
       list =
-        TimelineUtils.getEipTTimelineListToDeleteTopic(rundata, context, false);
+        TimelineUtils.getEipTTimelineLikeListToDeleteTopic(
+          rundata,
+          context,
+          false);
 
       if (list == null) {
         // 指定した トピック ID のレコードが見つからない場合
@@ -177,31 +142,26 @@ public class TimelineFormData extends ALAbstractFormData {
       }
 
       List<Integer> topicIdList = new ArrayList<Integer>();
-      EipTTimeline topic;
+      EipTTimelineLike topic;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         topic = list.get(i);
-        topicIdList.add(topic.getTimelineId());
+        topicIdList.add(topic.getTimelineLikeId());
       }
 
       // トピックを削除
-      SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+      SelectQuery<EipTTimelineLike> query =
+        Database.query(EipTTimelineLike.class);
       Expression exp =
         ExpressionFactory.inDbExp(
-          EipTTimeline.TIMELINE_ID_PK_COLUMN,
+          EipTTimelineLike.TIMELINE_LIKE_ID_PK_COLUMN,
           topicIdList);
       query.setQualifier(exp);
 
-      List<EipTTimeline> topics = query.fetchList();
+      List<EipTTimelineLike> topics = query.fetchList();
 
       Database.deleteAll(topics);
       Database.commit();
-
-      ALTimelineFactoryService tlservice =
-        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      timelinehandler.pushToken(rundata, String.valueOf(uid));
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -230,39 +190,10 @@ public class TimelineFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // 新規オブジェクトモデル
-      EipTTimeline topic = Database.create(EipTTimeline.class);
-      // 親トピックID
-      topic.setParentId(Integer.valueOf(parentId));
-      // ユーザーID
-      topic.setOwnerId(Integer.valueOf(uid));
-      // メモ
-      topic.setNote(note.getValue());
-      // 作成日
-      topic.setCreateDate(Calendar.getInstance().getTime());
-      // 更新日
-      topic.setUpdateDate(Calendar.getInstance().getTime());
-
-      if (Integer.valueOf(parentId) != 0) {
-        EipTTimeline parent =
-          Database.get(EipTTimeline.class, Integer.valueOf(parentId));
-        parent.setUpdateDate(Calendar.getInstance().getTime());
-      }
-      // submitURL();
-
+      EipTTimelineLike like = Database.create(EipTTimelineLike.class);
+      like.setOwnerId(user_id);
+      like.setTimelineId(timeline_id);
       Database.commit();
-
-      ALTimelineFactoryService tlservice =
-        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      timelinehandler.pushToken(rundata, String.valueOf(uid));
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        topic.getTimelineId(),
-        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
-        topic.getCreateDate().toString());
-
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -296,7 +227,6 @@ public class TimelineFormData extends ALAbstractFormData {
   @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-
     boolean res = super.setFormData(rundata, context, msgList);
     return res;
   }
@@ -316,70 +246,33 @@ public class TimelineFormData extends ALAbstractFormData {
   }
 
   /**
-   * メモを取得します。 <BR>
-   * 
-   * @return
+   * @return user_id
    */
-  public ALStringField getNote() {
-    return note;
+  public int getUser_id() {
+    return user_id;
   }
 
   /**
-   * @return parentId
+   * @param user_id
+   *          セットする user_id
    */
-  public int getParentId() {
-    return parentId;
+  public void setUser_id(int user_id) {
+    this.user_id = user_id;
   }
 
   /**
-   * @param parentId
-   *          セットする parentId
+   * @return timeline_id
    */
-  public void setParentId(int parentId) {
-    this.parentId = parentId;
+  public int getTimeline_id() {
+    return timeline_id;
   }
 
   /**
-   * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
-   * @return
+   * @param timeline_id
+   *          セットする timeline_id
    */
-  @Override
-  public String getAclPortletFeature() {
-    return aclPortletFeature;
+  public void setTimeline_id(int timeline_id) {
+    this.timeline_id = timeline_id;
   }
 
-  public void setAclPortletFeature(String aclPortletFeature) {
-    this.aclPortletFeature = aclPortletFeature;
-  }
-
-  /**
-   * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   * 
-   * @return
-   */
-  public boolean hasAclUpdateTopicOthers() {
-    return hasAclUpdateTopicOthers;
-  }
-
-  /**
-   * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   * 
-   * @return
-   */
-  public boolean hasAclDeleteTopicOthers() {
-    return hasAclDeleteTopicOthers;
-  }
-
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
-  }
-
-  public boolean hasPhoto() {
-    return has_photo;
-  }
 }

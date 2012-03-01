@@ -33,23 +33,14 @@ aipo.timeline.addHiddenValue = function(form, name, value){
     }
 }
 
-aipo.timeline.addGood = function(form, name, value){
-    if (form[name] && document.getElementsByName(name).item(0)) {
-        form[name].value = value;
-    } else {
-        var q = document.createElement('input');
-        q.type = 'hidden';
-        q.name = name;
-        q.value = value;
-        form.appendChild(q);
-    }
+aipo.timeline.addLike = function(form, name, value){
 }
 
 aipo.timeline.showCommentField = function(tid){
 	dojo.byId('commentField' + tid).style.display = "";
 	var dummy = dojo.byId('commentInputDummy' + tid);
 	if(typeof dummy != "undefined" && dummy != null){
-		dojo.byId('commentInputDummy' + tid).style.display = "none";	
+		dojo.byId('commentInputDummy' + tid).style.display = "none";
 	}
 }
 

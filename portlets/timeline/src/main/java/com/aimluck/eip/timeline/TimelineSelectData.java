@@ -20,7 +20,6 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -222,15 +221,29 @@ public class TimelineSelectData extends
 
       SelectQuery<EipTTimeline> query =
         getSelectQueryForCotopic(record.getTimelineId().toString());
+
+      query.orderAscending(EipTTimeline.CREATE_DATE_PROPERTY);
+
       List<EipTTimeline> aList = query.fetchList();
       if (aList != null) {
         for (EipTTimeline coTopic : aList) {
           coTopicList.add((TimelineResultData) getResultData(coTopic));
         }
       }
-      Collections.sort(coTopicList, getDateComparator());
 
       rd.setCoTopicList(coTopicList);
+
+      TimelineLikeSelectData ls = new TimelineLikeSelectData();
+      List<TimelineLikeResultData> likeList =
+        ls.getLikeList(record.getTimelineId());
+
+      rd.setLikeList(likeList);
+
+      for (TimelineLikeResultData like : likeList) {
+        if ((int) like.getUserId().getValue() == uid) {
+          rd.setLike(true);
+        }
+      }
 
       int userId = record.getOwnerId().intValue();
       rd.setHasPhoto(false);

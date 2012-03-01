@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -172,6 +173,76 @@ public class TimelineUtils {
       int size = topics.size();
       for (int i = 0; i < size; i++) {
         EipTTimeline topic = topics.get(i);
+        if (topic.getOwnerId().intValue() == userid || isSuperUser) {
+          isdelete = true;
+          break;
+        }
+      }
+      if (!isdelete) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[Timeline] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      return topics;
+    } catch (Exception ex) {
+      logger.error("[TimelineUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
+  }
+
+  /**
+   * いいねオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isSuperUser
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
+  public static List<EipTTimelineLike> getEipTTimelineLikeListToDeleteTopic(
+      RunData rundata, Context context, boolean isSuperUser)
+      throws ALPageNotFoundException, ALDBErrorException {
+    String topicid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    try {
+      if (topicid == null || Integer.valueOf(topicid) == null) {
+        // トピック ID が空の場合
+        logger.debug("[Timeline] Empty ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      int userid = ALEipUtils.getUserId(rundata);
+
+      SelectQuery<EipTTimelineLike> query =
+        Database.query(EipTTimelineLike.class);
+
+      Expression exp01 =
+        ExpressionFactory.matchDbExp(EipTTimelineLike.OWNER_ID_COLUMN, Integer
+          .valueOf(userid));
+      Expression exp02 =
+        ExpressionFactory.matchDbExp(
+          EipTTimelineLike.TIMELINE_ID_COLUMN,
+          Integer.valueOf(topicid));
+
+      if (isSuperUser) {
+        query.andQualifier(exp02);
+      } else {
+        query.andQualifier(exp01.andExp(exp02));
+      }
+
+      List<EipTTimelineLike> topics = query.fetchList();
+      if (topics == null || topics.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[Timeline] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      boolean isdelete = false;
+      int size = topics.size();
+      for (int i = 0; i < size; i++) {
+        EipTTimelineLike topic = topics.get(i);
         if (topic.getOwnerId().intValue() == userid || isSuperUser) {
           isdelete = true;
           break;
