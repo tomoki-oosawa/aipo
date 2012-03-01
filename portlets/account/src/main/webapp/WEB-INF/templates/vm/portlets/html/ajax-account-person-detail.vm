@@ -59,7 +59,7 @@
 #foreach($record in $!result.Detail.getPostNameList())
 #set($n = $velocityCount - 1)
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonPostDetailScreen').addQueryData('entityid',$!result.Detail.getPostID($!n)))');" style="display:block;">$!record</a>
-<style="display:block;">$!record</style>
+<span style="display:block;">$!record</span>
 #end
 #ALtditemfooter()
 #ALtdcaption('役職')
