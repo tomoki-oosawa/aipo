@@ -36,8 +36,9 @@ aipo.timeline.addHiddenValue = function(form, name, value){
 aipo.timeline.addLike = function(form, name, value){
 }
 
-aipo.timeline.showCommentField = function(tid){
+aipo.timeline.showCommentField = function(pid, tid){
 	dojo.byId('commentField' + tid).style.display = "";
+	dojo.byId('note_' + pid + '_' + tid).focus();
 	var dummy = dojo.byId('commentInputDummy' + tid);
 	if(typeof dummy != "undefined" && dummy != null){
 		dojo.byId('commentInputDummy' + tid).style.display = "none";
@@ -66,10 +67,7 @@ aipo.timeline.setScrollTop = function(scrollTop){
 }
 
 aipo.timeline.onKeyDown = function(pid, tid){
-	var val = dojo.byId("note_" + pid + "_0").value;
-	if(tid == "0"){
-		dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
-	}
+	var val = dojo.byId("note_" + pid + "_" + tid).value;
 	var num = 0;
 	if(val.match(/\n|\r\n/g) != null){
 		num = val.match(/\n|\r\n/g).length;
@@ -81,6 +79,11 @@ aipo.timeline.onKeyDown = function(pid, tid){
 		}
 	}
 	dojo.byId("note_" + pid + "_" + tid).style.height = num * 18 + 39 + "px";
+}
+
+aipo.timeline.onKeyUp = function(pid){
+	var val = dojo.byId("note_" + pid + "_0").value;
+	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
 aipo.timeline.onReceiveMessage = function(msg){
