@@ -61,7 +61,6 @@
       <div class="body">$!record.Note</div>
       <div class="time">$!{record.CreateDate}
       &nbsp;
-	  <a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">コメントする</a>
 	  #if(${record.isLike()})
 		<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
           <input type="hidden" name="secid" value="$secid" />
