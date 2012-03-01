@@ -68,10 +68,6 @@ public class ALEipManager {
   /** ACLキー */
   private static String ACL_KEY = "com.aimluck.eip.common.ALEipManager.acls";
 
-  /** BlogResultDataキー */
-  private static String BLOG_USER_LIST_KEY =
-    "com.aimluck.eip.blog.BlogEntryLatestSelectData.userDataList";
-
   /**
    * 
    * @return
@@ -269,25 +265,6 @@ public class ALEipManager {
       request.setAttribute(ACL_KEY, roleMap);
     }
     return roleMap;
-  }
-
-  public Object getUserDataList() {
-    HttpServletRequest request = HttpServletRequestLocator.get();
-    if (request != null) {
-      // requestから取得
-      Object obj = request.getAttribute(BLOG_USER_LIST_KEY);
-      if (obj != null) {
-        return obj;
-      }
-    }
-    return null;
-  }
-
-  public void setUserDataList(Object obj) {
-    HttpServletRequest request = HttpServletRequestLocator.get();
-    if (request != null) {
-      request.setAttribute(BLOG_USER_LIST_KEY, obj);
-    }
   }
 
 }

@@ -40,6 +40,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALBlogManager;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -290,7 +291,7 @@ public class BlogEntrySelectData extends
       int userId = record.getOwnerId().intValue();
       rd.setHasPhoto(false);
 
-      ALEipManager manager = ALEipManager.getInstance();
+      ALBlogManager manager = ALBlogManager.getInstance();
       List<BlogUserResultData> userDataList =
         (List<BlogUserResultData>) manager.getUserDataList();
 
