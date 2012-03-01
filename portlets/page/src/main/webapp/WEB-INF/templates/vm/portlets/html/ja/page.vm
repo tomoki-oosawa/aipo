@@ -23,7 +23,7 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
-	ptConfig['$!portlet.ID'] = { group:"page", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("eventSubmit_doPage_list","1"))', reloadFunction:aipo.page.reloadTab };
+	ptConfig['$!portlet.ID'] = { group:"page", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PageScreen"))', reloadFunction:aipo.reloadPage };
 
 //]]>
 </script>

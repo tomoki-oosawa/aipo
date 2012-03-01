@@ -40,7 +40,3 @@ aipo.page.onReceiveMessage = function(msg){
         dojo.byId('messageDiv').innerHTML = msg;
     }
 }
-
-aipo.page.reloadTab = function(portletId) {
-	document.location.href = ptConfig[portletId].initUrl;
-};

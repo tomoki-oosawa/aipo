@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.jetspeed.om.SecurityReference;
 import org.apache.jetspeed.om.profile.Controller;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Layout;
 import org.apache.jetspeed.om.profile.MetaInfo;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -78,7 +79,7 @@ public class PageFormData extends ALAbstractFormData {
   private boolean enableAddPage = true;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -131,7 +132,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param msgList
    * @return
    */
@@ -149,7 +150,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -199,7 +200,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -280,10 +281,40 @@ public class PageFormData extends ALAbstractFormData {
         if (defaultRef != null) {
           p.setSecurityRef(defaultRef);
         }
-        portlets.addPortlets(p);
+
+        // 個人設定、システム管理タブの前に配置する
+        Portlets newPortlets = new PsmlPortlets();
+        newPortlets.setMetaInfo(portlets.getMetaInfo());
+        newPortlets.setSecurityRef(portlets.getSecurityRef());
+        newPortlets.setControl(portlets.getControl());
+        newPortlets.setController(portlets.getController());
+
+        Entry[] entries = portlets.getEntriesArray();
+        for (Entry entry : entries) {
+          newPortlets.addEntry(entry);
+        }
+
+        Portlets[] childPortlets = portlets.getPortletsArray();
+        for (Portlets _portlets : childPortlets) {
+          if (_portlets.getSecurityRef().getParent().equals("owner-only")) {
+            newPortlets.addPortlets(_portlets);
+          }
+        }
+
+        newPortlets.addPortlets(p);
+
+        for (Portlets _portlets : childPortlets) {
+          if (!_portlets.getSecurityRef().getParent().equals("owner-only")) {
+            newPortlets.addPortlets(_portlets);
+          }
+        }
+
+        ((JetspeedRunData) rundata).getProfile().getDocument().setPortlets(
+          newPortlets);
+
+        PageUtils.doSave(rundata, context);
+        PageUtils.updateLayoutPositions(newPortlets);
       }
-      PageUtils.doSave(rundata, context);
-      PageUtils.updateLayoutPositions(portlets);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -292,7 +323,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -345,7 +376,7 @@ public class PageFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
