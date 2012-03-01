@@ -918,8 +918,8 @@ input[type=submit],
 input[type=button],
 input[type=reset],
 button {
-	height:2em;
-	>line-height:1.7em;/*IE*/
+	height:2.4em;
+	>line-height:2.1em;/*IE*/
 	padding:0 0.5em;
 	>padding:0 0.1em;/*IE*/
 }
@@ -997,13 +997,13 @@ input[type=reset] {
 	-ms-border-radius:3px;
 }
 .auiButtonAction {
-	color:#fff;
+	color:#fff !important;
 	font-weight:bold;
-	text-shadow:0 1px 0 #f09000;
-	border:solid 1px #f09000;
+	text-shadow:0 1px 0 #f09000 !important;
+	border:solid 1px #f09000 !important;
 	background:#ff9900;
-	background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900));/*Ch*/
+	background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900)) !important;/*Ch*/
 	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
 }
 .auiButtonBold {
@@ -1492,8 +1492,7 @@ form input[type=text],
 form input[type=password] {
 	height:2.1em;
 	*height:2.0em;/*IE*/
-	line-height:2.1em;
-	*line-height:2.0em;/*IE*/
+	line-height/*\**/:2.0em\9;/*IE7-8*/
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
@@ -1678,8 +1677,14 @@ ul#attachments span.deletebutton:hover{
 	margin:5px 0 0 20px;
 	background:#f0f0f0;
 }
+#timelineOuter .commentCaption {
+	padding:5px;
+	font-size:80%;
+	*font-size:75%;
+}
 #timelineOuter .comments .message {
 	margin:0;
+	padding:5px;
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;

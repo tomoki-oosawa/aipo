@@ -1693,6 +1693,7 @@ div.termScheduleDiv {
 	top:1px;
 	height:15px;
 	margin-left:1px;
+	color:#ffffff;
 }
 div.termScheduleDiv div.termScheduleDivNameDiv {
 	color:#FFF;
@@ -1943,610 +1944,374 @@ div.calerndarTodoDiv a:hover {
 	padding:0;
 }
 
-span span {
-	line-height:1.6em;
+span.dispUser {
+	display:inline-block;
+	padding:2px 3px;
+	margin-bottom:2px;
+	font-size:0.9em;
+	color:#ffffff;
 }
+div.color0 {border-color:#000080;}
+div.color0 div.scheduleDivFirstLine {background-color:#000080;border-color:#000080;}
+div.color0 div.scheduleDivLastLine div.handleDiv {background-color:#000080;}
+span.color0 {background-color:#000080;}
+div.termColor0 {background-color:#000080 !important;}
 
-div.color0 {
-	border-color:#039;
-}
-div.color0 div.scheduleDivFirstLine {
-	background-color:#039;
-	border-color:#039;
-}
-div.color0 div.scheduleDivLastLine div.handleDiv {
-	background-color:#039;
-}
-span.color0 {
-	background-color:#039;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor0 {
-	background-color:#039!important;
-	color:#FFF;
-}
+div.color1 {border-color:#FF0000;}
+div.color1 div.scheduleDivFirstLine {background-color:#FF0000;border-color:#FF0000;}
+div.color1 div.scheduleDivLastLine div.handleDiv {background-color:#FF0000;}
+span.color1 {background-color:#FF0000;}
+div.termColor1 {background-color:#FF0000 !important;}
 
-div.color1 {
-	border-color:#CC0033;
-}
-div.color1 div.scheduleDivFirstLine {
-	background-color:#CC0033;
-	border-color:#CC0033;
-}
-div.color1 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC0033;
-}
-span.color1 {
-	background-color:#CC0033;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor1 {
-	background-color:#CC0033!important;
-	color:#FFF;
-}
+div.color2 {border-color:#008000;}
+div.color2 div.scheduleDivFirstLine {background-color:#008000;border-color:#008000;}
+div.color2 div.scheduleDivLastLine div.handleDiv {background-color:#008000;}
+span.color2 {background-color:#008000;}
+div.termColor2 {background-color:#008000 !important;}
 
-div.color2 {
-	border-color:#006600;
-}
-div.color2 div.scheduleDivFirstLine {
-	background-color:#006600;
-	border-color:#006600;
-}
-div.color2 div.scheduleDivLastLine div.handleDiv {
-	background-color:#006600;
-}
-span.color2 {
-	background-color:#006600;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor2 {
-	background-color:#669900!important;
-	color:#FFF;
-}
+div.color3 {border-color:#ff9900;}
+div.color3 div.scheduleDivFirstLine {background-color:#ff9900;border-color:#ff9900;}
+div.color3 div.scheduleDivLastLine div.handleDiv {background-color:#ff9900;}
+span.color3 {background-color:#ff9900;}
+div.termColor3 {background-color:#ff9900 !important;}
 
-div.color3 {
-	border-color:#39F;
-}
-div.color3 div.scheduleDivFirstLine {
-	background-color:#39F;
-	border-color:#39F;
-}
-div.color3 div.scheduleDivLastLine div.handleDiv {
-	background-color:#39F;
-}
-span.color3 {
-	background-color:#39F;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor3 {
-	background-color:#39F!important;
-	color:#FFF;
-}
+div.color4 {border-color:#800000;}
+div.color4 div.scheduleDivFirstLine {background-color:#800000;border-color:#800000;}
+div.color4 div.scheduleDivLastLine div.handleDiv {background-color:#800000;}
+span.color4 {background-color:#800000;}
+div.termColor4 {background-color:#800000 !important;}
 
-div.color4 {
-	border-color:#F63;
-}
-div.color4 div.scheduleDivFirstLine {
-	background-color:#F63;
-	border-color:#F63;
-}
-div.color4 div.scheduleDivLastLine div.handleDiv {
-	background-color:#F63;
-}
-span.color4 {
-	background-color:#F63;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor4 {
-	background-color:#F63!important;
-	color:#FFF;
-}
+div.color5 {border-color:#ff00ff;}
+div.color5 div.scheduleDivFirstLine {background-color:#ff00ff;border-color:#ff00ff;}
+div.color5 div.scheduleDivLastLine div.handleDiv {background-color:#ff00ff;}
+span.color5 {background-color:#ff00ff;}
+div.termColor5 {background-color:#ff00ff !important;}
 
-div.color5 {
-	border-color:#339966;
-}
-div.color5 div.scheduleDivFirstLine {
-	background-color:#339966;
-	border-color:#339966;
-}
-div.color5 div.scheduleDivLastLine div.handleDiv {
-	background-color:#339966;
-}
-span.color5 {
-	background-color:#339966;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor5 {
-	background-color:#339966!important;
-	color:#FFF;
-}
+div.color6 {border-color:#00CCFF;}
+div.color6 div.scheduleDivFirstLine {background-color:#00CCFF;border-color:#00CCFF;}
+div.color6 div.scheduleDivLastLine div.handleDiv {background-color:#00CCFF;}
+span.color6 {background-color:#00CCFF;}
+div.termColor6 {background-color:#00CCFF !important;}
 
-div.color6 {
-	border-color:#0066CC;
-}
-div.color6 div.scheduleDivFirstLine {
-	background-color:#0066CC;
-	border-color:#0066CC;
-}
-div.color6 div.scheduleDivLastLine div.handleDiv {
-	background-color:#0066CC;
-}
-span.color6 {
-	background-color:#0066CC;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor6 {
-	background-color:#0066CC!important;
-	color:#FFF;
-}
+div.color7 {border-color:#800080;}
+div.color7 div.scheduleDivFirstLine {background-color:#800080;border-color:#800080;}
+div.color7 div.scheduleDivLastLine div.handleDiv {background-color:#800080;}
+span.color7 {background-color:#800080;}
+div.termColor7 {background-color:#800080 !important;}
 
-div.color7 {
-	border-color:#FF00CC;
-}
-div.color7 div.scheduleDivFirstLine {
-	background-color:#FF00CC;
-	border-color:#FF00CC;
-}
-div.color7 div.scheduleDivLastLine div.handleDiv {
-	background-color:#FF00CC;
-}
-span.color7 {
-	background-color:#FF00CC;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor7 {
-	background-color:#FF00CC!important;
-	color:#FFF;
-}
+div.color8 {border-color:#808000;}
+div.color8 div.scheduleDivFirstLine {background-color:#808000;border-color:#808000;}
+div.color8 div.scheduleDivLastLine div.handleDiv {background-color:#808000;}
+span.color8 {background-color:#808000;}
+div.termColor8 {background-color:#808000 !important;}
 
-div.color8 {
-	border-color:#669900;
-}
-div.color8 div.scheduleDivFirstLine {
-	background-color:#669900;
-	border-color:#669900;
-}
-div.color8 div.scheduleDivLastLine div.handleDiv {
-	background-color:#669900;
-}
-span.color8 {
-	background-color:#669900;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor8 {
-	background-color:#669900!important;
-	color:#FFF;
-}
+div.color9 {border-color:#ff0066;}
+div.color9 div.scheduleDivFirstLine {background-color:#ff0066;border-color:#ff0066;}
+div.color9 div.scheduleDivLastLine div.handleDiv {background-color:#ff0066;}
+span.color9 {background-color:#ff0066;}
+div.termColor9 {background-color:#ff0066 !important;}
 
-div.color9 {
-	border-color:#666;
-}
-div.color9 div.scheduleDivFirstLine {
-	background-color:#666;
-	border-color:#666;
-}
-div.color9 div.scheduleDivLastLine div.handleDiv {
-	background-color:#666;
-}
-span.color9 {
-	background-color:#666;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor9 {
-	background-color:#666!important;
-	color:#FFF;
-}
+div.color10 {border-color:#0000ff;}
+div.color10 div.scheduleDivFirstLine {background-color:#0000ff;border-color:#0000ff;}
+div.color10 div.scheduleDivLastLine div.handleDiv {background-color:#0000ff;}
+span.color10 {background-color:#0000ff;}
+div.termColor10 {background-color:#0000ff !important;}
 
-div.color10 {
-	border-color:#000060;
-}
-div.color10 div.scheduleDivFirstLine {
-	background-color:#000060;
-	border-color:#000060;
-}
-div.color10 div.scheduleDivLastLine div.handleDiv {
-	background-color:#000060;
-}
-span.color10 {
-	background-color:#000060;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor10 {
-	background-color:#000060!important;
-	color:#FFF;
-}
+div.color11 {border-color:#00cc00;}
+div.color11 div.scheduleDivFirstLine {background-color:#00cc00;border-color:#00cc00;}
+div.color11 div.scheduleDivLastLine div.handleDiv {background-color:#00cc00;}
+span.color11 {background-color:#00cc00;}
+div.termColor11 {background-color:#00cc00 !important;}
 
-div.color11 {
-	border-color:#C33;
-}
-div.color11 div.scheduleDivFirstLine {
-	background-color:#C33;
-	border-color:#C33;
-}
-div.color11 div.scheduleDivLastLine div.handleDiv {
-	background-color:#C33;
-}
-span.color11 {
-	background-color:#C33;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor11 {
-	background-color:#C33!important;
-	color:#FFF;
-}
+div.color12 {border-color:#808080;}
+div.color12 div.scheduleDivFirstLine {background-color:#808080;border-color:#808080;}
+div.color12 div.scheduleDivLastLine div.handleDiv {background-color:#808080;}
+span.color12 {background-color:#808080;}
+div.termColor12 {background-color:#808080 !important;}
 
-div.color12 {
-	border-color:#6C6;
-}
-div.color12 div.scheduleDivFirstLine {
-	background-color:#6C6;
-	border-color:#6C6;
-}
-div.color12 div.scheduleDivLastLine div.handleDiv {
-	background-color:#6C6;
-}
-span.color12 {
-	background-color:#6C6;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor12 {
-	background-color:#6C6!important;
-	color:#FFF;
-}
+div.color13 {border-color:#0066ff;}
+div.color13 div.scheduleDivFirstLine {background-color:#0066ff;border-color:#0066ff;}
+div.color13 div.scheduleDivLastLine div.handleDiv {background-color:#0066ff;}
+span.color13 {background-color:#0066ff;}
+div.termColor13 {background-color:#0066ff !important;}
 
-div.color13 {
-	border-color:#3399CC;
-}
-div.color13 div.scheduleDivFirstLine {
-	background-color:#3399CC;
-	border-color:#3399CC;
-}
-div.color13 div.scheduleDivLastLine div.handleDiv {
-	background-color:#3399CC;
-}
-span.color13 {
-	background-color:#3399CC;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor13 {
-	background-color:#3399CC!important;
-	color:#FFF;
-}
+div.color14 {border-color:#008080;}
+div.color14 div.scheduleDivFirstLine {background-color:#008080;border-color:#008080;}
+div.color14 div.scheduleDivLastLine div.handleDiv {background-color:#008080;}
+span.color14 {background-color:#008080;}
+div.termColor14 {background-color:#008080 !important;}
 
-div.color14 {
-	border-color:#6666FF;
-}
-div.color14 div.scheduleDivFirstLine {
-	background-color:#6666FF;
-	border-color:#6666FF;
-}
-div.color14 div.scheduleDivLastLine div.handleDiv {
-	background-color:#6666FF;
-}
-span.color14 {
-	background-color:#6666FF;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor14 {
-	background-color:#6666FF!important;
-	color:#FFF;
-}
+div.color15 {border-color:#66ee00;}
+div.color15 div.scheduleDivFirstLine {background-color:#66ee00;border-color:#66ee00;}
+div.color15 div.scheduleDivLastLine div.handleDiv {background-color:#66ee00;}
+span.color15 {background-color:#66ee00;}
+div.termColor15 {background-color:#66ee00 !important;}
 
-div.color15 {
-	border-color:#C39;
-}
-div.color15 div.scheduleDivFirstLine {
-	background-color:#C39;
-	border-color:#C39;
-}
-div.color15 div.scheduleDivLastLine div.handleDiv {
-	background-color:#C39;
-}
-span.color15 {
-	background-color:#C39;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor15 {
-	background-color:#C39!important;
-	color:#FFF;
-}
+div.color16 {border-color:#6600ff;}
+div.color16 div.scheduleDivFirstLine {background-color:#6600ff;border-color:#6600ff;}
+div.color16 div.scheduleDivLastLine div.handleDiv {background-color:#6600ff;}
+span.color16 {background-color:#6600ff;}
+div.termColor16 {background-color:#6600ff !important;}
 
-div.color16 {
-	border-color:#330000;
-}
-div.color16 div.scheduleDivFirstLine {
-	background-color:#330000;
-	border-color:#330000;
-}
-div.color16 div.scheduleDivLastLine div.handleDiv {
-	background-color:#330000;
-}
-span.color16 {
-	background-color:#330000;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor16 {
-	background-color:#330000!important;
-	color:#FFF;
-}
+div.color17 {border-color:#ff6600;}
+div.color17 div.scheduleDivFirstLine {background-color:#ff6600;border-color:#ff6600;}
+div.color17 div.scheduleDivLastLine div.handleDiv {background-color:#ff6600;}
+span.color17 {background-color:#ff6600;}
+div.termColor17 {background-color:#ff6600 !important;}
 
-div.color17 {
-	border-color:#AAA;
-}
-div.color17 div.scheduleDivFirstLine {
-	background-color:#AAA;
-	border-color:#AAA;
-}
-div.color17 div.scheduleDivLastLine div.handleDiv {
-	background-color:#AAA;
-}
-span.color17 {
-	background-color:#AAA;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor17 {
-	background-color:#AAA!important;
-	color:#FFF;
-}
+div.color18 {border-color:#00ff66;}
+div.color18 div.scheduleDivFirstLine {background-color:#00ff66;border-color:#00ff66;}
+div.color18 div.scheduleDivLastLine div.handleDiv {background-color:#00ff66;}
+span.color18 {background-color:#00ff66;}
+div.termColor18 {background-color:#00ff66 !important;}
 
-div.color18 {
-	border-color:#9999FF;
-}
-div.color18 div.scheduleDivFirstLine {
-	background-color:#9999FF;
-	border-color:#9999FF;
-}
-div.color18 div.scheduleDivLastLine div.handleDiv {
-	background-color:#9999FF;
-}
-span.color18 {
-	background-color:#9999FF;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor18 {
-	background-color:#9999FF!important;
-	color:#FFF;
-}
+div.color19 {border-color:#003399;}
+div.color19 div.scheduleDivFirstLine {background-color:#003399;border-color:#003399;}
+div.color19 div.scheduleDivLastLine div.handleDiv {background-color:#003399;}
+span.color19 {background-color:#003399;}
+div.termColor19 {background-color:#003399 !important;}
 
-div.color19 {
-	border-color:#800000;
-}
-div.color19 div.scheduleDivFirstLine {
-	background-color:#800000;
-	border-color:#800000;
-}
-div.color19 div.scheduleDivLastLine div.handleDiv {
-	background-color:#800000;
-}
-span.color19 {
-	background-color:#800000;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor19 {
-	background-color:#800000!important;
-	color:#FFF;
-}
+div.color20 {border-color:#990033;}
+div.color20 div.scheduleDivFirstLine {background-color:#990033;border-color:#990033;}
+div.color20 div.scheduleDivLastLine div.handleDiv {background-color:#990033;}
+span.color20 {background-color:#990033;}
+div.termColor20 {background-color:#990033 !important;}
 
-div.color20 {
-	border-color:#F6C;
-}
-div.color20 div.scheduleDivFirstLine {
-	background-color:#F6C;
-	border-color:#F6C;
-}
-div.color20 div.scheduleDivLastLine div.handleDiv {
-	background-color:#F6C;
-}
-span.color20 {
-	background-color:#F6C;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor20 {
-	background-color:#F6C!important;
-	color:#FFF;
-}
+div.color21 {border-color:#339900;}
+div.color21 div.scheduleDivFirstLine {background-color:#339900;border-color:#339900;}
+div.color21 div.scheduleDivLastLine div.handleDiv {background-color:#339900;}
+span.color21 {background-color:#339900;}
+div.termColor21 {background-color:#339900 !important;}
 
-div.color21 {
-	border-color:#CC6600;
-}
-div.color21 div.scheduleDivFirstLine {
-	background-color:#CC6600;
-	border-color:#CC6600;
-}
-div.color21 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC6600;
-}
-span.color21 {
-	background-color:#CC6600;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor21 {
-	background-color:#CC6600!important;
-	color:#FFF;
-}
+div.color22 {border-color:#111111;}
+div.color22 div.scheduleDivFirstLine {background-color:#111111;border-color:#111111;}
+div.color22 div.scheduleDivLastLine div.handleDiv {background-color:#111111;}
+span.color22 {background-color:#111111;}
+div.termColor22 {background-color:#111111 !important;}
 
-div.color22 {
-	border-color:#CC9900;
-}
-div.color22 div.scheduleDivFirstLine {
-	background-color:#CC9900;
-	border-color:#CC9900;
-}
-div.color22 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC9900;
-}
-span.color22 {
-	background-color:#CC9900;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor22 {
-	background-color:#CC9900!important;
-	color:#FFF;
-}
+div.color23 {border-color:#006666;}
+div.color23 div.scheduleDivFirstLine {background-color:#006666;border-color:#006666;}
+div.color23 div.scheduleDivLastLine div.handleDiv {background-color:#006666;}
+span.color23 {background-color:#006666;}
+div.termColor23 {background-color:#006666 !important;}
 
-div.color23 {
-	border-color:#9966FF;
-}
-div.color23 div.scheduleDivFirstLine {
-	background-color:#9966FF;
-	border-color:#9966FF;
-}
-div.color23 div.scheduleDivLastLine div.handleDiv {
-	background-color:#9966FF;
-}
-span.color23 {
-	background-color:#9966FF;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor23 {
-	background-color:#9966FF!important;
-	color:#FFF;
-}
+div.color24 {border-color:#660066;}
+div.color24 div.scheduleDivFirstLine {background-color:#660066;border-color:#660066;}
+div.color24 div.scheduleDivLastLine div.handleDiv {background-color:#660066;}
+span.color24 {background-color:#660066;}
+div.termColor24 {background-color:#660066 !important;}
 
-div.color24 {
-	border-color:#CC6699;
-}
-div.color24 div.scheduleDivFirstLine {
-	background-color:#CC6699;
-	border-color:#CC6699;
-}
-div.color24 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC6699;
-}
-span.color24 {
-	background-color:#CC6699;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor24 {
-	background-color:#CC6699!important;
-	color:#FFF;
-}
+div.color25 {border-color:#666600;}
+div.color25 div.scheduleDivFirstLine {background-color:#666600;border-color:#666600;}
+div.color25 div.scheduleDivLastLine div.handleDiv {background-color:#666600;}
+span.color25 {background-color:#666600;}
+div.termColor25 {background-color:#666600 !important;}
 
-div.color25 {
-	border-color:#663366;
-}
-div.color25 div.scheduleDivFirstLine {
-	background-color:#663366;
-	border-color:#663366;
-}
-div.color25 div.scheduleDivLastLine div.handleDiv {
-	background-color:#663366;
-}
-span.color25 {
-	background-color:#663366;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor25 {
-	background-color:#663366!important;
-	color:#FFF;
-}
+div.color26 {border-color:#660000;}
+div.color26 div.scheduleDivFirstLine {background-color:#660000;border-color:#660000;}
+div.color26 div.scheduleDivLastLine div.handleDiv {background-color:#660000;}
+span.color26 {background-color:#660000;}
+div.termColor26 {background-color:#660000 !important;}
 
-div.color26 {
-	border-color:#CC9966;
-}
-div.color26 div.scheduleDivFirstLine {
-	background-color:#CC9966;
-	border-color:#CC9966;
-}
-div.color26 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC9966;
-}
-span.color26 {
-	background-color:#CC9966;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor26 {
-	background-color:#CC9966!important;
-	color:#FFF;
-}
+div.color27 {border-color:#006600;}
+div.color27 div.scheduleDivFirstLine {background-color:#006600;border-color:#006600;}
+div.color27 div.scheduleDivLastLine div.handleDiv {background-color:#006600;}
+span.color27 {background-color:#006600;}
+div.termColor27 {background-color:#006600 !important;}
 
-div.color27 {
-	border-color:#CC6666;
-}
-div.color27 div.scheduleDivFirstLine {
-	background-color:#CC6666;
-	border-color:#CC6666;
-}
-div.color27 div.scheduleDivLastLine div.handleDiv {
-	background-color:#CC6666;
-}
-span.color27 {
-	background-color:#CC6666;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor27 {
-	background-color:#CC6666!important;
-	color:#FFF;
-}
+div.color28 {border-color:#000066;}
+div.color28 div.scheduleDivFirstLine {background-color:#000066;border-color:#000066;}
+div.color28 div.scheduleDivLastLine div.handleDiv {background-color:#000066;}
+span.color28 {background-color:#000066;}
+div.termColor28 {background-color:#000066 !important;}
 
-div.color28 {
-	border-color:#cc6600;
-}
-div.color28 div.scheduleDivFirstLine {
-	background-color:#cc6600;
-	border-color:#cc6600;
-}
-div.color28 div.scheduleDivLastLine div.handleDiv {
-	background-color:#cc6600;
-}
-span.color28 {
-	background-color:#cc6600;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor28 {
-	background-color:#cc6600!important;
-	color:#FFF;
-}
+div.color29 {border-color:#666666;}
+div.color29 div.scheduleDivFirstLine {background-color:#666666;border-color:#666666;}
+div.color29 div.scheduleDivLastLine div.handleDiv {background-color:#666666;}
+span.color29 {background-color:#666666;}
+div.termColor29 {background-color:#666666 !important;}
 
-div.color29 {
-	border-color:#cc9966;
-}
-div.color29 div.scheduleDivFirstLine {
-	background-color:#cc9966;
-	border-color:#cc9966;
-}
-div.color29 div.scheduleDivLastLine div.handleDiv {
-	background-color:#cc9966;
-}
-span.color29 {
-	background-color:#cc9966;
-	color:#FFF;
-	padding:1px 3px;
-}
-div.termColor29 {
-	background-color:#cc9966!important;
-	color:#FFF;
-}
+/*
+div.color0 {border-color:#039;}
+div.color0 div.scheduleDivFirstLine {background-color:#039;border-color:#039;}
+div.color0 div.scheduleDivLastLine div.handleDiv {background-color:#039;}
+span.color0 {background-color:#039;}
+div.termColor0 {background-color:#039 !important;}
 
+div.color1 {border-color:#CC0033;}
+div.color1 div.scheduleDivFirstLine {background-color:#CC0033;border-color:#CC0033;}
+div.color1 div.scheduleDivLastLine div.handleDiv {background-color:#CC0033;}
+span.color1 {background-color:#CC0033;}
+div.termColor1 {background-color:#CC0033 !important;}
+
+div.color2 {border-color:#006600;}
+div.color2 div.scheduleDivFirstLine {background-color:#006600;border-color:#006600;}
+div.color2 div.scheduleDivLastLine div.handleDiv {background-color:#006600;}
+span.color2 {background-color:#006600;}
+div.termColor2 {background-color:#669900 !important;}
+
+div.color3 {border-color:#39F;}
+div.color3 div.scheduleDivFirstLine {background-color:#39F;border-color:#39F;}
+div.color3 div.scheduleDivLastLine div.handleDiv {background-color:#39F;}
+span.color3 {background-color:#39F;}
+div.termColor3 {background-color:#39F !important;}
+
+div.color4 {border-color:#F63;}
+div.color4 div.scheduleDivFirstLine {background-color:#F63;border-color:#F63;}
+div.color4 div.scheduleDivLastLine div.handleDiv {background-color:#F63;}
+span.color4 {background-color:#F63;}
+div.termColor4 {background-color:#F63 !important;}
+
+div.color5 {border-color:#339966;}
+div.color5 div.scheduleDivFirstLine {background-color:#339966;border-color:#339966;}
+div.color5 div.scheduleDivLastLine div.handleDiv {background-color:#339966;}
+span.color5 {background-color:#339966;}
+div.termColor5 {background-color:#339966 !important;}
+
+div.color6 {border-color:#0066CC;}
+div.color6 div.scheduleDivFirstLine {background-color:#0066CC;border-color:#0066CC;}
+div.color6 div.scheduleDivLastLine div.handleDiv {background-color:#0066CC;}
+span.color6 {background-color:#0066CC;}
+div.termColor6 {background-color:#0066CC !important;}
+
+div.color7 {border-color:#FF00CC;}
+div.color7 div.scheduleDivFirstLine {background-color:#FF00CC;border-color:#FF00CC;}
+div.color7 div.scheduleDivLastLine div.handleDiv {background-color:#FF00CC;}
+span.color7 {background-color:#FF00CC;}
+div.termColor7 {background-color:#FF00CC !important;}
+
+div.color8 {border-color:#669900;}
+div.color8 div.scheduleDivFirstLine {background-color:#669900;border-color:#669900;}
+div.color8 div.scheduleDivLastLine div.handleDiv {background-color:#669900;}
+span.color8 {background-color:#669900;}
+div.termColor8 {background-color:#669900 !important;}
+
+div.color9 {border-color:#666;}
+div.color9 div.scheduleDivFirstLine {background-color:#666;border-color:#666;}
+div.color9 div.scheduleDivLastLine div.handleDiv {background-color:#666;}
+span.color9 {background-color:#666;}
+div.termColor9 {background-color:#666 !important;}
+
+div.color10 {border-color:#000060;}
+div.color10 div.scheduleDivFirstLine {background-color:#000060;border-color:#000060;}
+div.color10 div.scheduleDivLastLine div.handleDiv {background-color:#000060;}
+span.color10 {background-color:#000060;}
+div.termColor10 {background-color:#000060 !important;}
+
+div.color11 {border-color:#C33;}
+div.color11 div.scheduleDivFirstLine {background-color:#C33;border-color:#C33;}
+div.color11 div.scheduleDivLastLine div.handleDiv {background-color:#C33;}
+span.color11 {background-color:#C33;}
+div.termColor11 {background-color:#C33 !important;}
+
+div.color12 {border-color:#6C6;}
+div.color12 div.scheduleDivFirstLine {background-color:#6C6;border-color:#6C6;}
+div.color12 div.scheduleDivLastLine div.handleDiv {background-color:#6C6;}
+span.color12 {background-color:#6C6;}
+div.termColor12 {background-color:#6C6 !important;}
+
+div.color13 {border-color:#3399CC;}
+div.color13 div.scheduleDivFirstLine {background-color:#3399CC;border-color:#3399CC;}
+div.color13 div.scheduleDivLastLine div.handleDiv {background-color:#3399CC;}
+span.color13 {background-color:#3399CC;}
+div.termColor13 {background-color:#3399CC !important;}
+
+div.color14 {border-color:#6666FF;}
+div.color14 div.scheduleDivFirstLine {background-color:#6666FF;border-color:#6666FF;}
+div.color14 div.scheduleDivLastLine div.handleDiv {background-color:#6666FF;}
+span.color14 {background-color:#6666FF;}
+div.termColor14 {background-color:#6666FF !important;}
+
+div.color15 {border-color:#C39;}
+div.color15 div.scheduleDivFirstLine {background-color:#C39;border-color:#C39;}
+div.color15 div.scheduleDivLastLine div.handleDiv {background-color:#C39;}
+span.color15 {background-color:#C39;}
+div.termColor15 {background-color:#C39 !important;}
+
+div.color16 {border-color:#330000;}
+div.color16 div.scheduleDivFirstLine {background-color:#330000;border-color:#330000;}
+div.color16 div.scheduleDivLastLine div.handleDiv {background-color:#330000;}
+span.color16 {background-color:#330000;}
+div.termColor16 {background-color:#330000 !important;}
+
+div.color17 {border-color:#AAA;}
+div.color17 div.scheduleDivFirstLine {background-color:#AAA;border-color:#AAA;}
+div.color17 div.scheduleDivLastLine div.handleDiv {background-color:#AAA;}
+span.color17 {background-color:#AAA;}
+div.termColor17 {background-color:#AAA !important;}
+
+div.color18 {border-color:#9999FF;}
+div.color18 div.scheduleDivFirstLine {background-color:#9999FF;border-color:#9999FF;}
+div.color18 div.scheduleDivLastLine div.handleDiv {background-color:#9999FF;}
+span.color18 {background-color:#9999FF;}
+div.termColor18 {background-color:#9999FF !important;}
+
+div.color19 {border-color:#800000;}
+div.color19 div.scheduleDivFirstLine {background-color:#800000;border-color:#800000;}
+div.color19 div.scheduleDivLastLine div.handleDiv {background-color:#800000;}
+span.color19 {background-color:#800000;}
+div.termColor19 {background-color:#800000 !important;}
+
+div.color20 {border-color:#F6C;}
+div.color20 div.scheduleDivFirstLine {background-color:#F6C;border-color:#F6C;}
+div.color20 div.scheduleDivLastLine div.handleDiv {background-color:#F6C;}
+span.color20 {background-color:#F6C;}
+div.termColor20 {background-color:#F6C !important;}
+
+div.color21 {border-color:#CC6600;}
+div.color21 div.scheduleDivFirstLine {background-color:#CC6600;border-color:#CC6600;}
+div.color21 div.scheduleDivLastLine div.handleDiv {background-color:#CC6600;}
+span.color21 {background-color:#CC6600;}
+div.termColor21 {background-color:#CC6600 !important;}
+
+div.color22 {border-color:#CC9900;}
+div.color22 div.scheduleDivFirstLine {background-color:#CC9900;border-color:#CC9900;}
+div.color22 div.scheduleDivLastLine div.handleDiv {background-color:#CC9900;}
+span.color22 {background-color:#CC9900;}
+div.termColor22 {background-color:#CC9900 !important;}
+
+div.color23 {border-color:#9966FF;}
+div.color23 div.scheduleDivFirstLine {background-color:#9966FF;border-color:#9966FF;}
+div.color23 div.scheduleDivLastLine div.handleDiv {background-color:#9966FF;}
+span.color23 {background-color:#9966FF;}
+div.termColor23 {background-color:#9966FF !important;}
+
+div.color24 {border-color:#CC6699;}
+div.color24 div.scheduleDivFirstLine {background-color:#CC6699;border-color:#CC6699;}
+div.color24 div.scheduleDivLastLine div.handleDiv {background-color:#CC6699;}
+span.color24 {background-color:#CC6699;}
+div.termColor24 {background-color:#CC6699 !important;}
+
+div.color25 {border-color:#663366;}
+div.color25 div.scheduleDivFirstLine {background-color:#663366;border-color:#663366;}
+div.color25 div.scheduleDivLastLine div.handleDiv {background-color:#663366;}
+span.color25 {background-color:#663366;}
+div.termColor25 {background-color:#663366 !important;}
+
+div.color26 {border-color:#CC9966;}
+div.color26 div.scheduleDivFirstLine {background-color:#CC9966;border-color:#CC9966;}
+div.color26 div.scheduleDivLastLine div.handleDiv {background-color:#CC9966;}
+span.color26 {background-color:#CC9966;}
+div.termColor26 {background-color:#CC9966 !important;}
+
+div.color27 {border-color:#CC6666;}
+div.color27 div.scheduleDivFirstLine {background-color:#CC6666;border-color:#CC6666;}
+div.color27 div.scheduleDivLastLine div.handleDiv {background-color:#CC6666;}
+span.color27 {background-color:#CC6666;}
+div.termColor27 {background-color:#CC6666 !important;}
+
+div.color28 {border-color:#cc6600;}
+div.color28 div.scheduleDivFirstLine {background-color:#cc6600;border-color:#cc6600;}
+div.color28 div.scheduleDivLastLine div.handleDiv {background-color:#cc6600;}
+span.color28 {background-color:#cc6600;}
+div.termColor28 {background-color:#cc6600 !important;}
+
+div.color29 {border-color:#cc9966;}
+div.color29 div.scheduleDivFirstLine {background-color:#cc9966;border-color:#cc9966;}
+div.color29 div.scheduleDivLastLine div.handleDiv {background-color:#cc9966;}
+span.color29 {background-color:#cc9966;}
+div.termColor29 {background-color:#cc9966 !important;}
+*/
 
 div.dummy_div {
 	cursor:pointer;
