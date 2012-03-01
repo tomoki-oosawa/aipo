@@ -57,11 +57,14 @@
     dojo.style("scheduleDivAdd06_"+portletId,'opacity', 0);
     dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
 
-#if (${client} == "IPAD")
+	#if (${client} == "IPAD")
 	dojo.query(".scroll_width").style("width", "17px");
-#end
+	#if($!top_form=='simple')
+	dojo.query(".scroll_width").style("width", "3%");
+ 	#end
+	#end
 
-    var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
+	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){
        var params = {
             widgetId: "member_to-$!portlet.ID",

@@ -49,17 +49,20 @@
     var portletId = '$!portlet.ID';
     dojo.style("termScheduleDivAdd_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd00_"+portletId,'opacity', 0);
-    dojo.style("scheduleDivAdd01_"+portletId,'opacity', 0);
+	dojo.style("scheduleDivAdd01_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd02_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd03_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd04_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd05_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd06_"+portletId,'opacity', 0);
-    dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
+	dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
 
-#if (${client} == "IPAD")
+	#if (${client} == "IPAD")
 	dojo.query(".scroll_width").style("width", "17px");
-#end
+	#if($!top_form == 'simple')
+	dojo.query(".scroll_width").style("width", "3%");
+ 	#end
+	#end
 
     var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){

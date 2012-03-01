@@ -122,10 +122,13 @@
                               </div>
                             </div>
                           </td>
-                          <td width="18">
+                          #if(${client} == "IPAD" && $!top_form == 'simple')
+							#else
+						  <td width="18">
                             <div class="weeklySpan">&nbsp;</div>
                             <div class="weeklySpan">&nbsp;</div>
                           </td>
+						  #end
                         </tr>
 
                         <tr>
@@ -161,10 +164,13 @@
                               ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
-                          <td width="18">
+                          #if(${client} == "IPAD" && $!top_form == 'simple')
+							#else
+						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
                           </td>
-                        </tr>
+						  #end
+						  </tr>
 						<tr>
 						<td colspan="9">
 						<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage" style="z-index: -1;">&nbsp;</div>
@@ -590,10 +596,11 @@
                                 <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
 
+
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
                               </div>
                             </td>
-                            <td class="scrollRight">
+								<td class="scrollRight">
                               <div class="scroll_width"></div>
                             </td>
                           </tr>

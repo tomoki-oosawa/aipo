@@ -122,11 +122,14 @@
                               </div>
                             </div>
                           </td>
-                          <td width="18">
+						  #if(${client} == "IPAD" && $!top_form == 'simple')
+							#else
+						  <td width="18">
                             <div class="weeklySpan">&nbsp;</div>
                             <div class="weeklySpan">&nbsp;</div>
                           </td>
-                        </tr>
+						  #end
+						  </tr>
 
                         <tr>
                           <td width="50">
@@ -161,9 +164,12 @@
                               ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
-                          <td width="18">
+                          #if(${client} == "IPAD" && $!top_form == 'simple')
+							#else
+						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
                           </td>
+						  #end
                         </tr>
 						<tr>
 						<td colspan="9">
@@ -583,17 +589,16 @@
                                 </div>
 
                                 <div id="scheduleDivAdd00_$!portlet.ID" class="scheduleDivAdd" style="left: 0%;#if($!top_form=='simple')width: 100%;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+								<div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd02_$!portlet.ID" class="scheduleDivAdd" style="left: 28.5714%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd03_$!portlet.ID" class="scheduleDivAdd" style="left: 42.8571%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd04_$!portlet.ID" class="scheduleDivAdd" style="left: 57.1429%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
                                 <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>
                               </div>
                             </td>
-                            <td class="scrollRight">
+								<td class="scrollRight">
                               <div class="scroll_width"></div>
                             </td>
                           </tr>
