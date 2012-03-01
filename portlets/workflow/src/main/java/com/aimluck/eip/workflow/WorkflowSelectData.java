@@ -39,6 +39,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -503,6 +504,18 @@ public class WorkflowSelectData extends
         .intValue()));
       rd.setProgress(record.getProgress());
       rd.setPrice(record.getPrice().longValue());
+
+      Expression exp2 =
+        ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, rd
+          .getRequestId());
+      Expression exp3 =
+        ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "Workflow");
+      Expression exp4 = exp2.andExp(exp3);
+      List<Activity> list = Database.query(Activity.class, exp4).fetchList();
+
+      for (Activity activity : list) {
+        rd.setActivityId(activity.getId());
+      }
 
       String lastUpdateUser = null;
       EipTWorkflowRequestMap map = null;

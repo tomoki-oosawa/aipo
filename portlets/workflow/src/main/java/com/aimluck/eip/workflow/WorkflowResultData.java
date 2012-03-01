@@ -97,6 +97,9 @@ public class WorkflowResultData implements ALData {
   /** 更新日時 */
   private ALDateTimeField updateDateTime;
 
+  /** あなた宛のお知らせのID */
+  protected ALNumberField activityId;
+
   /**
    *
    *
@@ -126,6 +129,8 @@ public class WorkflowResultData implements ALData {
     createDateYear = new ALDateTimeField("yyyy年M月d日");
     createDate = new ALDateTimeField("M月d日");
     createDateTime = new ALDateTimeField("H:mm");
+
+    activityId = new ALNumberField();
   }
 
   /**
@@ -319,6 +324,20 @@ public class WorkflowResultData implements ALData {
    */
   public void setClientName(String string) {
     client_name.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getActivityId() {
+    return activityId;
+  }
+
+  /**
+   * @param string
+   */
+  public void setActivityId(int string) {
+    activityId.setValue(string);
   }
 
   /**
