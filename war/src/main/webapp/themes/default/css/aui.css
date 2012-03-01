@@ -303,8 +303,8 @@ table.activityTable tr.unread td {
 }
 #footText div {
 	display:inline;
-	height:28px;
-	line-height:28px;
+	height:30px;
+	line-height:30px;
 	padding:0 1em;
 	border-left:solid 1px #ccc;
 }
@@ -327,21 +327,14 @@ table.activityTable tr.unread td {
 }
 #startGuide .close {
 	float:right;
-	padding:20px 20px 0 0;
+	padding:20px;
 }
 #startGuide .close a {
 	color:#fff;
 }
-/* White footer
 .guideContents {
 	float:left;
-	padding:20px;
-	text-align:center;
-	border-left:solid 1px #fff;
-	border-right:solid 1px #ccc;
-}*/
-.guideContents {
-	float:left;
+	width:199px;
 	padding:20px;
 	text-align:center;
 	border-right:solid 1px #505050;
@@ -1640,6 +1633,112 @@ ul#attachments span.deletebutton:hover{
 	background-position:23px 1em;
 }
 
+/* timeline ********************/
+#timelineOuter .message {
+	margin-bottom:10px;
+	padding-top: 5px;
+	border-top: 1px solid #dcdcdc;
+}
+
+#timelineOuter .on {
+	border-top: 1px solid #999999;
+}
+
+#timelineOuter #inputField {
+	margin-bottom: 10px;
+}
+
+#timelineOuter textarea.elastic {
+	width: 99%;
+	overflow: hidden;
+	border: 0px;
+	resize: none;
+	outline: 0;
+	line-height: normal;
+	height: 21px;
+	-webkit-appearance: caret;
+}
+
+#timelineOuter .commentField {
+	margin-left: 20px;
+	padding:4px;
+	border-top:solid 1px #fff;
+	border-bottom:solid 1px #e6e6e6;
+	background:#f0f0f0;
+}
+
+#timelineOuter .outer {
+	border: 1px #cdcdcd solid;
+	padding: 3px;
+	margin-bottom: 5px;
+	background:#fff;
+}
+
+#timelineOuter .comments {
+	margin:5px 0 0 20px;
+	background:#f0f0f0;
+}
+#timelineOuter .comments .message {
+	margin:0;
+	border: none;
+	border-bottom:solid 1px #e6e6e6;
+	border-top:solid 1px #fff;
+}
+
+#timelineOuter .timeline {
+	width: 100%;
+	word-break: break-all;
+	word-wrap: break-word;
+}
+
+#timelineOuter .timeline .name {
+	/*color: #369;*/
+	font-weight: bold;
+	padding-right: 5px;
+}
+
+.name .avatar {
+	float:left;
+	width:23px;
+	height:23px;
+	margin:0 4px 0 0;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+#timelineOuter .readMore {
+	margin-top: 5px;
+	padding: 3px;
+	background: #efefef url(https://app.aipo.com/themes/default/images/common/bg_slash.gif) repeat left top;
+	border: 1px #cdcdcd solid;
+	text-align: center;
+}
+#timelineOuter .timeline .body {
+        padding-top: 3px;
+        min-height: 25px;
+        padding-bottom: 5px;
+}
+
+#timelineOuter .timeline .time {
+        margin-bottom:3px;
+        font-size: 80%;
+        *font-size: 75%;
+        color: #434343;
+}
+
+#timelineOuter .commentInputDummy {
+        padding:4px;
+        border-top:solid 1px #fff;
+        border-bottom:solid 1px #e6e6e6;
+}
+#timelineOuter .commentInputDummy span {
+        display:block;
+        padding:2px;
+        border: 1px #cdcdcd solid;
+        color: #aaaaaa;
+        cursor: text;
+        background:#fff;
+}
+
 /* auiIcon ********************/
 /*
 auiIconは「class="auiIcon auiIconSetting"」と
@@ -1706,10 +1805,30 @@ a.auiIconLock:hover {background-position:0px -208px;}
 *html .auiIconLock {background-position:0px -192px;}/*IE6*/
 *html a.auiIconLock:hover {background-position:0px -192px;}/*IE6*/
 
+.auiIconReload {background-position:0px -224px;}
+a.auiIconReload:hover {background-position:0px -240px;}
+*html .auiIconReload {background-position:0px -224px;}/*IE6*/
+*html a.auiIconReload:hover {background-position:0px -224px;}/*IE6*/
+
+.auiIconPrint {background-position:0px -256px;}
+a.auiIconPrint:hover {background-position:0px -256px;}
+*html .auiIconPrint {background-position:0px -256px;}/*IE6*/
+*html a.auiIconPrint:hover {background-position:0px -256px;}/*IE6*/
+
 .auiIconDelete {background-position:0px -272px;}
 a.auiIconDelete:hover {background-position:0px -288px;}
 *html .auiIconDelete {background-position:0px -272px;}/*IE6*/
 *html a.auiIconDelete:hover {background-position:0px -272px;}/*IE6*/
+
+.auiIconPlus {background-position:0px -304px;}
+a.auiIconPlus:hover {background-position:0px -320px;}
+*html .auiIconPlus {background-position:0px -304px;}/*IE6*/
+*html a.auiIconPlus:hover {background-position:0px -304px;}/*IE6*/
+
+.auiIconMinus {background-position:0px -336px;}
+a.auiIconMinus:hover {background-position:0px -352px;}
+*html .auiIconMinus {background-position:0px -336px;}/*IE6*/
+*html a.auiIconMinus:hover {background-position:0px -336px;}/*IE6*/
 
 .auiIconArwLeft {background-position:0px -368px;}
 a.auiIconArwLeft:hover {background-position:0px -384px;}
@@ -1740,6 +1859,11 @@ a.auiIconImage:hover {background-position:0px -512px;}
 a.auiIconUsers:hover {background-position:0px -544px;}
 *html .auiIconUsers {background-position:0px -528px;}/*IE6*/
 *html a.auiIconUsers:hover {background-position:0px -528px;}/*IE6*/
+
+.auiIconSearch {background-position:0px -560px;}
+a.auiIconSearch:hover {background-position:0px -576px;}
+*html .auiIconSearch {background-position:0px -560px;}/*IE6*/
+*html a.auiIconSearch:hover {background-position:0px -560px;}/*IE6*/
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
