@@ -116,21 +116,17 @@ public class MsgboardTopicSelectData extends
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      String sortStr =
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-sort");
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      String sortStr = null;
+      if (portlet != null) {
+        sortStr = portlet.getPortletConfig().getInitParameter("p2a-sort");
+      } else {
+        sortStr = "update_date";
+      }
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
       if ("update_date".equals(sortStr)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
-
-      logger.debug("[MsgboardTopicSelectData] Init Parameter. : "
-        + ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-sort"));
     }
 
     uid = ALEipUtils.getUserId(rundata);
@@ -172,7 +168,7 @@ public class MsgboardTopicSelectData extends
         }
       }
     } catch (Exception ex) {
-      logger.debug("Exception", ex);
+      logger.error("Exception", ex);
     }
 
     target_keyword = new ALStringField();
@@ -457,11 +453,13 @@ public class MsgboardTopicSelectData extends
       throw new ALPageNotFoundException();
     }
 
-    String cotopicsort =
-      ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2b-sort");
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    String cotopicsort = null;
+    if (portlet != null) {
+      cotopicsort = portlet.getPortletConfig().getInitParameter("p2b-sort");
+    } else {
+      cotopicsort = "response_old";
+    }
 
     try {
       parentTopic =
