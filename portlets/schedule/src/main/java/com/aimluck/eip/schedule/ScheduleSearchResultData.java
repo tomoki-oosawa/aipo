@@ -43,7 +43,7 @@ public class ScheduleSearchResultData extends ScheduleResultData {
   }
 
   public String getDateFull() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'MM'月'dd'日（'E'）'");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'M'月'd'日（'E'）'");
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
@@ -79,7 +79,7 @@ public class ScheduleSearchResultData extends ScheduleResultData {
   }
 
   public String getDateDetail() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'MM'月'dd'日（'E'）'");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'M'月'd'日（'E'）'");
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));

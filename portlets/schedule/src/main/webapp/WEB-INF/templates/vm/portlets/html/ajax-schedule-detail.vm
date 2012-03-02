@@ -144,7 +144,7 @@ ${record.FacilityName}<br/>
 #ALtdcaption('登録者名')
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
 #ALtdcaption('更新者名')
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年M月d日 H時mm分')}）")
 <tr>
 #ALtdcellheaderAtt("colspan='2' align='center'")
 #if( !$!result.isActivity() && ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
