@@ -165,6 +165,7 @@ img.avatar,
 	float:left;
 	display:block;
 	height:12px;
+	padding:0;
 	background:#f03d25;
 	color:#FFF;
 	font-size:8px;
@@ -1034,17 +1035,17 @@ button.auiButtonBold {
 }
 .auiButtonAction:hover {
 	color:#fff;
-	border:solid 1px #e08000;
+	border:solid 1px #e0800 !important0;
 	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#ffbb22;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900));/*Ch*/
+	background:#ffbb22 !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900)) !important;/*Ch*/
 	background: -moz-linear-gradient(top, #ffcc33, #ff9900);/*Fx*/
 }
 .auiButtonAction:active {
-	border:solid 1px #e08000;
+	border:solid 1px #e08000 !important;
 	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#ff9000;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22));/*Ch*/
+	background:#ff9000 !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22)) !important;/*Ch*/
 	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
 }
 .auiButtonBold:hover {
