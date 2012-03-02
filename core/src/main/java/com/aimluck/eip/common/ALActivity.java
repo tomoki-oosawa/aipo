@@ -27,6 +27,11 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.social.Activity;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
@@ -41,6 +46,8 @@ public class ALActivity implements ALData, Serializable {
   private ALStringField displayName;
 
   private ALStringField appId;
+
+  private ALStringField loginname;
 
   private ALStringField title;
 
@@ -74,6 +81,7 @@ public class ALActivity implements ALData, Serializable {
     displayName = new ALStringField();
     displayName.setValue("_");
     appId = new ALStringField();
+    loginname = new ALStringField();
     title = new ALStringField();
     externalId = new ALStringField();
     portletParams = new ALStringField();
@@ -107,6 +115,21 @@ public class ALActivity implements ALData, Serializable {
    */
   public void setAppId(String appId) {
     this.appId.setValue(appId);
+  }
+
+  /**
+   * @return loginname
+   */
+  public ALStringField getLoginName() {
+    return loginname;
+  }
+
+  /**
+   * @param loginname
+   *          セットする loginname
+   */
+  public void setLoginName(String loginname) {
+    this.loginname.setValue(loginname);
   }
 
   /**
@@ -248,5 +271,50 @@ public class ALActivity implements ALData, Serializable {
    */
   public ALStringField getIcon() {
     return icon;
+  }
+
+  /**
+   * external_id毎の直近のアクティビティを返す。存在しない場合null。
+   * 
+   * @param appid
+   *          ex Schedule
+   * @param external_id
+   *          ページ毎に割り振られるid
+   * @return
+   */
+  public static ALActivity getRecentActivity(String appid, int external_id,
+      float priority) {
+    ResultList<ALActivity> list =
+      ALActivityService.getList(new ALActivityGetRequest()
+        .withAppId(appid)
+        .withLimit(1)
+        .withPriority(priority)
+        .withExternalId(external_id));
+    return list.size() > 0 ? list.get(0) : null;
+  }
+
+  /**
+   * 更新情報をReplaceするか
+   * 
+   * @param activity
+   * @param loginname
+   * @return
+   */
+  public boolean isReplace(String loginname) {
+    return loginname.equals(this.getLoginName().getValue());
+
+  }
+
+  /**
+   * 更新情報を消す。
+   * 
+   * @param activity
+   * @param loginname
+   * @return
+   */
+  public void Delete() {
+
+    String sql = "delete from activity where id = " + this.getId();
+    Database.sql(Activity.class, sql).execute();
   }
 }

@@ -68,6 +68,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -744,7 +745,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3742,6 +3743,11 @@ public class ScheduleUtils {
   public static void createShareScheduleActivity(EipTSchedule schedule,
       String loginName, List<String> recipients, boolean isNew) {
     if (recipients != null && recipients.size() > 0) {
+      ALActivity RecentActivity =
+        ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
+      boolean isDeletePrev =
+        RecentActivity != null && RecentActivity.isReplace(loginName);
+
       String title =
         new StringBuilder("予定「").append(schedule.getName()).append(
           isNew ? "」を追加しました。" : "」を編集しました。").toString();
@@ -3761,11 +3767,20 @@ public class ScheduleUtils {
         .withTile(title)
         .witchPriority(1f)
         .withExternalId(String.valueOf(schedule.getScheduleId())));
+
+      if (isDeletePrev) {
+        RecentActivity.Delete();
+      }
     }
   }
 
   public static void createNewScheduleActivity(EipTSchedule schedule,
       String loginName, boolean isNew) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     String title =
       new StringBuilder("予定「").append(schedule.getName()).append(
         isNew ? "」を追加しました。" : "」を編集しました。").toString();
@@ -3783,6 +3798,10 @@ public class ScheduleUtils {
       .withTile(title)
       .witchPriority(0f)
       .withExternalId(String.valueOf(schedule.getScheduleId())));
+
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   public static String getTargetKeyword(RunData rundata, Context context) {

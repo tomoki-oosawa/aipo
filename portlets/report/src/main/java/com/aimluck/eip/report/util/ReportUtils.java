@@ -49,6 +49,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMemberMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -844,6 +845,10 @@ public class ReportUtils {
   public static void createReportActivity(EipTReport report, String loginName,
       List<String> recipients, Boolean type) {
     if (recipients != null && recipients.size() > 0) {
+      ALActivity RecentActivity =
+        ALActivity.getRecentActivity("Report", report.getReportId(), 1f);
+      boolean isDeletePrev =
+        RecentActivity != null && RecentActivity.isReplace(loginName);
 
       StringBuilder b = new StringBuilder("報告書「");
 
@@ -863,6 +868,10 @@ public class ReportUtils {
         .withTile(b.toString())
         .witchPriority(1f)
         .withExternalId(String.valueOf(report.getReportId())));
+
+      if (isDeletePrev) {
+        RecentActivity.Delete();
+      }
     }
   }
 
@@ -877,7 +886,10 @@ public class ReportUtils {
   public static void createReportReplyActivity(EipTReport report,
       String loginName, String recipient) {
     if (recipient != null) {
-
+      ALActivity RecentActivity =
+        ALActivity.getRecentActivity("Report", report.getReportId(), 1f);
+      boolean isDeletePrev =
+        RecentActivity != null && RecentActivity.isReplace(loginName);
       StringBuilder b = new StringBuilder("報告書「");
 
       b.append(report.getReportName()).append("」").append("に返信しました。");
@@ -895,6 +907,10 @@ public class ReportUtils {
         .withTile(b.toString())
         .witchPriority(1f)
         .withExternalId(String.valueOf(report.getReportId())));
+
+      if (isDeletePrev) {
+        RecentActivity.Delete();
+      }
     }
   }
 
@@ -908,6 +924,10 @@ public class ReportUtils {
    */
   public static void createNewReportActivity(EipTReport report,
       String loginName, Boolean type) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Report", report.getReportId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
 
     StringBuilder b = new StringBuilder("報告書「");
 
@@ -926,6 +946,9 @@ public class ReportUtils {
       .withTile(b.toString())
       .witchPriority(0f)
       .withExternalId(String.valueOf(report.getReportId())));
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   /**
@@ -938,6 +961,10 @@ public class ReportUtils {
    */
   public static void createNewReportReplyActivity(EipTReport report,
       String loginName) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Report", report.getReportId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
 
     StringBuilder b = new StringBuilder("報告書「");
 
@@ -955,6 +982,9 @@ public class ReportUtils {
       .withTile(b.toString())
       .witchPriority(0f)
       .withExternalId(String.valueOf(report.getReportId())));
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   /**

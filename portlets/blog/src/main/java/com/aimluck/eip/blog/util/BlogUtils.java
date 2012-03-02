@@ -54,6 +54,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -830,6 +831,11 @@ public class BlogUtils {
   }
 
   public static void createNewBlogActivity(EipTBlogEntry blog, String loginName) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Blog", blog.getEntryId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     String title =
       new StringBuilder("ブログ「")
         .append(blog.getTitle())
@@ -847,6 +853,9 @@ public class BlogUtils {
       .withTile(title)
       .witchPriority(0f)
       .withExternalId(String.valueOf(blog.getEntryId())));
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   public static void createNewCommentActivity(EipTBlogEntry blog,
@@ -854,6 +863,11 @@ public class BlogUtils {
     if (loginName.equals(targetLoginName)) {
       return;
     }
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Blog", blog.getEntryId(), 1f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     List<String> recipients = new ArrayList<String>();
     recipients.add(targetLoginName);
     String title =
@@ -874,6 +888,10 @@ public class BlogUtils {
       .withTile(title)
       .witchPriority(1f)
       .withExternalId(String.valueOf(blog.getEntryId())));
+
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   /**

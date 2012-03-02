@@ -38,6 +38,7 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -615,6 +616,12 @@ public class ToDoUtils {
    */
   public static void createToDoActivity(EipTTodo todo, String loginName,
       List<String> recipients, boolean isNew) {
+
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Todo", todo.getTodoId(), 1f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     String title =
       new StringBuilder("ToDo「").append(todo.getTodoName()).append(
         isNew ? "」を追加しました。" : "」を編集しました。").toString();
@@ -643,6 +650,10 @@ public class ToDoUtils {
         .withTile(title)
         .witchPriority(0f)
         .withExternalId(String.valueOf(todo.getTodoId())));
+    }
+
+    if (isDeletePrev) {
+      RecentActivity.Delete();
     }
   }
 

@@ -497,6 +497,7 @@ public class ALDefaultSocialApplicationHanlder extends
     for (Activity model : resultList) {
       ALActivity activity = new ALActivity();
       activity.setId(model.getId());
+      activity.setLoginName(model.getLoginName());
       activity.setAppId(model.getAppId());
       activity.setTitle(model.getTitle());
       activity.setUpdateDate(model.getUpdateDate());
@@ -534,6 +535,7 @@ public class ALDefaultSocialApplicationHanlder extends
     ALActivity activity = new ALActivity();
     activity.setId(model.getId());
     activity.setAppId(model.getAppId());
+    activity.setLoginName(model.getLoginName());
     activity.setTitle(model.getTitle());
     activity.setUpdateDate(model.getUpdateDate());
     activity.setExternalId(model.getExternalId());
@@ -698,6 +700,12 @@ public class ALDefaultSocialApplicationHanlder extends
         + "."
         + ActivityMap.IS_READ_PROPERTY, isRead));
     }
+    int external_id = request.getExternalId();
+
+    if (external_id > 0) {
+      query.where(Operations.eq(Activity.EXTERNAL_ID_PROPERTY, external_id));
+    }
+
     float priority = request.getPriority();
     if (priority >= 0f) {
       query.where(Operations.eq(Activity.PRIORITY_PROPERTY, priority));

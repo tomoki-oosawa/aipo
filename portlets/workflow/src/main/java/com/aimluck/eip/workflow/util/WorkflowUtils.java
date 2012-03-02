@@ -47,6 +47,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRoute;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -1780,6 +1781,11 @@ public class WorkflowUtils {
   public static void createWorkflowRequestActivity(EipTWorkflowRequest request,
       String loginName, List<String> recipients, Type type) {
     if (recipients != null && recipients.size() > 0) {
+      ALActivity RecentActivity =
+        ALActivity.getRecentActivity("Workflow", request.getRequestId(), 1f);
+      boolean isDeletePrev =
+        RecentActivity != null && RecentActivity.isReplace(loginName);
+
       EipTWorkflowCategory category = request.getEipTWorkflowCategory();
       String name = request.getRequestName();
 
@@ -1818,6 +1824,10 @@ public class WorkflowUtils {
         .withTile(b.toString())
         .witchPriority(1f)
         .withExternalId(String.valueOf(request.getRequestId())));
+
+      if (isDeletePrev) {
+        RecentActivity.Delete();
+      }
     }
   }
 

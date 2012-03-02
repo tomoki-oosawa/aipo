@@ -34,6 +34,8 @@ public class ALActivityGetRequest {
 
   private String appId;
 
+  private int externalId;
+
   private String loginName;
 
   private String targetLoginName;
@@ -79,6 +81,19 @@ public class ALActivityGetRequest {
 
   public ALActivityGetRequest withPage(int page) {
     setPage(page);
+    return this;
+  }
+
+  public int getExternalId() {
+    return externalId;
+  }
+
+  public void setExternalId(int externalId) {
+    this.externalId = externalId;
+  }
+
+  public ALActivityGetRequest withExternalId(int externalId) {
+    setExternalId(externalId);
     return this;
   }
 

@@ -36,6 +36,7 @@ import com.aimluck.eip.cabinet.FolderInfo;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolderMap;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -746,6 +747,11 @@ public class CabinetUtils {
    */
   public static void createCabinetActivity(EipTCabinetFile file,
       String loginName, List<String> recipients, boolean isNew) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Cabinet", file.getFileId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     String title =
       new StringBuilder("ファイル「")
         .append(file.getFileTitle())
@@ -773,6 +779,9 @@ public class CabinetUtils {
         .withTile(title)
         .witchPriority(0f)
         .withExternalId(String.valueOf(file.getFileId())));
+    }
+    if (isDeletePrev) {
+      RecentActivity.Delete();
     }
   }
 

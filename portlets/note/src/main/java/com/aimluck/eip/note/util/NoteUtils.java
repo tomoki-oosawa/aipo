@@ -41,6 +41,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNote;
 import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -767,6 +768,11 @@ public class NoteUtils {
   public static void sendNoteActivity(EipTNote note, String loginName,
       List<String> recipients) {
     if (recipients != null && recipients.size() > 0) {
+      ALActivity RecentActivity =
+        ALActivity.getRecentActivity("Note", note.getNoteId(), 1f);
+      boolean isDeletePrev =
+        RecentActivity != null && RecentActivity.isReplace(loginName);
+
       String subjectType = note.getSubjectType();
       String subject = "";
       if ("0".equals(subjectType)) {
@@ -799,6 +805,10 @@ public class NoteUtils {
         .withTile(title)
         .witchPriority(1f)
         .withExternalId(String.valueOf(note.getNoteId())));
+
+      if (isDeletePrev) {
+        RecentActivity.Delete();
+      }
     }
   }
 }

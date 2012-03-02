@@ -43,6 +43,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -1138,6 +1139,11 @@ public class MsgboardUtils {
 
   public static void createTopicActivity(EipTMsgboardTopic topic,
       String loginName, List<String> recipients, boolean isNew) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Msgboard", topic.getTopicId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     String title =
       new StringBuilder("掲示板「")
         .append(topic.getTopicName())
@@ -1166,6 +1172,10 @@ public class MsgboardUtils {
         .witchPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
+
+    if (isDeletePrev) {
+      RecentActivity.Delete();
+    }
   }
 
   /**
@@ -1177,6 +1187,11 @@ public class MsgboardUtils {
    */
   public static void createNewTopicActivity(EipTMsgboardTopic topic,
       String loginName, String recipient) {
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Msgboard", topic.getTopicId(), 1f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
+
     if (recipient != null && !loginName.equals(recipient)) {
       StringBuilder b = new StringBuilder("掲示板「");
 
@@ -1210,6 +1225,9 @@ public class MsgboardUtils {
         .withTile(b.toString())
         .witchPriority(1f)
         .withExternalId(String.valueOf(topic.getTopicId())));
+    }
+    if (isDeletePrev) {
+      RecentActivity.Delete();
     }
   }
 
