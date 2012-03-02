@@ -1647,7 +1647,6 @@ ul#attachments span.deletebutton:hover{
 #timelineOuter #inputField {
 	margin-bottom: 10px;
 }
-
 #timelineOuter textarea.elastic {
 	width: 99%;
 	overflow: hidden;
@@ -1666,7 +1665,6 @@ ul#attachments span.deletebutton:hover{
 	border-bottom:solid 1px #e6e6e6;
 	background:#f0f0f0;
 }
-
 #timelineOuter .outer {
 	border: 1px #cdcdcd solid;
 	padding: 3px;
@@ -1691,18 +1689,23 @@ ul#attachments span.deletebutton:hover{
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;
 }
-
 #timelineOuter .timeline {
 	width: 100%;
 	word-break: break-all;
 	word-wrap: break-word;
 }
-
 #timelineOuter .timeline .name {
 	/*color: #369;*/
 	font-weight: bold;
 	padding-right: 5px;
 }
+#timelineOuter .timeline .body {
+	margin-left:60px;
+}
+#timelineOuter .timeline .comments .body {
+	margin-left:42px;
+}
+
 
 .name .avatar {
 	float:left;
