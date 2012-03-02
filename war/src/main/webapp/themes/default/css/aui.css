@@ -1671,40 +1671,84 @@ ul#attachments span.deletebutton:hover{
 	margin-bottom: 5px;
 	background:#fff;
 }
+#timeline {
+	overflow:hidden;
+}
+#timeline .message {
+	clear:both;
+}
+#timeline .avatar {
+	float:left;
+}
+#timeline .messageContents {
+	padding-left:60px;
+}
+#timeline .comments .messageContents {
+	padding-left:42px;
+}
 
-#timelineOuter .comments {
-	margin:5px 0 0 20px;
+#timeline .comments {
+	margin:5px 0 0 60px;
 	background:#f0f0f0;
 }
-#timelineOuter .commentCaption {
+#timeline .commentCaption {
 	padding:3px 5px;
 	font-size:smaller;
 	border-top:solid 1px #fff;
 	border-bottom:solid 1px #e6e6e6;
 }
-#timelineOuter .comments .message {
+#timeline .comments .message {
 	margin:0;
 	padding:5px;
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;
 }
-#timelineOuter .timeline {
+#timeline .timeline {
 	width: 100%;
 	word-break: break-all;
 	word-wrap: break-word;
 }
-#timelineOuter .timeline .name {
+#timeline .name {
 	/*color: #369;*/
 	font-weight: bold;
 	padding-right: 5px;
 }
-#timelineOuter .timeline .body {
-	margin-left:60px;
+
+/* tlImageBox */
+.tlImageBlock {
+	margin:10px 0;
 }
-#timelineOuter .timeline .comments .body {
-	margin-left:42px;
+.tlImageBlock img {
+	max-width:200px;
+	max-height:200px;
+	padding:4px;
+	border:solid 1px #cccccc;
 }
+.tlImageBlock a:hover img {
+	border:solid 1px #ff9900;
+}
+
+/* clipBloard */
+.tlClipBoard {
+	margin:10px 0;
+}
+.tlClipImage {
+	float:left;
+	max-width:90px;
+	max-height:90px;
+	margin-right:10px;
+	text-align:center;
+}
+.tlClipImage img {
+	max-width:90px;
+	max-height:90px;
+}
+.tlClipContents {margin-left:100px;}
+.tlClipTitle {font-size:12px;}
+.tlClipUrl {font-size:10px;}
+.tlClipBody {padding-top:5px;color:#666666;}
+
 
 
 .name .avatar {
