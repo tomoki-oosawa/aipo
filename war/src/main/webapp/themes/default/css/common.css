@@ -195,10 +195,10 @@ div.outer {
 .spaceBottom {
 	padding-bottom:5px;
 }
-.spaceBoth {
+.spaceBoth {/*
 	padding-right:5px;
 	padding-left:5px;
-}
+*/}
 .spaceAll {
 	padding:5px;
 }
@@ -1890,9 +1890,9 @@ div.calendarScheduleDiv .calendarTime {
 
 div.calendarScheduleDiv .addSchedule {
 	display:inline-block !important;
-	border-bottom:solid 1px #000;
 	margin:0 0 5px 0;
 	padding:1px 0 !important;
+	text-decoration:underline !important;
 }
 div.calendarScheduleDiv .addSchedule:hover {
 	padding:1px 0;
