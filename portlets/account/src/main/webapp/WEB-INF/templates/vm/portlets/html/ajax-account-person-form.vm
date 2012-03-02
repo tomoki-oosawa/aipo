@@ -33,11 +33,11 @@
 #ALtditemheader()
 $!result.LoginName
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired($!result.NewPassword.FieldName)" "style='width:100px;'")
+#ALtdcaptionAtt("#ALrequired($!result.NewPassword.FieldName)" "")
 #ALtditemheader()
 #ALpasswdfield('new_password' $!result.NewPassword '50%' '' 'disabled')#ALcaution('（半角英数字）')
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired($!result.NewPasswordConfirm.FieldName)" "style='width:100px;'")
+#ALtdcaptionAtt("#ALrequired($!result.NewPasswordConfirm.FieldName)" "")
 #ALtditemheader()
 #ALpasswdfield('new_password_confirm' $!result.NewPasswordConfirm '50%' '' 'disabled')#ALcaution('（半角英数字）')
 #ALtditemfooter()
