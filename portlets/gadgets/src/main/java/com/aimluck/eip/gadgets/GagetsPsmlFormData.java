@@ -304,6 +304,16 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
                   entries[j].setParameter(0, scheduleParameter);
                 }
               }
+
+              if (entries[j].getParent().equals("WebMail")) {
+                Parameter webmailParameter =
+                  entries[j].getParameter("p3a-accounts");
+                if (webmailParameter != null) {
+                  webmailParameter.setValue("");
+                  entries[j].setParameter(0, webmailParameter);
+                }
+              }
+
             }
           }
           profile.setProfile(DBUtils.portletsToBytes(myportlets, mapping));

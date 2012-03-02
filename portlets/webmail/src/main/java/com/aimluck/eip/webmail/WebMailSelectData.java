@@ -157,6 +157,8 @@ public class WebMailSelectData extends
           .getParameters()
           .getString(WebMailUtils.FOLDER_ID));
       }
+    } else {
+      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, "0");
     }
 
     try {
