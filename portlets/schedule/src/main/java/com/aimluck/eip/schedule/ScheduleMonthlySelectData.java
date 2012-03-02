@@ -1238,6 +1238,30 @@ public class ScheduleMonthlySelectData extends
     return facilitiyGroups;
   }
 
+  public String getTargetName() {
+    try {
+      for (FacilityResultData record : facilityList) {
+        int id =
+          Integer
+            .valueOf(
+              target_user_id.substring(target_user_id.lastIndexOf("f") + 1))
+            .intValue();
+        if (record.getFacilityId().getValue() == id) {
+          return record.getFacilityName().toString();
+        }
+      }
+      return ALEipUtils
+        .getALEipUser(Integer.parseInt(target_user_id))
+        .getAliasName()
+        .toString();
+    } catch (NumberFormatException e) {
+      logger.error("[ScheduleMonthlySelectData]", e);
+    } catch (ALDBErrorException e) {
+      logger.error("[ScheduleMonthlySelectData]", e);
+    }
+    return "";
+  }
+
   /**
    * 表示切り替え時に指定するユーザ のログイン名前
    * 
