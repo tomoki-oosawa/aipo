@@ -24,9 +24,10 @@
 <div id="timelineOuter" style="width: 840px; margin: 0 auto;">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <div id="inputField">
+<div id="messageDiv"></div>
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
 <div class="outer">
-<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}');"></textarea>
+<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}');aipo.timeline.onKeyDown('$!{portlet.ID}', 0);"></textarea>
 </div>
 <div class="right">
 <span class="count" id="textCount_$!{portlet.ID}">500 文字</span> <a href="javascript:void(0)" class="auiButton" onclick="aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');dojo.byId('form$!portlet.ID').onsubmit();">発言する</a>
@@ -89,13 +90,13 @@
     </div>
     <div id="comments$!{record.TimelineId}" class="comments">
 	#if($record.LikeList.size() > 0)
-	  <div id="like_$!{record.TimelineId}" class="message">
+	  <div id="like_$!{record.TimelineId}" class="commentCaption">
 	    <span class="iconLike"></span>
 		${record.LikeList.size()}人が「いいね！」と言っています。
 	  </div>
 	#end
     #if($record.ReplyCountInteger > 2)
-      <div id="commentCaption$!{record.TimelineId}">
+      <div id="commentCaption$!{record.TimelineId}" class="commentCaption">
       <span class="iconComment"></span>
       <a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll($!{record.TimelineId})">コメント${record.ReplyCount}件をすべて見る</a>
       </div>
