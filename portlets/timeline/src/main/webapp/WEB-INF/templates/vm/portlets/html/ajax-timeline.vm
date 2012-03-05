@@ -45,7 +45,7 @@
   #if($result.ContentHeight == 0)
     <div id="timeline" class="timeline"  #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
   #else
-    <div id="timeline" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; " #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+    <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; " #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
   <div id="content">

@@ -68,22 +68,51 @@ aipo.timeline.setScrollTop = function(scrollTop){
 
 aipo.timeline.onKeyDown = function(pid, tid){
 	var val = dojo.byId("note_" + pid + "_" + tid).value;
-	var num = 0;
-	if(val.match(/\n|\r\n/g) != null){
-		num = val.match(/\n|\r\n/g).length;
-	}
-	var splitval = val.split(/\n|\r\n/g);
-	for(i in splitval){
-		if(splitval[i].length > 72){
-			num += Math.floor(splitval[i].length / 72);
-		}
-	}
-	dojo.byId("note_" + pid + "_" + tid).style.height = num * 18 + 39 + "px";
+
+//	if(tid == "0"){
+//		dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
+//	}
+
+	var shadowVal = val.replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/&/g, '&amp;')
+    .replace(/\n$/, '<br/>&nbsp;')
+    .replace(/\n/g, '<br/>')
+    .replace(/ {2,}/g, function(space) {
+        return times('&nbsp;', space.length) + ' ';
+    });
+
+	var shadow = document.createElement("div");
+	shadow.id="shadow"
+	shadow.style.position="absolute";
+	shadow.style.top="-1000";
+	shadow.style.left="-1000";
+	shadow.style.border="0";
+	shadow.style.outline="0";
+	shadow.style.lineHeight="normal";
+	shadow.style.height="auto";
+	shadow.style.resize="none";
+	shadow.cols="10"
+	//これが呼ばれる際の入力はまだ入ってこないので、適当に1文字追加
+	shadow.innerHTML = shadowVal + "あ";
+
+
+	var objBody = document.getElementsByTagName("body").item(0);
+	objBody.appendChild(shadow);
+
+	dojo.byId("shadow").style.width=document.getElementById("note_" + pid + "_" + tid).offsetWidth + "px";
+
+	var shadowHeight = document.getElementById("shadow").offsetHeight;
+
+	if(shadowHeight < 18)
+		shadowHeight = 18;
+	dojo.byId("note_" + pid + "_" + tid).style.height = shadowHeight + 21 + "px";
+	objBody.removeChild(shadow);
 }
 
 aipo.timeline.onKeyUp = function(pid){
-	var val = dojo.byId("note_" + pid + "_0").value;
-	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
+//	var val = dojo.byId("note_" + pid + "_0").value;
+//	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
 aipo.timeline.onReceiveMessage = function(msg){
