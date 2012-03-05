@@ -1658,13 +1658,6 @@ ul#attachments span.deletebutton:hover{
 	-webkit-appearance: caret;
 }
 
-#timelineOuter .commentField {
-	margin-left: 20px;
-	padding:4px;
-	border-top:solid 1px #fff;
-	border-bottom:solid 1px #e6e6e6;
-	background:#f0f0f0;
-}
 #timelineOuter .outer {
 	border: 1px #cdcdcd solid;
 	padding: 3px;
@@ -1683,13 +1676,12 @@ ul#attachments span.deletebutton:hover{
 #timeline .messageContents {
 	padding-left:60px;
 }
-#timeline .comments .messageContents {
-	padding-left:42px;
-}
-
 #timeline .comments {
 	margin:5px 0 0 60px;
 	background:#f0f0f0;
+}
+#timeline .comments .messageContents {
+	padding-left:42px;
 }
 #timeline .commentCaption {
 	padding:3px 5px;
@@ -1703,6 +1695,11 @@ ul#attachments span.deletebutton:hover{
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;
+}
+#timeline .commentField {
+	padding:4px;
+	border-top:solid 1px #fff;
+	border-bottom:solid 1px #e6e6e6;
 }
 #timeline .timeline {
 	width: 100%;
