@@ -37,17 +37,17 @@ aipo.timeline.addLike = function(form, name, value){
 }
 
 aipo.timeline.showCommentField = function(pid, tid){
-	dojo.byId('commentField' + tid).style.display = "";
+	dojo.byId('commentField_' + pid + '_' + tid).style.display = "";
 	dojo.byId('note_' + pid + '_' + tid).focus();
-	var dummy = dojo.byId('commentInputDummy' + tid);
+	var dummy = dojo.byId('commentInputDummy_' + pid + '_' + tid);
 	if(typeof dummy != "undefined" && dummy != null){
-		dojo.byId('commentInputDummy' + tid).style.display = "none";
+		dojo.byId('commentInputDummy_' + pid + '_' + tid).style.display = "none";
 	}
 }
 
-aipo.timeline.showCommentAll = function(tid){
-	dojo.byId('commentCaption' + tid).style.display="none";
-	dojo.query('#comments' + tid + ' .message').forEach(function(item) {
+aipo.timeline.showCommentAll = function(pid, tid){
+	dojo.byId('commentCaption_' + pid + '_' + tid).style.display="none";
+	dojo.query('#comments_' + pid + '_' + tid + ' .message').forEach(function(item) {
 		item.style.display = "";
 	});
 }
@@ -168,5 +168,13 @@ aipo.timeline.popupCenter = function(num) {
 
 aipo.timeline.popupCenterHide = function() {
     dojo.byId("popc").innerHTML = "";
+}
+
+aipo.timeline.hideDialog = function() {
+    var arrDialog = dijit.byId("modalDialog");
+    if(arrDialog){
+       arrDialog.hide();
+    }
+    aipo.portletReload('timeline');
 }
 

@@ -20,48 +20,23 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($nextrows = $result.RowsNum + 20)
+#set ($record = $result.Detail)
 ## ---------------------------------------------------------------------------
-<div id="timelineOuter" style="width: 840px; margin: 0 auto;">
-<input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
-<div id="inputField">
-<div id="messageDiv"></div>
-#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
-<div class="outer">
-<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}');aipo.timeline.onKeyDown('$!{portlet.ID}', 0);"></textarea>
-</div>
-<div class="right">
-<a href="javascript:void(0)" class="auiButton" onclick="aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');dojo.byId('form$!portlet.ID').onsubmit();">発言する</a>
-</div>
-#ALformfooter()
-</div>
-
-<div id="newMessage" style="display:none">
-	<a href="javascript:void(0)" onclick="aipo.portletReload('timeline')">新しい発言があります</a>
-</div>
-
-#if($result.List.size() == 0)
-  <div class="message">発言はありません。</div>
-#else
-  #if($result.ContentHeightMax == 0)
-    <div id="timeline" class="timeline"  #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
-  #else
-    <div id="timeline" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; " #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
-  #end
-  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
+#ALdialogheaderCloseJS("タイムライン詳細" "aipo.timeline.hideDialog()")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="timelineOuter">
   <div id="content">
-  #foreach ($record in $result.List)
     <div id="message$!{record.TimelineId}" class="message">
-      <div class="avatar mr10">
+      <div class="floatLeft mr10">
       #if(${record.hasPhoto()})
         <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
       #else
         <img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
       #end
       </div>
-	  <div class="messageContents">
-	  <div class="name">$!record.OwnerName</div>
-	  <div class="body">$!record.Note</div>
-	  <div class="time">$!{record.CreateDate}
+      <div class="name">$!record.OwnerName</div>
+      <div class="body">$!record.Note</div>
+      <div class="time">$!{record.CreateDate}
       &nbsp;
 	  #if(${record.isLike()})
 		<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
@@ -87,8 +62,8 @@
 		</form>
 	  #end
 	  </div>
-	  </div>
-	</div>
+
+    </div>
     <div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments">
 	#if($record.LikeList.size() > 0)
 	  <div id="like_$!{record.TimelineId}" class="commentCaption">
@@ -101,24 +76,23 @@
       <span class="iconComment"></span>
       <a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll('$!{portlet.ID}', $!{record.TimelineId})">コメント${record.ReplyCount}件をすべて見る</a>
       </div>
-	#end
+    #end
     #foreach ($record2 in $record.CoTopicList)
       #if($velocityCount < $record.CoTopicList.size() - 1)
         <div id="message$!{record2.TimelineId}" class="message" style="display:none">
       #else
         <div id="message$!{record2.TimelineId}" class="message">
       #end
-      <div class="avatar mr10">
+      <div class="floatLeft mr10">
       #if(${record2.hasPhoto()})
         <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}))" alt="${record2.OwnerName}" width="32" height="32" />
       #else
         <img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
       #end
       </div>
-	  <div class="messageContents">
-	  <div class="name">$!record2.OwnerName</div>
-	  <div class="body">$!record2.Note</div>
-	  <div class="time">$!{record2.CreateDate}
+      <div class="name">$!record2.OwnerName</div>
+      <div class="body">$!record2.Note</div>
+      <div class="time">$!{record2.CreateDate}
       &nbsp;
 	  #if(${record2.isLike()})
 		<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
@@ -146,14 +120,14 @@
 	    <span class="iconLike"></span>${record2.LikeList.size()}
 	  #end
       </div>
-	  </div>
-    </div>
+      </div>
     #end
     #if($record.CoTopicList.size() > 0)
       <div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record.TimelineId}">
       <span>コメントする</span>
       </div>
     #end
+    </div>
     <div id="commentField_$!{portlet.ID}_$!{record.TimelineId}" class="commentField" style="display:none">
     <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
       <input type="hidden" name="secid" value="$secid" />
@@ -165,13 +139,9 @@
       </div>
     </form>
     </div>
-	</div>
-  #end
-  #if($result.Count > $result.RowsNum && $result.ContentHeight == 0)
-    <div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');">もっと見る</a></div>
-  #end
   </div>
-  </div>
-#end
-
 </div>
+#ALbuttonheader()
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.timeline.hideDialog();" />
+#ALbuttonfooter()
+#ALdialogfooter()

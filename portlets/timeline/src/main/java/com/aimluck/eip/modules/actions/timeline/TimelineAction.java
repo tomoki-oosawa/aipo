@@ -140,8 +140,8 @@ public class TimelineAction extends ALBaseAction {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    */
   public void prepareService(RunData rundata, Context context) {
     ALTimelineFactoryService tlservice =

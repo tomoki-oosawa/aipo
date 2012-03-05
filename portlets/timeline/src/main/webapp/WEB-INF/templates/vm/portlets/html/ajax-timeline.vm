@@ -88,7 +88,7 @@
 	  </div>
 
     </div>
-    <div id="comments$!{record.TimelineId}" class="comments">
+    <div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments">
 	#if($record.LikeList.size() > 0)
 	  <div id="like_$!{record.TimelineId}" class="commentCaption">
 	    <span class="iconLike"></span>
@@ -96,9 +96,9 @@
 	  </div>
 	#end
     #if($record.ReplyCountInteger > 2)
-      <div id="commentCaption$!{record.TimelineId}" class="commentCaption">
+      <div id="commentCaption_$!{portlet.ID}_$!{record.TimelineId}" class="commentCaption">
       <span class="iconComment"></span>
-      <a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll($!{record.TimelineId})">コメント${record.ReplyCount}件をすべて見る</a>
+      <a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll('$!{portlet.ID}', $!{record.TimelineId})">コメント${record.ReplyCount}件をすべて見る</a>
       </div>
     #end
     #foreach ($record2 in $record.CoTopicList)
@@ -147,13 +147,13 @@
       </div>
     #end
     #if($record.CoTopicList.size() > 0)
-      <div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy$!{record.TimelineId}">
+      <div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record.TimelineId}">
       <span>コメントする</span>
       </div>
     #end
     </div>
-    <div id="commentField$!{record.TimelineId}" class="commentField" style="display:none">
-    <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
+    <div id="commentField_$!{portlet.ID}_$!{record.TimelineId}" class="commentField" style="display:none">
+    <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
       <input type="hidden" name="secid" value="$secid" />
       <div class="outer">
       <textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: black; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', $!{record.TimelineId})"></textarea>

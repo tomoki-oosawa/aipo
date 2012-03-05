@@ -39,6 +39,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.social.ALActivityService;
+import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.timeline.TimelineUserResultData;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -331,20 +333,73 @@ public class TimelineUtils {
         list.add(user);
       }
     } catch (Exception ex) {
-      logger.error("[BlogUtils]", ex);
+      logger.error("[timelineUtils]", ex);
     }
     return list;
   }
-  /*-
-   public static void sendMessage(RunData rundata, Context context,
-   String message) {
-   List<ALEipUser> userList = ALEipUtils.getUsers("");
-   ChannelService channelService = ChannelServiceFactory.getChannelService();
 
-   for (ALEipUser user : userList) {
-   ALNumberField userId = user.getUserId();
-   channelService.sendMessage(new ChannelMessage(userId, message));
-   }
-   }
+  public static void createNewCommentActivity(EipTTimeline timeline,
+      String loginName, String targetLoginName) {
+    if (loginName.equals(targetLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(targetLoginName);
+    String title = new StringBuilder("あなたの発言にコメントしました").toString();
+    String portletParams =
+      new StringBuilder("?template=TimelineDetailScreen")
+        .append("&entityid=")
+        .append(timeline.getTimelineId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("timeline")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTile(title)
+      .witchPriority(1f)
+      .withExternalId(String.valueOf(timeline.getTimelineId())));
+  }
+
+  /**
+   * トピックオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isJoin
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
    */
+  public static EipTTimeline getEipTTimelineParentEntry(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException {
+    String entryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    try {
+      if (entryid == null || Integer.valueOf(entryid) == null) {
+        // トピック ID が空の場合
+        logger.debug("[TimelineUtil] Empty ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTTimeline.TIMELINE_ID_PK_COLUMN,
+          Integer.valueOf(entryid));
+      query.setQualifier(exp);
+      List<EipTTimeline> entrys = query.fetchList();
+      if (entrys == null || entrys.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[TimelineUtils] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      EipTTimeline entry = entrys.get(0);
+      return entry;
+    } catch (Exception ex) {
+      logger.error("[EntryUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
+  }
 }

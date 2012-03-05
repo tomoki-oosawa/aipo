@@ -251,6 +251,23 @@ public class TimelineFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      if (topic.getParentId() != 0) {
+        // オブジェクトモデルを取得
+        EipTTimeline parententry =
+          TimelineUtils.getEipTTimelineParentEntry(rundata, context);
+        // アクティビティ
+        String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
+        String targetLoginName =
+          ALEipUtils
+            .getALEipUser(parententry.getOwnerId())
+            .getName()
+            .getValue();
+        TimelineUtils.createNewCommentActivity(
+          parententry,
+          loginName,
+          targetLoginName);
+      }
+
       ALTimelineFactoryService tlservice =
         (ALTimelineFactoryService) ((TurbineServices) TurbineServices
           .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
