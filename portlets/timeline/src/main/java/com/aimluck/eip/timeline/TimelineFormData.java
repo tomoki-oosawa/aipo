@@ -124,7 +124,7 @@ public class TimelineFormData extends ALAbstractFormData {
     // メモ必須項目
     note.setNotNull(true);
     // メモの文字数制限
-    note.limitMaxLength(500);
+    note.limitMaxLength(10000);
   }
 
   /**
