@@ -50,9 +50,9 @@
 #end
 </select>
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form").addQueryData("msize","1"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
 選択したファイルを<input type="button" onclick="aimluck.io.selectAllOptions(this.form.attachments);aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
-<input type="hidden" id="folderName" name="folderName" value="">
+<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="">
 #ALtditemfooter()
 #ALtdcaption("追加場所")
 #ALtditemheader()

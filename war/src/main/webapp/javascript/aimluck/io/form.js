@@ -395,8 +395,8 @@ aimluck.io.removeFileFromList = function(ul,li){
 	return ul.removeChild(li);
 }
 
-aimluck.io.createSelectFromFileList = function(form){
-    var ul = dojo.byId("attachments");
+aimluck.io.createSelectFromFileList = function(form, pid){
+    var ul = dojo.byId("attachments_" + pid);
     var select = document.createElement("select");
     select.style.display="none";
     select.id="attachments_select";

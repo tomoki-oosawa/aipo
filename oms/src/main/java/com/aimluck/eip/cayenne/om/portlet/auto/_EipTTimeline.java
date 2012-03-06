@@ -1,9 +1,12 @@
 package com.aimluck.eip.cayenne.om.portlet.auto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.cayenne.CayenneDataObject;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 
 /**
@@ -19,6 +22,8 @@ public abstract class _EipTTimeline extends CayenneDataObject {
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String PARENT_ID_PROPERTY = "parentId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
+    public static final String EIP_TTIMELINE_FILE_PROPERTY = "eipTTimelineFile";
+    public static final String EIP_TTIMELINE_LIKE_PROPERTY = "eipTTimelineLike";
     public static final String TURBINE_USER_PROPERTY = "turbineUser";
 
     public static final String TIMELINE_ID_PK_COLUMN = "TIMELINE_ID";
@@ -57,6 +62,30 @@ public abstract class _EipTTimeline extends CayenneDataObject {
     public Date getUpdateDate() {
         return (Date)readProperty("updateDate");
     }
+
+    public void addToEipTTimelineFile(EipTTimelineFile obj) {
+        addToManyTarget("eipTTimelineFile", obj, true);
+    }
+    public void removeFromEipTTimelineFile(EipTTimelineFile obj) {
+        removeToManyTarget("eipTTimelineFile", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<EipTTimelineFile> getEipTTimelineFile() {
+        return (List<EipTTimelineFile>)readProperty("eipTTimelineFile");
+    }
+
+
+    public void addToEipTTimelineLike(EipTTimelineLike obj) {
+        addToManyTarget("eipTTimelineLike", obj, true);
+    }
+    public void removeFromEipTTimelineLike(EipTTimelineLike obj) {
+        removeToManyTarget("eipTTimelineLike", obj, true);
+    }
+    @SuppressWarnings("unchecked")
+    public List<EipTTimelineLike> getEipTTimelineLike() {
+        return (List<EipTTimelineLike>)readProperty("eipTTimelineLike");
+    }
+
 
     public void setTurbineUser(TurbineUser turbineUser) {
         setToOneTarget("turbineUser", turbineUser, true);

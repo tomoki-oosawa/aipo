@@ -56,11 +56,37 @@ CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
 ALTER SEQUENCE pk_eip_t_timeline_like OWNED BY EIP_T_TIMELINE_LIKE.TIMELINE_LIKE_ID;
 --20120229
 
---20120306
+--20120305
 -----------------------------------------------------------------------------
--- ALTER TABLE
+-- EIP_T_REPORT_FILE
 -----------------------------------------------------------------------------
 
-ALTER TABLE EIP_T_EXT_TIMECARD_SYSTEM ADD COLUMN START_DAY INTEGER;
-UPDATE EIP_T_EXT_TIMECARD_SYSTEM SET START_DAY=1;
---20120306
+CREATE TABLE EIP_T_TIMELINE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    TIMELINE_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- CREATE SEQUENCE
+-----------------------------------------------------------------------------
+
+CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
+
+-----------------------------------------------------------------------------
+-- ALTER SEQUENCE
+-----------------------------------------------------------------------------
+
+ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
+
+
+
+--20120305

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<data-map project-version="2.0">
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+  project-version="3.0.0.1">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
 	<db-entity name="eip_facility_group">
 		<db-attribute name="FACILITY_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -243,7 +246,6 @@
 		<db-attribute name="OUTGOING_ADD_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="RESTTIME_IN" type="INTEGER" length="4"/>
 		<db-attribute name="RESTTIME_OUT" type="INTEGER" length="4"/>
-		<db-attribute name="START_DAY" type="INTEGER" length="2"/>
 		<db-attribute name="START_HOUR" type="INTEGER" length="2"/>
 		<db-attribute name="START_MINUTE" type="INTEGER" length="2"/>
 		<db-attribute name="SYSTEM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -451,6 +453,16 @@
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TIMELINE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+	</db-entity>
+	<db-entity name="eip_t_timeline_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="TIMELINE_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_t_timeline_like">
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
@@ -773,7 +785,6 @@
 		<obj-attribute name="outgoingAddFlag" type="java.lang.String" db-attribute-path="OUTGOING_ADD_FLAG"/>
 		<obj-attribute name="resttimeIn" type="java.lang.Integer" db-attribute-path="RESTTIME_IN"/>
 		<obj-attribute name="resttimeOut" type="java.lang.Integer" db-attribute-path="RESTTIME_OUT"/>
-		<obj-attribute name="startDay" type="java.lang.Integer" db-attribute-path="START_DAY"/>
 		<obj-attribute name="startHour" type="java.lang.Integer" db-attribute-path="START_HOUR"/>
 		<obj-attribute name="startMinute" type="java.lang.Integer" db-attribute-path="START_MINUTE"/>
 		<obj-attribute name="systemName" type="java.lang.String" db-attribute-path="SYSTEM_NAME"/>
@@ -952,6 +963,15 @@
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTTimelineFile" className="com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile" dbEntityName="eip_t_timeline_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="timelineId" type="java.lang.Integer" db-attribute-path="TIMELINE_ID"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTTimelineLike" className="com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike" dbEntityName="eip_t_timeline_like">
@@ -1225,8 +1245,20 @@
 	<db-relationship name="turbineUserGroupRole" source="eip_t_schedule_map" target="turbine_user_group_role" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTTimelineFile" source="eip_t_timeline" target="eip_t_timeline_file" toMany="true">
+		<db-attribute-pair source="TIMELINE_ID" target="TIMELINE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTTimelineLike" source="eip_t_timeline" target="eip_t_timeline_like" toMany="true">
+		<db-attribute-pair source="TIMELINE_ID" target="TIMELINE_ID"/>
+	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_timeline" target="turbine_user" toMany="false">
 		<db-attribute-pair source="OWNER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTTimeline" source="eip_t_timeline_file" target="eip_t_timeline" toMany="false">
+		<db-attribute-pair source="TIMELINE_ID" target="TIMELINE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTTimeline" source="eip_t_timeline_like" target="eip_t_timeline" toMany="false">
+		<db-attribute-pair source="TIMELINE_ID" target="TIMELINE_ID"/>
 	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_timeline_like" target="turbine_user" toMany="false">
 		<db-attribute-pair source="OWNER_ID" target="USER_ID"/>
@@ -1331,7 +1363,11 @@
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>
+	<obj-relationship name="eipTTimelineFile" source="EipTTimeline" target="EipTTimelineFile" deleteRule="Nullify" db-relationship-path="eipTTimelineFile"/>
+	<obj-relationship name="eipTTimelineLike" source="EipTTimeline" target="EipTTimelineLike" deleteRule="Nullify" db-relationship-path="eipTTimelineLike"/>
 	<obj-relationship name="turbineUser" source="EipTTimeline" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTTimeline" source="EipTTimelineFile" target="EipTTimeline" deleteRule="Nullify" db-relationship-path="eipTTimeline"/>
+	<obj-relationship name="eipTTimeline" source="EipTTimelineLike" target="EipTTimeline" deleteRule="Nullify" db-relationship-path="eipTTimeline"/>
 	<obj-relationship name="turbineUser" source="EipTTimelineLike" target="TurbineUser" deleteRule="Nullify" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTodoCategory" source="EipTTodo" target="EipTTodoCategory" db-relationship-path="eipTTodoCategory"/>
 	<obj-relationship name="turbineUser" source="EipTTodo" target="TurbineUser" db-relationship-path="turbineUser"/>

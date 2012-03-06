@@ -117,4 +117,6 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_REPORT = 320;
 
+  public static final int PORTLET_TYPE_TIMELINE = 330;
+
 }

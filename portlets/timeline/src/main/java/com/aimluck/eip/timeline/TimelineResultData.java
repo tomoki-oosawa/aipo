@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.timeline;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -79,6 +81,9 @@ public class TimelineResultData implements ALData {
   /** いいねをしたか */
   private boolean like;
 
+  /** 添付ファイルリスト */
+  private List<FileuploadBean> attachmentFileList = null;
+
   /**
    *
    *
@@ -101,6 +106,7 @@ public class TimelineResultData implements ALData {
     new_topic = false;
     has_photo = false;
     like = false;
+    attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
   /**
@@ -282,6 +288,21 @@ public class TimelineResultData implements ALData {
 
   public boolean hasPhoto() {
     return has_photo;
+  }
+
+  /**
+   * @return attachmentFileList
+   */
+  public List<FileuploadBean> getAttachmentFileList() {
+    return attachmentFileList;
+  }
+
+  /**
+   * @param attachmentFileList
+   *          セットする attachmentFileList
+   */
+  public void setAttachmentFileList(List<FileuploadBean> attachmentFileList) {
+    this.attachmentFileList = attachmentFileList;
   }
 
   /**

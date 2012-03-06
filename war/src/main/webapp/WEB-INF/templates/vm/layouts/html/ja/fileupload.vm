@@ -51,7 +51,7 @@
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 </head>
-<body class="portlet_background" onLoad="get_data()">
+<body class="portlet_background" onLoad="get_data('$!portlet.ID')">
 #parse("/portlets/html/ja/fileupload.vm")
 </body>
 </html>

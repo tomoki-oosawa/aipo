@@ -33,7 +33,7 @@
 ##ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("accountuserForm" $jslink $portlet "AccountUserFormJSONScreen" "aimluck.io.createSelectFromFileList(this);aimluck.io.selectAllOptions(this.group_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.account_user.onReceiveMessage)")
+#ALajaxscreenformheader("accountuserForm" $jslink $portlet "AccountUserFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.selectAllOptions(this.group_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.account_user.onReceiveMessage)")
 <input name="is_new_post" type="hidden" value="$!result.NewPost"/>
 <input name="is_new_position" type="hidden" value="$!result.NewPosition"/>
 #if($mode=="new_form")
@@ -79,13 +79,13 @@
 #ALtdcaption($!result.getFieldName("photo"))
 #ALtditemheader()
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form").addQueryData("msize","1"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
-<ul id="attachments">
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
+<ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
 	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
 	#end
 </ul>
-<input type="hidden" id="folderName" name="folderName" value="$!result.FolderName">
+<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 #ALtditemfooter()
 
 #ALtdcaption("部署")

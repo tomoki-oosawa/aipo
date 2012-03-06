@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -33,15 +35,19 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
@@ -81,6 +87,12 @@ public class TimelineFormData extends ALAbstractFormData {
   /** 顔写真の有無 */
   private boolean has_photo;
 
+  /** ファイルアップロードリスト */
+  private List<FileuploadLiteBean> fileuploadList;
+
+  /** 添付フォルダ名 */
+  private String folderName = null;
+
   /**
    * 
    * @param action
@@ -97,6 +109,7 @@ public class TimelineFormData extends ALAbstractFormData {
     uid = ALEipUtils.getUserId(rundata);
     orgId = Database.getDomainName();
     has_photo = false;
+    folderName = rundata.getParameters().getString("folderName");
 
   }
 
@@ -111,7 +124,8 @@ public class TimelineFormData extends ALAbstractFormData {
     note = new ALStringField();
     note.setFieldName("内容");
     note.setTrim(false);
-
+    // ファイルリスト
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
   }
 
   /**
@@ -136,10 +150,7 @@ public class TimelineFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    // メモ
-    note.validate(msgList);
-    return (msgList.size() == 0);
-
+    return note.validate(msgList) || fileuploadList != null;
   }
 
   /**
@@ -194,8 +205,33 @@ public class TimelineFormData extends ALAbstractFormData {
 
       List<EipTTimeline> topics = query.fetchList();
 
+      List<String> fpaths = new ArrayList<String>();
+      if (topics.size() > 0) {
+        int tsize = topics.size();
+        for (int i = 0; i < tsize; i++) {
+          List<?> files = topics.get(i).getEipTTimelineFile();
+          TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
+          TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
+          if (files != null && files.size() > 0) {
+            int fsize = files.size();
+            for (int j = 0; j < fsize; j++) {
+              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+            }
+          }
+        }
+      }
+
       Database.deleteAll(topics);
       Database.commit();
+
+      if (fpaths.size() > 0) {
+        // ローカルファイルに保存されているファイルを削除する．
+        int fsize = fpaths.size();
+        for (int i = 0; i < fsize; i++) {
+          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
+            + fpaths.get(i));
+        }
+      }
 
       ALTimelineFactoryService tlservice =
         (ALTimelineFactoryService) ((TurbineServices) TurbineServices
@@ -206,7 +242,7 @@ public class TimelineFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTimelineId(),
-        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         parent.getNote());
 
     } catch (Exception e) {
@@ -247,8 +283,11 @@ public class TimelineFormData extends ALAbstractFormData {
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
         parent.setUpdateDate(Calendar.getInstance().getTime());
       }
-      // submitURL();
 
+      // 添付ファイルを登録する．
+      insertAttachmentFiles(fileuploadList, folderName, uid, topic, msgList);
+
+      // submitURL();
       Database.commit();
 
       if (topic.getParentId() != 0) {
@@ -277,12 +316,83 @@ public class TimelineFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         topic.getTimelineId(),
-        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         topic.getCreateDate().toString());
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
+    }
+    return true;
+  }
+
+  private boolean insertAttachmentFiles(
+      List<FileuploadLiteBean> fileuploadList, String folderName, int uid,
+      EipTTimeline entry, List<String> msgList) {
+
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      return true;
+    }
+
+    try {
+      int length = fileuploadList.size();
+      ArrayList<FileuploadLiteBean> newfilebeans =
+        new ArrayList<FileuploadLiteBean>();
+      FileuploadLiteBean filebean = null;
+      for (int i = 0; i < length; i++) {
+        filebean = fileuploadList.get(i);
+        if (filebean.isNewFile()) {
+          newfilebeans.add(filebean);
+        }
+      }
+      int newfilebeansSize = newfilebeans.size();
+      if (newfilebeansSize > 0) {
+        FileuploadLiteBean newfilebean = null;
+        for (int j = 0; j < length; j++) {
+          newfilebean = newfilebeans.get(j);
+          // サムネイル処理
+          String[] acceptExts = ImageIO.getWriterFormatNames();
+          byte[] fileThumbnail =
+            FileuploadUtils.getBytesShrinkFilebean(
+              orgId,
+              folderName,
+              uid,
+              newfilebean,
+              acceptExts,
+              FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+              msgList);
+
+          String filename = j + "_" + String.valueOf(System.nanoTime());
+
+          // 新規オブジェクトモデル
+          EipTTimelineFile file = Database.create(EipTTimelineFile.class);
+          file.setOwnerId(Integer.valueOf(uid));
+          file.setFileName(newfilebean.getFileName());
+          file.setFilePath(TimelineUtils.getRelativePath(filename));
+          if (fileThumbnail != null) {
+            file.setFileThumbnail(fileThumbnail);
+          }
+          file.setEipTTimeline(entry);
+          file.setCreateDate(Calendar.getInstance().getTime());
+          file.setUpdateDate(Calendar.getInstance().getTime());
+
+          // ファイルの移動
+          ALStorageService.copyTmpFile(
+            uid,
+            folderName,
+            String.valueOf(newfilebean.getFileId()),
+            TimelineUtils.FOLDER_FILEDIR_TIMELIME,
+            TimelineUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+            filename);
+        }
+
+        // 添付ファイル保存先のフォルダを削除
+        ALStorageService.deleteTmpFolder(uid, folderName);
+      }
+
+    } catch (Exception e) {
+      logger.error(e);
     }
     return true;
   }
@@ -315,6 +425,13 @@ public class TimelineFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     boolean res = super.setFormData(rundata, context, msgList);
+    if (res) {
+      try {
+        fileuploadList = TimelineUtils.getFileuploadList(rundata);
+      } catch (Exception ex) {
+        logger.error("Exception", ex);
+      }
+    }
     return res;
   }
 
@@ -398,5 +515,9 @@ public class TimelineFormData extends ALAbstractFormData {
 
   public boolean hasPhoto() {
     return has_photo;
+  }
+
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    return fileuploadList;
   }
 }

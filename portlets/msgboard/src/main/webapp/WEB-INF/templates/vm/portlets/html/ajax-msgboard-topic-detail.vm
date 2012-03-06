@@ -131,7 +131,7 @@ ${record.Note}
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 ##<form name="msgboardForm$!portlet.ID" id="msgboardForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply').addQueryData('entityid', ${result.ParentTopic.TopicId})" method="post" onsubmit="aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage);return false;">
-#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
+#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
 <input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
 <input type="hidden" name="mode" value="topic_reply" />
 <input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}" />
@@ -164,13 +164,13 @@ ${record.Note}
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)');" value="ファイルの選択" class="button" name="add_attachment"/>
-<ul id="attachments">
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
+<ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
 	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
 	#end
 </ul>
-<input type="hidden" id="folderName" name="folderName" value="$!result.FolderName">
+<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 #ALtditemfooter()
 #ALtablefooter()
 #end

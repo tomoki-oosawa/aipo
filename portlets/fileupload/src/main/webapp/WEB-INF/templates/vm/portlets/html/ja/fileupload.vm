@@ -25,9 +25,9 @@
 <script language="JavaScript" type="text/JavaScript">
 <!--
 
-function get_data(){
+function get_data(pid){
     #if($!receiveFile && $!receiveFile == "true")
-    window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape');
+    window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
     window.parent.close();
     #end
 }

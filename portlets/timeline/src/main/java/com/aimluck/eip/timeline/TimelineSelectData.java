@@ -33,6 +33,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -40,6 +41,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALTimelineManager;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -259,6 +262,33 @@ public class TimelineSelectData extends
           rd.setHasPhoto(true);
           break;
         }
+      }
+
+      // ファイルリスト
+      List<EipTTimelineFile> list =
+        TimelineUtils
+          .getSelectQueryForFiles(record.getTimelineId().intValue())
+          .fetchList();
+      if (list != null && list.size() > 0) {
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
+        FileuploadBean filebean = null;
+        for (EipTTimelineFile file : list) {
+          String realname = file.getFileName();
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
+
+          filebean = new FileuploadBean();
+          filebean.setFileId(file.getFileId().intValue());
+          filebean.setFileName(realname);
+          if (hData != null) {
+            filebean.setContentType(hData.getContentType());
+          }
+          filebean.setIsImage(FileuploadUtils.isImage(realname));
+          attachmentFileList.add(filebean);
+        }
+        rd.setAttachmentFileList(attachmentFileList);
       }
 
       return rd;
