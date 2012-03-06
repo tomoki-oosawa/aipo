@@ -1840,6 +1840,16 @@ ul#attachments span.deletebutton:hover{
 #timeline .commentField form {
 	padding-left:42px;
 }
+.iconLike,
+.iconComment {
+	display:inline-block;
+	width:14px;
+	height:14px;
+	vertical-align:middle;
+	background:url('../images/icon/social_icons.gif') no-repeat;
+}
+.iconLike {background-position:-2px -2px;}
+.iconComment {background-position:-2px -17px;}
 
 /* table Class */
 tr.disabled th, tr.disabled td {
