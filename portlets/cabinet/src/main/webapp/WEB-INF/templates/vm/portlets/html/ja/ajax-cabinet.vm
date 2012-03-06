@@ -21,7 +21,7 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft w30">
 <form class="auiForm">
-#ALselectpdheader("folder_id" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+#ALselectpdheader("folder_id" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",0))">すべてのフォルダ</option>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())

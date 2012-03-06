@@ -142,7 +142,7 @@ public class CabinetSelectData extends
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
-      } else {
+      } else if (table_colum_num == 4) {
         String id =
           ALEipUtils
             .getPortlet(rundata, context)
