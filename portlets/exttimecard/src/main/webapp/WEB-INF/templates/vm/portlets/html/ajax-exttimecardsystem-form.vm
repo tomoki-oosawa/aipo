@@ -99,10 +99,10 @@
 </select>
 <div class="spaceTop">この時刻を過ぎると次の日のタイムカードに切り替えます。</div>
 #ALtditemfooter()
-#ALtdcaption("勤務時間")
+#ALtdcaption("外出時間")
 #ALtditemheader()
 <input type="checkbox" name="outgoing_add_flag" value="T" id="outgoing_add_flag" #if($result.OutgoingAddFlag.toString() == 'T')checked="checked"#end/>
-<label for="outgoing_add_flag_id">外出を勤怠時間に含める</label>
+外出を勤怠時間に含める
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
