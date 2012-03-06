@@ -1796,8 +1796,8 @@ public class WorkflowUtils {
           b.append("：");
         }
       }
-
       b.append(request.getRequestName()).append("」");
+
       switch (type) {
         case REQUEST:
           b.append("の確認依頼を出しました。");
@@ -1807,6 +1807,8 @@ public class WorkflowUtils {
           break;
         case ACCEPT:
           b.append("を承認しました。");
+          recipients.clear();
+          recipients.add(getUserName(request.getUserId().toString()));
           break;
         default:
 
