@@ -1804,13 +1804,13 @@ ul#attachments span.deletebutton:hover{
 	border: 1px #cdcdcd solid;
 	text-align: center;
 }
-#timeline .timeline .body {
+#timeline .message .body {
 	padding-top: 3px;
 	min-height: 25px;
 	padding-bottom: 5px;
 }
 
-#timeline .timeline .time {
+#timeline .message .time {
 	margin-bottom:3px;
 	font-size: 80%;
 	*font-size: 75%;
