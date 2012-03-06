@@ -363,8 +363,6 @@ table.roundBlockWrapperTop td.roundBlockTitle {
 	vertical-align:top;
 	text-shadow:#F4F4F4 0 1px;
 	background:transparent url(../images/common/icon_p.gif) no-repeat 12px 13px;
-	max-width:1em;
-	overflow:hidden;
 }
 table.roundBlockWrapperTop td.roundBlockTitle a {
 	color:#313131;
