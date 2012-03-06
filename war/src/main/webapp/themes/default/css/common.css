@@ -362,7 +362,9 @@ table.roundBlockWrapperTop td.roundBlockTitle {
 	padding:12px 10px 0 30px;
 	vertical-align:top;
 	text-shadow:#F4F4F4 0 1px;
-	background:transparent url(../images/common/icon_p.gif) no-repeat 12px 13px
+	background:transparent url(../images/common/icon_p.gif) no-repeat 12px 13px;
+	max-width:1em;
+	overflow:hidden;
 }
 table.roundBlockWrapperTop td.roundBlockTitle a {
 	color:#313131;
@@ -373,7 +375,7 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {
 table.roundBlockWrapperTop td.roundBlockIcon {
 	background:transparent url(../images/common/bg_con_s.gif) no-repeat left top;
 	white-space:nowrap;
-	padding:11px 5px 0 5px;
+	padding:12px 5px 0 5px;
 	vertical-align:top;
 }
 table.roundBlockWrapperTop td.roundBlockIcon img {
