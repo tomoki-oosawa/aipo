@@ -43,6 +43,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -146,6 +147,9 @@ public class ExtTimecardSummaryListSelectData extends
   /** <code>viewTodo</code> ToDo 表示設定 */
   protected int viewTodo;
 
+  /** 開始日 */
+  private int startDay;
+
   /**
    *
    */
@@ -184,13 +188,8 @@ public class ExtTimecardSummaryListSelectData extends
     viewEnd = new ALDateTimeField("yyyy-MM-dd");
     // 表示終了日時 (Criteria)
     viewEndCrt = new ALDateTimeField("yyyy-MM-dd");
-    // 今日
-    today = new ALDateTimeField("yyyy-MM-dd");
-    Calendar to = Calendar.getInstance();
-    to.set(Calendar.HOUR_OF_DAY, 0);
-    to.set(Calendar.MINUTE, 0);
-    today.setValue(to.getTime());
-    currentMonth.setValue(to.getTime());
+
+    startDay = 1;
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
@@ -202,58 +201,6 @@ public class ExtTimecardSummaryListSelectData extends
           .getString("view_month"));
       }
     }
-
-    // 現在の月
-    String tmpViewMonth = ALEipUtils.getTemp(rundata, context, "view_month");
-    if (tmpViewMonth == null || tmpViewMonth.equals("")) {
-      Calendar cal = Calendar.getInstance();
-      cal.set(Calendar.DATE, 1);
-      cal.set(Calendar.HOUR_OF_DAY, 0);
-      cal.set(Calendar.MINUTE, 0);
-      viewMonth.setValue(cal.getTime());
-    } else {
-      viewMonth.setValue(tmpViewMonth);
-      if (!viewMonth.validate(new ArrayList<String>())) {
-        ALEipUtils.removeTemp(rundata, context, "view_month");
-        throw new ALPageNotFoundException();
-      }
-    }
-
-    // 表示開始日時
-    Calendar cal = Calendar.getInstance();
-    Calendar tmpCal = Calendar.getInstance();
-    cal.setTime(viewMonth.getValue());
-    tmpCal.setTime(viewMonth.getValue());
-    int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    cal.add(Calendar.DATE, -dayofweek + 1);
-    viewStart.setValue(cal.getTime());
-
-    Calendar cal4 = Calendar.getInstance();
-    cal4.setTime(cal.getTime());
-    Calendar tmpCal4 = Calendar.getInstance();
-    tmpCal4.setTime(tmpCal.getTime());
-
-    Calendar cal5 = Calendar.getInstance();
-    cal5.setTime(cal.getTime());
-    Calendar tmpCal5 = Calendar.getInstance();
-    tmpCal5.setTime(tmpCal.getTime());
-
-    // 表示終了日時
-    viewEndCrt.setValue(cal.getTime());
-    cal.add(Calendar.DATE, -1);
-    viewEnd.setValue(cal.getTime());
-    // 次の月、前の月
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(viewMonth.getValue());
-    cal2.add(Calendar.MONTH, 1);
-    nextMonth.setValue(cal2.getTime());
-    cal2.add(Calendar.MONTH, -2);
-    prevMonth.setValue(cal2.getTime());
-
-    ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-      + "-00-00");
-    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-      + "-00-00");
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -336,6 +283,103 @@ public class ExtTimecardSummaryListSelectData extends
     datemap = new LinkedHashMap<Integer, ExtTimecardSummaryResultData>();
 
     usermap = new LinkedHashMap<Integer, List<ExtTimecardResultData>>();
+
+    /** 現在のユーザを取得 */
+    if (target_user_id != null && !target_user_id.isEmpty()) {
+      /** 勤務形態通常のstartDayを取得 */
+      SelectQuery<EipTExtTimecardSystemMap> default_query =
+        Database.query(EipTExtTimecardSystemMap.class);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystemMap.USER_ID_PROPERTY,
+          target_user_id);
+      default_query.setQualifier(exp);
+      ResultList<EipTExtTimecardSystemMap> map_list =
+        default_query.getResultList();
+      if (!map_list.isEmpty()) {
+        startDay = map_list.get(0).getEipTExtTimecardSystem().getStartDay();
+      }
+    } else if (userid != null && !userid.isEmpty()) {
+      /** 勤務形態通常のstartDayを取得 */
+      SelectQuery<EipTExtTimecardSystemMap> default_query =
+        Database.query(EipTExtTimecardSystemMap.class);
+      Expression exp =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystemMap.USER_ID_PROPERTY,
+          userid);
+      default_query.setQualifier(exp);
+      ResultList<EipTExtTimecardSystemMap> map_list =
+        default_query.getResultList();
+      if (!map_list.isEmpty()) {
+        startDay = map_list.get(0).getEipTExtTimecardSystem().getStartDay();
+      }
+    }
+
+    // 今日の日付
+    today = new ALDateTimeField("yyyy-MM-dd");
+    Calendar to = Calendar.getInstance();
+    to.set(Calendar.HOUR_OF_DAY, 0);
+    to.set(Calendar.MINUTE, 0);
+    today.setValue(to.getTime());
+
+    // 現在の月
+    String tmpViewMonth = ALEipUtils.getTemp(rundata, context, "view_month");
+    if (tmpViewMonth == null || tmpViewMonth.equals("")) {
+      Calendar cal = Calendar.getInstance();
+      cal.set(Calendar.DATE, 1);
+      cal.set(Calendar.HOUR_OF_DAY, 0);
+      cal.set(Calendar.MINUTE, 0);
+      if (Integer.parseInt(today.getDay().toString()) < startDay) {
+        cal.add(Calendar.MONTH, -1);
+      }
+      viewMonth.setValue(cal.getTime());
+    } else {
+      viewMonth.setValue(tmpViewMonth);
+      if (!viewMonth.validate(new ArrayList<String>())) {
+        ALEipUtils.removeTemp(rundata, context, "view_month");
+        throw new ALPageNotFoundException();
+      }
+    }
+
+    if (Integer.parseInt(today.getMonth()) == Integer.parseInt(viewMonth
+      .getMonth()
+      .toString())) {
+      currentMonth.setValue(to.getTime());
+    } else {
+      Calendar tmp_cal = Calendar.getInstance();
+      tmp_cal.set(Calendar.DATE, 1);
+      tmp_cal.set(Calendar.HOUR_OF_DAY, 0);
+      tmp_cal.set(Calendar.MINUTE, 0);
+      tmp_cal.add(Calendar.MONTH, -1);
+      currentMonth.setValue(tmp_cal.getTime());
+    }
+
+    // 表示開始日時
+    Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.MONTH, Integer.parseInt(viewMonth.getMonth()) - 1);
+    cal.set(Calendar.DATE, startDay);
+    Date startDate = cal.getTime();
+    viewStart.setValue(startDate);
+
+    // 表示終了日時
+    cal.add(Calendar.MONTH, 1);
+    cal.add(Calendar.DATE, -1);
+    Date endDate = cal.getTime();
+    viewEnd.setValue(endDate);
+    viewEndCrt.setValue(endDate);
+
+    // 次の月、前の月
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(viewMonth.getValue());
+    cal2.add(Calendar.MONTH, 1);
+    nextMonth.setValue(cal2.getTime());
+    cal2.add(Calendar.MONTH, -2);
+    prevMonth.setValue(cal2.getTime());
+
+    ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
+      + "-00-00");
+    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
+      + "-00-00");
 
     setupLists(rundata, context);
   }
@@ -668,22 +712,40 @@ public class ExtTimecardSummaryListSelectData extends
       Context context, String target_user_id) {
     SelectQuery<EipTExtTimecard> query = Database.query(EipTExtTimecard.class);
 
+    /** 勤務形態通常のstartDayを取得 */
+    startDay = 1;
+    SelectQuery<EipTExtTimecardSystemMap> default_query =
+      Database.query(EipTExtTimecardSystemMap.class);
+    Expression exp =
+      ExpressionFactory.matchExp(
+        EipTExtTimecardSystemMap.USER_ID_PROPERTY,
+        target_user_id);
+    default_query.setQualifier(exp);
+    ResultList<EipTExtTimecardSystemMap> map_list =
+      default_query.getResultList();
+    if (!map_list.isEmpty()) {
+      startDay = map_list.get(0).getEipTExtTimecardSystem().getStartDay();
+    }
+
     Expression exp1 =
       ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, new Integer(
         target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
-    cal.setTime(viewMonth.getValue());
-    cal.set(Calendar.DAY_OF_MONTH, 1);
+    cal.set(Calendar.YEAR, Integer.parseInt(viewMonth.getYear()));
+    cal.set(Calendar.MONTH, Integer.parseInt(viewMonth.getMonth()) - 1);
+    cal.set(Calendar.DAY_OF_MONTH, startDay);
     cal.set(Calendar.HOUR_OF_DAY, 0);
     cal.set(Calendar.MINUTE, 0);
     cal.set(Calendar.SECOND, 0);
     cal.set(Calendar.MILLISECOND, 0);
+
+    Date date = cal.getTime();
     Expression exp11 =
       ExpressionFactory.greaterOrEqualExp(
         EipTExtTimecard.PUNCH_DATE_PROPERTY,
-        cal.getTime());
+        date);
 
     cal.add(Calendar.MONTH, +1);
     cal.add(Calendar.MILLISECOND, -1);

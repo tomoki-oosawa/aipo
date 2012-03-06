@@ -53,8 +53,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardSystemFormData.class
-      .getName());
+   JetspeedLogFactoryService
+    .getLogger(ExtTimecardSystemFormData.class.getName());
 
   private ALNumberField system_id;
 
@@ -66,6 +66,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   private ALNumberField start_hour;
 
   private ALNumberField start_minute;
+
+  private ALNumberField start_day;
 
   /** 終了時刻 */
   private ALNumberField end_hour;
@@ -110,6 +112,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     start_minute = new ALNumberField();
     end_hour = new ALNumberField();
     end_minute = new ALNumberField();
+
+    start_day = new ALNumberField();
+    start_day.setFieldName("開始日");
 
     worktime_in = new ALNumberField();
     worktime_in.setFieldName("勤務時間内の勤務時間");
@@ -157,6 +162,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       end_hour.setValue(String.valueOf(record.getEndHour()));
       end_minute.setValue(String.valueOf(record.getEndMinute()));
 
+      start_day.setValue(String.valueOf(record.getStartDay()));
+
       worktime_in.setValue(record.getWorktimeIn());
       resttime_in.setValue(record.getResttimeIn());
       worktime_out.setValue(record.getWorktimeOut());
@@ -188,6 +195,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setStartMinute((int) start_minute.getValue());
       record.setEndHour((int) end_hour.getValue());
       record.setEndMinute((int) end_minute.getValue());
+      record.setStartDay((int) start_day.getValue());
       record.setWorktimeIn((int) worktime_in.getValue());
       record.setResttimeIn((int) resttime_in.getValue());
       record.setWorktimeOut((int) worktime_out.getValue());
@@ -264,6 +272,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setStartMinute((int) start_minute.getValue());
       record.setEndHour((int) end_hour.getValue());
       record.setEndMinute((int) end_minute.getValue());
+      record.setStartDay((int) start_day.getValue());
       record.setWorktimeIn((int) worktime_in.getValue());
       record.setResttimeIn((int) resttime_in.getValue());
       record.setWorktimeOut((int) worktime_out.getValue());
@@ -319,6 +328,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           end_hour.setValue(String.valueOf(record.getEndHour()));
           end_minute.setValue(String.valueOf(record.getEndMinute()));
 
+          start_day.setValue(String.valueOf(record.getStartDay()));
+
           worktime_in.setValue(record.getWorktimeIn());
           resttime_in.setValue(record.getResttimeIn());
           worktime_out.setValue(record.getWorktimeOut());
@@ -351,7 +362,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     start_minute.limitValue(0, 59);
     end_hour.limitValue(0, 23);
     end_minute.limitValue(0, 59);
-
+    start_day.limitValue(0, 28);
     worktime_in.limitValue(0, 480);
     worktime_out.limitValue(0, 480);
     resttime_in.limitValue(0, 480);
@@ -529,9 +540,16 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   public ALStringField getOutgoingAddFlag() {
     return this.outgoing_add_flag;
   }
+  
+  /**
+   * @return
+   */
+  public ALNumberField getStartDay() {
+    return start_day;
+  }
 
   public ALNumberField getSystemId() {
     return this.system_id;
   }
-
+  
 }

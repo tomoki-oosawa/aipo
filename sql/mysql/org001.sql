@@ -453,6 +453,7 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   `start_minute` int(11) DEFAULT NULL,
   `end_hour` int(11) DEFAULT NULL,
   `end_minute` int(11) DEFAULT NULL,
+  `start_day` int(11) DEFAULT NULL,
   `worktime_in` int(11) DEFAULT NULL,
   `resttime_in` int(11) DEFAULT NULL,
   `worktime_out` int(11) DEFAULT NULL,
@@ -464,7 +465,7 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   PRIMARY KEY (`system_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,360,60,360,60,4,'T',now(),now());
+INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,4,'T',now(),now());
 
 CREATE TABLE `eip_t_ext_timecard_system_map` (
   `system_map_id` int(11) NOT NULL AUTO_INCREMENT,

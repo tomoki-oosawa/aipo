@@ -67,6 +67,14 @@
 #end
 </select>
 #ALtditemfooter()
+#ALtdcaption("#ALrequired('開始日')")
+#ALtditemheader()
+<select name="start_day" size="1">
+#foreach ( $num in [1..28] )
+<option value="$num" #if ($!result.StartDay.toString() == "$num") selected="selected" #end>$num日</option>
+#end
+</select>
+#ALtditemfooter()
 #ALtdcaptionAtt("#ALrequired('休憩時間')" "rowspan='2'")
 #ALtditemheader()
 <h3>勤務時間内の場合</h3>

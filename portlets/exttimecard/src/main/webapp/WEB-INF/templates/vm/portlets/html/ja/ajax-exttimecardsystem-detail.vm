@@ -32,6 +32,10 @@ $!{result.Detail.SystemName}
 #ALtditemheader()
 ${result.Detail.StartHour}時${result.Detail.StartMinute}分 ～ $!{result.Detail.EndHour}時${result.Detail.EndMinute}分
 #ALtditemfooter()
+#ALtdcaption("開始日")
+#ALtditemheader()
+${result.Detail.StartDay}日
+#ALtditemfooter()
 #ALtdcaption("休憩時間")
 #ALtditemheader()
 <h3>勤務時間内の場合</h3><span class="strong">$!{result.Detail.WorkTimeIn}</span>分の勤務に対して、休憩時間は<span class="strong">$!{result.Detail.RestTimeIn}</span>分<br />

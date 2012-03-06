@@ -40,6 +40,8 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALNumberField end_minute;
 
+  private ALNumberField start_day;
+
   private ALNumberField worktime_in;
 
   private ALNumberField resttime_in;
@@ -68,6 +70,7 @@ public class ExtTimecardSystemDetailResultData extends
     start_minute = new ALNumberField();
     end_hour = new ALNumberField();
     end_minute = new ALNumberField();
+    start_day = new ALNumberField();
     worktime_in = new ALNumberField();
     resttime_in = new ALNumberField();
     worktime_out = new ALNumberField();
@@ -130,6 +133,10 @@ public class ExtTimecardSystemDetailResultData extends
     return update_date;
   }
 
+  public ALNumberField getStartDay() {
+    return start_day;
+  }
+
   public void setUserId(int i) {
     user_id.setValue(i);
   }
@@ -180,6 +187,10 @@ public class ExtTimecardSystemDetailResultData extends
 
   public void setUpdateDate(String str) {
     update_date.setValue(str);
+  }
+
+  public void setStartDay(int i) {
+    start_day.setValue(i);
   }
 
 }

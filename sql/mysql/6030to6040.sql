@@ -20,3 +20,8 @@ CREATE TABLE `eip_t_timeline_like` (
   UNIQUE KEY `eip_t_timeline_timelineid_ownerid_key` (`timeline_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --20120229
+
+--20120306
+ALTER TABLE `eip_t_ext_timecard_system` ADD COLUMN `start_day` int(11);
+UPDATE `eip_t_ext_timecard_system` SET start_day=1;
+--20120306

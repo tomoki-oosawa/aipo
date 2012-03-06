@@ -16,6 +16,7 @@ public class _EipTExtTimecardSystem extends org.apache.cayenne.CayenneDataObject
     public static final String OUTGOING_ADD_FLAG_PROPERTY = "outgoingAddFlag";
     public static final String RESTTIME_IN_PROPERTY = "resttimeIn";
     public static final String RESTTIME_OUT_PROPERTY = "resttimeOut";
+    public static final String START_DAY_PROPERTY = "startDay";
     public static final String START_HOUR_PROPERTY = "startHour";
     public static final String START_MINUTE_PROPERTY = "startMinute";
     public static final String SYSTEM_NAME_PROPERTY = "systemName";
@@ -80,6 +81,14 @@ public class _EipTExtTimecardSystem extends org.apache.cayenne.CayenneDataObject
     }
     public Integer getResttimeOut() {
         return (Integer)readProperty("resttimeOut");
+    }
+    
+    
+    public void setStartDay(Integer startDay) {
+        writeProperty("startDay", startDay);
+    }
+    public Integer getStartDay() {
+        return (Integer)readProperty("startDay");
     }
     
     

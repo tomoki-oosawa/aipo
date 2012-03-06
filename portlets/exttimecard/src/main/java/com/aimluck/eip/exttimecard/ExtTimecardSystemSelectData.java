@@ -126,6 +126,7 @@ public class ExtTimecardSystemSelectData extends
       rd.setStartMinute(record.getStartMinute());
       rd.setEndHour(record.getEndHour().intValue());
       rd.setEndMinute(record.getEndMinute());
+      rd.setStartDay(record.getStartDay().intValue());
       rd.setWorkTimeIn(record.getWorktimeIn());
       rd.setRestTimeIn(record.getResttimeIn());
       rd.setWorkTimeOut(record.getWorktimeOut());
@@ -158,6 +159,7 @@ public class ExtTimecardSystemSelectData extends
       rd.setStartMinute(record.getStartMinute());
       rd.setEndHour(record.getEndHour());
       rd.setEndMinute(record.getEndMinute());
+      rd.setStartDay(record.getStartDay());
       rd.setWorkTimeIn(record.getWorktimeIn());
       rd.setWorkTimeOut(record.getWorktimeOut());
       rd.setRestTimeIn(record.getResttimeIn());
