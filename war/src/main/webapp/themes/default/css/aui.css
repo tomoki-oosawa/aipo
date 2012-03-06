@@ -172,25 +172,28 @@ img.avatar,
 	line-height:12px;
 }
 /***************************************************
-	ActivityPopup
+	ActivityPopup & auiPopup
 --------------------------------------------------*/
 .dijitPopup {
 	display:block;
 	z-index:9999 !important;
 	background:#FFF;
 }
+.auiPopup,
 .activityPopup {
 	position:absolute;
 	right:0;
 	top:0;
 	background:#FFF;
 	width:400px;
-	padding:8px;
+	padding:9px;
 	border:1px solid #999;
-	border-radius:3px;
-	-ms-border-radius:3px;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+	border-radius:4px;
+	-ms-border-radius:4px;
+	box-shadow:0 2px 4px rgba(0,0,0,0.4);
+	z-index:9998 !important;
 }
+.auiPopup h2,
 #activityListPane h2 {
 	padding:0 0 5px;
 	border-bottom:solid 1px #ccc;
@@ -262,9 +265,43 @@ table.activityTable tr.unread td {
 }
 .rightBtn {
 	text-align:right;
-	padding:5px 0 0;
 	margin:0;
 	font-size:10px;
+}
+
+
+/***************************************************
+	auiListWrapper
+--------------------------------------------------*/
+.auiListWrapper {
+	height:305px;
+	overflow-y:auto;
+}
+
+/***************************************************
+	userList
+--------------------------------------------------*/
+.userList {
+}
+.userList li {
+	background:none;
+	padding:5px 0;
+	border-bottom:solid 1px #eee;
+}
+.userList .avatar {
+	height:50px;
+	padding-right:10px;
+}
+.userList .content {
+	display:table-cell;
+	overflow:hidden;
+	vertical-align:middle;
+}
+.userList .content div {
+	display:table-cell;
+	*display:inline;
+	vertical-align:middle;
+	zoom:1;
 }
 
 /***************************************************
@@ -1647,10 +1684,21 @@ ul#attachments span.deletebutton:hover{
 #timelineOuter #inputField {
 	margin-bottom: 10px;
 }
+#timelineOuter .outer {
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+#timelineOuter textarea {
+	border:none;
+	border-radius:0;
+	-ms-border-radius:0;
+}
+#timelineOuter textarea:focus {
+	box-shadow:none;
+}
 #timelineOuter textarea.elastic {
 	width: 99%;
 	overflow: hidden;
-	border: 0px;
 	resize: none;
 	outline: 0;
 	line-height: normal;
@@ -1661,7 +1709,7 @@ ul#attachments span.deletebutton:hover{
 #timelineOuter .outer {
 	border: 1px #cdcdcd solid;
 	padding: 3px;
-	margin-bottom: 5px;
+	margin:0 0 5px 0;
 	background:#fff;
 }
 #timeline {
@@ -1695,11 +1743,6 @@ ul#attachments span.deletebutton:hover{
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;
-}
-#timeline .commentField {
-	padding:4px;
-	border-top:solid 1px #fff;
-	border-bottom:solid 1px #e6e6e6;
 }
 #timeline .timeline {
 	width: 100%;
@@ -1746,8 +1789,6 @@ ul#attachments span.deletebutton:hover{
 .tlClipUrl {font-size:10px;}
 .tlClipBody {padding-top:5px;color:#666666;}
 
-
-
 .name .avatar {
 	float:left;
 	width:23px;
@@ -1756,38 +1797,57 @@ ul#attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timelineOuter .readMore {
+#timeline .readMore {
 	margin-top: 5px;
 	padding: 3px;
 	background: #efefef url(https://app.aipo.com/themes/default/images/common/bg_slash.gif) repeat left top;
 	border: 1px #cdcdcd solid;
 	text-align: center;
 }
-#timelineOuter .timeline .body {
-        padding-top: 3px;
-        min-height: 25px;
-        padding-bottom: 5px;
+#timeline .timeline .body {
+	padding-top: 3px;
+	min-height: 25px;
+	padding-bottom: 5px;
 }
 
-#timelineOuter .timeline .time {
-        margin-bottom:3px;
-        font-size: 80%;
-        *font-size: 75%;
-        color: #434343;
+#timeline .timeline .time {
+	margin-bottom:3px;
+	font-size: 80%;
+	*font-size: 75%;
+	color: #434343;
 }
 
-#timelineOuter .commentInputDummy {
-        padding:4px;
-        border-top:solid 1px #fff;
-        border-bottom:solid 1px #e6e6e6;
+#timeline .commentInputDummy {
+	padding:5px;
+	border-top:solid 1px #fff;
+	border-bottom:solid 1px #e6e6e6;
 }
-#timelineOuter .commentInputDummy span {
-        display:block;
-        padding:2px;
-        border: 1px #cdcdcd solid;
-        color: #aaaaaa;
-        cursor: text;
-        background:#fff;
+#timeline .commentInputDummy span {
+	display:block;
+	padding:2px;
+	border: 1px #cdcdcd solid;
+	color: #aaaaaa;
+	cursor: text;
+	background:#fff;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+#timeline .commentField {
+	padding:5px;
+	border-top:solid 1px #fff;
+	border-bottom:solid 1px #e6e6e6;
+}
+#timeline .commentField form {
+	padding-left:42px;
+}
+
+/* table Class */
+tr.disabled th, tr.disabled td {
+	background:#f6f6f6;
+	color:#666666;
+}
+tr.disabled a {
+	color:#666666;
 }
 
 /* auiIcon ********************/
