@@ -819,7 +819,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           } else {
             // 出退勤時間
             timecard.setClockInTime(clock_in_time.getValue());
-            if (clock_out_time.getFieldName() != null) {
+            if (!clock_out_time.getDay().isEmpty()) {
+              // 退勤時間が入っていた時
               timecard.setClockOutTime(clock_out_time.getValue());
             }
 
