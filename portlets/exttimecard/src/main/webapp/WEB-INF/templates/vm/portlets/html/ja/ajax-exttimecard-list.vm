@@ -240,8 +240,12 @@ $rdlist.DateStr
 #set($q = '"')
 #set($outgoings = "<a class=${q}auiButton${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>外出</a>")
 #set($comebacks = "<a class=${q}auiButton${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q}>復帰</a>")
-#set($outgoings = "$outgoings<br>$outcome.get('outgoing')")
-#set($comebacks = "$comebacks<br>$outcome.get('comeback')")
+#if($outcome.get('outgoing') != "")
+#set($outgoings = "$outcome.get('outgoing')")
+#end
+#if($outcome.get('comeback') != "")
+#set($comebacks = "$outcome.get('comeback')")
+#end
 #else
 #set($outgoings = $outcome.get('outgoing'))
 #set($comebacks = $outcome.get('comeback'))
