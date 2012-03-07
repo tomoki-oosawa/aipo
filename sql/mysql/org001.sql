@@ -667,6 +667,20 @@ CREATE TABLE `eip_t_timeline_like` (
   UNIQUE KEY `eip_t_timeline_timelineid_ownerid_key` (`timeline_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_timeline_file`
+(
+    `file_id` int(11) NOT NULL AUTO_INCREMENT,
+    `owner_id` int(11),
+    `timeline_id` int(11),
+    `file_name` varchar(128) NOT NULL,
+    `file_path` text NOT NULL,
+    `file_thumbnail` blob,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `eip_t_timecard_settings` (
   `timecard_settings_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,

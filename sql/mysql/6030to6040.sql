@@ -37,6 +37,6 @@ CREATE TABLE `eip_t_timeline_file`
     `update_date` datetime DEFAULT NULL,
     FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
     PRIMARY KEY (`file_id`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --20120307
