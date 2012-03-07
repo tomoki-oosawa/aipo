@@ -115,16 +115,18 @@ aipo.timeline.onKeyUp = function(pid){
 //	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
+
 aipo.timeline.onReceiveMessage = function(msg){
+	var pid = dojo.byId("getTimelinePortletId").innerHTML;
     if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
+        var arrDialog = dijit.byId("modalDialog_" + pid);
         if(arrDialog){
             arrDialog.hide();
         }
         aipo.portletReload('timeline');
     }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
+    if (dojo.byId("messageDiv_" + pid) ){
+        dojo.byId("messageDiv_" + pid).innerHTML = msg;
     }
 }
 
