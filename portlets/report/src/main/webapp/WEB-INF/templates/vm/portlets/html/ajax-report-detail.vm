@@ -130,7 +130,7 @@ ${record.Note}
 #ALtditemfooter()
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
-<select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
+<select id="attachments_$!portlet.ID" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
 #foreach( $record in $!resultOnReportDetail.AttachmentFileNameList )
 <option value="$record.FileId">$resultOnReportDetail.FileName</option>
 #end

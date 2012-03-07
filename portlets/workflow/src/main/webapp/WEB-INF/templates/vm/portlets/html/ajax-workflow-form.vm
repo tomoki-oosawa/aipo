@@ -43,14 +43,14 @@
 ## IE文字化け対策
 <span id="workflow_val_route1" style="display:none">ユーザー一覧から選択する</span>
 <span id="workflow_val_route2" style="display:none">申請経路一覧から選択する</span>
-<span id="workflow_val_confirm1" style="display:none">申請内容は変更されています\n分類を変更すると内容が消えてしまいますがよろしいですか？</span>
+<span id="workflow_val_confirm1" style="display:none">申請内容は変更されています。<br>分類を変更すると内容が消えてしまいますがよろしいですか？</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
+#ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
 <input type="hidden" name="mode" id="mode_$!portlet.ID" value="$!modesrv" />
 
 #ALtableheaderWide()
@@ -126,15 +126,13 @@
 
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
-<select id="attachments" name="attachments" type="select" size="3" multiple="multiple" style="width: 325px">
-#foreach( $record in $!result.AttachmentFileNameList )
-<option value="$record.FileId">$record.FileName</option>
-#end
-
-</select>
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
 <input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
-選択したファイルを<input type="button" onclick="aimluck.io.removeOptions(this.form.attachments);" value="削除する" class="button" name="add_attachment"/>
+<ul id="attachments_$!{portlet.ID}" class="attachments">
+	#foreach($record in $!result.AttachmentFileNameList )
+	<li data-fileid="s${record.FileId}" data-filename="$!record.FileName"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+	#end
+</ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="">
 #ALtditemfooter()
 #ALtablefooter()
