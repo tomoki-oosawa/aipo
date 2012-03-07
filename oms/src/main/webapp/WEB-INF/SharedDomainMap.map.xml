@@ -454,7 +454,7 @@
 	</db-entity>
 	<db-entity name="eip_t_timeline_file">
 		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
