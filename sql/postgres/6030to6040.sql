@@ -56,7 +56,13 @@ CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
 ALTER SEQUENCE pk_eip_t_timeline_like OWNED BY EIP_T_TIMELINE_LIKE.TIMELINE_LIKE_ID;
 --20120229
 
---20120305
+--20120307
+-----------------------------------------------------------------------------
+-- ALTER TABLE
+-----------------------------------------------------------------------------
+ALTER TABLE EIP_T_EXT_TIMECARD_SYSTEM ADD COLUMN START_DAY SMALLINT;
+UPDATE EIP_T_EXT_TIMECARD_SYSTEM SET START_DAY=1;
+
 -----------------------------------------------------------------------------
 -- EIP_T_REPORT_FILE
 -----------------------------------------------------------------------------
@@ -87,6 +93,4 @@ CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
 
 ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
 
-
-
---20120305
+--20120307

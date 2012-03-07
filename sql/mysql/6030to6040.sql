@@ -20,3 +20,23 @@ CREATE TABLE `eip_t_timeline_like` (
   UNIQUE KEY `eip_t_timeline_timelineid_ownerid_key` (`timeline_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 --20120229
+
+--20120307
+ALTER TABLE `eip_t_ext_timecard_system` ADD COLUMN `start_day` smallint;
+UPDATE `eip_t_ext_timecard_system` SET start_day=1;
+
+CREATE TABLE `eip_t_timeline_file`
+(
+    `file_id` int(11) NOT NULL AUTO_INCREMENT,
+    `owner_id` int(11),
+    `timeline_id` int(11),
+    `file_name` varchar(128) NOT NULL,
+    `file_path` text NOT NULL,
+    `file_thumbnail` blob,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`file_id`)
+);
+
+--20120307
