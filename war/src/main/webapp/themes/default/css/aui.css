@@ -1612,21 +1612,21 @@ form input[type=radio] {
 }
 
 /* fileupload **************************/
-ul#attachments{
-
+ul.attachments{
+	margin:5px 0;
 }
-ul#attachments >li{
+ul.attachments >li{
 	list-style: none;
 	background:none;
 	padding:0;
 }
-ul#attachments span.deletebutton{
+ul.attachments span.deletebutton{
 	margin-left:10px;
 	cursor:pointer;
 	text-decoration: underline;
 	color: #1B1B1B;
 }
-ul#attachments span.deletebutton:hover{
+ul.attachments span.deletebutton:hover{
 	text-decoration:none;
 	color: #F90;
 }
@@ -1815,6 +1815,9 @@ ul#attachments span.deletebutton:hover{
 	font-size: 80%;
 	*font-size: 75%;
 	color: #434343;
+}
+#timeline .message .more {
+	line-height:1.6;
 }
 
 #timeline .commentInputDummy {
