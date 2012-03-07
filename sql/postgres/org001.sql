@@ -1353,6 +1353,25 @@ CREATE TABLE EIP_T_TIMELINE_LIKE
 );
 
 -----------------------------------------------------------------------------
+-- EIP_T_REPORT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_TIMELINE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    TIMELINE_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 
@@ -1436,6 +1455,7 @@ CREATE SEQUENCE pk_eip_t_report_member_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_report_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1506,6 +1526,7 @@ ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
 ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
 ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE.TIMELINE_ID;
 ALTER SEQUENCE pk_eip_t_timeline_like OWNED BY EIP_T_TIMELINE_LIKE.TIMELINE_LIKE_ID;
+ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
