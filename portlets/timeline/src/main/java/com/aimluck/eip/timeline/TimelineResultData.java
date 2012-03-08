@@ -160,10 +160,50 @@ public class TimelineResultData implements ALData {
   }
 
   /**
-   * @return
+   * @return String
    */
   public String getNote() {
     return ALEipUtils.getMessageList(note.getValue());
+  }
+
+  private final int PRE_NOTE_LENGTH = 500;
+
+  /**
+   * 続きを見るを表示するかどうかの判定
+   * 
+   * @return boolean
+   */
+  public boolean isLongNote() {
+    return note.getValue().length() > PRE_NOTE_LENGTH;
+  }
+
+  /**
+   * 続きを見るで隠されない部分を返します。
+   * 
+   * @return String
+   */
+  public String getPreviewNote() {
+    if (isLongNote()) {
+      return ALEipUtils.getMessageList(note.getValue().substring(
+        0,
+        PRE_NOTE_LENGTH));
+    } else {
+      return getNote();
+    }
+  }
+
+  /**
+   * 続きを見るで隠される部分を返します。
+   * 
+   * @return String
+   */
+  public String getDetailNote() {
+    if (isLongNote()) {
+      return ALEipUtils.getMessageList(note.getValue().substring(
+        PRE_NOTE_LENGTH));
+    } else {
+      return null;
+    }
   }
 
   /**

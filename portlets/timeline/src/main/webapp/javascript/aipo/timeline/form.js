@@ -115,7 +115,6 @@ aipo.timeline.onKeyUp = function(pid){
 //	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
-
 aipo.timeline.onReceiveMessage = function(msg){
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;
     if(!msg) {
@@ -166,3 +165,10 @@ aipo.timeline.hideDialog = function() {
     aipo.portletReload('timeline');
 }
 
+
+aipo.timeline.ellipse_message=function(_this){
+	var p=_this.parentElement;
+	var body=p.parentElement;
+	dojo.query(p).addClass("opened");
+	dojo.query(".text_exposed_show",body).removeClass("ellipsis");
+}
