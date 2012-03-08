@@ -637,3 +637,14 @@ background-repeat:no-repeat;
 }
 .dojoDndAvatarItem {
 }
+
+/* timeline */
+
+#timeline .text_exposed_show.ellipsis{
+    display:none;
+}
+
+#timeline .message .more.opened{
+    display:none;
+}
+
