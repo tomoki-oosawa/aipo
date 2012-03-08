@@ -38,8 +38,6 @@
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>フィルタを登録しておくことで、受信したメールを自動振り分けできます。</p>
-<p>『フィルタを追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("フィルタを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
 </p>
