@@ -148,6 +148,20 @@ aipo.timeline.popupCenter = function(num) {
         var image_width = i.width;
         var image_height = i.height;
         var coord = dojo.coords(dojo.byId("modalDialog"),false);
+        if (document.all) {
+            mX = document.documentElement.clientWidth;
+            mY = document.documentElement.clientHeight;
+        } else {
+            mX = window.innerWidth;
+            mY = window.innerHeight;
+        }
+        if(image_width != 0) {
+
+            var x_posision = mX / 2 - image_width/2 - coord.x;
+            dojo.byId("popc").style.left =  x_posision +'px';
+            var y_posision =  mY / 2 - image_height/2 - coord.y;
+            dojo.byId("popc").style.top = y_posision +'px';
+        }
         dojo.byId("popc").innerHTML = '<a href="javascript:aipo.timeline.popupCenterHide();"><img src='+num+'></a>';
     }
     i.src = num;
@@ -171,4 +185,20 @@ aipo.timeline.ellipse_message=function(_this){
 	var body=p.parentElement;
 	dojo.query(p).addClass("opened");
 	dojo.query(".text_exposed_show",body).removeClass("ellipsis");
+}
+
+aipo.timeline.onForcus = function(pid, tid){
+	var note = dojo.byId("note_" + pid + "_" + tid);
+	if(note.value == note.defaultValue){
+		note.value='';
+		note.style.color='black';
+	}
+}
+
+aipo.timeline.onBlur = function(pid, tid){
+	var note = dojo.byId("note_" + pid + "_" + tid);
+	if(note.value==''){
+		note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
+		note.style.color='#999999';
+	}	
 }
