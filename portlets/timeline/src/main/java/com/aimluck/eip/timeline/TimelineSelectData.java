@@ -35,6 +35,7 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -76,6 +77,10 @@ public class TimelineSelectData extends
   /** ログインユーザ ID */
   private int uid;
 
+  private ALBaseUser baseuser;
+
+  private ALEipUser user;
+
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
@@ -109,7 +114,8 @@ public class TimelineSelectData extends
       ALEipConstants.LIST_SORT_TYPE_DESC);
 
     uid = ALEipUtils.getUserId(rundata);
-
+    baseuser = (ALBaseUser) rundata.getUser();
+    user = ALEipUtils.getALEipUser(rundata);
   }
 
   /**
@@ -435,5 +441,16 @@ public class TimelineSelectData extends
    */
   public void setScrollTop(int scrollTop) {
     this.scrollTop = scrollTop;
+  }
+
+  public boolean hasMyPhoto() {
+    if (baseuser == null) {
+      return false;
+    }
+    return baseuser.getPhoto() != null;
+  }
+
+  public ALEipUser getMyUser() {
+    return user;
   }
 }

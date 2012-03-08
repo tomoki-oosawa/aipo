@@ -39,6 +39,7 @@ aipo.timeline.addLike = function(form, name, value){
 aipo.timeline.showCommentField = function(pid, tid){
 	dojo.byId('commentField_' + pid + '_' + tid).style.display = "";
 	dojo.byId('note_' + pid + '_' + tid).focus();
+	dojo.byId('note_' + pid + '_' + tid).style.color='black';
 	var dummy = dojo.byId('commentInputDummy_' + pid + '_' + tid);
 	if(typeof dummy != "undefined" && dummy != null){
 		dojo.byId('commentInputDummy_' + pid + '_' + tid).style.display = "none";
@@ -200,5 +201,18 @@ aipo.timeline.onBlur = function(pid, tid){
 	if(note.value==''){
 		note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
 		note.style.color='#999999';
-	}	
+	}
+}
+
+aipo.timeline.onBlurCommentField = function(pid, tid){
+	var note = dojo.byId("note_" + pid + "_" + tid);
+	var dummy = dojo.byId('commentInputDummy_' + pid + '_' + tid);
+	var field = dojo.byId('commentField_' + pid + '_' + tid);
+
+	if(note.value==''){
+		note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
+		note.style.color='#999999';
+		dummy.style.display = "";
+		field.style.display = "none";
+	}
 }
