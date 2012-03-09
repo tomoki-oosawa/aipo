@@ -35,7 +35,7 @@
 </div>
 <div class="floatLeft mr10">
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
+<a href="javascript:void(0)" class="auiButton" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
 </div>
 <div class="Left">
 <ul id="attachments_$!{portlet.ID}" class="attachments">
@@ -43,6 +43,7 @@
 	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
 	#end
 </ul>
+<div style="clear:both"></div>
 </div>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 #ALformfooter()
@@ -77,7 +78,6 @@
 		$record.PreviewNote#if($record.isLongNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
     <p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">続きを読む</a></p>#end
 		<div class="tlImageBlock clearfix">
-			<div id='popc' style='position:absolute; left:50%; top:50%;'></div>
 			#foreach( $attachmentFile in $!record.AttachmentFileList )
 				#if($attachmentFile.isImage())
 					<a href="javascript:aipo.timeline.popupCenter('$jslink.getTemplate("TimelineFileRawScreen").addQueryData("ownerid", $!{record.OwnerId}).addQueryData("entityid", $record.TimelineId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
@@ -202,6 +202,9 @@
       </div>
     </form>
     </div>
+	</div>
+	<div id="popc_timeline" class="auiPopup imgPopup hide" style="max-width:800px;">
+		<div class="imgBody"></div>
 	</div>
   #end
   #if($result.Count > $result.RowsNum && $result.ContentHeight == 0)

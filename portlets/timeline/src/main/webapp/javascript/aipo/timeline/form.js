@@ -148,7 +148,12 @@ aipo.timeline.popupCenter = function(num) {
     i.onload = function(){
         var image_width = i.width;
         var image_height = i.height;
-        var coord = dojo.coords(dojo.byId("modalDialog"),false);
+        //var coord = dojo.coords(dojo.byId("modalDialog"),false);
+
+        var coord={
+        	x: document.documentElement.scrollLeft || document.body.scrollLeft,
+        	y: document.documentElement.scrollTop || document.body.scrollTop
+        }
         if (document.all) {
             mX = document.documentElement.clientWidth;
             mY = document.documentElement.clientHeight;
@@ -156,20 +161,22 @@ aipo.timeline.popupCenter = function(num) {
             mX = window.innerWidth;
             mY = window.innerHeight;
         }
-        if(image_width != 0) {
-
-            var x_posision = mX / 2 - image_width/2 - coord.x;
-            dojo.byId("popc").style.left =  x_posision +'px';
-            var y_posision =  mY / 2 - image_height/2 - coord.y;
-            dojo.byId("popc").style.top = y_posision +'px';
+        if(image_width != 0 && image_height!=0) {
+            var x_posision = mX / 2 -image_width/2 +coord.x;
+            dojo.byId("popc_timeline").style.left =  x_posision +'px';
+            var y_posision =  mY / 2 -image_height/2 + coord.y;
+            dojo.byId("popc_timeline").style.top = y_posision +'px';
         }
-        dojo.byId("popc").innerHTML = '<a href="javascript:aipo.timeline.popupCenterHide();"><img src='+num+'></a>';
+        dojo.byId("popc_timeline").style.maxWidth=Math.min(800,(image_width+10))+'px';
+    	dojo.query("#popc_timeline").removeClass("hide");
+        dojo.byId("popc_timeline").children[0].innerHTML = '<a href="javascript:aipo.timeline.popupCenterHide();"><img src='+num+'></a>';
     }
     i.src = num;
 }
 
 aipo.timeline.popupCenterHide = function() {
-    dojo.byId("popc").innerHTML = "";
+	dojo.query("#popc_timeline").addClass("hide");
+    dojo.byId("popc_timeline").children[0].innerHTML = "";
 }
 
 aipo.timeline.hideDialog = function() {

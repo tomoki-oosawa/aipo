@@ -638,6 +638,10 @@ background-repeat:no-repeat;
 .dojoDndAvatarItem {
 }
 
+.hide{
+  display: none;
+}
+
 /* timeline */
 
 #timeline .text_exposed_show.ellipsis{

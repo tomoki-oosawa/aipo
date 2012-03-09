@@ -272,7 +272,7 @@ table.activityTable tr.unread td {
 }
 /* imgPopup */
 .imgPopup {
-	overflow:hiddne;
+	overflow:hidden;
 }
 .imgPopup .imgBody {
 	text-align:center;
