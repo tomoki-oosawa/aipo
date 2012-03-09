@@ -20,7 +20,7 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft w30">
 <form class="auiForm">
-#ALselectpdheader("topic" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
+#ALselectpdheader("topic" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","0").addQueryData("filtertype","category"))">すべてのカテゴリ</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>

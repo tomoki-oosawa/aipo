@@ -161,6 +161,9 @@ public class MsgboardTopicSelectData extends
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
+        if (table_colum_num != 4) {
+          categoryId = "";
+        }
         if (categoryId != null) {
           ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
           ALEipUtils
