@@ -137,7 +137,7 @@
 #end
 #ALbuttonheader()
 #if ($controller.Portlets.allowCustomize($data))
-#ALsubmit('eventSubmit_doSave' '更新する')#ALsubmit('eventSubmit_doCancel' 'キャンセルする')
+#ALsubmit('eventSubmit_doSave' '更新する')#ALsubmitCancel('eventSubmit_doCancel' 'キャンセルする')
 #end
 #ALbuttonfooter()
      </form>

@@ -76,7 +76,7 @@ $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit('eventSubmit_doUpdate' '更新する')#ALsubmit('eventSubmit_doCancel' 'キャンセルする')
+#ALsubmit('eventSubmit_doUpdate' '更新する')#ALsubmitCancel('eventSubmit_doCancel' 'キャンセルする')
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()

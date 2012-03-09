@@ -312,6 +312,10 @@
 #end
 
 #macro(ALsubmit $name $value)
+<input name="$name" class="auiButtonAction" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(ALsubmitCancel $name $value)
 <input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
 #end
 
@@ -324,7 +328,7 @@
 #end
 
 #macro(ALsubmitJS $name $value $js)
-<input name="$name" class="button" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
+<input name="$name" class="auiButtonAction" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
 #end
 
 #macro(ALbutton $name $value $onclick)
