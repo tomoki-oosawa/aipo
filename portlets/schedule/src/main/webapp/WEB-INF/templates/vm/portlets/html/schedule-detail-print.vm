@@ -111,7 +111,7 @@ if(document.all!=undefined){
 
 
 <div id="printBody" style="width:600px;font-size:10pt;">
-<h1>$!{result.User.AliasName}さん $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 $!{result.Detail.Date2}のスケジュール</h1>
+<h1>$!{result.User.AliasName} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
 
 
 <table><tbody>
@@ -212,7 +212,7 @@ ${record.FacilityName}<br/>
 #ALtdcaption('登録者名')
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
 #ALtdcaption('更新者名')
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年M月d日 H時mm分')}）")
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
 
 
 </tbody></table>
