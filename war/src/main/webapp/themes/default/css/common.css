@@ -2344,12 +2344,9 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 vertical-align:middle;
 margin:0 3px 0 0;
 }
-.floatRight{
-float:right;
-}
-.floatLeft{
-float:left;
-}
+.floatRight{float:right}
+.floatLeft{float:left}
+.hide {display:none}
 
 /***************************************************
 	width
