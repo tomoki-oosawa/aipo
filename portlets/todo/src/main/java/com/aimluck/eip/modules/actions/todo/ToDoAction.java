@@ -84,12 +84,24 @@ public class ToDoAction extends ALBaseAction {
     // セッション情報のクリア
     clearToDoSession(rundata, context);
 
+    ToDoSelectData listData = new ToDoSelectData();
+    listData.initField();
+    listData.setRowsNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.setTableColumNum(Integer.parseInt(portlet
+      .getPortletConfig()
+      .getInitParameter("p0e-rows")));
+
     // デフォルトカテゴリ設定の適用
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
-      .getPortletConfig()
-      .getInitParameter("p1d-categories")
-      .trim());
+
+    if (ToDoSelectData.table_colum_num == 4) {
+      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+        .getPortletConfig()
+        .getInitParameter("p1d-categories")
+        .trim());
+    }
     ALEipUtils.setTemp(
       rundata,
       context,
@@ -101,14 +113,13 @@ public class ToDoAction extends ALBaseAction {
       LIST_SORT_TYPE_STR,
       ALEipConstants.LIST_SORT_TYPE_DESC);
 
-    ToDoSelectData listData = new ToDoSelectData();
-    listData.initField();
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p1a-rows")));
-    listData.setTableColumNum(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p1e-rows")));
+    /*
+     * ToDoSelectData listData = new ToDoSelectData(); listData.initField();
+     * listData.setRowsNum(Integer.parseInt(portlet .getPortletConfig()
+     * .getInitParameter("p1a-rows")));
+     * listData.setTableColumNum(Integer.parseInt(portlet .getPortletConfig()
+     * .getInitParameter("p0e-rows")));
+     */
     listData.setStrLength(0);
     listData.loadCategoryList(rundata);
     listData.doViewList(this, rundata, context);
