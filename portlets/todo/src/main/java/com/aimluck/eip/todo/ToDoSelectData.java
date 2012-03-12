@@ -97,7 +97,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
 
   private boolean hasAclDeleteTodoOther;
 
-  public static int table_colum_num;
+  private int table_colum_num;
 
   /**
    * 
@@ -582,6 +582,6 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    *          セットする
    */
   public void setTableColumNum(int table_colum_num) {
-    ToDoSelectData.table_colum_num = table_colum_num;
+    this.table_colum_num = table_colum_num;
   }
 }

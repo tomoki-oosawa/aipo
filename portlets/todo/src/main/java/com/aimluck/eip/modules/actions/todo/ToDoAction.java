@@ -96,7 +96,7 @@ public class ToDoAction extends ALBaseAction {
     // デフォルトカテゴリ設定の適用
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
 
-    if (ToDoSelectData.table_colum_num == 4) {
+    if (listData.getTableColumNum() == 4) {
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
         .getPortletConfig()
         .getInitParameter("p1d-categories")
