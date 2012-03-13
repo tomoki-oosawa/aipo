@@ -1944,8 +1944,8 @@ div.calerndarTodoDiv a:hover {
 	padding:0;
 }
 
-span span span,
-span.dispUser {
+/*span span span,*/
+span.dispUser, span.color0, span.color1, span.color2, span.color3, span.color4, span.color5, span.color6, span.color7, span.color8, span.color9, span.color10, span.color11, span.color12, span.color13, span.color14, span.color15, span.color16, span.color17, span.color18, span.color19, span.color20, span.color21, span.color22, span.color23, span.color24, span.color25, span.color26, span.color27, span.color28, span.color29 {
 	display:inline-block;
 	padding:2px 3px;
 	margin-bottom:2px;
