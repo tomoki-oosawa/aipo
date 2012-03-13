@@ -27,7 +27,7 @@
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
 <div class="outer">
-<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)">近況を共有しましょう</textarea>
+<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)">近況を共有しましょう</textarea>
 </div>
 <div class="floatRight">
 <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
@@ -195,7 +195,7 @@
     <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
       <input type="hidden" name="secid" value="$secid" />
       <div class="outer">
-        <textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', $!{record.TimelineId})" onfocus="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
+        <textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId})" onfocus="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
       </div>
       <div class="right">
       <a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">コメントする</a>
