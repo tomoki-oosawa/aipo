@@ -62,9 +62,9 @@
     <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
-  <div id="content">
+  <div id="content_$!{portlet.ID}">
   #foreach ($record in $result.List)
-    <div id="message$!{record.TimelineId}" class="message">
+    <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
       <div class="avatar mr10">
       #if(${record.hasPhoto()})
         <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
@@ -130,9 +130,9 @@
 	#end
     #foreach ($record2 in $record.CoTopicList)
       #if($velocityCount < $record.CoTopicList.size() - 1)
-        <div id="message$!{record2.TimelineId}" class="message" style="display:none">
+        <div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message" style="display:none">
       #else
-        <div id="message$!{record2.TimelineId}" class="message">
+        <div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message">
       #end
       <div class="avatar mr10">
       #if(${record2.hasPhoto()})
@@ -207,9 +207,17 @@
 		<div class="imgBody"></div>
 	</div>
   #end
+  <div id="content_end_$!{portlet.ID}"></div>
+  </div>
+  <div id="more_$!{portlet.ID}">
   #if($result.Count > $result.RowsNum && $result.ContentHeight == 0)
-	<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');" class="readMore" style="display:block;">もっと見る</a></div>
+	#set($pages = $result.PagesNum)
+	#set($currentPage = $result.CurrentPage)
+	#if($pages > $currentPage) #set($next = $currentPage + 1)
+	<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID');" style="display:block;">もっと見る</a></div>
+	#end
   #end
+  <div id="more_end_$!{portlet.ID}"></div>
   </div>
   </div>
 #end

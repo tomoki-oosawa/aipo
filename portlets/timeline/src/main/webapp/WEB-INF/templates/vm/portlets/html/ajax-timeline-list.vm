@@ -27,7 +27,7 @@
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
 <div class="outer">
-<textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)">近況を共有しましょう</textarea>
+  <textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)">近況を共有しましょう</textarea>
 </div>
 <div class="floatRight">
 <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
@@ -37,13 +37,14 @@
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
 <a href="javascript:void(0)" class="auiButton" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
 </div>
-
+<div class="Left">
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
 	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
 	#end
 </ul>
 <div style="clear:both"></div>
+</div>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 #ALformfooter()
 </div>
@@ -55,15 +56,15 @@
 #if($result.List.size() == 0)
   <div class="message">発言はありません。</div>
 #else
-  #if($result.ContentHeightMax == 0)
-    <div id="timeline" class="timeline"  #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+  #if($result.ContentHeight == 0)
+    <div id="timeline" class="timeline" style="clear:both" #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
   #else
-    <div id="timeline" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; " #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+    <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
-  <div id="content">
+  <div id="content_$!{portlet.ID}">
   #foreach ($record in $result.List)
-    <div id="message$!{record.TimelineId}" class="message">
+    <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
       <div class="avatar mr10">
       #if(${record.hasPhoto()})
         <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
@@ -75,9 +76,8 @@
 	  <div class="name">$!record.OwnerName</div>
 	  <div class="body">
 		$record.PreviewNote#if($record.isLongNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
-		<p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">続きを読む</a></p>#end
+    <p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">続きを読む</a></p>#end
 		<div class="tlImageBlock clearfix">
-
 			#foreach( $attachmentFile in $!record.AttachmentFileList )
 				#if($attachmentFile.isImage())
 					<a href="javascript:aipo.timeline.popupCenter('$jslink.getTemplate("TimelineFileRawScreen").addQueryData("ownerid", $!{record.OwnerId}).addQueryData("entityid", $record.TimelineId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
@@ -130,9 +130,9 @@
 	#end
     #foreach ($record2 in $record.CoTopicList)
       #if($velocityCount < $record.CoTopicList.size() - 1)
-        <div id="message$!{record2.TimelineId}" class="message" style="display:none">
+        <div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message" style="display:none">
       #else
-        <div id="message$!{record2.TimelineId}" class="message">
+        <div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message">
       #end
       <div class="avatar mr10">
       #if(${record2.hasPhoto()})
@@ -195,7 +195,7 @@
     <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
       <input type="hidden" name="secid" value="$secid" />
       <div class="outer">
-        <textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', $!{record.TimelineId})" onfocus="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
+      <textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeydown="aipo.timeline.onKeyDown('$!{portlet.ID}', $!{record.TimelineId})" onfocus="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
       </div>
       <div class="right">
       <a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">コメントする</a>
@@ -207,9 +207,17 @@
 		<div class="imgBody"></div>
 	</div>
   #end
-  #if($result.Count > $result.RowsNum && $result.ContentHeightMax == 0)
-    <div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineListScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');">もっと見る</a></div>
+  <div id="content_end_$!{portlet.ID}"></div>
+  </div>
+  <div id="more_$!{portlet.ID}">
+  #if($result.Count > $result.RowsNum && $result.ContentHeight == 0)
+	#set($pages = $result.PagesNum)
+	#set($currentPage = $result.CurrentPage)
+	#if($pages > $currentPage) #set($next = $currentPage + 1)
+	<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID');" style="display:block;">もっと見る</a></div>
+	#end
   #end
+  <div id="more_end_$!{portlet.ID}"></div>
   </div>
   </div>
 #end

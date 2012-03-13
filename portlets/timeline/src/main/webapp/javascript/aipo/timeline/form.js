@@ -58,9 +58,28 @@ aipo.timeline.onScroll = function(url, pid){
 	var clientHeight = dojo.byId("timeline").clientHeight;
 	var scrollHeight = dojo.byId("timeline").scrollHeight;
 	var remain = scrollHeight - clientHeight - scrollTop;
-	if(remain < 5){
-		aipo.viewPage(url, pid, [['scrollTop', scrollTop]]);
+	try{
+		dojo.xhrPost({
+	        portletId: pid,
+	        url: url,
+	        encoding: "utf-8",
+	        handleAs: "text",
+	        headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
+	        load: function(data, event) {
+	        	var content = [];
+	        	content = data.split("<div id=" + '"' +  "content_" + pid + '"' + ">");
+	        	content = content[1].split("<div id=" + '"' +  "content_end_" + pid + '"' + ">");
+	            dojo.byId("content_" + pid).innerHTML += content[0];
+	        	var more = [];
+	        	more = data.split("<div id=" + '"' +  "more_" + pid + '"' + ">");
+	        	more = more[1].split("<div id=" + '"' +  "more_end_" + pid + '"' + ">");
+	            dojo.byId("more_" + pid).innerHTML = more[0];
+	        }
+	    });
+	} catch (e) {
+		alert (e);
 	}
+
 }
 
 aipo.timeline.setScrollTop = function(scrollTop){
