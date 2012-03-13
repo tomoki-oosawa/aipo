@@ -67,7 +67,7 @@ aipo.timeline.setScrollTop = function(scrollTop){
 	dojo.byId("timeline").scrollTop = scrollTop;
 }
 
-aipo.timeline.onKeyUp = function(pid, tid){
+aipo.timeline.onKeyDown = function(pid, tid){
 	var val = dojo.byId("note_" + pid + "_" + tid).value;
 
 //	if(tid == "0"){
@@ -94,6 +94,8 @@ aipo.timeline.onKeyUp = function(pid, tid){
 	shadow.style.height="auto";
 	shadow.style.resize="none";
 	shadow.cols="10"
+	//これが呼ばれる際の入力はまだ入ってこないので、適当に1文字追加
+	shadow.innerHTML = shadowVal + "あ";
 
 
 	var objBody = document.getElementsByTagName("body").item(0);
@@ -107,6 +109,11 @@ aipo.timeline.onKeyUp = function(pid, tid){
 		shadowHeight = 18;
 	dojo.byId("note_" + pid + "_" + tid).style.height = shadowHeight + 21 + "px";
 	objBody.removeChild(shadow);
+}
+
+aipo.timeline.onKeyUp = function(pid){
+//	var val = dojo.byId("note_" + pid + "_0").value;
+//	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
 aipo.timeline.onReceiveMessage = function(msg){
