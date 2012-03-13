@@ -30,7 +30,7 @@
         <parameter name="template" value="todo" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>ToDo表示件数（通常時）</title>
+                <title>ToDo表示件数（トップページ）</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -38,7 +38,7 @@
         <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>ToDo表示件数（最大化時）</title>
+                <title>ToDo表示件数</title>
             </meta-info>
         </parameter>
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -55,7 +55,7 @@
 
         <parameter name="p1d-categories" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>初期表示カテゴリー（通常時）</title>
+                <title>詳細表示時の初期表示カテゴリー</title>
             </meta-info>
         </parameter>
         <parameter name="p1d-categories.style" value="TodoCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -68,7 +68,7 @@
         </parameter>
         <parameter name="p0e-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p0e-rows.style.items" value="2,4" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p0e-rows.style.values" value="タイトル、更新日,タイトル、カテゴリ、作成者、更新日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p0e-rows.style.values" value="簡易表示,詳細表示" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="action" value="todo.ToDoAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="ToDoFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
