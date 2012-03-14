@@ -55,7 +55,7 @@
 
         <parameter name="p1d-categories" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>詳細表示時の初期表示カテゴリー</title>
+                <title>初期表示カテゴリ（トップページ）</title>
             </meta-info>
         </parameter>
         <parameter name="p1d-categories.style" value="TodoCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -63,7 +63,7 @@
 
         <parameter name="p0e-rows" value="4" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>表示項目</title>
+                <title>表示項目（トップページ）</title>
             </meta-info>
         </parameter>
         <parameter name="p0e-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
