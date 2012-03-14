@@ -42,7 +42,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -63,7 +62,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class AjaxScheduleWeeklyGroupSelectData extends
-    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
+    AjaxScheduleMonthlySelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -204,6 +203,9 @@ public class AjaxScheduleWeeklyGroupSelectData extends
         throw new ALPageNotFoundException();
       }
     }
+    // MonthlyCalendarに表示する月を登録
+    this.setMonthlyCalendarViewMonth(viewStart.getYear(), viewStart.getMonth());
+
     Calendar cal2 = Calendar.getInstance();
     cal2.setTime(viewStart.getValue());
     cal2.add(Calendar.DATE, 1);

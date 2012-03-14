@@ -126,6 +126,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         throw new ALPageNotFoundException();
       }
     }
+    // MonthlyCalendarに表示する月を登録
+    this.setMonthlyCalendarViewMonth(viewStart.getYear(), viewStart.getMonth());
+    this.setMonthlyCalendar(rundata, context);
+
     Calendar cal2 = Calendar.getInstance();
     cal2.setTime(viewStart.getValue());
     cal2.add(Calendar.DATE, 1);

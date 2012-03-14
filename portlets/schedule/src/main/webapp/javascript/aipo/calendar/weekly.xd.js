@@ -82,6 +82,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
         load: function(data, event) {
+        	/*//月カレンダーを更新
+        	if(aipo.calendar.reloadMonthlyCalendar!=null){
+        		aipo.calendar.reloadMonthlyCalendar();
+        	}*/
             //権限チェック
             obj_error = dojo.byId('error-'+_portletId);
             dojo.style(obj_error, "display" , "none");
@@ -516,7 +520,7 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
     if(dojo.byId("top_form").value=="simple"){
     	singleWidth = 7.2;
     }
-    
+
     scheduleDiv.sort(aipo.calendar.sortByRegion);
 
 
@@ -981,7 +985,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         if(dojo.byId("top_form").value=="simple"){
           this.dragSource.schedule.index = 0;
         }
-        
+
         if (dojo.isIE) {
             document.onkeydown = "";
             document.onkeyup = "";

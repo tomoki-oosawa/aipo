@@ -17,9 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
+#ALjavascript("javascript/aipo/calendar/monthly.js")
 ## ---------------------------------------------------------------------------
 #set ($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new')")
 #set ($indicator_id = "indicator-list-")
+#if(!$filter)
+	#set($filter="")
+#end
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
 <span id="schedule_val_tooltip1" style="display:none;">読み込み中...</span>
@@ -33,14 +37,70 @@
 </div>
 
 <div class="auiWidget clearfix">
+    <table class="auiCalendar">
+    	<tbody id="mc_table"><tr>
+    	<th colspan="7" style="line-height:1.7em;">
+    		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>年<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>月</div>
+    		<div class="auiSelectButton floatRight">
+    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前月へ" /></span></a></div>
+    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="翌月へ" /></span></a></div>
+    		</ul>
+    		</div>
+    	</th>
+    	</tr>
+    	<tr class="week">
+    		<td class="sunday">日</td>
+    		<td>月</td>
+    		<td>火</td>
+    		<td>水</td>
+    		<td>木</td>
+    		<td>金</td>
+    		<td class="saturday">土</td>
+    	</tr>
+    	#set($entityids = "")
+    	#set($weekListSize = $result.MonthlyCalendarContainer.WeekList.size())
+    	#set($weekcount = 0)
+    	#foreach($record4 in $result.MonthlyCalendarContainer.WeekList)
+    	<tr class="monthlyCalendarAutoTr">
+    	#foreach($record in $record4.DayList)
+    	#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
+    	#set ($color_style = "")
+		#set ($color_style_ohtermonth = "")
+		#set ($color_style_selected = "")
 
-<ul>
-<li#if($!result.Viewtype == "calendar") class="active"#end><a href="javascript:void(0)" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","calendar"))','$!portlet.ID');">ブロック</a></li>
-<li#if($!result.Viewtype == "oneday-group") class="active"#end><a href="javascript:void(0)" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group"))','$!portlet.ID');">日</a></li>
-<li#if($!result.Viewtype == "weekly-group") class="active"#end><a href="javascript:void(0)" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","weekly-group"))','$!portlet.ID');">週</a></li>
-<li#if($!result.Viewtype == "monthly") class="active"#end><a href="javascript:void(0)" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","monthly"))','$!portlet.ID');">月</a></li>
-<li#if($!result.Viewtype == "list") class="active"#end><a href="javascript:void(0)" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","list"))','$!portlet.ID');">一覧</a></li>
-</ul>
+    	#if($!{record.Date.Value.Day} == 0)
+    	#set ($color_style = " sunday")
+    	#elseif($!{record.Date.Value.Day} == 6)
+    	#set ($color_style = " saturday")
+    	#end
+
+    	#if($!{record.isHoliday()})
+    	#set ($color_style = " holiday")
+    	#end
+
+    	#if(! ($!{result.MonthlyCalendarViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
+    	#set ($color_style_ohtermonth = " out")
+    	#end
+
+    	#if($!{record.Today}==$!{result.MonthlyCalendarToday.toString()})
+    	#set ($color_style = " today")
+    	#end
+
+    	#if($!{record.Today}==$!{result.ViewDate.toString()})
+    	#set ($color_style_selected = " selected")
+    	#end
+
+    	<td class="${color_style}${color_style_ohtermonth}${color_style_selected}">
+    		#ALMonthlyCalenderOnedayLink($!portlet.ID $filter $record)
+    	</td>
+    	#end
+    	</tr>
+    	#end
+    </tbody></table>
+    <img src="images/common/dot.gif" width="1" height="1" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
+    	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleMonthlyJSONScreen"))'
+    	,'$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group")'
+    	,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');">
 
 </div>
 

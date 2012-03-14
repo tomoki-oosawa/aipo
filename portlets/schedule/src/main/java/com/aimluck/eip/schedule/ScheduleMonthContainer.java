@@ -35,8 +35,9 @@ public class ScheduleMonthContainer implements ALData {
   private List<ScheduleWeekContainer> weekList;
 
   /*
-   * 
+   *
    */
+  @Override
   public void initField() {
     weekList = new ArrayList<ScheduleWeekContainer>();
   }
@@ -48,10 +49,6 @@ public class ScheduleMonthContainer implements ALData {
    */
   public void setViewMonth(Calendar cal, Calendar vcal) {
     for (int i = 1; i <= 6; i++) {
-      if ((i == 5 || i == 6)
-        && (cal.get(Calendar.MONTH) != vcal.get(Calendar.MONTH))) {
-        break;
-      }
       // 日付を7日ずつずらす
       ScheduleWeekContainer con = new ScheduleWeekContainer();
       con.initField();

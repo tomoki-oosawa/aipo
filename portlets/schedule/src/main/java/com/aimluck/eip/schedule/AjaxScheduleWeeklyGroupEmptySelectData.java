@@ -32,7 +32,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
@@ -47,7 +46,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
  *
  */
 public class AjaxScheduleWeeklyGroupEmptySelectData extends
-    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
+    AjaxScheduleMonthlySelectData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")

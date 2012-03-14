@@ -41,7 +41,6 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -60,8 +59,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * スケジュール1日表示の検索結果を管理するクラスです。
  * 
  */
-public class ScheduleOnedaySelectData extends
-    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
+public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -227,6 +225,9 @@ public class ScheduleOnedaySelectData extends
 
       }
     }
+    // MonthlyCalendarに表示する月を登録
+    this.setMonthlyCalendarViewMonth(viewDate.getYear(), viewDate.getMonth());
+
     Calendar viewDateCal = Calendar.getInstance();
     viewDateCal.setTime(viewDate.getValue());
     viewDateCal.add(Calendar.DATE, 7);

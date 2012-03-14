@@ -161,6 +161,7 @@ public class ScheduleWeeklyJSONFormData {
         new AjaxScheduleWeeklyGroupSelectData();
       // ScheduleWeeklySelectData listData = new
       // ScheduleWeeklySelectData();
+      listData.initField();
       listData.doSelectList(null, rundata, context);
       JSONObject json = new JSONObject();
       json.put("hasAcl", hasAcl(rundata));

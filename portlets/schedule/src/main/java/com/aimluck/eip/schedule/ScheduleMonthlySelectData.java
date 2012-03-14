@@ -39,7 +39,6 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
@@ -64,8 +63,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 月間スケジュールの検索結果を管理するクラスです。
  * 
  */
-public class ScheduleMonthlySelectData extends
-    ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
+public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   private final String TARGET_GROUP_NAME = "target_group_name";
@@ -232,6 +230,8 @@ public class ScheduleMonthlySelectData extends
         throw new ALPageNotFoundException();
       }
     }
+    // MonthlyCalendarに表示する月を登録
+    this.setMonthlyCalendarViewMonth(viewMonth.getYear(), viewMonth.getMonth());
 
     // 表示開始日時
     Calendar cal = Calendar.getInstance();
