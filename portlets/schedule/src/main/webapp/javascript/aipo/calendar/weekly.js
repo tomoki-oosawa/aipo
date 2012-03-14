@@ -76,10 +76,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
         load: function(data, event) {
-        	/*//月カレンダーを更新
+        	//月カレンダーを更新
         	if(aipo.calendar.reloadMonthlyCalendar!=null){
         		aipo.calendar.reloadMonthlyCalendar();
-        	}*/
+        	}
             //権限チェック
             obj_error = dojo.byId('error-'+_portletId);
             dojo.style(obj_error, "display" , "none");

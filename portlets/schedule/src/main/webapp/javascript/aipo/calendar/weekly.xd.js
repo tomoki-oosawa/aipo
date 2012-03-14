@@ -82,10 +82,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
         load: function(data, event) {
-        	/*//月カレンダーを更新
+        	//月カレンダーを更新
         	if(aipo.calendar.reloadMonthlyCalendar!=null){
         		aipo.calendar.reloadMonthlyCalendar();
-        	}*/
+        	}
             //権限チェック
             obj_error = dojo.byId('error-'+_portletId);
             dojo.style(obj_error, "display" , "none");
@@ -145,6 +145,15 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             var tmpNode1, tmpNode2, tmpNode3, tmpNode4;
             var startEnd = data.startDate.substring(0,4) + "年" + parseInt(data.startDate.substring(5,7),10) + "月" + parseInt(data.startDate.substring(8,10),10) + "日" + data.dayOfWeek[0];
             dojo.byId('viewWeekly-' + _portletId).innerHTML = startEnd;
+
+            if(g_data.startDate!=null){
+            	if(g_data.startDate.getYear()!=data.startDate().getYear() ||  g_data.startDate.getMonth()!=data.startDate().getMonth()){
+            		aipo.calendar.showMonthlyCalendar(data.startDate().getFullYear()+'-'+(data.startDate().getMonth()+1));
+            	}
+            }else{
+            	aipo.calendar.showMonthlyCalendar(aipo.calendar.showMonthlyCalendar(data.startDate().getFullYear()+'-'+(data.startDate().getMonth()+1)););
+            }
+            g_data.startDate=data.startDate;
 
             var simpleStyleFirst = "";
             var simpleStyle = "";
