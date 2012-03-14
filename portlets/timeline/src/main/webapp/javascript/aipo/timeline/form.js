@@ -86,7 +86,7 @@ aipo.timeline.setScrollTop = function(scrollTop){
 	dojo.byId("timeline").scrollTop = scrollTop;
 }
 
-aipo.timeline.onKeyDown = function(pid, tid){
+aipo.timeline.onKeyUp = function(pid, tid){
 	var val = dojo.byId("note_" + pid + "_" + tid).value;
 
 //	if(tid == "0"){
@@ -128,11 +128,6 @@ aipo.timeline.onKeyDown = function(pid, tid){
 		shadowHeight = 18;
 	dojo.byId("note_" + pid + "_" + tid).style.height = shadowHeight + 21 + "px";
 	objBody.removeChild(shadow);
-}
-
-aipo.timeline.onKeyUp = function(pid){
-//	var val = dojo.byId("note_" + pid + "_0").value;
-//	dojo.byId("textCount_" + pid).innerHTML = 500 - val.length + "文字";
 }
 
 aipo.timeline.onReceiveMessage = function(msg){
