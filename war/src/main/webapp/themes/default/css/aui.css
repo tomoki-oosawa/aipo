@@ -182,8 +182,6 @@ img.avatar,
 .auiPopup,
 .activityPopup {
 	position:absolute;
-	right:0;
-	top:0;
 	background:#FFF;
 	padding:9px;
 	border:1px solid #999;
@@ -194,6 +192,8 @@ img.avatar,
 }
 .activityPopup {
 	width:400px;
+	right:0;
+	top:0;
 }
 .auiPopup h2,
 #activityListPane h2 {
@@ -1417,15 +1417,19 @@ table.auiCalendar th div {
 }
 table.auiCalendar td {
 	text-align:center;
+	font-size:11px;
+	width:26px;
 }
 table.auiCalendar .auiButton {
 	padding:0 0.7em;
 }
 table.auiCalendar .sunday {
 	background:#fff0f0;
+	width:25px;
 }
 table.auiCalendar .saturday {
 	background:#f0ffff;
+	width:25px;
 }
 table.auiCalendar td a {
 	padding:1px;
@@ -1810,12 +1814,26 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timeline .readMore {
-	margin-top: 5px;
-	padding: 3px;
-	background: #efefef url(https://app.aipo.com/themes/default/images/common/bg_slash.gif) repeat left top;
-	border: 1px #cdcdcd solid;
+#timelineOuter #newMessage {
+	margin-bottom: 5px;
+	background: #f0f0f0;
 	text-align: center;
+	border: 1px #cdcdcd solid;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+#timeline .readMore {
+	margin-top: 10px;
+	background: #f0f0f0;
+	text-align: center;
+	border: 1px #cdcdcd solid;
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+#timelineOuter #newMessage a,
+#timeline .readMore a {
+	display:block;
+	padding: 3px;
 }
 #timeline .message .body {
 	padding-top: 3px;
