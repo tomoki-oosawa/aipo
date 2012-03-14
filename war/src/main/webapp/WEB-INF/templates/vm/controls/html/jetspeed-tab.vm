@@ -81,7 +81,7 @@ $portlet.getContent($data)
                                               <div class="roundTopRightMain">
                                                 <div class="roundBottomRightMain">
                                                   <div class="roundBottomLeftMain">
-                                                    #if (${client} != "IPAD") 
+                                                    #if (${client} != "IPAD")
                                                     <div class="roundMainWrapper">
 													#else
                                                     <div class="roundMainWrapper" style="min-height:1000px">
@@ -89,8 +89,6 @@ $portlet.getContent($data)
 													#if($runs.size()==0)
 													#AUIrowTableWide()
 													<tr><td colspan="4" class="auiNoData">
-													<p>利用したいアプリを自由に追加できます。</p>
-													<p>『アプリを追加する』 ボタンを押して、追加してください。</p>
 													<p class="mh10">
 													<a title="アプリを追加する" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">アプリを追加する</a>
 													</p>
