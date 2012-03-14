@@ -65,7 +65,7 @@
 <tr>
 <th>その他表示設定</th>
 <td>
-<input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。<br />
+<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
 </td>
 </tr>
 <th></th>

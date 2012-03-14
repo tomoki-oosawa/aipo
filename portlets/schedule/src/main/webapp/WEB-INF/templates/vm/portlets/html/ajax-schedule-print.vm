@@ -41,6 +41,7 @@
 <link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css"/>
 <!--
 #if($isXDomain == "true")
 <script type="text/javascript">

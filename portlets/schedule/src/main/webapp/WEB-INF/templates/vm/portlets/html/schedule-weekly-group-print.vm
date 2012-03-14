@@ -65,10 +65,10 @@
 <tr>
 <th>その他表示設定</th>
 <td>
-<input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。<br />
-<input id=print_term type="checkbox" checked="checked" /> 期間スケジュールを表示させる。<br />
-<input id=print_todo type="checkbox" checked="checked" /> ToDoを表示させる。<br />
-<input id=print_holiday type="checkbox" checked="checked" /> 祝日を表示する。<br />
+<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
+<label><input id=print_term type="checkbox" checked="checked" /> 期間スケジュールを表示させる。</label><br />
+<label><input id=print_todo type="checkbox" checked="checked" /> ToDoを表示させる。</label><br />
+<label><input id=print_holiday type="checkbox" checked="checked" /> 祝日を表示する。</label><br />
 ##<label><input type="checkbox" checked="checked" /> 記念日を表示する。</label></td>
 </tr>
 <th></th>
