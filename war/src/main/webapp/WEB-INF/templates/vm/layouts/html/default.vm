@@ -62,7 +62,7 @@
 #else
 <div id="wrapper" style="margin-bottom:28px">
 #end
-  <table class="tableWrapper">
+  ##<table class="tableWrapper">
     <tbody>
       <tr>
         <td class="wide top">
@@ -74,7 +74,7 @@
                     <div id="roundTopRight">
                       <div id="roundBottomRight">
                         <div id="roundBottomLeft">
-                          <div id="roundWrapper">
+                          ##<div id="roundWrapper">
 
 $!jnavigation.setTemplate($config.getString("topnav.vm"))
 $screen_placeholder
@@ -82,7 +82,7 @@ $screen_placeholder
 $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 #end
 
-                          </div>
+                          ##</div>
                         </div>
                       </div>
                     </div>
@@ -94,7 +94,7 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
         </td>
       </tr>
     </tbody>
-  </table>
+  ##</table>
 </div>
 <!-- /WRAPPER -->
 <div id="modalDialog" class="modalDialog" style="display:none"></div>

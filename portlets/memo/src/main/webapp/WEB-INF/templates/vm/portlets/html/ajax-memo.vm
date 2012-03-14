@@ -40,7 +40,8 @@
         <input type="hidden" name="entityid" value="$!{result.Detail.MemoId}" />
         <input type="hidden" name="memo_name" value="$!{result.Detail.MemoName}" />
         <div class="p">
-        <table class="tableWrapper"><tbody><tr>
+        <table class="tableWrapper">
+			<tbody><tr>
         <td>
         #ALtextarea('note' $!result.Detail.Note 10 40)
         </td>
@@ -51,7 +52,8 @@
 		#ALajaxIndicatorSpan("${indicator_id}" "$!{portlet.ID}" "&nbsp;")
         #AUISummaryDivfooter()
         </td>
-        </tr></tbody></table>
+        </tr></tbody>
+		</table>
         </div>
         #ALformfooter()
     #end

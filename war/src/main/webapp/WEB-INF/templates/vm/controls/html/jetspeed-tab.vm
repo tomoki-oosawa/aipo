@@ -69,18 +69,18 @@ $portlet.getContent($data)
 							#end
 							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
-                            <table class="tableWrapper">
+                            ##<table class="tableWrapper">
                               <tbody>
                                 <tr>
                                   <td class="wide top">
-                                    <div class="roundTopMain clearfix">
-                                      <div class="roundRightMain">
-                                        <div class="roundBottomMain">
-                                          <div class="roundLeftMain">
-                                            <div class="roundTopLeftMain">
-                                              <div class="roundTopRightMain">
-                                                <div class="roundBottomRightMain">
-                                                  <div class="roundBottomLeftMain">
+                                    ##<div class="roundTopMain clearfix">
+                                      ##<div class="roundRightMain">
+                                        ##<div class="roundBottomMain">
+                                          ##<div class="roundLeftMain">
+                                            ##<div class="roundTopLeftMain">
+                                              ##<div class="roundTopRightMain">
+                                                ##<div class="roundBottomRightMain">
+                                                  ##<div class="roundBottomLeftMain">
                                                     #if (${client} != "IPAD")
                                                     <div class="roundMainWrapper">
 													#else
@@ -98,18 +98,18 @@ $portlet.getContent($data)
 														$portlet.getContent($data)
 													#end
                                                     </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                                                  ##</div>
+                                                ##</div>
+                                              ##</div>
+                                            ##</div>
+                                          ##</div>
+                                        ##</div>
+                                      ##</div>
+                                    ##</div>
                                   </td>
                                 </tr>
                               </tbody>
-                            </table>
+                            ##</table>
                             <!-- /MAIN OUTER  -->
 #end
 #end

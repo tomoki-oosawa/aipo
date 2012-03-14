@@ -699,27 +699,27 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-  <div class="roundTopMain">
-    <div class="roundRightMain">
-      <div class="roundBottomMain">
-        <div class="roundLeftMain">
-          <div class="roundTopLeftMain">
-            <div class="roundTopRightMain">
-              <div class="roundBottomRightMain">
-                <div class="roundBottomLeftMain">
+  ##<div class="roundTopMain">
+    ##<div class="roundRightMain">
+      ##<div class="roundBottomMain">
+        ##<div class="roundLeftMain">
+          ##<div class="roundTopLeftMain">
+            ##<div class="roundTopRightMain">
+              ##<div class="roundBottomRightMain">
+                ##<div class="roundBottomLeftMain">
                   <div class="roundMainWrapper">
 #end
 
 #macro(ALtabfooter)
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                ##</div>
+              ##</div>
+            ##</div>
+          ##</div>
+        ##</div>
+      ##</div>
+    ##</div>
+  ##</div>
 </div>
 #end
 
@@ -735,27 +735,27 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-  <div class="roundTopMain">
-    <div class="roundRightMain">
-      <div class="roundBottomMain">
-        <div class="roundLeftMain">
-          <div class="roundTopLeftMain">
-            <div class="roundTopRightMain">
-              <div class="roundBottomRightMain">
-                <div class="roundBottomLeftMain">
+  ##<div class="roundTopMain">
+    ##<div class="roundRightMain">
+      ##<div class="roundBottomMain">
+        ##<div class="roundLeftMain">
+          ##<div class="roundTopLeftMain">
+            ##<div class="roundTopRightMain">
+              ##<div class="roundBottomRightMain">
+                ##<div class="roundBottomLeftMain">
                   <div class="roundMainWrapper">
 #end
 
 #macro(ALajaxtabfooter)
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  ##</div>
+                ##</div>
+              ##</div>
+            ##</div>
+          ##</div>
+        ##</div>
+      ##</div>
+    ##</div>
+  ##</div>
 </div>
 #end
 
@@ -892,15 +892,15 @@ $item.get(0)
     <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('fileuploadDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
   </div>
   <div class="clearfix">
-    <div class="roundTopMain">
-      <div class="roundRightMain">
-        <div class="roundBottomMain">
-          <div class="roundLeftMain">
-            <div class="roundTopLeftMain">
-              <div class="roundTopRightMain">
-                <div class="roundBottomRightMain">
-                  <div class="roundBottomLeftMain">
-                    <div class="roundMainWrapper">
+    ##<div class="roundTopMain">
+      ##<div class="roundRightMain">
+        ##<div class="roundBottomMain">
+          ##<div class="roundLeftMain">
+            ##<div class="roundTopLeftMain">
+              ##<div class="roundTopRightMain">
+                ##<div class="roundBottomRightMain">
+                  ##<div class="roundBottomLeftMain">
+                    ##<div class="roundMainWrapper">
                       <div class="spaceBoth">
                         <div class="clearfix">
 #end
@@ -908,16 +908,16 @@ $item.get(0)
 #macro(ALfileuploadDialogfooter)
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                    ##</div>
+                  ##</div>
+                ##</div>
+              ##</div>
+            ##</div>
+          ##</div>
+        ##</div>
+      ##</div>
+    ##</div>
+  ##</div>
 </div>
 #end
 
@@ -933,14 +933,14 @@ $item.get(0)
     <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('addressbookDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
   </div>
   <div class="clearfix">
-    <div class="roundTopMain">
-      <div class="roundRightMain">
-        <div class="roundBottomMain">
-          <div class="roundLeftMain">
-            <div class="roundTopLeftMain">
-              <div class="roundTopRightMain">
-                <div class="roundBottomRightMain">
-                  <div class="roundBottomLeftMain">
+    ##<div class="roundTopMain">
+      ##<div class="roundRightMain">
+        ##<div class="roundBottomMain">
+          ##<div class="roundLeftMain">
+            ##<div class="roundTopLeftMain">
+              ##<div class="roundTopRightMain">
+                ##<div class="roundBottomRightMain">
+                  ##<div class="roundBottomLeftMain">
                     <div class="roundMainWrapper">
                       <div class="spaceBoth">
                         <div class="clearfix">
@@ -950,15 +950,15 @@ $item.get(0)
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  ##</div>
+                ##</div>
+              ##</div>
+            ##</div>
+          ##</div>
+        ##</div>
+      ##</div>
+    ##</div>
+  ##</div>
 </div>
 #end
 
