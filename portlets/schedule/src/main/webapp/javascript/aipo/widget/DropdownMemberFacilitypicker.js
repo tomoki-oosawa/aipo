@@ -164,7 +164,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             }
             var j = i % aipo.calendar.maximum_to;
             var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            html += "<span class=\"small color" + j +"\">" + text + "</span>";
+            html += "<span class=\"dispUser color" + j +"\">" + text + "</span>";
         }
         input.innerHTML = html;
     },
