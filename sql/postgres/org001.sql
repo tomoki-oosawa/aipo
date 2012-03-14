@@ -1642,7 +1642,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(191,'manhour_summary_self','プロ�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(192,'manhour_summary_other','プロジェクト管理（他ユーザーの工数）操作',1);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(193,'manhour_common_category','プロジェクト管理（自分の共有カテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(194,'manhour_common_category_other','プロジェクト管理（他ユーザーの共有カテゴリ）操作',27);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','ポートレット操作',29);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','アプリ配置',29);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(211,'report_self','報告書（自分の報告書）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(212,'report_other','報告書（他ユーザーの報告書）操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(213,'report_reply','報告書（報告書への返信）操作',20);
@@ -1697,7 +1697,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(27,'プロジェクト管理（自分の共有
 INSERT INTO EIP_T_ACL_ROLE VALUES(28,'プロジェクト管理（他ユーザーの共有カテゴリ）管理者',194,3,NULL);
 
 --portlet
-INSERT INTO EIP_T_ACL_ROLE VALUES(29,'ポートレット管理者',201,29,NULL);
+INSERT INTO EIP_T_ACL_ROLE VALUES(29,'アプリ配置管理者',201,29,NULL);
 
 --report
 INSERT INTO EIP_T_ACL_ROLE VALUES(31, '報告書（自分の報告書）管理者',211,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
