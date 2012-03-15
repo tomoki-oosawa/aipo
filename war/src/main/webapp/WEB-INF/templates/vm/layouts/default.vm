@@ -62,7 +62,7 @@
 #else
 <div id="wrapper" style="margin-bottom:28px">
 #end
-  ##<table class="tableWrapper">
+  <table class="tableWrapper">
     <tbody>
       <tr>
         <td class="wide top">
@@ -94,7 +94,7 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
         </td>
       </tr>
     </tbody>
-  ##</table>
+  </table>
 </div>
 <!-- /WRAPPER -->
 <div id="modalDialog" class="modalDialog" style="display:none"></div>

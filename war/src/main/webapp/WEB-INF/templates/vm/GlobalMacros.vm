@@ -747,7 +747,7 @@ $item.get(0)
 #end
 
 #macro(ALajaxtabfooter)
-                  ##</div>
+                  </div>
                 ##</div>
               ##</div>
             ##</div>
@@ -900,7 +900,7 @@ $item.get(0)
               ##<div class="roundTopRightMain">
                 ##<div class="roundBottomRightMain">
                   ##<div class="roundBottomLeftMain">
-                    ##<div class="roundMainWrapper">
+                    <div class="roundMainWrapper">
                       <div class="spaceBoth">
                         <div class="clearfix">
 #end
@@ -908,7 +908,7 @@ $item.get(0)
 #macro(ALfileuploadDialogfooter)
                         </div>
                       </div>
-                    ##</div>
+                    </div>
                   ##</div>
                 ##</div>
               ##</div>
@@ -917,7 +917,7 @@ $item.get(0)
         ##</div>
       ##</div>
     ##</div>
-  ##</div>
+  </div>
 </div>
 #end
 
@@ -958,7 +958,7 @@ $item.get(0)
         ##</div>
       ##</div>
     ##</div>
-  ##</div>
+  </div>
 </div>
 #end
 

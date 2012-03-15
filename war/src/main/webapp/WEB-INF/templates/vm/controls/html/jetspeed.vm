@@ -61,7 +61,7 @@
 							#end
 							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
-                            ##<table class="tableWrapper">
+                            <table class="tableWrapper">
                               <tbody>
                                 <tr>
                                   <td class="wide top">
@@ -87,7 +87,7 @@ $portlet.getContent($data)
                                   </td>
                                 </tr>
                               </tbody>
-                            ##</table>
+                            </table>
                             <!-- /MAIN OUTER  -->
 #else
 #if (!$data.User.hasLoggedIn())
