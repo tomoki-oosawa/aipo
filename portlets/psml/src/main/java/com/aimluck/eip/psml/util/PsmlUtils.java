@@ -119,7 +119,14 @@ public class PsmlUtils {
             parent.removeChild(node);
             i--;
           }
-
+          if (parent
+            .getAttributes()
+            .getNamedItem("parent")
+            .getNodeValue()
+            .equals("Webmail")) {
+            i--;
+            i++;
+          }
           if (parent
             .getAttributes()
             .getNamedItem("parent")
