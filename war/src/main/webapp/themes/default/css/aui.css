@@ -377,7 +377,8 @@ table.activityTable tr.unread td {
 	text-decoration:none;
 }
 #startGuide .close {
-	float:right;
+	position:absolute;
+	right:0;
 	padding:20px;
 }
 #startGuide .close a {
@@ -385,7 +386,7 @@ table.activityTable tr.unread td {
 }
 .guideContents {
 	float:left;
-	width:199px;
+	width:189px;
 	padding:20px;
 	text-align:center;
 	border-right:solid 1px #505050;
