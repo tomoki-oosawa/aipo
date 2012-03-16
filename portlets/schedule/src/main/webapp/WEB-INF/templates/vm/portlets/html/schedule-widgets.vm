@@ -44,7 +44,6 @@
     		<div class="auiSelectButton floatRight">
     			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前月へ" /></span></a></div>
     			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="翌月へ" /></span></a></div>
-    		</ul>
     		</div>
     	</th>
     	</tr>
@@ -99,8 +98,8 @@
     </tbody></table>
     <img src="images/common/dot.gif" width="1" height="1" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
     	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleMonthlyJSONScreen"))'
-    	,'$!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group")'
-    	,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');">
+    	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group"))'
+    	,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');" />
 
 </div>
 
