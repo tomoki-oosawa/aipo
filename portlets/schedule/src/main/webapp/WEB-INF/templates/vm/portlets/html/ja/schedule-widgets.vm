@@ -96,7 +96,7 @@
     	</tr>
     	#end
     </tbody></table>
-    <img src="images/common/dot.gif" width="1" height="1" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
+    <img src="images/common/dot.gif" width="1" height="1" alt="" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
     	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleMonthlyJSONScreen"))'
     	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group"))'
     	,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');" />
