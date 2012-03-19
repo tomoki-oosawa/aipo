@@ -44,7 +44,9 @@ CREATE TABLE `eip_t_timeline_file`
 -- 20120314
 UPDATE `eip_t_acl_portlet_feature` SET `feature_alias_name` = 'アプリ配置' WHERE `feature_name` = 'portlet_customize' AND `feature_alias_name` = 'ポートレット操作';
 UPDATE `eip_t_acl_role` SET `role_name` = 'アプリ配置管理者' WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'portlet_customize') AND `role_name` = 'ポートレット管理者';
+-- 20120314
 
+-- 20120321
 CREATE TABLE `eip_t_timeline_url`
 (
     `url_id` int(11) NOT NULL AUTO_INCREMENT,
