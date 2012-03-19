@@ -65,7 +65,7 @@
 </div>
 
 #if($result.List.size() == 0)
-  <div class="message" style="clear:both">発言はありません。</div>
+  <div class="message" style="clear:both">投稿はありません。</div>
 #else
   #if($result.ContentHeight == 0)
     <div id="timeline" class="timeline" style="clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
