@@ -78,9 +78,9 @@
     <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
       <div class="avatar mr10">
       #if(${record.hasPhoto()})
-        <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
+        <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
       #else
-        <img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
+        <img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
       #end
       </div>
 	  <div class="messageContents">
@@ -164,9 +164,9 @@
       #end
       <div class="avatar mr10">
       #if(${record2.hasPhoto()})
-        <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}))" alt="${record2.OwnerName}" width="32" height="32" />
+        <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}))" alt="${record2.OwnerName}" width="32" height="32" />
       #else
-        <img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
+        <img src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
       #end
       </div>
 	  <div class="messageContents">
@@ -218,9 +218,9 @@
     <div id="commentField_$!{portlet.ID}_$!{record.TimelineId}" class="commentField" style="display:none">
     <div id="avatar_$!{record.TimelineId}" class="avatar mr10">
       #if(${result.hasMyPhoto()})
-      <img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}))" alt="${result.MyUser.AliasName}" width="32" height="32" />
+      <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}))" alt="${result.MyUser.AliasName}" width="32" height="32" />
       #else
-      <img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
+      <img src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
       #end
     </div>
     <form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
