@@ -61,7 +61,7 @@
 </div>
 
 <div id="newMessage" style="display:none; clear:both">
-	<a href="javascript:void(0)" onclick="aipo.portletReload('timeline')">新しい発言があります</a>
+	<a href="javascript:void(0)" onclick="aipo.portletReload('timeline')">新しい投稿があります</a>
 </div>
 
 #if($result.List.size() == 0)
@@ -132,7 +132,7 @@
 	  <a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">コメントする</a>
       #if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))
 	    <form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
-          <input type="hidden" name="_name" value="発言" />
+          <input type="hidden" name="_name" value="投稿" />
           <input type="hidden" name="secid" value="$secid" />
           #set ($deleteSubmit = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete')))
 		  &nbsp;
