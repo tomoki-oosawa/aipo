@@ -248,19 +248,14 @@ aipo.timeline.ellipse_message = function(_this) {
   dojo.query(".text_exposed_show", body).removeClass("ellipsis");
 }
 
-aipo.timeline.onForcus = function(pid, tid) {
-  var note = dojo.byId("note_" + pid + "_" + tid);
-  if (note.value == note.defaultValue) {
-    note.value = '';
-    note.style.color = 'black';
-  }
+aipo.timeline.onFocus = function(pid) {
+  dojo.byId("guide_" + pid).style.display = "none"
 }
 
-aipo.timeline.onBlur = function(pid, tid) {
-  var note = dojo.byId("note_" + pid + "_" + tid);
+aipo.timeline.onBlur = function(pid) {
+  var note = dojo.byId("note_" + pid);
   if (note.value == '') {
-    note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
-    note.style.color = '#999999';
+    dojo.byId("guide_" + pid).style.display = ""
   }
 }
 
