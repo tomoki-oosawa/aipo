@@ -54,7 +54,7 @@ aipo.timeline.showCommentAll = function(pid, tid) {
       });
 }
 
-aipo.timeline.onScroll = function(url, pid) {
+aipo.timeline.onScroll = function(url, pid, page) {
   var scrollTop = dojo.byId("timeline").scrollTop;
   var clientHeight = dojo.byId("timeline").clientHeight;
   var scrollHeight = dojo.byId("timeline").scrollHeight;
@@ -71,11 +71,12 @@ aipo.timeline.onScroll = function(url, pid) {
           },
           load : function(data, event) {
             var content = [];
+            page++;
             content = data.split("<div id=" + '"' + "content_"
-                + pid + '"' + ">");
+                + pid + '_1"' + ">");
             content = content[1].split("<div id=" + '"'
                 + "content_end_" + pid + '"' + ">");
-            dojo.byId("content_" + pid).innerHTML += content[0];
+            dojo.byId("content_" + pid + "_" + page).innerHTML = content[0];
             var more = [];
             more = data.split("<div id=" + '"' + "more_" + pid
                 + '"' + ">");
@@ -282,7 +283,7 @@ aipo.timeline.nextThumbnail = function(pid, max) {
   var maxval = parseInt(max);
   if(value < maxval){
     dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
-    value += 1;
+    value++;
     page.value = value;
     dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
     dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
@@ -294,7 +295,7 @@ aipo.timeline.prevThumbnail = function(pid, max) {
   var value = parseInt(page.value);
   if(value > 1){
     dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
-    value -= 1;
+    value--;
     page.value = value;
     dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
     dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
