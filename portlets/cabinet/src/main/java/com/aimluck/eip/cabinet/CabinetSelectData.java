@@ -123,6 +123,9 @@ public class CabinetSelectData extends
             context,
             CabinetUtils.KEY_FOLDER_ID,
             rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        } else {
+          // フォルダ指示無し→フォルダのセッション変数をすべてのフォルダに
+          ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID, "0");
         }
       }
       String tmpfid =
@@ -160,6 +163,9 @@ public class CabinetSelectData extends
             context,
             CabinetUtils.KEY_FOLDER_ID,
             rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+        } else {
+          // フォルダ指示無し→フォルダのセッション変数をすべてのフォルダに
+          ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID, "0");
         }
       }
       String tmpfid =
