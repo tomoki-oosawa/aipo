@@ -47,15 +47,15 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('route'))")
 #ALtditemheader()
 <div id="membernormallist">
-<div class="spaceTop spaceLeft small">左側に申請先を追加してください。</div>
+<div class="spaceTop spaceLeft small">左側に申請順に追加してください。</div>
 
-<div dojoType="aipo.widget.MemberNormalSelectList"
+<div dojoType="aipo.workflow.MemberNormalSelectList"
     id="membernormalselect"
     widgetId="membernormalselect"
     buttonAddId="button_member_add"
     buttonRemoveId="button_member_remove"
     memberFromId="tmp_member_from"
-    memberToTitle="申請先一覧"
+    memberToTitle="申請経路順"
     memberToId="positions"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
     memberFromOptionKey="name"

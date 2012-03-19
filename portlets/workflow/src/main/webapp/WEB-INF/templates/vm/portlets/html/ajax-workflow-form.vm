@@ -50,7 +50,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
+#ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
 <input type="hidden" name="mode" id="mode_$!portlet.ID" value="$!modesrv" />
 
 #ALtableheaderWide()
@@ -80,20 +80,20 @@
 ##ALtditemheader()
 ##ALtextfield('price' $!result.Price '35%' 16 'disabled')&nbsp;円&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caution">￥、カンマ（,）は不要</span>
 ##ALtditemfooter()
-#ALtdcaption("#ALrequired('申請先')")
+#ALtdcaption("#ALrequired('申請経路')")
 #ALtditemheader()
 <input id="is_saved_route" name="is_saved_route" type="hidden" value="$!result.isSavedRoute" />
 <input id="is_saved_route_button" name="post_type" type="button" class="button" value=" #if(!$!{result.isSavedRoute})申請経路一覧から選択する#elseユーザー一覧から選択する#end " onclick="aipo.workflow.formSwitchRouteSelect(this)" />
 <div id="workflowRouteInputField" #if($!{result.isSavedRoute})style="display:none"#end>
 <div id="membernormallist">
-<div class="spaceTop spaceLeft small">左側に申請先を追加してください。</div>
-<div dojoType="aipo.widget.MemberNormalSelectList"
+<div class="spaceTop spaceLeft small">左側に申請順に追加してください。</div>
+<div dojoType="aipo.workflow.MemberNormalSelectList"
     id="membernormalselect"
     widgetId="membernormalselect"
     buttonAddId="button_member_add"
     buttonRemoveId="button_member_remove"
     memberFromId="tmp_member_from"
-    memberToTitle="申請先一覧"
+    memberToTitle="申請経路順"
     memberToId="positions"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
     memberFromOptionKey="name"

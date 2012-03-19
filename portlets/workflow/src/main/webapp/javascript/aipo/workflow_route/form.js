@@ -19,7 +19,7 @@
 
 dojo.provide("aipo.workflow_route");
 
-dojo.require("aipo.widget.MemberNormalSelectList");
+dojo.require("aipo.workflow.MemberNormalSelectList");
 dojo.require("dijit.form.ComboBox");
 
 aipo.workflow_route.onLoadWorkflowRouteDialog = function(portlet_id){

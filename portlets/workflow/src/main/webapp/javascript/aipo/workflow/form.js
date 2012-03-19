@@ -19,7 +19,7 @@
 
 dojo.provide("aipo.workflow");
 
-dojo.require("aipo.widget.MemberNormalSelectList");
+dojo.require("aipo.workflow.MemberNormalSelectList");
 dojo.require("dijit.form.ComboBox");
 
 var before = 0;
