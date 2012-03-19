@@ -44,4 +44,17 @@ CREATE TABLE `eip_t_timeline_file`
 -- 20120314
 UPDATE `eip_t_acl_portlet_feature` SET `feature_alias_name` = 'アプリ配置' WHERE `feature_name` = 'portlet_customize' AND `feature_alias_name` = 'ポートレット操作';
 UPDATE `eip_t_acl_role` SET `role_name` = 'アプリ配置管理者' WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'portlet_customize') AND `role_name` = 'ポートレット管理者';
+
+CREATE TABLE `eip_t_timeline_url`
+(
+    `url_id` int(11) NOT NULL AUTO_INCREMENT,
+    `timeline_id` int(11),
+    `url` varchar(128) NOT NULL,
+    `body` text,
+    `title` varchar(128),
+    `thumbnail` varchar(128),
+    FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`url_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- 20120314

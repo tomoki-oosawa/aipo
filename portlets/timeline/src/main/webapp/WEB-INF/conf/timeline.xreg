@@ -50,6 +50,6 @@
         <parameter name="p2a-rows.style.values" value="コンテンツの高さに合わせる,250px,500px,750px" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <media-type ref="html"/>
-        <url cachedOnURL="true"/>
+        <url cachedOnUrl="true"/>
     </portlet-entry>
 </registry>

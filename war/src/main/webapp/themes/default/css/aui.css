@@ -377,8 +377,7 @@ table.activityTable tr.unread td {
 	text-decoration:none;
 }
 #startGuide .close {
-	position:absolute;
-	right:0;
+	float:right;
 	padding:20px;
 }
 #startGuide .close a {
@@ -386,7 +385,7 @@ table.activityTable tr.unread td {
 }
 .guideContents {
 	float:left;
-	width:189px;
+	width:199px;
 	padding:20px;
 	text-align:center;
 	border-right:solid 1px #505050;
@@ -1700,12 +1699,20 @@ ul.attachments span.deletebutton:hover{
 	border-top: 1px solid #999999;
 }
 
+#timelineOuter #inputField,
+#timelineOuter .outer {
+	border-radius:3px;
+	-ms-border-radius:3px;
+	border: 1px #cdcdcd solid;
+	background:#fff;
+	overflow:hidden;
+}
 #timelineOuter #inputField {
 	margin-bottom: 10px;
 }
 #timelineOuter .outer {
-	border-radius:3px;
-	-ms-border-radius:3px;
+	padding: 3px;
+	margin:0 0 5px 0;
 }
 #timelineOuter textarea {
 	border:none;
@@ -1724,13 +1731,20 @@ ul.attachments span.deletebutton:hover{
 	height: 21px;
 	-webkit-appearance: caret;
 }
-
-#timelineOuter .outer {
-	border: 1px #cdcdcd solid;
-	padding: 3px;
-	margin:0 0 5px 0;
-	background:#fff;
+.tlInputMention {
+	padding:4px;
 }
+.tlInputAttachment {
+	border-top:dotted 1px #e0e0e0;
+	margin-top:5px;
+	padding:10px 6px;
+}
+.tlInputControls {
+	border-top:solid 1px #e6e6e6;
+	padding:4px;
+	background:#f0f0f0;
+}
+
 #timeline {
 	overflow:hidden;
 }
@@ -1775,7 +1789,7 @@ ul.attachments span.deletebutton:hover{
 }
 
 /* tlImageBox */
-.tlImageBlock {
+.messageContents .tlImageBlock {
 	margin:10px 0;
 }
 .tlImageBlock img {
@@ -1789,7 +1803,7 @@ ul.attachments span.deletebutton:hover{
 }
 
 /* clipBloard */
-.tlClipBoard {
+.messageContents .tlClipBoard {
 	margin:10px 0;
 }
 .tlClipImage {
@@ -1836,6 +1850,7 @@ ul.attachments span.deletebutton:hover{
 #timeline .readMore a {
 	display:block;
 	padding: 3px;
+	text-decoration:none;
 }
 #timeline .message .body {
 	padding-top: 3px;

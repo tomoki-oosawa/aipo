@@ -75,6 +75,9 @@ public class TimelineResultData implements ALData {
   /** いいねオブジェクト */
   private List<TimelineLikeResultData> likeList;
 
+  /** Urlオブジェクト */
+  private List<TimelineUrlResultData> urlList;
+
   /** 顔写真の有無 */
   private boolean has_photo;
 
@@ -312,6 +315,21 @@ public class TimelineResultData implements ALData {
    */
   public void setLikeList(List<TimelineLikeResultData> likeList) {
     this.likeList = likeList;
+  }
+
+  /**
+   * @return urlList
+   */
+  public List<TimelineUrlResultData> getUrlList() {
+    return urlList;
+  }
+
+  /**
+   * @param urlList
+   *          セットする urlList
+   */
+  public void setUrlList(List<TimelineUrlResultData> urlList) {
+    this.urlList = urlList;
   }
 
   public Integer getReplyCountInteger() {

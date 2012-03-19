@@ -1,0 +1,69 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+<div class="tlInputAttachment">
+<div class="floatRight">
+  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title="削除">
+    <span>x</span>
+  </a>
+</div>
+<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
+  <input type="hidden" id="TimelinePage_$!{portlet.ID}" name="TimelinePage_$!{portlet.ID}" value="1"/>
+  #foreach ($record in $result.Images)
+    #if($velocityCount == 1)
+      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_$velocityCount" style="">
+    #else
+      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_$velocityCount" style="display:none">
+    #end
+        <img src="$!record">
+      </div>
+  #end
+  <div class="tlClipContents">
+    <div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Title</a></div>
+    <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Url</a></div>
+    <div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!result.Body</div>
+    #if($result.Images.size() > 0)
+      <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID">
+      <div class="auiSelectButton floatLeft" id="timelineSelectButton_$!{portlet.ID}">
+        <ul class="floatLeft mr10">
+          <li title="前へ">
+            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID', '$result.Images.size()')" title="前へ" class="first arrow">
+              <span><img src="themes/default/images/icon/icon_arrow_l.gif" alt="前のサムネイル"></span>
+            </a>
+          </li>
+          <li title="次へ">
+            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID', '$result.Images.size()')" title="次へ" class="last arrow">
+              <span><img src="themes/default/images/icon/icon_arrow_r.gif" alt="次のサムネイル"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="count" id="count_$!{portlet.ID}">
+        ${result.Images.size()} 件中 1 件
+      </div>
+      </div>
+      <div style="clear:both">
+        <input type="checkbox" value="サムネイルを表示しない" id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
+        <label for="checkbox_$!{portlet.ID}">サムネイルを表示しない</label>
+      </div>
+    #end
+  </div>
+</div>
+</div>

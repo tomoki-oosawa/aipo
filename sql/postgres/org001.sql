@@ -1339,7 +1339,7 @@ CREATE TABLE EIP_T_TIMELINE
 );
 
 -----------------------------------------------------------------------------
--- EIP_T_TIMELINE
+-- EIP_T_TIMELINE_LIKE
 -----------------------------------------------------------------------------
 
 CREATE TABLE EIP_T_TIMELINE_LIKE
@@ -1353,7 +1353,7 @@ CREATE TABLE EIP_T_TIMELINE_LIKE
 );
 
 -----------------------------------------------------------------------------
--- EIP_T_REPORT_FILE
+-- EIP_T_TIMELINE_FILE
 -----------------------------------------------------------------------------
 
 CREATE TABLE EIP_T_TIMELINE_FILE
@@ -1368,6 +1368,22 @@ CREATE TABLE EIP_T_TIMELINE_FILE
     UPDATE_DATE TIMESTAMP,
     FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
     PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_TIMELINE_URL
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_TIMELINE_URL
+(
+    URL_ID INTEGER NOT NULL,
+    TIMELINE_ID INTEGER,
+    THUMBNAIL VARCHAR (128),
+    TITLE VARCHAR (128),
+    URL VARCHAR (128) NOT NULL,
+    BODY TEXT,
+    FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (URL_ID)
 );
 
 
@@ -1456,6 +1472,7 @@ CREATE SEQUENCE pk_eip_t_report_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_timeline_url INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1526,7 +1543,8 @@ ALTER SEQUENCE pk_eip_t_report_member_map OWNED BY EIP_T_REPORT_MEMBER_MAP.ID;
 ALTER SEQUENCE pk_eip_t_report_map OWNED BY EIP_T_REPORT_MAP.ID;
 ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE.TIMELINE_ID;
 ALTER SEQUENCE pk_eip_t_timeline_like OWNED BY EIP_T_TIMELINE_LIKE.TIMELINE_LIKE_ID;
-ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_timeline_file OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_timeline_url OWNED BY EIP_T_TIMELINE_URL.URL_ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------

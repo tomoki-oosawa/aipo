@@ -34,6 +34,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -223,6 +224,7 @@ public class TimelineSelectData extends
 
       rd.setReplyCount(TimelineUtils.countReply(record.getTimelineId()));
 
+      /* 子トピック */
       List<TimelineResultData> coTopicList =
         new ArrayList<TimelineResultData>();
 
@@ -240,6 +242,7 @@ public class TimelineSelectData extends
 
       rd.setCoTopicList(coTopicList);
 
+      /* いいね */
       TimelineLikeSelectData ls = new TimelineLikeSelectData();
       List<TimelineLikeResultData> likeList =
         ls.getLikeList(record.getTimelineId());
@@ -251,6 +254,13 @@ public class TimelineSelectData extends
           rd.setLike(true);
         }
       }
+
+      /* URL */
+      TimelineUrlSelectData us = new TimelineUrlSelectData();
+      List<TimelineUrlResultData> urlList =
+        us.getUrlList(record.getTimelineId());
+
+      rd.setUrlList(urlList);
 
       int userId = record.getOwnerId().intValue();
       rd.setHasPhoto(false);
@@ -332,6 +342,16 @@ public class TimelineSelectData extends
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
     Expression exp =
       ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
+        .valueOf(topicid));
+    query.setQualifier(exp);
+    query.distinct(true);
+    return query;
+  }
+
+  private SelectQuery<EipTTimelineUrl> getSelectQueryForUrl(String topicid) {
+    SelectQuery<EipTTimelineUrl> query = Database.query(EipTTimelineUrl.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTTimelineUrl.TIMELINE_ID_PROPERTY, Integer
         .valueOf(topicid));
     query.setQualifier(exp);
     query.distinct(true);

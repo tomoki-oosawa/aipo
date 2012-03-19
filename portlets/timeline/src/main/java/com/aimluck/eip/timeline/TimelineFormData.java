@@ -36,6 +36,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -282,12 +283,37 @@ public class TimelineFormData extends ALAbstractFormData {
         EipTTimeline parent =
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
         parent.setUpdateDate(Calendar.getInstance().getTime());
+      } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
+        && !ALEipUtils.getParameter(rundata, context, "tlClipUrl").equals("")) {
+
+        // 新規オブジェクトモデル
+        EipTTimelineUrl url = Database.create(EipTTimelineUrl.class);
+
+        if (ALEipUtils.getParameter(rundata, context, "tlClipImage") != null) {
+          url.setThumbnail(ALEipUtils.getParameter(
+            rundata,
+            context,
+            "tlClipImage"));
+        }
+
+        if (ALEipUtils.getParameter(rundata, context, "tlClipTitle") != null) {
+          url
+            .setTitle(ALEipUtils.getParameter(rundata, context, "tlClipTitle"));
+        }
+
+        url.setUrl(ALEipUtils.getParameter(rundata, context, "tlClipUrl"));
+
+        if (ALEipUtils.getParameter(rundata, context, "tlClipBody") != null) {
+          url.setBody(ALEipUtils.getParameter(rundata, context, "tlClipBody"));
+        }
+        url.setEipTTimeline(topic);
+        clearTimelineSession(rundata, context);
       }
 
       // 添付ファイルを登録する．
       insertAttachmentFiles(fileuploadList, folderName, uid, topic, msgList);
 
-      // submitURL();
+      // submitUrl();
       Database.commit();
 
       if (topic.getParentId() != 0) {
@@ -520,4 +546,19 @@ public class TimelineFormData extends ALAbstractFormData {
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
   }
+
+  /**
+   * タイムラインで使用したセッション情報を消去する．
+   * 
+   */
+  public void clearTimelineSession(RunData rundata, Context context) {
+    List<String> list = new ArrayList<String>();
+    list.add("tlClipImage");
+    list.add("tlClipTitle");
+    list.add("tlClipUrl");
+    list.add("tlClipBody");
+    ALEipUtils.removeTemp(rundata, context, list);
+
+  }
+
 }

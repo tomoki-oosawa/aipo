@@ -19,47 +19,58 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
-#set ($nextrows = $result.RowsNum + 20)
+#set ($pages = $result.PagesNum)
+#set ($currentPage = $result.CurrentPage)
+#set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 ## ---------------------------------------------------------------------------
 <div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
+<input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
+<input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
 <div id="inputField">
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
-<div class="outer">
-  <textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)" placeholder="近況を共有しましょう"></textarea>
+#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
+
+<div class="tlInputMention">
+  <textarea class="elastic" id="note_$!{portlet.ID}_0" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', 0);" onfocus="aipo.timeline.onForcus('$!{portlet.ID}', 0)" onblur="aipo.timeline.onBlur('$!{portlet.ID}', 0)">近況を共有しましょう</textarea>
 </div>
-<div class="floatRight">
-<span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
-<a href="javascript:void(0)" class="auiButtonAction" onclick="aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');dojo.byId('form$!portlet.ID').onsubmit();">投稿する</a>
+
+<div class="clearfix tlInputClip" id="tlInputClip_$!{portlet.ID}">
 </div>
-<div class="floatLeft mr10">
-#set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-<a href="javascript:void(0)" class="auiButton" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
+
+<div class="clearfix tlInputControls">
+  <div class="floatRight">
+    <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
+    <a href="javascript:void(0)" class="auiButtonAction" onclick="aipo.timeline.addText(dojo.byId('form$!portlet.ID'), '$!portlet.ID');aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');dojo.byId('form$!portlet.ID').onsubmit();">投稿する</a>
+  </div>
+  <div class="floatLeft mr10">
+    #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
+    <a href="javascript:void(0)" class="auiButton" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
+  </div>
+  <div class="Left">
+    <ul id="attachments_$!{portlet.ID}" class="attachments">
+      #foreach($record in $!result.AttachmentFileNameList )
+      <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+      #end
+    </ul>
+    <div style="clear:both"></div>
+  </div>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 </div>
-<div class="Left">
-<ul id="attachments_$!{portlet.ID}" class="attachments">
-	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
-	#end
-</ul>
-<div style="clear:both"></div>
-</div>
-<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">
 #ALformfooter()
 </div>
 
-<div id="newMessage" style="display:none">
+<div id="newMessage" style="display:none; clear:both">
 	<a href="javascript:void(0)" onclick="aipo.portletReload('timeline')">新しい発言があります</a>
 </div>
 
 #if($result.List.size() == 0)
-  <div class="message">発言はありません。</div>
+  <div class="message" style="clear:both">発言はありません。</div>
 #else
   #if($result.ContentHeight == 0)
-    <div id="timeline" class="timeline" style="clear:both" #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+    <div id="timeline" class="timeline" style="clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID');"#end>
   #else
-    <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($result.Count > $result.RowsNum)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("rows", $nextrows))', '$!portlet.ID');"#end>
+    <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID');"#end>
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
   <div id="content_$!{portlet.ID}">
@@ -86,6 +97,20 @@
 				#end
 			#end
 	  	</div>
+
+		<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
+			#foreach ($attachmentUrl in $record.UrlList)
+				<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
+					<img src="$attachmentUrl.Thumbnail">
+				</div>
+				<div class="tlClipContents">
+					<div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$attachmentUrl.Title</a></div>
+					<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$attachmentUrl.Url</a></div>
+					<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$attachmentUrl.Body</div>
+				</div>
+			#end
+		</div>
+
 	  </div>
 	  <div class="time">$!{record.CreateDate}
       &nbsp;
@@ -216,9 +241,7 @@
   <div id="content_end_$!{portlet.ID}"></div>
   </div>
   <div id="more_$!{portlet.ID}">
-  #if($result.Count > $result.RowsNum && $result.ContentHeight == 0)
-	#set($pages = $result.PagesNum)
-	#set($currentPage = $result.CurrentPage)
+  #if($result.ContentHeight == 0)
 	#if($pages > $currentPage) #set($next = $currentPage + 1)
 	<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID');" style="display:block;">もっと見る</a></div>
 	#end
