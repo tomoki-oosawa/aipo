@@ -20,6 +20,7 @@
 package com.aimluck.eip.timeline;
 
 import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
@@ -37,6 +38,12 @@ public class TimelineLikeResultData implements ALData {
   /** いいね！を押したユーザーID */
   private ALNumberField user_id;
 
+  /** 登録者名 */
+  private ALStringField user_name;
+
+  /** 顔写真の有無 */
+  private boolean has_photo;
+
   /**
    *
    *
@@ -46,6 +53,7 @@ public class TimelineLikeResultData implements ALData {
     timeline_like_id = new ALNumberField();
     timeline_id = new ALNumberField();
     user_id = new ALNumberField();
+    user_name = new ALStringField();
   }
 
   /**
@@ -84,12 +92,32 @@ public class TimelineLikeResultData implements ALData {
     return user_id;
   }
 
+  public ALStringField getUserName() {
+    return user_name;
+  }
+
+  public void setUserName(String str) {
+    user_name.setValue(str);
+  }
+
   /**
    * @param user_id
    *          セットする user_id
    */
   public void setUserId(long i) {
     user_id.setValue(i);
+  }
+
+  /**
+   * 
+   * @param bool
+   */
+  public void setHasPhoto(boolean bool) {
+    has_photo = bool;
+  }
+
+  public boolean hasPhoto() {
+    return has_photo;
   }
 
 }

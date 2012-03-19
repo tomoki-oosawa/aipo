@@ -20,6 +20,7 @@ dojo._hasResource["aimluck.widget.Dialog"] = true;
  */
 
 dojo.provide("aimluck.widget.Dialog");
+dojo.provide("aimluck.widget.DialogSub");
 dojo.provide("aimluck.widget.DialogUnderlay");
 dojo.provide("aimluck.widget.Timeout");
 
@@ -64,10 +65,18 @@ dojo.declare( "aimluck.widget.Timeout",  [dijit._Widget, dijit._Templated] , {
 });
 
 dojo.declare(
+    "aimluck.widget.DialogSub",
+    [aimluck.widget.Dialog,dijit.Dialog],
+    {
+    	templateString:"<div id='modalDialogSub' class='modalDialogSub' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
+    }
+);
+
+
+dojo.declare(
     "aimluck.widget.Dialog",
     [dijit.Dialog],
     {
-        widgetId: null,
         loadingMessage:"<div class='indicatorDialog'><div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div></div>",
         templateString:null,
         templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",//<div dojoAttachPoint=\"titleBar\" class=\"modalDialogTitleBar\" tabindex=\"0\" waiRole=\"dialog\">&nbsp;</div>

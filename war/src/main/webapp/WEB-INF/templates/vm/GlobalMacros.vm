@@ -379,6 +379,10 @@
 <input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();" />
 #end
 
+#macro(ALajaxbuttonDialogSubClose)
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialogSub();" />
+#end
+
 #macro(ALajaxbuttonCancel)
 <input name="ajaxbuttonCancel" class="button" type="button" value="キャンセルする" onclick="aipo.common.hideDialog();" />
 #end

@@ -148,7 +148,7 @@
 	#if($record.LikeList.size() > 0)
 	  <div id="like_$!{record.TimelineId}" class="commentCaption">
 	    <span class="iconLike"></span>
-		${record.LikeList.size()}人が「いいね！」と言っています。
+		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeList.size()}人が</a>「いいね！」と言っています。
 	  </div>
 	#end
     #if($record.ReplyCountInteger > 2)
@@ -201,7 +201,7 @@
 	  #end
 	  #if($record2.LikeList.size() > 0)
 		&nbsp;
-	    <span class="iconLike"></span>${record2.LikeList.size()}
+	    <span class="iconLike"></span><a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeList.size()}</a>
 	  #end
       </div>
 	  </div>

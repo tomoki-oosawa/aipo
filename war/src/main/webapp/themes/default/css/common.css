@@ -949,6 +949,46 @@ table.simpleTable td.caption {
 .modalDialog input[type=radio] {
 	margin:3px 0;
 }
+
+
+/* End hides from IE-mac */
+ .modalDialogSub {
+	border:5px solid #ddd;
+	background-color:#fff;
+	z-index:999;
+	position:absolute;
+}
+.modalDialogSubUnderlayWrapper {
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:998;
+	display:none;
+	background:transparent;
+}
+.modalDialogSubUnderlay {
+	background:#eee;
+	opacity:.5;
+}
+.dj_ie .modalDialogSubUnderlay {
+	filter:alpha(opacity=50);
+}
+.dj_gecko .modalDialogSubUnderlay {
+	-moz-opacity:.5;
+}
+.dijit_a11y .modalDialogSub {
+	opacity:1!important;
+	background-color:white!important;
+}
+.modalDialogSub .closeText {
+	display:none;
+	position:absolute;
+}
+.dijit_a11y .modalDialogSub .closeText {
+	display:inline;
+}
+
+
 .fileuploadDialog {
 	border:5px solid #ddd;
 	background-color:#fff;
