@@ -54,7 +54,7 @@ dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSe
 
                var optionflow = document.createElement("OPTION");
                optionflow.value = f_o[i].value;
-               optionflow.text = (j+1) + ": " + f_o[i].text;
+               optionflow.text = (j+1) + ". " + f_o[i].text;
                optionflow.selected = true;
 
                t_o.add(optionflow, t_o.length);
@@ -86,7 +86,7 @@ dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSe
 
                 var optionflow = document.createElement("OPTION");
             	optionflow.value = f_o[i].value;
-                optionflow.text = (j+1) + ": " + f_o[i].text;
+                optionflow.text = (j+1) + ". " + f_o[i].text;
                 optionflow.selected = true;
 
                 select_member_to.insertBefore(optionflow, t_o[t_o.length]);
@@ -108,7 +108,7 @@ dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSe
               		}else{
               			t_o[j].text = t_o[j].text.slice(4);
               		}
-              		t_o[j].text = (j+1) + ": " + t_o[j].text;
+              		t_o[j].text = (j+1) + ". " + t_o[j].text;
               		}
               	}
               }
@@ -126,7 +126,7 @@ dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSe
                 		}else{
                 			t_o[j].text = t_o[j].text.slice(4);
                 		}
-                		t_o[j].text = (j+1) + ": " + t_o[j].text;
+                		t_o[j].text = (j+1) + ". " + t_o[j].text;
                 		}
                 	}
                 }
