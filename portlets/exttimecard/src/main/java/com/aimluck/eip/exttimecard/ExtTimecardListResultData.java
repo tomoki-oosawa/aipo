@@ -244,6 +244,36 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * 現在残業中かどうか調べます。
+   * 
+   * @return boolean
+   */
+  public boolean getIsClockOverTime() {
+    if (getIsNotNullClockInTime()) {
+      int end_hour = timecard_system.getEndHour(), end_minute =
+        timecard_system.getEndMinute();
+
+      Calendar cal = Calendar.getInstance();
+
+      int now_hour = cal.get(Calendar.HOUR_OF_DAY);
+      int now_minute = cal.get(Calendar.MINUTE);
+
+      if (now_hour < end_hour) {
+        return false;
+      } else if (now_hour == end_hour) {
+        if (now_minute < end_minute) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * 外出／復帰の配列を得ます。
    * 
    * @return

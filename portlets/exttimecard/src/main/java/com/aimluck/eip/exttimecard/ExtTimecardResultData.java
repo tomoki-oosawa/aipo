@@ -30,6 +30,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
 
 /**
@@ -40,6 +41,9 @@ public class ExtTimecardResultData implements ALData {
 
   /** 現在時刻 */
   private ALStringField now_time;
+
+  /** タイムカードの設定 */
+  private EipTExtTimecardSystem timecard_system;
 
   /** 出勤フラグ */
   private ALStringField work_flag;
@@ -98,9 +102,10 @@ public class ExtTimecardResultData implements ALData {
   private boolean isTypeE;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     work_flag = new ALStringField();
     now_time = new ALStringField();
@@ -169,6 +174,36 @@ public class ExtTimecardResultData implements ALData {
     for (int i = 0; i < length; i++) {
       if (!outgoing_time.get(i).isNullHour()
         && comeback_time.get(i).isNullHour()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * 現在残業中かどうか調べます。
+   * 
+   * @return boolean
+   */
+  public boolean getIsOverTime() {
+    if (!getIsNullClockInTime()) {
+      int end_hour = timecard_system.getEndHour(), end_minute =
+        timecard_system.getEndMinute();
+
+      Calendar cal = Calendar.getInstance();
+
+      int now_hour = cal.get(Calendar.HOUR_OF_DAY);
+      int now_minute = cal.get(Calendar.MINUTE);
+
+      if (now_hour < end_hour) {
+        return false;
+      } else if (now_hour == end_hour) {
+        if (now_minute < end_minute) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
         return true;
       }
     }
@@ -520,6 +555,24 @@ public class ExtTimecardResultData implements ALData {
 
   public void setIsTypeE(boolean b) {
     isTypeE = b;
+  }
+
+  /**
+   * タイムカードの設定を取得します。
+   * 
+   * @return
+   */
+  public EipTExtTimecardSystem getTimecardSystem() {
+    return timecard_system;
+  }
+
+  /**
+   * タイムカードの設定を読み込みます。
+   * 
+   * @return
+   */
+  public void setTimecardSystem(EipTExtTimecardSystem system) {
+    timecard_system = system;
   }
 
 }

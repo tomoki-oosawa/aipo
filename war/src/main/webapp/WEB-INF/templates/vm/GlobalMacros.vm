@@ -1585,7 +1585,9 @@ $link.get(0)
 #macro(AUIajaxbuttonLinkCallback $title $url $portlet_id $callback)
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
 #end
-
+#macro(AUIajaxbuttonLinkCallbackBold $title $url $portlet_id $callback)
+<a class="auiButtonBold" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
+#end
 
 #macro(AUIactionMenu $items $currentItem)
 <div class="auiWidget clearfix">

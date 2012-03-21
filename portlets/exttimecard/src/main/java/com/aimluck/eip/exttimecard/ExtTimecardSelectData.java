@@ -588,6 +588,7 @@ public class ExtTimecardSelectData extends
       rd.initField();
       rd.setClockInTime(record.getClockInTime());
       rd.setClockOutTime(record.getClockOutTime());
+      rd.setTimecardSystem(timecard_system);
       rd.setPunchDate(record.getPunchDate());
       for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
         rd.setOutgoingTime(record.getOutgoingTime(i), i);
