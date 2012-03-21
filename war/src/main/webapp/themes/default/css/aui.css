@@ -377,7 +377,8 @@ table.activityTable tr.unread td {
 	text-decoration:none;
 }
 #startGuide .close {
-	float:right;
+	position:absolute;
+	right:0;
 	padding:20px;
 }
 #startGuide .close a {
@@ -385,7 +386,7 @@ table.activityTable tr.unread td {
 }
 .guideContents {
 	float:left;
-	width:199px;
+	width:189px;
 	padding:20px;
 	text-align:center;
 	border-right:solid 1px #505050;
@@ -1690,8 +1691,8 @@ ul.attachments span.deletebutton:hover{
 
 /* timeline ********************/
 #timelineOuter .message {
-	margin-bottom:10px;
-	padding-top: 5px;
+	margin:0;
+	padding:10px 0;
 	border-top: 1px solid #dcdcdc;
 }
 
@@ -1758,12 +1759,42 @@ ul.attachments span.deletebutton:hover{
 	padding-left:60px;
 }
 #timeline .comments {
-	margin:5px 0 0 60px;
+	margin:0 0 10px 60px;
 	background:#f0f0f0;
 }
 #timeline .comments .messageContents {
 	padding-left:42px;
 }
+.messageContents .name {
+	/*color: #369;*/
+	font-weight: bold;
+	padding-right: 5px;
+}
+.messageContents .body {
+	padding:3px 0;
+}
+
+.messageContents .time {
+	font-size: 80%;
+	*font-size: 75%;
+	color: #434343;
+}
+.tlActivity,
+.tlActivity a {
+	color:#666666;
+	font-size:11px;
+}
+.tlActivity .messageContents {
+	display:table-cell;
+	padding-left:0px !important;
+	line-height:20px;
+}
+.tlActivity .messageContents div {
+	display:inline;
+	padding:0;
+}
+
+
 #timeline .commentCaption {
 	padding:3px 5px;
 	font-size:smaller;
@@ -1782,14 +1813,8 @@ ul.attachments span.deletebutton:hover{
 	word-break: break-all;
 	word-wrap: break-word;
 }
-#timeline .name {
-	/*color: #369;*/
-	font-weight: bold;
-	padding-right: 5px;
-}
-
 /* tlImageBox */
-.messageContents .tlImageBlock {
+.tlImageBlock {
 	margin:10px 0;
 }
 .tlImageBlock img {
@@ -1803,7 +1828,7 @@ ul.attachments span.deletebutton:hover{
 }
 
 /* clipBloard */
-.messageContents .tlClipBoard {
+.tlClipBoard {
 	margin:10px 0;
 }
 .tlClipImage {
@@ -1817,7 +1842,7 @@ ul.attachments span.deletebutton:hover{
 	max-width:90px;
 	max-height:90px;
 }
-.tlClipContents {margin-left:100px;}
+.tlClipContents {display:table-cell}
 .tlClipTitle {font-size:12px;}
 .tlClipUrl {font-size:10px;}
 .tlClipBody {padding-top:5px;color:#666666;}
@@ -1850,19 +1875,6 @@ ul.attachments span.deletebutton:hover{
 #timeline .readMore a {
 	display:block;
 	padding: 3px;
-	text-decoration:none;
-}
-#timeline .message .body {
-	padding-top: 3px;
-	min-height: 25px;
-	padding-bottom: 5px;
-}
-
-#timeline .message .time {
-	margin-bottom:3px;
-	font-size: 80%;
-	*font-size: 75%;
-	color: #434343;
 }
 #timeline .message .more {
 	line-height:1.6;
@@ -1949,41 +1961,49 @@ a.auiIcon:hover {background-color:#999;}
 *html a.auiIcon:hover {background-color:transparent;}/*IE6*/
 
 .auiIconSetting {background-position:0px 0px;}
+.auiIconSetting_w {background-position:0px -16px;}
 a.auiIconSetting:hover {background-position:0px -16px;}
 *html .auiIconSetting {background-position:0px 0px;}/*IE6*/
 *html a.auiIconSetting:hover {background-position:0px 0px;}/*IE6*/
 
 .auiIconFile {background-position:0px -32px;}
+.auiIconFile_w {background-position:0px -48px;}
 a.auiIconFile:hover {background-position:0px -48px;}
 *html .auiIconFile {background-position:0px -32px;}/*IE6*/
 *html a.auiIconFile:hover {background-position:0px -32px;}/*IE6*/
 
 .auiIconUser {background-position:0px -64px;}
+.auiIconUser_w {background-position:0px -80px;}
 a.auiIconUser:hover {background-position:0px -80px;}
 *html .auiIconUser {background-position:0px -64px;}/*IE6*/
 *html a.auiIconUser:hover {background-position:0px -64px;}/*IE6*/
 
 .auiIconCreate {background-position:0px -96px;}
+.auiIconCreate_w {background-position:0px -112px;}
 a.auiIconCreate:hover {background-position:0px -112px;}
 *html .auiIconCreate {background-position:0px -96px;}/*IE6*/
 *html a.auiIconCreate:hover {background-position:0px -96px;}/*IE6*/
 
 .auiIconClock {background-position:0px -128px;}
+.auiIconClock_w {background-position:0px -144px;}
 a.auiIconClock:hover {background-position:0px -144px;}
 *html .auiIconClock {background-position:0px -128px;}/*IE6*/
 *html a.auiIconClock:hover {background-position:0px -128px;}/*IE6*/
 
 .auiIconCalendar {background-position:0px -160px;}
+.auiIconCalendar_w {background-position:0px -176px;}
 a.auiIconCalendar:hover {background-position:0px -176px;}
 *html .auiIconCalendar {background-position:0px -160px;}/*IE6*/
 *html a.auiIconCalendar:hover {background-position:0px -160px;}/*IE6*/
 
 .auiIconLock {background-position:0px -192px;}
+.auiIconLock_w {background-position:0px -208px;}
 a.auiIconLock:hover {background-position:0px -208px;}
 *html .auiIconLock {background-position:0px -192px;}/*IE6*/
 *html a.auiIconLock:hover {background-position:0px -192px;}/*IE6*/
 
 .auiIconReload {background-position:0px -224px;}
+.auiIconReload_w {background-position:0px -240px;}
 a.auiIconReload:hover {background-position:0px -240px;}
 *html .auiIconReload {background-position:0px -224px;}/*IE6*/
 *html a.auiIconReload:hover {background-position:0px -224px;}/*IE6*/
@@ -1994,51 +2014,61 @@ a.auiIconPrint:hover {background-position:0px -256px;}
 *html a.auiIconPrint:hover {background-position:0px -256px;}/*IE6*/
 
 .auiIconDelete {background-position:0px -272px;}
+.auiIconDelete_w {background-position:0px -288px;}
 a.auiIconDelete:hover {background-position:0px -288px;}
 *html .auiIconDelete {background-position:0px -272px;}/*IE6*/
 *html a.auiIconDelete:hover {background-position:0px -272px;}/*IE6*/
 
 .auiIconPlus {background-position:0px -304px;}
+.auiIconPlus_w {background-position:0px -320px;}
 a.auiIconPlus:hover {background-position:0px -320px;}
 *html .auiIconPlus {background-position:0px -304px;}/*IE6*/
 *html a.auiIconPlus:hover {background-position:0px -304px;}/*IE6*/
 
 .auiIconMinus {background-position:0px -336px;}
+.auiIconMinus_w {background-position:0px -352px;}
 a.auiIconMinus:hover {background-position:0px -352px;}
 *html .auiIconMinus {background-position:0px -336px;}/*IE6*/
 *html a.auiIconMinus:hover {background-position:0px -336px;}/*IE6*/
 
 .auiIconArwLeft {background-position:0px -368px;}
+.auiIconArwLeft_w {background-position:0px -384px;}
 a.auiIconArwLeft:hover {background-position:0px -384px;}
 *html .auiIconArwLeft {background-position:0px -368px;}/*IE6*/
 *html a.auiIconArwLeft:hover {background-position:0px -368px;}/*IE6*/
 
 .auiIconArwRight {background-position:0px -400px;}
+.auiIconArwRight_w {background-position:0px -416px;}
 a.auiIconArwRight:hover {background-position:0px -416px;}
 *html .auiIconArwRight {background-position:0px -400px;}/*IE6*/
 *html a.auiIconArwRight:hover {background-position:0px -400px;}/*IE6*/
 
 .auiIconArwBottom {background-position:0px -432px;}
+.auiIconArwBottom_w {background-position:0px -448px;}
 a.auiIconArwBottom:hover {background-position:0px -448px;}
 *html .auiIconArwBottom {background-position:0px -432px;}/*IE6*/
 *html a.auiIconArwBottom:hover {background-position:0px -432px;}/*IE6*/
 
 .auiIconArwTop {background-position:0px -464px;}
+.auiIconArwTop_w {background-position:0px -480px;}
 a.auiIconArwTop:hover {background-position:0px -480px;}
 *html .auiIconArwTop {background-position:0px -464px;}/*IE6*/
 *html a.auiIconArwTop:hover {background-position:0px -464px;}/*IE6*/
 
 .auiIconImage {background-position:0px -496px;}
+.auiIconImage_w {background-position:0px -512px;}
 a.auiIconImage:hover {background-position:0px -512px;}
 *html .auiIconImage {background-position:0px -496px;}/*IE6*/
 *html a.auiIconImage:hover {background-position:0px -496px;}/*IE6*/
 
 .auiIconUsers {background-position:0px -528px;}
+.auiIconUsers_w {background-position:0px -544px;}
 a.auiIconUsers:hover {background-position:0px -544px;}
 *html .auiIconUsers {background-position:0px -528px;}/*IE6*/
 *html a.auiIconUsers:hover {background-position:0px -528px;}/*IE6*/
 
 .auiIconSearch {background-position:0px -560px;}
+.auiIconSearch_w {background-position:0px -576px;}
 a.auiIconSearch:hover {background-position:0px -576px;}
 *html .auiIconSearch {background-position:0px -560px;}/*IE6*/
 *html a.auiIconSearch:hover {background-position:0px -560px;}/*IE6*/
