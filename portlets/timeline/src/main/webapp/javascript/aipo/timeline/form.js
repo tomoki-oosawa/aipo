@@ -124,19 +124,18 @@ aipo.timeline.onKeyUp = function(pid, tid) {
 	  objId = "note_" + pid + "_" + tid;
   } else {
 	  objId = "note_" + pid;
+	  var _val = dojo.byId(objId).value;
+	  if (dojo.byId("flag_" + pid).value == "none") {
+		  var spritval = _val.split(/\r\n|\n/g);
+		  for (i in spritval) {
+		    if (spritval[i].match(/^http/i)) {
+		      aipo.timeline.getUrl(spritval[i], pid)
+		    }
+		  }
+	  }
   }
+  
   var val = dojo.byId(objId).value;
-
-  if (tid == 0 && dojo.byId("flag_" + pid).value == "none") {
-    var spritval = val.split(/\r\n|\n/g);
-
-    for (i in spritval) {
-      if (spritval[i].match(/^http/i)) {
-        aipo.timeline.getUrl(spritval[i], pid)
-      }
-    }
-  }
-
   var shadowVal = val.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(
       /&/g, '&amp;').replace(/\n$/, '<br/>&nbsp;')
       .replace(/\n/g, '<br/>').replace(/ {2,}/g, function(space) {
@@ -167,8 +166,7 @@ aipo.timeline.onKeyUp = function(pid, tid) {
 
   if (shadowHeight < 18)
     shadowHeight = 18;
-  dojo.byId(objId).style.height = shadowHeight + 21
-      + "px";
+  dojo.byId(objId).style.height = shadowHeight + 21 + "px";
   objBody.removeChild(shadow);
 }
 
