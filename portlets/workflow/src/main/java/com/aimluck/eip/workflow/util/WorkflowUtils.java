@@ -1821,10 +1821,11 @@ public class WorkflowUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Workflow")
         .withLoginName(loginName)
+        .withUserId(request.getUserId())
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(b.toString())
-        .witchPriority(1f)
+        .withTitle(b.toString())
+        .withPriority(1f)
         .withExternalId(String.valueOf(request.getRequestId())));
 
       if (isDeletePrev) {

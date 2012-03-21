@@ -48,6 +48,9 @@ public class TimelineResultData implements ALData {
   /** 所有者名 */
   private ALStringField owner_name;
 
+  /** タイムラインのタイプ */
+  private String timeline_type;
+
   /** 公開/非公開フラグ */
   private boolean is_public;
 
@@ -87,6 +90,9 @@ public class TimelineResultData implements ALData {
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
+  /** 更新情報の場合のURLのGETparams */
+  private ALStringField params;
+
   /**
    *
    *
@@ -97,6 +103,7 @@ public class TimelineResultData implements ALData {
     parent_id = new ALNumberField();
     owner_id = new ALNumberField();
     owner_name = new ALStringField();
+    params = new ALStringField();
 
     note = new ALStringField();
     note.setTrim(false);
@@ -376,6 +383,52 @@ public class TimelineResultData implements ALData {
    */
   public void setLike(boolean like) {
     this.like = like;
+  }
+
+  /**
+   * @param timeline_type
+   *          セットする timeline_type
+   */
+  public void setTimelineType(String timeline_type) {
+    this.timeline_type = timeline_type;
+  }
+
+  /**
+   * @return timeline_type
+   */
+  public String getTimelineType() {
+    return timeline_type;
+  }
+
+  /**
+   * @param params
+   *          セットする params
+   */
+  public void setParams(String params) {
+    this.params.setValue(params);
+  }
+
+  /**
+   * @return params
+   */
+  public ALStringField getParams() {
+    return params;
+  }
+
+  public String getPopupUrl() {
+    String portletParams = this.getParams().getValue();
+
+    if (portletParams != null && portletParams.length() > 0) {
+      StringBuilder b = new StringBuilder(portletParams);
+      // if (portletParams.indexOf("?") > -1) {
+      // b.append("&activityId=").append(id);
+      // } else {
+      // b.append("?activityId=").append(id);
+      // }
+      return b.toString();
+    } else {
+      return "";
+    }
   }
 
 }

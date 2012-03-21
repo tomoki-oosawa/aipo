@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.cayenne.om.social.ActivityMap;
 import com.aimluck.eip.cayenne.om.social.AppData;
@@ -272,8 +273,9 @@ public class ALDefaultSocialApplicationHanlder extends
         createActivity(new ALActivityPutRequest()
           .withAppId("GadgetAdd")
           .withPortletParams(portletParams)
-          .withTile(title)
-          .witchPriority(0f)
+          .withUserId(request.getActivityUserId())
+          .withTitle(title)
+          .withPriority(0f)
           .withLoginName(request.getActivityLoginName())
           .withExternalId(String.valueOf(app.getAppId().toString())));
       }
@@ -839,6 +841,22 @@ public class ALDefaultSocialApplicationHanlder extends
       Database.sql(Activity.class, sql).execute();
 
       Database.commit();
+
+      // タイムラインに更新情報を追加
+      if (priority == 0f) {
+        EipTTimeline timeline = Database.create(EipTTimeline.class);
+        timeline.setParentId(0);
+        timeline.setOwnerId(request.getUserId());
+        timeline.setNote(request.getTitle());
+        timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+        timeline.setParams(request.getPortletParams());
+        // 作成日
+        timeline.setCreateDate(Calendar.getInstance().getTime());
+        // 更新日
+        timeline.setUpdateDate(Calendar.getInstance().getTime());
+        Database.commit();
+      }
+
     } catch (Throwable t) {
       Database.rollback();
       throw new RuntimeException(t);

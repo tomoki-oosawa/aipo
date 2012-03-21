@@ -373,8 +373,8 @@ public class TimelineUtils {
       .withLoginName(loginName)
       .withPortletParams(portletParams)
       .withRecipients(recipients)
-      .withTile(title)
-      .witchPriority(1f)
+      .withTitle(title)
+      .withPriority(1f)
       .withExternalId(String.valueOf(timeline.getTimelineId())));
   }
 

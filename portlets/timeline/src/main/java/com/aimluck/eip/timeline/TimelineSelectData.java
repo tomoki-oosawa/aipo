@@ -175,7 +175,19 @@ public class TimelineSelectData extends
     Expression exp1 =
       ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
         .valueOf(0));
-    query.setQualifier(exp1);
+
+    // 自分の更新情報は表示させない。
+    // and !(自分 and 更新) (!自分 || !更新)
+    long loginuserid = ALEipUtils.getALEipUser(rundata).getUserId().getValue();
+
+    Expression exp2 =
+      ExpressionFactory
+        .noMatchExp(EipTTimeline.OWNER_ID_PROPERTY, loginuserid)
+        .orExp(
+          ExpressionFactory.noMatchExp(
+            EipTTimeline.TIMELINE_TYPE_PROPERTY,
+            EipTTimeline.TIMELINE_TYPE_ACTIVITY));
+    query.setQualifier(exp1.andExp(exp2));
 
     query.distinct(true);
 
@@ -221,6 +233,8 @@ public class TimelineSelectData extends
 
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setTimelineType(record.getTimelineType());
+      rd.setParams(record.getParams());
 
       rd.setReplyCount(TimelineUtils.countReply(record.getTimelineId()));
 

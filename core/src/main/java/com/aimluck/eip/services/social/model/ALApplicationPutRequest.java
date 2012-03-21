@@ -34,6 +34,8 @@ public class ALApplicationPutRequest {
 
   private String activityLoginName;
 
+  private int activityUserId;
+
   /**
    * @param url
    *          セットする url
@@ -131,6 +133,30 @@ public class ALApplicationPutRequest {
 
   public ALApplicationPutRequest withActivityLoginName(String loginName) {
     setActivityLoginName(loginName);
+    return this;
+  }
+
+  /**
+   * @param activityuserId
+   *          セットする activityuserId
+   */
+  public void setActivityUserId(int activityuserId) {
+    this.activityUserId = activityuserId;
+  }
+
+  /**
+   * @return activityuserId
+   */
+  public int getActivityUserId() {
+    return activityUserId;
+  }
+
+  /**
+   * @param activityuserId
+   *          セットする activityuserId
+   */
+  public ALApplicationPutRequest withActivityuserId(int activityuserId) {
+    setActivityUserId(activityuserId);
     return this;
   }
 

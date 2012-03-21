@@ -635,20 +635,22 @@ public class ToDoUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("todo")
         .withLoginName(loginName)
+        .withUserId(todo.getUserId())
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(1f)
+        .withTitle(title)
+        .withPriority(1f)
         .withExternalId(String.valueOf(todo.getTodoId())));
     }
     if (todo.getPublicFlag().equals("T")) {
       // 全体向けアクティビティー
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("todo")
+        .withUserId(todo.getUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withPriority(0f)
         .withExternalId(String.valueOf(todo.getTodoId())));
     }
 

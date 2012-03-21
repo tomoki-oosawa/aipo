@@ -223,6 +223,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       ALApplicationService.create(new ALApplicationPutRequest()
         .withUrl(url.getValue())
         .withTitle(metaData.getTitle())
+        .withActivityuserId(ALEipUtils.getUserId(rundata))
         .withDescription(metaData.getDescription())
         .withIcon(metaData.getIcon())
         .withActivityLoginName(activityLoginName));
@@ -253,6 +254,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
       ALApplicationService.update(appId, new ALApplicationPutRequest()
         .withTitle(metaData.getTitle())
+        .withActivityuserId(ALEipUtils.getUserId(rundata))
         .withDescription(metaData.getDescription())
         .withIcon(metaData.getIcon()));
 

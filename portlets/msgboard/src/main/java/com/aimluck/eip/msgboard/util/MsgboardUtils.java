@@ -1157,22 +1157,23 @@ public class MsgboardUtils {
     if (recipients != null && recipients.size() > 0) {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
+        .withUserId(topic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     } else {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
         .withLoginName(loginName)
+        .withUserId(topic.getOwnerId())
         .withPortletParams(portletParams)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
-
     if (isDeletePrev) {
       RecentActivity.Delete();
     }
@@ -1203,11 +1204,12 @@ public class MsgboardUtils {
           "&entityid=").append(topic.getTopicId()).toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
+        .withUserId(topic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipient)
-        .withTile(b.toString())
-        .witchPriority(1f)
+        .withTitle(b.toString())
+        .withPriority(1f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     } else if (recipient == null && !loginName.equals(recipient)) {
       StringBuilder b = new StringBuilder("掲示板「");
@@ -1220,10 +1222,11 @@ public class MsgboardUtils {
           "&entityid=").append(topic.getTopicId()).toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
+        .withUserId(topic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withTile(b.toString())
-        .witchPriority(1f)
+        .withTitle(b.toString())
+        .withPriority(1f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
     if (isDeletePrev) {
@@ -1251,19 +1254,21 @@ public class MsgboardUtils {
     if (recipients != null && recipients.size() > 0) {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
+        .withUserId(topic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     } else {
       ALActivityService.create(new ALActivityPutRequest()
+        .withUserId(topic.getOwnerId())
         .withAppId("Msgboard")
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withPriority(0f)
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
   }

@@ -799,11 +799,12 @@ public class NoteUtils {
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Note")
+        .withUserId(Integer.valueOf(note.getOwnerId()))
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(1f)
+        .withTitle(title)
+        .withPriority(1f)
         .withExternalId(String.valueOf(note.getNoteId())));
 
       if (isDeletePrev) {

@@ -849,10 +849,12 @@ public class BlogUtils {
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("blog")
       .withLoginName(loginName)
+      .withUserId(blog.getOwnerId())
       .withPortletParams(portletParams)
-      .withTile(title)
-      .witchPriority(0f)
+      .withTitle(title)
+      .withPriority(0f)
       .withExternalId(String.valueOf(blog.getEntryId())));
+
     if (isDeletePrev) {
       RecentActivity.Delete();
     }
@@ -882,11 +884,12 @@ public class BlogUtils {
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Blog")
+      .withUserId(blog.getOwnerId())
       .withLoginName(loginName)
       .withPortletParams(portletParams)
       .withRecipients(recipients)
-      .withTile(title)
-      .witchPriority(1f)
+      .withTitle(title)
+      .withPriority(1f)
       .withExternalId(String.valueOf(blog.getEntryId())));
 
     if (isDeletePrev) {

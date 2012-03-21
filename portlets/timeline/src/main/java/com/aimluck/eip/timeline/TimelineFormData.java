@@ -274,6 +274,9 @@ public class TimelineFormData extends ALAbstractFormData {
       topic.setOwnerId(Integer.valueOf(uid));
       // メモ
       topic.setNote(note.getValue());
+      // 登録
+      topic.setTimelineType(EipTTimeline.TIMELINE_TYPE_TIMELINE);
+
       // 作成日
       topic.setCreateDate(Calendar.getInstance().getTime());
       // 更新日

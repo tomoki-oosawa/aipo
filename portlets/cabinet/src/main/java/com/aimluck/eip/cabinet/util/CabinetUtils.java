@@ -768,18 +768,22 @@ public class CabinetUtils {
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withUserId(file.getUpdateUserId())
+        .withPriority(0f)
         .withExternalId(String.valueOf(file.getFileId())));
     } else {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Cabinet")
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withTile(title)
-        .witchPriority(0f)
+        .withTitle(title)
+        .withUserId(file.getUpdateUserId())
+        .withPriority(0f)
         .withExternalId(String.valueOf(file.getFileId())));
     }
+
+    Database.commit();
     if (isDeletePrev) {
       RecentActivity.Delete();
     }

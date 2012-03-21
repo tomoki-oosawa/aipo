@@ -37,7 +37,10 @@ public class ALActivityPutRequest {
   private String portletParams;
 
   private String loginName;
-
+  
+  // timelineに表示させる時はuserIdを使う。
+  private int userId;
+  
   private String body;
 
   private float priority = 0f;
@@ -129,7 +132,7 @@ public class ALActivityPutRequest {
     this.priority = priority;
   }
 
-  public ALActivityPutRequest witchPriority(float priority) {
+  public ALActivityPutRequest withPriority(float priority) {
     setPriority(priority);
     return this;
   }
@@ -201,8 +204,28 @@ public class ALActivityPutRequest {
     return title;
   }
 
-  public ALActivityPutRequest withTile(String title) {
-    setTitle(title);
-    return this;
-  }
+  public ALActivityPutRequest withTitle(String title) {
+	    setTitle(title);
+	    return this;
+	  }
+
+	  /**
+	   * @param userId
+	   *          セットする userId
+	   */
+	  public void setUserId(int userId) {
+	    this.userId = userId;
+	  }
+
+	  /**
+	   * @return userId
+	   */
+	  public int getUserId() {
+	    return userId;
+	  }
+
+	  public ALActivityPutRequest withUserId(int userId) {
+	    this.userId=userId;
+	    return this;
+	  }
 }

@@ -3761,11 +3761,12 @@ public class ScheduleUtils {
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Schedule")
+        .withUserId(schedule.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(title)
-        .witchPriority(1f)
+        .withTitle(title)
+        .withPriority(1f)
         .withExternalId(String.valueOf(schedule.getScheduleId())));
 
       if (isDeletePrev) {
@@ -3793,10 +3794,11 @@ public class ScheduleUtils {
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Schedule")
+      .withUserId(schedule.getOwnerId())
       .withLoginName(loginName)
       .withPortletParams(portletParams)
-      .withTile(title)
-      .witchPriority(0f)
+      .withTitle(title)
+      .withPriority(0f)
       .withExternalId(String.valueOf(schedule.getScheduleId())));
 
     if (isDeletePrev) {

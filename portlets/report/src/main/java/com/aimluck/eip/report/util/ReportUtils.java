@@ -862,11 +862,12 @@ public class ReportUtils {
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Report")
+        .withUserId(report.getUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
-        .withTile(b.toString())
-        .witchPriority(1f)
+        .withTitle(b.toString())
+        .withPriority(1f)
         .withExternalId(String.valueOf(report.getReportId())));
 
       if (isDeletePrev) {
@@ -901,11 +902,12 @@ public class ReportUtils {
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Report")
+        .withUserId(report.getUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipient)
-        .withTile(b.toString())
-        .witchPriority(1f)
+        .withTitle(b.toString())
+        .withPriority(1f)
         .withExternalId(String.valueOf(report.getReportId())));
 
       if (isDeletePrev) {
@@ -941,11 +943,13 @@ public class ReportUtils {
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Report")
+      .withUserId(report.getUserId())
       .withLoginName(loginName)
       .withPortletParams(portletParams)
-      .withTile(b.toString())
-      .witchPriority(0f)
+      .withTitle(b.toString())
+      .withPriority(0f)
       .withExternalId(String.valueOf(report.getReportId())));
+
     if (isDeletePrev) {
       RecentActivity.Delete();
     }
@@ -977,11 +981,13 @@ public class ReportUtils {
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Report")
+      .withUserId(report.getUserId())
       .withLoginName(loginName)
       .withPortletParams(portletParams)
-      .withTile(b.toString())
-      .witchPriority(0f)
+      .withTitle(b.toString())
+      .withPriority(0f)
       .withExternalId(String.valueOf(report.getReportId())));
+
     if (isDeletePrev) {
       RecentActivity.Delete();
     }

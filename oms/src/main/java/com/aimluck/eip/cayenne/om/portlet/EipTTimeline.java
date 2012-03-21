@@ -31,6 +31,10 @@ public class EipTTimeline extends _EipTTimeline {
 
   public static final String PARENT_ID_COLUMN = "PARENT_ID";
 
+  public static final String TIMELINE_TYPE_ACTIVITY = "A";
+
+  public static final String TIMELINE_TYPE_TIMELINE = "T";// デフォルト
+
   public Integer getTimelineId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(TIMELINE_ID_PK_COLUMN);
