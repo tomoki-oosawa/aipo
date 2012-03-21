@@ -119,7 +119,13 @@ aipo.timeline.setScrollTop = function(scrollTop) {
 }
 
 aipo.timeline.onKeyUp = function(pid, tid) {
-  var val = dojo.byId("note_" + pid + "_" + tid).value;
+  var objId;
+  if((typeof tid !== "undefined") && (tid != null)){
+	  objId = "note_" + pid + "_" + tid;
+  } else {
+	  objId = "note_" + pid;
+  }
+  var val = dojo.byId(objId).value;
 
   if (tid == 0 && dojo.byId("flag_" + pid).value == "none") {
     var spritval = val.split(/\r\n|\n/g);
@@ -154,15 +160,14 @@ aipo.timeline.onKeyUp = function(pid, tid) {
   var objBody = document.getElementsByTagName("body").item(0);
   objBody.appendChild(shadow);
 
-  dojo.byId("shadow").style.width = document.getElementById("note_" + pid
-      + "_" + tid).offsetWidth
+  dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth
       + "px";
 
   var shadowHeight = document.getElementById("shadow").offsetHeight;
 
   if (shadowHeight < 18)
     shadowHeight = 18;
-  dojo.byId("note_" + pid + "_" + tid).style.height = shadowHeight + 21
+  dojo.byId(objId).style.height = shadowHeight + 21
       + "px";
   objBody.removeChild(shadow);
 }
@@ -328,7 +333,7 @@ aipo.timeline.deleteClip = function(pid){
 }
 
 aipo.timeline.submit = function(form, indicator_id, pid, callback){
-	if(dojo.byId('note_' + pid + '_0').value != dojo.byId('note_' + pid + '_0').defaultValue){
+	if(dojo.byId('note_' + pid).value != dojo.byId('note_' + pid).defaultValue){
 		aimluck.io.submit(form, indicator_id, pid, callback);
 	}
 }
