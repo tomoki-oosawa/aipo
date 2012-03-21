@@ -1,0 +1,231 @@
+@charset "utf-8";
+
+/* style denial */
+body {position:absolute}
+.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
+	display:none;
+}
+#header {padding-top:0;height:auto}
+#header .inner {height:auto}
+.hdNavi {
+	position:absolute;
+	right:0;
+	padding-top:0;
+}
+.hdActivity {
+	line-height:40px;
+}
+.activityField {
+	display:table-cell;
+	width:45px;
+	height:45px;
+	padding:0;
+	text-align:center;
+	vertical-align:middle;
+	background:#999999
+		-webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(255,255,255,0.5)),
+		color-stop(0.5, rgba(255,255,255,0)), 
+		to(rgba(0,0,0,0.1))
+	);
+	border-radius:6px 0 0 6px;
+	border-left:solid 1px #777777;
+}
+.activityField:hover {
+	background:#999999;
+}
+.hdActivity div.active {
+	background:#999999
+		-webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(0,0,0,0.3)),
+		color-stop(0.8, rgba(0,0,0,0)), 
+		to(rgba(0,0,0,0))
+	);
+}
+.activityPopup {
+	width:280px;
+}
+#activitycheckerContainer {
+	margin-top:0;
+}
+
+td.container {
+	display:block;
+	width:auto;
+}
+
+
+/* set PortletOuter */
+.roundMainWrapper {
+	padding:0;
+}
+.roundTopBlock, .roundRightBlock, .roundBottomBlock, .roundLeftBlock, .roundTopLeftBlock, .roundTopRightBlock, .roundBottomRightBlock, .roundBottomLeftBlock {
+	background-image:none;
+}
+table.roundBlockWrapperTop {
+	background:#c0c0c0
+		-webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(255,255,255,0.8)),
+		color-stop(0.5, rgba(255,255,255,0)), 
+		to(rgba(0,0,0,0.1))
+	);
+	border-top:solid 1px #999999;
+	border-bottom:solid 1px #999999;
+	box-shadow:0 2px 3px rgba(0,0,0,0.2);
+	margin-bottom:5px;
+}
+table.roundBlockWrapperTop td.roundBlockIcon {display:none}
+table.roundBlockWrapperTop td.roundBlockTitle {
+	padding:0;
+	background-image:none;
+	text-align:center;
+	vertical-align:middle;
+	overflow:hidden;
+}
+table.roundBlockWrapperTop td.roundBlockTitle a {
+	color:#ffffff;
+	text-decoration:none;
+	text-shadow:0 1px 0 rgba(0,0,0,0.8);
+	font-size:16px;
+	font-weight:bold;
+}
+table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
+.roundBlockWrapperBottom {padding:0;}
+
+
+/* appsNavigation */
+#appsNavigation {
+	position:absolute;
+	top:0;
+	left:-260px;
+	width:260px;
+	height:100%;
+	font-size:13px;
+	background:#999999;
+	color:#ffffff;
+}
+#appsNavigationBack {
+	display:none;
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0;
+	right:0;
+}
+#appsNavigationBack a {
+	display:block;
+	height:100%;
+}
+.anDrawer {
+	position:absolute;
+	right:-45px;
+	overflow:hidden;
+	border-radius:0 6px 6px 0;
+	border-right:solid 1px #777777;
+	background:#999999
+		-webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(255,255,255,0.5)),
+		color-stop(0.5, rgba(255,255,255,0)), 
+		to(rgba(0,0,0,0.1))
+	);
+}
+.anDrawer a {
+	display:table-cell;
+	width:45px;
+	height:45px;
+	vertical-align:middle;
+	text-align:center;
+}
+.anDrawer img {
+	width:24px;
+	height:24px;
+}
+#appsNavigation h2 {
+	line-height:40px;
+	padding:0 5px;
+	white-space:nowrap;
+	text-shadow:0 1px 0 rgba(0,0,0,0.8);
+	background:#666666;
+}
+#appsNavigation li {
+	clear:both;
+	padding:0;
+	background:none;
+	overflow:hidden;
+}
+#appsNavigation a {
+	text-decoration:none;
+	color:#ffffff;
+}
+#appsNavigation li a {
+	display:block;
+	height:40px;
+	line-height:40px;
+	font-size:16px;
+	font-weight:bold;
+	text-shadow:0 1px 0 rgba(0,0,0,0.8);
+	border-top:solid 1px rgba(255,255,255,0.4);
+	border-bottom:solid 1px rgba(0,0,0,0.5);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(255,255,255,0.3)),
+		to(rgba(255,255,255,0))
+	);
+}
+.anUser {
+	font-size:16px;
+	font-weight:bold;
+	text-shadow:0 1px 0 rgba(0,0,0,0.8);
+	background:
+		-webkit-gradient(
+		linear, left top, left bottom,
+		from(rgba(255,255,255,0.5)),
+		color-stop(0.5, rgba(255,255,255,0)), 
+		to(rgba(0,0,0,0.1))
+	);
+}
+.anUser > div {
+	display:table-cell;
+	vertical-align:middle;
+	height:45px;
+	line-height:45px;
+}
+.anUser .avatar {
+	width:40px;
+	text-align:center;
+}
+#appsNavigation .icon {
+	display:block;
+	float:left;
+	padding:10px;
+	vertical-align:middle;
+	text-align:center;
+}
+#appsNavigation .icon img {
+	width:20px;
+	height:20px;
+}
+.anFooter {
+	padding:10px 5px;
+	background:#303030;
+}
+
+
+/* timeline*/
+#timeline .avatar img,
+#timeline .avatar {
+	max-width:20px;
+	max-height:20px;
+}
+#timeline .messageContents,
+#timeline .comments .messageContents {
+	display:table-cell;
+	padding-left:0;
+}
+#timeline .comments {
+	margin-left:30px;
+}
