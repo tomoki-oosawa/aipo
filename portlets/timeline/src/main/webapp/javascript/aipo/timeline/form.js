@@ -118,23 +118,28 @@ aipo.timeline.setScrollTop = function(scrollTop) {
   dojo.byId("timeline").scrollTop = scrollTop;
 }
 
-aipo.timeline.onKeyUp = function(pid, tid) {
+aipo.timeline.onKeyUp = function(pid, tid, e) {
   var objId;
   if((typeof tid !== "undefined") && (tid != null)){
 	  objId = "note_" + pid + "_" + tid;
   } else {
-	  objId = "note_" + pid;
-	  var _val = dojo.byId(objId).value;
-	  if (dojo.byId("flag_" + pid).value == "none") {
-		  var spritval = _val.split(/\r\n|\n/g);
-		  for (i in spritval) {
-		    if (spritval[i].match(/^http/i)) {
-		      aipo.timeline.getUrl(spritval[i], pid)
-		    }
-		  }
-	  }
+		objId = "note_" + pid;
+		var keycode;
+		if (window.event) keycode = window.event.keyCode;
+		else if (e) keycode = e.which;
+		if((keycode == 13)|(keycode == 32)){
+			var _val = dojo.byId(objId).value;
+			if (dojo.byId("flag_" + pid).value == "none") {
+				var spritval = _val.split(/\r\n|\n/g);
+				for (i in spritval) {
+					if (spritval[i].match(/^http/i)) {
+						aipo.timeline.getUrl(spritval[i], pid)
+					}
+				}
+			}
+		}
   }
-  
+
   var val = dojo.byId(objId).value;
   var shadowVal = val.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(
       /&/g, '&amp;').replace(/\n$/, '<br/>&nbsp;')
