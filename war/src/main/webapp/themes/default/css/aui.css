@@ -1525,28 +1525,21 @@ form {
 	margin:0;
 	padding:0;
 }
-.auiForm input,
-.auiForm textarea,
-.auiForm select,
-form input,
-form textarea,
-form select {
+input,
+textarea,
+select {
 	margin:0;
 	vertical-align:middle;
 }
-.auiForm textarea,
-.auiForm select,
-form textarea,
-form select {
+textarea,
+select {
 	margin:1px 0;
 	border:solid 1px #ccc;
 	border-radius:2px;
 	-ms-border-radius:2px;
 }
-.auiForm input[type=text],
-.auiForm input[type=password],
-form input[type=text],
-form input[type=password] {
+input[type=text],
+input[type=password] {
 	height:2.1em;
 	*height:2.0em;/*IE*/
 	line-height/*\**/:2.0em\9;/*IE7-8*/
@@ -1559,12 +1552,10 @@ form input[type=password] {
 	-moz-box-sizing:border-box;
 	background-color:#fff;
 }
-.auiForm select,
-form select {
+select {
 	padding:0.25em;
 }
 
-.auiForm textarea,
 form textarea {
 	border-radius:3px;
 	-ms-border-radius:3px;
@@ -1572,52 +1563,36 @@ form textarea {
 	-moz-box-sizing:border-box;
 	background-color:#fff;
 }
-.auiForm input[type=text]:hover,
-.auiForm input[type=text]:focus,
-.auiForm input[type=password]:hover,
-.auiForm input[type=password]:focus,
-.auiForm select:hover,
-.auiForm select:focus,
-.auiForm textarea:hover,
-.auiForm textarea:focus,
-form input[type=text]:hover,
-form input[type=text]:focus,
-form input[type=password]:hover,
-form input[type=password]:focus,
-form select:hover,
-form select:focus,
-form textarea:hover,
-form textarea:focus {
+input[type=text]:hover,
+input[type=text]:focus,
+input[type=password]:hover,
+input[type=password]:focus,
+select:hover,
+select:focus,
+textarea:hover,
+textarea:focus {
 	border:solid 1px #999;
 }
-.auiForm input[type=text]:focus,
-.auiForm input[type=password]:focus,
-.auiForm textarea:focus,
-form input[type=text]:focus,
-form input[type=password]:focus,
-form textarea:focus {
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
-.auiForm input[disabled],
-.auiForm textarea[disabled],
-form input[disabled],
-form textarea[disabled] {
+input[disabled],
+textarea[disabled] {
 	color:#999;
 	background:#eee;
 }
-.auiForm input[disabled]:hover,
-.auiForm textarea[disabled]:hover,
-form input[disabled]:hover,
-form textarea[disabled]:hover {
+input[disabled]:hover,
+textarea[disabled]:hover {
 	color:#999;
 	background:#eee;
 	border-color:#c9c9c9;
 	cursor:default;
+	box-shadow:none;
 }
-.auiForm input[type=checkbox],
-.auiForm input[type=radio],
-form input[type=checkbox],
-form input[type=radio] {
+input[type=checkbox],
+input[type=radio] {
 	height:auto;
 }
 .inlineCheckbox,
