@@ -33,6 +33,16 @@ aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename, pid) {
     dojo.byId('folderName_' + pid).value =  foldername;
 }
 
+aipo.fileupload.replaceFileInfo = function(foldername, fileid, filename, pid) {
+    var ul = dojo.byId('attachments_' + pid);
+
+    if(ul.nodeName.toLowerCase()=="ul")
+    	aimluck.io.replaceFileToList(ul,fileid,filename);
+    else
+    	aimluck.io.addOption(ul,fileid,filename, false);//MultipeによるSelectとの互換性維持
+    dojo.byId('folderName_' + pid).value =  foldername;
+}
+
 aipo.fileupload.openAttachment = function(url, pid){
     var wx = 430;
     var wy = 130;

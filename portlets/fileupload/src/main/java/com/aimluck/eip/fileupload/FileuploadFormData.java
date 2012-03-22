@@ -161,7 +161,9 @@ public class FileuploadFormData extends ALAbstractFormData {
 
     // 添付可能数のチェック
     if (maxSize > 0) {
-      if (nowSize >= maxSize) {
+      if (maxSize == 1 && nowSize == 1) {
+        
+      } else if (nowSize >= maxSize) {
         msgList.add("これ以上、ファイルを追加することはできません。");
       }
     }
@@ -275,6 +277,10 @@ public class FileuploadFormData extends ALAbstractFormData {
 
   public ALStringField getFolderName() {
     return folderName;
+  }
+
+  public int getMaxSize() {
+    return maxSize;
   }
 
 }

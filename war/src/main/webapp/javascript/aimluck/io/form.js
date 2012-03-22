@@ -391,7 +391,28 @@ aimluck.io.addFileToList =function(ul,fileid,filename){
 	    return ul.appendChild(li);
   }
 }
+
+aimluck.io.replaceFileToList =function(ul,fileid,filename){
+	if (document.all) {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    ul.innerHTML="";
+	   return ul.appendChild(li);
+  } else {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    ul.innerHTML="";
+	    return ul.appendChild(li);
+  }
+}
+
 aimluck.io.removeFileFromList = function(ul,li){
+	alert("ul = "+ ul +"\n"+ "li = "+ li);
 	return ul.removeChild(li);
 }
 

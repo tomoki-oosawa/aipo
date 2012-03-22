@@ -27,8 +27,12 @@
 
 function get_data(pid){
     #if($!receiveFile && $!receiveFile == "true")
+	#if($!result.MaxSize == 1)
+	window.opener.aipo.fileupload.replaceFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #else
     window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
-    window.parent.close();
+    #end
+	window.parent.close();
     #end
 }
 
