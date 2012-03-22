@@ -59,4 +59,11 @@ CREATE TABLE `eip_t_timeline_url`
     PRIMARY KEY (`url_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- 20120314
+-- 20120321
+
+-- 20120322
+alter table `eip_t_timeline` add column `timeline_type` varchar (2);
+alter table `eip_t_timeline` add column `params` varchar (99);
+
+update eip_t_timeline set timeline_type='T' where (coalesce(timeline_type,'')='');
+-- 20120322

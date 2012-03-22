@@ -652,11 +652,13 @@ CREATE TABLE `eip_t_timeline` (
    `parent_id` int(11) NOT NULL DEFAULT 0,
    `owner_id` int(11),
    `note` text,
+   `timeline_type` varchar (2),
+   `params` varchar (99),
    `create_date` datetime DEFAULT NULL,
    `update_date` datetime DEFAULT NULL,
    PRIMARY KEY(`timeline_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY (  `owner_id` )
+ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY ( `owner_id` )
 REFERENCES  `turbine_user` (`user_id`);
 
 CREATE TABLE `eip_t_timeline_like` (
