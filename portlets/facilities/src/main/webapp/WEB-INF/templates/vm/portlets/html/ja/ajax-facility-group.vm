@@ -42,8 +42,6 @@
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>設備をグループ単位でまとめることができます。</p>
-<p>『設備グループを追加する』ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
 </p>

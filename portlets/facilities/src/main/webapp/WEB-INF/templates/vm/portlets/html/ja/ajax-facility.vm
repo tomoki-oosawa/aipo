@@ -34,7 +34,9 @@
 </ul>
 </div>
 </div>
+#if($result.getAllFacilitySum() != 0)
 #AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#end
 #AUISummaryDivfooter()
 #if($result.getAllFacilitySum() != 0)
 #AUISummaryDiv()
@@ -53,8 +55,6 @@
 #if($result.getAllFacilitySum() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>会議室や社用車、パソコンなどの設備を設定できます。</p>
-<p>『設備を追加する』ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
 </p>

@@ -26,19 +26,28 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["設備", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen')"])
+#set($tab = ["設備", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen').addQueryData('filter','')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = ["設備グループ", "group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:8em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
 </div>
+#if($result.List.size() != 0)
 #AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#end
 </div>
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('設備グループ')
 #if($result.List.size() == 0)
-指定された条件に該当する設備グループはありません。<br />
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p class="mh10">
+#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
+
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
