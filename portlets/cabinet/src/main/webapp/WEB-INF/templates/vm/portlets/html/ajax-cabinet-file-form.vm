@@ -69,7 +69,7 @@
 <option value="$record.FolderId" #if($!result.isMatch(${record.FolderId}, $!result.FolderId.Value)) selected #end>${space}${record.FolderName}</option>
 #end
 #end
-</select>&nbsp;&nbsp;の下
+</select>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("note"))
 #ALtditemheader()
