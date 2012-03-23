@@ -1,3 +1,4 @@
+//TimelineUtils.jav
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -650,29 +651,37 @@ public class TimelineUtils {
     Database.commit();
   }
 
-  public static Document getDocument(String string) throws Exception {
+  public static Document getDocument(String string) {
     DOMParser parser = new DOMParser();
-    URL url = new URL(string);
-    URLConnection con = url.openConnection();
-    con.setConnectTimeout(10000);
-    con.setUseCaches(false);
-    con.addRequestProperty("_", UUID.randomUUID().toString());
-    String contentType = con.getContentType();
-    String charsetSearch = contentType.replaceFirst("(?i).*charset=(.*)", "$1");
-    String charset = null;
-    if (contentType.equals(charsetSearch)) {
-      charset = "UTF-8";
-    } else {
-      charset = charsetSearch;
+    try {
+      URL url = new URL(string);
+      URLConnection con = url.openConnection();
+      con.setConnectTimeout(10000);
+      con.setUseCaches(false);
+      con.addRequestProperty("_", UUID.randomUUID().toString());
+      String contentType = con.getContentType();
+      if (contentType == null) {
+        return null;
+      }
+      String charsetSearch =
+        contentType.replaceFirst("(?i).*charset=(.*)", "$1");
+      String charset = null;
+      if (contentType.equals(charsetSearch)) {
+        charset = "UTF-8";
+      } else {
+        charset = charsetSearch;
+      }
+      BufferedReader reader =
+        new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
+      InputSource source = new InputSource(reader);
+      parser.setFeature("http://xml.org/sax/features/namespaces", false);
+      parser.parse(source);
+      Document document = parser.getDocument();
+      reader.close();
+      return document;
+    } catch (Exception ex) {
+      return null;
     }
-    BufferedReader reader =
-      new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
-    InputSource source = new InputSource(reader);
-    parser.setFeature("http://xml.org/sax/features/namespaces", false);
-    parser.parse(source);
-    Document document = parser.getDocument();
-    reader.close();
-    return document;
   }
 
   /**
@@ -683,60 +692,68 @@ public class TimelineUtils {
    */
   public static TimelineUrlBeans perseFromUrl(String url_str) throws Exception {
     Document document = getDocument(url_str);
-    TimelineUrlBeans tub = new TimelineUrlBeans();
-    String pagePath = url_str.substring(0, url_str.lastIndexOf('/') + 1);
-    String basePath =
-      url_str.substring(0, url_str.indexOf('/', url_str.indexOf("//") + 2) + 1);
-    if (pagePath.endsWith("//")) {
-      pagePath =
-        basePath = (new StringBuilder()).append(url_str).append("/").toString();
-    }
-    String protocolString = url_str.substring(0, url_str.lastIndexOf(':') + 1);
-
-    NodeList nodeListImage = document.getElementsByTagName("img");
-    List<String> images = new ArrayList<String>();
-    for (int i = 0; i < nodeListImage.getLength(); i++) {
-      Element element = (Element) nodeListImage.item(i);
-      String src = element.getAttribute("src");
-
-      if (src.startsWith("//")) {
-        src =
-          (new StringBuilder()).append(protocolString).append(src).toString();
-      } else if (src.startsWith("/")) {
-        src =
-          (new StringBuilder())
-            .append(basePath)
-            .append(src.substring(1))
-            .toString();
-      } else if (!src.startsWith("http")) {
-        src = (new StringBuilder()).append(pagePath).append(src).toString();
+    if (document != null) {
+      TimelineUrlBeans tub = new TimelineUrlBeans();
+      String pagePath = url_str.substring(0, url_str.lastIndexOf('/') + 1);
+      String basePath =
+        url_str.substring(
+          0,
+          url_str.indexOf('/', url_str.indexOf("//") + 2) + 1);
+      if (pagePath.endsWith("//")) {
+        pagePath =
+          basePath =
+            (new StringBuilder()).append(url_str).append("/").toString();
       }
-      images.add(src);
-    }
-    tub.setImages(images);
+      String protocolString =
+        url_str.substring(0, url_str.lastIndexOf(':') + 1);
 
-    NodeList nodeListTitle = document.getElementsByTagName("title");
-    for (int i = 0; i < nodeListTitle.getLength(); i++) {
-      Element element = (Element) nodeListTitle.item(i);
-      String title = element.getFirstChild().getNodeValue();
-      tub.setTitle(title);
-      break;
-    }
+      NodeList nodeListImage = document.getElementsByTagName("img");
+      List<String> images = new ArrayList<String>();
+      for (int i = 0; i < nodeListImage.getLength(); i++) {
+        Element element = (Element) nodeListImage.item(i);
+        String src = element.getAttribute("src");
 
-    NodeList nodeListBody = document.getElementsByTagName("meta");
-    for (int i = 0; i < nodeListBody.getLength(); i++) {
-      Element element = (Element) nodeListBody.item(i);
-      String name = element.getAttribute("name");
-      if (name.equals("description")) {
-        String body = element.getAttribute("content");
-        tub.setBody(body);
+        if (src.startsWith("//")) {
+          src =
+            (new StringBuilder()).append(protocolString).append(src).toString();
+        } else if (src.startsWith("/")) {
+          src =
+            (new StringBuilder())
+              .append(basePath)
+              .append(src.substring(1))
+              .toString();
+        } else if (!src.startsWith("http")) {
+          src = (new StringBuilder()).append(pagePath).append(src).toString();
+        }
+        images.add(src);
+      }
+      tub.setImages(images);
+
+      NodeList nodeListTitle = document.getElementsByTagName("title");
+      for (int i = 0; i < nodeListTitle.getLength(); i++) {
+        Element element = (Element) nodeListTitle.item(i);
+        String title = element.getFirstChild().getNodeValue();
+        tub.setTitle(title);
         break;
       }
+
+      NodeList nodeListBody = document.getElementsByTagName("meta");
+      for (int i = 0; i < nodeListBody.getLength(); i++) {
+        Element element = (Element) nodeListBody.item(i);
+        String name = element.getAttribute("name");
+        if (name.equals("description")) {
+          String body = element.getAttribute("content");
+          tub.setBody(body);
+          break;
+        }
+      }
+
+      tub.setUrl(url_str);
+
+      return tub;
+    } else {
+      return null;
     }
-
-    tub.setUrl(url_str);
-
-    return tub;
   }
 
 }

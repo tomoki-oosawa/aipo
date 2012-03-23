@@ -104,8 +104,8 @@ aipo.timeline.getUrl = function(url, pid) {
         X_REQUESTED_WITH : "XMLHttpRequest"
       },
       load : function(data, event) {
-        dojo.byId("tlInputClip_" + pid).innerHTML = data;
-        dojo.byId("flag_" + pid).value = "exist"
+		        dojo.byId("tlInputClip_" + pid).innerHTML = data;
+		        dojo.byId("flag_" + pid).value = "exist";
       }
     });
   } catch (e) {
@@ -132,8 +132,8 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 			if (dojo.byId("flag_" + pid).value == "none") {
 				var spritval = _val.split(/\r\n|\n/g);
 				for (i in spritval) {
-					if (spritval[i].match(/^http/i)) {
-						aipo.timeline.getUrl(spritval[i], pid)
+					if (spritval[i].match(/^http:\/\/[^ 	]/i)) {
+						aipo.timeline.getUrl(spritval[i], pid);
 					}
 				}
 			}
@@ -163,7 +163,6 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
   var objBody = document.getElementsByTagName("body").item(0);
   objBody.appendChild(shadow);
-
   dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth
       + "px";
 

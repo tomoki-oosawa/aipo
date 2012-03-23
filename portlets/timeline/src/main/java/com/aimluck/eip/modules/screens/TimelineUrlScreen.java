@@ -51,9 +51,10 @@ public class TimelineUrlScreen extends ALVelocityScreen {
       TimelineUrlBeans listdata = new TimelineUrlBeans();
       String url = ALEipUtils.getParameter(rundata, context, "url");
       listdata = TimelineUtils.perseFromUrl(url);
-      setResultData(listdata);
-      putData(rundata, context);
-
+      if (listdata != null) {
+        setResultData(listdata);
+        putData(rundata, context);
+      }
       String layout_template = "portlets/html/ja/ajax-timeline-url.vm";
       setTemplate(rundata, context, layout_template);
 

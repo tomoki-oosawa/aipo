@@ -281,7 +281,6 @@ public class TimelineFormData extends ALAbstractFormData {
       topic.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
       topic.setUpdateDate(Calendar.getInstance().getTime());
-
       if (Integer.valueOf(parentId) != 0) {
         EipTTimeline parent =
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
