@@ -46,7 +46,7 @@
   </div>
   <div class="floatLeft mr10">
     #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-    <a href="javascript:void(0)" class="auiButton" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
+    <a href="javascript:void(0)" class="auiButtonBold" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
   </div>
   <div class="Left">
     <ul id="attachments_$!{portlet.ID}" class="attachments">
