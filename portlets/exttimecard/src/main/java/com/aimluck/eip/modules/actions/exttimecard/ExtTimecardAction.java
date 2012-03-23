@@ -103,9 +103,8 @@ public class ExtTimecardAction extends ALBaseAction {
    */
   public void doExtTimecard_list(RunData rundata, Context context)
       throws Exception {
-    if (ALEipUtils
-      .getTemp(rundata, context, "target_group_name")
-      .equals("only")) {
+    if ("only"
+      .equals(ALEipUtils.getTemp(rundata, context, "target_group_name"))) {
       ALEipUtils.setTemp(rundata, context, "target_group_name", "all");
     }
     ExtTimecardSelectData listData = new ExtTimecardSelectData();
