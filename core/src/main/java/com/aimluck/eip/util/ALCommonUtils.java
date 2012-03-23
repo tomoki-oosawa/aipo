@@ -76,7 +76,7 @@ public class ALCommonUtils {
       return "";
     }
     StringBuffer res = new StringBuffer("");
-    int step = 6;
+    int step = 4;
     int size = str.length();
     int count = size / step;
     int j;

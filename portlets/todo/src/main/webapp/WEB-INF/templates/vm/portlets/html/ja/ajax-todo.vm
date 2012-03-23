@@ -47,13 +47,13 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoNameHtml</a>
 #if(! $!record.Public)
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開" align="absmiddle"/>
 #end</div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.CategoryName</div>" '')
-#ALtdcellAtt("<div>$!record.userName</div>" '')
+#ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
+#ALtdcellAtt("<div>$!record.userNameHtml</div>" '')
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end
@@ -69,7 +69,7 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoNameHtml</a>
 #if(! $!record.Public)
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開" align="absmiddle"/>
 #end</div>

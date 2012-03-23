@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -108,6 +109,10 @@ public class CabinetFileResultData implements ALData {
    */
   public ALStringField getFileTitle() {
     return file_title;
+  }
+
+  public String getFileTitleHtml() {
+    return ALCommonUtils.replaceToAutoCR(file_title.toString());
   }
 
   /**
@@ -199,6 +204,10 @@ public class CabinetFileResultData implements ALData {
     return update_user;
   }
 
+  public String getUpdateUserHtml() {
+    return ALCommonUtils.replaceToAutoCR(update_user.toString());
+  }
+
   public void setUpdateUser(String str) {
     update_user.setValue(str);
   }
@@ -252,6 +261,10 @@ public class CabinetFileResultData implements ALData {
 
   public ALStringField getFolderName() {
     return folder_name;
+  }
+
+  public String getFolderNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(folder_name.toString());
   }
 
   public void setFolderName(String string) {

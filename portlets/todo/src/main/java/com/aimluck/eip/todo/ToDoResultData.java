@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -147,6 +148,10 @@ public class ToDoResultData implements ALData {
     return category_name.toString();
   }
 
+  public String getCategoryNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+  }
+
   /**
    * @return
    */
@@ -180,6 +185,13 @@ public class ToDoResultData implements ALData {
    */
   public String getTodoName() {
     return todo_name.toString();
+  }
+
+  /**
+   * @return
+   */
+  public String getTodoNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(todo_name.toString());
   }
 
   /**
@@ -393,6 +405,10 @@ public class ToDoResultData implements ALData {
 
   public ALStringField getUserName() {
     return user_name;
+  }
+
+  public String getUserNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(user_name.toString());
   }
 
   public void setCreateUserName(String create_user_name) {

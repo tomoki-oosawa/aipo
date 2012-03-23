@@ -28,6 +28,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -126,6 +127,10 @@ public class MsgboardTopicResultData implements ALData {
     return topic_name.toString();
   }
 
+  public String getTopicNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(topic_name.toString());
+  }
+
   /**
    * @param i
    */
@@ -182,6 +187,10 @@ public class MsgboardTopicResultData implements ALData {
     return category_name.toString();
   }
 
+  public String getCategoryNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+  }
+
   /**
    * @param i
    */
@@ -202,6 +211,10 @@ public class MsgboardTopicResultData implements ALData {
 
   public ALStringField getOwnerName() {
     return owner_name;
+  }
+
+  public String getOwnerNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(owner_name.toString());
   }
 
   /**
