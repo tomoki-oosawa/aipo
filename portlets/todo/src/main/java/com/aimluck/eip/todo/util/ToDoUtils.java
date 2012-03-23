@@ -635,7 +635,9 @@ public class ToDoUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("todo")
         .withLoginName(loginName)
-        .withUserId(todo.getUserId())
+        .withUserId(
+          todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
+            .getUserId())
         .withPortletParams(portletParams)
         .withRecipients(recipients)
         .withTitle(title)
@@ -646,7 +648,9 @@ public class ToDoUtils {
       // 全体向けアクティビティー
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("todo")
-        .withUserId(todo.getUserId())
+        .withUserId(
+          todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
+            .getUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withTitle(title)

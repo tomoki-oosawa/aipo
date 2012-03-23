@@ -1821,7 +1821,10 @@ public class WorkflowUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Workflow")
         .withLoginName(loginName)
-        .withUserId(request.getUserId())
+        .withUserId(
+          request.getUserId() == null ? request
+            .getTurbineUser()
+            .getUpdatedUserId() : request.getUserId())
         .withPortletParams(portletParams)
         .withRecipients(recipients)
         .withTitle(b.toString())
