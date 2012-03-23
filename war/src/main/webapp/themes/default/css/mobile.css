@@ -107,6 +107,7 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 	font-size:13px;
 	background:#999999;
 	color:#ffffff;
+	z-index:1001;
 }
 #appsNavigationBack {
 	display:none;
@@ -115,6 +116,7 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 	height:100%;
 	top:0;
 	right:0;
+	z-index:1000;
 }
 #appsNavigationBack a {
 	display:block;
