@@ -33,7 +33,7 @@
 
 <div class="tlInputMention" style="position:relative">
   <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
-  <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:10px; left:5px">近況を共有しましょう</span>
+  <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:5px; left:5px">近況を共有しましょう</span>
 </div>
 
 <div class="clearfix tlInputClip" id="tlInputClip_$!{portlet.ID}">
