@@ -129,6 +129,10 @@ var setMouseListener=function(){
         	dojo.query('div.menubar').style('display', 'none');
         }
     });
+    // スマートフォン対応用
+    if(aipo.onloadSmartPhone!=null){
+    	aipo.onloadSmartPhone();
+    }
 }
 
 aipo.viewPage = function(url, portletId, params) {

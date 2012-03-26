@@ -790,8 +790,8 @@ $item.get(0)
                                                                               <table class="roundBlockWrapperTop">
                                                                                 <tbody>
                                                                                   <tr>
-                                                                                    <td class="roundBlockTitle">$title</td>
-                                                                                    <td class="roundBlockMenu"><span id="portletMenu"></span></td>
+                                                                                    <td class=#if(${client}=="IPHONE")"roundBlockTitle wide"#else"roundBlockTitle"#end>$title</td>
+                                                                                    <td class=#if(${client}=="IPHONE")"roundBlockMenu  hide"#else"roundBlockMenu"#end><span id="portletMenu"></span></td>
                                                                                     <td class="endcap"></td>
                                                                                   </tr>
                                                                                 </tbody>

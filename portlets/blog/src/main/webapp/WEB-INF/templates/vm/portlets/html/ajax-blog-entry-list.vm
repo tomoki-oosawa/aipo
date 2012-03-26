@@ -73,7 +73,7 @@
 </div>
 </div>
 <div id="auiThreeColumnWidgets">
-<div class="auiWidget clearfix">
+<div class="auiWidget clearfix mb_hide">
 <form class="auiForm">
 <select name="groupId" onChange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="wide">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","LoginUser").addQueryData("target_user_id", "all"))">すべてのグループ</option>

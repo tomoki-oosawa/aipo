@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if (!$tabs )
 #parse ("jetspeed.vm")
@@ -24,8 +23,25 @@
 #if($!showTab == "false")
 $portlet.getContent($data)
 #else
+
+#if(${client}=="IPHONE")
+<script language="javascript">
+dojo.addOnLoad(function(){
+document.body.style.display = 'none';
+#set($count=0)
+#foreach($tab in $tabs)
+	#if($count==0)
+	location.href='$!utils.escapeXML($tab.Link)';
+	#end
+	#set($count=1)
+#end
+});
+</script>
+#else
 #ALsubmenuheader($tabs)
 $portlet.getContent($data)
 #ALsubmenufooter()
+#end
+
 #end
 #end

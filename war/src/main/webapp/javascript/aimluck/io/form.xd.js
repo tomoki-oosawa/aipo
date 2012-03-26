@@ -523,6 +523,10 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 	portlet.setContent(html);
                 }
             }
+            // スマートフォン対応用
+            if(aipo.onloadSmartPhone!=null){
+            	aipo.onloadSmartPhone();
+            }
         },
         error: function (error) {
         }

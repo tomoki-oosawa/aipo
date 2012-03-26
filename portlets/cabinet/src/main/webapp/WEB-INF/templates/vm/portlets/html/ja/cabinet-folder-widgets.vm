@@ -26,7 +26,7 @@
 <div class="auiWidget clearfix">
 <a title="ファイルを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);" class="auiButtonBold">ファイルを追加する</a>
 </div>
-<div class="auiWidget clearfix">
+<div id="subNavigation" class="auiWidget clearfix">
 <div class="auiDirectoryList">
 <div class="d0#if(!$result.SelectedFolderInfo) active #end"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,0).addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">すべてのフォルダ</span></a></div>
 #foreach($record in $!result.FolderHierarchyList)
