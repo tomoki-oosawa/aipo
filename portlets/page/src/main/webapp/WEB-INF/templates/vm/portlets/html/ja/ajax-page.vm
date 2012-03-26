@@ -48,7 +48,11 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
+#if($!record.isMypage())
+$!record.PageTitle
+#else
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PageDetailScreen").addQueryData("entityid",$record.PageId))');">$!record.PageTitle</a>
+#end
 #ALtdcellfooter()
 #ALtdcell("$!record.PageDescription")
 </tr>

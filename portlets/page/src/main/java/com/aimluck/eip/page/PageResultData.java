@@ -24,7 +24,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 
 /**
- * ページ設定のResultDataです。 
+ * ページ設定のResultDataです。
  */
 public class PageResultData implements ALData {
 
@@ -43,6 +43,7 @@ public class PageResultData implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
     page_id = new ALStringField();
     page_title = new ALStringField();
@@ -100,4 +101,7 @@ public class PageResultData implements ALData {
     portlet_num.setValue(field);
   }
 
+  public boolean isMypage() {
+    return page_title.getValue().equals("マイページ");
+  }
 }

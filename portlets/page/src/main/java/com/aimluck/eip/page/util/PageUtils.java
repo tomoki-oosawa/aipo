@@ -100,9 +100,10 @@ public class PageUtils {
         for (int j = 0; j < valuesLength; j++) {
           p = portlets.getPortlets(i);
 
-          // 個人設定とシステム管理のページは削除不可にする．
+          // 個人設定とシステム管理とマイページのページは削除不可にする．
           if (p.getId().equals(pageId)
-            || p.getSecurityRef().getParent().equals("admin-view")) {
+            || p.getSecurityRef().getParent().equals("admin-view")
+            || p.getTitle().equals("マイページ")) {
             continue;
           }
 

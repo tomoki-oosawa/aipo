@@ -143,6 +143,11 @@ public class PageFormData extends ALAbstractFormData {
       msgList.add("これ以上ページを追加できません。");
     }
 
+    if (page_title.getValue().equals("マイページ")) {
+      msgList.add("ページ名「マイページ」はすでに追加されています。");
+      return false;
+    }
+
     page_title.validate(msgList);
     page_description.validate(msgList);
     return (msgList.size() == 0);
