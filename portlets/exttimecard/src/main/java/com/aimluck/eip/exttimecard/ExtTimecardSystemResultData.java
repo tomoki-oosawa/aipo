@@ -35,12 +35,17 @@ public class ExtTimecardSystemResultData implements ALData {
   private ALStringField system_name;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     system_id = new ALNumberField();
     system_name = new ALStringField();
+  }
+
+  public Boolean isSystemIdNormal() {
+    return (system_id.getValue() == 1);
   }
 
   public ALNumberField getSystemId() {
