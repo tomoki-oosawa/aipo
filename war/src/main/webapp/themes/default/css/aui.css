@@ -1579,12 +1579,14 @@ textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
 input[disabled],
-textarea[disabled] {
+textarea[disabled],
+button[disabled] {
 	color:#999;
 	background:#eee;
 }
 input[disabled]:hover,
-textarea[disabled]:hover {
+textarea[disabled]:hover,
+button[disabled]:hover {
 	color:#999;
 	background:#eee;
 	border-color:#c9c9c9;
@@ -1831,7 +1833,7 @@ ul.attachments span.deletebutton:hover{
 	-ms-border-radius:3px;
 }
 #timelineOuter #newMessage {
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	background: #f0f0f0;
 	text-align: center;
 	border: 1px #cdcdcd solid;
