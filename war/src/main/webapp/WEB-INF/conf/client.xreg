@@ -32,7 +32,9 @@
         <mimetype-map>
             <mimetype>text/html</mimetype>
         </mimetype-map>
-        <capability-map/>
+        <capability-map>
+            <capability>HTML_DOM_IPHONE</capability>
+        </capability-map>
     </client-entry>
     <client-entry name="ipad" hidden="false">
         <user-agent-pattern>.*iPad.*|.*Android.*</user-agent-pattern>

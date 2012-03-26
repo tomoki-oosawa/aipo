@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.apache.jetspeed.om.registry.ClientEntry;
-import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.portal.PanedPortletController;
 import org.apache.jetspeed.portal.Portlet;
@@ -36,7 +34,6 @@ import org.apache.jetspeed.portal.PortletInstance;
 import org.apache.jetspeed.portal.PortletSet;
 import org.apache.jetspeed.portal.PortletState;
 import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.persistence.PersistenceManager;
@@ -115,16 +112,13 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
-      if ("Activity".equals(p.getName())
-        && !portlets.getController().getConfig().getName().equals(
-          "MenuController")) {
+      if ("Activity".equals(p.getName())) {
         continue;
       }
 
       // Secure the tabs
-      JetspeedLink jsLink = null;
       try {
-        jsLink = JetspeedLinkFactory.getInstance(rundata);
+        JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
         portalResource.setOwner(jsLink.getUserName());
         JetspeedLinkFactory.putInstance(jsLink);
       } catch (Exception e) {
@@ -172,20 +166,8 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
       if (controller != null) {
         tab.setSelected(controller.isSelected(p, rundata));
-
-        String useragent = rundata.getUserAgent();
-        useragent = useragent.trim();
-        ClientRegistry registry =
-          (ClientRegistry) Registry.get(Registry.CLIENT);
-        ClientEntry entry = registry.findEntry(useragent);
-        if (entry.getManufacturer().equals("IPHONE")) {
-          tab.setLink(jsLink.getPortletById(p.getID()).addQueryData(
-            "action",
-            "controls.Maximize").toString());
-        } else {
-          tab.setLink(controller.getPortletURI(p, rundata).toString()
-            + "?action=controls.Restore");
-        }
+        tab.setLink(controller.getPortletURI(p, rundata).toString()
+          + "?action=controls.Restore");
       }
 
       // 修正 ：最大化時とノーマル時のポートレットの表示を切り替え可能にするため，

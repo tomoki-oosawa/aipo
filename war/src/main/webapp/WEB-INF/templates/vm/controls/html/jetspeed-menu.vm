@@ -16,14 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-## ---------------------------------------------------------------------------
-#macro(ALtabElement $tabss $title $image)
-#foreach($tab in $tabss)
-	#if($tab.Title.toString()==$title)
-	<li><a href="$!utils.escapeXML($tab.Link)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$title</a></li>
-	#end
-#end
-#end
 
 ## ---------------------------------------------------------------------------
 #if (!$tabs )
@@ -32,78 +24,8 @@
 #if($!showTab == "false")
 $portlet.getContent($data)
 #else
-
-
-#if(${client}=="IPHONE")
-<!-- appsNavigation -->
-<script language="javascript">
-function appsNaviSwitch() {
-        var navi = document.getElementById('appsNavigation');
-        var bk = document.getElementById('appsNavigationBack');
-        var wrapper = document.getElementById('wrapper');
-        var nLeft = '-260px';
-        var h = document.documentElement.clientHeight;
-        var nh = document.getElementById('anInner').clientHeight
-        if(nh > h) h = nh;
-        if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
-                navi.style.left = '0px';
-                bk.style.display = 'block';
-                wrapper.style.overflow = 'hidden';
-                wrapper.style.height = h + 'px';
-        }else{
-                navi.style.left = nLeft;
-                bk.style.display = 'none';
-                wrapper.style.overflow = 'visible';
-                wrapper.style.height = 'auto'
-        }
-}
-</script>
-<div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()">test</a></div>
-<div id="appsNavigation"><div id="anInner">
-        <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><img src="themes/default/images/mobile/an_list.png"></a></div>
-        <div class="anUser">
-                <div class="avatar">#if ($data.User.getPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("r",$!utils.ImageRandomNumber)))" alt="顔写真"  height="20" width="20"/>#else<img src="images/common/avatar_default3.png" alt="顔写真"  height="20" width="20"/>#end </div>
-                <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
-        </div>
-        <div class="anApps">
-                <h2>アプリ</h2>
-                <ul>
-#ALtabElement($tabs "タイムラインβ版" "an_timeline.png")
-#ALtabElement($tabs "タイムカード" "an_timecard.png")
-#ALtabElement($tabs "スケジュール" "an_schedule.png")
-#ALtabElement($tabs "更新情報" "an_info.png")
-#ALtabElement($tabs "ブログ" "an_blog.png")
-#ALtabElement($tabs "掲示板" "an_bbs.png")
-#ALtabElement($tabs "共有ToDo" "an_todo.png")
-#ALtabElement($tabs "共有フォルダ" "an_folder.png")
-#ALtabElement($tabs "ワークフロー" "an_workflow.png")
-#ALtabElement($tabs "伝言メモ" "an_note.png")
-#ALtabElement($tabs "報告書" "an_report.png")
-#ALtabElement($tabs "Webメール" "an_mail.png")
-#ALtabElement($tabs "アドレス帳" "an_address.png")
-#ALtabElement($tabs "ユーザー名簿" "an_users.png")
-#ALtabElement($tabs "メモ帳" "an_memo.png")
-                </ul>
-        </div>
-        <div class="anSetting">
-                <h2>設定</h2>
-                <ul>
-                        <!--<li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_setting.png" /></span>個人設定</a></li>
-                        <li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_pc.png" /></span>PC版表示へ変更</a></li>-->
-                        <li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><img src="themes/default/images/mobile/an_logout.png" /></span>ログアウト</a></li>
-                </ul>
-        </div>
-        <div class="anFooter">
-                <div class="copyright">Aipo &copy; Aimluck,Inc</div>
-        </div>
-</div></div>
-$portlet.getContent($data)
-<!-- /mobileNavigation -->
-#else
 #ALsubmenuheader($tabs)
 $portlet.getContent($data)
 #ALsubmenufooter()
-#end
-
 #end
 #end

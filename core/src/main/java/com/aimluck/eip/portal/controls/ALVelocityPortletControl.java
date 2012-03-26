@@ -255,7 +255,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           PortalToolkit.getSet(portlets),
           rundata,
           context));
-        context.put("menus", getMenus(portlets, rundata, context));
       }
     } catch (Exception e) {
       logger.error("[ALVelocityPortletControl]", e);
@@ -506,68 +505,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   }
 
   /**
-   * iphoneメニュー用にタブを取り出す。
-   * 
-   * @param portlets
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private Collection<PortletTab> getMenus(Portlets portlets, RunData rundata,
-      Context context) {
-    TreeSet<PortletTab> tabs =
-      new TreeSet<PortletTab>(new PortletTabComparator());
-    // PanedPortletController controller =
-    // (PanedPortletController) portlets.getController();
-
-    // if portlet is a PortletSet, try to retrieve the Controller
-    // we need a PanedPortletController to work properly.
-    // if (portlets.getController() instanceof PanedPortletController) {
-    // controller = (PanedPortletController) portlets.getController();
-    // }
-    int count = 0;
-    for (Iterator en = portlets.getPortletsIterator(); en.hasNext();) {
-      Portlets p = (Portlets) en.next();
-      // ここからtabs
-      String pane = p.getId();
-      Collection<PortletTab> atabs =
-        getTabs(PortalToolkit.getSet(p), rundata, context);
-      /**
-       * リンク埋め込み。
-       **/
-      for (PortletTab tab : atabs) {
-        try {
-          JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          DynamicURI duri =
-            jsLink.getLink(
-              JetspeedLink.CURRENT,
-              null,
-              null,
-              JetspeedLink.CURRENT,
-              null);
-          // 最大化リンクを登録する
-          // tab.setMaximizeLink(controller.getPortletURI(p,
-          // rundata).addQueryData(
-          // "action",
-          // "controls.Maximize").toString());
-          duri =
-            duri
-              .addPathInfo(JetspeedResources.PATH_PANEID_KEY, pane)
-              .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY, tab.getId())
-              .addQueryData(
-                JetspeedResources.PATH_ACTION_KEY,
-                "controls.Maximize");
-          tab.setMaximizeLink(duri.toString());
-        } catch (Exception e) {
-          logger.warn("[ALVelocityPortletControl]", e);
-        }
-      }
-      tabs.addAll(atabs);
-    }
-    return tabs;
-  }
-
-  /**
    * 修正：ポートレットの最大化画面時にタブを表示するために， <br />
    * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
    * のメソッドを元に修正を加えた．
@@ -580,7 +517,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   private Collection<PortletTab> getTabs(PortletSet portlets, RunData rundata,
       Context context) {
     TreeSet<PortletTab> tabs =
-   new TreeSet<PortletTab>(new PortletTabComparator());
+      new TreeSet<PortletTab>(new PortletTabComparator());
     PanedPortletController controller = null;
     // if portlet is a PortletSet, try to retrieve the Controller
     // we need a PanedPortletController to work properly.
@@ -601,9 +538,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
-      if ("Activity".equals(p.getName())
-        && portlets.getController().getConfig().getName().equals(
-          "TabController")) {
+      if ("Activity".equals(p.getName())) {
         continue;
       }
       // Secure the tabs
@@ -636,8 +571,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       PortletTab tab = new PortletTab();
 
       // Handle the portlet title
-
-      tab.setId(p.getID());
       String title = null;
       PortletInstance pi = PersistenceManager.getInstance(p, rundata);
       if (pi != null) {
@@ -679,6 +612,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         }
         tab.setSelected(isSelected);
 
+        tab.setId(p.getID());
+
         // 修正 ：ポートレットの最大化画面でタブを押された場合に，
         // 最大化の情報をセッションから削除可能にするため，
         // URL にリストア処理用のクラスを付加した．
@@ -695,11 +630,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
                 null,
                 JetspeedLink.CURRENT,
                 null);
-            // 最大化リンクを登録する
-            tab.setMaximizeLink(controller
-              .getPortletURI(p, rundata)
-              .addQueryData("action", "controls.Maximize")
-              .toString());
 
             isSelected =
               containsPeid(rundata, (PortletSet) p, getPortlet().getID());
@@ -720,11 +650,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
             tab.setLink(controller.getPortletURI(p, rundata).addQueryData(
               "action",
               "controls.Restore").toString());
-            // 最大化リンクを登録する
-            tab.setMaximizeLink(controller
-              .getPortletURI(p, rundata)
-              .addQueryData("action", "controls.Maximize")
-              .toString());
           }
           // tab.setLink(controller.getPortletURI(p, rundata).addPathInfo(
           // "js_pane", getPortlet().getID()).addQueryData("action",
@@ -837,8 +762,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     private String link = null;
 
-    private String maximize_link = null;
-
     private List<PortletAction> actions = null;
 
     private int position = -1;
@@ -871,14 +794,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     public void setLink(String link) {
       this.link = link;
-    }
-
-    public String getMaximizeLink() {
-      return this.maximize_link;
-    }
-
-    public void setMaximizeLink(String link) {
-      this.maximize_link = link;
     }
 
     public List<PortletAction> getActions() {
