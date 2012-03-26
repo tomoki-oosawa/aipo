@@ -690,7 +690,7 @@ CREATE TABLE `eip_t_timeline_url`
     `url` varchar(128) NOT NULL,
     `body` text,
     `title` varchar(128),
-    `thumbnail` varchar(128),
+    `thumbnail` blob,
     FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
     PRIMARY KEY (`url_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

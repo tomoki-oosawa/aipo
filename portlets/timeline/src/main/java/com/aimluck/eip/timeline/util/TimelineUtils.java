@@ -46,6 +46,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -593,6 +594,45 @@ public class TimelineUtils {
         throw new ALPageNotFoundException();
       }
       return files.get(0);
+    } catch (Exception ex) {
+      logger.error("[TimelineUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * ファイルオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTTimelineUrl getEipTTimelineUrl(RunData rundata)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int attachmentIndex =
+        rundata.getParameters().getInt("attachmentIndex", -1);
+      if (attachmentIndex < 0) {
+        // ID が空の場合
+        logger.debug("[TimelineUtils] Empty ID...");
+        throw new ALPageNotFoundException();
+
+      }
+
+      SelectQuery<EipTTimelineUrl> query =
+        Database.query(EipTTimelineUrl.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTTimelineUrl.URL_ID_PK_COLUMN, Integer
+          .valueOf(attachmentIndex));
+      query.andQualifier(exp);
+
+      List<EipTTimelineUrl> urls = query.fetchList();
+      if (urls == null || urls.size() == 0) {
+        // 指定した ID のレコードが見つからない場合
+        logger.debug("[TimelineUtils] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return urls.get(0);
     } catch (Exception ex) {
       logger.error("[TimelineUtils]", ex);
       throw new ALDBErrorException();

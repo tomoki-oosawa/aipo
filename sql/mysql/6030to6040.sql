@@ -67,3 +67,10 @@ alter table `eip_t_timeline` add column `params` varchar (99);
 
 update eip_t_timeline set timeline_type='T' where (coalesce(timeline_type,'')='');
 -- 20120322
+
+-- 20120326
+
+alter table `eip_t_timeline_url` drop `thumbnail`;
+alter table `eip_t_timeline_url` add column `thumbnail` blob;
+
+-- 20120326

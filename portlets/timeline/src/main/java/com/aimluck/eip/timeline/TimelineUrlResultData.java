@@ -36,7 +36,7 @@ public class TimelineUrlResultData implements ALData {
   private ALNumberField timelineId;
 
   /** サムネイル */
-  private ALStringField thumbnail;
+  private byte[] thumbnail;
 
   /** タイトル */
   private ALStringField title;
@@ -55,7 +55,6 @@ public class TimelineUrlResultData implements ALData {
   public void initField() {
     timelineUrlId = new ALNumberField();
     timelineId = new ALNumberField();
-    thumbnail = new ALStringField();
     title = new ALStringField();
     url = new ALStringField();
     body = new ALStringField();
@@ -94,7 +93,7 @@ public class TimelineUrlResultData implements ALData {
   /**
    * @return thumbnail
    */
-  public ALStringField getThumbnail() {
+  public byte[] getThumbnail() {
     return thumbnail;
   }
 
@@ -102,8 +101,8 @@ public class TimelineUrlResultData implements ALData {
    * @param thumbnail
    *          セットする thumbnail
    */
-  public void setThumbnail(String str) {
-    thumbnail.setValue(str);
+  public void setThumbnail(byte[] b) {
+    thumbnail = b;
   }
 
   /**

@@ -24,11 +24,11 @@ public class _EipTTimelineUrl extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setThumbnail(String thumbnail) {
+    public void setThumbnail(byte[] thumbnail) {
         writeProperty("thumbnail", thumbnail);
     }
-    public String getThumbnail() {
-        return (String)readProperty("thumbnail");
+    public byte[] getThumbnail() {
+        return (byte[])readProperty("thumbnail");
     }
     
     

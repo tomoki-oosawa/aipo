@@ -102,11 +102,11 @@
 				#foreach ($attachmentUrl in $record.UrlList)
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 					<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
-						<img src="$attachmentUrl.Thumbnail">
+						<img class="width_thumbs" border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})">
 					</div>
 					<div class="tlClipContents">
 						<div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$attachmentUrl.Title</a></div>
-						<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$attachmentUrl.Url</a></div>
+						<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}">$attachmentUrl.BasePath</div>
 						<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$attachmentUrl.Body</div>
 					</div>
 					</div>

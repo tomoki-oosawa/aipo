@@ -19,6 +19,12 @@
 
 package com.aimluck.eip.timeline;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -292,10 +298,29 @@ public class TimelineFormData extends ALAbstractFormData {
         EipTTimelineUrl url = Database.create(EipTTimelineUrl.class);
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipImage") != null) {
-          url.setThumbnail(ALEipUtils.getParameter(
-            rundata,
-            context,
-            "tlClipImage"));
+          String str = ALEipUtils.getParameter(rundata, context, "tlClipImage");
+          URL u = new URL(str);
+          InputStream is = u.openStream();
+          ByteArrayOutputStream b = new ByteArrayOutputStream();
+          OutputStream os = new BufferedOutputStream(b);
+          int c;
+          try {
+            while ((c = is.read()) != -1) {
+              os.write(c);
+            }
+          } catch (IOException e) {
+            e.printStackTrace();
+          } finally {
+            if (os != null) {
+              try {
+                os.flush();
+                os.close();
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            }
+          }
+          url.setThumbnail(b.toByteArray());
         }
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipTitle") != null) {
