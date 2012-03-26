@@ -23,7 +23,7 @@
 #set ($currentPage = $result.CurrentPage)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 ## ---------------------------------------------------------------------------
- #foreach ($record in $result.List)
+
     <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class=#if($record.TimelineType=="A")"message tlActivity"#else"message"#end>
       <div class="avatar mr10">
       #if(${record.hasPhoto()})
@@ -192,4 +192,3 @@
 			<div class="imgBody"></div>
 		</div>
 		#end
-	#end

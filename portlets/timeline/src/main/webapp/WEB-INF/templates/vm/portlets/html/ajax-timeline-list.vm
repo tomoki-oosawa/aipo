@@ -73,8 +73,10 @@
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
   <div id="content_$!{portlet.ID}_1">
-    #parse("/portlets/html/ja/ajax-timeline-content.vm")
-  <div id="content_end_$!{portlet.ID}"></div>
+    #foreach ($record in $result.List)
+      #parse("/portlets/html/ja/ajax-timeline-content.vm")
+    #end
+    <div id="content_end_$!{portlet.ID}"></div>
   </div>
   #foreach ($i in [2..${pages}])
 	<div id="content_$!{portlet.ID}_${i}"></div>
