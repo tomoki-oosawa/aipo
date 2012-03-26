@@ -137,6 +137,20 @@ public class TimelineUrlResultData implements ALData {
   }
 
   /**
+   * @return baseUrl
+   */
+  public String getBasePath() {
+    String u = url.getValue();
+    int j = u.indexOf("//") + 2;
+    int i = u.indexOf('/', j);
+    if (i >= 0) {
+      return u.substring(j, i);
+    } else {
+      return u.substring(j, u.length());
+    }
+  }
+
+  /**
    * @return body
    */
   public ALStringField getBody() {
