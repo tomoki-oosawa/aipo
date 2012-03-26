@@ -104,6 +104,9 @@ form.searchbox input.submit:active {
 	height:23px !important;
 	line-height:23px !important;
 }
+*:first-child+html .hdLogout input {/* IE7 Hack */
+	line-height:20px !important;
+}
 .hdLogout input:hover {
 	box-shadow:none !important;
 }
@@ -985,6 +988,14 @@ button.auiButtonSmall {
 	padding:0 0.55em;
 	>padding:0 0.15em;/*IE*/
 }
+*:first-child+html input[type=submit],
+*:first-child+html input[type=button],
+*:first-child+html input[type=reset],
+*:first-child+html button,
+*:first-child+html .auiButtonSmall {/* IE7 Hack */
+	padding:0 !important;
+}
+
 .auiButton:hover,
 .auiButtonSmall:hover,
 input[type=submit]:hover,
