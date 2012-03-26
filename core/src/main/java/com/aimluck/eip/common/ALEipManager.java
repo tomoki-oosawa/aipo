@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.om.profile.ProfileLocator;
+import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -67,6 +69,18 @@ public class ALEipManager {
 
   /** ACLキー */
   private static String ACL_KEY = "com.aimluck.eip.common.ALEipManager.acls";
+
+  /** eip_m_config prefix key */
+  private static String CONFIG_PREFIX = "config_";
+
+  /** container_config prefix key */
+  private static String CONTAINER_PREFIX = "container_";
+
+  /** turbineUser prefix key */
+  private static String USER_PREFIX = "turbineUser_";
+
+  /** psml prefix key */
+  private static String PSML_PREFIX = "psml";
 
   /**
    * 
@@ -265,6 +279,115 @@ public class ALEipManager {
       request.setAttribute(ACL_KEY, roleMap);
     }
     return roleMap;
+  }
+
+  public Object getConfig(String name) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      return request.getAttribute(CONFIG_PREFIX + name);
+    } else {
+      return null;
+    }
+  }
+
+  public void setConfig(String name, Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(CONFIG_PREFIX + name, obj);
+    }
+  }
+
+  public Object getContainerConfig(String name) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      return request.getAttribute(CONTAINER_PREFIX + name);
+    } else {
+      return null;
+    }
+  }
+
+  public void setContainerConfig(String name, Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(CONTAINER_PREFIX + name, obj);
+    }
+  }
+
+  public Object getTurbineUser(int userId) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      return request.getAttribute(USER_PREFIX + String.valueOf(userId));
+    } else {
+      return null;
+    }
+  }
+
+  public void setTurbineUser(int userId, Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(USER_PREFIX + String.valueOf(userId), obj);
+    }
+  }
+
+  public Object getTurbineUser(String loginName) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      return request.getAttribute(USER_PREFIX + loginName);
+    } else {
+      return null;
+    }
+  }
+
+  public void setTurbineUser(String loginName, Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(USER_PREFIX + loginName, obj);
+    }
+  }
+
+  public Object getUserProfile(ProfileLocator locator) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String key = getUserProfileKey(locator);
+    if (request != null && key != null) {
+      return request.getAttribute(key);
+    } else {
+      return null;
+    }
+  }
+
+  public void setUserProfile(ProfileLocator locator, Object obj) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String key = getUserProfileKey(locator);
+    if (request != null && key != null) {
+      request.setAttribute(key, obj);
+    }
+  }
+
+  private String getUserProfileKey(ProfileLocator locator) {
+
+    StringBuffer buffer = new StringBuffer(PSML_PREFIX);
+    String userName = null;
+    JetspeedUser user = locator.getUser();
+
+    if (user != null) {
+      userName = user.getUserName();
+    } else {
+      return null;
+    }
+
+    addKey(userName, buffer);
+    addKey(locator.getMediaType(), buffer);
+    addKey(locator.getLanguage(), buffer);
+    addKey(locator.getCountry(), buffer);
+    addKey(locator.getName(), buffer);
+
+    return buffer.toString();
+  }
+
+  private void addKey(String key, StringBuffer buffer) {
+    if (key != null && key.length() > 0) {
+      buffer.append("_").append(key);
+    }
   }
 
 }

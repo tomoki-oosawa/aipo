@@ -59,6 +59,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALSessionUtils;
 
 /**
  * セッションを制御するクラスです。 <br />
@@ -91,12 +92,25 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       return;
     }
 
+    JetspeedUser loginuser = (JetspeedUser) data.getUser();
+
+    if (ALSessionUtils.isImageRequest(data)) {
+      if (isLogin(loginuser)) {
+        return;
+      }
+    }
+
+    if (ALSessionUtils.isJsonScreen(data)) {
+      if (isLogin(loginuser)) {
+        return;
+      }
+    }
+
     if (data.getRequest().getAttribute(
       ALDigestAuthenticationFilter.REQUIRE_DIGEST_AUTH) != null) {
-      JetspeedUser loginuser = (JetspeedUser) data.getUser();
       HttpServletRequest hreq = data.getRequest();
       HttpServletResponse hres = data.getResponse();
-      if (loginuser == null || !loginuser.hasLoggedIn()) {
+      if (!isLogin(loginuser)) {
         String auth = hreq.getHeader("Authorization");
 
         if (auth == null) {
@@ -158,15 +172,14 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
 
-    JetspeedUser loginuser = (JetspeedUser) data.getUser();
-    if (loginuser == null || !loginuser.hasLoggedIn()) {
+    if (!isLogin(loginuser)) {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
       if (username.length() > 0) {
         try {
-          JetspeedUser juser = JetspeedSecurity.login(username, password);
-          if (juser != null && "F".equals(juser.getDisabled())) {
-            JetspeedSecurity.saveUser(juser);
+          loginuser = JetspeedSecurity.login(username, password);
+          if (loginuser != null && "F".equals(loginuser.getDisabled())) {
+            JetspeedSecurity.saveUser(loginuser);
           } else {
             data.setUser(JetspeedSecurity.getAnonymousUser());
             data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
@@ -178,9 +191,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
-    JetspeedUser user = (JetspeedUser) data.getUser();
+
     boolean isScreenTimeout = false;
-    if ((user == null || !user.hasLoggedIn())
+    if (!isLogin(loginuser)
       && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
       if (data.getRequest().getCookies() != null) {
@@ -190,11 +203,11 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
         if (userName.length() > 0 && loginCookieValue.length() > 0) {
           try {
-            user = JetspeedSecurity.getUser(userName);
-            if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
-              data.setUser(user);
-              user.setHasLoggedIn(Boolean.valueOf(true));
-              user.updateLastLogin();
+            loginuser = JetspeedSecurity.getUser(userName);
+            if (loginuser.getPerm("logincookie", "").equals(loginCookieValue)) {
+              data.setUser(loginuser);
+              loginuser.setHasLoggedIn(Boolean.valueOf(true));
+              loginuser.updateLastLogin();
               data.save();
             }
           } catch (LoginException noSuchUser) {
@@ -206,7 +219,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
       }
 
-    } else if ((user == null || !user.hasLoggedIn())
+    } else if (!isLogin(loginuser)
       && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
 
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
@@ -311,7 +324,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     String language = data.getRequest().getParameter("js_language");
 
     if (null != language) {
-      user.setPerm("language", language);
+      loginuser.setPerm("language", language);
     }
 
     CustomLocalizationService locService =
@@ -326,8 +339,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           TurbineResources.getString("locale.default.country", "US"));
     }
 
-    if (data.getUser() != null) {
-      data.getUser().setTemp("locale", locale);
+    if (loginuser != null) {
+      loginuser.setTemp("locale", locale);
     }
 
     String paramPortlet = jdata.getParameters().getString("js_peid");
@@ -338,8 +351,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     // Ajaxリクエストでセッションタイムアウトした場合はリダイレクトしない
     if (!isScreenTimeout && !"".equals(externalLoginUrl)) {
       HttpServletRequest request = data.getRequest();
-      if (data.getUser() == null
-        || (data.getUser() != null && !data.getUser().hasLoggedIn())) {
+      if (!isLogin(loginuser)) {
         StringBuilder buf = new StringBuilder();
         buf.append(request.getScheme()).append("://").append(
           request.getServerName());
@@ -361,7 +373,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       }
     }
 
-    if (loginuser != null && loginuser.hasLoggedIn()) {
+    if (isLogin(loginuser)) {
       HttpServletRequest request = ((JetspeedRunData) data).getRequest();
       String requestUrl = request.getRequestURL().toString();
 
@@ -415,5 +427,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     return ret;
+  }
+
+  private boolean isLogin(JetspeedUser loginuser) {
+    return (loginuser != null && loginuser.hasLoggedIn());
   }
 }

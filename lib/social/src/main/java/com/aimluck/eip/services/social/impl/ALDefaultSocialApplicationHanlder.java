@@ -43,6 +43,7 @@ import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALActivityCount;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.orm.Database;
@@ -450,18 +451,30 @@ public class ALDefaultSocialApplicationHanlder extends
    */
   @Override
   public String getContainerConfig(Property property) {
-    ContainerConfig config =
-      Database
-        .query(ContainerConfig.class)
-        .where(
-          Operations.eq(ContainerConfig.NAME_PROPERTY, property.toString()))
-        .fetchSingle();
-
-    if (config == null) {
-      return property.defaultValue();
+    ContainerConfig config = null;
+    Object obj =
+      ALEipManager.getInstance().getContainerConfig(property.toString());
+    if (obj != null) {
+      return (String) obj;
+    } else {
+      config =
+        Database
+          .query(ContainerConfig.class)
+          .where(
+            Operations.eq(ContainerConfig.NAME_PROPERTY, property.toString()))
+          .fetchSingle();
+      if (config == null) {
+        ALEipManager.getInstance().setContainerConfig(
+          property.toString(),
+          property.defaultValue());
+        return property.defaultValue();
+      } else {
+        ALEipManager.getInstance().setContainerConfig(
+          property.toString(),
+          config.getValue());
+        return config.getValue();
+      }
     }
-
-    return config.getValue();
   }
 
   /**

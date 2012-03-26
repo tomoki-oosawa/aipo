@@ -54,6 +54,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * グループを管理するクラスです。 <br />
@@ -79,6 +80,7 @@ public class ALGroupManagement extends TurbineBaseService implements
    * 
    * @param group
    */
+  @Override
   public void addGroup(Group group) throws JetspeedSecurityException {
     if (groupExists(group.getName())) {
       throw new GroupException("The group '"
@@ -110,6 +112,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<Group> getGroups(String username)
       throws JetspeedSecurityException {
     JetspeedUser user = null;
@@ -151,6 +154,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<TurbineGroup> getGroups() throws JetspeedSecurityException {
     List<TurbineGroup> groups;
     try {
@@ -193,6 +197,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void saveGroup(Group group) throws JetspeedSecurityException {
     if (!groupExists(group.getName())) {
       throw new GroupException("The group '"
@@ -220,6 +225,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void removeGroup(String groupname) throws JetspeedSecurityException {
     try {
       Group group = this.getGroup(groupname);
@@ -251,6 +257,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void joinGroup(String username, String groupname)
       throws JetspeedSecurityException {
     joinGroup(username, groupname, defaultRole);
@@ -259,6 +266,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void joinGroup(String username, String groupname, String rolename)
       throws JetspeedSecurityException {
     try {
@@ -269,8 +277,9 @@ public class ALGroupManagement extends TurbineBaseService implements
       // 新規オブジェクトモデル
       TurbineUserGroupRole user_group_role =
         Database.create(TurbineUserGroupRole.class);
+
       TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(user.getUserId()));
+        ALEipUtils.getTurbineUser(Integer.valueOf(user.getUserId()));
 
       user_group_role.setTurbineUser(tuser);
       user_group_role.setTurbineGroup((TurbineGroup) group);
@@ -290,6 +299,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void unjoinGroup(String username, String groupname)
       throws JetspeedSecurityException {
     unjoinGroup(username, groupname, defaultRole);
@@ -298,6 +308,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void unjoinGroup(String username, String groupname, String rolename)
       throws JetspeedSecurityException {
     try {
@@ -336,6 +347,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public boolean inGroup(String username, String groupname)
       throws JetspeedSecurityException {
     List<TurbineUserGroupRole> groups;
@@ -366,6 +378,7 @@ public class ALGroupManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Group getGroup(String groupname) throws JetspeedSecurityException {
     List<TurbineGroup> groups;
     try {

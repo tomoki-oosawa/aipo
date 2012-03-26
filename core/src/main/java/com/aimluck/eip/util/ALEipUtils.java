@@ -615,7 +615,7 @@ public class ALEipUtils {
    * @return
    */
   public static ALEipUser getALEipUser(int id) throws ALDBErrorException {
-    TurbineUser tuser = Database.get(TurbineUser.class, id);
+    TurbineUser tuser = getTurbineUser(id);
     return getALEipUser(tuser);
   }
 
@@ -646,15 +646,11 @@ public class ALEipUtils {
    */
   public static ALEipUser getALEipUser(String loginname)
       throws ALDBErrorException {
-    Expression exp =
-      ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, loginname);
-    List<TurbineUser> users =
-      Database.query(TurbineUser.class, exp).fetchList();
-    if (users.size() == 0) {
+    TurbineUser tuser = getTurbineUser(loginname);
+    if (tuser == null) {
       return null;
     }
 
-    TurbineUser tuser = users.get(0);
     ALEipUser user = new ALEipUser();
     user.initField();
     user.setUserId(tuser.getUserId().intValue());
@@ -692,7 +688,14 @@ public class ALEipUtils {
    * @return
    */
   public static TurbineUser getTurbineUser(int id) throws ALDBErrorException {
-    TurbineUser tuser = Database.get(TurbineUser.class, id);
+    Object obj = ALEipManager.getInstance().getTurbineUser(id);
+    TurbineUser tuser = null;
+    if (obj == null) {
+      tuser = Database.get(TurbineUser.class, id);
+      ALEipManager.getInstance().setTurbineUser(id, tuser);
+    } else {
+      tuser = (TurbineUser) obj;
+    }
     return tuser;
   }
 
@@ -704,11 +707,18 @@ public class ALEipUtils {
    */
   public static TurbineUser getTurbineUser(String login_name)
       throws ALDBErrorException {
-    TurbineUser tuser =
-      Database
-        .query(TurbineUser.class)
-        .where(Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, login_name))
-        .fetchSingle();
+    Object obj = ALEipManager.getInstance().getTurbineUser(login_name);
+    TurbineUser tuser = null;
+    if (obj == null) {
+      tuser =
+        Database
+          .query(TurbineUser.class)
+          .where(Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, login_name))
+          .fetchSingle();
+      ALEipManager.getInstance().setTurbineUser(login_name, tuser);
+    } else {
+      tuser = (TurbineUser) obj;
+    }
     return tuser;
   }
 

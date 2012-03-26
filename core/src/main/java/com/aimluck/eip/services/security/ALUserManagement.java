@@ -33,8 +33,6 @@ import java.util.Vector;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileLocator;
@@ -77,7 +75,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -170,47 +167,29 @@ public class ALUserManagement extends TurbineBaseService implements
   @Override
   public JetspeedUser getUser(Principal principal)
       throws JetspeedSecurityException {
-
-    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-    if (principal instanceof UserNamePrincipal) {
-      Expression exp =
-        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, principal
-          .getName());
-      query.setQualifier(exp);
-    } else if (principal instanceof UserIdPrincipal) {
-      Expression exp =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(principal.getName()));
-      query.setQualifier(exp);
-    } else {
-      throw new UserException("Invalid Principal Type in getUser: "
-        + principal.getClass().getName());
-    }
-    List<TurbineUser> users;
+    TurbineUser user = null;
     try {
-      users = query.fetchList();
+      if (principal instanceof UserNamePrincipal) {
+        user = ALEipUtils.getTurbineUser(principal.getName());
+      } else if (principal instanceof UserIdPrincipal) {
+        user = ALEipUtils.getTurbineUser(Integer.valueOf(principal.getName()));
+      } else {
+        throw new UserException("Invalid Principal Type in getUser: "
+          + principal.getClass().getName());
+      }
     } catch (Exception e) {
       String message = "Failed to retrieve user '" + principal.getName() + "'";
       logger.error(message, e);
       throw new UserException(message, e);
     }
-    if (users.size() > 1) {
-      throw new UserException("Multiple Users with same username '"
-        + principal.getName()
-        + "'");
+    try {
+      JetspeedUser juser = row2UserObject(user);
+      return juser;
+    } catch (UserException e) {
+      String message = "Failed to retrieve user '" + principal.getName() + "'";
+      logger.error(message, e);
+      throw new UserException(message, e);
     }
-    if (users.size() == 1) {
-      try {
-        JetspeedUser juser = row2UserObject(users.get(0));
-        return juser;
-      } catch (UserException e) {
-        String message =
-          "Failed to retrieve user '" + principal.getName() + "'";
-        logger.error(message, e);
-        throw new UserException(message, e);
-      }
-    }
-    throw new UnknownUserException("Unknown user '" + principal.getName() + "'");
   }
 
   /**
@@ -219,47 +198,7 @@ public class ALUserManagement extends TurbineBaseService implements
   @Override
   public JetspeedUser getUser(RunData rundata, Principal principal)
       throws JetspeedSecurityException {
-
-    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-    if (principal instanceof UserNamePrincipal) {
-      Expression exp =
-        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, principal
-          .getName());
-      query.setQualifier(exp);
-    } else if (principal instanceof UserIdPrincipal) {
-      Expression exp =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(principal.getName()));
-      query.setQualifier(exp);
-    } else {
-      throw new UserException("Invalid Principal Type in getUser: "
-        + principal.getClass().getName());
-    }
-    List<TurbineUser> users;
-    try {
-      users = query.fetchList();
-    } catch (Exception e) {
-      String message = "Failed to retrieve user '" + principal.getName() + "'";
-      logger.error(message, e);
-      throw new UserException(message, e);
-    }
-    if (users.size() > 1) {
-      throw new UserException("Multiple Users with same username '"
-        + principal.getName()
-        + "'");
-    }
-    if (users.size() == 1) {
-      try {
-        JetspeedUser juser = row2UserObject(users.get(0));
-        return juser;
-      } catch (UserException e) {
-        String message =
-          "Failed to retrieve user '" + principal.getName() + "'";
-        logger.error(message, e);
-        throw new UserException(message, e);
-      }
-    }
-    throw new UnknownUserException("Unknown user '" + principal.getName() + "'");
+    return getUser(principal);
   }
 
   /**
@@ -313,25 +252,16 @@ public class ALUserManagement extends TurbineBaseService implements
     }
 
     try {
-
       Boolean hasAdminCredential = (Boolean) user.getPerm("isAdmin", null);
-
-      Expression exp =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(user.getUserId()));
-
-      List<TurbineUser> users =
-        Database.query(TurbineUser.class, exp).fetchList();
-
-      if (users == null || users.size() == 0) {
+      ALBaseUser baseuser = (ALBaseUser) user;
+      // 新規オブジェクトモデル
+      TurbineUser tuser =
+        ALEipUtils.getTurbineUser(Integer.valueOf(user.getUserId()));
+      if (tuser == null) {
         throw new UnknownUserException("Cannot save user '"
           + user.getUserName()
           + "', User doesn't exist");
       }
-
-      ALBaseUser baseuser = (ALBaseUser) user;
-      // 新規オブジェクトモデル
-      TurbineUser tuser = users.get(0);
       tuser.setLoginName(baseuser.getUserName());
       tuser.setPasswordValue(baseuser.getPassword());
       tuser.setFirstName(baseuser.getFirstName());
@@ -615,23 +545,17 @@ public class ALUserManagement extends TurbineBaseService implements
     }
 
     JetspeedUser user = getUser(principal);
-
     try {
+      TurbineUser tuser =
+        ALEipUtils.getTurbineUser(Integer.valueOf(user.getUserId()));
 
-      Expression exp =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(user.getUserId()));
-
-      List<TurbineUser> users =
-        Database.query(TurbineUser.class, exp).fetchList();
-
-      if (users == null || users.size() == 0) {
+      if (tuser == null) {
         throw new UserException("["
           + principal.getName()
           + "] is a system user and cannot be removed");
       }
 
-      Database.delete(users.get(0));
+      Database.delete(tuser);
       PsmlManager.removeUserDocuments(user);
 
       Database.commit();
@@ -793,22 +717,18 @@ public class ALUserManagement extends TurbineBaseService implements
   protected boolean accountExists(JetspeedUser user, boolean checkUniqueId)
       throws UserException {
     String id = user.getUserId();
-
-    Expression exp =
-      ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user
-        .getUserName());
-
-    List<TurbineUser> users;
+    TurbineUser retrieved = null;
     try {
-      users = Database.query(TurbineUser.class, exp).fetchList();
+      retrieved = ALEipUtils.getTurbineUser(user.getUserName());
     } catch (Exception e) {
       logger.error("Failed to check account's presence", e);
       throw new UserException("Failed to check account's presence", e);
     }
-    if (users.size() < 1) {
+
+    if (retrieved == null) {
       return false;
     }
-    TurbineUser retrieved = users.get(0);
+
     String keyId = retrieved.getUserId().toString();
     if (checkUniqueId && !keyId.equals(id)) {
       throw new UserException("User exists but under a different unique ID");

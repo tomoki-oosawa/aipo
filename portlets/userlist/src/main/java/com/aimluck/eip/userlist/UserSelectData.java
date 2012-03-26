@@ -21,6 +21,7 @@ package com.aimluck.eip.userlist;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -33,23 +34,24 @@ import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.AccountResultData;
-import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -64,7 +66,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class UserSelectData extends
-    ALAbstractSelectData<TurbineUser, ALBaseUser> {
+    ALAbstractSelectData<TurbineUser, TurbineUser> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -81,6 +83,9 @@ public class UserSelectData extends
   private boolean adminFilter;
 
   private ALStringField tab;
+
+  /** 一覧データ */
+  private List<Object> list;
 
   /**
    * 初期化します。
@@ -348,8 +353,13 @@ public class UserSelectData extends
    * @return
    */
   @Override
-  protected ALBaseUser selectDetail(RunData rundata, Context context) {
-    return AccountUtils.getBaseUser(rundata, context);
+  protected TurbineUser selectDetail(RunData rundata, Context context) {
+    String userid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    if (userid == null) {
+      return null;
+    }
+    return Database.get(TurbineUser.class, Integer.parseInt(userid));
   }
 
   /**
@@ -359,7 +369,10 @@ public class UserSelectData extends
    */
   @Override
   protected Object getResultData(TurbineUser record) {
-    return getResultDataDetail(ALEipUtils.getBaseUser(record.getUserId()));
+    AccountResultData rd = new AccountResultData();
+    rd.initField();
+    setResultData(record, rd);
+    return rd;
   }
 
   /**
@@ -367,44 +380,137 @@ public class UserSelectData extends
    * @return
    */
   @Override
-  protected Object getResultDataDetail(ALBaseUser record) {
+  protected Object getResultDataDetail(TurbineUser record) {
     try {
-      Integer id = new Integer(record.getUserId());
-
       AccountResultData rd = new AccountResultData();
       rd.initField();
-      rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
-      rd.setUserName(record.getUserName());
-      rd.setName(new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString());
-      rd.setNameKana(new StringBuffer()
-        .append(record.getLastNameKana())
-        .append(" ")
-        .append(record.getFirstNameKana())
-        .toString());
-      rd.setEmail(record.getEmail());
-      rd.setOutTelephone(record.getOutTelephone());
-      rd.setInTelephone(record.getInTelephone());
-      rd.setCellularPhone(record.getCellularPhone());
-      rd.setCellularMail(record.getCellularMail());
-      rd.setPostNameList(ALEipUtils.getPostNameList(id.intValue()));
-      rd.setPositionName(ALEipUtils.getPositionName(record.getPositionId()));
-      rd.setDisabled(record.getDisabled());
+      setResultData(record, rd);
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
-      if (record.getPhoto() != null) {
-        rd.setHasPhoto(true);
-      } else {
-        rd.setHasPhoto(false);
-      }
-
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  private void setResultData(TurbineUser model, AccountResultData data) {
+    data.setUserId(model.getUserId());
+    data.setUserName(model.getLoginName());
+    data.setName(getAliasName(model.getFirstName(), model.getLastName()));
+    data.setNameKana(getAliasName(model.getFirstNameKana(), model
+      .getLastNameKana()));
+    data.setEmail(model.getEmail());
+    data.setOutTelephone(model.getOutTelephone());
+    data.setInTelephone(model.getInTelephone());
+    data.setCellularPhone(model.getCellularPhone());
+    data.setCellularMail(model.getCellularMail());
+    data.setPostNameList(ALEipUtils.getPostNameList(model.getUserId()));
+    data.setPositionName(ALEipUtils.getPositionName(model.getPositionId()));
+    data.setDisabled(model.getDisabled());
+
+    if (model.getPhoto() != null) {
+      data.setHasPhoto(true);
+    } else {
+      data.setHasPhoto(false);
+    }
+  }
+
+  private String getAliasName(String firstName, String lastName) {
+    return new StringBuffer()
+      .append(lastName)
+      .append(" ")
+      .append(firstName)
+      .toString();
+  }
+
+  /**
+   * 一覧表示します。
+   * 
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
+  @Override
+  public boolean doSelectList(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      ResultList<TurbineUser> resultList = selectList(rundata, context);
+      if (resultList != null) {
+        if (resultList.getTotalCount() > 0) {
+          setPageParam(resultList.getTotalCount());
+        }
+
+        Map<Integer, Boolean> map = getAdminInfo(resultList);
+        list = new ArrayList<Object>();
+        for (TurbineUser model : resultList) {
+          Object object = getResultData(model);
+          setAdminInfo(object, map);
+          if (object != null) {
+            list.add(object);
+          }
+        }
+      }
+      return (list != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+
+  }
+
+  private Map<Integer, Boolean> getAdminInfo(ResultList<TurbineUser> list) {
+    if (list == null) {
+      return new HashMap<Integer, Boolean>();
+    }
+
+    List<Integer> userIds = new ArrayList<Integer>();
+    for (TurbineUser user : list) {
+      userIds.add(user.getUserId());
+    }
+
+    Role adminrole = null;
+    try {
+      adminrole = JetspeedSecurity.getRole("admin");
+    } catch (JetspeedSecurityException e) {
+      logger.error("[UserSelectData]", e);
+      return new HashMap<Integer, Boolean>();
+    }
+    List<TurbineUserGroupRole> roleList =
+      Database
+        .query(TurbineUserGroupRole.class)
+        .where(
+          Operations.eq(TurbineUserGroupRole.TURBINE_ROLE_PROPERTY, adminrole
+            .getId()),
+          Operations.in(TurbineUserGroupRole.TURBINE_USER_PROPERTY, userIds))
+        .fetchList();
+
+    if (roleList == null) {
+      return new HashMap<Integer, Boolean>();
+    }
+
+    Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+    for (TurbineUserGroupRole role : roleList) {
+      map.put(role.getTurbineUser().getUserId(), Boolean.valueOf(true));
+    }
+
+    return map;
+  }
+
+  private void setAdminInfo(Object obj, Map<Integer, Boolean> map) {
+    AccountResultData data = (AccountResultData) obj;
+    Boolean bool = map.get(Integer.valueOf((int) data.getUserId().getValue()));
+    data.setIsAdmin(bool == null ? false : bool);
   }
 
   /**

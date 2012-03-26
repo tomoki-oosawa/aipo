@@ -60,6 +60,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ロールを管理するクラスです。 <br />
@@ -83,6 +84,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<?> getRoles(String username) throws JetspeedSecurityException {
     JetspeedUser user = null;
     try {
@@ -132,6 +134,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<?> getRoles() throws JetspeedSecurityException {
     List<TurbineRole> roles;
     try {
@@ -145,6 +148,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void addRole(Role role) throws JetspeedSecurityException {
 
     if (roleExists(role.getName())) {
@@ -209,6 +213,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void saveRole(Role role) throws JetspeedSecurityException {
     if (!roleExists(role.getName())) {
       throw new RoleException("The role '"
@@ -237,6 +242,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void removeRole(String rolename) throws JetspeedSecurityException {
     try {
       Role role = this.getRole(rolename);
@@ -278,11 +284,13 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void grantRole(String username, String rolename)
       throws JetspeedSecurityException {
     grantRole(username, rolename, GroupManagement.DEFAULT_GROUP_NAME);
   }
 
+  @Override
   public void grantRole(String username, String rolename, String groupname)
       throws JetspeedSecurityException {
     try {
@@ -294,7 +302,7 @@ public class ALRoleManagement extends TurbineBaseService implements
       TurbineUserGroupRole user_group_role =
         Database.create(TurbineUserGroupRole.class);
       TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(user.getUserId()));
+        ALEipUtils.getTurbineUser(Integer.valueOf(user.getUserId()));
       user_group_role.setTurbineUser(tuser);
       user_group_role.setTurbineGroup((TurbineGroup) group);
       user_group_role.setTurbineRole((TurbineRole) role);
@@ -316,11 +324,13 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void revokeRole(String username, String rolename)
       throws JetspeedSecurityException {
     revokeRole(username, rolename, GroupManagement.DEFAULT_GROUP_NAME);
   }
 
+  @Override
   public void revokeRole(String username, String rolename, String groupname)
       throws JetspeedSecurityException {
     try {
@@ -362,11 +372,13 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public boolean hasRole(String username, String rolename)
       throws JetspeedSecurityException {
     return hasRole(username, rolename, GroupManagement.DEFAULT_GROUP_NAME);
   }
 
+  @Override
   public boolean hasRole(String username, String rolename, String groupname)
       throws JetspeedSecurityException {
     List<TurbineUserGroupRole> roles;
@@ -408,6 +420,7 @@ public class ALRoleManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Role getRole(String rolename) throws JetspeedSecurityException {
     List<TurbineRole> roles;
 

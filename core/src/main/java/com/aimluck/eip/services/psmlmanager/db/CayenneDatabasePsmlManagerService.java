@@ -70,6 +70,7 @@ import org.xml.sax.InputSource;
 import com.aimluck.eip.cayenne.om.account.JetspeedGroupProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedRoleProfile;
 import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.orm.Database;
 
 /**
@@ -1391,22 +1392,30 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     return list;
   }
 
+  @SuppressWarnings("unchecked")
   private List<JetspeedUserProfile> selectJetspeedUserProfilePeer(
       DataContext dataContext, ProfileLocator locator, boolean order)
       throws CayenneRuntimeException {
-    SelectQuery query = new SelectQuery(JetspeedUserProfile.class);
-    assignJetSpeedUserProfileQuery(locator, query);
-    if (order) {
-      query.addOrdering(JetspeedUserProfile.USER_NAME_PROPERTY, true);
-      query.addOrdering(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, true);
-      query.addOrdering(JetspeedUserProfile.LANGUAGE_PROPERTY, true);
-      query.addOrdering(JetspeedUserProfile.COUNTRY_PROPERTY, true);
-      query.addOrdering(JetspeedUserProfile.PAGE_PROPERTY, true);
-    }
+    Object obj = ALEipManager.getInstance().getUserProfile(locator);
 
-    @SuppressWarnings("unchecked")
-    List<JetspeedUserProfile> list = dataContext.performQuery(query);
-    return list;
+    if (obj != null) {
+      return (List<JetspeedUserProfile>) obj;
+    } else {
+
+      SelectQuery query = new SelectQuery(JetspeedUserProfile.class);
+      assignJetSpeedUserProfileQuery(locator, query);
+      if (order) {
+        query.addOrdering(JetspeedUserProfile.USER_NAME_PROPERTY, true);
+        query.addOrdering(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, true);
+        query.addOrdering(JetspeedUserProfile.LANGUAGE_PROPERTY, true);
+        query.addOrdering(JetspeedUserProfile.COUNTRY_PROPERTY, true);
+        query.addOrdering(JetspeedUserProfile.PAGE_PROPERTY, true);
+      }
+
+      List<JetspeedUserProfile> list = dataContext.performQuery(query);
+      ALEipManager.getInstance().setUserProfile(locator, list);
+      return list;
+    }
   }
 
   private void deleteJetspeedUserProfilePeer(DataContext dataContext,
