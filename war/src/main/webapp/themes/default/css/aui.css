@@ -1875,7 +1875,7 @@ ul.attachments span.deletebutton:hover{
 }
 #timeline .commentInputDummy span {
 	display:block;
-	padding:2px;
+	padding:5px;
 	border: 1px #cdcdcd solid;
 	color: #aaaaaa;
 	cursor: text;
