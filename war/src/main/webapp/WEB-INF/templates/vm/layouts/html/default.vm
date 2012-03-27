@@ -61,7 +61,7 @@
 </head>
 <body onload="aipo.container.renderGadgets()">
 <!-- WRAPPER -->
-#if (${client} == "IPAD")
+#if (${client} == "IPAD" ||${client} == "IPHONE" )
 <div id="wrapper">
 #else
 <div id="wrapper" style="margin-bottom:28px">
