@@ -209,6 +209,21 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     try {
       int length = portletList.length;
+      int timelineCount = 0;
+
+      for (int i = 0; i < length; i++) {
+        Entry[] entries = portletList[i].getEntriesArray();
+        if (entries == null || entries.length <= 0) {
+          continue;
+        }
+        int ent_length = entries.length;
+        for (int j = 0; j < ent_length; j++) {
+          String parent = entries[j].getParent();
+          if (parent.equals("Timeline")) {
+            timelineCount++;
+          }
+        }
+      }
 
       search: for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();
@@ -221,7 +236,8 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
           String parent = entries[j].getParent();
           if (entries[j].getId().equals(portletId)
             && (editablePortlets.contains(entries[j].getParent()) || parent
-              .startsWith("GadgetsTemplate"))) {
+              .startsWith("GadgetsTemplate"))
+            && (!parent.equals("Timeline") || timelineCount > 1)) {
             PortletWrapper wrapper =
               (PortletWrapper) PortletFactory.getPortlet(entries[j]);
             if (wrapper != null) {
