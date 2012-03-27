@@ -1971,6 +1971,8 @@ public class ALEipUtils {
   public static void addAdminPage(String user_name) throws Exception {
     ProfileLocator locator = Profiler.createLocator();
     locator.createFromPath(String.format("user/%s/media-type/html", user_name));
+    /** for request cache clear */
+    ALEipManager.getInstance().removeProfile(locator);
     Profile profile = Profiler.getProfile(locator);
     Portlets portlets = profile.getDocument().getPortlets();
 

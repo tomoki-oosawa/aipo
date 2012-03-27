@@ -363,6 +363,14 @@ public class ALEipManager {
     }
   }
 
+  public void removeProfile(ProfileLocator locator) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String key = getUserProfileKey(locator);
+    if (request != null && key != null) {
+      request.removeAttribute(key);
+    }
+  }
+
   private String getUserProfileKey(ProfileLocator locator) {
 
     StringBuffer buffer = new StringBuffer(PSML_PREFIX);
