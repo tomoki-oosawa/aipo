@@ -321,20 +321,20 @@ td.container {
 	Apps Style
 --------------------------------------------------*/
 /* timeline*/
-#timeline .avatar img,
-#timeline .avatar {
+.timeline .avatar img,
+.timeline .avatar {
 	max-width:20px;
 	max-height:20px;
 }
-#timeline .messageContents,
-#timeline .comments .messageContents {
+.timeline .messageContents,
+.timeline .comments .messageContents {
 	display:table-cell;
 	padding-left:0;
 }
-#timeline .comments {
+.timeline .comments {
 	margin-left:30px;
 }
-#timeline .commentField form {
+.timeline .commentField form {
 	padding-left:22px;
 }
 

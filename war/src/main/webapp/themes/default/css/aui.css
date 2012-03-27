@@ -1734,23 +1734,23 @@ ul.attachments span.deletebutton:hover{
 	background:#f0f0f0;
 }
 
-#timeline {
+.timeline {
 	overflow:hidden;
 }
-#timeline .message {
+.timeline .message {
 	clear:both;
 }
-#timeline .avatar {
+.timeline .avatar {
 	float:left;
 }
-#timeline .messageContents {
+.timeline .messageContents {
 	padding-left:60px;
 }
-#timeline .comments {
+.timeline .comments {
 	margin:0 0 10px 60px;
 	background:#f0f0f0;
 }
-#timeline .comments .messageContents {
+.timeline .comments .messageContents {
 	padding-left:42px;
 }
 .messageContents .name {
@@ -1783,20 +1783,20 @@ ul.attachments span.deletebutton:hover{
 }
 
 
-#timeline .commentCaption {
+.timeline .commentCaption {
 	padding:3px 5px;
 	font-size:smaller;
 	border-top:solid 1px #fff;
 	border-bottom:solid 1px #e6e6e6;
 }
-#timeline .comments .message {
+.timeline .comments .message {
 	margin:0;
 	padding:5px;
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff;
 }
-#timeline .timeline {
+.timeline .timeline {
 	width: 100%;
 	word-break: break-all;
 	word-wrap: break-word;
@@ -1851,7 +1851,7 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timeline .readMore {
+.timeline .readMore {
 	margin-top: 10px;
 	background: #f0f0f0;
 	text-align: center;
@@ -1860,20 +1860,20 @@ ul.attachments span.deletebutton:hover{
 	-ms-border-radius:3px;
 }
 #timelineOuter #newMessage a,
-#timeline .readMore a {
+.timeline .readMore a {
 	display:block;
 	padding: 3px;
 }
-#timeline .message .more {
+.timeline .message .more {
 	line-height:1.6;
 }
 
-#timeline .commentInputDummy {
+.timeline .commentInputDummy {
 	padding:5px;
 	border-top:solid 1px #fff;
 	border-bottom:solid 1px #e6e6e6;
 }
-#timeline .commentInputDummy span {
+.timeline .commentInputDummy span {
 	display:block;
 	padding:5px;
 	border: 1px #cdcdcd solid;
@@ -1883,18 +1883,18 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timeline .commentField {
+.timeline .commentField {
 	padding:5px;
 	border-top:solid 1px #fff;
 	border-bottom:solid 1px #e6e6e6;
 }
-#timeline .commentField form {
+.timeline .commentField form {
 	padding-left:42px;
 }
-#timeline .text_exposed_show.ellipsis{
+.timeline .text_exposed_show.ellipsis{
 	display:none;
 }
-#timeline .message .more.opened{
+.timeline .message .more.opened{
 	display:none;
 }
 .iconLike,
