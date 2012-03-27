@@ -78,8 +78,10 @@
     #end
     <div id="content_end_$!{portlet.ID}"></div>
   </div>
-  #foreach ($i in [2..${pages}])
-	<div id="content_$!{portlet.ID}_${i}"></div>
+  #if(${pages} > 1)
+    #foreach ($i in [2..${pages}])
+	  <div id="content_$!{portlet.ID}_${i}"></div>
+    #end
   #end
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeight == 0)
