@@ -226,9 +226,8 @@ public class ScheduleAction extends ALBaseAction {
       String useragent = rundata.getUserAgent();
       ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
       ClientEntry entry = registry.findEntry(useragent);
-      if ("IPHONE".equals(entry.getManufacturer())
-        && template.equals("schedule-calendar")) {
-        template = "schedule-oneday";
+      if ("IPHONE".equals(entry.getManufacturer())) {
+        template = "schedule-search-list";
       }
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
@@ -598,9 +597,8 @@ public class ScheduleAction extends ALBaseAction {
       String useragent = rundata.getUserAgent();
       ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
       ClientEntry entry = registry.findEntry(useragent);
-      if ("IPHONE".equals(entry.getManufacturer())
-        && "calendar".equals(currentTab)) {
-        currentTab = "oneday-group";
+      if ("IPHONE".equals(entry.getManufacturer())) {
+        currentTab = "list";
       }
 
       if (currentTab.equals("calendar")) {

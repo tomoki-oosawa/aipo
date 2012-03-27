@@ -105,9 +105,8 @@ public class ScheduleScreen extends ALVelocityScreen {
       } else {
         currentTab = tmpCurrentTab;
       }
-      if ("IPHONE".equals(entry.getManufacturer())
-        && "calender".equals(currentTab)) {
-        currentTab = "oneday";
+      if ("IPHONE".equals(entry.getManufacturer())) {
+        currentTab = "list";
       }
 
       // Velocity テンプレートを読み込む
