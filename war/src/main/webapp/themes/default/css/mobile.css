@@ -354,6 +354,56 @@ table.listTable td.caption, table.subTable td.caption {
 	width:auto !important;
 }
 /***************************************************
+	login
+--------------------------------------------------*/
+#auiLoginBox {
+	width:auto;
+	margin:0;
+	padding:0;
+	background:none;
+}
+#auiLoginInner {
+	padding:10px;
+	background:none;
+}
+#auiLoginBox .logo {
+	margin:20px 0;
+}
+#auiLoginBox .logo img {
+	width:200px;
+	height:73px;
+}
+#auiLoginBox select {
+	height:2.2em;
+	font-size:1.5em;
+}
+#auiLoginBox input.text {
+	width:100%;
+	height:auto;
+	padding:5px;
+	font-size:1.5em;
+}
+#auiLoginBox .guide {
+	height:1.5em;
+	line-height:1.5em;
+	font-size:1.5em;
+	margin:0.4em 0;
+}
+#auiLoginBox .floatLeft, #auiLoginBox .floatRight {
+	float:none;
+	margin:10px auto 0 auto;
+}
+#auiLoginBox .floatLeft {
+	font-size:1.5em;
+}
+#auiLoginBox input {
+	vertical-align:0em;
+}
+#auiLoginBox .floatRight {
+	width:152px;
+}
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none}
