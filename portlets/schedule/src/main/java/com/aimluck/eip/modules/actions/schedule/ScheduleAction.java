@@ -599,6 +599,7 @@ public class ScheduleAction extends ALBaseAction {
       ClientEntry entry = registry.findEntry(useragent);
       if ("IPHONE".equals(entry.getManufacturer())) {
         currentTab = "list";
+        ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       }
 
       if (currentTab.equals("calendar")) {
