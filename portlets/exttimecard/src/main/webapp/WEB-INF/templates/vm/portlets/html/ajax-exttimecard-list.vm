@@ -245,14 +245,10 @@ $rdlist.DateStr
 #if($first == 0)
 #if($class == "today" && $!result.TargetUserId == $!result.UserId && !($rdlist.IsNotNullClockOutTime))
 #set($q = '"')
-#if($rdlist.IsNotNullClockInTime)
-#set($outgoings = "<input type=${q}button${q} value=${q}外出${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
-#else
+#if(!$rdlist.IsNotNullClockInTime)
 <td nowrap="nowrap"><input type="submit" class="submit" name="eventSubmit_doExtTimecard_outgoing_" value="外出" disabled=""></td>
 #end
-#if($rdlist.IsNotNullClockInTime)
-#set($comebacks = "<input type=${q}button${q} value=${q}復帰${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
-#else
+#if(!$rdlist.IsNotNullClockInTime)
 <td nowrap="nowrap"><input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled=""></td>
 #end
 #if($outcome.get('outgoing') != "")
@@ -267,8 +263,23 @@ $rdlist.DateStr
 #end
 #set($first = 1)
 #else
-#set($outgoings = "$outgoings<br>$outcome.get('outgoing')")
-#set($comebacks = "$comebacks<br>$outcome.get('comeback')")
+#set($outgoings = "$outgoings<br />$outcome.get('outgoing')")
+#set($comebacks = "$comebacks<br />$outcome.get('comeback')")
+#end
+#end
+
+#if($rdlist.IsNotNullClockInTime && !$rdlist.IsNotNullClockOutTime && $class == "today")
+#set($outgoingsbutton = "<input type=${q}button${q} value=${q}外出${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
+#set($comebacksbutton = "<input type=${q}button${q} value=${q}復帰${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
+#if($outgoings == "")
+#set($outgoings = "$outgoingsbutton")
+#else
+#set($outgoings = "$outgoings<br />$outgoingsbutton")
+#end
+#if($comebacks == "")
+#set($comebacks = "$comebacksbutton")
+#else
+#set($comebacks = "$comebacks<br />$comebacksbutton")
 #end
 #end
 
