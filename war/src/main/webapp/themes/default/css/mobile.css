@@ -62,13 +62,13 @@ td.container {
 /***************************************************
 	set PortletOuter
 --------------------------------------------------*/
-.roundMainWrapper {
+#roundWrapper .roundMainWrapper {
 	padding:0;
 }
-.roundTopBlock, .roundRightBlock, .roundBottomBlock, .roundLeftBlock, .roundTopLeftBlock, .roundTopRightBlock, .roundBottomRightBlock, .roundBottomLeftBlock {
+#roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
 	background-image:none;
 }
-table.roundBlockWrapperTop {
+#roundWrapper table.roundBlockWrapperTop {
 	background:#c0c0c0
 		-webkit-gradient(
 		linear, left top, left bottom,
@@ -81,8 +81,8 @@ table.roundBlockWrapperTop {
 	box-shadow:0 2px 3px rgba(0,0,0,0.2);
 	margin-bottom:5px;
 }
-table.roundBlockWrapperTop td.roundBlockIcon {display:none}
-table.roundBlockWrapperTop td.roundBlockTitle {
+#roundWrapper table.roundBlockWrapperTop td.roundBlockIcon {display:none}
+#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle {
 	padding:0;
 	background-image:none;
 	text-align:center;
@@ -94,14 +94,13 @@ table.roundBlockWrapperTop td.roundBlockTitle {
 	text-shadow:0 1px 0 rgba(0,0,0,0.8);
 	box-shadow:inset 0 2px 0 rgba(255,255,255,0.7);
 }
-table.roundBlockWrapperTop td.roundBlockTitle a {
+#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a {
 	color:#ffffff;
 	text-decoration:none;
 }
-table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
-.roundBlockWrapperBottom {padding:0;}
-
-.roundBlockMenu, .endcap {display:none}
+#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
+#roundWrapper .roundBlockWrapperBottom {padding:0;}
+#roundWrapper .roundBlockMenu, .endcap {display:none}
 
 
 /***************************************************
@@ -126,6 +125,9 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 	top:0;
 	right:0;
 	z-index:994;
+}
+#appsNavigation ul {
+	display:none;
 }
 #appsNavigationBack a {
 	display:block;
@@ -332,6 +334,9 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 #timeline .comments {
 	margin-left:30px;
 }
+#timeline .commentField form {
+	padding-left:22px;
+}
 
 
 /***************************************************
@@ -339,10 +344,14 @@ table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 --------------------------------------------------*/
 .modalDialog {
 	width:auto;
-	max-width:96%;
-	margin:55px 2% 0 2%;
+	width:100%;
+	margin:45px 0 0 0;
 	top:0 !important;
 	left:0 !important;
+}
+table.listTable td.caption, table.subTable td.caption {
+	min-width:8em;
+	width:auto !important;
 }
 /***************************************************
 	mobile class - undermost
