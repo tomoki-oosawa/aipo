@@ -23,8 +23,10 @@
 <div class="absoluteRight">
 <div class="auiSelectButton">
 <ul>
+#if (${client} != "IPHONE")
 #set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#end
 #set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])

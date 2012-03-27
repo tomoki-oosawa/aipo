@@ -22,7 +22,10 @@ package com.aimluck.eip.modules.actions.schedule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -220,6 +223,13 @@ public class ScheduleAction extends ALBaseAction {
         template = _template;
       }
 
+      String useragent = rundata.getUserAgent();
+      ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+      ClientEntry entry = registry.findEntry(useragent);
+      if ("IPHONE".equals(entry.getManufacturer())
+        && template.equals("schedule-calendar")) {
+        template = "schedule-oneday";
+      }
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
@@ -578,13 +588,20 @@ public class ScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group")
           || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab
-            .equals("list"))) {
+          .equals("list"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
       }
-
       currentTab = ScheduleUtils.getCurrentTab(rundata, context);
+
+      String useragent = rundata.getUserAgent();
+      ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+      ClientEntry entry = registry.findEntry(useragent);
+      if ("IPHONE".equals(entry.getManufacturer())
+        && "calendar".equals(currentTab)) {
+        currentTab = "oneday-group";
+      }
 
       if (currentTab.equals("calendar")) {
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();

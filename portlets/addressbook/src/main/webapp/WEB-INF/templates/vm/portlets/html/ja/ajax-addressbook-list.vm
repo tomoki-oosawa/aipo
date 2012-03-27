@@ -50,7 +50,7 @@
 #AUIsearchresult($!result.SearchWord.toString())
 指定された条件に該当するアドレスはありません。<br />
 #else
-    
+
 #ALajaxlistformheader('アドレス')
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -71,9 +71,9 @@
 #ALtdheadThin("#ALswitchCheckbox()")
 <th>#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookListScreen')</th>
 <th>#ALajaxsortaddressbook('company_name_kana' '会社名' $result 'AddressBookListScreen')</th>
-#ALtdhead('メールアドレス')
-#ALtdhead('電話番号')
-#ALtdhead('携帯番号')
+#ALtdheadAtt('メールアドレス' 'class="mb_hide"')
+#ALtdheadAtt('電話番号' 'class="mb_hide"')
+#ALtdheadAtt('携帯番号' 'class="mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -87,9 +87,9 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap"')
-#ALtdcellAtt($!record.Telephone 'nowrap="nowrap"')
-#ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap"')
+#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'class="mb_hide" nowrap="nowrap"')
+#ALtdcellAtt($!record.Telephone 'class="mb_hide" nowrap="nowrap"')
+#ALtdcellAtt($!record.CellularPhone 'class="mb_hide" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()

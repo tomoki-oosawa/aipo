@@ -23,8 +23,10 @@
 <div class="absoluteRight">
 <div class="auiSelectButton">
 <ul>
+#if (${client} != "IPHONE")
 #set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#end
 #set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
@@ -105,9 +107,9 @@
 #else
 #AUIrowTableWide()
 <tr>
-<th class="w20">日時</th>
-<th class="w60">タイトル</th>
-<th class="w20">登録者</th>
+<th class="w30">日時</th>
+<th class="w40">タイトル</th>
+<th class="w30">登録者</th>
 </tr>
 #foreach ($record in $result.ScheduleList)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
@@ -124,7 +126,7 @@
 #else
 <tr>
 #end
-<td nowrap="nowrap">${record.DateFull}</td>
+<td #if (${client} != "IPHONE")nowrap="nowrap"#else #end>${record.DateFull}</td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 &nbsp;#if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />

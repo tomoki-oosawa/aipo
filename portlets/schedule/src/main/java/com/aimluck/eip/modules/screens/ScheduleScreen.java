@@ -22,7 +22,10 @@ package com.aimluck.eip.modules.screens;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -84,6 +87,11 @@ public class ScheduleScreen extends ALVelocityScreen {
       String portletId = portlet.getID();
       String currentTab;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
+
+      String useragent = rundata.getUserAgent();
+      ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+      ClientEntry entry = registry.findEntry(useragent);
+
       if (tmpCurrentTab == null
         || !(tmpCurrentTab.equals("calendar")
           || tmpCurrentTab.equals("oneday")
@@ -92,10 +100,14 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("search")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
+      }
+      if ("IPHONE".equals(entry.getManufacturer())
+        && "calender".equals(currentTab)) {
+        currentTab = "oneday";
       }
 
       // Velocity テンプレートを読み込む
@@ -115,7 +127,8 @@ public class ScheduleScreen extends ALVelocityScreen {
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
 
-      if (("".equals(template)) || (!done)) {
+      if (!"IPHONE".equals(entry.getManufacturer())
+        && ("".equals(template) || (!done))) {
         template = "schedule-calendar";
         if (template.equals(_template)) {
           done = true;

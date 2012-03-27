@@ -168,17 +168,19 @@ public class JetspeedTool implements ApplicationTool {
             {
               // タイムラインがあればタイムラインを先頭にする。
               Entry[] entrylist = subset.getEntriesArray();
-              int timelineindex = 0;
-              for (int i = 0; i < entrylist.length; i++) {
-                if ("Timeline".equals(entrylist[i].getParent())) {
-                  timelineindex = i;
+              if (entrylist.length > 0) {
+                int timelineindex = 0;
+                for (int i = 0; i < entrylist.length; i++) {
+                  if ("Timeline".equals(entrylist[i].getParent())) {
+                    timelineindex = i;
+                  }
+                  subset.removeEntry(0);
                 }
-                subset.removeEntry(0);
-              }
-              subset.addEntry(entrylist[timelineindex]);
-              for (int i = 0; i < entrylist.length; i++) {
-                if (timelineindex != i) {
-                  subset.addEntry(entrylist[i]);
+                subset.addEntry(entrylist[timelineindex]);
+                for (int i = 0; i < entrylist.length; i++) {
+                  if (timelineindex != i) {
+                    subset.addEntry(entrylist[i]);
+                  }
                 }
               }
             }

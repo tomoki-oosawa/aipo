@@ -22,7 +22,10 @@ package com.aimluck.eip.modules.screens;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -78,6 +81,10 @@ public class ScheduleListScreen extends ScheduleScreen {
         }
       }
 
+      String useragent = rundata.getUserAgent();
+      ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+      ClientEntry entry = registry.findEntry(useragent);
+
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData =
         null;
       // ポートレット ID を取得する．
@@ -92,10 +99,15 @@ public class ScheduleListScreen extends ScheduleScreen {
           || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("search")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
+      }
+
+      if ("IPHONE".equals(entry.getManufacturer())
+        && "calender".equals(currentTab)) {
+        currentTab = "oneday";
       }
 
       // 初期共有メンバー表示フラグを取得する

@@ -18,9 +18,13 @@
  *#
 ## ---------------------------------------------------------------------------
 #macro(ALtabElementMaximize $name $image)
+#set($break=false)
 #foreach($tab in $menus)
-	#if($tab.Name.toString()==$name)
-	<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
+	#if($break==false)
+		#if($tab.Name.toString()==$name)
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
+		#set($break=true)
+		#end
 	#end
 #end
 #end
@@ -75,27 +79,35 @@ function widgetMenuSwitch() {
 }
 // ナビゲーションメニュー用
 function appsNaviSwitch() {
-        var navi = document.getElementById('appsNavigation');
-        var bk = document.getElementById('appsNavigationBack');
-        var wrapper = document.getElementById('wrapper');
-        var nLeft = '-260px';
-        var h = document.documentElement.clientHeight;
-        var nh = document.getElementById('anInner').clientHeight
-        if(nh > h) h = nh;
-        if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
-                navi.style.left = '0px';
-                bk.style.display = 'block';
-                wrapper.style.overflow = 'hidden';
-                wrapper.style.height = h + 'px';
-        }else{
-                navi.style.left = nLeft;
-                bk.style.display = 'none';
-                wrapper.style.overflow = 'visible';
-                wrapper.style.height = 'auto'
-        }
+	var navi = document.getElementById('appsNavigation');
+	var lists = navi.getElementsByTagName("ul");
+	var bk = document.getElementById('appsNavigationBack');
+	var wrapper = document.getElementById('wrapper');
+	var nLeft = '-260px';
+	if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
+		for (var i=0; i<lists.length; i++){
+			lists[i].style.display = "block";
+		}
+		navi.style.left = '0px';
+		navi.style.boxShadow = '0 5px 5px rgba(0,0,0,0.5)';
+		navi.style.borderRight = 'solid 1px #909090';
+		bk.style.display = 'block';
+		wrapper.style.overflow = 'hidden';
+		wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
+	}else{
+		navi.style.left = nLeft;
+		navi.style.boxShadow = 'none';
+		navi.style.borderRight = 'none';
+		bk.style.display = 'none';
+		wrapper.style.overflow = 'visible';
+		wrapper.style.height = 'auto'
+		for (var i=0; i<lists.length; i++){
+			lists[i].style.display = "none";
+		}
+	}
 }
 </script>
-<div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()">test</a></div>
+<div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
 <div id="appsNavigation"><div id="anInner">
         <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><img src="themes/default/images/mobile/an_list.png"></a></div>
         <div class="anUser">
@@ -177,34 +189,40 @@ function appsNaviSwitch() {
 							<!-- /MAIN TAB -->
 		#end
                             <!-- MAIN OUTER -->
-                            <table class="tableWrapper">
-                              <tbody>
-                                <tr>
-                                  <td class="wide top">
-                                    ##<div class="roundTopMain clearfix">
-                                      ##<div class="roundRightMain">
-                                        ##<div class="roundBottomMain">
-                                          ##<div class="roundLeftMain">
-                                            ##<div class="roundTopLeftMain">
-                                              ##<div class="roundTopRightMain">
-                                                ##<div class="roundBottomRightMain">
-                                                  ##<div class="roundBottomLeftMain">
-                                                    <div class="roundMainWrapper">
+                            <!-- roundWrapper -->
+							<div id="roundWrapper">
+								<!-- MAIN OUTER -->
+								<div class="roundMainWrapper">
+		                            <table class="tableWrapper">
+		                              <tbody>
+		                                <tr>
+		                                  <td class="wide top">
+		                                    ##<div class="roundTopMain clearfix">
+		                                      ##<div class="roundRightMain">
+		                                        ##<div class="roundBottomMain">
+		                                          ##<div class="roundLeftMain">
+		                                            ##<div class="roundTopLeftMain">
+		                                              ##<div class="roundTopRightMain">
+		                                                ##<div class="roundBottomRightMain">
+		                                                  ##<div class="roundBottomLeftMain">
+		                                                    <div class="roundMainWrapper">
 $portlet.getContent($data)
-                                                    </div>
-                                                  ##</div>
-                                                ##</div>
-                                              ##</div>
-                                            ##</div>
-                                          ##</div>
-                                        ##</div>
-                                      ##</div>
-                                    ##</div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <!-- /MAIN OUTER  -->
+	                                                    	</div>
+		                                                  ##</div>
+		                                                ##</div>
+		                                              ##</div>
+		                                            ##</div>
+		                                          ##</div>
+		                                        ##</div>
+		                                      ##</div>
+		                                    ##</div>
+		                                  </td>
+		                                </tr>
+		                              </tbody>
+		                            </table>
+		                            <!-- /MAIN OUTER  -->
+		                        </div>
+		                    </div>
 #else
 #if (!$data.User.hasLoggedIn())
 $!portlet.getContent($data)

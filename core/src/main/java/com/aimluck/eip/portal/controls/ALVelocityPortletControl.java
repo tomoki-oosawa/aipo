@@ -506,17 +506,16 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   }
 
   /**
-   * iphoneメニュー用にタブを取り出す。
+   * iphoneメニュー用にすべてのポートレットのリストを取り出す。
    * 
    * @param portlets
    * @param rundata
    * @param context
    * @return
    */
-  private Collection<PortletTab> getMenus(Portlets portlets, RunData rundata,
+  private List<PortletTab> getMenus(Portlets portlets, RunData rundata,
       Context context) {
-    TreeSet<PortletTab> tabs =
-      new TreeSet<PortletTab>(new PortletTabComparator());
+    List<PortletTab> tabs = new ArrayList<PortletTab>();
     // PanedPortletController controller =
     // (PanedPortletController) portlets.getController();
 

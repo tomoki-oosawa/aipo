@@ -45,10 +45,10 @@
 <tr>
 #ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'UserListListScreen')")
 #ALtdhead('部署名')
-#ALtdhead('役職')
-#ALtdheadW25('メールアドレス')
-#ALtdheadThin('電話番号（外線）')
-#ALtdheadThin('電話番号（内線）')
+#ALtdheadAtt('役職' 'class="mb_hide"')
+#ALtdheadAtt('メールアドレス' 'class="w25 mb_hide"')
+#ALtdheadAtt('電話番号（外線）' 'class="mb_hide"')
+#ALtdheadAtt('電話番号（内線）' 'class="mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -67,10 +67,10 @@ $post
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt($result.getStringCR($!record.PositionName) "nowrap='nowrap'")
-#ALtdcell("$!record.Email")
-#ALtdcellAtt("$!record.OutTelephone" "nowrap='nowrap'")
-#ALtdcellAtt("$!record.InTelephone" "nowrap='nowrap'")
+#ALtdcellAtt($result.getStringCR($!record.PositionName) "class='mb_hide' nowrap='nowrap'")
+#ALtdcellAtt("$!record.Email" "class='mb_hide'")
+#ALtdcellAtt("$!record.OutTelephone" "class='mb_hide' nowrap='nowrap'")
+#ALtdcellAtt("$!record.InTelephone" "class='mb_hide' nowrap='nowrap'")
 </tr>
 #end
 #AUItablefooter()

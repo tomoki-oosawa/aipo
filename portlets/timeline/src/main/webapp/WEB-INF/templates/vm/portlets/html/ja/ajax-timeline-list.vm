@@ -23,7 +23,7 @@
 #set ($currentPage = $result.CurrentPage)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 ## ---------------------------------------------------------------------------
-<div id="timelineOuter" style="width: 840px; margin: 0 auto;">
+<div id="timelineOuter" style="margin: 0 auto;">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
 <input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
