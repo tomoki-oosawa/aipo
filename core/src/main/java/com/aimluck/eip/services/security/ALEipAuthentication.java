@@ -141,7 +141,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
         throw new LoginException(e.toString());
       }
 
-      if (!user.getPassword().equals(password)) {
+      if (user == null || !user.getPassword().equals(password)) {
         logger.error("Invalid password for user: " + username);
         throw new FailedLoginException("Credential authentication failure");
       }
