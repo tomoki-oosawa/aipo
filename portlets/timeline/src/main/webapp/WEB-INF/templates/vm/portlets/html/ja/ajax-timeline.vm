@@ -64,14 +64,14 @@
 </div>
 
 #if($result.List.size() == 0)
-  <div class="message" style="clear:both">投稿はありません。</div>
+  <div id="timeline_$!{portlet.ID}" class="message" style="clear:both">投稿はありません。</div>
 #else
   #if($result.ContentHeight == 0)
-    <div id="timeline" class="timeline" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
+    <div id="timeline_$!{portlet.ID}" class="timeline" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
   #else
-    <div id="timeline" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
+    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
   #end
-  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop($result.ScrollTop);" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop');" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
     #foreach ($record in $result.List)
       #parse("/portlets/html/ja/ajax-timeline-content.vm")
@@ -93,4 +93,5 @@
   </div>
   </div>
 #end
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setMinHeight('$!portlet.ID');" style="display:none"/>
 </div>

@@ -55,9 +55,9 @@ aipo.timeline.showCommentAll = function(pid, tid) {
 }
 
 aipo.timeline.onScroll = function(url, pid, page) {
-  var scrollTop = dojo.byId("timeline").scrollTop;
-  var clientHeight = dojo.byId("timeline").clientHeight;
-  var scrollHeight = dojo.byId("timeline").scrollHeight;
+  var scrollTop = dojo.byId("timeline_" + pid).scrollTop;
+  var clientHeight = dojo.byId("timeline_" + pid).clientHeight;
+  var scrollHeight = dojo.byId("timeline_" + pid).scrollHeight;
   var remain = scrollHeight - clientHeight - scrollTop;
   try {
     dojo
@@ -114,8 +114,8 @@ aipo.timeline.getUrl = function(url, pid) {
 
 }
 
-aipo.timeline.setScrollTop = function(scrollTop) {
-  dojo.byId("timeline").scrollTop = scrollTop;
+aipo.timeline.setScrollTop = function(pid, scrollTop) {
+  dojo.byId("timeline_" + pid).scrollTop = scrollTop;
 }
 
 aipo.timeline.onKeyUp = function(pid, tid, e) {
@@ -339,3 +339,15 @@ aipo.timeline.submit = function(form, indicator_id, pid, callback){
 		aimluck.io.submit(form, indicator_id, pid, callback);
 	}
 }
+
+aipo.timeline.setMinHeight = function(pid){
+	var min = 0;
+	if(document.all) {
+		min += (document.documentElement.clientHeight - dojo.byId("timeline_" + pid).getBoundingClientRect().top);
+	}
+	else {
+		min += (innerHeight - dojo.byId("timeline_" + pid).getBoundingClientRect().top);
+	}
+	dojo.byId("timeline_" + pid).style.minHeight = min + "px";
+}
+
