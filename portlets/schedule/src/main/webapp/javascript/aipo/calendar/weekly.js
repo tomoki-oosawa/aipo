@@ -163,8 +163,15 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                   }
                 }
                 var item = null;
-                termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
-                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+
+                //IPADはスクロールバーを表示しないので表示調節用の列を削除
+                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")?"border-right:0":"";
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")
+                	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td  colspan="2" nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
+                else
+                	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
+
+                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
@@ -172,7 +179,12 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
-                termTableHtml += "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>"
+
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")
+                	termTableHtml += "</div></td></tr>";
+                else
+                	termTableHtml += "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+
                 l_count++;
             });
            termTableHtml += "</tbody></table>"

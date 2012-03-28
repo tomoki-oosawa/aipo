@@ -72,7 +72,7 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyHeadRights'>
-                              <div class='weeklyHeadRight' style="left: 0%;">
+                              <div class='weeklyHeadRight'  style="left:0%">
                                 <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday0-$!portlet.ID">&nbsp;</div>
                               </div>
@@ -119,7 +119,7 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyTermRights'>
-                              <div class='weeklyTermRight weeklyTermRightL' id='termDay0-$!portlet.ID' style="left: 0%;">
+                              <div class='weeklyTermRight weeklyTermRightL' id='termDay0-$!portlet.ID' #if(${client} == "IPAD" && $!top_form == 'simple') style="left:0%;border-right:0;" #else style="left: 0%;" #end>
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;">
