@@ -23,19 +23,26 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>テーマの管理</h2>
+#if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('テーマ' $jslink $portlet)
-#if($result.List.size() <= 0)
-<div class="message">複数の記事をグループ化することで、記事を分類することができます。</div>
-<div class="message">『テーマを追加する』 ボタンを押して、追加してください。 </div>
+#end
+#if($result.List.size() == 0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p class="mh10">
+#AUIbuttonAction("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")<span class="caution">（テーマに含まれる記事はすべて『未分類』に移動されます。）</span>
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
 </div>
 #AUIajaxpageview('BlogThemaListScreen' $result)
 #AUISummaryDivfooter()
@@ -56,7 +63,7 @@
 
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")<span class="caution">（テーマに含まれる記事はすべて『未分類』に移動されます。）</span>
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
 </div>
 #AUIajaxpageview('BlogThemaListScreen' $result)
 #AUISummaryDivfooter()
