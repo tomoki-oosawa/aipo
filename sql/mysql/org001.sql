@@ -651,6 +651,8 @@ CREATE TABLE `eip_t_timeline` (
    `timeline_id` int(11) NOT NULL AUTO_INCREMENT,
    `parent_id` int(11) NOT NULL DEFAULT 0,
    `owner_id` int(11),
+   `app_id` varchar(255) COLLATE utf8_unicode_ci,
+   `external_id` varchar(99) COLLATE utf8_unicode_ci ,
    `note` text,
    `timeline_type` varchar (2),
    `params` varchar (99),

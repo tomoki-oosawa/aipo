@@ -857,9 +857,22 @@ public class ALDefaultSocialApplicationHanlder extends
 
       // タイムラインに更新情報を追加
       if (priority == 0f) {
+        String timelineSql =
+          "delete from eip_t_timeline where timeline_type = 'A' and owner_id = "
+            + request.getUserId()
+            + " and app_id = '"
+            + request.getAppId()
+            + "' and external_id = '"
+            + request.getExternalId()
+            + "'";
+
+        Database.sql(EipTTimeline.class, timelineSql).execute();
+
         EipTTimeline timeline = Database.create(EipTTimeline.class);
         timeline.setParentId(0);
         timeline.setOwnerId(request.getUserId());
+        timeline.setAppId(request.getAppId());
+        timeline.setExternalId(request.getExternalId());
         timeline.setNote(request.getTitle());
         timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
         timeline.setParams(request.getPortletParams());
@@ -867,6 +880,7 @@ public class ALDefaultSocialApplicationHanlder extends
         timeline.setCreateDate(Calendar.getInstance().getTime());
         // 更新日
         timeline.setUpdateDate(Calendar.getInstance().getTime());
+
         Database.commit();
       }
 

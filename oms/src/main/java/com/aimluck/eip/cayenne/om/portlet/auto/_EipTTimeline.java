@@ -9,7 +9,9 @@ import java.util.List;
   */
 public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String APP_ID_PROPERTY = "appId";
     public static final String CREATE_DATE_PROPERTY = "createDate";
+    public static final String EXTERNAL_ID_PROPERTY = "externalId";
     public static final String NOTE_PROPERTY = "note";
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String PARAMS_PROPERTY = "params";
@@ -22,11 +24,27 @@ public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
 
     public static final String TIMELINE_ID_PK_COLUMN = "TIMELINE_ID";
 
+    public void setAppId(String appId) {
+        writeProperty("appId", appId);
+    }
+    public String getAppId() {
+        return (String)readProperty("appId");
+    }
+    
+    
     public void setCreateDate(java.util.Date createDate) {
         writeProperty("createDate", createDate);
     }
     public java.util.Date getCreateDate() {
         return (java.util.Date)readProperty("createDate");
+    }
+    
+    
+    public void setExternalId(String externalId) {
+        writeProperty("externalId", externalId);
+    }
+    public String getExternalId() {
+        return (String)readProperty("externalId");
     }
     
     

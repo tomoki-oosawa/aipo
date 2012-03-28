@@ -74,3 +74,10 @@ alter table `eip_t_timeline_url` drop `thumbnail`;
 alter table `eip_t_timeline_url` add column `thumbnail` blob;
 
 -- 20120326
+
+-- 20120328
+
+alter table `eip_t_timeline` add column `app_id` varchar(255) COLLATE utf8_unicode_ci;
+alter table `eip_t_timeline` add column `external_id` varchar(99) COLLATE utf8_unicode_ci;
+
+-- 20120328

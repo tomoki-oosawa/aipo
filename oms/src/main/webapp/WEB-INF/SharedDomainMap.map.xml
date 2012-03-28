@@ -445,7 +445,9 @@
 		<db-attribute name="WORKTIME_OUT" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="eip_t_timeline">
+		<db-attribute name="APP_ID" type="VARCHAR" length="255"/>
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="EXTERNAL_ID" type="VARCHAR" length="99"/>
 		<db-attribute name="NOTE" type="CLOB"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PARAMS" type="CHAR" length="99"/>
@@ -968,7 +970,9 @@
 		<obj-attribute name="worktimeOut" type="java.lang.Integer" db-attribute-path="WORKTIME_OUT"/>
 	</obj-entity>
 	<obj-entity name="EipTTimeline" className="com.aimluck.eip.cayenne.om.portlet.EipTTimeline" dbEntityName="eip_t_timeline">
+		<obj-attribute name="appId" type="java.lang.String" db-attribute-path="APP_ID"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="externalId" type="java.lang.String" db-attribute-path="EXTERNAL_ID"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="params" type="java.lang.String" db-attribute-path="PARAMS"/>
