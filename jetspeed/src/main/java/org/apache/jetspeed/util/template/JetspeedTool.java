@@ -166,6 +166,23 @@ public class JetspeedTool implements ApplicationTool {
             Portlets subset = it.next();
 
             {
+              // スケジュールがあればスケジュールを先頭にする。
+              Entry[] preentrylist = subset.getEntriesArray();
+              if (preentrylist.length > 0) {
+                int scheduleindex = 0;
+                for (int i = 0; i < preentrylist.length; i++) {
+                  if ("Schedule".equals(preentrylist[i].getParent())) {
+                    scheduleindex = i;
+                  }
+                  subset.removeEntry(0);
+                }
+                subset.addEntry(preentrylist[scheduleindex]);
+                for (int i = 0; i < preentrylist.length; i++) {
+                  if (scheduleindex != i) {
+                    subset.addEntry(preentrylist[i]);
+                  }
+                }
+              }
               // タイムラインがあればタイムラインを先頭にする。
               Entry[] entrylist = subset.getEntriesArray();
               if (entrylist.length > 0) {
