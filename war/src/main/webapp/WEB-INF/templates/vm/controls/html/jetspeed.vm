@@ -118,8 +118,8 @@ function appsNaviSwitch() {
                 <h2>アプリ</h2>
                 <ul>
 #ALtabElementMaximize("Timeline" "an_timeline.png")
-#ALtabElementMaximize("ExtTimecard" "an_timecard.png")
 #ALtabElementMaximize("Schedule" "an_schedule.png")
+#ALtabElementMaximize("ExtTimecard" "an_timecard.png")
 #ALtabElementMaximize("Activity" "an_info.png")
 #ALtabElementMaximize("Blog" "an_blog.png")
 #ALtabElementMaximize("Msgboard" "an_bbs.png")
