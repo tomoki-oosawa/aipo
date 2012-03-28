@@ -343,11 +343,11 @@ aipo.timeline.submit = function(form, indicator_id, pid, callback){
 aipo.timeline.setMinHeight = function(pid){
 	var min = 0;
 	if(document.all) {
-		min += (document.documentElement.clientHeight - dojo.byId("timeline_" + pid).getBoundingClientRect().top);
+		min += (document.documentElement.clientHeight - dojo.byId("message_" + pid).getBoundingClientRect().top);
 	}
 	else {
-		min += (innerHeight - dojo.byId("timeline_" + pid).getBoundingClientRect().top);
+		min += (innerHeight - dojo.byId("message_" + pid).getBoundingClientRect().top);
 	}
-	dojo.byId("timeline_" + pid).style.minHeight = min + "px";
+	dojo.byId("message_" + pid).style.minHeight = min + "px";
 }
 
