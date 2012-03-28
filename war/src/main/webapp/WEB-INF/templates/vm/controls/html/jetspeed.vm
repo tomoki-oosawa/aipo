@@ -205,9 +205,9 @@ function appsNaviSwitch() {
 		                                              ##<div class="roundTopRightMain">
 		                                                ##<div class="roundBottomRightMain">
 		                                                  ##<div class="roundBottomLeftMain">
-		                                                    <div class="roundMainWrapper">
+		                                                    ##<div class="roundMainWrapper">
 $portlet.getContent($data)
-	                                                    	</div>
+	                                                    	##</div>
 		                                                  ##</div>
 		                                                ##</div>
 		                                              ##</div>
