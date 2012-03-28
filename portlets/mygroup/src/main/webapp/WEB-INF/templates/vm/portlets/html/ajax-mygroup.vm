@@ -24,8 +24,6 @@
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>自分だけのMyグループで表示切り替えができるようになります。 </p>
-<p>『グループを追加する』 ボタンを押して、追加してください。 </p>
 <p class="mh10">
 	#AUIbuttonAction("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
 </p>
