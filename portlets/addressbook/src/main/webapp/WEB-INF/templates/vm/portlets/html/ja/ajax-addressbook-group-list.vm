@@ -38,8 +38,6 @@
 #if($result.List.size() ==0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>グループ機能はアドレス帳に登録されているアドレスを、グループ単位でまとめる機能です。</p>
-<p>『グループを追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p>

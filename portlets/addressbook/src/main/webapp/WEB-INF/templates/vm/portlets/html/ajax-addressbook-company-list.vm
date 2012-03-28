@@ -54,8 +54,6 @@
 #else
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>会社情報を登録しておくことで、アドレスを会社単位で管理することが可能となります。</p>
-<p>『会社情報を追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("会社情報を追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
 </p>
