@@ -19,9 +19,13 @@
 
 package com.aimluck.eip.timeline;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムライントピックのResultData <BR>
@@ -44,6 +48,9 @@ public class TimelineLikeResultData implements ALData {
   /** 顔写真の有無 */
   private boolean has_photo;
 
+  /** 登録日 */
+  private ALDateTimeField create_date;
+
   /**
    *
    *
@@ -54,6 +61,7 @@ public class TimelineLikeResultData implements ALData {
     timeline_id = new ALNumberField();
     user_id = new ALNumberField();
     user_name = new ALStringField();
+    create_date = new ALDateTimeField();
   }
 
   /**
@@ -118,6 +126,21 @@ public class TimelineLikeResultData implements ALData {
 
   public boolean hasPhoto() {
     return has_photo;
+  }
+
+  /**
+   * @return create_date
+   */
+  public ALDateTimeField getCreateDate() {
+    return ALEipUtils.getFormattedTime(create_date);
+  }
+
+  /**
+   * @param create_date
+   *          セットする create_date
+   */
+  public void setCreateDate(Date date) {
+    create_date.setValue(date);
   }
 
 }

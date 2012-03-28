@@ -7,6 +7,7 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTTimelineLike extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String TIMELINE_ID_PROPERTY = "timelineId";
     public static final String EIP_TTIMELINE_PROPERTY = "eipTTimeline";
@@ -14,6 +15,14 @@ public class _EipTTimelineLike extends org.apache.cayenne.CayenneDataObject {
 
     public static final String TIMELINE_LIKE_ID_PK_COLUMN = "TIMELINE_LIKE_ID";
 
+    public void setCreateDate(java.util.Date createDate) {
+        writeProperty("createDate", createDate);
+    }
+    public java.util.Date getCreateDate() {
+        return (java.util.Date)readProperty("createDate");
+    }
+    
+    
     public void setOwnerId(Integer ownerId) {
         writeProperty("ownerId", ownerId);
     }

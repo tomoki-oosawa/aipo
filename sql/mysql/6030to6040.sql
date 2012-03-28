@@ -80,4 +80,5 @@ alter table `eip_t_timeline_url` add column `thumbnail` blob;
 alter table `eip_t_timeline` add column `app_id` varchar(255) COLLATE utf8_unicode_ci;
 alter table `eip_t_timeline` add column `external_id` varchar(99) COLLATE utf8_unicode_ci;
 
+alter table `eip_t_timeline_like` add column `create_date` datetime DEFAULT NULL;
 -- 20120328

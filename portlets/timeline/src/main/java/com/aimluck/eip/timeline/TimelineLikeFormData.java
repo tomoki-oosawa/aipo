@@ -20,6 +20,7 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -193,6 +194,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       EipTTimelineLike like = Database.create(EipTTimelineLike.class);
       like.setOwnerId(user_id);
       like.setTimelineId(timeline_id);
+      like.setCreateDate(Calendar.getInstance().getTime());
       Database.commit();
     } catch (Exception ex) {
       logger.error("Exception", ex);

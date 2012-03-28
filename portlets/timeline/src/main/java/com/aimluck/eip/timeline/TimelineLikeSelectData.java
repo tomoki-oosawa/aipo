@@ -30,7 +30,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -147,6 +146,8 @@ public class TimelineLikeSelectData extends
       rd.setUserId(record.getOwnerId().longValue());
       rd
         .setUserName(ALEipUtils.getUserFullName(record.getOwnerId().intValue()));
+      rd.setCreateDate(record.getCreateDate());
+
       rd.setHasPhoto(false);
       ALTimelineManager manager = ALTimelineManager.getInstance();
       List<TimelineUserResultData> userDataList =
@@ -195,8 +196,7 @@ public class TimelineLikeSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    map.putValue("update_date", EipTTimeline.UPDATE_DATE_PROPERTY);
-    map.putValue("owner_name", EipTTimeline.OWNER_ID_PROPERTY);
+    map.putValue("create_date", EipTTimelineLike.CREATE_DATE_PROPERTY);
     return map;
   }
 
@@ -231,6 +231,7 @@ public class TimelineLikeSelectData extends
       ExpressionFactory.matchExp(EipTTimelineLike.TIMELINE_ID_PROPERTY, Integer
         .valueOf(topicid));
     query.setQualifier(exp);
+    query.orderDesending(EipTTimelineLike.CREATE_DATE_PROPERTY);
     query.distinct(true);
     return query;
   }

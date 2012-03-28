@@ -467,6 +467,7 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_timeline_like">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TIMELINE_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TIMELINE_LIKE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
@@ -990,6 +991,7 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTTimelineLike" className="com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike" dbEntityName="eip_t_timeline_like">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="timelineId" type="java.lang.Integer" db-attribute-path="TIMELINE_ID"/>
 	</obj-entity>
