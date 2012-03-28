@@ -29,8 +29,6 @@
   #AUIrowTableWide()
   <tr>
   <td colspan="4" class="auiNoData">
-  <p>カテゴリが登録されていません。</p>
-  <p>カテゴリを追加することで、ToDo を分類することができます。</p>
   <p class="mh10">#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
   </td>
   </tr>
