@@ -1791,7 +1791,7 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline .comments .message {
 	margin:0;
-	padding:5px;
+	padding:5px !important;
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
 	border-top:solid 1px #fff !important;
