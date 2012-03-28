@@ -25,7 +25,7 @@
 #ALdialogheaderCloseJS("タイムライン詳細" "aipo.timeline.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="timelineOuter">
-  <div id="timeline" class="timeline">
+  <div id="timeline_$!{portlet.ID}" class="timeline">
   <div id="content">
     #parse("/portlets/html/ja/ajax-timeline-content.vm")
   </div>
