@@ -27,8 +27,6 @@
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>ユーザーの役職を設定できます。</p>
-<p>『役職を追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("役職を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 </p>

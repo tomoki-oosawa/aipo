@@ -27,8 +27,6 @@
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>ユーザーを部署単位でまとめることができます。</p>
-<p>『部署を追加する』 ボタンを押して、追加してください。</p>
 <p class="mh10">
 #AUIbuttonAction("部署を追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
 </p>
