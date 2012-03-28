@@ -189,10 +189,6 @@ function appsNaviSwitch() {
 							<!-- /MAIN TAB -->
 		#end
                             <!-- MAIN OUTER -->
-                            <!-- roundWrapper -->
-							<div id="roundWrapper">
-								<!-- MAIN OUTER -->
-								<div class="roundMainWrapper">
 		                            <table class="tableWrapper">
 		                              <tbody>
 		                                <tr>
@@ -221,8 +217,6 @@ $portlet.getContent($data)
 		                              </tbody>
 		                            </table>
 		                            <!-- /MAIN OUTER  -->
-		                        </div>
-		                    </div>
 #else
 #if (!$data.User.hasLoggedIn())
 $!portlet.getContent($data)
