@@ -487,4 +487,14 @@ public class TimelineSelectData extends
   public ALEipUser getMyUser() {
     return user;
   }
+
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  public boolean isAdmin() {
+    return ALEipUtils.isAdmin(uid);
+  }
+
 }

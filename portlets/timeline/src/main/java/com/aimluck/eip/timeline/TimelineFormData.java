@@ -186,7 +186,10 @@ public class TimelineFormData extends ALAbstractFormData {
       List<EipTTimeline> list;
 
       list =
-        TimelineUtils.getEipTTimelineListToDeleteTopic(rundata, context, false);
+        TimelineUtils.getEipTTimelineListToDeleteTopic(
+          rundata,
+          context,
+          ALEipUtils.isAdmin(rundata));
 
       if (list == null) {
         // 指定した トピック ID のレコードが見つからない場合
