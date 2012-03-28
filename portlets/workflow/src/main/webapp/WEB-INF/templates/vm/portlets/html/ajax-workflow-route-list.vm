@@ -41,8 +41,6 @@
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
-<p>申請経路を設定すると、ワークフローの申請時に申請経路が選択できます。 </p>
-<p>『申請経路を追加する』 ボタンを押して、追加してください。 </p>
 <p class="mh10">
 	#AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 </p>
