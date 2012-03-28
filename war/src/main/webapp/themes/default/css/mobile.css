@@ -69,15 +69,14 @@ td.container {
 	background-image:none;
 }
 #roundWrapper table.roundBlockWrapperTop {
-	background:#c0c0c0
+	background:#666666
 		-webkit-gradient(
 		linear, left top, left bottom,
-		from(rgba(255,255,255,0.8)),
-		color-stop(0.5, rgba(255,255,255,0)), 
-		to(rgba(0,0,0,0.1))
+		from(rgba(255,255,255,0.4)),
+		to(rgba(255,255,255,0))
 	);
-	border-top:solid 1px #9f9f9f;
-	border-bottom:solid 1px #9f9f9f;
+	border-top:solid 1px #c0c0c0;
+	border-bottom:solid 1px #999999;
 	box-shadow:0 2px 3px rgba(0,0,0,0.2);
 	margin-bottom:5px;
 }
@@ -92,7 +91,6 @@ td.container {
 	font-size:16px;
 	font-weight:bold;
 	text-shadow:0 1px 0 rgba(0,0,0,0.8);
-	box-shadow:inset 0 2px 0 rgba(255,255,255,0.7);
 }
 #roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a {
 	color:#ffffff;
@@ -101,6 +99,7 @@ td.container {
 #roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 #roundWrapper .roundBlockWrapperBottom {padding:0;}
 #roundWrapper .roundBlockMenu, .endcap {display:none}
+.roundBlockContent {padding:0;}
 
 
 /***************************************************
@@ -250,16 +249,14 @@ td.container {
 	left:0;
 	bottom:0;
 	padding:0;
-	background:#c0c0c0
+	background:#666666
 		-webkit-gradient(
 		linear, left top, left bottom,
-		from(rgba(255,255,255,0.6)),
-		color-stop(0.5, rgba(255,255,255,0)), 
-		to(rgba(0,0,0,0.1))
+		from(rgba(255,255,255,0.4)),
+		to(rgba(255,255,255,0))
 	);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);
-	border-top:solid 1px #9f9f9f;
-	border-bottom:solid 1px #9f9f9f;
+	box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);
+	border-top:solid 1px #909090;
 	z-index:994;
 }
 .auiWidget {
@@ -271,12 +268,13 @@ td.container {
 	position:absolute;
 	padding:5px;
 }
-.widgetButton a:hover, .widgetButton a:hover {
-	box-shadow:none;
-}
 .widgetButton a {
 	height:32px;
 	line-height:32px;
+	box-shadow:0 -1px 0 rgba(0,0,0,0.3);
+}
+.widgetButton a:hover {
+	box-shadow:none;
 }
 .snDrawer {
 	float:right;
@@ -284,6 +282,7 @@ td.container {
 }
 .snDrawer .auiButtonBold {
 	padding:4px;
+	box-shadow:0 -1px 0 rgba(0,0,0,0.3);
 }
 .snDrawer img {
 	width:24px;
@@ -350,9 +349,35 @@ td.container {
 	left:0 !important;
 }
 table.listTable td.caption, table.subTable td.caption {
-	min-width:8em;
 	width:auto !important;
 }
+.modalDialog .listTable th, .modalDialog .listTable td{
+	display:block;
+	padding:5px 0;
+}
+.modalDialog .listTable th, .modalDialog .listTable .caption {
+	padding:5px;
+	background:#f6f6f6;
+}
+
+#memberField table,
+#facilityField table {
+	width:100%;
+}
+.modalDialog .listTable .popup {
+	width:auto !important;
+}
+.memberlistToTop,
+.memberlistToBody,
+.memberlistToBottom {
+	float:left;
+}
+.memberlistFromTop,
+.memberlistFromBody,
+.memberlistFromBottom {
+	float:right;
+}
+
 /***************************************************
 	login
 --------------------------------------------------*/

@@ -1368,45 +1368,31 @@ table.simpleTable td.caption {
 	color:#FFF;
 	font-weight:bold;
 }
-.memberlistToTop {
-	float:left;
-	width:45%;
-	padding-right:3%;
+
+
+.modalDialog .listTable .popup {
+	width:auto !important;
 }
-* html .memberlistToTop {
-	padding-left:1px;
+.memberlistToTop,
+.memberlistFromTop,
+.memberlistToBody,
+.memberlistFromBody,
+.memberlistToBottom,
+.memberlistFromBottom {
+	width:49%;
+	padding:0;
 }
-*+html .memberlistToTop {
-	padding-left:1px;
-}
-.memberlistFromTop {
-	float:left;
-	width:48%;
-}
-* html .memberlistFromTop {
-	padding-left:1px;
-}
-*+html .memberlistFromTop {
-	padding-left:1px;
-}
-.memberlistToBody {
-	float:left;
-	width:45%;
-	padding-right:3%;
-}
-.memberlistFromBody {
-	float:left;
-	width:48%;
-}
+.memberlistToTop,
+.memberlistToBody,
 .memberlistToBottom {
 	float:left;
-	width:45%;
-	padding-right:3%;
 }
+.memberlistFromTop,
+.memberlistFromBody,
 .memberlistFromBottom {
-	float:left;
-	width:48%;
+	float:right;
 }
+
 .indicator {
 	background:url(../images/common/indicator.gif) no-repeat left;
 	padding:2px 0 2px 18px;
