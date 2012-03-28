@@ -275,9 +275,14 @@ $rdlist.DateStr
 #set($comebacks = "$comebacks<br>$outcome.get('comeback')")
 #end
 #end
-
+#if($rdlist.IsNotNullClockInTime)
 #ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
 #ALtdcellAtt($comebacks "align='center' nowrap='nowrap'")
+#else
+#ALtdcellAtt($outgoings "class='mb_hide' align='center' nowrap='nowrap'")
+#ALtdcellAtt($comebacks "class='mb_hide' align='center' nowrap='nowrap'")
+#end
+
 #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
 #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
 #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='mb_hide' align='center'")
