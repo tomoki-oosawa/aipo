@@ -21,6 +21,7 @@
 #set ($indicator_id = "indicator-list-")
 #set ($nextrows = $result.RowsNum + 20)
 #set ($record = $result.Detail)
+#set ($timelineViewType = "detail")
 ## ---------------------------------------------------------------------------
 #ALdialogheaderCloseJS("タイムライン詳細" "aipo.timeline.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

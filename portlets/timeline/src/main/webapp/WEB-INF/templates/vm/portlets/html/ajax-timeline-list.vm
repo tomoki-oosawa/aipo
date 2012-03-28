@@ -22,11 +22,13 @@
 #set ($pages = $result.PagesNum)
 #set ($currentPage = $result.CurrentPage)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
+#set ($timelineViewType = "list")
 ## ---------------------------------------------------------------------------
 <div id="timelineOuter" style="margin: 0 auto;">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
 <input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
+<input type="hidden" id="height_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="$result.ContentHeight" />
 <div id="inputField">
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
@@ -68,13 +70,16 @@
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setMinHeight('$!portlet.ID');" style="display:none"/>
 #else
   #if($result.ContentHeight == 0)
-    <div id="timeline_$!{portlet.ID}" class="timeline" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
+    <div id="timeline_$!{portlet.ID}" class="timeline">
   #else
-    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" #if($pages > $currentPage) #set($next = $currentPage + 1)onScroll="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$!currentPage');"#end>
+    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop');" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
-    #foreach ($record in $result.List)
+	#if($pages > $currentPage) #set($next = $currentPage + 1)
+		<input id="readHidden_$!{portlet.ID}" type="hidden" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage');" />
+    #end
+	#foreach ($record in $result.List)
       #parse("/portlets/html/ja/ajax-timeline-content.vm")
     #end
     <div id="content_end_$!{portlet.ID}"></div>

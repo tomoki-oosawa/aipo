@@ -175,11 +175,11 @@
 		</div>
 		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
-			<div class="outer">
-				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; color: #999999; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onfocus="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
+			<div class="tlInputMention">
+				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
 			</div>
 			<div class="right">
-				<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">コメントする</a>
+				<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end">コメントする</a>
 			</div>
 		</form>
 	</div>

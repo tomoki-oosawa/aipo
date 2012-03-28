@@ -60,34 +60,37 @@ aipo.timeline.onScroll = function(url, pid, page) {
   var clientHeight = dojo.byId("timeline_" + pid).clientHeight;
   var scrollHeight = dojo.byId("timeline_" + pid).scrollHeight;
   var remain = scrollHeight - clientHeight - scrollTop;
-  try {
-    dojo
-        .xhrPost({
-          portletId : pid,
-          url : url,
-          encoding : "utf-8",
-          handleAs : "text",
-          headers : {
-            X_REQUESTED_WITH : "XMLHttpRequest"
-          },
-          load : function(data, event) {
-            var content = [];
-            page++;
-            content = data.split("<div id=" + '"' + "content_"
-                + pid + '_1"' + ">");
-            content = content[1].split("<div id=" + '"'
-                + "content_end_" + pid + '"' + ">");
-            dojo.byId("content_" + pid + "_" + page).innerHTML = content[0];
-            var more = [];
-            more = data.split("<div id=" + '"' + "more_" + pid
-                + '"' + ">");
-            more = more[1].split("<div id=" + '"' + "more_end_"
-                + pid + '"' + ">");
-            dojo.byId("more_" + pid).innerHTML = more[0];
-          }
-        });
-  } catch (e) {
-    alert(e);
+  if(dojo.byId("height_" + pid) == 0 || remain < 5){
+	  try {
+		    dojo
+		        .xhrPost({
+		          portletId : pid,
+		          url : url,
+		          encoding : "utf-8",
+		          handleAs : "text",
+		          headers : {
+		            X_REQUESTED_WITH : "XMLHttpRequest"
+		          },
+		          load : function(data, event) {
+		            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
+		            var content = [];
+		            page++;
+		            content = data.split("<div id=" + '"' + "content_"
+		                + pid + '_1"' + ">");
+		            content = content[1].split("<div id=" + '"'
+		                + "content_end_" + pid + '"' + ">");
+		            dojo.byId("content_" + pid + "_" + page).innerHTML = content[0];
+		            var more = [];
+		            more = data.split("<div id=" + '"' + "more_" + pid
+		                + '"' + ">");
+		            more = more[1].split("<div id=" + '"' + "more_end_"
+		                + pid + '"' + ">");
+		            dojo.byId("more_" + pid).innerHTML = more[0];
+		          }
+		        });
+		  } catch (e) {
+		    alert(e);
+		  }
   }
 }
 
@@ -274,7 +277,6 @@ aipo.timeline.onBlurCommentField = function(pid, tid) {
 
   if (note.value == '') {
     note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
-    note.style.color = '#999999';
     dummy.style.display = "";
     field.style.display = "none";
   }
