@@ -706,13 +706,17 @@ public class TimelineUtils {
       String charsetSearch =
         contentType.replaceFirst("(?i).*charset=(.*)", "$1");
       String charset = null;
+      BufferedReader reader = null;
       if (contentType.equals(charsetSearch)) {
-        charset = "UTF-8";
+        reader =
+          new BufferedReader(new InputStreamReader(con.getInputStream()));
       } else {
         charset = charsetSearch;
+        reader =
+          new BufferedReader(new InputStreamReader(
+            con.getInputStream(),
+            charset));
       }
-      BufferedReader reader =
-        new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
       parser.parse(source);
