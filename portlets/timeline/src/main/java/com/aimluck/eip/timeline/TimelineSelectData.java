@@ -176,6 +176,10 @@ public class TimelineSelectData extends
       ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
         .valueOf(0));
 
+    query.setQualifier(exp1);
+
+    query.distinct(true);
+
     List<Integer> resultid = new ArrayList<Integer>();
     List<EipTTimeline> queryList = query.fetchList();
     for (EipTTimeline item : queryList) {
