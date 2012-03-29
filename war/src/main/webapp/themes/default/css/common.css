@@ -873,6 +873,7 @@ table.simpleTable td.caption {
 	padding:.2em .4em 0 .2em;
 }
 .popup {
+	width:auto !important;
 	padding:5px;
 	border:3px solid #ddd;
 	background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
@@ -893,12 +894,20 @@ table.simpleTable td.caption {
 .popup {
 	display:block;
 }
+/***************************************************
+	modalDialog
+--------------------------------------------------*/
 /* End hides from IE-mac */ .modalDialog {
 	background-color:#fff;
 	width:550px;
 	z-index:997;
 	position:absolute;
 }
+.modalDialog #memberField table,
+.modalDialog #facilityField table {
+	width:100%;
+}
+
 .modalDialogTitleBar {
 	overflow:hidden;
 	cursor:move;

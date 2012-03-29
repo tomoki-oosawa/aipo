@@ -203,6 +203,20 @@ img.avatar,
 	padding:0 0 5px;
 	border-bottom:solid 1px #ccc;
 }
+.auiPopup .roundBlockWrapperTop,
+.auiPopup .roundBlockTitle,
+.auiPopup .roundBlockIcon {
+	height:auto !important;
+}
+.auiPopup table.roundBlockWrapperTop td.roundBlockTitle {
+	padding:10px 0 10px 20px;
+	background-position:0px 10px;
+}
+.auiPopup table.roundBlockWrapperTop td.roundBlockIcon {
+	padding:10px 0;
+	background:none;
+}
+
 table.activityTable {
 	border:none;
 	padding:0;
