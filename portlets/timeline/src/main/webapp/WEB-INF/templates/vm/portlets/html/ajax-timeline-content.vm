@@ -40,6 +40,7 @@
 			#else
 				$record.PreviewNote#if($record.isLongNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
 				<p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">続きを読む</a></p>#end
+				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
 					#foreach( $attachmentFile in $!record.AttachmentFileList )
 						#if($attachmentFile.isImage())
@@ -49,6 +50,7 @@
 						#end
 					#end
 				</div>
+				#end
 				#foreach ($attachmentUrl in $record.UrlList)
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
