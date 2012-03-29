@@ -126,8 +126,6 @@
 			<div class="body">$!record2.Note</div>
 			<div class="time">$!{record2.CreateDate}
 				&nbsp;
-				#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}))
-				#else
 					#if(${record2.isLike()})
 						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 							<input type="hidden" name="secid" value="$secid" />
@@ -140,7 +138,6 @@
 						</form>
 					#end
 					&nbsp;
-				#end
 				#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
 					<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 						<input type="hidden" name="_name" value="コメント">
