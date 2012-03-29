@@ -152,7 +152,7 @@
 				#end
 				#if($record2.LikeList.size() > 0)
 					&nbsp;
-					<span class="iconLike"></span><a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeList.size()}</a>
+					<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeList.size()}</a>
 				#end
 			</div>
 		</div>
