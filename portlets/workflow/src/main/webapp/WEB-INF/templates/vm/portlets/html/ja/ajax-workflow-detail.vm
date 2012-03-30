@@ -27,8 +27,7 @@
 <form name="workflowForm$!portlet.ID" id="workflowForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);return false;">
 <input type="hidden" name="mode" value="none" />
 <input type="hidden" name="secid" value="$secid" />
-<div class"p">
-#ALtableheaderWide()
+#ALtableheaderAtt("listTable wide mb20")
 #ALtdcaption('決裁状況')
 #ALtditemheader()
 #if($!result.Detail.Progress.Value == "D")
@@ -58,8 +57,6 @@ $!result.Detail.RouteName
 #end
 #ALtdcaption('申請内容')
 #ALtditem($!result.Detail.Note)
-##ALtdcaption('金額')
-##ALtditem("$!{result.Detail.PriceStr}&nbsp;円")
 #if($!result.Detail.OldRequestLinks.size() > 0)
 #ALtdcaption('過去の申請内容')
 #ALtditemheader()
@@ -79,21 +76,18 @@ $!result.Detail.RouteName
 #ALtditemfooter()
 #end
 #ALtablefooter()
-</div>
-#ALtableheaderWide()
-<tr>
-#ALtdheadAtt("決裁履歴" "colspan='4' align='center'")
-</tr>
-<tr>
-#ALtdheadThin("決裁")
-#ALtdheadAtt("ユーザー名" "style='width:20%'")
-#ALtdheadThin("日時")
-#ALtdhead("コメント")
-</tr>
+<h2>決済履歴</h2>
+#ALtableheaderAtt("listTable wide mb10")
+##<tr>
+##ALtdheadThin("決裁")
+##ALtdheadAtt("ユーザー名" "style='width:20%'")
+##ALtdheadThin("日時")
+##ALtdhead("コメント")
+##</tr>
 #set ($confirm_view_flg = true)
 #foreach ($record in $result.Detail.DecisionRecords)
 <tr>
-#ALtdcellheaderAtt("nowrap='nowrap'")
+#ALtdcellheaderAtt("class='caption'")
 #if($!record.Status.Value == "C")
 #if($confirm_view_flg)
 <span class="caution">$!{record.StatusString}</span>
@@ -102,21 +96,26 @@ $!result.Detail.RouteName
 $!{record.StatusString}
 #end
 #ALtdcellfooter()
-#ALtdcell("$!record.UserAliasName")
-#ALtdcellheaderAtt("nowrap='nowrap'")
-#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T") $!{record.UpdateDate} #end
-#ALtdcellfooter()
 #ALtdcellheader()
+
+<span class="floatLeft w50">$!{record.UserAliasName}</span>
+<span class="floatLeft right w45">
+#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
+$!{record.UpdateDate}
+#end
+</span>
+
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
-#ALtextarea('comment' $!record.NoteR 10 40)
-<div class="alignleft">
-<div class="alignleft">#ALsubmitJS('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');")</div>
+<p class="clearfix">  
+#ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
+#ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" 'mt5 mb20 floatRight')
+</p>
+<p class="clearfix">
 #if(!($!result.Detail.CanRemandApplicant) && $!result.Detail.RemandingRecords.size() == 0)
 &nbsp;
 #else
-<div class="alignleft">
 <span id="order_field">
-#ALselectpdheader("passback_order" "90%" "" )
+#ALselectpdheader("passback_order" "70%" "" )
 #if($!result.Detail.CanRemandApplicant)
 <option value='0'>申請者</option>
 #end
@@ -126,8 +125,8 @@ $!{record.StatusString}
 #end
 #end
 #ALselectfooter()
-</span>に#ALsubmitJS('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');")</div>
-</div>
+</span>に#ALsubmitJSAtt('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');" 'floatRight')
+</p>
 #end
 #else
 $!record.Note
@@ -146,5 +145,5 @@ $!record.Note
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
-#ALformfooter()
+</form>
 #ALdialogfooter()

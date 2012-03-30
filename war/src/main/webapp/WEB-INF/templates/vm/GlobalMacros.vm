@@ -311,6 +311,10 @@
 <textarea class="text wide" name="$name" rows="$rows" cols="$cols">$text</textarea>
 #end
 
+#macro(ALtextareaAtt $name $text $rows $cols $class)
+<textarea class="$class" name="$name" rows="$rows" cols="$cols">$text</textarea>
+#end
+
 #macro(ALsubmit $name $value)
 <input name="$name" class="auiButtonAction" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
 #end
@@ -327,8 +331,16 @@
 <input name="$name" class="auiButton" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
 #end
 
+#macro(ALsubmitJSAuiButtonAtt $name $value $js $class)
+<input name="$name" class="auiButton $class" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
+#end
+
 #macro(ALsubmitJS $name $value $js)
 <input name="$name" class="auiButtonAction" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
+#end
+
+#macro(ALsubmitJSAtt $name $value $js $class)
+<input name="$name" class="auiButtonAction $class" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);$js" />
 #end
 
 #macro(ALbutton $name $value $onclick)
