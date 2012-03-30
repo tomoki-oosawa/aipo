@@ -58,7 +58,7 @@
 #end
 #end
 #else
-<input type="submit" class="submit" value="退勤" disabled="">
+<span class="auiButtonDisabled" disabled="disabled">退勤</span>
 #end
 #ALtdcellfooter()
 
@@ -66,7 +66,7 @@
 
 #if ($!{result.Detail.IsNullClockInTime}==false)
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_outgoing_" value="外出" disabled="">
+<span class="auiButtonDisabled" disabled="disabled">外出</span>
 #elseif ($!{result.Detail.IsOutgoing})
 #if (!$!{result.Detail.OutgoingTime} )
 不整合
@@ -77,7 +77,7 @@
 <input type="button" value="外出" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();"/>
 #end
 #else
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_outgoing_" value="外出" disabled="">
+<span class="auiButtonDisabled" disabled="disabled">外出</span>
 #end
 
 #ALtdcellfooter()
@@ -85,12 +85,12 @@
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 #if ($!{result.Detail.IsNullClockInTime}==false)
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled="">
+<span class="auiButtonDisabled" disabled="disabled">復帰</span>
 #else
 <input type="button" value="復帰" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();"/>
 #end
 #else
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled="">
+<span class="auiButtonDisabled" disabled="disabled">復帰</span>
 #end
 #ALtdcellfooter()
 </tr>

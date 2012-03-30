@@ -231,7 +231,7 @@ $rdlist.DateStr
 <td nowrap="nowrap"><input type="button" value="退勤" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
 #end
 #else
-<td nowrap="nowrap"><input type="submit" class="submit" value="退勤" disabled=""></td>
+<td nowrap="nowrap"><span class="auiButtonDisabled" disabled="disabled">退勤</span></td>
 #end
 #else
 #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
@@ -252,12 +252,12 @@ $rdlist.DateStr
 #if($rdlist.IsNotNullClockInTime)
 #set($outgoings = "<input type=${q}button${q} value=${q}外出${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
 #else
-<td nowrap="nowrap"><input type="submit" class="submit" name="eventSubmit_doExtTimecard_outgoing_" value="外出" disabled=""></td>
+<td nowrap="nowrap"><span class="auiButtonDisabled" disabled="disabled">外出</span></td>
 #end
 #if($rdlist.IsNotNullClockInTime)
 #set($comebacks = "<input type=${q}button${q} value=${q}復帰${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
 #else
-<td nowrap="nowrap"><input type="submit" class="submit" name="eventSubmit_doExtTimecard_comeback_" value="復帰" disabled=""></td>
+<td nowrap="nowrap"><span class="auiButtonDisabled" disabled="disabled">復帰</span></td>
 #end
 #if($outcome.get('outgoing') != "")
 #set($outgoings = "$outcome.get('outgoing')")
