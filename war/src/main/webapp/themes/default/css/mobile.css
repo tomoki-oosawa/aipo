@@ -181,8 +181,8 @@ td.container {
 	font-size:16px;
 	font-weight:bold;
 	text-shadow:0 1px 0 rgba(0,0,0,1);
-	border-top:solid 1px rgba(255,255,255,0.4);
-	border-bottom:solid 1px rgba(0,0,0,0.7);
+	border-top:solid 1px rgba(255,255,255,0.3);
+	border-bottom:solid 1px rgba(0,0,0,0.8);
 /*	background: -webkit-gradient(
 		linear, left top, left bottom,
 		from(rgba(255,255,255,0.2)),
@@ -224,8 +224,14 @@ td.container {
 	height:20px;
 }
 .anFooter {
-	padding:10px 5px;
+	display:table-cell;
+	width:260px;
+	height:43px;
+	padding:0 5px;
+	vertical-align:middle;
 	background:#505050;
+	overflow:hidden;
+	text-shadow:0 1px 0 rgba(0,0,0,1);
 }
 
 /***************************************************

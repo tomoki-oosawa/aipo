@@ -903,11 +903,6 @@ table.simpleTable td.caption {
 	z-index:997;
 	position:absolute;
 }
-.modalDialog #memberField table,
-.modalDialog #facilityField table {
-	width:100%;
-}
-
 .modalDialogTitleBar {
 	overflow:hidden;
 	cursor:move;
@@ -1378,7 +1373,9 @@ table.simpleTable td.caption {
 	font-weight:bold;
 }
 
-
+.modalDialog .listTable table.none {
+	width:100%;
+}
 .modalDialog .listTable .popup {
 	width:auto !important;
 }
@@ -2371,7 +2368,8 @@ margin:0 3px 0 0;
 /***************************************************
 	cell data width
 --------------------------------------------------*/
-.wName {width:7.5em}
+.wTitle {width:auto}
+.wName, .wCreater, .wUpdater {width:7.5em}
 .wDate {width:5.5em}
 .wDateWeak {width:8em}
 .wDateFull {width:10em}
