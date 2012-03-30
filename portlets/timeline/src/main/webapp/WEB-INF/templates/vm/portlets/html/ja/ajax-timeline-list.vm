@@ -66,8 +66,7 @@
 </div>
 
 #if($result.List.size() == 0)
-  <div id="message_$!{portlet.ID}" class="message" style="clear:both">投稿はありません。</div>
-  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setMinHeight('$!portlet.ID');" style="display:none"/>
+  <div id="message_$!{portlet.ID}" class="message" style="clear:both; min-height:750px">投稿はありません。</div>
 #else
   #if($result.ContentHeight == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
