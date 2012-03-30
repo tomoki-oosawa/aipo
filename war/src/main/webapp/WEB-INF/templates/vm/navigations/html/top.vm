@@ -53,7 +53,12 @@ dojo.addOnLoad(function () {
     if(acHtml){
        var params = {
             widgetId: "activitychecker",
+
+#if (${client} == "IPHONE" )
             iconURL: "themes/$!theme/images/mobile/an_activity.png",
+#else
+            iconURL: "themes/$!theme/images/common/icon_message.gif",
+#end
             iconAlt: "あなた宛のお知らせ"
        };
        var ac = new aipo.widget.DropdownActivityChecker(params , acHtml);
