@@ -380,6 +380,29 @@ public class TimelineUtils {
       .withExternalId(String.valueOf(timeline.getTimelineId())));
   }
 
+  public static void createNewLikeActivity(EipTTimeline timeline,
+      String loginName, String targetLoginName) {
+    if (loginName.equals(targetLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(targetLoginName);
+    String title = new StringBuilder("あなたの投稿に「いいね」が押されました").toString();
+    String portletParams =
+      new StringBuilder("?template=TimelineDetailScreen")
+        .append("&entityid=")
+        .append(timeline.getTimelineId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("timeline")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTitle(title)
+      .withPriority(1f)
+      .withExternalId(String.valueOf(timeline.getTimelineId())));
+  }
+
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
    * 
@@ -699,7 +722,6 @@ public class TimelineUtils {
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
-
       String contentType = con.getContentType();
       if (contentType == null) {
         return null;

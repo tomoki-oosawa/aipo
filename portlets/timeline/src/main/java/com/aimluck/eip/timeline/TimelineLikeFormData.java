@@ -196,6 +196,24 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       like.setTimelineId(timeline_id);
       like.setCreateDate(Calendar.getInstance().getTime());
       Database.commit();
+
+      if (like.getOwnerId() != 0) {
+        // オブジェクトモデルを取得
+        EipTTimeline parententry =
+          TimelineUtils.getEipTTimelineParentEntry(rundata, context);
+        // アクティビティ
+        String loginName =
+          ALEipUtils.getALEipUser(user_id).getName().getValue();
+        String targetLoginName =
+          ALEipUtils
+            .getALEipUser(parententry.getOwnerId())
+            .getName()
+            .getValue();
+        TimelineUtils.createNewLikeActivity(
+          parententry,
+          loginName,
+          targetLoginName);
+      }
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
