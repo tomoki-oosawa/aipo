@@ -54,7 +54,7 @@ $!{result.Detail.Note}
 <div style="padding-top:15px;">
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
 <div style="padding-top:5px;">
-<img src="images/blog/blog_item.gif">&nbsp;<a href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
+<img src="images/blog/blog_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addQueryData("ownerid", $!{result.Detail.OwnerId}).addQueryData("entityid", $!result.Detail.EntryId).addQueryData("attachmentIndex", $attachmentFile.FileId)"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>

@@ -62,7 +62,7 @@ $!{result.ParentTopic.Note}
 <div style="padding-top:15px;">
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 <div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
@@ -106,7 +106,7 @@ ${record.Note}
 <div style="padding-top:15px;">
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>

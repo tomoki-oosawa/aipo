@@ -46,7 +46,7 @@
 						#if($attachmentFile.isImage())
 							<a href="javascript:aipo.timeline.popupCenter('$jslink.getTemplate("TimelineFileRawScreen").addQueryData("ownerid", $!{record.OwnerId}).addQueryData("entityid", $record.TimelineId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
 						#else
-							<a href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+							<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 						#end
 					#end
 				</div>

@@ -65,7 +65,7 @@
 ##<th class="thin">編集</th>
 #end
 
-#ALtdheadAtt("#ALajaxsort('file_name' 'ファイル' $result 'CabinetListScreen')" "mb_hide")
+#ALtdheadAtt("#ALajaxsort('file_name' 'ファイル' $result 'CabinetListScreen')" "class='mb_hide'")
 #ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
 #ALtdheadAtt("更新者" "class='thin mb_hide'")
 #ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')" "class='thin mb_hide'")
@@ -85,7 +85,7 @@
 *#
 ##ファイルネーム
 #ALtdcellheaderAtt("class='mb_hide'")
-<div><a href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a></div>
+<div><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addQueryData("entityid", ${record.FileId})">$record.WbrFileName</a></div>
 #ALtdcellfooter()
 ##タイトル
 #ALtdcellheader()
