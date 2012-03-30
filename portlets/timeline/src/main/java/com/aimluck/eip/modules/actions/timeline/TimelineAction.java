@@ -68,7 +68,7 @@ public class TimelineAction extends ALBaseAction {
 
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
-    listData.setRowsNum(10);
+    listData.setRowsNum(20);
     listData.doViewList(this, rundata, context);
 
     setTemplate(rundata, "timeline");
@@ -106,7 +106,7 @@ public class TimelineAction extends ALBaseAction {
     listData.initField();
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
-    listData.setRowsNum(10);
+    listData.setRowsNum(20);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "timeline-list");
   }

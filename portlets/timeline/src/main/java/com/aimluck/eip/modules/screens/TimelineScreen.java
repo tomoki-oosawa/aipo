@@ -32,7 +32,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムライントピックの一覧を処理するクラスです。
- *
+ * 
  */
 public class TimelineScreen extends ALVelocityScreen {
 
@@ -41,7 +41,7 @@ public class TimelineScreen extends ALVelocityScreen {
     .getLogger(TimelineScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -52,7 +52,7 @@ public class TimelineScreen extends ALVelocityScreen {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
-      int rows = 10;
+      int rows = 20;
       int scrollTop = 0;
       if (rundata.getParameters().containsKey("rows")) {
         rows = rundata.getParameters().getInt("rows");
