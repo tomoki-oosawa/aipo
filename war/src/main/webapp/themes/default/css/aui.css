@@ -184,7 +184,7 @@ img.avatar,
 }
 .auiPopup,
 .activityPopup {
-	position:absolute;
+	/*position:absolute;*/
 	background:#FFF;
 	padding:9px;
 	border:1px solid #999;
