@@ -232,7 +232,7 @@
   <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")時間で指定する#else期間で指定する#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
-#ALtditem("#ALtextfield('name' $!result.Name '95%' 50 'active')")
+#ALtditem("#ALtextfield('name' $!result.Name '100%' 50 'active')")
 
 #* 共有カテゴリ連携（ここから） *#
 #if($!result.isDisplayManHour())
@@ -245,7 +245,7 @@
 #* 共有カテゴリ連携（ここまで） *#
 
 #ALtdcaption("$!result.getFieldName('place')")
-#ALtditem("#ALtextfield('place' $!result.Place '95%' 50 'active')")
+#ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
 #ALtdcaption("$!result.getFieldName('note')")
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 5 50)
