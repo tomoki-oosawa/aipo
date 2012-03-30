@@ -24,8 +24,8 @@
     <portlet-entry name="Timeline" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>タイムラインβ版</title>
-            <description>タイムラインβ版を管理します。</description>
+            <title>タイムライン</title>
+            <description>タイムラインを管理します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="timeline" hidden="true" cachedOnName="true" cachedOnValue="true"/>
