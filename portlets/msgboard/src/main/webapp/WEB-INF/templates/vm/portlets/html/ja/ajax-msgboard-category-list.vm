@@ -34,15 +34,22 @@
 <div id="auiContentsArea">
 <div id="auiContentsAreaInner">
 <h2>カテゴリの管理</h2>
+#if($result.List.size() > 0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader('カテゴリ' $jslink $portlet)
+#end
 #if($result.List.size() <= 0)
-<div class="message">複数のトピックをグループ化することで、トピックを分類することができます。</div>
-<div class="message">『カテゴリ追加』 ボタンを押して、追加してください。 </div>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p class="mh10">
+#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
