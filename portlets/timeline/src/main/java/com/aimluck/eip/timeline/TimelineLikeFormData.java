@@ -106,7 +106,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
   }
 
   /**
-   * トピックをデータベースから削除します。 <BR>
+   * いいねをデータベースから削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -202,17 +202,20 @@ public class TimelineLikeFormData extends ALAbstractFormData {
         EipTTimeline parententry =
           TimelineUtils.getEipTTimelineParentEntry(rundata, context);
         // アクティビティ
-        String loginName =
-          ALEipUtils.getALEipUser(user_id).getName().getValue();
-        String targetLoginName =
-          ALEipUtils
-            .getALEipUser(parententry.getOwnerId())
-            .getName()
-            .getValue();
-        TimelineUtils.createNewLikeActivity(
-          parententry,
-          loginName,
-          targetLoginName);
+        TimelineLikeSelectData likelist = new TimelineLikeSelectData();
+        if (likelist.getLikeList(timeline_id).size() == 1) {
+          String loginName =
+            ALEipUtils.getALEipUser(user_id).getName().getValue();
+          String targetLoginName =
+            ALEipUtils
+              .getALEipUser(parententry.getOwnerId())
+              .getName()
+              .getValue();
+          TimelineUtils.createNewLikeActivity(
+            parententry,
+            loginName,
+            targetLoginName);
+        }
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
