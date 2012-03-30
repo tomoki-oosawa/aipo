@@ -56,8 +56,12 @@ dojo.addOnLoad(function () {
 
 #if (${client} == "IPHONE" )
             iconURL: "themes/$!theme/images/mobile/an_activity.png",
+            iconWidth: "24",
+            iconHeight: "24",
 #else
             iconURL: "themes/$!theme/images/common/icon_message.gif",
+            iconWidth: "19",
+            iconHeight: "15",
 #end
             iconAlt: "あなた宛のお知らせ"
        };
