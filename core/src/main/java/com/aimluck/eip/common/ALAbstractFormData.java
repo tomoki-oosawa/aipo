@@ -35,9 +35,11 @@ import com.aimluck.commons.field.ALDateContainer;
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.quota.ALQuotaService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -157,6 +159,10 @@ public abstract class ALAbstractFormData implements ALData {
 
   }
 
+  protected boolean isOverQuota() {
+    return ALQuotaService.isOverQuota(Database.getDomainName());
+  }
+
   /**
    * データを新規登録します。
    * 
@@ -185,11 +191,17 @@ public abstract class ALAbstractFormData implements ALData {
         ALEipConstants.MODE_INSERT);
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
-          rundata,
-          context,
-          msgList));
+
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add("ディスク容量を 100% 使用していますので、データ削除またはプラン変更をしてください。");
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         mode = action.getMode();
@@ -241,11 +253,18 @@ public abstract class ALAbstractFormData implements ALData {
         ALEipConstants.MODE_UPDATE);
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
-          rundata,
-          context,
-          msgList));
+
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add("ディスク容量を 100% 使用していますので、データ削除またはプラン変更をしてください。");
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
+            rundata,
+            context,
+            msgList));
+      }
+
       if (!res) {
         action.setMode(ALEipConstants.MODE_EDIT_FORM);
         mode = action.getMode();
