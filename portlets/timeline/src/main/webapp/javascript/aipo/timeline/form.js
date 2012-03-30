@@ -136,7 +136,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 			if (dojo.byId("flag_" + pid).value == "none") {
 				var spritval = _val.split(/\r\n|\n/g);
 				for (i in spritval) {
-					if (spritval[i].match(/^http:\/\/[^ 	]/i)) {
+					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
 						aipo.timeline.getUrl(spritval[i], pid);
 					}
 				}

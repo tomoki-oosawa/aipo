@@ -22,8 +22,8 @@ package com.aimluck.eip.timeline.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -695,28 +695,34 @@ public class TimelineUtils {
     DOMParser parser = new DOMParser();
     try {
       URL url = new URL(string);
-      URLConnection con = url.openConnection();
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
+
       String contentType = con.getContentType();
       if (contentType == null) {
         return null;
       }
       String charsetSearch =
         contentType.replaceFirst("(?i).*charset=(.*)", "$1");
-      String charset = null;
+      String charset = con.getContentEncoding();
       BufferedReader reader = null;
-      if (contentType.equals(charsetSearch)) {
-        reader =
-          new BufferedReader(new InputStreamReader(con.getInputStream()));
-      } else {
+      if (!contentType.equals(charsetSearch)) {
         charset = charsetSearch;
+      }
+      if (charset == null) {
+        reader =
+          new BufferedReader(new InputStreamReader(
+            con.getInputStream(),
+            "JISAutoDetect"));
+      } else {
         reader =
           new BufferedReader(new InputStreamReader(
             con.getInputStream(),
             charset));
       }
+
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
       parser.parse(source);
