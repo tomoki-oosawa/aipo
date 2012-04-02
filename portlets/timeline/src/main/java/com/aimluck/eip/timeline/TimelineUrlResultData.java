@@ -47,6 +47,9 @@ public class TimelineUrlResultData implements ALData {
   /** メモ */
   private ALStringField body;
 
+  /** サムネイルの有無 */
+  private boolean thumbnailFlag;
+
   /**
    *
    *
@@ -58,6 +61,7 @@ public class TimelineUrlResultData implements ALData {
     title = new ALStringField();
     url = new ALStringField();
     body = new ALStringField();
+    setThumbnailFlag(false);
   }
 
   /**
@@ -162,6 +166,14 @@ public class TimelineUrlResultData implements ALData {
    */
   public void setBody(String str) {
     body.setValue(str);
+  }
+
+  public boolean isThumbnailFlag() {
+    return thumbnailFlag;
+  }
+
+  public void setThumbnailFlag(boolean thumbnailFlag) {
+    this.thumbnailFlag = thumbnailFlag;
   }
 
 }

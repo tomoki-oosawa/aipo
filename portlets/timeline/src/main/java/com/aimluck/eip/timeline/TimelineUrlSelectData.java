@@ -135,6 +135,11 @@ public class TimelineUrlSelectData extends
       rd.setTitle(record.getTitle());
       rd.setUrl(record.getUrl());
       rd.setBody(record.getBody());
+      boolean flag = false;
+      if (record.getThumbnail() != null) {
+        flag = true;
+      }
+      rd.setThumbnailFlag(flag);
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

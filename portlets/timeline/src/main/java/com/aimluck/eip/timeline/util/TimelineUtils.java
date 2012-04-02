@@ -797,7 +797,9 @@ public class TimelineUtils {
         } else if (!src.startsWith("http")) {
           src = (new StringBuilder()).append(pagePath).append(src).toString();
         }
-        images.add(src);
+        if (src != null) {
+          images.add(src);
+        }
       }
       tub.setImages(images);
 
@@ -805,8 +807,10 @@ public class TimelineUtils {
       for (int i = 0; i < nodeListTitle.getLength(); i++) {
         Element element = (Element) nodeListTitle.item(i);
         String title = element.getFirstChild().getNodeValue();
-        tub.setTitle(title);
-        break;
+        if (title != null) {
+          tub.setTitle(title);
+          break;
+        }
       }
 
       NodeList nodeListBody = document.getElementsByTagName("meta");
@@ -815,8 +819,10 @@ public class TimelineUtils {
         String name = element.getAttribute("name");
         if (name.equals("description")) {
           String body = element.getAttribute("content");
-          tub.setBody(body);
-          break;
+          if (body != null) {
+            tub.setBody(body);
+            break;
+          }
         }
       }
 
