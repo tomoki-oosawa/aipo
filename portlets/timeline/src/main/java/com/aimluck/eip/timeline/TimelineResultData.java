@@ -194,9 +194,27 @@ public class TimelineResultData implements ALData {
    */
   public String getPreviewNote() {
     if (isLongNote()) {
-      return ALEipUtils.getMessageList(note.getValue().substring(
-        0,
-        PRE_NOTE_LENGTH));
+
+      String subnote =
+        ALEipUtils
+          .getMessageList(note.getValue().substring(0, PRE_NOTE_LENGTH));
+
+      String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
+      if (sub.indexOf("http") == -1
+        || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
+        || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+        return subnote;
+      }
+      sub = note.getValue();
+
+      int i;
+
+      for (i = PRE_NOTE_LENGTH; sub.charAt(i) != ' ' && sub.charAt(i) != '\n'; i++) {
+
+      }
+      subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
+
+      return subnote;
     } else {
       return getNote();
     }
@@ -209,8 +227,25 @@ public class TimelineResultData implements ALData {
    */
   public String getDetailNote() {
     if (isLongNote()) {
-      return ALEipUtils.getMessageList(note.getValue().substring(
-        PRE_NOTE_LENGTH));
+      String subnote =
+        ALEipUtils.getMessageList(note.getValue().substring(PRE_NOTE_LENGTH));
+
+      String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
+      if (sub.indexOf("http") == -1
+        || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
+        || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+        return subnote;
+      }
+      sub = note.getValue();
+
+      int i;
+
+      for (i = PRE_NOTE_LENGTH; sub.charAt(i) != ' ' && sub.charAt(i) != '\n'; i++) {
+
+      }
+      subnote = ALEipUtils.getMessageList(note.getValue().substring(i));
+
+      return subnote;
     } else {
       return null;
     }
