@@ -3574,6 +3574,8 @@ public class ScheduleUtils {
     select.append(" eip_t_schedule.create_user_id,");
     if (isSearch) {
       select.append(" eip_t_schedule.note,");
+      select.append(" eip_t_schedule_map.user_id,");
+      select.append(" eip_t_schedule_map.type,");
     }
     select.append(" eip_t_schedule.edit_flag,");
     select
