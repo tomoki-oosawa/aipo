@@ -71,7 +71,7 @@ $!result.Detail.RouteName
 #ALtdcaption('添付ファイル')
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<img src="images/workflow/workflow_item.gif">&nbsp;<a href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$attachmentFile.FileName</a><br>
+<img src="images/workflow/workflow_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$attachmentFile.FileName</a><br>
 #end
 #ALtditemfooter()
 #end
@@ -98,15 +98,17 @@ $!{record.StatusString}
 #ALtdcellfooter()
 #ALtdcellheader()
 
+<div class="clearfix">
 <span class="floatLeft w50">$!{record.UserAliasName}</span>
 <span class="floatLeft right w45">
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
 $!{record.UpdateDate}
 #end
 </span>
+</div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
-<p class="clearfix">  
+<p class="clearfix">
 #ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
 #ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" 'mt5 mb20 floatRight')
 </p>

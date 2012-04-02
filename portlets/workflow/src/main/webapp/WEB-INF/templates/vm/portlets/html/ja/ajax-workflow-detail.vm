@@ -98,12 +98,14 @@ $!{record.StatusString}
 #ALtdcellfooter()
 #ALtdcellheader()
 
+<div class="clearfix">
 <span class="floatLeft w50">$!{record.UserAliasName}</span>
 <span class="floatLeft right w45">
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
 $!{record.UpdateDate}
 #end
 </span>
+</div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 <p class="clearfix">
