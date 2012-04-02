@@ -98,21 +98,19 @@ $!{record.StatusString}
 #ALtdcellfooter()
 #ALtdcellheader()
 
-<div class="clearfix">
 <span class="floatLeft w50">$!{record.UserAliasName}</span>
 <span class="floatLeft right w45">
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
 $!{record.UpdateDate}
 #end
 </span>
-</div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
-<p class="clearfix">
-#ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
-#ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" 'mt5 mb20 floatRight')
+#ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')	
+<p class="right mt5 mb20">
+#ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" '')
 </p>
-<p class="clearfix">
+<p class="right">
 #if(!($!result.Detail.CanRemandApplicant) && $!result.Detail.RemandingRecords.size() == 0)
 &nbsp;
 #else
@@ -127,7 +125,7 @@ $!{record.UpdateDate}
 #end
 #end
 #ALselectfooter()
-</span>に#ALsubmitJSAtt('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');" 'floatRight')
+</span>に#ALsubmitJSAtt('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');" '')
 </p>
 #end
 #else
