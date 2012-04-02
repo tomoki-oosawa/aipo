@@ -44,7 +44,31 @@ dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
         }
-    }
+    },
+
+	_toggleDropDown: function(){
+		// summary: toggle the drop-down widget; if it is up, close it, if not, open it
+		if(this.disabled){ return; }
+		dijit.focus(this.popupStateNode);
+		var dropDown = this.dropDown;
+		if(!dropDown){ return false; }
+		if(!this._opened){
+			// If there's an href, then load that first, so we don't get a flicker
+			if(dropDown.href && !dropDown.isLoaded){
+				var self = this;
+				var handler = dojo.connect(dropDown, "onLoad", function(){
+					dojo.disconnect(handler);
+					self._openDropDown();
+				});
+				dropDown._loadCheck(true);
+				return;
+			}else{
+				this._openDropDown();
+			}
+		}else{
+			this._closeDropDown();
+		}
+	}
 });
 
 }
