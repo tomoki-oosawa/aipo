@@ -7,7 +7,7 @@ body {position:absolute}
 .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
 	display:none;
 }
-#header {padding-top:0;height:auto}
+#header {padding:0;height:auto}
 #header .inner {height:auto}
 .hdNavi {
 	position:absolute;
@@ -15,6 +15,10 @@ body {position:absolute}
 	padding-top:0;
 }
 .hdActivity {
+	position:absolute;
+	top:0;
+	right:0;
+	width:45px;
 	line-height:40px;
 }
 .activityField {
@@ -329,8 +333,8 @@ td.container {
 /* timeline*/
 .timeline .avatar img,
 .timeline .avatar {
-	max-width:20px;
-	max-height:20px;
+	max-width:32px;
+	max-height:32px;
 }
 .timeline .messageContents,
 .timeline .comments .messageContents {
@@ -340,9 +344,9 @@ td.container {
 .timeline .comments {
 	margin-left:30px;
 }
-.timeline .commentField form {
+.timeline .commentField form {/*
 	padding-left:22px;
-}
+*/}
 
 
 /***************************************************
@@ -432,6 +436,72 @@ table.listTable td.caption, table.subTable td.caption {
 #auiLoginBox .floatRight {
 	width:152px;
 }
+
+/***************************************************
+	auiSummaryMeta
+--------------------------------------------------*/
+.auiSummaryMeta {
+	margin:6px 0;
+}
+/***************************************************
+	auiRowTable
+--------------------------------------------------*/
+table.auiRowTable tr {
+	display:block;
+	padding:3px 0;
+	border-bottom:solid 1px #eee;
+}
+table.auiRowTable tr:hover td {
+	background:none;
+}
+table.auiRowTable th {display:none}
+table.auiRowTable td {
+	width:100%;
+	display:inline;
+	padding:0;
+	border:none;
+}
+table.auiRowTable td > div {display:inline}
+
+table.auiRowTable td.wTitle,
+table.auiRowTable td.wTitle > div {
+	display:block;
+	font-size:14px;
+}
+table.auiRowTable td.wTitle a {
+	display:block;
+	cursor:pointer;
+}
+table.auiRowTable td.wTitl a {
+}
+
+/* tableBbs */
+.tableBbs .wIcon,
+.tableBbs .wCreater {display:none}
+
+.tableBbs .wCategory,
+.tableBbs .wUpdater,
+.tableBbs .wDate {
+	font-size:smaller;
+	color:#666666;
+}
+.tableBbs .wCategory:after,
+.tableBbs .wUpdater:after {
+	content: " / ";
+}
+
+
+
+.wDate {}
+.wDateWeak {}
+.wDateFull {}
+.wCategory {}
+.wCopname {}
+.wCheckbox {}
+.wIcon {}
+.wMail {}
+.wPosition {}
+.wTel {}
 
 /***************************************************
 	mobile class - undermost
