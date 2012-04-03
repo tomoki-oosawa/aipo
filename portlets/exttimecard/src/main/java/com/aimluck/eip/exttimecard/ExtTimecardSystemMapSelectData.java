@@ -33,6 +33,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.account.util.AccountUtils;
+import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
@@ -75,6 +76,7 @@ public class ExtTimecardSystemMapSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     String sorttype = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
     if (sort == null || sort.equals("")) {
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "userposition");
     }
 
     if ("name_kana".equals(ALEipUtils.getTemp(rundata, context, LIST_SORT_STR))
@@ -274,6 +276,9 @@ public class ExtTimecardSystemMapSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("name_kana", TurbineUser.LAST_NAME_KANA_PROPERTY);
+    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
+      + "."
+      + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
     return map;
   }
 
