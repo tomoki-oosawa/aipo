@@ -953,55 +953,71 @@ table.activityTable tr.unread td {
 
 
 /* auiButton ********************/
+
 .auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonDisabled,
+.auiButtonSearch,
 .auiButtonSmall,
+.auiButtonDisabled,
 input[type=submit],
 input[type=button],
 input[type=reset],
 button {
 	display:inline-block;
-	color:#000;
+	white-space:nowrap;
+	overflow:hidden;
 	text-decoration:none;
 	text-align:center;
-	text-shadow:0 1px 0 #f8f8f8;
 	vertical-align:middle;
 	cursor:pointer;
-	border:solid 1px #c0c0c0;
 	border-radius:2px;
 	-ms-border-radius:2px;
+}
+
+.auiButton,
+.auiButtonBold,
+.auiButtonSmall,
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+	color:#000;
+	text-shadow:0 1px 0 #f8f8f8;
+	border:solid 1px #c0c0c0;
 	background:#f0f0f0;
 	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;/*IE*/
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);
 }
-.auiButton {
-	line-height:1.85em;
-	height:1.85em;
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonDisabled,
+.auiButtonSearch {
+	height:26px;
+	line-height:26px;
 	padding:0 0.7em;
-}
-.auiButtonSmall {
-	padding:0 5px;
-	font-size:8pt;
-	white-space:nowrap;
 }
 input[type=submit],
 input[type=button],
 input[type=reset],
 button {
-	height:2.4em;
-	>line-height:2.1em;/*IE*/
-	padding:0 0.5em;
-	>padding:0 0.1em;/*IE*/
+	height:28px;
+	line-height:28px;
+	padding:0 0.7em;
 }
 button.auiButton,
 button {
-	line-height:1.8em;
 	padding:0 0.55em;
 	>padding:0 0.15em;/*IE*/
 }
-button.auiButtonSmall {
-	padding:0 0.55em;
-	>padding:0 0.15em;/*IE*/
+.auiButtonSmall {
+	padding:0 5px;
+	height:16px !important;
+	line-height:16px !important;
+	font-size:10px;
 }
 *:first-child+html input[type=submit],
 *:first-child+html input[type=button],
@@ -1010,8 +1026,8 @@ button.auiButtonSmall {
 *:first-child+html .auiButtonSmall {/* IE7 Hack */
 	padding:0 !important;
 }
-
 .auiButton:hover,
+.auiButtonBold:hover,
 .auiButtonSmall:hover,
 input[type=submit]:hover,
 input[type=button]:hover,
@@ -1025,6 +1041,7 @@ button:hover {
 	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
 }
 .auiButton:active,
+.auiButtonBold:active,
 .auiButtonSmall:active,
 input[type=submit]:active,
 input[type=button]:active,
@@ -1035,12 +1052,6 @@ button:active {
 	background:#ccc;
 	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
 	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
-}
-input.auiButton,
-input[type=submit],
-input[type=button],
-input[type=reset] {
-	padding:0 0.4em;
 }
 .auiButton span {
 	display:table-cell;
@@ -1063,17 +1074,6 @@ input[type=reset] {
 	vertical-align:middle;
 }
 
-.auiButtonAction,
-.auiButtonBold {
-	display:inline-block;
-	line-height:2.2em;
-	padding:0 1em;
-	text-decoration:none;
-	text-align:center;
-	cursor:pointer;
-	border-radius:3px;
-	-ms-border-radius:3px;
-}
 .auiButtonAction {
 	color:#fff !important;
 	font-weight:bold;
@@ -1093,23 +1093,6 @@ input[type=reset] {
 	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
 	background: -moz-linear-gradient(top, #fff, #f0f0f0);
 }
-input[type='submit'].auiButtonAction,
-input[type='reset'].auiButtonAction,
-input[type='button'].auiButtonAction,
-input[type='submit'].auiButtonBold,
-input[type='reset'].auiButtonBold,
-input[type='button'].auiButtonBold {
-	height:2.4em;
-	line-height:auto;
-	padding:0 0.7em;
-	>padding:0;
-}
-button.auiButtonAction,
-button.auiButtonBold {
-	height:2.5em;
-	line-height:auto;
-	>padding:0;
-}
 .auiButtonAction:hover {
 	color:#fff;
 	border:solid 1px #e0800 !important0;
@@ -1125,54 +1108,37 @@ button.auiButtonBold {
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22)) !important;/*Ch*/
 	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
 }
-.auiButtonBold:hover {
-	color:#000;
-	border:solid 1px #999;
-	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#e0e0e0;
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e1e1e1));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
+
+.auiButtonDisabled{
+	text-shadow:0 1px 0 #f8f8f8;
+	border:solid 1px #c0c0c0;
+	color:#999;
+	background:#eee;
+	cursor:default;
 }
-.auiButtonBold:active {
-	color:#000;
-	border:solid 1px #999;
-	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#ccc;
-	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
-	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
+.auiButtonDisabled:hover {color:#999}
+*:first-child+html .auiButtonDisabled {/* IE7 Hack */
+	line-height:2.4em;
+}
+input[disabled],
+textarea[disabled],
+button[disabled] {
+	color:#999;
+	background:#eee;
+}
+input[disabled]:hover,
+textarea[disabled]:hover,
+button[disabled]:hover {
+	color:#999;
+	background:#eee;
+	border-color:#c9c9c9;
+	cursor:default;
+	box-shadow:none;
 }
 
 /* auiSearch ********************/
 .auiSearch {
 	position:relative;
-}
-.auiSearch input.text,
-.auiSearch input[type='text'],
-.auiSearch input.date {
-	height:2.1em;
-	*height:2.0em;/*IE*/
-	line-height:2.1em;
-	*line-height:2.0em;/*IE*/
-	padding:0 2px;
-	vertical-align:middle;
-	border-radius:3px;
-	-ms-border-radius:3px;
-	box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	background-color:#fff;
-	border:1px solid #c9c9c9;
-}
-.auiSearch input.text:hover,
-.auiSearch input.text:focus,
-.auiSearch input[type='text']:hover,
-.auiSearch input[type='text']:focus,
-.auiSearch input.date:hover,
-.auiSearch input.date:focus {
-	border:solid 1px #999;
-}
-.auiSearch input.text:focus,
-.auiSearch input.date:focus {
-	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
 }
 .auiSearch input.text {
 	width:20em;
@@ -1181,31 +1147,18 @@ button.auiButtonBold {
 	width:7em;
 }
 .auiButtonSearch {
-	display:inline-block;
-	line-height:2em;
-	padding:0 1em;
 	color:#000;
-	text-decoration:none;
-	text-align:center;
 	font-weight:bold;
 	text-shadow:0 1px 0 #f8f8f8;
-	cursor:pointer;
 	border:solid 1px #d0d0d0;
-	border-radius:3px;
-	-ms-border-radius:3px;
 	background:#ddd;
 	background:#ddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
 	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd));/*Ch*/
 	background: -moz-linear-gradient(top, #eee, #ddd);/*Fx*/
 }
-input[type='submit'].auiButtonSearch,
-input[type='button'].auiButtonSearch,
-button.auiButtonSearch {
-	height:2.1em;
-	>height:2.2em;/*IE*/
-	line-height:auto;
-	padding:0 0.75em;
-	>padding:0 0.4em;
+*:first-child+html .auiButtonSearch {
+	height:26px;
+	line-height:26px;
 }
 .auiButtonSearch:hover {
 	color:#000;
@@ -1566,9 +1519,8 @@ select {
 }
 input[type=text],
 input[type=password] {
-	height:2.1em;
-	*height:2.0em;/*IE*/
-	line-height/*\**/:2.0em\9;/*IE7-8*/
+	height:26px;
+	line-height:26px;
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
@@ -1603,41 +1555,6 @@ input[type=text]:focus,
 input[type=password]:focus,
 textarea:focus {
 	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
-}
-.auiButtonDisabled{
-	display:inline-block;
-	text-decoration:none;
-	text-align:center;
-	text-shadow:0 1px 0 #f8f8f8;
-	vertical-align:middle;
-	border:solid 1px #c0c0c0;
-	border-radius:2px;
-	-ms-border-radius:2px;
-	color:#999;
-	background:#eee;
-	height:2.25em;
-	line-height:2.25em;
-	padding:0 0.6em;
-}
-.auiButtonDisabled:hover {color:#999}
-*:first-child+html .auiButtonDisabled {/* IE7 Hack */
-	line-height:2.4em;
-	padding:0 0.1em;
-}
-input[disabled],
-textarea[disabled],
-button[disabled] {
-	color:#999;
-	background:#eee;
-}
-input[disabled]:hover,
-textarea[disabled]:hover,
-button[disabled]:hover {
-	color:#999;
-	background:#eee;
-	border-color:#c9c9c9;
-	cursor:default;
-	box-shadow:none;
 }
 input[type=checkbox],
 input[type=radio] {
