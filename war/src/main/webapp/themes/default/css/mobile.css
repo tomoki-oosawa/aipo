@@ -446,6 +446,7 @@ table.listTable td.caption, table.subTable td.caption {
 /***************************************************
 	auiRowTable
 --------------------------------------------------*/
+/*
 table.auiRowTable tr {
 	display:block;
 	padding:3px 0;
@@ -474,8 +475,9 @@ table.auiRowTable td.wTitle a {
 }
 table.auiRowTable td.wTitl a {
 }
-
+*/
 /* tableBbs */
+/*
 .tableBbs .wIcon,
 .tableBbs .wCreater {display:none}
 
@@ -489,9 +491,6 @@ table.auiRowTable td.wTitl a {
 .tableBbs .wUpdater:after {
 	content: " / ";
 }
-
-
-
 .wDate {}
 .wDateWeak {}
 .wDateFull {}
@@ -502,6 +501,7 @@ table.auiRowTable td.wTitl a {
 .wMail {}
 .wPosition {}
 .wTel {}
+*/
 
 /***************************************************
 	mobile class - undermost
