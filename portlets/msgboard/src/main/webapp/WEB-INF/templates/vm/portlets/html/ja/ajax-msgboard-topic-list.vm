@@ -45,9 +45,9 @@
 <div class="message">指定された条件に該当するトピックはありません。</div>
 #else
 <div class="auiSummaryMeta clearfix">
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIajaxpageview('MsgboardTopicListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicListScreen')")

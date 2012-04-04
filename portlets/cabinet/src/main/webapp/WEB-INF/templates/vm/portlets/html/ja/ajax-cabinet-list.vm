@@ -57,7 +57,11 @@
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
 </div>
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
+#AUISummaryDivfooter()
+#end
 #AUIrowTableWide()
 <tr>
 

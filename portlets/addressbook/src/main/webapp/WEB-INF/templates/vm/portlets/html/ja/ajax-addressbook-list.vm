@@ -47,7 +47,6 @@
   アクセス権限がありません。管理者にお問い合わせください。
 #else
 #if($result.List.size() == 0)
-#AUIsearchresult($!result.SearchWord.toString())
 指定された条件に該当するアドレスはありません。<br />
 #else
 

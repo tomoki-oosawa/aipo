@@ -60,9 +60,9 @@
 <div class="message">指定された条件に該当する依頼はありません。</div>
 #else
 <div class="auiSummaryMeta clearfix">
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIajaxpageview('WorkflowListScreen' $result)
 </div>
-#AUIsearchresult($!result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowListScreen')")

@@ -60,15 +60,13 @@
 #if($result.List.size() == 0)
 指定された条件に該当するアドレスはありません。<br />
 #else
-
-
-#ALajaxlistformheader('AddressBook')
 #AUISummaryDiv()
 #AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
 #AUISummaryDiv()
 #AUIsearchresult($result.SearchWord.toString())
 #AUISummaryDivfooter()
+#ALajaxlistformheader('AddressBook')
 #AUIrowTableWide()
 <tr>
 <th>

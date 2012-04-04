@@ -18,31 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
-<div class="relativeBlock" style="margin-bottom:10px;">
-<div class="absoluteRight">
-<div class="auiSelectButton">
-
-#if (${client} != "IPHONE")
-<ul>
-#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["一覧", "list", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-</ul>
-#end
-</div>
-</div>
-
-</div>
-
-<div class="auiForm">
+<div class="auiSummaryMeta clearfix">
+<div class="floatLeft auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch","all"))">すべてのグループ</option>
         #if($result.GroupList.size() > 0)
@@ -77,6 +54,29 @@
     </select>
 </div>
 
+<div class="floatRight">
+<div class="auiSelectButton floatLeft mr5">
+
+#if (${client} != "IPHONE")
+<ul>
+#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["一覧", "list", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+#end
+</div>
+</div>
+
+</div>
+
+
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 
@@ -84,8 +84,8 @@
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else
-<div class="clearfix">
-<div class="floatLeft">#AUIsearchresult($!result.targetKeyword.toString())</div>
+<div class="auiSummaryMeta clearfix">
+#AUIsearchresult($!result.targetKeyword.toString())
 #AUIajaxpageview('ScheduleListScreen' $result)
 </div>
 #AUIrowTableWide()

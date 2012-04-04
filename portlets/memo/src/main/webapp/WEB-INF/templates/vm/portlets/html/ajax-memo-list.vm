@@ -27,8 +27,8 @@
 <input type="hidden" name="template" value="MemoListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
-</a>
 </form>
+<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -42,11 +42,15 @@
 </div>
 #AUIajaxpageview('MemoListScreen' $result)
 </div>
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
+#AUISummaryDivfooter()
+#end
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadW75("#ALajaxsort('memo_name' 'メモ名' $result 'MemoListScreen')")
+#ALtdheadW75("#ALajaxsort('memo_name' 'タイトル' $result 'MemoListScreen')")
 #ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'MemoListScreen')")
 </tr>
 

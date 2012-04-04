@@ -78,8 +78,11 @@
 </div>
 #AUIajaxpageview('NoteListScreen' $result)
 #AUISummaryDivfooter()
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
-
+#AUISummaryDivfooter()
+#end
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'style="width:20px"')

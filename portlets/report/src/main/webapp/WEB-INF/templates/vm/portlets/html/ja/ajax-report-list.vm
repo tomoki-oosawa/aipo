@@ -37,9 +37,9 @@
 #else
 
 #AUISummaryDiv()
+#AUIsearchresult($result.targetKeyword.toString())
 #AUIajaxpageview('ReportListScreen' $result)
 #AUISummaryDivfooter()
-#AUIsearchresult($result.targetKeyword.toString())
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('report_name' 'タイトル' $result 'ReportListScreen')")

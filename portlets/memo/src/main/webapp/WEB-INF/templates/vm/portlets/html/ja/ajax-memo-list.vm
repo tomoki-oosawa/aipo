@@ -42,7 +42,11 @@
 </div>
 #AUIajaxpageview('MemoListScreen' $result)
 </div>
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
+#AUISummaryDivfooter()
+#end
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")

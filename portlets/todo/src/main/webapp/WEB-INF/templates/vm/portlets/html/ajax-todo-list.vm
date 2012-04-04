@@ -56,8 +56,6 @@
 </div>
 </div>
 
-#AUIsearchresult($!result.targetKeyword.toString())
-
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('ToDo')
@@ -73,15 +71,21 @@
 </div>
 #AUIajaxpageview('ToDoListScreen' $result)
 </div>
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
+#AUIsearchresult($!result.targetKeyword.toString())
+#AUISummaryDivfooter()
+#end
+
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadThin("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')")
+#ALtdheadAtt("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')" "class='thin mb_hide'")
 <th>#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')</th>
 <th class="wName">#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')</th>
-<th class="wCategory">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
+<th class="wCategory mb_hide">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
 #ALtdheadThin("#ALajaxsort('end_date' '締め切り日' $result 'ToDoListScreen')")
-#ALtdheadThin("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')")
+#ALtdheadAtt("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')" "class='thin mb_hide'")
 </tr>
 #foreach ($record in $result.List)
 #if($!result.currentTab == "list")
@@ -98,7 +102,7 @@
 #end
 <tr $lsStyle>
 #ALtdcellAtt("<input name='check$!record.TodoId' type='checkbox' value='$!record.TodoId'/>" 'align="center"')
-#ALtdcellAtt("<img src='images/todo/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'align="center"')
+#ALtdcellAtt("<img src='images/todo/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'class=" mb_hide" align="center"')
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
@@ -108,9 +112,9 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UserName</div>" "")
-#ALtdcellAtt("<div>$!record.CategoryName</div>" "")
+#ALtdcellAtt("<div>$!record.CategoryName</div>" "class='mb_hide' ")
 #ALtdcellAtt("<div>$!record.EndDate</div>" 'nowrap="nowrap"')
-#ALtdcellheaderAtt('nowrap="nowrap"')
+#ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
 #if($!result.currentTab == "list")<img src='images/todo/$!record.StateImage' alt='$!record.StateString' title='$!record.StateString' style="vertical-align: middle;" />&nbsp;#end<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('todo','$!portlet.ID');">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "0"))"   #if ($!record.State.toString() == "0" )  selected="selected" #end>未着手</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "10"))"  #if ($!record.State.toString() == "10")  selected="selected" #end>10%</option>

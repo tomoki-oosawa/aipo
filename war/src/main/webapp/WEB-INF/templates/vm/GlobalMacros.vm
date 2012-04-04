@@ -1695,7 +1695,7 @@ $item.get(0)
 
 #macro(AUIsearchresult $keyword)
 #if($!keyword && $!keyword != "")
-<div class="auiSummaryMeta auiSearchResult">検索結果：$!keyword</div>
+<div class="floatLeft auiSearchResult">検索結果：$!keyword</div>
 #end
 #end
 

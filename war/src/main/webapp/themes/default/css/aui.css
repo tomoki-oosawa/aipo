@@ -1203,6 +1203,8 @@ button[disabled]:hover {
 .auiSearchResult {
 	clear:both;
 	font-weight:bold;
+	line-height:24px;
+	padding-right:1em;
 }
 .auiSearchMore {
 	line-height:2em;

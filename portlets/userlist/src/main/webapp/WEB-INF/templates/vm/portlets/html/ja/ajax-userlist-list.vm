@@ -38,8 +38,8 @@
 #else
 #ALajaxlistformheader('AddressBook')
 #AUISummaryDiv()
-#AUIajaxpageview("UserListListScreen" $result)
 #AUIsearchresult($result.SearchWord.toString())
+#AUIajaxpageview("UserListListScreen" $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
