@@ -1,8 +1,4 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.widget.MemberFacilitySelectList"],
-["require", "dijit._Widget"],
-["require", "dijit._Templated"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.MemberFacilitySelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+if(!dojo._hasResource["aipo.widget.MemberFacilitySelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.MemberFacilitySelectList"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -50,7 +46,7 @@ dojo.declare("aipo.widget.MemberFacilitySelectList", [dijit._Widget, dijit._Temp
     memberGroupUrl: "",
     changeGroupUrl: "",
     tmpPortretId: "",
-    templateString: "<div id=\"${widgetId}\" widgetId=\"${widgetId}\" style=\"display: none\"><table class=\"none\" ><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"auiPopup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >閲覧ユーザー一覧</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"　削除　\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"　＜ 追加　\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div> </div></div></div></td></tr></table></div>\n",
+    templateString: "<div id=\"${widgetId}\" widgetId=\"${widgetId}\" style=\"display: none\"><div class=\"auiPopup\" style=\"width:300px\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >閲覧ユーザー一覧</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"10\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"　削除　\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"　＜ 追加　\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div> </div></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
 
@@ -281,5 +277,3 @@ dojo.declare("aipo.widget.MemberFacilitySelectList", [dijit._Widget, dijit._Temp
 });
 
 }
-
-}});
