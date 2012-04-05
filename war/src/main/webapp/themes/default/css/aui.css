@@ -180,7 +180,7 @@ img.avatar,
 .dijitPopup {
 	display:block;
 	z-index:9999 !important;
-	background:#FFF;
+	/*background:#FFF;*/
 }
 .auiPopup,
 .activityPopup {

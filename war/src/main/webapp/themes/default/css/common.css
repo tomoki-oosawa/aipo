@@ -898,7 +898,7 @@ table.simpleTable td.caption {
 	modalDialog
 --------------------------------------------------*/
 /* End hides from IE-mac */ .modalDialog {
-	background-color:#fff;
+/*	background-color:#fff;*/
 	width:550px;
 	z-index:997;
 	position:absolute;
