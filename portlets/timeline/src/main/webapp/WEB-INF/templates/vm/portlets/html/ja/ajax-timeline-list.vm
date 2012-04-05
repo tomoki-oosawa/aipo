@@ -75,13 +75,7 @@
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop');" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
-	#if($pages > $currentPage) #set($next = $currentPage + 1)
-		<input id="readHidden_$!{portlet.ID}" type="hidden" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage');" />
-    #end
-	#foreach ($record in $result.List)
-      #parse("/portlets/html/ja/ajax-timeline-content.vm")
-    #end
-    <div id="content_end_$!{portlet.ID}"></div>
+	#parse("/portlets/html/ja/ajax-timeline-content.vm")
   </div>
   #if(${pages} > 1)
     #foreach ($i in [2..${pages}])
@@ -90,8 +84,8 @@
   #end
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeight == 0)
-	#if($pages > $currentPage) #set($next = $currentPage + 1)
-	<div class="readMore"><a href="javascript:void(0);" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage');" style="display:block;">もっと見る</a></div>
+	#if($pages > $currentPage)
+		<div class="readMore"><a href="javascript:void(0);" onclick="dojo.byId('readHidden_$!{portlet.ID}').onclick()" style="display:block;">もっと見る</a></div>
 	#end
   #end
   <div id="more_end_$!{portlet.ID}"></div>

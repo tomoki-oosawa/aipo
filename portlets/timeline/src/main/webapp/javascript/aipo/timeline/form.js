@@ -55,7 +55,7 @@ aipo.timeline.showCommentAll = function(pid, tid) {
       });
 }
 
-aipo.timeline.onScroll = function(url, pid, page) {
+aipo.timeline.onScroll = function(url, pid, page, max) {
   var scrollTop = dojo.byId("timeline_" + pid).scrollTop;
   var clientHeight = dojo.byId("timeline_" + pid).clientHeight;
   var scrollHeight = dojo.byId("timeline_" + pid).scrollHeight;
@@ -73,19 +73,11 @@ aipo.timeline.onScroll = function(url, pid, page) {
 		          },
 		          load : function(data, event) {
 		            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
-		            var content = [];
 		            page++;
-		            content = data.split("<div id=" + '"' + "content_"
-		                + pid + '_1"' + ">");
-		            content = content[1].split("<div id=" + '"'
-		                + "content_end_" + pid + '"' + ">");
-		            dojo.byId("content_" + pid + "_" + page).innerHTML = content[0];
-		            var more = [];
-		            more = data.split("<div id=" + '"' + "more_" + pid
-		                + '"' + ">");
-		            more = more[1].split("<div id=" + '"' + "more_end_"
-		                + pid + '"' + ">");
-		            dojo.byId("more_" + pid).innerHTML = more[0];
+		            dojo.byId("content_" + pid + "_" + page).innerHTML = data;
+		            if(page == max){
+		            	dojo.byId("more_" + pid).style.display = "none";
+		            }
 		          }
 		        });
 		  } catch (e) {

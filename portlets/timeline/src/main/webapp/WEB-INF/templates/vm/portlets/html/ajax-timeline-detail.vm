@@ -28,7 +28,7 @@
 <div id="timelineOuter">
   <div id="timeline_$!{portlet.ID}" class="timeline">
   <div id="content">
-    #parse("/portlets/html/ja/ajax-timeline-content.vm")
+    #parse("/portlets/html/ja/ajax-timeline-content-inner.vm")
   </div>
   </div>
 </div>
