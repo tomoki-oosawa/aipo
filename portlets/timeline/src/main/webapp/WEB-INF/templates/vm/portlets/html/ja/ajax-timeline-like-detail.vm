@@ -20,7 +20,7 @@
 #set ($record = $result.Detail)
 ## ---------------------------------------------------------------------------
 <div id="messageDiv"></div>
-<div class="auiPopup" style="width:400px;left:50%;top:50%;margin:-210px 0 0 -200px;">
+<div class="auiPopup">
 <h2>「いいね！」と言っている人</h2>
     <div class="auiListWrapper">
 		<ul class="userList">
