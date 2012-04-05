@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>ユーザー名簿</title>
-            <description>ユーザー名簿を表示します。</description>
+            <description>利用しているユーザー一覧を表示します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="userlist" hidden="true" cachedOnName="true" cachedOnValue="true"/>

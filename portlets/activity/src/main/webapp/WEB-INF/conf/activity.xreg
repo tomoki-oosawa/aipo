@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>更新情報</title>
-            <description>更新情報を表示します。</description>
+            <description>追加や更新のあった内容を時系列で表示します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="action" value="activity.ActivityAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>

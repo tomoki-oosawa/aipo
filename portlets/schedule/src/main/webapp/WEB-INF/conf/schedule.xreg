@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>スケジュール</title>
-            <description>個人や設備、グループの予定を管理します。登録した予定を「日／週／月」で閲覧できます。</description>
+            <description>全員でスケジュールの共有が行えます。設備予約や継続スケジュールの登録もできます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="schedule" hidden="true" cachedOnName="true" cachedOnValue="true"/>

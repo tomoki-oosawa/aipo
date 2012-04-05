@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>メモ帳</title>
-            <description>メモ帳を管理します。</description>
+            <description>個人用の簡易的なメモ帳です。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="memo" hidden="true" cachedOnName="true" cachedOnValue="true"/>

@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>報告書</title>
-            <description>報告書を管理します。</description>
+            <description>特定のユーザへ報告書を通知し共有できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="report" hidden="true" cachedOnName="true" cachedOnValue="true"/>

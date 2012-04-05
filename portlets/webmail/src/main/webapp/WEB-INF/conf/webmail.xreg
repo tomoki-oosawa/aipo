@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Webメール</title>
-            <description>Webメールを管理します。</description>
+            <description>メールの送受信が行えるWebメール機能です。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="webmail" hidden="true" cachedOnName="true" cachedOnValue="true"/>

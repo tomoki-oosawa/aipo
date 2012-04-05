@@ -25,7 +25,7 @@
         <security-ref parent="admin-view"/>
         <meta-info>
             <title>タイムカード管理</title>
-            <description>タイムカードを管理します。</description>
+            <description>出退勤を1クリックで登録できるタイムカードです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="exttimecardsystem-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>

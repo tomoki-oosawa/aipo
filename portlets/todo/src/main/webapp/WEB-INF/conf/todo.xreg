@@ -24,7 +24,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>共有ToDo</title>
-            <description>共有ToDoを管理します。</description>
+            <description>作業の進捗を共有できる共有ToDoです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="todo" hidden="true" cachedOnName="true" cachedOnValue="true"/>
