@@ -1633,9 +1633,7 @@ ul.attachments span.deletebutton:hover{
 #timelineOuter .message {
 	clear:both;
 	border-top: 1px solid #dcdcdc;
-	margin:10px 0;
 }
-
 #timelineOuter .on {
 	border-top: 1px solid #999999;
 }
@@ -1687,6 +1685,7 @@ ul.attachments span.deletebutton:hover{
 }
 
 .timeline {
+	margin-top:10px;
 	overflow:hidden;
 }
 .timeline .avatar {
