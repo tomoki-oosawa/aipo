@@ -270,6 +270,13 @@ dojo.declare(
                 delete self._xhrDfd;
                 return err;
             });
+        },
+        hide:function(){
+          	/**親のhideを継承 -start*/
+        	if(!this._alreadyInitialized){return }if(this._fadeIn.status()=="playing"){this._fadeIn.stop() }this._fadeOut.play(); if(this._scrollConnected){this._scrollConnected=false }dojo.forEach(this._modalconnects,dojo.disconnect); this._modalconnects=[]; this.connect(this._fadeOut,"onEnd",dojo.hitch(this,function(){dijit.focus(this._savedFocus) })); this.open=false;
+        	/**親のhideを継承 -end */
+        	dojo.query("#auiContentsArea,#auiWidgetsArea").removeClass("mb_dialoghide");
+            dojo.query("#modalDialog").removeClass("mb_dialog");
         }
     }
 );
