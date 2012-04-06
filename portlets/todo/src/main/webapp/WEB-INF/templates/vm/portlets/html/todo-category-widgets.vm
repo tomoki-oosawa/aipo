@@ -25,7 +25,7 @@
 #set ($menues3 = [["完了ToDo", "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
 
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <a title="ToDoを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);" class="auiButtonBold">ToDoを追加する</a>
 </div>

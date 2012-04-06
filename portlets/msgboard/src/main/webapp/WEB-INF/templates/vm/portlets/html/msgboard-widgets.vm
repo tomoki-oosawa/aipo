@@ -25,7 +25,7 @@
 #set ($tabs = [["トピック一覧", "",""]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("トピックを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
 </div>

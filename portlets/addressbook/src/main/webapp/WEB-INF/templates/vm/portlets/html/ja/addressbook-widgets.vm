@@ -22,7 +22,7 @@
 #set ($companyUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyListScreen")))
 ## ---------------------------------------------------------------------------
 
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #if($button_flag=="true")
 #AUIbuttonAction("アドレスを追加する" "javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);")

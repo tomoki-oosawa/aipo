@@ -23,7 +23,7 @@
 </li>
 #end
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <ul>
 #ALsetCategoryList('all' 'すべてのアプリ')

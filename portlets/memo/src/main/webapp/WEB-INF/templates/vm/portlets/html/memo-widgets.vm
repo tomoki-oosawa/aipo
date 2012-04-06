@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("メモを作成する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.memo.onLoadMemoDialog);")
 </div>

@@ -212,6 +212,12 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     entry.getManufacturer();
 
     context.put("client", entry.getManufacturer());
+    char c = 0;
+    if (entry.getManufacturer().equals("IPAD")
+      || entry.getManufacturer().equals("IPHONE")) {
+      c = useragent.charAt(useragent.indexOf("OS") + 3);
+    }
+    context.put("clientVer", String.valueOf(c));
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

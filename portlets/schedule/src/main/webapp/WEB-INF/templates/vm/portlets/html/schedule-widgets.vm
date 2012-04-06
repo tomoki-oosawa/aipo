@@ -31,7 +31,7 @@
 <span id="schedule_val_tooltip3" style="display:none;">参加者</span>
 <span id="schedule_val_tooltip4" style="display:none;">設備</span>
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("予定を追加する" "javascript:aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);")
 </div>

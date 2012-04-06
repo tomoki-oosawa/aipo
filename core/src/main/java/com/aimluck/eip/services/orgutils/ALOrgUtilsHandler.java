@@ -81,6 +81,12 @@ public abstract class ALOrgUtilsHandler {
     entry.getManufacturer();
 
     hash.put("client", entry.getManufacturer());
+    char c = 0;
+    if (entry.getManufacturer().equals("IPAD")
+      || entry.getManufacturer().equals("IPHONE")) {
+      c = useragent.charAt(useragent.indexOf("OS") + 3);
+    }
+    hash.put("clientVer", String.valueOf(c));
 
     return hash;
   }

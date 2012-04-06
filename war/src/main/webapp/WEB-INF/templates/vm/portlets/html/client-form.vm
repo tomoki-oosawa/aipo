@@ -129,7 +129,7 @@ limitations under the License.
 		</tr>
 		<tr>
 		  <td bgcolor="$!{skin.TitleBackgroundColor}">
-		    <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_CLIENT_VERSION</font></b>
+		    <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_clientVerSION</font></b>
 		  </td>
 		  <td bgcolor="$!{skin.TitleBackgroundColor}">
 		    <font face="$ui.sansSerifFonts">
@@ -198,7 +198,7 @@ limitations under the License.
 		</tr>
 		<tr>
 		  <td bgcolor="$!{skin.TitleBackgroundColor}">
-		    <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_CLIENT_VERSION</font></b>
+		    <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_clientVerSION</font></b>
 		  </td>
 		  <td bgcolor="$!{skin.TitleBackgroundColor}">
 		    <font face="$ui.sansSerifFonts">

@@ -22,7 +22,7 @@
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doCabinet_list','1')))
 #set ($submenulist = [["ファイルを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], ["フォルダを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea">
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #else style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("ファイルを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);")
 </div>

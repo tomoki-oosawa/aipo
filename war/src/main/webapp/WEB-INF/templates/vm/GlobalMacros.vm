@@ -1700,7 +1700,7 @@ $item.get(0)
 #end
 
 #macro(AUIcontentsAreaHeader)
-<div id="auiContentsArea"><div id="auiContentsAreaInner">
+<div id="auiContentsArea" #if($clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 #end
 
 
