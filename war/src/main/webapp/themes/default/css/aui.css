@@ -1203,8 +1203,6 @@ button[disabled]:hover {
 .auiSearchResult {
 	clear:both;
 	font-weight:bold;
-	line-height:24px;
-	padding-right:1em;
 }
 .auiSearchMore {
 	line-height:2em;
@@ -1633,9 +1631,9 @@ ul.attachments span.deletebutton:hover{
 
 /* timeline ********************/
 #timelineOuter .message {
-	margin:0;
-	padding:10px 0;
+	clear:both;
 	border-top: 1px solid #dcdcdc;
+	margin:10px 0;
 }
 
 #timelineOuter .on {
@@ -1691,14 +1689,13 @@ ul.attachments span.deletebutton:hover{
 .timeline {
 	overflow:hidden;
 }
-.timeline .message {
-	clear:both;
-}
 .timeline .avatar {
 	float:left;
+	margin:10px 10px 0 0;
 }
 .timeline .messageContents {
 	padding-left:60px;
+	margin:10px 0;
 }
 .timeline .comments {
 	margin:0 0 10px 60px;
@@ -1706,6 +1703,10 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline .comments .messageContents {
 	padding-left:42px;
+	margin:0;
+}
+.timeline .comments .avatar {
+	margin:0 10px 0 0;
 }
 .messageContents .name {
 	/*color: #369;*/
@@ -1744,7 +1745,7 @@ ul.attachments span.deletebutton:hover{
 	border-bottom:solid 1px #e6e6e6;
 }
 .timeline .comments .message {
-	margin:0;
+	margin:0 !important;
 	padding:5px !important;
 	border: none;
 	border-bottom:solid 1px #e6e6e6;
@@ -1798,7 +1799,6 @@ ul.attachments span.deletebutton:hover{
 	-ms-border-radius:3px;
 }
 #timelineOuter #newMessage {
-	margin-bottom: 10px;
 	background: #f0f0f0;
 	text-align: center;
 	border: 1px #cdcdcd solid;

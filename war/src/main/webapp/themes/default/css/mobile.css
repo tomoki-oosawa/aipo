@@ -338,11 +338,11 @@ td.container {
 }
 .timeline .messageContents,
 .timeline .comments .messageContents {
-	display:table-cell;
-	padding-left:0;
+/*	display:table-cell;*/
+	padding-left:42px;
 }
 .timeline .comments {
-	margin-left:30px;
+	margin-left:42px;
 }
 .timeline .commentField form {/*
 	padding-left:22px;
