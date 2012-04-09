@@ -79,13 +79,13 @@
 
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadAtt("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')" "class='thin mb_hide'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='thin center'")
+#ALtdheadAtt("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')" "class='thin mb_hide center'")
 <th>#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')</th>
 <th class="wName">#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')</th>
 <th class="wCategory mb_hide">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
-#ALtdheadThin("#ALajaxsort('end_date' '締め切り日' $result 'ToDoListScreen')")
-#ALtdheadAtt("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')" "class='thin mb_hide'")
+#ALtdheadAtt("#ALajaxsort('end_date' '締め切り日' $result 'ToDoListScreen')" 'class="thin center"')
+#ALtdheadAtt("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')" 'class="thin mb_hide center"')
 </tr>
 #foreach ($record in $result.List)
 #if($!result.currentTab == "list")
