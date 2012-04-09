@@ -135,8 +135,10 @@ public class TimelineUtils {
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
 
     Expression exp1 =
-      ExpressionFactory.matchDbExp(EipTTimeline.PARENT_ID_COLUMN, timeline_id);
-    query.setQualifier(exp1);
+      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, timeline_id);
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTimeline.TIMELINE_TYPE_PROPERTY, "T");
+    query.setQualifier(exp1.andExp(exp2));
 
     return query.getCount();
   }

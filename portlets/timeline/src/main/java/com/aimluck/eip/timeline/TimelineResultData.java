@@ -75,6 +75,9 @@ public class TimelineResultData implements ALData {
   /** 子トピックオブジェクト */
   private List<TimelineResultData> coTopicList;
 
+  /** 子アクティビティオブジェクト */
+  private List<TimelineResultData> coActivityList;
+
   /** いいねオブジェクト */
   private List<TimelineLikeResultData> likeList;
 
@@ -342,6 +345,21 @@ public class TimelineResultData implements ALData {
    */
   public void setCoTopicList(List<TimelineResultData> coTopicList) {
     this.coTopicList = coTopicList;
+  }
+
+  /**
+   * @return coActivityList
+   */
+  public List<TimelineResultData> getCoActivityList() {
+    return coActivityList;
+  }
+
+  /**
+   * @param coActivityList
+   *          セットする coActivityList
+   */
+  public void setCoActivityList(List<TimelineResultData> coActivityList) {
+    this.coActivityList = coActivityList;
   }
 
   /**

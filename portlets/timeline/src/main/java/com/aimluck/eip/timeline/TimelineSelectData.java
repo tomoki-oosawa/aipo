@@ -34,7 +34,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -245,6 +244,24 @@ public class TimelineSelectData extends
 
       rd.setCoTopicList(coTopicList);
 
+      /* 子アクティビティ */
+      List<TimelineResultData> coActivityList =
+        new ArrayList<TimelineResultData>();
+
+      SelectQuery<EipTTimeline> query2 =
+        getSelectQueryForCoactivity(record.getTimelineId().toString());
+
+      query2.orderAscending(EipTTimeline.CREATE_DATE_PROPERTY);
+
+      List<EipTTimeline> aList2 = query2.fetchList();
+      if (aList2 != null) {
+        for (EipTTimeline coActivity : aList2) {
+          coActivityList.add((TimelineResultData) getResultData(coActivity));
+        }
+      }
+
+      rd.setCoActivityList(coActivityList);
+
       /* いいね */
       TimelineLikeSelectData ls = new TimelineLikeSelectData();
       List<TimelineLikeResultData> likeList =
@@ -343,20 +360,24 @@ public class TimelineSelectData extends
 
   private SelectQuery<EipTTimeline> getSelectQueryForCotopic(String topicid) {
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    Expression exp =
+    Expression exp1 =
       ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
         .valueOf(topicid));
-    query.setQualifier(exp);
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTimeline.TIMELINE_TYPE_PROPERTY, "T");
+    query.setQualifier(exp1.andExp(exp2));
     query.distinct(true);
     return query;
   }
 
-  private SelectQuery<EipTTimelineUrl> getSelectQueryForUrl(String topicid) {
-    SelectQuery<EipTTimelineUrl> query = Database.query(EipTTimelineUrl.class);
-    Expression exp =
-      ExpressionFactory.matchExp(EipTTimelineUrl.TIMELINE_ID_PROPERTY, Integer
+  private SelectQuery<EipTTimeline> getSelectQueryForCoactivity(String topicid) {
+    SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
         .valueOf(topicid));
-    query.setQualifier(exp);
+    Expression exp2 =
+      ExpressionFactory.matchExp(EipTTimeline.TIMELINE_TYPE_PROPERTY, "A");
+    query.setQualifier(exp1.andExp(exp2));
     query.distinct(true);
     return query;
   }

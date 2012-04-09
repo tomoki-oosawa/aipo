@@ -275,6 +275,7 @@ public class TimelineFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+      Calendar tCal = Calendar.getInstance();
       // 新規オブジェクトモデル
       EipTTimeline topic = Database.create(EipTTimeline.class);
       // 親トピックID
@@ -287,13 +288,21 @@ public class TimelineFormData extends ALAbstractFormData {
       topic.setTimelineType(EipTTimeline.TIMELINE_TYPE_TIMELINE);
 
       // 作成日
-      topic.setCreateDate(Calendar.getInstance().getTime());
+      topic.setCreateDate(tCal.getTime());
       // 更新日
-      topic.setUpdateDate(Calendar.getInstance().getTime());
+      topic.setUpdateDate(tCal.getTime());
       if (Integer.valueOf(parentId) != 0) {
         EipTTimeline parent =
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
-        parent.setUpdateDate(Calendar.getInstance().getTime());
+        if (parent
+          .getTimelineType()
+          .equals(EipTTimeline.TIMELINE_TYPE_TIMELINE)) {
+          parent.setUpdateDate(tCal.getTime());
+        } else if (parent.getTimelineType().equals(
+          EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {
+          exchangeParent(parent);
+        }
+
       } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
         && !ALEipUtils.getParameter(rundata, context, "tlClipUrl").equals("")) {
 
@@ -589,6 +598,48 @@ public class TimelineFormData extends ALAbstractFormData {
     list.add("tlClipBody");
     ALEipUtils.removeTemp(rundata, context, list);
 
+  }
+
+  public void exchangeParent(EipTTimeline topic) {
+    Calendar tCal = Calendar.getInstance();
+    SelectQuery<EipTTimeline> tQuery = Database.query(EipTTimeline.class);
+    Calendar tCalBefore = Calendar.getInstance();
+    tCalBefore.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
+      .get(Calendar.DATE), 0, 0, 0);
+    Calendar tCalAfter = Calendar.getInstance();
+    tCalAfter.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
+      .get(Calendar.DATE), 0, 0, 0);
+    tCalAfter.add(Calendar.DATE, 1);
+
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTTimeline.OWNER_ID_PROPERTY, Integer
+        .valueOf(topic.getOwnerId()));
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTTimeline.TIMELINE_TYPE_PROPERTY,
+        EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+    Expression exp3 =
+      ExpressionFactory.betweenExp(
+        EipTTimeline.CREATE_DATE_PROPERTY,
+        tCalBefore.getTime(),
+        tCalAfter.getTime());
+
+    tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3)));
+    tQuery.distinct(true);
+    List<EipTTimeline> tList = tQuery.fetchList();
+    for (EipTTimeline t : tList) {
+      if (t.getTimelineId() != topic.getTimelineId()) {
+        EipTTimeline t2 = Database.get(EipTTimeline.class, t.getTimelineId());
+        t2.setParentId(topic.getTimelineId());
+      }
+    }
+
+    EipTTimeline topic2 =
+      Database.get(EipTTimeline.class, topic.getTimelineId());
+
+    topic2.setUpdateDate(tCal.getTime());
+    topic2.setParentId(0);
+    Database.commit();
   }
 
 }

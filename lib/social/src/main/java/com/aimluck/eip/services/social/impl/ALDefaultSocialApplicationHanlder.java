@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -868,8 +870,44 @@ public class ALDefaultSocialApplicationHanlder extends
 
         Database.sql(EipTTimeline.class, timelineSql).execute();
 
+        Calendar tCal = Calendar.getInstance();
+        int parentId = 0;
+        SelectQuery<EipTTimeline> tQuery = Database.query(EipTTimeline.class);
+        Calendar tCalBefore = Calendar.getInstance();
+        tCalBefore.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
+          .get(Calendar.DATE), 0, 0, 0);
+        Calendar tCalAfter = Calendar.getInstance();
+        tCalAfter.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
+          .get(Calendar.DATE), 0, 0, 0);
+        tCalAfter.add(Calendar.DATE, 1);
+
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipTTimeline.OWNER_ID_PROPERTY, Integer
+            .valueOf(request.getUserId()));
+        Expression exp2 =
+          ExpressionFactory.matchExp(
+            EipTTimeline.TIMELINE_TYPE_PROPERTY,
+            EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+        Expression exp3 =
+          ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, 0);
+        Expression exp4 =
+          ExpressionFactory.betweenExp(
+            EipTTimeline.CREATE_DATE_PROPERTY,
+            tCalBefore.getTime(),
+            tCalAfter.getTime());
+
+        tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4))));
+        tQuery.distinct(true);
+        List<EipTTimeline> parents = tQuery.fetchList();
+        if (parents != null && parents.size() != 0) {
+          parentId = parents.get(0).getTimelineId();
+          EipTTimeline parent =
+            Database.get(EipTTimeline.class, Integer.valueOf(parentId));
+          parent.setUpdateDate(tCal.getTime());
+        }
+
         EipTTimeline timeline = Database.create(EipTTimeline.class);
-        timeline.setParentId(0);
+        timeline.setParentId(parentId);
         timeline.setOwnerId(request.getUserId());
         timeline.setAppId(request.getAppId());
         timeline.setExternalId(request.getExternalId());
@@ -877,9 +915,9 @@ public class ALDefaultSocialApplicationHanlder extends
         timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
         timeline.setParams(request.getPortletParams());
         // 作成日
-        timeline.setCreateDate(Calendar.getInstance().getTime());
+        timeline.setCreateDate(tCal.getTime());
         // 更新日
-        timeline.setUpdateDate(Calendar.getInstance().getTime());
+        timeline.setUpdateDate(tCal.getTime());
 
         Database.commit();
       }
