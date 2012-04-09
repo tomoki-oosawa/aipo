@@ -26,11 +26,6 @@ body#login {
 	font-size:.75em;
 }
 
-
-#auiContentsArea.mb_dialoghide,#auiWidgetsArea.mb_dialoghide{
-	display:none;
-}
-
 /***************************************************
 	auiHeader
 --------------------------------------------------*/
@@ -1010,7 +1005,7 @@ input[type=button],
 input[type=reset],
 button {
 	height:28px;
-	line-height:28px;
+	line-height:1em;
 	padding:0 0.7em;
 }
 button.auiButton,
@@ -1023,6 +1018,12 @@ button {
 	height:16px !important;
 	line-height:16px !important;
 	font-size:10px;
+}
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall {
+	line-height:1em !important;
 }
 *:first-child+html input[type=submit],
 *:first-child+html input[type=button],
@@ -1638,9 +1639,7 @@ ul.attachments span.deletebutton:hover{
 #timelineOuter .message {
 	clear:both;
 	border-top: 1px solid #dcdcdc;
-	margin:10px 0;
 }
-
 #timelineOuter .on {
 	border-top: 1px solid #999999;
 }
@@ -1692,6 +1691,7 @@ ul.attachments span.deletebutton:hover{
 }
 
 .timeline {
+	margin-top:10px;
 	overflow:hidden;
 }
 .timeline .avatar {
