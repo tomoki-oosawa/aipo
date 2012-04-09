@@ -413,8 +413,8 @@ table.listTable td.caption, table.subTable td.caption {
 	margin:20px 0;
 }
 #auiLoginBox .logo img {
-	width:200px;
-	height:73px;
+	width:150px;
+	height:55px;
 }
 #auiLoginBox select {
 	height:2.2em;
@@ -423,7 +423,7 @@ table.listTable td.caption, table.subTable td.caption {
 #auiLoginBox input.text {
 	width:100%;
 	height:auto;
-	padding:5px;
+	padding:5px 0;
 	font-size:1.5em;
 }
 #auiLoginBox .guide {
