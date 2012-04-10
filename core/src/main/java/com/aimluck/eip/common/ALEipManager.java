@@ -42,6 +42,7 @@ import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * 会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
@@ -177,7 +178,9 @@ public class ALEipManager {
     // データベースから新規取得
     Map<Integer, ALEipPost> postMap = new LinkedHashMap<Integer, ALEipPost>();
     try {
-      List<EipMPost> list = Database.query(EipMPost.class).fetchList();
+      SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+      query.orderAscending(EipMPost.POST_NAME_PROPERTY);
+      List<EipMPost> list = query.fetchList();
       for (EipMPost record : list) {
         ALEipPost post = new ALEipPost();
         post.initField();
