@@ -1406,6 +1406,7 @@ table.simpleTable td.caption {
 }
 .indicatorDialog {
 	border:5px solid #ddd;
+	background:#ffffff;
 }
 ul.imageView {
 	display:block;
