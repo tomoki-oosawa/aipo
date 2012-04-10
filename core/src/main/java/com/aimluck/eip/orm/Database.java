@@ -476,6 +476,26 @@ public class Database {
     DataContext.bindThreadDataContext(null);
   }
 
+  public static boolean isJdbcPostgreSQL() {
+
+    DataContext dataContext = DataContext.getThreadDataContext();
+    String url = null;
+    try {
+      url =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getMetaData()
+          .getURL();
+    } catch (SQLException e) {
+      logger.warn(e.getMessage(), e);
+    }
+
+    return url != null && url.startsWith("jdbc:postgresql");
+  }
+
   protected static DBCPDataSourceFactory createDataSourceFactory() {
     String property =
       System.getProperty("com.aimluck.eip.orm.DataSourceFactory");

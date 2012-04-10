@@ -55,6 +55,15 @@
 		<db-attribute name="POSITION" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER"/>
 	</db-entity>
+	<db-entity name="eip_t_acl_map">
+		<db-attribute name="ACL_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="FEATURE" type="VARCHAR" length="64"/>
+		<db-attribute name="ID" type="INTEGER" length="4"/>
+		<db-attribute name="LEVEL" type="INTEGER" length="4"/>
+		<db-attribute name="TARGET_ID" type="INTEGER" length="4"/>
+		<db-attribute name="TARGET_TYPE" type="VARCHAR" length="8"/>
+		<db-attribute name="TYPE" type="VARCHAR" length="8"/>
+	</db-entity>
 	<db-entity name="eip_t_acl_portlet_feature">
 		<db-attribute name="ACL_TYPE" type="INTEGER"/>
 		<db-attribute name="FEATURE_ALIAS_NAME" type="VARCHAR" length="99"/>
@@ -102,6 +111,14 @@
 		<db-attribute name="PSML_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 		<db-attribute name="USER_NAME" type="VARCHAR" length="32"/>
 	</db-entity>
+	<db-entity name="v_eip_m_user_group_list">
+		<db-attribute name="ID" type="INTEGER" length="4"/>
+		<db-attribute name="NAME" type="VARCHAR" length="255"/>
+		<db-attribute name="POS" type="INTEGER" length="4"/>
+		<db-attribute name="SORT" type="INTEGER" length="4"/>
+		<db-attribute name="TYPE" type="VARCHAR" length="8"/>
+		<db-attribute name="UID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+	</db-entity>
 	<obj-entity name="AipoLicense" className="com.aimluck.eip.cayenne.om.account.AipoLicense" dbEntityName="aipo_license">
 		<obj-attribute name="license" type="java.lang.String" db-attribute-path="LICENSE"/>
 		<obj-attribute name="limitUsers" type="java.lang.Integer" db-attribute-path="LIMIT_USERS"/>
@@ -148,6 +165,14 @@
 	<obj-entity name="EipMUserPosition" className="com.aimluck.eip.cayenne.om.account.EipMUserPosition" dbEntityName="eip_m_user_position">
 		<obj-attribute name="position" type="java.lang.Integer" db-attribute-path="POSITION"/>
 	</obj-entity>
+	<obj-entity name="EipTAclMap" className="com.aimluck.eip.cayenne.om.account.EipTAclMap" dbEntityName="eip_t_acl_map">
+		<obj-attribute name="feature" type="java.lang.String" db-attribute-path="FEATURE"/>
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="level" type="java.lang.Integer" db-attribute-path="LEVEL"/>
+		<obj-attribute name="targetId" type="java.lang.Integer" db-attribute-path="TARGET_ID"/>
+		<obj-attribute name="targetType" type="java.lang.String" db-attribute-path="TARGET_TYPE"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="TYPE"/>
+	</obj-entity>
 	<obj-entity name="EipTAclPortletFeature" className="com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature" dbEntityName="eip_t_acl_portlet_feature">
 		<obj-attribute name="aclType" type="java.lang.Integer" db-attribute-path="ACL_TYPE"/>
 		<obj-attribute name="featureAliasName" type="java.lang.String" db-attribute-path="FEATURE_ALIAS_NAME"/>
@@ -188,6 +213,13 @@
 		<obj-attribute name="page" type="java.lang.String" db-attribute-path="PAGE"/>
 		<obj-attribute name="profile" type="byte[]" db-attribute-path="PROFILE"/>
 		<obj-attribute name="userName" type="java.lang.String" db-attribute-path="USER_NAME"/>
+	</obj-entity>
+	<obj-entity name="VEipMUserGroupList" className="com.aimluck.eip.cayenne.om.account.VEipMUserGroupList" dbEntityName="v_eip_m_user_group_list">
+		<obj-attribute name="id" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="pos" type="java.lang.Integer" db-attribute-path="POS"/>
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="TYPE"/>
 	</obj-entity>
 	<db-relationship name="turbineGroup" source="eip_m_post" target="turbine_group" toMany="true">
 		<db-attribute-pair source="GROUP_NAME" target="GROUP_NAME"/>

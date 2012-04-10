@@ -1049,6 +1049,17 @@ CREATE TABLE `eip_t_report_map` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_acl_map` (
+  `acl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `target_id` int(11) NOT NULL,
+  `target_type` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `type` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `feature` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `level` int(11) NOT NULL,
+  PRIMARY KEY (`acl_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;

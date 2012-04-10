@@ -41,6 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FacilityResultData implements ALData {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FacilityResultData.class.getName());
 

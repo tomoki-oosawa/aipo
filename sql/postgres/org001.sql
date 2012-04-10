@@ -1391,6 +1391,21 @@ CREATE TABLE EIP_T_TIMELINE_URL
     PRIMARY KEY (URL_ID)
 );
 
+-----------------------------------------------------------------------------
+-- EIP_T_ACL_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_ACL_MAP
+(
+  ACL_ID INTEGER NOT NULL,
+  TARGET_ID INTEGER NOT NULL,
+  TARGET_TYPE CHARACTER VARYING(8),
+  ID INTEGER NOT NULL,
+  TYPE VARCHAR(8),
+  FEATURE VARCHAR(64),
+  LEVEL INTEGER NOT NULL,
+  PRIMARY KEY (ACL_ID)
+);
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
@@ -1478,6 +1493,7 @@ CREATE SEQUENCE pk_eip_t_timeline INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_url INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_acl_map INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1550,6 +1566,7 @@ ALTER SEQUENCE pk_eip_t_timeline OWNED BY EIP_T_TIMELINE.TIMELINE_ID;
 ALTER SEQUENCE pk_eip_t_timeline_like OWNED BY EIP_T_TIMELINE_LIKE.TIMELINE_LIKE_ID;
 ALTER SEQUENCE pk_eip_t_timeline_file OWNED BY EIP_T_TIMELINE_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_t_timeline_url OWNED BY EIP_T_TIMELINE_URL.URL_ID;
+ALTER SEQUENCE pk_eip_t_acl_map OWNED BY EIP_T_ACL_MAP.ACL_ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------

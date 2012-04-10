@@ -133,6 +133,8 @@ public class ScheduleUtils {
 
   public static final String AJAX_SCHEDULE_PORTLET_NAME = "AjaxSchedule";
 
+  public static final String SCHEDULE_ADMIN_PORTLET_NAME = "ScheduleAdmin";
+
   /** 検索キーワード変数の識別子 */
   public static final String TARGET_KEYWORD = "keyword";
 

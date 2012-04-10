@@ -320,7 +320,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url, indicator_id
 }
 
 aimluck.io.createOptions = function(selectId, params) {
-  var sel, pre, key, value, url, ind;
+  var sel, pre, key, value, url, ind, callback, callbackTarget;
   if (params["url"]) {
       url = params["url"];
   }
@@ -344,6 +344,14 @@ aimluck.io.createOptions = function(selectId, params) {
       var indicator = dojo.byId(ind);
       if (indicator) {
         dojo.style(indicator, "display" , "none");
+      }
+  }
+  if (typeof params["callback"] == "undefined") {
+  } else {
+	  callback = params["callback"];
+	  if (typeof params["callbackTarget"] == "undefined") {
+      } else {
+          callbackTarget = params["callbackTarget"];
       }
   }
 
@@ -373,6 +381,9 @@ aimluck.io.createOptions = function(selectId, params) {
           });
           if (indicator) {
             dojo.style(indicator, "display" , "none");
+          }
+          if (callback) {
+        	  callback.call(callbackTarget ? callbackTarget : callback, response);
           }
       }
   });

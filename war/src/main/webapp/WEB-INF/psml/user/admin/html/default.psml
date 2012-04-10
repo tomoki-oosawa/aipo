@@ -78,26 +78,32 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="124" parent="WorkflowCategory">
+        <entry id="139" parent="ScheduleAdmin">
             <layout position="8" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="137" parent="ExtTimecardSystem">
+        <entry id="124" parent="WorkflowCategory">
             <layout position="9" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="128" parent="AccessControl">
+        <entry id="137" parent="ExtTimecardSystem">
             <layout position="10" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
         </entry>
-        <entry id="129" parent="Eventlog">
+        <entry id="128" parent="AccessControl">
             <layout position="11" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
+        <entry id="129" parent="Eventlog">
+            <layout position="12" size="-1">
                 <property name="column" value="0"/>
                 <property name="row" value="0"/>
             </layout>
