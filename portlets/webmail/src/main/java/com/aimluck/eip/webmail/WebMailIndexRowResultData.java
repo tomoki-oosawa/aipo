@@ -24,6 +24,7 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * WebメールのResultDataです。 <br />
@@ -123,7 +124,7 @@ public class WebMailIndexRowResultData {
    * @return
    */
   public String getPerson() {
-    return person.toString();
+    return ALCommonUtils.replaceToAutoCR(person.toString());
   }
 
   /**
@@ -149,8 +150,8 @@ public class WebMailIndexRowResultData {
    * 
    * @return
    */
-  public ALStringField getSubject() {
-    return subject;
+  public String getSubject() {
+    return ALCommonUtils.replaceToAutoCR(subject.toString());
   }
 
   /**
