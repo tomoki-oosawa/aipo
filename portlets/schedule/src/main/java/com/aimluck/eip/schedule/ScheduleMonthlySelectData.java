@@ -894,7 +894,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
-      if (userList.size() == 0) {
+      if ("facilitygroup".equals(getCurrentFilterType())) {
         facilityList =
           FacilitiesUtils.getFacilityGroupList(Integer
             .valueOf(target_group_name));
