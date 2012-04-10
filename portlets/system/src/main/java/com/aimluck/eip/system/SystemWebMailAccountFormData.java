@@ -262,7 +262,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   protected void setValidator() {
     // アカウント名
     account_name.setNotNull(true);
-    account_name.limitMaxLength(20);
+    account_name.limitMaxLength(50);
 
     // SMTPサーバ名
     smtpserver_name.setNotNull(true);

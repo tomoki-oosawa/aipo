@@ -69,7 +69,7 @@
 	</db-entity>
 	<db-entity name="eip_m_mail_account">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
-		<db-attribute name="ACCOUNT_NAME" type="VARCHAR" isMandatory="true" length="20"/>
+		<db-attribute name="ACCOUNT_NAME" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="ACCOUNT_TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="AUTH_RECEIVE_FLG" type="SMALLINT" length="2"/>
 		<db-attribute name="AUTH_SEND_FLG" type="SMALLINT" length="1"/>

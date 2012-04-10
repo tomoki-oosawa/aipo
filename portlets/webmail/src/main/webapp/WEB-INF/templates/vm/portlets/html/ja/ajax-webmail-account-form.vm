@@ -57,7 +57,7 @@ ${title}
 #end
 #ALtableheaderWide()
 #ALtdcaptionAttWebmail($!result.getFieldName('account_name'))
-#ALtditem("#ALtextfield('account_name' $!result.AccountName '60%' 20 'active')")
+#ALtditem("#ALtextfield('account_name' $!result.AccountName '60%' 50 'active')")
 #ALtdcaptionAttWebmail($!result.getFieldName('smtpserver_name') )
 #ALtditem("#ALtextfield('smtpserver_name' $!result.SmtpserverName '60%' 50 'disabled')#ALcaution('（半角英数字）')")
 #ALtdcaptionAttWebmail($!result.getFieldName('pop3server_name') )

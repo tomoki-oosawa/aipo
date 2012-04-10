@@ -82,3 +82,9 @@ alter table `eip_t_timeline` add column `external_id` varchar(99) COLLATE utf8_u
 
 alter table `eip_t_timeline_like` add column `create_date` datetime DEFAULT NULL;
 -- 20120328
+
+-- 20120411
+
+alter table eip_m_mail_account change column account_name account_name varchar(200);
+
+-- 20120411

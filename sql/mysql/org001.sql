@@ -179,7 +179,7 @@ CREATE TABLE `eip_m_facility` (
 CREATE TABLE `eip_m_mail_account` (
   `account_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
-  `account_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `account_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `account_type` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `smtpserver_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `pop3server_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
