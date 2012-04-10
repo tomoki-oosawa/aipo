@@ -184,13 +184,6 @@ public class ToDoResultData implements ALData {
    * @return
    */
   public String getTodoName() {
-    return todo_name.toString();
-  }
-
-  /**
-   * @return
-   */
-  public String getTodoNameHtml() {
     return ALCommonUtils.replaceToAutoCR(todo_name.toString());
   }
 

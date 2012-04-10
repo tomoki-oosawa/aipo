@@ -52,8 +52,8 @@
 <img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開" align="absmiddle"/>
 #end</div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.CategoryName</div>" '')
-#ALtdcellAtt("<div>$!record.userName</div>" '')
+#ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
+#ALtdcellAtt("<div>$!record.userNameHtml</div>" '')
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end
