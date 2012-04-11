@@ -85,6 +85,7 @@ function appsNaviSwitch() {
 	var wrapper = document.getElementById('wrapper');
 	var nLeft = '-260px';
 	if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
+		//show
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "block";
 		}
@@ -94,16 +95,31 @@ function appsNaviSwitch() {
 		bk.style.display = 'block';
 		wrapper.style.overflow = 'hidden';
 		wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
+		 var userAgent = window.navigator.userAgent.toLowerCase();
+		 if (userAgent.indexOf("android") > -1 ){
+		 	var content=dojo.query(".roundBlockContent")[0];
+		 	if(content){
+		 		content.style.display="none";
+		 	}
+		 }
 	}else{
+		//hide
 		navi.style.left = nLeft;
 		navi.style.boxShadow = 'none';
 		navi.style.borderRight = 'none';
 		bk.style.display = 'none';
 		wrapper.style.overflow = 'visible';
-		wrapper.style.height = 'auto'
+		wrapper.style.height = 'auto';
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "none";
 		}
+		 var userAgent = window.navigator.userAgent.toLowerCase();
+		 if (userAgent.indexOf("android") > -1 ){
+		 	var content=dojo.query(".roundBlockContent")[0];
+		 	if(content){
+		 		content.style.display="";
+		 	}
+		 }
 	}
 }
 </script>

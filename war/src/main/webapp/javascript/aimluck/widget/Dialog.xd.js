@@ -280,8 +280,7 @@ dojo.declare(
         },
         hide:function(){
         	dijit.Dialog.prototype.hide.apply(this);
-        	dojo.query("#auiContentsArea").removeClass("mb_dialoghide");
-        	dojo.query("#auiWidgetsArea").removeClass("mb_dialoghide");
+        	dojo.query(".mb_dialoghide").removeClass("mb_dialoghide");
         	dojo.query("#modalDialog").removeClass("mb_dialog");
         }
     }
