@@ -106,7 +106,7 @@ $!{record.UpdateDate}
 </span>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
-#ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')	
+#ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
 <p class="right mt5 mb20">
 #ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" '')
 </p>
@@ -129,6 +129,7 @@ $!{record.UpdateDate}
 </p>
 #end
 #else
+<br/>
 $!record.Note
 #end
 #ALtdcellfooter()
