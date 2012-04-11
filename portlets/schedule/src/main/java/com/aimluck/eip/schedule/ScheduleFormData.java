@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
@@ -1450,7 +1451,8 @@ public class ScheduleFormData extends ALAbstractFormData {
           memberIds[i] = memberIdList.get(i).intValue();
         }
 
-        for (Object record : facilityList) {
+        for (ListIterator<Object> record =
+          facilityList.listIterator(facilityList.size()); record.hasNext();) {
           int facilityId =
             (int) ((FacilityResultData) record).getFacilityId().getValue();
           if (!isContains(facilityIdList, facilityId)) {
