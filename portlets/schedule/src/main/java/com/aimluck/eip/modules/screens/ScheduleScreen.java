@@ -100,7 +100,7 @@ public class ScheduleScreen extends ALVelocityScreen {
           || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("search")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
@@ -179,6 +179,11 @@ public class ScheduleScreen extends ALVelocityScreen {
       }
       if ("".equals(template)) {
         template = _template;
+      }
+
+      useragent = useragent.trim();
+      if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
+        context.put("isMac", 1);
       }
 
       if ("calendar".equals(currentTab)) {

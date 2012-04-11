@@ -99,7 +99,7 @@ public class ScheduleListScreen extends ScheduleScreen {
           || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("search")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
@@ -108,6 +108,11 @@ public class ScheduleListScreen extends ScheduleScreen {
       if ("IPHONE".equals(entry.getManufacturer())
         && "calender".equals(currentTab)) {
         currentTab = "oneday";
+      }
+
+      useragent = useragent.trim();
+      if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
+        context.put("isMac", 1);
       }
 
       // 初期共有メンバー表示フラグを取得する

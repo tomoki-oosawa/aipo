@@ -229,6 +229,12 @@ public class ScheduleAction extends ALBaseAction {
       if ("IPHONE".equals(entry.getManufacturer())) {
         template = "schedule-search-list";
       }
+
+      useragent = useragent.trim();
+      if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
+        context.put("isMac", 1);
+      }
+
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
@@ -587,7 +593,7 @@ public class ScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group")
           || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab
-          .equals("list"))) {
+            .equals("list"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
@@ -600,6 +606,11 @@ public class ScheduleAction extends ALBaseAction {
       if ("IPHONE".equals(entry.getManufacturer())) {
         currentTab = "list";
         ALEipUtils.setTemp(rundata, context, "tab", currentTab);
+      }
+
+      useragent = useragent.trim();
+      if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
+        context.put("isMac", 1);
       }
 
       if (currentTab.equals("calendar")) {

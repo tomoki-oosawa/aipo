@@ -102,7 +102,7 @@
                               </div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple')
+                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
 							#else
 						  <td width="18">
                             <div class="weeklySpan">&nbsp;</div>
@@ -144,7 +144,7 @@
                               ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple')
+                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
 							#else
 						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
