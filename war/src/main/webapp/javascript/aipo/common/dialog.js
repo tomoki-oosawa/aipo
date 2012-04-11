@@ -21,18 +21,14 @@ dojo.provide("aipo.common");
 
 aipo.common.showDialog = function(url, portlet_id, callback) {
     var arrDialog = dijit.byId("modalDialog");
-    var userAgent = window.navigator.userAgent.toLowerCase();
-    if (userAgent.indexOf("iphone") > -1||userAgent.indexOf("android") > -1 ){
-	    dojo.query("#auiContentsArea").addClass("mb_dialoghide");
-	    dojo.query("#auiWidgetsArea").addClass("mb_dialoghide");
-	    dojo.query("#modalDialog").addClass("mb_dialog");
-    }
+    dojo.query("#auiContentsArea").addClass("mb_dialoghide");
+    dojo.query("#auiWidgetsArea").addClass("mb_dialoghide");
+    dojo.query("#modalDialog").addClass("mb_dialog");
     if(! arrDialog){
        arrDialog = new aimluck.widget.Dialog({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback}, "modalDialog");
     }else{
        arrDialog.setCallback(portlet_id, callback);
     }
-
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
@@ -47,6 +43,8 @@ aipo.common.hideDialog = function() {
 };
 aipo.common.showDialogSub = function(url, portlet_id, callback) {
     var arrDialogSub = dijit.byId('modalDialog');
+
+
 
     if(! arrDialogSub){
        arrDialogSub = new aimluck.widget.DialogSub({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback ,templateString:"<div id='modalDialogSub' class='modalDialogSub' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"

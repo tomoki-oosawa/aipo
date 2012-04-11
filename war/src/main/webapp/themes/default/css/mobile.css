@@ -356,9 +356,19 @@ td.container {
 	width:auto;
 	width:100%;
 	margin:45px 0 0 0;
+
 	top:0 !important;
 	left:0 !important;
 }
+.modalDialog.mb_dialog{
+	position: relative;
+	margin:0;
+}
+
+.modalDialogUnderlayWrapper{
+	display: none !important;
+}
+
 table.listTable td.caption, table.subTable td.caption {
 	width:auto !important;
 }
@@ -498,7 +508,7 @@ table.auiRowTable td.wTitl a {
 .wCopname {}
 .wCheckbox {}
 .wIcon {}
-.wMail {}
+.wMail {}F
 .wPosition {}
 .wTel {}
 */
@@ -507,3 +517,4 @@ table.auiRowTable td.wTitl a {
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none}
+.mb_dialoghide{display:none;}

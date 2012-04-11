@@ -173,6 +173,13 @@ dojo.declare(
             dijit.Dialog.superclass.onLoad.call(this);
             this.isPositionLock = false;
 
+            var userAgent = window.navigator.userAgent.toLowerCase();
+            if (userAgent.indexOf("iphone") > -1||userAgent.indexOf("android") > -1 ){
+            	//一番上へスクロール
+            	if(!!document.documentElement.scrollTop) document.documentElement.scrollTop=0;
+            	else if(!!document.body.scrollTop)document.body.scrollTop=0;
+            }
+
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
                 focusNode.focus();
@@ -275,7 +282,7 @@ dojo.declare(
         	dijit.Dialog.prototype.hide.apply(this);
         	dojo.query("#auiContentsArea").removeClass("mb_dialoghide");
         	dojo.query("#auiWidgetsArea").removeClass("mb_dialoghide");
-            dojo.query("#modalDialog").removeClass("mb_dialog");
+        	dojo.query("#modalDialog").removeClass("mb_dialog");
         }
     }
 );
