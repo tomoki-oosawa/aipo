@@ -134,7 +134,7 @@ style="font-weight:bold"
 
 #AUIcontentsAreaFooter()
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static"  #end>
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
   <a title="伝言メモを作成する" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new"))','$!portlet.ID',aipo.note.onLoadNoteDialog);">伝言メモを作成する</a>
 </div>

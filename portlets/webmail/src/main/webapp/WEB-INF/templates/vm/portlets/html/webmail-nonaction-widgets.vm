@@ -27,7 +27,7 @@
 #set($screen = "WebMailListScreen")
 #end
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static"  #end>
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <a title="メールを作成する" href="javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);" class="auiButtonBold">メールを作成する</a>
 </div>

@@ -19,7 +19,7 @@
 
 #set ($addAddress = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static"  #end>
+<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <a title="アドレスを追加する" href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">アドレスを追加する</a>
 </div>
