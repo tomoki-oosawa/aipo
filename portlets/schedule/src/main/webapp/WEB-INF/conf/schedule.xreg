@@ -126,18 +126,4 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
-    <portlet-entry name="ScheduleAdmin" hidden="true" type="ref" parent="Velocity" application="false">
-        <security-ref parent="admin-view"/>
-        <meta-info>
-            <title>スケジュール管理</title>
-            <description></description>
-        </meta-info>
-        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
-        <parameter name="template" value="schedule-admin-settings" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="action" value="schedule.ScheduleAdminAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true" />
-        <media-type ref="html"/>
-        <url cachedOnURL="true"/>
-    </portlet-entry>
 </registry>
