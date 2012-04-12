@@ -79,12 +79,12 @@
 <colgroup style="width:10em;"></colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
-#ALtdhead('状態')
-#ALtdhead("#ALajaxsort('login_name' 'ユーザー名' $result 'AccountUserListScreen')")
-#ALtdhead("#ALajaxsort('name_kana' '名前' $result 'AccountUserListScreen')")
-#ALtdhead('部署名')
-#ALtdhead('役職名')
+#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThin('状態')
+#ALtdheadW33("#ALajaxsort('login_name' 'ユーザー名' $result 'AccountUserListScreen')")
+#ALtdheadW25("#ALajaxsort('name_kana' '名前' $result 'AccountUserListScreen')")
+#ALtdheadW25('部署名')
+#ALtdheadW10('役職名')
 </tr>
 #foreach ($record in $result.List)
 #set($disabled_flg = $!record.Disabled)
