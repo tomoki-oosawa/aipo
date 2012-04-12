@@ -86,6 +86,7 @@ alter table `eip_t_timeline_like` add column `create_date` datetime DEFAULT NULL
 -- 20120411
 
 alter table eip_m_mail_account change column account_name account_name varchar(200);
+ALTER TABLE eip_t_timeline ADD COLUMN num_on_day INTEGER DEFAULT 0;
 
 CREATE TABLE `eip_t_acl_map` (
   `acl_id` int(11) NOT NULL AUTO_INCREMENT,
