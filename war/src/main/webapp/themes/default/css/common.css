@@ -680,6 +680,14 @@ table.listTable {
 	border-collapse:collapse;
 	padding:0;
 }
+table.listTableNoBorder {
+	margin-top:5px;
+	border-top:none;
+	border-spacing:0;
+	border-collapse:collapse;
+	padding:0;
+	border-bottom:none
+}
 table.subTable {
 	margin-top:2px;
 	border-spacing:0;

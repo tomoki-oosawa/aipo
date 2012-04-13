@@ -42,9 +42,37 @@ function event_account_csv_regist(button) {
   }
 }
 
+function download_csv(){
+    var flag = 0;
+    for(i=0; i<document.io_select.downloadcsv.length; i++){
+        if(document.io_select.downloadcsv[i].checked){
+            flag = 1;
+            window.location.href = document.io_select.downloadcsv[i].value;
+        }
+    }
+	if(flag == 0){
+        alert('ダウンロードするテンプレートの種類を選択して下さい。');
+    }
+}
+
+
+function import_csv(){
+    var importflag = 0;
+	for(j=0; j<document.readcsv.importcsv.length; j++){
+        if(document.readcsv.importcsv[j].checked){
+            importflag = 1;
+			document.readcsv.action = document.readcsv.importcsv[j].value;
+        }
+	}
+	if(importflag == 0){
+        alert('インポートするcsvの種類を選択して下さい。');
+    }
+	document.readcsv.submit();
+}
+
+
 //-->
 </script>
-
 #if((! $result.List || $result.List.size() == 0) && !$!validateError)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
@@ -58,43 +86,70 @@ function event_account_csv_regist(button) {
 #end
 #end
 
-<div class="auiSummaryMeta clearfix">
-  <div class="floatLeft">
-    <form class ="auiForm" name="io_select" action="" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="secid" value="$secid" />
-    <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')" selected>ユーザーアカウント</option>
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
-    <option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
-    </select>
-    を一括登録します。
-    </form>
-  </div>
-</div>
+<h3>テンプレートのダウンロード</h3>
 
-<div style="margin:0px 0px 5px 0px">
-ユーザーをファイルから一括して登録できます。
-<a href="$jslink.getTemplate('FileIOAccountCsvFileScreen')">こちらのテンプレート</a>の形式で作成したファイルをボタン [参照...] で指定し、
-ボタン [読み込む] を押してください。
-確認画面が表示された後に、ボタン [登録] を押すことで、登録が完了します。
-</div>
+<form enctype="multipart/form-data" method="post" action="" name="io_select" class="auiForm">
+<input type="hidden" value="$secid" name="secid">
 
-<form name="readcsv" action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" method="post" enctype="multipart/form-data">
-<input type="hidden" name="secid" value="$secid" />
-<input type="hidden" name="temp_folder" value="$temp_folder"/>
-#ALtableheaderWide()
+<table class="listTable wide">
+<tbody>
+
 <tr>
-<td width="150" class="caption">CSVファイルの指定</td>
-<td nowrap="nowrap">
-<input class="" type="file" name="attachment" value="" size="30" style="ime-mode:disable" />
+<td width="150" class="caption">種類</td>
+<td>
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountCsvFileScreen')" />ユーザーアカウント</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')" />部署</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCompanyCsvFileScreen')" />アドレス(会社)帳</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCsvFileScreen')" />アドレス帳</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOScheduleCsvFileScreen')" />スケジュール</label><br />
 </td>
 </tr>
+
 <tr>
-#ALtdcellAtt("#ALsubmit('send' '読み込む')" 'colspan="2" align="center"')
+<td colspan="2" class="center"><input type="button" onClick="download_csv()" value="ダウンロード" class="button" name="send" /></td>
 </tr>
-#ALtablefooter()
+
+</tbody>
+</table>
+</form>
+
+
+<h3 class="mt20">インポート</h3>
+
+<form enctype="multipart/form-data" method="post" action="" name="readcsv">
+<input type="hidden" value="$secid" name="secid">
+<input type="hidden" value="$temp_folder" name="temp_folder">
+
+<table class="listTable wide">
+<tbody>
+<tr>
+<td width="150" class="caption">種類</td>
+<td>
+<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />ユーザーアカウント</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />部署</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />アドレス(会社)帳</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />アドレス帳</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>スケジュール</label><br />
+</td>
+</tr>
+
+<tr>
+<td class="caption">CSVファイルの指定</td>
+<td nowrap="nowrap"><input type="file" style="ime-mode:disable" size="30" value="" name="attachment" class="" /></td>
+</tr>
+
+<tr>
+<td colspan="2" class="center"><input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="インポート" class="auiButtonAction" name="send" /></td>
+</tr>
+
+</tbody>
+</table>
+
+<p>
+ログイン名、パスワード、名前（姓）、名前（名）、名前（姓・フリガナ）、名前（名・フリガナ）は必須項目です。
+パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
+登録されているログイン名と同じログイン名を指定した場合には、情報が上書きされます。部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
+</p>
 
 #if($!result.List && $!result.List.size() > 0)
 #set($showErrmsg1 = false)
@@ -133,6 +188,9 @@ function event_account_csv_regist(button) {
 #if($!record.getPositionNotFound())#set($showErrmsg15 = true)#end
 #if($!record.getSameUser())#set($showErrmsg17 = true)#end
 #end
+
+<table class="listTable wide">
+<td>
 
 #if($result.isError())${result.getLineCount()}件中${result.getNotErrorCount()}件のデータを登録しました。<br>以下のデータはエラーが見つかった為登録できませんでした。#end
 #set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg16 || $showErrmsg17)
@@ -289,7 +347,10 @@ $!rec
 </div>
 <br>
 
-#ALtableheaderWide()
+</td>
+</table>
+
+<table class="listTableNoBorder wide">
 <tr>
 #if($result.isError() || $result.overMaxUser())
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' '戻る' 'event_account_csv(this)')" 'colspan="11" align="center"')
@@ -301,12 +362,7 @@ $!rec
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
 #end
 </tr>
-#ALtablefooter()
+</table>
 #end
 </form>
 
-<div style="margin:5px 0px 5px 0px">
-ログイン名、パスワード、名前（姓）、名前（名）、名前（姓・フリガナ）、名前（名・フリガナ）は必須項目です。
-パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
-登録されているログイン名と同じログイン名を指定した場合には、情報が上書きされます。部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
-</div>
