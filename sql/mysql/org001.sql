@@ -656,12 +656,11 @@ CREATE TABLE `eip_t_timeline` (
    `note` text,
    `timeline_type` varchar (2),
    `params` varchar (99),
+   `num_on_day` int(11) NOT NULL DEFAULT 0,
    `create_date` datetime DEFAULT NULL,
    `update_date` datetime DEFAULT NULL,
    PRIMARY KEY(`timeline_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY ( `owner_id` )
-REFERENCES  `turbine_user` (`user_id`);
 
 CREATE TABLE `eip_t_timeline_like` (
   `timeline_like_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1124,4 +1123,4 @@ ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCE
 
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 
-
+ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY ( `owner_id` ) REFERENCES  `turbine_user` (`user_id`);
