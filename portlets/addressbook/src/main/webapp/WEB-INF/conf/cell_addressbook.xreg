@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>ｱﾄﾞﾚｽ帳</title>
-            <description>アドレスを管理します。</description>
+            <description>電話番号やメールアドレスを共有できるアドレス帳です。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="addressbook" hidden="true" cachedOnName="true" cachedOnValue="true"/>

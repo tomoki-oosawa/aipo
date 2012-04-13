@@ -44,7 +44,7 @@
 #ALtdhead("#ALajaxsort('account_name' 'アカウント名' $result 'WebMailAccountListScreen')")
 #ALtdheadAtt('メールアドレス' 'width="10%"')
 #ALtdheadAtt('未読数' 'width="1%"')
-#ALtdheadAtt('最終受信日' 'width="1%"')
+#ALtdheadAtt('最終受信日' 'width="1%"class="center"')
 </tr>
 #foreach ($record in $result.List)
 #if($!record.countUnRead>= 0)

@@ -96,13 +96,13 @@ public class ToDoFormData extends ALAbstractFormData {
   /** 開始日 */
   private ALDateField start_date;
 
-  /** 締め切り日 */
+  /** 締切日 */
   private ALDateField end_date;
 
   /** 開始日指定フラグ */
   private ALStringField start_date_check;
 
-  /** 締め切り日指定フラグ */
+  /** 締切日指定フラグ */
   private ALStringField end_date_check;
 
   /** カテゴリ一覧 */
@@ -221,14 +221,14 @@ public class ToDoFormData extends ALAbstractFormData {
     start_date = new ALDateField();
     start_date.setFieldName("開始日");
     start_date.setValue(new Date());
-    // 締め切り日
+    // 締切日
     end_date = new ALDateField();
-    end_date.setFieldName("締め切り日");
+    end_date.setFieldName("締切日");
     end_date.setValue(new Date());
     // 開始日指定フラグ
     start_date_check = new ALStringField();
     start_date_check.setFieldName("指定しない");
-    // 締め切り日指定フラグ
+    // 締切日指定フラグ
     end_date_check = new ALStringField();
     end_date_check.setFieldName("指定しない");
     // 現在の年
@@ -325,15 +325,15 @@ public class ToDoFormData extends ALAbstractFormData {
       // 開始日
       isStartDate = start_date.validate(msgList);
     }
-    // 締め切り日指定フラグが設定されている場合は締め切り日入力フォームチェックを行いません。
+    // 締切日指定フラグが設定されている場合は締切日入力フォームチェックを行いません。
     if (end_date_check.getValue() == null) {
-      // 締め切り日
+      // 締切日
       if (end_date.validate(msgList) && isStartDate) {
         try {
           if (end_date.getValue().getDate().before(
             start_date.getValue().getDate())) {
             msgList
-              .add("『 <span class='em'>締め切り日</span> 』は『 <span class='em'>開始日</span> 』以降の日付で指定してください。");
+              .add("『 <span class='em'>締切日</span> 』は『 <span class='em'>開始日</span> 』以降の日付で指定してください。");
           }
         } catch (Exception e) {
           logger.error("Exception", e);
@@ -383,7 +383,7 @@ public class ToDoFormData extends ALAbstractFormData {
       } else {
         start_date.setValue(todo.getStartDate());
       }
-      // 締め切り日
+      // 締切日
       if (ToDoUtils.isEmptyDate(todo.getEndDate())) {
         end_date_check.setValue("TRUE");
         end_date.setValue(date1);
@@ -489,7 +489,7 @@ public class ToDoFormData extends ALAbstractFormData {
       } else {
         todo.setStartDate(ToDoUtils.getEmptyDate());
       }
-      // 締め切り日
+      // 締切日
       if (end_date_check.getValue() == null) {
         todo.setEndDate(end_date.getValue().getDate());
       } else {
@@ -685,7 +685,7 @@ public class ToDoFormData extends ALAbstractFormData {
       } else {
         todo.setStartDate(ToDoUtils.getEmptyDate());
       }
-      // 締め切り日
+      // 締切日
       if (end_date_check.getValue() == null) {
         todo.setEndDate(end_date.getValue().getDate());
       } else {
@@ -837,7 +837,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   * 締め切り日を取得します。 <BR>
+   * 締切日を取得します。 <BR>
    * 
    * @return
    */
@@ -864,7 +864,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   * 締め切り日指定フラグを取得します。 <BR>
+   * 締切日指定フラグを取得します。 <BR>
    * 
    * @return
    */

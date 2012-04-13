@@ -72,9 +72,9 @@
 #ALtdheadAtt("#ALajaxsort('file_name' 'ファイル' $result 'CabinetListScreen')" "class='mb_hide'")
 #ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
 #ALtdheadAtt("更新者" "class='thin mb_hide'")
-#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')" "class='thin mb_hide'")
-#ALtdheadAtt("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')" "class='thin mb_hide'")
-#ALtdheadAtt("#ALajaxsort('file_size' 'サイズ（KB）' $result 'CabinetListScreen')" "class='thin mb_hide'")
+#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')" "class='thin mb_hide center'")
+#ALtdheadAtt("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')" "class='thin mb_hide center'")
+#ALtdheadAtt("#ALajaxsort('file_size' '容量（KB）' $result 'CabinetListScreen')" "class='thin mb_hide'")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -96,11 +96,11 @@
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitle</a></div>
 #ALtdcellfooter()
 ##更新者
-#ALtdcellAtt("$!{record.updateUser}" 'class="mb_hide center" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.updateUser}" 'class="mb_hide left" nowrap="nowrap"')
 ##更新日
-#ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide center" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide right" nowrap="nowrap"')
 ##ダウンロード数
-#ALtdcellAtt("$!{record.Counter}" 'class="mb_hide center" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.Counter}" 'class="mb_hide right" nowrap="nowrap"')
 ##サイズ
 #ALtdcellAtt("$!{record.FileSize}" 'class="mb_hide right" nowrap="nowrap"')
 </tr>

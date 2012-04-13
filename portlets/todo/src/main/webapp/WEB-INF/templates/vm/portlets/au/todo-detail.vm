@@ -35,7 +35,7 @@ $!result.Detail.TodoName
 #end
 #ALcell_dd_footer($career)
 #ALcell_dt($career '開始日')#ALcell_dd($career "$!{result.Detail.StartDate}")
-#ALcell_dt($career '締め切り日')#ALcell_dd($career "$!{result.Detail.EndDate}")
+#ALcell_dt($career '締切日')#ALcell_dd($career "$!{result.Detail.EndDate}")
 #ALcell_dt($career '進捗')#ALcell_dd($career "$!{result.Detail.StateString}")
 #ALcell_dt($career '優先度')#ALcell_dd($career "$!{result.Detail.PriorityString}")
 #ALcell_dt($career '登録日')#ALcell_dd($career "$!{result.Detail.CreateDate}")

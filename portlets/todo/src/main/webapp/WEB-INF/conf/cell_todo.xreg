@@ -52,7 +52,7 @@
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort.style.items" value="priority,end_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="優先度,締め切り日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="優先度,締切日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-sort" value="priority" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>進捗状況ソート方法</title>
@@ -60,7 +60,7 @@
         </parameter>
         <parameter name="p3b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3b-sort.style.items" value="user_name,priority,end_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3b-sort.style.values" value="ユーザー名,優先度,締め切り日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3b-sort.style.values" value="ユーザー名,優先度,締切日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen" value="15" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>タイトル表示文字数</title>

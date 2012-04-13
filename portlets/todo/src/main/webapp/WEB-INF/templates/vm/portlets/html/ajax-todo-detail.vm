@@ -44,7 +44,7 @@ $!result.Detail.TodoName
 #ALtditem($!result.Detail.UserName)
 #ALtdcaption('開始日')
 #ALtditem($!result.Detail.StartDate)
-#ALtdcaption('締め切り日')
+#ALtdcaption('締切日')
 #ALtditem($!result.Detail.EndDate)
 #ALtdcaption('進捗')
 #ALtditem($!result.Detail.StateString)

@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>掲示板</title>
-            <description>掲示板を管理します。</description>
+            <description>お知らせを掲載できる掲示板です。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="msgboard-topic-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>

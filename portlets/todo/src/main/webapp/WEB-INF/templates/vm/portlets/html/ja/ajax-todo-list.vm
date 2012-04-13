@@ -84,7 +84,7 @@
 <th>#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')</th>
 <th class="wName">#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')</th>
 <th class="wCategory mb_hide">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
-#ALtdheadAtt("#ALajaxsort('end_date' '締め切り日' $result 'ToDoListScreen')" 'class="thin center"')
+#ALtdheadAtt("#ALajaxsort('end_date' '締切日' $result 'ToDoListScreen')" 'class="thin center"')
 #ALtdheadAtt("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')" 'class="thin mb_hide center"')
 </tr>
 #foreach ($record in $result.List)

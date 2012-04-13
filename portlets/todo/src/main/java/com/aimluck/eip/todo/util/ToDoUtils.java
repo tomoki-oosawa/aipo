@@ -538,7 +538,7 @@ public class ToDoUtils {
     if (calendar.get(Calendar.YEAR) == 9999
       && calendar.get(Calendar.MONTH) == 11
       && calendar.get(Calendar.DATE) == 31) {
-      // 締め切り日時が未指定の場合
+      // 締切日時が未指定の場合
       return LIMIT_STATE_BEFORE;
     }
 
@@ -715,7 +715,7 @@ public class ToDoUtils {
         ALDateUtil.format(todo.getStartDate(), "yyyy年M月d日（E）")).append(CR);
     }
     if (!isEmptyDate(todo.getEndDate())) {
-      body.append("[締め切り日] ").append(CR).append(
+      body.append("[締切日] ").append(CR).append(
         ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日（E）")).append(CR);
     }
 

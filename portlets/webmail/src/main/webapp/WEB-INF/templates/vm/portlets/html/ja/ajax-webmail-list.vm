@@ -86,7 +86,7 @@
 ##ALtdheadThin("#ALajaxsort('read_flg' '状態' $result 'WebMailListScreen')")
 #ALtdheadAtt("#ALajaxsort('person' $person $result 'WebMailListScreen')" 'style="width:10em;"')
 #ALtdhead("#ALajaxsort('subject' '件名' $result 'WebMailListScreen')")
-#ALtdheadAtt("#ALajaxsort('date' '日付' $result 'WebMailListScreen')" 'style="width:6em;"')
+#ALtdheadAtt("#ALajaxsort('date' '日付' $result 'WebMailListScreen')" 'style="width:6em" class="center"')
 ##ALtdheadThin('容量')
 ##ALtdheadThin(' ')
 ##ALtdheadThin(' ')

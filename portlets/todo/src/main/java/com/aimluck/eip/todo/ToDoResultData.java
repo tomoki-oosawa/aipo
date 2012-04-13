@@ -61,7 +61,7 @@ public class ToDoResultData implements ALData {
   /** 開始日 */
   private ALStringField start_date;
 
-  /** 締め切り日 */
+  /** 締切日 */
   private ALStringField end_date;
 
   /** メモ */
