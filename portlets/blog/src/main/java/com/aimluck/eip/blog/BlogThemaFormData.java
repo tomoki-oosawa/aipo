@@ -81,6 +81,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
    *
    *
    */
+  @Override
   public void initField() {
 
     // カテゴリ名
@@ -89,7 +90,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
     thema_name.setTrim(true);
     // メモ
     description = new ALStringField();
-    description.setFieldName("説明");
+    description.setFieldName("メモ");
     description.setTrim(true);
   }
 
