@@ -184,7 +184,6 @@ dojo.declare(
             	this._scrollpos.y= document.documentElement.scrollTop || document.body.scrollTop;
             	//ここで隠す
             	dojo.query(".roundBlockContent").addClass("mb_dialoghide");
-            	console.info(this._scrollpos);
             	//一番上へスクロール
             	if(!!document.documentElement) document.documentElement.scrollTop=0;
             	if(!!document.body)document.body.scrollTop=0;
