@@ -33,7 +33,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.cayenne.om.account.EipTAclMap;
 import com.aimluck.eip.cayenne.om.portlet.EipFacilityGroup;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
@@ -349,13 +348,13 @@ public class FacilityFormData extends ALAbstractFormData {
       Database.commit();
 
       // ACL
-      EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
-      scheduleAcl.setFeature("schedule");
-      scheduleAcl.setTargetId(facility.getFacilityId());
-      scheduleAcl.setTargetType("f");
-      scheduleAcl.setId(2);
-      scheduleAcl.setType("ug");
-      scheduleAcl.setLevel(2);
+      // EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
+      // scheduleAcl.setFeature("schedule");
+      // scheduleAcl.setTargetId(facility.getFacilityId());
+      // scheduleAcl.setTargetType("f");
+      // scheduleAcl.setId(2);
+      // scheduleAcl.setType("ug");
+      // scheduleAcl.setLevel(2);
 
       Database.commit();
 

@@ -68,7 +68,6 @@ import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.account.EipTAclMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineRole;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -385,13 +384,13 @@ public class ALUserManagement extends TurbineBaseService implements
     userposition.setPosition(Integer.valueOf(new_pos));
 
     // ACL
-    EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
-    scheduleAcl.setFeature("schedule");
-    scheduleAcl.setTargetId(tuser.getUserId());
-    scheduleAcl.setTargetType("u");
-    scheduleAcl.setId(2);
-    scheduleAcl.setType("ug");
-    scheduleAcl.setLevel(2);
+    // EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
+    // scheduleAcl.setFeature("schedule");
+    // scheduleAcl.setTargetId(tuser.getUserId());
+    // scheduleAcl.setTargetType("u");
+    // scheduleAcl.setId(2);
+    // scheduleAcl.setType("ug");
+    // scheduleAcl.setLevel(2);
 
     try {
       // ユーザを登録
