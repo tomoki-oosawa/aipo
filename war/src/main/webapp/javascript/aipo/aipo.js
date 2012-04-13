@@ -251,6 +251,20 @@ CronTask.prototype = {
 		}
 };
 
+
+aipo.userAgent={
+	__userAgent:window.navigator.userAgent.toLowerCase(),
+	isAndroid:function(){
+		return this.__userAgent.indexOf("android") > -1;
+	},
+	isIphone:function(){
+		return this.__userAgent.indexOf("iphone") > -1;
+	},
+	isSmartPhone:function(){
+		return this.isAndroid() || this.isIphone();
+	}
+};
+
 aipo.escapeHTML = function(value) {
     var replaceChars = function(ch) {
         switch (ch) {

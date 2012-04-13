@@ -25,7 +25,6 @@ dojo.provide("aipo.common");
 
 aipo.common.showDialog = function(url, portlet_id, callback) {
     var arrDialog = dijit.byId("modalDialog");
-    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
     dojo.query("#modalDialog").addClass("mb_dialog");
     if(! arrDialog){
        arrDialog = new aimluck.widget.Dialog({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback}, "modalDialog");

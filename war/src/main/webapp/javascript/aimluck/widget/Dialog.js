@@ -89,6 +89,7 @@ dojo.declare(
         reloadIds: new Array(),
         _portlet_id: null,
         _callback:null,
+        _scrollpos:{x:null,y:null},
         _setup: function(){
             // summary:
             //      stuff we need to do before showing the Dialog for the first
@@ -177,11 +178,16 @@ dojo.declare(
             dijit.Dialog.superclass.onLoad.call(this);
             this.isPositionLock = false;
 
-            var userAgent = window.navigator.userAgent.toLowerCase();
-            if (userAgent.indexOf("iphone") > -1||userAgent.indexOf("android") > -1 ){
+            if (aipo.userAgent.isSmartPhone()){
+            	//スクロール位置の保持
+            	this._scrollpos.x=document.documentElement.scrollLeft || document.body.scrollLeft;
+            	this._scrollpos.y= document.documentElement.scrollTop || document.body.scrollTop;
+            	//ここで隠す
+            	dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+            	console.info(this._scrollpos);
             	//一番上へスクロール
-            	if(!!document.documentElement.scrollTop) document.documentElement.scrollTop=0;
-            	else if(!!document.body.scrollTop)document.body.scrollTop=0;
+            	if(!!document.documentElement) document.documentElement.scrollTop=0;
+            	if(!!document.body)document.body.scrollTop=0;
             }
 
             var focusNode = dojo.byId( this.widgetId );
@@ -286,6 +292,19 @@ dojo.declare(
         	dijit.Dialog.prototype.hide.apply(this);
         	dojo.query(".mb_dialoghide").removeClass("mb_dialoghide");
         	dojo.query("#modalDialog").removeClass("mb_dialog");
+
+        	if (aipo.userAgent.isSmartPhone()){
+            	//保持しておいた位置へスクロール
+        		if(!!document.documentElement){
+        			document.documentElement.scrollLeft=this._scrollpos.x;
+        			document.documentElement.scrollTop=this._scrollpos.y;
+        		}
+        		if(!!document.body){
+        			document.body.scrollLeft=this._scrollpos.x;
+        			document.body.scrollTop=this._scrollpos.y;
+        		}
+        		this._scrollpos.x=this._scrollpos.y=null;
+            }
         }
     }
 );

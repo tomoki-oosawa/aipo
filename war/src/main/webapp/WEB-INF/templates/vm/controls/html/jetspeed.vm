@@ -95,8 +95,7 @@ function appsNaviSwitch() {
 		bk.style.display = 'block';
 		wrapper.style.overflow = 'hidden';
 		wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
-		 var userAgent = window.navigator.userAgent.toLowerCase();
-		 if (userAgent.indexOf("android") > -1 ){
+		 if (aipo.userAgent.isAndroid()){
 		 	var content=dojo.query(".roundBlockContent")[0];
 		 	if(content){
 		 		content.style.display="none";
@@ -113,8 +112,7 @@ function appsNaviSwitch() {
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "none";
 		}
-		 var userAgent = window.navigator.userAgent.toLowerCase();
-		 if (userAgent.indexOf("android") > -1 ){
+		 if (aipo.userAgent.isAndroid()){
 		 	var content=dojo.query(".roundBlockContent")[0];
 		 	if(content){
 		 		content.style.display="";
