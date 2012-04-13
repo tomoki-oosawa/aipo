@@ -59,7 +59,7 @@ $space<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.esc
 #else
 #ALtdcellAtt("" "thin")
 #end
-#ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide center" nowrap="nowrap"')
 </tr>
 
 #end
