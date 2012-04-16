@@ -182,6 +182,7 @@ dojo.declare(
             	//一番上へスクロール
             	if(!!document.documentElement) document.documentElement.scrollTop=0;
             	if(!!document.body)document.body.scrollTop=0;
+            	dojo.query(".mb_dialoghide").removeClass("mb_dialoghide");
             }
 
             var focusNode = dojo.byId( this.widgetId );
