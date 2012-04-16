@@ -264,6 +264,7 @@ public class FileIOAction extends ALBaseAction {
         }
       }
     }
+    logger.warn("[addressbookImport]addressbook CSV imported");
     ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
       .toString(not_error));
     int error_count =
@@ -458,6 +459,7 @@ public class FileIOAction extends ALBaseAction {
         }
       }
     }
+    logger.warn("[addressbookCompanyImport]addressbook_Company CSV imported");
     ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
       .toString(not_error));
     int error_count =
@@ -871,6 +873,7 @@ public class FileIOAction extends ALBaseAction {
         }
       }
     }
+    logger.warn("[postImport]post CSV imported");
     ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
       .toString(not_error));
     int error_count =
@@ -1076,6 +1079,7 @@ public class FileIOAction extends ALBaseAction {
         }
       }
     }
+    logger.warn("[scheduleImport]1 schedule CSV imported");
     ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
       .toString(not_error));
     int error_count =

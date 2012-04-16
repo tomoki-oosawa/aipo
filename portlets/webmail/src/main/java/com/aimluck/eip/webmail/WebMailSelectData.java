@@ -285,7 +285,7 @@ public class WebMailSelectData extends
       }
 
       loadUnreadMailSumMap(rundata, context);
-
+      logger.warn("[webmailLoad]userId = " + userId + " webmail load");
       return folder.getIndexRows(rundata, context);
     } catch (Exception ex) {
       logger.error("Exception", ex);
