@@ -279,8 +279,8 @@ $rdlist.DateStr
 #ALtdcellAtt($outgoings "data-t=$rdlist.IsNotNullClockInTime data-c=$class align='center' nowrap='nowrap' data-debug-class='1'")
 #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' data-debug-class='1'")
 #else
-#ALtdcellAtt($outgoings "data-t=$rdlist.IsNotNullClockInTime data-c=$class class='mb_hide' align='center' nowrap='nowrap' data-debug-class='2'")
-#ALtdcellAtt($comebacks "class='mb_hide' align='center' nowrap='nowrap' data-debug-class='1'")
+##ALtdcellAtt($outgoings "data-t=$rdlist.IsNotNullClockInTime data-c=$class class='mb_hide' align='center' nowrap='nowrap' data-debug-class='2'")
+##ALtdcellAtt($comebacks "class='mb_hide' align='center' nowrap='nowrap' data-debug-class='1'")
 #end
 
 #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
