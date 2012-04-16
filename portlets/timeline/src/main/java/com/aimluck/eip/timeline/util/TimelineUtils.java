@@ -37,6 +37,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.cyberneko.html.parsers.DOMParser;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -717,6 +718,10 @@ public class TimelineUtils {
   }
 
   public static Document getDocument(String string) {
+    return getDocument(string, "JISAutoDetect");
+  }
+
+  public static Document getDocument(String string, String _charset) {
     DOMParser parser = new DOMParser();
     try {
       URL url = new URL(string);
@@ -739,7 +744,7 @@ public class TimelineUtils {
         reader =
           new BufferedReader(new InputStreamReader(
             con.getInputStream(),
-            "JISAutoDetect"));
+            _charset));
       } else {
         reader =
           new BufferedReader(new InputStreamReader(
@@ -753,6 +758,11 @@ public class TimelineUtils {
       Document document = parser.getDocument();
       reader.close();
       return document;
+    } catch (DOMException e) {
+      if (!"UTF-8".equals(_charset)) {
+        return getDocument(string, "UTF-8");
+      }
+      return null;
     } catch (Exception ex) {
       return null;
     }
