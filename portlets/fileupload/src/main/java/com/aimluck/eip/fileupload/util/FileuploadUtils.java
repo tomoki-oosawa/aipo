@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.fileupload.util;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -350,7 +351,7 @@ public class FileuploadUtils {
       BufferedImage orgImage = ImageIO.read(is);
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkImage(orgImage, width, height);
-      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("png");
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
       ImageWriter writer = writers.next();
 
       ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -453,6 +454,8 @@ public class FileuploadUtils {
         targetImage.getHeight(null),
         BufferedImage.TYPE_INT_RGB);
     Graphics2D g = tmpImage.createGraphics();
+    g.setColor(Color.WHITE);
+    g.fillRect(0, 0, shrinkedWidth, shrinkedHeight);
     g.drawImage(targetImage, 0, 0, null);
 
     return tmpImage;
