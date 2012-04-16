@@ -264,7 +264,7 @@ public class FileIOAction extends ALBaseAction {
         }
       }
     }
-    logger.warn("[addressbookImport]addressbook CSV imported");
+
     ALEipUtils.setTemp(rundata, context, "not_error_count", Integer
       .toString(not_error));
     int error_count =
