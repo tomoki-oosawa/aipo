@@ -256,7 +256,7 @@ public class AccountEditFormData extends ALAbstractFormData {
                 filebean,
                 acceptExts,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList);
           } else {
             facePhoto = null;

@@ -483,7 +483,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
               newfilebean,
               acceptExts,
               FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-              FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
               msgList);
 
           String filename = j + "_" + String.valueOf(System.nanoTime());

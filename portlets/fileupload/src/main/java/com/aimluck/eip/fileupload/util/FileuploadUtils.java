@@ -76,7 +76,7 @@ public class FileuploadUtils {
   public static final int DEF_THUMBNAIL_WIDTH = 86;
 
   /** 画像サムネイルのサイズ（縦幅） */
-  public static final int DEF_THUMBNAIL_HEIGTH = 86;
+  public static final int DEF_THUMBNAIL_HEIGHT = 86;
 
   /** 現在の添付ファイル数 */
   public static final String KEY_NOW_SIZE = "nsize";
@@ -306,6 +306,51 @@ public class FileuploadUtils {
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
+      ImageWriter writer = writers.next();
+
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      ImageOutputStream ios = ImageIO.createImageOutputStream(out);
+      writer.setOutput(ios);
+      writer.write(shrinkImage);
+
+      result = out.toByteArray();
+    } catch (Exception e) {
+      logger.error("Exception", e);
+      result = null;
+    } finally {
+      try {
+        if (is != null) {
+          is.close();
+        }
+      } catch (Exception e) {
+        logger.error("Exception", e);
+        result = null;
+      }
+    }
+    return result;
+  }
+
+  /**
+   * 縮小した画像のバイナリを返す。
+   * 
+   * @param org_id
+   * @param folderName
+   * @param uid
+   * @param fileBean
+   * @param acceptExts
+   * @param msgList
+   * @return
+   */
+  public static byte[] getBytesShrink(InputStream is, int width, int height,
+      List<String> msgList) {
+
+    byte[] result = null;
+
+    try {
+      BufferedImage orgImage = ImageIO.read(is);
+      BufferedImage shrinkImage =
+        FileuploadUtils.shrinkImage(orgImage, width, height);
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("png");
       ImageWriter writer = writers.next();
 
       ByteArrayOutputStream out = new ByteArrayOutputStream();

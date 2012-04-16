@@ -1510,7 +1510,7 @@ public class WorkflowUtils {
             filebean,
             acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-            FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
             msgList);
 
         String filename = i + "_" + String.valueOf(System.nanoTime());

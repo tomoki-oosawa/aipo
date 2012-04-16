@@ -908,7 +908,7 @@ public class MsgboardUtils {
             filebean,
             acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-            FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
             msgList);
 
         String filename = "0_" + String.valueOf(System.nanoTime());

@@ -19,11 +19,7 @@
 
 package com.aimluck.eip.timeline;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -313,26 +309,11 @@ public class TimelineFormData extends ALAbstractFormData {
           String str = ALEipUtils.getParameter(rundata, context, "tlClipImage");
           URL u = new URL(str);
           InputStream is = u.openStream();
-          ByteArrayOutputStream b = new ByteArrayOutputStream();
-          OutputStream os = new BufferedOutputStream(b);
-          int c;
-          try {
-            while ((c = is.read()) != -1) {
-              os.write(c);
-            }
-          } catch (IOException e) {
-            e.printStackTrace();
-          } finally {
-            if (os != null) {
-              try {
-                os.flush();
-                os.close();
-              } catch (IOException e) {
-                e.printStackTrace();
-              }
-            }
-          }
-          url.setThumbnail(b.toByteArray());
+          url.setThumbnail(FileuploadUtils.getBytesShrink(
+            is,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+            msgList));
         }
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipTitle") != null) {
@@ -425,7 +406,7 @@ public class TimelineFormData extends ALAbstractFormData {
               newfilebean,
               acceptExts,
               FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-              FileuploadUtils.DEF_THUMBNAIL_HEIGTH,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
               msgList);
 
           String filename = j + "_" + String.valueOf(System.nanoTime());
