@@ -87,8 +87,8 @@
 ##ヘッダー名を変更する場合はEventlogCsvExportScreenも変更してください
 #ALtdhead("#ALajaxsort('event_date' '日時' $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('user_name' '名前' $result 'EventlogScreen')")
-#ALtdhead("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')")
-#ALtdhead("#ALajaxsort('event_type' '操作' $result 'EventlogScreen')")
+#ALtdheadAtt("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')"'class="center"')
+#ALtdheadAtt("#ALajaxsort('event_type' '操作' $result 'EventlogScreen')"'class="center"')
 #ALtdhead("#ALajaxsort('ip_addr' '接続IP' $result 'EventlogScreen')")
 </tr>
 #foreach ($record in $result.List)
@@ -100,7 +100,7 @@
 #ALtdcellAtt("<div>$!record.UserFullName</div>"'')
 #ALtdcellAtt("<div>$!record.PortletName</div>"'')
 #ALtdcellAtt("<div>$!record.EventName</div>"'')
-#ALtdcellAtt("<div>$!record.IpAddr $!record</div>"'')
+#ALtdcellAtt("<div>$!record.IpAddr</div>"'')
 </tr>
 #end
 </tbody>
