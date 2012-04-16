@@ -351,7 +351,7 @@ public class FileuploadUtils {
       BufferedImage orgImage = ImageIO.read(is);
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkImage(orgImage, width, height);
-      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("png");
       ImageWriter writer = writers.next();
 
       ByteArrayOutputStream out = new ByteArrayOutputStream();
