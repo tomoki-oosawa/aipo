@@ -119,11 +119,11 @@ ${record.FacilityName}<br />
 </td>
 </tr>
 <tr>
-#ALtdhead('登録者名')
+#ALtdhead('登録者')
 #ALtdcell("$!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})")
 </tr>
 <tr>
-#ALtdhead('更新者名')
+#ALtdhead('更新者')
 #ALtdcell("$!{result.Detail.UpdateUser.AliasName}<br />($!{result.Detail.UpdateDate})")
 </tr>
 

@@ -96,8 +96,8 @@ ${record.FacilityName}
 #ALcell_dd_footer($career)
 #end
 
-#ALcell_dt($career '登録者名')#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
-#ALcell_dt($career '更新者名')#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
+#ALcell_dt($career '登録者')#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
+#ALcell_dt($career '更新者')#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
 #ALcell_dl_footer($career)
 ###ALcell_hr($career '1')
 ###ALcell_formheader($career $jslink $portlet)

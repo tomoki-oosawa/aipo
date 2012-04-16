@@ -212,9 +212,9 @@ ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption('登録者名')
+#ALtdcaption('登録者')
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
-#ALtdcaption('更新者名')
+#ALtdcaption('更新者')
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
 
 

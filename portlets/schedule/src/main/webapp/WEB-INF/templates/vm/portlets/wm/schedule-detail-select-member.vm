@@ -109,12 +109,12 @@ $!record.AliasName
 ${record.FacilityName}<br />
 #end
 </dd>
-<dt>登録者名</dt>
+<dt>登録者</dt>
 <dd>
 $!{result.Detail.CreateUser.AliasName}<br />($!{result.Detail.CreateDate})
 </dd>
 
-<dt>更新者名</dt>
+<dt>更新者</dt>
 <dd>
 $!{result.Detail.UpdateUser.AliasName}<br />($!{result.Detail.UpdateDate})
 </dd>
