@@ -179,23 +179,6 @@ public class TimelineSelectData extends
 
     query.distinct(true);
 
-    List<Integer> resultid = new ArrayList<Integer>();
-    List<EipTTimeline> queryList = query.fetchList();
-    for (EipTTimeline item : queryList) {
-      if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
-        resultid.add(item.getParentId());
-      } else if (!resultid.contains(item.getTimelineId())) {
-        resultid.add(item.getTimelineId());
-      }
-    }
-    if (resultid.size() == 0) {
-      // 検索結果がないことを示すために-1を代入
-      resultid.add(-1);
-    }
-    Expression ex =
-      ExpressionFactory.inDbExp(EipTTimeline.TIMELINE_ID_PK_COLUMN, resultid);
-    query.andQualifier(ex);
-
     return query;
   }
 
