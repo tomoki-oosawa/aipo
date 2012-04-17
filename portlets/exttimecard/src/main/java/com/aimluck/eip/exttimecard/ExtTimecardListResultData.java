@@ -407,11 +407,13 @@ public class ExtTimecardListResultData implements ALData {
       // 変更部分
       float resttimein;
       resttimein = (float) timecard_system.getResttimeIn() / 60;
-      for (float f = time - worktimein; f > 0.0; f -= worktimein + resttimein) {
-        if (f < resttimein) {
-          time -= f; // 端数切捨ての場合
-        } else {
-          exrest++; //
+      if (worktimein + resttimein > 0.0) {
+        for (float f = time - worktimein; f > 0.0; f -= worktimein + resttimein) {
+          if (f < resttimein) {
+            time -= f; // 端数切捨ての場合
+          } else {
+            exrest++; //
+          }
         }
       }
       // 変更部分
@@ -590,11 +592,13 @@ public class ExtTimecardListResultData implements ALData {
       int exrest = 0;
       float worktimein = (timecard_system.getWorktimeIn() / 60);
       float resttimein = (timecard_system.getResttimeIn() / 60);
-      for (float i = time - worktimein; i > 0.0; i -= worktimein + resttimein) {
-        if (i < resttimein) {
-          time -= i;// 端数切捨ての場合
-        } else {
-          exrest++;//
+      if (worktimein + resttimein > 0.0) {
+        for (float i = time - worktimein; i > 0.0; i -= worktimein + resttimein) {
+          if (i < resttimein) {
+            time -= i;// 端数切捨ての場合
+          } else {
+            exrest++;//
+          }
         }
       }
       time -= (timecard_system.getResttimeIn() / 60) * exrest;
