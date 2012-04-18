@@ -1342,6 +1342,8 @@ CREATE TABLE EIP_T_TIMELINE
     PRIMARY KEY(TIMELINE_ID)
 );
 
+CREATE INDEX eip_t_timeline_parent_id_index ON EIP_T_TIMELINE (PARENT_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_TIMELINE_LIKE
 -----------------------------------------------------------------------------

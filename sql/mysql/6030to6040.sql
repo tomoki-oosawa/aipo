@@ -100,3 +100,7 @@ CREATE TABLE `eip_t_acl_map` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- 20120411
+
+-- 20120418
+ALTER TABLE  `eip_t_timeline` ADD INDEX (  `parent_id` );
+-- 20120418

@@ -659,7 +659,8 @@ CREATE TABLE `eip_t_timeline` (
    `num_on_day` int(11) NOT NULL DEFAULT 0,
    `create_date` datetime DEFAULT NULL,
    `update_date` datetime DEFAULT NULL,
-   PRIMARY KEY(`timeline_id`)
+   PRIMARY KEY(`timeline_id`),
+   KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timeline_like` (

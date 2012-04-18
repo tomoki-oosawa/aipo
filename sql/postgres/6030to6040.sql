@@ -179,3 +179,7 @@ CREATE SEQUENCE pk_eip_t_acl_map INCREMENT 20;
 ALTER SEQUENCE pk_eip_t_acl_map OWNED BY EIP_T_ACL_MAP.ACL_ID;
 
 -- 20120411
+
+-- 20120418
+CREATE INDEX parent_id ON eip_t_timeline (parent_id);
+-- 20120418
