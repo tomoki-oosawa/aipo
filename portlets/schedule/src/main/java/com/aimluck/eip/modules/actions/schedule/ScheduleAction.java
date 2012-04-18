@@ -233,6 +233,8 @@ public class ScheduleAction extends ALBaseAction {
       useragent = useragent.trim();
       if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
         context.put("isMac", 1);
+      } else {
+        context.put("isMac", 0);
       }
 
       if (template.equals("schedule-calendar")) {
@@ -360,6 +362,16 @@ public class ScheduleAction extends ALBaseAction {
       showAll = "f";
     }
     context.put("init_s_all", showAll);
+
+    // log error回避用
+    context.put("top_form", "");
+    String useragent = rundata.getUserAgent();
+    useragent = useragent.trim();
+    if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
+      context.put("isMac", 1);
+    } else {
+      context.put("isMac", 0);
+    }
 
     // load and set xreg info
     ALEipUtils.setTemp(
@@ -593,7 +605,7 @@ public class ScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group")
           || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab
-            .equals("list"))) {
+          .equals("list"))) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
