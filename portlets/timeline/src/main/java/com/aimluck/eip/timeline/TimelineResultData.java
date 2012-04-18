@@ -51,6 +51,9 @@ public class TimelineResultData implements ALData {
   /** タイムラインのタイプ */
   private String timeline_type;
 
+  /** アプリケーションID **/
+  private String app_id;
+
   /** 公開/非公開フラグ */
   private boolean is_public;
 
@@ -451,6 +454,31 @@ public class TimelineResultData implements ALData {
    */
   public String getTimelineType() {
     return timeline_type;
+  }
+
+  /**
+   * @param timeline_type
+   *          セットする app_id
+   */
+  public void setAppId(String app_id) {
+    this.app_id = app_id;
+  }
+
+  /**
+   * @return app_id
+   */
+  public String getAppId() {
+    return app_id;
+  }
+
+  public boolean isNotActivityParent() {
+    if (app_id == null) {
+      return true;
+    }
+    if (app_id.isEmpty()) {
+      return true;
+    }
+    return !(app_id.equals("ACTIVITY_PARENT"));
   }
 
   /**

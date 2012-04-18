@@ -1107,7 +1107,12 @@ public class ScheduleWeeklyJSONFormData {
         schedule,
         loginName,
         recipients,
-        isNew);
+        false);
+
+      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+      if ("O".equals(newSchedule.getPublicFlag())) {
+        ScheduleUtils.createNewScheduleActivity(schedule, loginName, false);
+      }
     }
   }
 

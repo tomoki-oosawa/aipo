@@ -205,6 +205,7 @@ public class TimelineSelectData extends
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       rd.setTimelineType(record.getTimelineType());
+      rd.setAppId(record.getAppId());
       rd.setParams(record.getParams());
 
       rd.setReplyCount(TimelineUtils.countReply(record.getTimelineId()));
@@ -234,7 +235,7 @@ public class TimelineSelectData extends
       SelectQuery<EipTTimeline> query2 =
         getSelectQueryForCoactivity(record.getTimelineId().toString());
 
-      query2.orderAscending(EipTTimeline.CREATE_DATE_PROPERTY);
+      query2.orderDesending(EipTTimeline.UPDATE_DATE_PROPERTY);
 
       List<EipTTimeline> aList2 = query2.fetchList();
       if (aList2 != null) {

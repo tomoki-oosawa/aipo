@@ -859,20 +859,8 @@ public class ALDefaultSocialApplicationHanlder extends
 
       // タイムラインに更新情報を追加
       if (priority == 0f) {
-        String timelineSql =
-          "delete from eip_t_timeline where timeline_type = 'A' and owner_id = "
-            + request.getUserId()
-            + " and app_id = '"
-            + request.getAppId()
-            + "' and external_id = '"
-            + request.getExternalId()
-            + "'";
-
-        Database.sql(EipTTimeline.class, timelineSql).execute();
-
         Calendar tCal = Calendar.getInstance();
         int parentId = 0;
-        SelectQuery<EipTTimeline> tQuery = Database.query(EipTTimeline.class);
         Calendar tCalBefore = Calendar.getInstance();
         tCalBefore.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
           .get(Calendar.DATE), 0, 0, 0);
@@ -895,8 +883,15 @@ public class ALDefaultSocialApplicationHanlder extends
             EipTTimeline.CREATE_DATE_PROPERTY,
             tCalBefore.getTime(),
             tCalAfter.getTime());
-
-        tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4))));
+        Expression exp5 =
+          ExpressionFactory.matchExp(
+            EipTTimeline.APP_ID_PROPERTY,
+            "ACTIVITY_PARENT");
+        Expression exp6 =
+          ExpressionFactory.matchExp(EipTTimeline.EXTERNAL_ID_PROPERTY, "0");
+        SelectQuery<EipTTimeline> tQuery = Database.query(EipTTimeline.class);
+        tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4.andExp(
+          exp5).andExp(exp6)))));
         tQuery.distinct(true);
         List<EipTTimeline> parents = tQuery.fetchList();
         if (parents != null && parents.size() != 0) {
@@ -904,24 +899,93 @@ public class ALDefaultSocialApplicationHanlder extends
           EipTTimeline parent =
             Database.get(EipTTimeline.class, Integer.valueOf(parentId));
           parent.setUpdateDate(tCal.getTime());
+        } else {
+          // 親ダミー生成
+          EipTTimeline timeline = Database.create(EipTTimeline.class);
+          timeline.setParentId(0);
+          timeline.setOwnerId(request.getUserId());
+          timeline.setAppId("ACTIVITY_PARENT");
+          timeline.setExternalId("0");
+          timeline.setNote("");
+          timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+          timeline.setParams(new SimpleDateFormat("yyyyMMdd").format(cal
+            .getTime()));
+          // 作成日
+          timeline.setCreateDate(tCal.getTime());
+          // 更新日
+          timeline.setUpdateDate(tCal.getTime());
+
+          Database.commit();
+
+          // 親データ再検索
+          tQuery = Database.query(EipTTimeline.class);
+          tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4.andExp(
+            exp5).andExp(exp6)))));
+          tQuery.distinct(true);
+          parents = tQuery.fetchList();
+          if (parents != null && parents.size() != 0) {
+            parentId = parents.get(0).getTimelineId();
+            EipTTimeline parent =
+              Database.get(EipTTimeline.class, Integer.valueOf(parentId));
+            parent.setUpdateDate(tCal.getTime());
+          }
         }
-
-        EipTTimeline timeline = Database.create(EipTTimeline.class);
-        timeline.setParentId(parentId);
-        timeline.setOwnerId(request.getUserId());
-        timeline.setAppId(request.getAppId());
-        timeline.setExternalId(request.getExternalId());
-        timeline.setNote(request.getTitle());
-        timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
-        timeline.setParams(request.getPortletParams());
-        // 作成日
-        timeline.setCreateDate(tCal.getTime());
-        // 更新日
-        timeline.setUpdateDate(tCal.getTime());
-
+        exp1 =
+          ExpressionFactory.matchExp(
+            EipTTimeline.TIMELINE_TYPE_PROPERTY,
+            EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+        exp2 =
+          ExpressionFactory.matchExp(EipTTimeline.OWNER_ID_PROPERTY, Integer
+            .valueOf(request.getUserId()));
+        exp3 =
+          ExpressionFactory.matchExp(EipTTimeline.APP_ID_PROPERTY, request
+            .getAppId());
+        exp4 =
+          ExpressionFactory.matchExp(EipTTimeline.EXTERNAL_ID_PROPERTY, request
+            .getExternalId());
+        tQuery = Database.query(EipTTimeline.class);
+        tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4))));
+        // tQuery.andQualifier(exp3);
+        tQuery.distinct(true);
+        List<EipTTimeline> olders = tQuery.fetchList();
+        if (olders != null && olders.size() != 0) {
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+          String timelineSql =
+            "UPDATE eip_t_timeline"
+              + " SET parent_id = #bind($parentId) "
+              + ", note = #bind($title) "
+              + ", params = #bind($portletParams) "
+              + ", update_date = #bind($now) "
+              + " WHERE timeline_type = 'A' "
+              + " AND owner_id = #bind($userId) "
+              + " AND app_id = #bind($appId) "
+              + " AND external_id = #bind($externalId); ";
+          Database
+            .sql(EipTTimeline.class, timelineSql)
+            .param("parentId", parentId)
+            .param("title", request.getTitle())
+            .param("portletParams", request.getPortletParams())
+            .param("now", sdf.format(tCal.getTime()))
+            .param("userId", request.getUserId())
+            .param("appId", request.getAppId())
+            .param("externalId", request.getExternalId())
+            .execute();
+        } else {
+          EipTTimeline timeline = Database.create(EipTTimeline.class);
+          timeline.setParentId(parentId);
+          timeline.setOwnerId(request.getUserId());
+          timeline.setAppId(request.getAppId());
+          timeline.setExternalId(request.getExternalId());
+          timeline.setNote(request.getTitle());
+          timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
+          timeline.setParams(request.getPortletParams());
+          // 作成日
+          timeline.setCreateDate(tCal.getTime());
+          // 更新日
+          timeline.setUpdateDate(tCal.getTime());
+        }
         Database.commit();
       }
-
     } catch (Throwable t) {
       Database.rollback();
       throw new RuntimeException(t);

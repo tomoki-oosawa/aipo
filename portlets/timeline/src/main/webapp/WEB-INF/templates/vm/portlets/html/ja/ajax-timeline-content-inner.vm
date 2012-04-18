@@ -26,6 +26,7 @@
 			<img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
 		#end
 	</div>
+#if($!{record.isNotActivityParent()})
 	<div class="messageContents">
 		<div class="name">$!record.OwnerName</div>
 		<div class="body">
@@ -62,7 +63,7 @@
 			#end
 		</div>
 		<div class="time">
-			$!{record.CreateDate}
+			$!{record.UpdateDate}
 			&nbsp;
 			#if(${record.isLike()})
 				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
@@ -177,13 +178,17 @@
 		</form>
 	</div>
 </div>
+#end
 		#foreach ($record2 in $record.CoActivityList)
 			<div class="messageContents">
+                #if($velocityCount==1)
+                        <div class="name">$!record.OwnerName</div>
+                #end
 				<div class="body">
 					<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$record2.PreviewNote</a>
 				</div>
 				<div class="time">
-					$!{record2.CreateDate}
+					$!{record2.UpdateDate}
 					&nbsp;
 					#if(${record2.isLike()})
 						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">

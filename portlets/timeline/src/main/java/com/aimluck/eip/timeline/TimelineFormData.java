@@ -194,11 +194,15 @@ public class TimelineFormData extends ALAbstractFormData {
       }
 
       List<Integer> topicIdList = new ArrayList<Integer>();
-      EipTTimeline topic;
+      List<Integer> topicParentIdList = new ArrayList<Integer>();
+      List<String> topicTypeList = new ArrayList<String>();
+      EipTTimeline topic = null;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         topic = list.get(i);
         topicIdList.add(topic.getTimelineId());
+        topicTypeList.add(topic.getTimelineType());
+        topicParentIdList.add(topic.getParentId());
       }
 
       // トピックを削除
@@ -225,6 +229,10 @@ public class TimelineFormData extends ALAbstractFormData {
             }
           }
         }
+      }
+
+      if (topicTypeList.get(0).equals("A")) {
+        deleteParent(list, topicParentIdList);
       }
 
       Database.deleteAll(topics);
@@ -296,7 +304,10 @@ public class TimelineFormData extends ALAbstractFormData {
           parent.setUpdateDate(tCal.getTime());
         } else if (parent.getTimelineType().equals(
           EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {
-          exchangeParent(parent);
+          EipTTimeline grandParent =
+            Database.get(EipTTimeline.class, Integer.valueOf(parent
+              .getParentId()));
+          exchangeParent(grandParent);
         }
 
       } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
@@ -621,6 +632,59 @@ public class TimelineFormData extends ALAbstractFormData {
     topic2.setUpdateDate(tCal.getTime());
     topic2.setParentId(0);
     Database.commit();
+  }
+
+  public void deleteParent(List<EipTTimeline> list,
+      List<Integer> topicParentIdList) {
+    int topicparent = 0;
+    topicparent = topicParentIdList.get(0);
+
+    SelectQuery<EipTTimeline> dQuery = Database.query(EipTTimeline.class);
+
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, topicparent);
+    dQuery.andQualifier(exp1);
+    dQuery.distinct(true);
+    List<EipTTimeline> tList = dQuery.fetchList();
+
+    if (tList.size() == 1) {
+      SelectQuery<EipTTimeline> ddQuery = Database.query(EipTTimeline.class);
+      Expression exp2 =
+        ExpressionFactory.matchDbExp(
+          EipTTimeline.TIMELINE_ID_PK_COLUMN,
+          topicparent);
+      ddQuery.setQualifier(exp2);
+
+      List<EipTTimeline> tParent = ddQuery.fetchList();// tParent=削除対象
+
+      List<String> fpaths = new ArrayList<String>();
+      if (tParent.size() > 0) {
+        int tsize = tParent.size();
+        for (int i = 0; i < tsize; i++) {
+          List<?> files = tParent.get(i).getEipTTimelineFile();
+          TimelineUtils.deleteFiles(tParent.get(i).getTimelineId());
+          TimelineUtils.deleteLikes(tParent.get(i).getTimelineId());
+          if (files != null && files.size() > 0) {
+            int fsize = files.size();
+            for (int j = 0; j < fsize; j++) {
+              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+            }
+          }
+        }
+      }
+
+      Database.deleteAll(tParent);
+      Database.commit();
+
+      if (fpaths.size() > 0) {
+        // ローカルファイルに保存されているファイルを削除する．
+        int fsize = fpaths.size();
+        for (int i = 0; i < fsize; i++) {
+          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
+            + fpaths.get(i));
+        }
+      }
+    }
   }
 
 }
