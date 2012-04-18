@@ -35,7 +35,6 @@
 <div class="auiWidget clearfix">
 #AUIbuttonAction("予定を追加する" "javascript:aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);")
 </div>
-
 <div class="auiWidget clearfix">
     <table class="auiCalendar">
     	<tbody id="mc_table"><tr>

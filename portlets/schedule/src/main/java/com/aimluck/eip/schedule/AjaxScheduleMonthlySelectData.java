@@ -57,6 +57,9 @@ public class AjaxScheduleMonthlySelectData extends
   /** <code>nextMonth</code> 次の月 */
   private ALDateTimeField nextMonth;
 
+  /** <code>nextMonth</code> 表示されている日 */
+  private ALDateTimeField viewStart;
+
   /**
    * 現在の月を取得します。
    * 
@@ -124,9 +127,6 @@ public class AjaxScheduleMonthlySelectData extends
   public void setMonthlyCalendar(RunData rundata, Context context)
       throws ALPageNotFoundException {
 
-    // 表示開始日時
-    ALDateTimeField viewStart = new ALDateTimeField("yyyy-MM-dd");
-
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
       // スケジュールの表示開始日時
@@ -170,7 +170,6 @@ public class AjaxScheduleMonthlySelectData extends
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
     cal.add(Calendar.DATE, -dayofweek + 1);
-    viewStart.setValue(cal.getTime());
 
     // 月間スケジュールコンテナの初期化
     try {
@@ -205,6 +204,9 @@ public class AjaxScheduleMonthlySelectData extends
     viewMonth.setNotNull(true);
     // 今日
     today = new ALDateTimeField("yyyy-MM-dd");
+    // 表示開始日時
+    viewStart = new ALDateTimeField("yyyy-MM-dd");
+    viewStart.setNotNull(true);
   }
 
   /**
@@ -218,7 +220,18 @@ public class AjaxScheduleMonthlySelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
     setMonthlyCalendar(rundata, context);
+
+    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_start");
+    if (tmpViewStart == null || "".equals(tmpViewStart)) {
+      Calendar cal = Calendar.getInstance();
+      cal.set(Calendar.HOUR_OF_DAY, 0);
+      cal.set(Calendar.MINUTE, 0);
+      viewStart.setValue(cal.getTime());
+    } else {
+      viewStart.setValue(tmpViewStart);
+    }
   }
 
   /**
@@ -277,6 +290,13 @@ public class AjaxScheduleMonthlySelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * @return viewDate
+   */
+  public ALDateTimeField getViewDate() {
+    return viewStart;
   }
 
 }
