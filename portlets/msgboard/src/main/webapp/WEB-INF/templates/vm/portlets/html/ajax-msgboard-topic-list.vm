@@ -53,7 +53,6 @@
 #ALtdhead("#ALajaxsort('topic_name' 'トピック名' $result 'MsgboardTopicListScreen')")
 #ALtdheadAtt("#ALajaxsort('category_name' 'カテゴリ' $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:10em"')
 #ALtdheadAtt("#ALajaxsort('owner_name' '作成者' $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:8em"')
-#ALtdheadAtt("#ALajaxsort('update_user' '更新者' $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:8em"')
 #ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
@@ -72,7 +71,6 @@ $!record.CategoryName
 </div>
 </td>
 #ALtdcellAtt("$!{record.OwnerName}" 'class="mb_hide" nowrap="nowrap"')
-#ALtdcellAtt("$!{record.UpdateUser}" 'class="mb_hide" nowrap="nowrap"')
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
