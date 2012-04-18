@@ -293,13 +293,13 @@ if(document.all!=undefined){
 #if(${record.TermResultData.isShowDetail()})
 <div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">
-期間：$!{record.TermResultData.Name}
+$!{record.TermResultData.Name}
 #if(!${record.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
 #if(${record.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />#end
 </a>
 #else
 <div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small">
-期間：$!{record.TermResultData.Name}
+$!{record.TermResultData.Name}
 #if(!${record.TermResultData.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #end
