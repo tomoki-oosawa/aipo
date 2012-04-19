@@ -437,17 +437,18 @@
     /* cell for today's date */
     /*text-decoration:underline;
     font-weight:bold;*/
-}
-.dijitCalendarCurrentDate .dijitCalendarDateLabel {
-	text-shadow:none;
-	border-top:solid 1px #506073;
-	border-left:solid 1px #506073;
+    background-color:#c0c0c0;
 }
 
 .dijitCalendarSelectedDate {
     /* cell for the selected date */
     background-color:#7389a5 !important;
     color:#ffffff !important;
+}
+.dijitCalendarSelectedDate .dijitCalendarDateLabel {
+	text-shadow:none;
+	border-top:solid 1px #506073;
+	border-left:solid 1px #506073;
 }
 .dijitCalendarYearContainer {
     /* footer of the table that contains the year display/selector */

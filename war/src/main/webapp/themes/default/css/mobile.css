@@ -271,6 +271,7 @@ td.container {
 	z-index:994;
 }
 .auiWidget {
+	padding:5px;
 }
 .auiWidget p {
 	margin:0;
@@ -306,7 +307,7 @@ td.container {
 	bottom:44px;
 	min-width:150px;
 	max-width:300px;
-	padding:0 5px;
+	/*padding:0 5px;*/
 	background:#ffffff;
 	border:solid 1px #999999;
 	border-right:none;
@@ -360,8 +361,8 @@ td.container {
 	left:0 !important;
 }
 .modalDialog.mb_dialog{
-	position: relative;
-	margin:0;
+	/*position: relative;
+	margin:0;*/
 }
 
 .modalDialogUnderlayWrapper{
@@ -535,3 +536,4 @@ table.auiRowTable td.wTitl a {
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none}
+.mb_dialoghide{display:none;}
