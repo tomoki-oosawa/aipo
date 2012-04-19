@@ -69,10 +69,10 @@ $portlet.getContent($data)
 							#end
 							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
-		                            <table class="tableWrapper">
-		                              <tbody>
-		                                <tr>
-		                                  <td class="wide top">
+		                            ##<table class="tableWrapper">
+		                              ##<tbody>
+		                                ##<tr>
+		                                  ##<td class="wide top">
 		                                    ##<div class="roundTopMain clearfix">
 		                                      ##<div class="roundRightMain">
 		                                        ##<div class="roundBottomMain">
@@ -106,10 +106,10 @@ $portlet.getContent($data)
 		                                        ##</div>
 		                                      ##</div>
 		                                    ##</div>
-		                                  </td>
-		                                </tr>
-		                              </tbody>
-		                            </table>
+		                                  ##</td>
+		                                ##</tr>
+		                              ##</tbody>
+		                            ##</table>
                             <!-- MAIN OUTER -->
 #end
 #end
