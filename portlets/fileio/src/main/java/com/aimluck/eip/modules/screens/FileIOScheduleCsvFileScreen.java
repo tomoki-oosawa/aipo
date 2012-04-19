@@ -63,7 +63,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
       StringBuffer sb = new StringBuffer();
-      sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前,ログイン名");
+      sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前,ユーザー名");
       sb.append(LINE_SEPARATOR);
       sb
         .append("\"2011/07/09\",\"16:30\",\"2011/07/09\",\"17:00\",\"会議室\",\"営業会議\",\"営業戦略と一週間の予定を確認\",\"山田 太郎\",\"yamada\"");

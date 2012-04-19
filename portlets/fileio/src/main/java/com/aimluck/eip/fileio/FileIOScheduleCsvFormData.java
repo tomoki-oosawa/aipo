@@ -59,7 +59,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
 
-  /** TMPログイン名 */
+  /** TMPユーザー名 */
   private ALStringField username;
 
   /** TMPユーザー名 */
@@ -114,9 +114,9 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // ログイン名
+    // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ログイン名");
+    username.setFieldName("ユーザー名");
     username.setTrim(true);
     // ログインID
     userfullname = new ALStringField();
@@ -488,7 +488,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   // }
 
   /**
-   * オブジェクトモデルからログイン名を取得する。 <BR>
+   * オブジェクトモデルからユーザー名を取得する。 <BR>
    * 
    * @param userFullName
    * @return
@@ -634,7 +634,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * ログイン名を入力します <BR>
+   * ユーザー名を入力します <BR>
    * 
    * @param str
    */

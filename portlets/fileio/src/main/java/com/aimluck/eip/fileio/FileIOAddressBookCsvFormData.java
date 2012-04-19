@@ -153,7 +153,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   private FileIOStringField comp_fax_number_full;
 
-  /** ログイン名 */
+  /** ユーザー名 */
   private ALStringField username;
 
   private boolean same_company;
@@ -293,9 +293,9 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     comp_fax_number_full.setFieldName("FAX番号");
     comp_fax_number_full.setTrim(true);
 
-    // ログイン名
+    // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ログイン名");
+    username.setFieldName("ユーザー名");
     username.setTrim(true);
 
     public_flag.setValue("T");

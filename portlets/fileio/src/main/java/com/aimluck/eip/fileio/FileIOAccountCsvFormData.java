@@ -71,7 +71,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   public static final String DEFAULT_VIEW_PASSWORD = "*";
 
-  /** ログイン名 */
+  /** ユーザー名 */
   private ALStringField username;
 
   /** パスワード */
@@ -128,9 +128,9 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // ログイン名
+    // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ログイン名");
+    username.setFieldName("ユーザー名");
     username.setTrim(true);
     // パスワード
     password = new ALStringField();
@@ -262,13 +262,13 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         || usernamestr.startsWith(ALEipUtils.dummy_user_head)
         || !username.validate(msgList)) {
         msgList
-          .add("『 <span class='em'>ログイン名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ログイン名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくログイン名」は登録することができません。");
+          .add("『 <span class='em'>ユーザー名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ユーザー名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくユーザー名」は登録することができません。");
         username.setValue(null);
       }
 
       if (!AccountUtils.isValidSymbolUserName(usernamestr)) {
         StringBuffer msg =
-          new StringBuffer("『 <span class='em'>ログイン名</span> 』に使用できる記号は");
+          new StringBuffer("『 <span class='em'>ユーザー名</span> 』に使用できる記号は");
         List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
         for (String symbol : symbols) {
           msg.append("『").append(symbol).append("』");
@@ -948,7 +948,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * ログイン名を入力します <BR>
+   * ユーザー名を入力します <BR>
    * 
    * @param str
    */

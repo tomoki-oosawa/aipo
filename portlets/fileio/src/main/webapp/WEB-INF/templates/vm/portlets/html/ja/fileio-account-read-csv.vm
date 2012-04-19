@@ -65,11 +65,32 @@ function import_csv(){
         }
 	}
 	if(importflag == 0){
-        alert('インポートするcsvの種類を選択して下さい。');
+        alert('読み込むcsvの種類を選択して下さい。');
     }
 	document.readcsv.submit();
 }
 
+function show_Attention(divId, divClass){
+	var divs = document.getElementsByTagName('div');
+	for(var i=0; i<divs.length; i++){
+		if(divs[i].className == divClass){
+			if(divs[i].id == divId) {
+				divs[i].style.display = "block";
+				}else{
+				divs[i].style.display = "none";
+				}
+		}
+	}
+}
+
+function hide_Attention(){
+	var divs = document.getElementsByTagName('div');
+	for(var i=0; i<divs.length; i++){
+		if(divs[i].id == "Account_Attention" || divs[i].id == "Schedule_Attention") {
+		divs[i].style.display = "none";
+		}
+	}
+}
 
 //-->
 </script>
@@ -125,11 +146,11 @@ function import_csv(){
 <tr>
 <td width="150" class="caption">種類</td>
 <td>
-<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />ユーザーアカウント</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />部署</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />アドレス(会社)帳</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />アドレス帳</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>スケジュール</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Account_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />ユーザーアカウント</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />部署</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />アドレス(会社)帳</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />アドレス帳</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Schedule_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>スケジュール</label><br />
 </td>
 </tr>
 
@@ -139,17 +160,31 @@ function import_csv(){
 </tr>
 
 <tr>
-<td colspan="2" class="center"><input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="インポート" class="auiButtonAction" name="send" /></td>
+<td colspan="2" class="center">
+	#if($!result.List && $!result.List.size() > 0)
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="読み込む" class="button" name="send" />
+	#else
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="読み込む" class="auiButtonAction" name="send" />
+	#end
+</td>
 </tr>
 
 </tbody>
 </table>
 
-<p>
-ログイン名、パスワード、名前（姓）、名前（名）、名前（姓・フリガナ）、名前（名・フリガナ）は必須項目です。
-パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
-登録されているログイン名と同じログイン名を指定した場合には、情報が上書きされます。部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
-</p>
+<div id="Account_Attention" class="AttentionGroup" style="display:none">
+	<p>
+		ユーザー名、パスワード、名前（姓）、名前（名）、名前（姓・フリガナ）、名前（名・フリガナ）は必須項目です。
+		パスワードの値が「*」の場合、パスワードは変更されません。「*」以外の場合、その値にパスワードが設定されます。
+		登録されているユーザー名と同じユーザー名を指定した場合には、情報が上書きされます。
+		部署の項目は、「/」で区切ることにより、複数の部署に登録できます。
+	</p>
+</div>
+<div id="Schedule_Attention" class="AttentionGroup" style="display:none">
+	<p>
+		ユーザー名 と 名前 の両方が指定されている場合は、ユーザー名を優先してユーザーを検索し、登録します。
+	</p>
+</div>
 
 #if($!result.List && $!result.List.size() > 0)
 #set($showErrmsg1 = false)
@@ -198,8 +233,8 @@ function import_csv(){
 <ul>
 #if($showErrmsg1)
 <li>
-<span class="caution">（※1）&nbsp;ログイン名は 16 文字以下の英数字と記号で入力してください。使用できる記号は『-』『_』『.』の三つです。
-また、ログイン名として、「admin」「template」「anon」「先頭に dummy_ がつくログイン名」は登録することができません。</span><br />
+<span class="caution">（※1）&nbsp;ユーザー名は 16 文字以下の英数字と記号で入力してください。使用できる記号は『-』『_』『.』の三つです。
+また、ユーザー名として、「admin」「template」「anon」「先頭に dummy_ がつくユーザー名」は登録することができません。</span><br />
 </li>
 #end
 #if($showErrmsg2)
@@ -248,7 +283,7 @@ function import_csv(){
 <li><span class="caution">（※16）&nbsp;ユーザー登録数がライセンス数を上回っています。</span></li>
 #end
 #if($showErrmsg17)
-<li><span class="caution">（※17）&nbsp;同じログイン名を複数追加できません。指定されたCSVファイルをご確認のうえ、ログイン名を変更してください。</span></li>
+<li><span class="caution">（※17）&nbsp;同じユーザー名を複数追加できません。指定されたCSVファイルをご確認のうえ、ユーザー名を変更してください。</span></li>
 #end
 </ul>
 #else
@@ -267,10 +302,10 @@ function import_csv(){
 
 <div style="width:100%; overflow:auto;">
 <table class="tableWrapper" style="margin: 1px"><tbody><tr><td>
-#ALtableheaderWide()
+#ALtableheaderBorderWide()
 <tr>
 <th nowrap="nowrap" class="head">登録の可否</th>
-<th nowrap="nowrap" class="head">ログイン名</th>
+<th nowrap="nowrap" class="head">ユーザー名</th>
 <th nowrap="nowrap" class="head">パスワード</th>
 <th nowrap="nowrap" class="head">名前（姓）</th>
 <th nowrap="nowrap" class="head">名前（名）</th>
@@ -357,9 +392,9 @@ $!rec
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
-#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
+#ALtdcellAtt("#ALauibutton('eventSubmit_doAccount_insert_csv' '正常な部分のみ登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
 #else
-#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
+#ALtdcellAtt("#ALauibutton('eventSubmit_doAccount_insert_csv' '登録する' 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' 'キャンセルする' 'event_account_csv(this)')" 'colspan="12" align="center"')
 #end
 </tr>
 </table>

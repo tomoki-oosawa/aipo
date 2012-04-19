@@ -49,7 +49,7 @@ public class FileIOAccountCsvResultData implements ALData {
   /** 役職がデータベースに存在するか否か */
   private boolean position_not_found;
 
-  /** 同じログイン名が存在するか否か */
+  /** 同じユーザー名が存在するか否か */
   private boolean same_user;
 
   /** エラーが起きたかどうか */
@@ -154,7 +154,7 @@ public class FileIOAccountCsvResultData implements ALData {
   }
 
   /**
-   * 同じログイン名が存在するかを示すフラグを取得します <BR>
+   * 同じユーザー名が存在するかを示すフラグを取得します <BR>
    * 
    * @return
    */
@@ -212,7 +212,7 @@ public class FileIOAccountCsvResultData implements ALData {
   }
 
   /**
-   * 同じログイン名が存在するかを示すフラグを設定します <BR>
+   * 同じユーザー名が存在するかを示すフラグを設定します <BR>
    * 
    * @param flg
    */

@@ -551,7 +551,7 @@ public class FileIOAction extends ALBaseAction {
         continue;
       }
       String username = formData.getUserName().toString();
-      if (!username.equals("ログイン名")) {
+      if (!username.equals("ユーザー名")) {
         if (!usernameList.contains(username)) {
           usernameList.add(username);
           if (formData.doInsert(this, rundata, context)) {

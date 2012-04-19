@@ -68,7 +68,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
       StringBuffer sb = new StringBuffer();
-      sb.append("ログイン名,パスワード,名前（姓）,名前（名）");
+      sb.append("ユーザー名,パスワード,名前（姓）,名前（名）");
       sb.append(",名前（姓・フリガナ）,名前（名・フリガナ）,メールアドレス");
       sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職").append(
         LINE_SEPARATOR);
@@ -104,7 +104,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     try {
       StringBuffer sb = new StringBuffer();
-      sb.append("ログイン名,パスワード,名前（姓）,名前（名）");
+      sb.append("ユーザー名,パスワード,名前（姓）,名前（名）");
       sb.append(",名前（姓・フリガナ）,名前（名・フリガナ）,メールアドレス");
       sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職").append(
         LINE_SEPARATOR);

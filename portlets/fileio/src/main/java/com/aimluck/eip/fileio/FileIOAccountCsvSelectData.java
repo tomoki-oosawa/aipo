@@ -213,7 +213,7 @@ public class FileIOAccountCsvSelectData
         e_line.append(",\"\"");
       }
 
-      if (formData.getUserName().toString().equals("ログイン名")) {
+      if (formData.getUserName().toString().equals("ユーザー名")) {
         setLineCount(getLineCount() - 1);
 
         ErrorCode += e_line.toString();
@@ -409,7 +409,7 @@ public class FileIOAccountCsvSelectData
         reader.nextToken();
       }
 
-      if (formData.getUserName().toString().equals("ログイン名")) {
+      if (formData.getUserName().toString().equals("ユーザー名")) {
         continue;
       }
 
