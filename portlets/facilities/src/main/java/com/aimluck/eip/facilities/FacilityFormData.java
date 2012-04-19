@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.Group;
@@ -320,10 +321,37 @@ public class FacilityFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+      // 設備の順番を調整
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement.append("SELECT MAX (sort) as max_sort FROM eip_m_facility");
+      String querydata = statement.toString();
+      List<DataRow> maxnum =
+        Database.sql(EipMFacility.class, querydata).fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      // 最大のソートナンバーの後ろに振られていないデータを追加
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMFacility.SORT_PROPERTY, null);
+      SelectQuery<EipMFacility> querynotsort =
+        Database.query(EipMFacility.class);
+      querynotsort.orderAscending(EipMFacility.UPDATE_DATE_PROPERTY);
+      querynotsort.setQualifier(exp2);
+      List<EipMFacility> facility_notsort_list = querynotsort.fetchList();
+      for (EipMFacility facilitydata2 : facility_notsort_list) {
+        facilitydata2.setSort(++lastnum);
+      }
+
       // 新規オブジェクトモデル
       EipMFacility facility = Database.create(EipMFacility.class);
       // ユーザID
       facility.setUserId(Integer.valueOf(userId));
+      // ソートnum
+      facility.setSort(++lastnum);
       // 設備名
       facility.setFacilityName(facility_name.getValue());
       // メモ
@@ -356,7 +384,7 @@ public class FacilityFormData extends ALAbstractFormData {
       // scheduleAcl.setType("ug");
       // scheduleAcl.setLevel(2);
 
-      Database.commit();
+      // Database.commit();
 
     } catch (Exception ex) {
       Database.rollback();
