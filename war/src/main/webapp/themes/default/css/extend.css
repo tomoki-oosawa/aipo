@@ -302,14 +302,18 @@
 
 .dijitCalendarContainer {
     font-size: 100%;
-    border-collapse: collapse;
+    /*border-collapse: collapse;
     border-spacing: 0;
-    margin: 0 7px 0 5px;
     border: 3px solid #b5b5b5;
-    background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
+    margin: 0 7px 0 5px;
+    background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;*/
     width: 200px;
+	background:#f0f0f0;
+    border:1px solid #999999;
+	border-radius:4px;
+	-ms-border-radius:4px;
+	box-shadow:0 2px 4px rgba(0,0,0,0.4);
 }
-
 .dijitCalendarIncrementControl {
     /* next/prev month buttons */
     width:16px;
@@ -338,15 +342,12 @@
 .dj_ie6 .dijitCalendarIncrease {
     background-image:url("../images/common/btn_right.gif");
 }
-
-
-
 .dijitCalendarMonthContainer th {
     /* month header cell */
     /*background:#EEEEEE url(../images/common/bg_btn.gif) repeat left top;*/
-    padding-top:.3em;
-    padding-bottom:.1em;
+    padding:5px 0;
     text-align:center;
+	vertical-align:middle;
 }
 .dj_ie6 .dijitCalendarMonthContainer th {
     padding-top:.1em;
@@ -355,7 +356,7 @@
 
 .dijitCalendarDayLabelTemplate {
     /* day of week labels */
-    background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;
+    /*background:#EEEEEE url(../images/common/bg_slash.gif) repeat left top;*/
     font-weight:normal;
     padding-top:.15em;
     padding-bottom:0em;
@@ -363,6 +364,7 @@
     color:#293a4b;
     text-align:center;
     /*border:1px solid #b5b5b5;*/
+	border-bottom:solid 1px #c0c0c0;
 }
 
 .dijitCalendarMonthLabel {
@@ -384,28 +386,40 @@
     font-size: 0.9em;
     font-weight: normal;
     text-align: center;
-    padding: 0.3em 0.3em 0.05em 0.3em;
+    /*padding: 0.3em 0.3em 0.05em 0.3em;*/
     letter-spacing: 1px;
+	border-right:solid 1px #c0c0c0;
+	border-bottom:solid 1px #c0c0c0;
+	background:#e0e0e0;
+}
+.dijitCalendarDateTemplate:hover {
+	background:#ffffff;
+}
+.dijitCalendarDateLabel {
+	/* oneday */
+	display:block;
+	padding:3px;
+	border-top:solid 1px #f6f6f6;
+	border-left:solid 1px #f6f6f6;
+    cursor:pointer;
+	text-shadow:0 1px 0 rgba(255,255,255,0.8);
 }
 
 .dijitCalendarPreviousMonth,
 .dijitCalendarNextMonth         {
     /* days that are part of the previous or next month */
     color:#999999;
-    background-color:#f8f8f8 !important;
+	background:#e0e0e0;
     cursor:pointer;
 }
 
 .dijitCalendarPreviousMonthDisabled,
 .dijitCalendarNextMonthDisabled {
     /* days that are part of the previous or next month - disabled*/
-    background-color:#a4a5a6 !important;
 }
 
 .dijitCalendarCurrentMonth {
     /* days that are part of this month */
-    background-color:white !important;
-    cursor:pointer;
 }
 
 .dijitCalendarCurrentMonthDisabled {
@@ -421,28 +435,32 @@
 
 .dijitCalendarCurrentDate {
     /* cell for today's date */
-    text-decoration:underline;
-    font-weight:bold;
+    /*text-decoration:underline;
+    font-weight:bold;*/
+}
+.dijitCalendarCurrentDate .dijitCalendarDateLabel {
+	text-shadow:none;
+	border-top:solid 1px #506073;
+	border-left:solid 1px #506073;
 }
 
 .dijitCalendarSelectedDate {
     /* cell for the selected date */
-    background-color:#bbc4d0 !important;
-    color:black !important;
+    background-color:#7389a5 !important;
+    color:#ffffff !important;
 }
-
-
 .dijitCalendarYearContainer {
     /* footer of the table that contains the year display/selector */
-    background:white url("images/calendarYearLabel.png") repeat-x bottom;
-    border-top:1px solid #ccc;
+    /*background:white url("images/calendarYearLabel.png") repeat-x bottom;*/
+    border-top:1px solid #cccccc;
 }
 
 .dijitCalendarYearLabel {
     /* container for all of 3 year labels */
     margin:0;
-    padding:0.4em 0 0.25em 0;
+    padding:5px;
     text-align:center;
+	background:none !important;
 }
 
 .dijitCalendarSelectedYear {
@@ -450,7 +468,8 @@
     color:black;
     padding:0.2em;
     padding-bottom:0.1em;
-    background-color:#bbc4d0 !important;
+    background-color:#7389a5 !important;
+	color:#ffffff;
 }
 
 .dijitCalendarNextYear,
@@ -637,4 +656,3 @@ background-repeat:no-repeat;
 }
 .dojoDndAvatarItem {
 }
-
