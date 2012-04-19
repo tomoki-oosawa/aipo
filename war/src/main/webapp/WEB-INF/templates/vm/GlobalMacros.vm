@@ -75,6 +75,11 @@
   <tbody>
 #end
 
+#macro(ALtableheaderBorderWide)
+<table class="listTableBorder wide">
+  <tbody>
+#end
+
 #macro(ALdialogtableheaderWide)
 <table class="dialogTable wide">
   <tbody>
@@ -346,6 +351,11 @@
 #macro(ALbutton $name $value $onclick)
 <input name="$name" class="button" type="button" value="$value" onclick="$onclick" />
 #end
+
+#macro(ALauibutton $name $value $onclick)
+<input name="$name" class="auiButtonAction" type="button" value="$value" onclick="$onclick" />
+#end
+
 
 #macro(ALbuttonAction $name $value)
 <input name="$name" class="button" type="button" value="$value" onclick="aimluck.io.actionSubmit(this);" />

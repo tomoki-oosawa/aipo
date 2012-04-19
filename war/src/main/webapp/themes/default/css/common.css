@@ -680,6 +680,21 @@ table.listTable {
 	border-collapse:collapse;
 	padding:0;
 }
+table.listTableBorder {
+	margin-bottom:10px;
+	margin-top:5px;
+	border:solid 1px #ddd;
+	border-spacing:0;
+	border-collapse:collapse;
+	padding:0;
+}
+table.listTableBorder th {
+	padding:5px 3px;
+	white-space:nowrap;
+	text-align:center;
+	font-weight:bold;
+	border:solid 1px #ddd;
+}
 table.listTableNoBorder {
 	margin-top:5px;
 	border-top:none;
