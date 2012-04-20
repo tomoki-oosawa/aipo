@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-list-")
 #set ($pages = $result.PagesNum)
 #set ($currentPage = $result.CurrentPage)
-#set ($nextPage = $cuttentPage + 1)
+#set ($nextPage = $currentPage + 1)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 #set ($timelineViewType = "list")
 ## ---------------------------------------------------------------------------
