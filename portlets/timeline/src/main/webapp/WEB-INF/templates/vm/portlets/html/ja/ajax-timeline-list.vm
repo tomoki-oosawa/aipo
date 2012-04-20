@@ -44,7 +44,7 @@
 <div class="tlInputControls clearfix">
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
-	<input type="submit" class="auiButtonAction" onclick="aipo.timeline.addText(dojo.byId('form$!portlet.ID'), '$!portlet.ID');aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');aimluck.io.setHiddenValue(this);" value="投稿する" />
+	<input href="javascript:void(0)" type="submit" class="auiButtonAction" onclick="aipo.timeline.addText(dojo.byId('form$!portlet.ID'), '$!portlet.ID');aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');aimluck.io.setHiddenValue(this);" value="投稿する" />
   </div>
   <div class="floatLeft mr10">
     #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))

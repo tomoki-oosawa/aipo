@@ -35,9 +35,9 @@
 出勤<br />$!{result.Detail.ClockInTime.Time}
 #else
 #if (!$!{result.Detail.IsNullClockOutTime})
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_punchin_" value="出勤" disabled="">
+<input type="submit" class="submit" name="eventSubmit_doExtTimecard_punchin_" value="出勤" />
 #else
-<input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();">
+<input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();" />
 #end
 #end
 
@@ -58,7 +58,7 @@
 #end
 #end
 #else
-<span class="auiButtonDisabled" disabled="disabled">退勤</span>
+<span class="auiButtonDisabled">退勤</span>
 #end
 #ALtdcellfooter()
 
@@ -66,7 +66,7 @@
 
 #if ($!{result.Detail.IsNullClockInTime}==false)
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
-<span class="auiButtonDisabled" disabled="disabled">外出</span>
+<span class="auiButtonDisabled">外出</span>
 #elseif ($!{result.Detail.IsOutgoing})
 #if (!$!{result.Detail.OutgoingTime} )
 不整合
@@ -77,7 +77,7 @@
 <input type="button" value="外出" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();"/>
 #end
 #else
-<span class="auiButtonDisabled" disabled="disabled">外出</span>
+<span class="auiButtonDisabled">外出</span>
 #end
 
 #ALtdcellfooter()
@@ -85,12 +85,12 @@
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 #if ($!{result.Detail.IsNullClockInTime}==false)
 #if ($!{result.Detail} && !($!{result.Detail.IsNullClockOutTime}))
-<span class="auiButtonDisabled" disabled="disabled">復帰</span>
+<span class="auiButtonDisabled">復帰</span>
 #else
 <input type="button" value="復帰" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();"/>
 #end
 #else
-<span class="auiButtonDisabled" disabled="disabled">復帰</span>
+<span class="auiButtonDisabled">復帰</span>
 #end
 #ALtdcellfooter()
 </tr>

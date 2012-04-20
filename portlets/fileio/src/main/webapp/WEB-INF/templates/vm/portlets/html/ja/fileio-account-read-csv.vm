@@ -110,7 +110,7 @@ function hide_Attention(){
 <h3>テンプレートのダウンロード</h3>
 
 <form enctype="multipart/form-data" method="post" action="" name="io_select" class="auiForm">
-<input type="hidden" value="$secid" name="secid">
+<input type="hidden" value="$secid" name="secid" />
 
 <table class="listTable wide">
 <tbody>
@@ -138,8 +138,8 @@ function hide_Attention(){
 <h3 class="mt20">インポート</h3>
 
 <form enctype="multipart/form-data" method="post" action="" name="readcsv">
-<input type="hidden" value="$secid" name="secid">
-<input type="hidden" value="$temp_folder" name="temp_folder">
+<input type="hidden" value="$secid" name="secid" />
+<input type="hidden" value="$temp_folder" name="temp_folder" />
 
 <table class="listTable wide">
 <tbody>
