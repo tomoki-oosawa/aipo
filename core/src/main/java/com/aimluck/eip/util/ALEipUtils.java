@@ -1263,7 +1263,7 @@ public class ALEipUtils {
         field.setTrim(false);
         field.setValue(token);
         sb.append(
-          ALCommonUtils.replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
+          replaseLeftSpace(ALCommonUtils.replaceToAutoCR(replaceStrToLink(field
             .toString())))).append("<br/>");
       }
       reader.close();
