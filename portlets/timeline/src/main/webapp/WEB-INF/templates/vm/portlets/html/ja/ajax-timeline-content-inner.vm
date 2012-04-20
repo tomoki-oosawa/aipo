@@ -65,13 +65,14 @@
 		<div class="time">
 			$!{record.UpdateDate}
 			&nbsp;
+      #set ($formUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))")
 			#if(${record.isLike()})
-				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
 					<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">いいね！を取り消す</a>
 				</form>
 			#else
-				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
 					<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">いいね！</a>
 				</form>
@@ -121,13 +122,14 @@
 				<div class="body">$!record2.Note</div>
 				<div class="time">$!{record2.CreateDate}
 					&nbsp;
+            #set ($likeUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid))" )
 						#if(${record2.isLike()})
-							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 								<input type="hidden" name="secid" value="$secid" />
 								<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！を取り消す</a>
 							</form>
 						#else
-							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 								<input type="hidden" name="secid" value="$secid" />
 								<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！</a>
 							</form>
@@ -135,7 +137,7 @@
 						&nbsp;
 						#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
 							<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
-								<input type="hidden" name="_name" value="コメント">
+								<input type="hidden" name="_name" value="コメント" />
 								<input type="hidden" name="secid" value="$secid" />
 								#set ($deleteSubmit = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record2.TimelineId).addQueryData('mode', 'delete')))
 								<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessage);">削除する</a>
@@ -167,7 +169,7 @@
 				<img src="images/common/avatar_default3.png" alt="${record2.OwnerName}" width="32" height="32" />
 			#end
 		</div>
-		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
+		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
 				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
