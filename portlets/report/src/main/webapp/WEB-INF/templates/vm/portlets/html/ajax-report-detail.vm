@@ -118,7 +118,7 @@ ${record.Note}
 <input type="hidden" name="mode" value="report_reply" />
 <input type="hidden" name="entityid" value="$!result.ParentReport.ReportId" />
 <input type="hidden" name="report_name" value=" " />
-#if($mode=="new_form")
+#if($!mode && $mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
 <input type="hidden" name="mode" value="update" />
