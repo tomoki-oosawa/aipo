@@ -177,6 +177,9 @@ public class ALUserManagement extends TurbineBaseService implements
         throw new UserException("Invalid Principal Type in getUser: "
           + principal.getClass().getName());
       }
+    } catch (IllegalStateException e) {
+      // session Timeout Errorによるerrorはログに残さない。
+      throw e;
     } catch (Exception e) {
       String message = "Failed to retrieve user '" + principal.getName() + "'";
       logger.error(message, e);
@@ -185,6 +188,9 @@ public class ALUserManagement extends TurbineBaseService implements
     try {
       JetspeedUser juser = row2UserObject(user);
       return juser;
+    } catch (IllegalStateException e) {
+      // session Timeout Errorによるerrorはログに残さない。
+      throw e;
     } catch (UserException e) {
       String message = "Failed to retrieve user '" + principal.getName() + "'";
       logger.error(message, e);
