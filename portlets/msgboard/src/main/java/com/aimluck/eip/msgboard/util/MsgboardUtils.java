@@ -198,7 +198,7 @@ public class MsgboardUtils {
 
       return topic;
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error("[MsgboardUtils]", pageNotFound);
+      // logger.error("[MsgboardUtils]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
       logger.error("[MsgboardUtils]", ex);

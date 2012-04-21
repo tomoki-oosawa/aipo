@@ -486,7 +486,7 @@ public class MsgboardTopicSelectData extends
       // 表示するカラムのみデータベースから取得する．
       return resultList;
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error("[MsgboardTopicSelectData]", pageNotFound);
+      // logger.error("[MsgboardTopicSelectData]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
       logger.error("[MsgboardTopicSelectData]", ex);

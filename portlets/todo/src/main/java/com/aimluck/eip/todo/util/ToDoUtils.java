@@ -137,7 +137,7 @@ public class ToDoUtils {
       }
       return todo;
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error("[ToDoUtils]", pageNotFound);
+      // logger.error("[ToDoUtils]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
       logger.error("Exception", ex);

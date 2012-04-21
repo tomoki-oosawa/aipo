@@ -159,7 +159,7 @@ public class ReportUtils {
 
       return report;
     } catch (ALPageNotFoundException pageNotFound) {
-      logger.error(pageNotFound);
+      // logger.error(pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
       logger.error("[ReportUtils]", ex);
