@@ -663,6 +663,14 @@ CREATE TABLE `eip_t_timeline` (
    KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_timeline_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timeline_id` int(11) DEFAULT NULL,
+  `is_read` int(11) DEFAULT NULL,
+  `login_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `eip_t_timeline_like` (
   `timeline_like_id` int(11) NOT NULL AUTO_INCREMENT,
   `timeline_id` int(11) NOT NULL,
@@ -1125,3 +1133,5 @@ ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCE
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 
 ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY ( `owner_id` ) REFERENCES  `turbine_user` (`user_id`);
+
+ALTER TABLE `eip_t_timeline_map` ADD FOREIGN KEY (  `timeline_id` ) REFERENCES  `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE ;

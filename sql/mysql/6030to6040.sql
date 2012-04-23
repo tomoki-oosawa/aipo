@@ -104,3 +104,15 @@ CREATE TABLE `eip_t_acl_map` (
 -- 20120418
 ALTER TABLE  `eip_t_timeline` ADD INDEX (  `parent_id` );
 -- 20120418
+
+-- 20120423
+CREATE TABLE `eip_t_timeline_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `timeline_id` int(11) DEFAULT NULL,
+  `is_read` int(11) DEFAULT NULL,
+  `login_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `eip_t_timeline_map` ADD FOREIGN KEY (`timeline_id`) REFERENCES  `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE ;
+-- 20120423

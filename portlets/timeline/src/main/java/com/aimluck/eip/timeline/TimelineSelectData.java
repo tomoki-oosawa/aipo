@@ -20,6 +20,7 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -34,6 +35,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -41,6 +43,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.common.ALTimelineManager;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -48,6 +51,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -94,6 +98,8 @@ public class TimelineSelectData extends
   private boolean hasAclDeleteTopicOthers;
 
   private ALStringField target_keyword;
+
+  private List<Object> list;
 
   /**
    * 
@@ -366,6 +372,79 @@ public class TimelineSelectData extends
     return query;
   }
 
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      action.setMode(ALEipConstants.MODE_LIST);
+      ResultList<EipTTimeline> resultList = selectList(rundata, context);
+
+      if (resultList != null) {
+        if (resultList.getTotalCount() > 0) {
+          setPageParam(resultList.getTotalCount());
+        }
+        list = new ArrayList<Object>();
+        for (EipTTimeline model : resultList) {
+          Object object = getResultData(model);
+          TimelineResultData rd = (TimelineResultData) object;
+
+          List<TimelineResultData> coac = rd.getCoActivityList();
+
+          // 権限のあるアクティビティのみ表示する
+
+          for (Iterator<TimelineResultData> iter = coac.iterator(); iter
+            .hasNext();) {
+            TimelineResultData coac_item = iter.next();
+            SelectQuery<EipTTimelineMap> query_map =
+              Database.query(EipTTimelineMap.class);
+            Expression exp1 =
+              ExpressionFactory.matchExp(
+                EipTTimelineMap.EIP_TTIMELINE_PROPERTY,
+                coac_item.getTimelineId().getValue());
+            query_map.setQualifier(exp1);
+            List<EipTTimelineMap> data_map = query_map.fetchList();
+
+            List<String> userlist = new ArrayList<String>();
+            for (int j = 0; j < data_map.size(); j++) {
+              userlist.add(data_map.get(j).getLoginName());
+            }
+
+            if (!(user.getUserId().toString().equals(
+              coac_item.getOwnerId().toString())
+              || userlist.contains(user.getName().toString()) || userlist
+                .contains("-1"))) {
+              iter.remove();
+            }
+          }
+
+          if (rd != null
+            && !(rd.getCoActivityList().size() == 0
+              && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+            list.add(rd);
+          }
+        }
+      }
+      action.setResultData(this);
+      action.putData(rundata, context);
+      ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      return (list != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+
+  }
+
   /**
    * トピックの総数を返す． <BR>
    * 
@@ -489,6 +568,11 @@ public class TimelineSelectData extends
    */
   public boolean isAdmin() {
     return ALEipUtils.isAdmin(uid);
+  }
+
+  @Override
+  public List<Object> getList() {
+    return list;
   }
 
 }

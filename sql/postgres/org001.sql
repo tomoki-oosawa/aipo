@@ -1345,6 +1345,20 @@ CREATE TABLE EIP_T_TIMELINE
 CREATE INDEX eip_t_timeline_parent_id_index ON EIP_T_TIMELINE (PARENT_ID);
 
 -----------------------------------------------------------------------------
+-- EIP_T_TIMELINE_MAP
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_TIMELINE_MAP
+(
+    ID INTEGER NOT NULL,
+    TIMELINE_ID INTEGER NULL,
+    IS_READ INTEGER NULL,
+    LOGIN_NAME varchar(32) NOT NULL,
+    PRIMARY KEY(ID)
+);
+ALTER TABLE EIP_T_TIMELINE_MAP ADD FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE;
+
+-----------------------------------------------------------------------------
 -- EIP_T_TIMELINE_LIKE
 -----------------------------------------------------------------------------
 
@@ -1492,6 +1506,7 @@ CREATE SEQUENCE pk_eip_t_report_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_report_member_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_report_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_timeline_map INCREMENT 20 START 200;
 CREATE SEQUENCE pk_eip_t_timeline_like INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timeline_url INCREMENT 20;

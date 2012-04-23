@@ -34,6 +34,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
 import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.cayenne.om.social.ActivityMap;
 import com.aimluck.eip.cayenne.om.social.AppData;
@@ -917,6 +918,29 @@ public class ALDefaultSocialApplicationHanlder extends
 
           Database.commit();
 
+          ALApplication application2 =
+            getApplication(new ALApplicationGetRequest().withAppId(request
+              .getAppId()));
+          if (application2 != null) {
+            activity.setIcon(application2.getIcon().getValue());
+          }
+
+          String activitySaveLimit2 =
+            ALContainerConfigService.get(Property.ACTIVITY_SAVE_LIMIT);
+          int limit2 = 30;
+          try {
+            limit2 = Integer.valueOf(activitySaveLimit2).intValue();
+          } catch (Throwable ignore) {
+
+          }
+          Calendar cal2 = Calendar.getInstance();
+          cal2.add(Calendar.DAY_OF_MONTH, -limit2);
+
+          Database.query(EipTTimelineMap.class).where(
+            Operations.lt(EipTTimelineMap.EIP_TTIMELINE_PROPERTY
+              + "."
+              + EipTTimeline.UPDATE_DATE_PROPERTY, cal2.getTime())).deleteAll();
+
           // 親データ再検索
           tQuery = Database.query(EipTTimeline.class);
           tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4.andExp(
@@ -983,6 +1007,23 @@ public class ALDefaultSocialApplicationHanlder extends
           timeline.setCreateDate(tCal.getTime());
           // 更新日
           timeline.setUpdateDate(tCal.getTime());
+
+          // タイムラインマップ追加
+          if (recipients != null && recipients.size() > 0) {
+            for (String recipient : recipients) {
+              EipTTimelineMap timelineMap =
+                Database.create(EipTTimelineMap.class);
+              timelineMap.setLoginName(recipient);
+              timelineMap.setEipTTimeline(timeline);
+              timelineMap.setIsRead(priority == 1f ? 0 : 1);
+            }
+          } else {
+            EipTTimelineMap timelineMap =
+              Database.create(EipTTimelineMap.class);
+            timelineMap.setLoginName("-1");
+            timelineMap.setEipTTimeline(timeline);
+            timelineMap.setIsRead(1);
+          }
         }
         Database.commit();
       }
