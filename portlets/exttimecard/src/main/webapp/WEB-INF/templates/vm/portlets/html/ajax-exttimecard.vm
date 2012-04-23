@@ -25,6 +25,22 @@
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '${indicator_id}','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #ALtableheaderAtt("wide")
 <tr>
+
+#if($!{result.Detail.IsTypeA}||$!{result.Detail.IsTypeH}||$!{result.Detail.IsTypeC})
+<td nowrap="nowrap" class="w25 center">
+<span class="auiButtonDisabled">出勤</span>
+</td>
+<td nowrap="nowrap" class="w25 center">
+<span class="auiButtonDisabled">退勤</span>
+</td>
+<td nowrap="nowrap" class="w25 center">
+<span class="auiButtonDisabled">外出</span>
+</td>
+<td nowrap="nowrap" class="w25 center">
+<span class="auiButtonDisabled">復帰</span>
+</td>
+#else
+
 #ALtdcellheaderAtt("nowrap='nowrap' class='w25 center'")
 #if (!$!{result.Detail})
 <input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();"/>
@@ -92,6 +108,7 @@
 <span class="auiButtonDisabled">復帰</span>
 #end
 #ALtdcellfooter()
+#end
 </tr>
 #ALtablefooter()
 #ALformfooter()

@@ -590,6 +590,22 @@ public class ExtTimecardSelectData extends
       rd.setClockOutTime(record.getClockOutTime());
       rd.setTimecardSystem(timecard_system);
       rd.setPunchDate(record.getPunchDate());
+
+      String type = record.getType();
+      rd.setType(type);
+
+      if ("P".equals(type)) {
+        rd.setIsTypeP(true);
+      } else if ("A".equals(type)) {
+        rd.setIsTypeA(true);
+      } else if ("H".equals(type)) {
+        rd.setIsTypeH(true);
+      } else if ("C".equals(type)) {
+        rd.setIsTypeC(true);
+      } else if ("E".equals(type)) {
+        rd.setIsTypeE(true);
+      }
+
       for (int i = 1; i <= EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; i++) {
         rd.setOutgoingTime(record.getOutgoingTime(i), i);
         rd.setComebackTime(record.getComebackTime(i), i);
