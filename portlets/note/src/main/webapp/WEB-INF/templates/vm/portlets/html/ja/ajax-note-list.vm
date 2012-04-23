@@ -86,8 +86,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'style="width:20px"')
-#ALtdheadAtt("#ALajaxsort('client_name' '依頼者' $result 'NoteListScreen')" 'style="width:8em"')
-#ALtdheadAtt('依頼者所属' 'class="mb_hide"')
+#ALtdheadAtt("#ALajaxsort('client_name' '依頼者（依頼者所属）' $result 'NoteListScreen')" 'style="width:8em"')
 #ALtdheadAtt("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')" 'style="width:30%"')
 #ALtdheadAtt("#if($isReceive) 送信者 #else 受信者 #end" 'class="mb_hide" style="width:20%"')
 #ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end" 'style="width:10em"')
@@ -106,9 +105,8 @@ style="font-weight:bold"
 #ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
 
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!record.ClientName</a></div>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!{record.ClientName}#if($record.CompanyName != "")（$!record.CompanyName）#end</a></div>
 #ALtdcellfooter()
-#ALtdcellheaderAtt('class="mb_hide"')<div>$!record.CompanyName</div>#ALtdcellfooter()
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>#if ($isReceive) $!record.SrcUserFullName #else $!record.DestUserFullName.Value #end</div>#ALtdcellfooter()
 #ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"class="right"')
