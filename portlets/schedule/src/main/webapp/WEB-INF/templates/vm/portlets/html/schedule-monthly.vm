@@ -167,6 +167,7 @@
 #end
 </tr>
 ### 期間スケジュール（ここから） ###
+#set($col_span = 0)
 #if($termConListSize > 0)
 #foreach($termcontainer in ${result.TermContainer.getWeekList($weekcount)})
 <tr>
@@ -176,9 +177,7 @@
 #set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
 #if($!{record.TermResultData})
-	#set ($col_span = $!{record.TermResultData.Rowspan})
-#else
-	#set ($col_span = 0)
+#set($col_span=$!{record.TermResultData.Rowspan})
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
@@ -218,7 +217,7 @@
 #end
 </td>
 #else
-<td class="term${color_style}${color_style_holiday}${color_style_othermonth}" #if($col_span > 0 ) style="display:none" #else style="display:" #end></td>
+#if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end
 #end
 ##end
 #set ($col_span = $col_span - 1)
