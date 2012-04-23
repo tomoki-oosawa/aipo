@@ -39,24 +39,24 @@
 </p>
 <div id="Block_Internal_Group" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end>
 <select name="currentInternalGroupName" id="currentInternalGroupName" style="width: 99%" onchange="aipo.webmail.changeInternalGroup('$internalScreenlink', this.options[this.selectedIndex].value)">
-<option value="LoginUser" #if ($!result.CurrentInternalGroupName.toString()== "all") selected="selected" #end>すべてのグループ</option>
+<option value="LoginUser">すべてのグループ</option>
 #foreach( $record in $!result.InternalGroupList )
-<option value="$!record.Name" #if ($!result.CurrentInternalGroupName.toString()== $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+<option value="$!record.Name">$!record.AliasName</option>
 #end
 #if(($result.InternalGroupList.size() > 0) && ($result.PostMap.size() > 0))
-<option value="$!record.Name" #if ($!result.CurrentInternalGroupName.toString() == $!record.Name.toString()) selected="selected" #end>----------</option>
+<option value="$!record.Name">----------</option>
 #end
 #foreach( $record in $!result.PostMap )
-<option value="$!record.GroupName" #if ($!result.CurrentInternalGroupName.toString() == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+<option value="$!record.GroupName">$!record.PostName</option>
 #end
 </select>
 </div>
 <div id="userDiv" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end></div>
 <div id="Block_External_Group" class="mb5" #if($DefTypeCompany == "1") style="display:none;" #end>
 <select name="currentExternalGroupName" id="currentExternalGroupName" style="width: 99%" onchange="aipo.webmail.changeExternalGroup('$externalScreenlink', this.options[this.selectedIndex].value)">
-<option value="" #if ($!result.CurrentExternalGroupName.toString()== "") selected="selected" #end>すべてのグループ</option>
+<option value="">すべてのグループ</option>
 #foreach( $record in $!result.ExternalGroupList )
-<option value="$!record.GroupId" #if ($!result.CurrentExternalGroupName.toString() == $!record.GroupId.toString()) selected="selected" #end>$!record.Name</option>
+<option value="$!record.GroupId">$!record.Name</option>
 #end
 </select>
 </div>
