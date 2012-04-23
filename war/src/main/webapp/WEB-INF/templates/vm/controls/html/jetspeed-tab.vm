@@ -62,7 +62,7 @@ $portlet.getContent($data)
 						        </li>
                               </ul>
                             </div>
-							#if($activeurlselected!="")
+							#if($activeurlselected)
 							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
                             #else
                              <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
@@ -86,7 +86,9 @@ $portlet.getContent($data)
 															#else
 		                                                    <div class="roundMainWrapper" style="min-height:1000px">
 															#end
-															#if($runs.size()==0)
+															#if(!$run)
+																$portlet.getContent($data)
+															#elseif($runs.size()==0)
 															#AUIrowTableWide()
 															<tr><td colspan="4" class="auiNoData">
 															<p class="mh10">
