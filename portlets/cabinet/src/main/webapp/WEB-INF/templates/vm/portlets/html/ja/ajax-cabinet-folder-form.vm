@@ -22,7 +22,7 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doCabinet_folder_insert")
 #set ($subtitle = 'フォルダ追加')
-#set ($positiontitle = "追加位置")
+#set ($positiontitle = "位置")
 #else
 #set ($action_str = "更新する")
 #set ($subtitle = 'フォルダ編集')

@@ -55,7 +55,7 @@
 
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="">
 #ALtditemfooter()
-#ALtdcaption("追加場所")
+#ALtdcaption("位置")
 #ALtditemheader()
 <select name="folder_id" style="WIDTH: 70%">
 #foreach($record in $!result.FolderHierarchyList)
