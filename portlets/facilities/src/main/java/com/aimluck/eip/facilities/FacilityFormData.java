@@ -324,7 +324,7 @@ public class FacilityFormData extends ALAbstractFormData {
       // 設備の順番を調整
       int lastnum = 0;
       StringBuffer statement = new StringBuffer();
-      statement.append("SELECT MAX (sort) as max_sort FROM eip_m_facility");
+      statement.append("SELECT MAX(sort) as max_sort FROM eip_m_facility");
       String querydata = statement.toString();
       List<DataRow> maxnum =
         Database.sql(EipMFacility.class, querydata).fetchListAsDataRow();
