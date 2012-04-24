@@ -30,7 +30,6 @@
 #ALtdcaption('申請経路')
 #ALtditemheader()
 $!{result.Detail.RouteV}
-<div class="spaceTop small">※ 上から順に承認されます。</div>
 #ALtditemfooter()
 #ALtdcaption('メモ')
 #ALtditem($!result.Detail.Note)

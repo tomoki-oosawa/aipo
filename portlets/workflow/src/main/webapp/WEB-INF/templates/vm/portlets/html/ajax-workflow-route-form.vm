@@ -70,7 +70,7 @@
 </div>
 <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">
 #foreach($record in $!result.MemberList)
-<option value="$!record.Name">$!record.AliasName</option>
+<option value="$!record.Name">$velocityCount. $!record.AliasName</option>
 #end
 </select>
 </div>

@@ -50,9 +50,10 @@ public class WorkflowRouteResultData implements ALData {
     .getLogger(WorkflowUtils.class.getName());
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     route_id = new ALNumberField();
     route_name = new ALStringField();
@@ -107,12 +108,16 @@ public class WorkflowRouteResultData implements ALData {
       String username, next_token;
 
       StringTokenizer st = new StringTokenizer(route.getValue(), ",");
+      int routenumber = 1;
       while (st.hasMoreTokens()) {
         next_token = st.nextToken();
         if (!next_token.equals("")) {
           username = ALStringUtil.sanitizing(WorkflowUtils.getName(next_token));
+          routeun.append(routenumber);
+          routeun.append(". ");
           routeun.append(username);
           routeun.append("<br />");
+          routenumber++;
         }
       }
 
