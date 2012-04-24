@@ -28,7 +28,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("書き込み")##delete時メッセージ
 #ALtableheaderWide()
-#ALtdcaption('名前')
+#ALtdcaption('作成者')
 #ALtditem($!result.ParentReport.ClientName)
 #ALtdcaption('タイトル')
 #ALtditem($!result.ParentReport.ReportName)
