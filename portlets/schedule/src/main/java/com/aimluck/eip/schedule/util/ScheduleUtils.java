@@ -747,7 +747,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3675,7 +3675,7 @@ public class ScheduleUtils {
     StringBuilder last = new StringBuilder();
 
     last
-      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule_map.type DESC,eip_t_schedule_map.user_id");
+      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule_map.type DESC,eip_t_schedule.update_date DESC,eip_t_schedule_map.user_id");
 
     SQLTemplate<VEipTScheduleList> countQuery =
       Database
