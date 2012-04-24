@@ -330,6 +330,8 @@ public class ReportSelectData extends
       rd.setReportId(record.getReportId().intValue());
       rd.setReportName(record.getReportName());
       rd.setCreateDate(record.getCreateDate());
+      rd.setStartDate(record.getStartDate());
+      rd.setEndDate(record.getEndDate());
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
       // 自身の報告書かを設定する
@@ -587,6 +589,7 @@ public class ReportSelectData extends
     map.putValue("create_date", EipTReport.CREATE_DATE_PROPERTY);
     map.putValue("user_id", EipTReport.USER_ID_PROPERTY);
     map.putValue("parent_id", EipTReport.PARENT_ID_PROPERTY);
+    map.putValue("start_date", EipTReport.START_DATE_PROPERTY);
     return map;
   }
 

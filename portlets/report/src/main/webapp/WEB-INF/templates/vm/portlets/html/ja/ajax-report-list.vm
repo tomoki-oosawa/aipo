@@ -43,6 +43,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('report_name' 'タイトル' $result 'ReportListScreen')")
+#ALtdhead("#ALajaxsort('start_date' '日時' $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('user_id' '作成者' $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('create_date' '作成日時' $result 'ReportListScreen')")
 </tr>
@@ -53,6 +54,7 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportDetailScreen").addQueryData("entityid",$record.ReportId))');">$!record.ReportName</a>
 </div>
 #ALtdcellfooter()
+#ALtdcell("<div>$!{record.StartDate.toString('yyyy年M月d日H時m分')}～$!{record.EndDate.toString('H時m分')}</div>")
 #ALtdcell("<div>$!record.ClientName</div>")
 #ALtdcellAtt("<div>$!record.CreateDateTime</div>" 'class="right" nowrap="nowrap"')
 </tr>
