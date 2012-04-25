@@ -36,7 +36,7 @@ import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class ActivityNotifyEnableJSONScreen extends ALJSONScreen {
 
@@ -60,30 +60,35 @@ public class ActivityNotifyEnableJSONScreen extends ALJSONScreen {
         notifyValue = false;
       }
       String portletId = ActivityUtils.getGlobalPortletId(rundata);
-      Portlet p = ALEipUtils.getPortlet(rundata, portletId);
-      Profile profile = ((JetspeedRunData) rundata).getProfile();
+      String desktopNotificationParam = null;
+      if (portletId != null) {
+        Portlet p = ALEipUtils.getPortlet(rundata, portletId);
+        Profile profile = ((JetspeedRunData) rundata).getProfile();
 
-      PortletInstance instance = PersistenceManager.getInstance(p, rundata);
+        PortletInstance instance = PersistenceManager.getInstance(p, rundata);
 
-      if (notifyValue != null) {
-        // save all the changes
-        try {
-          instance.setAttribute("desktopNotification", notifyValue ? "T" : "F");
-          profile.setDocument(instance.getDocument());
-          profile.store();
-          p.init();
-          org.apache.jetspeed.util.PortletSessionState.setPortletConfigChanged(
-            p,
-            rundata);
-        } catch (PortletException e) {
-          logger.error("Customizer failed to reinitialize the portlet "
-            + p.getName(), e);
-        } catch (Exception e) {
-          logger.error("Unable to save profile ", e);
+        if (notifyValue != null) {
+          // save all the changes
+          try {
+            instance.setAttribute("desktopNotification", notifyValue
+              ? "T"
+              : "F");
+            profile.setDocument(instance.getDocument());
+            profile.store();
+            p.init();
+            org.apache.jetspeed.util.PortletSessionState
+              .setPortletConfigChanged(p, rundata);
+          } catch (PortletException e) {
+            logger.error("Customizer failed to reinitialize the portlet "
+              + p.getName(), e);
+          } catch (Exception e) {
+            logger.error("Unable to save profile ", e);
+          }
         }
+
+        desktopNotificationParam =
+          p.getPortletConfig().getInitParameter("desktopNotification");
       }
-      String desktopNotificationParam =
-        p.getPortletConfig().getInitParameter("desktopNotification");
       json = new JSONObject();
       json.put("enable", notifyValue != null
         ? notifyValue.booleanValue()
