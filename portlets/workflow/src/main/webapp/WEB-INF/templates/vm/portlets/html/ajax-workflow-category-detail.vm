@@ -35,7 +35,7 @@ $!result.Detail.RouteName
 &nbsp;&nbsp;(&nbsp;$!result.Detail.RouteH&nbsp;)
 #end
 #ALtditemfooter()
-#ALtdcaption('テンプレート')
+#ALtdcaption('申請内容テンプレート')
 #ALtditem($!result.Detail.Template)
 #ALtdcaption('メモ')
 #ALtditem($!result.Detail.Note)
