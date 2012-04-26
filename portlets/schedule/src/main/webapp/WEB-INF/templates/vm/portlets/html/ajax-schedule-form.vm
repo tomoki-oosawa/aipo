@@ -212,8 +212,7 @@
             #end
             </select>
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="" #if ($!result.isSameDate) selected="selected" #end>--分</option>
-            <option value="0" #if (!$!result.isSameDate && $!result.EndDate.Minute == "0") selected="selected" #end>00分</option>
+            <option value="0" #if ($!result.isSameDate || (!$!result.isSameDate && $!result.EndDate.Minute == "0")) selected="selected" #end>00分</option>
             <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05分</option>
             <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10分</option>
             <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15分</option>
@@ -232,7 +231,7 @@
   <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")時間で指定する#else期間で指定する#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
-#ALtditem("#ALtextfield('name' $!result.Name '95%' 50 'active')")
+#ALtditem("#ALtextfield('name' $!result.Name '100%' 50 'active')")
 
 #* 共有カテゴリ連携（ここから） *#
 #if($!result.isDisplayManHour())
@@ -245,7 +244,7 @@
 #* 共有カテゴリ連携（ここまで） *#
 
 #ALtdcaption("$!result.getFieldName('place')")
-#ALtditem("#ALtextfield('place' $!result.Place '95%' 50 'active')")
+#ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
 #ALtdcaption("$!result.getFieldName('note')")
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 5 50)
