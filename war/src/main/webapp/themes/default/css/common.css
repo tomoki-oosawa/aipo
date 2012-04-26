@@ -202,7 +202,7 @@ div.outer {
 	padding:5px;
 }
 .p {
-	margin-bottom:5px;
+	margin:5px 0;
 }
 .button {
 	cursor:pointer;
@@ -973,7 +973,8 @@ table.simpleTable td.caption {
 }
 .modalDialog input[type=checkbox],
 .modalDialog input[type=radio] {
-	margin:3px 0;
+/*	margin:3px 0;*/
+	vertical-align:middle;
 }
 .fileuploadDialog {
 	border:5px solid #ddd;
