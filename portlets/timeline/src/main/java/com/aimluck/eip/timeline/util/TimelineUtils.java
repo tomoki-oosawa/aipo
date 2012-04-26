@@ -66,7 +66,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムラインのユーティリティクラス <BR>
- * 
+ *
  */
 public class TimelineUtils {
 
@@ -128,7 +128,7 @@ public class TimelineUtils {
 
   /**
    * トピックに対する返信数を返します
-   * 
+   *
    * @param timeline_id
    * @return
    */
@@ -146,7 +146,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -218,7 +218,7 @@ public class TimelineUtils {
 
   /**
    * いいねオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -288,7 +288,7 @@ public class TimelineUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   * 
+   *
    * @param org_id
    * @param groupname
    * @return
@@ -408,7 +408,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -450,7 +450,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -460,7 +460,7 @@ public class TimelineUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -588,7 +588,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -628,7 +628,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -667,7 +667,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -679,7 +679,7 @@ public class TimelineUtils {
 
   /**
    * ファイル検索のクエリを返します
-   * 
+   *
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -721,7 +721,7 @@ public class TimelineUtils {
     return getDocument(string, "JISAutoDetect");
   }
 
-  public static Document getDocument(String string, String _charset) {
+  public static Document getDocument(String string, String defaultCharset) {
     DOMParser parser = new DOMParser();
     try {
       URL url = new URL(string);
@@ -729,37 +729,59 @@ public class TimelineUtils {
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
+
+      // HTTPヘッダのcontentTypeのcharsetを読み込む
       String contentType = con.getContentType();
       if (contentType == null) {
         return null;
       }
       String charsetSearch =
         contentType.replaceFirst("(?i).*charset=(.*)", "$1");
-      String charset = con.getContentEncoding();
+      String contentTypeCharset = con.getContentEncoding();
       BufferedReader reader = null;
       if (!contentType.equals(charsetSearch)) {
-        charset = charsetSearch;
+        contentTypeCharset = charsetSearch;
       }
-      if (charset == null) {
+      if (contentTypeCharset == null) {
         reader =
           new BufferedReader(new InputStreamReader(
             con.getInputStream(),
-            _charset));
+            defaultCharset));
       } else {
         reader =
           new BufferedReader(new InputStreamReader(
             con.getInputStream(),
-            charset));
+            contentTypeCharset));
       }
 
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
       parser.parse(source);
+
+      // documentからmetaタグのcharsetを読み込む
       Document document = parser.getDocument();
+      String metaTagCharset = getMetaTagCharset(document);
+      if (metaTagCharset != null && !metaTagCharset.equals(contentTypeCharset)) {
+        // デフォルトのcharsetと異なっていた場合、新しいcharsetで再読み込み
+        HttpURLConnection reconnection =
+          (HttpURLConnection) url.openConnection();
+        reconnection.setConnectTimeout(10000);
+        reconnection.setUseCaches(false);
+        reconnection.addRequestProperty("_", UUID.randomUUID().toString());
+
+        reader =
+          new BufferedReader(new InputStreamReader(reconnection
+            .getInputStream(), metaTagCharset));
+        source = new InputSource(reader);
+        parser.setFeature("http://xml.org/sax/features/namespaces", false);
+        parser.parse(source);
+        document = parser.getDocument();
+      }
+
       reader.close();
       return document;
     } catch (DOMException e) {
-      if (!"UTF-8".equals(_charset)) {
+      if (!"UTF-8".equals(defaultCharset)) {
         return getDocument(string, "UTF-8");
       }
       return null;
@@ -769,7 +791,32 @@ public class TimelineUtils {
   }
 
   /**
-   * 
+   * 読み込んだdocumentからmetaタグ内のcharset属性を読み取るメソッド
+   *
+   * @param document
+   * @return
+   */
+  public static String getMetaTagCharset(Document document) {
+    String charset = null;
+    NodeList metaList = document.getElementsByTagName("meta");
+    for (int i = 0; i < metaList.getLength(); i++) {
+      Element element = (Element) metaList.item(i);
+      String src = element.getAttribute("content");
+      if (src != null && src.contains("charset=")) {
+        charset = src.replaceFirst("(?i).*charset=(.*)", "$1");
+        break;
+      }
+      src = element.getAttribute("charset");
+      if (src != null) {
+        charset = src;
+        break;
+      }
+    }
+    return charset;
+  }
+
+  /**
+   *
    * @param url_str
    * @return
    * @throws Exception
