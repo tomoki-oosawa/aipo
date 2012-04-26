@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($indicator_id = "indicator-dlg-")
+#set ($indicator_id = "indicator-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader("ワークフロー詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

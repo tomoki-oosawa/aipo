@@ -216,12 +216,16 @@ aipo.workflow.onReceiveMessage = function(msg){
 
 
 aipo.workflow.onAccept = function(portletId){
+    dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "accept";
 }
 
 aipo.workflow.onDenial = function(portletId){
+    dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "denial";
