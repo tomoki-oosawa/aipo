@@ -20,6 +20,7 @@
 ## ---------------------------------------------------------------------------
 ## 簡易表示用
 <input type="hidden" id="top_form" value="$!{top_form}"></input>
+<input type="hidden" id="isMac" value="${isMac}" />
 
 <div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
@@ -71,7 +72,6 @@
 
 <div class="indicator" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
-##<div id="wrapper">
     <table class="tableWrapper">
         <tbody>
             <tr>
@@ -95,7 +95,7 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyHeadRights'>
-                              <div class='weeklyHeadRight#if($!top_form=='simple')R#end' style="left: 0%;#if($!top_form=='simple')width: 100%;#end#if($!top_form=='simple' && ${client} == "IPAD")border-right:0;#end">
+                              <div id="weeklyHeadRightborder-$!portlet.ID" class='weeklyHeadRight#if($!top_form=='simple')R#end' style="left: 0%;#if($!top_form=='simple')width: 100%;#end border-right: block;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday0-$!portlet.ID">&nbsp;</div>
                               </div>
@@ -125,13 +125,10 @@
                               </div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
-							#else
-						  <td width="18">
+						  <td id ="weeklySpan-$!portlet.ID" width="18" display="block">
                             <div class="weeklySpan">&nbsp;</div>
                             <div class="weeklySpan">&nbsp;</div>
                           </td>
-						  #end
                         </tr>
 
                         <tr>
@@ -142,7 +139,7 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyTermRights'>
-                              <div class='weeklyTermRight weeklyTermRightL#if($!top_form=='simple') weeklyTermRightR#end' id='termDay0-$!portlet.ID' style="left: 0%;#if($!top_form=='simple')width: 100%;#end#if($!top_form=='simple' && ${client} == "IPAD")border-right:0;#end">
+                              <div class='weeklyTermRight weeklyTermRightL#if($!top_form=='simple') weeklyTermRightR#elseif(${isMac} == 1)weeklyTermRightRnone#end' id='termDay0-$!portlet.ID' style="left: 0%;#if($!top_form=='simple')width: 100%;#end border-right: block;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">
@@ -164,7 +161,6 @@
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div id="termScheduleDivAdd_$!portlet.ID" class="termScheduleDivAdd" style="left: 0%; z-index: 1;">&nbsp;</div>
-                              ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
                           #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)

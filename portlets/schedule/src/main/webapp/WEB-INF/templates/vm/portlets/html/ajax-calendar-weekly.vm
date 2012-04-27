@@ -30,9 +30,9 @@
 
 //]]>
 </script>
+<input type="hidden" id="isMac" value="${isMac}"></input>
 <div class="none" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
-##<div id="wrapper">
     <table class="tableWrapper">
         <tbody>
             <tr>
@@ -102,7 +102,7 @@
                               </div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple')
+                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
 							#else
 						  <td width="18">
                             <div class="weeklySpan">&nbsp;</div>
@@ -141,15 +141,14 @@
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div id="termScheduleDivAdd_$!portlet.ID" class="termScheduleDivAdd" style="left: 0%; z-index: 1;">&nbsp;</div>
-                              ##<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage">&nbsp;</div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple')
+                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
 							#else
 						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
                           </td>
-						  #end
+						 #end
                         </tr>
 						<tr>
 						<td colspan="9">
