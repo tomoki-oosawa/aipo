@@ -80,3 +80,6 @@ label {
 	border-top-width:3px !important;
 	background:#ccc;
 }
+.calendarBody {
+	min-height:80px;
+}
