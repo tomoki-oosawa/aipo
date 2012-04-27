@@ -29,6 +29,9 @@ body#login {
 p {
 	margin:5px 0;
 }
+span[type="button"] {
+	outline:none;
+}
 
 /***************************************************
 	auiHeader
