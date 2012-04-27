@@ -66,7 +66,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムラインのユーティリティクラス <BR>
- *
+ * 
  */
 public class TimelineUtils {
 
@@ -128,7 +128,7 @@ public class TimelineUtils {
 
   /**
    * トピックに対する返信数を返します
-   *
+   * 
    * @param timeline_id
    * @return
    */
@@ -146,7 +146,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -218,7 +218,7 @@ public class TimelineUtils {
 
   /**
    * いいねオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -288,7 +288,7 @@ public class TimelineUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   *
+   * 
    * @param org_id
    * @param groupname
    * @return
@@ -408,7 +408,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param isJoin
@@ -450,7 +450,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -460,7 +460,7 @@ public class TimelineUtils {
 
   /**
    * 添付ファイルを取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -588,7 +588,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -628,7 +628,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -667,7 +667,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   *
+   * 
    * @param uid
    * @return
    */
@@ -679,7 +679,7 @@ public class TimelineUtils {
 
   /**
    * ファイル検索のクエリを返します
-   *
+   * 
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -792,7 +792,7 @@ public class TimelineUtils {
 
   /**
    * 読み込んだdocumentからmetaタグ内のcharset属性を読み取るメソッド
-   *
+   * 
    * @param document
    * @return
    */
@@ -807,7 +807,7 @@ public class TimelineUtils {
         break;
       }
       src = element.getAttribute("charset");
-      if (src != null) {
+      if (src != null && !src.equals("")) {
         charset = src;
         break;
       }
@@ -816,7 +816,7 @@ public class TimelineUtils {
   }
 
   /**
-   *
+   * 
    * @param url_str
    * @return
    * @throws Exception
