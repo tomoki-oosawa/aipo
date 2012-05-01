@@ -110,7 +110,7 @@
     </div>
   </div>
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
-    <div class="p">毎月の定例会や毎週の打ち合わせなど、ある一定期間で繰り返すスケジュールを設定します。
+    <div class="p">
       <h3>繰り返しパターン</h3>
       <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeD">毎日</label>
