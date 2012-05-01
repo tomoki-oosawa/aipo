@@ -54,6 +54,11 @@
 <div class="indicator" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</div>
 #end
 
+#macro(ALajaxIndicatorglay $indicator_id $portlet_id $msg)
+#if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
+<div class="indicatorglay" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</div>
+#end
+
 #macro(ALajaxIndicatorSpan $indicator_id $portlet_id $msg)
 #if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
 <span class="indicator" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</span>

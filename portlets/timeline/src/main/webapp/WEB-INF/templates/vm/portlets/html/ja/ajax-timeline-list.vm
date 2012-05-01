@@ -23,6 +23,7 @@
 #set ($currentPage = $result.CurrentPage)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 #set ($timelineViewType = "list")
+#set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 <div id="timelineOuter" style="margin: 0 auto;">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
@@ -46,6 +47,11 @@
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
 	<input href="javascript:void(0)" type="submit" class="auiButtonAction" onclick="aipo.timeline.addText(dojo.byId('form$!portlet.ID'), '$!portlet.ID');aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');aimluck.io.setHiddenValue(this);" value="投稿する" />
   </div>
+  <div class="floatRight">
+	<div class="tlInputMention">
+		#ALajaxIndicatorglay("$indicator_id" "$!portlet.ID" "&nbsp;")
+	</div>
+	</div>
   <div class="floatLeft mr10">
     #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
     <a href="javascript:void(0)" class="auiButtonBold" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>

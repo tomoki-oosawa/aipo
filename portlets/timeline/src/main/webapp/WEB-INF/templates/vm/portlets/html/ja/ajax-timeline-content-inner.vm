@@ -17,7 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-
+#set ($indicator_id = "indicator-list-")
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
 	<div class="avatar mr10">
 		#if(${record.hasPhoto()})
@@ -169,13 +171,20 @@
 				<img src="images/common/avatar_default3.png" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#end
 		</div>
-		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
+		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))" method="post" onsubmit="aimluck.io.submit(this,'${indicator_id}_$!{record.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
 				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
 			</div>
-			<div class="right">
-				<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end">コメントする</a>
+			<div class="tlInputMention clearfix">
+				<div class="floatRight">
+					<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end">コメントする</a>
+				</div>
+				<div class="floatRight">
+						<div class="tlInputMention">
+							#ALajaxIndicatorglay("${indicator_id}_$!{record.TimelineId}" "$!portlet.ID" "&nbsp;")
+						</div>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -294,13 +303,20 @@
 				<img src="images/common/avatar_default3.png" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#end
 		</div>
-		<form name="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
+		<form name="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$!{indicator_id}_$!{record2.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
 				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record2.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record2.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record2.TimelineId})"></textarea>
 			</div>
-			<div class="right">
-				<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end">コメントする</a>
+			<div class="tlInputMention clearfix">
+				<div class="floatRight">
+					<a class="auiButton" href="javascript:void(0)" onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end">コメントする</a>
+				</div>
+				<div class="floatRight">
+						<div class="tlInputMention">
+							#ALajaxIndicatorglay("${indicator_id}_$!{record2.TimelineId}" "$!portlet.ID" "&nbsp;")
+						</div>
+				</div>
 			</div>
 		</form>
 	</div>
