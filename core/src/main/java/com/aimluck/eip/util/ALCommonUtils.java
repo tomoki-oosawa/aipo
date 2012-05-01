@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
+import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
@@ -88,6 +89,20 @@ public class ALCommonUtils {
       res.append(str.substring(count * step));
     }
     return res.toString();
+  }
+
+  public static int getMaxFileSize() {
+    return getMaxFileSize("MB");
+  }
+
+  public static int getMaxFileSize(String unit) {
+    int size = TurbineUpload.getSizeMax();
+    if (unit.equals("MB")) {
+      size = size / 1024 / 1024;
+    } else if (unit.equals("KB")) {
+      size = size / 1024;
+    }
+    return size;
   }
 
   /**

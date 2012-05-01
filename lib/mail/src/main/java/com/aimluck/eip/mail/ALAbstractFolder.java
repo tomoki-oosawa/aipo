@@ -57,6 +57,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.sk_jp.mail.MailUtility;
 import com.sk_jp.mail.MultipartUtility;
@@ -166,8 +167,9 @@ public abstract class ALAbstractFolder implements ALFolder {
           Header h = (Header) headers.nextElement();
           newMsg.addHeader(h.getName(), h.getValue());
         }
-        newMsg
-          .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
+        newMsg.setText("メールのサイズが"
+          + ALCommonUtils.getMaxFileSize()
+          + "MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         newMsg.writeTo(output);
       }

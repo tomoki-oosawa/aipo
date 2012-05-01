@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.mail.util.UnicodeCorrecter;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.sk_jp.mail.MailUtility;
 import com.sun.mail.pop3.POP3Message;
 
@@ -122,7 +123,9 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
 
       writer.println("【重要】『" + ALOrgUtilsService.getAlias() + "』 からのお知らせです。");
       writer.println("メールのサイズが大きすぎたため、このメールの本文を受信できませんでした。");
-      writer.println("受信可能なメールサイズは、7MB までです。");
+      writer.println("受信可能なメールサイズは、"
+        + ALCommonUtils.getMaxFileSize()
+        + "MB までです。");
 
       writer.flush();
       writer.close();

@@ -31,6 +31,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.mail.util.ALStaticObject;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * メール受信（POP3）を操作するクラスです。 <br />
@@ -341,7 +342,9 @@ public class ALPop3MailReceiveThread implements Runnable {
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL_LOCKED) {
       msg = "メールの受信中、もしくは、メンテナンス中です。しばらくしてから、『メール一覧』ボタンを押してください。";
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL_OVER_MAIL_MAX_SIZE) {
-      msg = ("7MB よりも大きいサイズのメールがありました。7MBを超えたメールの場合は、送信者などの情報のみ受信し、本文は受信しません。");
+      int size = ALCommonUtils.getMaxFileSize();
+      msg =
+        (size + "MB よりも大きいサイズのメールがありました。" + size + "MBを超えたメールの場合は、送信者などの情報のみ受信し、本文は受信しません。");
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL_CONNECT) {
       msg = "設定されている受信サーバ（POP3）と接続できませんでした。";
     } else if (res == ALPop3MailReceiver.RECEIVE_MSG_FAIL_AUTH) {

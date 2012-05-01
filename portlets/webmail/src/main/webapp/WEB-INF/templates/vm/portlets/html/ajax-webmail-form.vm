@@ -38,7 +38,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-<div class="message"><span>送信できるメールの大きさは、本文と添付ファイルをあわせて 7MB までです。</span><br />
+<div class="message"><span>送信できるメールの大きさは、本文と添付ファイルをあわせて $!{result.MaxFileSize} MB までです。</span><br />
 <span>機種依存文字は、送信先で正しく表示されない可能性があります。<br /><a href="javascript:aipo.webmail.open_help('${context_path}/help/unusualchar.html')">詳しくはこちらを参照ください。</a></span></div><br />
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WebMailFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.webmail.onReceiveMessage)")
 <input type="hidden" name="mode" value="insert" />

@@ -46,6 +46,7 @@ import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ローカルのファイルシステムを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
@@ -212,8 +213,9 @@ public class ALFileLocalFolder extends ALAbstractFolder {
           Header h = (Header) headers.nextElement();
           newMsg.addHeader(h.getName(), h.getValue());
         }
-        newMsg
-          .setText("メールのサイズが7MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
+        newMsg.setText("メールのサイズが"
+          + ALCommonUtils.getMaxFileSize()
+          + "MBを超えていたため、このメールを受信できませんでした。\r\n 誠に恐れ入りますが、別のメーラーで受信してください。");
         newMsg.writeTo(output);
       }
       ALStorageService.createNewFile(new ByteArrayInputStream(output

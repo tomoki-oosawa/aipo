@@ -38,11 +38,11 @@ import javax.imageio.stream.ImageOutputStream;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -532,16 +532,10 @@ public class FileuploadUtils {
   }
 
   public static int getMaxFileSize() {
-    return getMaxFileSize("MB");
+    return ALCommonUtils.getMaxFileSize("MB");
   }
 
   public static int getMaxFileSize(String unit) {
-    int size = TurbineUpload.getSizeMax();
-    if (unit.equals("MB")) {
-      size = size / 1024 / 1024;
-    } else if (unit.equals("KB")) {
-      size = size / 1024;
-    }
-    return size;
+    return ALCommonUtils.getMaxFileSize(unit);
   }
 }
