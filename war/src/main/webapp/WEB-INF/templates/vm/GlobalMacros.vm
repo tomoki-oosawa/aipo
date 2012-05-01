@@ -1612,7 +1612,7 @@ $link.get(0)
 #end
 
 #macro(AUIajaxbuttonLinkCallbackBoldInput $title $url $portlet_id $callback)
-<input type="button" value="$title" class="auiButtonBold" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+<input type="button" value="$title" class="auiButtonBold" title="$title" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
 #macro(AUIactionMenu $items $currentItem)
