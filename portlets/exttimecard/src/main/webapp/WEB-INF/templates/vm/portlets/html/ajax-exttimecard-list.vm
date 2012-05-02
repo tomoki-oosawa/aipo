@@ -274,9 +274,9 @@
   #if($rdlist.IsNotNullClockInTime || $class != "today")
     #ALtdcellAtt($outgoings "data-t=${s}${rdlist.IsNotNullClockInTime}${s} data-c=${s}${class}${s} align='center' nowrap='nowrap' data-debug-class='1'")
     #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' data-debug-class='1'")
-  #else
-  ##ALtdcellAtt($outgoings "data-t=$rdlist.IsNotNullClockInTime data-c=$class class='mb_hide' align='center' nowrap='nowrap' data-debug-class='2'")
-  ##ALtdcellAtt($comebacks "class='mb_hide' align='center' nowrap='nowrap' data-debug-class='1'")
+  #elseif( $!result.TargetUserId != $!result.UserId)
+    #ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
+    #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' ")
   #end
 
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
