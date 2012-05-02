@@ -199,7 +199,7 @@
 					<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$record2.PreviewNote</a>
 				</div>
 				<div class="time">
-					$!{record2.CreateDate}
+					$!{record2.UpdateDate}
 					&nbsp;
 					#if(${record2.isLike()})
 						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
