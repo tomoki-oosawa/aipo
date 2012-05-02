@@ -131,13 +131,13 @@ if(document.all!=undefined){
 ## 祝日の表示切替
     if(document.getElementById('print_holiday').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='alignleft'){
+        if(document.all[i].className=='alignleft small'){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='alignleft'){
+        if(document.all[i].className=='alignleft small'){
           document.all[i].style.display = 'none';
         }
       }
