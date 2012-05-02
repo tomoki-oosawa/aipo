@@ -71,7 +71,7 @@ $!result.Detail.RouteName
 #ALtdcaption('添付ファイル')
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<img src="images/workflow/workflow_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$attachmentFile.FileName</a><br>
+<img src="images/workflow/workflow_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.FileName)">$attachmentFile.FileName</a><br>
 #end
 #ALtditemfooter()
 #end

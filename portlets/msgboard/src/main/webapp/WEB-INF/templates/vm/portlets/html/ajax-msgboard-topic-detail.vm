@@ -62,11 +62,11 @@ $!{result.ParentTopic.Note}
 <div style="padding-top:15px;">
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 <div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
-<a href="javascript:void(0);" onclick="aipo.msgboard.popupCenter('$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+<a href="javascript:void(0);" onclick="aipo.msgboard.popupCenter('$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 &nbsp;（マウスのクリックで画像を拡大縮小できます）
 </div>
 #end

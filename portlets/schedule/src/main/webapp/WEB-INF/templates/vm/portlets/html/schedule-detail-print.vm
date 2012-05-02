@@ -20,7 +20,6 @@
 ## ---------------------------------------------------------------------------
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:print();"><img src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /></a>
 <a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
 </div>
 ※この枠の範囲の設定項目は、印刷へ反映されません。
@@ -44,7 +43,7 @@
 <option value="780px">780ピクセル</option>
 <option value="800px">800ピクセル</option>
 </select>
-<input type="button" value="変更する" onclick="change_print_form()"/></td>
+</td>
 </tr>
 <tr>
 <th>文字サイズ</th>
@@ -68,7 +67,10 @@
 <label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
 </td>
 </tr>
-<th></th>
+<tr>
+<th><input type="button" value="変更する" onclick="change_print_form()"/></th>
+<td><input type="button" value="印刷する" onclick="javascript:print();"/></td>
+</tr>
 </table>
 </div>
 

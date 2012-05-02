@@ -62,12 +62,12 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('type'))")
 #ALtditemheader()
-<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">出勤</label>
-<input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">欠勤</label>
-<input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">有休</label>
-<input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">代休</label>
-<input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">その他</label>
-<input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">未選択</label>
+<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">&nbsp;出勤</label>
+<input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">&nbsp;欠勤</label>
+<input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;有休</label>
+<input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">&nbsp;代休</label>
+<input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">&nbsp;その他</label>
+<input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;未選択</label>
 #ALtditemfooter()
 
 #if($!result.IsPast)
@@ -125,7 +125,7 @@
 #ALtditemheader()
 #foreach ( $outcome in [1..5] )
 <span id="rest_num${outcome}" #if($outcome > $result.RestNum) style="display:none" #end>
-	
+
 <select name=outgoing_time$!{outcome}_hour id="outgoing_time$!{outcome}_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )

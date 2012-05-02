@@ -37,7 +37,7 @@
 <div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addQueryData('target_user_id', "$!result.TargetUserId").addQueryData('view_month', "$!result.ViewMonth")) )
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #end
@@ -272,8 +272,8 @@
   #end
 
   #if($rdlist.IsNotNullClockInTime || $class != "today")
-    #ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
-    #ALtdcellAtt($comebacks "align='center' nowrap='nowrap'")
+    #ALtdcellAtt($outgoings "data-t=${s}${rdlist.IsNotNullClockInTime}${s} data-c=${s}${class}${s} align='center' nowrap='nowrap' data-debug-class='1'")
+    #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' data-debug-class='1'")
   #else
   ##ALtdcellAtt($outgoings "data-t=$rdlist.IsNotNullClockInTime data-c=$class class='mb_hide' align='center' nowrap='nowrap' data-debug-class='2'")
   ##ALtdcellAtt($comebacks "class='mb_hide' align='center' nowrap='nowrap' data-debug-class='1'")
