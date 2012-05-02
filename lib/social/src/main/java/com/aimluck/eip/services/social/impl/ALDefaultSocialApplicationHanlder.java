@@ -979,17 +979,18 @@ public class ALDefaultSocialApplicationHanlder extends
               + " SET parent_id = #bind($parentId) "
               + ", note = #bind($title) "
               + ", params = #bind($portletParams) "
-              + ", update_date = #bind($now) "
+              + ", update_date =  '"
+              + sdf.format(tCal.getTime())
+              + "'"
               + " WHERE timeline_type = 'A' "
               + " AND owner_id = #bind($userId) "
               + " AND app_id = #bind($appId) "
               + " AND external_id = #bind($externalId); ";
-          Database
-            .sql(EipTTimeline.class, timelineSql)
-            .param("parentId", parentId)
-            .param("title", request.getTitle())
-            .param("portletParams", request.getPortletParams())
-            .param("now", sdf.format(tCal.getTime()))
+          Database.sql(EipTTimeline.class, timelineSql).param(
+            "parentId",
+            parentId).param("title", request.getTitle()).param(
+            "portletParams",
+            request.getPortletParams())
             .param("userId", request.getUserId())
             .param("appId", request.getAppId())
             .param("externalId", request.getExternalId())
