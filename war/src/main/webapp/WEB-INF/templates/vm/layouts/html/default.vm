@@ -167,6 +167,11 @@ dojo.addOnLoad(function() {
             withHandles: true,
             copyOnly: false
         });
+        container.onSelectStart = function(e){
+		    if(this.isDragging){
+			    dojo.stopEvent(e);
+		    }
+        };
         containerSources.push(container);
     }
 
