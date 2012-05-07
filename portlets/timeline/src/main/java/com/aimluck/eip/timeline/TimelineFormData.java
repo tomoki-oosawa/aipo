@@ -302,20 +302,9 @@ public class TimelineFormData extends ALAbstractFormData {
         if (parent
           .getTimelineType()
           .equals(EipTTimeline.TIMELINE_TYPE_TIMELINE)) {// 通常のコメント挿入時
-
           parent.setUpdateDate(tCal.getTime());
         } else if (parent.getTimelineType().equals(
-
-        EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {// 親が更新情報 or
-                                               // 親がACTIVITY_PARENT　更新情報に対するコメントの挿入
-          // ACTIVITY_PARENTの一つ下の要素
-          EipTTimeline actorChild =
-            "ACTIVITY_PARENT".equals(parent.getAppId()) ? parent : Database
-              .get(EipTTimeline.class, Integer.valueOf(parent.getParentId()));
-          EipTTimeline grandParent =
-            Database.get(EipTTimeline.class, Integer.valueOf(actorChild
-              .getParentId()));
-          exchangeParent(grandParent);
+          EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {
         }
 
       } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
