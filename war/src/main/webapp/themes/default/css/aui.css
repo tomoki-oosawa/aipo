@@ -1069,8 +1069,12 @@ button:active {
 .auiButton span {
 	display:table-cell;
 	>display:block;
+	/*
 	height:1.85em;
 	line-height:1.85em;
+	*/
+	height:26px;
+	line-height:26px;
 	text-align:center;
 	vertical-align:middle;
 }
@@ -1148,6 +1152,26 @@ button[disabled]:hover {
 	cursor:default;
 	box-shadow:none;
 }
+.auiButtonGroup {
+	border-radius:10px;
+}
+.auiButtonGroup .auiButton {
+	margin:0 -1px;
+	border-radius:0;
+	-ms-border-radius:0;
+}
+.auiButtonGroup .auiButton:hover {
+	border:solid 1px #c0c0c0;
+}
+.auiButtonGroup .left {
+	border-radius:2px 0 0 2px;
+	-ms-border-radius:2px 0 0 2px;
+}
+.auiButtonGroup .right {
+	border-radius:0 2px 2px 0;
+	-ms-border-radius:0 2px 2px 0;
+}
+
 
 /* auiSearch ********************/
 .auiSearch {
@@ -1259,17 +1283,22 @@ table.auiGridTable tr.even {
 }
 
 table.auiGridTable tr.sunday td,
-table.auiGridTable tr.holiday td {
+table.auiGridTable tr.sunday th,
+table.auiGridTable tr.holiday td,
+table.auiGridTable tr.holiday th {
 	background:#ffefe5;
 }
-table.auiGridTable tr.saturday td {
+table.auiGridTable tr.saturday td,
+table.auiGridTable tr.saturday th {
 	background:#ebf0f6;
 }
-table.auiGridTable tr.today td {
+table.auiGridTable tr.today td,
+table.auiGridTable tr.today th {
 	background:#e0ffe0;
 }
 
-table.auiGridTable tr:hover td {
+table.auiGridTable tr:hover td,
+table.auiGridTable tr:hover th {
 	background:#ffffe0;
 }
 
@@ -1298,18 +1327,60 @@ table.auiRowTable div {
 table.auiRowTable tr.even {
 }
 table.auiRowTable tr.sunday td,
-table.auiRowTable tr.holiday td {
+table.auiRowTable tr.sunday th,
+table.auiRowTable tr.holiday td,
+table.auiRowTable tr.holiday th {
 	background:#ffefe5;
 }
-table.auiRowTable tr.saturday td {
+table.auiRowTable tr.saturday td,
+table.auiRowTable tr.saturday th {
 	background:#ebf0f6;
 }
-table.auiRowTable tr.today td {
+table.auiRowTable tr.today td,
+table.auiRowTable tr.today th {
 	background:#e0ffe0;
 }
-table.auiRowTable tr:hover td {
+table.auiRowTable tr:hover td,
+table.auiRowTable tr:hover th {
 	background:#f5f5f5;
 }
+
+/* auiTimeList ********************/
+.auiTimeList li {
+	background:none;
+	padding:0;
+}
+.auiTimeList li ul {
+	margin:0;
+}
+.auiTimeList .day {
+	background:#f0f0f0;
+	padding:8px 5px;
+	font-weight:bold;
+}
+.auiTimeList .today .day {
+	background:#e0ffe0;
+}
+.auiTimeList a {
+	display:block;
+	padding:5px 0;
+	text-decoration:none;
+	border-bottom:solid 1px #eee;
+}
+.auiTimeList .hour {
+	display:table-cell;
+	width:3.5em;
+	padding-right:1em;
+	text-align:right;
+}
+.auiTimeList .title {
+	display:table-cell;
+}
+.auiTimeList .blank {
+	display:table-cell;
+	padding:5px 0;
+}
+
 
 /* auiDirectoryList ********************/
 .auiDirectoryList {

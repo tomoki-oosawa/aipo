@@ -293,7 +293,7 @@ td.container {
 	padding:5px;
 }
 .snDrawer .auiButtonBold {
-	padding:4px;
+	padding:3px 4px;
 	box-shadow:0 -1px 0 rgba(0,0,0,0.3);
 }
 .snDrawer img {
@@ -452,6 +452,12 @@ table.listTable td.caption, table.subTable td.caption {
 --------------------------------------------------*/
 .auiSummaryMeta {
 	margin:6px 0;
+}
+/***************************************************
+	auiTimeList
+--------------------------------------------------*/
+.auiTimeList {
+	font-size:14px;
 }
 /***************************************************
 	auiRowTable

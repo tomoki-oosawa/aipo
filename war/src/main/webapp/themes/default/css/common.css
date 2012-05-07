@@ -177,6 +177,11 @@ div.outer {
 .center {
 	text-align:center !important;
 }
+div.center,
+table.center {
+	margin-right:auto;
+	margin-left:auto;
+}
 .top {
 	vertical-align:top !important;
 }
