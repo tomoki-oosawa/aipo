@@ -198,7 +198,7 @@
   #if($rdlist.IsNotNullClockInTime)
         #ALtdcellAtt("$!{rd.ClockInTime.Hour}時$!{rd.ClockInTime.Minute}分" "nowrap='nowrap' align='center'")
   #else
-    #if($saturday_sunday_holiday == 0)
+    ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
           <td nowrap="nowrap"><input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
@@ -208,15 +208,15 @@
       #else
         #ALtdcellAtt('' "")
       #end
-    #else
-      #ALtdcellAtt("" "nowrap='nowrap' align='center'")
-    #end
+    ###else
+      ###ALtdcellAtt("" "nowrap='nowrap' align='center'")
+    ###end
   #end
 
   #if($rdlist.IsNotNullClockOutTime)
     #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' ")
   #else
-    #if($saturday_sunday_holiday == 0)
+    ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
           #if($rdlist.IsNotNullClockInTime)
@@ -234,9 +234,9 @@
       #else
         #ALtdcellAtt('' "")
       #end
-    #else
-      #ALtdcellAtt("" "nowrap='nowrap' align='center'")
-    #end
+    ###else
+      ###ALtdcellAtt("" "nowrap='nowrap' align='center'")
+    ###end
   #end
 
   #set($first = 0)
