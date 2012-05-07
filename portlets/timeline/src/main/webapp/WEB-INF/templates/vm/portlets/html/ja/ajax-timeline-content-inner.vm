@@ -226,7 +226,7 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments" #if($record2.LikeList.size() == 0 && $record2.ReplyCountInteger == 0 && $record2.CoTopicList.size() == 0) style="display:none" #end>
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end" #if($record2.LikeList.size() == 0 && $record2.ReplyCountInteger == 0 && $record2.CoTopicList.size() == 0) style="display:none" #end>
 	#if($record2.LikeList.size() > 0)
 	<div id="like_$!{record2.TimelineId}" class="commentCaption">
 		<span class="iconLike"></span>
