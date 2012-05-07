@@ -1,0 +1,156 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+<div id="printHeader">
+<div class="buttons">
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+</div>
+※この枠の範囲の設定項目は、印刷へ反映されません。
+<table>
+<tr>
+<th>表示する幅</th>
+<td>
+<select id="print_width">
+<option value="100%" >100%</option>
+<option value="90%">90%</option>
+<option value="80%">80%</option>
+<option selected="selected" value="600px">600ピクセル</option>
+<option value="620px">620ピクセル</option>
+<option value="640px">640ピクセル</option>
+<option value="660px">660ピクセル</option>
+<option value="680px">680ピクセル</option>
+<option value="700px">700ピクセル</option>
+<option value="720px">720ピクセル</option>
+<option value="740px">740ピクセル</option>
+<option value="760px">760ピクセル</option>
+<option value="780px">780ピクセル</option>
+<option value="800px">800ピクセル</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>文字サイズ</th>
+<td><select id="print_word_size">
+<option value="8pt">8pt</option>
+<option value="9pt">9pt</option>
+<option selected="selected" value="10pt">10pt</option>
+<option value="11pt">11pt</option>
+<option value="12pt">12pt</option>
+<option value="13pt">13pt</option>
+<option value="14pt">14pt</option>
+<option value="16pt">16pt</option>
+<option value="18pt">18pt</option>
+<option value="20pt">20pt</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>その他表示設定</th>
+<td>
+<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
+</td>
+</tr>
+<tr>
+<th><input type="button" value="変更する" onclick="change_print_form()"/></th>
+<td><input type="button" value="印刷する" onclick="javascript:print();"/></td>
+</tr>
+</table>
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+
+if(document.all!=undefined){
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+}else{
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = 'none';
+      }
+    }
+}
+  }
+  //]]>
+</script>
+
+<div id="printBody" style="width:600px;font-size:10pt;">
+#AUIrowTableWide()
+<tr>
+<th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>日時</th>
+<th #if(${client}=="IPHONE")class="w50"#else class="w40" #end>タイトル</th>
+<th class="w30 mb_hide">登録者</th>
+</tr>
+#foreach ($record in $result.ScheduleList)
+##set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
+<tr>
+<td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
+<td><div>$!{record.WbrName}&nbsp;
+#if(! ${record.isPublic()})
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+#end
+#if($record.isDuplicate())
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+#end
+#if(${record.isRepeat()})
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+#end
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+#end</div></td>
+<td class="mb_hide"><div>$!{record.CreateUser.AliasName}</td>
+</tr>
+#end
+#AUItablefooter()
+</div>
+<!--
+#if($!ajax_onloadimage)
+  <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
+#else
+  <script type="text/javascript" language="JavaScript">
+    //<![CDATA[
+    dojo.addOnLoad(function(){
+      aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
+    });
+    //]]>
+  </script>
+#end
+-->
+

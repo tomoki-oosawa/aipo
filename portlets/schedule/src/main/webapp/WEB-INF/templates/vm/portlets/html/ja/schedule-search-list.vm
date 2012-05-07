@@ -101,8 +101,18 @@
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
     </select>
+
+<div class="floatRight">
+<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="印刷画面を開く" class="auiButton pl5 pr5">
+<span>
+<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
+</span>
+</a>
+</div>
+
 </div>
 <div id="listmessageDiv"></div>
+
 #if($result.ScheduleList.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else

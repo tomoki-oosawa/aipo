@@ -42,6 +42,9 @@ label {
 #printBody td {
 	vertical-align:top;
 }
+#printBody tr:hover td {
+	background: none !important;
+}
 .week th {
 	width:14%;
 }

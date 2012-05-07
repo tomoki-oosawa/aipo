@@ -87,9 +87,11 @@
 #if ($!result.Viewtype == "detail")
 #parse("/portlets/html/ja/schedule-detail-print.vm")
 #end
+## List
+#if ($!result.Viewtype == "list")
+#parse("/portlets/html/ja/schedule-search-list-print.vm")
+#end
 #ALspacebothfooter()
 
 </body>
 </html>
-
-

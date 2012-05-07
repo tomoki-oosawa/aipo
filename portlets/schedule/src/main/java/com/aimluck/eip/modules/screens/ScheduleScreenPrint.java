@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.schedule.ScheduleListSelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.ScheduleOnedayGroupSelectData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
@@ -85,6 +86,7 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         || !(tmpCurrentTab.equals("oneday")
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
+          || tmpCurrentTab.equals("list")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
             .equals("weekly-group"))) {
         currentTab = "oneday";
@@ -143,6 +145,7 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
           }
         }
       }
+
       String tab_flg_oneday_group =
         ALEipUtils
           .getPortlet(rundata, context)
@@ -166,6 +169,21 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         tab_count++;
         if (("".equals(template)) || (!done)) {
           template = "schedule-weekly-group";
+          if (template.equals(_template)) {
+            done = true;
+          }
+        }
+      }
+
+      String tab_flg_list =
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("pba-tab");
+      if ("0".equals(tab_flg_list) && ("T".equals(has_acl_other))) {
+        tab_count++;
+        if (("".equals(template)) || (!done)) {
+          template = "schedule-list";
           if (template.equals(_template)) {
             done = true;
           }
@@ -205,6 +223,16 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         }
         listData = new ScheduleMonthlySelectData();
         ((ScheduleMonthlySelectData) listData).setPortletId(portletId);
+      } else if ("list".equals(currentTab)) {
+        // tab = "list";
+        if ("T".equals(has_acl_self)) {
+          if (!"0".equals(tab_flg_list)) {
+            tab_flg_list = "0";
+            tab_count++;
+          }
+        }
+        listData = new ScheduleListSelectData();
+        ((ScheduleListSelectData) listData).setPortletId(portletId);
       } else if ("oneday-group".equals(currentTab)) {
         // tab = "oneday-group";
         if ("T".equals(has_acl_other)) {
