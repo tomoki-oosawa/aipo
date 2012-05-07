@@ -1,5 +1,7 @@
 @charset"utf-8";
-
+* {
+	font-family:"ＭＳ Ｐゴシック", Osaka;
+}
 body {
 	width:auto;
 	padding:5px;
