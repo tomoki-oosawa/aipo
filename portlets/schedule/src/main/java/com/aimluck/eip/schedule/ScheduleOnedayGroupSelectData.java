@@ -43,6 +43,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
+import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipGroup;
@@ -122,6 +123,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   private boolean hasAclviewOther = false;
 
+  /** <code>target_group_name</code> グループ名 */
+  private TurbineGroup target_group_name;
+
   /**
    * 
    * @param action
@@ -150,6 +154,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         rows[i] = 1;
       }
       String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+
+      target_group_name = getGroup(filter);
+
       if (filter == null) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         String groupName =
@@ -995,5 +1002,23 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   public boolean hasAuthorityFacilityInsert() {
     return hasAuthorityFacilityInsert;
+  }
+
+  private TurbineGroup getGroup(String filter) {
+    Expression exp1 =
+      ExpressionFactory.matchExp(TurbineGroup.GROUP_NAME_PROPERTY, filter);
+
+    SelectQuery<TurbineGroup> query = Database.query(TurbineGroup.class);
+
+    query.setQualifier(exp1);
+    List<TurbineGroup> list = query.fetchList();
+    if (list.isEmpty()) {
+      return null;
+    }
+    return list.get(0);
+  }
+
+  public TurbineGroup getTargetGroupName() {
+    return target_group_name;
   }
 }

@@ -59,8 +59,8 @@
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
 -->
-
 </head>
+<body>
 
 #ALspacebothheader()
 ## One day
@@ -89,6 +89,7 @@
 #end
 #ALspacebothfooter()
 
+</body>
 </html>
 
 

@@ -18,91 +18,188 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<div class="relativeBlock" style="margin-bottom:10px;">
-<div class="absoluteRight">
-<div class="auiSelectButton">
-
-#if (${client}!= "IPHONE")
-<ul>
-#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["一覧", "list", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-</ul>
-#end
+<div id="printHeader">
+<div class="buttons">
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
 </div>
+※この枠の範囲の設定項目は、印刷へ反映されません。
+<table>
+<tr>
+<th>表示する幅</th>
+<td>
+<select id=print_width>
+<option value="100%" >100%</option>
+<option value="90%">90%</option>
+<option value="80%">80%</option>
+<option selected="selected" value="600px">600ピクセル</option>
+<option value="620px">620ピクセル</option>
+<option value="640px">640ピクセル</option>
+<option value="660px">660ピクセル</option>
+<option value="680px">680ピクセル</option>
+<option value="700px">700ピクセル</option>
+<option value="720px">720ピクセル</option>
+<option value="740px">740ピクセル</option>
+<option value="760px">760ピクセル</option>
+<option value="780px">780ピクセル</option>
+<option value="800px">800ピクセル</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>文字サイズ</th>
+<td><select id=print_word_size>
+<option value="8pt">8pt</option>
+<option value="9pt">9pt</option>
+<option selected="selected" value="10pt">10pt</option>
+<option value="11pt">11pt</option>
+<option value="12pt">12pt</option>
+<option value="13pt">13pt</option>
+<option value="14pt">14pt</option>
+<option value="16pt">16pt</option>
+<option value="18pt">18pt</option>
+<option value="20pt">20pt</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>その他表示設定</th>
+<td>
+<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
+<label><input id=print_term type="checkbox" checked="checked" /> 期間スケジュールを表示させる。</label><br />
+<label><input id=print_todo type="checkbox" checked="checked" /> ToDoを表示させる。</label><br />
+##<label><input id=print_holiday type="checkbox" checked="checked" /> 祝日を表示する。</label><br />
+##<label><input type="checkbox" checked="checked" /> 記念日を表示する。</label>
+</td>
+</tr>
+<th></th>
+</table>
+<input type="button" value="変更する" onclick="change_print_form()"/>
+<input type="button" value="印刷する" onclick="javascript:print();"/>
 </div>
 
-<div class="clearfix">
-<div class="auiSelectButton">
-<ul>
-<li style="width:4em;margin-right:10px;" title="今日へ">
-<a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');"><span>今日</span></a>
-</li>
-<li style="margin-right:5px;" title="前の週へ">
-<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ" /></span></a>
-</li>
-<li title="前の日へ">
-<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ" /></span></a>
-</li>
-<li style="margin-right:5px;" title="次の日へ">
-<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ" /></span></a>
-</li>
-<li style="margin-right:10px;" title="次の週へ">
-<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
-</li>
-</ul>
-</div>
-<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.ViewDate.DayOfWeek}</strong></div>
-</div>
 
-</div>
-<div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
-<div id="content-$!portlet.ID" style="visibility:visible">
 
-<div class="floatRight">
-<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="印刷画面を開く" class="auiButton pl5 pr5">
-<span>
-<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
-</span>
-</a>
-</div>
+<script type="text/javascript" language="JavaScript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
 
-#if(($!{hasAcl}) && $!{hasAcl} == "T")
-	<div class="auiForm">
-        <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">$!result.UserName</option>
+if(document.all!=undefined){
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='icon_schedule'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 期間スケジュールの表示切替
+    if(document.getElementById('print_term').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='termWeek'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## ToDoの表示切替
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+## 祝日の表示切替
+    if(document.getElementById('print_holiday').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='holiday small'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='holiday small'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
+}else{
+### firefox用 ############################################
+## アイコンの表示切替
+    if(document.getElementById('print_icon').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
+        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = 'none';
+      }
+    }
+## 期間スケジュールの表示切替
+    if(document.getElementById('print_term').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('termWeek').length; i++){
+        document.getElementById('printBody').getElementsByClassName('termWeek')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('termWeek').length; i++){
+        document.getElementById('printBody').getElementsByClassName('termWeek')[i].style.display = 'none';
+      }
+    }
+## ToDoの表示切替
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo').length; i++){
+        document.getElementById('printBody').getElementsByClassName('calerndarTodo')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo').length; i++){
+        document.getElementById('printBody').getElementsByClassName('calerndarTodo')[i].style.display = 'none';
+      }
+    }
+## 祝日の表示切替
+    if(document.getElementById('print_holiday').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('holiday small').length; i++){
+        document.getElementById('printBody').getElementsByClassName('holiday small')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('holiday small').length; i++){
+        document.getElementById('printBody').getElementsByClassName('holiday small')[i].style.display = 'none';
+      }
+    }
+}
+  }
+  //]]>
+</script>
 
-            #if($result.GroupList.size() > 0)
-				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-			#end
-			#foreach( $record in $result.GroupList )
-        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
-            #end
-            #if($result.PostMap.size() > 0)
-        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-			#end
-            #foreach( $record in $result.PostMap )
-            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.GroupName).addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
-			#end
-				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
-				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","Facility").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "Facility") selected="selected" #end>設備一覧</option>
-            #foreach($record in $!result.FacilitiyGroupList)
-        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","facilitygroup"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
-            #end
-        </select>
-	</div>
-#end
+
+
+
+
 
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">選択したグループには、ユーザーおよび設備が登録されていません。</div>
 #else
+<div id="printBody" style="width:600px;font-size:10pt;">
+<h1>#if($!{result.getTargetGroupName().groupAliasName})$!{result.getTargetGroupName().groupAliasName}#end $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.ViewDate.DayOfWeek}</h1>
+
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{result.ViewDate.toString()}))
 #set($entityids = "")
 #set($termcolcount = 0)
@@ -159,26 +256,16 @@
 #end
 #ALtdheadheaderAtt("class='groupOneday' rowspan='$duplirowmax'")
 $record3.AliasName
-#if(!$result.isMatch($record3.UserId.Value) && $result.hasAuthorityNote())
-#set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
-<br /><a class="btn_gray" style="margin-top:5px;" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
-<img src="images/schedule/plus_orange.gif" alt="+" />
-伝言メモ追加
-</a>
-#end
+
 #ALtdheadfooter()
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
 #foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
-#ALtdcellheaderAtt("style='background-color:#FFE5E5;'rowspan='$duplirowmax'")
+
+#ALtdcellheaderAtt("rowspan='$duplirowmax'")
 <div class="calendarScheduleDiv">
 <div class="small">
-#if($result.isMatch($record.UserId.Value))
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-#else
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-#end
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
+
 ${record.TodoName}
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
@@ -201,7 +288,7 @@ ${record.TodoName}
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName
+$record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
 #else
@@ -210,6 +297,7 @@ ${record.TodoName}
 #if(${record.isTmpreserve()})
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end
+</div>
 #else
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
@@ -221,9 +309,8 @@ $record.WbrName
 #if(${record.isTmpreserve()})
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
 #end
-#end
-</a>
 </div>
+#end
 #ALtdcellfooter()
 #end
 #end
@@ -239,12 +326,12 @@ $record.WbrName
 
 #if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
-#ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
+#ALtdcellheaderAtt("colspan='$colspan'")
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a></div>
+<div class="small">$!{record.WbrName}</div>
 </div>
 #else
 <div class="calendarScheduleDiv">
@@ -273,9 +360,6 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
 #ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-<a  class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
-</div></div>
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("" "colspan='$colspan' height='1'")
@@ -316,12 +400,12 @@ $record.WbrName
 
 #if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
-#ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
+#ALtdcellheaderAtt("colspan='$colspan'")
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <div class="small">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
+<div class="small">$record.WbrName</div>
 </div>
 #else
 <div class="calendarScheduleDiv">
@@ -402,12 +486,11 @@ $record.WbrName
 #set($colspan = $!{result.getScheduleColspan($record, $rows)} )
 #if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
-#ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
+#ALtdcellheaderAtt("colspan='$colspan'")
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
+<div class="small">${record.Date}$record.WbrName</div>
 </div>
 #else
 <div class="calendarScheduleDiv">
@@ -432,9 +515,6 @@ $record.WbrName
 #if($!{result.hasAuthorityFacilityInsert()})
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
 #ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-<a  class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
-</div></div>
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("" "colspan='$colspan' height='1'")
@@ -469,13 +549,11 @@ $record.WbrName
 
 #if ($!{record.Name.Value})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
-#ALtdcellheaderAtt("colspan='$colspan' style='background-color:#EDF1F2'")
-
+#ALtdcellheaderAtt("colspan='$colspan'")
 #if($record.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
-<div class="small">${record.Date}</div>
-<div class="small"><a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName</a></div>
+<div class="small">${record.Date}$record.WbrName</div>
 </div>
 #else
 <div class="calendarScheduleDiv">
@@ -526,10 +604,12 @@ $record.WbrName
 #end
 
 #ALtablefooter()
-#end
 </div>
+#end
 
+##----ここまで schedule-oneday-group.vmと共通--------
 
+<!--
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
@@ -542,3 +622,5 @@ $record.WbrName
     //]]>
   </script>
 #end
+-->
+
