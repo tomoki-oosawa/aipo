@@ -317,6 +317,17 @@ td.container {
 }
 
 /***************************************************
+	auiSearch
+--------------------------------------------------*/
+.auiSearch {
+}
+.auiSearch input.text {
+}
+.auiButtonSearch {
+	width:32px;
+}
+
+/***************************************************
 	auiThreeClumns
 --------------------------------------------------*/
 #auiThreeClumns {
@@ -454,10 +465,41 @@ table.listTable td.caption, table.subTable td.caption {
 	margin:6px 0;
 }
 /***************************************************
-	auiTimeList
+	auiTapList
 --------------------------------------------------*/
-.auiTimeList {
+/* auiTapList ********************/
+.auiTapList li {
+	background:none;
+	padding:0;
 	font-size:14px;
+}
+.auiTapList li ul {
+	margin:0;
+}
+.auiTapList .day {
+	background:#f0f0f0;
+	padding:8px 5px;
+	font-weight:bold;
+}
+.auiTapList .today .day {
+	background:#e0ffe0;
+}
+.auiTapList a {
+	display:block;
+	text-decoration:none;
+	border-bottom:solid 1px #eee;
+}
+.auiTapList span {
+	display:table-cell;
+	padding:5px 0.5em;
+}
+.auiTapList .hour {
+	width:3em;
+	text-align:right;
+}
+.auiTapList .title {
+}
+.auiTapList .blank {
 }
 /***************************************************
 	auiRowTable
