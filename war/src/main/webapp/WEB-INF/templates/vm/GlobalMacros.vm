@@ -849,15 +849,8 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
-<div class="roundTopBlock clearfix">
-  <div class="roundRightBlock">
-    <div class="roundBottomBlock">
-      <div class="roundLeftBlock">
-        <div class="roundTopLeftBlock">
-          <div class="roundTopRightBlock">
-            <div class="roundBottomRightBlock" >
-              <div class="roundBottomLeftBlock">
-                <table class="roundBlockWrapperTop">
+    <div class="auiPopup clearfix">
+        <table class="roundBlockWrapperTop">
                   <tbody>
                     <tr>
 #if($portlet_id!="")
@@ -873,20 +866,12 @@ $item.get(0)
                     </tr>
                   </tbody>
                 </table>
-                <div class="roundBlockWrapperBottom clearfix">
-                  <div class="roundBlockContent">
+        <div class="roundBlockContent">
 #end
 
 #macro(ALdialogheaderCloseJS $title $js)
-<div class="roundTopBlock clearfix">
-  <div class="roundRightBlock">
-    <div class="roundBottomBlock">
-      <div class="roundLeftBlock">
-        <div class="roundTopLeftBlock">
-          <div class="roundTopRightBlock">
-            <div class="roundBottomRightBlock" >
-              <div class="roundBottomLeftBlock">
-                <table class="roundBlockWrapperTop">
+	<div class="auiPopup clearfix">
+        <table class="roundBlockWrapperTop">
                   <tbody>
                     <tr>
                       <td class="roundBlockTitle wide">$title</td>
@@ -894,20 +879,11 @@ $item.get(0)
                     </tr>
                   </tbody>
                 </table>
-                <div class="roundBlockWrapperBottom clearfix">
-                  <div class="roundBlockContent">
+        <div class="roundBlockContent">
 #end
 
 #macro(ALdialogfooter)
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 #end
 
