@@ -972,7 +972,8 @@ public class ALEipUtils {
       String template =
         rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
-        if (template.endsWith("DetailScreen")) {
+        if (template.endsWith("DetailScreen")
+          || template.endsWith("FormScreen")) {
           VelocityContext context = new VelocityContext();
           setupContext(rundata, context);
           try {
