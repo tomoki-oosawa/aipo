@@ -877,13 +877,18 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   protected void setupLists(RunData rundata, Context context) {
 
     target_group_name = getTargetGroupName(rundata, context);
-
+    boolean fgroup_flag = false;
+    String target_group_id = "";
     current_filter = target_group_name;
     String[] target = target_group_name.split(";");
+    String[] target2 = target_group_name.split("_");
     if ("f".equals(target[0])) {
-      target_group_name = target[1];
+      target_group_id = target[1];
     }
-
+    if ("f".equals(target2[0])) {
+      target_group_id = target2[1];
+      fgroup_flag = true;
+    }
     if ((target_group_name != null)
       && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))
@@ -894,10 +899,10 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
-      if ("facilitygroup".equals(getCurrentFilterType())) {
+      if (fgroup_flag) {
         facilityList =
-          FacilitiesUtils.getFacilityGroupList(Integer
-            .valueOf(target_group_name));
+          FacilitiesUtils
+            .getFacilityGroupList(Integer.valueOf(target_group_id));
       } else {
         facilityList = FacilitiesUtils.getFacilityList(target_group_name);
       }
