@@ -409,13 +409,24 @@ public class TimelineSelectData extends
         parentIds.add(model.getTimelineId());
       }
 
-      // コメント
-      Map<Integer, List<TimelineResultData>> commentsMap =
-        getComments(parentIds);
-
       // 更新情報
       Map<Integer, List<TimelineResultData>> activitiesMap =
         getActivities(parentIds);
+
+      // コメント
+      List<Integer> commentIds = new ArrayList<Integer>();
+      commentIds.addAll(parentIds);
+      Iterator<List<TimelineResultData>> activitiesIter =
+        activitiesMap.values().iterator();
+      while (activitiesIter.hasNext()) {
+        List<TimelineResultData> next = activitiesIter.next();
+        for (TimelineResultData rd : next) {
+          commentIds.add(Integer.valueOf((int) rd.getTimelineId().getValue()));
+        }
+      }
+
+      Map<Integer, List<TimelineResultData>> commentsMap =
+        getComments(commentIds);
 
       // URL
       Map<Integer, List<TimelineUrlResultData>> urlsMap = getUrls(parentIds);
@@ -445,6 +456,10 @@ public class TimelineSelectData extends
           for (Iterator<TimelineResultData> iter = coac.iterator(); iter
             .hasNext();) {
             TimelineResultData coac_item = iter.next();
+            coac_item.setCoTopicList(commentsMap.get(Integer
+              .valueOf((int) coac_item.getTimelineId().getValue())));
+            coac_item.setReplyCount(coac_item.getCoTopicList().size());
+
             SelectQuery<EipTTimelineMap> query_map =
               Database.query(EipTTimelineMap.class);
             Expression exp1 =
