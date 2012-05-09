@@ -99,6 +99,9 @@ public class TimelineResultData implements ALData {
   /** 更新情報の場合のURLのGETparams */
   private ALStringField params;
 
+  /** いいね！の数 */
+  private int likeCount;
+
   /**
    *
    *
@@ -123,6 +126,7 @@ public class TimelineResultData implements ALData {
     has_photo = false;
     like = false;
     attachmentFileList = new ArrayList<FileuploadBean>();
+    likeCount = 0;
   }
 
   /**
@@ -347,7 +351,8 @@ public class TimelineResultData implements ALData {
    *          セットする coTopicList
    */
   public void setCoTopicList(List<TimelineResultData> coTopicList) {
-    this.coTopicList = coTopicList;
+    this.coTopicList =
+      coTopicList == null ? new ArrayList<TimelineResultData>(0) : coTopicList;
   }
 
   /**
@@ -362,7 +367,10 @@ public class TimelineResultData implements ALData {
    *          セットする coActivityList
    */
   public void setCoActivityList(List<TimelineResultData> coActivityList) {
-    this.coActivityList = coActivityList;
+    this.coActivityList =
+      coActivityList == null
+        ? new ArrayList<TimelineResultData>(0)
+        : coActivityList;
   }
 
   /**
@@ -423,7 +431,10 @@ public class TimelineResultData implements ALData {
    *          セットする attachmentFileList
    */
   public void setAttachmentFileList(List<FileuploadBean> attachmentFileList) {
-    this.attachmentFileList = attachmentFileList;
+    this.attachmentFileList =
+      attachmentFileList == null
+        ? new ArrayList<FileuploadBean>(0)
+        : attachmentFileList;
   }
 
   /**
@@ -510,6 +521,14 @@ public class TimelineResultData implements ALData {
     } else {
       return "";
     }
+  }
+
+  public int getLikeCount() {
+    return likeCount;
+  }
+
+  public void setLikeCount(int likeCount) {
+    this.likeCount = likeCount;
   }
 
 }

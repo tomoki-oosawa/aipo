@@ -55,9 +55,6 @@ public class TimelineLikeSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineSelectData.class.getName());
 
-  /** ログインユーザ ID */
-  private int uid;
-
   /**
    * 
    * @param action
@@ -75,8 +72,6 @@ public class TimelineLikeSelectData extends
       context,
       LIST_SORT_TYPE_STR,
       ALEipConstants.LIST_SORT_TYPE_DESC);
-
-    uid = ALEipUtils.getUserId(rundata);
 
   }
 
@@ -232,7 +227,6 @@ public class TimelineLikeSelectData extends
         .valueOf(topicid));
     query.setQualifier(exp);
     query.orderDesending(EipTTimelineLike.CREATE_DATE_PROPERTY);
-    query.distinct(true);
     return query;
   }
 

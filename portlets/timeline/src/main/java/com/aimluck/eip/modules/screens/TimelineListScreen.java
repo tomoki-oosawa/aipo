@@ -19,13 +19,11 @@
 
 package com.aimluck.eip.modules.screens;
 
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.timeline.TimelineSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -48,8 +46,8 @@ public class TimelineListScreen extends TimelineScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
-    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    // String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
       int rows = 20;
       int scrollTop = 0;

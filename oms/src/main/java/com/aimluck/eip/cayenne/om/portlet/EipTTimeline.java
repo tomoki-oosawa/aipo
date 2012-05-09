@@ -35,6 +35,40 @@ public class EipTTimeline extends _EipTTimeline {
 
   public static final String TIMELINE_TYPE_TIMELINE = "T";// デフォルト
 
+  private boolean like;
+
+  private int likeCount;
+
+  /**
+   * @return like
+   */
+  public boolean isLike() {
+    return like;
+  }
+
+  /**
+   * @param like
+   *          セットする like
+   */
+  public void setLike(boolean like) {
+    this.like = like;
+  }
+
+  /**
+   * @return userCount
+   */
+  public int getLikeCount() {
+    return likeCount;
+  }
+
+  /**
+   * @param userCount
+   *          セットする userCount
+   */
+  public void setLikeCount(int likeCount) {
+    this.likeCount = likeCount;
+  }
+
   public Integer getTimelineId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(TIMELINE_ID_PK_COLUMN);

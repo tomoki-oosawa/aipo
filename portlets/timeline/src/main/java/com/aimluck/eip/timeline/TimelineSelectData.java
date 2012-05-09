@@ -20,9 +20,15 @@
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -36,6 +42,7 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -49,6 +56,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -89,7 +97,7 @@ public class TimelineSelectData extends
   private final boolean showReplyForm = false;
 
   /** 閲覧権限の有無 */
-  private boolean hasAclCategoryList;
+  // private boolean hasAclCategoryList;
 
   /** 他ユーザーの作成したトピックの編集権限 */
   private boolean hasAclUpdateTopicOthers;
@@ -134,11 +142,16 @@ public class TimelineSelectData extends
   @Override
   public ResultList<EipTTimeline> selectList(RunData rundata, Context context) {
     try {
-      SelectQuery<EipTTimeline> query = getSelectQuery(rundata, context);
-      buildSelectQueryForListView(query);
-      buildSelectQueryForListViewSort(query, rundata, context);
+
       // 表示するカラムのみデータベースから取得する．
-      ResultList<EipTTimeline> list = query.getResultList();
+      ResultList<EipTTimeline> list =
+        TimelineUtils.getTimelineList(
+          uid,
+          Arrays.asList(0),
+          null,
+          current_page,
+          getRowsNum());
+
       // 件数をセットする．
       topicSum = list.getTotalCount();
       // 表示する高さを調節する
@@ -171,19 +184,12 @@ public class TimelineSelectData extends
    * @param context
    * @return
    */
-
-  private SelectQuery<EipTTimeline> getSelectQuery(RunData rundata,
+  protected SelectQuery<EipTTimeline> getSelectQuery(RunData rundata,
       Context context) {
 
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
-        .valueOf(0));
-
-    query.setQualifier(exp1);
-
-    query.distinct(true);
+    query.where(Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer
+      .valueOf(0)));
 
     return query;
   }
@@ -194,7 +200,6 @@ public class TimelineSelectData extends
    * @param obj
    * @return
    */
-  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTTimeline record) {
     try {
@@ -213,69 +218,14 @@ public class TimelineSelectData extends
       rd.setTimelineType(record.getTimelineType());
       rd.setAppId(record.getAppId());
       rd.setParams(record.getParams());
-
-      rd.setReplyCount(TimelineUtils.countReply(record.getTimelineId()));
-
-      /* 子トピック */
-      List<TimelineResultData> coTopicList =
-        new ArrayList<TimelineResultData>();
-
-      SelectQuery<EipTTimeline> query =
-        getSelectQueryForCotopic(record.getTimelineId().toString());
-
-      query.orderAscending(EipTTimeline.CREATE_DATE_PROPERTY);
-
-      List<EipTTimeline> aList = query.fetchList();
-      if (aList != null) {
-        for (EipTTimeline coTopic : aList) {
-          coTopicList.add((TimelineResultData) getResultData(coTopic));
-        }
-      }
-
-      rd.setCoTopicList(coTopicList);
-
-      /* 子アクティビティ */
-      List<TimelineResultData> coActivityList =
-        new ArrayList<TimelineResultData>();
-
-      SelectQuery<EipTTimeline> query2 =
-        getSelectQueryForCoactivity(record.getTimelineId().toString());
-
-      query2.orderDesending(EipTTimeline.UPDATE_DATE_PROPERTY);
-
-      List<EipTTimeline> aList2 = query2.fetchList();
-      if (aList2 != null) {
-        for (EipTTimeline coActivity : aList2) {
-          coActivityList.add((TimelineResultData) getResultData(coActivity));
-        }
-      }
-
-      rd.setCoActivityList(coActivityList);
-
-      /* いいね */
-      TimelineLikeSelectData ls = new TimelineLikeSelectData();
-      List<TimelineLikeResultData> likeList =
-        ls.getLikeList(record.getTimelineId());
-
-      rd.setLikeList(likeList);
-
-      for (TimelineLikeResultData like : likeList) {
-        if ((int) like.getUserId().getValue() == uid) {
-          rd.setLike(true);
-        }
-      }
-
-      /* URL */
-      TimelineUrlSelectData us = new TimelineUrlSelectData();
-      List<TimelineUrlResultData> urlList =
-        us.getUrlList(record.getTimelineId());
-
-      rd.setUrlList(urlList);
+      rd.setLike(record.isLike());
+      rd.setLikeCount(record.getLikeCount());
 
       int userId = record.getOwnerId().intValue();
       rd.setHasPhoto(false);
 
       ALTimelineManager manager = ALTimelineManager.getInstance();
+      @SuppressWarnings("unchecked")
       List<TimelineUserResultData> userDataList =
         (List<TimelineUserResultData>) manager.getUserDataList();
 
@@ -288,33 +238,6 @@ public class TimelineSelectData extends
           rd.setHasPhoto(true);
           break;
         }
-      }
-
-      // ファイルリスト
-      List<EipTTimelineFile> list =
-        TimelineUtils
-          .getSelectQueryForFiles(record.getTimelineId().intValue())
-          .fetchList();
-      if (list != null && list.size() > 0) {
-        List<FileuploadBean> attachmentFileList =
-          new ArrayList<FileuploadBean>();
-        FileuploadBean filebean = null;
-        for (EipTTimelineFile file : list) {
-          String realname = file.getFileName();
-          javax.activation.DataHandler hData =
-            new javax.activation.DataHandler(
-              new javax.activation.FileDataSource(realname));
-
-          filebean = new FileuploadBean();
-          filebean.setFileId(file.getFileId().intValue());
-          filebean.setFileName(realname);
-          if (hData != null) {
-            filebean.setContentType(hData.getContentType());
-          }
-          filebean.setIsImage(FileuploadUtils.isImage(realname));
-          attachmentFileList.add(filebean);
-        }
-        rd.setAttachmentFileList(attachmentFileList);
       }
 
       return rd;
@@ -333,7 +256,14 @@ public class TimelineSelectData extends
   @Override
   protected Object getResultDataDetail(EipTTimeline record)
       throws ALPageNotFoundException, ALDBErrorException {
-    return getResultData(record);
+
+    TimelineResultData rd = (TimelineResultData) getResultData(record);
+    TimelineLikeSelectData ls = new TimelineLikeSelectData();
+    List<TimelineLikeResultData> likeList =
+      ls.getLikeList(record.getTimelineId());
+    rd.setLikeList(likeList);
+
+    return rd;
   }
 
   @Override
@@ -348,28 +278,118 @@ public class TimelineSelectData extends
     }
   }
 
-  private SelectQuery<EipTTimeline> getSelectQueryForCotopic(String topicid) {
-    SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
-        .valueOf(topicid));
-    Expression exp2 =
-      ExpressionFactory.matchExp(EipTTimeline.TIMELINE_TYPE_PROPERTY, "T");
-    query.setQualifier(exp1.andExp(exp2));
-    query.distinct(true);
-    return query;
+  protected Map<Integer, List<TimelineResultData>> getComments(
+      List<Integer> parentIds) {
+    List<EipTTimeline> list =
+      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1);
+    Map<Integer, List<TimelineResultData>> result =
+      new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
+    for (EipTTimeline model : list) {
+      Integer id = model.getParentId();
+      List<TimelineResultData> rdList = result.get(id);
+      if (rdList == null) {
+        rdList = new ArrayList<TimelineResultData>();
+      }
+      rdList.add((TimelineResultData) getResultData(model));
+      result.put(id, rdList);
+    }
+
+    return result;
   }
 
-  private SelectQuery<EipTTimeline> getSelectQueryForCoactivity(String topicid) {
-    SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, Integer
-        .valueOf(topicid));
-    Expression exp2 =
-      ExpressionFactory.matchExp(EipTTimeline.TIMELINE_TYPE_PROPERTY, "A");
-    query.setQualifier(exp1.andExp(exp2));
-    query.distinct(true);
-    return query;
+  protected Map<Integer, List<TimelineResultData>> getActivities(
+      List<Integer> parentIds) {
+    List<EipTTimeline> list =
+      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1);
+
+    Map<Integer, List<TimelineResultData>> result =
+      new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
+    for (EipTTimeline model : list) {
+      Integer id = model.getParentId();
+      List<TimelineResultData> rdList = result.get(id);
+      if (rdList == null) {
+        rdList = new ArrayList<TimelineResultData>();
+      }
+      rdList.add((TimelineResultData) getResultData(model));
+      result.put(id, rdList);
+    }
+
+    return result;
+  }
+
+  protected Map<Integer, List<TimelineUrlResultData>> getUrls(
+      List<Integer> parentIds) {
+    if (parentIds == null || parentIds.size() == 0) {
+      return new HashMap<Integer, List<TimelineUrlResultData>>(parentIds.size());
+    }
+    SelectQuery<EipTTimelineUrl> query = Database.query(EipTTimelineUrl.class);
+    query.where(Operations.in(EipTTimelineUrl.TIMELINE_ID_PROPERTY, parentIds));
+
+    List<EipTTimelineUrl> list = query.fetchList();
+    Map<Integer, List<TimelineUrlResultData>> result =
+      new HashMap<Integer, List<TimelineUrlResultData>>(parentIds.size());
+    for (EipTTimelineUrl model : list) {
+      Integer id = model.getTimelineId();
+      List<TimelineUrlResultData> rdList = result.get(id);
+      if (rdList == null) {
+        rdList = new ArrayList<TimelineUrlResultData>();
+      }
+
+      TimelineUrlResultData rd = new TimelineUrlResultData();
+      rd.initField();
+      rd.setTimelineUrlId(model.getTimelineUrlId().longValue());
+      rd.setTimelineId(model.getTimelineId().longValue());
+      rd.setThumbnail(model.getThumbnail());
+      rd.setTitle(model.getTitle());
+      rd.setUrl(model.getUrl());
+      rd.setBody(model.getBody());
+      boolean flag = false;
+      if (model.getThumbnail() != null) {
+        flag = true;
+      }
+      rd.setThumbnailFlag(flag);
+      rdList.add(rd);
+
+      result.put(id, rdList);
+    }
+
+    return result;
+  }
+
+  protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
+    if (parentIds == null || parentIds.size() == 0) {
+      return new HashMap<Integer, List<FileuploadBean>>(parentIds.size());
+    }
+    SelectQuery<EipTTimelineFile> query =
+      Database.query(EipTTimelineFile.class);
+    query
+      .where(Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
+
+    List<EipTTimelineFile> list = query.fetchList();
+    Map<Integer, List<FileuploadBean>> result =
+      new HashMap<Integer, List<FileuploadBean>>(parentIds.size());
+    for (EipTTimelineFile model : list) {
+      Integer id = model.getTimelineId();
+      List<FileuploadBean> rdList = result.get(id);
+      if (rdList == null) {
+        rdList = new ArrayList<FileuploadBean>();
+      }
+
+      String realname = model.getFileName();
+      DataHandler hData = new DataHandler(new FileDataSource(realname));
+
+      FileuploadBean filebean = new FileuploadBean();
+      filebean.setFileId(model.getFileId().intValue());
+      filebean.setFileName(realname);
+      if (hData != null) {
+        filebean.setContentType(hData.getContentType());
+      }
+      filebean.setIsImage(FileuploadUtils.isImage(realname));
+      rdList.add(filebean);
+      result.put(id, rdList);
+    }
+
+    return result;
   }
 
   @Override
@@ -381,7 +401,27 @@ public class TimelineSelectData extends
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
+
+      // 投稿
       ResultList<EipTTimeline> resultList = selectList(rundata, context);
+      List<Integer> parentIds = new ArrayList<Integer>(resultList.size());
+      for (EipTTimeline model : resultList) {
+        parentIds.add(model.getTimelineId());
+      }
+
+      // コメント
+      Map<Integer, List<TimelineResultData>> commentsMap =
+        getComments(parentIds);
+
+      // 更新情報
+      Map<Integer, List<TimelineResultData>> activitiesMap =
+        getActivities(parentIds);
+
+      // URL
+      Map<Integer, List<TimelineUrlResultData>> urlsMap = getUrls(parentIds);
+
+      // ファイル
+      Map<Integer, List<FileuploadBean>> filesMap = getFiles(parentIds);
 
       if (resultList != null) {
         if (resultList.getTotalCount() > 0) {
@@ -391,6 +431,12 @@ public class TimelineSelectData extends
         for (EipTTimeline model : resultList) {
           Object object = getResultData(model);
           TimelineResultData rd = (TimelineResultData) object;
+
+          rd.setCoTopicList(commentsMap.get(model.getTimelineId()));
+          rd.setCoActivityList(activitiesMap.get(model.getTimelineId()));
+          rd.setUrlList(urlsMap.get(model.getTimelineId()));
+          rd.setAttachmentFileList(filesMap.get(model.getTimelineId()));
+          rd.setReplyCount(rd.getCoTopicList().size());
 
           List<TimelineResultData> coac = rd.getCoActivityList();
 

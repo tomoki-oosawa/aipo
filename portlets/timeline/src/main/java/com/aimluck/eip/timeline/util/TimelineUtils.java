@@ -56,6 +56,8 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
@@ -124,7 +126,7 @@ public class TimelineUtils {
   public static final String TARGET_KEYWORD = "keyword";
 
   /** パラメータリセットの識別子 */
-  private static final String RESET_FLAG = "reset_params";
+  // private static final String RESET_FLAG = "reset_params";
 
   /**
    * トピックに対する返信数を返します
@@ -132,6 +134,7 @@ public class TimelineUtils {
    * @param timeline_id
    * @return
    */
+  @Deprecated
   public static Integer countReply(Integer timeline_id) {
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
 
@@ -464,7 +467,7 @@ public class TimelineUtils {
    * @param uid
    * @return
    */
-  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+  public static List<FileuploadLiteBean> getFileuploadList(RunData rundata) {
     String[] fileids =
       rundata
         .getParameters()
@@ -473,8 +476,8 @@ public class TimelineUtils {
       return null;
     }
 
-    ArrayList<String> hadfileids = new ArrayList<String>();
-    ArrayList<String> newfileids = new ArrayList<String>();
+    List<String> hadfileids = new ArrayList<String>();
+    List<String> newfileids = new ArrayList<String>();
 
     for (int j = 0; j < fileids.length; j++) {
       if (fileids[j].trim().startsWith("s")) {
@@ -484,8 +487,7 @@ public class TimelineUtils {
       }
     }
 
-    ArrayList<FileuploadLiteBean> fileNameList =
-      new ArrayList<FileuploadLiteBean>();
+    List<FileuploadLiteBean> fileNameList = new ArrayList<FileuploadLiteBean>();
     FileuploadLiteBean filebean = null;
     int fileid = 0;
 
@@ -684,6 +686,7 @@ public class TimelineUtils {
    *          ファイルを検索するリクエストのid
    * @return query
    */
+  @Deprecated
   public static SelectQuery<EipTTimelineFile> getSelectQueryForFiles(
       int requestid) {
     SelectQuery<EipTTimelineFile> query =
@@ -893,4 +896,127 @@ public class TimelineUtils {
     }
   }
 
+  public static ResultList<EipTTimeline> getTimelineList(Integer userId,
+      List<Integer> parentIds, String type, int page, int limit) {
+
+    if (parentIds == null || parentIds.size() == 0) {
+      return new ResultList<EipTTimeline>(
+        new ArrayList<EipTTimeline>(0),
+        -1,
+        -1,
+        0);
+    }
+
+    StringBuilder select = new StringBuilder();
+
+    select.append("SELECT");
+    select.append(" eip_t_timeline.app_id,");
+    select.append(" eip_t_timeline.create_date,");
+    select.append(" eip_t_timeline.external_id,");
+    select.append(" eip_t_timeline.note,");
+    select.append(" eip_t_timeline.owner_id,");
+    select.append(" eip_t_timeline.params,");
+    select.append(" eip_t_timeline.parent_id,");
+    select.append(" eip_t_timeline.timeline_type,");
+    select.append(" eip_t_timeline.update_date,");
+    select.append(" eip_t_timeline.timeline_id,");
+
+    // ログインユーザーがいいね！をしているかどうか
+    select
+      .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t0 WHERE (t0.timeline_id = eip_t_timeline.timeline_id) AND (t0.owner_id = #bind($user_id))) AS is_like,");
+    // いいね！の総数
+    select
+      .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t1 WHERE t1.timeline_id = eip_t_timeline.timeline_id) AS l_count");
+
+    StringBuilder count = new StringBuilder();
+    count.append("SELECT count(eip_t_timeline.timeline_id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body.append(" FROM eip_t_timeline WHERE ");
+    if (type != null) {
+      body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
+    }
+    body.append(" eip_t_timeline.parent_id IN (");
+    boolean isFirst = true;
+    for (Integer num : parentIds) {
+      if (!isFirst) {
+        body.append(",");
+
+      }
+      body.append(num.intValue());
+      isFirst = false;
+    }
+    body.append(")");
+
+    StringBuilder last = new StringBuilder();
+
+    if ("T".equals(type)) {
+      last.append(" ORDER BY eip_t_timeline.create_date ASC");
+    } else {
+      last.append(" ORDER BY eip_t_timeline.update_date DESC");
+    }
+
+    SQLTemplate<EipTTimeline> countQuery =
+      Database
+        .sql(EipTTimeline.class, count.toString() + body.toString())
+        .param("user_id", Integer.valueOf(userId));
+    if (type != null) {
+      countQuery.param("type", type);
+    }
+
+    int countValue = 0;
+    if (page > 0 && limit > 0) {
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
+      }
+
+      int offset = 0;
+      if (limit > 0) {
+        int num = ((int) (Math.ceil(countValue / (double) limit)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        offset = limit * (page - 1);
+      } else {
+        page = 1;
+      }
+
+      last.append(" LIMIT ");
+      last.append(limit);
+      last.append(" OFFSET ");
+      last.append(offset);
+    }
+
+    SQLTemplate<EipTTimeline> query =
+      Database.sql(
+        EipTTimeline.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "user_id",
+        Integer.valueOf(userId));
+    if (type != null) {
+      query.param("type", type);
+    }
+
+    List<DataRow> fetchList = query.fetchListAsDataRow();
+
+    List<EipTTimeline> list = new ArrayList<EipTTimeline>();
+    for (DataRow row : fetchList) {
+      Long is_like = (Long) row.get("is_like");
+      Long l_count = (Long) row.get("l_count");
+      EipTTimeline object = Database.objectFromRowData(row, EipTTimeline.class);
+      object.setLike(is_like.intValue() > 0);
+      object.setLikeCount(l_count.intValue());
+      list.add(object);
+
+    }
+
+    if (page > 0 && limit > 0) {
+      return new ResultList<EipTTimeline>(list, page, limit, countValue);
+    } else {
+      return new ResultList<EipTTimeline>(list, -1, -1, list.size());
+    }
+
+  }
 }
