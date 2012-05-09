@@ -1707,6 +1707,9 @@ ul.attachments span.deletebutton:hover{
 	border-radius:0;
 	-ms-border-radius:0;
 }
+*:first-child+html #timelineOuter textarea {
+	margin-left:-60px;
+}
 #timelineOuter textarea:focus {
 	box-shadow:none;
 }
