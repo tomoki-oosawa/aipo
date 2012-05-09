@@ -93,11 +93,11 @@
 			#end
 		</div>
 	</div>
-	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments" #if($record.LikeList.size() == 0 && $record.ReplyCountInteger == 0 && $record.CoTopicList.size() == 0) style="display:none" #end>
-		#if($record.LikeList.size() > 0)
+	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments" #if($record.LikeCount == 0 && $record.ReplyCountInteger == 0 && $record.CoTopicList.size() == 0) style="display:none" #end>
+		#if($record.LikeCount > 0)
 			<div id="like_$!{record.TimelineId}" class="commentCaption">
 				<span class="iconLike"></span>
-				<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeList.size()}人</a>が「いいね！」と言っています。
+				<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCount}人</a>が「いいね！」と言っています。
 			</div>
 		#end
 		#if($record.ReplyCountInteger > 2)
@@ -146,9 +146,9 @@
 								<input type="hidden" id="dummy_$!{portlet.ID}_$!{record2.TimelineId}" value="" />
 							</form>
 						#end
-						#if($record2.LikeList.size() > 0)
+						#if($record2.LikeCount > 0)
 							&nbsp;
-							<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeList.size()}</a>
+							<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeCount}</a>
 						#end
 				</div>
 			</div>
@@ -226,11 +226,11 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end" #if($record2.LikeList.size() == 0 && $record2.ReplyCountInteger == 0 && $record2.CoTopicList.size() == 0) style="display:none" #end>
-	#if($record2.LikeList.size() > 0)
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end" #if($record2.LikeCount == 0 && $record2.ReplyCountInteger == 0 && $record2.CoTopicList.size() == 0) style="display:none" #end>
+	#if($record2.LikeCount > 0)
 	<div id="like_$!{record2.TimelineId}" class="commentCaption">
 		<span class="iconLike"></span>
-		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeList.size()}人</a>が「いいね！」と言っています。
+		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCount}人</a>が「いいね！」と言っています。
 	</div>
 	#end
 	#if($record2.ReplyCountInteger > 2)
@@ -278,9 +278,9 @@
 							<input type="hidden" id="dummy_$!{portlet.ID}_$!{record3.TimelineId}" value="" />
 					</form>
 				#end
-				#if($record3.LikeList.size() > 0)
+				#if($record3.LikeCount > 0)
 					&nbsp;
-					<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record3.LikeList.size()}</a>
+					<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record3.LikeCount}</a>
 				#end
 			</div>
 		</div>
