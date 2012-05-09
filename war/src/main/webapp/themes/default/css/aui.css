@@ -696,7 +696,8 @@ table.activityTable tr.unread td {
 #auiLoginBox input.button:active {
 	background:url(../images/login_btn_back.png) 0px -100px no-repeat;
 }
-.loginAlert {
+.loginAlert,
+.alert {
 	margin-bottom:10px;
 	padding:10px;
 	background:#ffcccc;

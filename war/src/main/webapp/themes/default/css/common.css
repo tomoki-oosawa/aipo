@@ -241,6 +241,7 @@ table.center {
 	margin-bottom:5px;
 }
 .caution {
+	color:#DC0033;
 	font-size:.96em;
 }
 * html .caution {
@@ -684,6 +685,12 @@ table.listTable {
 	border-spacing:0;
 	border-collapse:collapse;
 	padding:0;
+}
+table.listTable caption {
+	background:#f0f0f0;
+	padding:5px;
+	font-weight:bold;
+	text-align:left;
 }
 table.listTableBorder {
 	margin-bottom:10px;
@@ -1433,12 +1440,6 @@ table.simpleTable td.caption {
 	padding:2px 0 2px 18px;
 	margin-left:2px;
 }
-.indicatorglay {
-	background:url(../images/common/indicatorglay.gif) no-repeat left;
-	padding:2px 0 2px 18px;
-	margin-left:2px;
-}
-
 .indicatorDialog {
 	border:5px solid #ddd;
 	background:#ffffff;
@@ -1572,10 +1573,6 @@ div.weeklyTermRights div.weeklyTermRight {
 }
 div.weeklyTermRights div.weeklyTermRightR {
 	border-width:1px 1px 0 1px!important;
-}
-div.weeklyTermRights div.weeklyTermRightRnone {
-	border-width:1px 1px 0 1px!important;
-	border-right:none;
 }
 div.weeklyTermRights div.weeklyTermRight div.weeklyTermRightTop, div.weeklyTermRights div.weeklyTermRightR div.weeklyTermRightTop {
 	height:17px;
