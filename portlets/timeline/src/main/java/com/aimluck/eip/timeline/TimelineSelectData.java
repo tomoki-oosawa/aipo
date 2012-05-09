@@ -258,10 +258,41 @@ public class TimelineSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
 
     TimelineResultData rd = (TimelineResultData) getResultData(record);
+
+    Integer id = record.getTimelineId();
     TimelineLikeSelectData ls = new TimelineLikeSelectData();
     List<TimelineLikeResultData> likeList =
       ls.getLikeList(record.getTimelineId());
     rd.setLikeList(likeList);
+    rd.setLikeCount(likeList.size());
+    for (TimelineLikeResultData lrd : likeList) {
+      int value = (int) lrd.getUserId().getValue();
+      if (value == uid) {
+        rd.setLike(true);
+        break;
+      }
+    }
+
+    // 更新情報
+    Map<Integer, List<TimelineResultData>> activitiesMap =
+      getActivities(Arrays.asList(id));
+
+    // コメント
+    Map<Integer, List<TimelineResultData>> commentsMap =
+      getComments(Arrays.asList(id));
+
+    // URL
+    Map<Integer, List<TimelineUrlResultData>> urlsMap =
+      getUrls(Arrays.asList(id));
+
+    // ファイル
+    Map<Integer, List<FileuploadBean>> filesMap = getFiles(Arrays.asList(id));
+
+    rd.setCoTopicList(commentsMap.get(id));
+    rd.setCoActivityList(activitiesMap.get(id));
+    rd.setUrlList(urlsMap.get(id));
+    rd.setAttachmentFileList(filesMap.get(id));
+    rd.setReplyCount(rd.getCoTopicList().size());
 
     return rd;
   }
