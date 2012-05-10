@@ -866,7 +866,9 @@ table.activityTable tr.unread td {
 	width:25px;
 }
 
-/* Widgets Area ********************/
+/***************************************************
+	auiWidgetsArea
+--------------------------------------------------*/
 #auiWidgetsArea {
 	float:left;
 	width:180px;
@@ -925,7 +927,9 @@ table.activityTable tr.unread td {
 }
 
 
-/* Contents Area ********************/
+/***************************************************
+	auiContentsArea
+--------------------------------------------------*/
 #auiContentsArea {
 	float:right;
 	width:100%;
@@ -953,7 +957,9 @@ table.activityTable tr.unread td {
 	width:180px;
 }
 
-/* Wide Area ********************/
+/***************************************************
+	auiWideArea
+--------------------------------------------------*/
 #auiWideArea,
 #auiWideAreaInner {
 	width:100%;
@@ -961,8 +967,9 @@ table.activityTable tr.unread td {
 }
 
 
-/* auiButton ********************/
-
+/***************************************************
+	auiButton
+--------------------------------------------------*/
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
@@ -1175,7 +1182,9 @@ button[disabled]:hover {
 }
 
 
-/* auiSearch ********************/
+/***************************************************
+	auiSearch
+--------------------------------------------------*/
 .auiSearch {
 	position:relative;
 }
@@ -1248,7 +1257,9 @@ button[disabled]:hover {
 	margin-bottom:2em;
 }
 
-/* auiSummaryMeta ********************/
+/***************************************************
+	auiSummaryMeta
+--------------------------------------------------*/
 .auiSummaryMeta {
 	width:100%;
 	line-height:2em;
@@ -1266,7 +1277,9 @@ button[disabled]:hover {
 	font-weight:bold;
 }
 
-/* auiGridTable ********************/
+/***************************************************
+	auiGridTable
+--------------------------------------------------*/
 table.auiGridTable {
 	border-collapse:collapse;
 }
@@ -1304,7 +1317,9 @@ table.auiGridTable tr:hover th {
 	background:#ffffe0;
 }
 
-/* auiRowTable ********************/
+/***************************************************
+	auiRowTable
+--------------------------------------------------*/
 table.auiRowTable {
 	border-spacing:0;
 	border-collapse:collapse;
@@ -1348,7 +1363,9 @@ table.auiRowTable tr:hover th {
 }
 
 
-/* auiDirectoryList ********************/
+/***************************************************
+	auiDirectoryList
+--------------------------------------------------*/
 .auiDirectoryList {
 	margin-bottom:0.8em;
 }
@@ -1407,7 +1424,9 @@ table.auiRowTable tr:hover th {
 .auiDirectoryList .d19 span {margin-left:180px;}
 .auiDirectoryList .d20 span {margin-left:190px;}
 
-/* auiSakuin ********************/
+/***************************************************
+	auiSakuin
+--------------------------------------------------*/
 .auiSakuin {
 }
 .auiSakuin li {
@@ -1435,7 +1454,9 @@ table.auiRowTable tr:hover th {
 	background:#f0f0f0 none;
 }
 
-/* auiCalendar ********************/
+/***************************************************
+	auiCalendar
+--------------------------------------------------*/
 table.auiCalendar {
 	width:100%;
 	border-collapse:collapse;
@@ -1482,6 +1503,9 @@ table.auiCalendar .selected a {
 	border:solid 1px #000;
 }
 
+/***************************************************
+	Avatar
+--------------------------------------------------*/
 /* auiAvatarBlock ********************/
 .auiAvatarBlock {
 	text-align:center;
@@ -1509,7 +1533,9 @@ table.auiCalendar .selected a {
 	-ms-border-radius:3px;
 }
 
-/* auiBlogEntry ********************/
+/***************************************************
+	auiBlogEntry
+--------------------------------------------------*/
 #auiBlogEntries {
 	padding-top:1em;
 	border-top:solid 1px #eee;
@@ -1543,12 +1569,16 @@ table.auiCalendar .selected a {
 	font-size:8pt;
 }
 
-/* auiMail ********************/
+/***************************************************
+	auiMail
+--------------------------------------------------*/
 .auiMailSummaryExcerpt {
 	color:#999;
 }
 
-/* auiForm ********************/
+/***************************************************
+	auiForm
+--------------------------------------------------*/
 .auiForm,
 form {
 	margin:0;
@@ -1645,7 +1675,9 @@ ul.attachments span.deletebutton:hover{
 	color: #F90;
 }
 
-/* auiSubmenu ********************/
+/***************************************************
+	auiSubmenu
+--------------------------------------------------*/
 .auiSubmenu {
 	padding-right:5px;
 }
@@ -1684,7 +1716,9 @@ ul.attachments span.deletebutton:hover{
 	background-position:23px 1em;
 }
 
-/* timeline ********************/
+/***************************************************
+	timeline
+--------------------------------------------------*/
 #timelineOuter .message {
 	clear:both;
 	border-top: 1px solid #dcdcdc;
@@ -1928,7 +1962,9 @@ tr.disabled a {
 	color:#666666;
 }
 
-/* auiIcon ********************/
+/***************************************************
+	auiIcon
+--------------------------------------------------*/
 /*
 auiIconは「class="auiIcon auiIconSetting"」と
 ベースクラスとサブクラスを同時に付与させること。
@@ -2093,7 +2129,9 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 	text-align:center;
 }
 
-/* CSS3 transition ********************/
+/***************************************************
+	CSS3 transition
+--------------------------------------------------*/
 @-webkit-keyframes fadeIn {
 	0% {
 		filter: alpha(opacity=0);

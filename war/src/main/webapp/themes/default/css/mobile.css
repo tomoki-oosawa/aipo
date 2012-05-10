@@ -324,7 +324,6 @@ td.container {
 .auiSearch input.text {
 }
 .auiButtonSearch {
-	width:32px;
 }
 
 /***************************************************
@@ -465,43 +464,6 @@ table.listTable td.caption, table.subTable td.caption {
 	margin:6px 0;
 }
 /***************************************************
-	auiTapList
---------------------------------------------------*/
-/* auiTapList ********************/
-.auiTapList li {
-	background:none;
-	padding:0;
-	font-size:14px;
-}
-.auiTapList li ul {
-	margin:0;
-}
-.auiTapList .day {
-	background:#f0f0f0;
-	padding:8px 5px;
-	font-weight:bold;
-}
-.auiTapList .today .day {
-	background:#e0ffe0;
-}
-.auiTapList a {
-	display:block;
-	text-decoration:none;
-	border-bottom:solid 1px #eee;
-}
-.auiTapList span {
-	display:table-cell;
-	padding:5px 0.5em;
-}
-.auiTapList .hour {
-	width:3em;
-	text-align:right;
-}
-.auiTapList .title {
-}
-.auiTapList .blank {
-}
-/***************************************************
 	auiRowTable
 --------------------------------------------------*/
 /*
@@ -562,6 +524,118 @@ table.auiRowTable td.wTitl a {
 */
 
 
+/***************************************************
+	auiScheduleList
+--------------------------------------------------*/
+.auiScheduleList {
+}
+.auiScheduleList,
+.auiScheduleList ul {
+	width:100%;
+}
+.auiScheduleList li {
+	clear:both;
+	width:100%;
+	background:none;
+	padding:0;
+}
+.auiScheduleList li ul {
+	margin:0;
+}
+.auiScheduleList .day {
+	background:#f0f0f0;
+	padding:8px 5px;
+	font-weight:bold;
+}
+.auiScheduleList .today .day {
+	background:#e0ffe0;
+}
+.auiScheduleList a {
+	width:100%;
+	display:block;
+	text-decoration:none;
+	border-bottom:solid 1px #eee;
+}
+.auiScheduleList span {
+	display:table-cell;
+	padding:10px 0;
+	overflow:hidden;
+}
+.auiScheduleList .hour {
+	width:3em;
+	padding-right:10px;
+	text-align:right;
+}
+.auiScheduleList .title {
+}
+/***************************************************
+	auiScheduleCalendar
+--------------------------------------------------*/
+.auiScheduleCalendar {
+	width:100%;
+    border-collapse: collapse;
+	background:#f0f0f0;
+    border:1px solid #cccccc;
+	border-radius:4px;
+	-ms-border-radius:4px;
+}
+.auiScMonth th {
+    padding:5px 0;
+    text-align:center;
+	vertical-align:middle;
+}
+.auiScMonthLabel {
+	font-size:16px;
+}
+.auiScWeek {
+    font-weight:normal;
+    padding-top:.15em;
+    padding-bottom:0em;
+    color:#293a4b;
+    text-align:center;
+	border-bottom:solid 1px #c0c0c0;
+}
+.auiScDate {
+    font-size: 0.9em;
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: 1px;
+	border-right:solid 1px #c0c0c0;
+	border-bottom:solid 1px #c0c0c0;
+	background:#e0e0e0;
+}
+.auiScDate:hover {
+	background:#ffffff;
+}
+.auiScDateLabel {
+	display:block;
+	padding:5px;
+	border-top:solid 1px rgba(255,255,255,0.8);
+	border-left:solid 1px rgba(255,255,255,0.8);
+    cursor:pointer;
+	text-shadow:0 1px 0 rgba(255,255,255,0.8);
+	font-size:16px;
+}
+.auiScPrevMonth,
+.auiScNextMonth {
+    color:#999999;
+	background:#e0e0e0;
+    cursor:pointer;
+}
+.auiScCurrentMonth {
+}
+.auiScCurrentDate {
+    background-color:#c0c0c0;
+}
+.auiScSelectedDate {
+    background-color:#909090 !important;
+    color:#ffffff !important;
+}
+.auiScSelectedDate .auiScDateLabel {
+	text-shadow:0 1px 0 rgba(0,0,0,0.3);
+	border-top:solid 1px #606060;
+	border-left:solid 1px #606060;
+}
 /***************************************************
 	dijitCalendar
 --------------------------------------------------*/

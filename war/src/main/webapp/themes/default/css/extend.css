@@ -442,13 +442,13 @@
 
 .dijitCalendarSelectedDate {
     /* cell for the selected date */
-    background-color:#7389a5 !important;
+    background-color:#909090 !important;
     color:#ffffff !important;
 }
 .dijitCalendarSelectedDate .dijitCalendarDateLabel {
-	text-shadow:none;
-	border-top:solid 1px #506073;
-	border-left:solid 1px #506073;
+	text-shadow:0 1px 0 rgba(0,0,0,0.3);
+	border-top:solid 1px #606060;
+	border-left:solid 1px #606060;
 }
 .dijitCalendarYearContainer {
     /* footer of the table that contains the year display/selector */
@@ -469,7 +469,7 @@
     color:black;
     padding:0.2em;
     padding-bottom:0.1em;
-    background-color:#7389a5 !important;
+    background-color:#909090 !important;
 	color:#ffffff;
 }
 
@@ -622,7 +622,7 @@ background-repeat:no-repeat;
 
 
 .container {
-    /*cursor: default;*/
+    cursor: default;
 }
 .dojoDndContainerOver.dojoDndContainerItemOver {
 }
