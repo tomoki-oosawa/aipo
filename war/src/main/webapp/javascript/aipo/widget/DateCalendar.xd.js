@@ -49,7 +49,7 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
         var tday = dayNames[date.getDay()];
 
         var viewvalue = dojo.byId(this.dateId+'_view');
-        viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09";
         var hiddendate = dojo.byId(this.dateId);
         hiddendate.value = tyear+"/"+tmonth+"/"+tdate;
         var hiddendate_year = dojo.byId(this.dateId+'_year');
