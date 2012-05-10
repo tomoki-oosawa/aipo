@@ -698,9 +698,10 @@ table.activityTable tr.unread td {
 }
 .loginAlert,
 .alert {
-	margin-bottom:10px;
+	margin:10px 0;
 	padding:10px;
 	background:#ffcccc;
+	border-radius:2px;
 	-webkit-animation-name: fadeIn;
 	-webkit-animation-duration: 1s;
 }
