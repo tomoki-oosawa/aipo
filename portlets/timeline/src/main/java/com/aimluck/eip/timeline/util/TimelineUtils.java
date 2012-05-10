@@ -393,7 +393,7 @@ public class TimelineUtils {
     }
     List<String> recipients = new ArrayList<String>();
     recipients.add(targetLoginName);
-    String title = new StringBuilder("あなたの投稿に「いいね」が押されました").toString();
+    String title = new StringBuilder("あなたの投稿に「いいね！」が押されました").toString();
     String portletParams =
       new StringBuilder("?template=TimelineDetailScreen")
         .append("&entityid=")
