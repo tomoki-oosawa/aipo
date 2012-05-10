@@ -1568,7 +1568,7 @@ select {
 }
 input[type=text],
 input[type=password] {
-	/*height:26px;*/
+	height:26px;
 	line-height:26px;
 	padding:0 2px;
 	vertical-align:middle;
