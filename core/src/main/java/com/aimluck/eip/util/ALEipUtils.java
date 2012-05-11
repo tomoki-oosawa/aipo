@@ -118,6 +118,25 @@ public class ALEipUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALEipUtils.class.getName());
 
+  // iPhone メニューを表示させたい順番に並べる
+  // TODO: 設定ファイルで管理して VM と統合する
+  public static String[] IPHONE_APPS = {
+    "Timeline",
+    "Schedule",
+    "ExtTimecard",
+    "Activity",
+    "Blog",
+    "Msgboard",
+    "ToDo",
+    "Cabinet",
+    "Workflow",
+    "Note",
+    "Report",
+    "WebMail",
+    "AddressBook",
+    "UserList",
+    "Memo" };
+
   /**
    * セッション変数に値を格納します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
@@ -2013,5 +2032,43 @@ public class ALEipUtils {
 
       PsmlManager.store(profile);
     }
+  }
+
+  public static String getFirstPortletId(String username) {
+    try {
+      ProfileLocator locator = Profiler.createLocator();
+      locator
+        .createFromPath(String.format("user/%s/media-type/html", username));
+      Profile profile = Profiler.getProfile(locator);
+      Portlets portlets = profile.getDocument().getPortlets();
+
+      if (portlets == null) {
+        return null;
+      }
+
+      Portlets[] portletList = portlets.getPortletsArray();
+      if (portletList == null) {
+        return null;
+      }
+
+      for (Portlets portlet : portletList) {
+        Entry[] entries = portlet.getEntriesArray();
+        if (entries == null || entries.length == 0) {
+          continue;
+        }
+        for (String name : IPHONE_APPS) {
+          for (Entry entry : entries) {
+            String portletName = entry.getParent();
+            if (name.equals(portletName)) {
+              return entry.getId();
+            }
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return null;
   }
 }

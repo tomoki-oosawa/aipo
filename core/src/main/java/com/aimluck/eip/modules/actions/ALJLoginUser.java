@@ -24,8 +24,10 @@ import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -144,7 +146,7 @@ public class ALJLoginUser extends ActionEvent {
                 // 使用されているのが妥当な記号であるかの確認
                 if (!(username.charAt(i1) == "_".charAt(0)
                   || username.charAt(i1) == "-".charAt(0) || username
-                  .charAt(i1) == ".".charAt(0))) {
+                    .charAt(i1) == ".".charAt(0))) {
                   valid = false;
                   break;
                 }
@@ -342,25 +344,47 @@ public class ALJLoginUser extends ActionEvent {
           }
 
         }
+        JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
         String redirectUrl = data.getParameters().getString("redirect", "");
 
         if (redirectUrl != null && !"".equals(redirectUrl)) {
-          JetspeedLink jsLink = JetspeedLinkFactory.getInstance(data);
           data.setRedirectURI(redirectUrl);
           data.getResponse().sendRedirect(redirectUrl);
           JetspeedLinkFactory.putInstance(jsLink);
           jsLink = null;
+          return;
         }
 
         if (ALCellularUtils.isCellularPhone(data)) {
-          JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           rundata.setRedirectURI(jsLink.getPortletById("").addQueryData(
             JetspeedResources.PATH_ACTION_KEY,
             "controls.Restore").toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           JetspeedLinkFactory.putInstance(jsLink);
           jsLink = null;
+          return;
+        }
+
+        String client =
+          ((ClientRegistry) Registry.get(Registry.CLIENT)).findEntry(
+            data.getUserAgent().trim()).getManufacturer();
+        String peid = data.getParameters().getString("js_peid");
+        if (peid == null) {
+          peid = (String) data.getUser().getTemp("js_peid");
+        }
+        if (peid == null && "IPHONE".equals(client)) {
+          String firstPortletId =
+            ALEipUtils.getFirstPortletId(data.getUser().getUserName());
+          String url =
+            jsLink.getPortletById(firstPortletId).addQueryData(
+              "action",
+              "controls.Maximize").toString();
+          data.setRedirectURI(url);
+          data.getResponse().sendRedirect(url);
+          JetspeedLinkFactory.putInstance(jsLink);
+          jsLink = null;
+          return;
         }
 
       } else {
@@ -421,4 +445,5 @@ public class ALJLoginUser extends ActionEvent {
     }
     return disabled;
   }
+
 }
