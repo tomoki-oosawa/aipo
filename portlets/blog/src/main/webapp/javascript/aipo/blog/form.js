@@ -75,36 +75,6 @@ aipo.blog.ExpandImage = function(url) {
   popup.window.document.close();
 }
 
-
-aipo.blog.popupCenter = function(num) {
-    var i = new Image();
-    i.onload = function(){
-        var image_width = i.width;
-        var image_height = i.height;
-        var coord = dojo.coords(dojo.byId("modalDialog"),false);
-        if (document.all) {
-            mX = document.documentElement.clientWidth;
-            mY = document.documentElement.clientHeight;
-        } else {
-            mX = window.innerWidth;
-            mY = window.innerHeight;
-        }
-        if(image_width != 0) {
-            var x_posision = mX / 2 - image_width/2 - coord.x;
-            dojo.byId("popc").style.left =  x_posision +'px';
-            var y_posision =  mY / 2 - image_height/2 - coord.y;
-            dojo.byId("popc").style.top = y_posision +'px';
-        }
-        dojo.byId("popc").innerHTML = '<a href="javascript:aipo.blog.popupCenterHide();"><img src='+num+'></a>';
-    }
-    i.src = num;
-}
-
-
-aipo.blog.popupCenterHide = function() {
-    dojo.byId("popc").innerHTML = "";
-}
-
 aipo.blog.formSwitchThemaInput = function(button) {
     if(button.form.is_new_thema.value == 'TRUE' || button.form.is_new_thema.value == 'true') {
 

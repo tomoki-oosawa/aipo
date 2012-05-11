@@ -938,6 +938,8 @@ table.simpleTable td.caption {
 	z-index:997;
 	position:absolute;
 }
+
+
 .modalDialogTitleBar {
 	overflow:hidden;
 	cursor:move;
@@ -988,6 +990,11 @@ table.simpleTable td.caption {
 /*	margin:3px 0;*/
 	vertical-align:middle;
 }
+
+ .modalDialog#imageDialog {
+	z-index:999;
+}
+
 .fileuploadDialog {
 	border:5px solid #ddd;
 	background-color:#fff;
@@ -1063,6 +1070,27 @@ table.simpleTable td.caption {
 	display:inline;
 }
 /* END addressbookDialog */
+
+/* fileuploadViewDialog */
+.fileuploadViewDialog {
+	z-index:999;
+	width:600px;
+	position:absolute;
+}
+.fileuploadViewDialogUnderlayWrapper {
+	left:0;
+	top:0;
+	z-index:998;
+	display:none;
+	background:transparent;
+}
+.fileuploadViewDialogUnderlay {
+	background:#eee;
+	opacity:.5;
+}
+
+/* END fileuploadViewDialog */
+
 
 .popupMenu {
 	position:absolute;

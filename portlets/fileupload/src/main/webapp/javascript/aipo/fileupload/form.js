@@ -64,3 +64,39 @@ aipo.fileupload.openAttachment = function(url, pid){
     attachment_subwin.focus();
 }
 
+aipo.fileupload.ImageDialog
+
+aipo.fileupload.showImageDialog = function(url, portlet_id, callback) {
+	aipo.fileupload.ImageDialog = dijit.byId("imageDialog");
+    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+    dojo.query("#imageDialog").addClass("mb_dialog");
+
+    if(! aipo.fileupload.ImageDialog){
+    	aipo.fileupload.ImageDialog = new aipo.fileupload.widget.FileuploadViewDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
+    }else{
+    	aipo.fileupload.ImageDialog.setCallback(portlet_id, callback);
+    }
+    if(aipo.fileupload.ImageDialog){
+    	aipo.fileupload.ImageDialog.setHref(url);
+    	aipo.fileupload.ImageDialog.show();
+    }
+};
+
+aipo.fileupload.hideImageDialog = function() {
+    var arrDialog = dijit.byId("imageDialog");
+
+    if(arrDialog){
+      arrDialog.hide();
+    }
+};
+
+aipo.fileupload.onLoadImage=function(image){
+	var dialog=dojo.byId('imageDialog');
+	dialog.style.visibility="hidden";
+	dialog.style.width=image.width+"px";
+	dialog.style.height=image.height+"px";
+	aipo.fileupload.ImageDialog._position();//再調整
+	dialog.style.visibility="visible";
+};
+
+

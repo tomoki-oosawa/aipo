@@ -41,7 +41,8 @@
 				<div class="tlImageBlock clearfix">
 					#foreach( $attachmentFile in $!record.AttachmentFileList )
 						#if($attachmentFile.isImage())
-							<a href="javascript:aipo.timeline.popupCenter('$jslink.getTemplate("TimelineFileRawScreen").addQueryData("ownerid", $!{record.OwnerId}).addQueryData("entityid", $record.TimelineId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
+							<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
+
 						#else
 							<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 						#end
@@ -178,7 +179,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
@@ -310,7 +311,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
@@ -327,5 +328,5 @@
 #end
 </div>
 <div id="popc_timeline" class="auiPopup imgPopup hide" style="max-width:800px;">
-	<div class="imgBody"></div>
+
 </div>
