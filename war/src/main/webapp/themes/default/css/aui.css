@@ -1047,6 +1047,7 @@ button.auiButtonSmall {
 *:first-child+html button,
 *:first-child+html .auiButtonSmall {/* IE7 Hack */
 	padding:0 !important;
+	line-height:1.4em !important
 }
 .auiButton:hover,
 .auiButtonBold:hover,
@@ -1791,6 +1792,7 @@ ul.attachments span.deletebutton:hover{
 .timeline .comments {
 	margin:0 0 10px 60px;
 	background:#f0f0f0;
+	overflow:hidden;
 }
 .timeline .comments .messageContents {
 	padding-left:42px;
