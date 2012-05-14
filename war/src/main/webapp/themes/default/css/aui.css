@@ -140,8 +140,8 @@ img.avatar,
 .activityField {
 	position:relative;
 	width:17px;
-	height:23px;
-	padding:0 6px;
+	height:18px;
+	padding:5px 6px 0;
 	cursor:pointer;
 	border-radius:3px;
 	-ms-border-radius:3px;
@@ -160,10 +160,12 @@ img.avatar,
 	background:url(../images/icon/activitychecker.png) top left no-repeat;
 	height:12px;
 }
+/*
 #activitycheckerContainer {
 	display:block;
 	margin-top:5px;
 }
+*/
 .activitychecker-right {
 	float:left;
 	display:block;
@@ -729,6 +731,9 @@ table.activityTable tr.unread td {
 .auiSelectButton {
 	padding-right:1px;
 	background:#FFF;
+}
+*:first-child+html .auiSelectButton {
+    float:none;
 }
 .auiSelectButton ul {
 	margin:0;
@@ -1601,7 +1606,7 @@ select {
 input[type=text],
 input[type=password] {
 	height:28px;
-	line-height:28px;
+	line-height/*\**/:28px\9;/*IEHack*/
 	padding:0 2px;
 	vertical-align:middle;
 	border-radius:3px;
@@ -1612,7 +1617,7 @@ input[type=password] {
 	background-color:#fff;
 }
 *:first-child+html input[type=text],
-*:first-child+html input[type=password] {
+*:first-child+html input[type=password] {/*IE7Hack*/
 	height:26px;
 	line-height:26px;
 }
