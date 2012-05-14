@@ -1620,6 +1620,7 @@ input[type=password] {
 *:first-child+html input[type=password] {/*IE7Hack*/
 	height:26px;
 	line-height:26px;
+	max-width:99.2%;
 }
 select {
 	padding:0.25em;
