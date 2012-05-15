@@ -227,7 +227,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
             && "D".equals(record2.getStatus())
             && record.getScheduleId().intValue() == record2
               .getParentId()
-              .intValue()) {
+              .intValue()
+            && record.getUserId().intValue() == record2.getUserId().intValue()) {
             canAdd = false;
             break;
           }
@@ -235,7 +236,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
             && "D".equals(record.getStatus())
             && record2.getScheduleId().intValue() == record
               .getParentId()
-              .intValue()) {
+              .intValue()
+            && record2.getUserId().intValue() == record.getUserId().intValue()) {
             // [繰り返しスケジュール] 親の ID を検索
             if (!delList.contains(record2)) {
               delList.add(record2);
