@@ -423,7 +423,7 @@ aimluck.io.replaceFileToList =function(ul,fileid,filename){
 }
 
 aimluck.io.removeFileFromList = function(ul,li){
-	alert("ul = "+ ul +"\n"+ "li = "+ li);
+//	alert("ul = "+ ul +"\n"+ "li = "+ li);
 	return ul.removeChild(li);
 }
 
