@@ -76,6 +76,8 @@
                 <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/widget/ToolTip.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.js</include>
               </includes>
               <excludes>
                 <exclude>**/*.xd.js</exclude>
@@ -104,6 +106,8 @@
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
                 <include>aipo/widget/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/ToolTip.xd.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.xd.js</include>
               </includes>
             </aggregation>
             <aggregation>
