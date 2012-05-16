@@ -79,7 +79,7 @@
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")<span class="caution">（カテゴリに含まれるワークフローはすべて「未分類」に変更されます。）</span>
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()
