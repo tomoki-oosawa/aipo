@@ -160,7 +160,7 @@
             <capability>HTTP_COOKIE</capability>
         </capability-map>
     </client-entry>
-    <client-entry name="lynx" hidden="false">
+    <!-- client-entry name="lynx" hidden="false">
         <user-agent-pattern>Lynx.*</user-agent-pattern>
         <manufacturer>GNU</manufacturer>
         <model>None</model>
@@ -285,5 +285,5 @@
             <capability>HTML_PLUGIN</capability>
             <capability>HTTP_COOKIE</capability>
         </capability-map>
-    </client-entry>
+    </client-entry -->
 </registry>
