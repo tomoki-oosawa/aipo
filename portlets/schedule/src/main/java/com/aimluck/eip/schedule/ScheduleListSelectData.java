@@ -222,6 +222,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     ScheduleSearchResultData rd = new ScheduleSearchResultData();
     rd.initField();
     try {
+      // スケジュールが棄却されている場合は表示しない
+      if ("R".equals(record.getStatus())) {
+        return rd;
+      }
 
       boolean is_member = record.isMember();
 
