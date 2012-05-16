@@ -488,6 +488,10 @@
     overflow: hidden;
     visibility: hidden;
 }
+*:first-child+html .dijitCalendarMonthLabelSpacer {
+    height: 5px;
+　　margin-top:-4px;
+}
 
 /****
         dijit.Tooltip
