@@ -37,7 +37,7 @@
   #end
   <div class="tlClipContents">
     <div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Title</a></div>
-    <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Url</a></div>
+    <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.AutoCRUrl</a> aaa</div>
     <div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!result.Body</div>
     #if($result.Images.size() > 0)
       <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID">

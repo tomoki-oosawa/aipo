@@ -483,7 +483,7 @@
 		<db-attribute name="THUMBNAIL" type="LONGVARBINARY"/>
 		<db-attribute name="TIMELINE_ID" type="INTEGER" length="4"/>
 		<db-attribute name="TITLE" type="VARCHAR" length="128"/>
-		<db-attribute name="URL" type="VARCHAR" length="128"/>
+		<db-attribute name="URL" type="CLOB"/>
 		<db-attribute name="URL_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_todo">

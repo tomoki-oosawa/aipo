@@ -116,3 +116,7 @@ CREATE TABLE `eip_t_timeline_map` (
 
 ALTER TABLE `eip_t_timeline_map` ADD FOREIGN KEY (`timeline_id`) REFERENCES  `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE ;
 -- 20120423
+
+-- 20120516
+ALTER TABLE `eip_t_timeline_url` ALTER COLUMN `url` TYPE text
+-- 20120516

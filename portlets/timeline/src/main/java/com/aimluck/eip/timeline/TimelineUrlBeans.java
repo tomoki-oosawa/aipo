@@ -21,6 +21,8 @@ package com.aimluck.eip.timeline;
 
 import java.util.List;
 
+import com.aimluck.eip.util.ALCommonUtils;
+
 /**
  * タイムライントピックの検索データを管理するクラスです。 <BR>
  * 
@@ -73,6 +75,10 @@ public class TimelineUrlBeans {
    */
   public String getUrl() {
     return url;
+  }
+
+  public String getAutoCRUrl() {
+    return ALCommonUtils.replaceToAutoCRString(url);
   }
 
   /**

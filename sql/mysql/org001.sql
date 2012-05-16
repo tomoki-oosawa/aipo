@@ -698,7 +698,7 @@ CREATE TABLE `eip_t_timeline_url`
 (
     `url_id` int(11) NOT NULL AUTO_INCREMENT,
     `timeline_id` int(11),
-    `url` varchar(128) NOT NULL,
+    `url` text NOT NULL,
     `body` text,
     `title` varchar(128),
     `thumbnail` blob,
