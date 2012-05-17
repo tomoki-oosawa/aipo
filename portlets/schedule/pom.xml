@@ -71,6 +71,11 @@
       <artifactId>aipo-portlet-system</artifactId>
       <version>${aipo.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-portlet-timeline</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

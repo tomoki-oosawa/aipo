@@ -74,6 +74,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -2108,6 +2109,12 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       }
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(
+        rundata,
+        context,
+        "Schedule",
+        schedule.getScheduleId().toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

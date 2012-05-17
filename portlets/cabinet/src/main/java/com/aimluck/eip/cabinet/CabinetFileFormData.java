@@ -49,6 +49,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -396,6 +397,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
       // ファイルを削除
       Database.delete(file);
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(rundata, context, "Cabinet", file
+        .getFileId()
+        .toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

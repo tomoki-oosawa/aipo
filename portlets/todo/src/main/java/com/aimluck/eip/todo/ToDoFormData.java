@@ -62,6 +62,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -436,6 +437,10 @@ public class ToDoFormData extends ALAbstractFormData {
       // Todoを削除
       Database.delete(todo);
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(rundata, context, "todo", todo
+        .getTodoId()
+        .toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

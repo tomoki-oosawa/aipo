@@ -55,6 +55,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,8 +65,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardTopicFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardTopicFormData.class.getName());
 
   /** トピック名 */
   private ALStringField topic_name;
@@ -361,6 +362,10 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
       Database.deleteAll(topics);
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(rundata, context, "Msgboard", parent
+        .getTopicId()
+        .toString());
 
       if (fpaths.size() > 0) {
         // ローカルファイルに保存されているファイルを削除する．

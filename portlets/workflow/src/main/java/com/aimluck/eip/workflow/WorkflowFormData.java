@@ -59,6 +59,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
@@ -540,6 +541,12 @@ public class WorkflowFormData extends ALAbstractFormData {
       // リクエストを削除
       Database.delete(request);
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(
+        rundata,
+        context,
+        "Workflow",
+        request.getRequestId().toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

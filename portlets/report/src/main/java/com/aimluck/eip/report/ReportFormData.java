@@ -64,6 +64,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -430,6 +431,10 @@ public class ReportFormData extends ALAbstractFormData {
       // リクエストを削除
       Database.delete(report);
       Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(rundata, context, "Report", report
+        .getReportId()
+        .toString());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

@@ -178,93 +178,13 @@ public class TimelineFormData extends ALAbstractFormData {
 
       EipTTimeline parent = Database.get(EipTTimeline.class, (long) parentid);
 
-      // オブジェクトモデルを取得
-      List<EipTTimeline> list;
-
-      list =
-        TimelineUtils.getEipTTimelineListToDeleteTopic(
-          rundata,
-          context,
-          ALEipUtils.isAdmin(rundata));
-
-      if (list == null) {
-        // 指定した トピック ID のレコードが見つからない場合
-        logger.debug("[TimelineFormData] Not found List...");
-        throw new ALPageNotFoundException();
-      }
-
-      List<Integer> topicIdList = new ArrayList<Integer>();
-      List<Integer> topicParentIdList = new ArrayList<Integer>();
-      List<String> topicTypeList = new ArrayList<String>();
-      EipTTimeline topic = null;
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        topic = list.get(i);
-        topicIdList.add(topic.getTimelineId());
-        topicTypeList.add(topic.getTimelineType());
-        topicParentIdList.add(topic.getParentId());
-      }
-
-      // トピックを削除
-      SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-      Expression exp =
-        ExpressionFactory.inDbExp(
-          EipTTimeline.TIMELINE_ID_PK_COLUMN,
-          topicIdList);
-      query.setQualifier(exp);
-
-      List<EipTTimeline> topics = query.fetchList();
-
-      List<String> fpaths = new ArrayList<String>();
-      if (topics.size() > 0) {
-        int tsize = topics.size();
-        for (int i = 0; i < tsize; i++) {
-          List<?> files = topics.get(i).getEipTTimelineFile();
-          TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
-          TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
-          if (files != null && files.size() > 0) {
-            int fsize = files.size();
-            for (int j = 0; j < fsize; j++) {
-              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
-            }
-          }
-        }
-      }
-
-      if (topicTypeList.get(0).equals("A")) {
-        deleteParent(list, topicParentIdList);
-      }
-
-      Database.deleteAll(topics);
-      Database.commit();
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
-
-      ALTimelineFactoryService tlservice =
-        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      timelinehandler.pushToken(rundata, String.valueOf(uid));
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        parent.getTimelineId(),
-        ALEventlogConstants.PORTLET_TYPE_TIMELINE,
-        parent.getNote());
+      return TimelineUtils.deleteTimelineFromParent(rundata, context, parent);
 
     } catch (Exception e) {
       Database.rollback();
       logger.error("[TimelineSelectData]", e);
       throw new ALDBErrorException();
     }
-    return true;
   }
 
   /**
@@ -629,59 +549,6 @@ public class TimelineFormData extends ALAbstractFormData {
     topic2.setUpdateDate(tCal.getTime());
     topic2.setParentId(0);
     Database.commit();
-  }
-
-  public void deleteParent(List<EipTTimeline> list,
-      List<Integer> topicParentIdList) {
-    int topicparent = 0;
-    topicparent = topicParentIdList.get(0);
-
-    SelectQuery<EipTTimeline> dQuery = Database.query(EipTTimeline.class);
-
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, topicparent);
-    dQuery.andQualifier(exp1);
-    dQuery.distinct(true);
-    List<EipTTimeline> tList = dQuery.fetchList();
-
-    if (tList.size() == 1) {
-      SelectQuery<EipTTimeline> ddQuery = Database.query(EipTTimeline.class);
-      Expression exp2 =
-        ExpressionFactory.matchDbExp(
-          EipTTimeline.TIMELINE_ID_PK_COLUMN,
-          topicparent);
-      ddQuery.setQualifier(exp2);
-
-      List<EipTTimeline> tParent = ddQuery.fetchList();// tParent=削除対象
-
-      List<String> fpaths = new ArrayList<String>();
-      if (tParent.size() > 0) {
-        int tsize = tParent.size();
-        for (int i = 0; i < tsize; i++) {
-          List<?> files = tParent.get(i).getEipTTimelineFile();
-          TimelineUtils.deleteFiles(tParent.get(i).getTimelineId());
-          TimelineUtils.deleteLikes(tParent.get(i).getTimelineId());
-          if (files != null && files.size() > 0) {
-            int fsize = files.size();
-            for (int j = 0; j < fsize; j++) {
-              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
-            }
-          }
-        }
-      }
-
-      Database.deleteAll(tParent);
-      Database.commit();
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
-    }
   }
 
 }
