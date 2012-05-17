@@ -358,6 +358,10 @@ td.container {
 .timeline .commentField form {/*
 	padding-left:22px;
 */}
+.timeline .message > .more {
+	margin-left:42px;
+}
+
 
 
 /***************************************************

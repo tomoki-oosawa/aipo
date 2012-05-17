@@ -1914,8 +1914,9 @@ ul.attachments span.deletebutton:hover{
 	display:block;
 	padding: 3px;
 }
-.timeline .message .more {
+.timeline .message > .more {
 	line-height:1.6;
+	margin:10px 0 0 60px;
 }
 
 .timeline .commentInputDummy {
