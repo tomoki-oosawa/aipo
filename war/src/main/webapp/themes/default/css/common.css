@@ -1462,6 +1462,12 @@ table.simpleTable td.caption {
 	padding:2px 0 2px 18px;
 	margin-left:2px;
 }
+
+.indicatorglay {
+	background:url(../images/common/indicatorglay.gif) no-repeat left;
+	padding:2px 0 2px 18px;
+	margin-left:2px;
+}
 .indicatorDialog {
 	border:5px solid #ddd;
 	background:#ffffff;
