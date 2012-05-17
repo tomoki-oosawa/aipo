@@ -23,20 +23,18 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-
-import com.aimluck.commons.field.ALIllegalDateException;
 
 /**
  * 祝日を保持するシングルトンクラスです。 <br />
@@ -73,17 +71,17 @@ public class ALEipHolidaysManager {
     + "holidays_user.properties";
 
   /** デフォルトの祝日一覧 */
-  private List<ALHoliday> defaultHolidays = null;
+  private Map<String, ALHoliday> defaultHolidays = null;
 
   /** ユーザ定義の祝日一覧 */
-  private List<ALHoliday> userHolidays = null;
+  private Map<String, ALHoliday> userHolidays = null;
 
   /**
    * コンストラクタ
    */
   private ALEipHolidaysManager() {
-    defaultHolidays = new ArrayList<ALHoliday>();
-    userHolidays = new ArrayList<ALHoliday>();
+    defaultHolidays = new HashMap<String, ALHoliday>();
+    userHolidays = new HashMap<String, ALHoliday>();
 
     loadHolidays();
   }
@@ -110,25 +108,10 @@ public class ALEipHolidaysManager {
     }
 
     ALHoliday holiDay = null;
-    int year = -1;
-    int month = -1;
-    int day = -1;
 
-    Calendar calendar = new GregorianCalendar();
-    calendar.setTime(date);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
-    try {
-      year = calendar.get(Calendar.YEAR);
-      month = calendar.get(Calendar.MONTH) + 1;
-      day = calendar.get(Calendar.DATE);
-    } catch (Throwable ex) {
-      return null;
-    }
-
-    holiDay = isHoliday(userHolidays, year, month, day);
+    holiDay = isHoliday(userHolidays, date);
     if (holiDay == null) {
-      holiDay = isHoliday(defaultHolidays, year, month, day);
+      holiDay = isHoliday(defaultHolidays, date);
     }
     return holiDay;
   }
@@ -142,32 +125,9 @@ public class ALEipHolidaysManager {
    * @param day
    * @return
    */
-  private ALHoliday isHoliday(List<ALHoliday> list, int year, int month, int day) {
-    ALHoliday holiDay = null;
-    Calendar hCalendar = null;
-    int hYear = -1;
-    int hMonth = -1;
-    int hDay = -1;
-    int length = list.size();
-
-    try {
-      for (int i = 0; i < length; i++) {
-        holiDay = list.get(i);
-        hCalendar = new GregorianCalendar();
-        hCalendar.setTime(holiDay.getDay().getValue().getDate());
-        hCalendar.set(Calendar.SECOND, 0);
-        hCalendar.set(Calendar.MILLISECOND, 0);
-        hYear = hCalendar.get(Calendar.YEAR);
-        hMonth = hCalendar.get(Calendar.MONTH) + 1;
-        hDay = hCalendar.get(Calendar.DATE);
-        if (hYear == year && hMonth == month && hDay == day) {
-          return holiDay;
-        }
-      }
-    } catch (ALIllegalDateException ex) {
-      logger.error("Exception", ex);
-    }
-    return null;
+  private ALHoliday isHoliday(Map<String, ALHoliday> list, Date date) {
+    String key = new SimpleDateFormat("yyyy-MM-dd").format(date);
+    return list.get(key);
   }
 
   /**
@@ -202,11 +162,13 @@ public class ALEipHolidaysManager {
         loadHoliday(reader, userHolidays);
       }
 
+      /*-
       Comparator<ALHoliday> comp = getHolidaysComparator();
       if (comp != null) {
         Collections.sort(defaultHolidays, comp);
         Collections.sort(userHolidays, comp);
       }
+       */
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return;
@@ -220,7 +182,7 @@ public class ALEipHolidaysManager {
    * @param list
    * @throws Exception
    */
-  private void loadHoliday(BufferedReader reader, List<ALHoliday> list)
+  private void loadHoliday(BufferedReader reader, Map<String, ALHoliday> list)
       throws Exception {
     if (reader == null) {
       return;
@@ -240,7 +202,12 @@ public class ALEipHolidaysManager {
         String dayStr = st.nextToken();
         holiDay = new ALHoliday(nameStr, dayStr);
         if (holiDay.getDay().validate(dummyList)) {
-          list.add(holiDay);
+          String key =
+            new SimpleDateFormat("yyyy-MM-dd").format(holiDay
+              .getDay()
+              .getValue()
+              .getDate());
+          list.put(key, holiDay);
         }
       }
     }
@@ -251,8 +218,9 @@ public class ALEipHolidaysManager {
    * 
    * @return 祝日情報を日付で昇順に並び替える比較関数
    */
-  private Comparator<ALHoliday> getHolidaysComparator() {
+  protected Comparator<ALHoliday> getHolidaysComparator() {
     Comparator<ALHoliday> com = new Comparator<ALHoliday>() {
+      @Override
       public int compare(ALHoliday obj0, ALHoliday obj1) {
         int ret = 0;
         try {
