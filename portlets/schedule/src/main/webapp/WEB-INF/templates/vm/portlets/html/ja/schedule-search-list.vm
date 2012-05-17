@@ -86,7 +86,9 @@
 			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
         #foreach($record in $!result.FacilitiyGroupList)
-        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!record.Name).addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+			$!result.TargetGroupName
+			$!record.Name.toString()
+        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
         #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
