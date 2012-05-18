@@ -25,7 +25,18 @@
 #else
 #set ($event_cancel = "eventSubmit_doWebmail_show_sent_mails")
 #end
-#ALdialogheaderCloseJS("メール詳細" "aipo.webmail.hideDialog()")
+
+<div class="auiPopup clearfix">
+    <table class="roundBlockWrapperTop">
+              <tbody>
+                <tr>
+                  <td class="roundBlockTitle" style="width:89%">メール詳細</td>
+                  <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+    <div class="roundBlockContent">
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
 #ALtableheaderWide()
