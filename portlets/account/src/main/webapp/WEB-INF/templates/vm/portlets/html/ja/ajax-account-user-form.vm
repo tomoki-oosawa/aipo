@@ -42,7 +42,7 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
-#ALtdcaptionAtt("#ALrequired($!result.getFieldName('username'))" "style='width:180px;'")
+#ALtdcaption("#ALrequired($!result.getFieldName('username'))")
 #ALtditemheader()
 #if($mode=="new_form")
 #ALtextfield('username' $!result.UserName '70%' 30 'disabled')#ALcaution('（半角英数字）')
@@ -50,17 +50,17 @@
 <input name="username" value="$!result.UserName" type="hidden">$!result.UserName
 #end
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired('パスワード')" "style='width:180px;'")
+#ALtdcaption("#ALrequired('パスワード')")
 #ALtditemheader()
 #ALpasswdfield('password' "$!result.Password" '70%' '' 'disabled')#ALcaution('（半角英数字）')
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired('パスワード<br />（確認用）')" "style='width:180px;'")
+#ALtdcaption("#ALrequired('パスワード<br />（確認用）')")
 #ALtditemheader()
 #ALpasswdfield('password2' "$!result.Password2" '70%' '' 'disabled')#ALcaution('（半角英数字）')
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired('名前')" "style='width:180px;'")
+#ALtdcaption("#ALrequired('名前')")
 #ALtditem("#ALtextfield('lastname' $!result.LastName '30%' 20 'active')#ALtextfield('firstname' $!result.FirstName '30%' 20 'active')")
-#ALtdcaptionAtt("#ALrequired('名前（フリガナ）')" "style='width:180px;'")
+#ALtdcaption("#ALrequired('名前（フリガナ）')")
 #ALtditem("#ALtextfield('last_name_kana' $!result.LastNameKana '30%' 20 'active')#ALtextfield('first_name_kana' $!result.FirstNameKana '30%' 20 'active')")
 #ALtdcaption($!result.getFieldName("email"))
 #ALtditem("#ALtextfield('email' $!result.Email '60%' 50 'disabled')#ALcaution('（半角英数字）')")
