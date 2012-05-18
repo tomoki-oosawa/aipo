@@ -163,20 +163,41 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             }
 
             termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>"
-            dojo.forEach(data.termSchedule, function(itemList) {
+
+            var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
+            if(Element.clientWidth == Element.offsetWidth){
+              dojo.byId('weeklySpan-'+_portletId).style.display = "none";
+              if(dojo.byId('isMac').value != 0){
+              dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+              dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+              }
+            }
+
+
+            	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
                 var simpleDisplayR = "";
                 if(dojo.byId("top_form").value=="simple"){
-                  simpleDisplay = ' style="display: none;"';
-                  for (k = 0; k < itemList.length ; k++){
-                    item = itemList[k];
-                    if(item.index==0){
-                    	simpleDisplay = "";
-                    	simpleDisplayR = " weeklyTermRightR";
-                    	break;
+                    simpleDisplay = ' style="display: none;"';
+                    for (k = 0; k < itemList.length ; k++){
+                      item = itemList[k];
+                      if(item.index==0){
+                      	simpleDisplay = "";
+                      	simpleDisplayR = " weeklyTermRightR";
+                      	break;
+                      }
                     }
-                  }
+                   }
+
+                var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
+                if(Element.clientWidth == Element.offsetWidth){
+                  	simpleDisplayR = " weeklyTermRightRnone";
+                  	if(dojo.byId('isMac').value != 0){
+                  	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+                  	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+                  	}
                 }
+
                 var item = null;
                 //IPADはスクロールバーを表示しないので表示調節用の列を削除
                 if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")
@@ -193,10 +214,20 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                 termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
 
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")
-                	termTableHtml += "</div></td></tr>";
-                else
-                	termTableHtml += "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+                var weeklyTermtailHtml;
+
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple"||Element.clientWidth == Element.offsetWidth ){
+                	weeklyTermtailHtml = "</div></td></tr>";
+                }else{
+                	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+                }
+
+                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form").value !=="simple"){
+                	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+                }
+
+                termTableHtml += weeklyTermtailHtml;
+
                 l_count++;
             });
            termTableHtml += "</tbody></table>"
@@ -535,6 +566,7 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
     var positionLeftArray = new Array(sum);
     var resizeWidthArray = new Array(sum);
     var singleWidth = 1;
+    var sumWidth = 0;
     if(dojo.byId("top_form").value=="simple"){
     	singleWidth = 7.2;
     }
@@ -570,22 +602,21 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
             overlapNumArray[j] = overlapNumArrayMax;
     }
 
+        	 for (i=0; i<sum; i++) {
+        	        if (overlapNumArray[i] != 0) {
+        	               if (positionLeftArray[i] < positionLeftArray[i+1])
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW * singleWidth + "%");
+        	            else if (resizeWidthArray[i]==0)
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW * singleWidth +"%");
+        	            else
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW * singleWidth +"%");
+        	        }
+        	        else
+        	            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW * singleWidth +"%");
 
-    for (i=0; i<sum; i++) {
-        if (overlapNumArray[i] != 0) {
-               if (positionLeftArray[i] < positionLeftArray[i+1])
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW * singleWidth + "%");
-            else if (resizeWidthArray[i]==0)
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW * singleWidth +"%");
-            else
-                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW * singleWidth +"%");
-        }
-        else
-            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW * singleWidth +"%");
-
-        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i])) * singleWidth+"%");
-        dojo.style(scheduleDiv[i], "visibility", "visible" );
-     }
+        	        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i])) * singleWidth+"%");
+        	        dojo.style(scheduleDiv[i], "visibility", "visible" );
+        	     }
 }
 
 // aipo.calendar.overlapSchedule
