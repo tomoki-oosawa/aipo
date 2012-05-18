@@ -85,7 +85,7 @@
 #end
 #AUIrowTableWide()
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" 'style="width:20px"')
+#ALtdheadAtt("#ALswitchCheckbox()" 'class="thin"')
 #ALtdheadAtt("#ALajaxsort('client_name' '依頼者（依頼者所属）' $result 'NoteListScreen')" 'style="width:8em"')
 #ALtdheadAtt("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')" 'style="width:30%"')
 #if(!$isReceive)
