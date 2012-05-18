@@ -1135,3 +1135,8 @@ ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip
 ALTER TABLE `eip_t_timeline` ADD FOREIGN KEY ( `owner_id` ) REFERENCES  `turbine_user` (`user_id`);
 
 ALTER TABLE `eip_t_timeline_map` ADD FOREIGN KEY (  `timeline_id` ) REFERENCES  `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE ;
+
+ALTER TABLE `eip_m_config` ADD INDEX (`name`);
+
+ALTER TABLE `container_config` ADD INDEX (`name`);
+

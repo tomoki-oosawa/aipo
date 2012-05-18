@@ -1119,6 +1119,8 @@ CREATE TABLE eip_m_config (
 )
 ;
 
+CREATE INDEX eip_m_config_name ON eip_m_config (NAME);
+
 CREATE TABLE application (
     APP_ID varchar(255) NOT NULL,
     CONSUMER_KEY varchar(99) NULL,
@@ -1206,6 +1208,8 @@ CREATE TABLE container_config (
     PRIMARY KEY (ID)
 )
 ;
+
+CREATE INDEX container_config_name ON container_config (NAME);
 
 CREATE TABLE activity_map (
     ACTIVITY_ID INTEGER NULL,
