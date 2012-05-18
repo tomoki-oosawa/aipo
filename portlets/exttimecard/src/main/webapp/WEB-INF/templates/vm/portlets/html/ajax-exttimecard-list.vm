@@ -271,6 +271,12 @@
     #end
   #end
 
+  ##今日である＆＆そのユーザーである＆＆出勤ボタンが押されていない＆＆退勤ボタンが押されている
+  #if($class == "today" && $!result.TargetUserId == $!result.UserId && !($rdlist.IsNotNullClockInTime) && $rdlist.IsNotNullClockOutTime)
+  	<td nowrap="nowrap"><span class="auiButtonDisabled">外出</span></td>
+  	<td nowrap="nowrap"><span class="auiButtonDisabled">復帰</span></td>
+  #end
+
   #if($rdlist.IsNotNullClockInTime || $class != "today")
     #ALtdcellAtt($outgoings "data-t=${s}${rdlist.IsNotNullClockInTime}${s} data-c=${s}${class}${s} align='center' nowrap='nowrap' data-debug-class='1'")
     #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' data-debug-class='1'")
