@@ -324,7 +324,7 @@
 </div>
 #end
 #if($record.CoActivityList.size()>=2)
-<p class="more ml60 mt10"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">他の更新情報を見る</a></p>
+<p class="more"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">他の更新情報を見る</a></p>
 #end
 </div>
 <div id="popc_timeline" class="auiPopup imgPopup hide" style="max-width:800px;">
