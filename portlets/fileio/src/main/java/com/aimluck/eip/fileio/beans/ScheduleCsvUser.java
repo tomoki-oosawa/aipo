@@ -157,17 +157,16 @@ public class ScheduleCsvUser {
 
   public void complementUserName() throws Exception {
     TurbineUser user =
-      Database
-        .query(TurbineUser.class)
-        .where(Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, name.getValue()))
-        .fetchSingle();
+      Database.query(TurbineUser.class).where(
+        Operations.eq(TurbineUser.LOGIN_NAME_PROPERTY, name.getValue())).where(
+        Operations.eq(TurbineUser.DISABLED_PROPERTY, "F")).fetchSingle();
 
     if (user == null) {
+
       user =
-        Database
-          .query(TurbineUser.class)
-          .where(Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue()))
-          .fetchSingle();
+        Database.query(TurbineUser.class).where(
+          Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue())).where(
+          Operations.eq(TurbineUser.DISABLED_PROPERTY, "F")).fetchSingle();
       if (user == null) {
         throw new Exception();
       } else {
