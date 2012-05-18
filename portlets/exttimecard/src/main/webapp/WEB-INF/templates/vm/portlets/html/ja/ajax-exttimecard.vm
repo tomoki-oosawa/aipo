@@ -50,7 +50,7 @@
 出勤<br />$!{result.Detail.ClockInTime.Time}
 #else
 #if (!$!{result.Detail.IsNullClockOutTime})
-<input type="submit" class="submit" name="eventSubmit_doExtTimecard_punchin_" value="出勤" />
+<span class="auiButtonDisabled">出勤</span>
 #else
 <input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();" />
 #end
