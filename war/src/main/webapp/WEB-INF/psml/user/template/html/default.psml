@@ -37,18 +37,19 @@
 		</metainfo>
 		<security-ref parent="owner-only" />
 		<layout position="4" size="-1" />
-		<controller name="TwoColumnsRight" />
+		<controller name="ThreeColumns" />
 		<entry parent="ExtTimecard">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="0" />
 			</layout>
 		</entry>
-		<entry parent="Activity">
+		<entry parent="Msgboard">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="1" />
 			</layout>
+			<parameter name="p1e-rows" value="2" />
 		</entry>
 		<entry parent="Note">
 			<layout position="-1" size="-1">
@@ -56,53 +57,55 @@
 				<property name="row" value="2" />
 			</layout>
 		</entry>
-		<entry parent="Workflow">
+		<entry parent="Report">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="3" />
 			</layout>
 		</entry>
-		<entry parent="Report">
+		<entry parent="Cabinet">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="4" />
 			</layout>
+			<parameter name="p1e-rows" value="2" />
 		</entry>
-		<entry parent="AddressBook">
+		<entry parent="ToDo">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="5" />
 			</layout>
+			<parameter name="p0e-rows" value="2" />
 		</entry>
-		<entry parent="UserList">
+		<entry parent="Workflow">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="6" />
 			</layout>
 		</entry>
-
-		<entry parent="Schedule">
+		<entry parent="Timeline">
 			<layout position="-1" size="-1">
 				<property name="column" value="1" />
 				<property name="row" value="0" />
 			</layout>
 		</entry>
-		<entry parent="Msgboard">
+		<entry parent="Schedule">
 			<layout position="-1" size="-1">
-				<property name="column" value="1" />
+				<property name="column" value="2" />
+				<property name="row" value="0" />
+			</layout>
+			<parameter name="p19-rows" value="simple" />
+		</entry>
+		<entry parent="UserList">
+			<layout position="-1" size="-1">
+				<property name="column" value="2" />
 				<property name="row" value="1" />
 			</layout>
 		</entry>
-		<entry parent="ToDo">
+		<entry parent="AddressBook">
 			<layout position="-1" size="-1">
-				<property name="column" value="1" />
+				<property name="column" value="2" />
 				<property name="row" value="2" />
-			</layout>
-		</entry>
-		<entry parent="Cabinet">
-			<layout position="-1" size="-1">
-				<property name="column" value="1" />
-				<property name="row" value="3" />
 			</layout>
 		</entry>
 	</portlets>
