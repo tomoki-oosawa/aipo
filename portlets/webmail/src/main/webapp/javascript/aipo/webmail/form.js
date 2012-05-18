@@ -133,28 +133,31 @@ aipo.webmail.open_help = function(url){
     help_subwin.focus();
 }
 
-aipo.webmail.switchHeader = function(button) {
-    if(button.form.is_header_tiny.value == 'TRUE' || button.form.is_header_tiny.value == 'true') {
+aipo.webmail.switchHeader = function(button,portlet_id) {
+	var is_header_tiny=dojo.byId("is_header_tiny");
+    if(is_header_tiny.value == 'TRUE' || is_header_tiny.value == 'true') {
         //簡易表示の際に「詳細表示」ボタンを押した→詳細部分をonにして簡易部分をoffにする 。詳細表示になったのでis_header_tinyがfalse
-        button.value = '簡易表示';
-        aipo.webmail.switchHeaderDetail(button.form);
+        button.innerHTML = '簡易表示';
+        aipo.webmail.switchHeaderDetail();
     } else {
         //詳細表示の際に「簡易表示」ボタンを押した→簡易部分をonにして詳細部分をoffにする
-        button.value = '詳細表示';
-        aipo.webmail.switchHeaderTiny(button.form);
+        button.innerHTML = '詳細表示';
+        aipo.webmail.switchHeaderTiny();
     }
 }
 
-aipo.webmail.switchHeaderTiny = function(form) {
+aipo.webmail.switchHeaderTiny = function() {
+	var is_header_tiny=dojo.byId("is_header_tiny");
     dojo.byId('WebMailHeaderFieldTiny').style.display = "";
     dojo.byId('WebMailHeaderFieldDetail').style.display = "none";
-    form.is_header_tiny.value = 'TRUE';
+    is_header_tiny.value = 'TRUE';
 }
 
-aipo.webmail.switchHeaderDetail = function(form) {
+aipo.webmail.switchHeaderDetail = function() {
+	var is_header_tiny=dojo.byId("is_header_tiny");
     dojo.byId('WebMailHeaderFieldTiny').style.display = "none";
     dojo.byId('WebMailHeaderFieldDetail').style.display = "";
-    form.is_header_tiny.value = 'FALSE';
+    is_header_tiny.value = 'FALSE';
 }
 
 aipo.webmail.doDeleteAccount = function(url,p_id) {
@@ -443,4 +446,9 @@ aipo.webmail.filter_order_submit = function(form) {
     tmp = tmp + s_o[s_o.length-1].value;
   }
   form.positions.value = tmp;
+}
+
+aipo.webmail.action=function(_this,portlet_id){
+	var action=dojo.byId(portlet_id+"_action").value;
+	aimluck.io.openDialog(_this,action,portlet_id, aipo.webmail.onLoadMailDialog);
 }

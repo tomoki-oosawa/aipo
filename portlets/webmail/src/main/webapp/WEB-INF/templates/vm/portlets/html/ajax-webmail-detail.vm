@@ -39,19 +39,30 @@
     <div class="roundBlockContent">
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
+
+<div align="left clearfix">
+<select id="$!{portlet.ID}_action">
+	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')">返信する</option>
+	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')">全員に返信する</option>
+	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')">転送する</option>
+	<option >--------------</option>
+	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')">削除する</option>
+</select>
+<input type="button" onclick="javascript:aipo.webmail.action(this,'$!portlet.ID')" value="実行" class="button" name="ajaxbuttonEdit">
+</div>
+
 #ALtableheaderWide()
-#ALtdcaption('ヘッダ')
-#ALtditemheader()
-<input name="is_header_tiny" type="hidden" value="TRUE"/>
+#ALtditemheaderAtt("colspan='2' class='mailTitle'")
+$!result.Detail.Subject
+#ALtditemfooter()
+#ALtditemheaderAtt("colspan='2'")
+<input name="is_header_tiny" id="is_header_tiny" type="hidden" value="TRUE"/>
 <div id="WebMailHeaderFieldDetail" style="display:none">
 #foreach($headerline in $!result.Detail.Headers)
 $headerline<br />
 #end
 </div>
 <div id="WebMailHeaderFieldTiny">
-#if($!{result.Detail.Subject.toString()} != "")
-件名：$!result.Detail.Subject<br />
-#end
 #if($!{result.Detail.Date.toString()} != "")
 日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br />
 #end
@@ -60,10 +71,9 @@ $headerline<br />
 差出人：$!result.Detail.From
 #end
 </div>
-<div align="right"><input name="category_input_button" type="button" class="button" value="詳細表示" onclick="aipo.webmail.switchHeader(this)" /></div>
+<div class="mt5"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">詳細を開く</a></div>
 #ALtditemfooter()
-#ALtdcaption('本文')
-#ALtditemheader()
+#ALtditemheaderAtt("colspan='2'")
 $!result.Detail.Body
 #ALtditemfooter()
 #ALtdcaption('添付ファイル')
@@ -76,7 +86,7 @@ $!result.Detail.Body
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')" "$!portlet.ID" "aipo.webmail.onLoadMailDialog" "返信する")#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')" "$!portlet.ID" "aipo.webmail.onLoadMailDialog" "全員に返信する")#ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')" "$!portlet.ID" "aipo.webmail.onLoadMailDialog" "転送する")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.webmail.hideDialog();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.webmail.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

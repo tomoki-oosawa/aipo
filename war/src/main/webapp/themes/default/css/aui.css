@@ -2135,6 +2135,12 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 	text-align:center;
 }
 
+.mailTitle{
+font-size:14px;
+font-weight:bold;
+padding:10px 0 !important;
+}
+
 /***************************************************
 	CSS3 transition
 --------------------------------------------------*/
