@@ -68,7 +68,7 @@
 		<div class="time">
 			$!{record.CreateDate}
 			&nbsp;
-      #set ($formUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))")
+	  #set ($formUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))")
 			#if(${record.isLike()})
 				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
@@ -125,7 +125,7 @@
 				<div class="body">$!record2.Note</div>
 				<div class="time">$!{record2.CreateDate}
 					&nbsp;
-            #set ($likeUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid))" )
+			#set ($likeUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid))" )
 						#if(${record2.isLike()})
 							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 								<input type="hidden" name="secid" value="$secid" />
@@ -179,7 +179,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
@@ -193,9 +193,9 @@
 #end
 #foreach ($record2 in $record.CoActivityList)
 <div class="messageContents text_exposed_show #if($velocityCount>=2) ellipsis#end">
-    #if($velocityCount==1)
-    <div class="name">$!record.OwnerName</div>
-    #end
+	#if($velocityCount==1)
+	<div class="name">$!record.OwnerName</div>
+	#end
 	<div class="body">
 		<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$record2.PreviewNote</a>
 	</div>
@@ -311,7 +311,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value="コメントする" />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
