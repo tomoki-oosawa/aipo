@@ -309,6 +309,19 @@ table.activityTable tr.unread td {
 	max-height:800px;
 }
 
+/* imgPopupTutorial */
+.imgPopupTutorial {
+	position:absolute;
+	overflow:hidden;
+}
+.imgPopupTutorial .imgBody {
+	text-align:center;
+}
+.imgPopupTutorial img {
+	max-width:1000px;
+	max-height:1000px;
+}
+
 
 /***************************************************
 	auiListWrapper

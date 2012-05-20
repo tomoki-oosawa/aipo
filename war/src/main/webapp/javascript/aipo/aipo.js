@@ -284,3 +284,68 @@ aipo.escapeHTML = function(value) {
 
     return String(value).replace(/[<>&"']/g, replaceChars);
 };
+
+aipo.ImageDialog
+
+aipo.showTutorialDialog = function(url, portlet_id, callback) {
+	aipo.ImageDialog = dijit.byId("imageDialog");
+    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+    dojo.query("#imageDialog").addClass("mb_dialog");
+
+    if(! aipo.ImageDialog){
+    	aipo.ImageDialog = new aipo.widget.TutorialDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
+    }else{
+    	aipo.ImageDialog.setCallback(portlet_id, callback);
+    }
+    if(aipo.ImageDialog){
+    	aipo.ImageDialog.setHref(url);
+    	aipo.ImageDialog.show();
+    }
+};
+
+aipo.hideImageDialog = function() {
+    var arrDialog = dijit.byId("imageDialog");
+
+    if(arrDialog){
+      arrDialog.hide();
+    }
+};
+
+aipo.onLoadImage=function(image){
+	var dialog=dojo.byId('imageDialog');
+	dialog.style.visibility="hidden";
+	dialog.style.width=image.width+"px";
+	dialog.style.height=image.height+"px";
+	aipo.ImageDialog._position();//再調整
+	dialog.style.visibility="visible";
+};
+
+aipo.tutorialNextPage=function(){
+	var page = dojo.byId('page_tutorial');
+	var val = page.value - 0;
+	dojo.byId('popupImage' + val).style.display = "none";
+	if(val == 1){
+		dojo.byId('tutorial_prev').style.display = "";
+	}
+	val++;
+	dojo.byId('popupImage' + val).style.display = "";
+	if(val == 4){
+		dojo.byId('tutorial_next').style.display = "none";
+	}
+	page.value = val + "";
+};
+
+aipo.tutorialPrevPage=function(){
+	var page = dojo.byId('page_tutorial');
+	var val = page.value - 0;
+	dojo.byId('popupImage' + val).style.display = "none";
+	if(val == 4){
+		dojo.byId('tutorial_next').style.display = "none";
+	}
+	val--;
+	dojo.byId('popupImage' + val).style.display = "";
+	if(val == 1){
+		dojo.byId('tutorial_prev').style.display = "none";
+	}
+	page.value = val + "";
+};

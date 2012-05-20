@@ -76,6 +76,7 @@
                 <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/widget/ToolTip.js</include>
+                <include>aipo/widget/TutorialDialog.js</include>
                 <include>aipo/fileupload/widget/FileuploadDialog.js</include>
                 <include>aipo/fileupload/widget/FileuploadViewDialog.js</include>
               </includes>
