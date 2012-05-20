@@ -127,6 +127,7 @@
                 <include>../../../../target/aipo/javascript/aipo/account_person/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/todo/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/activity/form.js</include>
               </includes>
             </aggregation>
           </aggregations>

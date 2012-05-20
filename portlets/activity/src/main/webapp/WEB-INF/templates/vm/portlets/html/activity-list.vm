@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["更新情報一覧", ""]])
 ## ---------------------------------------------------------------------------
-
+#ALjavascript("javascript/aipo/activity/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"activity", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllListScreen"))', reloadFunction:aipo.reloadPage };
-	
+
 //]]>
 </script>
 #if($!result.hasAuthority())

@@ -91,7 +91,7 @@
 
 <ul class="activityList">
 #foreach ($record in $result.List)
-<li #if(!$record.isRead()) class="unread" #end>
+<li #if(!$record.isRead()) class="unread" #end">
 <div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
@@ -100,6 +100,9 @@
 </li>
 #end
 </ul>
+
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.activity.setListSize()" style="display:none" />
+
 
 <p class="rightBtn">
 #if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">デスクトップ通知を#if($!desktopNotification && $!notifyPermission)無効#else有効#endにする</a>&nbsp;#end<input type="button" name="allread" value="すべて既読にする" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
