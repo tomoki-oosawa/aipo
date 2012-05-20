@@ -65,8 +65,7 @@
 #foreach( $record in $!result.PostMap )
 <option value="$!{record.GroupName.toString()}" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected #set($groupName = $!record.GroupName) #end>$!record.PostName</option>
 #end
-</select>&nbsp;<span id="destuserDiv"></span>
-
+</select><span id="destuserDiv"></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('client_name'))")
 #ALtditem("#ALtextfield('client_name' $!result.ClientName '90%' 50 'active')")
