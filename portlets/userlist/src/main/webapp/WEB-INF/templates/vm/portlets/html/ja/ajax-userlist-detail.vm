@@ -45,6 +45,14 @@ $!result.Detail.Name
 #ALtditem($!result.Detail.CellularPhone)
 #ALtdcaption('携帯メールアドレス')
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
+#ALtdcaption('顔写真')
+#ALtditemheader()
+#if($!{result.Detail.hasPhoto()})
+<img class="avatar" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}))" alt="顔写真" align="absmiddle" />
+#else
+未登録です。
+#end
+#ALtditemfooter()
 #ALtdcaption('部署名')
 #ALtditemheader()
 #foreach($record in $!result.Detail.getPostNameList())
