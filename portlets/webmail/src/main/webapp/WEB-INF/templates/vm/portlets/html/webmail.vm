@@ -18,17 +18,16 @@
  *#
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/webmail/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.widget.AddressbookDialog");
-    
+
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen"))', reloadFunction:aipo.reloadPage };
 
 	aipo.webmail.onProcessingTimer();
-	
+
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-webmail.vm")

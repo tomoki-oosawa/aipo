@@ -21,14 +21,13 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ファイル一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/fileupload/form.js")
 #ALjavascript("javascript/aipo/cabinet/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"cabinet", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.cabinet.menuSelected = 0;
-	
+
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)

@@ -21,14 +21,13 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メールアカウント一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list_max','1')"]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/fileupload/form.js")
 #ALjavascript("javascript/aipo/webmail/form.js")
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.widget.AddressbookDialog");
-    
+
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.webmail.menuSelected = 2;
 

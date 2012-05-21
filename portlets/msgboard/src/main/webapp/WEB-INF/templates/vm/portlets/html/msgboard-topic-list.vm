@@ -21,10 +21,9 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["トピック一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/fileupload/form.js")
-#ALjavascript("javascript/aipo/msgboard/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
+    dojo.provide('aipo.msgboard');
 
     ptConfig['$!portlet.ID'] = { group:"msgboard", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.msgboard.menuSelected = 0;

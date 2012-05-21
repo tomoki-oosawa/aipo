@@ -32,7 +32,7 @@
               <tasks>
                 <copy todir="../../war/target/aipo" verbose="false"
                   overwrite="true">
-                  <fileset dir="./src/main/webapp" includes="**/*" />
+                  <fileset dir="./src/main/webapp" includes="**/*" excludes="**/*.js" />
                 </copy>
                 <copy todir="../../war/target/aipo/WEB-INF/lib"
                   verbose="false" overwrite="true">
@@ -46,7 +46,30 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>net.sf.alchim</groupId>
+        <artifactId>yuicompressor-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compress</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>./src/main/webapp/javascript</sourceDirectory>
+          <outputDirectory>../../war/target/aipo/javascript</outputDirectory>
+          <nosuffix>true</nosuffix>
+          <encoding>UTF-8</encoding>
+          <gzip>false</gzip>
+          <includes>
+            <include>**/*.js</include>
+          </includes>
+          <jswarn>false</jswarn>
+          <statistics>false</statistics>
+          <force>true</force>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
-
 </project>

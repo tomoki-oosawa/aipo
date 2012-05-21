@@ -21,10 +21,9 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["スケジュール一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/schedule/form.js")
-#ALjavascript("javascript/aipo/todo/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
+    dojo.provide('aipo.schedule');
 
     dojo.require("aipo.calendar.weekly");
     dojo.require("aipo.widget.DropdownMemberFacilitypicker");

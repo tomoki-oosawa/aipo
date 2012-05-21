@@ -21,8 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["テーマ一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/blog/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"blog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaListScreen"))', reloadFunction:aipo.reloadPage };

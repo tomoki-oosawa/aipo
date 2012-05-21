@@ -21,7 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["伝言メモ一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/note/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

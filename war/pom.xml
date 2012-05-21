@@ -116,18 +116,19 @@
               <output>target/aipo/javascript/aipo/common.js</output>
               <includes>
                 <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/schedule/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/todo/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/workflow/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/blog/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/msgboard/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/note/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/exttimecard/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/report/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/activity/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/account_user/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/account_person/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/todo/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/activity/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
               </includes>
             </aggregation>
           </aggregations>

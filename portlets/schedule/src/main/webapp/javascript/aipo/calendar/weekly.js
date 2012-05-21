@@ -340,7 +340,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 tmpDraggable = new aipo.calendar.WeeklyScheduleDraggable(draggable, {pid:_portletId , sid:'"schedule-' + count + '-' + _portletId +'"' , handle: '"dummy_div_-' + _portletId +'"' });
                 aipo.calendar.objectlist.push(tmpDraggable);
 
-                if(item.member || item.loginuser || item.owner || item.public){
+                if(item.member || item.loginuser || item.owner || item['public']){
                     tmpDraggable.setDraggable(true);
                 } else {
                     tmpDraggable.setDraggable(false);
@@ -355,7 +355,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 tmpDraggable.portletId = _portletId;
 
                 scheduleDiv[item.index].push(draggable);
-                if(item.public || item.member){
+                if(item['public'] || item.member){
                     dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
                 }
 
@@ -486,7 +486,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                             tmpDraggable2.scheduleNode = draggable;
                             tmpDraggable2.portletId = _portletId;
                             tmpDraggable2.termType = 'left';
-                            if(item.member || item.loginuser || item.owner || item.public){
+                            if(item.member || item.loginuser || item.owner || item['public']){
                                 tmpDraggable2.setDraggable(true);
                             } else {
                                 tmpDraggable2.setDraggable(false);
@@ -503,7 +503,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                             tmpDraggable3.scheduleNode = draggable;
                             tmpDraggable3.portletId = _portletId;
                             tmpDraggable3.termType = 'right';
-                            if(item.member || item.loginuser || item.owner || item.public){
+                            if(item.member || item.loginuser || item.owner || item['public']){
                                 tmpDraggable3.setDraggable(true);
                             } else {
                                 tmpDraggable3.setDraggable(false);
@@ -515,7 +515,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
                         dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 
-                        if(item.member || item.loginuser || item.owner || item.public){
+                        if(item.member || item.loginuser || item.owner || item['public']){
                             tmpDraggable.setDraggable(true);
                         } else {
                             tmpDraggable.setDraggable(false);

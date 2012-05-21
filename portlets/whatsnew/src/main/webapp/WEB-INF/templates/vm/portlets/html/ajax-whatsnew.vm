@@ -18,11 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aipo/schedule/form.js")
-#ALjavascript("javascript/aipo/workflow/form.js")
-#ALjavascript("javascript/aipo/blog/form.js")
-#ALjavascript("javascript/aipo/msgboard/form.js")
-#ALjavascript("javascript/aipo/note/form.js")
+
 ## ------------------------------------------
 #if ($result.List.size() < 1 || ! $result.List)
 <div class="message">新着情報はありません。</div>

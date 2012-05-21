@@ -21,7 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["タイムカード月集計", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/exttimecard/form.js")
 #ALjavascript("javascript/aipo/exttimecardsystem/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

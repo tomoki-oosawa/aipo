@@ -19,9 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/workflow/form.js")
 #ALjavascript("javascript/aipo/workflow/MemberNormalSelectList.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

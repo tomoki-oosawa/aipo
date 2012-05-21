@@ -1,5 +1,5 @@
 dojo._xdResourceLoaded({
-depends: [["provide", "aipo.widget.MemberAclSelectList"],
+depends: [["provide", "aipo.widget.MemberAclSelectList"]],
 defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.MemberAclSelectList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.MemberAclSelectList"] = true;
 /*

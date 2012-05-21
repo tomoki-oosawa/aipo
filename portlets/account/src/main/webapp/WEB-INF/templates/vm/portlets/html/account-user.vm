@@ -20,7 +20,6 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/account_user/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

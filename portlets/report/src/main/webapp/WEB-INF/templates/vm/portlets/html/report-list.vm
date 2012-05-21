@@ -21,8 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["報告書一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/report/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

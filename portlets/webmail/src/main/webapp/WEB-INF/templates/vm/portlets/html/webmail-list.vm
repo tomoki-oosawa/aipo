@@ -21,13 +21,12 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メール一覧", ""]])
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/webmail/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.widget.AddressbookDialog");
-    
+
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen"))', reloadUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen"))', reloadFunction:aipo.webmail.reloadMailList };
     aipo.webmail.menuSelected = 0;
 

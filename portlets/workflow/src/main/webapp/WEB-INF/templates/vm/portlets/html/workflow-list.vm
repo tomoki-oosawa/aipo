@@ -21,13 +21,11 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ワークフロー一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/workflow/form.js")
-#ALjavascript("javascript/aipo/fileupload/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"workflow", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen"))', reloadFunction:aipo.reloadPage };
-	
+
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)

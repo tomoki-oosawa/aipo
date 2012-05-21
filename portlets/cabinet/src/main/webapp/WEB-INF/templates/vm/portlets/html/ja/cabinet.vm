@@ -19,7 +19,6 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/fileupload/form.js")
 #ALjavascript("javascript/aipo/cabinet/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

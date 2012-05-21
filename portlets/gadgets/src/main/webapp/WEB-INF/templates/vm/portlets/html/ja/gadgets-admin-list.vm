@@ -21,7 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["アプリ一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/gadgets_admin/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
