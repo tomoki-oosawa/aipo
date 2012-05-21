@@ -476,8 +476,10 @@ public class WebMailFormData extends ALAbstractFormData {
 
       StringBuffer replies = new StringBuffer();
       replies.append("\r\n\r\n\r\n" + "------Original Message-------\r\n");
-      for (String factor : tmp2) {
-        replies.append("> " + factor + "\r\n");
+      if (tmp2 != null) {
+        for (String factor : tmp2) {
+          replies.append("> " + factor + "\r\n");
+        }
       }
 
       // Body
