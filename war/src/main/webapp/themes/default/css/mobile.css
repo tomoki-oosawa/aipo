@@ -411,6 +411,22 @@ table.listTable td.caption, table.subTable td.caption {
 .auiPopup {
 	max-width:300px;
 }
+
+#imageDialog {
+	left:0 !important;
+	width:100% !important;
+	height:auto !important;
+}
+.imgPopup {
+	width:100%;
+}
+.imgBody {
+	width:100%;
+}
+.imgPopup img {
+	width:100%;
+	height:auto;
+}
 /***************************************************
 	login
 --------------------------------------------------*/
