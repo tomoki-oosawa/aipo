@@ -309,19 +309,6 @@ table.activityTable tr.unread td {
 	max-height:800px;
 }
 
-/* imgPopupTutorial */
-.imgPopupTutorial {
-	position:absolute;
-	overflow:hidden;
-}
-.imgPopupTutorial .imgBody {
-	text-align:center;
-}
-.imgPopupTutorial img {
-	max-width:1000px;
-	max-height:1000px;
-}
-
 
 /***************************************************
 	auiListWrapper
@@ -1794,7 +1781,6 @@ ul.attachments span.deletebutton:hover{
 }
 
 .timeline {
-	min-height:400px;
 	margin-top:10px;
 	overflow:hidden;
 }
@@ -2147,12 +2133,6 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 /* auiNoData ********************/
 .auiNoData {
 	text-align:center;
-}
-
-.mailTitle{
-font-size:14px;
-font-weight:bold;
-padding:10px 0 !important;
 }
 
 /***************************************************
