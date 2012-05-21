@@ -32,10 +32,13 @@ aipo.customize.onReceiveMessage = function(msg){
 }
 
 aipo.customize.showMenu = function(portlet_id) {
-    var menuNode = dojo.query('#menubar_' + portlet_id);
-    if (menuNode.style('display') == 'none') {
+	var menuNode = dojo.query('#menubar_' + portlet_id);
+	if (menuNode.style('display') == 'none') {
         dojo.query('div.menubar').style('display', 'none');
         menuNode.style('display', 'block');
+        if(dojo.byId("timeline_"+portlet_id) && (dojo.query('div.timeline').length == 1)){
+    		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
+    	}
     } else {
         aipo.customize.hideMenu(portlet_id);
     }

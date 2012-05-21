@@ -273,7 +273,7 @@ $!portlet.getContent($data)
     <div class="menubar" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
 <ul>
 #foreach ( $action in $actions )<li><a href="$!utils.escapeXML(${action.Link})">設定</a></li>#end
-#if($accessControl == "true")<li class="last"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">削除</a></li>#end
+#if($accessControl == "true")<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">削除</a></li>#end
 </ul>
     </div>
     #end
