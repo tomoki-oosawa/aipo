@@ -617,76 +617,80 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   public void loadTodo(RunData rundata, Context context) {
     try {
       SelectQuery<EipTTodo> query = getSelectQueryForTodo(rundata, context);
-      List<EipTTodo> todos = query.fetchList();
+      if (query != null) {
+        List<EipTTodo> todos = query.fetchList();
 
-      int todossize = todos.size();
-      for (int i = 0; i < todossize; i++) {
-        EipTTodo record = todos.get(i);
-        ScheduleToDoResultData rd = new ScheduleToDoResultData();
-        rd.initField();
+        int todossize = todos.size();
+        for (int i = 0; i < todossize; i++) {
+          EipTTodo record = todos.get(i);
+          ScheduleToDoResultData rd = new ScheduleToDoResultData();
+          rd.initField();
 
-        // ポートレット ToDo のへのリンクを取得する．
-        String todo_url = "";
-        if (userid.equals(target_user_id)) {
-          todo_url =
-            ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo", record
-              .getTodoId()
-              .longValue(), portletId);
-        } else {
-          todo_url =
-            ScheduleUtils.getPortletURItoTodoPublicDetailPane(
-              rundata,
-              "ToDo",
-              record.getTodoId().longValue(),
-              portletId);
-        }
-        rd.setTodoId(record.getTodoId().longValue());
-        rd.setTodoName(record.getTodoName());
-        rd.setUserId(record.getTurbineUser().getUpdatedUserId().intValue());
-        rd.setStartDate(record.getStartDate());
-        rd.setEndDate(record.getEndDate());
-        rd.setTodoUrl(todo_url);
-        // 公開/非公開を設定する．
-        rd.setPublicFlag("T".equals(record.getPublicFlag()));
+          // ポートレット ToDo のへのリンクを取得する．
+          String todo_url = "";
+          if (userid.equals(target_user_id)) {
+            todo_url =
+              ScheduleUtils.getPortletURItoTodoDetailPane(
+                rundata,
+                "ToDo",
+                record.getTodoId().longValue(),
+                portletId);
+          } else {
+            todo_url =
+              ScheduleUtils.getPortletURItoTodoPublicDetailPane(
+                rundata,
+                "ToDo",
+                record.getTodoId().longValue(),
+                portletId);
+          }
+          rd.setTodoId(record.getTodoId().longValue());
+          rd.setTodoName(record.getTodoName());
+          rd.setUserId(record.getTurbineUser().getUpdatedUserId().intValue());
+          rd.setStartDate(record.getStartDate());
+          rd.setEndDate(record.getEndDate());
+          rd.setTodoUrl(todo_url);
+          // 公開/非公開を設定する．
+          rd.setPublicFlag("T".equals(record.getPublicFlag()));
 
-        int stime;
-        if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-          .getStartDate()
-          .getValue(), false)) {
-          stime = 0;
-        } else {
-          stime =
+          int stime;
+          if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
+            .getStartDate()
+            .getValue(), false)) {
+            stime = 0;
+          } else {
+            stime =
+              -(int) ((viewStart.getValue().getTime() - rd
+                .getStartDate()
+                .getValue()
+                .getTime()) / 86400000);
+          }
+          int etime =
             -(int) ((viewStart.getValue().getTime() - rd
-              .getStartDate()
+              .getEndDate()
               .getValue()
               .getTime()) / 86400000);
-        }
-        int etime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getEndDate()
-            .getValue()
-            .getTime()) / 86400000);
-        if (stime < 0) {
-          stime = 0;
-        }
-        int count = stime;
-        int col = etime - stime + 1;
-        int row = count / 7;
-        count = count % 7;
-        // 行をまたがる場合
-        while (count + col > 7) {
-          ScheduleToDoResultData rd3 = (ScheduleToDoResultData) rd.clone();
-          rd3.setRowspan(7 - count);
-          monthTodoCon.addToDoResultData(count, row, rd3);
-          count = 0;
-          col -= rd3.getRowspan();
-          row++;
-        }
-        // rowspanを設定
-        rd.setRowspan(col);
-        if (col > 0) {
-          // 期間スケジュールをコンテナに格納
-          monthTodoCon.addToDoResultData(count, row, rd);
+          if (stime < 0) {
+            stime = 0;
+          }
+          int count = stime;
+          int col = etime - stime + 1;
+          int row = count / 7;
+          count = count % 7;
+          // 行をまたがる場合
+          while (count + col > 7) {
+            ScheduleToDoResultData rd3 = (ScheduleToDoResultData) rd.clone();
+            rd3.setRowspan(7 - count);
+            monthTodoCon.addToDoResultData(count, row, rd3);
+            count = 0;
+            col -= rd3.getRowspan();
+            row++;
+          }
+          // rowspanを設定
+          rd.setRowspan(col);
+          if (col > 0) {
+            // 期間スケジュールをコンテナに格納
+            monthTodoCon.addToDoResultData(count, row, rd);
+          }
         }
       }
     } catch (Exception ex) {
