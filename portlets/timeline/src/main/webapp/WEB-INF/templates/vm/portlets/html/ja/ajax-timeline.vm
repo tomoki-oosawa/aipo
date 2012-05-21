@@ -72,7 +72,13 @@
 </div>
 
 #if($result.List.size() == 0)
-  <div id="message_$!{portlet.ID}" class="message" style="clear:both; min-height:750px">投稿はありません。</div>
+	<div id="timeline_$!{portlet.ID}" class="timeline">
+		<div id="content">
+			<div id="" class="message">
+			<p style="color:#999999;" class="center mt30">まだ投稿がありません。<br>近況やスケジュールを投稿して、タイムラインを始めましょう。</p>
+			</div>
+		</div>
+	</div>
 #else
   #if($result.ContentHeight == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
