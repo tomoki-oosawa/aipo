@@ -626,7 +626,7 @@ background-repeat:no-repeat;
 
 
 .container {
-    cursor: default;
+    /*cursor: default;*/
 }
 .dojoDndContainerOver.dojoDndContainerItemOver {
 }
