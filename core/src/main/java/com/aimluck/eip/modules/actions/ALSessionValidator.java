@@ -57,6 +57,7 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
+import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALSessionUtils;
@@ -176,16 +177,24 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
       if (username.length() > 0) {
-        try {
-          loginuser = JetspeedSecurity.login(username, password);
-          if (loginuser != null && "F".equals(loginuser.getDisabled())) {
-            JetspeedSecurity.saveUser(loginuser);
-          } else {
-            data.setUser(JetspeedSecurity.getAnonymousUser());
-            data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
-            data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+
+        if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
+          data.setUser(JetspeedSecurity.getAnonymousUser());
+          data.setMessage("このユーザーはパソコンでのみログインできます。");
+          data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+        } else {
+
+          try {
+            loginuser = JetspeedSecurity.login(username, password);
+            if (loginuser != null && "F".equals(loginuser.getDisabled())) {
+              JetspeedSecurity.saveUser(loginuser);
+            } else {
+              data.setUser(JetspeedSecurity.getAnonymousUser());
+              data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
+              data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+            }
+          } catch (LoginException e) {
           }
-        } catch (LoginException e) {
         }
       }
     }
