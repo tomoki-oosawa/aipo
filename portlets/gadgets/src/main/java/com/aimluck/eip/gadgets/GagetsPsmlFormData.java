@@ -296,7 +296,8 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
             int ent_length = entries.length;
             for (int j = 0; j < ent_length; j++) {
-              if (entries[j].getParent().equals("Schedule")) {
+              if (entries[j].getParent().equals("Schedule")
+                || entries[j].getParent().equals("AjaxScheduleWeekly")) {
                 Parameter scheduleParameter =
                   entries[j].getParameter("p6a-uids");
                 if (scheduleParameter != null) {

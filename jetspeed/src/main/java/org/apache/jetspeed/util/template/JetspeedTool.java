@@ -171,7 +171,8 @@ public class JetspeedTool implements ApplicationTool {
               if (preentrylist.length > 0) {
                 int scheduleindex = 0;
                 for (int i = 0; i < preentrylist.length; i++) {
-                  if ("Schedule".equals(preentrylist[i].getParent())) {
+                  if ("Schedule".equals(preentrylist[i].getParent())
+                    || "AjaxScheduleWeekly".equals(preentrylist[i].getParent())) {
                     scheduleindex = i;
                   }
                   subset.removeEntry(0);

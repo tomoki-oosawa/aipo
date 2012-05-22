@@ -119,7 +119,12 @@ public class PsmlUtils {
             .getAttributes()
             .getNamedItem("parent")
             .getNodeValue()
-            .equals("Schedule")) {
+            .equals("Schedule")
+            || parent
+              .getAttributes()
+              .getNamedItem("parent")
+              .getNodeValue()
+              .equals("AjaxScheduleWeekly")) {
             parent.removeChild(node);
             i--;
           }

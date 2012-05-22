@@ -2065,6 +2065,9 @@ public class ALEipUtils {
         for (String name : IPHONE_APPS) {
           for (Entry entry : entries) {
             String portletName = entry.getParent();
+            if (portletName.equals("AjaxScheduleWeekly")) {
+              portletName = "Schedule";
+            }
             if (name.equals(portletName)) {
               return entry.getId();
             }

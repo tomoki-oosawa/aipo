@@ -24,6 +24,9 @@
 		#if($tab.Name.toString()==$name)
 		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
 		#set($break=true)
+		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
+		#set($break=true)
 		#end
 	#end
 #end
