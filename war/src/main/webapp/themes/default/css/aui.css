@@ -978,7 +978,6 @@ table.activityTable tr.unread td {
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
-.auiButtonDisabled,
 .auiButtonSearch,
 .auiButtonSmall,
 .auiButtonDisabled,
@@ -1015,12 +1014,13 @@ button {
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
-.auiButtonDisabled,
+/*.auiButtonDisabled,*/
 .auiButtonSearch {
 	height:26px;
 	line-height:26px;
 	padding:0 0.7em;
 }
+
 input[type=submit],
 input[type=button],
 input[type=reset],
@@ -1147,10 +1147,13 @@ button:active {
 	color:#999;
 	background:#eee;
 	cursor:default;
+	height:26px;
+	line-height:2.3em;
+	padding:0 0.7em;
 }
 .auiButtonDisabled:hover {color:#999}
 *:first-child+html .auiButtonDisabled {/* IE7 Hack */
-	line-height:2.4em;
+	line-height:2.2em;
 }
 input[disabled],
 textarea[disabled],
@@ -1267,6 +1270,7 @@ button[disabled]:hover {
 	auiSummaryMeta
 --------------------------------------------------*/
 .auiSummaryMeta {
+	position:relative;
 	width:100%;
 	line-height:2em;
 	margin:0.8em 0;
