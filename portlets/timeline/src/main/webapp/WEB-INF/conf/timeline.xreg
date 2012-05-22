@@ -33,7 +33,7 @@
         <parameter name="p1a-rows" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
 
             <meta-info>
-                <title>コンテンツの高さ（通常時）</title>
+                <title>コンテンツの高さ（トップページ）</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -42,7 +42,7 @@
         <parameter name="p2a-rows" value="0" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
 
             <meta-info>
-                <title>コンテンツの高さ（最大化時）</title>
+                <title>コンテンツの高さ</title>
             </meta-info>
         </parameter>
         <parameter name="p2a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>

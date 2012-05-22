@@ -38,7 +38,7 @@
         <parameter name="p1a-memos.style.initialvalue" value="（表示するメモの選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>メモ表示件数（最大化時）</title>
+                <title>メモ表示件数</title>
             </meta-info>
         </parameter>
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
