@@ -53,7 +53,6 @@
 #end
 #end
 </select></form></div>
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Workflow')
 #if($result.List.size() == 0)
