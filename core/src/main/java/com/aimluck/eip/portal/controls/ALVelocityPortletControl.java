@@ -35,8 +35,6 @@ import org.apache.ecs.StringElement;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
-import org.apache.jetspeed.om.registry.ClientEntry;
-import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.portal.PanedPortletController;
 import org.apache.jetspeed.portal.Portlet;
@@ -47,7 +45,6 @@ import org.apache.jetspeed.portal.controls.AbstractPortletControl;
 import org.apache.jetspeed.portal.security.portlets.PortletWrapper;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.PortalToolkit;
-import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.TemplateLocator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -205,19 +202,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     }
     context.put("accessControl", showDelete);
 
-    String useragent = rundata.getUserAgent();
-    useragent = useragent.trim();
-    ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
-    ClientEntry entry = registry.findEntry(useragent);
-    entry.getManufacturer();
-
-    context.put("client", entry.getManufacturer());
-    char c = 0;
-    if (entry.getManufacturer().equals("IPAD")
-      || entry.getManufacturer().equals("IPHONE")) {
-      c = useragent.charAt(useragent.indexOf("OS") + 3);
-    }
-    context.put("clientVer", String.valueOf(c));
+    context.put("client", ALEipUtils.getClient(rundata));
+    context.put("clientVer", ALEipUtils.getClientVersion(rundata));
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

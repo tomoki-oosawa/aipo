@@ -160,7 +160,7 @@ public class JetspeedTool implements ApplicationTool {
         ClientRegistry registry =
           (ClientRegistry) Registry.get(Registry.CLIENT);
         ClientEntry entry = registry.findEntry(useragent);
-        if (entry.getManufacturer().equals("IPHONE")) {
+        if ("IPHONE".equals(entry == null ? null : entry.getManufacturer())) {
           for (@SuppressWarnings("unchecked")
           Iterator<Portlets> it = portlets.getPortletsIterator(); it.hasNext();) {
             Portlets subset = it.next();

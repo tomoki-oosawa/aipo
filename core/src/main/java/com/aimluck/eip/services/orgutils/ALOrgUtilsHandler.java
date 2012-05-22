@@ -25,16 +25,13 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.jetspeed.om.registry.ClientEntry;
-import org.apache.jetspeed.om.registry.ClientRegistry;
-import org.apache.jetspeed.services.Registry;
-
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALServletUtils;
 
 /**
@@ -74,19 +71,9 @@ public abstract class ALOrgUtilsHandler {
     hash.put("isXDomain", String.valueOf(url.startsWith("http")));
 
     HttpServletRequest request = HttpServletRequestLocator.get();
-    String useragent = request.getHeader("User-Agent");
-    useragent = useragent.trim();
-    ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
-    ClientEntry entry = registry.findEntry(useragent);
-    entry.getManufacturer();
-
-    hash.put("client", entry.getManufacturer());
-    char c = 0;
-    if (entry.getManufacturer().equals("IPAD")
-      || entry.getManufacturer().equals("IPHONE")) {
-      c = useragent.charAt(useragent.indexOf("OS") + 3);
-    }
-    hash.put("clientVer", String.valueOf(c));
+    String useragent = request.getHeader("User-Agent").trim();
+    hash.put("client", ALEipUtils.getClient(useragent));
+    hash.put("clientVer", ALEipUtils.getClientVersion(useragent));
 
     return hash;
   }

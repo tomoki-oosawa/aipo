@@ -24,10 +24,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -366,9 +364,7 @@ public class ALJLoginUser extends ActionEvent {
           return;
         }
 
-        String client =
-          ((ClientRegistry) Registry.get(Registry.CLIENT)).findEntry(
-            data.getUserAgent().trim()).getManufacturer();
+        String client = ALEipUtils.getClient(rundata);
         String peid = data.getParameters().getString("js_peid");
         if (peid == null) {
           peid = (String) data.getUser().getTemp("js_peid");

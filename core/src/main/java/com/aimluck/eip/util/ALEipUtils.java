@@ -28,12 +28,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
@@ -49,6 +52,8 @@ import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileLocator;
 import org.apache.jetspeed.om.profile.psml.PsmlLayout;
+import org.apache.jetspeed.om.registry.ClientEntry;
+import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.registry.MediaTypeEntry;
 import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -96,6 +101,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALMyGroups;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.modules.actions.controls.Restore;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -2070,5 +2076,56 @@ public class ALEipUtils {
       return null;
     }
     return null;
+  }
+
+  public static String getClient(RunData rundata) {
+    return getClient(rundata.getUserAgent().trim());
+  }
+
+  public static String getClient(String userAgent) {
+    return getClientEntry(userAgent).getKey();
+  }
+
+  public static String getClientVersion(RunData rundata) {
+    return getClientVersion(rundata.getUserAgent().trim());
+  }
+
+  public static String getClientVersion(String userAgent) {
+    return getClientEntry(userAgent).getValue();
+  }
+
+  protected static Map.Entry<String, String> getClientEntry(String userAgent) {
+    Map<String, String> map = new HashMap<String, String>(1);
+
+    String key = "com.aimluck.eip.util.getClient.client";
+    String keyVer = "com.aimluck.eip.util.getClient.clientVer";
+    String client = null;
+    String clientVer = "0";
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      client = (String) request.getAttribute(key);
+      clientVer = (String) request.getAttribute(keyVer);
+      if (client != null && client.length() > 0) {
+        map.put(client, clientVer);
+        return map.entrySet().iterator().next();
+      }
+    }
+
+    ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
+    ClientEntry entry = registry.findEntry(userAgent);
+    client = entry == null ? "OUTER" : entry.getManufacturer();
+
+    if ("IPAD".equals(client) || "IPHONE".equals(client)) {
+      clientVer = String.valueOf(userAgent.charAt(userAgent.indexOf("OS") + 3));
+    }
+
+    if (request != null) {
+      request.setAttribute(key, client);
+      request.setAttribute(keyVer, clientVer);
+    }
+    map.put(client, clientVer);
+
+    return map.entrySet().iterator().next();
   }
 }

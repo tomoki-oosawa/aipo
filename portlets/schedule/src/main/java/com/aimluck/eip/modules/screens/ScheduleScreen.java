@@ -22,10 +22,7 @@ package com.aimluck.eip.modules.screens;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jetspeed.om.registry.ClientEntry;
-import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
-import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -89,8 +86,6 @@ public class ScheduleScreen extends ALVelocityScreen {
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
 
       String useragent = rundata.getUserAgent();
-      ClientRegistry registry = (ClientRegistry) Registry.get(Registry.CLIENT);
-      ClientEntry entry = registry.findEntry(useragent);
 
       if (tmpCurrentTab == null
         || !(tmpCurrentTab.equals("calendar")
@@ -105,7 +100,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       } else {
         currentTab = tmpCurrentTab;
       }
-      if ("IPHONE".equals(entry.getManufacturer())) {
+      if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
         currentTab = "list";
       }
 
@@ -126,7 +121,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
 
-      if (!"IPHONE".equals(entry.getManufacturer())
+      if (!"IPHONE".equals(ALEipUtils.getClient(rundata))
         && ("".equals(template) || (!done))) {
         template = "schedule-calendar";
         if (template.equals(_template)) {
