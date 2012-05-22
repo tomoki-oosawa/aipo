@@ -147,7 +147,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	simpleStyle = "width: 0%;display: none;";
             }
 
-            termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>"
+            termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>";
 
             var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
             if(Element.clientWidth == Element.offsetWidth){
