@@ -27,7 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.gadgets.GagetsPsmlFormData;
+import com.aimluck.eip.gadgets.AdvancedGagetsPsmlFormData;
 
 /**
  * メモ帳をJSONデータとして出力するクラスです。 <br />
@@ -49,10 +49,10 @@ public class GadgetsPsmlFormJSONScreen extends ALJSONScreen {
     String mode = this.getMode();
     try {
 
-      if (ALEipConstants.MODE_INSERT.equals(mode)) {
-        GagetsPsmlFormData formData = new GagetsPsmlFormData();
+      if ("timeline".equals(mode) || "schedule".equals(mode)) {
+        AdvancedGagetsPsmlFormData formData = new AdvancedGagetsPsmlFormData();
         formData.initField();
-        if (formData.doInsert(this, rundata, context)) {
+        if (formData.doUpdate(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray
@@ -62,7 +62,7 @@ public class GadgetsPsmlFormJSONScreen extends ALJSONScreen {
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)
         || "default".equals(mode)
         || "all_user".equals(mode)) {
-        GagetsPsmlFormData formData = new GagetsPsmlFormData();
+        AdvancedGagetsPsmlFormData formData = new AdvancedGagetsPsmlFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
@@ -72,7 +72,7 @@ public class GadgetsPsmlFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
-        GagetsPsmlFormData formData = new GagetsPsmlFormData();
+        AdvancedGagetsPsmlFormData formData = new AdvancedGagetsPsmlFormData();
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {

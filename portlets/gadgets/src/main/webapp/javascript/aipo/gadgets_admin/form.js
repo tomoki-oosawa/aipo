@@ -23,7 +23,7 @@ dojo.provide("aipo.gadgets_admin.form");
 aipo.gadgets_admin.onLoadDialog = function(portlet_id){
 
 
-}
+};
 
 aipo.gadgets_admin.onReceiveMessage = function(msg){
     if(!msg) {
@@ -36,7 +36,7 @@ aipo.gadgets_admin.onReceiveMessage = function(msg){
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
-}
+};
 
 aipo.gadgets_admin.hideDialog = function() {
     var arrDialog = dijit.byId("modalDialog");
@@ -87,15 +87,6 @@ aipo.gadgets_admin.ajaxDeleteSubmit = function(button, url, indicator_id, portle
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-var Mode;
-var form;
-aipo.gadgets_admin.beforeSubmit = function(button,portlet_id, mode) {
-    dojo.byId(portlet_id + "-mode").value = mode;
-    form=button.form;
-    Mode=mode;
-}
-
-
 aipo.gadgets_admin.onReceiveMessageUpdate = function(msg){
 	var update = dojo.byId('caution_update');
 	if(update){
@@ -114,6 +105,21 @@ aipo.gadgets_admin.onReceiveMessageUpdate = function(msg){
 		dojo.byId('caution_'+Mode).innerHTML =!msg?"更新が完了しました。":"設定に失敗しました。時間をおいてから再度試してください。";
 		aimluck.io.disableForm(form,false);
     }
-}
+};
+
+var Mode = "";
+var form;
+aipo.gadgets_admin.beforeSubmit = function(button,portlet_id, mode) {
+    dojo.byId(portlet_id + "-mode").value = mode;
+    form=button.form;
+    Mode=mode;
+};
+
+aipo.gadgets_admin.submit = function(form, indicator_id, portlet_id, callback) {
+	if(Mode == "timeline" || Mode == "schedule" || Mode == "all_user"){
+		aimluck.io.submit(form, indicator_id, portlet_id, callback);
+	}
+};
+
 
 

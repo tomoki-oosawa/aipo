@@ -77,6 +77,10 @@ public class PsmlUtils {
 
   public static String ELEMENT_PARAMETER = "parameter";
 
+  public static String DEFAULT_TIMELINE_PAGE_NAME = "defaultTimeline.psml";
+
+  public static String DEFAULT_SCHEDULE_PAGE_NAME = "defaultSchedule.psml";
+
   public static String ParsePsml(String psml) throws Exception {
     try {
       Document dom = loadXMLFrom(psml);
@@ -400,4 +404,53 @@ public class PsmlUtils {
     return sb.toString();
   }
 
+  public static File getTemplateHtmlDefaultTimelinePsmlFile(RunData runData) {
+    String path = getTemplateHtmlDefaultTimelinePsmlPath(runData);
+    File psml = new File(path);
+    if (!psml.exists()) {
+      return null;
+    }
+
+    return psml;
+  }
+
+  public static String getTemplateHtmlDefaultTimelinePsmlPath(RunData runData) {
+    // get configuration parameters from Jetspeed Resources
+    String root = JetspeedResources.getString("services.PsmlManager.root");
+    ServletConfig conf = runData.getServletConfig();
+    String rootPath = conf.getServletContext().getRealPath(root);
+
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(rootPath).append(File.separator);
+    buffer.append("user").append(File.separator);
+    buffer.append(TEMPLATE_NAME).append(File.separator);
+    buffer.append("html").append(File.separator);
+    buffer.append(DEFAULT_TIMELINE_PAGE_NAME);
+    return buffer.toString();
+  }
+
+  public static File getTemplateHtmlDefaultSchedulePsmlFile(RunData runData) {
+    String path = getTemplateHtmlDefaultSchedulePsmlPath(runData);
+    File psml = new File(path);
+    if (!psml.exists()) {
+      return null;
+    }
+
+    return psml;
+  }
+
+  public static String getTemplateHtmlDefaultSchedulePsmlPath(RunData runData) {
+    // get configuration parameters from Jetspeed Resources
+    String root = JetspeedResources.getString("services.PsmlManager.root");
+    ServletConfig conf = runData.getServletConfig();
+    String rootPath = conf.getServletContext().getRealPath(root);
+
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(rootPath).append(File.separator);
+    buffer.append("user").append(File.separator);
+    buffer.append(TEMPLATE_NAME).append(File.separator);
+    buffer.append("html").append(File.separator);
+    buffer.append(DEFAULT_SCHEDULE_PAGE_NAME);
+    return buffer.toString();
+  }
 }

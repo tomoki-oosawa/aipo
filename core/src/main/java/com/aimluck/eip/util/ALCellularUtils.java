@@ -32,7 +32,6 @@ import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
-import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.registry.MediaTypeEntry;
 import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -179,17 +178,6 @@ public class ALCellularUtils {
       }
     }
     return isCellularPhone;
-  }
-
-  public static boolean isSmartPhone(RunData data) {
-    String client =
-      ((ClientRegistry) Registry.get(Registry.CLIENT)).findEntry(
-        data.getUserAgent().trim()).getManufacturer();
-    String peid = data.getParameters().getString("js_peid");
-    if (peid == null && "IPHONE".equals(client)) {
-      return true;
-    }
-    return false;
   }
 
   /**

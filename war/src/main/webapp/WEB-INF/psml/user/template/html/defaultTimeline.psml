@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+    Aipo is a groupware program developed by Aimluck,Inc.
+    Copyright (C) 2004-2011 Aimluck,Inc.
+    http://www.aipo.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<portlets >
+	<metainfo>
+		<title>Aipo</title>
+	</metainfo>
+	<security-ref parent="owner-view" />
+	<control name="TabControl" />
+	<controller name="TabController" />
+	<entry parent="Activity" />
+	<portlets>
+		<metainfo>
+			<description>
+			</description>
+			<title>マイページ</title>
+		</metainfo>
+		<security-ref parent="owner-only" />
+		<layout position="4" size="-1" />
+		<controller name="ThreeColumns" />
+		<entry parent="ExtTimecard">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="0" />
+			</layout>
+		</entry>
+		<entry parent="Msgboard">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="1" />
+			</layout>
+			<parameter name="p1e-rows" value="2" />
+		</entry>
+		<entry parent="Note">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="2" />
+			</layout>
+		</entry>
+		<entry parent="Report">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="3" />
+			</layout>
+		</entry>
+		<entry parent="Cabinet">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="4" />
+			</layout>
+			<parameter name="p1e-rows" value="2" />
+		</entry>
+		<entry parent="ToDo">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="5" />
+			</layout>
+			<parameter name="p0e-rows" value="2" />
+		</entry>
+		<entry parent="Workflow">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="6" />
+			</layout>
+		</entry>
+		<entry parent="Timeline">
+			<layout position="-1" size="-1">
+				<property name="column" value="1" />
+				<property name="row" value="0" />
+			</layout>
+		</entry>
+		<entry parent="Schedule">
+			<layout position="-1" size="-1">
+				<property name="column" value="2" />
+				<property name="row" value="0" />
+			</layout>
+			<parameter name="p19-rows" value="simple" />
+		</entry>
+		<entry parent="UserList">
+			<layout position="-1" size="-1">
+				<property name="column" value="2" />
+				<property name="row" value="1" />
+			</layout>
+		</entry>
+		<entry parent="AddressBook">
+			<layout position="-1" size="-1">
+				<property name="column" value="2" />
+				<property name="row" value="2" />
+			</layout>
+		</entry>
+	</portlets>
+	<portlets>
+		<metainfo>
+			<title>個人設定</title>
+		</metainfo>
+		<security-ref parent="owner-view" />
+		<layout position="6" size="-1" />
+		<control name="MenuControl" />
+		<controller name="MenuController" />
+		<entry parent="AccountPerson">
+			<layout position="0" size="-1" />
+		</entry>
+		<entry parent="MyGroup">
+			<layout position="1" size="-1" />
+		</entry>
+		<entry parent="Page">
+			<layout position="2" size="-1" />
+		</entry>
+	</portlets>
+</portlets>

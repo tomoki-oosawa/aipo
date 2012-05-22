@@ -69,13 +69,6 @@ public class ALJLoginUser extends ActionEvent {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
 
-      if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
-        data.setUser(JetspeedSecurity.getAnonymousUser());
-        data.setMessage("このユーザーはパソコンでのみログインできます。");
-        data.getUser().setHasLoggedIn(Boolean.valueOf(false));
-        return;
-      }
-
       boolean newUserApproval =
         JetspeedResources.getBoolean("newuser.approval.enable", false);
       String secretkey = data.getParameters().getString("secretkey", null);

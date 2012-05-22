@@ -57,7 +57,6 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
-import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALSessionUtils;
@@ -173,28 +172,34 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
 
+    String startGuideCookieValue = null;
+
+    // if Cookie is null then data.getCookies() occurs an error
+    if (data.getRequest().getCookies() != null) {
+      startGuideCookieValue =
+        data.getCookies().getString("start_guide_popup", "");
+    }
+
+    if (startGuideCookieValue != null && startGuideCookieValue != "") {
+      context.put("start_guide_popup", Boolean.valueOf(startGuideCookieValue));
+    } else {
+      context.put("start_guide_popup", true);
+    }
+
     if (!isLogin(loginuser)) {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
       if (username.length() > 0) {
-
-        if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
-          data.setUser(JetspeedSecurity.getAnonymousUser());
-          data.setMessage("このユーザーはパソコンでのみログインできます。");
-          data.getUser().setHasLoggedIn(Boolean.valueOf(false));
-        } else {
-
-          try {
-            loginuser = JetspeedSecurity.login(username, password);
-            if (loginuser != null && "F".equals(loginuser.getDisabled())) {
-              JetspeedSecurity.saveUser(loginuser);
-            } else {
-              data.setUser(JetspeedSecurity.getAnonymousUser());
-              data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
-              data.getUser().setHasLoggedIn(Boolean.valueOf(false));
-            }
-          } catch (LoginException e) {
+        try {
+          loginuser = JetspeedSecurity.login(username, password);
+          if (loginuser != null && "F".equals(loginuser.getDisabled())) {
+            JetspeedSecurity.saveUser(loginuser);
+          } else {
+            data.setUser(JetspeedSecurity.getAnonymousUser());
+            data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
+            data.getUser().setHasLoggedIn(Boolean.valueOf(false));
           }
+        } catch (LoginException e) {
         }
       }
     }
