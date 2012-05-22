@@ -686,9 +686,11 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(org_id, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
         // msgList.addAll(errors);
 
       }
@@ -1166,9 +1168,11 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(org_id, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          org_id,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
         // msgList.addAll(errors);
 
       }

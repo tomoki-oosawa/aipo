@@ -1211,9 +1211,11 @@ public class ScheduleFormData extends ALAbstractFormData {
             messageList.add(message);
           }
 
-          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-            .getUserId(rundata), messageList, ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+          ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+            orgId,
+            ALEipUtils.getUserId(rundata),
+            messageList,
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
           // msgList.addAll(errors);
 
         }
@@ -1746,7 +1748,7 @@ public class ScheduleFormData extends ALAbstractFormData {
                 destMember.getUserId()));
             }
 
-            ALMailService.sendAdminMail(new ALAdminMailContext(
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
               orgId,
               ALEipUtils.getUserId(rundata),
               messageList,
@@ -1772,7 +1774,7 @@ public class ScheduleFormData extends ALAbstractFormData {
               messageList.add(message);
             }
 
-            ALMailService.sendAdminMail(new ALAdminMailContext(
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
               orgId,
               ALEipUtils.getUserId(rundata),
               messageList,

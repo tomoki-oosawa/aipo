@@ -21,10 +21,19 @@ package com.aimluck.eip.mail;
 
 import java.util.List;
 
+import org.apache.cayenne.access.DataContext;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+
+import com.aimluck.eip.orm.Database;
+
 /**
- * 
+ *
  */
 public class ALMailService {
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALMailService.class.getName());
 
   public static ALMailHandler getService() {
     return ALMailFactoryService.getInstance().getMailHandler();
@@ -40,5 +49,24 @@ public class ALMailService {
   public static List<String> sendAdminMail(ALAdminMailContext adminMailContext)
       throws Exception {
     return getService().sendAdminMail(adminMailContext);
+  }
+
+  public static void sendAdminMailAsync(
+      final ALAdminMailContext adminMailContext) {
+
+    final DataContext dataContext = DataContext.getThreadDataContext();
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          DataContext.bindThreadDataContext(dataContext);
+          getService().sendAdminMail(adminMailContext);
+        } catch (Exception e) {
+          logger.error("[ALMailService]", e);
+        } finally {
+          Database.tearDown();
+        }
+      }
+    }).start();
   }
 }

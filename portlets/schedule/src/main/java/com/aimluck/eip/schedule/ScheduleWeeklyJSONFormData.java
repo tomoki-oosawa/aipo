@@ -530,7 +530,7 @@ public class ScheduleWeeklyJSONFormData {
                 messageList.add(message);
               }
 
-              ALMailService.sendAdminMail(new ALAdminMailContext(
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
                 orgId,
                 ALEipUtils.getUserId(rundata),
                 messageList,
@@ -698,7 +698,7 @@ public class ScheduleWeeklyJSONFormData {
                   destMember.getUserId()));
               }
 
-              ALMailService.sendAdminMail(new ALAdminMailContext(
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
                 orgId,
                 ALEipUtils.getUserId(rundata),
                 messageList,
@@ -857,7 +857,7 @@ public class ScheduleWeeklyJSONFormData {
               messageList.add(message);
             }
 
-            ALMailService.sendAdminMail(new ALAdminMailContext(
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
               orgId,
               ALEipUtils.getUserId(rundata),
               messageList,
@@ -1021,7 +1021,7 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMembers = new ArrayList<ALEipUserAddr>();
               destMembers.add(destMember);
 
-              ALMailService.sendAdminMail(new ALAdminMailContext(
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
                 orgId,
                 ALEipUtils.getUserId(rundata),
                 messageList,

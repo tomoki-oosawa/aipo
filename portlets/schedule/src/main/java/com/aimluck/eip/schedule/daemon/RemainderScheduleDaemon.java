@@ -260,7 +260,7 @@ public class RemainderScheduleDaemon implements Daemon {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
           orgId,
           1,
           messageList,
