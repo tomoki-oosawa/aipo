@@ -267,7 +267,9 @@ aipo.timeline.addText = function(form, pid){
 		    aipo.timeline.addHiddenValue(form, "tlClipImage", dojo.byId("tlClipImage_" + pid + "_" + page.value).children[0].src);
 	    }
 	    aipo.timeline.addHiddenValue(form, "tlClipTitle", dojo.byId("tlClipTitle_" + pid).children[0].innerHTML);
-	    aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo.byId("tlClipUrl_" + pid).children[0].href);
+	    if(dojo.byId("tlClipUrl_" + pid).children[0].innerHTML){
+	    	aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo.byId("tlClipUrl_" + pid).children[0].href);
+	    }
 	    aipo.timeline.addHiddenValue(form, "tlClipBody", dojo.byId("tlClipBody_" + pid).innerHTML);
 	  }
 }
