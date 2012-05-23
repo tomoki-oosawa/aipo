@@ -53,7 +53,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
    */
   @Override
   protected String getContentType(RunData rundata) {
-    return "application/octet-stream";
+    return "image/jpeg";
   }
 
   /**
