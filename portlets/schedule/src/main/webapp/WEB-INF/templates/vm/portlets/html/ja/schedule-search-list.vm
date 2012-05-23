@@ -66,8 +66,14 @@
 </div>
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">読み込み中...</div>
 
-<div id="content-$!portlet.ID" style="visibility:visible">
-
+<div class="auiSummaryMeta">
+<div class="floatRight">
+<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="印刷画面を開く" class="auiButton pl5 pr5">
+<span>
+<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
+</span>
+</a>
+</div>
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
@@ -101,21 +107,13 @@
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
     </select>
-
-<div class="floatRight">
-<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="印刷画面を開く" class="auiButton pl5 pr5">
-<span>
-<img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="印刷" />
-</span>
-</a>
 </div>
-
 </div>
 <div id="listmessageDiv"></div>
-
 #if($result.ScheduleList.size() == 0)
 <div class="message">指定された条件に該当する予定はありません。</div>
 #else
+<div id="content-$!portlet.ID" style="visibility:visible">
 #AUIrowTableWide()
 <tr>
 <th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>日時</th>
@@ -155,8 +153,8 @@
 </tr>
 #end
 #AUItablefooter()
-#end
 </div>
+#end
 
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />

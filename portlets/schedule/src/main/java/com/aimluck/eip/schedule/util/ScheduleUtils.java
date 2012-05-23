@@ -3571,6 +3571,7 @@ public class ScheduleUtils {
     select.append(" eip_t_schedule.place,");
     select.append(" eip_t_schedule.start_date,");
     select.append(" eip_t_schedule.end_date,");
+    select.append(" eip_t_schedule.update_date,");
     select.append(" eip_t_schedule.public_flag,");
     select.append(" eip_t_schedule.repeat_pattern,");
     select.append(" eip_t_schedule.create_user_id,");
