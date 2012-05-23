@@ -40,20 +40,17 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
 
-<div align="left clearfix">
-<select id="$!{portlet.ID}_action">
-	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')">返信する</option>
-	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')">全員に返信する</option>
-	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')">転送する</option>
-	<option >--------------</option>
-	<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')">削除する</option>
-</select>
-<input type="button" onclick="javascript:aipo.webmail.action(this,'$!portlet.ID')" value="実行" class="button" name="ajaxbuttonEdit">
-</div>
+#if(($!result.Detail.Subject) && ($!result.Detail.getSubject().toString() != ""))
+#set($MailSubject = $!result.Detail.Subject)
+#elseif($!result.Detail.Subject)
+#set($MailSubject = "無題")
+#end
 
 #ALtableheaderWide()
 #ALtditemheaderAtt("colspan='2' class='mailTitle'")
-$!result.Detail.Subject
+<strong>
+$!MailSubject
+</strong>
 #ALtditemfooter()
 #ALtditemheaderAtt("colspan='2'")
 <input name="is_header_tiny" id="is_header_tiny" type="hidden" value="TRUE"/>
@@ -86,7 +83,11 @@ $!result.Detail.Body
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.webmail.hideDialog();" />
+<input name="ajaxbuttonReply" class="button" type="button" value="返信する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+<input name="ajaxbuttonReplyAll" class="button" type="button" value="全員に返信する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+<input name="ajaxbuttonTransport" class="button" type="button" value="転送する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')" "indicator-dlg-" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.webmail.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

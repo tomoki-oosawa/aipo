@@ -40,9 +40,17 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
 
+#if(($!result.Detail.Subject) && ($!result.Detail.getSubject().toString() != ""))
+#set($MailSubject = $!result.Detail.Subject)
+#elseif($!result.Detail.Subject)
+#set($MailSubject = "無題")
+#end
+
 #ALtableheaderWide()
 #ALtditemheaderAtt("colspan='2' class='mailTitle'")
-$!result.Detail.Subject
+<strong>
+$!MailSubject
+</strong>
 #ALtditemfooter()
 #ALtditemheaderAtt("colspan='2'")
 <input name="is_header_tiny" id="is_header_tiny" type="hidden" value="TRUE"/>
