@@ -83,6 +83,7 @@ aipo.todo.onReceiveMessage = function(msg){
         }
         aipo.portletReload('todo');
         aipo.portletReload('schedule');
+        aipo.portletReload('timeline');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;

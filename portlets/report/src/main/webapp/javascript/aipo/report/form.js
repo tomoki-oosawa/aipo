@@ -112,6 +112,7 @@ aipo.report.onReceiveMessage = function(msg){
 
         aipo.portletReload('report');
         aipo.portletReload('whatsnew');
+        aipo.portletReload('timeline');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;

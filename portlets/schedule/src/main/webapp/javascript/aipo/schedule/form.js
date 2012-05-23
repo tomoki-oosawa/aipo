@@ -559,6 +559,7 @@ aipo.schedule.onReceiveMessage = function(msg){
         }
 
         aipo.portletReload('schedule');
+        aipo.portletReload('timeline');
     }
 
     if(msg != null && msg.match(/duplicate_facility/)){

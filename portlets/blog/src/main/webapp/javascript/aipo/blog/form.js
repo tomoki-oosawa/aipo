@@ -112,6 +112,7 @@ aipo.blog.onReceiveMessage = function(msg){
             arrDialog.hide();
         }
         aipo.portletReload('blog');
+        aipo.portletReload('timeline');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;

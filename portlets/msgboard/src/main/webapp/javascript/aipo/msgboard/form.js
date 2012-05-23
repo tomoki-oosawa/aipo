@@ -118,6 +118,7 @@ aipo.msgboard.onReceiveMessage = function(msg){
             arrDialog.hide();
         }
         aipo.portletReload('msgboard');
+        aipo.portletReload('timeline');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;

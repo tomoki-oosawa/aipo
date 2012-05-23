@@ -81,6 +81,7 @@ aipo.cabinet.onReceiveMessage = function(msg){
         }
         aipo.portletReload('cabinet');
         aipo.portletReload('schedule');
+        aipo.portletReload('timeline');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
