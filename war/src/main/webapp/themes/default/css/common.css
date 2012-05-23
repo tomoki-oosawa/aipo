@@ -1954,6 +1954,16 @@ div.calendarScheduleDiv .addSchedule:hover {
 	background:none;
 }
 
+.addScheduleCell:hover {
+	background:#F5F5F5;
+	cursor:pointer;
+}
+.addScheduleCell:hover a.addSchedule {
+	color:#FF9900;
+	text-decoration:none !important;
+}
+
+
 table.calendar td.term {
 	border-top:none;
 	border-bottom:none;
