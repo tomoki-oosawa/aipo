@@ -68,7 +68,7 @@ $headerline<br />
 差出人：$!result.Detail.From
 #end
 </div>
-<div class="mt5"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">詳細を開く</a></div>
+<div class="mt5" style="cursor: pointer;"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">詳細を開く</a></div>
 #ALtditemfooter()
 #ALtditemheaderAtt("colspan='2'")
 $!result.Detail.Body
