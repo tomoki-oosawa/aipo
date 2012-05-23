@@ -111,104 +111,97 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
-    String portletName = portlets.getName();
-    Integer pNameInt = 0;
-    try {
-      pNameInt = Integer.valueOf(portletName);
-    } catch (Exception e) {
-      pNameInt = 0;
-    } finally {
+    String portletId = portlets.getID();
+    String peid =
+      rundata.getParameters().getString(controller.getPaneParameter());
 
-      if (pNameInt != 0) {
-        SessionState state =
-          ((JetspeedRunData) rundata).getPortletSessionState(portlets.getID());
-        state.setAttribute(JetspeedResources.PATH_PANEID_KEY, null);
-      }
-
-      int count = 0;
-      for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
-        Portlet p = (Portlet) en.nextElement();
-        PortalResource portalResource = new PortalResource(p);
-        if ("Activity".equals(p.getName())
-          && !portlets.getController().getConfig().getName().equals(
-            "MenuController")) {
-          continue;
-        }
-
-        // Secure the tabs
-        JetspeedLink jsLink = null;
-        try {
-          jsLink = JetspeedLinkFactory.getInstance(rundata);
-          portalResource.setOwner(jsLink.getUserName());
-          JetspeedLinkFactory.putInstance(jsLink);
-        } catch (Exception e) {
-          logger.warn("[ALVelocityPortletSetControl]", e);
-          portalResource.setOwner(null);
-        }
-        JetspeedRunData jdata = (JetspeedRunData) rundata;
-        boolean hasView =
-          JetspeedSecurity.checkPermission(
-            (JetspeedUser) jdata.getUser(),
-            portalResource,
-            JetspeedSecurity.PERMISSION_VIEW);
-        if (!hasView) {
-          continue;
-        }
-        // skip any closed portlet
-        if ((p instanceof PortletState)
-          && (((PortletState) p).isClosed(rundata))) {
-          continue;
-        }
-
-        String mstate = p.getAttribute("_menustate", "open", rundata);
-        if (mstate.equals("closed")) {
-          continue;
-        }
-
-        PortletTab tab = new PortletTab();
-
-        // Handle the portlet title
-        String title = null;
-        PortletInstance pi = PersistenceManager.getInstance(p, rundata);
-        if (pi != null) {
-          title = pi.getTitle();
-          if (title == null) {
-            title = (p.getTitle() != null) ? p.getTitle() : p.getName();
-          }
-        }
-        tab.setTitle(title);
-
-        tab.setPosition(p.getPortletConfig().getPosition());
-        if (tabs.contains(tab)) {
-          PortletTab lastTab = tabs.last();
-          int nextPos = lastTab.getPosition() + 1;
-          tab.setPosition(nextPos);
-        }
-
-        if (controller != null) {
-          tab.setSelected(controller.isSelected(p, rundata));
-
-          if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
-            tab.setLink(jsLink.getPortletById(p.getID()).addQueryData(
-              "action",
-              "controls.Maximize").toString());
-          } else {
-            tab.setLink(controller.getPortletURI(p, rundata).toString()
-              + "?action=controls.Restore");
-          }
-        }
-
-        // 修正 ：最大化時とノーマル時のポートレットの表示を切り替え可能にするため，
-        // メソッド buildActionList(RunData rundata,Portlet portlet,Context context)
-        // を呼ぶように修正した．
-        tab.setActions(buildActionList(rundata, p, context));
-        tab.setAuthority(hasAuthority);
-
-        tabs.add(tab);
-      }
-
-      return tabs;
+    if (portletId.equals(peid)) {
+      SessionState state =
+        ((JetspeedRunData) rundata).getPortletSessionState(portletId);
+      state.setAttribute(JetspeedResources.PATH_PANEID_KEY, null);
     }
+
+    int count = 0;
+    for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
+      Portlet p = (Portlet) en.nextElement();
+      PortalResource portalResource = new PortalResource(p);
+      if ("Activity".equals(p.getName())
+        && !portlets.getController().getConfig().getName().equals(
+          "MenuController")) {
+        continue;
+      }
+
+      // Secure the tabs
+      JetspeedLink jsLink = null;
+      try {
+        jsLink = JetspeedLinkFactory.getInstance(rundata);
+        portalResource.setOwner(jsLink.getUserName());
+        JetspeedLinkFactory.putInstance(jsLink);
+      } catch (Exception e) {
+        logger.warn("[ALVelocityPortletSetControl]", e);
+        portalResource.setOwner(null);
+      }
+      JetspeedRunData jdata = (JetspeedRunData) rundata;
+      boolean hasView =
+        JetspeedSecurity.checkPermission(
+          (JetspeedUser) jdata.getUser(),
+          portalResource,
+          JetspeedSecurity.PERMISSION_VIEW);
+      if (!hasView) {
+        continue;
+      }
+      // skip any closed portlet
+      if ((p instanceof PortletState) && (((PortletState) p).isClosed(rundata))) {
+        continue;
+      }
+
+      String mstate = p.getAttribute("_menustate", "open", rundata);
+      if (mstate.equals("closed")) {
+        continue;
+      }
+
+      PortletTab tab = new PortletTab();
+
+      // Handle the portlet title
+      String title = null;
+      PortletInstance pi = PersistenceManager.getInstance(p, rundata);
+      if (pi != null) {
+        title = pi.getTitle();
+        if (title == null) {
+          title = (p.getTitle() != null) ? p.getTitle() : p.getName();
+        }
+      }
+      tab.setTitle(title);
+
+      tab.setPosition(p.getPortletConfig().getPosition());
+      if (tabs.contains(tab)) {
+        PortletTab lastTab = tabs.last();
+        int nextPos = lastTab.getPosition() + 1;
+        tab.setPosition(nextPos);
+      }
+
+      if (controller != null) {
+        tab.setSelected(controller.isSelected(p, rundata));
+
+        if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
+          tab.setLink(jsLink.getPortletById(p.getID()).addQueryData(
+            "action",
+            "controls.Maximize").toString());
+        } else {
+          tab.setLink(controller.getPortletURI(p, rundata).toString()
+            + "?action=controls.Restore");
+        }
+      }
+
+      // 修正 ：最大化時とノーマル時のポートレットの表示を切り替え可能にするため，
+      // メソッド buildActionList(RunData rundata,Portlet portlet,Context context)
+      // を呼ぶように修正した．
+      tab.setActions(buildActionList(rundata, p, context));
+      tab.setAuthority(hasAuthority);
+
+      tabs.add(tab);
+    }
+    return tabs;
   }
 
   /**
