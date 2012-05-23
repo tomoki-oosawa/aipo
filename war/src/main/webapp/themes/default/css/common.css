@@ -2351,7 +2351,7 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 	zoom:1;
 	overflow:visible;
 }
-*:first-child+html .menubar {
+*:first-child+html .roundBlockIcon .menubar {
     margin:16px 0 0 -16px;
 }
 .menubar ul {
