@@ -28,7 +28,7 @@
 #set ($onclickOpen = "document.getElementById('startGuide').style.display='block';document.getElementById('guide_on').style.display='none';document.getElementById('guide_off').style.display='inline';aipo.setCookie('start_guide_popup',true,'/');")
                             <div id="footer" class="clearfix" style="position:static;">
 #end
-								#if($data.User.isAdmin())
+								#if($data.User.isAdmin() && $data.User.UserName != "admin")
                             	<!-- START GUIDE -->
                             	<div id="startGuide" #if (${start_guide_popup}) style="display:block;" #else  style="display:none;"  #end>
                             		<div class="close"><a href="javascript:void(0);" onclick="$!{onclickClose}"><img src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="absmiddle" title="閉じる"></a></div>
@@ -47,7 +47,7 @@
 								#end
 							<div id="footText">
                             	<div class="copyright">$!{alias_copyright} $!{version} $!{copyright}</div>
-                            	#if($data.User.isAdmin())
+								#if($data.User.isAdmin() && $data.User.UserName != "admin")
                             		<div id="guide_on" #if (${start_guide_popup}) style="display:none;" #else  style="display:inline;"  #end><a href="javascript:void(0);" onclick="$!{onclickOpen}">スタートガイド</a></div>
 									<div id="guide_off" #if (${start_guide_popup}) style="display:inline;" #else  style="display:none;"  #end><a href="javascript:void(0);" onclick="$!{onclickClose}">スタートガイド</a></div>
 								#end
