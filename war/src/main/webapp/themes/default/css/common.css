@@ -1077,6 +1077,10 @@ table.simpleTable td.caption {
 	width:600px;
 	position:absolute;
 }
+.fileuploadViewDialog.preLoadImage{
+	visibility: hidden;
+}
+
 .fileuploadViewDialogUnderlayWrapper {
 	left:0;
 	top:0;

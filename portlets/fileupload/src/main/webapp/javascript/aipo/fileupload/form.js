@@ -67,6 +67,8 @@ aipo.fileupload.openAttachment = function(url, pid){
 aipo.fileupload.ImageDialog
 
 aipo.fileupload.showImageDialog = function(url, portlet_id, callback) {
+	var dialog=dojo.byId('imageDialog');
+	dojo.query("#imageDialog").addClass("preLoadImage");
 	aipo.fileupload.ImageDialog = dijit.byId("imageDialog");
     dojo.query(".roundBlockContent").addClass("mb_dialoghide");
     dojo.query("#imageDialog").addClass("mb_dialog");
@@ -92,11 +94,10 @@ aipo.fileupload.hideImageDialog = function() {
 
 aipo.fileupload.onLoadImage=function(image){
 	var dialog=dojo.byId('imageDialog');
-	dialog.style.visibility="hidden";
 	dialog.style.width=image.width+"px";
 	dialog.style.height=image.height+"px";
 	aipo.fileupload.ImageDialog._position();//再調整
-	dialog.style.visibility="visible";
+	dojo.query("#imageDialog").removeClass("preLoadImage");
 };
 
 

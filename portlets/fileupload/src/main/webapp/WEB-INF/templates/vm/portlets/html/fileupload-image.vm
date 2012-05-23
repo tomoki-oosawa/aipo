@@ -19,10 +19,8 @@
 ## ---------------------------------------------------------------------------
 ## ---------------------------------------------------------------------------
 
-<div class="auiPopup imgPopup" onclick="aipo.fileupload.hideImageDialog()">
  <div class="imgBody">
  	<a href="javascript:void(0)">
 		<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" />
 	</a>
  </div>
-</div>
