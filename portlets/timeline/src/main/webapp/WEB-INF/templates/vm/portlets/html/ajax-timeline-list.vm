@@ -71,10 +71,10 @@
 </div>
 
 #if($result.List.size() == 0)
-	<div id="timeline_$!{portlet.ID}" class="timeline">
+	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
 			<div id="" class="message">
-			<p style="color:#999999;" class="center mt30">まだ投稿がありません。<br>近況やスケジュールを投稿して、タイムラインを始めましょう。</p>
+			<p class="mt10">投稿はありません。</p>
 			</div>
 		</div>
 	</div>
