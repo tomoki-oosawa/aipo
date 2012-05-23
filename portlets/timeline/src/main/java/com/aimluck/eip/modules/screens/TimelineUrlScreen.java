@@ -19,11 +19,18 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.timeline.TimelineUrlBeans;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -54,6 +61,23 @@ public class TimelineUrlScreen extends ALVelocityScreen {
       if (listdata != null) {
         setResultData(listdata);
         putData(rundata, context);
+      } else {
+        try {
+          BufferedWriter writer;
+          ServletOutputStream out = null;
+          HttpServletResponse response = rundata.getResponse();
+          out = response.getOutputStream();
+          writer =
+            new BufferedWriter(new OutputStreamWriter(
+              out,
+              ALEipConstants.DEF_CONTENT_ENCODING));
+          writer.write("error");
+          writer.flush();
+          writer.close();
+          return;
+        } catch (Exception e) {
+          logger.error("[ALVelocityScreen]", e);
+        }
       }
       String layout_template = "portlets/html/ja/ajax-timeline-url.vm";
       setTemplate(rundata, context, layout_template);

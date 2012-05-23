@@ -100,8 +100,12 @@ aipo.timeline.getUrl = function(url, pid) {
         X_REQUESTED_WITH : "XMLHttpRequest"
       },
       load : function(data, event) {
+    	  if(data != "error") {
 		        dojo.byId("tlInputClip_" + pid).innerHTML = data;
 		        dojo.byId("flag_" + pid).value = "exist";
+    	  } else {
+    			dojo.byId("flag_" + pid).value = "forbidden";
+    	  }
       }
     });
   } catch (e) {
@@ -268,7 +272,7 @@ aipo.timeline.addText = function(form, pid){
 	    }
 	    aipo.timeline.addHiddenValue(form, "tlClipTitle", dojo.byId("tlClipTitle_" + pid).children[0].innerHTML);
 	    if(dojo.byId("tlClipUrl_" + pid).children[0].innerHTML){
-	    	aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo.byId("tlClipUrl_" + pid).children[0].href);
+	    	aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo.byId("tlClipUrl_" + pid).children[0].getAttribute("href"));
 	    }
 	    aipo.timeline.addHiddenValue(form, "tlClipBody", dojo.byId("tlClipBody_" + pid).innerHTML);
 	  }
