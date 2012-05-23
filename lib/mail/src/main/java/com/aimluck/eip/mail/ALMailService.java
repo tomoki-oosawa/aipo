@@ -21,7 +21,6 @@ package com.aimluck.eip.mail;
 
 import java.util.List;
 
-import org.apache.cayenne.access.DataContext;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -52,21 +51,14 @@ public class ALMailService {
   }
 
   public static void sendAdminMailAsync(
-      final ALAdminMailContext adminMailContext) {
+      final ALAdminMailContext adminMailContext) throws Exception {
 
-    final DataContext dataContext = DataContext.getThreadDataContext();
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          DataContext.bindThreadDataContext(dataContext);
-          getService().sendAdminMail(adminMailContext);
-        } catch (Exception e) {
-          logger.error("[ALMailService]", e);
-        } finally {
-          Database.tearDown();
-        }
-      }
-    }).start();
+    Runnable sender =
+      new ALMailSendThread(
+        Database.createDataContext(Database.getDomainName()),
+        adminMailContext);
+
+    Thread mailthread = new Thread(sender);
+    mailthread.start();
   }
 }
