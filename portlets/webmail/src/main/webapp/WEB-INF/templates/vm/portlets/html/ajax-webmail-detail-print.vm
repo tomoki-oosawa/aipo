@@ -142,9 +142,11 @@ $!result.Detail.Body
 </tr>
 <tr>
 	<th class="left">添付ファイル</th>
+	<td>
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
-	<td>$result.getStringCR($attachmentFileName)</td>
+	$result.getStringCR($attachmentFileName)<br>
 #end
+</td>
 </tr>
 </tbody>
 </table>
