@@ -641,11 +641,16 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           schedule,
           loginName,
           recipients,
-          true);
+          true,
+          ownerid); // createShareScheduleActivity関数に引数1個追加
 
         // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
         if ("O".equals(public_flag.toString())) {
-          ScheduleUtils.createNewScheduleActivity(schedule, loginName, true);
+          ScheduleUtils.createNewScheduleActivity(
+            schedule,
+            loginName,
+            true,
+            ownerid);
         }
       }
 
@@ -1125,10 +1130,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           schedule,
           loginName,
           recipients,
-          false);
+          false,
+          ownerid);
         // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
         if ("O".equals(public_flag.toString())) {
-          ScheduleUtils.createNewScheduleActivity(schedule, loginName, false);
+          ScheduleUtils.createNewScheduleActivity(
+            schedule,
+            loginName,
+            false,
+            ownerid);
         }
       }
 

@@ -1167,11 +1167,16 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule,
         loginName,
         recipients,
-        true);
+        true,
+        ownerid);
 
       // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
       if ("O".equals(public_flag.toString())) {
-        ScheduleUtils.createNewScheduleActivity(schedule, loginName, true);
+        ScheduleUtils.createNewScheduleActivity(
+          schedule,
+          loginName,
+          true,
+          ownerid);
       }
 
     } catch (Exception e) {
@@ -1701,15 +1706,21 @@ public class ScheduleFormData extends ALAbstractFormData {
           recipients.add(user.getName().getValue());
         }
       }
+      int userid = ALEipUtils.getUserId(rundata);
       ScheduleUtils.createShareScheduleActivity(
         tmpSchedule,
         loginName,
         recipients,
-        false);
+        false,
+        userid);
 
       // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
       if ("O".equals(public_flag.toString())) {
-        ScheduleUtils.createNewScheduleActivity(schedule, loginName, false);
+        ScheduleUtils.createNewScheduleActivity(
+          schedule,
+          loginName,
+          false,
+          userid);
       }
 
     } catch (Exception e) {

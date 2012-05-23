@@ -747,7 +747,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3745,7 +3745,7 @@ public class ScheduleUtils {
   }
 
   public static void createShareScheduleActivity(EipTSchedule schedule,
-      String loginName, List<String> recipients, boolean isNew) {
+      String loginName, List<String> recipients, boolean isNew, int userid) {
     if (recipients != null && recipients.size() > 0) {
       ALActivity RecentActivity =
         ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
@@ -3765,7 +3765,7 @@ public class ScheduleUtils {
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Schedule")
-        .withUserId(schedule.getOwnerId())
+        .withUserId(userid)
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
@@ -3780,7 +3780,7 @@ public class ScheduleUtils {
   }
 
   public static void createNewScheduleActivity(EipTSchedule schedule,
-      String loginName, boolean isNew) {
+      String loginName, boolean isNew, int userid) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
     boolean isDeletePrev =
@@ -3798,7 +3798,7 @@ public class ScheduleUtils {
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Schedule")
-      .withUserId(schedule.getOwnerId())
+      .withUserId(userid)
       .withLoginName(loginName)
       .withPortletParams(portletParams)
       .withTitle(title)
