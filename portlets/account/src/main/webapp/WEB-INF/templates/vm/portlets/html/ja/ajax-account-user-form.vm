@@ -75,7 +75,7 @@
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')-&nbsp;#ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')-&nbsp;#ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution('（半角数字）')
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("cellular_mail"))
-#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')#ALcaution('（半角英数字）')")
+#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution('（半角英数字）')")
 #ALtdcaption($!result.getFieldName("photo"))
 #ALtditemheader()
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form").addQueryData("msize","1"))
