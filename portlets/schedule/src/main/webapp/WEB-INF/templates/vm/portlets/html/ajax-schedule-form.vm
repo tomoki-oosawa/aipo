@@ -257,7 +257,18 @@
 #ALtditemfooter()
 #ALtdcaption("参加ユーザー")
 #ALtditemheader()
-<div id="memberFieldButton"></div>
+<div id="memberFieldButton">
+	<table style="width:98%;">
+		<tbody>
+			<tr class="member">
+				<td style="width:80%; border:none;"></td>
+				<td style="border:none;">
+					<input type="button" class="alignright" value="参加ユーザー選択" onclick="aipo.schedule.expandMember();" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div id="memberField" style="display:none;">
 <table class="none">
   <tr><td>
@@ -313,7 +324,18 @@
 #ALtditemfooter()
 #ALtdcaption('設備')
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end"></div>
+<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
+	<table style="width:98%;">
+		<tbody>
+			<tr class="member">
+				<td style="width:80%; border:none;"></td>
+				<td style="border:none;">
+					<input type="button" class="alignright" value="設備選択" onclick="aipo.schedule.expandMember();" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div id="facilityField" style="display:none;">
     <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
