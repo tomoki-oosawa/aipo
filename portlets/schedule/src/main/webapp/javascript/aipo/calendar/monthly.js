@@ -109,6 +109,10 @@ aipo.calendar.createMonthlyCalendar = function(json_url){
          */
         load: function(data, event) {
         	var result = data;
+        	if(result.error == 1){
+        		//セッションタイムアウトエラー発生時
+        		location.reload();
+        	}
         	/*
         	 * 日付表示
         	 */
