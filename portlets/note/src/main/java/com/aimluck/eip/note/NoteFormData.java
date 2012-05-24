@@ -484,11 +484,11 @@ public class NoteFormData extends ALAbstractFormData {
             .setCellularBody(createMsgForCellPhone(destMember.getUserId()));
           messageList.add(message);
         }
-        List<String> errors =
-          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-            .getUserId(rundata), messageList, add_dest_type_int));
-
-        msgList.addAll(errors);
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          orgId,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          add_dest_type_int));
 
         // 重複するメッセージを削除する
         HashSet<String> tempMsgList = new HashSet<String>();
