@@ -277,10 +277,7 @@
   	<td nowrap="nowrap"><span class="auiButtonDisabled">復帰</span></td>
   #end
 
-  #if($rdlist.IsNotNullClockInTime || $class != "today")
-    #ALtdcellAtt($outgoings "data-t=${s}${rdlist.IsNotNullClockInTime}${s} data-c=${s}${class}${s} align='center' nowrap='nowrap' data-debug-class='1'")
-    #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' data-debug-class='1'")
-  #elseif( $!result.TargetUserId != $!result.UserId)
+  #if($rdlist.IsNotNullClockInTime || $class != "today" || $!result.TargetUserId != $!result.UserId)
     #ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
     #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' ")
   #end
