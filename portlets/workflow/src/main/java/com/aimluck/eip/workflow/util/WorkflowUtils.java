@@ -1006,11 +1006,10 @@ public class WorkflowUtils {
         messageList.add(message);
       }
 
-      List<String> errors =
-        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
-      msgList.addAll(errors);
+      ALMailService.sendAdminMailAsync(new ALAdminMailContext(orgId, ALEipUtils
+        .getUserId(rundata), messageList, ALMailUtils
+        .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
+      // msgList.addAll(errors);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -1089,11 +1088,10 @@ public class WorkflowUtils {
 
       }
 
-      List<String> errors =
-        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
-      msgList.addAll(errors);
+      ALMailService.sendAdminMailAsync(new ALAdminMailContext(orgId, ALEipUtils
+        .getUserId(rundata), messageList, ALMailUtils
+        .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
+      // msgList.addAll(errors);
 
     } catch (Exception e) {
       logger.error("[WorkflowUtils]", e);
