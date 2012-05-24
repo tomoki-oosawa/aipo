@@ -122,3 +122,10 @@ ALTER TABLE `eip_t_timeline_url` modify `url` text not null;
 ALTER TABLE `eip_m_config` ADD INDEX (`name`);
 ALTER TABLE `container_config` ADD INDEX (`name`);
 -- 20120518
+
+-- 20120524
+ALTER TABLE `turbine_user` ADD COLUMN `has_photo` varchar (1) DEFAULT 'F';
+ALTER TABLE `turbine_user` ADD COLUMN `photo_modified` datetime DEFAULT NULL;
+UPDATE `turbine_user` SET `photo_modified` = NOW();
+UPDATE `turbine_user` SET `has_photo` = 'T' WHERE `photo` IS NOT NULL;
+-- 20120524
