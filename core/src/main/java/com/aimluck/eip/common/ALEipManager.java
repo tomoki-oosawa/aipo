@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.common;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,12 +42,14 @@ import com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature;
 import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.cayenne.om.security.VTurbineUserLite;
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
+ * ユーザー情報、会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
  * 
  */
 public class ALEipManager {
@@ -56,6 +60,9 @@ public class ALEipManager {
 
   /** Singleton */
   private static ALEipManager manager = new ALEipManager();
+
+  /** ユーザーキー */
+  private static String USERS_KEY = "com.aimluck.eip.common.ALEipManager.users";
 
   /** 会社キー */
   private static String COMPANIES_KEY =
@@ -119,6 +126,92 @@ public class ALEipManager {
     if (request != null) {
       request.setAttribute(POSITIONS_KEY, null);
     }
+  }
+
+  public ALEipUser getUser(Integer userId) {
+    Map<Integer, ALEipUser> users = getUsers(Arrays.asList(userId));
+    return users.get(userId);
+  }
+
+  public Map<Integer, ALEipUser> getUsers(List<Integer> users) {
+    Map<Integer, ALEipUser> results =
+      new HashMap<Integer, ALEipUser>(users.size());
+    List<Integer> fetchUsers = new ArrayList<Integer>(users.size());
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+
+    if (request != null) {
+      @SuppressWarnings("unchecked")
+      Map<Integer, ALEipUser> map =
+        (Map<Integer, ALEipUser>) request.getAttribute(USERS_KEY);
+      if (map != null) {
+        for (Integer userId : users) {
+          ALEipUser user = map.get(userId);
+          if (user != null) {
+            results.put(userId, user);
+          } else {
+            fetchUsers.add(userId);
+          }
+        }
+      } else {
+        fetchUsers.addAll(users);
+      }
+    } else {
+      fetchUsers.addAll(users);
+    }
+
+    if (fetchUsers.size() > 0) {
+
+      StringBuilder select = new StringBuilder();
+
+      select.append("SELECT");
+      select.append(" turbine_user.user_id,");
+      select.append(" turbine_user.last_name,");
+      select.append(" turbine_user.first_name,");
+      select.append(" turbine_user.login_name,");
+      select.append(" turbine_user.has_photo,");
+      select.append(" turbine_user.photo_modified");
+
+      StringBuilder body = new StringBuilder();
+      body.append(" FROM turbine_user WHERE ");
+      body.append(" turbine_user.user_id IN (");
+      boolean isFirst = true;
+      for (Integer num : fetchUsers) {
+        if (!isFirst) {
+          body.append(",");
+
+        }
+        body.append(num.intValue());
+        isFirst = false;
+      }
+      body.append(")");
+
+      SQLTemplate<VTurbineUserLite> query =
+        Database.sql(VTurbineUserLite.class, select.toString()
+          + body.toString());
+      List<VTurbineUserLite> list = query.fetchList();
+
+      for (VTurbineUserLite model : list) {
+        ALEipUser eipUser = new ALEipUser();
+        eipUser.initField();
+        eipUser.setAliasName(model.getFirstName(), model.getLastName());
+        eipUser.setName(model.getLoginName());
+        eipUser.setUserId(model.getUserId());
+        eipUser.setHasPhoto("T".equals(model.getHasPhoto()));
+        eipUser.setPhotoModified(model.getPhotoModified() != null ? model
+          .getPhotoModified()
+          .getTime() : 0);
+
+        results.put(model.getUserId(), eipUser);
+      }
+    }
+
+    // requestに登録
+    if (request != null) {
+      request.setAttribute(USERS_KEY, results);
+    }
+
+    return results;
   }
 
   /**

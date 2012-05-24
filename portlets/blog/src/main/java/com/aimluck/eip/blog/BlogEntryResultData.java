@@ -28,6 +28,8 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -42,9 +44,6 @@ public class BlogEntryResultData implements ALData {
 
   /** Owner ID */
   private ALNumberField owner_id;
-
-  /** Owner 名 */
-  private ALStringField owner_name;
 
   /** Title */
   private ALStringField title;
@@ -85,8 +84,7 @@ public class BlogEntryResultData implements ALData {
   /** 日付（アンカーリンク用） */
   private int day;
 
-  /** 顔写真の有無 */
-  private boolean has_photo;
+  private ALEipUser user = null;
 
   /**
    *
@@ -96,7 +94,6 @@ public class BlogEntryResultData implements ALData {
   public void initField() {
     entry_id = new ALNumberField();
     owner_id = new ALNumberField();
-    owner_name = new ALStringField();
     title = new ALStringField();
     note = new ALStringField();
     blog_id = new ALNumberField();
@@ -111,7 +108,6 @@ public class BlogEntryResultData implements ALData {
 
     day = 0;
     comments_num = 0;
-    has_photo = false;
   }
 
   /**
@@ -284,14 +280,12 @@ public class BlogEntryResultData implements ALData {
    * @return
    */
   public ALStringField getOwnerName() {
-    return owner_name;
-  }
-
-  /**
-   * @param i
-   */
-  public void setOwnerName(String string) {
-    owner_name.setValue(string);
+    ALStringField field = new ALStringField();
+    ALEipUser user = getUser();
+    if (user != null) {
+      field.setValue(user.getAliasName().getValue());
+    }
+    return field;
   }
 
   /**
@@ -336,16 +330,33 @@ public class BlogEntryResultData implements ALData {
     day = i;
   }
 
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
-  }
-
   public boolean hasPhoto() {
-    return has_photo;
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.hasPhoto();
+    } else {
+      return false;
+    }
   }
 
+  /**
+   * @return photoModified
+   */
+  public long getPhotoModified() {
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.getPhotoModified();
+    } else {
+      return 0;
+    }
+  }
+
+  public ALEipUser getUser() {
+    if (user == null) {
+      user =
+        ALEipManager.getInstance().getUser(
+          Integer.valueOf((int) this.owner_id.getValue()));
+    }
+    return user;
+  }
 }

@@ -33,6 +33,7 @@ import org.apache.turbine.util.RunData;
 public class ALSessionUtils {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALSessionUtils.class.getName());
 
@@ -45,6 +46,9 @@ public class ALSessionUtils {
       imageScreenList = new ArrayList<String>();
       imageScreenList.add("FileuploadFacePhotoScreen");
       imageScreenList.add("TimelineFileThumbnailScreen");
+      imageScreenList.add("TimelineUrlThumbnailScreen");
+      imageScreenList.add("BlogFileThumbnailScreen");
+      imageScreenList.add("MsgboardTopicFileThumbnailScreen");
     }
     return imageScreenList;
   }
@@ -62,6 +66,9 @@ public class ALSessionUtils {
       return false;
     }
     if (getImageScreenList().contains(template)) {
+      data.getRequest().setAttribute(
+        "com.aimluck.eip.util.ALSessionUtils.isImageRequest",
+        true);
       return true;
     }
     return false;

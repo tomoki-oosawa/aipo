@@ -34,12 +34,12 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -62,6 +62,8 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
 
   /** 検索ワード */
   private ALStringField searchWord;
+
+  private final List<Integer> users = new ArrayList<Integer>();
 
   /**
    * 
@@ -156,7 +158,6 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       rd.initField();
       rd.setEntryId(entry_id.longValue());
       rd.setOwnerId(ower_id);
-      rd.setOwnerName(BlogUtils.getUserFullName(ower_id));
 
       rd.setTitle(ALCommonUtils.compressString((String) Database
         .getFromDataRow(dataRow, EipTBlogEntry.TITLE_COLUMN), getStrLength()));
@@ -180,6 +181,10 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
       List<EipTBlogComment> list = query.fetchList();
       if (list != null && list.size() > 0) {
         rd.setCommentsNum(list.size());
+      }
+
+      if (!users.contains(ower_id)) {
+        users.add(ower_id);
       }
 
       return rd;
@@ -271,6 +276,17 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
    */
   public ALStringField getSearchWord() {
     return searchWord;
+  }
+
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean result = super.doViewList(action, rundata, context);
+    loadAggregateUsers();
+    return result;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
   }
 
 }

@@ -41,9 +41,10 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractFormData;
-import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -133,13 +134,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     // 顔写真の取得
-    ALBaseUser user = BlogUtils.getBaseUser(uid);
-    user_name = user.getLastName() + " " + user.getFirstName();
-    if (user.getPhoto() != null) {
-      has_photo = true;
-    } else {
-      has_photo = false;
-    }
+    ALEipUser user = ALEipManager.getInstance().getUser(uid);
+    user_name = user.getAliasName().getValue();
+    has_photo = user.hasPhoto();
 
     int view_uid = BlogUtils.getViewId(rundata, context, uid);
     // アクセス権

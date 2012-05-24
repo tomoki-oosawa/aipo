@@ -808,6 +808,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhoto(facePhoto);
+          user.setHasPhoto(true);
+          user.setPhotoModified(new Date());
         }
 
         // ユーザーを追加
@@ -954,9 +956,12 @@ public class AccountUserFormData extends ALAbstractFormData {
           if (filebean.getFileId() != 0) {
             // 顔写真を登録する．
             user.setPhoto(facePhoto);
+            user.setPhotoModified(new Date());
+            user.setHasPhoto(true);
           }
         } else {
           user.setPhoto(null);
+          user.setHasPhoto(false);
         }
 
         user.setEmail(email.getValue());
@@ -1012,6 +1017,8 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
           currentUser.setFirstNameKana(user.getFirstNameKana());
           currentUser.setLastNameKana(user.getLastNameKana());
+          currentUser.setHasPhoto(user.hasPhoto());
+          currentUser.setPhotoModified(user.getPhotoModified());
         }
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService

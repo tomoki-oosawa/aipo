@@ -112,11 +112,9 @@ public class AccountEditSelectData extends
       rd.setCellularMail(record.getCellularMail());
       rd.setCompanyId(record.getCompanyId());
 
-      if (record.getPhoto() != null) {
-        rd.setHasPhoto(true);
-      } else {
-        rd.setHasPhoto(false);
-      }
+      rd.setHasPhoto(record.hasPhoto());
+      rd.setPhotoModified(record.getPhotoModified().getTime());
+
       rd.setPostIdList(postIds);
       rd.setPostNameList(postNames);
       rd.setPositionName(getPositionName(record.getPositionId()));

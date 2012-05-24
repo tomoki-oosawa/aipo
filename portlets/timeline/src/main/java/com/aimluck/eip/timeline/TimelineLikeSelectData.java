@@ -35,13 +35,12 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.common.ALTimelineManager;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -54,6 +53,8 @@ public class TimelineLikeSelectData extends
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineSelectData.class.getName());
+
+  private final List<Integer> users = new ArrayList<Integer>();
 
   /**
    * 
@@ -72,7 +73,6 @@ public class TimelineLikeSelectData extends
       context,
       LIST_SORT_TYPE_STR,
       ALEipConstants.LIST_SORT_TYPE_DESC);
-
   }
 
   /**
@@ -130,7 +130,6 @@ public class TimelineLikeSelectData extends
    * @param obj
    * @return
    */
-  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTTimelineLike record) {
     try {
@@ -139,26 +138,12 @@ public class TimelineLikeSelectData extends
       rd.setTimelineLikeId(record.getTimelineLikeId().longValue());
       rd.setTimelineId(record.getTimelineId().longValue());
       rd.setUserId(record.getOwnerId().longValue());
-      rd
-        .setUserName(ALEipUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setCreateDate(record.getCreateDate());
 
-      rd.setHasPhoto(false);
-      ALTimelineManager manager = ALTimelineManager.getInstance();
-      List<TimelineUserResultData> userDataList =
-        (List<TimelineUserResultData>) manager.getUserDataList();
+      if (!users.contains(record.getOwnerId())) {
+        users.add(record.getOwnerId());
+      }
 
-      if (userDataList == null) {
-        userDataList = TimelineUtils.getTimelineUserResultDataList("LoginUser");
-        manager.setUserDataList(userDataList);
-      }
-      for (TimelineUserResultData userData : userDataList) {
-        if (record.getOwnerId().intValue() == userData.getUserId().getValue()
-          && userData.hasPhoto()) {
-          rd.setHasPhoto(true);
-          break;
-        }
-      }
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -215,6 +200,7 @@ public class TimelineLikeSelectData extends
         likeList.add((TimelineLikeResultData) getResultData(like));
       }
     }
+    loadAggregateUsers();
     return likeList;
   }
 
@@ -228,6 +214,17 @@ public class TimelineLikeSelectData extends
     query.setQualifier(exp);
     query.orderDesending(EipTTimelineLike.CREATE_DATE_PROPERTY);
     return query;
+  }
+
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean result = super.doViewList(action, rundata, context);
+    loadAggregateUsers();
+    return result;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
   }
 
 }

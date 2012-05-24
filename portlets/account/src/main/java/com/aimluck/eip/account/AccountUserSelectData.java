@@ -295,6 +295,8 @@ public class AccountUserSelectData extends
         .getPositionId()
         .intValue()));
       rd.setDisabled(record.getDisabled());
+      rd.setHasPhoto("T".equals(record.getHasPhoto()));
+      rd.setPhotoModified(record.getPhotoModified().getTime());
 
       return rd;
     } catch (Exception ex) {
@@ -335,11 +337,8 @@ public class AccountUserSelectData extends
       rd.setPositionName(ALEipUtils.getPositionName(record.getPositionId()));
       rd.setDisabled(record.getDisabled());
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
-      if (record.getPhoto() != null) {
-        rd.setHasPhoto(true);
-      } else {
-        rd.setHasPhoto(false);
-      }
+      rd.setHasPhoto(record.hasPhoto());
+      rd.setPhotoModified(record.getPhotoModified().getTime());
 
       return rd;
     } catch (Exception ex) {

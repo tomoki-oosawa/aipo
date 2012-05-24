@@ -34,6 +34,7 @@ import com.aimluck.eip.fileupload.FileuploadViewResultData;
 public class FileuploadViewScreen extends ALVelocityScreen {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileuploadViewScreen.class.getName());
 

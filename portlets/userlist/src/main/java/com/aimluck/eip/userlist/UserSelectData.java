@@ -407,12 +407,8 @@ public class UserSelectData extends
     data.setPostNameList(ALEipUtils.getPostNameList(model.getUserId()));
     data.setPositionName(ALEipUtils.getPositionName(model.getPositionId()));
     data.setDisabled(model.getDisabled());
+    data.setHasPhoto("T".equals(model.getHasPhoto()));
 
-    if (model.getPhoto() != null) {
-      data.setHasPhoto(true);
-    } else {
-      data.setHasPhoto(false);
-    }
   }
 
   private String getAliasName(String firstName, String lastName) {

@@ -27,29 +27,4 @@ import com.aimluck.eip.common.ALEipUser;
  */
 public class TimelineUserResultData extends ALEipUser implements ALData {
 
-  /** 顔写真の有無 */
-  private boolean has_photo;
-
-  /**
-   *
-   *
-   */
-  @Override
-  public void initField() {
-    super.initField();
-    has_photo = false;
-  }
-
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
-  }
-
-  public boolean hasPhoto() {
-    return has_photo;
-  }
-
 }

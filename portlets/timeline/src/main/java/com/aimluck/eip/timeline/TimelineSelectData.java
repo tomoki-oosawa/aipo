@@ -48,10 +48,10 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
-import com.aimluck.eip.common.ALTimelineManager;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -108,6 +108,8 @@ public class TimelineSelectData extends
   private ALStringField target_keyword;
 
   private List<Object> list;
+
+  private final List<Integer> users = new ArrayList<Integer>();
 
   /**
    * 
@@ -206,13 +208,8 @@ public class TimelineSelectData extends
       TimelineResultData rd = new TimelineResultData();
       rd.initField();
       rd.setTimelineId(record.getTimelineId().longValue());
-
       rd.setNote(record.getNote());
-
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd.setOwnerName(ALEipUtils
-        .getUserFullName(record.getOwnerId().intValue()));
-
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       rd.setTimelineType(record.getTimelineType());
@@ -221,23 +218,8 @@ public class TimelineSelectData extends
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
 
-      int userId = record.getOwnerId().intValue();
-      rd.setHasPhoto(false);
-
-      ALTimelineManager manager = ALTimelineManager.getInstance();
-      @SuppressWarnings("unchecked")
-      List<TimelineUserResultData> userDataList =
-        (List<TimelineUserResultData>) manager.getUserDataList();
-
-      if (userDataList == null) {
-        userDataList = TimelineUtils.getTimelineUserResultDataList("LoginUser");
-        manager.setUserDataList(userDataList);
-      }
-      for (TimelineUserResultData userData : userDataList) {
-        if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {
-          rd.setHasPhoto(true);
-          break;
-        }
+      if (!users.contains(record.getOwnerId())) {
+        users.add(record.getOwnerId());
       }
 
       return rd;
@@ -293,6 +275,8 @@ public class TimelineSelectData extends
     rd.setUrlList(urlsMap.get(id));
     rd.setAttachmentFileList(filesMap.get(id));
     rd.setReplyCount(rd.getCoTopicList().size());
+
+    loadAggregateUsers();
 
     return rd;
   }
@@ -465,6 +449,8 @@ public class TimelineSelectData extends
       // ファイル
       Map<Integer, List<FileuploadBean>> filesMap = getFiles(parentIds);
 
+      // ユーザー
+
       if (resultList != null) {
         if (resultList.getTotalCount() > 0) {
           setPageParam(resultList.getTotalCount());
@@ -483,7 +469,6 @@ public class TimelineSelectData extends
           List<TimelineResultData> coac = rd.getCoActivityList();
 
           // 権限のあるアクティビティのみ表示する
-
           for (Iterator<TimelineResultData> iter = coac.iterator(); iter
             .hasNext();) {
             TimelineResultData coac_item = iter.next();
@@ -520,6 +505,9 @@ public class TimelineSelectData extends
           }
         }
       }
+
+      loadAggregateUsers();
+
       action.setResultData(this);
       action.putData(rundata, context);
       ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
@@ -665,6 +653,10 @@ public class TimelineSelectData extends
   @Override
   public List<Object> getList() {
     return list;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
   }
 
 }

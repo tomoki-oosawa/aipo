@@ -103,12 +103,17 @@ public class JetspeedTemplatePage extends DefaultPage {
       case -1:
         break;
       case 0:
-        data.getResponse().setHeader("Cache-Control", "no-cache");
-        data.getResponse().setHeader("Pragma", "no-cache");
-        data.getResponse().setDateHeader("Expires", 0);
-        data.getResponse().setDateHeader(
-          "Last-Modified",
-          System.currentTimeMillis());
+        Object isImageRequest =
+          data.getRequest().getAttribute(
+            "com.aimluck.eip.util.ALSessionUtils.isImageRequest");
+        if (isImageRequest == null || isImageRequest.toString().length() == 0) {
+          data.getResponse().setHeader("Cache-Control", "no-cache");
+          data.getResponse().setHeader("Pragma", "no-cache");
+          data.getResponse().setDateHeader("Expires", 0);
+          data.getResponse().setDateHeader(
+            "Last-Modified",
+            System.currentTimeMillis());
+        }
         break;
       default:
         data

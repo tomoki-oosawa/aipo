@@ -37,6 +37,10 @@ public class TurbineUser extends _TurbineUser {
 
   public static final String PHOTO_COLUMN = "PHOTO";
 
+  public static final String HAS_PHOTO_COLUMN = "HAS_PHOTO";
+
+  public static final String PHOTO_MODIFIED_COLUMN = "PHOTO_MODIFIED";
+
   public Integer getUserId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(USER_ID_PK_COLUMN);
@@ -53,6 +57,6 @@ public class TurbineUser extends _TurbineUser {
 
   public void setUserId(String id) {
     setObjectId(new ObjectId("TurbineUser", USER_ID_PK_COLUMN, Integer
-        .valueOf(id)));
+      .valueOf(id)));
   }
 }

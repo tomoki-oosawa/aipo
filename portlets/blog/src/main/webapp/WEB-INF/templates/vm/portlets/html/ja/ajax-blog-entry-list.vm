@@ -47,7 +47,7 @@
 <div class="avatar">
 <a href="$!utils.escapeXML($!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('view_month', 'none'))">
 #if(${record.hasPhoto()})
-<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="${record.OwnerName}" width="50" height="50" />
+<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="${record.OwnerName}" width="50" height="50" />
 #else
 <img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="50" height="50" />
 #end
@@ -92,7 +92,7 @@
 #foreach($user in $!result.UserList)
 <li#if ($!result.OwnerId == $!user.UserId.toString()) class="active"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", $user.UserId))', '$!portlet.ID');">
 #if($user.hasPhoto())
-<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${user.UserId}))" width="32" height="32" alt="${user.AliasName}" />
+<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${user.UserId}).addQueryData("t", ${user.PhotoModified}))" width="32" height="32" alt="${user.AliasName}" />
 #else
 <img src="images/common/avatar_default3.png" alt="${user.AliasName}" width="32" height="32" />
 #end

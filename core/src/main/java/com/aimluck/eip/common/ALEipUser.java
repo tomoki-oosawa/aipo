@@ -37,13 +37,20 @@ public class ALEipUser implements ALData {
   /** 名前（アプリケーション） */
   private ALStringField alias_name;
 
+  private boolean hasPhoto;
+
+  private long photoModified;
+
   /**
    *
    */
+  @Override
   public void initField() {
     user_id = new ALNumberField();
     name = new ALStringField();
     alias_name = new ALStringField();
+    hasPhoto = false;
+    photoModified = 0L;
   }
 
   /**
@@ -92,6 +99,36 @@ public class ALEipUser implements ALData {
    */
   public void setUserId(int number) {
     user_id.setValue(number);
+  }
+
+  /**
+   * @return hasPhoto
+   */
+  public boolean hasPhoto() {
+    return hasPhoto;
+  }
+
+  /**
+   * @param hasPhoto
+   *          セットする hasPhoto
+   */
+  public void setHasPhoto(boolean hasPhoto) {
+    this.hasPhoto = hasPhoto;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public long getPhotoModified() {
+    return photoModified;
+  }
+
+  /**
+   * @param photoModified
+   *          セットする photoModified
+   */
+  public void setPhotoModified(long photoModified) {
+    this.photoModified = photoModified;
   }
 
 }

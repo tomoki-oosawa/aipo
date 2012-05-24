@@ -27,32 +27,17 @@ import com.aimluck.eip.common.ALEipUser;
  */
 public class BlogUserResultData extends ALEipUser implements ALData {
 
-  /** 顔写真の有無 */
-  private boolean has_photo;
-
   /** 1日以内に記事投稿をしたかのフラグ */
   private boolean newly_create_entry;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     super.initField();
-    has_photo = false;
     newly_create_entry = false;
-  }
-
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
-  }
-
-  public boolean hasPhoto() {
-    return has_photo;
   }
 
   /**
@@ -66,4 +51,5 @@ public class BlogUserResultData extends ALEipUser implements ALData {
   public boolean newlyCreateEntry() {
     return newly_create_entry;
   }
+
 }

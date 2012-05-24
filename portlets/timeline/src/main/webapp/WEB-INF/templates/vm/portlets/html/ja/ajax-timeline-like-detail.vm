@@ -29,7 +29,7 @@
 		<div class="content">
 			<div class="avatar">
 #if(${record2.hasPhoto()})
-				<td class="caption"><img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.UserId}))" alt="${record2.UserName}" width="50" height="50" /></td>
+				<td class="caption"><img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.UserId}).addQueryData("t", ${record2.PhotoModified}))" alt="${record2.UserName}" width="50" height="50" /></td>
 #else
       <td class="caption"><img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="${record2.UserName}" width="50" height="50" /></td>
 #end

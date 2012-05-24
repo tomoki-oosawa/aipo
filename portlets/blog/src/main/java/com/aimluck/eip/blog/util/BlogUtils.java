@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -258,7 +259,6 @@ public class BlogUtils {
         throw new ALPageNotFoundException();
       }
 
-      int userid = ALEipUtils.getUserId(rundata);
       SelectQuery<EipTBlogComment> query =
         Database.query(EipTBlogComment.class);
       Expression exp1 =
@@ -433,7 +433,7 @@ public class BlogUtils {
     StringBuffer statement = new StringBuffer();
     statement.append("SELECT DISTINCT ");
     statement
-      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.PHOTO, D.POSITION ");
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.HAS_PHOTO, B.PHOTO_MODIFIED, D.POSITION ");
     statement.append("FROM turbine_user_group_role as A ");
     statement.append("LEFT JOIN turbine_user as B ");
     statement.append("  on A.USER_ID = B.USER_ID ");
@@ -476,14 +476,19 @@ public class BlogUtils {
           TurbineUser.FIRST_NAME_COLUMN), (String) Database.getFromDataRow(
           dataRow,
           TurbineUser.LAST_NAME_COLUMN));
-        byte[] photo =
-          (byte[]) Database.getFromDataRow(dataRow, TurbineUser.PHOTO_COLUMN);
+        user.setHasPhoto("T".equals(Database.getFromDataRow(
+          dataRow,
+          TurbineUser.HAS_PHOTO_COLUMN)));
 
-        if (photo != null && photo.length > 0) {
-          user.setHasPhoto(true);
-        } else {
-          user.setHasPhoto(false);
+        Object photoModified =
+          Database.getFromDataRow(dataRow, TurbineUser.PHOTO_MODIFIED_COLUMN);
+        Date date = new Date();
+        try {
+          date = (Date) photoModified;
+        } catch (Throwable ignore) {
+
         }
+        user.setPhotoModified(date.getTime());
         list.add(user);
       }
     } catch (Exception ex) {

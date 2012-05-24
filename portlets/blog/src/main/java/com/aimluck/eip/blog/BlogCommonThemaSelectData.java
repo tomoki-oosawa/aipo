@@ -39,6 +39,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -62,6 +63,8 @@ public class BlogCommonThemaSelectData extends
     .getLogger(BlogCommonThemaSelectData.class.getName());
 
   private int loginuser_id = 0;
+
+  private final List<Integer> users = new ArrayList<Integer>();
 
   /**
    * 
@@ -285,13 +288,14 @@ public class BlogCommonThemaSelectData extends
         entryrd.setTitleDate(entry.getCreateDate());
 
         entryrd.setOwnerId(entry.getOwnerId().intValue());
-        entryrd.setOwnerName(BlogUtils.getUserFullName(entry
-          .getOwnerId()
-          .intValue()));
 
         List<?> comments = entry.getEipTBlogComments();
         if (comments != null) {
           entryrd.setCommentsNum(comments.size());
+        }
+
+        if (!users.contains(entry.getOwnerId())) {
+          users.add(entry.getOwnerId());
         }
 
         entryList.add(entryrd);
@@ -302,6 +306,9 @@ public class BlogCommonThemaSelectData extends
 
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+
+      loadAggregateUsers();
+
       return rd;
     } catch (Exception e) {
       return null;
@@ -341,5 +348,16 @@ public class BlogCommonThemaSelectData extends
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_BLOG_THEME;
+  }
+
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean result = super.doViewList(action, rundata, context);
+    loadAggregateUsers();
+    return result;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
   }
 }

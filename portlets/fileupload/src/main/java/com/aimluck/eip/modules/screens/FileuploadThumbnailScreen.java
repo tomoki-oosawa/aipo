@@ -21,6 +21,8 @@ package com.aimluck.eip.modules.screens;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +55,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
    */
   @Override
   protected String getContentType(RunData rundata) {
-    return "application/octet-stream";
+    return "image/jpeg";
   }
 
   /**
@@ -91,16 +93,16 @@ public class FileuploadThumbnailScreen extends RawScreen {
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
     try {
-      String attachmentRealName =
-        new String(getFileName().getBytes("Shift_JIS"), "8859_1");
 
       HttpServletResponse response = rundata.getResponse();
-      // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
-      response.setHeader("Content-disposition", "attachment; filename=\""
-        + attachmentRealName
-        + "\"");
-      response.setHeader("Cache-Control", "aipo");
-      response.setHeader("Pragma", "aipo");
+
+      long sec = 60 * 60 * 24 * 30;
+      response.setHeader("Cache-Control", "private, max-age=" + sec);
+
+      Calendar calendar = Calendar.getInstance();
+      calendar.add(Calendar.DATE, 30);
+      Date expired = calendar.getTime();
+      response.setDateHeader("Expires ", expired.getTime());
 
       // ファイル内容の出力
       out = response.getOutputStream();
@@ -110,9 +112,9 @@ public class FileuploadThumbnailScreen extends RawScreen {
         // サムネイル画像がデータベースに保存されていない場合
         throw new FileNotFoundException();
       }
-
       out.write(file);
       out.flush();
+
     } catch (Exception e) {
       logger.error("[ERROR]" + e);
     } finally {

@@ -128,7 +128,7 @@ function appsNaviSwitch() {
 <div id="appsNavigation"><div id="anInner">
         <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><img src="themes/default/images/mobile/an_list.png"></a></div>
         <div class="anUser">
-                <div class="avatar">#if ($data.User.getPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("r",$!utils.ImageRandomNumber)))" alt="顔写真" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="顔写真" width="20" height="20"/>#end </div>
+                <div class="avatar">#if ($data.User.getPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}))" alt="顔写真" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="顔写真" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
         </div>
         <div class="anApps">

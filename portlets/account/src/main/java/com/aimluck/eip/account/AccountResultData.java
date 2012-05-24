@@ -102,6 +102,8 @@ public class AccountResultData implements ALData {
   /** グループ名 */
   private ALStringField group_name;
 
+  private long photo_modified;
+
   /**
    *
    *
@@ -134,6 +136,7 @@ public class AccountResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     group_name = new ALStringField();
+    setPhotoModified(0L);
   }
 
   /**
@@ -480,6 +483,21 @@ public class AccountResultData implements ALData {
 
   public List<Integer> getPostIdList() {
     return post_id_list;
+  }
+
+  /**
+   * @return photo_modified
+   */
+  public long getPhotoModified() {
+    return photo_modified;
+  }
+
+  /**
+   * @param photo_modified
+   *          セットする photo_modified
+   */
+  public void setPhotoModified(long photo_modified) {
+    this.photo_modified = photo_modified;
   }
 
 }

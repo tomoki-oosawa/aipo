@@ -23,7 +23,7 @@
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
 	<div class="avatar mr10">
 		#if(${record.hasPhoto()})
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}))" alt="$!{record.OwnerName}" width="50" height="50" />
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="$!{record.OwnerName}" width="50" height="50" />
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!{record.OwnerName}" width="50" height="50" />
 		#end
@@ -115,7 +115,7 @@
 			#end
 			<div class="avatar mr10">
 				#if(${record2.hasPhoto()})
-					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}))" alt="$!{record2.OwnerName}" width="32" height="32" />
+					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}).addQueryData("t", ${record2.PhotoModified}))" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#else
 					<img src="images/common/avatar_default3.png" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#end
@@ -248,7 +248,7 @@
 		#end
 		<div class="avatar mr10">
 			#if(${record3.hasPhoto()})
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record3.OwnerId}))" alt="$!{record3.OwnerName}" width="32" height="32" />
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record3.OwnerId}).addQueryData("t", ${record3.PhotoModified}))" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#else
 				<img src="images/common/avatar_default3.png" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#end

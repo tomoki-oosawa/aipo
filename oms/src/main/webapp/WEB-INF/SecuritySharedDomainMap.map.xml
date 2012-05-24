@@ -35,6 +35,7 @@
 		<db-attribute name="EMAIL" type="VARCHAR" length="99"/>
 		<db-attribute name="FIRST_NAME" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="FIRST_NAME_KANA" type="VARCHAR" length="99"/>
+		<db-attribute name="HAS_PHOTO" type="CHAR" length="1"/>
 		<db-attribute name="IN_TELEPHONE" type="VARCHAR" length="15"/>
 		<db-attribute name="LAST_LOGIN" type="TIMESTAMP"/>
 		<db-attribute name="LAST_NAME" type="VARCHAR" isMandatory="true" length="99"/>
@@ -46,6 +47,7 @@
 		<db-attribute name="PASSWORD_CHANGED" type="TIMESTAMP"/>
 		<db-attribute name="PASSWORD_VALUE" type="VARCHAR" isMandatory="true" length="200"/>
 		<db-attribute name="PHOTO" type="LONGVARBINARY"/>
+		<db-attribute name="PHOTO_MODIFIED" type="TIMESTAMP"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -55,6 +57,16 @@
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROLE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="v_turbine_user_lite">
+		<db-attribute name="CELLULAR_MAIL" type="VARCHAR" length="99"/>
+		<db-attribute name="EMAIL" type="VARCHAR" length="99"/>
+		<db-attribute name="FIRST_NAME" type="VARCHAR" isMandatory="true" length="99"/>
+		<db-attribute name="HAS_PHOTO" type="CHAR" length="1"/>
+		<db-attribute name="LAST_NAME" type="VARCHAR" isMandatory="true" length="99"/>
+		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="PHOTO_MODIFIED" type="TIMESTAMP"/>
+		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<obj-entity name="TurbineGroup" className="com.aimluck.eip.cayenne.om.security.TurbineGroup" dbEntityName="turbine_group">
 		<obj-attribute name="groupAliasName" type="java.lang.String" db-attribute-path="GROUP_ALIAS_NAME"/>
@@ -85,6 +97,7 @@
 		<obj-attribute name="email" type="java.lang.String" db-attribute-path="EMAIL"/>
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="FIRST_NAME"/>
 		<obj-attribute name="firstNameKana" type="java.lang.String" db-attribute-path="FIRST_NAME_KANA"/>
+		<obj-attribute name="hasPhoto" type="java.lang.String" db-attribute-path="HAS_PHOTO"/>
 		<obj-attribute name="inTelephone" type="java.lang.String" db-attribute-path="IN_TELEPHONE"/>
 		<obj-attribute name="lastLogin" type="java.util.Date" db-attribute-path="LAST_LOGIN"/>
 		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="LAST_NAME"/>
@@ -96,10 +109,20 @@
 		<obj-attribute name="passwordChanged" type="java.util.Date" db-attribute-path="PASSWORD_CHANGED"/>
 		<obj-attribute name="passwordValue" type="java.lang.String" db-attribute-path="PASSWORD_VALUE"/>
 		<obj-attribute name="photo" type="byte[]" db-attribute-path="PHOTO"/>
+		<obj-attribute name="photoModified" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED"/>
 		<obj-attribute name="positionId" type="java.lang.Integer" db-attribute-path="POSITION_ID"/>
 		<obj-attribute name="updatedUserId" type="java.lang.Integer" db-attribute-path="UPDATED_USER_ID"/>
 	</obj-entity>
 	<obj-entity name="TurbineUserGroupRole" className="com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole" dbEntityName="turbine_user_group_role">
+	</obj-entity>
+	<obj-entity name="VTurbineUserLite" className="com.aimluck.eip.cayenne.om.security.VTurbineUserLite" dbEntityName="v_turbine_user_lite">
+		<obj-attribute name="cellularMail" type="java.lang.String" db-attribute-path="CELLULAR_MAIL"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="EMAIL"/>
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="FIRST_NAME"/>
+		<obj-attribute name="hasPhoto" type="java.lang.String" db-attribute-path="HAS_PHOTO"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="LAST_NAME"/>
+		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
+		<obj-attribute name="photoModified" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED"/>
 	</obj-entity>
 	<db-relationship name="eipFacilityGroup" source="turbine_group" target="eip_facility_group" toMany="true">
 		<db-attribute-pair source="GROUP_ID" target="GROUP_ID"/>
@@ -190,6 +213,9 @@
 	<obj-relationship name="eipTEventlog" source="TurbineUser" target="EipTEventlog" db-relationship-path="eipTEventlog"/>
 	<obj-relationship name="eipTMsgboardCategory" source="TurbineUser" target="EipTMsgboardCategory" db-relationship-path="eipTMsgboardCategory"/>
 	<obj-relationship name="eipTReport" source="TurbineUser" target="EipTReport" db-relationship-path="eipTReport"/>
+	<obj-relationship name="eipTTimeline" source="TurbineUser" target="EipTTimeline" db-relationship-path="eipTTimeline"/>
+	<obj-relationship name="eipTTimelineLike" source="TurbineUser" target="EipTTimelineLike" db-relationship-path="EipTTimelineLike"/>
+	<obj-relationship name="eipTTimelineLike1" source="TurbineUser" target="EipTTimelineLike" db-relationship-path="eipTTimelineLike"/>
 	<obj-relationship name="eipTTodo" source="TurbineUser" target="EipTTodo" db-relationship-path="eipTTodo"/>
 	<obj-relationship name="eipTTodoCategory" source="TurbineUser" target="EipTTodoCategory" db-relationship-path="eipTTodoCategory"/>
 	<obj-relationship name="eipTWorkflowRequest" source="TurbineUser" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>

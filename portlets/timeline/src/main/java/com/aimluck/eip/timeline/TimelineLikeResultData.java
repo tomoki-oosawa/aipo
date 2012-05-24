@@ -25,6 +25,8 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -42,14 +44,10 @@ public class TimelineLikeResultData implements ALData {
   /** いいね！を押したユーザーID */
   private ALNumberField user_id;
 
-  /** 登録者名 */
-  private ALStringField user_name;
-
-  /** 顔写真の有無 */
-  private boolean has_photo;
-
   /** 登録日 */
   private ALDateTimeField create_date;
+
+  private ALEipUser user = null;
 
   /**
    *
@@ -60,7 +58,6 @@ public class TimelineLikeResultData implements ALData {
     timeline_like_id = new ALNumberField();
     timeline_id = new ALNumberField();
     user_id = new ALNumberField();
-    user_name = new ALStringField();
     create_date = new ALDateTimeField();
   }
 
@@ -101,11 +98,12 @@ public class TimelineLikeResultData implements ALData {
   }
 
   public ALStringField getUserName() {
-    return user_name;
-  }
-
-  public void setUserName(String str) {
-    user_name.setValue(str);
+    ALStringField field = new ALStringField();
+    ALEipUser user = getUser();
+    if (user != null) {
+      field.setValue(user.getAliasName().getValue());
+    }
+    return field;
   }
 
   /**
@@ -116,16 +114,25 @@ public class TimelineLikeResultData implements ALData {
     user_id.setValue(i);
   }
 
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
+  public boolean hasPhoto() {
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.hasPhoto();
+    } else {
+      return false;
+    }
   }
 
-  public boolean hasPhoto() {
-    return has_photo;
+  /**
+   * @return photoModified
+   */
+  public long getPhotoModified() {
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.getPhotoModified();
+    } else {
+      return 0;
+    }
   }
 
   /**
@@ -143,4 +150,12 @@ public class TimelineLikeResultData implements ALData {
     create_date.setValue(date);
   }
 
+  public ALEipUser getUser() {
+    if (user == null) {
+      user =
+        ALEipManager.getInstance().getUser(
+          Integer.valueOf((int) this.user_id.getValue()));
+    }
+    return user;
+  }
 }

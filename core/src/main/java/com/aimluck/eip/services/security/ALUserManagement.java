@@ -154,6 +154,8 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setUpdatedUserId((tuser.getUpdatedUserId() != null) ? tuser
         .getUpdatedUserId()
         .intValue() : 0);
+      baseuser.setPhotoModified(tuser.getPhotoModified());
+      baseuser.setHasPhoto("T".equals(tuser.getHasPhoto()));
       return baseuser;
     } catch (Exception e) {
       logger.error("[ALUserManagement]", e);
@@ -293,6 +295,8 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setPhoto(baseuser.getPhoto());
       tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
       tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
+      tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
+      tuser.setPhotoModified(baseuser.getPhotoModified());
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {
@@ -360,6 +364,8 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setPhoto(baseuser.getPhoto());
     tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
     tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
+    tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
+    tuser.setPhotoModified(new Date());
 
     Database.commit();
 

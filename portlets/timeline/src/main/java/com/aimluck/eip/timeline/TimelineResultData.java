@@ -27,6 +27,8 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -44,9 +46,6 @@ public class TimelineResultData implements ALData {
 
   /** 所有者 ID */
   private ALNumberField owner_id;
-
-  /** 所有者名 */
-  private ALStringField owner_name;
 
   /** タイムラインのタイプ */
   private String timeline_type;
@@ -87,9 +86,6 @@ public class TimelineResultData implements ALData {
   /** Urlオブジェクト */
   private List<TimelineUrlResultData> urlList;
 
-  /** 顔写真の有無 */
-  private boolean has_photo;
-
   /** いいねをしたか */
   private boolean like;
 
@@ -102,6 +98,8 @@ public class TimelineResultData implements ALData {
   /** いいね！の数 */
   private int likeCount;
 
+  private ALEipUser user = null;
+
   /**
    *
    *
@@ -111,7 +109,6 @@ public class TimelineResultData implements ALData {
     timeline_id = new ALNumberField();
     parent_id = new ALNumberField();
     owner_id = new ALNumberField();
-    owner_name = new ALStringField();
     params = new ALStringField();
 
     note = new ALStringField();
@@ -123,7 +120,6 @@ public class TimelineResultData implements ALData {
 
     is_public = true;
     new_topic = false;
-    has_photo = false;
     like = false;
     attachmentFileList = new ArrayList<FileuploadBean>();
     likeCount = 0;
@@ -171,12 +167,13 @@ public class TimelineResultData implements ALData {
     return owner_id;
   }
 
-  public void setOwnerName(String string) {
-    owner_name.setValue(string);
-  }
-
   public ALStringField getOwnerName() {
-    return owner_name;
+    ALStringField field = new ALStringField();
+    ALEipUser user = getUser();
+    if (user != null) {
+      field.setValue(user.getAliasName().getValue());
+    }
+    return field;
   }
 
   /**
@@ -407,16 +404,13 @@ public class TimelineResultData implements ALData {
     return Integer.valueOf((int) reply_count.getValue());
   }
 
-  /**
-   * 
-   * @param bool
-   */
-  public void setHasPhoto(boolean bool) {
-    has_photo = bool;
-  }
-
   public boolean hasPhoto() {
-    return has_photo;
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.hasPhoto();
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -529,6 +523,27 @@ public class TimelineResultData implements ALData {
 
   public void setLikeCount(int likeCount) {
     this.likeCount = likeCount;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public long getPhotoModified() {
+    ALEipUser user = getUser();
+    if (user != null) {
+      return user.getPhotoModified();
+    } else {
+      return 0;
+    }
+  }
+
+  public ALEipUser getUser() {
+    if (user == null) {
+      user =
+        ALEipManager.getInstance().getUser(
+          Integer.valueOf((int) this.owner_id.getValue()));
+    }
+    return user;
   }
 
 }

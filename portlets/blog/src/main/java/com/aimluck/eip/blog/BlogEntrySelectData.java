@@ -40,7 +40,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.common.ALBlogManager;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -111,6 +110,8 @@ public class BlogEntrySelectData extends
   private List<BlogUserResultData> userList;
 
   private List<ALEipGroup> myGroupList;
+
+  private final List<Integer> users = new ArrayList<Integer>();
 
   /**
    * 
@@ -249,7 +250,6 @@ public class BlogEntrySelectData extends
    * @param obj
    * @return
    */
-  @SuppressWarnings("unchecked")
   @Override
   protected Object getResultData(EipTBlogEntry record) {
     try {
@@ -257,8 +257,6 @@ public class BlogEntrySelectData extends
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd
-        .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(ALCommonUtils.compressString(
         record.getTitle(),
         getStrLength()));
@@ -288,22 +286,8 @@ public class BlogEntrySelectData extends
         rd.setCommentsNum(list.size());
       }
 
-      int userId = record.getOwnerId().intValue();
-      rd.setHasPhoto(false);
-
-      ALBlogManager manager = ALBlogManager.getInstance();
-      List<BlogUserResultData> userDataList =
-        (List<BlogUserResultData>) manager.getUserDataList();
-
-      if (userDataList == null) {
-        userDataList = BlogUtils.getBlogUserResultDataList("LoginUser");
-        manager.setUserDataList(userDataList);
-      }
-      for (BlogUserResultData userData : userDataList) {
-        if (userId == userData.getUserId().getValue() && userData.hasPhoto()) {
-          rd.setHasPhoto(true);
-          break;
-        }
+      if (!users.contains(record.getOwnerId())) {
+        users.add(record.getOwnerId());
       }
 
       return rd;
@@ -345,8 +329,6 @@ public class BlogEntrySelectData extends
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());
       rd.setOwnerId(record.getOwnerId().longValue());
-      rd
-        .setOwnerName(BlogUtils.getUserFullName(record.getOwnerId().intValue()));
       rd.setTitle(record.getTitle());
       rd.setNote(record.getNote());
       rd.setBlogId(record.getEipTBlog().getBlogId().longValue());
@@ -429,6 +411,9 @@ public class BlogEntrySelectData extends
         record.setUpdateDate(Calendar.getInstance().getTime());
         Database.commit();
       }
+
+      loadAggregateUsers();
+
       return rd;
     } catch (Exception ex) {
       Database.rollback();
@@ -561,4 +546,14 @@ public class BlogEntrySelectData extends
     return aclPortletFeature;
   }
 
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean result = super.doViewList(action, rundata, context);
+    loadAggregateUsers();
+    return result;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
+  }
 }

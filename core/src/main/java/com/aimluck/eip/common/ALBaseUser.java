@@ -70,6 +70,10 @@ public class ALBaseUser extends
 
   public static final String MODIFIED = "MODIFIED";
 
+  public static final String PHOTO_MODIFIED = "PHOTO_MODIFIED";
+
+  public static final String HAS_PHOTO = "HAS_PHOTO";
+
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseUser.class.getName());
@@ -365,5 +369,31 @@ public class ALBaseUser extends
    */
   public boolean isAdmin() {
     return ALEipUtils.isAdmin(Integer.parseInt(this.getUserId()));
+  }
+
+  public boolean hasPhoto() {
+    String hasPhoto = (String) getPerm(HAS_PHOTO);
+    return "T".equals(hasPhoto);
+  }
+
+  /**
+   *
+   */
+  public void setHasPhoto(boolean hasPhoto) {
+    setPerm(HAS_PHOTO, hasPhoto ? "T" : "F");
+  }
+
+  /**
+   * @param d
+   */
+  public void setPhotoModified(Date d) {
+    setPerm(PHOTO_MODIFIED, d);
+  }
+
+  /**
+   * @return
+   */
+  public Date getPhotoModified() {
+    return (Date) (getPerm(PHOTO_MODIFIED));
   }
 }

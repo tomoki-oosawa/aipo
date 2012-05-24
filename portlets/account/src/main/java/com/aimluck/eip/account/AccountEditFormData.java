@@ -20,6 +20,7 @@
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -582,9 +583,12 @@ public class AccountEditFormData extends ALAbstractFormData {
         if (filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhoto(facePhoto);
+          user.setHasPhoto(true);
+          user.setPhotoModified(new Date());
         }
       } else {
         user.setPhoto(null);
+        user.setHasPhoto(false);
       }
 
       // 新しいパスワードをセットする
@@ -608,6 +612,8 @@ public class AccountEditFormData extends ALAbstractFormData {
       ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
       if (currentUser.getUserName().equals(user.getUserName())) {
         currentUser.setPassword(user.getPassword());
+        currentUser.setHasPhoto(user.hasPhoto());
+        currentUser.setPhotoModified(user.getPhotoModified());
       }
 
       // イベントログに保存
