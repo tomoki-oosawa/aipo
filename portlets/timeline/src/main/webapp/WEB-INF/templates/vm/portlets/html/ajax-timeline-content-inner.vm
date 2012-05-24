@@ -70,12 +70,12 @@
 			&nbsp;
 	  #set ($formUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))")
 			#if(${record.isLike()})
-				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record.TimelineId}', 'dislike', false))">
 					<input type="hidden" name="secid" value="$secid" />
 					<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">いいね！を取り消す</a>
 				</form>
 			#else
-				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+				<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record.TimelineId}', 'like', false))">
 					<input type="hidden" name="secid" value="$secid" />
 					<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">いいね！</a>
 				</form>
@@ -94,13 +94,11 @@
 			#end
 		</div>
 	</div>
-	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments" #if($record.LikeCount == 0 && $record.ReplyCountInteger == 0 && $record.CoTopicList.size() == 0) style="display:none" #end>
-		#if($record.LikeCount > 0)
-			<div id="like_$!{record.TimelineId}" class="commentCaption">
-				<span class="iconLike"></span>
-				<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCount}人</a>が「いいね！」と言っています。
-			</div>
-		#end
+	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments" >
+		<div id="like_$!{record.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
+			<span class="iconLike"></span>
+			<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCount}人</a>が「いいね！」と言っています。
+		</div>
 		#if($record.ReplyCountInteger > 2)
 			<div id="commentCaption_$!{portlet.ID}_$!{record.TimelineId}" class="commentCaption">
 				<span class="iconComment"></span>
@@ -127,12 +125,12 @@
 					&nbsp;
 			#set ($likeUrl = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid))" )
 						#if(${record2.isLike()})
-							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record2.TimelineId}', 'dislike', true))">
 								<input type="hidden" name="secid" value="$secid" />
 								<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！を取り消す</a>
 							</form>
 						#else
-							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+							<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$likeUrl" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record2.TimelineId}', 'like', true))">
 								<input type="hidden" name="secid" value="$secid" />
 								<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！</a>
 							</form>
@@ -147,10 +145,8 @@
 								<input type="hidden" id="dummy_$!{portlet.ID}_$!{record2.TimelineId}" value="" />
 							</form>
 						#end
-						#if($record2.LikeCount > 0)
-							&nbsp;
-							<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeCount}</a>
-						#end
+						&nbsp;
+						<a href="javascript:void(0);" id="likeCount_$!{record2.TimelineId}" #if($record2.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeCount}</a>
 				</div>
 			</div>
 		</div>
@@ -203,12 +199,12 @@
 		$!{record2.UpdateDate}
 		&nbsp;
 		#if(${record2.isLike()})
-			<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+			<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record2.TimelineId}', 'dislike', false))">
 				<input type="hidden" name="secid" value="$secid" />
 				<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！を取り消す</a>
 			</form>
 		#else
-			<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+			<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record2.TimelineId}', 'like', false))">
 				<input type="hidden" name="secid" value="$secid" />
 				<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record2.TimelineId}').onsubmit();">いいね！</a>
 			</form>
@@ -227,9 +223,9 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end" #if($record2.LikeCount == 0 && $record2.ReplyCountInteger == 0 && $record2.CoTopicList.size() == 0) style="display:none" #end>
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end">
 	#if($record2.LikeCount > 0)
-	<div id="like_$!{record2.TimelineId}" class="commentCaption">
+	<div id="like_$!{record2.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
 		<span class="iconLike"></span>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCount}人</a>が「いいね！」と言っています。
 	</div>
@@ -259,12 +255,12 @@
 			<div class="time">$!{record3.CreateDate}
 				&nbsp;
 					#if(${record3.isLike()})
-						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record3.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record3.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record3.TimelineId}', 'dislike', true))">
 							<input type="hidden" name="secid" value="$secid" />
 							<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record3.TimelineId}'), 'mode', 'dislike');dojo.byId('likeForm_$!{portlet.ID}_$!{record3.TimelineId}').onsubmit();">いいね！を取り消す</a>
 						</form>
 					#else
-						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record3.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+						<form style="display:inline" name="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" id="likeForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record3.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveLikeMessage('$!{portlet.ID}', '$!{record3.TimelineId}', 'like', true))">
 							<input type="hidden" name="secid" value="$secid" />
 							<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record3.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record3.TimelineId}').onsubmit();">いいね！</a>
 						</form>
@@ -279,10 +275,8 @@
 							<input type="hidden" id="dummy_$!{portlet.ID}_$!{record3.TimelineId}" value="" />
 					</form>
 				#end
-				#if($record3.LikeCount > 0)
-					&nbsp;
-					<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record3.LikeCount}</a>
-				#end
+				&nbsp;
+				<a href="javascript:void(0);" id="likeCount_$!{record3.TimelineId}" #if($record3.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record3.LikeCount}</a>
 			</div>
 		</div>
 	</div>
