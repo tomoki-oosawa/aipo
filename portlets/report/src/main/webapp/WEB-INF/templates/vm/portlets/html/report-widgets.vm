@@ -39,12 +39,12 @@
 </ul>
 
 
-##if($!result.hasAuthorityOther())
+#if($!result.hasAuthorityOther())
 <ul>
 <li #if(($!result.currentSubMenu == 'all'))class="active"#end>
 <a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen").addQueryData("submenu", "all").addQueryData("reset_params","true"))','$!portlet.ID');">すべての報告書</a></li>
 </ul>
-##end
+#end
 </div>
 
 </div>
