@@ -431,9 +431,11 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
               parenttopic));
             messageList.add(message);
           }
-          ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-            .getUserId(rundata), messageList, ALMailUtils
-            .getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+          ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+            orgId,
+            ALEipUtils.getUserId(rundata),
+            messageList,
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
         }
       } catch (Exception ex) {
         msgList.add("メールを送信できませんでした。");
