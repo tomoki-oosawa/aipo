@@ -68,6 +68,11 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecard;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
@@ -259,6 +264,9 @@ public class SystemDeleteSampleFormData extends ALAbstractFormData {
 
       // タイムカード処理
       updateTimecard(ids);
+
+      // タイムライン処理
+      updateTimeline(ids);
 
       // ToDo処理
       updateTodo(ids);
@@ -642,6 +650,84 @@ public class SystemDeleteSampleFormData extends ALAbstractFormData {
     List<EipTTimecard> timecardlist1 = timecardquery1.fetchList();
     if (timecardlist1 != null && timecardlist1.size() > 0) {
       Database.deleteAll(timecardlist1);
+    }
+  }
+
+  private void updateTimeline(List<Integer> ids) {
+    SelectQuery<EipTTimeline> timelineQuery1 =
+      Database.query(EipTTimeline.class);
+    Expression timelineExp1 =
+      ExpressionFactory.inExp(EipTTimeline.OWNER_ID_PROPERTY, ids);
+    timelineQuery1.setQualifier(timelineExp1);
+    List<EipTTimeline> timelineList1 = timelineQuery1.fetchList();
+
+    List<Integer> timelineIds = new ArrayList<Integer>();
+    for (EipTTimeline tmp : timelineList1) {
+      timelineIds.add(tmp.getTimelineId());
+    }
+
+    SelectQuery<EipTTimeline> timelineQuery2 =
+      Database.query(EipTTimeline.class);
+    Expression timelineExp2 =
+      ExpressionFactory.inDbExp(EipTTimeline.PARENT_ID_COLUMN, timelineIds);
+    timelineQuery2.setQualifier(timelineExp2);
+    List<EipTTimeline> timelineList2 = timelineQuery2.fetchList();
+    for (EipTTimeline tmp : timelineList2) {
+      timelineIds.add(tmp.getTimelineId());
+    }
+    timelineList1.addAll(timelineList2);
+
+    if (timelineList1.size() > 0) {
+
+      SelectQuery<EipTTimelineFile> timelineFileQuery1 =
+        Database.query(EipTTimelineFile.class);
+      Expression timelineFileExp1 =
+        ExpressionFactory.inExp(EipTTimelineFile.OWNER_ID_PROPERTY, ids);
+      timelineFileQuery1.setQualifier(timelineFileExp1);
+      List<EipTTimelineFile> timelineFileList1 = timelineFileQuery1.fetchList();
+      if (timelineFileList1 != null && timelineFileList1.size() > 0) {
+        Database.deleteAll(timelineFileList1);
+      }
+
+      SelectQuery<EipTTimelineMap> timelineMapQuery1 =
+        Database.query(EipTTimelineMap.class);
+      Expression timelineMapExp1 =
+        ExpressionFactory.inExp(EipTTimelineMap.EIP_TTIMELINE_PROPERTY, ids);
+      timelineMapQuery1.setQualifier(timelineMapExp1);
+      List<EipTTimelineMap> timelineMapList1 = timelineMapQuery1.fetchList();
+      if (timelineMapList1 != null && timelineMapList1.size() > 0) {
+        Database.deleteAll(timelineMapList1);
+      }
+
+      SelectQuery<EipTTimelineUrl> timelineUrlQuery1 =
+        Database.query(EipTTimelineUrl.class);
+      Expression timelineUrlExp1 =
+        ExpressionFactory.inExp(
+          EipTTimelineUrl.TIMELINE_ID_PROPERTY,
+          timelineIds);
+      timelineUrlQuery1.setQualifier(timelineUrlExp1);
+      List<EipTTimelineUrl> timelineUrlList1 = timelineUrlQuery1.fetchList();
+      if (timelineUrlList1 != null && timelineUrlList1.size() > 0) {
+        Database.deleteAll(timelineUrlList1);
+      }
+
+      SelectQuery<EipTTimelineLike> timelineLikeQuery1 =
+        Database.query(EipTTimelineLike.class);
+      Expression timelineLikeExp1 =
+        ExpressionFactory.inDbExp(EipTTimelineLike.OWNER_ID_COLUMN, ids);
+      Expression timelineLikeExp2 =
+        ExpressionFactory.inDbExp(
+          EipTTimelineLike.TIMELINE_ID_COLUMN,
+          timelineIds);
+      timelineLikeQuery1.setQualifier(timelineLikeExp1.orExp(timelineLikeExp2));
+      List<EipTTimelineLike> timelineLikeList1 = timelineLikeQuery1.fetchList();
+      if (timelineLikeList1 != null && timelineLikeList1.size() > 0) {
+        Database.deleteAll(timelineLikeList1);
+      }
+
+      if (timelineList1 != null && timelineList1.size() > 0) {
+        Database.deleteAll(timelineList1);
+      }
     }
   }
 
