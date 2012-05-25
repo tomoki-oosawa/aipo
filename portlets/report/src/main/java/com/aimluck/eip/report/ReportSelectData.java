@@ -97,6 +97,9 @@ public class ReportSelectData extends
   /** 検索ワード */
   private ALStringField target_keyword;
 
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
+
   /**
    * 
    * @param action
@@ -111,6 +114,8 @@ public class ReportSelectData extends
     // ReportUtils.clearReportSession(rundata, context);
     // }
     login_user = ALEipUtils.getALEipUser(rundata);
+    int uid = ALEipUtils.getUserId(rundata);
+    int view_uid = ReportUtils.getViewId(rundata, context, uid);
 
     String subMenuParam = rundata.getParameters().getString("submenu");
     currentSubMenu = ALEipUtils.getTemp(rundata, context, "submenu");
@@ -150,6 +155,13 @@ public class ReportSelectData extends
         ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    if (view_uid == uid) {
+      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER;
+    }
 
     // hasAuthorityOther = true;
     showReplyForm = true;
@@ -626,7 +638,7 @@ public class ReportSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    return aclPortletFeature;
   }
 
   public boolean hasAuthorityOther() {

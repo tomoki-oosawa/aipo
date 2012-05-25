@@ -137,7 +137,7 @@ public class ReportUtils {
         throw new ALPageNotFoundException();
       }
 
-      int userid = ALEipUtils.getUserId(rundata);
+      // int userid = ALEipUtils.getUserId(rundata);
 
       SelectQuery<EipTReport> query = Database.query(EipTReport.class);
       Expression exp1 =
@@ -323,8 +323,13 @@ public class ReportUtils {
    */
   public static EipTReport getEipTReport(RunData rundata, Context context)
       throws ALDBErrorException {
+    String param =
+      ALEipUtils.getParameter(rundata, context, ALEipConstants.ENTITY_ID);
     String requestid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      param != null ? param : ALEipUtils.getTemp(
+        rundata,
+        context,
+        ALEipConstants.ENTITY_ID);
     try {
       if (requestid == null || Integer.valueOf(requestid) == null) {
         // Request IDが空の場合
