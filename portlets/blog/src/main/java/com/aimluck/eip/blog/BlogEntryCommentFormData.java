@@ -303,13 +303,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
           messageList.add(message);
         }
-        List<String> errors =
-          ALMailService.sendAdminMail(new ALAdminMailContext(
-            orgId,
-            (int) login_user.getUserId().getValue(),
-            messageList,
-            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG)));
-        msgList.addAll(errors);
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          orgId,
+          (int) login_user.getUserId().getValue(),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_BLOG)));
 
       }
     } catch (Exception e) {
