@@ -84,6 +84,8 @@ public class SystemWebMailAdminSettingsSelectData
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
     rd.setMsgTypeWorkflow(ALMailUtils
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
+    rd.setMsgTypeMsgboard(ALMailUtils
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD));
 
     String timestr = ALMailUtils.getNotifyTime();
     rd.setMsgNotifyTimeHour(timestr.charAt(0) == '0'

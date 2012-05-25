@@ -69,6 +69,12 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
   /** 携帯電話へのメール送信フラグ(ワークフロー) */
   private ALNumberField cell_flg_workflow;
 
+  /** パソコンへのメール送信フラグ(掲示板返信) */
+  private ALNumberField pc_flg_msgboard;
+
+  /** 携帯電話へのメール送信フラグ(掲示板返信) */
+  private ALNumberField cell_flg_msgboard;
+
   /** 通知時間 */
   private ALNumberField notify_time_hour;
 
@@ -83,8 +89,11 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
   /** メール送信時のメッセージ種別(ブログ) */
   private int msg_type_blog = FLG_NOTIFY_NONCHECKED;
 
-  /** メール送信時のメッセージ種別(ワークフロー) */
+  /** メール送信時のメッセージ種別(掲示板返信) */
   private int msg_type_workflow = FLG_NOTIFY_NONCHECKED;
+
+  /** メール送信時のメッセージ種別(掲示板返信) */
+  private int msg_type_msgboard = FLG_NOTIFY_NONCHECKED;
 
   @Override
   public void initField() {
@@ -111,6 +120,12 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
     cell_flg_workflow = new ALNumberField();
     cell_flg_workflow.setValue(ALMailUtils.VALUE_MSGTYPE_DEST_NONE);
+
+    pc_flg_msgboard = new ALNumberField();
+    pc_flg_msgboard.setValue(ALMailUtils.VALUE_MSGTYPE_DEST_NONE);
+
+    cell_flg_msgboard = new ALNumberField();
+    cell_flg_msgboard.setValue(ALMailUtils.VALUE_MSGTYPE_DEST_NONE);
 
     notify_time_hour = new ALNumberField();
     notify_time_hour.setValue(0);
@@ -142,6 +157,8 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE));
     setNotifyFlg(pc_flg_workflow, cell_flg_workflow, ALMailUtils
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW));
+    setNotifyFlg(pc_flg_msgboard, cell_flg_msgboard, ALMailUtils
+      .getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD));
 
     String timestr = ALMailUtils.getNotifyTime();
     notify_time_hour.setValue(timestr.charAt(0) == '0' ? timestr
@@ -185,6 +202,13 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
       if (cell_flg_workflow.getValue() == FLG_NOTIFY_CHECKED) {
         msg_type_workflow += ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR;
       }
+
+      if (pc_flg_msgboard.getValue() == FLG_NOTIFY_CHECKED) {
+        msg_type_msgboard += ALMailUtils.VALUE_MSGTYPE_DEST_PC;
+      }
+      if (cell_flg_msgboard.getValue() == FLG_NOTIFY_CHECKED) {
+        msg_type_msgboard += ALMailUtils.VALUE_MSGTYPE_DEST_CELLULAR;
+      }
     }
 
     return res;
@@ -209,6 +233,9 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
       ALMailUtils.setSendDestType(
         ALMailUtils.KEY_MSGTYPE_WORKFLOW,
         msg_type_workflow);
+      ALMailUtils.setSendDestType(
+        ALMailUtils.KEY_MSGTYPE_MSGBOARD,
+        msg_type_msgboard);
       ALMailUtils.setNotifyTime(
         (int) notify_time_hour.getValue(),
         (int) notify_time_minute.getValue());
@@ -306,6 +333,24 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
    */
   public ALNumberField getCellFlgWorkflow() {
     return cell_flg_workflow;
+  }
+
+  /**
+   * メール送信時のメッセージ種別(掲示板返信)
+   * 
+   * @return
+   */
+  public ALNumberField getPcFlgMsgboard() {
+    return pc_flg_msgboard;
+  }
+
+  /**
+   * メール送信時のメッセージ種別(掲示板返信)
+   * 
+   * @return
+   */
+  public ALNumberField getCellFlgMsgboard() {
+    return cell_flg_msgboard;
   }
 
   /**

@@ -53,6 +53,13 @@
 <input name="cell_flg_workflow" type="checkbox" value="1" id="cell_flg_workflow_id" #if ($result.CellFlgWorkflow.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_workflow_id">携帯電話に通知する</label>
 #ALtditemfooter()
+#ALtdcaption("掲示板の他人からの返信")
+#ALtditemheader()
+<input name="pc_flg_msgboard" type="checkbox" value="1" id="pc_flg_msgboard_id" #if ($result.PcFlgMsgboard.toString() == "1") checked="checked" #end/>
+<label for="pc_flg_msgboard_id">パソコンに通知する</label>
+<input name="cell_flg_msgboard" type="checkbox" value="1" id="cell_flg_msgboard_id" #if ($result.CellFlgMsgboard.toString() == "1") checked="checked" #end/>
+<label for="cell_flg_msgboard_id">携帯電話に通知する</label>
+#ALtditemfooter()
 #*
 #ALtdcaption("通知時刻")
 #ALtditemheader()

@@ -435,7 +435,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             orgId,
             ALEipUtils.getUserId(rundata),
             messageList,
-            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD)));
         }
       } catch (Exception ex) {
         msgList.add("メールを送信できませんでした。");
