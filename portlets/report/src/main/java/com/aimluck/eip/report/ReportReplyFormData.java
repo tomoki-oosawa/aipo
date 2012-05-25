@@ -387,9 +387,11 @@ public class ReportReplyFormData extends ALAbstractFormData {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          orgId,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
 
       } catch (Exception ex) {
         logger.error("Exception", ex);

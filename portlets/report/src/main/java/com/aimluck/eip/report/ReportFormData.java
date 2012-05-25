@@ -573,9 +573,11 @@ public class ReportFormData extends ALAbstractFormData {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          orgId,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
         // msgList.addAll(errors);
 
       }
@@ -739,9 +741,11 @@ public class ReportFormData extends ALAbstractFormData {
           messageList.add(message);
         }
 
-        ALMailService.sendAdminMail(new ALAdminMailContext(orgId, ALEipUtils
-          .getUserId(rundata), messageList, ALMailUtils
-          .getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
+        ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+          orgId,
+          ALEipUtils.getUserId(rundata),
+          messageList,
+          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
         // msgList.addAll(errors);
 
       }
