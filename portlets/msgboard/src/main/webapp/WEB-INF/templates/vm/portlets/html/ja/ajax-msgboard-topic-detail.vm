@@ -66,7 +66,8 @@ $!{result.ParentTopic.Note}
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
-<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 &nbsp;（マウスのクリックで画像を拡大縮小できます）
 </div>
 #end
@@ -110,7 +111,8 @@ ${record.Note}
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
-<a href="javascript:aipo.msgboard.popupCenter('$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", $!{record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 &nbsp;（マウスのクリックで画像を拡大縮小できます）
 </div>
 #end
