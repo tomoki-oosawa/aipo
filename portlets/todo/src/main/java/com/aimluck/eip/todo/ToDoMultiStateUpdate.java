@@ -32,9 +32,17 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.mail.ALAdminMailContext;
+import com.aimluck.eip.mail.ALAdminMailMessage;
+import com.aimluck.eip.mail.ALMailService;
+import com.aimluck.eip.mail.util.ALEipUserAddr;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -112,6 +120,55 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
       }
 
       Database.commit();
+
+      for (EipTTodo todo : todoList) {
+        // メール送信
+        if (aclPortletFeature
+          .equals(ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER)) {
+          try {
+            List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+            memberList.add(ALEipUtils.getALEipUser(todo.getUserId()));
+            int msgType =
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO);
+            if (msgType > 0) {
+              // パソコンへメールを送信
+              List<ALEipUserAddr> destMemberList =
+                ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                  .getUserId(rundata), false);
+              String subject = "[" + ALOrgUtilsService.getAlias() + "]ToDo";
+              String orgId = Database.getDomainName();
+
+              List<ALAdminMailMessage> messageList =
+                new ArrayList<ALAdminMailMessage>();
+              for (ALEipUserAddr destMember : destMemberList) {
+                ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+                message.setPcSubject(subject);
+                message.setCellularSubject(subject);
+                message.setPcBody(ToDoUtils.createMsgForPc(
+                  rundata,
+                  todo,
+                  memberList,
+                  false));
+                message.setCellularBody(ToDoUtils.createMsgForPc(
+                  rundata,
+                  todo,
+                  memberList,
+                  false));
+                messageList.add(message);
+              }
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+                orgId,
+                ALEipUtils.getUserId(rundata),
+                messageList,
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
+            }
+          } catch (Exception ex) {
+            msgList.add("メールを送信できませんでした。");
+            logger.error("Exception", ex);
+            return false;
+          }
+        }
+      }
     } catch (Throwable t) {
       Database.rollback();
       logger.error("[ToDoMultiStateUpdate]", t);

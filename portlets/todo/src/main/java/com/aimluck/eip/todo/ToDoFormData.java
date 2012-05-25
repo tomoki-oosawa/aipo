@@ -583,7 +583,7 @@ public class ToDoFormData extends ALAbstractFormData {
                 false));
               messageList.add(message);
             }
-            ALMailService.sendAdminMail(new ALAdminMailContext(
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
               orgId,
               ALEipUtils.getUserId(rundata),
               messageList,
@@ -774,7 +774,7 @@ public class ToDoFormData extends ALAbstractFormData {
                 false));
               messageList.add(message);
             }
-            ALMailService.sendAdminMail(new ALAdminMailContext(
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
               orgId,
               ALEipUtils.getUserId(rundata),
               messageList,
