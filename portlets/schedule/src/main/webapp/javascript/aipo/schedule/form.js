@@ -750,3 +750,24 @@ aipo.schedule.setIndicator = function(portlet_id) {
     obj_indicator = dojo.byId('indicator-'+portlet_id);
     dojo.style(obj_indicator, "display" , "");
 }
+
+//tdタグクリック時にaタグと重複していないか判定を行います。onclickイベント専用
+aipo.schedule.showScheduleAddDialog=function(td,event,url,portlet_id,callback){
+    if (!event) {event = window.event; }
+    var pos={x:event.clientX,y:event.clientY};
+
+	var isCollapsed=false;
+	
+	dojo.query("a",td).forEach(function(item){
+		if(!isCollapsed){
+			var rect=item.getBoundingClientRect();
+			isCollapsed=(rect.left<=pos.x && pos.x<=rect.right && rect.top<=pos.y && pos.y<=rect.bottom);
+		}
+	});
+	if(isCollapsed){
+		return true;//aタグの追加処理
+	}else{
+		aipo.common.showDialog(url,portlet_id,callback);
+		return false;
+	}
+}

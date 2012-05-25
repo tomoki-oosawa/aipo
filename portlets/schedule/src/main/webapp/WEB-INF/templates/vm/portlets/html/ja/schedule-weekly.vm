@@ -128,13 +128,16 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set ($color_style_holiday = " holiday")
 #set ($holiday_name = "${record.Holiday.Name}")
 #end
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
+#if ($!{result.hasAuthoritySelfInsert()})
+<td class="topNone${color_style}${color_style_holiday} addScheduleCell" onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
+#else
 <td class="topNone${color_style}${color_style_holiday}">
+#end
 #if($record.ScheduleList.size() <= 0)
 	#if ($!{result.hasAuthoritySelfInsert()})
 <div class="calendarBody">
 <div class="calendarScheduleDiv"><div class="small">
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 </div></div>
 </div>
 	#end
@@ -144,10 +147,10 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
 <div>
 #if($record2.isShowDetail())
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()})")
+#set($DetailScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()})")
 <div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId}">
 <div class="small time">$!{record2.Date}</div>
-<div class="small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.Name}</a></div>
+<div class="small"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($DetailScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="small">$!{record2.Name}</a></div>
 </div>
 #else
 <div class="calendarScheduleDiv">
@@ -172,8 +175,6 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 #if ($!{result.hasAuthoritySelfInsert()})
 <div class="calendarScheduleDiv"><div class="small">
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 </div></div>
 #end
 #end

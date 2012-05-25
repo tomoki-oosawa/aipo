@@ -228,18 +228,20 @@ $!{record4.TermResultData.WbrName}
 #if($!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
 #end
-<td class="topNone${color_style}${color_style_holiday}">
-#if($record.ScheduleList.size() <= 0)
-<div class="calendarBody">
-<div class="calendarScheduleDiv"><div class="small">
-#if($!{result.hasAuthoritySelfInsert()})
+
 #if($record3.UserId.Value == $result.UserId)
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+#if($!{result.hasAuthoritySelfInsert()})
+<td class="topNone${color_style}${color_style_holiday} addScheduleCell"  onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" >
+#else
+<td class="topNone${color_style}${color_style_holiday}">
 #end
+#if($record.ScheduleList.size() <= 0)
+<div class="calendarBody">
+<div class="calendarScheduleDiv"><div class="small">
 </div></div>
 </div>
 #else
@@ -250,7 +252,6 @@ $!{record4.TermResultData.WbrName}
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 #end
 </div></div>
 #foreach($record2 in $record.ScheduleList)
@@ -379,36 +380,37 @@ $!{record.ToDoResultData.TodoName}
 #set($rowspanstr = "rowspan=$record3rowcount")
 #ALtdheadAtt("$record3.FacilityName" "$rowspanstr")
 #foreach($record in ${result.getFacilityContainer($record3.FacilityId.Value).DayList})
+#if($record.ScheduleList.size() > 0 ||$!{result.hasAuthorityFacilityInsert()})
+	#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
+	#set($onclick="onclick='aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)'")
+#end
+
 #if($!{record.Date.Value.equals($result.Today.Value)})
 #if($!{record.isHoliday()})
-#ALtdcellheaderAtt("class='holiday' style='vertical-align:top;' height='100%'")
+#ALtdcellheaderAtt("class='holiday' style='vertical-align:top;' height='100%' {$onclick}")
 #else
-#ALtdcellheaderAtt("class='today' style='vertical-align:top;' height='100%'")
+#ALtdcellheaderAtt("class='today' style='vertical-align:top;' height='100%' {$onclick}")
 #end
 ##<table class="outer" cellspacing="1" cellpadding="2" width="100%" height="100%"><tbody><tr ><td class="item" style="vertical-align:top;background-color:#FFFFE5" height="100%">
 #elseif($!{record.isHoliday()})
-#ALtdcellheaderAtt("class='holiday' style='vertical-align:top;'")
+	
+<td class='holiday' style='vertical-align:top;' $!{onclick}>
 #elseif($!{record.Date.Value.Day} == 0)
-#ALtdcellheaderAtt("class='sunday' style='vertical-align:top;'")
+<td class='sunday' style='vertical-align:top;' $!{onclick}>
 #elseif($!{record.Date.Value.Day} == 6)
-#ALtdcellheaderAtt("class='saturday' style='vertical-align:top;'")
+<td class='saturday' style='vertical-align:top;' $!{onclick}>
 #else
-#ALtdcellheaderAtt("style='vertical-align:top;'")
+<td style='vertical-align:top;' $!{onclick}>
 #end
 
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
 <div class="calendarScheduleDiv"><div class="small">
-#if($!{result.hasAuthorityFacilityInsert()})
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
-#end
+
 </div></div>
 </div>
 #else
 <div class="calendarScheduleDiv"><div class="small">
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
-<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
 </div></div>
 #foreach($record2 in $record.ScheduleList)
 #if(! ${record2.isDummy()})
