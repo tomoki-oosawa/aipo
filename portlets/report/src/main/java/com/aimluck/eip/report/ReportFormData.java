@@ -533,9 +533,6 @@ public class ReportFormData extends ALAbstractFormData {
       }
       ReportUtils.createReportActivity(report, loginName, recipients, true);
 
-      // 「更新情報」に表示させる。
-      ReportUtils.createNewReportActivity(report, loginName, true);
-
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
@@ -701,9 +698,6 @@ public class ReportFormData extends ALAbstractFormData {
         }
       }
       ReportUtils.createReportActivity(report, loginName, recipients, false);
-
-      // 「更新情報」に表示させる。
-      ReportUtils.createNewReportActivity(report, loginName, false);
 
     } catch (Exception ex) {
       Database.rollback();

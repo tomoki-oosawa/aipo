@@ -32,7 +32,6 @@
 #ALsetCategoryList('blog' 'ブログ')
 #ALsetCategoryList('todo' '共有ToDo')
 #ALsetCategoryList('Cabinet' '共有フォルダ')
-#ALsetCategoryList('Report' '報告書')
 #ALsetCategoryList('GadgetAdd' 'Aipoアプリ')
 </ul>
 </div>

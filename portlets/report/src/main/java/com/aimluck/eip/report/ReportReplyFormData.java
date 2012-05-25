@@ -353,8 +353,6 @@ public class ReportReplyFormData extends ALAbstractFormData {
 
       // 「更新情報」に表示させる。
       String loginName = login_user.getName().getValue();
-      ReportUtils.createNewReportReplyActivity(parentreport, loginName);
-
       String recipient =
         ALEipUtils.getALEipUser(parentreport.getUserId()).getName().getValue();
       ReportUtils.createReportReplyActivity(parentreport, loginName, recipient);
