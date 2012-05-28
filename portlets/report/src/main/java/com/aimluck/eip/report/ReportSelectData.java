@@ -97,6 +97,15 @@ public class ReportSelectData extends
   /** 検索ワード */
   private ALStringField target_keyword;
 
+  /** 現在のユーザ **/
+  private int uid;
+
+  /** 報告書作成ユーザ **/
+  private int view_uid;
+
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
+
   /**
    * 
    * @param action
@@ -106,6 +115,7 @@ public class ReportSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    uid = ALEipUtils.getUserId(rundata);
 
     // if (ReportUtils.hasResetFlag(rundata, context)) {
     // ReportUtils.clearReportSession(rundata, context);
@@ -139,7 +149,27 @@ public class ReportSelectData extends
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
 
+    // 報告書作成ユーザ
+    if (rundata.getParameters().getStringKey("clientid") != null) {
+      view_uid =
+        Integer.parseInt(rundata
+          .getParameters()
+          .getStringKey("clientid")
+          .toString());
+    } else {
+      view_uid = ReportUtils.getViewId(rundata, context, uid);
+    }
+
+    // 報告書通知先に入っているか 
+    boolean isSelf = ReportUtils.isSelf(rundata, context);
+
     // アクセス権限
+    if (uid == view_uid || isSelf) {
+      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER;
+    }
 
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -334,6 +364,7 @@ public class ReportSelectData extends
       rd.setEndDate(record.getEndDate());
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
+      rd.setClientId(client.getUserId().getValue());
       // 自身の報告書かを設定する
       Integer login_user_id =
         Integer.valueOf((int) login_user.getUserId().getValue());
@@ -626,7 +657,8 @@ public class ReportSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    // return ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    return aclPortletFeature;
   }
 
   public boolean hasAuthorityOther() {

@@ -51,7 +51,7 @@
 <tr>
 #ALtdcellheader()
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportDetailScreen").addQueryData("entityid",$record.ReportId))');">$!record.ReportName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportDetailScreen").addQueryData("entityid",$record.ReportId).addQueryData("clientid",$!record.ClientId))');">$!record.ReportName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$!{record.StartDate.toString('yyyy年M月d日H時m分')}～$!{record.EndDate.toString('H時m分')}</div>")

@@ -67,6 +67,9 @@ public class ReportResultData implements ALData {
   /** 更新日時 */
   private ALDateTimeField updateDate;
 
+  /** 登録者Id */
+  protected ALNumberField client_id;
+
   /** 登録者名 */
   protected ALStringField client_name;
 
@@ -99,6 +102,7 @@ public class ReportResultData implements ALData {
     updateDate = new ALDateTimeField();
     createDate = new ALDateTimeField();
     client_name = new ALStringField();
+    client_id = new ALNumberField();
 
     memberList = new ArrayList<ALEipUser>();
     mapList = new ArrayList<ALEipUser>();
@@ -167,6 +171,20 @@ public class ReportResultData implements ALData {
    */
   public void setClientName(String string) {
     client_name.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getClientId() {
+    return client_id;
+  }
+
+  /**
+   * @param i
+   */
+  public void setClientId(long i) {
+    client_id.setValue(i);
   }
 
   /**

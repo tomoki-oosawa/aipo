@@ -1239,4 +1239,32 @@ public class ReportUtils {
     }
     return target_keyword;
   }
+
+  /**
+   * 報告書の通知メンバーに入っているか.
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean isSelf(RunData rundata, Context context) {
+    boolean isSelf = false;
+    if (rundata.getParameters().getStringKey("entityid") != null) {
+      SelectQuery<EipTReportMap> q = Database.query(EipTReportMap.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTReportMap.REPORT_ID_PROPERTY, rundata
+          .getParameters()
+          .getStringKey("entityid")
+          .toString());
+      q.andQualifier(exp1);
+      List<EipTReportMap> queryList = q.fetchList();
+      for (EipTReportMap repo : queryList) {
+        if (repo.getUserId() == ALEipUtils.getUserId(rundata)) {
+          isSelf = true;
+        }
+      }
+    }
+
+    return isSelf;
+  }
 }
