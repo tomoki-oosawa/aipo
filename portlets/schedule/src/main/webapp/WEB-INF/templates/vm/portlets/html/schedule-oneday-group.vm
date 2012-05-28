@@ -430,7 +430,7 @@ $record.WbrName
 #else
 #if($!{result.hasAuthorityFacilityInsert()})
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
-<td colspan="$colspan" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)'">
+<td class="addScheduleCell" colspan="$colspan" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
 <div class="calendarScheduleDiv"><div class="small">
 </div></div>
 #ALtdcellfooter()
