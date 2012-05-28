@@ -43,15 +43,15 @@
 <tr>
 <td valign="top"><label for="layout01"><img src="themes/default/images/function/btn_selectlayout_timeline.gif" alt="タイムラインメイン" width="130" height="130" class="mb5" /></label>
 <br />
-<input type="radio" name="layout" id="layout01" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'timeline')"/><br /><label for="layout01"><strong>タイムラインメイン</strong><br /><span class="small">「タイムライン」を中心に配置</span></label></td>
+<input type="radio" name="layout" id="layout01" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'timeline')"/><br /><label for="layout01"><span class="small">「タイムライン」を中心に配置</span></label></td>
 
 <td valign="top"><label for="layout02"><img src="themes/default/images/function/btn_selectlayout_schedule.gif" alt="スケジュールメイン" width="130" height="130" class="mb5" /></label>
 <br />
-<input type="radio" name="layout" id="layout02" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'schedule')"/><br /><label for="layout02"><strong>スケジュールメイン</strong><br /><span class="small">「スケジュール」を中心に配置</span></label></td>
+<input type="radio" name="layout" id="layout02" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'schedule')"/><br /><label for="layout02"><span class="small">「スケジュール」を中心に配置</span></label></td>
 
 <td valign="top"><label for="layout03"><img src="themes/default/images/function/btn_selectlayout_mine.gif" alt="あなたの現在の配置" width="130" height="130" class="mb5" /></label>
 <br />
-<input type="radio" name="layout" id="layout03" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')"/><br /><label for="layout03"><strong>あなたの現在の配置</strong><br /><span class="small">あなたの現在の配置を適用</span></label></td>
+<input type="radio" name="layout" id="layout03" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')"/><br /><label for="layout03"><span class="small">あなたの現在の配置を適用</span></label></td>
 
 </tr>
 </tbody>
