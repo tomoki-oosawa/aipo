@@ -23,7 +23,7 @@
 <input type="hidden" id="isMac" value="${isMac}" />
 <input type="hidden" id="view_type" value="1"></input>
 
-<div class="relativeBlock" style="margin-bottom:10px;">
+<div class="relativeBlock">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
