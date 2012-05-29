@@ -56,7 +56,7 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         var left = html.offsetLeft - html.clientLeft;
         var top = html.offsetTop - html.clientTop;
         menuNode.style('left', left + "px");
-        menuNode.style('top', top + 25 + "px");
+        menuNode.style('top', top + 24 + "px");
     } else {
         aipo.customize.hideMenu(portlet_id);
     }
