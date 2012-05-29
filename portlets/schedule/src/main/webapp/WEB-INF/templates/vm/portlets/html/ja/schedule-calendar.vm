@@ -49,34 +49,45 @@
 <div class="clearfix">
 <div class="auiSelectButton">
 <ul>
-<li style="width:4em;margin-right:10px;" title="今日へ">
+<li style="width:4em;margin-right:3px;" title="今日へ">
 <a href="javascript:void(0);" class="btn" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"]);'><span>今日</span></a>
 </li>
-<li style="margin-right:5px;" title="前の週へ">
+<li style="margin-right:3px;" title="前の週へ">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ" /></span></a>
 </li>
 <li title="前の日へ">
 <a href="javascript:void(0);" class="first arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ" /></span></a>
 </li>
-<li style="margin-right:5px;" title="次の日へ">
+<li style="margin-right:3px;" title="次の日へ">
 <a href="javascript:void(0);" class="last arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ" /></span></a>
 </li>
-<li style="margin-right:10px;" title="次の週へ">
+<li style="margin-right:3px;" title="次の週へ">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
+</li>
+#if($!top_form=='simple')
+<li  title="1日">
+<a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>1日</span></a>
+</li>
+#end
+</ul>
+</div>
+#if($!top_form=='simple')
+<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;">
+<ul>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID')">1日</a>
+</li>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID')">4日</a>
+</li>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID')">7日</a>
 </li>
 </ul>
 </div>
-#if($!top_form=='simple')</div>#end
-<div style="height:30px; line-height:24px; padding-top: 5px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
-#if($!top_form=='simple')
-<form class="auiForm" style="display: inline">
-<select name="schedule" id="schedule" style="width: 55px;" onchange="aipo.calendar.changeDisypayPeriod(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value="1" selected="selected">1日</option>
-<option value="4">4日</option>
-<option value="7">7日</option>
-</select>
-</form>
 #end
+#if($!top_form=='simple')</div>#end
+<div style="height:30px; line-height:24px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
 </div>
 #if(!$!top_form || $!top_form!='simple')</div>#end
 </div>
