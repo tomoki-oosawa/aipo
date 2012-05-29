@@ -138,6 +138,12 @@ public class ScheduleUtils {
   /** 検索キーワード変数の識別子 */
   public static final String TARGET_KEYWORD = "keyword";
 
+  public static final String FILTER_NAMESPACE =
+    "com.aimluck.eip.schedule.filter";
+
+  public static final String FILTER_NAMESPACE_TYPE =
+    "com.aimluck.eip.schedule.filtertype";
+
   /**
    * Scheudle オブジェクトモデルを取得します。
    * 

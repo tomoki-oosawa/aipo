@@ -46,6 +46,7 @@ import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -138,6 +139,22 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER)) {
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        ScheduleUtils.FILTER_NAMESPACE,
+        rundata.getParameters().getString(ALEipConstants.LIST_FILTER));
+    }
+    if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER_TYPE)) {
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        ScheduleUtils.FILTER_NAMESPACE_TYPE,
+        rundata.getParameters().getString(ALEipConstants.LIST_FILTER_TYPE));
+    }
+
     viewtype = "oneday-group";
     try {
       termmap = new LinkedHashMap<Integer, List<ScheduleOnedayResultData>>();
@@ -153,7 +170,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       for (int i = 0; i < size; i++) {
         rows[i] = 1;
       }
-      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+      String filter =
+        ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
 
       target_group_name = getGroup(filter);
 
@@ -162,8 +180,16 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         String groupName =
           portlet.getPortletConfig().getInitParameter("p3a-group");
         if (groupName != null) {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE,
+            groupName);
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE_TYPE,
+            "group");
         }
       }
 
@@ -315,9 +341,10 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     ALDateTimeField field = new ALDateTimeField();
     field.setValue(cal.getTime());
 
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter =
+      ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
     String filter_type =
-      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+      ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE_TYPE);
     String crt_key = null;
     Attributes map = getColumnMap();
     if (filter == null

@@ -42,6 +42,7 @@ import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -113,6 +114,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>target_group_name</code> グループ名 */
   private TurbineGroup target_group_name;
 
+
   /**
    * 
    * @param action
@@ -126,6 +128,22 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       throws ALPageNotFoundException, ALDBErrorException {
     // スーパークラスのメソッドを呼び出す
     super.init(action, rundata, context);
+
+    if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER)) {
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        ScheduleUtils.FILTER_NAMESPACE,
+        rundata.getParameters().getString(ALEipConstants.LIST_FILTER));
+    }
+    if (rundata.getParameters().containsKey(ALEipConstants.LIST_FILTER_TYPE)) {
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        ScheduleUtils.FILTER_NAMESPACE_TYPE,
+        rundata.getParameters().getString(ALEipConstants.LIST_FILTER_TYPE));
+    }
+
     // 表示タイプの設定
     viewtype = "weekly-group";
     try {
@@ -137,7 +155,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       groups = ALEipUtils.getMyGroups(rundata);
       facilitiyGroups = ALEipUtils.getALEipGroups();
       userid = Integer.valueOf(ALEipUtils.getUserId(rundata));
-      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+      String filter =
+        ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
 
       target_group_name = getGroup(filter);
 
@@ -146,8 +165,16 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         String groupName =
           portlet.getPortletConfig().getInitParameter("p3a-group");
         if (groupName != null) {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, groupName);
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "group");
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE,
+            groupName);
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE_TYPE,
+            "group");
         }
       }
 
@@ -351,9 +378,10 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
    */
   protected List<VEipTScheduleList> getScheduleList(RunData rundata,
       Context context) {
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String filter =
+      ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
     String filter_type =
-      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+      ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE_TYPE);
     String crt_key = null;
     Attributes map = getColumnMap();
 
