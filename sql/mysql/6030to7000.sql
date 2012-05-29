@@ -129,3 +129,7 @@ ALTER TABLE `turbine_user` ADD COLUMN `photo_modified` datetime DEFAULT NULL;
 UPDATE `turbine_user` SET `photo_modified` = NOW();
 UPDATE `turbine_user` SET `has_photo` = 'T' WHERE `photo` IS NOT NULL;
 -- 20120524
+
+-- 20120528
+ALTER TABLE `turbine_user` ADD COLUMN `tutorial_forbid` VARCHAR (1) DEFAULT 'T';
+-- 20120528

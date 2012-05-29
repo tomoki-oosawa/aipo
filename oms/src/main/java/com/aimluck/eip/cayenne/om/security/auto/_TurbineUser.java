@@ -34,6 +34,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String PHOTO_PROPERTY = "photo";
     public static final String PHOTO_MODIFIED_PROPERTY = "photoModified";
     public static final String POSITION_ID_PROPERTY = "positionId";
+    public static final String TUTORIAL_FORBID_PROPERTY = "tutorialForbid";
     public static final String UPDATED_USER_ID_PROPERTY = "updatedUserId";
     public static final String EIP_MUSER_POSITION_PROPERTY = "eipMUserPosition";
     public static final String EIP_TACL_USER_ROLE_MAPS_PROPERTY = "eipTAclUserRoleMaps";
@@ -248,6 +249,14 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public Integer getPositionId() {
         return (Integer)readProperty("positionId");
+    }
+    
+    
+    public void setTutorialForbid(String tutorialForbid) {
+        writeProperty("tutorialForbid", tutorialForbid);
+    }
+    public String getTutorialForbid() {
+        return (String)readProperty("tutorialForbid");
     }
     
     

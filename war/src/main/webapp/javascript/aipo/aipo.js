@@ -329,7 +329,7 @@ aipo.tutorialNextPage=function(){
 	}
 	val++;
 	dojo.byId('popupImage' + val).style.display = "";
-	if(val == 4){
+	if(val == 3){
 		dojo.byId('tutorial_next').style.display = "none";
 	}
 	page.value = val + "";
@@ -339,8 +339,8 @@ aipo.tutorialPrevPage=function(){
 	var page = dojo.byId('page_tutorial');
 	var val = page.value - 0;
 	dojo.byId('popupImage' + val).style.display = "none";
-	if(val == 4){
-		dojo.byId('tutorial_next').style.display = "none";
+	if(val == 3){
+		dojo.byId('tutorial_next').style.display = "";
 	}
 	val--;
 	dojo.byId('popupImage' + val).style.display = "";

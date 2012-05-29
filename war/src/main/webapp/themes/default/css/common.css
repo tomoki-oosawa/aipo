@@ -1093,7 +1093,27 @@ table.simpleTable td.caption {
 	background:#eee;
 	opacity:.5;
 }
-/* END fileuploadViewDialog */
+/* END fileuploadDialog */
+
+/* tutorialDialog */
+.tutorialDialog {
+	z-index:999;
+	width:600px;
+	position:absolute;
+}
+
+.tutorialDialogUnderlayWrapper {
+	left:0;
+	top:0;
+	z-index:998;
+	display:none;
+	background:transparent;
+}
+.tutorialDialogUnderlay {
+	background:#eee;
+	opacity:.5;
+}
+/* END tutorialDialog */
 
 .popupMenu {
 	position:absolute;
