@@ -114,7 +114,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /** <code>target_group_name</code> グループ名 */
   private TurbineGroup target_group_name;
 
-
   /**
    * 
    * @param action
@@ -482,7 +481,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
       }
     }
-    if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
+    if ("Facility".equals(filter)) {
+      facilityList = FacilitiesUtils.getFacilityList(filter);
+    } else if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
       if ("f".equals(filteres[0])) {
         facilityList =
           FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filteres[1]));

@@ -438,7 +438,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         }
       }
     }
-    if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
+    if ("Facility".equals(filter)) {
+      facilityList = FacilitiesUtils.getFacilityList(filter);
+    } else if ("facilitygroup".equals(filter_type) || "f".equals(filteres[0])) {
       if ("f".equals(filteres[0])) {
         facilityList =
           FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filteres[1]));

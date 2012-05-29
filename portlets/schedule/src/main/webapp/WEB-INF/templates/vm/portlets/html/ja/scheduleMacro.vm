@@ -31,6 +31,18 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 </a>
 #end
 
+#macro (ALOnedayLinkFacility $portletID $filter $record $class)
+#if($!isMaximize)
+#set ($screen = 'ScheduleListScreen')
+#else
+#set ($screen = 'ScheduleScreen')
+#end
+#ALtdheadheaderAtt("class='$class' nowrap='nowrap'")
+<a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_date",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","facilitygroup"))', '$portletID');">
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+</a>
+#end
+
 #macro (ALMonthlyOnedayLink $portletID $filter $record)
 #if($!isMaximize)
 #set ($screen = 'ScheduleListScreen')
