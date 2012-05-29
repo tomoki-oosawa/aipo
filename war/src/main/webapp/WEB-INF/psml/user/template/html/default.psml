@@ -44,40 +44,40 @@
 				<property name="row" value="0" />
 			</layout>
 		</entry>
-		<entry parent="Msgboard">
+				<entry parent="Msgboard">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="1" />
 			</layout>
 			<parameter name="p1e-rows" value="2" />
 		</entry>
-		<entry parent="Note">
-			<layout position="-1" size="-1">
-				<property name="column" value="0" />
-				<property name="row" value="2" />
-			</layout>
-		</entry>
-		<entry parent="Report">
-			<layout position="-1" size="-1">
-				<property name="column" value="0" />
-				<property name="row" value="3" />
-			</layout>
-		</entry>
 		<entry parent="Cabinet">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
-				<property name="row" value="4" />
+				<property name="row" value="2" />
 			</layout>
 			<parameter name="p1e-rows" value="2" />
 		</entry>
 		<entry parent="ToDo">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
-				<property name="row" value="5" />
+				<property name="row" value="3" />
 			</layout>
 			<parameter name="p0e-rows" value="2" />
 		</entry>
+		<entry parent="Note">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="4" />
+			</layout>
+		</entry>
 		<entry parent="Workflow">
+			<layout position="-1" size="-1">
+				<property name="column" value="0" />
+				<property name="row" value="5" />
+			</layout>
+		</entry>
+		<entry parent="Report">
 			<layout position="-1" size="-1">
 				<property name="column" value="0" />
 				<property name="row" value="6" />
