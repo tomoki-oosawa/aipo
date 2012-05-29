@@ -44,6 +44,24 @@ aipo.customize.showMenu = function(portlet_id) {
     }
 }
 
+aipo.customize.showMenuSchedule = function(portlet_id) {
+	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
+	if (menuNode.style('display') == 'none') {
+        dojo.query('div.menubar').style('display', 'none');
+        menuNode.style('display', 'block');
+        if(dojo.byId("timeline_"+portlet_id) && (dojo.query('div.timeline').length == 1)){
+    		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
+    	}
+        var html = dojo.byId("indicateDate_" + portlet_id);
+        var left = html.offsetLeft - html.clientLeft;
+        var top = html.offsetTop - html.clientTop;
+        menuNode.style('left', left + "px");
+        menuNode.style('top', top + 25 + "px");
+    } else {
+        aipo.customize.hideMenu(portlet_id);
+    }
+}
+
 aipo.customize.hideMenu = function(portlet_id) {
     var menuNode = dojo.query('div.menubar').style('display', 'none');
 //    if (menuNode.style('display') == 'block') {
