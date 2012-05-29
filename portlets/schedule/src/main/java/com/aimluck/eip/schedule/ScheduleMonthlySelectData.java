@@ -927,7 +927,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       target_user_id = "";
     }
     try {
-      if ("".equals(target_user_id) || target_user_id.startsWith("f")) {
+      if ("".equals(target_user_id)
+        || target_user_id.startsWith("f")
+        || "all".equals(target_user_id)) {
         target_user_name = null;
       } else {
         ALEipUser tempuser =
