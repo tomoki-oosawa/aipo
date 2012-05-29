@@ -84,7 +84,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   private ALStringField allow_comments;
 
   /** 日時 */
-  private ALDateTimeField createDate;
+  private ALDateTimeField create_date;
 
   private List<BlogThemaResultData> themaList;
 
@@ -157,8 +157,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     // 更新日時
-    createDate = new ALDateTimeField(BlogUtils.DATE_TIME_FORMAT);
-    createDate.setFieldName("日時");
+    create_date = new ALDateTimeField(BlogUtils.DATE_TIME_FORMAT);
+    create_date.setFieldName("日時");
     // Title
     title = new ALStringField();
     title.setFieldName("タイトル");
@@ -202,7 +202,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   @Override
   protected void setValidator() {
     // 日付必須項目
-    createDate.setNotNull(true);
+    create_date.setNotNull(true);
     // Title必須項目
     title.setNotNull(true);
     // Titleの文字数制限
@@ -223,7 +223,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     // 日付
-    createDate.validate(msgList);
+    create_date.validate(msgList);
     // Title
     title.validate(msgList);
     // メモ
@@ -256,7 +256,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         return false;
       }
       // 日時
-      createDate.setValue(entry.getCreateDate());
+      create_date.setValue(entry.getCreateDate());
       // Title
       title.setValue(entry.getTitle());
       // メモ
@@ -405,7 +405,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // コメント付加フラグ
         entry.setAllowComments("T");
         // 作成日
-        entry.setCreateDate(createDate.getValue());
+        entry.setCreateDate(create_date.getValue());
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
@@ -588,7 +588,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // コメント付加フラグ
         entry.setAllowComments("T");
         // 作成日
-        entry.setCreateDate(createDate.getValue());
+        entry.setCreateDate(create_date.getValue());
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
@@ -646,8 +646,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     // 日時
-    if (createDate.toString().equals("")) {
-      createDate.setValue(Calendar.getInstance().getTime());
+    if (create_date.toString().equals("")) {
+      create_date.setValue(Calendar.getInstance().getTime());
     }
 
     boolean res = super.setFormData(rundata, context, msgList);
@@ -694,7 +694,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
    * @return
    */
   public ALDateTimeField getCreateDate() {
-    return createDate;
+    return create_date;
   }
 
   /**
