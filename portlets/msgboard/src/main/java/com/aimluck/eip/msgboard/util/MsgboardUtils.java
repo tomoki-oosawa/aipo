@@ -1187,7 +1187,7 @@ public class MsgboardUtils {
    * @param recipients
    */
   public static void createNewTopicActivity(EipTMsgboardTopic topic,
-      String loginName, String recipient) {
+      String loginName, List<String> recipient) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Msgboard", topic.getTopicId(), 1f);
     boolean isDeletePrev =

@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -33,6 +35,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -52,6 +55,7 @@ import com.aimluck.eip.modules.screens.MsgboardTopicDetailScreen;
 import com.aimluck.eip.modules.screens.MsgboardTopicFormJSONScreen;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -344,6 +348,9 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      List<ALEipUser> memberList = new ArrayList<ALEipUser>();
+      memberList = selectMsgMember(rundata, context);
+
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         topic.getTopicId(),
@@ -359,12 +366,13 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
           .getName()
           .getValue());
         // あなた宛のお知らせ
+        List<String> recipient = new ArrayList<String>();
+        for (int i = 0; i < memberList.size(); i++) {
+          recipient.add(memberList.get(i).getName().toString());
+        }
         MsgboardUtils.createNewTopicActivity(parenttopic, user
           .getName()
-          .toString(), ALEipUtils
-          .getALEipUser(parenttopic.getOwnerId())
-          .getName()
-          .toString());
+          .toString(), recipient);
       } else {
         List<Integer> userIds =
           MsgboardUtils.getWhatsNewInsertList(rundata, topic
@@ -390,12 +398,13 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             .getName()
             .getValue(), recipients);
           // あなた宛のお知らせ
+          List<String> recipient = new ArrayList<String>();
+          for (int i = 0; i < memberList.size(); i++) {
+            recipient.add(memberList.get(i).getName().toString());
+          }
           MsgboardUtils.createNewTopicActivity(parenttopic, user
             .getName()
-            .toString(), ALEipUtils
-            .getALEipUser(parenttopic.getOwnerId())
-            .getName()
-            .toString());
+            .toString(), recipient);
         }
       }
       // 添付ファイル保存先のフォルダを削除
@@ -403,8 +412,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       // メール送信
       try {
-        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-        memberList.add(ALEipUtils.getALEipUser(parenttopic.getOwnerId()));
         int msgType =
           ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD);
         if (msgType > 0) {
@@ -447,6 +454,49 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       throw new ALDBErrorException();
     }
     return true;
+  }
+
+  /**
+   * 自分以外のトピック関係者のuser_idのListを習得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private List<ALEipUser> selectMsgMember(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    // 関連トピックをすべて取得する
+    EipTMsgboardTopic parenttopic =
+      MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
+    SelectQuery<EipTMsgboardTopic> topicQuery =
+      Database.query(EipTMsgboardTopic.class);
+    Expression topicExp =
+      ExpressionFactory.matchExp(
+        EipTMsgboardTopic.PARENT_ID_PROPERTY,
+        parenttopic.getTopicId());
+    topicQuery.setQualifier(topicExp);
+
+    // トピックに関連する全てのユーザーIDを取得する
+    List<EipTMsgboardTopic> topicList = topicQuery.fetchList();
+    topicList.add(parenttopic);
+    List<Integer> userIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic topic : topicList) {
+      Integer userId = topic.getCreateUserId();
+      if (!userId.equals(uid) && !userIdList.contains(userId)) {
+        userIdList.add(userId);
+      }
+    }
+
+    // ユーザーIDからユーザー情報を取得する。
+    SelectQuery<TurbineUser> userQuery = Database.query(TurbineUser.class);
+    Expression userExp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIdList);
+    userQuery.setQualifier(userExp);
+    return ALEipUtils.getUsersFromSelectQuery(userQuery);
+
   }
 
   /**
