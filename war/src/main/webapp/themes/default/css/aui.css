@@ -1746,6 +1746,9 @@ ul.attachments span.deletebutton:hover{
 	clear:both;
 	border-top: 1px solid #dcdcdc;
 }
+#timelineOuter .message:first-child {
+	padding-top:7px;
+}
 #timelineOuter .on {
 	border-top: 1px solid #999999;
 }
@@ -1796,7 +1799,25 @@ ul.attachments span.deletebutton:hover{
 	background:#f0f0f0;
 }
 
+.tlDisplayChanger {
+	position:absolute;
+	top:-1px;
+	right:15px;
+	text-align:right;
+}
+.tlDisplayChanger .btn a {
+	display:block;
+	text-decoration:none;
+	padding:0 3px;
+	background:#fff;
+	font-size:11px;
+}
+.tlDisplayChanger .menubar {
+	right:0;
+	width:12em;
+}
 .timeline {
+	position:relative;
 	margin-top:10px;
 	overflow:hidden;
 }
@@ -2020,6 +2041,8 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 
 a.auiIcon:hover {background-color:#999;}
 *html a.auiIcon:hover {background-color:transparent;}/*IE6*/
+
+.auiIconClear {background-position:16px 0}
 
 .auiIconSetting {background-position:0px 0px;}
 .auiIconSetting_w {background-position:0px -16px;}

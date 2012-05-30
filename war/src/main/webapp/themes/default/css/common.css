@@ -2382,8 +2382,13 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 	zoom:1;
 	overflow:visible;
 }
+*:first-child+html .menubar {
+	display:block;
+}
+.roundBlockIcon .menubar {
+}
 *:first-child+html .roundBlockIcon .menubar {
-    margin:16px 0 0 -16px;
+    margin:18px 0 0 -18px;
 }
 .menubar ul {
 	width:100%;
@@ -2402,15 +2407,22 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 }
 .menubar ul li a {
 	display:block;
-	padding:5px !important;
+	padding:4px 8px !important;
 	margin:0;
 	text-decoration:none;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden;
 }
-.menubar ul li.last a {
+.menubar ul li.last a,
+.menubar ul li.last a:last-child {
 	background-image:none!important;
 }
 .menubar ul li a:hover {
 	color:#000;
+	background:#f0f0f0;
+}
+.menubar ul li a.selected {
 	background:#f0f0f0;
 }
 
