@@ -199,11 +199,23 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		var inputname = dojo.query("#likeForm_"+ portletId + "_" + timelineId + " > input")[1];
 	    if(mode == 'like'){
 	    	var onsubmit = form.getAttribute("onsubmit");
-	    	onsubmit = onsubmit.replace("\'like\'", "\'dislike\'");
-	    	form.setAttribute("onsubmit", onsubmit);
+	    	if(typeof onsubmit == "string"){
+	    		onsubmit = onsubmit.replace("\'like\'", "\'dislike\'");
+		    	form.setAttribute("onsubmit", onsubmit);
+	    	} else{
+	    		var onsubmitString = onsubmit.toString().replace("\'like\'", "\'dislike\'");
+	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.indexOf("}") - 1);
+	    		form.setAttribute("onsubmit", new Function(onsubmitString));
+	    	}
 	    	var onclick = a.getAttribute("onclick");
-	    	onclick = onclick.replace("\'like\'", "\'dislike\'");
-	    	a.setAttribute("onclick", onclick);
+	    	if(typeof onclick == "string"){
+	    		onclick = onclick.replace("\'like\'", "\'dislike\'");
+		    	a.setAttribute("onclick", onclick);
+	    	} else{
+	    		var onclickString = onclick.toString().replace("\'like\'", "\'dislike\'");
+	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.indexOf("}") - 1);
+	    		a.setAttribute("onclick", new Function(onclickString));
+	    	}
 	    	a.innerHTML = "いいね！を取り消す";
 	    	if(isComment){
 		    	aipo.timeline.increaseComLikeValue(timelineId);
@@ -212,11 +224,23 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 	    	}
 	    }else if(mode == 'dislike'){
 	    	var onsubmit = form.getAttribute("onsubmit");
-	    	onsubmit = onsubmit.replace("\'dislike\'", "\'like\'");
-	    	form.setAttribute("onsubmit", onsubmit);
+	    	if(typeof onsubmit == "string"){
+	    		onsubmit = onsubmit.replace("\'dislike\'", "\'like\'");
+		    	form.setAttribute("onsubmit", onsubmit);
+	    	} else{
+	    		var onsubmitString = onsubmit.toString().replace("\'dislike\'", "\'like\'");
+	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.indexOf("}") - 1);
+	    		form.setAttribute("onsubmit", new Function(onsubmitString));
+	    	}
 	    	var onclick = a.getAttribute("onclick");
-	    	onclick = onclick.replace("\'dislike\'", "\'like\'");
-	    	a.setAttribute("onclick", onclick);
+	    	if(typeof onclick == "string"){
+	    		onclick = onclick.replace("\'dislike\'", "\'like\'");
+		    	a.setAttribute("onclick", onclick);
+	    	} else{
+	    		var onclickString = onclick.toString().replace("\'dislike\'", "\'like\'");
+	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.indexOf("}") - 1);
+	    		a.setAttribute("onclick", new Function(onclickString));
+	    	}
 	    	a.innerHTML = "いいね！";
 	    	if(isComment){
 		    	aipo.timeline.decreaseComLikeValue(timelineId);
