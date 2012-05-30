@@ -53,8 +53,29 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
     		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
     	}
         var html = dojo.byId("indicateDate_" + portlet_id);
-        var left = html.offsetLeft - html.clientLeft;
-        var top = html.offsetTop - html.clientTop;
+        if(dojo.isIE){
+        	var getLeft = function(oj){
+        	    var px = 0;
+        	    while(oj){
+        	        px += oj.offsetLeft;
+        	        oj = oj.offsetParent;
+        	    }
+        	    return px;
+        	}
+        	var getTop = function(oj){
+        	    var px = 0;
+        	    while(oj){
+        	        px += oj.offsetTop;
+        	        oj = oj.offsetParent;
+        	    }
+        	    return px;
+        	}
+        	var left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
+        	var top = getTop(html) - getTop(html.offsetParent.offsetParent);
+        } else {
+        	var left = html.offsetLeft - html.clientLeft;
+        	var top = html.offsetTop - html.clientTop;
+        }
         menuNode.style('left', left + "px");
         menuNode.style('top', top + 24 + "px");
     } else {
