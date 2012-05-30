@@ -866,17 +866,14 @@ public class BlogUtils {
   }
 
   public static void createNewCommentActivity(EipTBlogEntry blog,
-      String loginName, String targetLoginName) {
-    if (loginName.equals(targetLoginName)) {
-      return;
-    }
+      String loginName, List<String> recipients) {
+    recipients.remove(loginName);
+
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Blog", blog.getEntryId(), 1f);
     boolean isDeletePrev =
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
-    List<String> recipients = new ArrayList<String>();
-    recipients.add(targetLoginName);
     String title =
       new StringBuilder("ブログ「")
         .append(ALCommonUtils.compressString(blog.getTitle(), 30))

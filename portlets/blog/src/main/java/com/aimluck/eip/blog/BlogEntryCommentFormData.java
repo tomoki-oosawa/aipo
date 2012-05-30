@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -36,6 +38,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -53,6 +56,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.screens.BlogDetailScreen;
 import com.aimluck.eip.modules.screens.BlogEntryFormJSONScreen;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
@@ -268,18 +272,22 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       // トピックを登録
       Database.commit();
 
+      // 更新情報を送るユーザーを取得する
+      List<ALEipUser> recipientList = new ArrayList<ALEipUser>();
+      recipientList = getRecipientList(rundata, context);
+
       // アクティビティ
       String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
-      String targetLoginName =
-        ALEipUtils.getALEipUser(entry.getOwnerId()).getName().getValue();
-      BlogUtils.createNewCommentActivity(entry, loginName, targetLoginName);
+      List<String> recipientNameList = new ArrayList<String>();
+      for (ALEipUser recipient : recipientList) {
+        recipientNameList.add(recipient.getName().getValue());
+      }
+      BlogUtils.createNewCommentActivity(entry, loginName, recipientNameList);
 
       // メール送信
       if (sendEmailToPC || sendEmailToCellular) {
-        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-        memberList.add(ALEipUtils.getALEipUser(entry.getOwnerId().intValue()));
         List<ALEipUserAddr> destMemberList =
-          ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+          ALMailUtils.getALEipUserAddrs(recipientList, ALEipUtils
             .getUserId(rundata), false);
 
         String orgId = Database.getDomainName();
@@ -316,6 +324,52 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       throw new ALDBErrorException();
     }
     return true;
+  }
+
+  /**
+   * 当該ブログの更新通知ユーザーを習得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private List<ALEipUser> getRecipientList(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    Integer loginUserId = ALEipUtils.getUserId(rundata);
+
+    // 関連トピックをすべて取得する
+    EipTBlogEntry parenttopic =
+      BlogUtils.getEipTBlogParentEntry(rundata, context);
+    SelectQuery<EipTBlogComment> topicQuery =
+      Database.query(EipTBlogComment.class);
+    Expression topicExp =
+      ExpressionFactory.matchDbExp(EipTBlogComment.ENTRY_ID_COLUMN, parenttopic
+        .getEntryId());
+    topicQuery.setQualifier(topicExp);
+
+    // トピックに関連する全てのユーザーIDを取得する
+    List<Integer> userIdList = new ArrayList<Integer>();
+    Integer userId = parenttopic.getOwnerId();
+    if (!loginUserId.equals(userId)) {
+      userIdList.add(userId);
+    }
+    List<EipTBlogComment> topicList = topicQuery.fetchList();
+    for (EipTBlogComment topic : topicList) {
+      userId = topic.getOwnerId();
+      if (!userId.equals(loginUserId) && !userIdList.contains(userId)) {
+        userIdList.add(userId);
+      }
+    }
+
+    // ユーザーIDからユーザー情報を取得する。
+    SelectQuery<TurbineUser> userQuery = Database.query(TurbineUser.class);
+    Expression userExp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIdList);
+    userQuery.setQualifier(userExp);
+    return ALEipUtils.getUsersFromSelectQuery(userQuery);
+
   }
 
   /**
