@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("ワークフロー詳細")
+#ALdialogheaderPrint("ワークフロー詳細" "$!portlet.ID" "WorkflowScreenPrint" "$!{result.getViewDate().toString()})")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
@@ -97,7 +97,6 @@ $!{record.StatusString}
 #end
 #ALtdcellfooter()
 #ALtdcellheader()
-
 <span class="floatLeft w50">$!{record.UserAliasName}</span>
 <span class="floatLeft right w45">
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")

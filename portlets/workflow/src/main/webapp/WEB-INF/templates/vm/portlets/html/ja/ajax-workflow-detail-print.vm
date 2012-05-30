@@ -1,0 +1,208 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<base href="$clink.External" ></base>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+#if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
+<title>${alias}</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="copyright" content="${copyright}" />
+<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
+<meta name="robots" content="noindex,follow" />
+<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
+<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
+<style>
+.p10 td{
+padding:10px;
+line-height:140%;
+}
+</style>
+<!--
+#if($isXDomain == "true")
+<script type="text/javascript">
+  djConifg = {
+    xDomainBasePath: '${external_resources_url}/javascript'
+  };
+</script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+#else
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+#end
+<script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
+-->
+</head>
+<body>
+<div id="printHeader">
+<div class="buttons">
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+</div>
+※この枠の範囲の設定項目は、印刷へ反映されません。
+<form>
+<table>
+<tr>
+<th>表示する幅</th>
+<td>
+<select id="print_width">
+<option value="100%" >100%</option>
+<option value="90%">90%</option>
+<option value="80%">80%</option>
+<option selected="selected" value="600px">600ピクセル</option>
+<option value="620px">620ピクセル</option>
+<option value="640px">640ピクセル</option>
+<option value="660px">660ピクセル</option>
+<option value="680px">680ピクセル</option>
+<option value="700px">700ピクセル</option>
+<option value="720px">720ピクセル</option>
+<option value="740px">740ピクセル</option>
+<option value="760px">760ピクセル</option>
+<option value="780px">780ピクセル</option>
+<option value="800px">800ピクセル</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>文字サイズ</th>
+<td><select id="print_word_size">
+<option value="8pt">8pt</option>
+<option value="9pt">9pt</option>
+<option selected="selected" value="10pt">10pt</option>
+<option value="11pt">11pt</option>
+<option value="12pt">12pt</option>
+<option value="13pt">13pt</option>
+<option value="14pt">14pt</option>
+<option value="16pt">16pt</option>
+<option value="18pt">18pt</option>
+<option value="20pt">20pt</option>
+</select>
+</td>
+</tr>
+</table>
+<input type="button" value="変更する" onclick="change_print_form()"/>
+<input type="button" value="印刷する" onclick="javascript:print();"/>
+</form>
+</div>
+<script type="text/javascript" language="JavaScript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+#ALtdcaption('決裁状況')
+#ALtditemheader()
+#if($!result.Detail.Progress.Value == "D")
+差戻要確認
+#else
+#if($!result.Detail.Progress.Value == "A") 承認済み #else 決裁待ち #end
+#end
+#ALtditemfooter()
+#ALtdcaption('タイトル')
+#ALtditemheader()
+$!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
+#ALtditemfooter()
+#ALtdcaption('申請日')
+#ALtditem($!result.Detail.CreateDate)
+#ALtdcaption('重要度')
+#ALtditem($!result.Detail.PriorityString)
+#if($!result.Detail.HasRootName)
+#ALtdcaption('申請経路')
+#ALtditemheader()
+$!result.Detail.RouteName
+#ALtditemfooter()
+#end
+#ALtdcaption('申請内容')
+#ALtditem($!result.Detail.Note)
+#if($!result.Detail.OldRequestLinks.size() > 0)
+#ALtdcaption('過去の申請内容')
+#ALtditemheader()
+#set ($count = 1)
+#foreach ($record in $!result.Detail.OldRequestLinks)
+<div>
+${count}回目 $record.CategoryName #if($record.RequestName.toString() != '') &nbsp;&nbsp; $record.RequestName #end $record.UpdateDate
+</div>
+#set ($count = $count + 1)
+#end
+#ALtditemfooter()
+#end
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption('添付ファイル')
+#ALtditemheader()
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )$attachmentFile.FileName <br>#end
+#ALtditemfooter()
+#end
+#ALtablefooter()
+</tbody></table>
+
+<table class="p5" style="margin-top:10px;">
+<colgroup style="width:25%;"></colgroup>
+<colgroup></colgroup>
+<tbody>
+<tr>
+#ALtdheadheaderAtt('align="center" colspan="2"')決済履歴#ALtdheadfooter()
+</tr>
+
+#foreach ($record in $result.Detail.DecisionRecords)
+<tr>
+#ALtdcellheader()
+$!{record.StatusString}
+##end
+#ALtdcellfooter()
+
+#ALtdcellheader()
+<span class="floatLeft w50">$!{record.UserAliasName}</span>
+<span class="floatLeft right w50">
+#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
+$!{record.UpdateDate}
+</span>
+#end
+<br>
+$!record.Note
+#ALtdcellfooter()
+
+</tr>
+#end
+</tbody></table>
+</div>
+</body>
+</html>
+
