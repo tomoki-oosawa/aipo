@@ -188,9 +188,8 @@ aipo.timeline.onReceiveMessage = function(msg) {
   }
 }
 
-aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isComment, msg) {
+aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isComment) {
 	  var pid = dojo.byId("getTimelinePortletId").innerHTML;
-	  if (!msg) {
 	    var arrDialog = dijit.byId("modalDialog_" + pid);
 	    if (arrDialog) {
 	      arrDialog.hide();
@@ -225,7 +224,6 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		    	aipo.timeline.decreaseLikeValue(timelineId);
 	    	}
 	    }
-	  }
 }
 
 aipo.timeline.increaseLikeValue = function(timelineId){
