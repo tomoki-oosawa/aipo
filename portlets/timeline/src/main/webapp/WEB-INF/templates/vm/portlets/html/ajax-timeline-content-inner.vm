@@ -39,16 +39,9 @@
 				<p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">続きを読む</a></p>#end
 				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
-					#foreach( $attachmentFile in $!record.AttachmentFileList )
-						#if($attachmentFile.isImage())
-							<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a><br>
-
-						#else
-							<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
-						#end
-					#end
-				</div>
-				#end
+					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a>#else<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a>
+#end#end
+</div>#end
 				#foreach ($attachmentUrl in $record.UrlList)
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
