@@ -1673,8 +1673,17 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
                 tmpL = this.positionTo;
                 tmpW = this.positionFrom - this.positionTo + 1;
             }
-            var width = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpW;
-            var left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
+            var width;
+            var left;
+
+            if(dojo.byId("view_type") && dojo.byId("top_form").value == "simple") {
+            	var sum = parseInt(dojo.byId("view_type").value);
+                width = 100 / sum * tmpW;
+                left = 100 / sum * tmpL;
+            } else {
+                width = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpW;
+                left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
+            }
             /*
             if(dojo.byId("top_form").value=="simple"){
             	width = 0;
