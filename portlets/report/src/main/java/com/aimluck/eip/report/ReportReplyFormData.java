@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -35,6 +37,8 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -53,6 +57,7 @@ import com.aimluck.eip.modules.actions.report.ReportAction;
 import com.aimluck.eip.modules.screens.ReportDetailScreen;
 import com.aimluck.eip.modules.screens.ReportFormJSONScreen;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.report.util.ReportUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -345,6 +350,10 @@ public class ReportReplyFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      // 更新情報を送るユーザーを取得する
+      List<ALEipUser> recipientList = new ArrayList<ALEipUser>();
+      recipientList = getRecipientList(rundata, context);
+
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         report.getReportId(),
@@ -353,16 +362,19 @@ public class ReportReplyFormData extends ALAbstractFormData {
 
       // 「更新情報」に表示させる。
       String loginName = login_user.getName().getValue();
-      String recipient =
-        ALEipUtils.getALEipUser(parentreport.getUserId()).getName().getValue();
-      ReportUtils.createReportReplyActivity(parentreport, loginName, recipient);
+      List<String> recipientNameList = new ArrayList<String>();
+      for (ALEipUser recipient : recipientList) {
+        recipientNameList.add(recipient.getName().getValue());
+      }
+      ReportUtils.createReportReplyActivity(
+        parentreport,
+        loginName,
+        recipientNameList);
 
       try {
         // メール送信
-        List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-        memberList.add(ALEipUtils.getALEipUser(parentreport.getUserId()));
         List<ALEipUserAddr> destMemberList =
-          ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+          ALMailUtils.getALEipUserAddrs(recipientList, ALEipUtils
             .getUserId(rundata), false);
 
         String subject = "[" + ALOrgUtilsService.getAlias() + "]報告書への返信";
@@ -405,6 +417,61 @@ public class ReportReplyFormData extends ALAbstractFormData {
       throw new ALDBErrorException();
     }
     return true;
+  }
+
+  /**
+   * 当該報告書の更新通知ユーザーを習得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALDBErrorException
+   * @throws ALPageNotFoundException
+   */
+  private List<ALEipUser> getRecipientList(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    List<Integer> userIdList = new ArrayList<Integer>();
+    Integer loginUserId = ALEipUtils.getUserId(rundata);
+    EipTReport parenttopic = ReportUtils.getEipTReport(rundata, context);
+
+    // 通知先をすべて取得する
+    SelectQuery<EipTReportMap> mapQuery = Database.query(EipTReportMap.class);
+    Expression mapExp =
+      ExpressionFactory.matchExp(EipTReportMap.REPORT_ID_PROPERTY, parenttopic
+        .getReportId());
+    mapQuery.setQualifier(mapExp);
+    List<EipTReportMap> mapList = mapQuery.fetchList();
+    for (EipTReportMap map : mapList) {
+      Integer userId = map.getUserId();
+      if (!userId.equals(loginUserId) && !userIdList.contains(userId)) {
+        userIdList.add(map.getUserId());
+      }
+    }
+
+    // 関連トピックをすべて取得する
+    SelectQuery<EipTReport> topicQuery = Database.query(EipTReport.class);
+    Expression topicExp =
+      ExpressionFactory.matchExp(EipTReport.PARENT_ID_PROPERTY, parenttopic
+        .getReportId());
+    topicQuery.setQualifier(topicExp);
+
+    // 全ての返信者のIDを取得する
+    List<EipTReport> topicList = topicQuery.fetchList();
+    topicList.add(parenttopic);
+    for (EipTReport topic : topicList) {
+      Integer userId = topic.getUserId();
+      if (!userId.equals(loginUserId) && !userIdList.contains(userId)) {
+        userIdList.add(userId);
+      }
+    }
+
+    // ユーザーIDからユーザー情報を取得する。
+    SelectQuery<TurbineUser> userQuery = Database.query(TurbineUser.class);
+    Expression userExp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIdList);
+    userQuery.setQualifier(userExp);
+    return ALEipUtils.getUsersFromSelectQuery(userQuery);
+
   }
 
   /**

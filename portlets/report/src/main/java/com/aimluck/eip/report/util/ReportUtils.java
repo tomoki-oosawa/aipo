@@ -885,8 +885,10 @@ public class ReportUtils {
    * @param type
    */
   public static void createReportReplyActivity(EipTReport report,
-      String loginName, String recipient) {
+      String loginName, List<String> recipient) {
     if (recipient != null) {
+      recipient.remove(loginName);
+
       ALActivity RecentActivity =
         ALActivity.getRecentActivity("Report", report.getReportId(), 1f);
       boolean isDeletePrev =
