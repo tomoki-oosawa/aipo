@@ -346,7 +346,7 @@ $record.WbrName
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-#ALtdcellheaderAtt("colspan='$colspan'")
+<td class='addScheduleCell' colspan='$colspan' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
 <div class="calendarScheduleDiv"><div class="small">
 </div></div>
 #ALtdcellfooter()
