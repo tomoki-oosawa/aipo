@@ -232,6 +232,14 @@ public class ScheduleAction extends ALBaseAction {
         context.put("isMac", 0);
       }
 
+      int schedule_selected_daylist =
+        rundata.getCookies().getInteger(
+          "schedule_selected_daylist_" + portletId);
+      if (schedule_selected_daylist != 0) {
+        context.put("dayList", schedule_selected_daylist);
+      } else {
+        context.put("dayList", 1);
+      }
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();

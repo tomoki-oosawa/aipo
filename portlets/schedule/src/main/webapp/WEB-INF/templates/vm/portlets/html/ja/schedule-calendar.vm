@@ -21,7 +21,7 @@
 ## 簡易表示用
 <input type="hidden" id="top_form" value="$!{top_form}"></input>
 <input type="hidden" id="isMac" value="${isMac}" />
-<input type="hidden" id="view_type" value="1"></input>
+<input type="hidden" id="view_type" value="$!{dayList}"></input>
 
 <div class="relativeBlock">
 <div class="absoluteRight">
@@ -65,8 +65,8 @@
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
 </li>
 #if($!top_form=='simple')
-<li style="width: 32px;" title="1日">
-<a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>1日</span></a>
+<li style="width: 32px;" title="$!{dayList}日">
+<a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}日</span></a>
 </li>
 #end
 </ul>
@@ -75,13 +75,13 @@
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 30px;">
 <ul>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID')">1日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1日</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID')">4日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4日</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID')">7日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7日</a>
 </li>
 </ul>
 </div>
@@ -642,6 +642,7 @@
 
 dojo.addOnLoad(function () {
   initCalendar['$!{portlet.ID}'](false);
+  aipo.calendar.changeDisypayPeriod('$!{dayList}', '$!portlet.ID');
 });
 
 //]]>
