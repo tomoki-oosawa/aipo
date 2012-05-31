@@ -899,7 +899,7 @@ public class TimelineUtils {
   }
 
   public static ResultList<EipTTimeline> getTimelineList(Integer userId,
-      List<Integer> parentIds, String type, int page, int limit) {
+      List<Integer> parentIds, String type, int page, int limit, int minId) {
 
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
@@ -949,6 +949,10 @@ public class TimelineUtils {
       isFirst = false;
     }
     body.append(")");
+
+    if (minId > 0) {
+      body.append(" AND eip_t_timeline.timeline_id > " + minId);
+    }
 
     StringBuilder last = new StringBuilder();
 

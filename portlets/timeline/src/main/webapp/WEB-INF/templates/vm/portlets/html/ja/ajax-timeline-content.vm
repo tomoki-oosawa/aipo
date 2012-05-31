@@ -22,6 +22,12 @@
 #if($pages > $currentPage) #set($next = $currentPage + 1)
 	<input id="readHidden_$!{portlet.ID}" type="hidden" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineContentScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage', '$pages');" />
 #end
+#if($result.List && $result.List.size() > 0)
+#set ($last_timelineId = $result.List.get(0).TimelineId)
+#else
+#set ($last_timelineId = "0")
+#end
+<input type="hidden" id="last_timelineId_$!{portlet.ID}" value="$last_timelineId" />
 #foreach ($record in $result.List)
 	#parse("/portlets/html/ja/ajax-timeline-content-inner.vm")
 #end

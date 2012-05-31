@@ -417,3 +417,30 @@ aipo.timeline.setMinHeight = function(pid){
 	dojo.byId("message_" + pid).style.minHeight = min + "px";
 }
 
+aipo.timeline.getNewMessage = function(url, pid){
+	  try {
+		    dojo.xhrPost({
+		      portletId : pid,
+		      url : url,
+		      content : {
+		          lastTimelineId : dojo.byId("last_timelineId_" + pid).value
+		        },
+		      encoding : "utf-8",
+		      handleAs : "text",
+		      headers : {
+		        X_REQUESTED_WITH : "XMLHttpRequest"
+		      },
+		      load : function(data, event) {
+		    	  if(data.length > 0){
+		    		  var obj = dojo.byId("timeline_" + pid);
+		    		  var node = document.createElement("div");
+		    		  node.innerHTML = data;
+		    		  obj.insertBefore(node, obj.childNodes[1]);
+		    	  }
+		      }
+		    });
+		  } catch (e) {
+		    alert(e);
+		  }
+}
+

@@ -152,7 +152,45 @@ public class TimelineSelectData extends
           Arrays.asList(0),
           null,
           current_page,
-          getRowsNum());
+          getRowsNum(),
+          0);
+
+      // 件数をセットする．
+      topicSum = list.getTotalCount();
+      // 表示する高さを調節する
+      contentHeight =
+        Integer.parseInt(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1a-rows"));
+      context.put("contentHeight", contentHeight);
+
+      // 表示する高さを調節する
+      contentHeightMax =
+        Integer.parseInt(ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p2a-rows"));
+      context.put("contentHeightMax", contentHeightMax);
+      return list;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+
+    }
+  }
+
+  public ResultList<EipTTimeline> selectListNew(RunData rundata, Context context) {
+    try {
+
+      int minId =
+        Integer.valueOf(ALEipUtils.getParameter(
+          rundata,
+          context,
+          "lastTimelineId"));
+      // 表示するカラムのみデータベースから取得する．
+      ResultList<EipTTimeline> list =
+        TimelineUtils.getTimelineList(uid, Arrays.asList(0), null, 0, 0, minId);
 
       // 件数をセットする．
       topicSum = list.getTotalCount();
@@ -296,7 +334,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getComments(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1);
+      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0);
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -315,7 +353,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getActivities(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1);
+      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1, 0);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -493,7 +531,124 @@ public class TimelineSelectData extends
             if (!(user.getUserId().toString().equals(
               coac_item.getOwnerId().toString())
               || userlist.contains(user.getName().toString()) || userlist
-                .contains("-1"))) {
+              .contains("-1"))) {
+              iter.remove();
+            }
+          }
+
+          if (rd != null
+            && !(rd.getCoActivityList().size() == 0
+              && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+            list.add(rd);
+          }
+        }
+      }
+
+      loadAggregateUsers();
+
+      action.setResultData(this);
+      action.putData(rundata, context);
+      ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      return (list != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+
+  }
+
+  public boolean doViewListNew(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      action.setMode(ALEipConstants.MODE_LIST);
+
+      // 投稿
+      ResultList<EipTTimeline> resultList = selectListNew(rundata, context);
+      List<Integer> parentIds = new ArrayList<Integer>(resultList.size());
+      for (EipTTimeline model : resultList) {
+        parentIds.add(model.getTimelineId());
+      }
+
+      // 更新情報
+      Map<Integer, List<TimelineResultData>> activitiesMap =
+        getActivities(parentIds);
+
+      // コメント
+      List<Integer> commentIds = new ArrayList<Integer>();
+      commentIds.addAll(parentIds);
+      Iterator<List<TimelineResultData>> activitiesIter =
+        activitiesMap.values().iterator();
+      while (activitiesIter.hasNext()) {
+        List<TimelineResultData> next = activitiesIter.next();
+        for (TimelineResultData rd : next) {
+          commentIds.add(Integer.valueOf((int) rd.getTimelineId().getValue()));
+        }
+      }
+
+      Map<Integer, List<TimelineResultData>> commentsMap =
+        getComments(commentIds);
+
+      // URL
+      Map<Integer, List<TimelineUrlResultData>> urlsMap = getUrls(parentIds);
+
+      // ファイル
+      Map<Integer, List<FileuploadBean>> filesMap = getFiles(parentIds);
+
+      // ユーザー
+
+      if (resultList != null) {
+        if (resultList.getTotalCount() > 0) {
+          setPageParam(resultList.getTotalCount());
+        }
+        list = new ArrayList<Object>();
+        for (EipTTimeline model : resultList) {
+          Object object = getResultData(model);
+          TimelineResultData rd = (TimelineResultData) object;
+
+          rd.setCoTopicList(commentsMap.get(model.getTimelineId()));
+          rd.setCoActivityList(activitiesMap.get(model.getTimelineId()));
+          rd.setUrlList(urlsMap.get(model.getTimelineId()));
+          rd.setAttachmentFileList(filesMap.get(model.getTimelineId()));
+          rd.setReplyCount(rd.getCoTopicList().size());
+
+          List<TimelineResultData> coac = rd.getCoActivityList();
+
+          // 権限のあるアクティビティのみ表示する
+          for (Iterator<TimelineResultData> iter = coac.iterator(); iter
+            .hasNext();) {
+            TimelineResultData coac_item = iter.next();
+            coac_item.setCoTopicList(commentsMap.get(Integer
+              .valueOf((int) coac_item.getTimelineId().getValue())));
+            coac_item.setReplyCount(coac_item.getCoTopicList().size());
+
+            SelectQuery<EipTTimelineMap> query_map =
+              Database.query(EipTTimelineMap.class);
+            Expression exp1 =
+              ExpressionFactory.matchExp(
+                EipTTimelineMap.EIP_TTIMELINE_PROPERTY,
+                coac_item.getTimelineId().getValue());
+            query_map.setQualifier(exp1);
+            List<EipTTimelineMap> data_map = query_map.fetchList();
+
+            List<String> userlist = new ArrayList<String>();
+            for (int j = 0; j < data_map.size(); j++) {
+              userlist.add(data_map.get(j).getLoginName());
+            }
+
+            if (!(user.getUserId().toString().equals(
+              coac_item.getOwnerId().toString())
+              || userlist.contains(user.getName().toString()) || userlist
+              .contains("-1"))) {
               iter.remove();
             }
           }
