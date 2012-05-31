@@ -1093,27 +1093,7 @@ table.simpleTable td.caption {
 	background:#eee;
 	opacity:.5;
 }
-/* END fileuploadDialog */
-
-/* tutorialDialog */
-.tutorialDialog {
-	z-index:999;
-	width:600px;
-	position:absolute;
-}
-
-.tutorialDialogUnderlayWrapper {
-	left:0;
-	top:0;
-	z-index:998;
-	display:none;
-	background:transparent;
-}
-.tutorialDialogUnderlay {
-	background:#eee;
-	opacity:.5;
-}
-/* END tutorialDialog */
+/* END fileuploadViewDialog */
 
 .popupMenu {
 	position:absolute;
@@ -2404,6 +2384,9 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 }
 .menubar ul li:first-child {
 	border:none;
+	border-radius:3px 3px 0 0;
+	-ms-border-radius:3px 3px 0 0;
+	overflow:hidden;
 }
 .menubar ul li a {
 	display:block;
@@ -2417,6 +2400,9 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 .menubar ul li.last a,
 .menubar ul li.last a:last-child {
 	background-image:none!important;
+	border-radius:0 0 3px 3px;
+	-ms-border-radius:0 0 3px 3px;
+	overflow:hidden;
 }
 .menubar ul li a:hover {
 	color:#000;

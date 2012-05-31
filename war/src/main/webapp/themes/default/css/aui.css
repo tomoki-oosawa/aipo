@@ -309,19 +309,6 @@ table.activityTable tr.unread td {
 	max-height:800px;
 }
 
-/* imgPopupTutorial */
-.imgPopupTutorial {
-	position:absolute;
-	overflow:hidden;
-}
-.imgPopupTutorial .imgBody {
-	text-align:center;
-}
-.imgPopupTutorial img {
-	max-width:1000px;
-	max-height:1000px;
-}
-
 
 /***************************************************
 	auiListWrapper
@@ -1811,6 +1798,14 @@ ul.attachments span.deletebutton:hover{
 	padding:0 3px;
 	background:#fff;
 	font-size:11px;
+}
+.tlDisplayGroup {
+	display:inline-block;
+	max-width:12em;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	overflow:hidden;
+	cursor:pointer;/*IE7*/
 }
 .tlDisplayChanger .menubar {
 	right:0;
