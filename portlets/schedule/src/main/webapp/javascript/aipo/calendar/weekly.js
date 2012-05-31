@@ -263,7 +263,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
             var simpleStyleFirst = "";
             var simpleStyle = "";
-            if(dojo.byId("top_form").value=="simple"){
+            if(dojo.byId("top_form").value == "simple" && dojo.byId("view_type").value == "1"){
                 simpleStyleFirst = "width: 100%;";
             	simpleStyle = "width: 0%;display: none;";
             }
@@ -282,11 +282,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
                 var simpleDisplayR = "";
-                if(dojo.byId("top_form").value=="simple"){
+                if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1" || dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
                   simpleDisplay = ' style="display: none;"';
                   for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
-                    if(item.index==0){
+                    if(item.index==0 || (dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4" && item.index < 4)){
                     	simpleDisplay = "";
                     	simpleDisplayR = " weeklyTermRightR";
                     	break;
@@ -306,31 +306,43 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 var item = null;
 
+
                 //IPADはスクロールバーを表示しないので表示調節用の列を削除
-                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")?"border-right:0":"";
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple")
+                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1")?"border-right:0":"";
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1")
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td  colspan="2" nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
                 else
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
 
-                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
+                if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
+	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay3-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 75%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
+                }else{
+                	termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
+                }
 
                 var weeklyTermtailHtml;
 
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple"||Element.clientWidth == Element.offsetWidth ){
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1"||Element.clientWidth == Element.offsetWidth ){
                 	weeklyTermtailHtml = "</div></td></tr>";
                 }else{
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
-                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form").value !=="simple"){
+                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form").value !=="simple" && dojo.byId("view_type").value == "1"){
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
@@ -516,10 +528,24 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
-                    var width = 100 / ptConfig[_portletId].scheduleDivDaySum * item.rowspan;
-                    var left = 100 / ptConfig[_portletId].scheduleDivDaySum * item.index;
+
+                    if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
+                    	var rowspanday = item.rowspan;
+                    	if(item.rowspan + item.index > 4){
+                    		rowspanday = rowspanday - (item.rowspan + item.index - 4);
+                    	}
+                    	var width = 25 * rowspanday;
+                    	var left = 25 * item.index;
+                    	if(item.index > 4){
+                    		width = 0 ;
+                    	}
+                    }else{
+                    	var width = 100 / ptConfig[_portletId].scheduleDivDaySum * item.rowspan;
+                    	var left = 100 / ptConfig[_portletId].scheduleDivDaySum * item.index;
+                    }
+
                     var simpleDisplay = "";
-                    if(dojo.byId("top_form").value=="simple"){
+                    if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1"){
                     	width = 100;
                         simpleDisplay = ((item.index==0) ? "" : "display: none;");
                     }
