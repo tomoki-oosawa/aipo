@@ -156,15 +156,13 @@ public class ReportSelectData extends
           .getParameters()
           .getStringKey("clientid")
           .toString());
-    } else {
-      view_uid = ReportUtils.getViewId(rundata, context, uid);
     }
 
-    // 報告書通知先に入っているか 
+    // 報告書通知先に入っているか
     boolean isSelf = ReportUtils.isSelf(rundata, context);
 
     // アクセス権限
-    if (uid == view_uid || isSelf) {
+    if (isSelf || uid == view_uid) {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
     } else {
       aclPortletFeature =
