@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
-#set ($indicator_id = "indicator-dlg-")
+#set ($indicator_id = "indicator-dlg2-")
 ## ---------------------------------------------------------------------------
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message">
 	<div class="avatar mr10">
