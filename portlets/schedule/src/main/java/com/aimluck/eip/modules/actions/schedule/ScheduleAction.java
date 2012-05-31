@@ -158,10 +158,15 @@ public class ScheduleAction extends ALBaseAction {
 
       // Velocity テンプレートを読み込む
       String template = "";
-      String _template =
-        portlet.getPortletConfig().getInitParameter("pba-template");
       boolean done = false;
-
+      String _template = "";
+      if ("simple".equals(top_form)) {
+        _template = "schedule-calendar";
+      } else {
+       _template =
+        portlet.getPortletConfig().getInitParameter("pba-template");
+      }
+      
       // 現在のユーザー名を取得する
       ALEipUser loginuser = ALEipUtils.getALEipUser(rundata);
       String current = loginuser.getAliasName().toString();
