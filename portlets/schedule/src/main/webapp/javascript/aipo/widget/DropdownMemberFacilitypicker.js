@@ -155,16 +155,19 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         var input = dojo.byId(this.inputId);
         var html = "";
         var t_o = select.options;
-        var i = 0;
         var len = t_o.length;
         if(len <= 0) return;
-        for(i = 0 ;i < len; i ++ ) {
+        for(var i = 0 ;i < len; i ++ ) {
             if (i != 0) {
                 html += ' ';
             }
             var j = i % aipo.calendar.maximum_to;
             var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             html += "<span class=\"dispUser color" + j +"\">" + text + "</span>";
+        }
+        var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
+        if(pickedList){
+        	pickedList.innerHTML=select.innerHTML;//init_memberlistの更新 ユーザー選択のデータを保持
         }
         input.innerHTML = html;
     },

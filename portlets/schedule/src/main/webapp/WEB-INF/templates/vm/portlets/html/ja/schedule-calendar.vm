@@ -101,10 +101,44 @@
 					<div id="error-$!portlet.ID" style="display:none">
 					</div>
                     <div id="content-$!portlet.ID" style="visibility:hidden">
+
+
+                    </div>
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID"></div>
+						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange.call(this,event);">
+
+							##マイグループ
+                			#foreach( $record in $result.GroupList)
+                        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.Name))">$!record.AliasName</option>
+                			#end
+                			#if($result.GroupList.size() > 0)
+                				<option value="">----------</option>
+            				#end
+
+							##部署
+                            #foreach( $record in $result.PostMap )
+                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.GroupName))">$!record.PostName</option>
+							#end
+                           	#if($result.PostMap.size() > 0)
+                        		<option value="">----------</option>
+                			#end
+
+                			##施設グループ
+                            #foreach($record in $!result.FacilityGroupList)
+                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))">$!record.AliasName</option>
+                            #end
+							#if($!result.FacilityGroupList.size() > 0)
+                        		<option value="">----------</option>
+                			#end
+							<option value="pickup" selected="selected">ユーザー選択</option>
+						</select>
+						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">
+
+						</div>
 					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
                         <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
+						##データ保存時に競合したためユーザー選択の保持用に別に用意
+						<select multiple="multiple" class="hide" id="picked_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
                     <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>

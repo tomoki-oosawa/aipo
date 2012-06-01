@@ -21,6 +21,7 @@ package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -33,6 +34,10 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
@@ -41,6 +46,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -55,11 +61,20 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
 
   private String acl_feat;
 
+  /** <code>groups</code> グループ */
+  private List<ALEipGroup> groups;
+
+  /** <code>groups</code> グループリスト */
+  private List<ALEipGroup> facilityGroups;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     acl_feat = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     initFacilityList(rundata);
+
+    groups = ALEipUtils.getMyGroups(rundata);
+    facilityGroups = ALEipUtils.getALEipGroups();
 
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
@@ -186,5 +201,47 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
     }
 
     return true;
+  }
+
+  /**
+   * グループリストを取得します。
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getGroupList() {
+    return groups;
+  }
+
+  /**
+   * 部署マップを取得します。
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   * 部署に所属する人を取得します。
+   * 
+   * @param groupname
+   * @return
+   */
+  @Deprecated
+  public List<ALEipUser> getMemberListByPost(String groupname) {
+    return ALEipUtils.getUsers(groupname);
+  }
+
+  /**
+   * 施設のグループリストを取得します。
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getFacilityGroupList() {
+    return facilityGroups;
+  }
+
+  public String getFacilityName(String fname) {
+    return "f;" + fname;
   }
 }
