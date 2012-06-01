@@ -65,14 +65,14 @@
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
 </li>
 #if($!top_form=='simple')
-<li style="width: 32px;" title="$!{dayList}日">
+<li style="width: 3em;" title="$!{dayList}日">
 <a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}日</span></a>
 </li>
 #end
 </ul>
 </div>
 #if($!top_form=='simple')
-<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 30px;">
+<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
 <a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1日</a>
