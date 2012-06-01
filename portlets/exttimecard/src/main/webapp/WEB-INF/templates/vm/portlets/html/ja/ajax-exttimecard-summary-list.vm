@@ -44,7 +44,7 @@
 <div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardSummaryXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('target_group_name', "$!result.TargetGroupName").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
 #AUIbutton("表示中の一覧をダウンロード" $dlLink)
 </div>
 #end
