@@ -24,7 +24,8 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-<form name="workflowForm$!portlet.ID" id="workflowForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);return false;">
+<form name="workflowForm$!portlet.ID" id="workflowForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})" method="post" onsubmit="return false;">
+<input type="hidden" name="_name" value="依頼">
 <input type="hidden" name="mode" value="none" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderAtt("listTable wide mb20")
@@ -38,7 +39,7 @@
 <span class="caution">#if($!result.Detail.Progress.Value == "A") 承認済み #else 決裁待ち #end</span>
 #end
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
-&nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');")
+&nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');aimluck.io.ajaxDeleteSubmit(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})','$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage)")
 #end
 #ALtditemfooter()
 #ALtdcaption('タイトル')
@@ -107,7 +108,7 @@ $!{record.UpdateDate}
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
 <p class="right mt5 mb20">
-#ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');" '')
+#ALsubmitJSAtt('eventSubmit_doWorkflow_accept' '承認する' "aipo.workflow.onAccept('$!portlet.ID');aimluck.io.submit(this.form,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);" '')
 </p>
 <p class="right">
 #if(!($!result.Detail.CanRemandApplicant) && $!result.Detail.RemandingRecords.size() == 0)
@@ -124,7 +125,7 @@ $!{record.UpdateDate}
 #end
 #end
 #ALselectfooter()
-</span>に#ALsubmitJSAtt('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');" '')
+</span>に#ALsubmitJSAtt('eventSubmit_doWorkflow_denial'  '差し戻す' "aipo.workflow.onDenial('$!portlet.ID');aimluck.io.submit(this.form,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);" '')
 </p>
 #end
 #else
