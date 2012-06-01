@@ -26,30 +26,31 @@
 </div>
 <div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
   <input type="hidden" id="TimelinePage_$!{portlet.ID}" name="TimelinePage_$!{portlet.ID}" value="1"/>
+  <input type="hidden" id="TimelinePage_$!{portlet.ID}_imagesMaxCount" name="TimelinePage_$!{portlet.ID}_imagesMaxCount" value="$result.Images.size()"/>
   #foreach ($record in $result.Images)
     #if($velocityCount == 1)
-      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_$velocityCount" style="">
+      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_${velocityCount}_untiview" style="display:none">
     #else
-      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_$velocityCount" style="display:none">
+      <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_${velocityCount}_untiview" style="display:none">
     #end
-        <img src="$!record">
+        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" src="$!record">
       </div>
   #end
   <div class="tlClipContents">
     <div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Title</a></div>
-    <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.AutoCRUrl</a> aaa</div>
+    <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.AutoCRUrl</a></div>
     <div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!result.Body</div>
     #if($result.Images.size() > 0)
       <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID">
       <div class="auiSelectButton floatLeft" id="timelineSelectButton_$!{portlet.ID}">
         <ul class="floatLeft mr10">
           <li title="前へ">
-            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID', '$result.Images.size()')" title="前へ" class="first arrow">
+            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID')" title="前へ" class="first arrow">
               <span><img src="themes/default/images/icon/icon_arrow_l.gif" alt="前のサムネイル"></span>
             </a>
           </li>
           <li title="次へ">
-            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID', '$result.Images.size()')" title="次へ" class="last arrow">
+            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID')" title="次へ" class="last arrow">
               <span><img src="themes/default/images/icon/icon_arrow_r.gif" alt="次のサムネイル"></span>
             </a>
           </li>
@@ -59,7 +60,7 @@
         ${result.Images.size()} 件中 1 件
       </div>
       </div>
-      <div style="clear:both">
+      <div style="clear:both" id="ViewThumbnail_$!{portlet.ID}">
         <input type="checkbox" value="サムネイルを表示しない" id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
         <label for="checkbox_$!{portlet.ID}">サムネイルを表示しない</label>
       </div>

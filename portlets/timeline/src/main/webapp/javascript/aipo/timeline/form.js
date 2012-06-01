@@ -86,6 +86,75 @@ aipo.timeline.onScroll = function(url, pid, page, max) {
   }
 }
 
+aipo.timeline.nextThumbnail = function(pid) {
+	  var page = dojo.byId("TimelinePage_" + pid);
+	  var value = parseInt(page.value);
+	  var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
+	  var maxval = parseInt(max);
+	  if(value < maxval){
+	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
+	    value++;
+	    page.value = value;
+	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
+	    dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
+	  }
+	}
+
+	aipo.timeline.prevThumbnail = function(pid) {
+	  var page = dojo.byId("TimelinePage_" + pid);
+	  var value = parseInt(page.value);
+	  var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value
+	  var maxval = parseInt(max);
+	  if(value > 1){
+	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
+	    value--;
+	    page.value = value;
+	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
+	    dojo.byId("count_" + pid).innerHTML = maxval + " 件中 " + page.value + " 件";
+	  }
+	}
+
+aipo.timeline.refreshImageList = function(pid, max) {
+	var page = dojo.byId("TimelinePage_" + pid);
+	var value = parseInt(page.value);
+	var maxval = parseInt(max);
+	var revmax = 0;
+	var i;
+	for(i=1 ; i <= maxval ; i++){
+		var w = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalWidth;
+		var h = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalHeight;
+		//alert("w:" + w + " / h : " + h);
+		if((w > 80) && (h > 80)){
+			//描画対象
+			revmax++;
+
+			var info = dojo.byId("tlClipImage_" + pid + "_1_untiview");
+
+			var divNode = document.createElement('div');
+			divNode.id = "tlClipImage_" + pid + "_" + revmax;
+			divNode.className = "tlClipImage";
+			divNode.style.display = "none";
+
+			var imgNode = document.createElement('img');
+			imgNode.src = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").src;
+
+			divNode.appendChild(imgNode);
+
+			info.parentNode.insertBefore(divNode, info);
+		}
+	  }
+	if(revmax>0){
+		document.getElementById("tlClipImage_" + pid + "_1").style.display = "";
+		dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value = revmax;
+	    dojo.byId("count_" + pid).innerHTML = revmax + " 件中 1 件";
+	}else{
+		dojo.byId("auiSummaryMeta_" + pid).style.display = "none";
+		dojo.byId("ViewThumbnail_" + pid).style.display = "none";
+	}
+}
+
+
+
 aipo.timeline.getUrl = function(url, pid) {
   try {
     dojo.xhrPost({
@@ -103,6 +172,7 @@ aipo.timeline.getUrl = function(url, pid) {
     	  if(data != "error") {
 		        dojo.byId("tlInputClip_" + pid).innerHTML = data;
 		        dojo.byId("flag_" + pid).value = "exist";
+				aipo.timeline.refreshImageList(pid, dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value);
     	  } else {
     			dojo.byId("flag_" + pid).value = "forbidden";
     	  }
@@ -340,31 +410,6 @@ aipo.timeline.onBlurCommentField = function(pid, tid) {
     note.value = dojo.byId("note_" + pid + "_" + tid).defaultValue;
     dummy.style.display = "";
     field.style.display = "none";
-  }
-}
-
-aipo.timeline.nextThumbnail = function(pid, max) {
-  var page = dojo.byId("TimelinePage_" + pid);
-  var value = parseInt(page.value);
-  var maxval = parseInt(max);
-  if(value < maxval){
-    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
-    value++;
-    page.value = value;
-    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-    dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
-  }
-}
-
-aipo.timeline.prevThumbnail = function(pid, max) {
-  var page = dojo.byId("TimelinePage_" + pid);
-  var value = parseInt(page.value);
-  if(value > 1){
-    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
-    value--;
-    page.value = value;
-    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-    dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
   }
 }
 
