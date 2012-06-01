@@ -21,8 +21,10 @@
 ## ---------------------------------------------------------------------------
 #set ($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new')")
 #set ($indicator_id = "indicator-list-")
-#if(!$filter)
-	#set($filter="")
+#if($result.CurrentFilter)
+	#set($filter=$result.CurrentFilter)
+#else
+	#set($filter="null")
 #end
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
