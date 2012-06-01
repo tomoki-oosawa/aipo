@@ -39,7 +39,7 @@ public class ALEventlogUtils {
 
   /**
    * mode を DB に保存するための数値に変換します。
-   *
+   * 
    * @param mode
    * @return
    */
@@ -60,7 +60,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.EVENT_TYPE_UPDATE;
     } else if (ALActionEventlogConstants.EVENT_MODE_MULTI_DELETE.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_MULTI_DELETE;
-    } else if (ALActionEventlogConstants.EVENT_MODE_DELETE.equals(mode)) {
+    } else if (ALActionEventlogConstants.EVENT_MODE_DELETE.equals(mode)
+      || ALActionEventlogConstants.EVENT_MODE_DELETE_REPLY.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_DELETE;
     } else if (ALActionEventlogConstants.EVENT_MODE_LOGIN.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_LOGIN;
@@ -87,7 +88,7 @@ public class ALEventlogUtils {
 
   /**
    * イベントのエイリアス名を取得します。
-   *
+   * 
    * @param eventType
    * @return
    */
@@ -104,7 +105,7 @@ public class ALEventlogUtils {
 
   /**
    * ポートレットのエイリアス名を取得します。
-   *
+   * 
    * @param eventType
    * @return
    */
@@ -117,9 +118,9 @@ public class ALEventlogUtils {
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_LOGOUT) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_LOGOUT;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_ACCOUNT) {
-      return ALActionEventlogConstants.PORTLET_TYPE_STR_ACCOUNT;}
-    else if (portletType == ALEventlogConstants.PORTLET_TYPE_SYSTEM) {
-        return ALActionEventlogConstants.PORTLET_TYPE_STR_SYSTEM;
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_ACCOUNT;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_SYSTEM) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_SYSTEM;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_AJAXSCHEDULEWEEKLY) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_AJAXSCHEDULEWEEKLY;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY) {
@@ -200,7 +201,7 @@ public class ALEventlogUtils {
 
   /**
    * ポートレットIDからそのポートレットのPSMLのparentの文字列を取得する
-   *
+   * 
    * @param rundata
    * @param portletEntryId
    * @return

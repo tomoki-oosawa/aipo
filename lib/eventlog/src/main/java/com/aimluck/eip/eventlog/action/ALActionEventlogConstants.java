@@ -23,7 +23,7 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ログ保存用ライブラリの定数です。
- *
+ * 
  */
 public class ALActionEventlogConstants {
 
@@ -76,6 +76,8 @@ public class ALActionEventlogConstants {
   public static final String EVENT_MODE_UPDATE = ALEipConstants.MODE_UPDATE;
 
   public static final String EVENT_MODE_DELETE = ALEipConstants.MODE_DELETE;
+
+  public static final String EVENT_MODE_DELETE_REPLY = "delete_reply";
 
   public static final String EVENT_MODE_MULTI_DELETE =
     ALEipConstants.MODE_MULTI_DELETE;
