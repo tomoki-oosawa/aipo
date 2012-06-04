@@ -94,12 +94,10 @@
         #foreach( $record in $result.PostMap )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
         #end
-			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
-    	#if(($!{hasAcl}) && $!{hasAcl} == "T")
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
-	    #end
-	    #foreach($record in $!result.FacilitiyGroupList)
-        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName == "f_$!record.Name.toString()") selected="selected" #end>$!record.AliasName</option>
+  			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>設備一覧</option>
+  	    #foreach($record in $!result.FacilitiyGroupList)
+          <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName == "f_$!record.Name.toString()") selected="selected" #end>$!record.AliasName</option>
         #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
