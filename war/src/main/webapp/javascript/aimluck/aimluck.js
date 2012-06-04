@@ -37,8 +37,6 @@ aimluck.namespace = function(ns) {
     return nsobj;
 };
 
-djConfig = { isDebug: false };
-
 function getObjectById(id) {
     if(document.getElementById) return document.getElementById(id) //e5,e6,n6,m1,o6
     else if(document.all)       return document.all(id)            //e4
@@ -48,7 +46,7 @@ function getObjectById(id) {
 function ew(button) {
   disableButton(button.form);
   button.form.action = button.form.action + '?' + button.name + '=1';
-  button.form.submit(); 
+  button.form.submit();
 }
 
 function dw(button) {
@@ -56,7 +54,7 @@ function dw(button) {
     disableButton(button.form);
     button.form.action = button.form.action + '?' + button.name + '=1';
     button.form.submit();
-  } 
+  }
 }
 
 function ews(button) {
@@ -70,7 +68,7 @@ function dws(button) {
     disableButton(button.form);
     button.form.action = button.form.action + '?' + button.name + '=1';
     button.form.submit();
-  } 
+  }
 }
 
 function setHiddenValue(button) {
@@ -103,7 +101,7 @@ function disableButton(form) {
 
 function check_new_mail(button, current_page) {
   button.form.action = button.form.action + '?confirmlasttime=true&start=' + current_page;
-  button.form.submit(); 
+  button.form.submit();
 }
 
 function createAction(button) {
@@ -163,14 +161,14 @@ function add_member(select_member_from, select_member_to) {
 		for(i = 0 ; i < f_o.length; i ++ ) {
 			if(!f_o[i].selected) continue;
 			var iseq = false;
-		
+
 			for( j = 0 ; j < t_o.length; j ++ ) {
 		  	if( t_o[j].value == f_o[i].value ) {
 		    	iseq = true;
 		    	break;
 		  	}
 			}
-		
+
 			if(iseq) continue;
 			var option = document.createElement("OPTION");
 			option.value = f_o[i].value;
@@ -188,14 +186,14 @@ function add_member(select_member_from, select_member_to) {
 		for(i = 0 ; i < f_o.length; i ++ ) {
 			if(!f_o[i].selected) continue;
 			var iseq = false;
-		
+
 			for( j = 0 ; j < t_o.length; j ++ ) {
 		  	if( t_o[j].value == f_o[i].value ) {
 		    	iseq = true;
 		    	break;
 		  	}
 			}
-		
+
 			if(iseq) continue;
 			var option = document.createElement("OPTION");
 			option.value = f_o[i].value;
@@ -216,14 +214,14 @@ function remove_member(select) {
 		  if( t_o[i].selected ) {
 	  	  t_o.remove(i);
 	    	i -= 1;
-	  	} 
+	  	}
 		}
   } else {
   	var t_o = select.options;
 	  for(i = 0 ;i < t_o.length; i ++ ) {
 		  if( t_o[i].selected ) {
 				select.removeChild(t_o[i]);
-	    	i -= 1; 
+	    	i -= 1;
 			}
 		}
   }
@@ -273,8 +271,8 @@ function doDownOptions(select) {
   }
 }
 
-function up_option(select, index, rate) {  
-  var s_o = select.options; 
+function up_option(select, index, rate) {
+  var s_o = select.options;
   var delta = 0;
   if(index - rate >= 0){
     delta = index - rate;
@@ -291,7 +289,7 @@ function up_option(select, index, rate) {
 }
 
 function down_option(select, index, rate) {
-  var s_o = select.options; 
+  var s_o = select.options;
   var delta = 0;
   if(s_o.length - 1 - index - rate >= 0){
   	delta = index + rate;
@@ -300,10 +298,10 @@ function down_option(select, index, rate) {
 	    if(! s_o[i].selected){
 	  	  delta = i;
 	  	  break;
-	    } 
+	    }
     }
   }
-  
+
   change_turn_option(select, index, delta);
 }
 

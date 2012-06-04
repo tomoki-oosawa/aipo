@@ -27,7 +27,7 @@
 
 #* G L O B A L *#
 #macro(ALjavascript $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file"></script>
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
 #end
 
 #macro(ALbuttonLink $title $url $image)

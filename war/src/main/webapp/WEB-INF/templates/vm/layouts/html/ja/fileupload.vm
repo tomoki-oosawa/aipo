@@ -32,27 +32,33 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
-<link rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css" media="screen,tv,print" />
-#if($isXDomain == "true")
-<script type="text/javascript">
-  djConifg = {
-    xDomainBasePath: '${external_resources_url}/javascript'
-  };
-</script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
-#else
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
-#end
-<script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
-<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css?$!{utils.CacheBust}" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css?$!{utils.CacheBust}" media="screen,tv,print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}" media="screen,tv,print" />
 </head>
 <body class="portlet_background" onLoad="get_data('$!portlet.ID')">
+#if($isXDomain == "true")
+<script type="text/javascript">
+  djConfig = {
+    xDomainBasePath: '${external_resources_url}/javascript',
+    cacheBust: '$!{utils.CacheBust}'
+  };
+</script>
+#ALjavascript("javascript/dojo/dojo.xd.js")
+#ALjavascript("javascript/aipo.xd.js")
+#else
+<script type="text/javascript">
+  djConfig = {
+    cacheBust: '$!{utils.CacheBust}'
+  };
+</script>
+#ALjavascript("javascript/dojo/dojo.js")
+#ALjavascript("javascript/aipo.js")
+#end
+<script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+#ALjavascript("javascript/aipo/container.js")
 #parse("/portlets/html/ja/fileupload.vm")
 </body>
 </html>

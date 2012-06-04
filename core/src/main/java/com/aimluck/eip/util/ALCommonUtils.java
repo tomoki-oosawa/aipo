@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.util;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
@@ -54,6 +55,8 @@ public class ALCommonUtils {
 
   /** 乱数生成機保持用 */
   private static SecureRandom random = getSecureRandom();
+
+  private static String CACHE_BUST = null;
 
   public static String escapeXML(String string) {
     return StringEscapeUtils.escapeXml(string);
@@ -423,4 +426,12 @@ public class ALCommonUtils {
     return null;
   }
 
+  public static String getCacheBust() {
+    if (CACHE_BUST == null) {
+      File file = new File(JetspeedResources.getString("aipo.cached.file"));
+      long lastModified = file.lastModified();
+      CACHE_BUST = String.valueOf(lastModified);
+    }
+    return CACHE_BUST;
+  }
 }
