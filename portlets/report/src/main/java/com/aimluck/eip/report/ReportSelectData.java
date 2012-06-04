@@ -162,7 +162,10 @@ public class ReportSelectData extends
     boolean isSelf = ReportUtils.isSelf(rundata, context);
 
     // アクセス権限
-    if (isSelf || uid == view_uid) {
+    if ((!ALEipConstants.MODE_DETAIL.equals(action.getMode()) && (!SUBMENU_ALL
+      .equals(currentSubMenu)))
+      || isSelf
+      || uid == view_uid) {
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
     } else {
       aclPortletFeature =
