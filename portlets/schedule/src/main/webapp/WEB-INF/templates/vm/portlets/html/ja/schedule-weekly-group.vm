@@ -387,9 +387,9 @@ $!{record.ToDoResultData.TodoName}
 
 #if($!{record.Date.Value.equals($result.Today.Value)})
 #if($!{record.isHoliday()})
-#ALtdcellheaderAtt("class='addScheduleCell holiday' style='vertical-align:top;' height='100%' onclick=\"aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)\"")
+<td class='addScheduleCell holiday' style='vertical-align:top;' height='100%' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)")>
 #else
-#ALtdcellheaderAtt("class='addScheduleCell today' style='vertical-align:top;' height='100%' onclick=\"aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)\"")
+<td class='addScheduleCell today' style='vertical-align:top;' height='100%' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)")>
 #end
 ##<table class="outer" cellspacing="1" cellpadding="2" width="100%" height="100%"><tbody><tr ><td class="item" style="vertical-align:top;background-color:#FFFFE5" height="100%">
 #elseif($!{record.isHoliday()})
