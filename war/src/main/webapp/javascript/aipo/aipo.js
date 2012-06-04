@@ -37,8 +37,6 @@ aipo.namespace = function(ns) {
     return nsobj;
 };
 
-djConfig = { isDebug: false };
-
 var ptConfig = [];
 
 aipo.onReceiveMessage = function(msg, group){
