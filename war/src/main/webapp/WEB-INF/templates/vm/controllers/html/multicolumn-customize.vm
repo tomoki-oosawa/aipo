@@ -25,6 +25,17 @@
         <tr>
 #set ($ndx = 0)
 #set ($col = 0)
+#set ($timelineCount = 0)
+
+
+#foreach ( $column in $portlets )
+#foreach ( $portlet in $column )
+#if($portlet.parent == "Timeline")
+#set ($timelineCount = $timelineCount + 1)
+#end
+#end
+#end
+
 #foreach ( $column in $portlets )
 #set ($row = 0)
 #if  ($sizes.size() >= $velocityCount)
@@ -69,7 +80,9 @@
                                                 <tr>
                                                   <td nowrap="nowrap" class="top right">
 #if($accessControl == "true")
+#if($portlet.parent != "Timeline" || ($timelineCount > 1))
                                                     <input type="image" src="images/close.gif" alt="$l10n.CUSTOMIZER_REMOVE" title="$l10n.CUSTOMIZER_REMOVE" name="eventSubmit_doDelete" />
+#end
 #end
 #if ($col == 0)
                                                     <img src="images/common/dot.gif" width="19" alt=""/>
