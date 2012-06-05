@@ -131,9 +131,6 @@ public class TimelineUtils {
   /** 検索キーワード変数の識別子 */
   public static final String TARGET_KEYWORD = "keyword";
 
-  /** パラメータリセットの識別子 */
-  // private static final String RESET_FLAG = "reset_params";
-
   /**
    * トピックに対する返信数を返します
    * 
@@ -899,7 +896,8 @@ public class TimelineUtils {
   }
 
   public static ResultList<EipTTimeline> getTimelineList(Integer userId,
-      List<Integer> parentIds, String type, int page, int limit, int minId) {
+      List<Integer> parentIds, String type, int page, int limit, int minId,
+      List<Integer> userIds) {
 
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
@@ -952,6 +950,22 @@ public class TimelineUtils {
 
     if (minId > 0) {
       body.append(" AND eip_t_timeline.timeline_id > " + minId);
+    }
+
+    if ((userIds != null && userIds.size() > 0)) {
+      body.append(" AND (");
+      body.append("eip_t_timeline.owner_id IN (");
+
+      boolean isFirstusers = true;
+      for (Integer num : userIds) {
+        if (!isFirstusers) {
+          body.append(",");
+        }
+        body.append(num.intValue());
+        isFirstusers = false;
+      }
+      body.append(")");
+      body.append(")");
     }
 
     StringBuilder last = new StringBuilder();

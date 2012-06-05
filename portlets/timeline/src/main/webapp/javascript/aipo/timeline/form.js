@@ -461,6 +461,21 @@ aipo.timeline.setMinHeight = function(pid){
 	}
 	dojo.byId("message_" + pid).style.minHeight = min + "px";
 }
+aipo.timeline.changeDisplayCallback = function(pid){
+	if(dojo.byId('menubar_tlDisplayChanger_' + pid).style.display == 'none'){
+		dojo.byId('menubar_tlDisplayChanger_' + pid).style.display = 'block';
+	}else{
+		dojo.byId('menubar_tlDisplayChanger_' + pid).style.display = 'none';
+	}
+}
+
+aipo.timeline.changeDisplay = function(pid){
+	if(dojo.byId('menubar_tlDisplayChanger_' + pid).style.display == 'none'){
+		setTimeout(function(){aipo.timeline.changeDisplayCallback(pid);}, 0);
+	}else{
+		aipo.timeline.changeDisplayCallback(pid);
+	}
+}
 
 aipo.timeline.getNewMessage = function(url, pid){
 	  try {

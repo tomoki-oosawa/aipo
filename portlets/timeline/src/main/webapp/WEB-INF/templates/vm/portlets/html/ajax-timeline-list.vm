@@ -72,6 +72,43 @@
 
 #if($result.List.size() == 0)
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
+		<div class="tlDisplayChanger">
+			<div class="btn">
+				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
+					<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
+						#if("$!{result.TargetGroupName}" == "all")
+							すべてのグループ
+						#else
+						#foreach( $record in $result.MyGroupList)
+						#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
+						$!record.AliasName
+						#end
+						#end
+						#foreach($record in $result.PostMap)
+						#if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")
+						$!record.PostName
+						#end
+						#end
+						#end
+					</span>
+					<i class="auiIcon auiIconArwBottom"></i>
+				</a>
+			</div>
+			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
+				<ul>
+					#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionAllUrl}', '$!{portlet.ID}');">すべてのグループ</a></li>
+					#foreach( $record in $result.MyGroupList)
+					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.viewPage('${actionmygroupUrl}', '$!{portlet.ID}');">$!record.AliasName</a></li>
+					#end
+					#foreach($record in $result.PostMap)
+					#set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionUrl}', '$!{portlet.ID}');">$!record.PostName</a></li>
+					#end
+				</ul>
+			</div>
+		</div>
 		<div id="content">
 			<div id="" class="message">
 			<p class="mt10">投稿はありません。</p>
@@ -85,6 +122,43 @@
     <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop');" style="display:none" />
+  	<div class="tlDisplayChanger">
+		<div class="btn">
+			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
+				<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
+				#if("$!{result.TargetGroupName}" == "all")
+					すべてのグループ
+				#else
+				#foreach( $record in $result.MyGroupList)
+				#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
+                	$!record.AliasName
+				#end
+            	#end
+				#foreach($record in $result.PostMap)
+				#if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")
+					$!record.PostName
+				#end
+				#end
+				#end
+                </span>
+				<i class="auiIcon auiIconArwBottom"></i>
+			</a>
+		</div>
+		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
+			<ul>
+			#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionAllUrl}', '$!{portlet.ID}');">すべてのグループ</a></li>
+			#foreach( $record in $result.MyGroupList)
+			#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.viewPage('${actionmygroupUrl}', '$!{portlet.ID}');">$!record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+		    #set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionUrl}', '$!{portlet.ID}');">$!record.PostName</a></li>
+			#end
+			</ul>
+		</div>
+	</div>
   <div id="content_$!{portlet.ID}_1">
 	#parse("/portlets/html/ja/ajax-timeline-content.vm")
   </div>

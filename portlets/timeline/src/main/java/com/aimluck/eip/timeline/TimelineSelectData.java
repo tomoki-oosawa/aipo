@@ -48,7 +48,9 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -69,6 +71,9 @@ import com.aimluck.eip.util.ALEipUtils;
  */
 public class TimelineSelectData extends
     ALAbstractSelectData<EipTTimeline, EipTTimeline> implements ALData {
+
+  /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
+  private final String TARGET_GROUP_NAME = "target_group_name";
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -96,9 +101,6 @@ public class TimelineSelectData extends
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
-  /** 閲覧権限の有無 */
-  // private boolean hasAclCategoryList;
-
   /** 他ユーザーの作成したトピックの編集権限 */
   private boolean hasAclUpdateTopicOthers;
 
@@ -110,6 +112,20 @@ public class TimelineSelectData extends
   private List<Object> list;
 
   private final List<Integer> users = new ArrayList<Integer>();
+
+  /** <code>userList</code> 表示切り替え用のユーザリスト */
+  private List<ALEipUser> userList = null;
+
+  /** <code>userid</code> ユーザーID */
+  private String userid;
+
+  private final List<Integer> useridList = new ArrayList<Integer>();
+
+  /** <code>target_group_name</code> 表示対象の部署名 */
+  protected String target_group_name;
+
+  /** <code>myGroupList</code> グループリスト（My グループと部署） */
+  private List<ALEipGroup> myGroupList = null;
 
   /**
    * 
@@ -132,6 +148,23 @@ public class TimelineSelectData extends
     uid = ALEipUtils.getUserId(rundata);
     baseuser = (ALBaseUser) rundata.getUser();
     user = ALEipUtils.getALEipUser(rundata);
+
+    // My グループの一覧を取得する．
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
+    int length = myGroups.size();
+    for (int i = 0; i < length; i++) {
+      myGroupList.add(myGroups.get(i));
+    }
+  }
+
+  /**
+   * My グループの一覧を取得する．
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getMyGroupList() {
+    return myGroupList;
   }
 
   /**
@@ -145,15 +178,22 @@ public class TimelineSelectData extends
   public ResultList<EipTTimeline> selectList(RunData rundata, Context context) {
     try {
 
-      // 表示するカラムのみデータベースから取得する．
-      ResultList<EipTTimeline> list =
-        TimelineUtils.getTimelineList(
-          uid,
-          Arrays.asList(0),
-          null,
-          current_page,
-          getRowsNum(),
-          0);
+      // 指定グループや指定ユーザをセッションに設定する．
+      setupLists(rundata, context);
+
+      ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
+      if ((useridList != null && useridList.size() > 0)) {
+        // 表示するカラムのみデータベースから取得する．
+        list =
+          TimelineUtils.getTimelineList(
+            uid,
+            Arrays.asList(0),
+            null,
+            current_page,
+            getRowsNum(),
+            0,
+            useridList);
+      }
 
       // 件数をセットする．
       topicSum = list.getTotalCount();
@@ -188,9 +228,17 @@ public class TimelineSelectData extends
           rundata,
           context,
           "lastTimelineId"));
+
       // 表示するカラムのみデータベースから取得する．
       ResultList<EipTTimeline> list =
-        TimelineUtils.getTimelineList(uid, Arrays.asList(0), null, 0, 0, minId);
+        TimelineUtils.getTimelineList(
+          uid,
+          Arrays.asList(0),
+          null,
+          0,
+          0,
+          minId,
+          useridList);
 
       // 件数をセットする．
       topicSum = list.getTotalCount();
@@ -334,7 +382,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getComments(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0);
+      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0, null);
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -353,7 +401,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getActivities(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1, 0);
+      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1, 0, useridList);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -531,7 +579,7 @@ public class TimelineSelectData extends
             if (!(user.getUserId().toString().equals(
               coac_item.getOwnerId().toString())
               || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+                .contains("-1"))) {
               iter.remove();
             }
           }
@@ -648,7 +696,7 @@ public class TimelineSelectData extends
             if (!(user.getUserId().toString().equals(
               coac_item.getOwnerId().toString())
               || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+                .contains("-1"))) {
               iter.remove();
             }
           }
@@ -759,6 +807,15 @@ public class TimelineSelectData extends
     return hasAclDeleteTopicOthers;
   }
 
+  /**
+   * 部署の一覧を取得する．
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
   public String getCurrentSearchWithSanitize() {
     return ALStringUtil.sanitizing(getCurrentSearch());
   }
@@ -814,4 +871,89 @@ public class TimelineSelectData extends
     ALEipManager.getInstance().getUsers(users);
   }
 
+  /**
+   * 指定グループや指定ユーザをセッションに設定する．
+   * 
+   * @param rundata
+   * @param context
+   * @throws ALDBErrorException
+   */
+  protected void setupLists(RunData rundata, Context context) {
+
+    target_group_name = getTargetGroupName(rundata, context);
+    boolean fgroup_flag = false;
+    String target_group_id = "";
+    current_filter = target_group_name;
+    String[] target = target_group_name.split(";");
+    String[] target2 = target_group_name.split("_");
+    if ("f".equals(target[0])) {
+      target_group_id = target[1];
+    }
+    if ("f".equals(target2[0])) {
+      target_group_id = target2[1];
+      fgroup_flag = true;
+    }
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
+      userList = ALEipUtils.getUsers(target_group_name);
+    } else if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
+      userList = ALEipUtils.getUsers(target_group_name);
+    } else {
+      userList = ALEipUtils.getUsers("LoginUser");
+    }
+    for (int i = 0; i < userList.size(); i++) {
+      useridList.add((int) (userList.get(i).getUserId().getValue()));
+    }
+  }
+
+  /**
+   * 表示切り替えで指定したグループ ID を取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  protected String getTargetGroupName(RunData rundata, Context context) {
+    return getTargetGroupName(rundata, context, TARGET_GROUP_NAME);
+  }
+
+  /**
+   * 表示切り替えで指定したグループ ID を取得する．
+   * 
+   * @param rundata
+   * @param target_key
+   * @param context
+   * @return
+   */
+  protected String getTargetGroupName(RunData rundata, Context context,
+      String target_key) {
+    String target_group_name = null;
+    String idParam = null;
+    if (ALEipUtils.isMatch(rundata, context)) {
+      // 自ポートレットへのリクエストの場合に，グループ名を取得する．
+      idParam = rundata.getParameters().getString(target_key);
+    }
+    target_group_name = ALEipUtils.getTemp(rundata, context, target_key);
+
+    if (idParam == null && target_group_name == null) {
+      ALEipUtils.setTemp(rundata, context, target_key, "all");
+      target_group_name = "all";
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, target_key, idParam);
+      target_group_name = idParam;
+    }
+    return target_group_name;
+  }
+
+  /**
+   * 表示切り替え時に指定するグループ名
+   * 
+   * @return
+   */
+  public String getTargetGroupName() {
+    return target_group_name;
+  }
 }
