@@ -1826,7 +1826,7 @@ ul.attachments span.deletebutton:hover{
 .timeline {
 	position:relative;
 	margin-top:10px;
-	overflow:hidden;
+	overflow:display;
 }
 .timeline .avatar {
 	float:left;
