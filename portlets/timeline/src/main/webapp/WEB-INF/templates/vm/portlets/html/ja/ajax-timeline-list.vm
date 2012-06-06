@@ -91,7 +91,6 @@
 						#end
 						#end
 					</span>
-					<i class="auiIcon auiIconArwBottom"></i>
 				</a>
 			</div>
 			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
@@ -141,7 +140,6 @@
 				#end
 				#end
                 </span>
-				<i class="auiIcon auiIconArwBottom"></i>
 			</a>
 		</div>
 		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
