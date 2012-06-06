@@ -226,6 +226,16 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             pNode.style.top = top_new + "px";
         }
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
+    },
+    _onDropDownClick:function(e){
+    	var groupSelect=dojo.byId("groupselect-"+this.tmpPortretId);
+
+        if(groupSelect && groupSelect.value!="pickup"){
+        		return false;
+        }
+
+    	//ユーザー選択になっていれば、処理を続行。
+    	aimluck.widget.Dropdown.prototype._onDropDownClick.call(this,e);
     }
 });
 
