@@ -64,8 +64,11 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
   /** <code>groups</code> グループ */
   private List<ALEipGroup> groups;
 
-  /** <code>groups</code> グループリスト */
+  /** <code>facilityGroups</code> グループリスト */
   private List<ALEipGroup> facilityGroups;
+
+  /** <code>selectedGroup</code> 選択されるグループ */
+  private String selectedGroup;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -75,6 +78,12 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
 
     groups = ALEipUtils.getMyGroups(rundata);
     facilityGroups = ALEipUtils.getALEipGroups();
+
+    selectedGroup =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p8h-cgrp");
 
     // スーパークラスのメソッドを呼び出す。
     super.init(action, rundata, context);
@@ -243,5 +252,20 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
 
   public String getFacilityName(String fname) {
     return "f;" + fname;
+  }
+
+  /**
+   * @return selectedGroup
+   */
+  public String getSelectedGroup() {
+    return selectedGroup;
+  }
+
+  /**
+   * @param selectedGroup
+   *          セットする selectedGroup
+   */
+  public void setSelectedGroup(String selectedGroup) {
+    this.selectedGroup = selectedGroup;
   }
 }

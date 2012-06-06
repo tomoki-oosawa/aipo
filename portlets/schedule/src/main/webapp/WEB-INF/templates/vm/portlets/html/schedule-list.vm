@@ -88,54 +88,68 @@
             tmpPortretId: "$!portlet.ID"
        };
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);
-	}
-	var gselect = document.getElementById("groupselect-$!portlet.ID");
 
-	aipo.schedule.groupSelectOnchange=function(e){
-		var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
-		switch(this.value){
-			case "":
-				this.selectedIndex=dojo.query('[value=pickup]',this)[0].index;//pickupへ流す。
-			case "pickup":
-				addtxt.removeClass("hide");
+       var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
+       var gselect = document.getElementById("groupselect-"+portletId);
+		if(gselect.value=="pickup"){
+			addtxt.removeClass("hide");
+		}else{
+			addtxt.addClass("hide");
+		}
 
-				//pickedListに保持したデータをmenber_toへ送る
-				dojo.byId("member_to-"+portletId).innerHTML=
-					dojo.byId("picked_memberlist-"+portletId).innerHTML;
-				mp.inputMemberSync();
-				aipo.calendar.populateWeeklySchedule(portletId);//スケジュール更新
-				mp._onDropDownClick();//picker表示
-				break;
-			default:
-				addtxt.addClass("hide");
-				var params="";
-				  dojo.xhrGet({
-                    portletId:portletId,
-                    url:this.value,
-                    encoding: "utf-8",
-                    handleAs: "json-comment-filtered",
-                    load: function(data, event) {
-						//paramsの編集+namesの変更
-						var html="";
-						var memberTo=dojo.byId("member_to-"+portletId);
-						var memberToHTML="";
-						for(var i=0;i<data.length;i++){
-							if (i != 0) {
-                                html += ' ';
-                            }
-							params+="&m_id="+data[i].userFacilityId;
-							html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-							memberToHTML+="<option value=\""+ data[i].userFacilityId+"\">"+data[i].aliasName+"</option>";
+		aipo.schedule.groupSelectOnchange=function(e){
+			var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
+			switch(this.value){
+				case "":
+					this.selectedIndex=dojo.query('[value=pickup]',this)[0].index;//pickupへ流す。
+				case "pickup":
+					addtxt.removeClass("hide");
+
+					//デフォルトを保存するためにajax送信
+					dojo.xhrGet({
+	                    portletId:portletId,
+	                    url:dojo.byId("groupselect-defaulturl-"+portletId).value,
+	                    encoding: "utf-8",
+	                    handleAs: "json-comment-filtered"
+					});
+
+					//pickedListに保持したデータをmenber_toへ送る
+					dojo.byId("member_to-"+portletId).innerHTML=
+						dojo.byId("picked_memberlist-"+portletId).innerHTML;
+					mp.inputMemberSync();
+					aipo.calendar.populateWeeklySchedule(portletId);//スケジュール更新
+					mp._onDropDownClick();//picker表示
+					break;
+				default:
+					addtxt.addClass("hide");
+					var params="";
+					  dojo.xhrGet({
+	                    portletId:portletId,
+	                    url:this.value,
+	                    encoding: "utf-8",
+	                    handleAs: "json-comment-filtered",
+	                    load: function(data, event) {
+							//paramsの編集+namesの変更
+							var html="";
+							var memberTo=dojo.byId("member_to-"+portletId);
+							var memberToHTML="";
+							for(var i=0;i<data.length;i++){
+								if (i != 0) {
+	                                html += ' ';
+	                            }
+								params+="&m_id="+data[i].userFacilityId;
+								html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
+								memberToHTML+="<option value=\""+ data[i].userFacilityId+"\">"+data[i].aliasName+"</option>";
+							}
+							dojo.byId("member_to_input-"+portletId).innerHTML=html;
+							memberTo.innerHTML=memberToHTML;
+							aipo.calendar.populateWeeklySchedule(portletId,params);//スケジュール更新
 						}
-						dojo.byId("member_to_input-"+portletId).innerHTML=html;
-						memberTo.innerHTML=memberToHTML;
-						aipo.calendar.populateWeeklySchedule(portletId,params);//スケジュール更新
-					}
-				});
-				break;
+					});
+					break;
+			}
 		}
 	}
-
 	var mpicker = dijit.byId("memberpicker-$!portlet.ID");
     if(mpicker){
         var select = dojo.byId('init_memberlist-$!portlet.ID');

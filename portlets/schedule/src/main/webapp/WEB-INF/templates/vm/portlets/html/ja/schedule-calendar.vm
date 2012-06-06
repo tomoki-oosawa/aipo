@@ -106,10 +106,9 @@
                     </div>
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
 						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange.call(this,event);">
-
 							##マイグループ
                 			#foreach( $record in $result.GroupList)
-                        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.Name))">$!record.AliasName</option>
+                        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalenderUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.Name))" #if($result.SelectedGroup.equals($!record.Name.Value))selected="selected" #end>$!record.AliasName</option>
                 			#end
                 			#if($result.GroupList.size() > 0)
                 				<option value="">----------</option>
@@ -117,7 +116,7 @@
 
 							##部署
                             #foreach( $record in $result.PostMap )
-                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.GroupName))">$!record.PostName</option>
+                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalenderUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.GroupName))"#if($result.SelectedGroup.equals($record.GroupName.Value)) selected="selected" #end>$!record.PostName</option>
 							#end
                            	#if($result.PostMap.size() > 0)
                         		<option value="">----------</option>
@@ -125,13 +124,14 @@
 
                 			##施設グループ
                             #foreach($record in $!result.FacilityGroupList)
-                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserFacilityLiteJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))">$!record.AliasName</option>
+                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalenderUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
                             #end
 							#if($!result.FacilityGroupList.size() > 0)
                         		<option value="">----------</option>
                 			#end
-							<option value="pickup" selected="selected">ユーザー選択</option>
+							<option value="pickup" #if("pickup"==$result.SelectedGroup) selected="selected" #end>ユーザー選択</option>
 						</select>
+						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalenderUserSelectJSONScreen").addQueryData("groupname","pickup"))" />
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">
 
 						</div>
