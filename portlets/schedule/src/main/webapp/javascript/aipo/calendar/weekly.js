@@ -1347,6 +1347,9 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this.dragSource.schedule.isDrag = true;
         var distance = ptConfig[this.portletId].distance;
+
+        var view_type=(dojo.byId("view_type") && dojo.byId("top_form") && dojo.byId("top_form").value == "simple")?dojo.byId("view_type").value:ptConfig[this.portletId].scheduleDivDaySum;
+
         var mouseX = aipo.calendar.getCurrentMouseX(e);
         _tmpIndex = mouseX.index;
         /*y = Math.floor(y/distance)*distance;
@@ -1367,7 +1370,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
                 this.moveIndex = - this.positionFrom + this.positionTo;
                 tmpL = tmpSchedule.indexReal + this.moveIndex;
                 tmpW = tmpSchedule.colspanReal;
-                var tmpS = ptConfig[this.portletId].scheduleDivDaySum;
+                var tmpS = view_type;
                 if (tmpW + tmpL > tmpS) {
                     if (tmpL < 0) {
                         tmpW = tmpS;
@@ -1415,8 +1418,8 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
                     tmpW = this.positionTo - tmpSchedule.index + 1;
                 }
             }
-            var width = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpW;
-            var left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
+            var width = 100 /view_type * tmpW;
+            var left = 100 /view_type * tmpL;
             /*
             if(dojo.byId("top_form").value=="simple"){
             	width = 100 * tmpW;
@@ -1444,6 +1447,13 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         var type = this.dragSource.termType;
         var scheduleNode = this.dragSource.scheduleNode;
         var startDate, endDate;
+
+
+        if(dojo.byId("top_form").value=="simple"){
+        	startDate = ptConfig[this.portletId].jsonData.date[0];
+        	endDate = ptConfig[this.portletId].jsonData.date[0];
+        }
+
         if (type == 'center') {
             startDate = aipo.calendar.getDate(viewStart, tmpSchedule.indexReal + this.moveIndex) + "-00-00";
             endDate = aipo.calendar.getDate(viewStart, tmpSchedule.indexReal + this.moveIndex + tmpSchedule.colspanReal-1) + "-00-00";
@@ -1465,10 +1475,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
 
             }
         }
-        if(dojo.byId("top_form").value=="simple"){
-        	startDate = ptConfig[this.portletId].jsonData.date[0];
-        	endDate = ptConfig[this.portletId].jsonData.date[0];
-        }
+
 
         this.positionFrom = -1;
         this.positionTo = -1;
