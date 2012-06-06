@@ -33,7 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ファイルのアップロードを処理するクラスです。 <br />
- * 
+ *
  */
 public class FileuploadFormScreen extends ALVelocityScreen {
 
@@ -42,7 +42,7 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     .getLogger(FileuploadFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -52,10 +52,10 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
     String mode = rundata.getParameters().getString("mode", "");
     try {
-      if (ALEipConstants.MODE_FORM.equals(mode)) {
-        doFileupload_form(rundata, context);
-      } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
-        doFileupload_update(rundata, context);
+      if (mode.contains(ALEipConstants.MODE_FORM)) {
+        doFileupload_form(rundata, context, mode);
+      } else if (mode.contains(ALEipConstants.MODE_UPDATE)) {
+        doFileupload_update(rundata, context, mode);
       }
     } catch (Exception ex) {
       logger.error("[FileuploadFormScreen] Exception.", ex);
@@ -65,12 +65,12 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
   /**
    * 添付ファイルの入力フォームを開く．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
    */
-  protected void doFileupload_form(RunData rundata, Context context)
+  protected void doFileupload_form(RunData rundata, Context context, String mode)
       throws Exception {
     context.put("data", rundata);
     context.put("js_peid", rundata.getParameters().getString("js_peid", ""));
@@ -89,19 +89,24 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "layouts/html/ja/fileupload.vm";
+    String layout_template;
+    if (mode.equals(ALEipConstants.MODE_FORM)) {
+      layout_template = "layouts/html/ja/fileupload.vm";
+    } else {
+      layout_template = "layouts/html/ja/fileupload-mini.vm";
+    }
     setTemplate(rundata, context, layout_template);
   }
 
   /**
    * 添付ファイルのアップロードを受け付ける．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
    */
-  protected void doFileupload_update(RunData rundata, Context context)
-      throws Exception {
+  protected void doFileupload_update(RunData rundata, Context context,
+      String mode) throws Exception {
 
     context.put("data", rundata);
     context.put("js_peid", rundata.getParameters().getString("js_peid", ""));
@@ -115,7 +120,12 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     if (formData.doUpdate(this, rundata, context)) {
       context.put("receiveFile", "true");
     }
-    String layout_template = "layouts/html/ja/fileupload.vm";
+    String layout_template;
+    if (mode.equals(ALEipConstants.MODE_UPDATE)) {
+      layout_template = "layouts/html/ja/fileupload.vm";
+    } else {
+      layout_template = "layouts/html/ja/fileupload-mini.vm";
+    }
     setTemplate(rundata, context, layout_template);
 
   }

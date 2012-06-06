@@ -445,10 +445,22 @@ aipo.timeline.deleteClip = function(pid){
 	dojo.byId("flag_" + pid).value = "forbidden";
 }
 
-aipo.timeline.submit = function(form, indicator_id, pid, callback){
-	if(dojo.byId('note_' + pid).value != dojo.byId('note_' + pid).defaultValue){
-		aimluck.io.submit(form, indicator_id, pid, callback);
+aipo.timeline.submit = function(form, indicator_id, pid, callback, cnt){
+	var note = dojo.byId('note_' + pid);
+	if(dojo.byId(indicator_id + pid).style.display == "none" || cnt >= 8) {
+		aimluck.io.createSelectFromFileList(form, pid);
+		if(note.value != note.defaultValue){
+			aimluck.io.submit(form, indicator_id, pid, callback);
+		}
+	} else {
+		setTimeout(function () {aipo.timeline.submit(form, indicator_id, pid, callback, cnt+1)}, Math.pow(2, cnt) * 1000);
 	}
+}
+
+aipo.timeline.write = function(inthis, indicator_id, pid) {
+	aipo.timeline.addText(dojo.byId('form' + pid), pid);
+	aipo.timeline.addHiddenValue(dojo.byId('form' + pid), 'mode', 'insert');
+	aimluck.io.setHiddenValue(inthis);
 }
 
 aipo.timeline.setMinHeight = function(pid){

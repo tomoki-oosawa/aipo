@@ -33,7 +33,7 @@
 <input type="hidden" id="height_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="$result.ContentHeight" />
 <div id="inputField">
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
+#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage, 0)")
 
 <div class="tlInputMention" style="position:relative">
   <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
@@ -46,7 +46,7 @@
 <div class="tlInputControls clearfix">
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
-	<input href="javascript:void(0)" type="submit" class="auiButtonAction" onclick="aipo.timeline.addText(dojo.byId('form$!portlet.ID'), '$!portlet.ID');aipo.timeline.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'insert');aimluck.io.setHiddenValue(this);" value="投稿する" />
+	<input href="javascript:void(0)" type="submit" id="timeline_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="投稿する" />
   </div>
   <div class="floatRight">
 	<div class="tlInputMention">
@@ -54,14 +54,14 @@
 	</div>
 	</div>
   <div class="floatLeft mr10">
-    #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-    <a href="javascript:void(0)" class="auiButtonBold" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');"  name="add_attachment">ファイルの選択</a>
+    <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" >
+    </iframe>
   </div>
-    <ul id="attachments_$!{portlet.ID}" class="attachments">
-      #foreach($record in $!result.AttachmentFileNameList )
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+    #foreach($record in $!result.AttachmentFileNameList )
       <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
-      #end
-    </ul>
+    #end
+  </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 </div>
 #ALformfooter()
