@@ -321,7 +321,6 @@ table.activityTable tr.unread td {
 	max-width:1000px;
 	max-height:1000px;
 }
-
 /***************************************************
 	auiListWrapper
 --------------------------------------------------*/
@@ -1826,7 +1825,7 @@ ul.attachments span.deletebutton:hover{
 .timeline {
 	position:relative;
 	margin-top:10px;
-	overflow:display;
+	overflow:hidden;
 }
 .timeline .avatar {
 	float:left;
