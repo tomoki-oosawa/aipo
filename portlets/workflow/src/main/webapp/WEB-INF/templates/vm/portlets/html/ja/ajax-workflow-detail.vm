@@ -28,7 +28,9 @@
 <input type="hidden" name="_name" value="依頼">
 <input type="hidden" name="mode" value="none" />
 <input type="hidden" name="secid" value="$secid" />
+
 #ALtableheaderAtt("listTable wide mb20")
+<caption>決済内容</caption>
 #ALtdcaption('決裁状況')
 #ALtditemheader()
 #if($!result.Detail.Progress.Value == "D")
@@ -77,8 +79,8 @@ $!result.Detail.RouteName
 #ALtditemfooter()
 #end
 #ALtablefooter()
-<h2>決済履歴</h2>
 #ALtableheaderAtt("listTable wide mb10")
+<caption>決済履歴</caption>
 ##<tr>
 ##ALtdheadThin("決裁")
 ##ALtdheadAtt("ユーザー名" "style='width:20%'")
