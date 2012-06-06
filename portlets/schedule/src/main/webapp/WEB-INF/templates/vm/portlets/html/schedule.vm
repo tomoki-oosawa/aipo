@@ -63,9 +63,39 @@
  	#end
 	#end
 
+	 var initCalender=function(){
+		for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
+	      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
+	      tmpDraggable.portletId = '$!portlet.ID';
+	      tmpDraggable.index = i;
+	    };
+
+	    tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
+	    tmpDraggable.portletId = '$!portlet.ID';
+
+	    aipo.calendar.populateWeeklySchedule('$!portlet.ID');
+	};
+
+	var ajaxMemberSelectLoad=function(data, event) {
+		//paramsの編集+namesの変更
+		var html="";
+		var memberTo=dojo.byId("member_to-"+portletId);
+		var memberToHTML="";
+		for(var i=0;i<data.length;i++){
+			if (i != 0) {
+				html += ' ';
+			}
+			params+="&m_id="+data[i].name;
+			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
+			memberToHTML+="<option value=\""+ data[i].userFacilityId+"\">"+data[i].aliasName+"</option>";
+		}
+		dojo.byId("member_to_input-"+portletId).innerHTML=html;
+		memberTo.innerHTML=memberToHTML;
+	};
+
 	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){
-       var params = {
+       params = {
             widgetId: "member_to-$!portlet.ID",
             iconURL: "themes/$!theme/images/icon/icon_member.gif",
             iconAlt: "参加者選択",
@@ -86,6 +116,7 @@
             tmpPortretId: "$!portlet.ID"
        };
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);
+
 
        var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
        var gselect = document.getElementById("groupselect-"+portletId);
@@ -126,21 +157,8 @@
 	                    url:this.value,
 	                    encoding: "utf-8",
 	                    handleAs: "json-comment-filtered",
-	                    load: function(data, event) {
-							//paramsの編集+namesの変更
-							var html="";
-							var memberTo=dojo.byId("member_to-"+portletId);
-							var memberToHTML="";
-							for(var i=0;i<data.length;i++){
-								if (i != 0) {
-	                                html += ' ';
-	                            }
-								params+="&m_id="+data[i].name;
-								html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-								memberToHTML+="<option value=\""+ data[i].userFacilityId+"\">"+data[i].aliasName+"</option>";
-							}
-							dojo.byId("member_to_input-"+portletId).innerHTML=html;
-							memberTo.innerHTML=memberToHTML;
+	                    load:ajaxMemberSelectLoad,
+						handle:function(){
 							aipo.calendar.populateWeeklySchedule(portletId,params);//スケジュール更新
 						}
 					});
@@ -151,25 +169,30 @@
 
 	var mpicker = dijit.byId("memberpicker-$!portlet.ID");
     if(mpicker){
-        var select = dojo.byId('init_memberlist-$!portlet.ID');
-        var i;
+        //メンバーリストの初期化
+    	var gselect = document.getElementById("groupselect-"+portletId);
+    	var select = dojo.byId('init_memberlist-$!portlet.ID');
         var s_o = select.options;
-        for(i = 0 ; i < s_o.length; i ++ ) {
+        for(var i = 0 ; i < s_o.length; i ++ ) {
             mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
         }
+		if(gselect.value=="pickup"){
+			initCalender();
+		}else{
+			//メンバーリストを取得しに行く
+			var params="";
+			  dojo.xhrGet({
+                portletId:portletId,
+                url:gselect.value,
+                encoding: "utf-8",
+                handleAs: "json-comment-filtered",
+                load:ajaxMemberSelectLoad,
+				handle:function(){
+					initCalender();
+				}
+			});
+		}
     }
-    var i;
-    for(i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
-      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
-      tmpDraggable.portletId = '$!portlet.ID';
-      tmpDraggable.index = i;
-    };
-
-    tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
-    tmpDraggable.portletId = '$!portlet.ID';
-
-    aipo.calendar.populateWeeklySchedule('$!portlet.ID');
-
 
   };
 
