@@ -118,7 +118,7 @@
 						dojo.byId("picked_memberlist-"+portletId).innerHTML;
 					mp.inputMemberSync();
 					aipo.calendar.populateWeeklySchedule(portletId);//スケジュール更新
-					mp._onDropDownClick();//picker表示
+					//mp._onDropDownClick();//picker表示
 					break;
 				default:
 					addtxt.addClass("hide");
