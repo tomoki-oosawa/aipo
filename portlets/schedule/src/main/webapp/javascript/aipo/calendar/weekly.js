@@ -298,7 +298,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                   }
                 }
 
-                var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
                 if(Element.clientWidth == Element.offsetWidth){
                   	simpleDisplayR = " weeklyTermRightRnone";
                   	if(dojo.byId('isMac').value != 0){
