@@ -135,7 +135,7 @@
 								if (i != 0) {
 	                                html += ' ';
 	                            }
-								params+="&m_id="+data[i].userFacilityId;
+								params+="&m_id="+data[i].name;
 								html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
 								memberToHTML+="<option value=\""+ data[i].userFacilityId+"\">"+data[i].aliasName+"</option>";
 							}
