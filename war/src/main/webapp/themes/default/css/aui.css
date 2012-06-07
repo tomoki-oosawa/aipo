@@ -1819,18 +1819,32 @@ ul.attachments span.deletebutton:hover{
 	background:#f0f0f0;
 }
 
+
 .tlDisplayChanger {
 	position:absolute;
-	top:-0.6em;
-	line-height:1em;
+	height:20px;
+	line-height:20px;
+	top:-9px;
+	>top:-10px;
+	/*top:-0.6em;*/
 	right:15px;
 	text-align:right;
 }
-.tlDisplayChanger .btn a {
-	display:block;
-	padding:0 3px;
+.tlDisplayChanger .btn {
 	background:#fff;
+	padding:0 3px;
+}
+.tlDisplayChanger .indicator {
+	vertical-align:middle;
+	float:left;
+	margin:1px 0;
+}
+.tlDisplayChanger .btn a {
 	font-size:11px;
+}
+.tlDisplayChanger .btn span {
+	height:20px;
+	line-height:20px;
 }
 .tlDisplayGroup {
 /*	display:inline-block;

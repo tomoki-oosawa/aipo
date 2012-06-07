@@ -1491,6 +1491,13 @@ table.simpleTable td.caption {
 	padding:2px 0 2px 18px;
 	margin-left:2px;
 }
+i.indicator {
+	display:inline-block;
+	margin:0;
+	padding:0;
+	width:18px;
+	height:18px;
+}
 .indicatorDialog {
 	border:5px solid #ddd;
 	background:#ffffff;
