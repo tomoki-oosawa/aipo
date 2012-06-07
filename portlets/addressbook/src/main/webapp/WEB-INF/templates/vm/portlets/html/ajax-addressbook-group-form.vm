@@ -48,23 +48,23 @@
 #ALtdcaption("所属メンバー")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">左側に所属メンバーを追加してください。</div>
-<div dojoType="aipo.widget.MemberNormalSelectList" 
-        id="membernormalselect" 
-        widgetId="membernormalselect"  
-        buttonAddId="button_member_add" 
-        buttonRemoveId="button_member_remove" 
-        memberFromId="tmp_member_from" 
+<div dojoType="aipo.widget.MemberNormalSelectList"
+        id="membernormalselect"
+        widgetId="membernormalselect"
+        buttonAddId="button_member_add"
+        buttonRemoveId="button_member_remove"
+        memberFromId="tmp_member_from"
         memberToTitle="所属メンバー一覧"
-        memberToId="address_to" 
-        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','all')" 
-        memberFromOptionKey="addressId" 
-        memberFromOptionValue="fullName" 
-        groupSelectId="tmp_group" 
+        memberToId="address_to"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','all')"
+        memberFromOptionKey="addressId"
+        memberFromOptionValue="fullName"
+        groupSelectId="tmp_group"
         groupSelectPreOptionKey="all"
-        groupSelectPreOptionValue="（グループ全体）"
-        groupSelectOptionKey="groupId" 
-        groupSelectOptionValue="name" 
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')" 
+        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectOptionKey="groupId"
+        groupSelectOptionValue="name"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group')">
 </div>
 <select size="10" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.Addresses)<option value="$!record.AddressId">$!record.Name</option>#end</select>

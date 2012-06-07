@@ -62,7 +62,7 @@
     memberFromOptionValue="aliasName"
     groupSelectId="tmp_group"
     groupSelectPreOptionKey="LoginUser"
-    groupSelectPreOptionValue="（グループ全体）"
+    groupSelectPreOptionValue="すべてのグループ"
     groupSelectOptionKey="groupId"
     groupSelectOptionValue="name"
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"

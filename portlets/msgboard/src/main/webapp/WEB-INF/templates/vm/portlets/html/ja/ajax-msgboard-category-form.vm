@@ -65,23 +65,23 @@
 <div class="spaceTop">
 <h3>所属メンバーの選択</h3>
 <div class="spaceLeft small">左側に所属メンバーを追加してください。</div>
-<div dojoType="aipo.widget.MemberNormalSelectList" 
-    id="membernormalselect" 
-    widgetId="membernormalselect"  
-    buttonAddId="button_member_add" 
-    buttonRemoveId="button_member_remove" 
-    memberFromId="tmp_member_from" 
+<div dojoType="aipo.widget.MemberNormalSelectList"
+    id="membernormalselect"
+    widgetId="membernormalselect"
+    buttonAddId="button_member_add"
+    buttonRemoveId="button_member_remove"
+    memberFromId="tmp_member_from"
     memberToTitle="所属メンバー一覧"
-    memberToId="member_to" 
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')" 
-    memberFromOptionKey="name" 
-    memberFromOptionValue="aliasName" 
-    groupSelectId="tmp_group" 
+    memberToId="member_to"
+    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+    memberFromOptionKey="name"
+    memberFromOptionValue="aliasName"
+    groupSelectId="tmp_group"
 	groupSelectPreOptionKey="LoginUser"
-    groupSelectPreOptionValue="（グループ全体）"
-    groupSelectOptionKey="groupId" 
-    groupSelectOptionValue="name" 
-    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen')" 
+    groupSelectPreOptionValue="すべてのグループ"
+    groupSelectOptionKey="groupId"
+    groupSelectOptionValue="name"
+    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen')"
     changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
 </div>
 <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>

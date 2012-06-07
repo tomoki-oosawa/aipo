@@ -58,7 +58,7 @@
     memberFromOptionValue="facilityName"
     groupSelectId="tmp_group"
     groupSelectPreOptionKey="all"
-    groupSelectPreOptionValue="（グループ全体）"
+    groupSelectPreOptionValue="すべてのグループ"
     groupSelectOptionKey="facilityGroupId"
     groupSelectOptionValue="facilityGroupName"
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
