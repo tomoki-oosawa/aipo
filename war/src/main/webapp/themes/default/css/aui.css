@@ -1740,12 +1740,15 @@ ul.attachments span.deletebutton:hover{
 /***************************************************
 	timeline
 --------------------------------------------------*/
+#timelineOuter {
+	margin:5px 0;
+}
 #timelineOuter .message {
 	clear:both;
 	border-top: 1px solid #dcdcdc;
 }
 #timelineOuter .message:first-child {
-	padding-top:7px;
+	margin-top:7px;
 }
 #timelineOuter .on {
 	border-top: 1px solid #999999;
@@ -1760,7 +1763,7 @@ ul.attachments span.deletebutton:hover{
 	overflow:hidden;
 }
 #timelineOuter #inputField {
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 #timelineOuter .outer {
 	padding: 3px;
@@ -1799,7 +1802,7 @@ ul.attachments span.deletebutton:hover{
 
 .tlDisplayChanger {
 	position:absolute;
-	top:-1px;
+	top:-0.5em;
 	right:15px;
 	text-align:right;
 }
@@ -1824,8 +1827,7 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline {
 	position:relative;
-	margin-top:10px;
-	overflow:hidden;
+	margin-top:15px;
 }
 .timeline .avatar {
 	float:left;
