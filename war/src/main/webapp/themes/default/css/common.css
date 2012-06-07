@@ -2416,8 +2416,12 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 	white-space:nowrap;
 	overflow:hidden;
 }
+.menubar ul li:first-child a {
+	border-radius:3px 3px 0 0;
+	-ms-border-radius:3px 3px 0 0;
+}
 .menubar ul li.last a,
-.menubar ul li.last a:last-child {
+.menubar ul li:last-child a {
 	background-image:none!important;
 	border-radius:0 0 3px 3px;
 	-ms-border-radius:0 0 3px 3px;
