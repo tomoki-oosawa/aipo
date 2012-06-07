@@ -1744,8 +1744,13 @@ ul.attachments span.deletebutton:hover{
 	margin:5px 0;
 }
 #timelineOuter .message {
+	margin:0;
+	padding:10px 0;
 	clear:both;
 	border-top: 1px solid #dcdcdc;
+}
+#timelineOuter .message:first-child {
+	margin-top:0 !important;
 }
 #timelineOuter .on {
 	border-top: 1px solid #999999;
@@ -1828,16 +1833,18 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline .avatar {
 	float:left;
-	margin:10px 10px 0 0;
+	margin:0 10px 0 0;
 }
 .timeline .messageContents {
 	padding-left:60px;
-	margin:10px 0;
 }
 .timeline .comments {
 	margin:0 0 10px 60px;
 	background:#f0f0f0;
 	overflow:hidden;
+}
+.timeline .message .comments {
+	margin-bottom:0;
 }
 .timeline .comments .messageContents {
 	padding-left:42px;
