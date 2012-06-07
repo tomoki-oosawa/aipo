@@ -1815,11 +1815,11 @@ ul.attachments span.deletebutton:hover{
 	font-size:11px;
 }
 .tlDisplayGroup {
-	display:inline-block;
+/*	display:inline-block;
 	max-width:12em;
 	text-overflow:ellipsis;
 	white-space:nowrap;
-	overflow:hidden;
+	overflow:hidden;*/
 	cursor:pointer;/*IE7*/
 }
 .tlDisplayChanger .menubar {
