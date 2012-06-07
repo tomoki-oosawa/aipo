@@ -356,7 +356,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         topic.getTopicId(),
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         parenttopic.getTopicName(),
-        "topic_reply");
+        "insert");
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(topic.getEipTMsgboardCategory().getPublicFlag())) {
