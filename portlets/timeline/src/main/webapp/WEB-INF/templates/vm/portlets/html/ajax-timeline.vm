@@ -32,7 +32,6 @@
 <input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
 <input type="hidden" id="height_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="$result.ContentHeight" />
 <div id="inputField">
-<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage, 0)")
 
 <div class="tlInputMention" style="position:relative">
@@ -44,6 +43,7 @@
 </div>
 
 <div class="tlInputControls clearfix">
+  <div id="messageDiv_$!portlet.ID"></div>
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
 	<input href="javascript:void(0)" type="submit" id="timeline_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="投稿する" />
@@ -141,7 +141,6 @@
 				#end
 				#end
                 </span>
-				<i class="auiIcon auiIconArwBottom"></i>
 			</a>
 		</div>
 		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">

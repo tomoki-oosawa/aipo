@@ -32,11 +32,39 @@ function get_data(pid){
     #else
     window.parent.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
     #end
+    #end
+
+	#if($errmsgs && !($errmsgs.size() == 0))
+	#foreach($msg in $errmsgs)
+	  showErrorMessage('$!msg');
+	#end
+	#end
+
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
 	indicator.style.display = "none";
 	var button = window.parent.document.getElementById("timeline_submit_" + pid);
 	button.disabled = ""
-    #end
+}
+
+function showErrorMessage(msg){
+	var ul = window.parent.document.getElementById("error_$!portlet.ID");
+	if(!ul){
+		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		ul = document.createElement("ul");
+		ul.id = "error_$!portlet.ID";
+		div.appendChild(ul);
+	}
+	var li = document.createElement("li");
+	li.innerHTML = msg;
+	ul.appendChild(li);
+}
+
+function hideErrorMessage(){
+	var ul = window.parent.document.getElementById("error_$!portlet.ID");
+	if(ul){
+		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		div.removeChild(ul);
+	}
 }
 
 function getFileName(){
@@ -62,15 +90,14 @@ function submitMini(form, portletId){
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + portletId);
 	indicator.style.display = "inline";
 	var button = window.parent.document.getElementById("timeline_submit_" + portletId);
-	button.disabled = "disabled"
+	button.disabled = "disabled";
+	hideErrorMessage();
 	form.submit();
 }
 
 //-->
 </script>
-<div class="spaceAll roundBlockContent">
-#ALspacebothheader()
-#ALerrmsg($errmsgs)
+
 <div id="messageDiv"></div>
 <form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','update-mini'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
 <input type="hidden" name="mode" value="update" />
@@ -80,13 +107,10 @@ function submitMini(form, portletId){
 <input type="hidden" name="secid" value="$secid" />
 <div id="uploadContainer">
 <span id="inputField">
-<div id="fileuploadButton$!portlet.ID" style="position: relative; overflow: hidden; direction: ltr; border:1px solid #ccc; padding:3px 0; text-align:center;">
-ファイルを追加する
-<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 460px; margin: 0px; padding: 0px; cursor: pointer; opacity: 0; " onchange="submitMini(this.form, '$!portlet.ID');">
+<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block;">
+<span style="position:absolute;top:0;left:50%;width:9em;margin-left:-4.5em;" class="uploadText">ファイルを追加する</span>
+<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0);" onchange="submitMini(this.form, '$!portlet.ID');">
 </div>
 </span>
 </div>
 </form>
-#ALspacebothfooter()
-##ALajaxtabfooter()
-</div>
