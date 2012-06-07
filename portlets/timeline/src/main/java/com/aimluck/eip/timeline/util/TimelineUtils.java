@@ -1107,14 +1107,14 @@ public class TimelineUtils {
         int tsize = topics.size();
         for (int i = 0; i < tsize; i++) {
           List<?> files = topics.get(i).getEipTTimelineFile();
-          TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
-          TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
           if (files != null && files.size() > 0) {
             int fsize = files.size();
             for (int j = 0; j < fsize; j++) {
               fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
             }
           }
+          TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
+          TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
         }
       }
 
