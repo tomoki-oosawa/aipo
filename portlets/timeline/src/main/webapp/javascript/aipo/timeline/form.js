@@ -532,3 +532,15 @@ aipo.timeline.getNewMessage = function(url, pid){
 		  }
 }
 
+aipo.timeline.displayIndicator = function(url, portletId, indicator_id, post){
+	dojo.byId("tlDisplayGroup_" + portletId).innerHTML = dojo.byId("PostName_" + portletId +"_" + post).innerHTML;
+
+    var obj_indicator = dojo.byId(indicator_id + portletId);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
+
+    aipo.viewPage(url, portletId);
+
+    obj_indicator = dojo.byId(indicator_id + portletId);
+}

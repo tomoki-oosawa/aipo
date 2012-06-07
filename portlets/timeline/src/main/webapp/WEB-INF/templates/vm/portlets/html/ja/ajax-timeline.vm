@@ -25,6 +25,7 @@
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 #set ($timelineViewType = "list")
 #set ($indicator_id = "indicator-dlg-")
+#set ($indicator_id3 = "indicator-dlg3-")
 ## ---------------------------------------------------------------------------
 <div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
@@ -70,7 +71,6 @@
 <div id="newMessage" style="display:none; clear:both">
 	<a href="javascript:void(0)" onclick="aipo.timeline.getNewMessage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineNewMessageScreen"))', '$!{portlet.ID}')">新しい投稿があります</a>
 </div>
-
 #if($result.List.size() == 0)
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div class="tlDisplayChanger">
@@ -97,20 +97,21 @@
 			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 				<ul>
 					#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionAllUrl}', '$!{portlet.ID}');">すべてのグループ</a></li>
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">すべてのグループ</a></li>
 					#foreach( $record in $result.MyGroupList)
 					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.viewPage('${actionmygroupUrl}', '$!{portlet.ID}');">$!record.AliasName</a></li>
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
 					#end
 					#foreach($record in $result.PostMap)
 					#set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionUrl}', '$!{portlet.ID}');">$!record.PostName</a></li>
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
 					#end
 				</ul>
 			</div>
 		</div>
 		<div id="content">
 			<div id="" class="message">
+			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 			<p class="mt10">投稿はありません。</p>
 			</div>
 		</div>
@@ -146,14 +147,14 @@
 		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 			<ul>
 			#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionAllUrl}', '$!{portlet.ID}');">すべてのグループ</a></li>
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">すべてのグループ</a></li>
 			#foreach( $record in $result.MyGroupList)
 			#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.viewPage('${actionmygroupUrl}', '$!{portlet.ID}');">$!record.AliasName</a></li>
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
 			#end
 			#foreach($record in $result.PostMap)
 		    #set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.viewPage('${actionUrl}', '$!{portlet.ID}');">$!record.PostName</a></li>
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
 			#end
 			</ul>
 		</div>
