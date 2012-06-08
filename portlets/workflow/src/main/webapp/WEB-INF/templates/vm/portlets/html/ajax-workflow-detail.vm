@@ -33,12 +33,12 @@
 <caption>決済内容</caption>
 #ALtdcaption('決裁状況')
 #ALtditemheader()
-#if($!result.Detail.Progress.Value == "D")
+#if($!result.Detail.Progress.Value == "D" && $!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
 <span class="caution">差戻要確認</span>&nbsp;&nbsp;
 #set ( $editUrl = $!utils.escapeXML("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormScreen').addQueryData('entityid',$!{result.Detail.RequestId})") )
 <input name="ajaxbuttonEdit" class="button" type="button" value="再申請する" onclick="aipo.common.showDialog('$!editUrl', '$!portlet.ID' , aipo.workflow.onLoadWorkflowDialog )" />
 #else
-<span class="caution">#if($!result.Detail.Progress.Value == "A") 承認済み #else 決裁待ち #end</span>
+<span class="caution">#if($!result.Detail.Progress.Value == "A") 承認済み #elseif($!result.Detail.Progress.Value == "R" || $!result.Detail.Progress.Value == "D") 否認 #else 決裁待ち #end</span>
 #end
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
 &nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' '削除する' "aipo.workflow.onDelete('$!portlet.ID');aimluck.io.ajaxDeleteSubmit(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})','$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage)")

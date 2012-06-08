@@ -431,8 +431,7 @@ public class WorkflowAllSelectData extends
       String state = new String();
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         state = "完了";
-      } else if (WorkflowUtils.DB_PROGRESS_WAIT.equals(record.getProgress())
-        || WorkflowUtils.DB_PROGRESS_REAPPLY.equals(record.getProgress())) {
+      } else if (WorkflowUtils.DB_PROGRESS_WAIT.equals(record.getProgress())) {
         state = "進行中";
       } else {
         state = "否認";

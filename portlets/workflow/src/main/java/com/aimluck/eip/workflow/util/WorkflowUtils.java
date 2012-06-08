@@ -117,7 +117,7 @@ public class WorkflowUtils {
   /** 申請者に差し戻し */
   public static final String DB_PROGRESS_DENAIL = "D";
 
-  /** 再申請済み */
+  /** 差し戻し後、再申請済み */
   public static final String DB_PROGRESS_REAPPLY = "R";
 
   /** データベースに登録されたファイルを表す識別子 */
