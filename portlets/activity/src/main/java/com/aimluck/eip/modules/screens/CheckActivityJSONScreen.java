@@ -110,6 +110,7 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
             .getIcon()
             .getValue());
           activityJson.put("text", activity.getTitle().getValue());
+          activityJson.put("appId", activity.getAppId().getValue());
           jsonArray.add(activityJson);
         }
       }
