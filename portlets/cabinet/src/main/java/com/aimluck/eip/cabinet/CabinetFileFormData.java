@@ -554,6 +554,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
         return false;
       }
 
+      // ファイルのパス
+      String local_file_pass = file.getFilePath();
+
       // アップロードしたファイルは存在するか
       boolean is_upload = true;
       if (fileuploadList == null) {
@@ -572,6 +575,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
           CabinetUtils.FOLDER_FILEDIR_CABINET,
           CabinetUtils.CATEGORY_KEY,
           filename);
+
+        if (local_file_pass != null && !"".equals(local_file_pass)) {
+          // ローカルファイルに保存されているファイルを削除する．
+          ALStorageService.deleteFile(CabinetUtils.getSaveDirPath(orgId)
+            + local_file_pass);
+        }
 
         // ファイル名
         file.setFileName(file_name.getValue());
