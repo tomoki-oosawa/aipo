@@ -30,7 +30,9 @@
 #AUIconfigitem("会社情報を変更する" $linkCompany)
 #AUIconfigitem("メール通知を設定する" $linkWebmailOption)
 #AUIconfigitem("メールアカウントを設定する" $linkWebmailAccount)
+#if($!{result.Detail.Sample} == "exist")
 #AUIconfigitem("サンプルデータを削除する" $linkSampleDelete)
+#end
 #AUIconfigitem("管理者パスワードを変更する" $linkAdminpassword)
 #AUIconfigfooter()
 #AUISummaryDivfooter()

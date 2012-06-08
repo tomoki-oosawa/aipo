@@ -23,17 +23,25 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.system.util.SystemUtils;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALServletUtils;
 
 /**
@@ -41,6 +49,12 @@ import com.aimluck.eip.util.ALServletUtils;
  */
 public class SystemNetworkSelectData extends
     ALAbstractSelectData<EipMCompany, EipMCompany> {
+
+  private static final String SAMPLE_USER1 = "sample1";
+
+  private static final String SAMPLE_USER2 = "sample2";
+
+  private static final String SAMPLE_USER3 = "sample3";
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -124,6 +138,33 @@ public class SystemNetworkSelectData extends
 
       rd.setLocalUrl(localurl);
       rd.setGlobalUrl(globalurl);
+
+      // サンプルデータの有無
+      try {
+        String[] sampleName = { SAMPLE_USER1, SAMPLE_USER2, SAMPLE_USER3 };
+        String[] sampleId = { "4", "5", "6" };
+
+        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+        Expression exp1 =
+          ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, sampleName);
+        Expression exp2 =
+          ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+        Expression exp3 =
+          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, sampleId);
+        query.setQualifier(exp1.andExp(exp2).andExp(exp3));
+
+        List<ALEipUser> list = ALEipUtils.getUsersFromSelectQuery(query);
+        if (list.size() <= 0) {
+          rd.setSample("");
+        } else {
+          rd.setSample(SystemNetworkResultData.EXIST);
+        }
+
+      } catch (Exception ex) {
+        logger.error("Exception", ex);
+        rd.setSample(SystemNetworkResultData.EXIST);
+        return null;
+      }
 
     } catch (SocketException e) {
       logger.error("[SystemNetworkSelectData]", e);

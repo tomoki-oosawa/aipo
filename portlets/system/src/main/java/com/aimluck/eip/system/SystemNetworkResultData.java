@@ -27,15 +27,20 @@ import com.aimluck.eip.common.ALData;
  */
 public class SystemNetworkResultData implements ALData {
 
+  public static final String EXIST = "exist";
+
   /** ローカル URL */
   private ALStringField local_url;
 
   /** グローバル URL */
   private ALStringField global_url;
 
+  private String sample = EXIST;
+
   /**
    *
    */
+  @Override
   public void initField() {
     local_url = new ALStringField();
     global_url = new ALStringField();
@@ -71,6 +76,20 @@ public class SystemNetworkResultData implements ALData {
    */
   public ALStringField getGlobalUrl() {
     return global_url;
+  }
+
+  /**
+   * @return sample
+   */
+  public String getSample() {
+    return sample;
+  }
+
+  /**
+   * @param value
+   */
+  public void setSample(String value) {
+    sample = value;
   }
 
 }
