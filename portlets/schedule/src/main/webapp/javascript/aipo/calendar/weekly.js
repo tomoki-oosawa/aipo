@@ -678,7 +678,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             obj_content = dojo.byId('content-'+_portletId);
             dojo.style(obj_content, "visibility" , "visible");
             obj_indicator = dojo.byId('indicator-'+_portletId);
-            dojo.style(obj_indicator, "display" , "none")
+            dojo.style(obj_indicator, "display" , "none");
+            dojo.query(".tableWrapper").removeClass("hide");
+
 
             if (!ptConfig[_portletId].isScroll) {
                 dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
