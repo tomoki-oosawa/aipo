@@ -20,6 +20,7 @@
 package com.aimluck.eip.services.storage.impl;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,7 @@ import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -206,28 +208,30 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       }
     }
 
+    // バッファリング修正START
     try {
       String filepath = path + separator() + fileName;
       File file = new File(filepath);
       file.createNewFile();
-      FileOutputStream os = new FileOutputStream(filepath);
       int c;
+      BufferedInputStream bis = null;
+      BufferedOutputStream bos = null;
       try {
-        while ((c = is.read()) != -1) {
-          os.write(c);
+        bis = new BufferedInputStream(is, 1024 * 1024);
+        bos =
+          new BufferedOutputStream(new FileOutputStream(filepath), 1024 * 1024);
+
+        while ((c = bis.read()) != -1) {
+          bos.write(c);
         }
       } catch (IOException e) {
         logger.error(e, e);
       } finally {
-        if (os != null) {
-          try {
-            os.flush();
-            os.close();
-          } catch (Throwable e) {
-            // ignore
-          }
-        }
+
+        IOUtils.closeQuietly(bis);
+        IOUtils.closeQuietly(bos);
       }
+      // バッファリング修正END
 
       PrintWriter w = null;
       try {
