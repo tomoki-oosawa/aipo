@@ -1875,6 +1875,10 @@ ul.attachments span.deletebutton:hover{
 	overflow:hidden;
 }
 .timeline .message .comments {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.timeline .message .comments:last-child {
 	margin-bottom:0;
 }
 .timeline .comments .messageContents {
