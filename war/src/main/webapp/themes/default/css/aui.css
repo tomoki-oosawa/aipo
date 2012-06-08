@@ -1940,13 +1940,15 @@ ul.attachments span.deletebutton:hover{
 	display:inline-block;
 	margin:0 5px 5px 0;
 }
-.tlImageBlock img {
+.tlImageBlock img,
+.thumbBlock img {
 	max-width:200px;
 	max-height:200px;
 	padding:4px;
 	border:solid 1px #cccccc;
 }
-.tlImageBlock a:hover img {
+.tlImageBlock a:hover img,
+.thumbBlock a:hover img {
 	border:solid 1px #ff9900;
 }
 
