@@ -1269,4 +1269,21 @@ public class ReportUtils {
 
     return isSelf;
   }
+
+  public static List<EipTReport> getChildReports(Integer reportId) {
+    SelectQuery<EipTReport> rquery = Database.query(EipTReport.class);
+    rquery.andQualifier(ExpressionFactory.matchExp(
+      EipTReport.PARENT_ID_PROPERTY,
+      reportId));
+    return rquery.fetchList();
+  }
+
+  public static List<EipTReportFile> getFiles(Integer reportId) {
+    SelectQuery<EipTReportFile> fquery = Database.query(EipTReportFile.class);
+    fquery.andQualifier(ExpressionFactory.matchExp(
+      EipTReportFile.EIP_TREPORT_PROPERTY,
+      reportId));
+    return fquery.fetchList();
+  }
+
 }

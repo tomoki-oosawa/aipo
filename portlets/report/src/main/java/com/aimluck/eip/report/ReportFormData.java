@@ -430,12 +430,31 @@ public class ReportFormData extends ALAbstractFormData {
 
       // リクエストを削除
       Database.delete(report);
+
+      if (report.getParentId() == 0) {
+        List<EipTReport> reports =
+          ReportUtils.getChildReports(report.getReportId());
+
+        for (EipTReport model : reports) {
+          Integer reportId = model.getReportId();
+          List<EipTReportFile> cfiles = ReportUtils.getFiles(reportId);
+
+          // delete real files
+          for (EipTReportFile file : cfiles) {
+            ALStorageService.deleteFile(ReportUtils.getSaveDirPath(orgId, uid)
+              + file.getFilePath());
+          }
+
+          Database.deleteAll(cfiles);
+        }
+        Database.deleteAll(reports);
+      }
+
       Database.commit();
 
       TimelineUtils.deleteTimelineActivity(rundata, context, "Report", report
         .getReportId()
         .toString());
-
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         report.getReportId(),
