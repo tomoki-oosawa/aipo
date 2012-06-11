@@ -94,7 +94,7 @@
 
 <div class="indicator" id="indicator-$!portlet.ID">読み込み中...</div>
 <!-- WRAPPER -->
-    <table class="tableWrapper hide">
+    <table class="tableWrapper" id="tableWrapper_$!portlet.ID">
         <tbody>
             <tr>
                 <td class="wide top">
