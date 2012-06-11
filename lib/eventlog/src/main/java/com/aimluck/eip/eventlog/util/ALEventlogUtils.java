@@ -194,6 +194,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_REPORT;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_REPORT) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_REPORT;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TIMELINE) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_TIMELINE;
     } else {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_STR_NONE;
     }

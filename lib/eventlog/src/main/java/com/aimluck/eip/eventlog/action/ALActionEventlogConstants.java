@@ -223,4 +223,6 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_REPORT = "報告書";
 
+  public static final String PORTLET_TYPE_STR_TIMELINE = "タイムライン";
+
 }
