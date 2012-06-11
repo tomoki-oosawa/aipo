@@ -60,7 +60,7 @@ dojo.addOnLoad(function () {
        var params = {
             widgetId: "activitychecker",
 
-#if (${client} == "IPHONE" )
+#if ("${client}" == "IPHONE" )
             iconURL: "themes/$!theme/images/mobile/an_activity.png",
             iconWidth: "24",
             iconHeight: "24",
