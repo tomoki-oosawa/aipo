@@ -476,6 +476,7 @@ public class AccountEditFormData extends ALAbstractFormData {
         filebean.setFolderName("");
         filebean.setFileId(0);
         filebean.setFileName("以前の写真ファイル");
+        filebean.setUserId(Integer.parseInt(user.getUserId()));
       }
 
       new_password.setValue(DEFAULT_VIEW_PASSWORD);
