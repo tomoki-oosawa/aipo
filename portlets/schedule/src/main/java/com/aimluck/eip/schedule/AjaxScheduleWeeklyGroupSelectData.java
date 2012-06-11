@@ -393,7 +393,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
 
-      if (rundata.getParameters().containsKey("params")) {
+      if (rundata.getParameters().containsKey("pickup")) {
         savePsmlParameters(rundata, context);
       }
 
