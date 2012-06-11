@@ -88,7 +88,7 @@
 			}
 			params+="&m_id="+data[i].name;
 			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-			aimluck.io.addOption(dojo.byId("member_to-"+portletId), data[i].userFacilityId, data[i].aliasName, true);
+			aimluck.io.addOption(dojo.byId("member_to-"+portletId), data[i].name, data[i].aliasName, true);
 		}
 		dojo.byId("member_to_input-"+portletId).innerHTML=html;
 	};
