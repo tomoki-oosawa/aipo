@@ -218,7 +218,7 @@
 	</div>
 </div>
 <div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end">
-	<div id="like_$!{record2.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
+<div id="like_$!{record2.TimelineId}" class="commentCaption"#if($record2.LikeCount <= 0) style="display:none" #end>
 		<span class="iconLike"></span>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCount}人</a>が「いいね！」と言っています。
 	</div>
