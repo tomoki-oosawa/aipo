@@ -1984,7 +1984,7 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timelineOuter #newMessage {
+#timelineOuter .newMessage {
 	background: #f0f0f0;
 	text-align: center;
 	border: 1px #cdcdcd solid;
@@ -1999,7 +1999,7 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timelineOuter #newMessage a,
+#timelineOuter .newMessage a,
 .timeline .readMore a {
 	display:block;
 	padding: 3px;

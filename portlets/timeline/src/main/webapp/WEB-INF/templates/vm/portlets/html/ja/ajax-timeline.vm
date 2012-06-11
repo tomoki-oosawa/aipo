@@ -68,7 +68,7 @@
 #ALformfooter()
 </div>
 
-<div id="newMessage" style="display:none; clear:both">
+<div class="newMessage" id="newMessage_$!portlet.ID" style="display:none; clear:both">
 	<a href="javascript:void(0)" onclick="aipo.timeline.getNewMessage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineNewMessageScreen"))', '$!{portlet.ID}')">新しい投稿があります</a>
 </div>
 #if($result.List.size() == 0)

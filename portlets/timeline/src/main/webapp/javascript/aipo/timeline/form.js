@@ -506,6 +506,10 @@ aipo.timeline.changeDisplay = function(pid){
 }
 
 aipo.timeline.getNewMessage = function(url, pid){
+	var obj_message = dojo.byId('newMessage_' + pid);
+	if (obj_message) {
+		dojo.style(obj_message, "display", "none");
+	}
 	  try {
 		    dojo.xhrPost({
 		      portletId : pid,
