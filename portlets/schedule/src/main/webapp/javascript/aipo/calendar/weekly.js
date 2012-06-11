@@ -195,6 +195,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
          aipo.calendar.dummyDivObj = null;
     }
 
+    if(dojo.byId('groupselect-' + _portletId).value =="pickup"){
+    	_params += "&pickup=true";
+    }
+    
     dojo.xhrGet({
         portletId: _portletId,
         url: ptConfig[_portletId].jsonUrl + _params,
@@ -1780,5 +1784,4 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDraggable", [aimluck.dnd.Dragga
         this.index = params.idx;
     }
 });
-
 }

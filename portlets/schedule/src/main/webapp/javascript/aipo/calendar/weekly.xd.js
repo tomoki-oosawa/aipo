@@ -201,6 +201,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
          aipo.calendar.dummyDivObj = null;
     }
 
+    if(dojo.byId('groupselect-' + _portletId).value =="pickup"){
+    	_params += "&pickup=true";
+    }
+    
     dojo.xhrGet({
         portletId: _portletId,
         url: ptConfig[_portletId].jsonUrl + _params,
@@ -684,8 +688,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             obj_content = dojo.byId('content-'+_portletId);
             dojo.style(obj_content, "visibility" , "visible");
             obj_indicator = dojo.byId('indicator-'+_portletId);
-            dojo.style(obj_indicator, "display" , "none")
-            dojo.query(".tableWrapper").removeClass("hide");
+            dojo.style(obj_indicator, "display" , "none");
+            dojo.byId('tableWrapper_'+_portletId).removeClass("hide");
 
             if (!ptConfig[_portletId].isScroll) {
                 dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;

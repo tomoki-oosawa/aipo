@@ -393,7 +393,9 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
 
-      savePsmlParameters(rundata, context);
+      if (rundata.getParameters().containsKey("params")) {
+        savePsmlParameters(rundata, context);
+      }
 
       List<VEipTScheduleList> list =
         ScheduleUtils.getScheduleList(userid, viewStart.getValue(), viewEndCrt
