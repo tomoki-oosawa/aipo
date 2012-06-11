@@ -24,8 +24,7 @@
 #ALcell_contents_header($career)
 #ALcell_formheader($career $jslink $portlet)
 <select name="tab">
-  <option value="syagai" #if($address_type && $address_type!="corp_address") selected="selected" #end>社外アドレス</option>
-  <option value="corp" #if($address_type && $address_type=="corp_address") selected="selected" #end>社内アドレス</option>
+  <value="syagai" #if($address_type && $address_type!="corp_address") selected="selected" #end></option>
 </select>
 <input name="sword" type="text" size="14" maxlength="100" value="" class="text">
 <input name="eventSubmit_doAddressbook_addr_search_list" type="hidden" value="1">

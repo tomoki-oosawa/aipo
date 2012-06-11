@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
 #set($title = 'アドレス帳')
-#set ($menulist_address = [["アドレス帳", ""], ["社外アドレス一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('tab','syagai')", "themes/iphone/img/icon/32/user.gif"], ["社内アドレス一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1').addQueryData('tab','corp')", "themes/iphone/img/icon/32/user-silver.gif"], ["アドレス検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search','1')", "themes/iphone/img/icon/32/search.gif"]])
+#set ($menulist_address = [["アドレス帳", ""], ["社外アドレス一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('tab','syagai')", "themes/iphone/img/icon/32/user.gif"], ["アドレス検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search','1')", "themes/iphone/img/icon/32/search.gif"]])
 #set ($menulist_company = [["会社情報",""], ["会社情報一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doaddressbook_company_list','1')", "themes/iphone/img/icon/32/web.gif"], ["会社情報検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search','1')", "themes/iphone/img/icon/32/search.gif"]])
 #set ($menulist = [$menulist_address, $menulist_company])
 

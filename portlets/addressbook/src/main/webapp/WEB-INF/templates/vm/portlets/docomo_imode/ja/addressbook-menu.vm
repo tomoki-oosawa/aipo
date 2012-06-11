@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_imode')
-#set ($menulist_address = [["ｱﾄﾞﾚｽ帳", ""], ["社外ｱﾄﾞﾚｽ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('tab','syagai')"], ["社内ｱﾄﾞﾚｽ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1').addQueryData('tab','corp')"], ["ｱﾄﾞﾚｽ検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search','1')"]]) 
+#set ($menulist_address = [["ｱﾄﾞﾚｽ帳", ""], ["社外ｱﾄﾞﾚｽ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list','1').addQueryData('tab','syagai')"], ["ｱﾄﾞﾚｽ検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_addr_search','1')"]]) 
 #set ($menulist_company = [["会社情報",""], ["会社情報一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doaddressbook_company_list','1')"], ["会社情報検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_search','1')"]]) 
 #set ($menulist = [$menulist_address, $menulist_company]) 
 #ALcell_menulist($career 'ｱﾄﾞﾚｽ帳' $menulist)
