@@ -26,7 +26,7 @@
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_id3 = "indicator-dlg3-")
 ## ---------------------------------------------------------------------------
-<div id="timelineOuter" style="margin: 0 auto;">
+<div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
 <input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
