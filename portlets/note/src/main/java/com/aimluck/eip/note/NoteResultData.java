@@ -76,6 +76,18 @@ public class NoteResultData implements ALData {
   /** 新着／未読／既読フラグ */
   private ALStringField note_stat = null;
 
+  /** 送信したメッセージ数 */
+  private ALNumberField sent_note;
+
+  /** 新着メッセージ数 */
+  private ALNumberField new_note;
+
+  /** 未読メッセージ数 */
+  private ALNumberField unread_note;
+
+  /** 既読メッセージ数 */
+  private ALNumberField read_note;
+
   /** メモ */
   private ALStringField message;
 
@@ -119,6 +131,10 @@ public class NoteResultData implements ALData {
     subject_type = new ALStringField();
     custom_subject = new ALStringField();
     note_stat = new ALStringField();
+    sent_note = new ALNumberField();
+    new_note = new ALNumberField();
+    unread_note = new ALNumberField();
+    read_note = new ALNumberField();
     message = new ALStringField();
     message.setTrim(false);
     accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
@@ -371,6 +387,38 @@ public class NoteResultData implements ALData {
 
   public void setNoteStat(String value) {
     note_stat.setValue(value);
+  }
+
+  public ALNumberField getSentNote() {
+    return sent_note;
+  }
+
+  public void setSentNote(long value) {
+    sent_note.setValue(value);
+  }
+
+  public ALNumberField getNewNote() {
+    return new_note;
+  }
+
+  public void setNewNote(long value) {
+    new_note.setValue(value);
+  }
+
+  public ALNumberField getUnreadNote() {
+    return unread_note;
+  }
+
+  public void setUnreadNote(long value) {
+    unread_note.setValue(value);
+  }
+
+  public ALNumberField getReadNote() {
+    return read_note;
+  }
+
+  public void setReadNote(long value) {
+    read_note.setValue(value);
   }
 
   /**

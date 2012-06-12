@@ -315,6 +315,21 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 
+      Expression mapexp =
+        ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, record
+          .getNoteId());
+      List<EipTNoteMap> list =
+        Database.query(EipTNoteMap.class, mapexp).fetchList();
+      // メッセージを既読した人数
+      Integer readNotes = 0;
+      for (EipTNoteMap notemap : list) {
+        if (notemap.getNoteStat().equals(NoteUtils.NOTE_STAT_READ)) {
+          readNotes++;
+        }
+      }
+      rd.setSentNote(list.size() - 1);
+      rd.setReadNote(readNotes.longValue());
+
       if (NoteUtils.NOTE_STAT_NEW.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_NEW);
         rd.setNoteStatImage("images/note/note_new_message.gif");
