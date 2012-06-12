@@ -65,6 +65,19 @@
  	#end
 	#end
 
+    var initCalender=function(){
+			for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
+		      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
+		      tmpDraggable.portletId = '$!portlet.ID';
+		      tmpDraggable.index = i;
+		    };
+
+		    tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
+		    tmpDraggable.portletId = '$!portlet.ID';
+
+		    aipo.calendar.populateWeeklySchedule('$!portlet.ID');
+		};
+
 	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){
        params = {
@@ -110,7 +123,7 @@
         //メンバーリストの初期化
     	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
 		if(gselect.value=="pickup"){
-			aipo.schedule.initCalender('$!portlet.ID');
+			initCalender();
 		}else{
 			//メンバーリストを取得しに行く
 			var params="";
@@ -134,7 +147,7 @@
             		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
             	},
 				handle:function(){
-					aipo.schedule.initCalender('$!portlet.ID');
+					initCalender();
 				}
 			});
 		}
