@@ -21,6 +21,7 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doFileupload_insert")
 #set($tabs = [["ファイルアップロード", "",""]])
+#set ($maxsize =  $msize)
 ## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/JavaScript">
 <!--
@@ -99,7 +100,7 @@ function submitMini(form, portletId){
 </script>
 
 <div id="messageDiv"></div>
-<form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','update-mini'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
+<form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','update-mini').addQueryData('msize', $msize))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
 <input type="hidden" name="msize" id="msize" value="$msize" />
