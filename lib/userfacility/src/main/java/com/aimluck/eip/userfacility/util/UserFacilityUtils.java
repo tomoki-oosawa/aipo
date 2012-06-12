@@ -161,6 +161,27 @@ public class UserFacilityUtils {
     return facilityAllList;
   }
 
+  public static List<UserFacilityLiteBean> getAllFacilityLiteBeans(
+      RunData rundata) {
+    // 全設備データの羅列
+    List<UserFacilityLiteBean> facilityAllList =
+      new ArrayList<UserFacilityLiteBean>();
+    SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+    fquery.orderAscending(EipMFacility.SORT_PROPERTY);
+    List<EipMFacility> facility_list = fquery.fetchList();
+
+    for (EipMFacility record : facility_list) {
+      UserFacilityLiteBean bean = new UserFacilityLiteBean();
+      bean.initField();
+      bean.setUserFacilityId(record.getFacilityId().intValue());
+      bean.setAliasName(record.getFacilityName());
+      bean.setName("f" + record.getFacilityId());
+      bean.setUserFacilityType("F");
+      facilityAllList.add(bean);
+    }
+    return facilityAllList;
+  }
+
   public static UserFacilityLiteBean getUserFacilityLiteBean(RunData rundata) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     UserFacilityLiteBean user = new UserFacilityLiteBean();
