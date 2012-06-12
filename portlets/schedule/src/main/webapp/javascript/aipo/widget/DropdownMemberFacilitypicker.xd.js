@@ -171,7 +171,12 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         }
         var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
         if(pickedList){
-        	pickedList.innerHTML=select.innerHTML;//init_memberlistの更新 ユーザー選択のデータを保持
+        	this.dropDown.removeMember(pickedList);
+			var p_mo = pickedList.options;
+			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
+			  opt.selected = true;
+			})(p_mo[i], i);
+			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
         }
         input.innerHTML = html;
     },

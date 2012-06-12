@@ -172,7 +172,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
 			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
 			  opt.selected = true;
 			})(p_mo[i], i);
-			this.dropDown.addMember(dojo.byId("member_to-"+portletId), dojo.byId("picked_memberlist-"+portletId));
+			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
         }
         input.innerHTML = html;
     },
