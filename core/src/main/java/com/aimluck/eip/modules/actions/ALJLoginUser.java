@@ -151,7 +151,7 @@ public class ALJLoginUser extends ActionEvent {
                 // 使用されているのが妥当な記号であるかの確認
                 if (!(username.charAt(i1) == "_".charAt(0)
                   || username.charAt(i1) == "-".charAt(0) || username
-                    .charAt(i1) == ".".charAt(0))) {
+                  .charAt(i1) == ".".charAt(0))) {
                   valid = false;
                   break;
                 }
@@ -174,7 +174,9 @@ public class ALJLoginUser extends ActionEvent {
             }
           }
           String celluid = ALCellularUtils.getCellularUid(rundata);
-          password = ALEipConstants.KEY_CELLULAR_UID + celluid;
+          if (!"".equals(celluid)) {
+            password = ALEipConstants.KEY_CELLULAR_UID + celluid;
+          }
         }
 
         user = JetspeedSecurity.login(username, password);
