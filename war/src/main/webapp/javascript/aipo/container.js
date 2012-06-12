@@ -231,7 +231,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
         if (obj.rc == 200) {
             var data = obj.data;
             var unreadCount = data.unreadCount;
-            var appIdMap = {Workflow:"workflow", todo:"todo"};
+            var appIdMap = {Workflow:"workflow", todo:"todo", Report:"report"};
             aipo.activityMax = data.max;
             var ac = dijit.byId("activitycheckerContainer");
             if (ac) {
@@ -240,7 +240,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
                 	var testactivity = data.activities[key];
                 	var appId = testactivity.appId;
                 	var group = appIdMap[appId];
-                	if(group == "workflow" || group == "todo"){
+                	if(group == "workflow" || group == "todo" || group == "report"){
                 		aipo.portletReload(group);
                 	}
                 }
