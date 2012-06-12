@@ -105,7 +105,7 @@
 
                     </div>
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange.call(this,event);">
+						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);">
 							##マイグループ
                 			#foreach( $record in $result.GroupList)
                         		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalenderUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.Name))" #if($result.SelectedGroup.equals($!record.Name.Value))selected="selected" #end>$!record.AliasName</option>

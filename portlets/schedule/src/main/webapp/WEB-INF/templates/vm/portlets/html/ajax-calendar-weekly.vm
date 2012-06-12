@@ -610,34 +610,6 @@
 
 dojo.addOnLoad(function () {
 
-   	 var initCalender=function(){
-		for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
-	      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
-	      tmpDraggable.portletId = '$!portlet.ID';
-	      tmpDraggable.index = i;
-	    };
-
-	    tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
-	    tmpDraggable.portletId = '$!portlet.ID';
-
-	    aipo.calendar.populateWeeklySchedule('$!portlet.ID');
-	};
-
-	var ajaxMemberSelectLoad=function(data, event) {
-		//paramsの編集+namesの変更
-		var html="";
-		mp.dropDown.removeMember(dojo.byId("member_to-"+portletId));
-		for(var i=0;i<data.length;i++){
-			if (i != 0) {
-				html += ' ';
-			}
-			params+="&m_id="+data[i].name;
-			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-			aimluck.io.addOption(dojo.byId("member_to-"+portletId), data[i].userFacilityId, data[i].aliasName, true);
-		}
-		dojo.byId("member_to_input-"+portletId).innerHTML=html;
-	};
-
 	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
 
     if(mpHTML){
@@ -662,83 +634,52 @@ dojo.addOnLoad(function () {
             tmpPortretId: "$!portlet.ID"
        };
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);
+       ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker = mp;
 
-
-       var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
-       var gselect = document.getElementById("groupselect-"+portletId);
+       var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+'$!portlet.ID'));
+       var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
 		if(gselect.value=="pickup"){
 			addtxt.removeClass("hide");
 		}else{
 			addtxt.addClass("hide");
-		}
-
-		aipo.schedule.groupSelectOnchange=function(e){
-			var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
-			switch(this.value){
-				case "":
-					this.selectedIndex=dojo.query('[value=pickup]',this)[0].index;//pickupへ流す。
-				case "pickup":
-					addtxt.removeClass("hide");
-					mp.dropDown.removeMember(dojo.byId("member_to-"+portletId));
-					mp.dropDown.removeMember(dojo.byId("tmp_member_to-"+portletId));
-    				var p_mo = dojo.byId("picked_memberlist-"+portletId).options;
-    				for(var i = 0; i < p_mo.length; i++)(function(opt, index){
-    				  opt.selected = true;
-    				})(p_mo[i], i);
-					mp.dropDown.addMember(dojo.byId("picked_memberlist-"+portletId), dojo.byId("tmp_member_to-"+portletId));
-					mp.dropDown.addMember(dojo.byId("picked_memberlist-"+portletId), dojo.byId("member_to-"+portletId));
-    				mp.inputMemberSync();
-					
-					aipo.calendar.populateWeeklySchedule(portletId);//スケジュール更新
-					
-					//デフォルトを保存するためにajax送信
-					dojo.xhrGet({
-	                    portletId:portletId,
-	                    url:dojo.byId("groupselect-defaulturl-"+portletId).value,
-	                    encoding: "utf-8",
-	                    handleAs: "json-comment-filtered"
-					});
-					break;
-				default:
-					addtxt.addClass("hide");
-					var params="";
-					  dojo.xhrGet({
-	                    portletId:portletId,
-	                    url:this.value,
-	                    encoding: "utf-8",
-	                    handleAs: "json-comment-filtered",
-	                    load:ajaxMemberSelectLoad,
-						handle:function(){
-							aipo.calendar.populateWeeklySchedule(portletId,params);//スケジュール更新
-						}
-					});
-					break;
-			}
 		}
 	}
 
 	var mpicker = dijit.byId("memberpicker-$!portlet.ID");
     if(mpicker){
         //メンバーリストの初期化
-    	var gselect = document.getElementById("groupselect-"+portletId);
+    	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
     	var select = dojo.byId('init_memberlist-$!portlet.ID');
 	        var s_o = select.options;
 	        for(var i = 0 ; i < s_o.length; i ++ ) {
 	            mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
 	        }
 		if(gselect.value=="pickup"){
-			initCalender();
+			aipo.schedule.initCalender('$!portlet.ID');
 		}else{
 			//メンバーリストを取得しに行く
 			var params="";
 			  dojo.xhrGet({
-                portletId:portletId,
+                portletId:'$!portlet.ID',
                 url:gselect.value,
                 encoding: "utf-8",
                 handleAs: "json-comment-filtered",
-                load:ajaxMemberSelectLoad,
+                load:function(data, event) {
+            		//paramsの編集+namesの変更
+            		var html="";
+            		mp.dropDown.removeMember(dojo.byId("member_to-"+'$!portlet.ID'));
+            		for(var i=0;i<data.length;i++){
+            			if (i != 0) {
+            				html += ' ';
+            			}
+            			params+="&m_id="+data[i].name;
+            			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
+            			aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
+            		}
+            		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
+            	},
 				handle:function(){
-					initCalender();
+					aipo.schedule.initCalender('$!portlet.ID');
 				}
 			});
 		}
