@@ -33,7 +33,7 @@
     #else
       <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_${velocityCount}_untiview" style="display:none">
     #end
-        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" src="$!record">
+        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" src="$!record" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
       </div>
   #end
   <div class="tlClipContents">
@@ -41,7 +41,7 @@
     <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.AutoCRUrl</a></div>
     <div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!result.Body</div>
     #if($result.Images.size() > 0)
-      <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID">
+      <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID" style="display:none">
       <div class="auiSelectButton floatLeft" id="timelineSelectButton_$!{portlet.ID}">
         <ul class="floatLeft mr10">
           <li title="前へ">
@@ -57,10 +57,11 @@
         </ul>
       </div>
       <div class="count" id="count_$!{portlet.ID}">
-        ${result.Images.size()} 件中 1 件
+        ##${result.Images.size()} 件中 1 件
+		件中 1 件
       </div>
       </div>
-      <div style="clear:both" id="ViewThumbnail_$!{portlet.ID}">
+      <div style="clear:both" id="ViewThumbnail_$!{portlet.ID}" style="display:none">
         <input type="checkbox" value="サムネイルを表示しない" id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
         <label for="checkbox_$!{portlet.ID}">サムネイルを表示しない</label>
       </div>
