@@ -42,7 +42,7 @@ function get_data(pid){
 
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
 	indicator.style.display = "none";
-	var button = window.parent.document.getElementById("timeline_submit_" + pid);
+	var button = window.parent.document.getElementById("al_submit_" + pid);
 	button.disabled = ""
 }
 
@@ -89,7 +89,7 @@ function checkFile(){
 function submitMini(form, portletId){
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + portletId);
 	indicator.style.display = "inline";
-	var button = window.parent.document.getElementById("timeline_submit_" + portletId);
+	var button = window.parent.document.getElementById("al_submit_" + portletId);
 	button.disabled = "disabled";
 	hideErrorMessage();
 	form.submit();
