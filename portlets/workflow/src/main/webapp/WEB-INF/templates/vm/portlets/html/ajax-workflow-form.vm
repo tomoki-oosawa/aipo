@@ -126,19 +126,21 @@
 
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
-#set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="ファイルの選択" class="button" name="add_attachment"/>
+<div class="floatLeft mr10">
+<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+</div>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
 	<li data-fileid="s${record.FileId}" data-filename="$!record.FileName"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
 	#end
 </ul>
-<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="">
+<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="" />
 #ALtditemfooter()
 #ALtablefooter()
 
 #ALbuttonheader()
-#ALsubmitJS($event_submit $action_str 'aipo.workflow.submit_list')#ALajaxbuttonClose()
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="申請する" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
