@@ -90,7 +90,7 @@
 #ALtdheadAtt("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')" 'style="width:30%"')
 #if(!$isReceive)
 #ALtdheadAtt("受信者" 'class="mb_hide" style="width:20%"')
-#ALtdheadAtt("状況" 'class="mb_hide" style="width:20%"')
+#ALtdheadAtt("状況" 'class="mb_hide" style="width:5%"')
 #end
 #ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end" 'style="width:10em"')
 </tr>
