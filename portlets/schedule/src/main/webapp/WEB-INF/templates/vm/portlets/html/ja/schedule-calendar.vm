@@ -184,7 +184,7 @@
                               </div>
                             </div>
                           </td>
-						  <td id ="weeklySpan-$!portlet.ID" width="18" display="block">
+						  <td id ="weeklySpan-$!portlet.ID" width="18" style="display:block;">
                             <div class="weeklySpan" style="width:16px">&nbsp;</div>
                             <div class="weeklySpan" style="width:16px">&nbsp;</div>
                           </td>
@@ -664,7 +664,6 @@
                           </tr>
                         </tbody>
                       </table>
-                    </div>
                     </div>
                 </td>
             </tr>
