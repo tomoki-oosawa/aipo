@@ -236,47 +236,6 @@ aipo.report.expandMap = function(){
    }
 }
 
-aipo.report.submit_list = function(form) {
-  var s_o = form.members.options;
-  var tmp = '';
-
-  for(i = 0 ; i < s_o.length; i++ ) {
-    s_o[i].selected = false;
-  }
-
-  if(s_o.length > 0) {
-    for(i = 0 ; i < s_o.length-1; i++ ) {
-      tmp = tmp + s_o[i].value + ',';
-    }
-    tmp = tmp + s_o[s_o.length-1].value;
-  }
-  form.member.value = tmp;
-
-  var s_o = form.positions.options;
-  var tmp = '';
-
-  for(i = 0 ; i < s_o.length; i++ ) {
-    s_o[i].selected = false;
-  }
-
-  if(s_o.length > 0) {
-    for(i = 0 ; i < s_o.length-1; i++ ) {
-      tmp = tmp + s_o[i].value + ',';
-    }
-    tmp = tmp + s_o[s_o.length-1].value;
-  }
-  form.map.value = tmp;
-
-  var date = form.createDate.value;
-  var hour = form.createDate_hour.value;
-  var minute = form.createDate_minute.value;
-
-  hour = aipo.report.formatNum(hour);
-  minute = aipo.report.formatNum(minute);
-
-  form.createDate.value = date + hour + minute;
-
-}
 aipo.report.formatNum = function(num) {
   var src = new String(num);
   var cnt = 2 - src.length;
