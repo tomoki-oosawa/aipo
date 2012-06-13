@@ -76,7 +76,8 @@
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALsubmit($event_submit $action_str)
+<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();if(dojo.isIE==8){location.reload();}">
 #ALbuttonfooter()
 #ALformfooter()
 #end
