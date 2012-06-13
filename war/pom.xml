@@ -128,6 +128,7 @@
                 <include>../../../../target/aipo/javascript/aipo/account_user/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/account_person/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/timeline/form.js</include>
               </includes>
             </aggregation>
           </aggregations>
