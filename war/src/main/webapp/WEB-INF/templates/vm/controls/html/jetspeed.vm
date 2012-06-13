@@ -198,7 +198,7 @@ function appsNaviSwitch() {
 						        </li>
                               </ul>
                             </div>
-							#if($activeurlselected!="")
+							#if("$!{activeurlselected}"!="")
 							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
                             #else
                              <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
