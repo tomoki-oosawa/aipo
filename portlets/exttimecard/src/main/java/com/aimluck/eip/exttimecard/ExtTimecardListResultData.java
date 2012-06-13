@@ -451,8 +451,8 @@ public class ExtTimecardListResultData implements ALData {
 
       /** 就業時間の中で決まった時間の休憩を取らせます。 */
       /** 決まった時間ごとの休憩時間を取らせます。 */
-      float worktimein = (timecard_system.getWorktimeOut() / 60);
-      float resttimein = (timecard_system.getResttimeOut() / 60);
+      float worktimein = (timecard_system.getWorktimeIn() / 60);
+      float resttimein = (timecard_system.getResttimeIn() / 60);
       if (worktimein + resttimein > 0.0) {
         float tmp_time = 0f;
         while (time > 0.0) {
@@ -620,14 +620,14 @@ public class ExtTimecardListResultData implements ALData {
 
       /** 就業時間の中で決まった時間の休憩を取らせます。 */
       /** 決まった時間ごとの休憩時間を取らせます。 */
-      float worktimein = (timecard_system.getWorktimeOut() / 60);
-      float resttimein = (timecard_system.getResttimeOut() / 60);
-      if (worktimein + resttimein > 0.0) {
+      float worktimeout = (timecard_system.getWorktimeOut() / 60);
+      float resttimeout = (timecard_system.getResttimeOut() / 60);
+      if (worktimeout + resttimeout > 0.0) {
         float tmp_time = 0f;
         while (time > 0.0) {
-          if (time > worktimein) {
-            tmp_time += worktimein;
-            time -= worktimein + resttimein;
+          if (time > worktimeout) {
+            tmp_time += worktimeout;
+            time -= worktimeout + resttimeout;
           } else {
             tmp_time += time;
             break;
