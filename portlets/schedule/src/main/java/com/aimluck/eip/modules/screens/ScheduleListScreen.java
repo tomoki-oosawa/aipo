@@ -86,22 +86,14 @@ public class ScheduleListScreen extends ScheduleScreen {
       String portletId = portlet.getID();
       String currentTab;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      if (tmpCurrentTab == null
-        || !(tmpCurrentTab.equals("calendar")
-          || tmpCurrentTab.equals("oneday")
-          || tmpCurrentTab.equals("weekly")
-          || tmpCurrentTab.equals("monthly")
-          || tmpCurrentTab.equals("list")
-          || tmpCurrentTab.equals("search")
-          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+      if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
       }
 
       if ("IPHONE".equals(ALEipUtils.getClient(rundata))
-        && "calender".equals(currentTab)) {
+        && "calendar".equals(currentTab)) {
         currentTab = "oneday";
       }
 

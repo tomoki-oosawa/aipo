@@ -1787,7 +1787,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDraggable", [aimluck.dnd.Dragga
 });
 
 
-aipo.schedule.initCalender=function(_portletId){
+aipo.schedule.initCalendar=function(_portletId){
 	for(var i =0; i < ptConfig[_portletId].scheduleDivDaySum; i++) {
       tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_'+_portletId , {idx: i});
       tmpDraggable.portletId = _portletId;

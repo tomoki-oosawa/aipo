@@ -34,12 +34,12 @@ import org.apache.velocity.context.Context;
  * カレンダーを処理するクラスです。<br />
  * UserFacilityLiteJSONScreenの選択されたグループをセッションに保持する。
  */
-public class ScheduleCalenderUserSelectJSONScreen extends
+public class ScheduleCalendarUserSelectJSONScreen extends
     UserFacilityLiteJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleCalenderUserSelectJSONScreen.class.getName());
+    .getLogger(ScheduleCalendarUserSelectJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)

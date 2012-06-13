@@ -93,7 +93,7 @@
     	#end
 
     	<td class="${color_style}${color_style_ohtermonth}${color_style_selected}">
-    		#ALMonthlyCalenderOnedayLink($!portlet.ID $filter $record)
+    		#ALMonthlyCalendarOnedayLink($!portlet.ID $filter $record)
     	</td>
     	#end
     	</tr>

@@ -610,7 +610,7 @@
 
 dojo.addOnLoad(function () {
 
-    var initCalender=function(){
+    var initCalendar=function(){
 			for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
 		      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
 		      tmpDraggable.portletId = '$!portlet.ID';
@@ -669,7 +669,7 @@ dojo.addOnLoad(function () {
 	            mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
 	        }
 		if(gselect.value=="pickup"){
-			initCalender();
+			initCalendar();
 		}else{
 			//メンバーリストを取得しに行く
 			var params="";
@@ -693,7 +693,7 @@ dojo.addOnLoad(function () {
             		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
             	},
 				handle:function(){
-					initCalender();
+					initCalendar();
 				}
 			});
 		}

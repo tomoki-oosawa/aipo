@@ -65,7 +65,7 @@
  	#end
 	#end
 
-    var initCalender=function(){
+    var initCalendar=function(){
 			for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
 		      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
 		      tmpDraggable.portletId = '$!portlet.ID';
@@ -123,7 +123,7 @@
         //メンバーリストの初期化
     	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
 		if(gselect.value=="pickup"){
-			initCalender();
+			initCalendar();
 		}else{
 			//メンバーリストを取得しに行く
 			var params="";
@@ -147,7 +147,7 @@
             		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
             	},
 				handle:function(){
-					initCalender();
+					initCalendar();
 				}
 			});
 		}

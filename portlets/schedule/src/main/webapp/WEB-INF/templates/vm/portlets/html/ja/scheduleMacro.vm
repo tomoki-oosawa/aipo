@@ -54,7 +54,7 @@ $!{record.Date.Day}
 </a>
 #end
 
-#macro (ALMonthlyCalenderOnedayLink $portletID $filter $record)
+#macro (ALMonthlyCalendarOnedayLink $portletID $filter $record)
 #set ($screen = 'ScheduleListScreen')
 <a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_date",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","group"))', '$portletID');">$!{record.Date.Day}</a>
 #end
