@@ -679,7 +679,11 @@
 
 dojo.addOnLoad(function () {
   initCalendar['$!{portlet.ID}'](false);
-  aipo.calendar.changeDisypayPeriod('$!{dayList}', '$!portlet.ID');
+  #if($!top_form == 'simple')
+    aipo.calendar.changeDisypayPeriod('$!{dayList}', '$!portlet.ID');
+  #else
+    aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');
+  #end
 });
 
 //]]>
