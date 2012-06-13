@@ -48,8 +48,8 @@
 #ALdialogheader($subtitle)
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WorkflowFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage);aipo.workflow.onLoadWorkflowDetail")
 <input type="hidden" name="mode" id="mode_$!portlet.ID" value="$!modesrv" />
 
