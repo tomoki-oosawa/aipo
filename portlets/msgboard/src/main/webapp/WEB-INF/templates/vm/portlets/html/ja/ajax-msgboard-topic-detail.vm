@@ -130,8 +130,8 @@ ${record.Note}
 #ALformfooter()
 
 #if($!resultOnTopicDetail)
-#ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
 ##<form name="msgboardForm$!portlet.ID" id="msgboardForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply').addQueryData('entityid', ${result.ParentTopic.TopicId})" method="post" onsubmit="aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage);return false;">
 #ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
 <input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
