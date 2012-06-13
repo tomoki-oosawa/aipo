@@ -19,9 +19,9 @@
 
 ## ---------------------------------------------------------------------------
 ## 簡易表示用
-<input type="hidden" id="top_form" value="$!{top_form}"></input>
 <input type="hidden" id="isMac" value="${isMac}" />
-<input type="hidden" id="view_type" value="$!{dayList}"></input>
+<input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}"></input>
+<input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}"></input>
 
 <div class="relativeBlock">
 <div class="absoluteRight">

@@ -56,7 +56,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 	var children = dojo.byId("weeklyHeadRights-" + pid).children;
 	var childrenTerm = dojo.byId("weeklyTermRights-" + pid).children;
     var childrenBody = dojo.byId("weeklyRights-" + pid).children;
-	dojo.byId("view_type").value = period;
+	dojo.byId("view_type_" + pid).value = period;
 	var dateCell = dojo.byId("indicateDate_" + pid);
 	if(dateCell == null){
 		return;
@@ -277,7 +277,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
             var simpleStyleFirst = "";
             var simpleStyle = "";
-            if(dojo.byId("top_form").value == "simple" && dojo.byId("view_type").value == "1"){
+            if(dojo.byId("top_form_" + _portletId).value == "simple" && dojo.byId("view_type_" + this.portletId).value == "1"){
                 simpleStyleFirst = "width: 100%;";
             	simpleStyle = "width: 0%;display: none;";
             }
@@ -296,11 +296,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
                 var simpleDisplayR = "";
-                if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1" || dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
+                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1" || dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
                   simpleDisplay = ' style="display: none;"';
                   for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
-                    if(item.index==0 || (dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4" && item.index < 4)){
+                    if(item.index==0 || (dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4" && item.index < 4)){
                     	simpleDisplay = "";
                     	simpleDisplayR = " weeklyTermRightR";
                     	break;
@@ -321,13 +321,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
 
                 //IPADはスクロールバーを表示しないので表示調節用の列を削除
-                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1")?"border-right:0":"";
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1")
+                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1")?"border-right:0":"";
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1")
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td  colspan="2" nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
                 else
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
 
-                if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
+                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
 	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
@@ -349,13 +349,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 var weeklyTermtailHtml;
 
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1"||Element.clientWidth == Element.offsetWidth ){
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"||Element.clientWidth == Element.offsetWidth ){
                 	weeklyTermtailHtml = "</div></td></tr>";
                 }else{
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
-                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form").value !=="simple" && dojo.byId("view_type").value == "1"){
+                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form_" + _portletId).value !=="simple" && dojo.byId("view_type_" + _portletId).value == "1"){
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
@@ -511,7 +511,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             });
 
             for(var i=0;i<ptConfig[_portletId].scheduleDivDaySum;i++) {
-                aipo.calendar.relocation(scheduleDiv[i].length, scheduleDiv[i], 100 /  ptConfig[_portletId].scheduleDivDaySum * i);
+                aipo.calendar.relocation(_portletId, scheduleDiv[i].length, scheduleDiv[i], 100 /  ptConfig[_portletId].scheduleDivDaySum * i);
                 scheduleDiv[i] = Array();
             }
             count = 0;
@@ -542,7 +542,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
 
-                    if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "4"){
+                    if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
                     	var rowspanday = item.rowspan;
                     	if(item.rowspan + item.index > 4){
                     		rowspanday = rowspanday - (item.rowspan + item.index - 4);
@@ -558,7 +558,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     }
 
                     var simpleDisplay = "";
-                    if(dojo.byId("top_form").value=="simple" && dojo.byId("view_type").value == "1"){
+                    if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"){
                     	width = 100;
                         simpleDisplay = ((item.index==0) ? "" : "display: none;");
                     }
@@ -701,7 +701,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 };
 
 // aipo.calendar.relocation
-aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
+aipo.calendar.relocation = function(_portletId, sum,scheduleDiv,scheduleDivLeft) {
     var i,j;
     var offsetW = 0.99;
     var scheduleDivWidth = 100 / 7;
@@ -714,9 +714,9 @@ aipo.calendar.relocation = function(sum,scheduleDiv,scheduleDivLeft) {
     var resizeWidthArray = new Array(sum);
     var singleWidth = 1;
     var sumWidth = 0;
-    if(dojo.byId("view_type").value == "1" && dojo.byId("top_form").value == "simple"){
+    if(dojo.byId("view_type_" + _portletId).value == "1" && dojo.byId("top_form_" + _portletId).value == "simple"){
     	singleWidth = 7.2;
-    } else if(dojo.byId("view_type").value == "4"){
+    } else if(dojo.byId("view_type_" + _portletId).value == "4"){
     	singleWidth = 1.75;
     	if(scheduleDivLeft > 57){
     		scheduleDivLeft = 100;
@@ -919,15 +919,15 @@ aipo.calendar.setGridArray = function(_portletId, _colSize) {
 }
 
 //aipo.calendar.getCurrentMouseX
-aipo.calendar.getCurrentMouseX = function(e){
+aipo.calendar.getCurrentMouseX = function(_portletId, e){
        if(aipo.calendar.gridArray == null) return {index: -1, x: 0};
        var startX = aipo.calendar.gridArray[0];
        var _tmpIndex= 0 ;
        var i;
        if(e.pageX > startX){
        var max = parseInt(aipo.calendar.gridArray.length) - 1;
-       if(dojo.byId("view_type") && dojo.byId("top_form").value == "simple"){
-    	   max = parseInt(dojo.byId("view_type").value) - 1;
+       if(dojo.byId("view_type_" + _portletId) && dojo.byId("top_form_" + _portletId).value == "simple"){
+    	   max = parseInt(dojo.byId("view_type_" + _portletId).value) - 1;
        }
            for(i = max; i > -1 ; i-- ) {
                  if(e.pageX > aipo.calendar.gridArray[i]){
@@ -1149,10 +1149,10 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
             }
         }
         if(!this.disableX) {
-           mouseX = aipo.calendar.getCurrentMouseX(e);
+           mouseX = aipo.calendar.getCurrentMouseX(this.portletId, e);
            this.leftTop.l = mouseX.x;
            /*
-           if(dojo.byId("top_form").value=="simple"){
+           if(dojo.byId("top_form_" + this.portletId).value=="simple"){
              this.leftTop.l = 0;
            }*/
            this.dragSource.schedule.index = mouseX.index;
@@ -1191,7 +1191,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
     onMouseUp: function (e) {
         ptConfig[this.portletId].isTooltipEnable = true;
         /*
-        if(dojo.byId("top_form").value=="simple"){
+        if(dojo.byId("top_form_" + this.portletId).value=="simple"){
           this.dragSource.schedule.index = 0;
         }*/
 
@@ -1359,8 +1359,8 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         this.dragSource.schedule.isDrag = true;
         var distance = ptConfig[this.portletId].distance;
 
-        var view_type=(dojo.byId("view_type") && dojo.byId("top_form") && dojo.byId("top_form").value == "simple")?dojo.byId("view_type").value:ptConfig[this.portletId].scheduleDivDaySum;
-        var mouseX = aipo.calendar.getCurrentMouseX(e);
+        var view_type=(dojo.byId("view_type_" + this.portletId) && dojo.byId("top_form_" + this.portletId) && dojo.byId("top_form_" + this.portletId).value == "simple")?dojo.byId("view_type_" + this.portletId).value:ptConfig[this.portletId].scheduleDivDaySum;
+        var mouseX = aipo.calendar.getCurrentMouseX(this.portletId, e);
         _tmpIndex = mouseX.index;
         /*y = Math.floor(y/distance)*distance;
         if(!this.disableY) { this.node.style.top = y + "px"; }*/
@@ -1431,7 +1431,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
             var width = 100 / view_type * tmpW;
             var left = 100 / view_type * tmpL;
             /*
-            if(dojo.byId("top_form").value=="simple"){
+            if(dojo.byId("top_form_" + this.portletId).value=="simple"){
             	width = 100 * tmpW;
             	left = 100 * tmpL;
             }*/
@@ -1458,7 +1458,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         var scheduleNode = this.dragSource.scheduleNode;
         var startDate, endDate;
 
-        if(dojo.byId("top_form").value=="simple"){
+        if(dojo.byId("top_form_" + this.portletId).value=="simple"){
         	startDate = ptConfig[this.portletId].jsonData.date[0];
         	endDate = ptConfig[this.portletId].jsonData.date[0];
         }
@@ -1698,7 +1698,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this._isDragging = true;
         dojo.style(this.node, "opacity", 0.5);
-        var mouseX = aipo.calendar.getCurrentMouseX(e);
+        var mouseX = aipo.calendar.getCurrentMouseX(this.portletId, e);
         var tmpIndex = mouseX.index;
         if(this.positionFrom == -1 && tmpIndex != -1) {
             this.positionFrom = tmpIndex;
@@ -1719,8 +1719,8 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
             var width;
             var left;
 
-            if(dojo.byId("view_type") && dojo.byId("top_form").value == "simple") {
-            	var sum = parseInt(dojo.byId("view_type").value);
+            if(dojo.byId("view_type_" + this.portletId) && dojo.byId("top_form_" + this.portletId).value == "simple") {
+            	var sum = parseInt(dojo.byId("view_type_" + this.portletId).value);
                 width = 100 / sum * tmpW;
                 left = 100 / sum * tmpL;
             } else {
@@ -1728,7 +1728,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
                 left = 100 / ptConfig[this.portletId].scheduleDivDaySum * tmpL;
             }
             /*
-            if(dojo.byId("top_form").value=="simple"){
+            if(dojo.byId("top_form_" + this.portletId).value=="simple"){
             	width = 0;
             	left = 0;
             }*/
@@ -1756,7 +1756,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
                 left1 = this.positionTo;
             }
             /*
-            if(dojo.byId("top_form").value=="simple"){
+            if(dojo.byId("top_form_" + this.portletId).value=="simple"){
             	left1 = 0;
             	left2 = 0;
             }*/
