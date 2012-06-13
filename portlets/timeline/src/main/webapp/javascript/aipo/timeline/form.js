@@ -92,6 +92,7 @@ aipo.timeline.nextThumbnail = function(pid) {
 	  var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
 	  var maxval = parseInt(max);
 	  if(value < maxval){
+		dojo.byId("tlClipImage_" + pid + "_1").style.display = "none";
 	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
 	    value++;
 	    page.value = value;
@@ -106,6 +107,7 @@ aipo.timeline.nextThumbnail = function(pid) {
 	  var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value
 	  var maxval = parseInt(max);
 	  if(value > 1){
+	    dojo.byId("tlClipImage_" + pid + "_1").style.display = "none";
 	    dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
 	    value--;
 	    page.value = value;
@@ -118,10 +120,24 @@ if(!aipo.timeline.revmaxlist){
 	aipo.timeline.revmaxlist = [];
 }
 
-var refreshcount = 0;
-
 aipo.timeline.refreshImageList = function(pid, i) {
-	refreshcount++;
+	function showImageList(pid){
+		var page = dojo.byId("TimelinePage_" + pid);
+		  var value = parseInt(page.value);
+		if(aipo.timeline.revmaxlist[pid] > 0){
+			if(dojo.byId("auiSummaryMeta_" + pid).style.display != "block"){
+				document.getElementById("tlClipImage_" + pid + "_1").style.display = "";
+				dojo.byId("auiSummaryMeta_" + pid).style.display = "block";
+				dojo.byId("ViewThumbnail_" + pid).style.display = "block";
+		}
+			if(!value){
+				value = 1;
+			}
+			dojo.byId("count_" + pid).innerHTML = aipo.timeline.revmaxlist[pid] + " 件中 "+ value + " 件";
+			dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value = aipo.timeline.revmaxlist[pid];
+		}
+	  }
+
 	var page = dojo.byId("TimelinePage_" + pid);
 	var value = parseInt(page.value);
 	var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
@@ -131,7 +147,7 @@ aipo.timeline.refreshImageList = function(pid, i) {
 	var w = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalWidth;
 	var h = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalHeight;
 
-	if((w > 80) && (h > 80)){
+	if((w > 80) && (h > 80) || dojo.isIE ){
 		//描画対象
 		if(aipo.timeline.revmaxlist.hasOwnProperty(pid)){
 			revmax = aipo.timeline.revmaxlist[pid];
@@ -150,16 +166,12 @@ aipo.timeline.refreshImageList = function(pid, i) {
 		imgNode.src = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").src;
 
 		divNode.appendChild(imgNode);
-
 		info.parentNode.insertBefore(divNode, info);
-
-		if(aipo.timeline.revmaxlist[pid] > 0){
-			document.getElementById("tlClipImage_" + pid + "_1").style.display = "";
-			dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value = aipo.timeline.revmaxlist[pid];
-		    dojo.byId("count_" + pid).innerHTML = aipo.timeline.revmaxlist[pid] + " 件中 1 件";
-		    dojo.byId("auiSummaryMeta_" + pid).style.display = "block";
-			dojo.byId("ViewThumbnail_" + pid).style.display = "block";
+		var delay = 0;
+		if(dojo.isIE){
+			delay= 200;
 		}
+		setTimeout(function(){showImageList(pid);}, delay);
 	}
 }
 
@@ -198,6 +210,7 @@ aipo.timeline.setScrollTop = function(pid, scrollTop) {
   dojo.byId("timeline_" + pid).scrollTop = scrollTop;
 }
 
+
 aipo.timeline.onKeyUp = function(pid, tid, e) {
   var objId;
   if((typeof tid !== "undefined") && (tid != null)){
@@ -214,9 +227,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
 						aipo.timeline.getUrl(spritval[i], pid);
-						refreshcount = 0;
 						aipo.timeline.revmaxlist[pid] = 0;
-
 					}
 				}
 			}
