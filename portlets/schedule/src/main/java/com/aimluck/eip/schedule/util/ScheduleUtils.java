@@ -1465,6 +1465,18 @@ public class ScheduleUtils {
     return newList;
   }
 
+  public static boolean validateTabName(String tab_name) {
+    if (tab_name == null) {
+      return false;
+    }
+    return ("calendar".equals(tab_name)
+      || "oneday".equals(tab_name)
+      || "weekly".equals(tab_name)
+      || "monthly".equals(tab_name)
+      || "oneday-group".equals(tab_name)
+      || "weekly-group".equals(tab_name) || "list".equals(tab_name));
+  }
+
   /**
    * 現在選択しているタブ名を取得する．
    * 
@@ -1487,13 +1499,7 @@ public class ScheduleUtils {
     }
     String currentTab;
     String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    if (tmpCurrentTab == null
-      || !(tmpCurrentTab.equals("calendar")
-        || tmpCurrentTab.equals("oneday")
-        || tmpCurrentTab.equals("weekly")
-        || tmpCurrentTab.equals("monthly")
-        || tmpCurrentTab.equals("oneday-group")
-        || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab.equals("list"))) {
+    if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
       currentTab = "calendar";
     } else {
       currentTab = tmpCurrentTab;

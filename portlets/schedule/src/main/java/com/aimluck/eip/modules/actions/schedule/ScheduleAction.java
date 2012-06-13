@@ -20,7 +20,9 @@
 package com.aimluck.eip.modules.actions.schedule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -84,6 +86,19 @@ public class ScheduleAction extends ALBaseAction {
 
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
+
+  private static Map<String, String> tabToLayOut;
+
+  static {
+    tabToLayOut = new HashMap<String, String>();
+    tabToLayOut.put("calendar", "schedule-calendar");
+    tabToLayOut.put("oneday", "schedule-oneday");
+    tabToLayOut.put("weekly", "schedule-weekly");
+    tabToLayOut.put("monthly", "schedule-monthly");
+    tabToLayOut.put("oneday-group", "schedule-oneday-group");
+    tabToLayOut.put("weekly-group", "schedule-weekly-group");
+    tabToLayOut.put("list", "schedule-search-list");
+  }
 
   /**
    * 
@@ -163,10 +178,23 @@ public class ScheduleAction extends ALBaseAction {
       if ("simple".equals(top_form)) {
         _template = "schedule-calendar";
       } else {
-       _template =
-        portlet.getPortletConfig().getInitParameter("pba-template");
+        String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
+
+        if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
+          _template =
+            portlet.getPortletConfig().getInitParameter("pba-template");
+        } else {
+          // :
+          _template = tabToLayOut.get(tmpCurrentTab);
+
+          // もしnullならmapに追加
+          // if (_template == null) {
+          // _template =
+          // portlet.getPortletConfig().getInitParameter("pba-template");
+          // }
+        }
       }
-      
+
       // 現在のユーザー名を取得する
       ALEipUser loginuser = ALEipUtils.getALEipUser(rundata);
       String current = loginuser.getAliasName().toString();
@@ -606,14 +634,7 @@ public class ScheduleAction extends ALBaseAction {
       String currentTab;
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
       String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      if (tmpCurrentTab == null
-        || !(tmpCurrentTab.equals("calendar")
-          || tmpCurrentTab.equals("oneday")
-          || tmpCurrentTab.equals("weekly")
-          || tmpCurrentTab.equals("monthly")
-          || tmpCurrentTab.equals("oneday-group")
-          || tmpCurrentTab.equals("weekly-group") || tmpCurrentTab
-            .equals("list"))) {
+      if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
         currentTab = "calendar";
       } else {
         currentTab = tmpCurrentTab;
