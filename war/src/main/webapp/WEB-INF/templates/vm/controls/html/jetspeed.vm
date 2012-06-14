@@ -160,7 +160,7 @@ function appsNaviSwitch() {
                 </ul>
         </div>
         <div class="anFooter">
-                <div class="copyright">Aipo &copy; Aimluck,Inc</div>
+                <div class="copyright">&copy; 2012 Aimluck</div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->
