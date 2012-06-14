@@ -99,6 +99,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
    *
    *
    */
+  @Override
   public void initField() {
     // カテゴリ名
     category_name = new ALStringField();
@@ -202,12 +203,18 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       // メモ
       note.setValue(category.getNote());
       // 申請経路ID
-      route_id.setValue(category
-        .getEipTWorkflowRoute()
-        .getRouteId()
-        .longValue());
+      if (category.getEipTWorkflowRoute() == null) {
+        route_id.setValue(0);
+      } else {
+        route_id.setValue(category
+          .getEipTWorkflowRoute()
+          .getRouteId()
+          .longValue());
+      }
       // 申請経路
-      route.setValue(category.getEipTWorkflowRoute().getRoute());
+      if (category.getEipTWorkflowRoute() != null) {
+        route.setValue(category.getEipTWorkflowRoute().getRoute());
+      }
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
