@@ -24,17 +24,21 @@
 <span id="blog_val_confirm1" style="display:none">このコメントを削除してもよろしいですか？</span>
 <span id="blog_val_confirm2" style="display:none">この記事を削除してもよろしいですか？<br>なお、このブログに含まれるコメントもすべて削除されます。</span>
 ## ---------------------------------------------------------------------------
-#ALdialogheader("記事詳細")
+#ALdialogheader("記事詳細（${result.Detail.OwnerName}）")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
-<table class="listTable wide">
-<caption>
-<span class="floatRight" style="font-weight:normal; color:#434343;">$!{result.Detail.ThemaName}</span>
-$!{result.Detail.Title}
-</cation>
+#ALtableheaderWide()
 <tr>
-<td>
+#ALtdheadheaderAtt("style='text-align:left; white-space: normal'")
+$!{result.Detail.ThemaName}
+#ALtdheadfooter()
+</tr>
+<tr>
+#ALtditemheader()
+<div class="clearfix">
+<h3>$!{result.Detail.Title}</h3>
+<div class="alignleft">投稿日：$!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分</div>
 <div class="alignright">
 #if($!result.Editable)
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
@@ -43,21 +47,7 @@ $!{result.Detail.Title}
 #ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
 #end
 </div>
-<div class="avatar floatLeft mr10">
-#if(${record.hasPhoto()})
-<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
-#else
-<img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="32" height="32" />
-#end
 </div>
-<div class="alignleft"><strong>${result.Detail.OwnerName}</strong></div>
-<br>
-$!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分
-#ALtdheadfooter()
-
-<tr>
-<td style="border-bottom:none;">
-<div class="clearfix">
 <div>
 $!{result.Detail.Note}
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
@@ -66,12 +56,11 @@ $!{result.Detail.Note}
 <div style="padding-top:5px;">
 <img src="images/blog/blog_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
 #if($attachmentFile.isImage())
-
 <div style="padding-top:3px;padding-left:12px;">
 <div id='popc' style='position:absolute'></div>
-<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
-<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a>
-##&nbsp;（マウスのクリックで画像を拡大縮小できます）
+<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');"><img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a><br>
+
+&nbsp;（マウスのクリックで画像を拡大縮小できます）
 </div>
 #end
 </div>
@@ -80,29 +69,22 @@ $!{result.Detail.Note}
 #end
 </div>
 #ALtditemfooter()
+</tr>
 #ALtablefooter()
 
-
-
-#if($!result.CommentList && $!result.CommentList.size() >= 0)
-<table class="listTable wide mb0">
-<caption>
-コメント
-</cation>
+#if($!result.CommentList && $!result.CommentList.size() > 0)
+##ALajaxpageview('BlogEntryCommentListScreen' $result)
+#ALtableheaderWide()
+<tr>
+#ALtdheadAtt("コメント" "style='text-align:left;'")
+</tr>
 #foreach ($record in $result.CommentList)
 <tr>
 #ALtditemheader()
-<div class="clearfix mb10">
-<div class="avatar floatLeft mr10">
-#if(${record.hasPhoto()})
-<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
-#else
-<img src="images/common/avatar_default3.png" alt="${record.OwnerName}" width="32" height="32" />
-#end
-</div>
-<div class="alignleft"><strong>$!{record.OwnerName}</strong>
-<br>
-$!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
+<div class="clearfix">
+<div class="alignleft">
+投稿者：<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid',${record.OwnerId}).addQueryData('action','controls.Maximize')">$!{record.OwnerName}</a>
+&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
 </div>
 <div class="alignright">
 #if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
@@ -110,7 +92,6 @@ $!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}�
 #end
 </div>
 </div>
-
 <div>
 ${record.Comment}
 </div>
@@ -132,7 +113,7 @@ ${record.Comment}
 #ALajaxscreenformheader("blogForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.blog.onReceiveMessage)")
 <input type="hidden" name="mode" value="comment" />
 <input type="hidden" name="entityid" value="$!{result.Detail.EntryId}" />
-<table class="listTable wide mt0" style="border-top:none;">
+#ALtableheaderWide()
 #ALtdcaption("#ALrequired($!resultOnCommentDetail.getFieldName('comment'))")
 #ALtditemheader()
 #ALtextarea('comment' $!resultOnCommentDetail.Comment 10 40)
