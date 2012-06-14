@@ -1026,14 +1026,6 @@ public class ExtTimecardSummaryListSelectData extends
   }
 
   /**
-   * @param date_str
-   * @return
-   */
-  public ExtTimecardSummaryResultData getDateListValue(String date_str) {
-    return datemap.get(date_str);
-  }
-
-  /**
    * 指定した2つの日付を比較する．
    * 
    * @param date1
