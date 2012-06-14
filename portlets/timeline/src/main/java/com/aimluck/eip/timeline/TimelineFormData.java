@@ -27,8 +27,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -47,7 +45,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -508,47 +505,4 @@ public class TimelineFormData extends ALAbstractFormData {
     ALEipUtils.removeTemp(rundata, context, list);
 
   }
-
-  public void exchangeParent(EipTTimeline topic) {
-    Calendar tCal = Calendar.getInstance();
-    SelectQuery<EipTTimeline> tQuery = Database.query(EipTTimeline.class);
-    Calendar tCalBefore = Calendar.getInstance();
-    tCalBefore.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
-      .get(Calendar.DATE), 0, 0, 0);
-    Calendar tCalAfter = Calendar.getInstance();
-    tCalAfter.set(tCal.get(Calendar.YEAR), tCal.get(Calendar.MONTH), tCal
-      .get(Calendar.DATE), 0, 0, 0);
-    tCalAfter.add(Calendar.DATE, 1);
-
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimeline.OWNER_ID_PROPERTY, Integer
-        .valueOf(topic.getOwnerId()));
-    Expression exp2 =
-      ExpressionFactory.matchExp(
-        EipTTimeline.TIMELINE_TYPE_PROPERTY,
-        EipTTimeline.TIMELINE_TYPE_ACTIVITY);
-    Expression exp3 =
-      ExpressionFactory.betweenExp(
-        EipTTimeline.CREATE_DATE_PROPERTY,
-        tCalBefore.getTime(),
-        tCalAfter.getTime());
-
-    tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3)));
-    tQuery.distinct(true);
-    List<EipTTimeline> tList = tQuery.fetchList();
-    for (EipTTimeline t : tList) {
-      if (t.getTimelineId() != topic.getTimelineId()) {
-        EipTTimeline t2 = Database.get(EipTTimeline.class, t.getTimelineId());
-        t2.setParentId(topic.getTimelineId());
-      }
-    }
-
-    EipTTimeline topic2 =
-      Database.get(EipTTimeline.class, topic.getTimelineId());
-
-    topic2.setUpdateDate(tCal.getTime());
-    topic2.setParentId(0);
-    Database.commit();
-  }
-
 }
