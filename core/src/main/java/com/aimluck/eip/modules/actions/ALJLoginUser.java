@@ -69,6 +69,13 @@ public class ALJLoginUser extends ActionEvent {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
 
+      // セッションハイジャック対策
+      // Cookieでセッションを管理していなければエラー画面を表示
+      if (!data.getRequest().isRequestedSessionIdFromCookie()) {
+        data.setScreenTemplate("CookieError");
+        return;
+      }
+
       // 入力されたユーザ名を検証する．
       ALStringField tmpname = new ALStringField();
       tmpname.setTrim(true);

@@ -1,0 +1,307 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set($enable_userlist = true)
+#if($config.getString("action.login.enable.select.userlist") != "true")
+#set($enable_userlist = false)
+#end
+## ---------------------------------------------------------------------------
+<script language="JavaScript" type="text/JavaScript">
+//<![CDATA[
+
+var tmpUsername = "";
+
+function set_username(form){
+#if($enable_userlist)
+  if(form.login_type.checked){
+  	form.username.value = form.member_username_list.options[form.member_username_list.selectedIndex].value;
+  }else{
+  	form.username.value = form.member_username.value;
+  }
+#else
+  form.username.value = form.member_username.value;
+#end
+}
+
+
+function submit2(form) {
+  set_username(form);
+
+#if($enable_userlist)
+  set_cookie("login_type", form.login_type.checked);
+#end
+  if (form.save_password.checked) {
+    set_cookie("username", form.username.value);
+    set_cookie("password", form.password.value);
+  } else {
+    remove_cookie("username");
+    remove_cookie("password");
+  }
+  set_cookie("save_password", form.save_password.checked);
+}
+
+function init() {
+#if($enable_userlist)
+  var form = document.forms[0];
+  var logintypeStr = get_cookie("login_type");
+  var logintypeObj = form.login_type;
+  var savePassStr = get_cookie("save_password");
+  var savePassObj = form.save_password;
+  if (logintypeStr == "false") {
+    logintypeObj.checked = false;
+  } else {
+    logintypeObj.checked = true;
+  }
+  if (savePassStr == "true") {
+    savePassObj.checked = true;
+  } else {
+    savePassObj.checked = false;
+  }
+  change_login_type(form, logintypeObj);
+#else
+  var form = document.forms[0];
+  var savePassStr = get_cookie("save_password");
+  var savePassObj = form.save_password;
+  if (savePassStr == "true") {
+    savePassObj.checked = true;
+  } else {
+    savePassObj.checked = false;
+  }
+  change_login_type(form);
+#end
+}
+
+function set_input_value(form) {
+  var usernameStr = "";
+  if (tmpUsername == "") {
+    if (form.save_password.checked) {
+      usernameStr = get_cookie("username");
+    }
+  } else {
+    usernameStr = tmpUsername;
+  }
+  var usernameObj = form.username;
+  usernameObj.value = usernameStr;
+#if($enable_userlist)
+  if(form.login_type.checked){
+  	form.member_username_list.options[form.member_username_list.selectedIndex].value = usernameStr;
+  }else{
+  	form.member_username.value = usernameStr;
+  	if(form.member_username.value!=''){
+  	  form.member_username.nextSibling.style.display = "none";
+  	}
+  }
+#else
+  form.member_username.value = usernameStr;
+  if(form.member_username.value!=''){
+    form.member_username.nextSibling.style.display = "none";
+  }
+#end
+
+  if (form.save_password.checked) {
+    form.password.value = get_cookie("password");
+    if(form.password.value!=''){
+  	  form.password.nextSibling.style.display = "none";
+  	}
+  }
+}
+
+function set_select_value(form) {
+  var usernameStr = "";
+  if (tmpUsername == "") {
+    if (form.save_password.checked) {
+      usernameStr = get_cookie("username");
+    }
+  } else {
+    usernameStr = tmpUsername;
+  }
+#if($enable_userlist)
+  var usernameObj = form.member_username_list;
+  for(var i = 0; i < usernameObj.length; i++) {
+    if(usernameObj.options[i].value == usernameStr) {
+      usernameObj.selectedIndex = i;
+      break;
+    }
+  }
+#end
+  if (form.save_password.checked) {
+    form.password.value = get_cookie("password");
+    if(form.password.value!=''){
+  	  form.password.nextSibling.style.display = "none";
+  	}
+  }
+}
+
+function get_cookie(strName) {
+  var strReturn = "";
+  var nLoop = 0;
+  var nLength = 0;
+  var strNameEx = strName + "=";
+  var strTemp = "";
+  while (nLoop < document.cookie.length) {
+    nLength = nLoop + strNameEx.length;
+    if (document.cookie.substring(nLoop, nLength) == strNameEx) {
+      strTemp = document.cookie.indexOf(";", nLength);
+      if (strTemp == -1) {
+        strReturn = document.cookie.substring(nLength, document.cookie.length);
+      } else {
+        strReturn = document.cookie.substring(nLength, strTemp);
+      }
+      break;
+   }
+   nLoop = document.cookie.indexOf(" ", nLoop) + 1;
+   if (nLoop == 0) {
+     break;
+    }
+  }
+  return strReturn;
+}
+
+function set_cookie(strName, strValue) {
+  var dtExpire = new Date();
+  dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+}
+
+function remove_cookie(strName) {
+  var strValue;
+  var dtExpire = new Date();
+  dtExpire.setTime(dtExpire.getTime() - 1);
+  strValue = get_cookie(strName);
+  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+}
+
+#if($enable_userlist)
+function change_login_type(form, check) {
+  if (check.checked) {
+  getObjectById('login_username_list_field').style.display = "";
+  getObjectById('login_username_field').style.display = "none";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value;
+  }
+  set_select_value(form);
+  } else {
+  getObjectById('login_username_list_field').style.display = "none";
+  getObjectById('login_username_field').style.display = "";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value;
+  }
+  set_input_value(form);
+  }
+}
+#else
+function change_login_type(form) {
+  getObjectById('login_username_field').style.display = "";
+  if (form.username.value != "") {
+    tmpUsername = form.username.value;
+  }
+  set_input_value(form);
+}
+#end
+
+#if($enable_userlist)
+function change_group(form, value) {
+  var f = form.member_username_list;
+  var f_o = f.options;
+  f_o.length = 0;
+  if (value == 'all') {
+  add_option(f, '', '（選択してください）', false);
+  #foreach($record2 in $!alEipUtils.getUsers('LoginUser') )
+    add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
+  #end
+  }
+  #foreach($record in $!alEipManager.PostMap)
+  if (value == $!record.PostId) {
+    add_option(f, '', '（選択してください）', false);
+    #foreach($record2 in $!alEipUtils.getUsers($!{record.GroupName.Value}) )
+      add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
+    #end
+  }
+  #end
+}
+#end
+
+//]]>
+</script>
+<!-- auiLoginBox -->
+<div id="auiLoginBox"><div id="auiLoginInner">
+<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
+<h3>セッションエラー</h3>
+<div class="loginAlert">
+Cookieが有効になっていない、あるいはCookieに対応していない端末です。
+#if(!$!data.getMessage().toString().startsWith("__errLicenseType:"))
+$!data.getMessage().toString()
+#else
+一般ユーザーではログインできません
+#end
+</div>
+<form name="frm" action="${context_path}/portal/?${jslink.ActionKey}=${config.getString("action.login")}" onsubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
+<input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
+#if($!data.getUser().getTemp("company_id"))
+<input name="org" type="hidden" value="$!data.getUser().getTemp("company_id")" />
+#else
+<input name="org" type="hidden" value="" />
+#end
+<input name="username" type="hidden" value="" />
+<input name="redirect" type="hidden" value="$!data.getUser().getTemp("redirect")" />
+<div class="field clearfix">
+<span id="login_username_field">
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('member_username').focus();">ユーザー名</span>
+</span>
+#if($enable_userlist)
+<span id="login_username_list_field" style="display:none">
+<select name='login_member' onchange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
+<option value='all'>（部署全体）</option>
+#foreach( $record in $!alEipManager.PostMap )
+<option value='$!{record.PostId}'>$!record.PostName</option>
+#end
+</select><select name='member_username_list' class="select2" tabindex="2">
+<option value=''>（選択してください）</option>
+#foreach($record in $!alEipUtils.getUsers('LoginUser'))
+<option value='$!record.Name'>$!record.AliasName</option>
+#end
+</select>
+</span>
+#end
+</div>
+<div class="field">
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('password').focus();">パスワード</span>
+</div>
+<div class="clearfix">
+<div class="floatLeft">
+#if($enable_userlist)
+<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
+#end
+<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ログイン情報を保存する</label></p>
+</div>
+<div class="floatRight">
+<input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
+</div>
+</div>
+</form>
+</div></div>
+<!-- /auiLoginBox -->
+<script language="JavaScript" type="text/JavaScript">
+//<![CDATA[
+
+init();
+
+//]]>
+</script>

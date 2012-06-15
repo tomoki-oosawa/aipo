@@ -42,6 +42,8 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.LoginException;
 import org.apache.jetspeed.util.Base64;
 import org.apache.jetspeed.util.ServiceUtil;
+import org.apache.jetspeed.util.template.JetspeedLink;
+import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -90,6 +92,15 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       data.setStackTrace(
         org.apache.turbine.util.StringUtils.stackTrace(other),
         other);
+      return;
+    }
+
+    // セッションハイジャック対策
+    // CookieでセッションIDが渡されていなければエラー画面を表示
+    if (data.getRequest().isRequestedSessionIdFromURL()) {
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(data);
+      String url = jsLink.getHomePage().toString().replaceAll(";.*", "");
+      data.setRedirectURI(url);
       return;
     }
 
@@ -173,7 +184,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
 
-    if (!isLogin(loginuser)) {
+    // Cookie無効エラーを検知している場合、ログインさせない
+    if (!isLogin(loginuser)
+      && !data.getParameters().get("template").equals("CookieError")) {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
       if (username.length() > 0) {
