@@ -29,7 +29,6 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -42,9 +41,6 @@ public class CellScheduleSelectData extends ScheduleSelectData {
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CellScheduleSelectData.class.getName());
-
-  /** <code>viewtype</code> 表示タイプ */
-  protected String viewtype;
 
   protected String entityid;
 
@@ -59,8 +55,6 @@ public class CellScheduleSelectData extends ScheduleSelectData {
   @Override
   protected EipTSchedule selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-
-    viewtype = ScheduleUtils.getCurrentTab(rundata, context);
 
     entityid = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
@@ -81,14 +75,6 @@ public class CellScheduleSelectData extends ScheduleSelectData {
     }
   }
 
-  /**
-   * 表示タイプを取得します。
-   * 
-   * @return
-   */
-  public String getViewtype() {
-    return viewtype;
-  }
 
   public String getEntityId() {
     return entityid;
