@@ -178,7 +178,7 @@ ${record.Note}
 #ALtablefooter()
 #end
 #ALbuttonheader()
-#if($!resultOnTopicDetail)<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">#end
+#if($!resultOnTopicDetail)<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
