@@ -171,7 +171,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     file_title.setTrim(true);
     // フォルダ名
     file_name = new ALStringField();
-    file_name.setFieldName("ファイル名");
+    file_name.setFieldName("ファイル");
     file_name.setTrim(true);
     // ファイルサイズ
     file_size = new ALNumberField();
@@ -217,7 +217,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     try {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
       FileuploadLiteBean filebean = null;
-      if (fileuploadList != null) {
+      if (fileuploadList != null && !fileuploadList.isEmpty()) {
         // 新規にアップロードしたデータをつめる
         filebean = fileuploadList.get(0);
         file_name.setValue(filebean.getFileName());
@@ -262,6 +262,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
     // ファイル名
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       file_name.validate(msgList);
+      if (fileuploadList != null && fileuploadList.size() > 1) {
+        msgList.add("２つ以上のファイルをアップロードすることはできません。");
+      }
     } else {
       if (fileuploadList != null) {
         if (fileuploadList.size() > 0) {
@@ -270,7 +273,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
     }
     if (ALEipConstants.MODE_UPDATE.equals(getMode()) && fileids == null) {
-      msgList.add("『 <span class='em'>ファイル名</span> 』を入力してください。");
+      msgList.add("『 <span class='em'>ファイル</span> 』を選択してください。");
     }
 
     // メモ
@@ -559,7 +562,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // アップロードしたファイルは存在するか
       boolean is_upload = true;
-      if (fileuploadList == null) {
+      if (fileuploadList == null || fileuploadList.isEmpty()) {
         is_upload = false;
       }
       if (is_upload) {
@@ -664,7 +667,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   public String getFolderName() {
-    return folderName.toString();
+    return folderName;
   }
 
   /**
