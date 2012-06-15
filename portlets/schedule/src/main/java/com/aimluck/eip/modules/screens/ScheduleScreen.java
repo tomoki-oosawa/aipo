@@ -65,41 +65,16 @@ public class ScheduleScreen extends ALVelocityScreen {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     // String tab = rundata.getParameters().getString("tab");
     try {
-      // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
-      if (ALEipUtils.isMatch(rundata, context)) {
-        // 現在選択されているタブ
-        // oneday : １日表示
-        // weekly : 週間表示
-        // monthly: 月間表示
-        if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata
-            .getParameters()
-            .getString("tab"));
-        }
-      }
+
+      String currentTab = ScheduleUtils.getCurrentTab(rundata, context);
 
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData =
         null;
       // ポートレット ID を取得する．
       String portletId = portlet.getID();
-      String currentTab;
-      String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
 
       String useragent = rundata.getUserAgent();
 
-      if (tmpCurrentTab == null
-        || !(tmpCurrentTab.equals("calendar")
-          || tmpCurrentTab.equals("oneday")
-          || tmpCurrentTab.equals("weekly")
-          || tmpCurrentTab.equals("monthly")
-          || tmpCurrentTab.equals("list")
-          || tmpCurrentTab.equals("search")
-          || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
-        currentTab = "calendar";
-      } else {
-        currentTab = tmpCurrentTab;
-      }
       if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
         currentTab = "list";
       }

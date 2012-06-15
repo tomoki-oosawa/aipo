@@ -28,7 +28,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.cayenne.DataRow;
@@ -143,6 +145,40 @@ public class ScheduleUtils {
 
   public static final String FILTER_NAMESPACE_TYPE =
     "com.aimluck.eip.schedule.filtertype";
+
+  private static Map<String, String> tabToLayOut;
+
+  static {
+    tabToLayOut = new HashMap<String, String>();
+    tabToLayOut.put("calendar", "schedule-calendar");
+    tabToLayOut.put("oneday", "schedule-oneday");
+    tabToLayOut.put("weekly", "schedule-weekly");
+    tabToLayOut.put("monthly", "schedule-monthly");
+    tabToLayOut.put("oneday-group", "schedule-oneday-group");
+    tabToLayOut.put("weekly-group", "schedule-weekly-group");
+    tabToLayOut.put("list", "schedule-search-list");
+  }
+
+  private static Map<String, String> LayOutTotab;
+
+  static {
+    LayOutTotab = new HashMap<String, String>();
+    LayOutTotab.put("schedule-calendar", "calendar");
+    LayOutTotab.put("schedule-oneday", "oneday");
+    LayOutTotab.put("schedule-weekly", "weekly");
+    LayOutTotab.put("schedule-monthly", "monthly");
+    LayOutTotab.put("schedule-oneday-group", "oneday-group");
+    LayOutTotab.put("schedule-weekly-group", "weekly-group");
+    LayOutTotab.put("schedule-search-list", "list");
+  }
+
+  public static String getLayoutFromTabName(String tabname) {
+    return tabToLayOut.get(tabname);
+  }
+
+  public static String getTabNameFromLayout(String Layout) {
+    return LayOutTotab.get(Layout);
+  }
 
   /**
    * Scheudle オブジェクトモデルを取得します。
@@ -753,7 +789,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -1493,9 +1529,17 @@ public class ScheduleUtils {
       // weekly : 週間表示
       // monthly: 月間表示
       if (rundata.getParameters().containsKey("tab")) {
-        ALEipUtils.setTemp(rundata, context, "tab", rundata
-          .getParameters()
-          .getString("tab"));
+        String tab = rundata.getParameters().getString("tab");
+
+        if (!"search".equals(tab)) {
+          ALEipUtils.setPsmlParameters(
+            rundata,
+            context,
+            "pba-template",
+            ScheduleUtils.getLayoutFromTabName(tab));
+        }
+
+        ALEipUtils.setTemp(rundata, context, "tab", tab);
       }
     }
     String currentTab;
@@ -3838,4 +3882,5 @@ public class ScheduleUtils {
     }
     return target_keyword;
   }
+
 }

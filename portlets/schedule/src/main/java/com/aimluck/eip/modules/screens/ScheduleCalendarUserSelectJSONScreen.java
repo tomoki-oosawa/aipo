@@ -19,16 +19,12 @@
 
 package com.aimluck.eip.modules.screens;
 
-import org.apache.jetspeed.om.profile.Entry;
-import org.apache.jetspeed.om.profile.Parameter;
-import org.apache.jetspeed.om.profile.Portlets;
-import org.apache.jetspeed.om.profile.Profile;
-import org.apache.jetspeed.om.profile.psml.PsmlParameter;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * カレンダーを処理するクラスです。<br />
@@ -45,7 +41,9 @@ public class ScheduleCalendarUserSelectJSONScreen extends
   protected String getJSONString(RunData rundata, Context context)
       throws Exception {
 
-    savePsmlParameters(rundata, context);
+    ALEipUtils.setPsmlParameters(rundata, context, "p8h-cgrp", rundata
+      .getParameters()
+      .getString("groupname"));
 
     String groupname = rundata.getParameters().getString("groupname");
 
@@ -54,68 +52,5 @@ public class ScheduleCalendarUserSelectJSONScreen extends
     } else {
       return super.getJSONString(rundata, context);
     }
-  }
-
-  // psmlに選択されたグループを保存
-  private boolean savePsmlParameters(RunData rundata, Context context) {
-    try {
-      String portletEntryId =
-        rundata.getParameters().getString("js_peid", null);
-      String groupname = rundata.getParameters().getString("groupname");
-      if (groupname == "" || groupname == null) {// nullで送信するとpsmlが破壊される
-        return false;
-      }
-
-      String KEY_CGRP = "p8h-cgrp";
-
-      Profile profile = ((JetspeedRunData) rundata).getProfile();
-      Portlets portlets = profile.getDocument().getPortlets();
-      if (portlets == null) {
-        return false;
-      }
-
-      Portlets[] portletList = portlets.getPortletsArray();
-      if (portletList == null) {
-        return false;
-      }
-
-      PsmlParameter param = null;
-      int length = portletList.length;
-      for (int i = 0; i < length; i++) {
-        Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0) {
-          continue;
-        }
-
-        int ent_length = entries.length;
-        for (int j = 0; j < ent_length; j++) {
-          if (entries[j].getId().equals(portletEntryId)) {
-            boolean hasParam = false;
-            Parameter params[] = entries[j].getParameter();
-            int param_len = params.length;
-            for (int k = 0; k < param_len; k++) {
-              if (params[k].getName().equals(KEY_CGRP)) {
-                hasParam = true;
-                params[k].setValue(groupname);
-                entries[j].setParameter(k, params[k]);
-              }
-            }
-            if (!hasParam) {
-              param = new PsmlParameter();
-              param.setName(KEY_CGRP);
-              param.setValue(groupname);
-              entries[j].addParameter(param);
-            }
-            break;
-          }
-        }
-      }
-      profile.store();
-
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return false;
-    }
-    return true;
   }
 }

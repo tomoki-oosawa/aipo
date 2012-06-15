@@ -48,10 +48,12 @@ import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Layout;
+import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileLocator;
 import org.apache.jetspeed.om.profile.psml.PsmlLayout;
+import org.apache.jetspeed.om.profile.psml.PsmlParameter;
 import org.apache.jetspeed.om.registry.ClientEntry;
 import org.apache.jetspeed.om.registry.ClientRegistry;
 import org.apache.jetspeed.om.registry.MediaTypeEntry;
@@ -2130,5 +2132,74 @@ public class ALEipUtils {
     map.put(client, clientVer);
 
     return map.entrySet().iterator().next();
+  }
+
+  /**
+   * PSMLにデータを埋め込みます。
+   * 
+   * @param rundata
+   * @param context
+   * @param key
+   * @param value
+   * @return
+   */
+  public static boolean setPsmlParameters(RunData rundata, Context context,
+      String key, String value) {
+    try {
+      String portletEntryId =
+        rundata.getParameters().getString("js_peid", null);
+      if (value == "" || value == null) {// nullで送信するとpsmlが破壊される
+        return false;
+      }
+
+      Profile profile = ((JetspeedRunData) rundata).getProfile();
+      Portlets portlets = profile.getDocument().getPortlets();
+      if (portlets == null) {
+        return false;
+      }
+
+      Portlets[] portletList = portlets.getPortletsArray();
+      if (portletList == null) {
+        return false;
+      }
+
+      PsmlParameter param = null;
+      int length = portletList.length;
+      for (int i = 0; i < length; i++) {
+        Entry[] entries = portletList[i].getEntriesArray();
+        if (entries == null || entries.length <= 0) {
+          continue;
+        }
+
+        int ent_length = entries.length;
+        for (int j = 0; j < ent_length; j++) {
+          if (entries[j].getId().equals(portletEntryId)) {
+            boolean hasParam = false;
+            Parameter params[] = entries[j].getParameter();
+            int param_len = params.length;
+            for (int k = 0; k < param_len; k++) {
+              if (params[k].getName().equals(key)) {
+                hasParam = true;
+                params[k].setValue(value);
+                entries[j].setParameter(k, params[k]);
+              }
+            }
+            if (!hasParam) {
+              param = new PsmlParameter();
+              param.setName(key);
+              param.setValue(value);
+              entries[j].addParameter(param);
+            }
+            break;
+          }
+        }
+      }
+      profile.store();
+
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return false;
+    }
+    return true;
   }
 }

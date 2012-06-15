@@ -20,9 +20,7 @@
 package com.aimluck.eip.modules.actions.schedule;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -86,19 +84,6 @@ public class ScheduleAction extends ALBaseAction {
 
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
-
-  private static Map<String, String> tabToLayOut;
-
-  static {
-    tabToLayOut = new HashMap<String, String>();
-    tabToLayOut.put("calendar", "schedule-calendar");
-    tabToLayOut.put("oneday", "schedule-oneday");
-    tabToLayOut.put("weekly", "schedule-weekly");
-    tabToLayOut.put("monthly", "schedule-monthly");
-    tabToLayOut.put("oneday-group", "schedule-oneday-group");
-    tabToLayOut.put("weekly-group", "schedule-weekly-group");
-    tabToLayOut.put("list", "schedule-search-list");
-  }
 
   /**
    * 
@@ -178,21 +163,7 @@ public class ScheduleAction extends ALBaseAction {
       if ("simple".equals(top_form)) {
         _template = "schedule-calendar";
       } else {
-        String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
-
-        if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
-          _template =
-            portlet.getPortletConfig().getInitParameter("pba-template");
-        } else {
-          // :
-          _template = tabToLayOut.get(tmpCurrentTab);
-
-          // もしnullならmapに追加
-          // if (_template == null) {
-          // _template =
-          // portlet.getPortletConfig().getInitParameter("pba-template");
-          // }
-        }
+        _template = portlet.getPortletConfig().getInitParameter("pba-template");
       }
 
       // 現在のユーザー名を取得する
@@ -340,7 +311,9 @@ public class ScheduleAction extends ALBaseAction {
         listData.setRowsNum(20);
       }
 
+      ALEipUtils.setPsmlParameters(rundata, context, "pba-template", template);
       ALEipUtils.setTemp(rundata, context, "tab", tab);
+
       listData.initField();
 
       // 最低限表示するのに必要な権限のチェック
@@ -620,26 +593,18 @@ public class ScheduleAction extends ALBaseAction {
       String portletId = ((JetspeedRunData) rundata).getJs_peid();
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
-      if (ALEipUtils.isMatch(rundata, context)) {
-        // 現在選択されているタブ
-        // oneday : １日表示
-        // weekly : 週間表示
-        // monthly: 月間表示
-        if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata
-            .getParameters()
-            .getString("tab"));
-        }
-      }
+
       String currentTab;
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
-      String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
-        currentTab = "calendar";
-      } else {
-        currentTab = tmpCurrentTab;
-      }
+
       currentTab = ScheduleUtils.getCurrentTab(rundata, context);
+
+      if ("search".equals(currentTab)) {
+        currentTab =
+          ScheduleUtils.getTabNameFromLayout(portlet
+            .getPortletConfig()
+            .getInitParameter("pba-template"));
+      }
 
       String useragent = rundata.getUserAgent();
       if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
@@ -705,6 +670,7 @@ public class ScheduleAction extends ALBaseAction {
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
+
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
       }

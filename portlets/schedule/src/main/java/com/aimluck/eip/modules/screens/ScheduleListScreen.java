@@ -71,10 +71,17 @@ public class ScheduleListScreen extends ScheduleScreen {
         // oneday : １日表示
         // weekly : 週間表示
         // monthly: 月間表示
+
         if (rundata.getParameters().containsKey("tab")) {
-          ALEipUtils.setTemp(rundata, context, "tab", rundata
-            .getParameters()
-            .getString("tab"));
+          String tab = rundata.getParameters().getString("tab");
+          if (!"search".equals(tab)) {
+            ALEipUtils.setPsmlParameters(
+              rundata,
+              context,
+              "pba-template",
+              ScheduleUtils.getLayoutFromTabName(tab));
+          }
+          ALEipUtils.setTemp(rundata, context, "tab", tab);
         }
       }
 
