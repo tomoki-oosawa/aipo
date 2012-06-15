@@ -1474,7 +1474,8 @@ public class ScheduleUtils {
       || "weekly".equals(tab_name)
       || "monthly".equals(tab_name)
       || "oneday-group".equals(tab_name)
-      || "weekly-group".equals(tab_name) || "list".equals(tab_name));
+      || "weekly-group".equals(tab_name)
+      || "list".equals(tab_name) || "search".equals(tab_name));
   }
 
   /**
