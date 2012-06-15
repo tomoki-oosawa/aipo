@@ -1193,7 +1193,7 @@ public class MsgboardUtils {
     boolean isDeletePrev =
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
-    if (recipient != null && !loginName.equals(recipient)) {
+    if (recipient != null) {
       StringBuilder b = new StringBuilder("掲示板「");
 
       b.append(ALCommonUtils.compressString(topic.getTopicName(), 30)).append(
@@ -1211,7 +1211,7 @@ public class MsgboardUtils {
         .withTitle(b.toString())
         .withPriority(1f)
         .withExternalId(String.valueOf(topic.getTopicId())));
-    } else if (recipient == null && !loginName.equals(recipient)) {
+    } else {
       StringBuilder b = new StringBuilder("掲示板「");
 
       b.append(ALCommonUtils.compressString(topic.getTopicName(), 30)).append(
