@@ -494,8 +494,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         && (userid_int != record.getOwnerId().intValue())
         && !is_member) {
         return rd;
+      } else if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+        return rd;
       }
-
       if ("C".equals(record.getPublicFlag())
         && (userid_int != record.getUserId().intValue())
         && (userid_int != record.getOwnerId().intValue())
@@ -1142,7 +1143,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @return
    */
   public List<ALEipUser> getUsers() {
-    if (hasAclviewOther) {
+    if (hasAclviewOther || target_group_name.equals("Facility")) {
       return userList;
     } else {
       try {
@@ -1214,11 +1215,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public List<FacilityResultData> getFacilityList() {
-    if (hasAclviewOther) {
-      return facilityList;
-    } else {
-      return null;
-    }
+    return facilityList;
   }
 
   /**

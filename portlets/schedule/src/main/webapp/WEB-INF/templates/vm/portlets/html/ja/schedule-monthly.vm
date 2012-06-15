@@ -107,7 +107,7 @@
         #end
         #if(($result.Users.size() > 0) && ($result.FacilityList.size() > 0))
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
-        #end
+		#end
         #foreach($record in $!result.FacilityList)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end

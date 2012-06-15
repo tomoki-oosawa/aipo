@@ -34,6 +34,7 @@ import org.apache.jetspeed.om.profile.psml.PsmlParameter;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -53,6 +54,8 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -374,7 +377,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       /**
        * 設備が入っている場合は、他人のスケジュールを見る権限があるかをチェックする
        */
-      acl_feat = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+      // acl_feat = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     }
 
     return true;
@@ -473,8 +476,8 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       StringBuffer uids = new StringBuffer();
       String str[] = rundata.getParameters().getStrings("m_id");
 
-      // 誰も選択されなかった場合、またはアクセス権がない場合はログインユーザーをかえす
-      if (str == null || str.length == 0 || !("T".equals(has_acl_other))) {
+      // 誰も選択されなかった場合はログインユーザーをかえす
+      if (str == null || str.length == 0) {
         str = new String[] { Integer.toString(ALEipUtils.getUserId(rundata)) };
       }
 
@@ -570,6 +573,24 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     try {
       // スケジュールが棄却されている場合は表示しない
       if ("R".equals(record.getStatus())) {
+        return rd;
+      }
+
+      boolean is_member = record.isMember();
+      // アクセス権限
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      boolean hasAclviewOther =
+        aclhandler.hasAuthority(
+          userid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         return rd;
       }
 

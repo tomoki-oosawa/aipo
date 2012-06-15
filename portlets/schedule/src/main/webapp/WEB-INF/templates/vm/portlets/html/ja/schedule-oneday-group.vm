@@ -73,7 +73,6 @@
 </span>
 </a>
 </div>
-
 #if(($!{hasAcl}) && $!{hasAcl} == "T")
 	<div class="auiForm">
         <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
@@ -98,8 +97,18 @@
             #end
         </select>
 	</div>
+#elseif(($!{hasAcl}) && $!{hasAcl} == "F")
+	<div class="auiForm">
+        <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+            <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))">$!result.UserName</option>
+				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","").addQueryData("filtertype","group"))" >----------</option>
+				<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter","Facility").addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "Facility") selected="selected" #end>設備一覧</option>
+            #foreach($record in $!result.FacilitiyGroupList)
+        		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","facilitygroup"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+            #end
+        </select>
+	</div>
 #end
-
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">選択したグループには、ユーザーおよび設備が登録されていません。</div>
 #else

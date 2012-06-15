@@ -55,7 +55,7 @@
         groupSelectPreOptionValue="すべてのユーザー、グループ"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserAllLiteJSONScreen').addQueryData('mode','grouponly')">
 </div>
 

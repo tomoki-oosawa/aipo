@@ -289,7 +289,7 @@
         groupSelectPreOptionValue="すべてのグループ"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>

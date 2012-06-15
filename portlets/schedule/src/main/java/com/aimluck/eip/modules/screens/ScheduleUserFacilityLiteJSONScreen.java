@@ -19,23 +19,24 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.schedule.util.ScheduleAclUtils;
-import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- *
+ * 設備情報をJSONデータとして出力するクラスです。 <br />
+ * 
  */
 public class ScheduleUserFacilityLiteJSONScreen extends ALJSONScreen {
 
@@ -51,42 +52,56 @@ public class ScheduleUserFacilityLiteJSONScreen extends ALJSONScreen {
 
     try {
 
-      int userid = ALEipUtils.getUserId(rundata);
       String mode = rundata.getParameters().getString("mode");
       if ("group".equals(mode)) {
         String[] groupname =
           rundata.getParameters().getString("groupname").split(";");
-        List<UserFacilityLiteBean> list = null;
-        List<UserFacilityLiteBean> users =
-          new ArrayList<UserFacilityLiteBean>();
-        List<UserFacilityLiteBean> facilities =
-          new ArrayList<UserFacilityLiteBean>();
         if ("f".equals(groupname[0])) {
-          list =
-            UserFacilityUtils.getFacilityLiteBeansFromGroup(rundata, Integer
-              .valueOf(groupname[1]));
-
-        } else {
-          list =
-            UserFacilityUtils.getUserFacilityLiteBeansFromGroup(
-              rundata,
-              groupname[0]);
-        }
-        for (UserFacilityLiteBean bean : list) {
-          if ("U".equals(bean.getUserFacilityType())) {
-            users.add(bean);
+          if ("all".equals(groupname[1])) {
+            json =
+              JSONArray.fromObject(UserFacilityUtils
+                .getAllFacilityLiteBeans(rundata));
           } else {
-            facilities.add(bean);
+            json =
+              JSONArray.fromObject(UserFacilityUtils
+                .getFacilityLiteBeansFromGroup(rundata, Integer
+                  .valueOf(groupname[1])));
+          }
+        } else {
+          if ("allgroups".equals(groupname[0])) {
+            json =
+              JSONArray.fromObject(UserFacilityUtils
+                .getAllFacilityLiteBeans(rundata));
+          } else {
+
+            boolean hasAclviewOther;
+            int userid = ALEipUtils.getUserId(rundata);
+            // アクセス権限
+            ALAccessControlFactoryService aclservice =
+              (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+                .getInstance())
+                .getService(ALAccessControlFactoryService.SERVICE_NAME);
+            ALAccessControlHandler aclhandler =
+              aclservice.getAccessControlHandler();
+
+            hasAclviewOther =
+              aclhandler.hasAuthority(
+                userid,
+                ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+                ALAccessControlConstants.VALUE_ACL_LIST);
+
+            if (hasAclviewOther) {
+              json =
+                JSONArray.fromObject(UserFacilityUtils
+                  .getUserFacilityLiteBeansFromGroup(rundata, groupname[0]));
+            } else {
+              json =
+                JSONArray.fromObject(ScheduleUtils
+                  .getUserFacilityLiteBeansFromGroup(rundata, groupname[0]));
+            }
+
           }
         }
-        List<UserFacilityLiteBean> results1 =
-          ScheduleAclUtils.getAclAcceptUserFilter(users, userid, 1);
-        List<UserFacilityLiteBean> results2 =
-          ScheduleAclUtils.getAclAcceptFacilityFilter(facilities, userid, 1);
-
-        results1.addAll(results2);
-
-        json = JSONArray.fromObject(results1);
       } else {
         json = new JSONArray();
       }

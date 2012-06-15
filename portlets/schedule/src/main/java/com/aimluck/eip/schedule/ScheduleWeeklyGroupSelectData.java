@@ -272,7 +272,10 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         && (userid.intValue() != record.getOwnerId().intValue())
         && !is_member) {
         return rd;
+      } else if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+        return rd;
       }
+
       if ("C".equals(record.getPublicFlag())
         && (userid.intValue() != record.getUserId().intValue())
         && (userid.intValue() != record.getOwnerId().intValue())
@@ -384,10 +387,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     String crt_key = null;
     Attributes map = getColumnMap();
 
-    if (filter == null
-      || filter_type == null
-      || filter.equals("")
-      || !hasAclviewOther) {
+    if (filter == null || filter_type == null || filter.equals("")) {
 
       members = new ArrayList<ALEipUser>();
       members.add(ALEipUtils.getALEipUser(rundata));

@@ -88,14 +88,14 @@
             buttonRemoveId: "button_member_remove-$!portlet.ID",
             memberFromId: "tmp_member_from-$!portlet.ID" ,
             memberToId: "tmp_member_to-$!portlet.ID" ,
-            memberFromUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserFacilityLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')",
+            memberFromUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserFacilityLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')",
             memberFromOptionKey: "name",
             memberFromOptionValue: "aliasName",
             groupSelectId: "tmp_group-$!portlet.ID",
             groupSelectOptionKey: "groupId",
             groupSelectOptionValue: "name",
-            memberGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen')",
-            changeGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserFacilityLiteJSONScreen').addQueryData('mode','group')" ,
+            memberGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen')",
+            changeGroupUrl: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserFacilityLiteJSONScreen').addQueryData('mode','group')" ,
             tmpPortretId: "$!portlet.ID"
        };
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);

@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -36,6 +37,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,6 +68,9 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
+
+  /** 閲覧権限の有無 */
+  private boolean hasAclviewOther;
 
   protected String viewtype;
 
@@ -163,6 +170,17 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     Calendar cal5 = Calendar.getInstance();
     cal5.setTime(viewStart.getValue());
     con.setViewStartDate(cal5);
+
+    int loginUserId = ALEipUtils.getUserId(rundata);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    hasAclviewOther =
+      aclhandler.hasAuthority(
+        loginUserId,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
   }
 
   @Override
@@ -252,6 +270,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         rd.setName(record.getName());
         // 仮スケジュールかどうか
         rd.setTmpreserve("T".equals(record.getStatus()));
+      }
+
+      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+        return rd;
       }
       // ID
       rd.setScheduleId(record.getScheduleId().intValue());

@@ -350,8 +350,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     if (filter == null
       || filter_type == null
       || filter.equals("")
-      || tmpViewDate2 != null
-      || !hasAclviewOther) {
+      || tmpViewDate2 != null) {
 
       members = new ArrayList<ALEipUser>();
       members.add(ALEipUtils.getALEipUser(rundata));
@@ -523,6 +522,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         && (userid != record.getUserId().intValue())
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
+        return rd;
+      } else if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         return rd;
       }
       if ("C".equals(record.getPublicFlag())

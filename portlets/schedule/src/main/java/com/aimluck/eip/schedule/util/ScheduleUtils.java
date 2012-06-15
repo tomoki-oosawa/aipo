@@ -94,6 +94,8 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.user.beans.UserLiteBean;
+import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -3883,4 +3885,48 @@ public class ScheduleUtils {
     return target_keyword;
   }
 
+  /**
+   * 
+   * @param rundata
+   * @return
+   */
+  public static List<UserFacilityLiteBean> getUserFacilityLiteBeansFromGroup(
+      RunData rundata, String groupname) {
+
+    List<UserLiteBean> tmp_u_list =
+      UserUtils.getUserLiteBeansFromGroup(rundata, groupname, true);
+    int t_size = tmp_u_list.size();
+
+    List<UserFacilityLiteBean> list = new ArrayList<UserFacilityLiteBean>();
+    UserLiteBean t_user;
+    UserFacilityLiteBean user;
+    for (int i = 0; i < t_size; i++) {
+      t_user = tmp_u_list.get(i);
+      user = new UserFacilityLiteBean();
+      user.initField();
+      user.setUserFacilityId(Integer.parseInt(t_user.getUserId()));
+      user.setName(t_user.getUserId());
+      user.setAliasName(t_user.getAliasName());
+      user.setUserFacilityType("U");
+      if (user.getUserFacilityId().equals(
+        String.valueOf(ALEipUtils.getUserId(rundata)))) {
+        list.add(user);
+      }
+    }
+
+    List<EipMFacility> aList =
+      Database.query(EipMFacility.class).orderAscending(
+        EipMFacility.SORT_PROPERTY).fetchList();
+    for (EipMFacility record : aList) {
+      user = new UserFacilityLiteBean();
+      user.initField();
+      user.setUserFacilityId(record.getFacilityId().intValue());
+      user.setName("f" + user.getUserFacilityId());
+      user.setAliasName(record.getFacilityName());
+      user.setUserFacilityType("F");
+      list.add(user);
+    }
+
+    return list;
+  }
 }
