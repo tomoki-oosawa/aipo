@@ -1023,7 +1023,6 @@ public class WorkflowUtils {
       Type flowStatus) {
 
     String orgId = Database.getDomainName();
-    List<String> msgList = new ArrayList<String>();
 
     List<ALEipUserAddr> userAddressList = new ArrayList<ALEipUserAddr>();
 
