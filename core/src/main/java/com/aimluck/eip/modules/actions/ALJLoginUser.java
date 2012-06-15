@@ -69,6 +69,37 @@ public class ALJLoginUser extends ActionEvent {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
 
+      // 入力されたユーザ名を検証する．
+      ALStringField tmpname = new ALStringField();
+      tmpname.setTrim(true);
+      tmpname.setNotNull(true);
+      tmpname.setCharacterType(ALStringField.TYPE_ASCII);
+      tmpname.limitMaxLength(16);
+      tmpname.setValue(username);
+      boolean valid = tmpname.validate(new ArrayList<String>());
+
+      int length = username.length();
+      for (int i1 = 0; i1 < length; i1++) {
+        if (isSymbol(username.charAt(i1))) {
+          // 使用されているのが妥当な記号であるかの確認
+          if (!(username.charAt(i1) == "_".charAt(0)
+            || username.charAt(i1) == "-".charAt(0) || username.charAt(i1) == "."
+            .charAt(0))) {
+            valid = false;
+            break;
+          }
+        }
+      }
+      if (!valid) {
+        // username = "";
+        data.setUser(JetspeedSecurity.getAnonymousUser());
+        data.setMessage("不正なログイン情報です。");
+        // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
+        data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+
+        return;
+      }
+      // ここから
       if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
         data.setUser(JetspeedSecurity.getAnonymousUser());
         data.setMessage("このユーザーはパソコンでのみログインできます。");
@@ -135,38 +166,11 @@ public class ALJLoginUser extends ActionEvent {
           if (key != null && key.length() > 0 && key.contains("_")) {
             username = key.substring(0, key.lastIndexOf("_"));
             String base64value = key.substring(key.lastIndexOf("_") + 1);
-
-            // 入力されたユーザ名を検証する．
-            ALStringField tmpname = new ALStringField();
-            tmpname.setTrim(true);
-            tmpname.setNotNull(true);
-            tmpname.setCharacterType(ALStringField.TYPE_ASCII);
-            tmpname.limitMaxLength(16);
-            tmpname.setValue(username);
-            boolean valid = tmpname.validate(new ArrayList<String>());
-
-            int length = username.length();
-            for (int i1 = 0; i1 < length; i1++) {
-              if (isSymbol(username.charAt(i1))) {
-                // 使用されているのが妥当な記号であるかの確認
-                if (!(username.charAt(i1) == "_".charAt(0)
-                  || username.charAt(i1) == "-".charAt(0) || username
-                  .charAt(i1) == ".".charAt(0))) {
-                  valid = false;
-                  break;
-                }
-              }
-            }
-
-            if (valid) {
-              ALEipUser eipuser = ALEipUtils.getALEipUser(username);
-              if (eipuser != null) {
-                if (!(ALCellularUtils.getCheckValueForCellLogin(
-                  username,
-                  eipuser.getUserId().toString())).equals(base64value)) {
-                  username = "";
-                }
-              } else {
+            ALEipUser eipuser = ALEipUtils.getALEipUser(username);
+            if (eipuser != null) {
+              if (!(ALCellularUtils.getCheckValueForCellLogin(username, eipuser
+                .getUserId()
+                .toString())).equals(base64value)) {
                 username = "";
               }
             } else {
