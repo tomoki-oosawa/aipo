@@ -34,6 +34,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
+import com.aimluck.eip.cayenne.om.portlet.EipTMail;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -47,6 +48,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.screens.WebMailAdminFormJSONScreen;
 import com.aimluck.eip.modules.screens.WebMailAdminFormScreen;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -660,6 +662,13 @@ public class WebMailAccountFormData extends ALAbstractFormData {
 
       Database.delete(account);
       Database.commit();
+
+      // delete from database
+      String sql =
+        "DELETE FROM eip_t_mail WHERE account_id = "
+          + String.valueOf(account.getAccountId());
+      SQLTemplate<EipTMail> sqlTemplate = Database.sql(EipTMail.class, sql);
+      sqlTemplate.execute();
 
       // セッション変数を削除する
       WebMailUtils.clearWebMailAccountSession(rundata, context);
