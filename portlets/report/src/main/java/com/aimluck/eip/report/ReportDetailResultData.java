@@ -24,6 +24,8 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -94,6 +96,18 @@ public class ReportDetailResultData extends ReportResultData {
       return;
     }
     this.update_date.setValue(date);
+  }
+
+  public boolean hasPhoto() {
+    ALEipUser user =
+      ALEipManager.getInstance().getUser(
+        Integer.valueOf((int) this.user_id.getValue()));
+    if (user != null) {
+      return user.hasPhoto();
+    } else {
+      return false;
+    }
+
   }
 
 }

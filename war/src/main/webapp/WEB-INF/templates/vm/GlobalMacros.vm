@@ -80,6 +80,12 @@
   <tbody>
 #end
 
+#macro(ALtableheaderWideWithCaption $capt)
+<table class="listTable wide">
+  <caption>$capt</caption>
+  <tbody>
+#end
+
 #macro(ALtableheaderBorderWide)
 <table class="listTableBorder wide">
   <tbody>

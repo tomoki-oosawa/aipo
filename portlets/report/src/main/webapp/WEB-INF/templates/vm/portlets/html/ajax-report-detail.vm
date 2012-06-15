@@ -27,11 +27,23 @@
 #ALdialogheader("報告書詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("書き込み")##delete時メッセージ
-#ALtableheaderWide()
-#ALtdcaption('作成者')
-#ALtditem($!result.ParentReport.ClientName)
-#ALtdcaption('タイトル')
-#ALtditem($!result.ParentReport.ReportName)
+#ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
+<tr>
+<td colspan="2">
+#if(${result.ParentReport.hasPhoto()})
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" class="floatLeft mr10" />
+#else
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" class="floatLeft mr10" />
+#end
+<div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString('yyyy年M月d日H時m分')}</div>
+<div class="alignright">
+#if($result.ParentReport.isSelfReport())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#end
+</div>
+</td>
+</tr>
 #ALtdcaption('社内参加者')
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MemberList)
@@ -73,19 +85,19 @@ $!record.AliasName
 #ALbuttonfooter()
 #if($!result.CoReportList && $!result.CoReportList.size() > 0)
 ##pageview($link $result)
-#ALtableheaderWide()
-<tr>
-#ALtdheadAtt("書き込み" "style='text-align:left;'")
-</tr>
+#ALtableheaderWideWithCaption("書き込み")
 #set($firstCoReport = true)
 #foreach ($record in $result.CoReportList)
 #set($firstCoReport = false)
 <tr>
 #ALtditemheader()
-<div class="clearfix">
-<div class="alignleft">
-投稿者：$!{record.ClientName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.UpdateDate.toString('yyyy年MM月dd日HH時mm分')}
-</div>
+<div class="clearfix mb10">
+#if(${record.hasPhoto()})
+<img width="32" height="32" alt="$!{record.ClientName}" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId))" class="floatLeft mr10" />
+#else
+<img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" class="floatLeft mr10" />
+#end
+<div class="alignleft"><strong>$!{record.ClientName}</strong><br />$!{record.UpdateDate.toString('yyyy年MM月dd日HH時mm分')}</div>
 <div class="alignright">
 #if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
@@ -112,6 +124,7 @@ ${record.Note}
 #end
 #ALformfooter()
 #if($!resultOnReportDetail)
+#ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
@@ -126,17 +139,17 @@ ${record.Note}
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!resultOnReportDetail.getFieldName('note'))")
 #ALtditemheader()
-<textarea class="text wide" name="note" rows="10" cols="40">$!resultOnReportDetail.Note</textarea>
+<textarea class="text wide" name="note" rows="5" cols="40">$!resultOnReportDetail.Note</textarea>
 #ALtditemfooter()
 #ALtdcaption("添付ファイル")
 #ALtditemheader()
 <div class="floatLeft mr10">
 <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 </div>
-<ul id="attachments_$!portlet.ID" class="attachments">	
+<ul id="attachments_$!portlet.ID" class="attachments">
   #foreach($record in $!result.AttachmentFileNameList )
    <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
-  #end  
+  #end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 #ALtditemfooter()
