@@ -627,6 +627,16 @@ dojo.addOnLoad(function () {
 	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
 
     if(mpHTML){
+
+        var tmpFrom = document.getElementById("tmp_member_from-$!portlet.ID");
+    	var tmpTo = document.getElementById("tmp_member_to-$!portlet.ID");
+    	if(tmpTo != null){
+	    	tmpTo.parentNode.removeChild(tmpTo);
+	    }
+    	if(tmpFrom != null){
+	    	tmpFrom.parentNode.removeChild(tmpFrom);
+	    }
+
        params = {
             widgetId: "member_to-$!portlet.ID",
             iconURL: "themes/$!theme/images/icon/icon_member.gif",
