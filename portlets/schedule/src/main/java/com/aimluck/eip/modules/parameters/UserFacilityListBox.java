@@ -64,7 +64,7 @@ public class UserFacilityListBox extends ListBox {
     for (int i = 0; i < length; i++) {
       user = list.get(i);
       groupKeys[i + 1] = user.getUserId().getValueAsString();
-      groupValues[i + 1] = user.getAliasName().getValue();
+      groupValues[i + 1] = user.getAliasName().toString();
     }
 
     for (int j = 0; j < f_length; j++) {
@@ -72,7 +72,7 @@ public class UserFacilityListBox extends ListBox {
       groupKeys[length + 1 + j] =
         ScheduleUtils.TARGET_FACILITY_ID
           + facility.getFacilityId().getValueAsString();
-      groupValues[length + 1 + j] = facility.getFacilityName().getValue();
+      groupValues[length + 1 + j] = facility.getFacilityName().toString();
     }
 
     this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);

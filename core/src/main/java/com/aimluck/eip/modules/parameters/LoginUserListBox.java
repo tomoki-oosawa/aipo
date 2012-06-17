@@ -57,7 +57,7 @@ public class LoginUserListBox extends ListBox {
     for (int i = 0; i < length; i++) {
       user = list.get(i);
       groupKeys[i + 1] = user.getUserId().getValueAsString();
-      groupValues[i + 1] = user.getAliasName().getValue();
+      groupValues[i + 1] = user.getAliasName().toString();
     }
 
     this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
