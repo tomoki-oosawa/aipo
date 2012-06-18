@@ -748,3 +748,23 @@ table.auiRowTable td.wTitl a {
 --------------------------------------------------*/
 .mb_hide {display:none}
 .mb_dialoghide{display:none;}
+
+/***************************************************
+	mobile width (mobile only resize)
+--------------------------------------------------*/
+.mw50 {width:50%;}
+.mw49 {width:49%;}
+.mw48 {width:48%;}
+.mw47 {width:47%;}
+.mw46 {width:46%;}
+.mw45 {width:45%;}
+.mw40 {width:40%;}
+.mw35 {width:35%;}
+.mw33 {width:33.333333%;}
+.mw30 {width:30%;}
+.mw25 {width:25%;}
+.mw20 {width:20%;}
+.mw15 {width:15%;}
+.mw10 {width:10%;}
+.mw5 {width:5%;}
+
