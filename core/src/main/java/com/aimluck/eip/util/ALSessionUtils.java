@@ -41,15 +41,16 @@ public class ALSessionUtils {
 
   private static List<String> jsonScreenList;
 
+  static {
+    imageScreenList = new ArrayList<String>(5);
+    imageScreenList.add("FileuploadFacePhotoScreen");
+    imageScreenList.add("TimelineFileThumbnailScreen");
+    imageScreenList.add("TimelineUrlThumbnailScreen");
+    imageScreenList.add("BlogFileThumbnailScreen");
+    imageScreenList.add("MsgboardTopicFileThumbnailScreen");
+  };
+
   public static List<String> getImageScreenList() {
-    if (imageScreenList == null) {
-      imageScreenList = new ArrayList<String>();
-      imageScreenList.add("FileuploadFacePhotoScreen");
-      imageScreenList.add("TimelineFileThumbnailScreen");
-      imageScreenList.add("TimelineUrlThumbnailScreen");
-      imageScreenList.add("BlogFileThumbnailScreen");
-      imageScreenList.add("MsgboardTopicFileThumbnailScreen");
-    }
     return imageScreenList;
   }
 
