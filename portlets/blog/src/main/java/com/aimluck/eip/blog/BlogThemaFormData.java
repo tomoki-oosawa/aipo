@@ -319,7 +319,9 @@ public class BlogThemaFormData extends ALAbstractFormData {
     try {
       // オブジェクトモデルを取得
       EipTBlogThema thema = BlogUtils.getEipTBlogThema(rundata, context);
-      if (thema == null) {
+      if (thema == null || thema.getCreateUserId() == 0) {
+        // テーマ「未分類」は削除不可
+        msgList.add("テーマ『 <span class='em'>未分類</span> 』は削除できません。");
         return false;
       }
 
