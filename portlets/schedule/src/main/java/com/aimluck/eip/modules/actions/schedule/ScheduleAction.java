@@ -306,7 +306,7 @@ public class ScheduleAction extends ALBaseAction {
       } else {
         tab = "search";
         listData = new ScheduleSearchSelectData();
-        ((ScheduleListSelectData) listData).setPortletId(portletId);
+        ((ScheduleSearchSelectData) listData).setPortletId(portletId);
         // TODO: 表示カスタマイズ
         listData.setRowsNum(20);
       }
