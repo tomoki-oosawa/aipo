@@ -38,6 +38,7 @@
 </div>
 </div>
 
+#AUISummaryDivfooter()
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
@@ -46,10 +47,8 @@
 </p>
 </td></tr>
 #AUItablefooter()
-#AUISummaryDivfooter()
 #else
 #AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
-#AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader('申請経路')
 #AUISummaryDiv()
