@@ -42,6 +42,7 @@ public class WorkflowCategoryResultData implements ALData {
    * 
    * 
    */
+  @Override
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();

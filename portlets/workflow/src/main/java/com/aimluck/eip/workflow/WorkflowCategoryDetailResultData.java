@@ -36,7 +36,7 @@ public class WorkflowCategoryDetailResultData extends
   protected ALStringField note;
 
   /** テンプレート */
-  protected ALStringField ordertemplate;
+  protected ALStringField template;
 
   /** 登録日 */
   protected ALStringField create_date;
@@ -58,7 +58,7 @@ public class WorkflowCategoryDetailResultData extends
   public void initField() {
     super.initField();
     note = new ALStringField();
-    ordertemplate = new ALStringField();
+    template = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
     route_name = new ALStringField();
@@ -90,14 +90,14 @@ public class WorkflowCategoryDetailResultData extends
    * @return
    */
   public String getTemplate() {
-    return ALEipUtils.getMessageList(ordertemplate.getValue());
+    return ALEipUtils.getMessageList(template.getValue());
   }
 
   /**
    * @param string
    */
   public void setTemplate(String string) {
-    ordertemplate.setValue(string);
+    template.setValue(string);
   }
 
   /**
