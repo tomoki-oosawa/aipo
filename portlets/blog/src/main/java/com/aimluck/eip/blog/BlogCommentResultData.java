@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -57,10 +58,13 @@ public class BlogCommentResultData implements ALData {
   /** 更新日(DATE) */
   private ALDateTimeField update_date_alternative;
 
+  private ALEipUser owner;
+
   /**
    *
    *
    */
+  @Override
   public void initField() {
     comment_id = new ALNumberField();
     owner_id = new ALNumberField();
@@ -182,5 +186,20 @@ public class BlogCommentResultData implements ALData {
    */
   public void setUpdateDateAlternative(Date date) {
     update_date_alternative.setValue(date);
+  }
+
+  /**
+   * @return owner
+   */
+  public ALEipUser getOwner() {
+    return owner;
+  }
+
+  /**
+   * @param owner
+   *          セットする owner
+   */
+  public void setOwner(ALEipUser owner) {
+    this.owner = owner;
   }
 }

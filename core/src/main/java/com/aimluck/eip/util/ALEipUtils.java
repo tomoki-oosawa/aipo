@@ -662,6 +662,10 @@ public class ALEipUtils {
     user.setUserId(tuser.getUserId().intValue());
     user.setName(tuser.getLoginName());
     user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+    user.setHasPhoto("T".equals(tuser.getHasPhoto()));
+    user.setPhotoModified(tuser.getPhotoModified() != null ? tuser
+      .getPhotoModified()
+      .getTime() : 0);
     return user;
   }
 

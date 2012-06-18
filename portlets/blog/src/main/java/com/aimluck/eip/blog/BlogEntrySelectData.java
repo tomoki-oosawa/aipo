@@ -46,6 +46,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -369,6 +370,7 @@ public class BlogEntrySelectData extends
             .longValue());
           comment.setUpdateDate(sdf.format(blogcomment.getUpdateDate()));
           comment.setUpdateDateAlternative(blogcomment.getUpdateDate());
+          comment.setOwner(ALEipUtils.getALEipUser(blogcomment.getOwnerId()));
 
           commentList.add(comment);
         }
