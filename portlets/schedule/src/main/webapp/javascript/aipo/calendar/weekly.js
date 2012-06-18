@@ -150,8 +150,6 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 		}
 	}
-
-	aipo.calendar.populateWeeklySchedule(pid, "");
 }
 
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {

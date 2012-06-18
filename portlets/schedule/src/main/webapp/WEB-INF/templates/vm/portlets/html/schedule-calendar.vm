@@ -79,13 +79,13 @@
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1日</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4日</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7日</a>
 </li>
 </ul>
 </div>
@@ -126,6 +126,24 @@
                         		<option value="">----------</option>
                 			#end
 
+                			##施設グループ
+                        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>設備一覧</option>
+                            #foreach($record in $!result.FacilityGroupList)
+                            	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
+                            #end
+                    		<option value="">----------</option>
+							<option value="pickup" #if("pickup"==$result.SelectedGroup) selected="selected" #end>ユーザー選択</option>
+						</select>
+						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("groupname","pickup"))" />
+						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">
+
+						</div>
+					    <div id="memberfacilitylistwidget-$!portlet.ID" style="display:none"></div>
+                        <select size="10" multiple="multiple" style="display:none;" name="init_memberlist-$!portlet.ID" id="init_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
+						##データ保存時に競合したためユーザー選択の保持用に別に用意
+						<select multiple="multiple" class="hide" id="picked_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
+					#elseif(($!{hasAcl}) && $!{hasAcl} == "F")
+						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);">
                 			##施設グループ
                         	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>設備一覧</option>
                             #foreach($record in $!result.FacilityGroupList)
