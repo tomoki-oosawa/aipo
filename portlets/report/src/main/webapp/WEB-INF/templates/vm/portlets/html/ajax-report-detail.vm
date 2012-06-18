@@ -50,8 +50,6 @@
 $!record.AliasName<br />
 #end
 #ALtditemfooter()
-#ALtdcaption('作成日時')
-#ALtditem($!{result.ParentReport.UpdateDate.toString('yyyy年M月d日H時m分')})
 #ALtdcaption('日時')
 #ALtditem("$!{result.ParentReport.StartDate.toString('yyyy年M月d日H時m分')}～$!{result.ParentReport.EndDate.toString('H時m分')}")
 #ALtdcaption('内容')
@@ -77,12 +75,6 @@ $!record.AliasName
 #end
 #ALtditemfooter()
 #ALtablefooter()
-#ALbuttonheader()
-#if($result.ParentReport.isSelfReport())
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
-#end
-#ALbuttonfooter()
 #if($!result.CoReportList && $!result.CoReportList.size() > 0)
 ##pageview($link $result)
 #ALtableheaderWideWithCaption("書き込み")
