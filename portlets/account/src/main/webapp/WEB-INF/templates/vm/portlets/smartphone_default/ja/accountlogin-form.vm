@@ -33,24 +33,22 @@ function set_username(form){
 }
 
 function submit2(form) {
-  if (form.save_password.checked) {
+  if (form.save_username.checked) {
     set_cookie("username", form.username.value);
-    set_cookie("password", form.password.value);
   } else {
     remove_cookie("username");
-    remove_cookie("password");
   }
-  set_cookie("save_password", form.save_password.checked);
+  set_cookie("save_username", form.save_username.checked);
 }
 
 function init() {
   var form = document.forms[0];
-  var savePassStr = get_cookie("save_password");
-  var savePassObj = form.save_password;
-  if (savePassStr == "true") {
-    savePassObj.checked = true;
+  var saveUsernameStr = get_cookie("save_username");
+  var saveUsernameObj = form.save_username;
+  if (saveUsernameStr == "true") {
+    saveUsernameObj.checked = true;
   } else {
-    savePassObj.checked = false;
+    saveUsernameObj.checked = false;
   }
   change_login_type(form);
 }
@@ -58,7 +56,7 @@ function init() {
 function set_input_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
     }
   } else {
@@ -66,23 +64,16 @@ function set_input_value(form) {
   }
   var usernameObj = form.username;
   usernameObj.value = usernameStr;
-
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
-  }
 }
 
 function set_select_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
     }
   } else {
     usernameStr = tmpUsername;
-  }
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
   }
 }
 
@@ -145,8 +136,8 @@ $!data.Message
 <h3 class="mb5">パスワード</h3>
 <input class="text" name="password" value="" type="password" size="30" maxlength="50" style="ime-mode:disabled" />
 <br />
-<input name="save_password" type="checkbox" class="checkbox" value="save" id="save_password" />
-<label for="pass">ログイン情報を保存する</label>
+<input name="save_username" type="checkbox" class="checkbox" value="save" id="save_username" />
+<label for="pass">ユーザー名を保存する</label>
 <br />
 <p class="center">
   <input name="login_submit" class="button" type="submit" value="ログイン" />
