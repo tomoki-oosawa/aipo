@@ -277,8 +277,12 @@ public class BlogEntryLatestSelectData extends
         "\\n",
         " ").replaceAll("\\r", " "));
       rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
-      rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
-      rd.setThemaName(record.getEipTBlogThema().getThemaName());
+
+      if (record.getEipTBlogThema() != null) {
+        rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
+        rd.setThemaName(record.getEipTBlogThema().getThemaName());
+      }
+
       rd.setAllowComments("T".equals(record.getAllowComments()));
       rd.setTitleDate(record.getCreateDate());
 
