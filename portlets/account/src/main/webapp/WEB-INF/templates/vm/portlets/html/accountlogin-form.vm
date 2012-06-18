@@ -46,14 +46,12 @@ function submit2(form) {
 #if($enable_userlist)
   set_cookie("login_type", form.login_type.checked);
 #end
-  if (form.save_password.checked) {
+  if (form.save_username.checked) {
     set_cookie("username", form.username.value);
-    set_cookie("password", form.password.value);
   } else {
     remove_cookie("username");
-    remove_cookie("password");
   }
-  set_cookie("save_password", form.save_password.checked);
+  set_cookie("save_username", form.save_username.checked);
 }
 
 function init() {
@@ -61,27 +59,27 @@ function init() {
   var form = document.forms[0];
   var logintypeStr = get_cookie("login_type");
   var logintypeObj = form.login_type;
-  var savePassStr = get_cookie("save_password");
-  var savePassObj = form.save_password;
+  var saveUsernameStr = get_cookie("save_username");
+  var saveUsernameObj = form.save_username;
   if (logintypeStr == "false") {
     logintypeObj.checked = false;
   } else {
     logintypeObj.checked = true;
   }
-  if (savePassStr == "true") {
-    savePassObj.checked = true;
+  if (saveUsernameStr == "true") {
+    saveUsernameObj.checked = true;
   } else {
-    savePassObj.checked = false;
+    saveUsernameObj.checked = false;
   }
   change_login_type(form, logintypeObj);
 #else
   var form = document.forms[0];
-  var savePassStr = get_cookie("save_password");
-  var savePassObj = form.save_password;
-  if (savePassStr == "true") {
-    savePassObj.checked = true;
+  var saveUsernameStr = get_cookie("save_username");
+  var saveUsernameObj = form.save_username;
+  if (saveUsernameStr == "true") {
+    saveUsernameObj.checked = true;
   } else {
-    savePassObj.checked = false;
+    saveUsernameObj.checked = false;
   }
   change_login_type(form);
 #end
@@ -90,7 +88,7 @@ function init() {
 function set_input_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
   	}
   } else {
@@ -114,18 +112,16 @@ function set_input_value(form) {
   }
 #end
 
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
-    if(form.password.value!=''){
-  	  form.password.nextSibling.style.display = "none";
-  	}
+ form.member_username.value = usernameStr;
+  if(form.member_username.value!=''){
+    form.member_username.nextSibling.style.display = "none";
   }
 }
 
 function set_select_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
   	}
   } else {
@@ -140,10 +136,10 @@ function set_select_value(form) {
     }
   }
 #end
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
-    if(form.password.value!=''){
-  	  form.password.nextSibling.style.display = "none";
+  if (form.save_username.checked) {
+    form.username.value = get_cookie("username");
+    if(form.username.value!=''){
+  	  form.username.nextSibling.style.display = "none";
   	}
   }
 }
@@ -281,7 +277,7 @@ $!data.Message
 <p>
 <input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ログイン情報を保存する</label></p>
+<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ユーザー名を保存する</label></p>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
