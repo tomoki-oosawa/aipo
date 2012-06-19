@@ -2376,6 +2376,9 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 	padding:0!important;
 	text-decoration:none;
 }
+/***************************************************
+	menubar
+--------------------------------------------------*/
 .menubar {
 	position:absolute;
 	padding:0;
@@ -2441,6 +2444,31 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 .menubar ul li a.selected {
 	background:#f0f0f0;
 }
+/* menubar.multi **********/
+.menubar.multi > div {
+	width:120px;
+	float:left;
+	margin:5px;
+	overflow:hidden;
+}
+.menubar.multi .caption {
+	color:#999999;
+	font-weight:bold;
+	margin:0;
+	padding:4px 8px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.menubar.multi ul li {
+	border-top:none;
+}
+.menubar.multi ul li a {
+	border-radius:3px;
+	-ms-border-radius:3px;
+}
+
+
 
 .controllerTable td img {
 	border:2px solid #FFF;

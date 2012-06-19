@@ -1112,14 +1112,15 @@ button:active {
 .auiButton span {
 	display:table-cell;
 	>display:block;
-	/*
-	height:1.85em;
-	line-height:1.85em;
-	*/
 	height:26px;
 	line-height:26px;
 	text-align:center;
 	vertical-align:middle;
+}
+*:first-child+html .auiButton span,
+*:first-child+html .auiButtonSmall span {
+	padding-top:4px;
+	height:22px;
 }
 .auiButtonSmall span {
 	display:table-cell;
@@ -1226,7 +1227,7 @@ button[disabled]:hover {
 	position:relative;
 }
 .auiSearch input.text {
-	width:20em;
+/*	width:20em;*/
 }
 .auiSearch input.date {
 	width:7em;
@@ -2056,6 +2057,85 @@ tr.disabled th, tr.disabled td {
 }
 tr.disabled a {
 	color:#666666;
+}
+
+/***************************************************
+	auiFilter
+--------------------------------------------------*/
+.auiFilter {
+	position:relative;
+}
+.auiFilter form {
+	width:100%;
+}
+.auiFilter .auiButton {
+	float:left;
+	width:16px;
+}
+.filters {
+	padding-left:40px;
+	color:#999;
+	line-height:28px;
+}
+.filterTip {
+	position:relative;
+	display:inline-block;
+	background:#e0e0e0;
+	color:#000;
+	margin:2px 2px 2px 0;
+	padding:0 22px 0 5px;
+	border-radius:3px;
+	-ms-border-radius:3px;
+	-webkit-transition: 0.3s ease-in-out;
+	height:24px !important;
+	overflow:hidden;
+}
+.filterTip > span {
+	display:inline-block;
+	max-width:16em;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	line-height:24px !important;
+}
+.filterTip > a {
+	position:absolute;
+	margin:4px 0 0 3px;
+}
+.auiFilter .menubar.multi {
+	left:0;
+	top:30px;
+}
+
+.filterInputField {
+	position:relative;
+	max-width:500px;
+}
+.filterInputField .menubar.multi {
+	left:auto;
+	right:0;
+}
+.filterInputField .filters {
+	position:absolute;
+	padding:0 2px;
+	height:28px;
+	overflow:hidden;
+	white-space:normal;
+}
+.filterDropDrawer {
+	position:absolute;
+	display:block;
+	right:0;
+	width:20px;
+	height:28px;
+	vertical-align:middle;
+}
+.filterDropDrawer i {
+	margin-top:6px;
+}
+.filterInputField input[type=text] {
+	width:100%;
+	padding-right:20px;
 }
 
 /***************************************************
