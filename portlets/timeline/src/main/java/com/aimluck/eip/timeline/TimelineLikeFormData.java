@@ -167,7 +167,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTimelineId(),
-        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
+        ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         parent.getNote());
 
     } catch (Exception e) {
