@@ -19,7 +19,7 @@
 
 #set($schedulescreen = "ScheduleListScreen")
 
-#AUIcontentsAreaHeader()
+<div id="auiContentsArea" #if($clientVer && $clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 #ALspacebothheader()
 
 

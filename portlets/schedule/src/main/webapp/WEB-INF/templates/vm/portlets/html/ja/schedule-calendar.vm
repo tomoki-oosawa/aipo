@@ -49,7 +49,7 @@
 <div class="clearfix">
 <div class="auiSelectButton">
 <ul>
-#if($!top_form=='simple'&&${client} == "IPAD")
+#if($!top_form && $!top_form=='simple'&&${client} == "IPAD")
 <li style="width:3em;margin-right:3px;" title="今日へ">
 #else
 <li style="width:4em;margin-right:3px;" title="今日へ">
@@ -68,14 +68,14 @@
 <li style="margin-right:3px;" title="次の週へ">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
 </li>
-#if($!top_form=='simple')
+#if($!top_form && $!top_form=='simple')
 <li style="width: 3em;" title="$!{dayList}日">
 <a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}日</span></a>
 </li>
 #end
 </ul>
 </div>
-#if($!top_form=='simple')
+#if($!top_form && $!top_form=='simple')
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
@@ -90,7 +90,7 @@
 </ul>
 </div>
 #end
-#if($!top_form=='simple')</div>#end
+#if($!top_form && $!top_form=='simple')</div>#end
 <div style="height:30px; line-height:24px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
 </div>
 #if(!$!top_form || $!top_form!='simple')</div>#end
@@ -172,31 +172,31 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div id="weeklyHeadRights-$!portlet.ID" class='weeklyHeadRights'>
-                              <div id="weeklyHeadRightborder-$!portlet.ID" class='weeklyHeadRight#if($!top_form=='simple')R#end' style="left: 0%;#if($!top_form=='simple')width: 100%;#end border-right: block;">
+                              <div id="weeklyHeadRightborder-$!portlet.ID" class='weeklyHeadRight#if($!top_form && $!top_form == 'simple')R#end' style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end border-right: block;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday0-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRight' style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRight' style="left: 14.2857%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay1-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday1-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRight' style="left: 28.5714%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRight' style="left: 28.5714%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay2-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday2-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRight' style="left: 42.8571%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRight' style="left: 42.8571%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay3-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday3-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRight' style="left: 57.1429%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRight' style="left: 57.1429%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay4-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday4-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRight' style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRight' style="left: 71.4286%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay5-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday5-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightR' style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyHeadRightR' style="left: 85.7143%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay6-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday6-$!portlet.ID">&nbsp;</div>
                               </div>
@@ -216,31 +216,31 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div id='weeklyTermRights-$!portlet.ID' class='weeklyTermRights'>
-                              <div class='weeklyTermRight weeklyTermRightL#if($!top_form=='simple') weeklyTermRightR#end' id='termDay0-$!portlet.ID' style="left: 0%;#if($!top_form=='simple')width: 100%;#end border-right: block;">
+                              <div class='weeklyTermRight weeklyTermRightL#if($!top_form && $!top_form=='simple') weeklyTermRightR#end' id='termDay0-$!portlet.ID' style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end border-right: block;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight' id='termDay2-$!portlet.ID' style="left: 28.5714%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight' id='termDay2-$!portlet.ID' style="left: 28.5714%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight' id='termDay3-$!portlet.ID' style="left: 42.8571%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight' id='termDay3-$!portlet.ID' style="left: 42.8571%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight' id='termDay4-$!portlet.ID' style="left: 57.1429%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight' id='termDay4-$!portlet.ID' style="left: 57.1429%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight' id='termDay5-$!portlet.ID' style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight' id='termDay5-$!portlet.ID' style="left: 71.4286%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyTermRight weeklyTermRightR' id='termDay6-$!portlet.ID' style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end">
+                              <div class='weeklyTermRight weeklyTermRightR' id='termDay6-$!portlet.ID' style="left: 85.7143%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div id="termScheduleDivAdd_$!portlet.ID" class="termScheduleDivAdd" style="left: 0%; z-index: 1;">&nbsp;</div>
                             </div>
                           </td>
-                          #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
+                          #if(${client} == "IPAD" && $!top_form == 'simple'||(${isMac} && ${isMac} == 1))
 							#else
 						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
@@ -313,7 +313,7 @@
                             </td>
                             <td width="100%">
                               <div id='weeklyRights-$!portlet.ID' class='weeklyRights'>
-                                <div class="weeklyRight" style="left: 0%;#if($!top_form=='simple')width: 100%;#end" id="weeklyRight0-$!portlet.ID">
+                                <div class="weeklyRight" style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end" id="weeklyRight0-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -363,7 +363,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRight" style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight1-$!portlet.ID">
+                                <div class="weeklyRight" style="left: 14.2857%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight1-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -413,7 +413,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRight" style="left: 28.5714%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight2-$!portlet.ID">
+                                <div class="weeklyRight" style="left: 28.5714%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight2-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -463,7 +463,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRight" style="left: 42.8571%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight3-$!portlet.ID">
+                                <div class="weeklyRight" style="left: 42.8571%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight3-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -513,7 +513,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRight" style="left:57.1429%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight4-$!portlet.ID">
+                                <div class="weeklyRight" style="left:57.1429%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight4-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -563,7 +563,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRight" style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight5-$!portlet.ID">
+                                <div class="weeklyRight" style="left: 71.4286%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight5-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -613,7 +613,7 @@
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
-                                <div class="weeklyRightR" style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight6-$!portlet.ID">
+                                <div class="weeklyRightR" style="left: 85.7143%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end" id="weeklyRight6-$!portlet.ID">
                                   <div class="rightMinute">&nbsp;</div>
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                   <div class="rightMinute">&nbsp;</div>
@@ -664,13 +664,13 @@
                                   <div class="rightMinuteBottom">&nbsp;</div>
                                 </div>
 
-                                <div id="scheduleDivAdd00_$!portlet.ID" class="scheduleDivAdd" style="left: 0%;#if($!top_form=='simple')width: 100%;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd02_$!portlet.ID" class="scheduleDivAdd" style="left: 28.5714%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd03_$!portlet.ID" class="scheduleDivAdd" style="left: 42.8571%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd04_$!portlet.ID" class="scheduleDivAdd" style="left: 57.1429%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
-                                <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;#if($!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd00_$!portlet.ID" class="scheduleDivAdd" style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd01_$!portlet.ID" class="scheduleDivAdd" style="left: 14.2857%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd02_$!portlet.ID" class="scheduleDivAdd" style="left: 28.5714%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd03_$!portlet.ID" class="scheduleDivAdd" style="left: 42.8571%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd04_$!portlet.ID" class="scheduleDivAdd" style="left: 57.1429%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd05_$!portlet.ID" class="scheduleDivAdd" style="left: 71.4286%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
+                                <div id="scheduleDivAdd06_$!portlet.ID" class="scheduleDivAdd" style="left: 85.7143%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">&nbsp;</div>
 
 
                                 <div id="scheduleGarage-$!portlet.ID" class="scheduleGarage">&nbsp;</div>

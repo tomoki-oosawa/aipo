@@ -122,9 +122,9 @@ $!{result.Detail.Date2}
 </div>
 
 <div>
-#if($!{result.Detail.MailFlag} == "A")
+#if($!{result.Detail.MailFlag} && $!{result.Detail.MailFlag} == "A")
 参加ユーザーにメール通知をおこないます。
-#elseif($!{result.Detail.MailFlag} == "I")
+#elseif($!{result.Detail.MailFlag} && $!{result.Detail.MailFlag} == "I")
 更新時は参加ユーザーにメール通知をおこないません。
 #else
 参加ユーザーにメール通知をおこないません。
