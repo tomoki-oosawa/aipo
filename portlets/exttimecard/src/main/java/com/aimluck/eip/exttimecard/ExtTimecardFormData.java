@@ -304,10 +304,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         && !"punchout".equals(edit_mode)
         && !"outgoing".equals(edit_mode)
         && !"comeback".equals(edit_mode)) {
-        if ((old_clock_in_time_hour != clock_in_time.getHour())
-          || (old_clock_in_time_minute != clock_in_time.getMinute())
-          || (old_clock_out_time_hour != clock_out_time.getHour())
-          || (old_clock_out_time_minute != clock_out_time.getMinute())) {
+        if (!old_clock_in_time_hour.equals(clock_in_time.getHour())
+          || !old_clock_in_time_minute.equals(clock_in_time.getMinute())
+          || !old_clock_out_time_hour.equals(clock_out_time.getHour())
+          || !old_clock_out_time_minute.equals(clock_out_time.getMinute())) {
           if (Calendar.getInstance().getTime().after(punch_date.getValue())) {
             reason.setNotNull(true);
             reason.validate(msgList);
@@ -316,7 +316,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         }
       }
 
-      if (getMode() == ALEipConstants.MODE_INSERT) {
+      if (getMode().equals(ALEipConstants.MODE_INSERT)) {
         SelectQuery<EipTExtTimecard> workflg_query =
           Database.query(EipTExtTimecard.class);
         Expression workflg_exp =
