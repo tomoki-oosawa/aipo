@@ -44,7 +44,7 @@
 </div>
 <div class="auiSummaryMeta">
 <div class="auiForm">
-<select name="target_group_name_list" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:16em">
+<select name="target_group_name_list" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="mw49">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
@@ -56,7 +56,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
 #end
 </select>
-<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:16em">
+<select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="mw49">
 #foreach($record in $!result.Users)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
 #end
