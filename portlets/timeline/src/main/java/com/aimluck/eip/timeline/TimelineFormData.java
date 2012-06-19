@@ -222,6 +222,12 @@ public class TimelineFormData extends ALAbstractFormData {
           parent.setUpdateDate(tCal.getTime());
         } else if (parent.getTimelineType().equals(
           EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {
+          parent.setUpdateDate(tCal.getTime());
+          if (parent.getParentId().intValue() != 0) {
+            EipTTimeline grandpa =
+              Database.get(EipTTimeline.class, parent.getParentId());
+            grandpa.setUpdateDate(tCal.getTime());
+          }
         }
 
       } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
