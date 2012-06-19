@@ -35,12 +35,13 @@ import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
- * 伝言メモの一覧を処理するクラスです。
+ * カスタマイズの一覧を処理するクラスです。
  * 
  */
 public class CustomizeFormScreen extends ALVelocityScreen {
@@ -73,11 +74,24 @@ public class CustomizeFormScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
-      ALEipUtils.CheckAclPermissionForCustomize(
+      if (!ALEipUtils.getHasAuthority(
         rundata,
         context,
-        ALAccessControlConstants.VALUE_ACL_INSERT);
-
+        ALAccessControlConstants.VALUE_ACL_UPDATE)
+        && !ALEipUtils.getHasAuthority(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_INSERT)) {
+        throw new ALPermissionException();
+      }
+      if (ALEipUtils.getHasAuthority(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT)) {
+        context.put("insert", 1);
+      } else {
+        context.put("insert", 0);
+      }
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       Profile profile = jdata.getProfile();
       String mediaType = profile.getMediaType();
@@ -137,8 +151,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
       String layout_template = "portlets/html/ja/ajax-customize-form.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[NoteScreen] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
+      ALEipUtils.redirectPermissionError(rundata);
     }
   }
 

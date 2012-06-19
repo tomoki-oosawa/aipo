@@ -84,7 +84,8 @@
 ###if($portletsSelected.containsKey($portlet.Name))
 ##<input type="checkbox" name="pname" value="$portlet.Name" checked="checked"/>
 ###else
-<input type="checkbox" name="pname" value="$portlet.Name"/>
+
+<input type="checkbox" name="pname"  value="$portlet.Name" #if ($insert == 0) disabled="disabled" #end/>
 ###end
 #ALtdcellfooter()
 #ALtdcellAtt("$portletCount" 'align="center"')

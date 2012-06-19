@@ -98,6 +98,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
   /** Add new portlets in the customized set */
   public void doAdd(RunData rundata, Context context) throws Exception {
+
     maintainUserSelections(rundata);
     Map<String, PortletEntry> userSelections =
       CustomizeUtils.getUserSelections(rundata);
@@ -140,32 +141,38 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
         }
 
         // add only new portlets!
-        if ((entry != null) && (portlets != null)) {
-          addIt = true;
-          if (addIt) {
-            Entry p = new PsmlEntry();
-            p.setParent(isGadgets ? "GadgetsTemplate" : pnames[i]);
-            p.setId(JetspeedIdGenerator.getNextPeid());
+        // アクセス権限のチェック
+        if (ALEipUtils.getHasAuthority(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_INSERT)) {
+          if ((entry != null) && (portlets != null)) {
+            addIt = true;
+            if (addIt) {
+              Entry p = new PsmlEntry();
+              p.setParent(isGadgets ? "GadgetsTemplate" : pnames[i]);
+              p.setId(JetspeedIdGenerator.getNextPeid());
 
-            if (isGadgets) {
-              p.setTitle(app.getTitle().getValue());
-              Parameter p1 = new PsmlParameter();
-              p1.setName("aid");
-              p1.setValue(app.getAppId().getValue());
-              p.addParameter(p1);
-              Parameter p2 = new PsmlParameter();
-              p2.setName("url");
-              p2.setValue(app.getUrl().getValue());
-              p.addParameter(p2);
-              Parameter p3 = new PsmlParameter();
-              p3.setName("mid");
-              String moduleId =
-                String.valueOf(ALApplicationService.getNextModuleId());
-              p3.setValue(moduleId);
-              p.addParameter(p3);
-              p.setId(moduleId);
+              if (isGadgets) {
+                p.setTitle(app.getTitle().getValue());
+                Parameter p1 = new PsmlParameter();
+                p1.setName("aid");
+                p1.setValue(app.getAppId().getValue());
+                p.addParameter(p1);
+                Parameter p2 = new PsmlParameter();
+                p2.setName("url");
+                p2.setValue(app.getUrl().getValue());
+                p.addParameter(p2);
+                Parameter p3 = new PsmlParameter();
+                p3.setName("mid");
+                String moduleId =
+                  String.valueOf(ALApplicationService.getNextModuleId());
+                p3.setValue(moduleId);
+                p.addParameter(p3);
+                p.setId(moduleId);
+              }
+              portlets.addEntry(p);
             }
-            portlets.addEntry(p);
           }
         }
       }
