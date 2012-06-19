@@ -24,11 +24,4 @@ public class EipMFacilityGroupMap extends _EipMFacilityGroupMap {
       .valueOf(id)));
   }
 
-  @Override
-  public boolean equals(Object _obj) {
-    EipMFacilityGroupMap obj = (EipMFacilityGroupMap) _obj;
-    return (this.getFacilityId().equals(obj.getFacilityId()) && this
-      .getGroupId()
-      .equals(obj.getGroupId())) ? true : false;
-  }
 }
