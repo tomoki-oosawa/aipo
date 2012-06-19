@@ -32,7 +32,7 @@
 <meta name="copyright" content="${copyright}" />
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
 <meta name="robots" content="noindex,follow" />
-#if(${client}=="IPHONE")
+#if("${client}" == "IPHONE")
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no">
 	<meta name="format-detection" content="telephone=no">
 #end
@@ -41,12 +41,12 @@
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/extend.css?$!{utils.CacheBust}" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/common.css?$!{utils.CacheBust}" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/aui.css?$!{utils.CacheBust}" media="screen,tv,print" />
-#if(${client}=="IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile.css?$!{utils.CacheBust}" media="screen,tv,print"/>#end
+#if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile.css?$!{utils.CacheBust}" media="screen,tv,print"/>#end
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body onload="aipo.container.renderGadgets()">
-#if($isXDomain == "true")
+#if("$isXDomain" == "true")
 <script type="text/javascript">
   djConfig = {
     xDomainBasePath: '$!{external_resources_url}/javascript',
@@ -79,7 +79,7 @@
 <div id="wrapper"  style="margin-bottom : 26px">
 #end
 
-##if("$!{client}"!="IPHONE")
+##if("$!{client}" != "IPHONE")
 $!jnavigation.setTemplate($config.getString("topnav.vm"))
 ##end
 $screen_placeholder
