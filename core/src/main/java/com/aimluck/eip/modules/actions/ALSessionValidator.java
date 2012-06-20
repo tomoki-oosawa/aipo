@@ -66,6 +66,7 @@ import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.util.ALSessionUtils;
 
 /**
@@ -187,6 +188,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
+
+    context.put("l10n", ALLocalizationUtils.createLocalization(data));
 
     // Cookie無効エラーを検知している場合、ログインさせない
     if (!isLogin(loginuser)

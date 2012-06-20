@@ -44,6 +44,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
@@ -223,7 +224,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       ALEipConstants.ENTITY_ID));
     context.put("config", new JetspeedResources());
     context.put("utils", new ALCommonUtils());
-
+    context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
