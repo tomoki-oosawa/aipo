@@ -459,7 +459,7 @@ public class TimelineSelectData extends
 
   protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
     if (parentIds == null || parentIds.size() == 0) {
-      return new HashMap<Integer, List<FileuploadBean>>(parentIds.size());
+      return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =
       Database.query(EipTTimelineFile.class);
