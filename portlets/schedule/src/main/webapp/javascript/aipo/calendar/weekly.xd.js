@@ -194,9 +194,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     ptConfig[_portletId].reloadFunction = aipo.calendar.populateWeeklySchedule;
 
     ptConfig[_portletId].isTooltipEnable = false;
-    if(aipo.calendar.dummyDivObj){
-         aipo.calendar.dummyDivObj.destroy();
-         aipo.calendar.dummyDivObj = null;
+    if(aipo.calendar.dummyDivObj[_portletId]){
+         aipo.calendar.dummyDivObj[_portletId].destroy();
+         aipo.calendar.dummyDivObj[_portletId] = null;
     }
 
     if(dojo.byId('groupselect-' + _portletId).value =="pickup"){
@@ -1248,7 +1248,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
     },
     onMouseDown: function(e){
         ptConfig[this.portletId].isTooltipEnable = false;
-        if(!!aipo.calendar.dummyDivObj && !!aipo.calendar.dummyDivObj.TooltipObject)aipo.calendar.dummyDivObj.TooltipObject.close();
+        if(!!aipo.calendar.dummyDivObj[_portletId] && !!aipo.calendar.dummyDivObj[_portletId].TooltipObject)aipo.calendar.dummyDivObj[_portletId].TooltipObject.close();
         aimluck.dnd.Draggable.prototype.onMouseDown.apply(this, arguments);
     },
     onScheduleClick: function(e) {
@@ -1272,16 +1272,16 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
         dojo.marginBox (ttdiv,dojo._getMarginBox(this.node,{ l: left, t: top, w: width, h: height }));
         ttdiv.style.zIndex = this.node.style.zIndex ;
         ttdiv.style.height = (parseInt(height) - 6) + "px";
-        if(!aipo.calendar.dummyDivObj){
-            aipo.calendar.dummyDivObj = new aipo.calendar.DummyDivObject(ttdiv , {pid: this.scheduleObjId , node: this.node});
+        if(!aipo.calendar.dummyDivObj[_portletId]){
+            aipo.calendar.dummyDivObj[_portletId] = new aipo.calendar.DummyDivObject(ttdiv , {pid: this.scheduleObjId , node: this.node});
         }else{
-            aipo.calendar.dummyDivObj.parentnode = this.node;
+            aipo.calendar.dummyDivObj[_portletId].parentnode = this.node;
         }
-        aipo.calendar.dummyDivObj.draggable = this;
+        aipo.calendar.dummyDivObj[_portletId].draggable = this;
 
-        if(aipo.calendar.dummyDivObj.TooltipObject){
-            aipo.calendar.dummyDivObj.TooltipObject.destroyRecursive();
-            aipo.calendar.dummyDivObj.TooltipObject = null;
+        if(aipo.calendar.dummyDivObj[_portletId].TooltipObject){
+            aipo.calendar.dummyDivObj[_portletId].TooltipObject.destroyRecursive();
+            aipo.calendar.dummyDivObj[_portletId].TooltipObject = null;
         }
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
@@ -1291,7 +1291,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
     setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
-        aipo.calendar.dummyDivObj.TooltipObject = new aipo.widget.ToolTip({
+        aipo.calendar.dummyDivObj[_portletId].TooltipObject = new aipo.widget.ToolTip({
             label: "<div class='indicator'>読み込み中...</div>",
             connectId: ["dummy_div_" + this.portletId]
         }, this.portletId, function(containerNode, node){
@@ -1533,7 +1533,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
     },
     onScheduleOver: function(e) {
         if(ptConfig[this.portletId].isTooltipEnable == false){return;}
-        /*
         var ttdiv = dojo.byId("dummy_div_" + this.portletId);
         var left =  dojo.getComputedStyle(this.node).left ;
         var top =  dojo.getComputedStyle(this.node).top;
@@ -1542,13 +1541,12 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
         dojo.marginBox (ttdiv,dojo._getMarginBox(this.node,{ l: left, t: top, w: width, h: height }));
         ttdiv.style.zIndex = this.node.style.zIndex ;
 
-        if(!aipo.calendar.dummyDivObj){
-            aipo.calendar.dummyDivObj = new aipo.calendar.DummyDivObject(ttdiv , {pid: this.portletId , node: this.node});
+        if(!aipo.calendar.dummyDivObj[_portletId]){
+            aipo.calendar.dummyDivObj[_portletId] = new aipo.calendar.DummyDivObject(ttdiv , {pid: this.portletId , node: this.node});
         }else{
-            aipo.calendar.dummyDivObj.parentnode = this.node;
+            aipo.calendar.dummyDivObj[_portletId].parentnode = this.node;
         }
-        aipo.calendar.dummyDivObj.draggable = this;
-        */
+        aipo.calendar.dummyDivObj[_portletId].draggable = this;
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
           this.setupTooltip();
