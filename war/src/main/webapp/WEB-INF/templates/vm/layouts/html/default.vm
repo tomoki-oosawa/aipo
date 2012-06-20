@@ -91,12 +91,18 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 <!-- /WRAPPER -->
 <div id="modalDialog" class="modalDialog" style="display:none"></div>
 <div id="imageDialog" class="modalDialog imageDialog" style="display:none"></div>
+#ALjavascript("javascript/aipo/tutorial/tutorial.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
 dojo.require("aimluck.widget.Dialog");
 
 dojo.addOnLoad(function() {
+
+    #if (!${tutorialForbid} && $data.User.hasLoggedIn())
+    aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
+    #end
+
     var params = {
         widgetId:'modalDialog'
     };
@@ -137,6 +143,8 @@ scheduleTooltipEnable = false;
 dojo.require("dojo.dnd.Source");
 
 dojo.addOnLoad(function() {
+
+
     dojo.query('.customizeMenuIcon').forEach(function(element) {
         dojo.connect(element, 'onmouseenter', null, function(){
             dojo.addClass(this, 'customizeMenuIconMouseenter');
@@ -249,6 +257,7 @@ dojo.addOnLoad(function() {
 
 //]]>
 </script>
+
 <iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
 #ALjavascript("javascript/aipo/common.js")
 </body>
