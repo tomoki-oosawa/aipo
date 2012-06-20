@@ -600,15 +600,17 @@ public class ExtTimecardSummaryListSelectData extends
    */
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
-    if ((target_group_name != null)
-      && (!target_group_name.equals(""))
-      && (!target_group_name.equals("all"))
-      && (!target_group_name.equals("only"))) {
-      userList = ALEipUtils.getUsers(target_group_name);
-    } else if (target_group_name.equals("all")
-      || target_group_name.equals("only")) {
-
-      userList = getUserList(Integer.parseInt(userid));
+    if (target_group_name != null) {
+      if ((!target_group_name.equals(""))
+        && (!target_group_name.equals("all"))
+        && (!target_group_name.equals("only"))) {
+        userList = ALEipUtils.getUsers(target_group_name);
+      } else if (target_group_name.equals("all")
+        || target_group_name.equals("only")) {
+        userList = getUserList(Integer.parseInt(userid));
+      } else {
+        userList = ALEipUtils.getUsers("LoginUser");
+      }
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
@@ -1061,14 +1063,17 @@ public class ExtTimecardSummaryListSelectData extends
    */
   public void setuserList(String target_group_name) {
     this.target_group_name = target_group_name;
-    if ((this.target_group_name != null)
-      && (!this.target_group_name.equals(""))
-      && (!this.target_group_name.equals("all"))
-      && (!this.target_group_name.equals("only"))) {
-      userList = ALEipUtils.getUsers(target_group_name);
-    } else if (this.target_group_name.equals("all")
-      || this.target_group_name.equals("only")) {
-      userList = getUserList(Integer.parseInt(userid));
+    if (this.target_group_name != null) {
+      if ((!this.target_group_name.equals(""))
+        && (!this.target_group_name.equals("all"))
+        && (!this.target_group_name.equals("only"))) {
+        userList = ALEipUtils.getUsers(target_group_name);
+      } else if (this.target_group_name.equals("all")
+        || this.target_group_name.equals("only")) {
+        userList = getUserList(Integer.parseInt(userid));
+      } else {
+        userList = ALEipUtils.getUsers("LoginUser");
+      }
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
