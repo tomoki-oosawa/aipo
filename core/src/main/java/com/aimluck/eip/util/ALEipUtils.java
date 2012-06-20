@@ -2152,7 +2152,7 @@ public class ALEipUtils {
     try {
       String portletEntryId =
         rundata.getParameters().getString("js_peid", null);
-      if (value == "" || value == null) {// nullで送信するとpsmlが破壊される
+      if (value.equals("") || value == null) {// nullで送信するとpsmlが破壊される
         return false;
       }
 
