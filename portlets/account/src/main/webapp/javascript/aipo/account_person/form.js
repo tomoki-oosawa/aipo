@@ -74,3 +74,7 @@ aipo.account_person.hideDialog = function() {
     aipo.portletReload('account_person');
 };
 
+aipo.account_person.setDeletePhotoValue = function(pid) {
+    var obj = dojo.byId("delete_photo_" + pid);
+    obj.value = true;
+};

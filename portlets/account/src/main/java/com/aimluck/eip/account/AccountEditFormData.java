@@ -137,6 +137,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** パスワード変更の可否．変更する場合は，false． */
   private boolean dontUpdatePasswd = false;
 
+  /** 登録済顔写真削除 */
+  private boolean delete_photo = false;
+
   /**
    * 初期化処理を行います。 <BR>
    * 
@@ -158,6 +161,7 @@ public class AccountEditFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     orgId = Database.getDomainName();
+    delete_photo = rundata.getParameters().getBoolean("delete_photo", false);
   }
 
   /**
@@ -497,6 +501,9 @@ public class AccountEditFormData extends ALAbstractFormData {
         filebean.setFileId(0);
         filebean.setFileName("以前の写真ファイル");
         filebean.setUserId(Integer.parseInt(user.getUserId()));
+        filebean.setPhotoModified(String.valueOf(user
+          .getPhotoModified()
+          .getTime()));
       }
 
       new_password.setValue(DEFAULT_VIEW_PASSWORD);
@@ -607,7 +614,7 @@ public class AccountEditFormData extends ALAbstractFormData {
           user.setHasPhoto(true);
           user.setPhotoModified(new Date());
         }
-      } else {
+      } else if (delete_photo) {
         user.setPhoto(null);
         user.setHasPhoto(false);
       }

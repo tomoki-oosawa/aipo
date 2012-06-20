@@ -41,6 +41,9 @@ public class FileuploadLiteBean implements ALData, Cloneable {
   /** ユーザーID */
   private ALNumberField user_id;
 
+  /** 顔写真の更新日時 */
+  private ALStringField photo_modified;
+
   /** 新規にアップロードされたファイルかどうか */
   private boolean is_new_file = true;
 
@@ -54,6 +57,7 @@ public class FileuploadLiteBean implements ALData, Cloneable {
     file_id = new ALNumberField();
     file_name = new ALStringField();
     user_id = new ALNumberField();
+    photo_modified = new ALStringField();
   }
 
   /**
@@ -86,6 +90,14 @@ public class FileuploadLiteBean implements ALData, Cloneable {
    */
   public void setUserId(int i) {
     user_id.setValue(i);
+  }
+
+  /**
+   * 
+   * @param string
+   */
+  public void setPhotoModified(String string) {
+    photo_modified.setValue(string);
   }
 
   /**
@@ -126,6 +138,14 @@ public class FileuploadLiteBean implements ALData, Cloneable {
    */
   public int getUserId() {
     return (int) user_id.getValue();
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public String getPhotoModified() {
+    return photo_modified.getValue();
   }
 
   public String getFileNameEscape() {

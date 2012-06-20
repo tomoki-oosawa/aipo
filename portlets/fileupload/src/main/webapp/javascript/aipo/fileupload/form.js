@@ -100,4 +100,9 @@ aipo.fileupload.onLoadImage=function(image){
 	dojo.query("#imageDialog").removeClass("preLoadImage");
 };
 
+aipo.fileupload.removeFileFromList=function(ul, li, pid){
+	dojo.style("facephoto_" + pid, "display", "none");
+	return ul.removeChild(li);
+};
+
 
