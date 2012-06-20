@@ -41,6 +41,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -111,6 +112,13 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /** フリガナ（姓） */
   private ALStringField last_name_kana;
+
+  /** 部署名リスト */
+  private final List<ALStringField> post_name_list =
+    new ArrayList<ALStringField>();
+
+  /** 役職 */
+  private ALStringField position_name;
 
   /** 顔写真 */
   private ALStringField photo = null;
@@ -221,6 +229,11 @@ public class AccountEditFormData extends ALAbstractFormData {
     last_name_kana = new ALStringField();
     last_name_kana.setFieldName("フリガナ（姓）");
     last_name_kana.setTrim(true);
+
+    // 役職
+    position_name = new ALStringField();
+    position_name.setFieldName("役職");
+    position_name.setTrim(true);
 
     // 顔写真
     photo = new ALStringField();
@@ -469,6 +482,13 @@ public class AccountEditFormData extends ALAbstractFormData {
       cellular_mail.setValue(user.getCellularMail());
       first_name_kana.setValue(user.getFirstNameKana());
       last_name_kana.setValue(user.getLastNameKana());
+
+      List<ALStringField> postNames =
+        ALEipUtils.getPostNameList(Integer.valueOf(user.getUserId()));
+
+      setPostNameList(postNames);
+
+      position_name.setValue(getPositionName(user.getPositionId()));
 
       if (user.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
@@ -806,6 +826,28 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
+   * 部署を取得します。 <BR>
+   * 
+   * @return
+   */
+  public List<ALStringField> getPostNameList() {
+    return post_name_list;
+  }
+
+  public void setPostNameList(List<ALStringField> list) {
+    post_name_list.addAll(list);
+  }
+
+  /**
+   * 役職を取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALStringField getPositionName() {
+    return position_name;
+  }
+
+  /**
    * @param loginname
    *          セットする loginname
    */
@@ -819,4 +861,19 @@ public class AccountEditFormData extends ALAbstractFormData {
   public ALStringField getLoginName() {
     return loginname;
   }
+
+  /**
+   * 
+   * @param id
+   * @return
+   */
+  private String getPositionName(int id) {
+    if (ALEipManager.getInstance().getPositionMap().containsKey(
+      Integer.valueOf(id))) {
+      return (ALEipManager.getInstance().getPositionMap().get(Integer
+        .valueOf(id))).getPositionName().getValue();
+    }
+    return null;
+  }
+
 }
