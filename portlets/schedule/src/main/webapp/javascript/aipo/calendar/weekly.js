@@ -1286,17 +1286,14 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
     setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
-        if(!this.TooltipObject){
-            this.TooltipObject = new aipo.widget.ToolTip({
-                label: "<div class='indicator'>読み込み中...</div>",
-                connectId: [this.node.id]
-            }, this.portletId, function(containerNode, node){
-                var request_url = ptConfig[this.portletId].jsonUrl.split("?")[0] + "?template=ScheduleDetailJSONScreen&view_date="+view_date+"&scheduleid="+schedule_id;
+        aipo.calendar.dummyDivObj[_portletId].TooltipObject = new aipo.widget.ToolTip({
+            label: "<div class='indicator'>読み込み中...</div>",
+            connectId: ["dummy_div_" + this.portletId]
+        }, this.portletId, function(containerNode, node){
+            var request_url = ptConfig[this.portletId].jsonUrl.split("?")[0] + "?template=ScheduleDetailJSONScreen&view_date="+view_date+"&scheduleid="+schedule_id;
 
-                aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
-            });
-        }
-        aipo.calendar.objectlist.push(this.TooltipObject);
+            aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
+        });
     },
     setDraggable: function(flag){
         this.isDraggable = flag;
