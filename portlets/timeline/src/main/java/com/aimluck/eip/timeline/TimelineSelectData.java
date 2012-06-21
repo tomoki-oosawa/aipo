@@ -505,6 +505,9 @@ public class TimelineSelectData extends
 
       // 投稿
       ResultList<EipTTimeline> resultList = selectList(rundata, context);
+      if (resultList == null) {
+        return false;
+      }
       List<Integer> parentIds = new ArrayList<Integer>(resultList.size());
       for (EipTTimeline model : resultList) {
         parentIds.add(model.getTimelineId());
@@ -537,58 +540,55 @@ public class TimelineSelectData extends
 
       // ユーザー
 
-      if (resultList != null) {
-        if (resultList.getTotalCount() > 0) {
-          setPageParam(resultList.getTotalCount());
+      if (resultList.getTotalCount() > 0) {
+        setPageParam(resultList.getTotalCount());
+      }
+      list = new ArrayList<Object>();
+      for (EipTTimeline model : resultList) {
+        Object object = getResultData(model);
+        TimelineResultData rd = (TimelineResultData) object;
+
+        rd.setCoTopicList(commentsMap.get(model.getTimelineId()));
+        rd.setCoActivityList(activitiesMap.get(model.getTimelineId()));
+        rd.setUrlList(urlsMap.get(model.getTimelineId()));
+        rd.setAttachmentFileList(filesMap.get(model.getTimelineId()));
+        rd.setReplyCount(rd.getCoTopicList().size());
+
+        List<TimelineResultData> coac = rd.getCoActivityList();
+
+        // 権限のあるアクティビティのみ表示する
+        for (Iterator<TimelineResultData> iter = coac.iterator(); iter
+          .hasNext();) {
+          TimelineResultData coac_item = iter.next();
+          coac_item.setCoTopicList(commentsMap.get(Integer
+            .valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setReplyCount(coac_item.getCoTopicList().size());
+
+          SelectQuery<EipTTimelineMap> query_map =
+            Database.query(EipTTimelineMap.class);
+          Expression exp1 =
+            ExpressionFactory.matchExp(
+              EipTTimelineMap.EIP_TTIMELINE_PROPERTY,
+              coac_item.getTimelineId().getValue());
+          query_map.setQualifier(exp1);
+          List<EipTTimelineMap> data_map = query_map.fetchList();
+
+          List<String> userlist = new ArrayList<String>();
+          for (int j = 0; j < data_map.size(); j++) {
+            userlist.add(data_map.get(j).getLoginName());
+          }
+
+          if (!(user.getUserId().toString().equals(
+            coac_item.getOwnerId().toString())
+            || userlist.contains(user.getName().toString()) || userlist
+            .contains("-1"))) {
+            iter.remove();
+          }
         }
-        list = new ArrayList<Object>();
-        for (EipTTimeline model : resultList) {
-          Object object = getResultData(model);
-          TimelineResultData rd = (TimelineResultData) object;
 
-          rd.setCoTopicList(commentsMap.get(model.getTimelineId()));
-          rd.setCoActivityList(activitiesMap.get(model.getTimelineId()));
-          rd.setUrlList(urlsMap.get(model.getTimelineId()));
-          rd.setAttachmentFileList(filesMap.get(model.getTimelineId()));
-          rd.setReplyCount(rd.getCoTopicList().size());
-
-          List<TimelineResultData> coac = rd.getCoActivityList();
-
-          // 権限のあるアクティビティのみ表示する
-          for (Iterator<TimelineResultData> iter = coac.iterator(); iter
-            .hasNext();) {
-            TimelineResultData coac_item = iter.next();
-            coac_item.setCoTopicList(commentsMap.get(Integer
-              .valueOf((int) coac_item.getTimelineId().getValue())));
-            coac_item.setReplyCount(coac_item.getCoTopicList().size());
-
-            SelectQuery<EipTTimelineMap> query_map =
-              Database.query(EipTTimelineMap.class);
-            Expression exp1 =
-              ExpressionFactory.matchExp(
-                EipTTimelineMap.EIP_TTIMELINE_PROPERTY,
-                coac_item.getTimelineId().getValue());
-            query_map.setQualifier(exp1);
-            List<EipTTimelineMap> data_map = query_map.fetchList();
-
-            List<String> userlist = new ArrayList<String>();
-            for (int j = 0; j < data_map.size(); j++) {
-              userlist.add(data_map.get(j).getLoginName());
-            }
-
-            if (!(user.getUserId().toString().equals(
-              coac_item.getOwnerId().toString())
-              || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
-              iter.remove();
-            }
-          }
-
-          if (rd != null
-            && !(rd.getCoActivityList().size() == 0
-              && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
-            list.add(rd);
-          }
+        if (!(rd.getCoActivityList().size() == 0
+          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+          list.add(rd);
         }
       }
 
