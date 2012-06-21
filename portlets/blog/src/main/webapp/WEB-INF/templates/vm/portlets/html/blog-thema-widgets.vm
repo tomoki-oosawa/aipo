@@ -20,16 +20,16 @@
 #set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
 #set($themaEditUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', "BlogThemaListScreen")))
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if(${clientVer} && ${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <a title="記事を作成する" href="javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);" class="auiButtonBold">記事を作成する</a>
 </div>
 <div class="auiWidget clearfix">
 <ul>
-<li#if ($!result.OwnerId == "all") class="active"#end>
+<li#if ($!result.OwnerId && $!result.OwnerId == "all") class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", "all"))', '$!portlet.ID');">新しい記事</a>
 </li>
-<li#if ($!result.OwnerId == $!result.LoginUid.toString()) class="active"#end>
+<li#if ($!result.OwnerId && $!result.OwnerId == $!result.LoginUid.toString()) class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", ${result.LoginUid}))', '$!portlet.ID');">自分の記事</a>
 </li>
 </ul>
@@ -37,12 +37,12 @@
 <div class="auiWidget clearfix">
 <ul>
 #set($themaFilterUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", "all")))
-<li#if (${result.ThemeId} == "all") class="active"#end>
+<li#if (${result.ThemeId} && ${result.ThemeId} == "all") class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$themaFilterUrl', '$!portlet.ID');">すべてのテーマ</a>
 </li>
 #foreach( $record in $result.ThemaList )
 #set($themaFilterUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", $!record.ThemaId.toString())))
-<li#if (${result.ThemeId} == $!record.ThemaId.toString()) class="active"#end>
+<li#if (${result.ThemeId} && ${result.ThemeId} == $!record.ThemaId.toString()) class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$themaFilterUrl', '$!portlet.ID');">$!record.ThemaName</a>
 </li>
 #end

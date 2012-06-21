@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-list-")
 #set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
-#AUIcontentsAreaHeader()
+<div id="auiContentsArea" #if($clientVer && $clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 <h2>テーマの管理</h2>
 #if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>

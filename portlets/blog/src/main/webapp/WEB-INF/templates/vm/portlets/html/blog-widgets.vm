@@ -20,7 +20,7 @@
 #set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
 #set($themaEditUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', "BlogThemaListScreen")))
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if(${clientVer} && ${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("記事を作成する" "javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);")
 </div>

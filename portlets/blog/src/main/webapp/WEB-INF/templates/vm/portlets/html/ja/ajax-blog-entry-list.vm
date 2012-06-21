@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-#AUIcontentsAreaHeader()
+<div id="auiContentsArea" #if($clientVer && $clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 <div id="auiThreeClumns">
 <div id="auiThreeClumnsInner">
 <div class="auiSummaryMeta clearfix">

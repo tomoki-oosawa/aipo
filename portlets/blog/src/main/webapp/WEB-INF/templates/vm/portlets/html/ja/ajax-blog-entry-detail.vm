@@ -126,7 +126,7 @@ ${record.Comment}
 <!-- form comment -->
 #ALerrmsg($errmsgsOnCommentDetail)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
 <form name="blogForm$!portlet.ID" id="blogForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('entityid', $!{result.Detail.EntryId})" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.blog.onReceiveMessage);return false;">
 #ALajaxscreenformheader("blogForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.blog.onReceiveMessage)")
 <input type="hidden" name="mode" value="comment" />
