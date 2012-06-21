@@ -26,103 +26,109 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("書き込み")
-#ALtableheaderWide()
-<tr>
-<td class="caption">
-#if ($!result.ParentTopic.CategoryId && $!result.ParentTopic.CategoryId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$!result.ParentTopic.CategoryId))');">$!result.ParentTopic.CategoryName</a>
-#if(! $!{result.ParentTopic.isPublic()})
-<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
-#end
-#else
-$!result.ParentTopic.CategoryName
-#end
+<table class="listTable wide">
+	#if(! $!{result.ParentTopic.isPublic()})
+		<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
+	#end
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
-</td>
-</tr>
-<tr>
-#ALtditemheader()
-<div class="clearfix">
-<h3>$!{result.ParentTopic.TopicName}</h3>
-<div class="alignleft">
-投稿者：$!{result.ParentTopic.OwnerName}&nbsp;&nbsp;&nbsp;投稿日：$!{result.ParentTopic.CreateDate.Year}年$!{result.ParentTopic.CreateDate.Month}月$!{result.ParentTopic.CreateDate.Day}日$!{result.ParentTopic.CreateDate.Hour}時$!{result.ParentTopic.CreateDate.Minute}分
-</div>
-<div class="alignright">
-#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
-#end
-#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
-#end
-</div>
-</div>
-<div>
-$!{result.ParentTopic.Note}
-#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
-<div style="padding-top:15px;">
-#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
-<div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
-#if($attachmentFile.isImage())
-<div style="padding-top:3px;padding-left:12px;">
-<div id='popc' style='position:absolute'></div>
-<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
-<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-&nbsp;（マウスのクリックで画像を拡大縮小できます）
-</div>
-#end
-</div>
-#end
-</div>
-#end
-</div>
-#ALtditemfooter()
-</tr>
+	<caption>
+	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryName</span>$!{result.ParentTopic.TopicName}
+	</caption>	
+		<tbody>
+			<tr>
+				<td>
+					<div class="alignright">
+						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
+						#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
+						#end
+						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
+						#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
+						#end
+					</div>			
+					<div class="avatar floatLeft mr10">
+						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
+							<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.ParentTopic.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+							#else
+							<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						#end
+					</div>				
+					<div>
+						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}年$!{result.ParentTopic.CreateDate.Month}月$!{result.ParentTopic.CreateDate.Day}日$!{result.ParentTopic.CreateDate.Hour}時$!{result.ParentTopic.CreateDate.Minute}分
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td style="border-bottom:none;">
+							$!{result.ParentTopic.Note}
+							#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
+								<div class="mt20">
+									#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
+										<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+										#if($attachmentFile.isImage())
+											<div  style="padding-top:3px;padding-left:12px;">
+												<div id='popc' style='position:absolute'></div>
+													<div class="thumbBlock">
+														<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+														<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+													</div>
+												</div>
+											</div>
+										#end
+									#end
+								</div>
+							#end
+				</td>
+			</tr>
 #ALtablefooter()
 
 #if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
 ##pageview($link $result)
-#ALtableheaderWide()
-<tr>
-#ALtdheadAtt("書き込み" "style='text-align:left;'")
-</tr>
+
+<table class="listTable wide mb0">
+<caption>コメント</caption>
+<tbody>
 #set($firstCoTopic = true)
 #foreach ($record in $result.CoTopicList)
 #set($firstCoTopic = false)
-<tr>
-#ALtditemheader()
-<div class="clearfix">
-<div class="alignleft">
-投稿者：$!{record.OwnerName}&nbsp;&nbsp;&nbsp;投稿日：$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
-</div>
-<div class="alignright">
-#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
-#end
-</div>
-</div>
-<div>
-${record.Note}
-#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
-<div style="padding-top:15px;">
-#foreach( $attachmentFile in $!record.AttachmentFileList )
-<div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
-#if($attachmentFile.isImage())
-<div style="padding-top:3px;padding-left:12px;">
-<div id='popc' style='position:absolute'></div>
-<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
-<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-&nbsp;（マウスのクリックで画像を拡大縮小できます）
-</div>
-#end
-</div>
-#end
-</div>
-#end
-</div>
-#ALtditemfooter()
-</tr>
+	<tr>
+		<td style="border-bottom:none;border-top:solid 1px #DDD">
+			<div class="clearfix">
+				<div class="alignright">
+					#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+					#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
+					#end
+				</div>
+					<div class="avatar floatLeft mr10">
+						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
+						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						#else
+						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						#end
+					</div>
+				<div class="alignleft"> 
+					<b>&nbsp;&nbsp;&nbsp;$!{record.OwnerName}</b><br>&nbsp;&nbsp;&nbsp;$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
+				</div>
+			</div>
+			<div><br>
+				${record.Note}
+				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+					<div class="mt20">
+						#foreach( $attachmentFile in $!record.AttachmentFileList )
+						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+							#if($attachmentFile.isImage())
+								<div style="padding-top:3px;padding-left:12px;">
+									<div id='popc' style='position:absolute'>
+									</div>
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
+							#end
+						#end
+					</div>
+				#end
+			</div>
+    	</td>
+  	</tr>
 #end
 #ALtablefooter()
 ##pageview($link $result)
@@ -130,57 +136,62 @@ ${record.Note}
 #ALformfooter()
 
 #if($!resultOnTopicDetail)
-<div id="messageDiv"></div>
-<div id="messageDiv_$!portlet.ID"></div>
+	<div id="messageDiv">
+	</div>
+	<div id="messageDiv_$!portlet.ID">
+	</div>
 ##<form name="msgboardForm$!portlet.ID" id="msgboardForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply').addQueryData('entityid', ${result.ParentTopic.TopicId})" method="post" onsubmit="aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage);return false;">
-#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
-<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
-<input type="hidden" name="mode" value="topic_reply" />
-<input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}" />
-#ALtableheaderWide()
-
-#if($mode=="new_form")
-#ALtdcaption($!resultOnTopicDetail.getFieldName("category_id"))
-#ALtditemheader()
-<div id="msgboardCategoryInputField" #if(!$!{resultOnTopicDetail.NewCategory})style="display:none"#end>
-#ALtableheaderSubWide()
-#ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
-#ALtablefooter()
-</div>
-<div id="msgboardCategorySelectField" #if($!{resultOnTopicDetail.NewCategory})style="display:none"#end>
-#ALselectpdheader("category_id" "90%" "")
-#foreach( $record in $result.CategoryList )
-<option value='$!record.CategoryId' #if ($!resultOnTopicDetail.CategoryId.toString() == $!resultOnTopicDetail.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-#ALselectfooter()
-</div>
-<input name="category_input_button" type="button" class="button" value=" #if(!$!{resultOnTopicDetail.NewCategory})新しく入力する#else一覧から選択する#end " onclick="aipo.msgboard.formSwitchCategoryInput(this)" />
-#ALtditemfooter()
-#end
-
-#ALtdcaption("#ALrequired($!resultOnTopicDetail.getFieldName('note'))")
-#ALtditemheader()
-#ALtextarea('note' $!resultOnTopicDetail.Note 10 40)
-#ALtditemfooter()
-#ALtdcaption("添付ファイル")
-#ALtditemheader()
-<div class="floatLeft mr10">
-<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
-</div>
-<ul id="attachments_$!{portlet.ID}" class="attachments">
-	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
-	#end
-</ul>
-<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
-#ALtditemfooter()
-#ALtablefooter()
+	#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
+		<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
+		<input type="hidden" name="mode" value="topic_reply" />
+		<input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}" />
+			<table class="listTable wide">
+				<tbody>
+				#if($mode=="new_form")
+					#ALtdcaption($!resultOnTopicDetail.getFieldName("category_id"))
+						<td>
+							<div id="msgboardCategoryInputField" #if(!$!{resultOnTopicDetail.NewCategory})style="display:none"#end>
+								#ALtableheaderSubWide()
+									#ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
+									#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
+								#ALtablefooter()
+							</div>
+							<div id="msgboardCategorySelectField" #if($!{resultOnTopicDetail.NewCategory})style="display:none"#end>
+								#ALselectpdheader("category_id" "90%" "")
+									#foreach( $record in $result.CategoryList )
+										<option value='$!record.CategoryId' #if ($!resultOnTopicDetail.CategoryId.toString() == $!resultOnTopicDetail.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+									#end
+								#ALselectfooter()
+							</div>
+							<input name="category_input_button" type="button" class="button" value=" #if(!$!{resultOnTopicDetail.NewCategory})新しく入力する#else一覧から選択する#end " onclick="aipo.msgboard.formSwitchCategoryInput(this)" />
+					#end
+						</td>
+  					</tr>
+					<tr>
+						<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span> </td>
+						<td>
+							#ALtextarea('note' $!resultOnTopicDetail.Note 5 40)
+						</td>
+					</tr>　
+					<tr>
+						<td style="height:16px; width:135px;"><b>添付ファイル</b></td>
+						<td>
+							<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+							<ul id="attachments_$!{portlet.ID}" class="attachments">
+								#foreach($record in $!result.AttachmentFileNameList )
+									<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+								#end
+							</ul>
+						</td>
+					</tr>
+					<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  				</tbody>
+			</table>
 #end
 #ALbuttonheader()
-#if($!resultOnTopicDetail)
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
-#end
+		#if($!resultOnTopicDetail)
+			<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="コメントする" onclick="aimluck.io.setHiddenValue(this);">
+		#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
