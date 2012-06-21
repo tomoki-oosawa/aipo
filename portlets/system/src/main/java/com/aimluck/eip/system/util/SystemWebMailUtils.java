@@ -382,22 +382,6 @@ public class SystemWebMailUtils {
     }
   }
 
-  // /**
-  // * 指定されたアカウントのメール受信を中断する。
-  // *
-  // * @param account
-  // */
-  // public static void stopReceiveMailThread(int accountId) {
-  //
-  // Object objRS = ALStaticObject.getInstance().getAccountStat(accountId,
-  // ALPop3MailReceiveThread.KEY_THREAD);
-  // if (objRS == null){
-  // return;
-  // }
-  //
-  // return;
-  // }
-
   /**
    * POP3 サーバと通信後の結果を取得する。
    * 
@@ -413,20 +397,6 @@ public class SystemWebMailUtils {
       } else {
         return ALPop3MailReceiveThread.getReceiveMailResult(user, accountId);
       }
-    }
-  }
-
-  /**
-   * POP3 サーバと通信後の結果を取得する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public static String getStatStrThread(String orgId, JetspeedUser user,
-      int accountId) throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      return ALPop3MailReceiveThread.getReceiveMailResultStr(user, accountId);
     }
   }
 
