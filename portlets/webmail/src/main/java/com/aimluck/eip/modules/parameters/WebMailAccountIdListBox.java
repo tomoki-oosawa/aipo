@@ -54,33 +54,34 @@ public class WebMailAccountIdListBox extends ListBox {
         ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(data)));
       List<EipMMailAccount> accounts = query.setQualifier(exp).fetchList();
+      if (accounts != null) {
+        int length = 1;
+        if (accounts.size() > 0) {
+          length = accounts.size() + 1;
+        }
 
-      int length = 1;
-      if (accounts != null && accounts.size() > 0) {
-        length = accounts.size() + 1;
+        String[] keys = new String[length];
+        String[] values = new String[length];
+
+        keys[0] = "";
+        values[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
+        int count = 1;
+
+        for (EipMMailAccount account : accounts) {
+          keys[count] = account.getAccountId().toString();
+          values[count] = account.getAccountName();
+          count++;
+        }
+
+        this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
+        this.items = keys;
+        this.values = values;
+        this.size = Integer.toString(length);
+        this.multiple =
+          Boolean
+            .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
+            .booleanValue();
       }
-
-      String[] keys = new String[length];
-      String[] values = new String[length];
-
-      keys[0] = "";
-      values[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
-      int count = 1;
-
-      for (EipMMailAccount account : accounts) {
-        keys[count] = account.getAccountId().toString();
-        values[count] = account.getAccountName();
-        count++;
-      }
-
-      this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
-      this.items = keys;
-      this.values = values;
-      this.size = Integer.toString(length);
-      this.multiple =
-        Boolean
-          .valueOf((String) this.getParm(MULTIPLE_CHOICE, "false"))
-          .booleanValue();
     } catch (Exception e) {
       ALEipUtils.redirectPageNotFound(data);
     }
