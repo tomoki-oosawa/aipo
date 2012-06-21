@@ -2116,6 +2116,9 @@ public class ALEipUtils {
       client = (String) request.getAttribute(key);
       clientVer = (String) request.getAttribute(keyVer);
       if (client != null && client.length() > 0) {
+        if (clientVer == null) {
+          clientVer = "";
+        }
         map.put(client, clientVer);
         return map.entrySet().iterator().next();
       }
@@ -2132,6 +2135,9 @@ public class ALEipUtils {
     if (request != null) {
       request.setAttribute(key, client);
       request.setAttribute(keyVer, clientVer);
+    }
+    if (clientVer == null) {
+      clientVer = "";
     }
     map.put(client, clientVer);
 
