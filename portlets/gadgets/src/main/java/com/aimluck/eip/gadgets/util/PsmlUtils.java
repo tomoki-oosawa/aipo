@@ -226,18 +226,21 @@ public class PsmlUtils {
 
   public static org.w3c.dom.Document loadXMLFrom(java.io.InputStream is)
       throws org.xml.sax.SAXException, java.io.IOException {
+    org.w3c.dom.Document doc;
     javax.xml.parsers.DocumentBuilderFactory factory =
       javax.xml.parsers.DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
-    javax.xml.parsers.DocumentBuilder builder = null;
+    javax.xml.parsers.DocumentBuilder builder;
     try {
       builder = factory.newDocumentBuilder();
-    } catch (javax.xml.parsers.ParserConfigurationException ex) {
+      doc = builder.parse(is);
+      return doc;
+    } catch (ParserConfigurationException ex) {
+      ex.printStackTrace();
+      return null;
+    } finally {
+      is.close();
     }
-
-    org.w3c.dom.Document doc = builder.parse(is);
-    is.close();
-    return doc;
   }
 
   public static org.w3c.dom.Document loadXMLFrom(String xml)
