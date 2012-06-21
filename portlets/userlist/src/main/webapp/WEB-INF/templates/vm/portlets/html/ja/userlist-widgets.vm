@@ -21,7 +21,7 @@
 <ul>
 <li#if ( !$!result.CurrentFilter || $!result.CurrentFilter == "") class="active" #end>
 #set($postLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen").addQueryData("filter","").addQueryData("filtertype","post")))
-<a href="javascript:void(0);" onclick="aipo.viewPage('$postLink', '$!portlet.ID');" >すべての部署</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$postLink', '$!portlet.ID');" >$l10n.USERLIST_ALL_POST</a>
 </li>
 #foreach( $record in $result.PostMap )
 <li#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) class="active" #end>

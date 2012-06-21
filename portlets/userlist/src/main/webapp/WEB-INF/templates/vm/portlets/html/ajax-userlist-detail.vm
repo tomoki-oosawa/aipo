@@ -18,40 +18,48 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALdialogheader("ユーザー詳細")
+#ALdialogheader($l10n.USERLIST_USER_DETAIL)
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALtableheaderWide()
-#ALtdcaption('名前')
+#ALtdcaption($l10n.USERLIST_NAME)
 #ALtditemheader()
 $!result.Detail.Name
 #ALtditemfooter()
-#ALtdcaption('名前（フリガナ）')
+#ALtdcaption($l10n.USERLIST_NAME_KANA)
 #ALtditem($result.getStringCR($!result.Detail.NameKana))
-#ALtdcaption('メールアドレス')
+#ALtdcaption($l10n.USERLIST_EMAIL)
 #ALtditem($result.getStringCR($!result.Detail.Email))
 #if($result.CurrentTab != "corp")
-#ALtdcaption('電話番号')
+#ALtdcaption($l10n.USERLIST_TELEPHONE)
 #ALtditem($!result.Detail.Telephone)
 #else
-#ALtdcaption('電話番号（外線）')
+#ALtdcaption($l10n.USERLIST_OUT_TELEPHONE)
 #ALtditem($!result.Detail.OutTelephone)
-#ALtdcaption('電話番号（内線）')
+#ALtdcaption($l10n.USERLIST_IN_TELEPHONE)
 #ALtditem($!result.Detail.InTelephone)
 #end
-#ALtdcaption('電話番号（携帯）')
+#ALtdcaption($l10n.USERLIST_CELLULAR_PHONE)
 #ALtditem($!result.Detail.CellularPhone)
-#ALtdcaption('携帯メールアドレス')
+#ALtdcaption($l10n.USERLIST_CELLULAR_MAIL)
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
-#ALtdcaption('部署名')
+#ALtdcaption($l10n.USERLIST_PHOTO)
+#ALtditemheader()
+#if($!{result.Detail.hasPhoto()})
+<img class="avatar" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}))" alt=$l10n.USERLIST_PHOTO align="absmiddle" />
+#else
+$l10n.USERLIST_NOT_CREATE
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.USERLIST_POST_NAME)
 #ALtditemheader()
 #foreach($record in $!result.Detail.getPostNameList())
 $!record <br />
 #end
 #ALtditemfooter()
-#ALtdcaption('役職名')
+#ALtdcaption($l10n.USERLIST_POSITION_NAME)
 #ALtditem($result.getStringCR($!result.Detail.PositionName))
 #ALtablefooter()
 #ALbuttonheader()
