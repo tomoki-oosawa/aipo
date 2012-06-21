@@ -65,6 +65,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ToDoのフォームデータを管理するクラスです。 <BR>
@@ -200,53 +201,64 @@ public class ToDoFormData extends ALAbstractFormData {
   public void initField() {
     // タイトル
     todo_name = new ALStringField();
-    todo_name.setFieldName("タイトル");
+    todo_name.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_TITLE"));
     todo_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
-    category_id.setFieldName("カテゴリ");
+    category_id.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_CATEGORY"));
     // 担当者ID
     user_id = new ALNumberField();
-    user_id.setFieldName("担当者");
+    user_id.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_PREPARED"));
     // 優先度
     priority = new ALNumberField(3);
-    priority.setFieldName("優先度");
+    priority.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_PRIORITY"));
     // 状態
     state = new ALNumberField();
-    state.setFieldName("進捗");
+    state.setFieldName(ALLocalizationUtils.getl10n("TODO_SETFIELDNAME_STATE"));
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("TODO_SETFIELDNAME_MEMO"));
     note.setTrim(false);
     // 開始日
     start_date = new ALDateField();
-    start_date.setFieldName("開始日");
+    start_date.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_START_DATE"));
     start_date.setValue(new Date());
     // 締切日
     end_date = new ALDateField();
-    end_date.setFieldName("締切日");
+    end_date.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_END_DATE"));
     end_date.setValue(new Date());
     // 開始日指定フラグ
     start_date_check = new ALStringField();
-    start_date_check.setFieldName("指定しない");
+    start_date_check.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_NOT_SET"));
     // 締切日指定フラグ
     end_date_check = new ALStringField();
-    end_date_check.setFieldName("指定しない");
+    end_date_check.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_NOT_SET"));
     // 現在の年
     currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
     // カテゴリ
     category_name = new ALStringField();
-    category_name.setFieldName("カテゴリ名");
+    category_name.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_CATEGORY_NAME"));
 
     // 公開区分
     public_flag = new ALStringField();
-    public_flag.setFieldName("公開区分");
+    public_flag.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_PUBLIC"));
     public_flag.setValue("T");
     public_flag.setTrim(true);
 
     addon_schedule_flg = new ALStringField();
-    addon_schedule_flg.setFieldName("スケジュールへの表示");
+    addon_schedule_flg.setFieldName(ALLocalizationUtils
+      .getl10n("TODO_SETFIELDNAME_ADD_ON_SCHEDULE_FLG"));
     addon_schedule_flg.setValue("T");
     addon_schedule_flg.setTrim(true);
   }
@@ -333,8 +345,7 @@ public class ToDoFormData extends ALAbstractFormData {
         try {
           if (end_date.getValue().getDate().before(
             start_date.getValue().getDate())) {
-            msgList
-              .add("『 <span class='em'>締切日</span> 』は『 <span class='em'>開始日</span> 』以降の日付で指定してください。");
+            msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_SET_TDATE"));
           }
         } catch (Exception e) {
           logger.error("Exception", e);
@@ -590,7 +601,7 @@ public class ToDoFormData extends ALAbstractFormData {
               ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
           }
         } catch (Exception ex) {
-          msgList.add("メールを送信できませんでした。");
+          msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_DONOT_SEND"));
           logger.error("Exception", ex);
           return false;
         }
@@ -643,7 +654,7 @@ public class ToDoFormData extends ALAbstractFormData {
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
-      msgList.add("エラーが発生しました。");
+      msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_GET_ERROR"));
       return false;
     }
     return true;
@@ -781,7 +792,7 @@ public class ToDoFormData extends ALAbstractFormData {
               ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_TODO)));
           }
         } catch (Exception ex) {
-          msgList.add("メールを送信できませんでした。");
+          msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_DONOT_SEND"));
           logger.error("Exception", ex);
           return false;
         }

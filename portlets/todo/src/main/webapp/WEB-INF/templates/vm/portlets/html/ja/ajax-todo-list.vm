@@ -27,7 +27,7 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="ToDoListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.TODO_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -35,7 +35,7 @@
 <div class="auiSummaryMeta clearfix">
 <div class="auiForm">
 <select name="target_group_name" id="target_group_name" class="mw49" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "all").addQueryData("target_user_id","all"))'>すべてのグループ</option>
+<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "all").addQueryData("target_user_id","all"))'>$l10n.TODO_ALL_GLOUP</option>
 #foreach( $record in $!result.MyGroupList )
 <option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "$!record.Name").addQueryData("target_user_id","all"))' #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
@@ -48,7 +48,7 @@
 #ALselectfooter()
 
 <select name="target_user_id" id="target_user_id" class="mw49" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "$!record.Name").addQueryData("target_user_id","all"))'>すべてのユーザー</option>
+<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "$!record.Name").addQueryData("target_user_id","all"))'>$l10n.TODO_ALL_USER</option>
 #foreach($record in $!result.Users)
 <option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("target_group_name", "$!result.TargetGroupName").addQueryData("target_user_id","$!record.UserId"))' #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
 #end
@@ -60,13 +60,13 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('ToDo')
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するToDoはありません。</div>
+<div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">#if($!result.currentTab == 'list')
-#AUIajaxbuttonCheckboxAction('完了にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('ToDoListScreen' $result)
@@ -80,12 +80,12 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" "class='thin center'")
-#ALtdheadAtt("#ALajaxsort('priority' '優先度' $result 'ToDoListScreen')" "class='thin mb_hide center'")
-<th>#ALajaxsort('todo_name' 'タイトル' $result 'ToDoListScreen')</th>
-<th class="wName">#ALajaxsort('user_name' '担当者' $result 'ToDoListScreen')</th>
-<th class="wCategory mb_hide">#ALajaxsort('category_name' 'カテゴリ' $result 'ToDoListScreen')</th>
-#ALtdheadAtt("#ALajaxsort('end_date' '締切日' $result 'ToDoListScreen')" 'class="thin center"')
-#ALtdheadAtt("#ALajaxsort('state' '進捗' $result 'ToDoListScreen')" 'class="thin mb_hide center"')
+#ALtdheadAtt("#ALajaxsort('priority' $l10n.TODO_PRIORITY $result 'ToDoListScreen')" "class='thin mb_hide center'")
+<th>#ALajaxsort('todo_name' $l10n.TODO_TITLE $result 'ToDoListScreen')</th>
+<th class="wName">#ALajaxsort('user_name' $l10n.TODO_PREPARED $result 'ToDoListScreen')</th>
+<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.TODO_CATEGORY $result 'ToDoListScreen')</th>
+#ALtdheadAtt("#ALajaxsort('end_date' $l10n.TODO_END_DATE $result 'ToDoListScreen')" 'class="thin center"')
+#ALtdheadAtt("#ALajaxsort('state' $l10n.TODO_STATE $result 'ToDoListScreen')" 'class="thin mb_hide center"')
 </tr>
 #foreach ($record in $result.List)
 #if($!result.currentTab == "list")
@@ -107,7 +107,7 @@
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
 #if(! $record.Public)
-<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" style="vertical-align: middle;" alt="非公開" title="非公開"/>
+<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" style="vertical-align: middle;" alt=$l10n.TODO_CLOSE_PUBLIC title=$l10n.TODO_CLOSE_PUBLIC/>
 #end
 </div>
 #ALtdcellfooter()
@@ -116,7 +116,7 @@
 #ALtdcellAtt("<div>$!record.EndDate</div>" 'nowrap="nowrap"')
 #ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
 #if($!result.currentTab == "list")<img src='images/todo/$!record.StateImage' alt='$!record.StateString' title='$!record.StateString' style="vertical-align: middle;" />&nbsp;#end<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('todo','$!portlet.ID');">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "0"))"   #if ($!record.State.toString() == "0" )  selected="selected" #end>未着手</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "0"))"   #if ($!record.State.toString() == "0" )  selected="selected" #end>$l10n.TODO_NOT_START</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "10"))"  #if ($!record.State.toString() == "10")  selected="selected" #end>10%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "20"))"  #if ($!record.State.toString() == "20")  selected="selected" #end>20%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "30"))"  #if ($!record.State.toString() == "30")  selected="selected" #end>30%</option>
@@ -126,7 +126,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "70"))"  #if ($!record.State.toString() == "70")  selected="selected" #end>70%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "80"))"  #if ($!record.State.toString() == "80")  selected="selected" #end>80%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "90"))"  #if ($!record.State.toString() == "90")  selected="selected" #end>90%</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "100"))" #if ($!record.State.toString() == "100") selected="selected" #end>完了</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "100"))" #if ($!record.State.toString() == "100") selected="selected" #end>$l10n.TODO_FINISHING</option>
 </select>
 #ALtdcellfooter()
 </tr>
@@ -134,9 +134,9 @@
 #AUItablefooter()
 <div class="auiSummaryMeta clearfix">
 	<div class="floatLeft">#if($!result.currentTab == 'list')
-		#AUIajaxbuttonCheckboxAction('完了にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+		#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 		#else
-		#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+		#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 		#end
 	</div>
 #AUIajaxpageview('ToDoListScreen' $result)

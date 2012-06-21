@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("ToDo詳細")
+#ALdialogheader($l10n.TODO_TODO_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxdetailformheader("ToDo")
 #ALtableheaderWide()
-#ALtdcaption('カテゴリ')
+#ALtdcaption($l10n.TODO_CATEGORY)
 #ALtditemheader()
 #if ($!result.Detail.CategoryId.toString() != "1")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryDetailScreen").addQueryData("entityid",$!result.Detail.CategoryId))');">$!result.Detail.CategoryName</a>
@@ -33,45 +33,45 @@
 $!result.Detail.CategoryName
 #end
 #ALtditemfooter()
-#ALtdcaption('ToDo詳細')
+#ALtdcaption($l10n.TODO_TODO_DETAIL)
 #ALtditemheader()
 $!result.Detail.TodoName
 #if(! ${result.Detail.Public})
-<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.TODO_CLOSE_PUBLIC title=$l10n.TODO_CLOSE_PUBLIC/>
 #end
 #ALtditemfooter()
-#ALtdcaption('担当者')
+#ALtdcaption($l10n.TODO_PREPARED)
 #ALtditem($!result.Detail.UserName)
-#ALtdcaption('開始日')
+#ALtdcaption($l10n.TODO_START_DATE)
 #ALtditem($!result.Detail.StartDate)
-#ALtdcaption('締切日')
+#ALtdcaption($l10n.TODO_END_DATE)
 #ALtditem($!result.Detail.EndDate)
-#ALtdcaption('進捗')
+#ALtdcaption($l10n.TODO_STATE)
 #ALtditem($!result.Detail.StateString)
-#ALtdcaption('優先度')
+#ALtdcaption($l10n.TODO_PRIORITY)
 #ALtditem($!result.Detail.PriorityString)
-#ALtdcaption('登録日')
+#ALtdcaption($l10n.TODO_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption('更新日')
+#ALtdcaption($l10n.TODO_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
-#ALtdcaption('更新者')
+#ALtdcaption($l10n.TODO_UPDATE_USER)
 #ALtditem($!result.Detail.CreateUserName)
-#ALtdcaption('メモ')
+#ALtdcaption($l10n.TODO_MEMO)
 #ALtditem($!result.Detail.Note)
-#ALtdcaption('公開区分')
+#ALtdcaption($l10n.TODO_PUBLIC)
 #ALtditemheader()
 #if($!result.Detail.Public)
-公開
+$l10n.TODO_OPEN_PUBLIC
 #else
-非公開
+$l10n.TODO_CLOSE_PUBLIC
 #end
 #ALtditemfooter()
-#ALtdcaption('スケジュールへの表示')
+#ALtdcaption($l10n.TODO_ADD_ON_SCHEDULE_FLG)
 #ALtditemheader()
 #if($!result.Detail.addonScheduleFlg())
-表示
+$l10n.TODO_DISPLAY
 #else
-非表示
+$l10n.TODO_NON_DISPLAY
 #end
 #ALtditemfooter()
 #ALtablefooter()

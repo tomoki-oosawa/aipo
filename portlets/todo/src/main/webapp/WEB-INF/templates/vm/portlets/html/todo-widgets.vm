@@ -19,27 +19,27 @@
 ## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["ToDoを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
-#set ($menues = [["すべてのカテゴリ", "list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','list').addQueryData('reset_keyword_params','true')"]])
-#set ($menues2 = [["カテゴリ一覧", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
-#set ($menues3 = [["完了ToDo", "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
+#set ($submenulist = [[$l10n.TODO_TODO_ADD,"javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], [$l10n.TODO_CATEGORY_ADD,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
+#set ($menues = [[$l10n.TODO_ALL_CATEGORY, "list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','list').addQueryData('reset_keyword_params','true')"]])
+#set ($menues2 = [[$l10n.TODO_CATEGORY_LIST, "category","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
+#set ($menues3 = [[$l10n.TODO_FINISH_TODO, "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction("ToDoを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);")
+#AUIbuttonAction($l10n.TODO_TODO_ADD "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);")
 </div>
 <div class="auiWidget clearfix">
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)
 <input type="hidden" id="topic" value="2" />
 <ul>
-<li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">すべてのカテゴリ</a></li>
+<li #if (!$result.CurrentFilter && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$l10n.TODO_ALL_CATEGORY</a></li>
 #foreach($record in $!result.CategoryList )
 <li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 <div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen')', '$!portlet.ID');">カテゴリの管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen')', '$!portlet.ID');">$l10n.TODO_MANAGEMENT</a>
 </div>
 </div>
 <div class="auiWidget clearfix">

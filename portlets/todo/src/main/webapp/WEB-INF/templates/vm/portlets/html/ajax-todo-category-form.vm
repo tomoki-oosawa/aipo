@@ -19,13 +19,13 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.TODO_ADD)
 #set ($event_submit = "eventSubmit_doTodo_category_insert")
-#set ($subtitle = "カテゴリ追加")
+#set ($subtitle = $l10n.TODO_CATEGORY_ADDITION)
 #else
-#set ($action_str = "更新する")
+#set ($action_str = $l10n.TODO_UPDATE)
 #set ($event_submit = "eventSubmit_doTodo_category_update")
-#set ($subtitle = "カテゴリ編集")
+#set ($subtitle = $l10n.TODO_CATEGORY_EDITION)
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------

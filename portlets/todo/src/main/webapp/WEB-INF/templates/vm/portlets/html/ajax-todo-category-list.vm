@@ -24,36 +24,36 @@
 #set ($categoryEtc = true) ## msgboard-widgets.vmでのカテゴリ表示の判断用
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>カテゴリの管理</h2>
+<h2>$l10n.TODO_MANAGEMENT</h2>
 #if($result.List.size() <= 0)
   #AUIrowTableWide()
   <tr>
   <td colspan="4" class="auiNoData">
-  <p class="mh10">#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
+  <p class="mh10">#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
   </td>
   </tr>
   #AUItablefooter()
 #else
 
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
 </p>
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader('カテゴリ' $jslink $portlet)
+#ALformheader($l10n.TODO_CATEGORY $jslink $portlet)
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 </div>
 #AUIajaxpageview('ToDoCategoryListScreen' $result)
 </div>
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadW75("#ALajaxsort('category_name' 'カテゴリ名' $result 'ToDoCategoryListScreen')")
-#ALtdheadW25("#ALajaxsort('user_name' '更新者' $result 'ToDoCategoryListScreen')")
+#ALtdheadW75("#ALajaxsort('category_name' $l10n.TODO_CATEGORY_NAME $result 'ToDoCategoryListScreen')")
+#ALtdheadW25("#ALajaxsort('user_name' $l10n.TODO_UPDATE_USER $result 'ToDoCategoryListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -68,7 +68,7 @@
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 </div>
 #AUIajaxpageview('ToDoCategoryListScreen' $result)
 </div>
