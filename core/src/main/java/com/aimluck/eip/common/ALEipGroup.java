@@ -101,11 +101,4 @@ public class ALEipGroup implements ALData, Serializable {
   public ALStringField getAliasName() {
     return alias_name;
   }
-
-  /**
-   * @param i
-   */
-  public void setFacilityGroupId(long i) {
-    // facility_group_id.setValue(i);
-  }
 }

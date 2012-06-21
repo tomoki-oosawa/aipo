@@ -880,7 +880,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @throws ALDBErrorException
    */
   protected void setupLists(RunData rundata, Context context) {
-
     target_group_name = getTargetGroupName(rundata, context);
     boolean fgroup_flag = false;
     String target_group_id = "";
@@ -894,14 +893,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       target_group_id = target2[1];
       fgroup_flag = true;
     }
-    if ((target_group_name != null)
-      && (!target_group_name.equals(""))
+    if ((!target_group_name.equals(""))
       && (!target_group_name.equals("all"))
       && (target_group_name.equals("Facility"))) {
       userList = ALEipUtils.getUsers(target_group_name);
       facilityList = FacilitiesUtils.getFacilityList(target_group_name);
-    } else if ((target_group_name != null)
-      && (!target_group_name.equals(""))
+    } else if ((!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
       if (fgroup_flag) {

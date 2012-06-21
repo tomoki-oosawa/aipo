@@ -579,7 +579,7 @@ public class TimelineSelectData extends
             if (!(user.getUserId().toString().equals(
               coac_item.getOwnerId().toString())
               || userlist.contains(user.getName().toString()) || userlist
-                .contains("-1"))) {
+              .contains("-1"))) {
               iter.remove();
             }
           }
@@ -696,7 +696,7 @@ public class TimelineSelectData extends
             if (!(user.getUserId().toString().equals(
               coac_item.getOwnerId().toString())
               || userlist.contains(user.getName().toString()) || userlist
-                .contains("-1"))) {
+              .contains("-1"))) {
               iter.remove();
             }
           }
@@ -893,12 +893,9 @@ public class TimelineSelectData extends
       target_group_id = target2[1];
       fgroup_flag = true;
     }
-    if ((target_group_name != null)
-      && (!target_group_name.equals(""))
-      && (!target_group_name.equals("all"))) {
+    if ((!target_group_name.equals("")) && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
-    } else if ((target_group_name != null)
-      && (!target_group_name.equals(""))
+    } else if ((!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else {
