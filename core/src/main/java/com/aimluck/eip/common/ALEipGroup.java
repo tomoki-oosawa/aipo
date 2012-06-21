@@ -106,6 +106,6 @@ public class ALEipGroup implements ALData, Serializable {
    * @param i
    */
   public void setFacilityGroupId(long i) {
-    facility_group_id.setValue(i);
+    // facility_group_id.setValue(i);
   }
 }
