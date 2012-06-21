@@ -35,16 +35,6 @@ public class ALSessionInitializer {
     .getLogger(ALSessionInitializer.class.getName());
 
   public void initializeSession(JetspeedRunData jdata, String peid) {
-
-    String portletName =
-      jdata.getProfile().getDocument().getEntryById(peid).getParent();
-    if (portletName.startsWith("Schedule")) {
-    } else if (portletName.startsWith("AjaxScheduleWeekly")) {
-    } else if (portletName.startsWith("ToDo")) {
-    } else if (portletName.startsWith("Note")) {
-    } else if (portletName.startsWith("WebMail")) {
-    } else if (portletName.startsWith("AddressBook")) {
-    }
   }
 
 }
