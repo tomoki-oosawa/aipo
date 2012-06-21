@@ -69,7 +69,7 @@
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatRight">
-	<div class="count">$from ～ $to 件 / 計 $count 件</div>
+	<div class="count">$from ～ $to / $count</div>
 #if ($pages > 1)
     <div class="auiSelectButton floatLeft">
       <ul>
