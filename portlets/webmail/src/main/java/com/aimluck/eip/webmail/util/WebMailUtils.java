@@ -356,47 +356,6 @@ public class WebMailUtils {
   }
 
   /**
-   * POP3 サーバから新着メール数を取得する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public static int getNewMailNumThread(String orgId, JetspeedUser user,
-      int accountId) throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
-        // メールと接続してなければ新規にスレッドを生成
-        Thread mailthread =
-          new Thread(new ALPop3MailReceiveThread(
-            Database.createDataContext(Database.getDomainName()),
-            user,
-            accountId,
-            ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));
-        mailthread.start();
-      }
-
-      return ALPop3MailReceiveThread.getNewMailNum(user, accountId);
-    }
-  }
-
-  // /**
-  // * 指定されたアカウントのメール受信を中断する。
-  // *
-  // * @param account
-  // */
-  // public static void stopReceiveMailThread(int accountId) {
-  //
-  // Object objRS = ALStaticObject.getInstance().getAccountStat(accountId,
-  // ALPop3MailReceiveThread.KEY_THREAD);
-  // if (objRS == null){
-  // return;
-  // }
-  //
-  // return;
-  // }
-
-  /**
    * POP3 サーバと通信後の結果を取得する。
    * 
    * @param rundata

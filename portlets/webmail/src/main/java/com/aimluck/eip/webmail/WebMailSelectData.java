@@ -496,14 +496,6 @@ public class WebMailSelectData extends
     return selectedFolder;
   }
 
-  public int getNewMailSum() {
-    try {
-      return WebMailUtils.getNewMailNumThread(orgId, user, accountId);
-    } catch (Exception ex) {
-      return 0;
-    }
-  }
-
   /**
    * フォルダ別未読メール数を取得する。
    * 
