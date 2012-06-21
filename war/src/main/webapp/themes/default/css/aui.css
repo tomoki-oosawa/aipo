@@ -1759,6 +1759,7 @@ ul.attachments span.deletebutton:hover{
 	timeline
 --------------------------------------------------*/
 #timelineOuter {
+	position:relative;
 	margin:5px 0;
 }
 #timelineOuter .message {
@@ -1768,6 +1769,8 @@ ul.attachments span.deletebutton:hover{
 	border-top: 1px solid #dcdcdc;
 }
 #timelineOuter .message:first-child {
+	border-top: none !important;
+	padding-top:0 !important;
 	margin-top:0 !important;
 }
 #timelineOuter .on {
@@ -1820,20 +1823,21 @@ ul.attachments span.deletebutton:hover{
 	background:#f0f0f0;
 }
 
-
 .tlDisplayChanger {
-	position:absolute;
-	height:20px;
-	line-height:20px;
-	top:-9px;
-	>top:-10px;
-	/*top:-0.6em;*/
-	right:15px;
+	position:relative;
+	height:10px;
+	line-height:10px;
 	text-align:right;
+	border-top:1px solid #DCDCDC;
+	z-index:1;
 }
 .tlDisplayChanger .btn {
 	background:#fff;
 	padding:0 3px;
+	position:absolute;
+	top:-9px;
+	>top:-10px;
+	right:15px;
 }
 .tlDisplayChanger .indicator {
 	vertical-align:middle;
@@ -1856,12 +1860,12 @@ ul.attachments span.deletebutton:hover{
 	cursor:pointer;/*IE7*/
 }
 .tlDisplayChanger .menubar {
+	top:10px;
 	right:0;
 	width:12em;
 }
 .timeline {
 	position:relative;
-	margin-top:15px;
 }
 .timeline .avatar {
 	float:left;
@@ -1985,7 +1989,7 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timelineOuter .newMessage {
+#timelineOuter #newMessage {
 	background: #f0f0f0;
 	text-align: center;
 	border: 1px #cdcdcd solid;
@@ -2000,7 +2004,7 @@ ul.attachments span.deletebutton:hover{
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-#timelineOuter .newMessage a,
+#timelineOuter #newMessage a,
 .timeline .readMore a {
 	display:block;
 	padding: 3px;
