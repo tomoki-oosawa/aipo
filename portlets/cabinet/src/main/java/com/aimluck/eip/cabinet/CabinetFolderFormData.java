@@ -144,23 +144,25 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     }
     FolderInfo rootFolderInfo = null;
     folder_hierarchy_list = CabinetUtils.getFolderList();
-    if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
-      int size = folder_hierarchy_list.size();
-      for (int i = 0; i < size; i++) {
-        FolderInfo info = folder_hierarchy_list.get(i);
-        info.setVisible(true);
-        if (info.getFolderId() == CabinetUtils.ROOT_FODLER_ID) {
-          rootFolderInfo = info;
-        }
-        if (info.getFolderId() == fid) {
-          selected_folderinfo = info;
+    if (folder_hierarchy_list != null) {
+      if (folder_hierarchy_list.size() > 0) {
+        int size = folder_hierarchy_list.size();
+        for (int i = 0; i < size; i++) {
+          FolderInfo info = folder_hierarchy_list.get(i);
+          info.setVisible(true);
+          if (info.getFolderId() == CabinetUtils.ROOT_FODLER_ID) {
+            rootFolderInfo = info;
+          }
+          if (info.getFolderId() == fid) {
+            selected_folderinfo = info;
+          }
         }
       }
-    }
-    CabinetUtils.setFolderVisibleForForm(folder_hierarchy_list, rundata);
+      CabinetUtils.setFolderVisibleForForm(folder_hierarchy_list, rundata);
 
-    if (selected_folderinfo == null) {
-      selected_folderinfo = rootFolderInfo;
+      if (selected_folderinfo == null) {
+        selected_folderinfo = rootFolderInfo;
+      }
     }
 
     groups = ALEipUtils.getMyGroups(rundata);
