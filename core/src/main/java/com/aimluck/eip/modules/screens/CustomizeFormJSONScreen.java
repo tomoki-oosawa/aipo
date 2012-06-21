@@ -180,7 +180,9 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     // --------------------------------------------------------------------------
 
     // 理由等 ：追加したポートレットを PSML に保存する．
-    doSaveAddAction(rundata, context, portlets);
+    if (portlets != null) {
+      doSaveAddAction(rundata, context, portlets);
+    }
 
     SessionState customizationState =
       ((JetspeedRunData) rundata).getPageSessionState();
