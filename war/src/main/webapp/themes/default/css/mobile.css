@@ -744,6 +744,12 @@ table.auiRowTable td.wTitl a {
 	text-align:right;
 }
 /***************************************************
+	auiListWrapper
+--------------------------------------------------*/
+.auiListWrapper {
+	height:230px;
+}
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none}
