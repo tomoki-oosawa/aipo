@@ -197,7 +197,9 @@ function hide_Attention(){
 
 <form enctype="multipart/form-data" method="post" action="" name="readcsv">
 <input type="hidden" value="$secid" name="secid" />
+#if($temp_folder)
 <input type="hidden" value="$temp_folder" name="temp_folder" />
+#end
 
 <table class="listTable wide">
 <tbody>
