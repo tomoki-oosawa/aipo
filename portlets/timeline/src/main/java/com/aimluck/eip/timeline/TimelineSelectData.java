@@ -421,7 +421,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineUrlResultData>> getUrls(
       List<Integer> parentIds) {
     if (parentIds == null || parentIds.size() == 0) {
-      return new HashMap<Integer, List<TimelineUrlResultData>>(parentIds.size());
+      return new HashMap<Integer, List<TimelineUrlResultData>>();
     }
     SelectQuery<EipTTimelineUrl> query = Database.query(EipTTimelineUrl.class);
     query.where(Operations.in(EipTTimelineUrl.TIMELINE_ID_PROPERTY, parentIds));
@@ -581,7 +581,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-            .contains("-1"))) {
+              .contains("-1"))) {
             iter.remove();
           }
         }
@@ -698,7 +698,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-            .contains("-1"))) {
+              .contains("-1"))) {
             iter.remove();
           }
         }
