@@ -25,8 +25,8 @@
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("timecardSettingsForm" $jslink $portlet "ExtTimecardSettingsFormJSONScreen" "aimluck.io.submit(this, '$indicator_id', '$!portlet.ID',aipo.timecardsettings.onReceiveMessage)")
+#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
+#ALajaxscreenformheader("timecardSettingsForm" $jslink $portlet "ExtTimecardSettingsFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.timecardsettings.onReceiveMessage)")
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired('勤務時間')")
 #ALtditemheader()

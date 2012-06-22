@@ -20,9 +20,9 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
-#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#ALajaxIndicator("$!indicator_id" "$!{portlet.ID}" "")
 <div id="exttimecardmessageDiv"></div>
-#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '${indicator_id}','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #ALtableheaderAtt("wide")
 <tr>
 

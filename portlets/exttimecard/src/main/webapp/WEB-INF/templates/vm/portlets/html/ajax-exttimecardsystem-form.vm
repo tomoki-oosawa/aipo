@@ -34,8 +34,8 @@
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("extTimecardSystemForm" $jslink $portlet "ExtTimecardSystemFormJSONScreen" "aimluck.io.submit(this, '$indicator_id', '$!portlet.ID',aipo.exttimecardsystem.onReceiveMessage)")
+#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
+#ALajaxscreenformheader("extTimecardSystemForm" $jslink $portlet "ExtTimecardSystemFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.exttimecardsystem.onReceiveMessage)")
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired('勤務形態')")
 #ALtditemheader()
