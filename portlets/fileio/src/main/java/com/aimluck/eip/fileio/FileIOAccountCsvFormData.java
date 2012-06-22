@@ -275,7 +275,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         }
         msg.append("のみです。");
         msgList.add(msg.toString());
-        username.setValue(null);
+        username.setValue(usernamestr);
       }
 
       // if (usernameList.contains(usernamestr)) {
