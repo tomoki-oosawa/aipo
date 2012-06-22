@@ -22,7 +22,7 @@
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doCabinet_list','1')))
 #set ($submenulist = [["ファイルを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);","images/icon/icon_add.gif"], ["フォルダを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <a title="ファイルを追加する" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadFileDialog);" class="auiButtonBold">ファイルを追加する</a>
 </div>
@@ -34,10 +34,10 @@
 ##全フォルダを表示するのでvisibleの条件は無視
 #if($record.isAuthorizedVisible())
 #if($record.HierarchyIndex <= 0)
-<div class="d1#if($result.SelectedFolderInfo.FolderId == $record.FolderId) active#end">
+<div class="d1#if("$result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
 #else
-<div class="d$index#if($result.SelectedFolderInfo.FolderId == $record.FolderId) active#end">
+<div class="d$index#if("$result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
 #end
 #end
