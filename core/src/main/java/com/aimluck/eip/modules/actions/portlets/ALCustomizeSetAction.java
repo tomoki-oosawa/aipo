@@ -697,21 +697,22 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       ((JetspeedRunData) rundata).getPageSessionState();
     customizationState.setAttribute("customize-mode", "layout");
 
-    // 理由等 ：追加したポートレット情報をセッションに反映冴えるため，
+    // 理由等 ：追加したポートレット情報をセッションに反映させるため，
     // リダイレクトでレイアウト設定画面に移行させた．
     JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-    rundata.setRedirectURI(jsLink
-      .getTemplate()
-      .addPathInfo("js_peid", set.getID())
-      .addPathInfo("mode", "layout")
-      .addQueryData("mtype", "html")
-      .addQueryData("action", "controls.Customize")
-      .toString());
-    rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-    jsLink = null;
-
+    if (set != null) {
+      rundata.setRedirectURI(jsLink
+        .getTemplate()
+        .addPathInfo("js_peid", set.getID())
+        .addPathInfo("mode", "layout")
+        .addQueryData("mtype", "html")
+        .addQueryData("action", "controls.Customize")
+        .toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      jsLink = null;
+    }
     /**
-     * Save changed wml profile
+     * fasdfadfa Save changed wml profile
      * --------------------------------------------------
      * ------------------------ last modified: 10/31/01 Andreas Kempf, Siemens
      * ICM S CP PE, Munich mailto: A.Kempf@web.de if (isWML) {
