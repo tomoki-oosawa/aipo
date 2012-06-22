@@ -46,8 +46,9 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('page_title'))")
 #ALtditem("#ALtextfield('page_title' $!result.PageTitle '90%' 10 'active')")
-#ALtdcaption("$!result.getFieldName('page_description')")
-#ALtditem("#ALtextfield('page_description' $!result.PageDescription '90%' 50 'active')")
+<input type="hidden" name="page_description" value="" />
+##ALtdcaption("$!result.getFieldName('page_description')")
+##ALtditem("#ALtextfield('page_description' $!result.PageDescription '90%' 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

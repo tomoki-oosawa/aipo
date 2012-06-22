@@ -196,6 +196,12 @@ function appsNaviSwitch() {
 						            </div>
 						            <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
 						        </li>
+
+								#if ($data.User.getUserName()!="admin")
+									<li class="addTab">
+										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="メニュータブを追加"><span>+</span></a>
+									</li>
+								#end
                               </ul>
                             </div>
 							#if("$!{activeurlselected}"!="")

@@ -25,7 +25,7 @@ aipo.page.onLoadPageDialog = function(portlet_id){
   if(obj){
      obj.focus();
   }
-  
+
 }
 
 aipo.page.onReceiveMessage = function(msg){
@@ -34,7 +34,7 @@ aipo.page.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        aipo.portletReload('page');
+        location.reload();
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
