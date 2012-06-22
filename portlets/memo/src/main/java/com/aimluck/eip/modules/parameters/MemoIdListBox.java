@@ -69,14 +69,18 @@ public class MemoIdListBox extends ListBox {
       int count = 1;
 
       EipTMemo memo = null;
-      Iterator<EipTMemo> iter = memos.iterator();
-      while (iter.hasNext()) {
-        memo = iter.next();
-        memoKeys[count] = memo.getMemoId().toString();
-        ALStringField dummy = new ALStringField();
-        dummy.setValue(memo.getMemoName());
-        memoValues[count] = dummy.toString();
-        count++;
+
+      if (memos != null && memos.size() > 0) {
+        Iterator<EipTMemo> iter = memos.iterator();
+
+        while (iter.hasNext()) {
+          memo = iter.next();
+          memoKeys[count] = memo.getMemoId().toString();
+          ALStringField dummy = new ALStringField();
+          dummy.setValue(memo.getMemoName());
+          memoValues[count] = dummy.toString();
+          count++;
+        }
       }
 
       this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
