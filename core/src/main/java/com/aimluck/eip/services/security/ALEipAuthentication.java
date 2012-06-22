@@ -197,10 +197,11 @@ public class ALEipAuthentication extends TurbineBaseService implements
     }
 
     // for security
-    rundata.getUser().setTemp(
-      ALEipConstants.SECURE_ID,
-      ALCommonUtils.getSecureRandomString());
-
+    if (rundata != null) {
+      rundata.getUser().setTemp(
+        ALEipConstants.SECURE_ID,
+        ALCommonUtils.getSecureRandomString());
+    }
     return user;
   }
 
