@@ -46,7 +46,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -265,10 +264,15 @@ public class BlogEntrySelectData extends
         "\\n",
         " ").replaceAll("\\r", " "));
       rd.setBlogId(record.getEipTBlog().getBlogId().longValue());
-      rd.setThemaId(record.getEipTBlogThema().getThemaId().longValue());
-      rd.setThemaName(ALCommonUtils.compressString(record
-        .getEipTBlogThema()
-        .getThemaName(), getStrLength()));
+
+      if (record.getEipTBlogThema() != null
+        && record.getEipTBlogThema().getThemaId() != null) {
+        rd.setThemaId(record.getEipTBlogThema().getThemaId().longValue());
+        rd.setThemaName(ALCommonUtils.compressString(record
+          .getEipTBlogThema()
+          .getThemaName(), getStrLength()));
+      }
+
       rd.setAllowComments("T".equals(record.getAllowComments()));
 
       rd.setTitleDate(record.getCreateDate());
