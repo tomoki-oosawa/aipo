@@ -22,9 +22,9 @@
 #set ($companyUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyListScreen")))
 ## ---------------------------------------------------------------------------
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#if($button_flag=="true")
+#if("$button_flag"=="true")
 #AUIbuttonAction("アドレスを追加する" "javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);")
 #else
 <a title="アドレスを追加する" href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">アドレスを追加する</a>
@@ -32,13 +32,13 @@
 </div>
 <div class="auiWidget clearfix">
 <ul>
-<li#if($result.currentTab == "syagai" && ! $!result.CurrentFilter ) class="active"#end>
+<li#if("$!result.currentTab" == "syagai" && ! $!result.CurrentFilter ) class="active"#end>
 #set($all = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData("eventSubmit_doAddressbook_list", "1").addQueryData("filter", "").addQueryData("filtertype", "group").addQueryData('tab','syagai')))
 <a href="javascript:void(0);" onclick="aipo.viewPage('$all', '$!portlet.ID');" >すべてのアドレス</a>
 </li>
 #if($result.GroupList.size()!=0)
 #foreach($record in $result.GroupList)
-<li#if($result.currentTab == "syagai" && $!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) class="active"#end>
+<li#if("$!result.currentTab" == "syagai" && $!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData('eventSubmit_doAddressbook_list', '1').addQueryData('filter', $!record.GroupId).addQueryData('filtertype', 'group').addQueryData('tab','syagai'))', '$!portlet.ID');" >$!record.GroupName</a>
 </li>
 #end
@@ -85,7 +85,7 @@
 <div>グループの指定 ⇒
 #ALselectpdheader("group" "90%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData("eventSubmit_doAddressbook_list", "1").addQueryData("filter", "").addQueryData("filtertype", "group"))">（グループ全体）</option>
-#if($!result.CurrentTab == "syagai")
+#if("$!result.CurrentTab" == "syagai")
 #foreach( $record in $result.GroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen').addQueryData("eventSubmit_doAddressbook_list", "1").addQueryData("filter", $!record.GroupId).addQueryData("filtertype", "group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) selected #end>$!record.GroupName</option>
 #end

@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if($result.CurrentTab != "corp")
+#if("$!result.CurrentTab" != "corp")
 #ALdialogheader("社外アドレス詳細")
 #else
 #ALdialogheader("社内アドレス詳細")
@@ -40,7 +40,7 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.NameKana))
 #ALtdcaption('メールアドレス')
 #ALtditem($result.getStringCR($!result.Detail.Email))
-#if($result.CurrentTab != "corp")
+#if("$!result.CurrentTab" != "corp")
 #ALtdcaption('電話番号')
 #ALtditem($!result.Detail.Telephone)
 #else
@@ -54,7 +54,7 @@ $!result.Detail.Name
 #ALtdcaption('携帯メールアドレス')
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
 
-#if($result.CurrentTab != "corp")
+#if("$!result.CurrentTab" != "corp")
 #ALtdcaption('会社')
 #ALtditemheader()
 #ALtableheaderSubWide()
@@ -86,7 +86,7 @@ $!record.Name <br />
 #end
 #ALtdcaption('役職名')
 #ALtditem($result.getStringCR($!result.Detail.PositionName))
-#if($result.CurrentTab != "corp")
+#if("$!result.CurrentTab" != "corp")
 #ALtdcaption('登録者名')
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
 #ALtdcaption('更新者名')
@@ -94,7 +94,7 @@ $!record.Name <br />
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#if($result.CurrentTab != "corp")
+#if("$!result.CurrentTab" != "corp")
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.addressbook.onLoadAddressbookDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onReceiveMessage")
 #end
 #ALajaxbuttonClose()

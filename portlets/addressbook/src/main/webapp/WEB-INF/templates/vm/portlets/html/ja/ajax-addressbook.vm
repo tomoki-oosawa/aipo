@@ -28,7 +28,7 @@
 #AUISummaryDivfooter()
 
 <input name="mode" type="hidden" value="ajaxsearch" />
-#if($!result.CurrentTab)
+#if("$!result.CurrentTab")
 #if($result.List.size() == 0)
 指定された条件に該当するアドレスはありません。<br />
 #else
