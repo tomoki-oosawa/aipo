@@ -1,5 +1,7 @@
 package com.aimluck.eip.util;
 
+import java.text.MessageFormat;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.localization.LocalizationTool;
@@ -26,5 +28,9 @@ public class ALLocalizationUtils {
       locale = new LocalizationTool();// 言語設定なし
     }
     return locale.get(key);
+  }
+
+  public static String getl10nFormat(String key, Object... values) {
+    return MessageFormat.format(getl10n(key), values);
   }
 }
