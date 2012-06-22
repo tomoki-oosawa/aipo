@@ -24,7 +24,7 @@
 #if($result.DateListKeys.size() == 0)
 <div class="message">指定された条件に該当するタイムカードはありません。</div>
 #else
-#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '${indicator_id}','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #if($!result.TargetUserId != "")
 <div class="auiSummaryMeta clearfix">
 <div class="auiSelectButton floatLeft">
@@ -50,7 +50,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
 #if(($result.MyGroupList.size() > 0) && ($result.PostMap.size() > 0))
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
 #end
 #foreach( $record in $!result.PostMap )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.GroupName.toString()}).addQueryData("target_user_id", "none"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
