@@ -362,24 +362,6 @@ public class WebMailUtils {
    * @param context
    * @throws Exception
    */
-  public static int getStatThread(String orgId, JetspeedUser user, int accountId)
-      throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      if (ALPop3MailReceiveThread.isProcessing(user, accountId)) {
-        return ALPop3MailReceiveThread.PROCESS_STAT_PROCESSING;
-      } else {
-        return ALPop3MailReceiveThread.getReceiveMailResult(user, accountId);
-      }
-    }
-  }
-
-  /**
-   * POP3 サーバと通信後の結果を取得する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
   public static String getStatStrThread(String orgId, JetspeedUser user,
       int accountId) throws Exception {
     synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
