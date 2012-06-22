@@ -112,13 +112,16 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         ALAccessControlConstants.VALUE_ACL_LIST);
 
     String portletId = portlets.getID();
-    String peid =
-      rundata.getParameters().getString(controller.getPaneParameter());
 
-    if (portletId.equals(peid)) {
-      SessionState state =
-        ((JetspeedRunData) rundata).getPortletSessionState(portletId);
-      state.setAttribute(JetspeedResources.PATH_PANEID_KEY, null);
+    if (controller != null) {
+      String peid =
+        rundata.getParameters().getString(controller.getPaneParameter());
+
+      if (portletId.equals(peid)) {
+        SessionState state =
+          ((JetspeedRunData) rundata).getPortletSessionState(portletId);
+        state.setAttribute(JetspeedResources.PATH_PANEID_KEY, null);
+      }
     }
 
     int count = 0;
