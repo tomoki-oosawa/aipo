@@ -176,33 +176,32 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
 
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
+
+      if (ALPortalApplicationService.isActive(portlet.getName())) {
+        super.doPerform(rundata, context);
+      } else {
+        rundata.getRequest().setAttribute("redirectTemplate", "Inactive.vm");
+      }
+
+      /*
+       * ポートレットタイトルを取るためにPortletInstanceを取得
+       */
+      PortletInstance portletInstance =
+        PersistenceManager.getInstance(portlet, jdata);
+
+      if (portletInstance == null) {
+        context.put("portletInstanceTitle", portlet.getTitle());
+      } else {
+        context.put("portletInstanceTitle", portletInstance.getTitle());
+      }
+
+      String redirectTemplate =
+        (String) rundata.getRequest().getAttribute("redirectTemplate");
+      if (redirectTemplate != null && redirectTemplate.length() > 0) {
+        setTemplate(rundata, redirectTemplate);
+        rundata.getRequest().setAttribute("redirectTemplate", null);
+      }
     }
-
-    if (ALPortalApplicationService.isActive(portlet.getName())) {
-      super.doPerform(rundata, context);
-    } else {
-      rundata.getRequest().setAttribute("redirectTemplate", "Inactive.vm");
-    }
-
-    /*
-     * ポートレットタイトルを取るためにPortletInstanceを取得
-     */
-    PortletInstance portletInstance =
-      PersistenceManager.getInstance(portlet, jdata);
-
-    if (portletInstance == null) {
-      context.put("portletInstanceTitle", portlet.getTitle());
-    } else {
-      context.put("portletInstanceTitle", portletInstance.getTitle());
-    }
-
-    String redirectTemplate =
-      (String) rundata.getRequest().getAttribute("redirectTemplate");
-    if (redirectTemplate != null && redirectTemplate.length() > 0) {
-      setTemplate(rundata, redirectTemplate);
-      rundata.getRequest().setAttribute("redirectTemplate", null);
-    }
-
     putData(rundata, context);
   }
 }
