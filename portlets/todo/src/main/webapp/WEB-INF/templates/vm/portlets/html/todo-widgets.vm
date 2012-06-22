@@ -25,7 +25,7 @@
 #set ($menues3 = [[$l10n.TODO_FINISH_TODO, "complete", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoListScreen').addQueryData('tab','complete').addQueryData('reset_params','true').addQueryData('reset_keyword_params','true')"]])
 
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction($l10n.TODO_TODO_ADD "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);")
 </div>
