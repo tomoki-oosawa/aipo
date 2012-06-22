@@ -26,10 +26,8 @@ import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -44,7 +42,6 @@ import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALMailReceiverContext;
-import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -304,82 +301,6 @@ public class SystemWebMailUtils {
     }
     sb.append("\"").append(unusualChars.get(length)).append("\"");
     return sb.toString();
-  }
-
-  /**
-   * POP3 サーバからメールを受信する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public static void receiveMailsThread(RunData rundata, Context context)
-      throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      JetspeedRunData jdata = (JetspeedRunData) rundata;
-      JetspeedUser user = (JetspeedUser) jdata.getUser();
-
-      // 現在使用中のアカウントIDを取得
-      int accountId = 0;
-      try {
-        accountId =
-          Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
-      } catch (Exception ex) {
-      }
-      if (accountId <= 0) {
-        return;
-      }
-
-      // アカウントがユーザーのものであるかどうかチェックする
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount(
-          Integer.parseInt(user.getUserId()),
-          accountId);
-      if (account == null) {
-        return;
-      }
-
-      if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
-        // メールと接続してなければ新規にスレッドを生成
-        Runnable receiver =
-          new ALPop3MailReceiveThread(
-            Database.createDataContext(Database.getDomainName()),
-            user,
-            accountId,
-            ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);
-        Thread mailthread = new Thread(receiver);
-
-        // ALStaticObject ob = ALStaticObject.getInstance();
-        // ob.updateAccountStat(accountId, ALPop3MailReceiveThread.KEY_THREAD,
-        // mailthread);
-        mailthread.start();
-      }
-    }
-  }
-
-  /**
-   * POP3 サーバから新着メール数を取得する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public static int getNewMailNumThread(String orgId, JetspeedUser user,
-      int accountId) throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      if (!ALPop3MailReceiveThread.isProcessing(user, accountId)) {
-        // メールと接続してなければ新規にスレッドを生成
-        Thread mailthread =
-          new Thread(new ALPop3MailReceiveThread(
-            Database.createDataContext(Database.getDomainName()),
-            user,
-            accountId,
-            ALPop3MailReceiveThread.PROCESS_TYPE_GET_NEWMAILNUM));
-        mailthread.start();
-      }
-
-      return ALPop3MailReceiveThread.getNewMailNum(user, accountId);
-    }
   }
 
   /**

@@ -356,20 +356,6 @@ public class WebMailUtils {
   }
 
   /**
-   * POP3 サーバと通信後の結果を取得する。
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
-  public static String getStatStrThread(String orgId, JetspeedUser user,
-      int accountId) throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
-      return ALPop3MailReceiveThread.getReceiveMailResultStr(user, accountId);
-    }
-  }
-
-  /**
    * 未読メール総数を取得する。
    * 
    * @param rundata
