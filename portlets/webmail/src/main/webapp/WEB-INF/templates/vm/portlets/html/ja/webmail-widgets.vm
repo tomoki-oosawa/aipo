@@ -19,15 +19,15 @@
 #set($sentLink = "$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent').addQueryData('folderid' ,'-1')")
 #set($newUrl_mailmaking = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen").addQueryData("entityid","new")))
 
-#if($type == "filter")
+#if("$type" == "filter")
 #set($screen = "WebMailFilterListScreen")
-#elseif($type == "folder")
+#elseif("$type" == "folder")
 #set($screen = "WebMailFolderListScreen")
 #else
 #set($screen = "WebMailListScreen")
 #end
 
-<div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
+<div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 #AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
 </div>
@@ -38,7 +38,7 @@
 #set ($i = 0)
 #foreach($record in $!result.FolderList)
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
-#if($i == 1)
+#if("$i" == 1)
 <li#if($result.currentTab == "sent") class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
 </li>

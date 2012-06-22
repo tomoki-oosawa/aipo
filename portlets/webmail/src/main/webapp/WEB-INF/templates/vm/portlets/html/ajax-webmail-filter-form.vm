@@ -56,7 +56,7 @@
 #ALtdcellheader()
 <select name="filter_type">
 #foreach($record in $!result.TypeList.keySet())
-#if ($record == $result.FilterType)
+#if ($record == "$result.FilterType")
 <option value="$record" selected="selected">${result.TypeList.get($record)}</option>
 #else
 <option value="$record">${result.TypeList.get($record)}</option>

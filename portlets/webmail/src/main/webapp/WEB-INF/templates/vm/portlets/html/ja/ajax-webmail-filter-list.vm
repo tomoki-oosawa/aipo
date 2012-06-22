@@ -47,7 +47,7 @@
 #ALajaxlistformheader('フィルタ')
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton("フィルターの適用順序を変える" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">
@@ -80,7 +80,7 @@ $!{record.FilterType}が$!{record.FilterString}を含む
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton("フィルターの適用順序を変える" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">
