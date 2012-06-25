@@ -217,13 +217,14 @@ public class WhatsNewSelectData extends
     List<EipTWhatsNew> result = query.fetchList();
     /** 既読物を抜く */
     List<EipTWhatsNew> filterd_result = new ArrayList<EipTWhatsNew>();
-    int size = result.size();
-    if (null != result && size > 0) {
-
-      for (int i = 0; i < size; i++) {
-        int id = result.get(i).getWhatsNewId().intValue();
-        if (parentIds.indexOf(id) == -1) {
-          filterd_result.add(result.get(i));
+    if (null != result) {
+      int size = result.size();
+      if (size > 0) {
+        for (int i = 0; i < size; i++) {
+          int id = result.get(i).getWhatsNewId().intValue();
+          if (parentIds.indexOf(id) == -1) {
+            filterd_result.add(result.get(i));
+          }
         }
       }
     }
