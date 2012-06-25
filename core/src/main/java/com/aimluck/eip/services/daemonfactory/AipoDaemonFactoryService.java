@@ -108,34 +108,6 @@ public class AipoDaemonFactoryService extends JetspeedDaemonFactoryService {
 
   }
 
-  /**
-   *
-   */
-  @Override
-  public void process(DaemonEntry entry) throws DaemonException {
-
-    DaemonThread dt = this.threads.get(entry.getName());
-
-    if (dt == null) {
-      start(entry);
-      dt = this.threads.get(entry.getName());
-    }
-
-    int status = this.getStatus(entry);
-
-    if (status != Daemon.STATUS_PROCESSING
-      && status != Daemon.STATUS_UNKNOWN
-      && dt != null) {
-      synchronized (dt) {
-        dt.notify();
-      }
-    }
-
-    if (dt != null && dt.isAlive() == false) {
-      dt.start();
-    }
-  }
-
   public ServletConfig getServletConfig() {
     return config;
   }
