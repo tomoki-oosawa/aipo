@@ -578,6 +578,10 @@ public class MsgboardTopicSelectData extends
       rd.setOwnerId(record.getOwnerId().longValue());
       rd.setOwnerName(ALEipUtils
         .getUserFullName(record.getOwnerId().intValue()));
+      ALEipUser user = ALEipUtils.getALEipUser(record.getOwnerId().intValue());
+      if (user != null) {
+        rd.setOwnerHasPhoto(user.hasPhoto());
+      }
       rd.setNote(record.getNote());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());

@@ -85,6 +85,9 @@ public class MsgboardTopicResultData implements ALData {
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
+  /** 顔写真フラグ */
+  private boolean has_photo;
+
   /**
    *
    *
@@ -111,6 +114,8 @@ public class MsgboardTopicResultData implements ALData {
 
     is_public = true;
     new_topic = false;
+
+    has_photo = false;
   }
 
   /**
@@ -316,6 +321,20 @@ public class MsgboardTopicResultData implements ALData {
 
   public ALNumberField getReplyCount() {
     return reply_count;
+  }
+
+  /**
+   * @return has_photo
+   */
+  public boolean isOwnerHasPhoto() {
+    return has_photo;
+  }
+
+  /**
+   * @param hasPhoto
+   */
+  public void setOwnerHasPhoto(boolean hasPhoto) {
+    this.has_photo = hasPhoto;
   }
 
 }

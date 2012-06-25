@@ -33,7 +33,7 @@
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
 	<caption>
 	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryName</span>$!{result.ParentTopic.TopicName}
-	</caption>	
+	</caption>
 		<tbody>
 			<tr>
 				<td>
@@ -44,14 +44,14 @@
 						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
 						#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 						#end
-					</div>			
+					</div>
 					<div class="avatar floatLeft mr10">
-						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
+						#if($!{result.ParentTopic.OwnerHasPhoto})
 							<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.ParentTopic.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 							#else
 							<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
-					</div>				
+					</div>
 					<div>
 						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}年$!{result.ParentTopic.CreateDate.Month}月$!{result.ParentTopic.CreateDate.Day}日$!{result.ParentTopic.CreateDate.Hour}時$!{result.ParentTopic.CreateDate.Minute}分
 					</div>
@@ -99,13 +99,13 @@
 					#end
 				</div>
 					<div class="avatar floatLeft mr10">
-						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
+						#if($!{record.OwnerHasPhoto})
 						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#else
 						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
 					</div>
-				<div class="alignleft"> 
+				<div class="alignleft">
 					<b>&nbsp;&nbsp;&nbsp;$!{record.OwnerName}</b><br>&nbsp;&nbsp;&nbsp;$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
 				</div>
 			</div>
