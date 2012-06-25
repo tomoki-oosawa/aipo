@@ -26,13 +26,13 @@
 <div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
 <ul>
-#ALsetCategoryList('all' 'すべてのアプリ')
-#ALsetCategoryList('Schedule' 'スケジュール')
-#ALsetCategoryList('Msgboard' '掲示板')
-#ALsetCategoryList('blog' 'ブログ')
-#ALsetCategoryList('todo' '共有ToDo')
-#ALsetCategoryList('Cabinet' '共有フォルダ')
-#ALsetCategoryList('GadgetAdd' 'Aipoアプリ')
+#ALsetCategoryList('all' $l10n.ACTIVITY_ALL_APP)
+#ALsetCategoryList('Schedule' $l10n.ACTIVITY_SCHEDULE)
+#ALsetCategoryList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
+#ALsetCategoryList('blog' $l10n.ACTIVITY_BLOG)
+#ALsetCategoryList('todo' $l10n.ACTIVITY_TODO)
+#ALsetCategoryList('Cabinet' $l10n.ACTIVITY_CABINET)
+#ALsetCategoryList('GadgetAdd' $l10n.ACTIVITY_AIPO_APP)
 </ul>
 </div>
 </div>

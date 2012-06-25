@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">更新情報はありません。</div>
+<div class="message">$l10n.ACTIVITY_NO_DATA</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">

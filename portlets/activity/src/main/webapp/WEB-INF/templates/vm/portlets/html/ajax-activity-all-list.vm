@@ -26,7 +26,7 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="ActivityAllListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a href="javascript:void(0);" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a href="javascript:void(0);" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.ACTIVITY_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -36,7 +36,7 @@
 ## 検索フォーム挿入場所
 ## ---------------------------------------------------------------------------
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当する更新情報はありません。</div>
+<div class="message">$l10n.ACTIVITY_ALERT_NO_YOUR_SELECT</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('ActivityAllListScreen' $result)
@@ -53,13 +53,13 @@
 ## ---------------------------------------------------------------------------
 ## #ALajaxsort('content' '内容' $result 'ActivityAllListScreen')
 ## ---------------------------------------------------------------------------
-内容
+$l10n.ACTIVITY_CONTENT
 </div></th>
 <th class="w20">
-名前
+$l10n.ACTIVITY_NAME
 </th>
 <th class="thin">
-更新日
+$l10n.ACTIVITY_UPDATE_DATE
 </th>
 </tr>
 #foreach ($record in $result.List)
@@ -68,7 +68,7 @@
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #end
-<div><a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!{record.PopupUrl}&js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a></div>
+<div><a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a></div>
 </td>
 <td><div>$!{record.DisplayName}</div></td>
 <td nowrap="nowrap" class="right">$!record.UpdateDate</td>

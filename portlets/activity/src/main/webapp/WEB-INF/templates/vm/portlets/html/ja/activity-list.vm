@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["更新情報一覧", ""]])
+#set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.ACTIVITY_LIST", ""]])
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/activity/form.js")
 <script language="JavaScript" type="text/javascript">
