@@ -189,10 +189,10 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       PortletInstance portletInstance =
         PersistenceManager.getInstance(portlet, jdata);
 
-      if (portletInstance == null) {
-        context.put("portletInstanceTitle", portlet.getTitle());
-      } else {
+      if (portletInstance != null) {
         context.put("portletInstanceTitle", portletInstance.getTitle());
+      } else {
+        context.put("portletInstanceTitle", portlet.getTitle());
       }
 
       String redirectTemplate =
