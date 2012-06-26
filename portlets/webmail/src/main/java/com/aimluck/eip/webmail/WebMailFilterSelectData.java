@@ -53,9 +53,8 @@ public class WebMailFilterSelectData extends
     ALAbstractSelectData<EipTMailFilter, EipTMailFilter> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(WebMailFilterSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WebMailFilterSelectData.class.getName());
 
   /** フィルタID */
   String filterId = null;
@@ -142,9 +141,11 @@ public class WebMailFilterSelectData extends
     }
 
     // メールアカウントIDをセッションに保存
-    ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, mailAccount
-      .getAccountId()
-      .toString());
+    if (mailAccount != null) {
+      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, mailAccount
+        .getAccountId()
+        .toString());
+    }
 
     // フォルダリストを取得
     mailFolderList = WebMailUtils.getMailFolderAll(mailAccount);
