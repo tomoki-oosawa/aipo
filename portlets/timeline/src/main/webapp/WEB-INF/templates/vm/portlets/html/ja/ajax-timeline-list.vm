@@ -72,7 +72,6 @@
 </div>
 
 #if($result.List.size() == 0)
-	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div class="tlDisplayChanger">
 			<div class="btn">
 				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
@@ -109,6 +108,7 @@
 				</ul>
 			</div>
 		</div>
+	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
 			<div id="" class="message">
 			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
@@ -117,12 +117,6 @@
 		</div>
 	</div>
 #else
-  #if($result.ContentHeightMax == 0)
-    <div id="timeline_$!{portlet.ID}" class="timeline">
-  #else
-    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
-  #end
-  <img src="images/common/dot.gif" width="1" height="1" onload="if(aipo.hasOwnProperty('timeline')) {aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop'); }" style="display:none" />
   	<div class="tlDisplayChanger">
 		<div class="btn">
 			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
@@ -159,6 +153,12 @@
 			</ul>
 		</div>
 	</div>
+  #if($result.ContentHeightMax == 0)
+    <div id="timeline_$!{portlet.ID}" class="timeline">
+  #else
+    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
+  #end
+  <img src="images/common/dot.gif" width="1" height="1" onload="if(aipo.hasOwnProperty('timeline')) {aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop'); }" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
 	#parse("/portlets/html/ja/ajax-timeline-content.vm")
   </div>

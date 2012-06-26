@@ -29,5 +29,6 @@
 #end
 <input type="hidden" id="last_timelineId_$!{portlet.ID}" value="$last_timelineId" />
 #foreach ($record in $result.List)
+#if($currentPage == 1 && $velocityCount == 1) #set($firstCss = " first")#else #set($firstCss = "")#end
 	#parse("/portlets/html/ja/ajax-timeline-content-inner.vm")
 #end
