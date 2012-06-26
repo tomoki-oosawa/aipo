@@ -19,14 +19,14 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($action_str = "返信する")
-#set ($subtitle = '報告書詳細')
+#set ($action_str = $l10n.REPORT_REPLY)
+#set ($subtitle = $l10n.REPORT_DETAIL)
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("報告書詳細")
+#ALdialogheader($l10n.REPORT_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("書き込み")##delete時メッセージ
+#ALajaxdetailformheader($l10n.REPORT_INSERTION)##delete時メッセージ
 #ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
 <tr>
 <td colspan="2">
@@ -35,7 +35,7 @@
 #else
 <img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" class="floatLeft mr10" />
 #end
-<div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString('yyyy年M月d日H時m分')}</div>
+<div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if($result.ParentReport.isSelfReport())
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
@@ -44,31 +44,31 @@
 </div>
 </td>
 </tr>
-#ALtdcaption('社内参加者')
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_MENVERS)
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MemberList)
 $!record.AliasName<br />
 #end
 #ALtditemfooter()
-#ALtdcaption('日時')
-#ALtditem("$!{result.ParentReport.StartDate.toString('yyyy年M月d日H時m分')}～$!{result.ParentReport.EndDate.toString('H時m分')}")
-#ALtdcaption('内容')
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
+#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}～$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_NOTE)
 #ALtditem($!{result.ParentReport.Note})
 #if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
-#ALtdcaption('添付ファイル')
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
 <a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
 #end
 #ALtditemfooter()
 #end
-#ALtdcaption('通知先')
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_POSITIONS)
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MapList)
 #if($result.ParentReport.getStatus($record.UserId.Value) == "R")
-<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt="既読" title="既読"/>
+<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.REPORT_READ title=$l10n.REPORT_READ/>
 #else
-<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt="未読" title="未読"/>
+<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.REPORT_UNREAD title=$l10n.REPORT_UNREAD/>
 #end
 $!record.AliasName
 <br />
@@ -77,7 +77,7 @@ $!record.AliasName
 #ALtablefooter()
 #if($!result.CoReportList && $!result.CoReportList.size() > 0)
 ##pageview($link $result)
-#ALtableheaderWideWithCaption("書き込み")
+#ALtableheaderWideWithCaption($l10n.REPORT_INSERTION)
 #set($firstCoReport = true)
 #foreach ($record in $result.CoReportList)
 #set($firstCoReport = false)
@@ -133,14 +133,14 @@ ${record.Note}
 #ALtditemheader()
 <textarea class="text wide" name="note" rows="5" cols="40">$!resultOnReportDetail.Note</textarea>
 #ALtditemfooter()
-#ALtdcaption("添付ファイル")
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
 #ALtditemheader()
 <div class="floatLeft mr10">
 <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 </div>
 <ul id="attachments_$!portlet.ID" class="attachments">
   #foreach($record in $!result.AttachmentFileNameList )
-   <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+   <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.REPORT_DELETE</span></li>
   #end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
@@ -148,7 +148,7 @@ ${record.Note}
 #ALtablefooter()
 #end
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value=$l10n.REPORT_ADD onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

@@ -19,22 +19,22 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.REPORT_ADD)
 #set ($event_submit = "eventSubmit_doReport_insert")
-#set ($subtitle = '報告書追加')
+#set ($subtitle = $l10n.REPORT_REPORT_ADDING)
 #set ($modesrv = "insert")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = '報告書編集')
+#set ($action_str = $l10n.REPORT_UPDATE)
+#set ($subtitle = $l10n.REPORT_REPORT_EDIT)
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="report_val_member1" style="display:none">参加ユーザー選択</span>
-<span id="report_val_member2" style="display:none">通知先選択</span>
-<span id="report_val_member3" style="display:none">選択画面を隠す</span>
+<span id="report_val_member1" style="display:none">$l10n.REPORT_SELECT_MENVERS</span>
+<span id="report_val_member2" style="display:none">$l10n.REPORT_SELECT_NOTIFY_POSITION</span>
+<span id="report_val_member3" style="display:none">$l10n.REPORT_HIDE_SELECT_MENU</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
@@ -51,28 +51,28 @@
 #ALtextfield('report_name' $!result.ReportName '90%' 50 'active')
 #ALtditemfooter()
 
-#ALtdcaption("#ALrequired('社内参加者')")
+#ALtdcaption("#ALrequired($l10n.REPORT_SETFIELDNAME_MENVERS)")
 
 #ALtditemheader()
 <div id="memberFieldButton"></div>
 <div id="memberField" style="display:none;">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">左側に社内参加者を追加してください。</div>
+    <div class="spaceTop spaceLeft small">$l10n.REPORT_ADD_MENVER_MSG</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="社内参加者一覧"
+        memberToTitle=$l10n.REPORT_MEMVER_LIST
         memberToId="members"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectPreOptionValue=$l10n.REPORT_ALL_GROUP
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -86,7 +86,7 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('createDate'))")
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="日付" hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt=$l10n.REPORT_DATE hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
 <br />
 <select name="startDate_hour" size="1">
 #foreach ( $num in [0..23] )
@@ -119,39 +119,39 @@
 
 
 
-#ALtdcaption("添付ファイル")
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
 #ALtditemheader()
 <div class="floatLeft mr10">
 	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 </div>
 	<ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.REPORT_DELETE</span></li>
 	#end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 #ALtditemfooter()
-#ALtdcaption("#ALrequired('通知先')")
+#ALtdcaption("#ALrequired($l10n.REPORT_SETFIELDNAME_POSITIONS)")
 #ALtditemheader()
 <div id="mapFieldButton"></div>
 <div id="mapField">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">左側に通知先を追加してください。</div>
+    <div class="spaceTop spaceLeft small">$l10n.REPORT_ADD_NOTIFY_POSITION_MSG</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="mapnormalselect"
         widgetId="mapnormalselect"
         buttonAddId="button_map_add"
         buttonRemoveId="button_map_remove"
         memberFromId="tmp_map_from"
-        memberToTitle="通知先一覧"
+        memberToTitle=$l10n.REPORT_NOTIFY_POSITION_LIST
         memberToId="positions"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_map_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectPreOptionValue=$l10n.REPORT_ALL_GROUP
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -166,7 +166,7 @@
 #ALtablefooter()
 
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value=$l10n.REPORT_ADD onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

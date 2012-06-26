@@ -66,6 +66,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 報告書のフォームデータを管理するクラスです。 <BR>
@@ -162,26 +163,30 @@ public class ReportFormData extends ALAbstractFormData {
   public void initField() {
     // 更新日時
     createDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
-    createDate.setFieldName("日時");
+    createDate.setFieldName(ALLocalizationUtils
+      .getl10n("REPORT_SETFIELDNAME_CREATEDATE"));
     // 報告時間
     startDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
     endDate = new ALDateTimeField(ReportUtils.DATE_TIME_FORMAT);
     // 報告書名
     report_name = new ALStringField();
-    report_name.setFieldName("タイトル");
+    report_name.setFieldName(ALLocalizationUtils
+      .getl10n("REPORT_SETFIELDNAME_REPORT_NAME"));
     report_name.setTrim(true);
     report_name.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_NOTE"));
     note.setTrim(false);
     // 通知先のリスト
     positions = new ALStringField();
-    positions.setFieldName("通知先");
+    positions.setFieldName(ALLocalizationUtils
+      .getl10n("REPORT_SETFIELDNAME_POSITIONS"));
     positions.setTrim(true);
     // 社内参加者のリスト
     members = new ALStringField();
-    members.setFieldName("社内参加者");
+    members.setFieldName(ALLocalizationUtils
+      .getl10n("REPORT_SETFIELDNAME_MENVERS"));
     members.setTrim(true);
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();
@@ -567,7 +572,11 @@ public class ReportFormData extends ALAbstractFormData {
             mapList,
             ALEipUtils.getUserId(rundata),
             false);
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]報告書";
+        String subject =
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]"
+            + ALLocalizationUtils.getl10n("REPORT_REPORT");
         String orgId = Database.getDomainName();
 
         List<ALAdminMailMessage> messageList =
@@ -601,7 +610,7 @@ public class ReportFormData extends ALAbstractFormData {
 
       }
     } catch (Exception ex) {
-      msgList.add("メールを送信できませんでした。");
+      msgList.add(ALLocalizationUtils.getl10n("REPORT_ALERT_DONOT_SEND"));
       logger.error("Exception", ex);
       return false;
     }
@@ -735,7 +744,11 @@ public class ReportFormData extends ALAbstractFormData {
             mapList,
             ALEipUtils.getUserId(rundata),
             false);
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]報告書";
+        String subject =
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]"
+            + ALLocalizationUtils.getl10n("REPORT_REPORT");
         String orgId = Database.getDomainName();
 
         List<ALAdminMailMessage> messageList =
@@ -769,7 +782,7 @@ public class ReportFormData extends ALAbstractFormData {
 
       }
     } catch (Exception ex) {
-      msgList.add("メールを送信できませんでした。");
+      msgList.add(ALLocalizationUtils.getl10n("REPORT_ALERT_DONOT_SEND"));
       logger.error("Exception", ex);
       return false;
     }

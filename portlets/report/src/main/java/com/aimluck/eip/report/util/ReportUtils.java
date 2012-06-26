@@ -71,6 +71,7 @@ import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 報告書のユーティリティクラスです。 <BR>
@@ -698,7 +699,8 @@ public class ReportUtils {
           filebean = new FileuploadLiteBean();
           filebean.initField();
           filebean.setFolderName("photo");
-          filebean.setFileName("以前の写真ファイル");
+          filebean.setFileName(ALLocalizationUtils
+            .getl10n("REPORT_PREVIOUS_PICTURE_FILE"));
           fileNameList.add(filebean);
         } else {
           BufferedReader reader = null;
@@ -850,10 +852,13 @@ public class ReportUtils {
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
 
-      StringBuilder b = new StringBuilder("報告書「");
+      StringBuilder b =
+        new StringBuilder(ALLocalizationUtils.getl10n("REPORT_REPORT") + "「");
 
       b.append(report.getReportName()).append("」").append(
-        type ? "の確認依頼を出しました。" : "を編集しました。");
+        type
+          ? ALLocalizationUtils.getl10n("REPORT_SEND_REQUEST_MSG")
+          : ALLocalizationUtils.getl10n("REPORT_UPDATED_MSG"));
 
       String portletParams =
         new StringBuilder("?template=ReportDetailScreen")
@@ -893,9 +898,11 @@ public class ReportUtils {
         ALActivity.getRecentActivity("Report", report.getReportId(), 1f);
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
-      StringBuilder b = new StringBuilder("報告書「");
+      StringBuilder b =
+        new StringBuilder(ALLocalizationUtils.getl10n("REPORT_REPORT") + "「");
 
-      b.append(report.getReportName()).append("」").append("に返信しました。");
+      b.append(report.getReportName()).append("」").append(
+        ALLocalizationUtils.getl10n("REPORT_REPLY_MSG"));
 
       String portletParams =
         new StringBuilder("?template=ReportDetailScreen")
@@ -944,22 +951,27 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
+    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
+      type
+        ? ALLocalizationUtils.getl10n("REPORT_ADD_MSG")
+        : ALLocalizationUtils.getl10n("REPORT_UPDATED_MSG")).append(CR).append(
+      CR);
     body
-      .append("さんが報告書")
-      .append(type ? "を追加しました。" : "を編集しました。")
-      .append(CR)
-      .append(CR);
-    body
-      .append("[タイトル]")
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
       .append(CR)
       .append(report.getReportName().toString())
       .append(CR);
-    body.append("[日時]").append(CR).append(
-      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_CREATEDATE") + "]")
+      .append(CR)
+      .append(
+        translateDate(report.getCreateDate(), ALLocalizationUtils
+          .getl10n("REPORT_TIME")))
+      .append(CR);
 
     if (report.getNote().toString().length() > 0) {
       body
-        .append("[内容]")
+        .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_NOTE") + "]")
         .append(CR)
         .append(report.getNote().toString())
         .append(CR);
@@ -968,7 +980,10 @@ public class ReportUtils {
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append("[社内参加者]").append(CR);
+      body.append(
+        "["
+          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_MENVERS")
+          + "]").append(CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -982,7 +997,9 @@ public class ReportUtils {
     if (mapList != null) {
       int size = mapList.size();
       int i;
-      body.append("[通知先]").append(CR);
+      body.append(
+        "[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_POSITIONS") + "]").append(
+        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -993,17 +1010,18 @@ public class ReportUtils {
       body.append(CR);
     }
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
-      body.append("・社外").append(CR);
+      body
+        .append("・" + ALLocalizationUtils.getl10n("REPORT_OUTSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
+      body
+        .append("・" + ALLocalizationUtils.getl10n("REPORT_IN_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
 
@@ -1038,23 +1056,31 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
+    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
+      type
+        ? ALLocalizationUtils.getl10n("REPORT_ADD_MSG")
+        : ALLocalizationUtils.getl10n("REPORT_UPDATED_MSG")).append(CR).append(
+      CR);
     body
-      .append("さんが報告書")
-      .append(type ? "を追加しました。" : "を編集しました。")
-      .append(CR)
-      .append(CR);
-    body
-      .append("[タイトル]")
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
       .append(CR)
       .append(report.getReportName().toString())
       .append(CR);
-    body.append("[日時]").append(CR).append(
-      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_CREATEDATE") + "]")
+      .append(CR)
+      .append(
+        translateDate(report.getCreateDate(), ALLocalizationUtils
+          .getl10n("REPORT_TIME")))
+      .append(CR);
 
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append("[社内参加者]").append(CR);
+      body.append(
+        "["
+          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_MENVERS")
+          + "]").append(CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -1067,7 +1093,9 @@ public class ReportUtils {
     if (mapList != null) {
       int size = mapList.size();
       int i;
-      body.append("[通知先]").append(CR);
+      body.append(
+        "[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_POSITIONS") + "]").append(
+        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -1086,11 +1114,8 @@ public class ReportUtils {
       logger.error("Exception", ex);
       return "";
     }
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
@@ -1124,31 +1149,43 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
-    body.append("さんが報告書").append("に返信しました。").append(CR).append(CR);
-    body.append("[タイトル]").append(CR).append(
-      reportparentreport.getReportName().toString()).append(CR);
-    body.append("[返信日時]").append(CR).append(
-      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG"))
+      .append(ALLocalizationUtils.getl10n("REPORT_REPLY_MSG"))
+      .append(CR)
+      .append(CR);
+    body
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
+      .append(CR)
+      .append(reportparentreport.getReportName().toString())
+      .append(CR);
+    body.append(
+      "[" + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE") + "]").append(
+      CR).append(
+      translateDate(report.getCreateDate(), ALLocalizationUtils
+        .getl10n("REPORT_TIME"))).append(CR);
 
     if (report.getNote().toString().length() > 0) {
       body
-        .append("[返信内容]")
+        .append(
+          "[" + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_NOTE") + "]")
         .append(CR)
         .append(report.getNote().toString())
         .append(CR);
     }
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
-      body.append("・社外").append(CR);
+      body
+        .append("・" + ALLocalizationUtils.getl10n("REPORT_OUTSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
+      body
+        .append("・" + ALLocalizationUtils.getl10n("REPORT_IN_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
 
@@ -1182,11 +1219,21 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
-    body.append("さんが報告書").append("に返信しました。").append(CR).append(CR);
-    body.append("[タイトル]").append(CR).append(
-      reportparentreport.getReportName().toString()).append(CR);
-    body.append("[返信日時]").append(CR).append(
-      translateDate(report.getCreateDate(), "yyyy年M月d日H時m分")).append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG"))
+      .append(ALLocalizationUtils.getl10n("REPORT_REPLY_MSG"))
+      .append(CR)
+      .append(CR);
+    body
+      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
+      .append(CR)
+      .append(reportparentreport.getReportName().toString())
+      .append(CR);
+    body.append(
+      "[" + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE") + "]").append(
+      CR).append(
+      translateDate(report.getCreateDate(), ALLocalizationUtils
+        .getl10n("REPORT_TIME"))).append(CR);
     body.append(CR);
 
     ALEipUser destUser;
@@ -1196,11 +1243,8 @@ public class ReportUtils {
       logger.error("Exception", ex);
       return "";
     }
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
