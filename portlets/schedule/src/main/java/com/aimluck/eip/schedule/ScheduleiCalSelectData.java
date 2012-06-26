@@ -82,7 +82,8 @@ public class ScheduleiCalSelectData extends ScheduleSearchSelectData {
       null,
       -1,
       -1,
-      false);
+      false,
+      true);
   }
 
   @Override

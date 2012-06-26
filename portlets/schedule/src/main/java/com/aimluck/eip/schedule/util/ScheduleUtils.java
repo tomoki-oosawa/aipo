@@ -791,7 +791,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3603,13 +3603,14 @@ public class ScheduleUtils {
       null,
       -1,
       -1,
+      false,
       false);
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
-      boolean isSearch) {
+      boolean isSearch, boolean isiCal) {
 
     StringBuilder select = new StringBuilder();
 
@@ -3638,6 +3639,8 @@ public class ScheduleUtils {
       select.append(" eip_t_schedule.note,");
       select.append(" eip_t_schedule_map.user_id,");
       select.append(" eip_t_schedule_map.type,");
+    } else if (isiCal) {
+      select.append(" eip_t_schedule.note,");
     }
     select.append(" eip_t_schedule.edit_flag,");
     select

@@ -56,6 +56,9 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   private int userid;
 
+  /** 内容 */
+  private ALStringField description;
+
   /**
    * 
    * @param action
@@ -144,7 +147,8 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       target_keyword.getValue(),
       getCurrentPage(),
       getRowsNum(),
-      true);
+      true,
+      false);
   }
 
   /**
@@ -201,6 +205,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
       rd.setNote(record.getNote());
       rd.setPlace(record.getPlace());
+      rd.setDescription(record.getNote());
 
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
@@ -247,6 +252,15 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
    */
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  /**
+   * 内容を設定します。
+   * 
+   * @param string
+   */
+  public void setDescription(String string) {
+    description.setValue(string);
   }
 
 }

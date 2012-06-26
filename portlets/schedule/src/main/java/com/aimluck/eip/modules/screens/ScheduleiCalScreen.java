@@ -37,6 +37,7 @@ import net.fortuna.ical4j.model.WeekDay;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
 import net.fortuna.ical4j.model.property.ExDate;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.Method;
@@ -210,6 +211,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       String place = rd.getPlace().getValue();
       if (place != null && place.length() > 0) {
         event.getProperties().add(new Location(place));
+      }
+
+      String description = rd.getDescription().getValue();
+      if (description != null && description.length() > 0) {
+        event.getProperties().add(new Description(description));
       }
 
       event.getProperties().add(
