@@ -266,7 +266,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         username.setValue(null);
       }
 
-      if (!AccountUtils.isValidSymbolUserName(usernamestr)) {
+      if (usernamestr != null
+        && !AccountUtils.isValidSymbolUserName(usernamestr)) {
         StringBuffer msg =
           new StringBuffer("『 <span class='em'>ユーザー名</span> 』に使用できる記号は");
         List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
