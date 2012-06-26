@@ -1768,7 +1768,8 @@ ul.attachments span.deletebutton:hover{
 	clear:both;
 	border-top: 1px solid #dcdcdc;
 }
-#timelineOuter .message:first-child {
+#timelineOuter .message:first-child,
+.message.first {
 	border-top: none !important;
 	padding-top:0 !important;
 	margin-top:0 !important;
