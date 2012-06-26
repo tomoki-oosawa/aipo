@@ -19,12 +19,13 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($action_str = "追加する")
-#set ($subtitle= "会社情報追加")
+#set ($action_str = $l10n.ADDRESSBOOK_ADD)
+
+#set ($subtitle= $l10n.ADDRESSBOOK_COMPANY_ADDITION)
 #set ($event_submit = "eventSubmit_doAddressbook_company_insert")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle= "会社情報編集")
+#set ($action_str = $l10n.ADDRESSBOOK_UPDATE)
+#set ($subtitle= $l10n.ADDRESSBOOK_COMPANY_EDITION)
 #set ($event_submit = "eventSubmit_doAddressbook_company_update")
 #end
 #set($tabs = [[$subtitle, "",""]])

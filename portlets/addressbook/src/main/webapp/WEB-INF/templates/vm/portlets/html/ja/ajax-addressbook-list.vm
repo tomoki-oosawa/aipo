@@ -38,24 +38,24 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="AddressBookListScreen"/>
 <input class="text floatLeft" type="text" name="sword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.SearchWord"/>
-<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.ADDRESSBOOK_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 #AUISummaryDivfooter()
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #if(!($result.hasAuthorityList))
-  アクセス権限がありません。管理者にお問い合わせください。
+  $l10n.ADDRESSBOOK_PERMISSION_DENIED
 #else
 #if($result.List.size() == 0)
-指定された条件に該当するアドレスはありません。<br />
+$l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #else
 
-#ALajaxlistformheader('アドレス')
+#ALajaxlistformheader($l10n.ADDRESSBOOK_ADDRESS)
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ADDRESSBOOK_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addPathInfo("mode", "ajaxsearch").addPathInfo('filter', "$!result.getCurrentFilter()").addPathInfo('filtertype', 'group').addPathInfo("tab", "$!result.currentTab")))
-<a class="auiButton" title="表示中の一覧をダウンロード" href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >表示中の一覧をダウンロード</a>
+<a class="auiButton" title=$l10n.ADDRESSBOOK_DOWNLOAD_LIST href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >$l10n.ADDRESSBOOK_DOWNLOAD_LIST</a>
 <input type="hidden" name="sword" value="$!result.searchWord"/>
 </div>
 #AUIajaxpageview(${pageviewscreen} $result)
@@ -68,11 +68,11 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-<th>#ALajaxsortaddressbook('name_kana' '名前' $result 'AddressBookListScreen')</th>
-<th>#ALajaxsortaddressbook('company_name_kana' '会社名' $result 'AddressBookListScreen')</th>
-#ALtdheadAtt('メールアドレス' 'class="mb_hide"')
-#ALtdheadAtt('電話番号' 'class="mb_hide"')
-#ALtdheadAtt('携帯番号' 'class="mb_hide"')
+<th>#ALajaxsortaddressbook('name_kana' $l10n.ADDRESSBOOK_NAME $result 'AddressBookListScreen')</th>
+<th>#ALajaxsortaddressbook('company_name_kana' $l10n.ADDRESSBOOK_COMPANY_NAME $result 'AddressBookListScreen')</th>
+#ALtdheadAtt($l10n.ADDRESSBOOK_EMAIL 'class="mb_hide"')
+#ALtdheadAtt($l10n.ADDRESSBOOK_TELEPHONE 'class="mb_hide"')
+#ALtdheadAtt($l10n.ADDRESSBOOK_CELLPHONE 'class="mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -80,7 +80,7 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');">$!record.Name</a></div>
 #if($!record.PublicFlag.toString() == 'F')
-<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開" />
+<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.ADDRESSBOOK_CLOSE_PUBLIC title=$l10n.ADDRESSBOOK_CLOSE_PUBLIC />
 #end
 #ALtdcellfooter()
 #ALtdcellheader()
@@ -94,9 +94,9 @@
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ADDRESSBOOK_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addQueryData("mode", "ajaxsearch").addQueryData("sword", "$!result.searchWord").addQueryData('filter', "$!result.getCurrentFilter()").addQueryData('filtertype', 'group').addQueryData("tab", "$!result.currentTab")))
-#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#AUIbutton($l10n.ADDRESSBOOK_DOWNLOAD_LIST $dlLink)
 </div>
 #AUISummaryDivfooter()
 </form>

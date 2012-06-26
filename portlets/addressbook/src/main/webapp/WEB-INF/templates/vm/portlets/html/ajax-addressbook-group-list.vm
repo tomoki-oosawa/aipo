@@ -21,40 +21,40 @@
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["アドレスを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],["会社情報を追加する","javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],["グループを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
-#set ($indicator_str = "データを送信")
+#set ($submenulist = [[$l10n.ADDRESSBOOK_ADDRESS_ADD,"javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);","images/icon/icon_add.gif"],[$l10n.ADDRESSBOOK_COMPANY_ADD,"javascript:aipo.common.showDialog('$newUrl3','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);","images/icon/icon_add.gif"],[$l10n.ADDRESSBOOK_GROUP_ADD,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);","images/icon/icon_add.gif"]])
+#set ($indicator_str = $l10n.ADDRESSBOOK_SEND_DATA)
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
-<h2>グループの管理</h2>
+<h2>$l10n.ADDRESSBOOK_GROUP_MANAGEMENT</h2>
 #if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
+#AUIbuttonAction($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p></div>
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('グループ')
+#ALajaxlistformheader($l10n.ADDRESSBOOK_GROUP)
 #end
 #if($result.List.size() ==0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("グループを追加する"  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
+#AUIbuttonAction($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
 #else
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}$l10n.ADDRESSBOOK_PROCESSING_NOW")
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ADDRESSBOOK_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 </div>
 #AUIajaxpageview('AddressBookGroupListScreen' $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsortaddressbook('group_name' 'グループ名' $result 'AddressBookGroupListScreen')")
+#ALtdhead("#ALajaxsortaddressbook('group_name' $l10n.ADDRESSBOOK_GROUP_NAME $result 'AddressBookGroupListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -67,7 +67,7 @@
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ADDRESSBOOK_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 </div>
 #AUIajaxpageview('AddressBookGroupListScreen' $result)
 #AUISummaryDivfooter()

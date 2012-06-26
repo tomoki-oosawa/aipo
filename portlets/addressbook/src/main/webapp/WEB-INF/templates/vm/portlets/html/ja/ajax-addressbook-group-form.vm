@@ -19,14 +19,14 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
-#set ($subtitle= "社外グループ追加")
+#set ($indicator_str = $l10n.ADDRESSBOOK_SEND_DATA)
+#set ($action_str = $l10n.ADDRESSBOOK_ADD)
+#set ($subtitle= $l10n.ADDRESSBOOK_OUT_GROUP_ADDITION)
 #set ($event_submit = "eventSubmit_doAddressbook_group_insert")
 #else
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
-#set ($subtitle= "社外グループ編集")
+#set ($indicator_str = $l10n.ADDRESSBOOK_SEND_DATA)
+#set ($action_str = $l10n.ADDRESSBOOK_UPDATE)
+#set ($subtitle= $l10n.ADDRESSBOOK_OUT_GROUP_EDITION)
 #set ($event_submit = "eventSubmit_doAddressbook_group_update")
 #end
 #set($tabs = [[$subtitle, "",""]])
@@ -35,7 +35,7 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}$l10n.ADDRESSBOOK_PROCESSING_NOW")
 #ALajaxscreenformheader("ABABGroup" $jslink $portlet "AddressBookGroupFormJSONScreen" "aimluck.io.selectAllOptions(this.address_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.addressbook.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
@@ -45,23 +45,23 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('group_name'))")
 #ALtditem("#ALtextfield('group_name' $!result.GroupName '90%' 50 'active')")
-#ALtdcaption("所属メンバー")
+#ALtdcaption($l10n.ADDRESSBOOK_BELONG_MEMBER)
 #ALtditemheader()
-<div class="spaceTop spaceLeft small">左側に所属メンバーを追加してください。</div>
+<div class="spaceTop spaceLeft small">$l10n.ADDRESSBOOK_BELONG_MEMBER_ADD</div>
 <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="所属メンバー一覧"
+        memberToTitle=$l10n.ADDRESSBOOK_BELONG_MEMBER_LIST
         memberToId="address_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','all')"
         memberFromOptionKey="addressId"
         memberFromOptionValue="fullName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="all"
-        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectPreOptionValue=$l10n.ADDRESSBOOK_ALL_GROUP
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')"

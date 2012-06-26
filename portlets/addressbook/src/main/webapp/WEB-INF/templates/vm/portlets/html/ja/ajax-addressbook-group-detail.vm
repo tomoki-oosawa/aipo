@@ -20,14 +20,14 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("社外グループ詳細")
+#ALdialogheader($l10n.ADDRESSBOOK_OUT_GROUP_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
-#ALajaxdetailformheader("グループ")
+#ALajaxdetailformheader($l10n.ADDRESSBOOK_GROUP)
 #ALtableheaderWide()
-#ALtdcaption('グループ名')
+#ALtdcaption($l10n.ADDRESSBOOK_GROUP_NAME)
 #ALtditem("$result.getStringCR($!result.Detail.GroupName)")
-#ALtdcaption('グループメンバー')
+#ALtdcaption($l10n.ADDRESSBOOK_GROUP_MEMBER)
 #ALtditemheader()
 #set ($memberlist = $!result.getGroupMemberList($!{result.Detail.GroupId.Value.toString()}))
 #if($!memberlist.size() > 0)
@@ -38,7 +38,7 @@ $!{membername}#if($count < $size)<br />#end
 #set($count = $count + 1)
 #end
 #else
-このグループにはメンバーが指定されていません。
+$l10n.ADDRESSBOOK_MISSING_MEMBER
 #end
 #ALtditemfooter()
 #ALtablefooter()
