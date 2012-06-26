@@ -72,7 +72,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
-  protected String viewtype;
+  protected String listViewtype;
 
   private ScheduleListContainer con;
 
@@ -92,7 +92,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     super.init(action, rundata, context);// 表示タイプの設定
 
-    viewtype = "list";
+    listViewtype = "list";
     // POST/GET から yyyy-MM-dd の形式で受け渡される。
     // 前の日
     prevDate = new ALDateTimeField("yyyy-MM-dd");
@@ -339,7 +339,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
    */
   @Override
   public String getViewtype() {
-    return viewtype;
+    return listViewtype;
   }
 
   /**
