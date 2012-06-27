@@ -373,12 +373,6 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         return false;
       }
 
-      if (routeobj.getRouteId().intValue() == 1) {
-        // カテゴリ「未分類」は削除不可
-        msgList.add("分類名『 <span class='em'>未分類</span> 』は削除できません。");
-        return false;
-      }
-
       List<EipTWorkflowRequest> requests =
         WorkflowUtils.getEipTWorkflowRequest(routeobj);
       for (EipTWorkflowRequest request : requests) {
