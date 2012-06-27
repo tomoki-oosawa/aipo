@@ -18,20 +18,20 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["勤務時間設定", "",""]])
+#set($tabs = [[$l10n.EXTTIMECARD_WORKTIME_SETTING, "",""]])
 ## ---------------------------------------------------------------------------
 #ALajaxtabheader($tabs "")
 #ALspacebothheader()
 #ALformheader('ExtTimecardSettings' $jslink $portlet)
 #ALtableheaderWide()
-#ALtdcaption("勤務時間")
+#ALtdcaption($l10n.EXTTIMECARD_WORKTIME)
 #ALtditemheader()
 $!{result.Detail.StartTime} ～ $!{result.Detail.EndTime}
 #ALtditemfooter()
-#ALtdcaption("休憩時間")
+#ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()
-<h3>勤務時間内の場合</h3><span class="strong">$!{result.Detail.WorktimeIn}</span>分の勤務に対して、休憩時間は<span class="strong">$!{result.Detail.ResttimeIn}</span>分<br />
-<h3>勤務時間外の場合</h3><span class="strong">$!{result.Detail.WorktimeOut}</span>分の勤務に対して、休憩 時間は<span class="strong">$!{result.Detail.ResttimeOut}</span>分
+<h3>$l10n.EXTTIMECARD_WORKTIME_IN</h3><span class="strong">$!{result.Detail.WorktimeIn}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE<span class="strong">$!{result.Detail.ResttimeIn}</span>$l10n.EXTTIMECARD_MINUTE<br />
+<h3>$l10n.EXTTIMECARD_WORKTIME_OUT</h3><span class="strong">$!{result.Detail.WorktimeOut}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE<span class="strong">$!{result.Detail.ResttimeOut}</span>$l10n.EXTTIMECARD_MINUTE
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

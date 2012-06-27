@@ -18,9 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
-#set ($subtitle = 'タイムカード編集')
+#set ($action_str = $l10n.EXTTIMECARD_UPDATE)
+#set ($subtitle = $l10n.EXTTIMECARD_TIMECARD_EDIT)
 #set ($event_submit = "eventSubmit_doExtTimecard_update")
 #set ($tabs = [[$subtitle, "",""]])
 #set ($indicator_id = "indicator-dlg-")
@@ -31,7 +30,7 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "$l10n.EXTTIMECARD_SEND_DATA")
 
 #if($!result.IsPast)
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.onSubmit(this); aimluck.io.submit(this,'$!indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
@@ -62,12 +61,12 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('type'))")
 #ALtditemheader()
-<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">&nbsp;出勤</label>
-<input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">&nbsp;欠勤</label>
-<input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;有休</label>
-<input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">&nbsp;代休</label>
-<input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">&nbsp;その他</label>
-<input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;未選択</label>
+<input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_PUNCH_IN</label>
+<input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_ABSENT_DAY</label>
+<input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_PAID_HOLIDAY</label>
+<input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY</label>
+<input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_OTHER</label>
+<input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_NO_SELECT</label>
 #ALtditemfooter()
 
 #if($!result.IsPast)
@@ -82,40 +81,40 @@
 <select name="clock_in_time_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
-<option value="$num" #if ($!result.ClockInTime.Hour == "$num") selected="selected" #end>$num時</option>
+<option value="$num" #if ($!result.ClockInTime.Hour == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
 #end
 #if ($end_hour > -1)
 #set($num = 23)
 #foreach ( $num2 in [0..$end_hour] )
 #set($num = $num + 1)
-<option value="$num" #if ($!result.ClockInTime.Hour == "$num2") selected="selected" #end>$num2時</option>
+<option value="$num" #if ($!result.ClockInTime.Hour == "$num2") selected="selected" #end>$num2$l10n.EXTTIMECARD_HOUR</option>
 #end
 #end
 </select>
 <select name="clock_in_time_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.ClockInTime.Minute == "$num") selected="selected" #end>$num分</option>
+<option value="$num" #if ($!result.ClockInTime.Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
 ～
 <select name="clock_out_time_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
-<option value="$num" #if ($!result.ClockOutTime.Hour == "$num") selected="selected" #end>$num時</option>
+<option value="$num" #if ($!result.ClockOutTime.Hour == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
 #end
 #if ($end_hour > -1)
 #set($num = 23)
 #foreach ( $num2 in [0..$end_hour] )
 #set($num = $num + 1)
-<option value="$num" #if ($!result.ClockOutTime.Hour == "$num2") selected="selected" #end>$num2時</option>
+<option value="$num" #if ($!result.ClockOutTime.Hour == "$num2") selected="selected" #end>$num2$l10n.EXTTIMECARD_HOUR</option>
 #end
 #end
 </select>
 <select name="clock_out_time_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.ClockOutTime.Minute == "$num") selected="selected" #end>$num分</option>
+<option value="$num" #if ($!result.ClockOutTime.Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
 #ALtditemfooter()
@@ -129,40 +128,40 @@
 <select name=outgoing_time$!{outcome}_hour id="outgoing_time$!{outcome}_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
-<option value="$num" #if ($!result.getOutgoingTime($outcome).Hour == "$num") selected="selected" #end>$num時</option>
+<option value="$num" #if ($!result.getOutgoingTime($outcome).Hour == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
 #end
 #if ($end_hour > -1)
 #set($num = 23)
 #foreach ( $num2 in [0..$end_hour] )
 #set($num = $num + 1)
-<option value="$num" #if ($!result.getOutgoingTime($outcome).Hour == "$num2") selected="selected" #end>$num2時</option>
+<option value="$num" #if ($!result.getOutgoingTime($outcome).Hour == "$num2") selected="selected" #end>$num2$l10n.EXTTIMECARD_HOUR</option>
 #end
 #end
 </select>
 <select name=outgoing_time$!{outcome}_minute id="outgoing_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>$num分</option>
+<option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
 ～
 <select name=comeback_time$!{outcome}_hour id="comeback_time$!{outcome}_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
-<option value="$num" #if ($!result.getComebackTime($outcome).Hour == "$num") selected="selected" #end>$num時</option>
+<option value="$num" #if ($!result.getComebackTime($outcome).Hour == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
 #end
 #if ($end_hour > -1)
 #set($num = 23)
 #foreach ( $num2 in [0..$end_hour] )
 #set($num = $num + 1)
-<option value="$num" #if ($!result.getComebackTime($outcome).Hour == "$num2") selected="selected" #end>$num2時</option>
+<option value="$num" #if ($!result.getComebackTime($outcome).Hour == "$num2") selected="selected" #end>$num2$l10n.EXTTIMECARD_HOUR</option>
 #end
 #end
 </select>
 <select name=comeback_time$!{outcome}_minute id="comeback_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.getComebackTime($outcome).Minute == "$num") selected="selected" #end>$num分</option>
+<option value="$num" #if ($!result.getComebackTime($outcome).Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
 <input class="minus$outcome" type="button" name="minus$outcome" id="minus$outcome" value="-" onClick="aipo.exttimecard.hideOutCome(this)" />

@@ -18,39 +18,39 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["勤務時間設定", "",""]])
+#set($tabs = [[$l10n.EXTTIMECARD_WORKTIME_SETTING, "",""]])
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS("勤務形態詳細" "aipo.exttimecardsystem.hideDialog()")
+#ALdialogheaderCloseJS($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS_DETAIL "aipo.exttimecardsystem.hideDialog()")
 #ALspacebothheader()
 #ALformheader('ExtTimecardSettings' $jslink $portlet)
 #ALtableheaderWide()
-#ALtdcaption("勤務形態")
+#ALtdcaption($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
 #ALtditemheader()
 $!{result.Detail.SystemName}
 #ALtditemfooter()
-#ALtdcaption("勤務時間")
+#ALtdcaption($l10n.EXTTIMECARD_WORKTIME)
 #ALtditemheader()
-${result.Detail.StartHour}時${result.Detail.StartMinute}分 ～ $!{result.Detail.EndHour}時${result.Detail.EndMinute}分
+${result.Detail.StartHour}$l10n.EXTTIMECARD_HOUR${result.Detail.StartMinute}$l10n.EXTTIMECARD_MINUTE ～ $!{result.Detail.EndHour}$l10n.EXTTIMECARD_HOUR${result.Detail.EndMinute}$l10n.EXTTIMECARD_MINUTE
 #ALtditemfooter()
-#ALtdcaption("開始日")
+#ALtdcaption($l10n.EXTTIMECARD_START_DAY)
 #ALtditemheader()
-${result.Detail.StartDay}日
+${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 #ALtditemfooter()
-#ALtdcaption("休憩時間")
+#ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()
-<h3 class="mb5">勤務時間内の場合</h3><p><span class="strong">$!{result.Detail.WorkTimeIn}</span>分の勤務に対して、休憩時間は<span class="strong">$!{result.Detail.RestTimeIn}</span>分</p>
-<h3 class="mb5">勤務時間外の場合</h3><p><span class="strong">$!{result.Detail.WorkTimeOut}</span>分の勤務に対して、休憩時間は<span class="strong">$!{result.Detail.RestTimeOut}</span>分</p>
+<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_IN</h3><p><span class="strong">$!{result.Detail.WorkTimeIn}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME<span class="strong">$!{result.Detail.RestTimeIn}</span>$l10n.EXTTIMECARD_MINUTE</p>
+<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_OUT</h3><p><span class="strong">$!{result.Detail.WorkTimeOut}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME<span class="strong">$!{result.Detail.RestTimeOut}</span>$l10n.EXTTIMECARD_MINUTE</p>
 #ALtditemfooter()
-#ALtdcaption("日付切替時刻")
+#ALtdcaption($l10n.EXTTIMECARD_CHANGE_HOUR)
 #ALtditemheader()
-<div class="spaceTop">$!{result.Detail.ChangeHour}時を過ぎると次の日のタイムカードに切り替えます。</div>
+<div class="spaceTop">$!{result.Detail.ChangeHour}$l10n.EXTTIMECARD_CHANGE_HOUR_DETAIL</div>
 #ALtditemfooter()
-#ALtdcaption("外出時間")
+#ALtdcaption($l10n.EXTTIMECARD_OUTGOINGTIME)
 #ALtditemheader()
 #if($result.Detail.OutgoingAddFlag == "T")
-	外出を勤怠時間に含める
+	$l10n.EXTTIMECARD_ADD_OUTGOINGTIME
 #else
-	外出を勤怠時間に含めない
+	$l10n.EXTTIMECARD_DONT_ADD_OUTGOINGTIME
 #end
 #ALtditemfooter()
 #ALtablefooter()

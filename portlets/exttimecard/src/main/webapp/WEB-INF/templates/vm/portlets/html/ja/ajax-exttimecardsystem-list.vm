@@ -26,23 +26,23 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["ユーザー", "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
+#set($tab = [$l10n.EXTTIMECARD_USER, "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["勤務形態", "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
+#set($tab = [$l10n.EXTTIMECARD_WORKING_ARRANGEMENTS, "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
 </div>
-#AUIbuttonAction("勤務形態を追加する" "javascript:aipo.common.showDialog('$addSystem','$!portlet.ID',aipo.exttimecardsystem.onLoadFormDialog);")
+#AUIbuttonAction($l10n.EXTTIMECARD_ADDING_WORKING_ARRANGEMENTS "javascript:aipo.common.showDialog('$addSystem','$!portlet.ID',aipo.exttimecardsystem.onLoadFormDialog);")
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('勤務形態')
+#ALajaxlistformheader($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
 #if($result.List.size() == 0)
-指定された条件に該当する勤務形態はありません。<br />
+$l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.EXTTIMECARD_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
 #ALajaxIndicator("$!indicator_id" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('ExtTimecardSystemListScreen' $result)
@@ -54,7 +54,7 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('system_name' '勤務形態' $result 'ExtTimecardSystemListScreen')")
+#ALtdhead("#ALajaxsort('system_name' $l10n.EXTTIMECARD_WORKING_ARRANGEMENTS $result 'ExtTimecardSystemListScreen')")
 
 </tr>
 #foreach ($record in $result.List)
@@ -74,7 +74,7 @@
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.EXTTIMECARD_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
 </div>
 #AUIajaxpageview('ExtTimecardSystemListScreen' $result)
 #AUISummaryDivfooter()

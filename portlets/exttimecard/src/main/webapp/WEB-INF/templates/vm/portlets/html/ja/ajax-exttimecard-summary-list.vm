@@ -24,28 +24,28 @@
 
 #set($user_results = $result.GroupExtTimecards)
 #if($user_results.size() == 0)
-<div class="message">指定されたグループにはユーザーが所属していません。</div>
+<div class="message">$l10n.EXTTIMECARD_NO_USER_IN_THIS_GROUP</div>
 #else
 
 <div class="auiSummaryMeta clearfix">
 <div class="auiSelectButton floatLeft">
 <ul class="floatLeft">
 <li style="margin-right:10px;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月</span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_CURRENT_MONTH class="btn" style="width:4em;"><span>$l10n.EXTTIMECARD_CURRENT_MONTH</span></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="先月" /></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_PREV_MONTH class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt=$l10n.EXTTIMECARD_PREV_MONTH /></span></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="来月" /></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_NEXT_MONTH class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt=$l10n.EXTTIMECARD_NEXT_MONTH /></span></a>
 </li>
 </ul>
 </div>
-<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
+<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} $l10n.EXTTIMECARD_YEAR $!{result.ViewMonth.Month} $l10n.EXTTIMECARD_MONTH</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardSummaryXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('target_group_name', "$!result.TargetGroupName").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
-#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
 </div>
 #end
 </div>
@@ -68,32 +68,32 @@
 </div>
 #AUIrowTableWide()
 <tr>
-#ALtdheadW25("名前")
-#ALtdheadW25("勤務形態")
-#ALtdheadThin("就業")
-#ALtdheadThin("残業")
-#ALtdheadThin("休出")
-#ALtdheadThin("遅刻")
-#ALtdheadThin("早退")
-#ALtdheadThin("欠勤")
-#ALtdheadThin("有休")
-#ALtdheadThin("代休")
-#ALtdheadThin("その他")
-#ALtdheadThin("未入力")
+#ALtdheadW25($l10n.EXTTIMECARD_NAME)
+#ALtdheadW25($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
+#ALtdheadThin($l10n.EXTTIMECARD_WORK_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_OVERTIME_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_OFF_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_LATE_COMING_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_EARLY_LEAVING_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_ABSENT_DAY)
+#ALtdheadThin($l10n.EXTTIMECARD_PAID_HOLIDAY)
+#ALtdheadThin($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY)
+#ALtdheadThin($l10n.EXTTIMECARD_OTHER)
+#ALtdheadThin($l10n.EXTTIMECARD_NOT_INPUT)
 </tr>
 #foreach ($key in $user_results)
 <tr>
 #ALtdcellAtt("$!{key.UserName}" "nowrap='nowrap'")
 #ALtdcellAtt("$!{key.SystemName}" "nowrap='nowrap'")
-#ALtdcellAtt("$!{key.WorkDay}日<br>（$!{key.WorkHour}時間）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OvertimeDay}日<br>（$!{key.OvertimeHour}時間）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OffDay}日<br>（$!{key.OffHour}時間）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.LateComingDay}日" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.EarlyLeavingDay}日" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.AbsentDay}日" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.PaidHoliday}日" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.CompensatoryHoliday}日" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OtherDay}日" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.OffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.LateComingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.EarlyLeavingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.AbsentDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.PaidHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.CompensatoryHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.OtherDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
 #ALtdcellAtt("$!{key.NoInput}" "nowrap='nowrap' align='center'")
 </tr>
 #end

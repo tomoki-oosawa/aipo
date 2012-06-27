@@ -22,30 +22,30 @@
 #AUIcontentsAreaHeader()
 
 #if($result.DateListKeys.size() == 0)
-<div class="message">指定された条件に該当するタイムカードはありません。</div>
+<div class="message">$l10n.EXTTIMECARD_NO_TIMECARD_MESSAGE</div>
 #else
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #if($!result.TargetUserId != "")
 <div class="auiSummaryMeta clearfix">
 <div class="auiSelectButton floatLeft">
 <ul class="floatLeft">
-<li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="今月へ" class="btn" style="width:4em;"><span>今月</span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="先月へ" class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="先月" /></span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="来月へ" class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="来月" /></span></a></li>
+<li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_CURRENT_MONTH class="btn" style="width:4em;"><span>$l10n.EXTTIMECARD_CURRENT_MONTH</span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_PREV_MONTH class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt=$l10n.EXTTIMECARD_PREV_MONTH /></span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_NEXT_MONTH class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt=$l10n.EXTTIMECARD_NEXT_MONTH /></span></a></li>
 </ul>
 </div>
-<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} 年 $!{result.ViewMonth.Month} 月</strong></div>
+<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} $l10n.EXTTIMECARD_YEAR $!{result.ViewMonth.Month} $l10n.EXTTIMECARD_MONTH</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
-#AUIbutton("表示中の一覧をダウンロード" $dlLink)
+#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
 </div>
 #end
 </div>
 <div class="auiSummaryMeta">
 <div class="auiForm">
 <select name="target_group_name_list" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="mw49">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">すべてのグループ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">$l10n.EXTTIMECARD_ALL_GROUP</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
@@ -70,16 +70,16 @@
 #end
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("日付")
-#ALtdheadAtt("勤務形態" "class='thin mb_hide'")
-#ALtdheadThin("出勤")
-#ALtdheadThin("退勤")
-#ALtdheadThin("外出")
-#ALtdheadThin("復帰")
-#ALtdheadAtt("就業" "class='thin mb_hide'")
-#ALtdheadAtt("残業" "class='thin mb_hide'")
-#ALtdheadAtt("休出" "class='thin mb_hide'")
-#ALtdheadAtt("修正理由、備考" "class='wide mb_hide'")
+#ALtdheadThin($l10n.EXTTIMECARD_DATE)
+#ALtdheadAtt($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS "class='thin mb_hide'")
+#ALtdheadThin($l10n.EXTTIMECARD_PUNCH_IN)
+#ALtdheadThin($l10n.EXTTIMECARD_PUNCH_OUT)
+#ALtdheadThin($l10n.EXTTIMECARD_OUTGOING)
+#ALtdheadThin($l10n.EXTTIMECARD_COMEBACK)
+#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='thin mb_hide'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='thin mb_hide'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='thin mb_hide'")
+#ALtdheadAtt($l10n.EXTTIMECARD_REASON_REMARKS "class='wide mb_hide'")
 </tr>
 
 #foreach ($rdlist in $result.DateListKeys)
@@ -135,15 +135,15 @@
   #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
     <td nowrap='nowrap' align='center' colspan='6' class="$class">
     #if($!{rd.IsTypeA})
-欠勤
+$l10n.EXTTIMECARD_ABSENT_DAY
     #elseif($!{rd.IsTypeH})
-有休
+$l10n.EXTTIMECARD_PAID_HOLIDAY
     #elseif($!{rd.IsTypeC})
- 代休
+$l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
     #elseif($!{rd.IsTypeE})
-その他
+$l10n.EXTTIMECARD_OTHER
     #elseif($!{rd.IsTypeP})
-出勤
+$l10n.EXTTIMECARD_PUNCH_IN
     #end
     </td>
   #else
@@ -158,13 +158,13 @@
 
   <td class='$class mb_hide'>
   #if($!{rd.ReasonFlg})
-修正理由：$!{rd.Reason}
+$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
 	、
     #end
   #end
   #if($!{rd.RemarksFlg})
-備考：$!{rd.Remarks}
+$l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
   </td>
 
@@ -173,37 +173,37 @@
 #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
   <td nowrap='nowrap' align='center' colspan='7' class="$class">
   #if($!{rd.IsTypeA})
-      欠勤
+      $l10n.EXTTIMECARD_ABSENT_DAY
   #elseif($!{rd.IsTypeH})
-      有休
+      $l10n.EXTTIMECARD_PAID_HOLIDAY
   #elseif($!{rd.IsTypeC})
-      代休
+      $l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
   #elseif($!{rd.IsTypeE})
-      その他
+      $l10n.EXTTIMECARD_OTHER
   #end
   </td>
   <td class='$class mb_hide'>
   #if($!{rd.ReasonFlg})
-修正理由：$!{rd.Reason}
+$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
 	、
     #end
   #end
   #if($!{rd.RemarksFlg})
-備考：$!{rd.Remarks}
+$l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
   </td>
 
 #else
   #if($rdlist.IsNotNullClockInTime)
-        #ALtdcellAtt("$!{rd.ClockInTime.Hour}時$!{rd.ClockInTime.Minute}分" "nowrap='nowrap' align='center'")
+        #ALtdcellAtt("$!{rd.ClockInTime.Hour}$l10n.EXTTIMECARD_HOUR$!{rd.ClockInTime.Minute}$l10n.EXTTIMECARD_MINUTE" "nowrap='nowrap' align='center'")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
-          <td nowrap="nowrap" align="center"><input type="button" value="出勤" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '出勤');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
+          <td nowrap="nowrap" align="center"><input type="button" value=$l10n.EXTTIMECARD_PUNCH_IN class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
         #else
-          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
         #end
       #else
         #ALtdcellAtt('' "")
@@ -214,7 +214,7 @@
   #end
 
   #if($rdlist.IsNotNullClockOutTime)
-    #ALtdcellAtt("$!{rd.ClockOutTime.Hour}時$!{rd.ClockOutTime.Minute}分" "nowrap='nowrap' align='center' ")
+    #ALtdcellAtt("$!{rd.ClockOutTime.Hour}$l10n.EXTTIMECARD_HOUR$!{rd.ClockOutTime.Minute}$l10n.EXTTIMECARD_MINUTE" "nowrap='nowrap' align='center' ")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
@@ -222,15 +222,15 @@
           #set($q = '"')
           #if($rdlist.IsNotNullClockInTime)
             #if($rdlist.IsClockOverTime)
-              #set($leaving = "<input type=${q}button${q} value=${q}退勤${q} class=${q}auiButtonAction${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
+              #set($leaving = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_PUNCH_OUT${q} class=${q}auiButtonAction${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '$l10n.EXTTIMECARD_PUNCH_OUT');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
             #else
-              #set($leaving = "<input type=${q}button${q} value=${q}退勤${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '退勤');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
+              #set($leaving = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_PUNCH_OUT${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchout');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchout', '$l10n.EXTTIMECARD_PUNCH_OUT');dojo.byId('form$!portlet.ID').onsubmit();${q} />")
             #end
           #else
-              #set($leaving = "<span class='auiButtonDisabled'>退勤</span>")
+              #set($leaving = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_PUNCH_OUT</span>")
           #end
         #else
-          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput('未入力' $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
         #end
       #else
         #ALtdcellAtt('' "")
@@ -275,30 +275,30 @@
   #if($class == "today" && $!result.TargetUserId == $!result.UserId)
   	##退勤ボタンの出力
   	#if($isOutgoing == 1)
-	  #set($leaving = "<span class='auiButtonDisabled'>退勤</span>")
+	  #set($leaving = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_PUNCH_OUT</span>")
 	#end
 	#if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていないならボタンを出力
 	  #ALtdcellAtt($leaving "align='center' nowrap='nowrap'")
 	#end
 
   	#if(!($rdlist.IsNotNullClockInTime)) ## 出勤ボタンが押されていない
-  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">外出</span></td>
-  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">復帰</span></td>
+  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_OUTGOING</span></td>
+  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_COMEBACK</span></td>
   	#else
   	  #if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていない
   	  	#set($q = '"')
   	    #if($isOutgoing == 0) ## 外出していない
   	      #if($outgoings == "") ##一番最初だけ２つとも表示
-  	        #set($outgoings = "<input type=${q}button${q} value=${q}外出${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
-  	        #set($comebacks = "<span class='auiButtonDisabled'>復帰</span>")
+  	        #set($outgoings = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', $l10n.EXTTIMECARD_OUTGOING);dojo.byId('form$!portlet.ID').onsubmit();${q}>")
+  	        #set($comebacks = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_COMEBACK</span>")
       	  #else
-  	        #set($outgoings = "$outgoings<br><input type=${q}button${q} value=${q}外出${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '外出');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
+  	        #set($outgoings = "$outgoings<br><input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
   	      #end
   	    #else
   	      #if($comebacks != "") ##一番最初以外は改行が必要
   	        #set($comebacks = "$comebacks<br>");
       	  #end
-		  #set($comebacks = "$comebacks<input type=${q}button${q} value=${q}復帰${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '復帰');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
+		  #set($comebacks = "$comebacks<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_COMEBACK${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_COMEBACK');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
   	    #end
   	  #end
   	#end
@@ -315,13 +315,13 @@
 
   <td class='$class mb_hide '>
   #if($!{rd.ReasonFlg})
-  修正理由：$!{rd.Reason}
+$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
   	、
     #end
   #end
   #if($!{rd.RemarksFlg})
-備考：$!{rd.Remarks}
+$l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
   </td>
 #end
@@ -334,7 +334,7 @@
 #AUItablefooter()
 
 #else
-<div class="message">指定されたグループにはユーザーが所属していません。</div>
+<div class="message">$l10n.EXTTIMECARD_NO_USER_IN_THIS_GROUP</div>
 #end
 
 

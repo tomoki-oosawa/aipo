@@ -28,4 +28,3 @@
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-exttimecardsystem-user-list.vm")
-#parse("/portlets/html/ja/exttimecardsystem-menu.vm")

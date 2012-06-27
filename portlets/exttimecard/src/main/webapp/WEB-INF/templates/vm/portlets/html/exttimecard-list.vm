@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["タイムカード一覧", ""]])
+#set ($navilist = [[$l10n.EXTTIMECARD_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.EXTTIMECARD_TIMECARD_LIST, ""]])
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/exttimecardsystem/form.js")

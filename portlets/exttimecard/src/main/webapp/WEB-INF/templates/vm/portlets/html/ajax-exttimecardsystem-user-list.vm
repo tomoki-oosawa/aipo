@@ -23,7 +23,7 @@
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">すべての部署</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">$l10n.EXTTIMECARD_ALL_POST</option>
 #foreach( $record in $result.PostMap )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post"))" #if ($!result.CurrentFilter && "$!result.CurrentFilter" == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
 #end
@@ -32,9 +32,9 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["ユーザー", "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
+#set($tab = [$l10n.EXTTIMECARD_USER, "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["勤務形態", "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
+#set($tab = [$l10n.EXTTIMECARD_WORKING_ARRANGEMENTS, "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
@@ -42,10 +42,10 @@
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 <form class="auiForm" name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
-<input type="hidden" name="_name" value="ユーザー" />
+<input type="hidden" name="_name" value=$l10n.EXTTIMECARD_USER />
 <input type="hidden" name="secid" value="$secid" />
 #if($result.List.size() == 0)
-指定された条件に該当するユーザーはありません。<br />
+$l10n.EXTTIMECARD_ALERT_NO_USER<br />
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)
@@ -59,9 +59,9 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('name_kana' '名前' $result 'ExtTimecardSystemMapListScreen')")
-#ALtdhead("部署名")
-#ALtdhead("勤務形態")
+#ALtdhead("#ALajaxsort('name_kana' $l10n.EXTTIMECARD_NAME $result 'ExtTimecardSystemMapListScreen')")
+#ALtdhead($l10n.EXTTIMECARD_POST_NAME)
+#ALtdhead($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -96,8 +96,8 @@ $!postname.AliasName
 <option value="$!{record.SystemId}">$!record.SystemName</option>
 #end
 </select>
-に
-#AUIajaxbuttonCheckboxAction('変更する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapFormJSONScreen').addQueryData('mode','multi_change')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+$l10n.EXTTIMECARD_CHANGE_SYSTEMNAME
+#AUIajaxbuttonCheckboxAction($l10n.EXTTIMECARD_CHANGE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapFormJSONScreen').addQueryData('mode','multi_change')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
 </div>
 #AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)
 #AUISummaryDivfooter()

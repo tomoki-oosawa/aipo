@@ -56,6 +56,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカードのフォームデータを管理するクラスです。 <BR>
@@ -174,25 +175,31 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     user_id = new ALNumberField();
 
     type = new ALStringField();
-    type.setFieldName("種類");
+    type.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_KINDS"));
     type.setValue("");
 
     punch_date = new ALDateTimeField();
-    punch_date.setFieldName("日付");
+    punch_date.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_DATE"));
 
     clock_in_time = new ALDateTimeField();
-    clock_in_time.setFieldName("勤怠時間");
+    clock_in_time.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME"));
     clock_out_time = new ALDateTimeField();
 
     outgoing_comeback = new ALDateTimeField();
-    outgoing_comeback.setFieldName("外出時間");
+    outgoing_comeback.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_OUTGOINGTIME"));
 
     reason = new ALStringField();
-    reason.setFieldName("修正理由");
+    reason.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_REASON"));
     reason.setValue("");
 
     remarks = new ALStringField();
-    remarks.setFieldName("備考");
+    remarks.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_REMARKS"));
     remarks.setValue("");
 
     create_date = new ALDateField();
@@ -297,7 +304,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
     try {
       if (type.getValue().equals("")) {
-        msgList.add("『 <span class='em'>種類</span> 』を選択してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("EXTTIMECARD_ALERT_SELECT_KIND"));
       }
 
       if (!"punchin".equals(edit_mode)
@@ -338,8 +346,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           if (clock_in_time.getValue().getTime() > clock_out_time
             .getValue()
             .getTime()) {
-            msgList
-              .add("『 <span class='em'>退勤時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("EXTTIMECARD_ALERT_SELECT_PUNCH_OUT_TIME"));
           }
         }
 
@@ -359,9 +367,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             && current_clock_out_time_minute != -1
             || current_clock_out_time_hour != -1
             && current_clock_out_time_minute == -1) {
-            msgList.add("『 <span class='em'>"
-              + clock_in_time.getFieldName()
-              + "</span> 』を入力してください。");
+            msgList.add(
+            ALLocalizationUtils.getl10nFormat(
+              "EXTTIMECARD_ALERT_TYPE_CLOCKINTIME",
+              clock_in_time.getFieldName())
+              );
           }
 
           /** 外出復帰時間が適切に入力されているかチェック */
@@ -372,12 +382,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
             ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
             if (!outgoing.isNotNullValue() || !comeback.isNotNullValue()) {
-              msgList.add("『 <span class='em'>"
-                + outgoing_comeback.getFieldName()
-                + "</span> 』を入力してください。"
-                + "（"
-                + i
-                + "行目）");
+              msgList.add(
+              ALLocalizationUtils.getl10nFormat(
+                "EXTTIMECARD_ALERT_TYPE_OUTGOING_COMEBACK",
+                outgoing_comeback.getFieldName(),
+                i)
+                );
             }
           }
 
@@ -397,16 +407,20 @@ public class ExtTimecardFormData extends ALAbstractFormData {
                 if (clock_in_time.isNotNullValue()
                   && from < clock_in_time.getValue().getTime()) {
                   msgList
-                    .add("『 <span class='em'>外出時刻</span> 』は『 <span class='em'>出勤時刻</span> 』以降の時刻を指定してください。（"
-                      + i
-                      + "行目）");
+                    .add(
+                      ALLocalizationUtils.getl10nFormat(
+                        "EXTTIMECARD_ALERT_SELECT_OUTGOING_AFTER_PUNCH_IN",
+                        i)
+                        );
                 }
                 if (clock_out_time.isNotNullValue()
                   && to > clock_out_time.getValue().getTime()) {
                   msgList
-                    .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>退勤時刻</span> 』以前の時刻を指定してください。（"
-                      + i
-                      + "行目）");
+                    .add(
+                      ALLocalizationUtils.getl10nFormat(
+                        "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_PUNCH_OUT",
+                        i)
+                        );
                 }
                 HashMap<String, Long> from_to = new HashMap<String, Long>();
                 from_to.put("from", outgoing.getValue().getTime());
@@ -414,9 +428,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
                 list_from_to.add(from_to);
               } else {
                 msgList
-                  .add("『 <span class='em'>復帰時刻</span> 』は『 <span class='em'>外出時刻</span> 』以降の時刻を指定してください。（"
-                    + i
-                    + "行目）");
+                  .add(
+                  	ALLocalizationUtils.getl10nFormat(
+                    "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_OUTGOING",
+                    i)
+                    );
               }
             } else if (ajustDate(outgoing, punch_date)
               && !ajustDate(comeback, punch_date)
@@ -478,7 +494,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
                   }
                 }
                 if (duplicate_flag) {
-                  msgList.add("外出時間が重複しています。");
+                  msgList.add(ALLocalizationUtils
+                    .getl10n("EXTTIMECARD_ALERT_OUTGOINGTIME"));
                   return false;
                 }
               }
@@ -1056,7 +1073,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日（EE）");
+      SimpleDateFormat sdf =
+        new SimpleDateFormat(ALLocalizationUtils.getl10n("EXTTIMECARD_FORMAT"));
       return sdf.format(punch_date.getValue());
     } catch (Exception e) {
       return "";

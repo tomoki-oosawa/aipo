@@ -43,6 +43,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード集計のフォームデータを管理するためのクラスです。 <br />
@@ -52,8 +53,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-   JetspeedLogFactoryService
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ExtTimecardSystemFormData.class.getName());
 
   private ALNumberField system_id;
@@ -97,6 +97,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     system_id = new ALNumberField();
     system_id.setNotNull(true);
@@ -105,7 +106,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     user_id.setNotNull(true);
 
     system_name = new ALStringField();
-    system_name.setFieldName("勤務形態");
+    system_name.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKING_ARRANGEMENTS"));
     system_name.setNotNull(true);
 
     start_hour = new ALNumberField();
@@ -114,25 +116,30 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     end_minute = new ALNumberField();
 
     start_day = new ALNumberField();
-    start_day.setFieldName("開始日");
+    start_day.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_START_DAY"));
 
     worktime_in = new ALNumberField();
-    worktime_in.setFieldName("勤務時間内の勤務時間");
+    worktime_in.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_WORKTIME"));
     worktime_in.setNotNull(true);
     worktime_in.limitMinValue(0);
 
     resttime_in = new ALNumberField();
-    resttime_in.setFieldName("勤務時間内の休憩時間");
+    resttime_in.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_RESTTIME"));
     resttime_in.setNotNull(true);
     resttime_in.limitValue(0, 360);
 
     worktime_out = new ALNumberField();
-    worktime_out.setFieldName("勤務時間外の勤務時間");
+    worktime_out.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_WORKTIME"));
     worktime_out.setNotNull(true);
     worktime_out.limitMinValue(0);
 
     resttime_out = new ALNumberField();
-    resttime_out.setFieldName("勤務時間外の休憩時間");
+    resttime_out.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_RESTTIME"));
     resttime_out.setNotNull(true);
     resttime_out.limitValue(0, 360);
 
@@ -240,7 +247,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       if (record.getSystemId().intValue() == 1) {
         // 勤務形態「通常」は削除不可
-        msgList.add("勤務形態『 <span class='em'>通常</span> 』は削除できません。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("EXTTIMECARD_ALERT_DELETE_WORKING_ARRANGEMENTS"));
         return false;
       }
 
@@ -390,17 +398,17 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add("勤務形態『 <span class='em'>"
-          + system_name.toString()
-          + "</span> 』は既に登録されています。");
+        msgList.add(
+          ALLocalizationUtils.getl10nFormat("EXTTIMECARD_ALERT_ALREADY_ADDED_WORKING_ARRANGEMENTS", system_name.toString())
+          );
       }
 
       long start_time = start_hour.getValue() * 60 + start_minute.getValue();
       long end_time = end_hour.getValue() * 60 + end_minute.getValue();
       long change_time = change_hour.getValue() * 60;
       if (!isValidChangeTime(start_time, end_time, change_time)) {
-        msgList
-          .add("『 <span class='em'>日付切替時刻</span> 』は『 <span class='em'>勤務時間</span> 』の範囲外の時刻を指定してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("EXTTIMECARD_ALERT_SELECT_CHANGE_HOUR"));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -540,7 +548,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   public ALStringField getOutgoingAddFlag() {
     return this.outgoing_add_flag;
   }
-  
+
   /**
    * @return
    */
@@ -551,5 +559,5 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   public ALNumberField getSystemId() {
     return this.system_id;
   }
-  
+
 }
