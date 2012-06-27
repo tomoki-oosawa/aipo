@@ -30,11 +30,13 @@
 #ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
 <tr>
 <td colspan="2">
+<div class="avatar floatLeft mr10">
 #if(${result.ParentReport.hasPhoto()})
-<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" class="floatLeft mr10" />
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" />
 #else
-<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" class="floatLeft mr10" />
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" />
 #end
+</div>
 <div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if($result.ParentReport.isSelfReport())
@@ -84,11 +86,13 @@ $!record.AliasName
 <tr>
 #ALtditemheader()
 <div class="clearfix mb10">
+<div class="avatar floatLeft mr10">
 #if(${record.hasPhoto()})
-<img width="32" height="32" alt="$!{record.ClientName}" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId))" class="floatLeft mr10" />
+<img width="32" height="32" alt="$!{record.ClientName}" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId))" />
 #else
-<img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" class="floatLeft mr10" />
+<img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" />
 #end
+</div>
 <div class="alignleft"><strong>$!{record.ClientName}</strong><br />$!{record.UpdateDate.toString('yyyy年MM月dd日HH時mm分')}</div>
 <div class="alignright">
 #if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
