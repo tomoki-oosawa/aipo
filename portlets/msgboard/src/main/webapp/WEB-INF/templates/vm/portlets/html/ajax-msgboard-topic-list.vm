@@ -21,8 +21,8 @@
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")))
 #set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_category_list','1')))
-#set ($submenulist = [["トピックを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
-#set ($tabs = [["トピック一覧", "",""]])
+#set ($submenulist = [[$l10n.MSGBOARD_ADD_TOPIC,"javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], [$l10n.MSGBOARD_CATEGORY_ADD,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
+#set ($tabs = [[$l10n.MSGBOARD_TOPIC_LIST, "",""]])
 #set ($indicator_id = "indicator-list-")
 
 #set ($categoryList = $result.CategoryList)
@@ -34,7 +34,7 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="MsgboardTopicListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.MSGBOARD_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -42,7 +42,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Msgboard')
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するトピックはありません。</div>
+<div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIsearchresult($!result.targetKeyword.toString())
@@ -50,10 +50,10 @@
 </div>
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('topic_name' 'タイトル' $result 'MsgboardTopicListScreen')")
-#ALtdheadAtt("#ALajaxsort('category_name' 'カテゴリ' $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:10em"')
-#ALtdheadAtt("#ALajaxsort('owner_name' '作成者' $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:8em"')
-#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'MsgboardTopicListScreen')" 'style="width:6em"')
+#ALtdhead("#ALajaxsort('topic_name' $l10n.MSGBOARD_TITLE $result 'MsgboardTopicListScreen')")
+#ALtdheadAtt("#ALajaxsort('category_name' $l10n.MSGBOARD_PORTLET_CATEGORY $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:10em"')
+#ALtdheadAtt("#ALajaxsort('owner_name' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:8em"')
+#ALtdheadAtt("#ALajaxsort('update_date' $l10n.MSGBOARD_UPDATE_DATE $result 'MsgboardTopicListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -66,7 +66,7 @@
 <div>
 $!record.CategoryName
 #if(! ${record.isPublic()})
-<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="非公開" title="非公開" />
+<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC />
 #end
 </div>
 </td>

@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["カテゴリ一覧", ""]])
+#set ($navilist = [[$l10n.MSGBOARD_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.MSGBOARD_CATEGORY_LIST, ""]])
 ## ---------------------------------------------------------------------------
 
 <script language="JavaScript" type="text/javascript">

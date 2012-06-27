@@ -19,29 +19,29 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
-#set ($subtitle = 'トピック追加')
+#set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
+#set ($action_str = $l10n.MSGBOARD_ADD)
+#set ($subtitle = $l10n.MSGBOARD_TOPIC_ADD)
 #set ($event_submit = "eventSubmit_doMsgboard_insert")
 #set ($action_utl = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen')")
 #elseif($mode=="edit_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
-#set ($subtitle = 'トピック編集')
+#set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
+#set ($action_str = $l10n.MSGBOARD_UPDATE)
+#set ($subtitle = $l10n.MSGBOARD_TOPIC_EDIT)
 #set ($event_submit = "eventSubmit_doMsgboard_update")
 #set ($action_utl = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen')")
 #else
-#set ($indicator_str = "データを送信")
-#set ($action_str = "返信する")
-#set ($subtitle = 'トピック返信')
+#set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
+#set ($action_str = $l10n.MSGBOARD_TOPIC_REPLY)
+#set ($subtitle = $l10n.MSGBOARD_TOPIC_REPLY_DO)
 #set ($event_submit = "eventSubmit_doMsgboard_update")
 #set ($action_utl = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply')")
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="msgboard_val_switch1" style="display:none">新しく入力する</span>
-<span id="msgboard_val_switch2" style="display:none">一覧から選択する</span>
+<span id="msgboard_val_switch1" style="display:none">$l10n.MSGBOARD_TYPE_NEW_WORD</span>
+<span id="msgboard_val_switch2" style="display:none">$l10n.MSGBOARD_SELECT_DATE_FROM_LIST</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -70,7 +70,7 @@
 #end
 #ALselectfooter()
 </div>
-<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})新しく入力する#else一覧から選択する#end " onclick="aipo.msgboard.formSwitchCategoryInput(this)" />
+<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.MSGBOARD_TYPE_NEW_WORD#else$l10n.MSGBOARD_SELECT_DATE_FROM_LIST#end " onclick="aipo.msgboard.formSwitchCategoryInput(this)" />
 #ALtditemfooter()
 #end
 
@@ -80,14 +80,14 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
-#ALtdcaption("添付ファイル")
+#ALtdcaption($l10n.MSGBOARD_FILE_ATTACH)
 #ALtditemheader()
 <div class="floatLeft mr10">
 <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 </div>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
   #foreach($record in $!result.AttachmentFileNameList )
-    <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+    <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
   #end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />

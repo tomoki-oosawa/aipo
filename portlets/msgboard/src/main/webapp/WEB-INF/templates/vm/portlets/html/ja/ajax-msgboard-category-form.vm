@@ -19,15 +19,15 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
+#set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
+#set ($action_str = $l10n.MSGBOARD_ADD)
 #set ($event_submit = "eventSubmit_doMsgboard_category_insert")
-#set ($subtitle = "カテゴリ追加")
+#set ($subtitle = $l10n.MSGBOARD_ADD_CATEGORY)
 #else
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
+#set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
+#set ($action_str = $l10n.MSGBOARD_UPDATE)
 #set ($event_submit = "eventSubmit_doMsgboard_category_update")
-#set ($subtitle = "カテゴリ編集")
+#set ($subtitle = $l10n.MSGBOARD_CATEGORY_EDITION)
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -49,36 +49,36 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
-#ALtdcaption("#ALrequired('トピックの<br />閲覧／返信')")
+#ALtdcaption("#ALrequired($l10n.MSGBOARD_TOPIC_CHANGE_VIEWS)")
 #ALtditemheader()
 <div class="spaceBottom">
 <input name="access_flag" type="radio" value="0" id="$!{portlet.ID}access_flag_0_id" onclick="aipo.msgboard.hideMember(form)" #if($!{result.AccessFlag.toString()} == "0") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_0_id"> 全てのユーザーが閲覧／返信可</label><br />
+<label for="$!{portlet.ID}access_flag_0_id"> $l10n.MSGBOARD_ALL_REPLY_ALL_VIEWS</label><br />
 <input name="access_flag" type="radio" value="1"  id="$!{portlet.ID}access_flag_1_id" onclick="aipo.msgboard.showMember(this)" #if($!{result.AccessFlag.toString()} == "1") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_1_id"> 全てのユーザーが閲覧可。所属メンバーのみ返信可</label><br />
+<label for="$!{portlet.ID}access_flag_1_id"> $l10n.MSGBOARD_ALL_MEMBER_MEMBER_VIEWS</label><br />
 <input name="access_flag" type="radio" value="2" id="$!{portlet.ID}access_flag_2_id" onclick="aipo.msgboard.showMember(form)" #if($!{result.AccessFlag.toString()} == "2") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_2_id"> 所属メンバーのみ閲覧／返信可</label><br />
+<label for="$!{portlet.ID}access_flag_2_id"> $l10n.MSGBOARD_MEMBER_REPLY_MEMBER_VIEWS</label><br />
 <input name="access_flag" type="radio" value="3"  id="$!{portlet.ID}access_flag_3_id" onclick="aipo.msgboard.hideMember(form)" #if($!{result.AccessFlag.toString()} == "3") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_3_id"> 自分のみ閲覧／返信可</label>
+<label for="$!{portlet.ID}access_flag_3_id"> $l10n.MSGBOARD_OWN_REPLY_OWE_VIEWS</label>
 </div>
 <div id="Block-GroupMember-Show" #if ($!result.isMember()) #else style="display:none;" #end>
 <div class="spaceTop">
-<h3>所属メンバーの選択</h3>
-<div class="spaceLeft small">左側に所属メンバーを追加してください。</div>
+<h3>$l10n.MSGBOARD_SELECT_MEMBER</h3>
+<div class="spaceLeft small">$l10n.MSGBOARD_ADD_MEMBER_LEFT</div>
 <div dojoType="aipo.widget.MemberNormalSelectList"
     id="membernormalselect"
     widgetId="membernormalselect"
     buttonAddId="button_member_add"
     buttonRemoveId="button_member_remove"
     memberFromId="tmp_member_from"
-    memberToTitle="所属メンバー一覧"
+    memberToTitle=$l10n.MSGBOARD_MEMBER_LIST
     memberToId="member_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
     memberFromOptionKey="name"
     memberFromOptionValue="aliasName"
     groupSelectId="tmp_group"
 	groupSelectPreOptionKey="LoginUser"
-    groupSelectPreOptionValue="すべてのグループ"
+    groupSelectPreOptionValue=$l10n.MSGBOARD_GROUP_LIST
     groupSelectOptionKey="groupId"
     groupSelectOptionValue="name"
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen')"

@@ -21,7 +21,7 @@
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("topic" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","0").addQueryData("filtertype","category"))">すべてのカテゴリ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","0").addQueryData("filtertype","category"))">$l10n.MSGBOARD_ALL_CATEGORY</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
@@ -34,7 +34,7 @@
 </div>
 
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するトピックはありません。</div>
+<div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
 #if($result.TableColumNum == 4)
 #ALformheader('Msgboard' $jslink $portlet)
@@ -49,7 +49,7 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicNameHtml #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 #if($!record.CategoryId.toString() != "1" && ! $!record.Public)
-<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開" align="absmiddle"/>
+<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC align="absmiddle"/>
 #end</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
@@ -71,7 +71,7 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicNameHtml #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 #if($!record.CategoryId.toString() != "1" && ! $!record.Public)
-<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" alt="非公開" title="非公開" align="absmiddle"/>
+<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC align="absmiddle"/>
 #end</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')

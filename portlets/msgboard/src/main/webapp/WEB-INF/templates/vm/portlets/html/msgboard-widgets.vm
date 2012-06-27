@@ -21,13 +21,13 @@
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")))
 #set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardCategoryListScreen')))
-#set ($submenulist = [["トピックを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
-#set ($tabs = [["トピック一覧", "",""]])
+#set ($submenulist = [[$l10n.MSGBOARD_ADD_TOPIC,"javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], [$l10n.MSGBOARD_CATEGORY_ADD,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
+#set ($tabs = [[$l10n.MSGBOARD_TOPIC_LIST, "",""]])
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction("トピックを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
+#AUIbuttonAction($l10n.MSGBOARD_TOPIC_LIST "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
 </div>
 
 <div class="auiWidget clearfix">
@@ -35,14 +35,14 @@
 <input type="hidden" id="topic" value="$!result.CurrentFilter"/>
 <ul>
 
-<li #if (!$!result.CurrentFilter && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">すべてのカテゴリ</a></li>
+<li #if (!$!result.CurrentFilter && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.MSGBOARD_ALL_CATEGORY</a></li>
 #foreach( $record in $!result.CategoryList )
 <li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 
 <div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID');">カテゴリの管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID');">$l10n.MSGBOARD_MANAGEMENT</a>
 </div>
 </div>
 

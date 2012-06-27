@@ -18,17 +18,17 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "返信する")
-#set ($subtitle = 'トピック詳細')
+#set ($action_str = $l10n.MSGBOARD_TOPIC_REPLY)
+#set ($subtitle = $l10n.MSGBOARD_TOPIC_DETAIL)
 #set ($event_submit = "eventSubmit_doMsgboard_update")
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("書き込み")
+#ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
 	#if(! $!{result.ParentTopic.isPublic()})
-		<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
+		<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC>
 	#end
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
 	<caption>
@@ -53,7 +53,7 @@
 						#end
 					</div>
 					<div>
-						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}年$!{result.ParentTopic.CreateDate.Month}月$!{result.ParentTopic.CreateDate.Day}日$!{result.ParentTopic.CreateDate.Hour}時$!{result.ParentTopic.CreateDate.Minute}分
+						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{result.ParentTopic.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
 					</div>
 				</td>
 			</tr>
@@ -85,7 +85,7 @@
 ##pageview($link $result)
 
 <table class="listTable wide mb0">
-<caption>コメント</caption>
+<caption>$l10n.MSGBOARD_COMMENT</caption>
 <tbody>
 #set($firstCoTopic = true)
 #foreach ($record in $result.CoTopicList)
@@ -106,7 +106,7 @@
 						#end
 					</div>
 				<div class="alignleft">
-					<b>&nbsp;&nbsp;&nbsp;$!{record.OwnerName}</b><br>&nbsp;&nbsp;&nbsp;$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
+					<b>&nbsp;&nbsp;&nbsp;$!{record.OwnerName}</b><br>&nbsp;&nbsp;&nbsp;$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{record.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
 				</div>
 			</div>
 			<div><br>
@@ -174,12 +174,12 @@
 						</td>
 					</tr>　
 					<tr>
-						<td style="height:16px; width:135px;"><b>添付ファイル</b></td>
+						<td style="height:16px; width:135px;"><b>$l10n.MSGBOARD_FILE_ATTACH</b></td>
 						<td>
 							<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 							<ul id="attachments_$!{portlet.ID}" class="attachments">
 								#foreach($record in $!result.AttachmentFileNameList )
-									<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+									<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
 								#end
 							</ul>
 						</td>

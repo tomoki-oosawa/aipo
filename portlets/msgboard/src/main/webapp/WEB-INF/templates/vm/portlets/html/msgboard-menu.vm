@@ -28,25 +28,25 @@ dojo.addOnLoad(function () {
     var subMenu =
 		[
 			{
-				caption: "トピック",
+				caption: $l10n.MSGBOARD_TOPIC,
 				iconClass: "menuBarIconAdd",
 				url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_list','1')",
 				submenu:
 				[
-				    {   caption: "トピック一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_list','1')"    },
-					{   caption: "トピックを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);"}
+				    {   caption: $l10n.MSGBOARD_TOPIC_LIST_VIEWS, iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_list','1')"    },
+					{   caption: $l10n.MSGBOARD_ADD_TOPIC, iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);"}
 					
 				]
 			},
 
 			{
-				caption: "カテゴリ",
+				caption: $l10n.MSGBOARD_PORTLET_CATEGORY,
 				iconClass: "menuBarIconList",
 				url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_category_list','1')",
 				submenu:
 				[
-					{   caption: "カテゴリ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_category_list','1')"    },
-					{   caption: "カテゴリを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);"}
+					{   caption: $l10n.MSGBOARD_CATEGORY_LIST_VIEWS, iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_category_list','1')"    },
+					{   caption: $l10n.MSGBOARD_CATEGORY_ADD, iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);"}
 				]
 			}
 		];

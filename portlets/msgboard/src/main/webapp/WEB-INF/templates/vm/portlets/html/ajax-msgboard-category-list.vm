@@ -20,8 +20,8 @@
 ## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["トピックを追加する","javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], ["カテゴリを追加する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
-#set ($tabs = [["カテゴリ一覧", "",""]])
+#set ($submenulist = [[$l10n.MSGBOARD_ADD_TOPIC,"javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);","images/icon/icon_add.gif"], [$l10n.MSGBOARD_CATEGORY_ADD,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);","images/icon/icon_add.gif"]])
+#set ($tabs = [[$l10n.MSGBOARD_CATEGORY_LIST, "",""]])
 #set ($indicator_id = "indicator-list-")
 
 #set ($categoryList = $result.List)
@@ -33,20 +33,20 @@
 ## ---------------------------------------------------------------------------
 <div id="auiContentsArea">
 <div id="auiContentsAreaInner">
-<h2>カテゴリの管理</h2>
+<h2>$l10n.MSGBOARD_MANAGEMENT</h2>
 #if($result.List.size() > 0)
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+#AUIbuttonAction("$l10n.MSGBOARD_CATEGORY_ADD" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader('カテゴリ' $jslink $portlet)
+#ALformheader($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)
 #end
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+#AUIbuttonAction($l10n.MSGBOARD_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
@@ -56,8 +56,8 @@
 </div>
 #AUIrowTableWide()
 <tr>
-#ALtdheadW75("#ALajaxsort('category_name' 'カテゴリ名' $result 'MsgboardCategoryListScreen')")
-#ALtdheadW25("#ALajaxsort('create_user' '作成者' $result 'MsgboardCategoryListScreen')")
+#ALtdheadW75("#ALajaxsort('category_name' $l10n.MSGBOARD_CATEGORY_NAME $result 'MsgboardCategoryListScreen')")
+#ALtdheadW25("#ALajaxsort('create_user' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardCategoryListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -65,7 +65,7 @@
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
 #if(! ${record.isPublic()})
-<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
+<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC>
 #end
 </div>
 #ALtdcellfooter()

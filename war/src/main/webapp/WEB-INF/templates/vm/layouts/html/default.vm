@@ -61,7 +61,7 @@
     cacheBust: '$!{utils.CacheBust}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.js")
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js?$!{utils.CacheBust}" djConfig="isDebug: true"></script>
 #ALjavascript("javascript/aipo.js")
 #end
 <script type="text/javascript" src="$!{unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
