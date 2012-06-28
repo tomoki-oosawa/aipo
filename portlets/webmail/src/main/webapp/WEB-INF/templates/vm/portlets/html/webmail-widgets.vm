@@ -38,7 +38,7 @@
 #set ($i = 0)
 #foreach($record in $!result.FolderList)
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
-#if("$i" == 1)
+#if($i == 1)
 <li#if($result.currentTab == "sent") class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
 </li>
