@@ -269,8 +269,7 @@ table.center {
 	height:16px;
 }
 #wrapper {
-	padding-top:51px;
-	background:#E5E5E5;
+	padding:0;
 }
 /* start guide reserved
 html > body #wrapper { *ExceptIE6*
@@ -327,7 +326,6 @@ html > body #wrapper { *ExceptIE6*
 }
 .roundMainWrapper {
 	padding:10px;
-	background:#FFF;
 }
 .roundTopMain {
 	background:#FFF;
