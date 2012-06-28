@@ -37,17 +37,33 @@ span[type="button"] {
 	auiHeader
 --------------------------------------------------*/
 #header {
-	padding-top:5px;
-	height:35px;
-	/*background:url(../images/head_bg.png) repeat-x left bottom; **reserved**/
+	z-index:2000;
+	height:30px;
+	position:fixed;
+	top:0;
+	width:100%;
+	padding:0;
+	margin:0 0 20px;
+	background:#FFF;
+	background:-moz-linear-gradient(top, #FFFFFF, #e7e9eb);
+	background:-webkit-gradient(linear, left top, left bottom, from(#FFFFFF), to(#e7e9eb));
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startcolorstr=#ffffff, endcolorstr=#e8eaec));/*IE6-7*/
+	-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startcolorstr=#ffffff, endcolorstr=#e8eaec))";/*IE8-*/
+	border-top:solid 1px #FFFFFF;
+	border-bottom:solid 1px #aeafb1;
+	box-shadow:0 1px 3px rgba(0,0,0,0.15);
 	overflow:hidden;
+	zoom: 1;
 }
 #header .inner {
-	height:27px;
-	padding:0 20px;
+	padding:0 10px;
+	height:29px;
+	border-bottom:solid 1px rgba(255,255,255,0.5);
 }
 .hdSign {float:left;}
 .hdNavi {float:right;padding-top:3px;}
+
+.hdMessege,
 .hdActivity,
 .hdSearch,
 .hdUserName,
@@ -64,13 +80,19 @@ span[type="button"] {
 	background:#ddd;
 }
 .hdLogo {
-	padding:3px 0 0 0;
 }
 .hdLogo a:hover img {
 	opacity:0.75;
 	filter: alpha(opacity=75);
 }
 .hdSearch {
+}
+.hdMessege{
+	border-right:1px solid #DCDCDC;
+	margin-right:10px;
+}
+.hdMessege a{
+	text-decoration:none;
 }
 form.searchbox {
 	padding:0;
@@ -101,15 +123,29 @@ form.searchbox input.submit:active {
 	background:#eee url(../images/icon/search.png) no-repeat center center;
 }
 .hdActivity {
+	min-width:23px;
 	padding:0 !important;
 }
 .hdNavi .hdLogout {
 	padding-right:0;
 	height:24px;
 }
-.hdLogout input {
+.hdLogout input[type="submit"]{
 	height:23px !important;
 	line-height:23px !important;
+	font-size:10px !important;
+	padding-bottom:1px;
+	border-radius:4px;
+	background:-moz-linear-gradient(top, #f3f4f4, #cdcfd1);
+	background:-webkit-gradient(linear, left top, left bottom, from(#f3f4f4), to(#cdcfd1));
+	border-top:1px solid #a4a2a2;
+	border-left:1px solid #c0c1c3;
+	border-right:1px solid #c0c1c3;
+	border-bottom:1px solid #c0c1c3;
+	font-weight:bold;
+	color:#434343;
+	text-shadow:0 1px 0 rgba(255,255,255,1);
+	box-shadow:0 1px 0px 0px rgba(255,255,255,1);
 }
 *:first-child+html .hdLogout input {/* IE7 Hack */
 	line-height:20px !important;
@@ -139,33 +175,82 @@ img.avatar,
 --------------------------------------------------*/
 .activityField {
 	position:relative;
-	width:17px;
-	height:18px;
-	padding:5px 6px 0;
+	padding:0;
+	width:100%;
+	height:100%;
 	cursor:pointer;
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
 .activityField:hover {
-	background:#eee;
+	background:none;
 }
 .hdActivity div.active {
 	background:#e0e0e0;
 }
+#activitycheckerContainer_label{
+	display:none;
+}
+
 #activitychecker {
+	position:static !important;
+	top:0 !important;
+	left:0 !important;
+	height:21px !important;
+	width:21px !important;
+	padding:0;
+	margin:0;
 	text-align:center;
-	position:absolute;
-	right:2px;
-	top:2px;
-	background:url(../images/icon/activitychecker.png) top left no-repeat;
-	height:12px;
+	font-weight:bold;
+	color:#fff;
+	border-radius:4px;
+	box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.1);
+	background:#da1b1f;
+	background:-moz-linear-gradient(top, #e63439, #da1b1f);
+	background:-webkit-gradient(linear, left top, left bottom, from(#e63439), to(#da1b1f));
+	border-top:1px solid #ab1619;
+	border-left:1px solid #c81a1e;
+	border-right:1px solid #c81a1e;
+	border-bottom:1px solid #c81a1e;
+	font-weight:bold;
+	text-shadow:0 1px 0 #a80203;
 }
-/*
-#activitycheckerContainer {
+#activitychecker.zero{
+	box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.05);
+	background:#b5b5b5;
+	background:-moz-linear-gradient(top, #b5b5b5, #b5b5b5);
+	background:-webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
+	border-top:1px solid #8f8e8e;
+	border-left:1px solid #acacad;
+	border-right:1px solid #acacad;
+	border-bottom:1px solid #a9acad;
+	text-shadow:0 1px 0 #a3a4a6;
+}
+#activitychecker span{
+	height:21px;
+	width:21px;
+	line-height:21px;
+	background:none;
+	font-size:11px;
+	padding:0;
+	margin:0;
+}
+.useraccount{
+	text-shadow:0 1px 0 rgba(255,255,255,1);
+}
+
+#activitycheckerContainer{
 	display:block;
-	margin-top:5px;
+	background:none;
+	height:19px;
+	line-height:20px;
+	padding:0;
+	margin:0;
+	text-align:center;
 }
-*/
+#activitychecker-counter{
+	background:#0000CC;
+}
 .activitychecker-right {
 	float:left;
 	display:block;
@@ -440,7 +525,7 @@ table.activityTable tr.unread td {
 	height:25px;
 	padding:0;
 	margin:0;
-	background:#fff url(../images/tab.png) left bottom repeat-x;
+	background:#E5E5E5 url(../images/tab.png) left bottom repeat-x;
 }
 #auiTabs ul {
 	position:relative;

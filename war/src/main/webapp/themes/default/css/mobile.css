@@ -4,6 +4,9 @@
 	style denial
 --------------------------------------------------*/
 body {position:absolute}
+#wrapper {
+	padding-top:0px;
+}
 .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
 	display:none;
 }
