@@ -21,7 +21,7 @@
 ## ---------------------------------------------------------------------------
 <div id="messageDiv"></div>
 <div class="auiPopup">
-<h2>「いいね！」と言っている人</h2>
+<h2>$l10n.TIMELINE_SAYING_LIKE</h2>
     <div class="auiListWrapper">
 		<ul class="userList">
 #foreach ($record2 in $record.LikeList)
@@ -43,7 +43,7 @@
 </ul>
 </div>
 #ALbuttonheader()
-<p class="rightBtn pt10" onclick="aipo.common.hideDialogSub();" ><button>閉じる</button></p>
+<p class="rightBtn pt10" onclick="aipo.common.hideDialogSub();" ><button>$l10n.TIMELINE_CLOSE</button></p>
 #ALbuttonfooter()
 </div>
 

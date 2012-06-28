@@ -52,6 +52,7 @@ import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
@@ -122,7 +123,8 @@ public class TimelineFormData extends ALAbstractFormData {
   public void initField() {
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils
+      .getl10n("TIMELINE_SETFIELDNAME_CONTENT"));
     note.setTrim(false);
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();

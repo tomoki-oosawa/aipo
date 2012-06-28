@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 <div class="tlInputAttachment">
 <div class="floatRight">
-  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title="削除">
+  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title=$l10n.TIMELINE_DELETION>
     <span>x</span>
   </a>
 </div>
@@ -44,26 +44,26 @@
       <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID" style="display:none">
       <div class="auiSelectButton floatLeft" id="timelineSelectButton_$!{portlet.ID}">
         <ul class="floatLeft mr10">
-          <li title="前へ">
-            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID')" title="前へ" class="first arrow">
-              <span><img src="themes/default/images/icon/icon_arrow_l.gif" alt="前のサムネイル"></span>
+          <li title=$l10n.TIMELINE_PREV>
+            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID')" title=$l10n.TIMELINE_PREV class="first arrow">
+              <span><img src="themes/default/images/icon/icon_arrow_l.gif" alt=$l10n.TIMELINE_PREV_THUMBNAIL></span>
             </a>
           </li>
-          <li title="次へ">
-            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID')" title="次へ" class="last arrow">
-              <span><img src="themes/default/images/icon/icon_arrow_r.gif" alt="次のサムネイル"></span>
+          <li title=$l10n.TIMELINE_NEXT>
+            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID')" title=$l10n.TIMELINE_NEXT class="last arrow">
+              <span><img src="themes/default/images/icon/icon_arrow_r.gif" alt=$l10n.TIMELINE_NEXT_THUMBNAIL></span>
             </a>
           </li>
         </ul>
       </div>
       <div class="count" id="count_$!{portlet.ID}">
-        ##${result.Images.size()} 件中 1 件
-		件中 1 件
+        ##${result.Images.size()} $l10n.TIMELINE_1_COUNT
+		$l10n.TIMELINE_1_COUNT
       </div>
       </div>
       <div style="clear:both" id="ViewThumbnail_$!{portlet.ID}" style="display:none">
-        <input type="checkbox" value="サムネイルを表示しない" id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
-        <label for="checkbox_$!{portlet.ID}">サムネイルを表示しない</label>
+        <input type="checkbox" value=$l10n.TIMELINE_DONOT_VIEW_THUMBNAIL id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
+        <label for="checkbox_$!{portlet.ID}">$l10n.TIMELINE_DONOT_VIEW_THUMBNAIL</label>
       </div>
     #end
   </div>

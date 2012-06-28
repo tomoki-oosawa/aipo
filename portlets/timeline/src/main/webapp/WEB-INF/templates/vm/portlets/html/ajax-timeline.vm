@@ -37,7 +37,7 @@
 
 <div class="tlInputMention" style="position:relative">
   <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
-  <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:5px; left:5px">近況を共有しましょう</span>
+  <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:5px; left:5px">$l10n.TIMELINE_LETS_SHARE</span>
 </div>
 
 <div class="clearfix tlInputClip" id="tlInputClip_$!{portlet.ID}">
@@ -47,7 +47,7 @@
   <div id="messageDiv_$!portlet.ID"></div>
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
-	<input href="javascript:void(0)" type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="投稿する" />
+	<input href="javascript:void(0)" type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value=$l10n.TIMELINE_POST />
   </div>
   <div class="floatRight">
 	<div class="tlInputMention">
@@ -60,7 +60,7 @@
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #foreach($record in $!result.AttachmentFileNameList )
-      <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+      <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.TIMELINE_DELETION</span></li>
     #end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
@@ -69,7 +69,7 @@
 </div>
 
 <div class="newMessage" id="newMessage_$!portlet.ID" style="display:none; clear:both">
-	<a href="javascript:void(0)" onclick="aipo.timeline.getNewMessage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineNewMessageScreen"))', '$!{portlet.ID}')">新しい投稿があります</a>
+	<a href="javascript:void(0)" onclick="aipo.timeline.getNewMessage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineNewMessageScreen"))', '$!{portlet.ID}')">$l10n.TIMELINE_NEW_MESSAGE</a>
 </div>
 #if($result.List.size() == 0)
 		<div class="tlDisplayChanger">
@@ -77,7 +77,7 @@
 				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
 					<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
 						#if("$!{result.TargetGroupName}" == "all")
-							すべてのグループ
+							$l10n.TIMELINE_ALL_GROUP
 						#else
 						#foreach( $record in $result.MyGroupList)
 						#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
@@ -96,7 +96,7 @@
 			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 				<ul>
 					#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">すべてのグループ</a></li>
+					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 					#foreach( $record in $result.MyGroupList)
 					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
 					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
@@ -112,7 +112,7 @@
 		<div id="content">
 			<div id="" class="message">
 			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
-			<p class="mt10">投稿はありません。</p>
+			<p class="mt10">$l10n.TIMELINE_NO_MESSAGE</p>
 			</div>
 		</div>
 	</div>
@@ -122,7 +122,7 @@
 			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
 				<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
 				#if("$!{result.TargetGroupName}" == "all")
-					すべてのグループ
+					$l10n.TIMELINE_ALL_GROUP
 				#else
 				#foreach( $record in $result.MyGroupList)
 				#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
@@ -141,7 +141,7 @@
 		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 			<ul>
 			#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">すべてのグループ</a></li>
+				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 			#foreach( $record in $result.MyGroupList)
 			#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
 				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
@@ -170,7 +170,7 @@
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeight == 0)
 	#if($pages > $currentPage)
-		<div class="readMore"><a href="javascript:void(0);" onclick="dojo.byId('readHidden_$!{portlet.ID}').onclick()" style="display:block;">もっと見る</a></div>
+		<div class="readMore"><a href="javascript:void(0);" onclick="dojo.byId('readHidden_$!{portlet.ID}').onclick()" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
 	#end
   #end
   <div id="more_end_$!{portlet.ID}"></div>

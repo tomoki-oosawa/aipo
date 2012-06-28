@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのResultData <BR>
@@ -302,6 +303,18 @@ public class TimelineResultData implements ALData {
 
   public void setCreateUser(String str) {
     create_user.setValue(str);
+  }
+
+  public String getReplyCountText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "TIMELINE_REPLAY_COUNT_TEXT",
+      reply_count.toString());
+  }
+
+  public String getLikeCountText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "TIMELINE_LIKE_COUNT_TEXT",
+      likeCount);
   }
 
   /**
