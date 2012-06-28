@@ -106,7 +106,7 @@
 						#end
 					</div>
 				<div class="alignleft">
-					<b>&nbsp;&nbsp;&nbsp;$!{record.OwnerName}</b><br>&nbsp;&nbsp;&nbsp;$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{record.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
+					<b>$!{record.OwnerName}</b><br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{record.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
 				</div>
 			</div>
 			<div><br>
