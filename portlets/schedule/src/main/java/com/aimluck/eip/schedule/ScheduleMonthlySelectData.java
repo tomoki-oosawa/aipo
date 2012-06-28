@@ -1244,21 +1244,31 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public String getTargetName() {
+
+    if (target_user_id.length() < 1) {
+      return "";
+    }
+
     try {
-      for (FacilityResultData record : facilityList) {
-        int id =
-          Integer
-            .valueOf(
-              target_user_id.substring(target_user_id.lastIndexOf("f") + 1))
-            .intValue();
-        if (record.getFacilityId().getValue() == id) {
-          return record.getFacilityName().toString();
+      if (target_user_id.substring(0, 1).equals("f")) {
+        for (FacilityResultData record : facilityList) {
+          int id =
+            Integer
+              .valueOf(
+                target_user_id.substring(target_user_id.lastIndexOf("f") + 1))
+              .intValue();
+          if (record.getFacilityId().getValue() == id) {
+            return record.getFacilityName().toString();
+          }
         }
+        return "";
+      } else {
+        return ALEipUtils
+          .getALEipUser(Integer.parseInt(target_user_id))
+          .getAliasName()
+          .toString();
       }
-      return ALEipUtils
-        .getALEipUser(Integer.parseInt(target_user_id))
-        .getAliasName()
-        .toString();
+
     } catch (NumberFormatException e) {
       logger.error("[ScheduleMonthlySelectData]", e);
     } catch (ALDBErrorException e) {
