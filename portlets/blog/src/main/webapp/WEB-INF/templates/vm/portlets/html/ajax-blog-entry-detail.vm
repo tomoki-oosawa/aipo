@@ -35,14 +35,7 @@ $!{result.Detail.Title}
 </cation>
 <tr>
 <td>
-<div class="alignright">
-#if($!result.Editable)
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
-#end
-#if($!{result.Deletable})
-#ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
-#end
-</div>
+<div class="clearfix">
 <div class="avatar floatLeft mr10">
 #if(${result.Detail.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.Detail.OwnerId}).addQueryData("t", ${result.Detail.PhotoModified}))" alt="${result.Detail.OwnerName}" width="32" height="32" />
@@ -53,6 +46,15 @@ $!{result.Detail.Title}
 <div class="alignleft"><strong>${result.Detail.OwnerName}</strong>
 <br>
 $!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分
+</div>
+<div class="alignright">
+#if($!result.Editable)
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
+#end
+#if($!{result.Deletable})
+#ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
+#end
+</div>
 </div>
 #ALtditemfooter()
 
