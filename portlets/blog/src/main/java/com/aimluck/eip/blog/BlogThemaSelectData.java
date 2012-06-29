@@ -172,14 +172,17 @@ public class BlogThemaSelectData extends
     rd.setThemaId(record.getThemaId().longValue());
     rd.setThemaName(record.getThemaName());
     rd.setDescription(record.getDescription());
-
-    rd.setCreateUserName(BlogUtils.getUserFullName(record
-      .getCreateUserId()
-      .intValue()));
+    if ((int) rd.getThemaId().getValue() != 1) {
+      rd.setCreateUserName(BlogUtils.getUserFullName(record
+        .getCreateUserId()
+        .intValue()));
+    }
     rd.setUpdateUserName(BlogUtils.getUserFullName(record
       .getUpdateUserId()
       .intValue()));
-    rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
+    if ((int) rd.getThemaId().getValue() != 1) {
+      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
+    }
     rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
     return rd;
   }
