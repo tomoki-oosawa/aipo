@@ -43,7 +43,7 @@ span[type="button"] {
 	overflow:hidden;
 }
 #header .inner {
-	height:27px;
+	height:30px;
 	padding:0 20px;
 }
 .hdSign {float:left;}
@@ -65,7 +65,6 @@ span[type="button"] {
 	background:#ddd;
 }
 .hdLogo {
-	padding:3px 0 0 0;
 }
 .hdLogo a:hover img {
 	opacity:0.75;
