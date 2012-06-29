@@ -576,7 +576,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       }
 
       if (!isNewUser) {
-        // ユーザーを既にいるグループから削除。
+        // ユーザーを既にいる部署から削除
         SelectQuery<TurbineUserGroupRole> query2 =
           Database.query(TurbineUserGroupRole.class);
         Expression exp2 =
@@ -597,10 +597,12 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         TurbineUserGroupRole ugr = null;
         for (int i = 0; i < list.size(); i++) {
           ugr = list.get(i);
-          Database.delete(ugr);
+          if (isPost(ugr.getTurbineGroup().getGroupName())) {
+            Database.delete(ugr);
+          }
         }
 
-        // ユーザーをグループに追加。
+        // ユーザーを部署に追加
         if (!post_name.toString().equals("") && post_name.toString() != null) {
           String[] postnames = post_name.toString().split("/");
           for (int i = 0; i < postnames.length; i++) {
@@ -1031,6 +1033,25 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     }
     EipMPost post = list.get(0);
     return post;
+  }
+
+  /**
+   * Myグループが部署かどうか判定 <BR>
+   * 
+   * @return
+   */
+  private boolean isPost(String group_name) {
+    SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+    ALStringField group_name_field = new ALStringField(group_name);
+    Expression exp =
+      ExpressionFactory
+        .matchExp(EipMPost.GROUP_NAME_PROPERTY, group_name_field);
+    query.setQualifier(exp);
+    if (query.getCount() == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /**
