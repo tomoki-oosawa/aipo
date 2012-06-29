@@ -38,6 +38,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイルの複数削除を行うためのクラスです。 <BR>
@@ -77,7 +78,8 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
         if (!CabinetUtils.isEditableFolder(
           filelist.get(i).getFolderId(),
           rundata)) {
-          msgList.add("削除する権限の無いファイルが含まれています。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("CABINET_DONOT_AUTHORITY_FILE"));
           return false;
         }
 

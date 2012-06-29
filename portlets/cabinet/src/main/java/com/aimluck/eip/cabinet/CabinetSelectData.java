@@ -48,6 +48,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイル検索データを管理するためのクラスです。 <br />
@@ -395,8 +396,8 @@ public class CabinetSelectData extends
         createUserName = createUser.getAliasName().getValue();
       }
       rd.setCreateUser(createUserName);
-      rd.setCreateDate(new SimpleDateFormat("yyyy年M月d日").format(record
-        .getCreateDate()));
+      rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
       ALEipUser updateUser =
         ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());

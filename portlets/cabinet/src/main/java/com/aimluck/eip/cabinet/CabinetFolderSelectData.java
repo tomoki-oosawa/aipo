@@ -45,6 +45,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのフォルダ検索データを管理するためのクラスです。 <br />
@@ -292,8 +293,8 @@ public class CabinetFolderSelectData extends
       }
 
       rd.setCreateUser(createUserName);
-      rd.setCreateDate(new SimpleDateFormat("yyyy年M月d日").format(record
-        .getCreateDate()));
+      rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
       ALEipUser updateUser =
         ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
@@ -323,7 +324,8 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateDate(new SimpleDateFormat("yyyy年M月d日H時m分").format(record
+      rd.setUpdateDate(new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("CABINET_YEAR_MONTH_DAY_HOUR_MINUTE")).format(record
         .getUpdateDate()));
 
       int size = folder_hierarchy_list.size();

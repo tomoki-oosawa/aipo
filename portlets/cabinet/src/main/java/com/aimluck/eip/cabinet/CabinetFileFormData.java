@@ -51,6 +51,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイルフォームデータを管理するクラス <BR>
@@ -162,24 +163,24 @@ public class CabinetFileFormData extends ALAbstractFormData {
   public void initField() {
     // フォルダ ID
     folder_id = new ALNumberField();
-    folder_id.setFieldName("フォルダ");
+    folder_id.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_ADD_TOPIC"));
     folder_id.setNotNull(true);
     folder_id.setValue(0);
     // ファイルタイトル
     file_title = new ALStringField();
-    file_title.setFieldName("タイトル");
+    file_title.setFieldName(ALLocalizationUtils.getl10n("CABINET_TITLE"));
     file_title.setTrim(true);
     // フォルダ名
     file_name = new ALStringField();
-    file_name.setFieldName("ファイル");
+    file_name.setFieldName(ALLocalizationUtils.getl10n("CABINET_FILE"));
     file_name.setTrim(true);
     // ファイルサイズ
     file_size = new ALNumberField();
-    file_size.setFieldName("ファイルサイズ");
+    file_size.setFieldName(ALLocalizationUtils.getl10n("CABINET_FILE_SIZE"));
 
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("CABINET_MEMO"));
     note.setTrim(true);
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();
@@ -263,7 +264,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       file_name.validate(msgList);
       if (fileuploadList != null && fileuploadList.size() > 1) {
-        msgList.add("２つ以上のファイルをアップロードすることはできません。");
+        msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_LAUNCH_MORE"));
       }
     } else {
       if (fileuploadList != null) {
@@ -273,18 +274,22 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
     }
     if (ALEipConstants.MODE_UPDATE.equals(getMode()) && fileids == null) {
-      msgList.add("『 <span class='em'>ファイル</span> 』を選択してください。");
+      msgList.add(ALLocalizationUtils.getl10n("CABINET_KAKKO")
+        + " <span class='em'>"
+        + ALLocalizationUtils.getl10n("CABINET_FILE")
+        + "</span> "
+        + ALLocalizationUtils.getl10n("CABINET_SELECT"));
     }
 
     // メモ
     note.validate(msgList);
     if (existsFileName()) {
-      msgList.add("このファイル名と同じファイルがすでに存在するため、登録できません。ファイル名を変更してください。");
+      msgList.add(ALLocalizationUtils.getl10n("CABINET_SAME_NAME_ANOTHER"));
     }
 
     /** 編集アクセス制限 */
     if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(), rundata)) {
-      msgList.add("このフォルダを編集する権限がありません。");
+      msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_AUTHORITY"));
     }
     return (msgList.size() == 0);
   }

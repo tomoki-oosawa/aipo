@@ -51,6 +51,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのフォルダフォームデータを管理するクラス <BR>
@@ -234,19 +235,23 @@ public class CabinetFolderFormData extends ALAbstractFormData {
   public void initField() {
     // フォルダ名
     folder_name = new ALStringField();
-    folder_name.setFieldName("フォルダ名");
+    folder_name
+      .setFieldName(ALLocalizationUtils.getl10n("CABINET_FOLDER_NAME"));
+
     folder_name.setTrim(true);
     // 親フォルダ
     parent_id = new ALNumberField();
-    parent_id.setFieldName("追加位置");
+    parent_id
+      .setFieldName(ALLocalizationUtils.getl10n("CABINET_ADD_POSISHION"));
     parent_id.setValue(0);
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("CABINET_MEMO"));
     note.setTrim(true);
     // アクセス権限フラグ
     access_flag = new ALNumberField();
-    access_flag.setFieldName("アクセス権限");
+    access_flag.setFieldName(ALLocalizationUtils
+      .getl10n("CABINET_ACCESS_RESTRICTION"));
     access_flag.setValue(0);
     // メンバーリスト
     memberList = new ArrayList<ALEipUser>();
@@ -293,11 +298,13 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       CabinetUtils.getAccessControlFolderId((int) parent_id.getValue());
     if (tmp_acl_folder != CabinetUtils.ROOT_FODLER_ID
       && access_flag.getValue() != CabinetUtils.ACCESS_PUBLIC_ALL) {
-      msgList.add("上位のフォルダでアクセス権限が設定されています。<br/>このフォルダに対するアクセス権限は設定できません。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("CABINET_DONNOT_ACCESS_NEED_TOP_LEVEL_AUTHORITY"));
     }
 
     if (existsFolderName()) {
-      msgList.add("このフォルダ名と同じフォルダがすでに存在するため、登録できません。フォルダ名を変更してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("CABINET_SAME_NAME_FOLDER_CHANGE_NAME"));
     }
 
     return (msgList.size() == 0);
