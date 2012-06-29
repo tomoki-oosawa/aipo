@@ -34,6 +34,7 @@ import org.apache.jetspeed.om.profile.ProfileLocator;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.localization.LocalizationTool;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
@@ -89,6 +90,9 @@ public class ALEipManager {
 
   /** psml prefix key */
   private static String PSML_PREFIX = "psml";
+
+  /** LocalizationTool */
+  private static String LOCALIZATION_PREFIX = "Localization";
 
   /**
    * 
@@ -491,6 +495,27 @@ public class ALEipManager {
   private void addKey(String key, StringBuffer buffer) {
     if (key != null && key.length() > 0) {
       buffer.append("_").append(key);
+    }
+  }
+
+  public LocalizationTool getLocalizationTool() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      Object obj = request.getAttribute(LOCALIZATION_PREFIX);
+      if (obj != null) {
+        return (LocalizationTool) obj;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  public void setLocalizationTool(LocalizationTool tool) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(LOCALIZATION_PREFIX, tool);
     }
   }
 

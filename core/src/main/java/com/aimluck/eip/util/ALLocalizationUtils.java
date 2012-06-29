@@ -7,27 +7,35 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.localization.LocalizationTool;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.common.ALEipManager;
+
 public class ALLocalizationUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALLocalizationUtils.class.getName());
 
-  private static LocalizationTool locale;
-
   public static LocalizationTool createLocalization(RunData rundata) {
-    LocalizationTool lt = new LocalizationTool();
-    lt.init(rundata);
-    locale = lt;
-    return locale;
+    LocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
+    if (tool == null) {
+      tool = new LocalizationTool();
+      tool.init(rundata);
+      ALEipManager.getInstance().setLocalizationTool(tool);
+    }
+    return tool;
   }
 
   public static String getl10n(String key) {
-    if (locale == null) {//
-      logger.info("言語が設定される前に実行されました。");
-      locale = new LocalizationTool();// 言語設定なし
+    LocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
+    if (tool == null) {
+      tool = new LocalizationTool();
+      RunData rundata = ALSessionUtils.getRundata();
+      if (rundata != null) {
+        tool.init(rundata);
+      }
+      ALEipManager.getInstance().setLocalizationTool(tool);
     }
-    return locale.get(key);
+    return tool.get(key);
   }
 
   public static String getl10nFormat(String key, Object... values) {

@@ -24,6 +24,10 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -89,6 +93,19 @@ public class ALSessionUtils {
     // return true;
     // }
     return false;
+  }
+
+  public static RunData getRundata() {
+    JetspeedRunDataService runDataService =
+      (JetspeedRunDataService) TurbineServices.getInstance().getService(
+        RunDataService.SERVICE_NAME);
+    if (runDataService != null) {
+      JetspeedRunData jrundata = runDataService.getCurrentRunData();
+      if (jrundata != null) {
+        return jrundata;
+      }
+    }
+    return null;
   }
 
 }
