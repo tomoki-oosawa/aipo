@@ -17,7 +17,74 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-<div class="auiSummaryMeta clearfix" style="#if($result.List.size() == 0 && $result.TableColumNum != 4);display:none#end">
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen")' />
+
+	<a href="javascript:void(0);" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'));" title="フィルタ" class="auiButton menubarOpenButton">
+			<span>
+				<i class="auiIcon auiIconSearch"></i>
+			</span>
+	</a>
+	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+		<div>
+			<p class="caption">$l10n.MSGBOARD_POST</p>
+			<ul class="filtertype"data-type="post" data-defaultparam="0">
+				<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post"))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_POST</a></li>
+
+				#foreach($record in $result.postList)
+				<li #if ($!result.issetFilter("post",$record.name))) class="selected" #end  data-param="$record.name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.name))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)' >$record.alias_name</a></li>
+				#end
+				#foreach($record in $result.PostMap)
+				<li #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+				#end
+			</ul>
+		</div>
+		<div>
+			<p class="caption">$l10n.MSGBOARD_PORTLET_CATEGORY</p>
+			<ul class="filtertype"data-type="category" data-defaultparam="0">
+				<li #if (!$!result.issetFilter("category")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("category")) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_CATEGORY</a></option>
+				#foreach( $record in $result.CategoryList )
+				<li #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end  data-param="$!{record.CategoryId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.CategoryName</a></li>
+				#end
+			</ul>
+		</div>
+	</div>
+	<div class="filters" id="filters_$!{portlet.ID}">
+		 #if(!$!result.issetFilter())
+		 	$l10n.MSGBOARD_FILTER_NONE
+		 #else
+			 #if(!$!result.issetFilter("post"))
+				<span class="filterTip"><span>$l10n.MSGBOARD_ALL_POST</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
+			 #else
+			 	#set($break=false)
+			 	#foreach($record in $result.postList)
+			 		#if(!$break)
+					#if($!result.issetFilter("post",$!{record.name})))
+						<span class="filterTip"><span>$record.alias_name</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
+			 			#set($break=true)
+			 		#end
+			 	#end#end
+
+			 	#foreach($record in $result.PostMap)#if(!$break)
+					#if($!result.issetFilter("post",$!{record.GroupName}))
+						<span class="filterTip"><span>$!record.PostName</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
+			 			#set($break=true)
+			 		#end
+			 	#end#end
+			 #end
+			 #if(!$!result.issetFilter("category"))
+				<span class="filterTip"><span>$l10n.MSGBOARD_ALL_CATEGORY</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','category')"><i class="auiIcon auiIconDelete"></i></a></span>
+			 #else
+			 	#set($break=false)
+			 	#foreach($record in $result.CategoryList)#if(!$break)
+			 		#if ($!result.issetFilter("category",$!{record.CategoryId}))
+						<span class="filterTip"><span>$!record.CategoryName</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','category')"><i class="auiIcon auiIconDelete"></i></a></span>
+			 			#set($break=true)
+			 		#end
+			 	#end#end
+			 #end
+		#end
+	</div>
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("topic" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
@@ -28,9 +95,6 @@
 #ALselectfooter()
 </form>
 </div>
-#if($result.List.size() != 0)
-#AUIajaxpageview('MsgboardTopicScreen' $result)
-#end
 </div>
 
 #if($result.List.size() == 0)
@@ -80,5 +144,10 @@
 </tbody>
 </table>
 #ALformfooter()
+<div class="auiSummaryMeta auiFilter clearfix">
+#if($result.List.size() != 0)
+#AUIajaxpageview('MsgboardTopicScreen' $result)
+#end
+</div>
 #end
 #end
