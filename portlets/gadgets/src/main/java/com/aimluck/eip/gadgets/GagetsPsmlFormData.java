@@ -279,6 +279,9 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
         PsmlDBUtils.checkAndFixInconsistency(profile.getUserName());
         if (!profile.getUserName().equals(ALEipUtils.getLoginName(rundata))) {
           ALEipUser alEipUser = ALEipUtils.getALEipUser(userName);
+          if (alEipUser == null) {
+            continue;
+          }
           long userId = alEipUser.getUserId().getValue();
           boolean isAdmin = ALEipUtils.isAdmin((int) userId);
           org.apache.jetspeed.util.PortletUtils.regenerateIds(portlets);

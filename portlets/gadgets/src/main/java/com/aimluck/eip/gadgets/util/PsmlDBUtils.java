@@ -29,6 +29,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -150,6 +152,7 @@ public class PsmlDBUtils {
   public static void checkAndFixInconsistency(String userName) {
     DataContext dataContext = DataContext.getThreadDataContext();
 
+    // delete duplication
     Map<String, String> map = new HashMap<String, String>();
     map.put(JetspeedUserProfile.USER_NAME_PROPERTY, userName);
     map.put(JetspeedUserProfile.MEDIA_TYPE_PROPERTY, "html");
@@ -165,6 +168,23 @@ public class PsmlDBUtils {
         Database.rollback();
         logger.error("[PsmlDBUtils]", e);
       }
+    }
+
+    // delete inconsistency
+    try {
+      TurbineUser tuser = ALEipUtils.getTurbineUser(userName);
+      if (tuser == null) {
+        SelectQuery<JetspeedUserProfile> query =
+          Database.query(JetspeedUserProfile.class);
+        query.where(Operations.eq(
+          JetspeedUserProfile.USER_NAME_PROPERTY,
+          userName));
+        List<JetspeedUserProfile> result = query.fetchList();
+        Database.deleteAll(result);
+        Database.commit();
+      }
+    } catch (ALDBErrorException e) {
+      logger.error(e, e);
     }
 
   }

@@ -187,8 +187,10 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
       for (JetspeedUserProfile profile : profiles) {
         String userName = profile.getUserName();
         PsmlDBUtils.checkAndFixInconsistency(profile.getUserName());
-
         ALEipUser alEipUser = ALEipUtils.getALEipUser(userName);
+        if (alEipUser == null) {
+          continue;
+        }
         long userId = alEipUser.getUserId().getValue();
         boolean isAdmin = ALEipUtils.isAdmin((int) userId);
         org.apache.jetspeed.util.PortletUtils.regenerateIds(portlets);
