@@ -91,7 +91,11 @@ public class WorkflowAction extends ALBaseAction {
         doWorkflow_list(rundata, context);
       }
 
-      if (getMode() == null) {
+      String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+
+      if (currentTab.endsWith("alldisplay")) {
+        doWorkflow_list_all(rundata, context);
+      } else {
         doWorkflow_list(rundata, context);
       }
     } catch (Exception ex) {

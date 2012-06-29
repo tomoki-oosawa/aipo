@@ -124,14 +124,16 @@ public class WorkflowAllSelectData extends
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
 
-    String tabParam = rundata.getParameters().getString("alltab");
-    currentTab = ALEipUtils.getTemp(rundata, context, "alltab");
+    String allTabParam = rundata.getParameters().getString("alltab");
+    String tabParam = rundata.getParameters().getString("tab");
+    currentTab = ALEipUtils.getTemp(rundata, context, "tab");
     if (tabParam == null && currentTab == null) {
       currentTab = null;
     } else if (tabParam != null) {
       currentTab = tabParam;
     }
-    ALEipUtils.setTemp(rundata, context, "alltab", tabParam);
+    ALEipUtils.setTemp(rundata, context, "alltab", allTabParam);
+    ALEipUtils.setTemp(rundata, context, "tab", tabParam);
 
     // カテゴリの初期値を取得する
     try {
