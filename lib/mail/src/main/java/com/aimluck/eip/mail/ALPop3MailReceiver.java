@@ -177,8 +177,8 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       }
 
       // POP3 サーバに保存されているメッセージ数を取得
-      int maxTotalMessages = pop3Folder.getMessageCount();
-      if (maxTotalMessages == 0) {
+      int totalMessages = pop3Folder.getMessageCount();
+      if (totalMessages == 0) {
         // 新着メール数を保存する．
         receiveFolder.setNewMailNum(0);
         close(pop3Store, pop3Folder, receiveFolder);
@@ -191,118 +191,103 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
       // 受信するメールの UID の一覧を取得
       newUIDL = new ArrayList<String>();
-      Message[] messages;
-      if (maxTotalMessages > 1000) {
-        messages = pop3Folder.getMessages(1, 1000);
-      } else {
-        messages = pop3Folder.getMessages();
-      }
+      Message[] messages = pop3Folder.getMessages();
 
       String uid = null;
-      int totalMessages = messages.length;
-      for (int j = 1; totalMessages > 0; j++) {
-        for (int i = 0; i < totalMessages; i++) {
-          uid = pop3Folder.getUID(messages[i]);
-          if (uid == null) {
-            String[] xuidls = messages[i].getHeader("X-UIDL");
-            if (xuidls != null && xuidls.length > 0) {
-              uid = xuidls[0];
-            } else {
-              uid = ((MimeMessage) messages[i]).getMessageID();
-            }
+      totalMessages = messages.length;
+      for (int i = 0; i < totalMessages; i++) {
+        uid = pop3Folder.getUID(messages[i]);
+        if (uid == null) {
+          String[] xuidls = messages[i].getHeader("X-UIDL");
+          if (xuidls != null && xuidls.length > 0) {
+            uid = xuidls[0];
+          } else {
+            uid = ((MimeMessage) messages[i]).getMessageID();
           }
-          newUIDL.add(uid);
         }
+        newUIDL.add(uid);
+      }
 
-        // UID の差分を取得
-        BitSet retrieveFlags = new BitSet();
-        if (rcontext.getDenyReceivedMail()) {
-          for (int i = 0; i < totalMessages; i++) {
-            if (!oldUIDL.contains(newUIDL.get(i))) {
-              retrieveFlags.set(i);
-              mailNumOnServer++;
-            } else {
-              receivedUIDL.add(newUIDL.get(i));
-            }
-          }
-        } else {
-          for (int i = 0; i < totalMessages; i++) {
+      // UID の差分を取得
+      BitSet retrieveFlags = new BitSet();
+      if (rcontext.getDenyReceivedMail()) {
+        for (int i = 0; i < totalMessages; i++) {
+          if (!oldUIDL.contains(newUIDL.get(i))) {
             retrieveFlags.set(i);
+            mailNumOnServer++;
+          } else {
+            receivedUIDL.add(newUIDL.get(i));
           }
-          mailNumOnServer = totalMessages;
         }
-        oldUIDL.clear();
-        newUIDL.clear();
-
-        ALStaticObject.getInstance().updateAccountStat(
-          rcontext.getAccountId(),
-          ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_ALL_NUM,
-          Integer.valueOf(mailNumOnServer));
-
-        // 現時点から指定日数を引いた日時を取得．
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.set(Calendar.DATE, cal.get(Calendar.DATE)
-          - rcontext.getSavingDays());
-        Date limitDate = cal.getTime();
-
-        MimeMessage tmpMessage = null;
-        ALMailMessage alPop3MailMessage = null;
+      } else {
         for (int i = 0; i < totalMessages; i++) {
-          finishedReceiving = false;
-          tmpMessage = (MimeMessage) pop3Folder.getMessage(i + 1);
-          // 新着メールであるかを確認
-          if (retrieveFlags.get(i)) {
-            nowReceivedUID = pop3Folder.getUID(tmpMessage);
-            if (nowReceivedUID == null) {
-              String[] xuidls = tmpMessage.getHeader("X-UIDL");
-              if (xuidls != null && xuidls.length > 0) {
-                nowReceivedUID = xuidls[0];
-              } else {
-                nowReceivedUID = tmpMessage.getMessageID();
-              }
+          retrieveFlags.set(i);
+        }
+        mailNumOnServer = totalMessages;
+      }
+      oldUIDL.clear();
+      newUIDL.clear();
+
+      ALStaticObject.getInstance().updateAccountStat(
+        rcontext.getAccountId(),
+        ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_ALL_NUM,
+        Integer.valueOf(mailNumOnServer));
+
+      // 現時点から指定日数を引いた日時を取得．
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(new Date());
+      cal.set(Calendar.DATE, cal.get(Calendar.DATE) - rcontext.getSavingDays());
+      Date limitDate = cal.getTime();
+
+      MimeMessage tmpMessage = null;
+      ALMailMessage alPop3MailMessage = null;
+      for (int i = 0; i < totalMessages; i++) {
+        finishedReceiving = false;
+        tmpMessage = (MimeMessage) pop3Folder.getMessage(i + 1);
+        // 新着メールであるかを確認
+        if (retrieveFlags.get(i)) {
+          nowReceivedUID = pop3Folder.getUID(tmpMessage);
+          if (nowReceivedUID == null) {
+            String[] xuidls = tmpMessage.getHeader("X-UIDL");
+            if (xuidls != null && xuidls.length > 0) {
+              nowReceivedUID = xuidls[0];
+            } else {
+              nowReceivedUID = tmpMessage.getMessageID();
             }
-            // （新着メール）メールを受信し保存する．
-            alPop3MailMessage =
-              new ALPop3Message((POP3Message) tmpMessage, i + 1);
-            if (tmpMessage.getSize() <= ALMailUtils.getMaxMailSize()) {
-              // 受信可能なメール容量以下であれば，登録する．
-              receiveFolder.saveMail(alPop3MailMessage, orgId);
-              if (rcontext.getDelete()) {
-                // 受信したメールを POP3 サーバ上から削除する
-                tmpMessage.setFlag(Flags.Flag.DELETED, rcontext.getDelete());
-              } else {
-                if (rcontext.getEnableSavingDays()) {
-                  // 指定日数を過ぎたメールを削除する（ヘッダ Received の日付で判断する）．
-                  Date receivedDate = ALMailUtils.getReceivedDate(tmpMessage);
-                  if (receivedDate != null && receivedDate.before(limitDate)) {
-                    // 受信したメールを POP3 サーバ上から削除する
-                    tmpMessage.setFlag(Flags.Flag.DELETED, true);
-                  }
+          }
+          // （新着メール）メールを受信し保存する．
+          alPop3MailMessage =
+            new ALPop3Message((POP3Message) tmpMessage, i + 1);
+          if (tmpMessage.getSize() <= ALMailUtils.getMaxMailSize()) {
+            // 受信可能なメール容量以下であれば，登録する．
+            receiveFolder.saveMail(alPop3MailMessage, orgId);
+            if (rcontext.getDelete()) {
+              // 受信したメールを POP3 サーバ上から削除する
+              tmpMessage.setFlag(Flags.Flag.DELETED, rcontext.getDelete());
+            } else {
+              if (rcontext.getEnableSavingDays()) {
+                // 指定日数を過ぎたメールを削除する（ヘッダ Received の日付で判断する）．
+                Date receivedDate = ALMailUtils.getReceivedDate(tmpMessage);
+                if (receivedDate != null && receivedDate.before(limitDate)) {
+                  // 受信したメールを POP3 サーバ上から削除する
+                  tmpMessage.setFlag(Flags.Flag.DELETED, true);
                 }
               }
-            } else {
-              receiveFolder.saveDefectiveMail(alPop3MailMessage, orgId);
-              overMailMaxSize = true;
             }
-            receivedUIDL.add(nowReceivedUID);
-            receivedMailNum++;
-
-            ALStaticObject.getInstance().updateAccountStat(
-              rcontext.getAccountId(),
-              ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_NUM,
-              Integer.valueOf(receivedMailNum));
+          } else {
+            receiveFolder.saveDefectiveMail(alPop3MailMessage, orgId);
+            overMailMaxSize = true;
           }
+          receivedUIDL.add(nowReceivedUID);
+          receivedMailNum++;
 
-          finishedReceiving = true;
-        }
-        if (maxTotalMessages > 1000 + j * 1000) {
-          messages = pop3Folder.getMessages(1 + j * 1000, 1000 + j * 1000);
-        } else {
-          messages = pop3Folder.getMessages(1 + j * 1000, maxTotalMessages);
+          ALStaticObject.getInstance().updateAccountStat(
+            rcontext.getAccountId(),
+            ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_NUM,
+            Integer.valueOf(receivedMailNum));
         }
 
-        totalMessages = messages.length;
+        finishedReceiving = true;
       }
 
       // POP3 サーバとの接続を閉じる
