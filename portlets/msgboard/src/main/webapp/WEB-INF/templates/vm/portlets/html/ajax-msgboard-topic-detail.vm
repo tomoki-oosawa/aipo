@@ -174,14 +174,18 @@
 						</td>
 					</tr>　
 					<tr>
-						<td style="height:16px; width:135px;"><b>$l10n.MSGBOARD_FILE_ATTACH</b></td>
+						<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
 						<td>
+							<div class="clearfix">
+							<div class="floatLeft mr10">
 							<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+							</div>
 							<ul id="attachments_$!{portlet.ID}" class="attachments">
 								#foreach($record in $!result.AttachmentFileNameList )
 									<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
 								#end
 							</ul>
+							</div>
 						</td>
 					</tr>
 					<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
