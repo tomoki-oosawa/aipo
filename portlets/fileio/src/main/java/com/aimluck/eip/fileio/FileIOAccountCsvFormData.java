@@ -44,6 +44,8 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
@@ -692,6 +694,18 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         ALAccessControlHandler aclhandler =
           aclservice.getAccessControlHandler();
         aclhandler.insertDefaultRole(userid);
+
+        // 勤務形態
+        EipTExtTimecardSystem system =
+          Database.get(EipTExtTimecardSystem.class, 1);
+        if (system != null) {
+          EipTExtTimecardSystemMap rd = new EipTExtTimecardSystemMap();
+          rd.setEipTExtTimecardSystem(system);
+          int user_id = Integer.parseInt(user.getUserId());
+          rd.setUserId(user_id);
+          rd.setCreateDate(now);
+          rd.setUpdateDate(now);
+        }
 
         Database.commit();
       }
