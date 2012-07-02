@@ -30,6 +30,7 @@
 #ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
 <tr>
 <td colspan="2">
+<div class="clearfix">
 <div class="avatar floatLeft mr10">
 #if(${result.ParentReport.hasPhoto()})
 <img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" />
@@ -43,6 +44,7 @@
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
+</div>
 </div>
 </td>
 </tr>
