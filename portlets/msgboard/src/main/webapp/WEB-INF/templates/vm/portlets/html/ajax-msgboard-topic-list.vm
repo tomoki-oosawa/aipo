@@ -30,76 +30,11 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-
-<div class="auiSummaryMeta auiFilter clearfix">
-<form class="auiSearch floatLeft" id="searchForm_$!{portlet.ID}" style="margin-right:1em;" onsubmit="aipo.msgboard.filteredSearch('$!{portlet.ID}');return false;">
-	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen")' />
-	<div class="filterInputField">
-		<div class="filters" id="filters_$!{portlet.ID}">
-			 #if(!$!result.issetFilter("post"))
-				<span class="filterTip"><span>$l10n.MSGBOARD_ALL_POST</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
-			 #else
-			 	#set($break=false)
-			 	#foreach($record in $result.postList)
-			 		#if(!$break)
-					#if($!result.issetFilter("post",$!{record.name})))
-						<span class="filterTip"><span>$record.alias_name</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
-			 			#set($break=true)
-			 		#end
-			 	#end#end
-
-			 	#foreach($record in $result.PostMap)#if(!$break)
-					#if($!result.issetFilter("post",$!{record.GroupName}))
-						<span class="filterTip"><span>$!record.PostName</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','post')"><i class="auiIcon auiIconDelete"></i></a></span>
-			 			#set($break=true)
-			 		#end
-			 	#end#end
-			 #end
-			 #if(!$!result.issetFilter("category"))
-				<span class="filterTip"><span>$l10n.MSGBOARD_ALL_CATEGORY</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','category')"><i class="auiIcon auiIconDelete"></i></a></span>
-			 #else
-			 	#set($break=false)
-			 	#foreach($record in $result.CategoryList)#if(!$break)
-			 		#if ($!result.issetFilter("category",$!{record.CategoryId}))
-						<span class="filterTip"><span>$!record.CategoryName</span><a href="javascript:void(0)" onclick="aipo.msgboard.filterSetDefault('$!{portlet.ID}','category')"><i class="auiIcon auiIconDelete"></i></a></span>
-			 			#set($break=true)
-			 		#end
-			 	#end#end
-			 #end
-		</div>
-		<a href="javascript:void(0)" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'));" title="フィルタ" class="menubarOpenButton filterDropDrawer">
-			<span>
-				<i class="auiIcon auiIconArwBottom"></i>
-			</span>
-		</a>
-		<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
-			<div>
-				<p class="caption">$l10n.MSGBOARD_POST</p>
-				<ul class="filtertype"data-type="post" data-defaultparam="0">
-					<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post"))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_POST</a></li>
-
-					#foreach($record in $result.postList)
-					<li #if ($!result.issetFilter("post",$record.name))) class="selected" #end  data-param="$record.name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.name))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)' >$record.alias_name</a></li>
-					#end
-					#foreach($record in $result.PostMap)
-					<li #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
-					#end
-				</ul>
-			</div>
-			<div>
-				<p class="caption">$l10n.MSGBOARD_PORTLET_CATEGORY</p>
-				<ul class="filtertype"data-type="category" data-defaultparam="0">
-					<li #if (!$!result.issetFilter("category")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("category")) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_CATEGORY</a></option>
-					#foreach( $record in $result.CategoryList )
-					<li #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end  data-param="$!{record.CategoryId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.CategoryName</a></li>
-					#end
-				</ul>
-			</div>
-		</div>
-		<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}"value="$!result.targetKeyword" style="margin-right:5px;" />
-	</div>
-	<a class="auiButtonSearch floatLeft" onclick="aipo.msgboard.filteredSearch('$!{portlet.ID}')">$l10n.MSGBOARD_SEARCH</a>
-	<input type="hidden" name="template" value="MsgboardTopicListScreen"/>
+<div class="auiSummaryMeta clearfix">
+<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<input type="hidden" name="template" value="MsgboardTopicListScreen"/>
+<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.MSGBOARD_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -147,5 +82,5 @@ $!record.CategoryName
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <!-- END Contents Area -->
-<img src="images/common/dot.gif" width="1" height="1" onload="setMouseListener();aipo.msgboard.initFilterSearch=function(portlet_id){var q=dojo.byId('q'+portlet_id);var filters=dojo.byId('filters_'+portlet_id);if(filters && q){q.style.paddingLeft=filters.offsetWidth+'px';}};aipo.msgboard.initFilterSearch('$!portlet.ID');" style="display:none" />
+
 #parse("/portlets/html/ja/msgboard-widgets.vm")

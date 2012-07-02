@@ -27,7 +27,7 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction($l10n.MSGBOARD_ADD_TOPIC "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
+#AUIbuttonAction($l10n.MSGBOARD_TOPIC_LIST "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);")
 </div>
 
 <div class="auiWidget clearfix">
@@ -35,9 +35,9 @@
 <input type="hidden" id="topic" value="$!result.CurrentFilter"/>
 <ul>
 
-<li #if (!$!result.issetFilter("category") && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.MSGBOARD_ALL_CATEGORY</a></li>
+<li #if (!$!result.CurrentFilter && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.MSGBOARD_ALL_CATEGORY</a></li>
 #foreach( $record in $!result.CategoryList )
-<li #if ($!result.issetFilter("category",$!record.CategoryId.toString())) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
+<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 

@@ -69,6 +69,14 @@
         <parameter name="p2b-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2b-sort.style.items" value="response_new,response_old" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2b-sort.style.values" value="返信日時の新しい順,返信日時の古い順" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-category" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>詳細表示時の初期選択カテゴリ</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p3a-category.style" value="MsgboardCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-category.style.initialvalue" value="すべてのカテゴリ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="p1e-rows" value="4" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示形式（トップページ）</title>

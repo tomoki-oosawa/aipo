@@ -27,7 +27,6 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -67,13 +66,6 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       if ("update".equals(mode)) {
         updateState(rundata, context, portlet);
       }
-
-      ParameterParser parser = rundata.getParameters();
-
-      MsgboardUtils.passPSML(rundata, context, "p12f-filters", parser
-        .getString(ALEipConstants.LIST_FILTER));
-      MsgboardUtils.passPSML(rundata, context, "p12g-filtertypes", parser
-        .getString(ALEipConstants.LIST_FILTER_TYPE));
 
       MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
       listData.initField();
