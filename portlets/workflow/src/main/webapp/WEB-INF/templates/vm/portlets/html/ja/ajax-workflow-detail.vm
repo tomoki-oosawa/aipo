@@ -22,7 +22,6 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheaderPrint("ワークフロー詳細" "$!portlet.ID" "WorkflowScreenPrint" "$!{result.getViewDate().toString()})")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 <form name="workflowForm$!portlet.ID" id="workflowForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})" method="post" onsubmit="return false;">
 <input type="hidden" name="_name" value="依頼">
@@ -74,7 +73,7 @@ $!result.Detail.RouteName
 #ALtdcaption('添付ファイル')
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<img src="images/workflow/workflow_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.FileName)">$attachmentFile.FileName</a><br>
+<img src="images/workflow/workflow_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a><br>
 #end
 #ALtditemfooter()
 #end

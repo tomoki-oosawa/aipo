@@ -58,6 +58,7 @@ public class WebMailResultData implements ALData {
    * 
    * 
    */
+  @Override
   public void initField() {
     headers = new ArrayList<String>();
     subject = new ALStringField();

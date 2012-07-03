@@ -89,7 +89,7 @@
 *#
 ##ファイルネーム
 #ALtdcellheaderAtt("class='mb_hide'")
-<div><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${record.FileId}).addPathInfo("f",${record.WbrFileName})">$record.WbrFileName</a></div>
+<div><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${record.FileId}).addPathInfo("f",${record.URLEncodedFileName})">$record.WbrFileName</a></div>
 #ALtdcellfooter()
 ##タイトル
 #ALtdcellheader()

@@ -30,7 +30,7 @@
 #ALtditem($!result.Detail.FileTitle)
 #ALtdcaption('ファイル名')
 #ALtditemheader()
-<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${result.Detail.FileId}).addPathInfo("f",${result.Detail.WbrFileName})">$!result.Detail.WbrFileName</a>
+<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${result.Detail.FileId}).addPathInfo("f",${result.Detail.URLEncodedFileName})">$!result.Detail.WbrFileName</a>
 #ALtditemfooter()
 #ALtdcaption('位置')
 #ALtditem("$!result.Detail.Position")

@@ -30,6 +30,7 @@ import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
@@ -88,10 +89,20 @@ public class WebMailFileScreen extends RawScreen {
       ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountid);
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
 
-      String fileName =
-        new String(
-          msg.getFileName(attachmentIndex).getBytes("Shift_JIS"),
-          "8859_1");
+      String fileName;
+      boolean isMsie = FileuploadUtils.isMsieBrowser(rundata);
+      if (isMsie) {
+        fileName =
+          new String(
+            msg.getFileName(attachmentIndex).getBytes("Windows-31J"),
+            "8859_1");
+      } else {
+        fileName =
+          new String(
+            msg.getFileName(attachmentIndex).getBytes("UTF-8"),
+            "8859_1");
+      }
+
       InputStream in = msg.getInputStream(attachmentIndex);
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)

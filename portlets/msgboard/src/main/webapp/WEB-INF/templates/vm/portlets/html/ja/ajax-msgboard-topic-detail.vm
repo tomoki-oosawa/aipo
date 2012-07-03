@@ -63,12 +63,12 @@
 							#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
 								<div class="mt20">
 									#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
-										<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+										<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 										#if($attachmentFile.isImage())
 											<div  style="padding-top:3px;padding-left:12px;">
 												<div id='popc' style='position:absolute'></div>
 													<div class="thumbBlock">
-														<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+														<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
 														<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 													</div>
 												</div>
@@ -79,7 +79,8 @@
 							#end
 				</td>
 			</tr>
-#ALtablefooter()
+  </tbody>
+</table>
 
 #if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
 ##pageview($link $result)
@@ -114,12 +115,12 @@
 				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
 					<div class="mt20">
 						#foreach( $attachmentFile in $!record.AttachmentFileList )
-						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 							#if($attachmentFile.isImage())
 								<div style="padding-top:3px;padding-left:12px;">
 									<div id='popc' style='position:absolute'>
 									</div>
-									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
 									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 								</div>
 							#end
@@ -130,17 +131,15 @@
     	</td>
   	</tr>
 #end
-#ALtablefooter()
+</tbody>
+</table>
 ##pageview($link $result)
 #end
 #ALformfooter()
 
 #if($!resultOnTopicDetail)
-	<div id="messageDiv">
-	</div>
-	<div id="messageDiv_$!portlet.ID">
-	</div>
-##<form name="msgboardForm$!portlet.ID" id="msgboardForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('mode','topic_reply').addQueryData('entityid', ${result.ParentTopic.TopicId})" method="post" onsubmit="aimluck.io.selectAllOptions(this.attachments);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage);return false;">
+	<div id="messageDiv"></div>
+	<div id="messageDiv_$!portlet.ID"></div>
 	#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
 		<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
 		<input type="hidden" name="mode" value="topic_reply" />

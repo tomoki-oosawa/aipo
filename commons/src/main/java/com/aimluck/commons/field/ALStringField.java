@@ -20,6 +20,7 @@
 package com.aimluck.commons.field;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +134,18 @@ public class ALStringField extends ALAbstractField {
    */
   public String getValue() {
     return value;
+  }
+
+  public String getURLEncodedValue() {
+    if (value == null) {
+      return "";
+    } else {
+      try {
+        return URLEncoder.encode(value, "utf-8");
+      } catch (UnsupportedEncodingException e) {
+        return "file";
+      }
+    }
   }
 
   /**

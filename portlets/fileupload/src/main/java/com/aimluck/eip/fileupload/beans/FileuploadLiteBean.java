@@ -132,6 +132,10 @@ public class FileuploadLiteBean implements ALData, Cloneable {
     return file_name.getValue();
   }
 
+  public String getURLEncodedValue() {
+    return file_name.getURLEncodedValue();
+  }
+
   /**
    * 
    * @return

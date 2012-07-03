@@ -56,73 +56,72 @@ $!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAltern
 #end
 </div>
 </div>
-#ALtditemfooter()
+</td>
+</tr>
 
 <tr>
 <td style="border-bottom:none;">
 <div class="clearfix">
-<div>
-$!{result.Detail.Note}
-#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
-<div style="padding-top:15px;">
-#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<div style="padding-top:5px;">
-<img src="images/blog/blog_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
-#if($attachmentFile.isImage())
-<div style="padding-top:3px;padding-left:12px;" class="thumbBlock">
-<div id='popc' style='position:absolute'></div>
-<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
-<img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a>
+  <div>
+  $!{result.Detail.Note}
+  #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+    <div style="padding-top:15px;">
+    #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+      <div style="padding-top:5px;">
+      <img src="images/blog/blog_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})"> $result.getStringCR($attachmentFile.FileNameField) </a><br>
+      #if($attachmentFile.isImage())
+        <div style="padding-top:3px;padding-left:12px;" class="thumbBlock">
+        <div id='popc' style='position:absolute'></div>
+        <a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
+        <img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a>
+        </div>
+      #end
+      </div>
+    #end
+    </div>
+  #end
+  </div>
 </div>
-#end
-</div>
-#end
-</div>
-#end
-</div>
-#ALtditemfooter()
-#ALtablefooter()
+</td>
+</tr>
+</table>
 
 
 
 #if($!result.CommentList && $!result.CommentList.size() >= 0)
 <table class="listTable wide mb0">
-<caption>
-コメント
-</cation>
+<caption>コメント</cation>
 #foreach ($record in $result.CommentList)
-<tr>
-#ALtditemheader()
-<div class="clearfix mb10">
-<div class="avatar floatLeft mr10">
-#if(${record.Owner.hasPhoto()})
-<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.Owner.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
-#else
-<img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
+  <tr>
+  <td>
+  <div class="clearfix mb10">
+  <div class="avatar floatLeft mr10">
+  #if(${record.Owner.hasPhoto()})
+    <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.Owner.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
+  #else
+    <img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
+  #end
+  </div>
+  <div class="alignleft"><strong>$!{record.OwnerName}</strong>
+  <br>
+  $!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
+  </div>
+  <div class="alignright">
+  #if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
+    #ALbutton("eventSubmit_doBlog_comment_delete" "削除する" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
+  #end
+  </div>
+  </div>
+  
+  <div>
+  ${record.Comment}
+  </div>
+  </td>
+  </tr>
 #end
-</div>
-<div class="alignleft"><strong>$!{record.OwnerName}</strong>
-<br>
-$!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
-</div>
-<div class="alignright">
-#if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
-#ALbutton("eventSubmit_doBlog_comment_delete" "削除する" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
+</table>
 #end
-</div>
-</div>
 
-<div>
-${record.Comment}
-</div>
-#ALtditemfooter()
-</tr>
-#end
-
-#ALtablefooter()
-##pageview($link $result)
-
-#end
 #ALformfooter()
 
 <!-- form comment -->
@@ -138,10 +137,10 @@ ${record.Comment}
 #ALtditemheader()
 #ALtextarea('comment' $!resultOnCommentDetail.Comment 10 40)
 #ALtditemfooter()
-#ALtablefooter()
+</table>
 #ALbuttonheader()
 #ALsubmit('eventSubmit_doBlog_entry_reply' 'コメントする')#ALajaxbuttonClose()
 #ALbuttonfooter()
-#ALformfooter()
+</form>
 #ALdialogfooter()
 

@@ -126,7 +126,11 @@ public class CabinetFileResultData implements ALData {
    * @return
    */
   public String getWbrFileName() {
-    return file_name.getValue();
+    return ALCommonUtils.replaceToAutoCR(file_name.getValue());
+  }
+
+  public String getURLEncodedFileName() {
+    return file_name.getURLEncodedValue();
   }
 
   /**

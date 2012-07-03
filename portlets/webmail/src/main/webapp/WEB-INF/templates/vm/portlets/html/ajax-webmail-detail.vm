@@ -19,24 +19,23 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-## ---------------------------------------------------------------------------
 #if($!result.currentTab == "received_mailbox")
 #set ($event_cancel = "eventSubmit_doWebmail_show_received_mails")
 #else
 #set ($event_cancel = "eventSubmit_doWebmail_show_sent_mails")
 #end
-
+## ---------------------------------------------------------------------------
 <div class="auiPopup clearfix">
-    <table class="roundBlockWrapperTop">
-              <tbody>
-                <tr>
-                  <td class="roundBlockTitle" style="width:89%">メール詳細</td>
-                  <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-    <div class="roundBlockContent">
+  <table class="roundBlockWrapperTop">
+    <tbody>
+      <tr>
+        <td class="roundBlockTitle" style="width:89%">メール詳細</td>
+        <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="roundBlockContent">
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("メール")
 
@@ -55,18 +54,18 @@ $!MailSubject
 #ALtditemheaderAtt("colspan='2'")
 <input name="is_header_tiny" id="is_header_tiny" type="hidden" value="TRUE"/>
 <div id="WebMailHeaderFieldDetail" style="display:none">
-#foreach($headerline in $!result.Detail.Headers)
-$headerline<br />
-#end
+  #foreach($headerline in $!result.Detail.Headers)
+  $headerline<br />
+  #end
 </div>
 <div id="WebMailHeaderFieldTiny">
-#if($!{result.Detail.Date.toString()} != "")
-日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br />
-#end
-宛先：$!result.Detail.To<br />
-#if($!{result.Detail.From.toString()} != "")
-差出人：$!result.Detail.From
-#end
+  #if($!{result.Detail.Date.toString()} != "")
+  日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br />
+  #end
+  宛先：$!result.Detail.To<br />
+  #if($!{result.Detail.From.toString()} != "")
+  差出人：$!result.Detail.From
+  #end
 </div>
 <div class="mt5" style="cursor: pointer;"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">詳細を開く</a></div>
 #ALtditemfooter()
@@ -77,7 +76,7 @@ $!result.Detail.Body
 #ALtditemheader()
 #set($count = 0)
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
-<a href="$jslink.getTemplate("WebMailFileScreen").addPathInfo("accountid", $accountid).addPathInfo("tab", $!result.currentTab).addPathInfo("entityid", $entityid).addPathInfo("attachmentIndex", $count).addPathInfo("f",${attachmentFileName})">$result.getStringCR($attachmentFileName)</a><br>
+<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WebMailFileScreen").addPathInfo("accountid", $accountid).addPathInfo("tab", $!result.currentTab).addPathInfo("entityid", $entityid).addPathInfo("attachmentIndex", $count).addPathInfo("f",${attachmentFileName.getURLEncodedValue()})">$result.getStringCR($attachmentFileName)</a><br>
 #set( $count = $count + 1 )
 #end
 #ALtditemfooter()
@@ -90,4 +89,6 @@ $!result.Detail.Body
 <input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.webmail.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
+  </div>
+</div>
 #ALdialogfooter()
