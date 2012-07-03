@@ -433,6 +433,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       context.put("relayUrl", relayUrl);
       context.put("rpctoken", rpctoken);
       context.put("checkUrl", checkUrl);
+      context.put("st", gadgetContext.getSecureToken());
 
       try {
         context.put("tutorialForbid", false);
