@@ -318,13 +318,16 @@ public class ToDoFormData extends ALAbstractFormData {
         ExpressionFactory.matchExp(
           EipTTodoCategory.USER_ID_PROPERTY,
           login_user_id);
-
+      // カテゴリ名が重複している場合チェックを行います。
       if (Database.query(EipTTodoCategory.class, exp).andQualifier(
         exp2.orExp(exp3)).fetchList().size() != 0) {
-        msgList.add("カテゴリ名『 <span class='em'>"
-          + category_name.toString()
-          + "</span> 』は既に登録されています。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("TODO_CATEGORY_NAME_ALREADY_REGISTERED")
+          + (category_name.toString())
+          + (ALLocalizationUtils
+            .getl10n("TODO_CATEGORY_NAME_ALRESDY_REGISTERED_END")));
       }
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
