@@ -2085,38 +2085,45 @@ tr.disabled a {
 	width:16px;
 }
 .filters {
-	padding-left:40px;
 	color:#999;
 	line-height:28px;
 }
 .filterTip {
-	position:relative;
+	/*position:relative;*/
 	display:inline-block;
 	background:#e0e0e0;
 	color:#000;
-	margin:2px 2px 2px 0;
-	padding:0 22px 0 5px;
+	margin:2px;
+	padding:0 7px;
 	border-radius:3px;
 	-ms-border-radius:3px;
-	-webkit-transition: 0.3s ease-in-out;
 	height:24px !important;
+	line-height:24px !important;
 	overflow:hidden;
+	max-width:16em;
+	white-space:nowrap;
+	text-overflow:ellipsis;
 }
-.filterTip > span {
+.filters a {
+	text-decoration:none;
+}
+.filters a:hover span {
+	color:#000;
+}
+/*.filterTip > span {
 	display:inline-block;
 	max-width:16em;
 	white-space:nowrap;
 	overflow:hidden;
 	text-overflow:ellipsis;
 	line-height:24px !important;
-}
+}*/
 .filterTip > a {
 	position:absolute;
 	margin:4px 0 0 3px;
 }
 .auiFilter .menubar.multi {
 	left:0;
-	top:30px;
 }
 
 .filterInputField {
