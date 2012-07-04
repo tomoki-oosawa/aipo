@@ -50,6 +50,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモの送信先に指定できるグループの検索データを管理するためのクラスです。
@@ -76,7 +77,7 @@ public class NoteGroupSelectData extends
   private int newNoteAllSum = 0;
 
   /**
-   * 初期化処理を行います。 
+   * 初期化処理を行います。
    * 
    * @param action
    * @param rundata
@@ -224,7 +225,7 @@ public class NoteGroupSelectData extends
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 
+   * 検索条件を設定した SelectQuery を返します。
    * 
    * @param rundata
    * @param context
@@ -329,12 +330,24 @@ public class NoteGroupSelectData extends
     return userAliasName;
   }
 
+  public String getUserAliasNameText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "NOTE_USER_ALIAS_NAME_TEXT",
+      userAliasName.toString());
+  }
+
   /**
    * 
    * @return
    */
   public int getNewNoteAllSum() {
     return newNoteAllSum;
+  }
+
+  public String getNewNoteAllSumText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "NOTE_NEW_NOTE_ALL_SUM_TEXT",
+      newNoteAllSum);
   }
 
   /**

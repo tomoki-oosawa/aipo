@@ -18,17 +18,17 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if ($!result.PostMap.size() == 0 && $!result.MyGroupList.size() == 0) 
-<div class="message">部署または My グループに登録されたユーザーに送信します。</div>
-<div class="message">部署または My グループが登録されていません。</div>
+#if ($!result.PostMap.size() == 0 && $!result.MyGroupList.size() == 0)
+<div class="message">$l10n.NOTE_SEND_NOTE_TO_MY_GROUP</div>
+<div class="message">$l10n.NOTE_ALERT_NO_ENTRY_MY_GROUP</div>
 #else
 #set($link = "$!jslink.getPortletById($!portlet.ID)")
 #ALformheader('NoteGroup' $jslink $portlet)
 #ALtableheaderSimpleWide()
-#ALtdcaption('グループ')
-#ALtditemheaderAtt("style='width: 80%;'")   
+#ALtdcaption($l10n.NOTE_GROUP)
+#ALtditemheaderAtt("style='width: 80%;'")
 #ALselectpdheader("group" "99%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('note','$!portlet.ID');")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteGroupScreen").addQueryData("filter","").addQueryData("filtertype","group"))">（選択してください）</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteGroupScreen").addQueryData("filter","").addQueryData("filtertype","group"))">$l10n.NOTE_SELECT_BRACKET</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteGroupScreen").addQueryData("filter",$!record.Name).addQueryData("filtertype","group"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 #end
@@ -42,20 +42,20 @@
 #ALtditemfooter()
 #ALtablefooter()
 #if($result.List.size() == 0)
-<div class="message">選択したグループには、$!result.UserAliasName 様以外のユーザーが登録されていません。</div>
+<div class="message">$!result.UserAliasNameText</div>
 #end
-#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0 && $!{result.UnreadReceivedNotesAllSum} && $!{result.UnreadReceivedNotesAllSum} > 0) <a href='$!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc')'>#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0) 新着：$!{result.NewNoteAllSum}件 #end</a> #end 
+#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0 && $!{result.UnreadReceivedNotesAllSum} && $!{result.UnreadReceivedNotesAllSum} > 0) <a href='$!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc')'>#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0) $!{result.NewNoteAllSumText} #end</a> #end 
 #if($result.List.size() > 0)
 #ALajaxpageview('NoteGroupScreen' $result)
 #ALtableheaderWide()
 <tr>
-#ALtdhead("#ALajaxsort('src_user' '名前' $result 'NoteGroupScreen')")
+#ALtdhead("#ALajaxsort('src_user' $l10n.NOTE_NAME $result 'NoteGroupScreen')")
 #ALtdheadThin(' ')
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcell($!record.UserName)
-#ALtdcellAtt("#ALajaxbuttonLinkCallback('メモ追加' $!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record.userId) 'images/icon/icon_add.gif' $!portlet.ID 'aipo.note.onLoadNoteDialog')" 'nowrap="nowrap"')
+#ALtdcellAtt("#ALajaxbuttonLinkCallback($l10n.NOTE_ADD_MEMO $!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record.userId) 'images/icon/icon_add.gif' $!portlet.ID 'aipo.note.onLoadNoteDialog')" 'nowrap="nowrap"')
 </tr>
 #end
 #ALtablefooter()

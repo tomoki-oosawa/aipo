@@ -19,22 +19,22 @@
 
 ## ---------------------------------------------------------------------------
 #if($!result.currentTab == "received_notes")
-#set($person_key = "送信者")
+#set($person_key = $l10n.NOTE_SRC_USER)
 #set($person_value = $!result.Detail.SrcUserFullName)
 #else
-#set($person_key = "受信者")
+#set($person_key = $l10n.NOTE_DEST_USER)
 #set($person_value = $!result.Detail.DestUserFullName)
 #end
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["伝言メモ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1')"], ["伝言メモ詳細", ""]])
-#set ($tabs = [["伝言メモ詳細", "",""]])
+#set ($navilist = [[$l10n.NOTE_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.NOTE_NOTE_LIST, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1')"], [$l10n.NOTE_NOTE_DETAIL, ""]])
+#set ($tabs = [[$l10n.NOTE_NOTE_DETAIL, "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS("伝言メモ詳細" "aipo.note.hideDialog()")
+#ALdialogheaderCloseJS($l10n.NOTE_NOTE_DETAIL "aipo.note.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("伝言メモ")
+#ALajaxdetailformheader($l10n.NOTE_NOTE)
 #ALtableheaderWide()
-#ALtdcaption('受付日時')
-#ALtditem("$!{result.Detail.AcceptDate.Year}年$!{result.Detail.AcceptDate.Month}月$!{result.Detail.AcceptDate.Day}日 $!{result.Detail.AcceptDate.Hour}時$!{result.Detail.AcceptDate.Minute}分")
+#ALtdcaption($l10n.NOTE_CLERK_TIME)
+#ALtditem("$!{result.Detail.AcceptDate.Year}$l10n.NOTE_YEAR$!{result.Detail.AcceptDate.Month}$l10n.NOTE_MONTH$!{result.Detail.AcceptDate.Day}$l10n.NOTE_DAY $!{result.Detail.AcceptDate.Hour}$l10n.NOTE_HOUR$!{result.Detail.AcceptDate.Minute}$l10n.NOTE_MINUTE")
 #ALtdcaption($person_key)
 #ALtditemheader()
 #if($!result.currentTab == "received_notes")
@@ -44,31 +44,31 @@ $person_value
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
 $!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "1")
-<img src="images/note/note_new_message.gif" alt="新着" title="新着"/>
+<img src="images/note/note_new_message.gif" alt="$l10n.NOTE_NEW_MESSAGE" title="$l10n.NOTE_NEW_MESSAGE"/>
 #elseif($result.getStatus($record.UserId.Value) == "2")
-<img src="images/note/note_unread_message.gif" alt="未読" title="未読"/>
+<img src="images/note/note_unread_message.gif" alt="$l10n.NOTE_UNREAD_MESSAGE" title="$l10n.NOTE_UNREAD_MESSAGE"/>
 #elseif($result.getStatus($record.UserId.Value) == "3")
-<img src="images/note/note_read_message.gif" alt="既読" title="既読"/>
+<img src="images/note/note_read_message.gif" alt="$l10n.NOTE_READ_MESSAGE" title="$l10n.NOTE_READ_MESSAGE"/>
 #else
-<img src="images/note/note_deleted_message.gif" alt="削除済み" title="削除済み"/>
+<img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
 #end
 <br/>
 #end
 #end
 #end
 #ALtditemfooter()
-#ALtdcaption('依頼者')
+#ALtdcaption($l10n.NOTE_CLIENT)
 #ALtditem($!result.Detail.ClientName)
-#ALtdcaption('依頼者所属')
+#ALtdcaption($l10n.NOTE_CLIENT_CAMPANY)
 #ALtditem($!result.Detail.CompanyName)
-#ALtdcaption('依頼者電話番号')
+#ALtdcaption($l10n.NOTE_CLIENT_CELLILAR_PHONE)
 #ALtditem($!result.Detail.Telephone)
-#ALtdcaption('依頼者メールアドレス')
+#ALtdcaption($l10n.NOTE_CLIENT_EMAIL)
 #ALtditem($!result.Detail.EmailAddress)
 #set($count = 0)
-#if ($!result.Detail.AddDestTypePc.toString() == "1") #set ($dest_type_pc_dist = "パソコン") #set($count = $count+1) #end
-#if ($!result.Detail.AddDestTypeCellphone.toString() == "1") #set ($dest_type_cellphone_dist = "携帯電話") #set($count = $count+1) #end
-#ALtdcaption('追加送信先')
+#if ($!result.Detail.AddDestTypePc.toString() == "1") #set ($dest_type_pc_dist = $l10n.NOTE_PC) #set($count = $count+1) #end
+#if ($!result.Detail.AddDestTypeCellphone.toString() == "1") #set ($dest_type_cellphone_dist = $l10n.NOTE_CELLULAR_PHONE) #set($count = $count+1) #end
+#ALtdcaption($l10n.NOTE_ADDING_ADDRESS)
 #if($count == 0)
 #ALtditem("-----")
 #else
@@ -77,23 +77,23 @@ $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
 #ALtditemfooter()
 #end
 #if ($!result.Detail.SubjectType.toString() == "0") #set ($subject = $!result.Detail.CustomSubject.toString()) #end
-#if ($!result.Detail.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
-#if ($!result.Detail.SubjectType.toString() == "2") #set ($subject = "折返しお電話ください。") #end
-#if ($!result.Detail.SubjectType.toString() == "3") #set ($subject = "連絡があったことをお伝えください。") #end
-#if ($!result.Detail.SubjectType.toString() == "4") #set ($subject = "伝言をお願いします。") #end
-#ALtdcaption('用件')
+#if ($!result.Detail.SubjectType.toString() == "1") #set ($subject = $l10n.NOTE_CALL_AGAIN) #end
+#if ($!result.Detail.SubjectType.toString() == "2") #set ($subject = $l10n.NOTE_CALL_BACK) #end
+#if ($!result.Detail.SubjectType.toString() == "3") #set ($subject = $l10n.NOTE_TELL_ME) #end
+#if ($!result.Detail.SubjectType.toString() == "4") #set ($subject = $l10n.NOTE_TAKE_A_MESSAGE) #end
+#ALtdcaption($l10n.NOTE_SUBJECT)
 #ALtditem($!subject)
-#ALtdcaption('本文')
+#ALtdcaption($l10n.NOTE_MESSAGE)
 #ALtditem($!result.Detail.Message)
-#ALtdcaption('作成日時')
-#ALtditem("$!{result.Detail.CreateDate.Year}年$!{result.Detail.CreateDate.Month}月$!{result.Detail.CreateDate.Day}日 $!{result.Detail.CreateDate.Hour}時$!{result.Detail.CreateDate.Minute}分")
+#ALtdcaption($l10n.NOTE_CREATE_TIME)
+#ALtditem("$!{result.Detail.CreateDate.Year}$l10n.NOTE_YEAR$!{result.Detail.CreateDate.Month}$l10n.NOTE_MONTH$!{result.Detail.CreateDate.Day}$l10n.NOTE_DAY $!{result.Detail.CreateDate.Hour}$l10n.NOTE_HOUR$!{result.Detail.CreateDate.Minute}$l10n.NOTE_MINUTE")
 #if($!result.Detail.ConfirmDate.toString() != "")
-#ALtdcaption('確認日時')
-#ALtditem("$!{result.Detail.ConfirmDate.Year}年$!{result.Detail.ConfirmDate.Month}月$!{result.Detail.ConfirmDate.Day}日 $!{result.Detail.ConfirmDate.Hour}時$!{result.Detail.ConfirmDate.Minute}分")
+#ALtdcaption($l10n.NOTE_CHECK_TIME)
+#ALtditem("$!{result.Detail.ConfirmDate.Year}$l10n.NOTE_YEAR$!{result.Detail.ConfirmDate.Month}$l10n.NOTE_MONTH$!{result.Detail.ConfirmDate.Day}$l10n.NOTE_DAY $!{result.Detail.ConfirmDate.Hour}$l10n.NOTE_HOUR$!{result.Detail.ConfirmDate.Minute}$l10n.NOTE_MINUTE")
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.note.hideDialog();" />
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.NOTE_CLOSE" onclick="aipo.note.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 <img src="images/common/dot.gif" width="0" height="0"

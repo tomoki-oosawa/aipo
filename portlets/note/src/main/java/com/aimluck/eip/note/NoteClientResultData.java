@@ -27,6 +27,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモ依頼者のResultDataです。
@@ -103,6 +104,16 @@ public class NoteClientResultData {
    */
   public String getSubject() {
     return ALCommonUtils.replaceToAutoCR(subject.toString());
+  }
+
+  /**
+   * @return
+   */
+  public String getClientNameSubjectText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "NOTE_CLIENT_NAME_SUBJECT_TEXT",
+      ALCommonUtils.replaceToAutoCR(client_name.toString()),
+      ALCommonUtils.replaceToAutoCR(subject.toString()));
   }
 
   /**
