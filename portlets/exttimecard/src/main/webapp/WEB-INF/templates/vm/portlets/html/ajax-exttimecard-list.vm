@@ -250,7 +250,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
         #if($outcome.get('outgoing') != "")
           #set($isOutgoing = 1)
           #set($outgoings = "$outcome.get('outgoing')")
-        #end
+		#end
         #if($outcome.get('comeback') != "")
           #set($isOutgoing = 0)
           #set($comebacks = "$outcome.get('comeback')")
@@ -280,7 +280,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 	#if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていないならボタンを出力
 	  #ALtdcellAtt($leaving "align='center' nowrap='nowrap'")
 	#end
-
+	
   	#if(!($rdlist.IsNotNullClockInTime)) ## 出勤ボタンが押されていない
   	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_OUTGOING</span></td>
   	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_COMEBACK</span></td>
@@ -288,9 +288,9 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   	  #if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていない
   	  	#set($q = '"')
   	    #if($isOutgoing == 0) ## 外出していない
-  	      #if($outgoings == "") ##一番最初だけ２つとも表示
-  	        #set($outgoings = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', $l10n.EXTTIMECARD_OUTGOING);dojo.byId('form$!portlet.ID').onsubmit();${q}>")
-  	        #set($comebacks = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_COMEBACK</span>")
+  	      #if($outgoings == "") ##一番最初だけ２つ（外出・復帰）とも表示
+            #set($outgoings = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")   
+			#set($comebacks = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_COMEBACK</span>")
       	  #else
   	        #set($outgoings = "$outgoings<br><input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
   	      #end
@@ -301,7 +301,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 		  #set($comebacks = "$comebacks<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_COMEBACK${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_COMEBACK');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
   	    #end
   	  #end
-  	#end
+	#end
   #end
 
   #if($rdlist.IsNotNullClockInTime || $class != "today" || $!result.TargetUserId != $!result.UserId)
