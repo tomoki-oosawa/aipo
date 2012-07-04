@@ -1086,8 +1086,8 @@ button.auiButtonSmall {
 *:first-child+html input[type=reset],
 *:first-child+html button,
 *:first-child+html .auiButtonSmall {/* IE7 Hack */
-	padding:0 !important;
-	line-height:1.4em !important
+	line-height:1.4em !important;
+	overflow:visible;
 }
 .auiButton:hover,
 .auiButtonBold:hover,
@@ -2340,4 +2340,50 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 		-moz-opacity:1;
 		opacity:1;
 	}
+}
+
+
+
+.hdMessege{
+line-height:23px;
+font-size:11px;
+float:left;
+border-right:1px solid #DCDCDC;
+padding:0px 8px 0px 0;
+margin:0 8px 0 0;
+}
+.hdMessege a{
+text-decoration:none;
+}
+.counter {
+position:inherit !important;
+float:left;
+font-size:9px;
+height:12px;
+min-width:10px;
+line-height:12px;
+padding:0 1px;
+text-align: center;
+margin-top:4px;
+margin-right:2px;
+border-radius:4px;
+color:#FFFFFF;
+box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.1);
+background:#e63439 !important;
+border-top:1px solid #ab1619;
+border-left:1px solid #c81a1e;
+border-right:1px solid #c81a1e;
+border-bottom:1px solid #c81a1e;
+text-shadow:0 1px 0 #a80203;
+}
+.counter.zero{
+box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.05);
+background:#b5b5b5 !important;
+background:-moz-linear-gradient(top, #b5b5b5, #b5b5b5);
+background:-webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
+border-top:1px solid #8f8e8e;
+border-left:1px solid #acacad;
+border-right:1px solid #acacad;
+border-bottom:1px solid #a9acad;
+text-shadow:0 1px 0 #a3a4a6;
 }
