@@ -147,7 +147,7 @@ public class AddressBookFilterdSelectData extends
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
 
       if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
-        // 「未分類」の会社情報ではない場合
+        // 「その他」の会社情報ではない場合
         rd.setCompanyName(ALCommonUtils.compressString(
           company.getCompanyName(),
           getStrLength()));
@@ -242,7 +242,7 @@ public class AddressBookFilterdSelectData extends
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
       if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
-        // 「未分類」の会社情報ではない場合、会社情報を設定する
+        // 「その他」の会社情報ではない場合、会社情報を設定する
         rd.setCompanyName(company.getCompanyName());
         rd.setCompanyNameKana(company.getCompanyNameKana());
         rd.setPostName(company.getPostName());

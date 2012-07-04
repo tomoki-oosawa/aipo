@@ -152,7 +152,7 @@ public class CommonCategoryUtils {
   }
 
   /**
-   * 指定された共有カテゴリ内の SchaduleMap を「未分類」にカテゴリ変更します。
+   * 指定された共有カテゴリ内の SchaduleMap を「その他」にカテゴリ変更します。
    * 
    * @param category
    */

@@ -391,7 +391,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     // カテゴリID
     if (category_id.getValue() == 1 && request_name.getValue().length() == 0) {
       msgList
-        .add("『 <span class='em'>カテゴリ</span> 』を未分類以外に変更するか、『 <span class='em'>タイトル</span> 』を入力してください。");
+        .add("『 <span class='em'>カテゴリ</span> 』をその他以外に変更するか、『 <span class='em'>タイトル</span> 』を入力してください。");
     }
     // リクエスト名
     request_name.validate(msgList);

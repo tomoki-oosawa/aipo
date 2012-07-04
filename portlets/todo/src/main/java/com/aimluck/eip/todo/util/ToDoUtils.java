@@ -576,7 +576,7 @@ public class ToDoUtils {
       ALEipUser user;
       for (EipTTodoCategory record : categoryList2) {
         user = ALEipUtils.getALEipUser(record.getUserId());
-        // exclude 「未分類」
+        // exclude 「その他」
         if (user != null) {
           rd = new ToDoCategoryResultData();
           rd.initField();
@@ -593,7 +593,7 @@ public class ToDoUtils {
       logger.error("Exception", ex);
     }
 
-    // 未分類追加
+    // その他追加
     EipTTodoCategory unCategorized =
       Database.query(EipTTodoCategory.class).where(
         Operations.eq(EipTTodoCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();

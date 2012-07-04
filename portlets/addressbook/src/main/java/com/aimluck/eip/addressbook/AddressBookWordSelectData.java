@@ -137,7 +137,7 @@ public class AddressBookWordSelectData extends
         .toString(), getStrLength()));
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();
-      // TODO: 「未分類」の会社情報ではない場合
+      // TODO: 「その他」の会社情報ではない場合
       if (!AddressBookUtils.EMPTY_COMPANY_NAME.equals(company.getCompanyName())) {
         rd.setCompanyId(company.getCompanyId().toString());
         rd.setCompanyName(ALCommonUtils.compressString(

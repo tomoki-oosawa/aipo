@@ -512,7 +512,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
       Database.delete(company);
 
-      // アドレス情報の中で削除対象会社に所属しているものの会社IDを（未分類）のものとする
+      // アドレス情報の中で削除対象会社に所属しているものの会社IDを（その他）のものとする
       int empty_id =
         AddressBookUtils
           .getDummyEipMAddressbookCompany(rundata, context)

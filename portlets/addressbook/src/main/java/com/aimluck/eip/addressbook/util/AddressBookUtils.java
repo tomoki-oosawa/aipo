@@ -244,7 +244,7 @@ public class AddressBookUtils {
   }
 
   /**
-   * 未分類の会社情報を取得する。
+   * その他の会社情報を取得する。
    * 
    * @param rundata
    * @param context

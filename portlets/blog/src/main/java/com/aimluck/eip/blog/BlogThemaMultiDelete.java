@@ -80,7 +80,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
-      // これらテーマに含まれる記事を「未分類」に移す
+      // これらテーマに含まれる記事を「その他」に移す
       List<Integer> themaIds = new ArrayList<Integer>();
       EipTBlogThema thema = null;
       int themasize = themalist.size();

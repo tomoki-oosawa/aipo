@@ -101,7 +101,7 @@ public class CommonCategoryMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
-      // 共有カテゴリ内の ScheduleMap は「未分類」にカテゴリ変更する
+      // 共有カテゴリ内の ScheduleMap は「その他」にカテゴリ変更する
       for (EipTCommonCategory record : commoncategory_list) {
         CommonCategoryUtils.setDefaultCommonCategoryToSchedule(record);
       }

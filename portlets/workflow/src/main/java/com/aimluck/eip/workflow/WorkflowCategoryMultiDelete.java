@@ -86,7 +86,7 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
       // カテゴリを削除
       Database.deleteAll(categorylist);
 
-      // これらカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
+      // これらカテゴリに含まれる依頼をカテゴリ「その他」に移す。
       List<Integer> categoryIds = new ArrayList<Integer>();
       for (EipTWorkflowCategory category : categorylist) {
         categoryIds.add(category.getCategoryId());

@@ -322,7 +322,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         return false;
       }
 
-      // 共有カテゴリ内の SchaduleMap は「未分類」にカテゴリ変更する
+      // 共有カテゴリ内の SchaduleMap は「その他」にカテゴリ変更する
       CommonCategoryUtils.setDefaultCommonCategoryToSchedule(category);
 
       // entityIdを取得

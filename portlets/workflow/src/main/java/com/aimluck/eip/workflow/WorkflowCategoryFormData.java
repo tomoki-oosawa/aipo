@@ -327,15 +327,15 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       }
 
       if (category.getCategoryId().intValue() == 1) {
-        // カテゴリ「未分類」は削除不可
-        msgList.add("分類名『 <span class='em'>未分類</span> 』は削除できません。");
+        // カテゴリ「その他」は削除不可
+        msgList.add("分類名『 <span class='em'>その他</span> 』は削除できません。");
         return false;
       }
 
       // ワーフクローカテゴリを削除
       Database.delete(category);
 
-      // このカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
+      // このカテゴリに含まれる依頼をカテゴリ「その他」に移す。
       SelectQuery<EipTWorkflowRequest> query =
         Database.query(EipTWorkflowRequest.class);
       Expression exp1 =

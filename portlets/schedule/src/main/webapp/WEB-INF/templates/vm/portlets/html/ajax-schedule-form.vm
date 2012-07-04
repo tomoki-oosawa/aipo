@@ -38,7 +38,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="schedule_val_category1" style="display:none;">（未分類）</span>
+<span id="schedule_val_category1" style="display:none;">（その他）</span>
 <span id="schedule_val_repeat1" style="display:none">繰り返す</span>
 <span id="schedule_val_repeat2" style="display:none">繰り返さない</span>
 <span id="schedule_val_span1" style="display:none">期間で指定する</span>

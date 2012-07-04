@@ -72,7 +72,7 @@
 </select>
 </div>
 </div>
-<div class="small spaceTop spaceBottom spaceLeft">共有カテゴリ「未分類」の予定は表示されません。</div>
+<div class="small spaceTop spaceBottom spaceLeft">共有カテゴリ「その他」の予定は表示されません。</div>
 #ALtditemfooter()
 #ALtablefooter()
 </div>
