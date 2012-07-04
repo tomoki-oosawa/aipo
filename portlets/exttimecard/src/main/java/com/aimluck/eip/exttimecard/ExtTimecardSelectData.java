@@ -1021,4 +1021,14 @@ public class ExtTimecardSelectData extends
   public ALDateTimeField getTmpViewMonth() {
     return tmpViewMonth;
   }
+
+  /**
+   * スクリーンの名前を返します。
+   * 
+   * @return
+   */
+  public String getScreenName() {
+    return "ExtTimecardSelectData";
+  }
+
 }

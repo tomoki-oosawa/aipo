@@ -19,9 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
-
 <div class="auiWidget clearfix">
-#set($menu = [[$l10n.EXTTIMECARD_TIMECARD_RECORD, "list","$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list')"], [$l10n.EXTTIMECARD_TIMECARD_COUNT, "summary", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','summary')"]])
-#AUIwidgetMenuList($menu $result.mode)
+<ul>
+<li #if ("$!result.ScreenName" != "ExtTimecardSummarySelectData") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen"))','$!portlet.ID')">$l10n.EXTTIMECARD_TIMECARD_RECORD</a></li>
+<li #if ("$!result.ScreenName" != "ExtTimecardSelectData") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen"))','$!portlet.ID')">$l10n.EXTTIMECARD_TIMECARD_COUNT</a></li>
+</ul>
+
 </div>
 </div>

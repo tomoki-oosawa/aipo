@@ -1282,4 +1282,14 @@ public class ExtTimecardSummaryListSelectData extends
       return null;
     }
   }
+
+  /**
+   * スクリーンの名前を返します。
+   * 
+   * @return
+   */
+  public String getScreenName() {
+    return "ExtTimecardSummarySelectData";
+  }
+
 }
