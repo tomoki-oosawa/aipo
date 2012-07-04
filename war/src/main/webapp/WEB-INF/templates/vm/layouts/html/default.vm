@@ -143,9 +143,7 @@ scheduleTooltipEnable = false;
 dojo.require("dojo.dnd.Source");
 
 dojo.addOnLoad(function() {
-
-
-    dojo.query('.customizeMenuIcon').forEach(function(element) {
+     dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
         dojo.connect(element, 'onmouseenter', null, function(){
             dojo.addClass(this, 'customizeMenuIconMouseenter');
         });
@@ -159,6 +157,7 @@ dojo.addOnLoad(function() {
             aipo.customize.hideMenu();
         }
     });
+
 
     var containers = dojo.query('.container');
     var containerSources = [];

@@ -1696,6 +1696,14 @@ $item.get(0)
 #end
 #end
 
+#macro(AUInewsearchresult $keyword)
+#if($!keyword && $!keyword != "")
+<div class="auiSummaryMeta auiSearchResult">検索結果：$!keyword</div>
+#end
+#end
+
+
+
 #macro(AUIcontentsAreaHeader)
 <div id="auiContentsArea" #if($clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 #end

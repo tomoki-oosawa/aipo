@@ -22,7 +22,11 @@ package com.aimluck.eip.msgboard;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -40,10 +44,13 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -64,8 +71,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class MsgboardTopicSelectData extends
-    ALAbstractSelectData<EipTMsgboardTopic, EipTMsgboardTopic> implements
-    ALData {
+    ALAbstractMultiFilterSelectData<EipTMsgboardTopic, EipTMsgboardTopic>
+    implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -73,6 +80,9 @@ public class MsgboardTopicSelectData extends
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
+
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
 
   /** トピックの総数 */
   private int topicSum;
@@ -154,25 +164,28 @@ public class MsgboardTopicSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_OTHER,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    // カテゴリの初期値を取得する
-    try {
-      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-      if (filter == null) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        String categoryId =
-          portlet.getPortletConfig().getInitParameter("p3a-category");
-        if (table_colum_num != 4) {
-          categoryId = "";
-        }
-        if (categoryId != null) {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-          ALEipUtils
-            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-    }
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
+    // // カテゴリの初期値を取得する
+    // try {
+    // String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    // if (filter == null) {
+    // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    // String categoryId =
+    // portlet.getPortletConfig().getInitParameter("p3a-category");
+    // if (table_colum_num != 4) {
+    // categoryId = "";
+    // }
+    // if (categoryId != null) {
+    // ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+    // ALEipUtils
+    // .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+    // }
+    // }
+    // } catch (Exception ex) {
+    // logger.error("Exception", ex);
+    // }
 
     target_keyword = new ALStringField();
   }
@@ -293,30 +306,56 @@ public class MsgboardTopicSelectData extends
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
-  // ::TODO
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  // :TODO
   @Override
   protected SelectQuery<EipTMsgboardTopic> buildSelectQueryForFilter(
       SelectQuery<EipTMsgboardTopic> query, RunData rundata, Context context) {
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    String filter_type =
-      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
-    String crt_key = null;
-    Attributes map = getColumnMap();
-    crt_key = map.getValue(filter_type);
-    if ("0".equals(filter)) {
-      current_filter = filter;
-      current_filter_type = filter_type;
-    } else if (filter != null
-      && filter_type != null
-      && !filter.equals("")
-      && crt_key != null) {
-      Expression exp = ExpressionFactory.matchDbExp(crt_key, filter);
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, userIds);
       query.andQualifier(exp);
-      current_filter = filter;
-      current_filter_type = filter_type;
     }
+
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
-    if (search != null && !search.equals("")) {
+
+    if (search != null && !"".equals(search)) {
       current_search = search;
       Expression ex1 =
         ExpressionFactory.likeExp(EipTMsgboardTopic.NOTE_PROPERTY, "%"
@@ -394,6 +433,7 @@ public class MsgboardTopicSelectData extends
       logger.error("Exception", ex);
       return null;
     }
+
   }
 
   /**
@@ -743,5 +783,34 @@ public class MsgboardTopicSelectData extends
    */
   public void setTableColumNum(int table_colum_num) {
     this.table_colum_num = table_colum_num;
+  }
+
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   * 部署の一覧を取得する．
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12g-filtertypes"));
   }
 }
