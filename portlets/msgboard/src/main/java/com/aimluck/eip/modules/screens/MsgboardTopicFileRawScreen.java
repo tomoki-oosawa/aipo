@@ -67,21 +67,6 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
       }
     }
     try {
-      doCheckAclPermission(
-        rundata,
-        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER,
-        ALAccessControlConstants.VALUE_ACL_LIST);
-    } catch (ALPermissionException e) {
-      try {
-        doCheckAclPermission(
-          rundata,
-          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY,
-          ALAccessControlConstants.VALUE_ACL_LIST);
-      } catch (ALPermissionException ex) {
-        throw new Exception();
-      }
-    }
-    try {
       EipTMsgboardFile msgboardfile =
         MsgboardUtils.getEipTMsgboardFile(rundata);
 
