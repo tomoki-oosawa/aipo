@@ -1873,7 +1873,6 @@ ul.attachments span.deletebutton:hover{
 	width:12em;
 }
 .timeline {
-	position:relative;
 }
 .timeline .avatar {
 	float:left;
@@ -2097,10 +2096,17 @@ tr.disabled a {
 	padding:0 7px;
 	border-radius:3px;
 	-ms-border-radius:3px;
-	height:24px !important;
-	line-height:24px !important;
-	overflow:hidden;
+	height:22px !important;
+	line-height:22px !important;
+	white-space:nowrap;
+}
+.filterInputField .filterTip {
+	padding-right:22px;
+}
+.filterTip > span {
+	display:inline-block;
 	max-width:16em;
+	overflow:hidden;
 	white-space:nowrap;
 	text-overflow:ellipsis;
 }
@@ -2110,25 +2116,21 @@ tr.disabled a {
 .filters a:hover span {
 	color:#000;
 }
-/*.filterTip > span {
-	display:inline-block;
-	max-width:16em;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	line-height:24px !important;
-}*/
 .filterTip > a {
 	position:absolute;
-	margin:4px 0 0 3px;
+	margin:4px -3px 0 3px;
 }
-.auiFilter .menubar.multi {
+*:first-child+html .filterTip > a {
+	margin-top:3px;
+}
+/*.auiFilter .menubar.multi {
 	left:0;
-}
+}*/
 
 .filterInputField {
+	float:left;
 	position:relative;
-	max-width:500px;
+	margin-right:5px;
 }
 .filterInputField .menubar.multi {
 	left:auto;
@@ -2136,25 +2138,38 @@ tr.disabled a {
 }
 .filterInputField .filters {
 	position:absolute;
-	padding:0 2px;
 	height:28px;
+	padding:0 1px;
 	overflow:hidden;
 	white-space:normal;
+}
+*:first-child+html .filterInputField .filters {
+	padding-top:1px;
 }
 .filterDropDrawer {
 	position:absolute;
 	display:block;
 	right:0;
 	width:20px;
-	height:28px;
+	height:26px;
+	margin:1px;
+	border-radius:3px;
+	-ms-border-radius:3px;
 	vertical-align:middle;
+}
+*:first-child+html .filterDropDrawer {
+	right:5px;
+	margin-top:2px;
+	background:#fff;
 }
 .filterDropDrawer i {
 	margin-top:6px;
 }
 .filterInputField input[type=text] {
-	width:100%;
 	padding-right:20px;
+}
+.filterInputField .menubar.multi {
+	top:30px;
 }
 
 /***************************************************
