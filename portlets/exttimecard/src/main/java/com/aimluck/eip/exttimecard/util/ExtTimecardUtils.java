@@ -28,6 +28,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -37,6 +38,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -86,10 +90,15 @@ public class ExtTimecardUtils {
       Context context) {
     String timecardid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
     try {
       if (timecardid == null || Integer.valueOf(timecardid) == null) {
-        // Todo IDが空の場合
-        logger.debug("[Timecard] Empty ID...");
+        logger.debug("[ExtTimecardUtils.getEipTExtTimecard] Empty ID...");
         return null;
       }
 
@@ -100,10 +109,18 @@ public class ExtTimecardUtils {
           EipTExtTimecard.TIMECARD_ID_PK_COLUMN,
           timecardid);
       query.setQualifier(exp11);
-      Expression exp21 =
-        ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      query.andQualifier(exp21);
+
+      // have "others timecard acl", then not check user_id
+      if (!(aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+        ALAccessControlConstants.VALUE_ACL_UPDATE))) {
+        Expression exp21 =
+          ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
+        query.andQualifier(exp21);
+      }
+
       List<EipTExtTimecard> timecards = query.fetchList();
       if (timecards == null || timecards.size() == 0) {
         // 指定したTimecard IDのレコードが見つからない場合

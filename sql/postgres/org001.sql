@@ -1700,7 +1700,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(162,'addressbook_address_outside','
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(163,'addressbook_company','アドレス帳（会社情報）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(164,'addressbook_company_group','アドレス帳（社外グループ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(171,'timecard_timecard_self','タイムカード（自分のタイムカード）操作',47);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(172,'timecard_timecard_other','タイムカード（他人のタイムカード）操作',33);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(172,'timecard_timecard_other','タイムカード（他人のタイムカード）操作',41);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(181,'cabinet_file','共有フォルダ（ファイル）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(182,'cabinet_folder','共有フォルダ（フォルダ）操作',30);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(191,'manhour_summary_self','プロジェクト管理（自分の工数）操作',1);

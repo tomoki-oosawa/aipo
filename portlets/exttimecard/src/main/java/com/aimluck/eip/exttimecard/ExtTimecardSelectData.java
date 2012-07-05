@@ -104,6 +104,9 @@ public class ExtTimecardSelectData extends
   private boolean hasAclSummaryOther;
 
   /** 閲覧権限の有無（タイムカード外部出力） */
+  private boolean hasAclUpdate;
+
+  /** 編集権限の有無（タイムカード外部出力） */
   private boolean hasAclXlsExport;
 
   /** <code>viewMonth</code> 現在の月 */
@@ -224,6 +227,13 @@ public class ExtTimecardSelectData extends
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
     }
+
+    // 他のユーザーの編集権限
+    hasAclUpdate =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
 
     hasAclXlsExport =
       aclhandler.hasAuthority(
@@ -916,6 +926,10 @@ public class ExtTimecardSelectData extends
   @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
+  }
+
+  public boolean hasAclUpdate() {
+    return hasAclUpdate;
   }
 
   public boolean hasAclXlsExport() {
