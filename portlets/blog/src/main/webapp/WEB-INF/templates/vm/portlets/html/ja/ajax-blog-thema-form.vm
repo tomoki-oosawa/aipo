@@ -19,13 +19,13 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.BLOG_ADD")
 #set ($event_submit = "eventSubmit_doBlog_thema_insert")
-#set ($subtitle = "テーマ追加")
+#set ($subtitle = "$l10n.BLOG_ADD_THEME")
 #else
-#set ($action_str = "更新する")
+#set ($action_str = "$l10n.BLOG_UPDATE ")
 #set ($event_submit = "eventSubmit_doBlog_thema_update")
-#set ($subtitle = "テーマ編集")
+#set ($subtitle = "$l10n.BLOG_THEME_EDIT")
 #end
 #set($tabs = [[$subtitle, "",""]])
 #set ($indicator_id = "indicator-dlg-")

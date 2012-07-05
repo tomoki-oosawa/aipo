@@ -22,7 +22,7 @@
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid","all"))">すべてのテーマ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid","all"))">$l10n.BLOG_ALL_THEME</option>
 #foreach( $record in $result.ThemaList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid",$!record.ThemaId))" #if ($!result.ThemeId && $!result.ThemeId == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
 #end
@@ -34,7 +34,7 @@
 #end
 </div>
 #if($result.List.size() == 0)
-<div class="message">指定したテーマに記事はありません。</div>
+<div class="message">$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME</div>
 #else
 <div id="auiBlogEntries">
 #foreach ($record in $result.List)

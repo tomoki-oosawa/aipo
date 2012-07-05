@@ -21,10 +21,10 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="blog_val_confirm1" style="display:none">このコメントを削除してもよろしいですか？</span>
-<span id="blog_val_confirm2" style="display:none">この記事を削除してもよろしいですか？<br>なお、このブログに含まれるコメントもすべて削除されます。</span>
+<span id="blog_val_confirm1" style="display:none">$l10n.BLOG_CONFIRM_DELETE_COMMENT</span>
+<span id="blog_val_confirm2" style="display:none">$l10n.BLOG_CONFIRM_DELETE_ENTRY</span>
 ## ---------------------------------------------------------------------------
-#ALdialogheader("記事詳細")
+#ALdialogheader($l10n.BLOG_DETAIL_ENTRY)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
@@ -45,14 +45,14 @@ $!{result.Detail.Title}
 </div>
 <div class="alignleft"><strong>${result.Detail.OwnerName}</strong>
 <br>
-$!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAlternative.Month}月$!{result.Detail.CreateDateAlternative.Day}日$!{result.Detail.CreateDateAlternative.Hour}時$!{result.Detail.CreateDateAlternative.Minute}分
+$!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.Hour}$l10n.BLOG_HOUR$!{result.Detail.CreateDateAlternative.Minute}分
 </div>
 <div class="alignright">
 #if($!result.Editable)
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
 #end
 #if($!{result.Deletable})
-#ALbutton("eventSubmit_doBlog_entry_delete" "削除する" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
+#ALbutton("eventSubmit_doBlog_entry_delete" "$l10n.BLOG_DO_DELETE " "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
 #end
 </div>
 </div>
@@ -127,7 +127,7 @@ $!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAltern
 <!-- form comment -->
 #ALerrmsg($errmsgsOnCommentDetail)
 <div id="messageDiv"></div>
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}しています...")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}$l10n.BLOG_DO")
 <form name="blogForm$!portlet.ID" id="blogForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('entityid', $!{result.Detail.EntryId})" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.blog.onReceiveMessage);return false;">
 #ALajaxscreenformheader("blogForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.blog.onReceiveMessage)")
 <input type="hidden" name="mode" value="comment" />
@@ -139,7 +139,7 @@ $!{result.Detail.CreateDateAlternative.Year}年$!{result.Detail.CreateDateAltern
 #ALtditemfooter()
 </table>
 #ALbuttonheader()
-#ALsubmit('eventSubmit_doBlog_entry_reply' 'コメントする')#ALajaxbuttonClose()
+#ALsubmit('eventSubmit_doBlog_entry_reply' "$l10n.BLOG_DO_COMMENT")#ALajaxbuttonClose()
 #ALbuttonfooter()
 </form>
 #ALdialogfooter()

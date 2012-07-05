@@ -22,34 +22,34 @@
 #set($newThemaUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
 <div id="auiContentsArea" #if($clientVer && $clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
-<h2>テーマの管理</h2>
+<h2>$l10n.BLOG_MANAGEMENT</h2>
 #if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+#AUIbuttonAction("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader('テーマ' $jslink $portlet)
+#ALformheader("$l10n.BLOG_THEME" $jslink $portlet)
 #end
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("テーマを追加する" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+#AUIbuttonAction("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.BLOG_DO_DELETE ""$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
 </div>
 #AUIajaxpageview('BlogThemaListScreen' $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-#ALtdheadWide("#ALajaxsort('thema_name' 'テーマ名' $result 'BlogThemaListScreen')")
+#ALtdheadWide("#ALajaxsort('thema_name' $l10n.BLOG_THEME_NAME $result 'BlogThemaListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -63,7 +63,7 @@
 
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.BLOG_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.blog.onListReceiveMessage")
 </div>
 #AUIajaxpageview('BlogThemaListScreen' $result)
 #AUISummaryDivfooter()
