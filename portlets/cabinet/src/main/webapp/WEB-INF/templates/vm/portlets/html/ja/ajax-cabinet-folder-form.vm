@@ -72,12 +72,18 @@
 #ALtablefooter()
 #end
 <div class="spaceBottom" #if(!$!result.showAclForm())style="display:none;"#end>
+<p>
 <input name="access_flag" type="radio" value="0" id="$!{portlet.ID}access_flag_0_id" onclick="aipo.cabinet.hideMember(form)" #if(${result.getAccessFlag().toString()} == "0") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_0_id"> 全てのユーザーが閲覧／追加／編集／削除可</label><br />
+<label for="$!{portlet.ID}access_flag_0_id"> 全てのユーザーが閲覧／追加／編集／削除可</label>
+</p>
+<p>
 <input name="access_flag" type="radio" value="1"  id="$!{portlet.ID}access_flag_1_id" onclick="aipo.cabinet.showMember(this)" #if(${result.getAccessFlag().toString()} == "1") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_1_id"> 全てのユーザーが閲覧可。所属メンバーのみ追加／編集／削除可</label><br />
+<label for="$!{portlet.ID}access_flag_1_id"> 全てのユーザーが閲覧可。所属メンバーのみ追加／編集／削除可</label>
+</p>
+<p>
 <input name="access_flag" type="radio" value="2" id="$!{portlet.ID}access_flag_2_id" onclick="aipo.cabinet.showMember(form)" #if(${result.getAccessFlag().toString()} == "2") checked="checked" #end>
-<label for="$!{portlet.ID}access_flag_2_id"> 所属メンバーのみ閲覧／追加／編集／削除可</label><br />
+<label for="$!{portlet.ID}access_flag_2_id"> 所属メンバーのみ閲覧／追加／編集／削除可</label>
+</p>
 <input name="access_flag" type="radio" value="3"  id="$!{portlet.ID}access_flag_3_id" onclick="aipo.cabinet.hideMember(form)" #if(${result.getAccessFlag().toString()} == "3") checked="checked" #end>
 <label for="$!{portlet.ID}access_flag_3_id"> 自分のみ閲覧／追加／編集／削除可</label>
 </div>

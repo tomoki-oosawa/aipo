@@ -166,11 +166,11 @@ function hide_Attention(){
 <tr>
 <td width="150" class="caption">種類</td>
 <td>
-<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountCsvFileScreen')" />ユーザーアカウント</label><br />
-<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')" />部署</label><br />
-<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCompanyCsvFileScreen')" />アドレス(会社)帳</label><br />
-<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCsvFileScreen')" />アドレス帳</label><br />
-<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOScheduleCsvFileScreen')" />スケジュール</label><br />
+<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountCsvFileScreen')" />ユーザーアカウント</label></p>
+<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')" />部署</label></p>
+<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCompanyCsvFileScreen')" />アドレス(会社)帳</label></p>
+<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCsvFileScreen')" />アドレス帳</label></p>
+<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOScheduleCsvFileScreen')" />スケジュール</label></p>
 </td>
 </tr>
 
@@ -196,11 +196,11 @@ function hide_Attention(){
 <tr>
 <td width="150" class="caption">種類</td>
 <td>
-<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Account_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />ユーザーアカウント</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />部署</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />アドレス(会社)帳</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />アドレス帳</label><br />
-<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Schedule_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>スケジュール</label><br />
+<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Account_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />ユーザーアカウント</label></p>
+<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />部署</label></p>
+<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />アドレス(会社)帳</label></p>
+<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />アドレス帳</label></p>
+<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Schedule_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>スケジュール</label></p>
 </td>
 </tr>
 

@@ -112,11 +112,13 @@
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p">
       <h3>繰り返しパターン</h3>
+      <p>
       <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeD">毎日</label>
-      <br/>
+      </p>
       <input id="repeat_typeW" type="radio" value="W" #if ($!{result.RepeatType.toString()} == "W") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeW">毎週</label>
+      <p>
       <input id="week_0_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_0"/>
       <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_0_id">日</label>
       <input id="week_1_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_1"/>
@@ -131,7 +133,7 @@
       <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_5_id">金</label>
       <input id="week_6_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_6"/>
       <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_6_id">土</label>
-      <br/>
+      </p>
       <input id="repeat_typeM" type="radio" value="M" #if ($!{result.RepeatType.toString()} == "M") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeM">毎月</label>
       <select onchange="aipo.schedule.enableMonth(this.form)" name="month_day">
@@ -251,9 +253,9 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
-<input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">公開（スケジュールを全員に公開します）</label><br/>
-<input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label><br/>
-<input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">完全に隠す（スケジュールをすべて非公開とします）</label>
+<p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">公開（スケジュールを全員に公開します）</label></p>
+<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label></p>
+<p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">完全に隠す（スケジュールをすべて非公開とします）</label></p>
 #ALtditemfooter()
 #ALtdcaption("参加ユーザー")
 #ALtditemheader()
@@ -289,7 +291,7 @@
         groupSelectPreOptionValue="すべてのグループ"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
