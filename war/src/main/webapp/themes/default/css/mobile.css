@@ -749,6 +749,29 @@ table.auiRowTable td.wTitl a {
 	height:230px;
 }
 /***************************************************
+	auiFilter
+--------------------------------------------------*/
+.filterInputField {
+	max-width:280px;
+}
+.filterInputField input[type=text] {
+	max-width:280px;
+}
+.menubar.multi {
+	max-width:96%;
+}
+.menubar.multi > div {
+	width:96%;
+	margin:2%;
+	float:none;
+}
+.menubar.multi .caption {
+	border-top:solid 1px #ccc;
+}
+.menubar.multi > div:first-child .caption {
+	border-top:none;
+}
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none}

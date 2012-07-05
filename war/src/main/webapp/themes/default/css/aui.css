@@ -2084,7 +2084,7 @@ tr.disabled a {
 	width:16px;
 }
 .filters {
-	white-space: nowrap;
+	white-space:nowrap;
 	color:#999;
 	line-height:28px;
 }
@@ -2131,7 +2131,9 @@ tr.disabled a {
 .filterInputField {
 	float:left;
 	position:relative;
-	margin-right:5px;
+}
+*:first-child+html .filterInputField {
+	overflow:hidden;
 }
 .filterInputField .menubar.multi {
 	left:auto;
@@ -2140,12 +2142,12 @@ tr.disabled a {
 .filterInputField .filters {
 	position:absolute;
 	height:28px;
-	padding:0 1px;
+	padding:1px 1px 0 1px;
 	overflow:hidden;
 	white-space:normal;
 }
 *:first-child+html .filterInputField .filters {
-	padding-top:1px;
+	padding-top:2px;
 }
 .filterDropDrawer {
 	position:absolute;
@@ -2159,18 +2161,29 @@ tr.disabled a {
 	vertical-align:middle;
 }
 *:first-child+html .filterDropDrawer {
-	right:5px;
+	right:-1px;
 	margin-top:2px;
 	background:#fff;
+	border-right:solid 1px #c9c9c9;
+}
+*:first-child+html .filterInputField:hover .filterDropDrawer {
+	border-right:solid 1px #999999;
 }
 .filterDropDrawer i {
 	margin-top:6px;
 }
 .filterInputField input[type=text] {
+	max-width:500px;
 	padding-right:20px;
+}
+*:first-child+html .filterInputField input[type=text] {
+
 }
 .filterInputField .menubar.multi {
 	top:30px;
+}
+.auiFilter .auiSearch .auiButtonSearch {
+	margin-left:5px;
 }
 
 /***************************************************
