@@ -2095,6 +2095,43 @@ public class ALEipUtils {
     return getClientEntry(userAgent).getKey();
   }
 
+  /**
+   * 期待するユーザーエージェントが含まれていればtrue
+   * 
+   * @param expect
+   * @param rundata
+   * @return
+   */
+  public static boolean isMatchUserAgent(String expect, RunData rundata) {
+    // User-Agent の取得
+    String userAgent = rundata.getUserAgent();
+    if (userAgent == null || "".equals(userAgent)) {
+      return false;
+    }
+    return userAgent.indexOf(expect) > -1;
+  }
+
+  /**
+   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
+   * 
+   * @param rundata
+   * @return MSIE の場合は，true．
+   */
+  public static boolean isMsieBrowser(RunData rundata) {
+    return isMatchUserAgent("Win", rundata)
+      && isMatchUserAgent("MSIE", rundata);
+  }
+
+  /**
+   * アクセスしてきたユーザが利用するブラウザ名が Android．
+   * 
+   * @param rundata
+   * @return MSIE の場合は，true．
+   */
+  public static boolean isAndroidBrowser(RunData rundata) {
+    return isMatchUserAgent("Android", rundata);
+  }
+
   public static String getClientVersion(RunData rundata) {
     return getClientVersion(rundata.getUserAgent().trim());
   }

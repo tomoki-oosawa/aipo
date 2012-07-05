@@ -34,7 +34,6 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALPermissionException;
-import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -99,14 +98,23 @@ public class FileuploadRawScreen extends RawScreen {
     OutputStream out = null;
     try {
       String attachmentRealName = null;
+      boolean isAndroid = ALEipUtils.isAndroidBrowser(rundata);
 
-      boolean isMsie = FileuploadUtils.isMsieBrowser(rundata);
-      if (isMsie) {
-        attachmentRealName =
-          new String(getFileName().getBytes("Windows-31J"), "8859_1");
+      if (isAndroid) {//androidだと日本語タイトルが変換されるので一律でfileに変更
+        attachmentRealName = "file";
+        if (getFileName().lastIndexOf(".") > -1) {
+          attachmentRealName +=
+            getFileName().substring(getFileName().lastIndexOf("."));
+        }
       } else {
-        attachmentRealName =
-          new String(getFileName().getBytes("UTF-8"), "8859_1");
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
+        if (isMsie) {
+          attachmentRealName =
+            new String(getFileName().getBytes("Windows-31J"), "8859_1");
+        } else {
+          attachmentRealName =
+            new String(getFileName().getBytes("UTF-8"), "Windows-31J");
+        }
       }
 
       HttpServletResponse response = rundata.getResponse();

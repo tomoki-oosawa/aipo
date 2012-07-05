@@ -506,11 +506,12 @@ public class FileuploadUtils {
   }
 
   /**
-   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
+   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する． ALEipUtils.isMsieBrowser
    * 
    * @param rundata
    * @return MSIE の場合は，true．
    */
+  @Deprecated
   public static boolean isMsieBrowser(RunData rundata) {
     // String os = "Win";
     String browserNames = "MSIE";
