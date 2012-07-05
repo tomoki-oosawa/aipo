@@ -31,7 +31,7 @@ dojo.provide("aipo.msgboard");
 //};
 
 //aipo.js setMouseLisnerを利用
-function (node,filters,event){
+aipo.msgboard.toggleMenu=function (node,filters,event){
 	var rect=filters.getBoundingClientRect();
 
 	if (node.style.display == "none") {
