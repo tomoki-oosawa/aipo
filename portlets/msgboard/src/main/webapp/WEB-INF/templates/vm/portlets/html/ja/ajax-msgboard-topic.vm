@@ -40,7 +40,7 @@
 		 	*##end#end#*
 		 *##end#*
 		 *##if(!$!result.issetFilter("category"))#*
-			*#<a href="javascript:void(0);" class="filterTip hide menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_ALL_CATEGORY</span></a>#*
+			*#<a href="javascript:void(0);" class="filterTip menubarOpenButton" style="display:none;" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_ALL_CATEGORY</span></a>#*
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.CategoryList)#if(!$break)#*
