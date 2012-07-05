@@ -19,27 +19,27 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid', $view_uid)")
-##set($methodlist = [["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["テーマ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_thema_form','1').addQueryData('entityid','new')"], ["みんなのﾌﾞﾛｸﾞを見る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事を検索する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
-#set($methodlist = [["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["みんなのﾌﾞﾛｸﾞを見る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事を検索する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
-#set($linklist = [["記事一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
+##set($methodlist = [["$l10n.BLOG_ADD_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_ADD_THEME", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_thema_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_LOOK_ALL_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["$l10n.BLOG_DO_ENTRY_SEARCH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($methodlist = [["$l10n.BLOG_ADD_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_LOOK_ALL_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["$l10n.BLOG_DO_ENTRY_SEARCH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($linklist = [["$l10n.BLOG_GO_ENTRY_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
 #ALcell_pagetitle($career $view_title)
 #ALcell_li_header($career)
-ユーザー選択<br />
+$l10n.BLOG_SELECT_USER<br />
 #ALcell_formheader($career $jslink $portlet)
 <select name="ownerid">
 #foreach($record in $users)
 <option value=$record.UserId #if($record.UserId.toString() == $result.ownerId) selected #end>$record.AliasName</option>
 #end
 </select>
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_list_user" value="ﾌﾞﾛｸﾞを見る">
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_list_user" value="$l10n.BLOG_LOOK_BLOG">
 #ALcell_formfooter()
 #ALcell_li_footer($career)
 #ALcell_hr($career '1')
 #ALcell_li_header($career)
-最新記事一覧<br />
+$l10n.BLOG_COMMENT_CELL_NEW_LIST<br />
 #ALcell_li_footer($career)
 #if ($!{result.List.size()} <= 0)
-&nbsp;指定したテーマに記事はありません。
+$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME
 #else
 #if($result.PagesNum > 1)
 #ALcell_hr($career '1')

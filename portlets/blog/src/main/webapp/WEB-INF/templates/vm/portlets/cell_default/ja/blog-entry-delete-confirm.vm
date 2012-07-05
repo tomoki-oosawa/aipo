@@ -19,37 +19,36 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')")
-#set($linklist = [["記事一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
-#ALcell_pagetitle($career "記事削除確認")
-この記事を削除してもよろしいですか？<br />
-なお、この記事についているｺﾒﾝﾄも全て削除されます。
+#set($linklist = [["$l10n.BLOG_GO_ENTRY_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
+#ALcell_pagetitle($career "$l10n.BLOG_CONFIRM_DELETE_ENTRY_CELL")
+$l10n.BLOG_CONFIRM_DELETE_ENTRY
 #ALcell_dl_header($career)
-#ALcell_dt($career '記事ﾀｲﾄﾙ')
+#ALcell_dt($career "$l10n.BLOG_ENTRY_TITLE")
 #ALcell_dd($career $!{result.Detail.Title})
-#ALcell_dt($career 'ﾃｰﾏ')
+#ALcell_dt($career "$l10n.BLOG_THEME_CELL")
 #ALcell_dd($career $!{result.Detail.ThemaName})
-#ALcell_dt($career '投稿者')
+#ALcell_dt($career "$l10n.BLOG_POSTING_NAME")
 <dd>$!result.Detail.OwnerName</dd>
-#ALcell_dt($career '投稿日')
+#ALcell_dt($career "$l10n.BLOG_POSTING_DAY")
 <dd>$!result.Detail.CreateDate</dd>
 <br />
-#ALcell_dt($career "記事内容")
+#ALcell_dt($career "$l10n.BLOG_ENTRY_NOTE")
 #ALcell_dd($career $!{result.Detail.Note})
 #ALcell_dl_footer($career)
 #ALcell_hr($career '1')
-ｺﾒﾝﾄ一覧
+$l10n.BLOG_COMMENT_CELL_LIST
 #ALcell_hr($career '1')
 #if(!($result.CommentList) || $!result.CommentList.size() <= 0)
-ｺﾒﾝﾄはありません
+$l10n.BLOG_COMMENT_CELL_NOTHING
 #ALcell_hr($career '1')
 #else
 #ALcell_dl_header($career)
 #foreach ($record in $result.CommentList)
-#ALcell_dt($career "投稿者")
+#ALcell_dt($career "$l10n.BLOG_POSTING_NAME")
 <dd>$!{record.OwnerName}</dd>
-#ALcell_dt($career "投稿日")
+#ALcell_dt($career "$l10n.BLOG_POSTING_DAY")
 <dd>$!{record.UpdateDate}</dd>
-#ALcell_dt($career "ｺﾒﾝﾄ")
+#ALcell_dt($career "$l10n.BLOG_COMMENT_CELL")
 #ALcell_dd($career $!{record.Comment})
 #ALcell_hr($career '1')
 #end
@@ -57,7 +56,7 @@
 #end
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="削除する">
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="$l10n.BLOG_DO_DELETE">
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

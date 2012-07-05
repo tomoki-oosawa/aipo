@@ -19,20 +19,20 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')")
-#set($methodlist = [["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["みんなのﾌﾞﾛｸﾞを見る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事を検索する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
-#set($linklist = [["記事一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
-#ALcell_pagetitle($career "ﾌﾞﾛｸﾞ")
+#set($methodlist = [["$l10n.BLOG_ADD_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["$l10n.BLOG_LOOK_ALL_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["$l10n.BLOG_DO_ENTRY_SEARCH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
+#set($linklist = [["$l10n.BLOG_GO_ENTRY_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"]])
+#ALcell_pagetitle($career "$l10n.BLOG_BLOG")
 #ALcell_li_header($career)
-記事検索<br />
+$l10n.BLOG_ENTRY_SEARCH<br />
 #ALcell_li_footer($career)
 #ALcell_formheader($career $jslink $portlet)
 #ALcell_textfield($career 'sword' $!result.SearchWord 14 50 '' 'h')
-#ALcell_submit($career 'eventSubmit_doBlog_search_list' " 検 索 ")
+#ALcell_submit($career 'eventSubmit_doBlog_search_list' " $l10n.BLOG_SEARCH_CELL ")
 #ALcell_formfooter()
-（記事タイトル・記事内容・ｺﾒﾝﾄで検索します）<br />
+（$l10n.BLOG_SEARCH_ALL）<br />
 #ALcell_hr($career '1')
 #if (!$result.List || $!{result.List.size()} <= 0)
- &nbsp;指定された条件に該当する記事はありません。
+ &nbsp;$l10n.BLOG_NOTHING_ENTRY。
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
