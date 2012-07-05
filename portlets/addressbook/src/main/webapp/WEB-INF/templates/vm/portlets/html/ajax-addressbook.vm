@@ -28,36 +28,36 @@
 #AUISummaryDivfooter()
 
 <input name="mode" type="hidden" value="ajaxsearch" />
-#if("$!result.CurrentTab")
-#if($result.List.size() == 0)
-$l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
-#else
-#AUISummaryDiv()
-#AUIsearchresult($result.SearchWord.toString())
-#AUIajaxpageview('AddressBookScreen' $result)
-</div>
-<table class="auiRowTable wide">
-<colgroup style="width:8em;" />
-<colgroup />
-<tbody>
-#foreach ($record in $result.List)
-<tr>
-#ALtdcellheader()
-<div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId).addQueryData("tab","$!result.currentTab"))');">$result.getStringCR($!record.Name)</a>
-#if($!record.PublicFlag.toString() == 'F')
-<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.ADDRESSBOOK_CLOSE_PUBLIC title=$l10n.ADDRESSBOOK_CLOSE_PUBLIC />
-#end
-</div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div>
-$result.getStringCR($!record.CompanyName)
-</div>
-#ALtdcellfooter()
-</tr>
-#end
-</tbody></table>
-#end
+#if("$!result.CurrentTab" != "")
+  #if($result.List.size() == 0)
+    $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
+  #else
+    #AUISummaryDiv()
+    #AUIsearchresult($result.SearchWord.toString())
+    #AUIajaxpageview('AddressBookScreen' $result)
+    </div>
+    <table class="auiRowTable wide">
+    <colgroup style="width:8em;" />
+    <colgroup />
+    <tbody>
+    #foreach ($record in $result.List)
+    <tr>
+    #ALtdcellheader()
+    <div>
+    <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId).addQueryData("tab","$!result.currentTab"))');">$result.getStringCR($!record.Name)</a>
+    #if($!record.PublicFlag.toString() == 'F')
+    <img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.ADDRESSBOOK_CLOSE_PUBLIC title=$l10n.ADDRESSBOOK_CLOSE_PUBLIC />
+    #end
+    </div>
+    #ALtdcellfooter()
+    #ALtdcellheader()
+    <div>
+    $result.getStringCR($!record.CompanyName)
+    </div>
+    #ALtdcellfooter()
+    </tr>
+    #end
+  </tbody></table>
+  #end
 #end
 </form>
