@@ -26,21 +26,23 @@
   </div>
   <div class="hdNavi">
 #if ($data.User.getUserName()!="admin")
-    <div class="hdActivity" title="あなた宛のお知らせ">
-      <div class="activityField">
-        <div class="dijitRight">
-          <span id="activitycheckerContainer"></span>
-        </div>
-      </div>
-    </div>
+    <div class="hdActivity" title="お知らせ"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">お知らせ</span></div></div>
 #end
     <div class="hdUserName">
     	#if ($data.User.getUserName()!="admin")
-    	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonFormScreen'))');">
-		#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="顔写真" />#else<img src="images/common/avatar_default3.png" class="avatar" alt="顔写真"/>#end #if($!data.User.CompanyId >= 1) $!data.User.getCompanyName($!data.User.CompanyId) #end $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-		</a>
+			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonFormScreen'))');">
+			#if ($data.User.hasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="顔写真" />
+			#else
+				<img src="images/common/avatar_default3.png" class="avatar" alt="顔写真"/>
+			#end
+			#if($!data.User.CompanyId >= 1)
+				$!data.User.getCompanyName($!data.User.CompanyId)
+			#end
+			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+			</a>
 		#else
-		$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
 		#end
     </div>
     <div class="hdLogout"><input type="button" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'" /></div>

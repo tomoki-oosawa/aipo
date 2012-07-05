@@ -26,13 +26,7 @@
   </div>
   <div class="hdNavi">
 #if ($data.User.getUserName()!="admin")
-    <div class="hdActivity" title="あなた宛のお知らせ">
-      <div class="activityField">
-        <div class="dijitRight">
-          <span id="activitycheckerContainer"></span>
-        </div>
-      </div>
-    </div>
+    <div class="hdActivity" title="お知らせ"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">お知らせ</span></div></div>
 #end
     <div class="hdUserName">
     	#if ($data.User.getUserName()!="admin")
