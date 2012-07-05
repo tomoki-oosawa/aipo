@@ -84,6 +84,9 @@ public class PsmlUtils {
   public static String ParsePsml(String psml) throws Exception {
     try {
       Document dom = loadXMLFrom(psml);
+      if (dom == null) {
+        return null;
+      }
 
       // remove admin portlets
       NodeList portlets = dom.getElementsByTagName("portlets");
@@ -224,25 +227,6 @@ public class PsmlUtils {
     }
   }
 
-  public static org.w3c.dom.Document loadXMLFrom(java.io.InputStream is)
-      throws org.xml.sax.SAXException, java.io.IOException {
-    org.w3c.dom.Document doc;
-    javax.xml.parsers.DocumentBuilderFactory factory =
-      javax.xml.parsers.DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
-    javax.xml.parsers.DocumentBuilder builder;
-    try {
-      builder = factory.newDocumentBuilder();
-      doc = builder.parse(is);
-      return doc;
-    } catch (ParserConfigurationException ex) {
-      ex.printStackTrace();
-      return null;
-    } finally {
-      is.close();
-    }
-  }
-
   public static org.w3c.dom.Document loadXMLFrom(String xml)
       throws org.xml.sax.SAXException, java.io.IOException {
     org.w3c.dom.Document doc;
@@ -254,7 +238,7 @@ public class PsmlUtils {
       doc = builder.parse(new InputSource(strReader));
       return doc;
     } catch (ParserConfigurationException e) {
-      e.printStackTrace();
+      logger.error(e, e);
       return null;
     }
   }

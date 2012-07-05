@@ -208,6 +208,9 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
       psml = PsmlUtils.ParsePsml(psml);
+      if (psml == null) {
+        return false;
+      }
       psml = PsmlUtils.PSMLEncode(psml);
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
 
@@ -236,6 +239,9 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
           .getMapping(rundata));
       psml = new String(psmlByte);
       psml = PsmlUtils.ParsePsml(psml);
+      if (psml == null) {
+        return false;
+      }
       psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
