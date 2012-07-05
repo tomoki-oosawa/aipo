@@ -31,13 +31,13 @@ dojo.provide("aipo.msgboard");
 //};
 
 //aipo.js setMouseLisnerを利用
-aipo.msgboard.toggleMenu=function(node,filters,event){
+function (node,filters,event){
 	var rect=filters.getBoundingClientRect();
 
 	if (node.style.display == "none") {
         dojo.query("div.menubar").style("display", "none");
         node.style.left=rect.left+"px";
-        node.style.top=(rect.bottom+6)+"px";
+        node.style.top=(rect.bottom+2)+"px";
         node.style.display="block";
     } else {
         dojo.query("div.menubar").style("display", "none");
