@@ -217,7 +217,9 @@ public class TimelineResultData implements ALData {
 
       int i;
 
-      for (i = PRE_NOTE_LENGTH; sub.charAt(i) != ' ' && sub.charAt(i) != '\n'; i++) {
+      for (i = PRE_NOTE_LENGTH; i < sub.length()
+        && sub.charAt(i) != ' '
+        && sub.charAt(i) != '\n'; i++) {
 
       }
       subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
@@ -248,7 +250,9 @@ public class TimelineResultData implements ALData {
 
       int i;
 
-      for (i = PRE_NOTE_LENGTH; sub.charAt(i) != ' ' && sub.charAt(i) != '\n'; i++) {
+      for (i = PRE_NOTE_LENGTH; i < sub.length()
+        && sub.charAt(i) != ' '
+        && sub.charAt(i) != '\n'; i++) {
 
       }
       subnote = ALEipUtils.getMessageList(note.getValue().substring(i));
