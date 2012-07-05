@@ -21,31 +21,31 @@
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen")' />
 	<div class="filters" id="filters_$!{portlet.ID}">#*
 		*##if(!$!result.issetFilter("post"))#*
-			*#<span class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_ALL_POST</span></span>#*
+			*#<a href="javascript:void(0);" class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_GROUP_LIST</span></a>#*
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.postList)#*
 		 		*##if(!$break)#*
-				*##if($!result.issetFilter("post",$!{record.Name})))#*
-					*#<span class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></span>#*
+				*##if($!result.issetFilter("post",$!{record.Name}))#*
+					*#<a href="javascript:void(0);"class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
 
 		 	*##foreach($record in $result.PostMap)#if(!$break)#*
 				*##if($!result.issetFilter("post",$!{record.GroupName}))#*
-					*#<span class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></span>#*
+					*#<a href="javascript:void(0);"class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
 		 *##end#*
 		 *##if(!$!result.issetFilter("category"))#*
-			*#<span class="filterTip hide menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_ALL_CATEGORY</span></span>#*
+			*#<a href="javascript:void(0);" class="filterTip hide menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_ALL_CATEGORY</span></a>#*
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.CategoryList)#if(!$break)#*
 		 		*##if ($!result.issetFilter("category",$!{record.CategoryId}))#*
-					*#<span class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></span>#*
+					*#<a href="javascript:void(0);" class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
@@ -54,15 +54,15 @@
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
-		<p class="caption">$l10n.MSGBOARD_POST</p>
+		<p class="caption">$l10n.MSGBOARD_GROUP</p>
 		<ul class="filtertype"data-type="post" data-defaultparam="0">
-			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post"))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_POST</a></li>
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_GROUP_LIST</a></li>
 
 			#foreach($record in $result.postList)
-			<li #if ($!result.issetFilter("post",$record.Name))) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
 			#end
 			#foreach($record in $result.PostMap)
-			<li #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName}))) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
 			#end
 		</ul>
 	</div>
@@ -75,16 +75,6 @@
 			#end
 		</ul>
 	</div>
-    <div class="floatLeft w30">
-    <form class="auiForm">
-    #ALselectpdheader("topic" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-    <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter","0").addQueryData("filtertype","category"))">$l10n.MSGBOARD_ALL_CATEGORY</option>
-    #foreach( $record in $result.CategoryList )
-    <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-    #end
-    #ALselectfooter()
-    </form>
-    </div>
 </div>
 
 #if($result.List.size() == 0)

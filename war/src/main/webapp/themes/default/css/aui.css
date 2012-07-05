@@ -2084,6 +2084,7 @@ tr.disabled a {
 	width:16px;
 }
 .filters {
+	white-space: nowrap;
 	color:#999;
 	line-height:28px;
 }
