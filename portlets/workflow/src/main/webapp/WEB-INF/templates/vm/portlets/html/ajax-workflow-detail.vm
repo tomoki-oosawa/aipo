@@ -141,7 +141,7 @@ $!record.Note
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#if($!result.Detail.Progress.Value == "R")
+#if($!result.Detail.Progress.Value == "R" && "$!{result.Detail.RequestId}" != "$!{result.PreviousID}")
 #set ( $editUrl = $!utils.escapeXML("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowDetailScreen').addQueryData('mode', 'detail').addQueryData('entityid', $!{result.PreviousID}).addQueryData('prvid',$!{result.PreviousID})") )
 <input name="ajaxbuttonBack" class="button" type="button" value="$l10n.WORKFLOW_BACK" onclick="aipo.common.showDialog('$!editUrl', '$!portlet.ID' )" />
 #end
