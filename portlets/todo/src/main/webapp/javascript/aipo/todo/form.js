@@ -72,7 +72,7 @@ aipo.todo.formCategoryInputOff = function(form) {
 }
 
 aipo.todo.changeGroup = function(link, group, sel) {
-    aimluck.utils.form.createSelect("user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=true", "userId", "aliasName", sel, '');
+    aimluck.utils.form.createSelect("user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=true", "userId", "aliasName", sel, '', 'class="w49"');
 }
 
 aipo.todo.onReceiveMessage = function(msg){
