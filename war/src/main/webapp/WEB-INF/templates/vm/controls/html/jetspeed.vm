@@ -191,10 +191,6 @@ function appsNaviSwitch() {
 #set($beforeselected =$selected)
 			#end
 								<li class="last store">
-						        	<div class="tab#if($beforeselected) activeNext#end">
-						                <div class="title"><a href="http://store.aipo.com/" target="_blank">Aipo Store</a></div>
-						            </div>
-						            <div class="tooltip_gray">Aipoアプリを追加して、もっと便利に</div>
 						        </li>
 
 								#if ($data.User.getUserName()!="admin")
