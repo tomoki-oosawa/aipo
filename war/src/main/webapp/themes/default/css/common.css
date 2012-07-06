@@ -988,9 +988,13 @@ table.simpleTable td.caption {
 }
 .modalDialog input[type=checkbox],
 .modalDialog input[type=radio] {
-/*	margin:3px 0;*/
-	vertical-align:middle;
+	vertical-align:-0.1em;
 }
+*:first-child+html .modalDialog input[type=checkbox],
+*:first-child+html .modalDialog input[type=radio] {
+	vertical-align:0em;
+}
+
  .modalDialog#imageDialog {
 	z-index:999;
 }
