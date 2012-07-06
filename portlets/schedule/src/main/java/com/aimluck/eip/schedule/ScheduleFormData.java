@@ -601,7 +601,7 @@ public class ScheduleFormData extends ALAbstractFormData {
               end_date = start_date;
             } else if ("".equals(rundata.getParameters().get("end_date_hour"))
               || "".equals(rundata.getParameters().get("end_date_minute"))) {
-              end_date = null;
+              end_date.setValue(start_date.getValue());
             }
           }
         }

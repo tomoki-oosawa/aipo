@@ -1991,11 +1991,6 @@ public class ScheduleUtils {
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
 
-    if (end_date == null) {
-      msgList.add("終了日時を正しく入力してください。");
-      end_date = start_date;
-    }
-
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(start_date.getValue());
     Calendar endDate = Calendar.getInstance();
