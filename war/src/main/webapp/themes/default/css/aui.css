@@ -160,9 +160,6 @@ img.avatar,
 	border-radius:3px;
 	-ms-border-radius:3px;
 }
-.activityField:hover {
-	background:#eee;
-}
 .hdActivity div.active {
 	background:#e0e0e0;
 }
