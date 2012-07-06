@@ -100,7 +100,7 @@ public class FileuploadRawScreen extends RawScreen {
       String attachmentRealName = null;
       boolean isAndroid = ALEipUtils.isAndroidBrowser(rundata);
 
-      if (isAndroid) {//androidだと日本語タイトルが変換されるので一律でfileに変更
+      if (isAndroid) {// androidだと日本語タイトルが変換されるので一律でfileに変更
         attachmentRealName = "file";
         if (getFileName().lastIndexOf(".") > -1) {
           attachmentRealName +=
@@ -113,7 +113,7 @@ public class FileuploadRawScreen extends RawScreen {
             new String(getFileName().getBytes("Windows-31J"), "8859_1");
         } else {
           attachmentRealName =
-            new String(getFileName().getBytes("UTF-8"), "Windows-31J");
+            new String(getFileName().getBytes("UTF-8"), "8859_1");
         }
       }
 
