@@ -72,6 +72,7 @@ span[type="button"] {
 }
 .hdSearch {
 }
+
 .hdMessege{
 }
 .hdMessege a{
@@ -105,8 +106,20 @@ form.searchbox input.submit:hover,
 form.searchbox input.submit:active {
 	background:#eee url(../images/icon/search.png) no-repeat center center;
 }
-.hdActivity {
-	padding:0 !important;
+
+.hdActivity{
+	cursor:pointer;
+	padding:0 2px !important;
+}
+.hdActivity:hover{
+	background:#EEEEEE;
+	border-radius:4px;
+}
+.hdActivity .mb_hide{
+	line-height:23px;
+}
+.hdActivity:hover .mb_hide{
+	color:#FF9900;
 }
 .hdNavi .hdLogout {
 	padding-right:0;
@@ -2366,21 +2379,6 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 		-moz-opacity:1;
 		opacity:1;
 	}
-}
-
-.hdActivity{
-	cursor:pointer;
-	padding:0 2px !important;
-}
-.hdActivity:hover{
-	background:#EEEEEE;
-	border-radius:4px;
-}
-.hdActivity .mb_hide{
-	line-height:23px;
-}
-.hdActivity:hover .mb_hide{
-	color:#FF9900;
 }
 
 .counter {
