@@ -28,6 +28,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -142,7 +143,7 @@ public class WorkflowRouteResultData implements ALData {
           routeun.append(" -> ");
         }
       }
-      routeun.append("完了");
+      routeun.append(ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION"));
 
       return routeun.toString();
     } catch (Exception ex) {

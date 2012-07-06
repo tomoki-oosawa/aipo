@@ -47,6 +47,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -100,15 +101,17 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   public void initField() {
     // カテゴリ名
     route_name = new ALStringField();
-    route_name.setFieldName("申請経路名");
+    route_name.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_APPLICATION_ROUTE_NAME"));
     route_name.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_MEMO"));
     note.setTrim(true);
     // 申請経路
     route = new ALStringField();
-    route.setFieldName("申請経路");
+    route.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_APPLICATION_ROUTE"));
     route.setTrim(true);
 
     memberList = new ArrayList<ALEipUser>();

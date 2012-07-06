@@ -73,6 +73,7 @@ import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
 import com.aimluck.eip.workflow.WorkflowDecisionRecordData;
 import com.aimluck.eip.workflow.WorkflowDetailResultData;
@@ -682,7 +683,7 @@ public class WorkflowUtils {
         drd.setNote(map.getNote());
         drd.setUpdateDate(WorkflowUtils.translateDate(
           map.getUpdateDate(),
-          "yyyy年M月d日H時m分"));
+          ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
         drList.add(drd);
 
         // 無効化、もしくは削除されているユーザーは差し戻し先として選べないようにする
@@ -716,7 +717,8 @@ public class WorkflowUtils {
               .getEipTWorkflowCategory()
               .getCategoryName());
             orrd.setUpdateDate(WorkflowUtils.translateDate(request
-              .getUpdateDate(), "yyyy年M月d日H時m分"));
+              .getUpdateDate(), ALLocalizationUtils
+              .getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
             oldList.add(orrd);
           }
           rd.setOldRequestLinks(oldList);
@@ -750,10 +752,10 @@ public class WorkflowUtils {
 
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),
-        "yyyy年M月d日H時m分"));
+        ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
       rd.setUpdateDate(WorkflowUtils.translateDate(
         record.getUpdateDate(),
-        "yyyy年M月d日H時m分"));
+        ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -837,7 +839,13 @@ public class WorkflowUtils {
    * @return
    */
   public static String getPriorityString(int i) {
-    String[] temp = { "高い", "やや高い", "普通", "やや低い", "低い" };
+    String[] temp =
+      {
+        ALLocalizationUtils.getl10n("WORKFLOW_HIGH"),
+        ALLocalizationUtils.getl10n("WORKFLOW_FEW_LOW"),
+        ALLocalizationUtils.getl10n("WORKFLOW_USUALLY"),
+        ALLocalizationUtils.getl10n("WORKFLOW_FEW_LOW"),
+        ALLocalizationUtils.getl10n("WORKFLOW_LOW") };
     String string = null;
     try {
       string = temp[i - 1];
@@ -896,9 +904,9 @@ public class WorkflowUtils {
    */
   public static String getStateString(int i) {
     if (i == 0) {
-      return "未着手";
+      return ALLocalizationUtils.getl10n("TODO_NOT_START");
     } else if (i == 100) {
-      return "完了";
+      return ALLocalizationUtils.getl10n("TODO_FINISHING");
     } else {
       return new StringBuffer().append(i).append("%").toString();
     }
@@ -911,17 +919,17 @@ public class WorkflowUtils {
   public static String getStatusString(String status) {
     String res = "";
     if (DB_STATUS_REQUEST.equals(status)) {
-      res = "申請";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_APPLICATION");
     } else if (DB_STATUS_CONFIRM.equals(status)) {
-      res = "確認中";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_CHECKING");
     } else if (DB_STATUS_WAIT.equals(status)) {
-      res = "確認前";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_CHECKING_BEFORE");
     } else if (DB_STATUS_ACCEPT.equals(status)) {
-      res = "承認";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_APPROVAL");
     } else if (DB_STATUS_DENIAL.equals(status)) {
-      res = "否認";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_DENIAL");
     } else if (DB_STATUS_THROUGH.equals(status)) {
-      res = "自動承認";
+      res = ALLocalizationUtils.getl10n("WORKFLOW_APPROVAL_AUTO");
     }
     return res;
   }
@@ -981,7 +989,11 @@ public class WorkflowUtils {
       List<ALEipUser> destUsers, List<String> msgList) throws Exception {
 
     String orgId = Database.getDomainName();
-    String subject = "[" + ALOrgUtilsService.getAlias() + "]ワークフロー";
+    String subject =
+      "["
+        + ALOrgUtilsService.getAlias()
+        + "]"
+        + ALLocalizationUtils.getl10n("WORKFLOW_WORKFLOW");
 
     try {
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
@@ -1028,7 +1040,10 @@ public class WorkflowUtils {
 
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
-    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setSubject("["
+      + ALOrgUtilsService.getAlias()
+      + "]"
+      + ALLocalizationUtils.getl10n("WORKFLOW_WORKFLOW"));
     mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
     mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
@@ -1206,19 +1221,46 @@ public class WorkflowUtils {
 
     switch (flowStatus) {
       case REQUEST:
-        body.append("さんからの承認依頼です。").append(CR).append(CR);
-        body.append("[決裁状況]").append(CR);
-        body.append("決裁待ち").append(CR);
+        body
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"))
+          .append(CR)
+          .append(CR);
+        body
+          .append("[")
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+          .append("]")
+          .append(CR);
+        body
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"))
+          .append(CR);
         break;
       case DENAIL:
-        body.append("さんの申請は差し戻されました。").append(CR).append(CR);
-        body.append("[決裁状況]").append(CR);
-        body.append("差戻要確認").append(CR);
+        body
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"))
+          .append(CR)
+          .append(CR);
+        body
+          .append("[")
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+          .append("]")
+          .append(CR);
+        body
+          .append(
+            ALLocalizationUtils.getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK"))
+          .append(CR);
         break;
       case ACCEPT:
-        body.append("さんの申請は承認されました。").append(CR).append(CR);
-        body.append("[決裁状況]").append(CR);
-        body.append("承認済み").append(CR);
+        body
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"))
+          .append(CR)
+          .append(CR);
+        body
+          .append("[")
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+          .append("]")
+          .append(CR);
+        body.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED")).append(
+          CR);
         break;
       default:
 
@@ -1231,7 +1273,9 @@ public class WorkflowUtils {
       String CR, boolean isCell, WorkflowMailBean mailBean) {
     StringBuilder body = new StringBuilder("");
 
-    body.append("[タイトル]").append(CR);
+    body.append("[").append(
+      ALLocalizationUtils.getl10n("WORKFLOW_REQUEST_NAME")).append("]").append(
+      CR);
     body.append(request.getEipTWorkflowCategory().getCategoryName()).append(CR);
 
     if (request.getRequestName() != null
@@ -1240,34 +1284,46 @@ public class WorkflowUtils {
     }
 
     body
-      .append("[申請日]")
+      .append("[")
+      .append(ALLocalizationUtils.getl10n("WORKFLOW_CREATEDATE"))
+      .append("]")
       .append(CR)
       .append(
-        WorkflowUtils.translateDate(request.getCreateDate(), "yyyy年M月d日H時m分"))
+        WorkflowUtils.translateDate(
+          request.getCreateDate(),
+          ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")))
       .append(CR);
 
     body
-      .append("[重要度]")
+      .append("[")
+      .append(ALLocalizationUtils.getl10n("WORKFLOW_PRIORITY_VALUE"))
+      .append("]")
       .append(CR)
       .append(WorkflowUtils.getPriorityString(request.getPriority().intValue()))
       .append(CR);
 
     if (!isCell) {
-      body.append("[申請内容]").append(CR).append(request.getNote()).append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO"))
+        .append("]")
+        .append(CR)
+        .append(request.getNote())
+        .append(CR);
     }
 
     if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
       body
-        .append("[金額]")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_AMOUNT"))
         .append(CR)
         .append(request.getPrice())
-        .append(" 円")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_YEN"))
         .append(CR);
     }
 
     body.append(CR);
-    body.append("[").append(mailBean.getAipoAlias()).append("へのアクセス]").append(
-      CR);
+    body.append("[").append(mailBean.getAipoAlias()).append(
+      ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO")).append("]").append(CR);
 
     return body.toString();
   }
@@ -1285,9 +1341,11 @@ public class WorkflowUtils {
       if (enableAsp) {
         body.append("　").append(mailBean.getGlobalUrl()).append(CR);
       } else {
-        body.append("・社外").append(CR);
+        body
+          .append(ALLocalizationUtils.getl10n("WORKFLOW_EXTERNAL"))
+          .append(CR);
         body.append("　").append(mailBean.getGlobalUrl()).append(CR);
-        body.append("・社内").append(CR);
+        body.append(ALLocalizationUtils.getl10n("WORKFLOW_HOUSE")).append(CR);
         body.append("　").append(mailBean.getLocalUrl()).append(CR).append(CR);
       }
     }
@@ -1312,7 +1370,10 @@ public class WorkflowUtils {
 
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
-    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setSubject("["
+      + ALOrgUtilsService.getAlias()
+      + "]"
+      + ALLocalizationUtils.getl10n("WORKFLOW_WORKFLOW"));
     mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
     mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
@@ -1335,17 +1396,42 @@ public class WorkflowUtils {
     }
 
     if ("D".equals(request.getProgress())) {
-      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("差戻要確認").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body.append(
+        ALLocalizationUtils.getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK")).append(
+        CR);
     } else if ("A".equals(request.getProgress())) {
-      body.append("さんの申請は承認されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("承認済み").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED")).append(CR);
     } else {
-      body.append("さんからの承認依頼です。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("決裁待ち").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"))
+        .append(CR);
     }
 
     body.append(getMessageContent(request, CR, false, mailBean));
@@ -1366,7 +1452,10 @@ public class WorkflowUtils {
 
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
-    mailBean.setSubject("[" + ALOrgUtilsService.getAlias() + "]ワークフロー");
+    mailBean.setSubject("["
+      + ALOrgUtilsService.getAlias()
+      + "]"
+      + ALLocalizationUtils.getl10n("WORKFLOW_WORKFLOW"));
     mailBean.setLoginUserId(ALEipUtils.getUserId(rundata));
     mailBean.setAipoAlias(ALOrgUtilsService.getAlias());
     mailBean.setGlobalUrl(ALMailUtils.getGlobalurl());
@@ -1390,17 +1479,42 @@ public class WorkflowUtils {
     }
 
     if ("D".equals(request.getProgress())) {
-      body.append("さんの申請は差し戻されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("差戻要確認").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body.append(
+        ALLocalizationUtils.getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK")).append(
+        CR);
     } else if ("A".equals(request.getProgress())) {
-      body.append("さんの申請は承認されました。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("承認済み").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED")).append(CR);
     } else {
-      body.append("さんからの承認依頼です。").append(CR).append(CR);
-      body.append("[決裁状況]").append(CR);
-      body.append("決裁待ち").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"))
+        .append(CR)
+        .append(CR);
+      body
+        .append("[")
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
+        .append("]")
+        .append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"))
+        .append(CR);
     }
 
     body.append(getMessageContent(request, CR, true, mailBean));
@@ -1786,7 +1900,9 @@ public class WorkflowUtils {
       EipTWorkflowCategory category = request.getEipTWorkflowCategory();
       String name = request.getRequestName();
 
-      StringBuilder b = new StringBuilder("申請「");
+      StringBuilder b =
+        new StringBuilder(ALLocalizationUtils
+          .getl10n("WORKFLOW_APPLICATION_ETC"));
       if (category != null) {
         b.append(category.getCategoryName());
         if (name != null && name.length() > 0) {
@@ -1797,13 +1913,13 @@ public class WorkflowUtils {
 
       switch (type) {
         case REQUEST:
-          b.append("の確認依頼を出しました。");
+          b.append(ALLocalizationUtils.getl10n("WORKFLOW_REQUEST_MSG"));
           break;
         case DENAIL:
-          b.append("を差し戻しました。");
+          b.append(ALLocalizationUtils.getl10n("WORKFLOW_DENIAL_MSG"));
           break;
         case ACCEPT:
-          b.append("を承認しました。");
+          b.append(ALLocalizationUtils.getl10n("WORKFLOW_ACCEPT_MSG"));
           recipients.clear();
           recipients.add(getUserName(request.getUserId().toString()));
           break;

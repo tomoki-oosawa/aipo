@@ -22,15 +22,15 @@
 #set ($Route = "Route")
 #set ($Route_id = "workflow_Route")
 #if($mode=="new_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
+#set ($indicator_str = "$l10n.WORKFLOW_SEND_TO_DATA")
+#set ($action_str = "$l10n.WORKFLOW_DO_ADD")
 #set ($event_submit = "eventSubmit_doWorkflow_category_insert")
-#set ($subtitle = "分類追加")
+#set ($subtitle = "$l10n.WORKFLOW_ADD_CLASSIFICATION")
 #else
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
+#set ($indicator_str = "$l10n.WORKFLOW_SEND_TO_DATA")
+#set ($action_str = "$l10n.WORKFLOW_DO_UPDATA")
 #set ($event_submit = "eventSubmit_doWorkflow_category_update")
-#set ($subtitle = "分類編集")
+#set ($subtitle = "$l10n.WORKFLOW_EDIT_CLASSIFICATION")
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -50,7 +50,7 @@
 #ALtdcaption("$!result.getFieldName('route_id')")
 #ALtditemheader()
 #ALselectpdheader("route_id" "90%" "aipo.workflow_category.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
-<option value="0">（指定しない）</option>
+<option value="0">$l10n.WORKFLOW_NO_SPECIFIED</option>
 #foreach( $record in $result.RouteList )
 <option value="$!record.RouteId" #if ($!result.RouteId.toString() == $!record.RouteId.toString()) selected #end>$!record.RouteName</option>
 #end

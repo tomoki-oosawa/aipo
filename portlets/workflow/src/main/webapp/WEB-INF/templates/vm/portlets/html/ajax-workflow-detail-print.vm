@@ -68,34 +68,34 @@ line-height:140%;
 <body>
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.WORKFLOW_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.WORKFLOW_CLOSE" /></a>
 </div>
-※この枠の範囲の設定項目は、印刷へ反映されません。
+$l10n.WORKFLOW_PRINT_MSG
 <form>
 <table>
 <tr>
-<th>表示する幅</th>
+<th>$l10n.WORKFLOW_DISPLAY_WITH</th>
 <td>
 <select id="print_width">
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
-<option selected="selected" value="600px">600ピクセル</option>
-<option value="620px">620ピクセル</option>
-<option value="640px">640ピクセル</option>
-<option value="660px">660ピクセル</option>
-<option value="680px">680ピクセル</option>
-<option value="700px">700ピクセル</option>
-<option value="720px">720ピクセル</option>
-<option value="740px">740ピクセル</option>
-<option value="760px">760ピクセル</option>
-<option value="780px">780ピクセル</option>
-<option value="800px">800ピクセル</option>
+<option selected="selected" value="600px">600$l10n.WORKFLOW_PIXEL</option>
+<option value="620px">620$l10n.WORKFLOW_PIXEL</option>
+<option value="640px">640$l10n.WORKFLOW_PIXEL</option>
+<option value="660px">660$l10n.WORKFLOW_PIXEL</option>
+<option value="680px">680$l10n.WORKFLOW_PIXEL</option>
+<option value="700px">700$l10n.WORKFLOW_PIXEL</option>
+<option value="720px">720$l10n.WORKFLOW_PIXEL</option>
+<option value="740px">740$l10n.WORKFLOW_PIXEL</option>
+<option value="760px">760$l10n.WORKFLOW_PIXEL</option>
+<option value="780px">780$l10n.WORKFLOW_PIXEL</option>
+<option value="800px">800$l10n.WORKFLOW_PIXEL</option>
 </select>
 </td>
 </tr>
 <tr>
-<th>文字サイズ</th>
+<th>$l10n.WORKFLOW_CHAR_SIZE</th>
 <td><select id="print_word_size">
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
@@ -111,8 +111,8 @@ line-height:140%;
 </td>
 </tr>
 </table>
-<input type="button" value="変更する" onclick="change_print_form()"/>
-<input type="button" value="印刷する" onclick="javascript:print();"/>
+<input type="button" value="$l10n.WORKFLOW_DO_CHANGE" onclick="change_print_form()"/>
+<input type="button" value="$l10n.WORKFLOW_DO_PRINT" onclick="javascript:print();"/>
 </form>
 </div>
 <script type="text/javascript" language="JavaScript">
@@ -128,44 +128,44 @@ line-height:140%;
 <colgroup style="width:25%;"></colgroup>
 <colgroup style="width:75%;"></colgroup>
 <tbody>
-#ALtdcaption('決裁状況')
+#ALtdcaption($l10n.WORKFLOW_FLOW_STATUS)
 #ALtditemheader()
 #if($!result.Detail.Progress.Value == "D")
-差戻要確認
+$l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK
 #else
-#if($!result.Detail.Progress.Value == "A") 承認済み #else 決裁待ち #end
+#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end
 #end
 #ALtditemfooter()
-#ALtdcaption('タイトル')
+#ALtdcaption($l10n.WORKFLOW_REQUEST_NAME)
 #ALtditemheader()
 $!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
 #ALtditemfooter()
-#ALtdcaption('申請日')
+#ALtdcaption($l10n.WORKFLOW_CREATEDATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption('重要度')
+#ALtdcaption($l10n.WORKFLOW_PRIORITY_VALUE)
 #ALtditem($!result.Detail.PriorityString)
 #if($!result.Detail.HasRootName)
-#ALtdcaption('申請経路')
+#ALtdcaption("$l10n.WORKFLOW_APPLICATION_ROUTE")
 #ALtditemheader()
 $!result.Detail.RouteName
 #ALtditemfooter()
 #end
-#ALtdcaption('申請内容')
+#ALtdcaption($l10n.WORKFLOW_ACCESS_TO)
 #ALtditem($!result.Detail.Note)
 #if($!result.Detail.OldRequestLinks.size() > 0)
-#ALtdcaption('過去の申請内容')
+#ALtdcaption($l10n.WORKFLOW_ACCESS_TO_PAST)
 #ALtditemheader()
 #set ($count = 1)
 #foreach ($record in $!result.Detail.OldRequestLinks)
 <div>
-${count}回目 $record.CategoryName #if($record.RequestName.toString() != '') &nbsp;&nbsp; $record.RequestName #end $record.UpdateDate
+${count}$l10n.WORKFLOW_TH $record.CategoryName #if($record.RequestName.toString() != '') &nbsp;&nbsp; $record.RequestName #end $record.UpdateDate
 </div>
 #set ($count = $count + 1)
 #end
 #ALtditemfooter()
 #end
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
-#ALtdcaption('添付ファイル')
+#ALtdcaption($l10n.WORKFLOW_ATTACHMENT)
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )$attachmentFile.FileName <br>#end
 #ALtditemfooter()
@@ -178,7 +178,7 @@ ${count}回目 $record.CategoryName #if($record.RequestName.toString() != '') &n
 <colgroup></colgroup>
 <tbody>
 <tr>
-#ALtdheadheaderAtt('align="center" colspan="2"')決済履歴#ALtdheadfooter()
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.WORKFLOW_SETTLEENT_HISTORY#ALtdheadfooter()
 </tr>
 
 #foreach ($record in $result.Detail.DecisionRecords)

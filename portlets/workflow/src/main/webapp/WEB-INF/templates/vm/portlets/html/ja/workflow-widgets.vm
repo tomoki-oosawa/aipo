@@ -22,24 +22,24 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction("依頼を作成する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.workflow.onLoadWorkflowDialog);")
+#AUIbuttonAction("$l10n.WORKFLOW_CREATE_REQUEST" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.workflow.onLoadWorkflowDialog);")
 </div>
 
 <div class="auiWidget clearfix">
 
 <ul>
 <li #if("$!result.currentTab" == 'unconfirmed')class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unconfirmed"))','$!portlet.ID');">受信依頼</a></li>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "requested").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unconfirmed"))','$!portlet.ID');">$l10n.WORKFLOW_RECEIVED_REQUEST</a></li>
 </ul>
 
 <ul>
 <li #if(("$!result.currentTab" == 'unfinished'))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">送信依頼</a></li>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("reset_params","true").addQueryData("tab","unfinished"))','$!portlet.ID');">$l10n.WORKFLOW_TRANSMITED_REQUEST</a></li>
 </ul>
 #if($!result.hasAuthorityOther())
 <ul>
 <li #if((!($!result.currentTab)||$!result.currentTab == 'alldisplay'))class="active"#end>
-<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true").addQueryData("tab","alldisplay"))','$!portlet.ID');">すべての依頼</a></li>
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!result.CurrentFilter").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("reset_params","true").addQueryData("tab","alldisplay"))','$!portlet.ID');">$l10n.WORKFLOW_ALL_REQUEST</a></li>
 </ul>
 #end
 

@@ -39,6 +39,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -173,8 +174,12 @@ public class WorkflowRouteSelectData extends
     rd.setRouteName(record.getRouteName());
     rd.setNote(record.getNote());
     rd.setRoute(record.getRoute());
-    rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-    rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+    rd.setCreateDate(ALDateUtil.format(
+      record.getCreateDate(),
+      ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY")));
+    rd.setUpdateDate(ALDateUtil.format(
+      record.getUpdateDate(),
+      ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY")));
     return rd;
   }
 

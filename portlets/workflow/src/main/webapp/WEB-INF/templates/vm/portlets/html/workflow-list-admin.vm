@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["全依頼一覧", ""]])
+#set ($navilist = [["$l10n.WORKFLOW_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.WORKFLOW_ALL_REQUEST_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
 <script language="JavaScript" type="text/javascript">

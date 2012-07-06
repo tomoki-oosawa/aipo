@@ -29,26 +29,26 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["分類", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
+#set($tab = ["$l10n.WORKFLOW_CLASSIFICATION", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:4em;" href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"><span>$tab.get(0)</span></a></li>
-#set($tab = ["申請経路", "route","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowScreen').addQueryData('tab','route')"])
+#set($tab = ["$l10n.WORKFLOW_APPLICATION_ROUTE", "route","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowScreen').addQueryData('tab','route')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_route_list','1')"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
 </div>
-#AUIbuttonAction("分類を追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
+#AUIbuttonAction("$l10n.WORKFLOW_DO_ADD_CLASSIFICATION" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
 #AUISummaryDivfooter()
 
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('分類')
+#ALajaxlistformheader('$l10n.WORKFLOW_CLASSIFICATION')
 #if($result.List.size() <= 0)
-<div class="message">複数の依頼をグループ化することで、ワークフローを分類することができます。</div>
-<div class="message">『分類追加』 ボタンを押して、追加してください。 </div>
+<div class="message">$l10n.WORKFLOW_SELECT_CATEGORY_MSG</div>
+<div class="message">$l10n.WORKFLOW_ADD_CATEGORY_MSG </div>
 #else
 
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.WORKFLOW_DO_REMOVE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()
@@ -59,7 +59,7 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('category_name' '分類名' $result 'WorkflowCategoryListScreen')")
+#ALtdhead("#ALajaxsort('category_name' $l10n.WORKFLOW_CLASSIFICATION_NAME $result 'WorkflowCategoryListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -79,7 +79,7 @@
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.WORKFLOW_DO_REMOVE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()

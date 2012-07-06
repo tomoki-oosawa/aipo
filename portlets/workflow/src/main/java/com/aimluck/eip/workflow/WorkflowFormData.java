@@ -61,6 +61,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
@@ -151,31 +152,34 @@ public class WorkflowFormData extends ALAbstractFormData {
   public void initField() {
     // リクエスト名
     request_name = new ALStringField();
-    request_name.setFieldName("タイトル");
+    request_name.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_REQUEST_NAME"));
     request_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
-    category_id.setFieldName("カテゴリ");
+    category_id.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_CATEGORY"));
     // 申請経路ID
     route_id = new ALNumberField();
-    route_id.setFieldName("申請経路");
+    route_id.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_APPLICATION_ROUTE"));
     // 申請経路
     route = new ALStringField();
     request_name.setTrim(true);
     // 重要度
     priority = new ALNumberField(3);
-    priority.setFieldName("重要度");
+    priority.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_PRIORITY_VALUE"));
     // メモ
     note = new ALStringField();
-    note.setFieldName("申請内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO"));
     note.setTrim(false);
 
     // 金額
     price = new ALNumberField();
-    price.setFieldName("金額");
+    price.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_OF_MONEY"));
     // 申請先のリスト
     positions = new ALStringField();
-    positions.setFieldName("ユーザ名リスト");
+    positions.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_USER_LIST"));
     positions.setTrim(true);
     // 申請先一覧
     memberList = new ArrayList<ALEipUser>();
@@ -1004,7 +1008,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         routeun.append(username);
         routeun.append(" -> ");
       }
-      routeun.append("完了");
+      routeun.append(ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION"));
 
       return routeun.toString();
     }

@@ -55,6 +55,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -549,11 +550,11 @@ public class WorkflowSelectData extends
 
       String state = new String();
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
-        state = "完了";
+        state = ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION");
       } else if (WorkflowUtils.DB_PROGRESS_WAIT.equals(record.getProgress())) {
-        state = "進行中";
+        state = ALLocalizationUtils.getl10n("WORKFLOW_PROGRESS");
       } else {
-        state = "否認";
+        state = ALLocalizationUtils.getl10n("WORKFLOW_DENIAL");
       }
       rd.setStateString(state);
 
@@ -561,7 +562,7 @@ public class WorkflowSelectData extends
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),
-        "yyyy年M月d日H時m分"));
+        ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);

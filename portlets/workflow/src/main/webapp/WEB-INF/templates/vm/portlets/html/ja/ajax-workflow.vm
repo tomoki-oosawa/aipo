@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">依頼はありません。</div>
+<div class="message">$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU</div>
 #else
 #ALformheader('Workflow' $jslink $portlet)
 <table class="activityTable">
@@ -33,11 +33,11 @@
 <span class="date">$!record.UpdateDateTime &nbsp; $!record.ClientName</span>
 <a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))', '$!portlet.ID', aipo.workflow.onLoadWorkflowDetail);">
 #if($record.Progress.Value == "D")
-申請 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 を差し戻しました。
+$l10n.WORKFLOW_APPLICATION 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 $l10n.WORKFLOW_DENIAL_MSG
 #elseif($record.Progress.Value == "A")
-申請 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 を承認しました。
+$l10n.WORKFLOW_APPLICATION 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 $l10n.WORKFLOW_ACCEPT_MSG
 #else
-申請 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 の確認依頼を出しました。
+$l10n.WORKFLOW_APPLICATION 「$!record.CategoryName#if($!record.RequestName != '')：$!record.RequestName #end」 $l10n.WORKFLOW_REQUEST_MSG
 #end
 </a>
 </td>

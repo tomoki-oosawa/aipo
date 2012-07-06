@@ -29,6 +29,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -122,12 +123,17 @@ public class WorkflowResultData implements ALData {
     client_name = new ALStringField();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
-    updateDate = new ALDateTimeField("M月d日");
+    updateDate =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_MONTH_DAY"));
     updateDateTime = new ALDateTimeField("H:mm");
 
-    createYear = new ALDateTimeField("yyyy年");
-    createDateYear = new ALDateTimeField("yyyy年M月d日");
-    createDate = new ALDateTimeField("M月d日");
+    createYear =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_YEAR"));
+    createDateYear =
+      new ALDateTimeField(ALLocalizationUtils
+        .getl10n("WORKFLOW_YEAR_MONTH_DAY"));
+    createDate =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_MONTH_DAY"));
     createDateTime = new ALDateTimeField("H:mm");
 
     activityId = new ALNumberField();
@@ -352,7 +358,8 @@ public class WorkflowResultData implements ALData {
   }
 
   public ALDateTimeField getUpdateDateTime() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
+    ALDateTimeField today =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_MONTH_DAY"));
     today.setValue(new Date());
     if (updateDate.toString().equals(today.toString())) {
       return updateDateTime;
@@ -372,8 +379,10 @@ public class WorkflowResultData implements ALData {
   }
 
   public ALDateTimeField getCreateDateTime() {
-    ALDateTimeField today = new ALDateTimeField("M月d日");
-    ALDateTimeField thisYear = new ALDateTimeField("yyyy年");
+    ALDateTimeField today =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_MONTH_DAY"));
+    ALDateTimeField thisYear =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("WORKFLOW_YEAR"));
     today.setValue(new Date());
     thisYear.setValue(new Date());
     if (createDate.toString().equals(today.toString())

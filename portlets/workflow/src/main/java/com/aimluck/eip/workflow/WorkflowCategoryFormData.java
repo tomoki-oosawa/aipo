@@ -45,6 +45,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -103,20 +104,23 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
   public void initField() {
     // カテゴリ名
     category_name = new ALStringField();
-    category_name.setFieldName("分類");
+    category_name.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_CLASSIFICATION"));
     category_name.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_MEMO"));
     note.setTrim(true);
     // テンプレート
     ordertemplate = new ALStringField();
-    ordertemplate.setFieldName("申請内容テンプレート");
+    ordertemplate.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_APPLICATION_CONTENTS_TEMPLATE"));
     ordertemplate.setTrim(true);
     // 申請経路ID
     route_id = new ALNumberField();
     route = new ALStringField();
-    route_id.setFieldName("申請経路");
+    route_id.setFieldName(ALLocalizationUtils
+      .getl10n("WORKFLOW_APPLICATION_ROUTE"));
   }
 
   /**
@@ -335,7 +339,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
       // ワーフクローカテゴリを削除
       Database.delete(category);
 
-      // このカテゴリに含まれる依頼をカテゴリ「その他」に移す。
+      // このカテゴリに含まれる依頼をカテゴリ「未分類」に移す。
       SelectQuery<EipTWorkflowRequest> query =
         Database.query(EipTWorkflowRequest.class);
       Expression exp1 =
@@ -440,7 +444,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         routeun.append(username);
         routeun.append(" -> ");
       }
-      routeun.append("完了");
+      routeun.append(ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION"));
 
       return routeun.toString();
     }

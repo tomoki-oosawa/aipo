@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["申請経路一覧", "",""]])
+#set($tabs = [["$l10n.WORKFLOW_ROUTE_LIST", "",""]])
 #set ($indicator_id = "indicator-list-")
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryFormScreen").addQueryData("entityid","new")))
 #set ($newAfterFunction1 = "aipo.workflow_route.onLoadWorkflowRouteDialog")
@@ -30,9 +30,9 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["分類", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
+#set($tab = ["$l10n.WORKFLOW_CLASSIFICATION", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:4em;" href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"><span>$tab.get(0)</span></a></li>
-#set($tab = ["申請経路", "route","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowScreen').addQueryData('tab','route')"])
+#set($tab = ["$l10n.WORKFLOW_APPLICATION_ROUTE", "route","$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowScreen').addQueryData('tab','route')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_route_list','1')"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
@@ -43,14 +43,14 @@
   #AUIrowTableWide()
   <tr><td colspan="4" class="auiNoData">
   <p class="mh10">
-  	#AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+  	#AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
   </p>
   </td></tr>
   #AUItablefooter()
 #else
-  #AUIbuttonAction("申請経路を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+  #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
   <div id="listMessageDiv"></div>
-  #ALajaxlistformheader('申請経路')
+  #ALajaxlistformheader('$l10n.WORKFLOW_APPLICATION_ROUTE')
   #AUISummaryDiv()
     <div class="floatLeft">
     #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
@@ -65,8 +65,8 @@
   <tbody>
   <tr>
   #ALtdheadThin("#ALswitchCheckbox()")
-  #ALtdhead("#ALajaxsort('route_name' '申請経路名' $result 'WorkflowRouteListScreen')")
-  #ALtdhead("#ALajaxsort('route' '申請経路' $result 'WorkflowRouteListScreen')")
+  #ALtdhead("#ALajaxsort('route_name' $l10n.WORKFLOW_APPLICATION_ROUTE_NAME $result 'WorkflowRouteListScreen')")
+  #ALtdhead("#ALajaxsort('route' $l10n.WORKFLOW_APPLICATION_ROUTE $result 'WorkflowRouteListScreen')")
   #ALtdheadThin(' ')
   </tr>
   #foreach ($record in $result.List)

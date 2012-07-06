@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
@@ -160,7 +161,7 @@ public class WorkflowCategoryDetailResultData extends
         routeun.append(username);
         routeun.append(" -> ");
       }
-      routeun.append("完了");
+      routeun.append(ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION"));
 
       return routeun.toString();
     }

@@ -26,7 +26,7 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="WorkflowAllListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.WORKFLOW_SAERCH</a>
 </a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
@@ -36,13 +36,13 @@
 #ALselectpdheader("category" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 
 #if ($all_flg)
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">すべての分類</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
 
 #else
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">すべての分類</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
 #foreach( $record in $result.CategoryList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
@@ -51,7 +51,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Workflow')
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当する依頼はありません。</div>
+<div class="message">$l10n.WORKFLOW_NO_WORKFLOW_YOU_SELECT</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIsearchresult($!result.targetKeyword.toString())
@@ -59,11 +59,11 @@
 </div>
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('request_name' 'タイトル' $result 'WorkflowAllListScreen')")
-#ALtdheadAtt("#ALajaxsort('progress' '状況' $result 'WorkflowAllListScreen')" 'style="width:6em" class="center"')
-#ALtdheadAtt("#ALajaxsort('user_name' '申請者' $result 'WorkflowAllListScreen')" 'style="width:12em"')
-#ALtdheadAtt("決済者"'style="width:12em"')
-#ALtdheadAtt("#ALajaxsort('create_date' '申請日' $result 'WorkflowAllListScreen')" 'style="width:6em"')
+#ALtdhead("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowAllListScreen')")
+#ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowAllListScreen')" 'style="width:6em" class="center"')
+#ALtdheadAtt("#ALajaxsort('user_name' $l10n.WORKFLOW_APPLICANT $result 'WorkflowAllListScreen')" 'style="width:12em"')
+#ALtdheadAtt("$l10n.WORKFLOW_SETTLEMENT"'style="width:12em"')
+#ALtdheadAtt("#ALajaxsort('create_date' $l10n.WORKFLOW_CREATEDATE $result 'WorkflowAllListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
