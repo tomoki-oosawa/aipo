@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen")' />
-	<div class="filters" id="filters_$!{portlet.ID}">#*
+	<div class="filters customizeMenuIcon" id="filters_$!{portlet.ID}">#*
 		*##if(!$!result.issetFilter("post"))#*
 			*#<a href="javascript:void(0);" class="filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_GROUP_LIST</span></a>#*
 		 *##else#*
