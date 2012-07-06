@@ -1858,4 +1858,8 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 		break;
 	}
 }
+
+
 }
+
+}});
