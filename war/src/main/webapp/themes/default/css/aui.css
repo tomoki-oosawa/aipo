@@ -73,8 +73,6 @@ span[type="button"] {
 .hdSearch {
 }
 .hdMessege{
-	border-right:1px solid #DCDCDC;
-	margin-right:10px;
 }
 .hdMessege a{
 	text-decoration:none;
@@ -2370,9 +2368,6 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 	}
 }
 
-.hdMessege{
-	margin:0 8px 0 0;
-}
 .hdActivity{
 	cursor:pointer;
 	padding:0 2px !important;
