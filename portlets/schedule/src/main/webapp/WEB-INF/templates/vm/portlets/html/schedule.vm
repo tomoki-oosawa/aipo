@@ -27,8 +27,8 @@
     dojo.require("aipo.widget.DropdownMemberFacilitypicker");
 
     ptConfig['$!portlet.ID'] = { group:"schedule", thisUrl:"$!jslink.getPortletById($!portlet.ID)", jsonUrl:"$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleWeeklyJSONScreen')", formUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen')', detailUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen')', rowHeight:18, scheduleDivDaySum:7, tmpIndex:-1, distance:3, timeStart:$!time_start, timeEnd:$!time_end, timeInterval:$!time_interval, contentHeight: ($!time_end - $!time_start)*(60/$!time_interval)*18, contentScrollTop: $!time_start*(60/$!time_interval)*18, initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage };
-	aipo.schedule.login_id = "$current_user_id";
-	aipo.schedule.login_name = "$current_user_ln";
+    aipo.schedule.login_id = "$current_user_id";
+    aipo.schedule.login_name = "$current_user_ln";
     aipo.schedule.login_aliasname = "$current_user";
 //]]>
 </script>
@@ -56,37 +56,37 @@
     dojo.style("scheduleDivAdd06_"+portletId,'opacity', 0);
     dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
 
-	#if (${client} == "IPAD")
-	dojo.query(".scroll_width").style("width", "17px");
-	#if($!top_form=='simple')
-	dojo.query(".scroll_width").style("width", "3%");
- 	#end
-	#end
+    #if (${client} == "IPAD")
+    dojo.query(".scroll_width").style("width", "17px");
+    #if($!top_form=='simple')
+    dojo.query(".scroll_width").style("width", "3%");
+    #end
+    #end
 
     var initCalendar=function(){
-			for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
-		      tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
-		      tmpDraggable.portletId = '$!portlet.ID';
-		      tmpDraggable.index = i;
-		    };
+            for(var i =0; i < ptConfig['$!portlet.ID'].scheduleDivDaySum; i++) {
+              tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_$!portlet.ID' , {idx: i});
+              tmpDraggable.portletId = '$!portlet.ID';
+              tmpDraggable.index = i;
+            };
 
-		    tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
-		    tmpDraggable.portletId = '$!portlet.ID';
+            tmpDraggable = new aipo.calendar.WeeklyTermScheduleAddDraggable('termScheduleDivAdd_$!portlet.ID',  {idx: 0});
+            tmpDraggable.portletId = '$!portlet.ID';
 
-		    aipo.calendar.populateWeeklySchedule('$!portlet.ID');
-		};
+            aipo.calendar.populateWeeklySchedule('$!portlet.ID');
+        };
 
-	var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
+    var mpHTML = document.getElementById("memberpicker-$!portlet.ID");
     if(mpHTML){
 
         var tmpFrom = document.getElementById("tmp_member_from-$!portlet.ID");
-    	var tmpTo = document.getElementById("tmp_member_to-$!portlet.ID");
-    	if(tmpTo != null){
-	    	tmpTo.parentNode.removeChild(tmpTo);
-	    }
-    	if(tmpFrom != null){
-	    	tmpFrom.parentNode.removeChild(tmpFrom);
-	    }
+        var tmpTo = document.getElementById("tmp_member_to-$!portlet.ID");
+        if(tmpTo != null){
+            tmpTo.parentNode.removeChild(tmpTo);
+        }
+        if(tmpFrom != null){
+            tmpFrom.parentNode.removeChild(tmpFrom);
+        }
 
        params = {
             widgetId: "member_to-$!portlet.ID",
@@ -113,53 +113,41 @@
 
        var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+portletId));
        var gselect = document.getElementById("groupselect-"+portletId);
-		if(gselect.value=="pickup"){
-			addtxt.removeClass("hide");
-		}else{
-			addtxt.addClass("hide");
-		}
-	}
-
-	var mpicker = dijit.byId("memberpicker-$!portlet.ID");
-    if(mpicker){
-        //メンバーリストの初期化
-    	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
-    	var select = dojo.byId('init_memberlist-$!portlet.ID');
-        var s_o = select.options;
-        for(var i = 0 ; i < s_o.length; i ++ ) {
-            mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+        if(gselect.value.indexOf("pickup")!=-1){
+            addtxt.removeClass("hide");
+        }else{
+            addtxt.addClass("hide");
         }
-		if(gselect.value=="pickup"){
-			initCalendar();
-		}else{
-			//メンバーリストを取得しに行く
-			var params="";
-			  dojo.xhrGet({
-                portletId:'$!portlet.ID',
-                url:gselect.value,
-                encoding: "utf-8",
-                handleAs: "json-comment-filtered",
-                load:function(data, event) {
-            		//paramsの編集+namesの変更
-            		var html="";
-            		mp.dropDown.removeMember(dojo.byId("member_to-"+'$!portlet.ID'));
-            		for(var i=0;i<data.length;i++){
-            			if (i != 0) {
-            				html += ' ';
-            			}
-            			params+="&m_id="+data[i].name;
-            			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-            			aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
-            		}
-            		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
-            	},
-				handle:function(){
-					initCalendar();
-				}
-			});
-		}
     }
 
+    var mpicker = dijit.byId("memberpicker-$!portlet.ID");
+    if(mpicker){
+        var params="";
+        dojo.xhrGet({
+            portletId:'$!portlet.ID',
+            url:gselect.value,
+            encoding: "utf-8",
+            handleAs: "json-comment-filtered",
+            load:function(data, event) {
+                //paramsの編集+namesの変更
+                var html="";
+                mp.dropDown.removeMember(dojo.byId("member_to-"+'$!portlet.ID'));
+                for(var i=0;i<data.length;i++){
+                    if (i != 0) {
+                        html += ' ';
+                    }
+                    params+="&m_id="+data[i].name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")+ "</span>";
+                    mpicker.addOptionSync(data[i].userFacilityId,data[i].aliasName,true);
+                    //aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
+                }
+                dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
+            },
+            handle:function(){
+                initCalendar();
+            }
+        });
+    }
   };
 
 //]]>

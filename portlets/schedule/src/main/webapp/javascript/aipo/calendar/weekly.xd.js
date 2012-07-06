@@ -1819,49 +1819,43 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 		dojo.byId("member_to_input-"+_portletId).innerHTML=html;
 	};
 	var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+_portletId));
-	switch(obj.value){
-		case "":
-			obj.selectedIndex=dojo.query('[value=pickup]',this)[0].index;//pickupへ流す。
-		case "pickup":
-			addtxt.removeClass("hide");
-			mp.dropDown.removeMember(dojo.byId("member_to-"+_portletId));
-			mp.dropDown.removeMember(dojo.byId("tmp_member_to-"+_portletId));
-			var p_mo = dojo.byId("picked_memberlist-"+_portletId).options;
-			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
-			  opt.selected = true;
-			})(p_mo[i], i);
-			mp.dropDown.addMember(dojo.byId("picked_memberlist-"+_portletId), dojo.byId("tmp_member_to-"+_portletId));
-			mp.dropDown.addMember(dojo.byId("picked_memberlist-"+_portletId), dojo.byId("member_to-"+_portletId));
-			mp.inputMemberSync();
+	switch(obj.value.indexOf("pickup")){
+	case -1:
+		addtxt.addClass("hide");
+		var params="";
+		  dojo.xhrGet({
+            portletId:_portletId,
+            url:obj.value,
+            encoding: "utf-8",
+            handleAs: "json-comment-filtered",
+            load:ajaxMemberSelectLoad,
+			handle:function(){
+				aipo.calendar.populateWeeklySchedule(_portletId,params);//スケジュール更新
+			}
+		});
+		break;
+	default:
+		addtxt.removeClass("hide");
+		mp.dropDown.removeMember(dojo.byId("member_to-"+_portletId));
+		mp.dropDown.removeMember(dojo.byId("tmp_member_to-"+_portletId));
+		var p_mo = dojo.byId("picked_memberlist-"+_portletId).options;
+		for(var i = 0; i < p_mo.length; i++)(function(opt, index){
+			opt.selected = true;
+		})(p_mo[i], i);
+		mp.dropDown.addMember(dojo.byId("picked_memberlist-"+_portletId), dojo.byId("tmp_member_to-"+_portletId));
+		mp.dropDown.addMember(dojo.byId("picked_memberlist-"+_portletId), dojo.byId("member_to-"+_portletId));
+		mp.inputMemberSync();
 
-			aipo.calendar.populateWeeklySchedule(_portletId);//スケジュール更新
+		aipo.calendar.populateWeeklySchedule(_portletId);//スケジュール更新
 
-			//デフォルトを保存するためにajax送信
-			dojo.xhrGet({
-                portletId:_portletId,
-                url:dojo.byId("groupselect-defaulturl-"+_portletId).value,
-                encoding: "utf-8",
-                handleAs: "json-comment-filtered"
-			});
-			break;
-		default:
-			addtxt.addClass("hide");
-			var params="";
-			  dojo.xhrGet({
-                portletId:_portletId,
-                url:obj.value,
-                encoding: "utf-8",
-                handleAs: "json-comment-filtered",
-                load:ajaxMemberSelectLoad,
-				handle:function(){
-					aipo.calendar.populateWeeklySchedule(_portletId,params);//スケジュール更新
-				}
-			});
-			break;
+		//デフォルトを保存するためにajax送信
+		dojo.xhrGet({
+			portletId:_portletId,
+			url:dojo.byId("groupselect-defaulturl-"+_portletId).value,
+			encoding: "utf-8",
+			handleAs: "json-comment-filtered"
+		});
+		break;
 	}
 }
-
-
 }
-
-}});

@@ -115,7 +115,7 @@
 
        var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+'$!portlet.ID'));
        var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
-		if(gselect.value=="pickup"){
+		if(gselect.value.indexOf("pickup")!=-1){
 			addtxt.removeClass("hide");
 		}else{
 			addtxt.addClass("hide");
@@ -132,7 +132,7 @@
 
         //メンバーリストの初期化
     	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
-		if(gselect.value=="pickup"){
+		if(gselect.value.indexOf("pickup")!=-1){
 			initCalendar();
 		}else{
 			//メンバーリストを取得しに行く

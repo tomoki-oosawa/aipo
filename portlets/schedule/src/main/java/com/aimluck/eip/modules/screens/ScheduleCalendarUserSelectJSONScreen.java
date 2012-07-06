@@ -19,11 +19,20 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.sf.json.JSONArray;
+
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
+import com.aimluck.eip.userfacility.util.UserFacilityUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -48,7 +57,29 @@ public class ScheduleCalendarUserSelectJSONScreen extends
     String groupname = rundata.getParameters().getString("groupname");
 
     if ("pickup".equals(groupname)) {
-      return null;// ユーザーセレクト時
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      List<UserFacilityLiteBean> memberList =
+        new ArrayList<UserFacilityLiteBean>();
+      String pickedMember =
+        portlet.getPortletConfig().getInitParameter("p6a-uids");
+      if (pickedMember == null || "".equals(pickedMember)) {
+        UserFacilityLiteBean login_user =
+          UserFacilityUtils.getUserFacilityLiteBean(rundata);
+        memberList.add(login_user);
+      } else {
+        String pickedMembers[] = pickedMember.split(",");
+        List<UserFacilityLiteBean> ulist =
+          ScheduleUtils.getALEipUserFacility(pickedMembers, rundata);
+        if (ulist == null || ulist.size() == 0) {
+          UserFacilityLiteBean login_user =
+            UserFacilityUtils.getUserFacilityLiteBean(rundata);
+          memberList.add(login_user);
+        } else {
+          memberList.addAll(ulist);
+        }
+      }
+      JSONArray json = JSONArray.fromObject(memberList);
+      return json.toString();
     } else {
       return super.getJSONString(rundata, context);
     }

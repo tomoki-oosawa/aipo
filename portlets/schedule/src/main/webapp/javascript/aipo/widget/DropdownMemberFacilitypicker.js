@@ -231,7 +231,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
     _onDropDownClick:function(e){
         var groupSelect=dojo.byId("groupselect-"+this.tmpPortretId);
 
-        if(groupSelect && groupSelect.value!="pickup"){
+        if(groupSelect && groupSelect.value.indexOf("pickup") == -1){
         		return false;
         }
 
