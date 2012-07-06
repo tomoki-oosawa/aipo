@@ -276,7 +276,7 @@ public class ReportFormData extends ALAbstractFormData {
     report_name.limitMaxLength(50);
     // メモの文字数制限
     note.setNotNull(true);
-    note.limitMaxLength(1000);
+    note.limitMaxLength(10000);
     // 日付必須項目
     createDate.setNotNull(true);
   }
