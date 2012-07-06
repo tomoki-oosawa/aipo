@@ -111,10 +111,6 @@ form.searchbox input.submit:active {
 	cursor:pointer;
 	padding:0 2px !important;
 }
-.hdActivity:hover{
-	background:#EEEEEE;
-	border-radius:4px;
-}
 .hdActivity .mb_hide{
 	line-height:23px;
 }
