@@ -137,11 +137,8 @@
                         html += ' ';
                     }
                     params+="&m_id="+data[i].name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")+ "</span>";
                     mpicker.addOptionSync(data[i].userFacilityId,data[i].aliasName,true);
-                    //aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
                 }
-                dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
             },
             handle:function(){
                 initCalendar();
