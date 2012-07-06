@@ -201,7 +201,7 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
         setTemplate(rundata, redirectTemplate);
         rundata.getRequest().setAttribute("redirectTemplate", null);
       }
+      putData(rundata, context);
     }
-    putData(rundata, context);
   }
 }
