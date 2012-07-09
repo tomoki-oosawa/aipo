@@ -22,52 +22,52 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('イベントログ')
+#ALajaxlistformheader($l10n.EVENTLOG)
 
 <div class="clearfix">
 <select id="start_date_year" name="start_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [2006..$!result.ViewDateMaxYear] )
-<option value="$num" #if ($!result.StartDate.Year == "$num") selected="selected" #end>$!{num}年</option>
+<option value="$num" #if ($!result.StartDate.Year == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_YEAR</option>
 #end
 </select>
 <select id="start_date_month" name="start_date_month" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [1..12] )
-<option value="$num" #if ($!result.StartDate.Month == "$num") selected="selected" #end>$!{num}月</option>
+<option value="$num" #if ($!result.StartDate.Month == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_MONTH</option>
 #end
 </select>
 <select id="start_date_day" name="start_date_day" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach($num in [1..$!result.StartDateMaxDay])
-<option value="$num" #if ($!result.StartDate.Day == "$num") selected="selected" #end>$!{num}日</option>
+<option value="$num" #if ($!result.StartDate.Day == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_DAY</option>
 #end
 </select>
 ～
 <select id="end_date_year" name="end_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [2006..$!result.ViewDateMaxYear] )
-<option value="$num" #if ($!result.EndDate.Year == "$num") selected="selected" #end>$!{num}年</option>
+<option value="$num" #if ($!result.EndDate.Year == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_YEAR</option>
 #end
 </select>
 <select id="end_date_month" name="end_date_month" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [1..12] )
-<option value="$num" #if ($!result.EndDate.Month == "$num") selected="selected" #end>$!{num}月</option>
+<option value="$num" #if ($!result.EndDate.Month == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_MONTH</option>
 #end
 </select>
 <select id="end_date_day" name="end_date_day" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach($num in [1..$!result.EndDateMaxDay])
-<option value="$num" #if ($!result.EndDate.Day == "$num") selected="selected" #end>$!{num}日</option>
+<option value="$num" #if ($!result.EndDate.Day == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_DAY</option>
 #end
 </select>
 </div>
 
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta clearfix">指定された条件に該当するイベントログはありません。</div>
+<div class="auiSummaryMeta clearfix">$l10n.EVENTLOG_NO_YOU_SELECT</div>
 #ALformfooter()
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.EVENTLOG_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
 
-#set($title = "選択期間の一覧をダウンロード")
+#set($title = "$l10n.EVENTLOG_DOWNLOAD")
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
 
 </div>
@@ -85,11 +85,11 @@
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
 ##ヘッダー名を変更する場合はEventlogCsvExportScreenも変更してください
-#ALtdhead("#ALajaxsort('event_date' '日時' $result 'EventlogScreen')")
-#ALtdhead("#ALajaxsort('user_name' '名前' $result 'EventlogScreen')")
-#ALtdheadAtt("#ALajaxsort('portlet_id' '機能名' $result 'EventlogScreen')"'class="center"')
-#ALtdheadAtt("#ALajaxsort('event_type' '操作' $result 'EventlogScreen')"'class="center"')
-#ALtdhead("#ALajaxsort('ip_addr' '接続IP' $result 'EventlogScreen')")
+#ALtdhead("#ALajaxsort('event_date' $l10n.EVENTLOG_DATE $result 'EventlogScreen')")
+#ALtdhead("#ALajaxsort('user_name' $l10n.EVENTLOG_NAME $result 'EventlogScreen')")
+#ALtdheadAtt("#ALajaxsort('portlet_id' $l10n.EVENTLOG_FEATURE_NAME $result 'EventlogScreen')"'class="center"')
+#ALtdheadAtt("#ALajaxsort('event_type' $l10n.EVENTLOG_OPERATION $result 'EventlogScreen')"'class="center"')
+#ALtdhead("#ALajaxsort('ip_addr' $l10n.EVENTLOG_IP $result 'EventlogScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -107,7 +107,7 @@
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.EVENTLOG_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
 </div>
 #AUIajaxpageview('EventlogScreen' $result)
 #AUISummaryDivfooter()
