@@ -20,33 +20,33 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("ロール詳細")
+#ALdialogheader("$l10n.ACCESSCTL_ROLE_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("ロール")
+#ALajaxdetailformheader("$l10n.ACCESSCTL_ROLE")
 #ALtableheaderWide()
-#ALtdcaption('ロール名')
+#ALtdcaption($l10n.ACCESSCTL_ROLE_NAME)
 #ALtditem($!result.Detail.AclRoleName)
-#ALtdcaption('アクセス権限')
+#ALtdcaption($l10n.ACCESSCTL_AUTHORITY)
 #ALtditemheader()
 <h3>$!result.Detail.FeatureName</h3>
-#if($!result.Detail.hasAclList()) <div>一覧表示</div> #end
-#if($!result.Detail.hasAclDetail()) <div>詳細表示</div> #end
-#if($!result.Detail.hasAclInsert()) <div>追加</div> #end
-#if($!result.Detail.hasAclUpdate()) <div>編集</div> #end
-#if($!result.Detail.hasAclDelete()) <div>削除</div> #end
-#if($!result.Detail.hasAclExport()) <div>外部出力</div> #end
+#if($!result.Detail.hasAclList()) <div>$l10n.ACCESSCTL_FEATURE_LISTVIEW</div> #end
+#if($!result.Detail.hasAclDetail()) <div>$l10n.ACCESSCTL_FEATURE_DETAILVIEW</div> #end
+#if($!result.Detail.hasAclInsert()) <div>$l10n.ACCESSCTL_FEATURE_ADD</div> #end
+#if($!result.Detail.hasAclUpdate()) <div>$l10n.ACCESSCTL_FEATURE_EDIT</div> #end
+#if($!result.Detail.hasAclDelete()) <div>$l10n.ACCESSCTL_FEATURE_DELETE</div> #end
+#if($!result.Detail.hasAclExport()) <div>$l10n.ACCESSCTL_FEATURE_EXPORT</div> #end
 #ALtditemfooter()
-#ALtdcaption('ユーザー')
+#ALtdcaption($l10n.ACCESSCTL_USER)
 #ALtditemheader()
 #foreach($record in $!result.Detail.UserNameList)
 $!utils.escapeXML($record)<br />
 #end
 #ALtditemfooter()
-#ALtdcaption('メモ')
+#ALtdcaption($l10n.ACCESSCTL_MEMO)
 #ALtditem($!result.Detail.Note)
-#ALtdcaption('登録日')
+#ALtdcaption($l10n.ACCESSCTL_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption('更新日')
+#ALtdcaption($l10n.ACCESSCTL_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()
