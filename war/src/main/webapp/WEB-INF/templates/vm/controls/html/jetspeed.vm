@@ -170,7 +170,7 @@ function appsNaviSwitch() {
                               <ul>
 			#foreach ( $tab in $tabs )
 #set($selected = $tab.Link && ($tab.isSelected() == true))
-                               <li class="#if($velocityCount==1)first#end">
+                               <li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
                                   <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
                                   <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
                                   <div class="setting">
@@ -190,8 +190,6 @@ function appsNaviSwitch() {
                                 </li>
 #set($beforeselected =$selected)
 			#end
-								<li class="last store">
-						        </li>
 
 								#if ($data.User.getUserName()!="admin")
 									<li class="addTab">
