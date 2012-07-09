@@ -31,13 +31,12 @@
 </div>
 
 <div class="auiWidget clearfix">
-
 <input type="hidden" id="topic" value="$!result.CurrentFilter"/>
-<ul>
 
-<li #if (!$!result.CurrentFilter && !$categoryEtc) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.MSGBOARD_ALL_CATEGORY</a></li>
+<ul>
+<li #if ($result.CategoryId == "" || $result.CategoryId == "0") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.MSGBOARD_ALL_CATEGORY</a></li>
 #foreach( $record in $!result.CategoryList )
-<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
+<li #if ("$result.CategoryId" == "$!record.CategoryId.toString()") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen").addQueryData("filtertype","category").addQueryData("filter",$!record.CategoryId).addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
 #end
 </ul>
 

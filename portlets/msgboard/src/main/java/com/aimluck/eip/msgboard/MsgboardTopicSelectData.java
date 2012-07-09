@@ -111,6 +111,13 @@ public class MsgboardTopicSelectData extends
   /** 初期表示 */
   private int table_colum_num;
 
+  /** カテゴリの初期値を取得する */
+  private String filterType = "";
+
+  /** カテゴリ　ID */
+  private String categoryId = "";
+
+  /** ターゲット　 */
   private ALStringField target_keyword;
 
   /**
@@ -167,25 +174,22 @@ public class MsgboardTopicSelectData extends
     // My グループの一覧を取得する．
     postList = ALEipUtils.getMyGroups(rundata);
 
-    // // カテゴリの初期値を取得する
-    // try {
-    // String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    // if (filter == null) {
-    // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    // String categoryId =
-    // portlet.getPortletConfig().getInitParameter("p3a-category");
-    // if (table_colum_num != 4) {
-    // categoryId = "";
-    // }
-    // if (categoryId != null) {
-    // ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-    // ALEipUtils
-    // .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-    // }
-    // }
-    // } catch (Exception ex) {
-    // logger.error("Exception", ex);
-    // }
+    // カテゴリの初期値を取得する
+    try {
+      filterType = rundata.getParameters().getString("filtertype", "");
+      if (filterType.equals("category")) {
+        String categoryId = rundata.getParameters().getString("filter", "");
+        if (!categoryId.equals("")) {
+          this.categoryId = categoryId;
+        } else {
+          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+          this.categoryId =
+            portlet.getPortletConfig().getInitParameter("p3a-category");
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
 
     target_keyword = new ALStringField();
   }
@@ -812,5 +816,9 @@ public class MsgboardTopicSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
       .getPortletConfig()
       .getInitParameter("p12g-filtertypes"));
+  }
+
+  public String getCategoryId() {
+    return categoryId;
   }
 }
