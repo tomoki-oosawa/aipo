@@ -19,20 +19,20 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.WEBMAIL_DO_ADD)
 #set ($event_submit = "eventSubmit_doWebmail_insert_folder")
-#set ($subtitle = 'フォルダ追加')
+#set ($subtitle = $l10n.WEBMAIL_ADD_FOLDER)
 #else
-#set ($action_str = "更新する")
+#set ($action_str = $l10n.WEBMAIL_DO_UPDATE)
 #set ($event_submit = "eventSubmit_doWebmail_update_folder")
-#set ($subtitle = 'フォルダ編集')
+#set ($subtitle = $l10n.WEBMAIL_EDIT_FOLDER)
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #if(!$!result.MailAccount)
 #ALbuttonheader()
-<div class="message">メールアカウントを選択してください。</div>
+<div class="message">$l10n.WEBMAIL_SELECT_MAILACCOUNT_MSG</div>
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #else

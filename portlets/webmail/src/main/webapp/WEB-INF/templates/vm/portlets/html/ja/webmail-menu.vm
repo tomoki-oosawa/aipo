@@ -30,36 +30,36 @@ dojo.addOnLoad(function () {
 	var subMenu =
         [
             {
-                caption: "メール",
+                caption: $l10n.WEBMAIL_MAIL,
                 iconClass: "menuBarIconList",
                 url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')",
                 submenu:
                 [
-                    {   caption: "メール一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"    },
-                    {   caption: "メールを作成する", iconClass: "menuBarIconWebmailCreateMail", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen")');"    },
-                    {   caption: "メールを受信する", iconClass:"menuBarIconWebmailReceiveMail", url: "javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("mode","recieve")', '$!portlet.ID');"    },
-                    {   caption: "フォルダを追加する", iconClass: "menuBarIconFolderAdd" , url:}
+                    {   caption: $l10n.WEBMAIL_DO_WATCH_MAILLIST, iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"    },
+                    {   caption: $l10n.WEBMAIL_DO_CREATE_EMAIL, iconClass: "menuBarIconWebmailCreateMail", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen")');"    },
+                    {   caption: $l10n.WEBMAIL_DO_RECEIVE_MAIL, iconClass:"menuBarIconWebmailReceiveMail", url: "javascript:aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("mode","recieve")', '$!portlet.ID');"    },
+                    {   caption: $l10n.WEBMAIL_DO_ADD_FOLDER, iconClass: "menuBarIconFolderAdd" , url:}
                 ]
             },
             {
-                caption: "フィルタ設定",
+                caption: $l10n.WEBMAIL_SETTING_FILTER,
                 iconClass: "menuBarIconList",
                 url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')" ,
                 submenu:
                 [
-                    {   caption: "フィルタ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"    },
-                    {   caption: "フィルタを追加する", iconClass: "menuBarIconAdd" , url: },
-                    {   caption: "フィルタの順番を変更する", iconClass: "menuBarIconAccountChangeTurn" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterOrderFormScreen")');"}
+                    {   caption: $l10n.WEBMAIL_WATCH_FILTERLIST, iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"    },
+                    {   caption: $l10n.WEBMAIL_DO_ADD_FILTER, iconClass: "menuBarIconAdd" , url: },
+                    {   caption: $l10n.WEBMAIL_DO_SORT_FILTER, iconClass: "menuBarIconAccountChangeTurn" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterOrderFormScreen")');"}
                 ]
             },
             {
-                caption: "アカウント設定",
+                caption: $l10n.WEBMAIL_SETTING_ACCOUNT,
                 iconClass: "menuBarIconList",
                 url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')" ,
                 submenu:
                 [
-                    {   caption: "アカウント一覧を見る", iconClass: "menuBarIconList", url:     },
-                    {   caption: "アカウントを追加する", iconClass: "menuBarIconAdd" , url: "},
+                    {   caption: $l10n.WEBMAIL_DO_WATCH_ACCOUNTLIST, iconClass: "menuBarIconList", url:     },
+                    {   caption: $l10n.WEBMAIL_DO_ADD_ACCOUNT, iconClass: "menuBarIconAdd" , url: "},
                 ]
             }
         ];

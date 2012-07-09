@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["メールアカウント一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list_max','1')"]])
+#set ($navilist = [[$l10n.WEBMAIL_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WEBMAIL_MAILACCOUNTLIST, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list_max','1')"]])
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/webmail/form.js")

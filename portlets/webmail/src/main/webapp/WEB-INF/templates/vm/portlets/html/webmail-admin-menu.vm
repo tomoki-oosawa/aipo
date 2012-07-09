@@ -27,7 +27,7 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-			{   caption: "メールアカウント管理", iconClass: "menuBarIconWebmailAccountConfig", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail','1')"    }
+			{   caption: $l10n.WEBMAIL_MANAGEMENT_MAILACCOUNT, iconClass: "menuBarIconWebmailAccountConfig", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail','1')"    }
 		];
 	
     var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");

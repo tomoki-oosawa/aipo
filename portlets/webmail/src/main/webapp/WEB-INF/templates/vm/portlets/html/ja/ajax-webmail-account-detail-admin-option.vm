@@ -18,55 +18,55 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["接続設定","connect","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail','1').addQueryData('Template','WebMailAdminDetailScreen')"],["メール通知設定","mailarrert","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail_option','1').addQueryData('Template','WebMailAdminSettingsScreen')"]])
+#set($tabs = [[$l10n.WEBMAIL_CONNECT_SETTING,"connect","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail','1').addQueryData('Template','WebMailAdminDetailScreen')"],["メール通知設定","mailarrert","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_detail_option','1').addQueryData('Template','WebMailAdminSettingsScreen')"]])
 ## ---------------------------------------------------------------------------
 #ALajaxtabheader($tabs "mailarrert")
 #ALspacebothheader()
 <div style="padding:0px 0px 5px 0px">
-メール通知の可否を設定します。
+$l10n.WEBMAIL_MAILINFORM_MSG
 </div>
-#ALformheader('メールアカウント' $jslink $portlet)
+#ALformheader($l10n.WEBMAIL_MAILACCOUNT $jslink $portlet)
 #ALtableheaderWide()
-#ALtdcaption("他人からのブログコメント")
-#set($cel = "通知しない")
-#set($pc = "通知しない")
-#if($result.Detail.MsgTypeBlog.toString() == "3") #set($pc = "通知する") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeBlog.toString() == "2") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeBlog.toString() == "1") #set($pc = "通知する")#end
+#ALtdcaption($l10n.WEBMAIL_COMMENT_OTHERS)
+#set($cel = $l10n.WEBMAIL_DONT_INFORM)
+#set($pc = $l10n.WEBMAIL_DONT_INFORM)
+#if($result.Detail.MsgTypeBlog.toString() == "3") #set($pc = $l10n.DO_INFORM) #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeBlog.toString() == "2") #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeBlog.toString() == "1") #set($pc = $l10n.DO_INFORM)#end
 <td class="item">
-パソコン:$pc
+$l10n.WEBMAIL_PC2$pc
 </td>
 <td class="item">
-携帯電話:$cel
+$l10n.WEBMAIL_CELLPHONE2$cel
 </td>
-#ALtdcaption("他人からのスケジュール追加")
-#set($cel = "通知しない")
-#set($pc = "通知しない")
-#if($result.Detail.MsgTypeSchedule.toString() == "3") #set($pc = "通知する") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeSchedule.toString() == "2") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeSchedule.toString() == "1") #set($pc = "通知する")#end
+#ALtdcaption($l10n.WEBMAIL_ADD_SCHEDULE_OTHERS)
+#set($cel = $l10n.WEBMAIL_DONT_INFORM)
+#set($pc = $l10n.WEBMAIL_DONT_INFORM)
+#if($result.Detail.MsgTypeSchedule.toString() == "3") #set($pc = $l10n.DO_INFORM) #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeSchedule.toString() == "2") #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeSchedule.toString() == "1") #set($pc = $l10n.DO_INFORM)#end
 <td class="item">
-パソコン:$pc
-</td>
-<td class="item">
-携帯電話:$cel
-</td>
-#ALtdcaption("ワークフロー申請")
-#set($cel = "通知しない")
-#set($pc = "通知しない")
-#if($result.Detail.MsgTypeWorkflow.toString() == "3") #set($pc = "通知する") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeWorkflow.toString() == "2") #set($cel = "通知する")
-#elseif($result.Detail.MsgTypeWorkflow.toString() == "1") #set($pc = "通知する")#end
-<td class="item">
-パソコン:$pc
+$l10n.WEBMAIL_PC2$pc
 </td>
 <td class="item">
-携帯電話:$cel
+$l10n.WEBMAIL_CELLPHONE2$cel
+</td>
+#ALtdcaption($l10n.WEBMAIL_REQUEST_WORKFLOW)
+#set($cel = $l10n.WEBMAIL_DONT_INFORM)
+#set($pc = $l10n.WEBMAIL_DONT_INFORM)
+#if($result.Detail.MsgTypeWorkflow.toString() == "3") #set($pc = $l10n.DO_INFORM) #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeWorkflow.toString() == "2") #set($cel = $l10n.DO_INFORM)
+#elseif($result.Detail.MsgTypeWorkflow.toString() == "1") #set($pc = $l10n.DO_INFORM)#end
+<td class="item">
+$l10n.WEBMAIL_PC2$pc
+</td>
+<td class="item">
+$l10n.WEBMAIL_CELLPHONE2$cel
 </td>
  #*
-#ALtdcaption("通知時刻")
+#ALtdcaption($l10n.WEBMAIL_INFORMTIME)
 <td class="item" colspan="2">
-当日 $!result.Detail.MsgNotifyTimeHour.toString() 時 $!result.Detail.MsgNotifyTimeMinute.toString() 分
+$l10n.WEBMAIL_THEDAY $!result.Detail.MsgNotifyTimeHour.toString() $l10n.WEBMAIL_HOUR $!result.Detail.MsgNotifyTimeMinute.toString() $l10n.WEBMAIL_MINUTE
 </td>
  *#
 

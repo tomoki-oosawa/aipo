@@ -21,16 +21,16 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(WebmailajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value="削除する" onclick="aipo.webmail.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value=$l10n.WEBMAIL_DELETE onclick="aipo.webmail.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
-#ALdialogheader("フォルダ")
+#ALdialogheader($l10n.WEBMAIL_FOLDER)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
-#ALajaxdetailformheader("フォルダ")
+#ALajaxdetailformheader($l10n.WEBMAIL_FOLDER)
 #if($result.CurrentPage)<input type="hidden" name="start" VALUE="$result.CurrentPage">#end
 #ALtableheaderWide()
-#ALtdcaption('フォルダ名')
+#ALtdcaption($l10n.WEBMAIL_FOLDER_NAME)
 #ALtditem($!result.Detail.FolderName)
 #ALtablefooter()
 #ALbuttonheader()

@@ -19,38 +19,38 @@
 
 ##-------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["メールアカウントを追加する","javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
-#set($tabs = [["メールアカウント一覧", "",""]])
+#set ($submenulist = [[$l10n.WEBMAIL_DO_ADD_MAILACCOUNT,"javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
+#set($tabs = [[$l10n.WEBMAIL_MAILACCOUNTLIST, "",""]])
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>アカウントの管理</h2>
+<h2>$l10n.WEBMAIL_MANAGEMENT_ACCOUNT</h2>
 #if($result.List.size() <= 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">アカウントを追加する</a>
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">$l10n.WEBMAIL_DO_ADD_ACCOUNT</a>
 </p>
 </td></tr>
 #AUItablefooter()
 #else
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("アカウントを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
 </p></div>
 #AUISummaryDiv()
 #AUIajaxpageview('WebMailAccountListScreen' $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('account_name' 'アカウント名' $result 'WebMailAccountListScreen')")
-#ALtdheadAtt('メールアドレス' 'width="10%"')
-#ALtdheadAtt('未読数' 'width="1%"')
-#ALtdheadAtt('最終受信日' 'width="1%"class="center"')
+#ALtdhead("#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')")
+#ALtdheadAtt($l10n.WEBMAIL_MAILADDRESS 'width="10%"')
+#ALtdheadAtt($l10n.WEBMAIL_UNREAD_COUNT 'width="1%"')
+#ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center"')
 </tr>
 #foreach ($record in $result.List)
 #if($!record.countUnRead>= 0)
 #set($countUnRead = $!record.countUnRead)
 #else
-#set($countUnRead = "確認失敗")
+#set($countUnRead = $l10n.WEBMAIL_CHECK_FAILED)
 #end
 <tr>
 #ALtdcellheader()
@@ -59,9 +59,9 @@
 #ALtdcellAtt("$!record.MailAddress" ' nowrap')
 #ALtdcellAtt("$countUnRead" 'align="right" nowrap')
 #if($!record.FinalAccessDate.toString() != "")
-#ALtdcellAtt("$!{record.FinalAccessDate.Month}月$!{record.FinalAccessDate.Day}日 $!{record.FinalAccessDate.Hour}時$!{record.FinalAccessDate.Minute}分" 'align="left" valign="center" nowrap')
+#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY $!{record.FinalAccessDate.Hour}$l10n.WEBMAIL_HOUR$!{record.FinalAccessDate.Minute}$l10n.WEBMAIL_MINUTE" 'align="left" valign="center" nowrap')
 #else
-#ALtdcellAtt("なし" 'align="center"')
+#ALtdcellAtt($l10n.WEBMAIL_NOTHING 'align="center"')
 #end
 </tr>
 #end

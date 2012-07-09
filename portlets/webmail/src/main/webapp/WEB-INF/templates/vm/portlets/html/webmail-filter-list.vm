@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["フィルタ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"]])
+#set ($navilist = [[$l10n.WEBMAIL_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WEBMAIL_FILTERLIST, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"]])
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/webmail/form.js")
 <script language="JavaScript" type="text/javascript">

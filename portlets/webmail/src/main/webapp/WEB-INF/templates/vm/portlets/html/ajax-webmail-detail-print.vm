@@ -67,34 +67,34 @@ line-height:140%;
 <body>
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.WEBMAIL_CLOSE1" width="19" height="20" border="0" align="top" title="$l10n.WEBMAIL_CLOSE1" /></a>
 </div>
-※この枠の範囲の設定項目は、印刷へ反映されません。
+$l10n.WEBMAIL_NOT_REFLECT_MSG
 <form>
 <table>
 <tr>
-<th>表示する幅</th>
+<th>$l10n.WEBMAIL_SHOWWIDTH</th>
 <td>
 <select id="print_width">
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
-<option selected="selected" value="600px">600ピクセル</option>
-<option value="620px">620ピクセル</option>
-<option value="640px">640ピクセル</option>
-<option value="660px">660ピクセル</option>
-<option value="680px">680ピクセル</option>
-<option value="700px">700ピクセル</option>
-<option value="720px">720ピクセル</option>
-<option value="740px">740ピクセル</option>
-<option value="760px">760ピクセル</option>
-<option value="780px">780ピクセル</option>
-<option value="800px">800ピクセル</option>
+<option selected="selected" value="600px">600$l10n.WEBMAIL_PIXEL</option>
+<option value="620px">620$l10n.WEBMAIL_PIXEL</option>
+<option value="640px">640$l10n.WEBMAIL_PIXEL</option>
+<option value="660px">660$l10n.WEBMAIL_PIXEL</option>
+<option value="680px">680$l10n.WEBMAIL_PIXEL</option>
+<option value="700px">700$l10n.WEBMAIL_PIXEL</option>
+<option value="720px">720$l10n.WEBMAIL_PIXEL</option>
+<option value="740px">740$l10n.WEBMAIL_PIXEL</option>
+<option value="760px">760$l10n.WEBMAIL_PIXEL</option>
+<option value="780px">780$l10n.WEBMAIL_PIXEL</option>
+<option value="800px">800$l10n.WEBMAIL_PIXEL</option>
 </select>
 </td>
 </tr>
 <tr>
-<th>文字サイズ</th>
+<th>$l10n.WEBMAIL_CHARSIZE</th>
 <td><select id="print_word_size">
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
@@ -110,8 +110,8 @@ line-height:140%;
 </td>
 </tr>
 </table>
-<input type="button" value="変更する" onclick="change_print_form()"/>
-<input type="button" value="印刷する" onclick="javascript:print();"/>
+<input type="button" value=$l10n.WEBMAIL_DO_CHANGE onclick="change_print_form()"/>
+<input type="button" value=$l10n.WEBMAIL_DO_PRINT onclick="javascript:print();"/>
 </form>
 </div>
 <script type="text/javascript" language="JavaScript">
@@ -130,9 +130,9 @@ line-height:140%;
 <tbody>
 <tr>
 <td colspan="2">
-日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br>
-宛先：$!result.Detail.To<br>
-差出人：$!result.Detail.From<br>
+$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY $!{result.Detail.Date.Hour}$l10n.WEBMAIL_HOUR$!{result.Detail.Date.Minute}$l10n.WEBMAIL_MINUTE<br>
+$l10n.WEBMAIL_TO$l10n.WEBMAIL_COLON$!result.Detail.To<br>
+$l10n.WEBMAIL_SENDER$l10n.WEBMAIL_COLON$!result.Detail.From<br>
 </td>
 </tr>
 <tr>
@@ -141,7 +141,7 @@ $!result.Detail.Body
 </td>
 </tr>
 <tr>
-	<th class="left">添付ファイル</th>
+	<th class="left">$l10n.WEBMAIL_ATTACHMENT</th>
 	<td>
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
 	$result.getStringCR($attachmentFileName)<br>

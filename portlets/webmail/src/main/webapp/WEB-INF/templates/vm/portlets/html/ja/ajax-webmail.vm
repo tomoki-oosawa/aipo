@@ -45,7 +45,7 @@
 <div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
 #end
 #if($!result.List && $!result.List.size() <= 0)
-<div class="message">受信メールはありません。</div>
+<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
 #else
 #ALformheader('WebMail' $jslink $portlet)
 <table class="auiRowTable wide">
@@ -58,7 +58,7 @@
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
 #set($MailSubject = $!record.Subject)
 #elseif($!record.Subject)
-#set($MailSubject = "無題")
+#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 <tr>
 #if($!record.Read)
@@ -91,7 +91,7 @@
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("アカウントを追加する" "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
+#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
 </p>
 </td></tr>
 #AUItablefooter()

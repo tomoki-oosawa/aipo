@@ -26,23 +26,23 @@
 #end
 ## ---------------------------------------------------------------------------
 <div class="auiPopup clearfix">
-  <table class="roundBlockWrapperTop">
-    <tbody>
-      <tr>
-        <td class="roundBlockTitle" style="width:89%">メール詳細</td>
-        <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="roundBlockContent">
+    <table class="roundBlockWrapperTop">
+              <tbody>
+                <tr>
+                  <td class="roundBlockTitle" style="width:89%">$l10n.WEBMAIL_MAIL_DETAIL</td>
+                  <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt=$l10n.WEBMAIL_OPEN_PRINTVIEW title=$l10n.WEBMAIL_OPEN_PRINTVIEW /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.WEBMAIL_CLOSE1" width="19" height="20" border="0" align="top" title="$l10n.WEBMAIL_CLOSE1"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+    <div class="roundBlockContent">
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("メール")
+#ALajaxdetailformheader($l10n.WEBMAIL_MAIL)
 
 #if(($!result.Detail.Subject) && ($!result.Detail.getSubject().toString() != ""))
 #set($MailSubject = $!result.Detail.Subject)
 #elseif($!result.Detail.Subject)
-#set($MailSubject = "無題")
+#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 
 #ALtableheaderWide()
@@ -59,20 +59,20 @@ $!MailSubject
   #end
 </div>
 <div id="WebMailHeaderFieldTiny">
-  #if($!{result.Detail.Date.toString()} != "")
-  日付：$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分<br />
-  #end
-  宛先：$!result.Detail.To<br />
-  #if($!{result.Detail.From.toString()} != "")
-  差出人：$!result.Detail.From
-  #end
+#if($!{result.Detail.Date.toString()} != "")
+$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY $!{result.Detail.Date.Hour}$l10n.WEBMAIL_HOUR$!{result.Detail.Date.Minute}$l10n.WEBMAIL_MINUTE<br />
+#end
+$l10n.WEBMAIL_TO$l10n.WEBMAIL_COLON$!result.Detail.To<br />
+#if($!{result.Detail.From.toString()} != "")
+$l10n.WEBMAIL_SENDER$l10n.WEBMAIL_COLON$!result.Detail.From
+#end
 </div>
-<div class="mt5" style="cursor: pointer;"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">詳細を開く</a></div>
+<div class="mt5" style="cursor: pointer;"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">$l10n.WEBMAIL_OPEN_DETAIL</a></div>
 #ALtditemfooter()
 #ALtditemheaderAtt("colspan='2'")
 $!result.Detail.Body
 #ALtditemfooter()
-#ALtdcaption('添付ファイル')
+#ALtdcaption($l10n.WEBMAIL_ATTACHMENT)
 #ALtditemheader()
 #set($count = 0)
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
@@ -82,11 +82,11 @@ $!result.Detail.Body
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input name="ajaxbuttonReply" class="button" type="button" value="返信する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
-<input name="ajaxbuttonReplyAll" class="button" type="button" value="全員に返信する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
-<input name="ajaxbuttonTransport" class="button" type="button" value="転送する" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+<input name="ajaxbuttonReply" class="button" type="button" value=$l10n.WEBMAIL_REPLY onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+<input name="ajaxbuttonReplyAll" class="button" type="button" value=$l10n.WEBMAIL_REPLY_ALL onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
+<input name="ajaxbuttonTransport" class="button" type="button" value=$l10n.WEBMAIL_FORWARD onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')" "indicator-dlg-" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
-<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.webmail.hideDialog();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
   </div>

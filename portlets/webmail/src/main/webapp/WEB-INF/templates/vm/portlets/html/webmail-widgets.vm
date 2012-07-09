@@ -29,7 +29,7 @@
 
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction("メールを作成する" "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
+#AUIbuttonAction($l10n.WEBMAIL_DO_CREATE_EMAIL "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
 </div>
 
 #if($result.MailAccountList.size() != 0)
@@ -40,7 +40,7 @@
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
 #if($i == 1)
 <li#if($result.currentTab == "sent") class="active"#end>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >$l10n.WEBMAIL_OUTBOX</a>
 </li>
 #end
 <li#if($result.currentTab == "receive" && $result.FolderId == $record.FolderId) class="active"#end>
@@ -50,12 +50,12 @@
 #end
 #if($!result.FolderList.size() < 2)
 <li#if($result.currentTab == "sent") class="active"#end>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >送信トレイ</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >$l10n.WEBMAIL_OUTBOX</a>
 </li>
 #end
 </ul>
 <div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">フォルダの管理</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">$l10n.WEBMAIL_MANAGEMENT_FOLDER</a>
 </div>
 </div>
 #end
@@ -70,14 +70,14 @@
 #end
 </ul>
 <div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">アカウントの管理</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">$l10n.WEBMAIL_MANAGEMENT_ACCOUNT</a>
 </div>
 </div>
 
 #if($result.MailAccountList.size() != 0)
 <div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')">フィルタの管理</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')">$l10n.WEBMAIL_MANAGEMENT_FILTER</a>
 </div>
 </div>
 #end

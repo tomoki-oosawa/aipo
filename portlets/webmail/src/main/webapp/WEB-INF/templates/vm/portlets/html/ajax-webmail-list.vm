@@ -19,16 +19,16 @@
 
 ## ---------------------------------------------------------------------------
 #if($!result.currentTab == "receive")
-#set($person = "差出人")
+#set($person = $l10n.WEBMAIL_SENDER)
 #else
-#set($person = "受取人")
+#set($person = $l10n.WEBMAIL_RECEIVER)
 #end
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData('entityid',$result.AccountId)))
 #set ($newUrl3 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen").addQueryData("mode","recieve")))
 #set ($newUrl4 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["メールを作成する","","themes/$!theme/images/icon/icon_add.gif"], ["アカウントを編集する","javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID', aipo.webmail.onLoadMailAccountDialog);","images/icon/icon_edit.gif"], ["メールを受信する","javascript:aipo.viewPage('$newUrl3','$!portlet.ID');aipo.webmail.onProcessingTimer();","themes/$!theme/images/icon/webmail_receive_mail.gif"], ["フォルダを作成する","javascript:aipo.common.showDialog('$newUrl4','$!portlet.ID');aipo.webmail.onProcessingTimer();","images/webmail/webmail_folder_add.gif"]])
-#set ($tabs = [["受信トレイ", "receive","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('tab','receive')"], ["送信トレイ", "sent","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent')"]])
+#set ($submenulist = [[$l10n.WEBMAIL_DO_CREATE_EMAIL,"","themes/$!theme/images/icon/icon_add.gif"], [$l10n.WEBMAIL_DO_EDIT_ACCOUNT,"javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID', aipo.webmail.onLoadMailAccountDialog);","images/icon/icon_edit.gif"], [$l10n.WEBMAIL_DO_RECEIVE_MAIL,"javascript:aipo.viewPage('$newUrl3','$!portlet.ID');aipo.webmail.onProcessingTimer();","themes/$!theme/images/icon/webmail_receive_mail.gif"], [$l10n.WEBMAIL_DO_CREATE_FOLDER,"javascript:aipo.common.showDialog('$newUrl4','$!portlet.ID');aipo.webmail.onProcessingTimer();","images/webmail/webmail_folder_add.gif"]])
+#set ($tabs = [[$l10n.WEBMAIL_INBOX, "receive","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('tab','receive')"], [$l10n.WEBMAIL_OUTBOX, "sent","$!jslink.getPortletById($!portlet.getID()).addQueryData('template','WebMailListScreen').addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('tab','sent')"]])
 #set ($indicator_id = "indicator-list-")
 #set ($StatStr = $!{result.StatStr})
 #set ($type = "mail")
@@ -41,7 +41,7 @@
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">アカウントを追加する</a>
+<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">$l10n.WEBMAIL_DO_ADD_ACCOUNT</a>
 </p>
 </td></tr>
 #AUItablefooter()
@@ -50,17 +50,17 @@
 #ALerrmsg($errmsgs)
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
-#ALajaxlistformheader('Webメール')
+#ALajaxlistformheader($l10n.WEBMAIL_WEBMAIL)
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
-#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_ALREADY_READ "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #end
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #if(($!result.FolderList.size() > 1) && ($!result.currentTab == "receive"))
 #ALselectpdheader('move_folder' '12em' "if(this.selectedIndex != 0)aimluck.io.ajaxCheckboxActionSubmit(this, '$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_move'))', '$indicator_id', '$!portlet.ID', aipo.webmail.onReceiveMessage);this.selectedIndex = 0;")
-<option value="">フォルダ移動</option>
+<option value="">$l10n.WEBMAIL_MOVE_FOLDER</option>
 #foreach($record in $!result.FolderList)
 #if($result.FolderId != $record.FolderId)
 <option value="${record.FolderId}">${record.FolderName}</option>
@@ -68,8 +68,8 @@
 #end
 #ALselectfooter()
 #end
-<a class="auiButton" title="メール受信" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
-<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
+<a class="auiButton" title=$l10n.WEBMAIL_RECEIVE_MAIL href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt=$l10n.WEBMAIL_RECEIVE_MAIL></span>
 </a>
 #if($StatStr && !($StatStr == ''))
 <span class="indicator" id="indicator-$portlet_id">$StatStr</span>
@@ -83,16 +83,16 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
-##ALtdheadThin("#ALajaxsort('read_flg' '状態' $result 'WebMailListScreen')")
+##ALtdheadThin("#ALajaxsort('read_flg' $l10n.WEBMAIL_STATE $result 'WebMailListScreen')")
 #ALtdheadAtt("#ALajaxsort('person' $person $result 'WebMailListScreen')" 'style="width:10em;"')
-#ALtdhead("#ALajaxsort('subject' '件名' $result 'WebMailListScreen')")
-#ALtdheadAtt("#ALajaxsort('date' '日付' $result 'WebMailListScreen')" 'style="width:6em" class="center"')
-##ALtdheadThin('容量')
+#ALtdhead("#ALajaxsort('subject' $l10n.WEBMAIL_TITLE $result 'WebMailListScreen')")
+#ALtdheadAtt("#ALajaxsort('date' $l10n.WEBMAIL_DATE $result 'WebMailListScreen')" 'style="width:6em" class="center"')
+##ALtdheadThin($l10n.WEBMAIL_CAPACITY)
 ##ALtdheadThin(' ')
 ##ALtdheadThin(' ')
 </tr>
 #if($!result.List && $!result.List.size() <= 0)
-<tr><td colspan="4" class="auiNoData"><p>このフォルダにはメールはありません。</p></td></tr>
+<tr><td colspan="4" class="auiNoData"><p>$l10n.WEBMAIL_NO_MAIL_THIS_FOLDER</p></td></tr>
 #else
 #foreach ($record in $result.List)
 <tr>
@@ -105,7 +105,7 @@
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
 #set($MailSubject = $!record.Subject)
 #elseif($!record.Subject)
-#set($MailSubject = "無題")
+#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 
 #ALtdcellAtt("<div>$!record.Person</div>" 'align="left"')
@@ -129,12 +129,12 @@ $MailSubject
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
-#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_ALREADY_READ "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #end
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #if(($!result.FolderList.size() > 1) && ($!result.currentTab == "receive"))
 #ALselectpdheader('move_folder' '12em' "if(this.selectedIndex != 0)aimluck.io.ajaxCheckboxActionSubmit(this, '$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_move'))', '$indicator_id', '$!portlet.ID', aipo.webmail.onReceiveMessage);this.selectedIndex = 0;")
-<option value="">フォルダ移動</option>
+<option value="">$l10n.WEBMAIL_MOVE_FOLDER</option>
 #foreach($record in $!result.FolderList)
 #if($result.FolderId != $record.FolderId)
 <option value="${record.FolderId}">${record.FolderName}</option>
@@ -142,8 +142,8 @@ $MailSubject
 #end
 #ALselectfooter()
 #end
-<a class="auiButton" title="メール受信" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
-<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt='メール受信'></span>
+<a class="auiButton" title=$l10n.WEBMAIL_RECEIVE_MAIL href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');">
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt=$l10n.WEBMAIL_RECEIVE_MAIL></span>
 </a>
 </div>
 #if($result.List.size() != 0)

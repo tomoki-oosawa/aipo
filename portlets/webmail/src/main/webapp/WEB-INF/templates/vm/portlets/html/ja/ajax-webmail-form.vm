@@ -18,7 +18,7 @@
  *#
 
 ##-------------------------------------------------------------
-#set ($action_str = "送信する")
+#set ($action_str = $l10n.WEBMAIL_DO_SEND)
 #set ($event_submit = "eventSubmit_doWebmail_send_mail")
 #set ($accountname = $!result.AccountName)
 #set($to = $!result.To)
@@ -28,18 +28,18 @@
 #set($body = $!result.Body)
 #set ($indicator_id = "indicator-dlg-")
 ##-------------------------------------------------------------
-#ALdialogheader("メール作成")
+#ALdialogheader($l10n.WEBMAIL_CREATE_EMAIL)
 #if($!result.AccountId == 0)
 #ALbuttonheader()
-<div class="message">メールアカウントを選択してください。</div>
+<div class="message">$l10n.WEBMAIL_SELECT_MAILACCOUNT_MSG</div>
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-<div class="message"><span>送信できるメールの大きさは、本文と添付ファイルをあわせて $!{result.MaxFileSize} MB までです。</span><br />
-<span>機種依存文字は、送信先で正しく表示されない可能性があります。<br /><a href="javascript:aipo.webmail.open_help('${context_path}/help/unusualchar.html')">詳しくはこちらを参照ください。</a></span></div><br />
+<div class="message"><span>$l10n.WEBMAIL_CAPACITY_MSG $!{result.MaxFileSize} $l10n.WEBMAIL_MAX_MB</span><br />
+<span>$l10n.WEBMAIL_CHARACTERS_MSG<br /><a href="javascript:aipo.webmail.open_help('${context_path}/help/unusualchar.html')">$l10n.WEBMAIL_REFER_DETAIL</a></span></div><br />
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WebMailFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.webmail.onReceiveMessage)")
 <input type="hidden" name="mode" value="insert" />
 <input type="hidden" name="mailtype" value="$!result.MailType">
@@ -48,9 +48,9 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('to'))")
 #ALtditemheader()
 #ALtextfield('to' $!result.To '60%' 512 'disable')
-##ALbutton('addressbook' 'アドレス帳' 'open_addressbook()')
+##ALbutton('addressbook' $l10n.WEBMAIL_ADDRESSBOOK 'open_addressbook()')
 #if($result.hasAuthorityAddressBook())
-<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value="アドレス帳" class="button" name="open_addressbook"/>
+<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value=$l10n.WEBMAIL_ADDRESSBOOK class="button" name="open_addressbook"/>
 #end
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('cc')")
@@ -63,7 +63,7 @@
 #ALtditemheader()
 #ALtextarea('body' $!result.Body 10 40)
 #ALtditemfooter()
-#ALtdcaption("添付ファイル")
+#ALtdcaption($l10n.WEBMAIL_ATTACHMENT)
 #ALtditemheader()
 <div class="floatLeft mr10">
 <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
@@ -71,14 +71,14 @@
 <ul id="attachments_$!{portlet.ID}" class="attachments">
  #foreach($record in $!result.AttachmentFileNameList )
   <li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
- #end	
+ #end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
-<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();if(dojo.isIE==8){location.reload();}">
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.WEBMAIL_DO_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.common.hideDialog();if(dojo.isIE==8){location.reload();}">
 #ALbuttonfooter()
 #ALformfooter()
 #end

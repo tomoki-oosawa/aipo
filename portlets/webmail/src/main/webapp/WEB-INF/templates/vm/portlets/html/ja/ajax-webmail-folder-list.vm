@@ -18,24 +18,24 @@
  *#
 ##-------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new")))
-#set ($submenulist = [["メールアカウントを追加する","javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
-#set($tabs = [["メールアカウント一覧", "",""]])
+#set ($submenulist = [[$l10n.WEBMAIL_DO_ADD_MAILACCOUNT,"javascript:aipo.common.showDialog('$newUrl1');","themes/$!theme/images/icon/icon_add.gif"]])
+#set($tabs = [[$l10n.WEBMAIL_MAILACCOUNTLIST, "",""]])
 #set ($type = "folder")
 ##------------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>フォルダの管理</h2>
+<h2>$l10n.WEBMAIL_MANAGEMENT_FOLDER</h2>
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("フォルダを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen')');")
+#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_FOLDER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFolderFormScreen')');")
 </p></div>
 #if($result.List.size() <= 0)
-<div class="message">フォルダが登録されていません。</div>
+<div class="message">$l10n.WEBMAIL_FOLDER_NOT_CREATED_MSG</div>
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('WebMailFolderListScreen' $result)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('folder_name' 'フォルダ名' $result 'WebMailFolderListScreen')")
+#ALtdhead("#ALajaxsort('folder_name' $l10n.WEBMAIL_FOLDER_NAME $result 'WebMailFolderListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
