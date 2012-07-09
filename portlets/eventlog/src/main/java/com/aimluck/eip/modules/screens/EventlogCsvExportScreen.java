@@ -33,11 +33,13 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.EventlogResultData;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -97,53 +99,55 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
    */
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
+    if (ALEipUtils.isAdmin(rundata)) {
+      SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
 
-    SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
-
-    Date startDay =
-      DateFormat.getDateInstance().parse(
-        rundata.getParameters().get("start_day"));
-    Date endDay =
-      DateFormat
-        .getDateInstance()
-        .parse(rundata.getParameters().get("end_day"));
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(endDay);
-    cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
-    endDay = cal.getTime();
-    Expression exp1 =
-      ExpressionFactory.greaterOrEqualExp(
-        EipTEventlog.EVENT_DATE_PROPERTY,
-        startDay);
-    Expression exp2 =
-      ExpressionFactory.lessExp(EipTEventlog.EVENT_DATE_PROPERTY, endDay);
-    query.andQualifier(exp1.andExp(exp2));
-    ResultList<EipTEventlog> list = query.getResultList();
-    String LINE_SEPARATOR = System.getProperty("line.separator");
-    try {
-      StringBuffer sb =
-        new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\"");
-      EventlogResultData data;
-      for (ListIterator<EipTEventlog> iterator = list.listIterator(list.size()); iterator
-        .hasPrevious();) {
-        sb.append(LINE_SEPARATOR);
-        data = getResultData(iterator.previous());
-        sb.append("\"");
-        sb.append(data.getEventDate());
-        sb.append("\",\"");
-        sb.append(data.getUserFullName());
-        sb.append("\",\"");
-        sb.append(data.getPortletName());
-        sb.append("\",\"");
-        sb.append(data.getEventName());
-        sb.append("\",\"");
-        sb.append(data.getIpAddr());
-        sb.append("\"");
+      Date startDay =
+        DateFormat.getDateInstance().parse(
+          rundata.getParameters().get("start_day"));
+      Date endDay =
+        DateFormat.getDateInstance().parse(
+          rundata.getParameters().get("end_day"));
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(endDay);
+      cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+      endDay = cal.getTime();
+      Expression exp1 =
+        ExpressionFactory.greaterOrEqualExp(
+          EipTEventlog.EVENT_DATE_PROPERTY,
+          startDay);
+      Expression exp2 =
+        ExpressionFactory.lessExp(EipTEventlog.EVENT_DATE_PROPERTY, endDay);
+      query.andQualifier(exp1.andExp(exp2));
+      ResultList<EipTEventlog> list = query.getResultList();
+      String LINE_SEPARATOR = System.getProperty("line.separator");
+      try {
+        StringBuffer sb =
+          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\"");
+        EventlogResultData data;
+        for (ListIterator<EipTEventlog> iterator =
+          list.listIterator(list.size()); iterator.hasPrevious();) {
+          sb.append(LINE_SEPARATOR);
+          data = getResultData(iterator.previous());
+          sb.append("\"");
+          sb.append(data.getEventDate());
+          sb.append("\",\"");
+          sb.append(data.getUserFullName());
+          sb.append("\",\"");
+          sb.append(data.getPortletName());
+          sb.append("\",\"");
+          sb.append(data.getEventName());
+          sb.append("\",\"");
+          sb.append(data.getIpAddr());
+          sb.append("\"");
+        }
+        return sb.toString();
+      } catch (Exception e) {
+        logger.error("[ERROR]" + e);
+        return null;
       }
-      return sb.toString();
-    } catch (Exception e) {
-      logger.error("[ERROR]" + e);
-      return null;
+    } else {
+      throw new ALPermissionException();
     }
   }
 
