@@ -19,35 +19,35 @@
 
 ## ---------------------------------------------------------------------------
 #if($!result.currentTab == "received_mailbox")
-#set($pagetitle = "受信トレイ")
-#set($person = "差出人")
+#set($pagetitle = "$l10n.WEBMAIL_INBOX")
+#set($person = "$l10n.WEBMAIL_SENDER")
 #set($person_value = "$!{result.Detail.From}")
 #else
-#set($pagetitle = "送信トレイ")
-#set($person = "宛先")
+#set($pagetitle = "$l10n.WEBMAIL_OUTBOX")
+#set($person = "$l10n.WEBMAIL_TO")
 #set($person_value = "$!{result.Detail.To}")
 #end
-#set($methodlist = [["メール返信", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["メール転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
-#set($linklist = [["アカウント一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["送信トレイへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"],["メール作成", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
+#set($methodlist = [["$l10n.WEBMAIL_REPLY_MAIL", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["$l10n.WEBMAIL_FORWARD_MAIL", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
+#set($linklist = [["$l10n.WEBMAIL_LINK_ACCOUNTLIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["$l10n.WEBMAIL_LINK_OUTBOX", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"],["$l10n.WEBMAIL_CREATE_EMAIL", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
 
-#ALcell_pagetitle_iphone($career "メール詳細")
+#ALcell_pagetitle_iphone($career "$l10n.WEBMAIL_MAIL_DETAIL")
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
 
 <table border="1">
 <tr>
-#ALtdhead('件名')
+#ALtdhead('$l10n.WEBMAIL_TITLE')
 #ALtdcell("$!{result.Detail.Subject}")
 </tr>
 <tr>
-#ALtdhead('受信日')
-#ALtdcell("$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分")
+#ALtdhead('$l10n.WEBMAIL_RECEIVE_DATA')
+#ALtdcell("$!{result.Detail.Date.Year}${l10n.WEBMAIL_YEAR}$!{result.Detail.Date.Month}${l10n.WEBMAIL_MONTH}$!{result.Detail.Date.Day}${l10n.WEBMAIL_DAY} $!{result.Detail.Date.Hour}${l10n.WEBMAIL_HOUR}$!{result.Detail.Date.Minute}${l10n.WEBMAIL_MINUTE}")
 </tr>
 <tr>
 #ALtdhead($person)
 #ALtdcell("$person_value")
 </tr>
-<tr><th>添付ファイル</th>
+<tr><th>$l10n.WEBMAIL_ATTACHMENT</th>
 <td>
 #set($count = 0)
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )

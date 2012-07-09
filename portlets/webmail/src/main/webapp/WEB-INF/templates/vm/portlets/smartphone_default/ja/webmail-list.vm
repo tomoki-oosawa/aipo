@@ -20,18 +20,18 @@
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_pageview','1')")
 #if($!result.currentTab == "receive")
-#set($tabname = "受信")
+#set($tabname = "$l10n.WEBMAIL_RECEIVE")
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($result.FolderId))
 #if ($unreadNum > 0)
-#set($pagetitle = "${tabname}トレイ - ${result.SelectedFolder.FolderName}(${unreadNum})")
+#set($pagetitle = "${tabname}${l10n.WEBMAIL_TRAY} - ${result.SelectedFolder.FolderName}(${unreadNum})")
 #else
-#set($pagetitle = "${tabname}トレイ - ${result.SelectedFolder.FolderName}")
+#set($pagetitle = "${tabname}${l10n.WEBMAIL_TRAY} - ${result.SelectedFolder.FolderName}")
 #end
-#set($linklist = [["アカウント一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["送信トレイへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"],["メール作成", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
+#set($linklist = [["$l10n.WEBMAIL_LINK_ACCOUNTLIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["$l10n.WEBMAIL_LINK_OUTBOX", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1')"],["$l10n.WEBMAIL_CREATE_EMAIL", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
 #else
-#set($tabname = "送信")
-#set($pagetitle = "${tabname}トレイ")
-#set($linklist = [["アカウント一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["受信トレイへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1')"],["メール作成", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
+#set($tabname = "$l10n.WEBMAIL_SEND")
+#set($pagetitle = "${tabname}${l10n.WEBMAIL_TRAY}")
+#set($linklist = [["$l10n.WEBMAIL_LINK_ACCOUNTLIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_accountlist-max','1')"],["$l10n.WEBMAIL_LINK_INBOX", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1')"],["$l10n.WEBMAIL_CREATE_EMAIL", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1')"]])
 #end
 #set ($StatStr = $!{result.StatStr})
 ## ---------------------------------------------------------------------------
@@ -40,7 +40,7 @@
 #ALcell_contents_header($career)
 <p class="center">$!{result.Error}</p>
 #if ($result.List.size() == 0)
-<p class="center">${tabname}メールはありません。</p>
+<p class="center">${tabname}$l10n.WEBMAIL_NO_MAIL</p>
 #else
 
 #if($StatStr && !($StatStr == ''))
@@ -54,11 +54,11 @@ ${StatStr}
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
 #set($MailSubject = $!record.Subject)
 #elseif($!record.Subject)
-#set($MailSubject = "無題")
+#set($MailSubject = "$l10n.WEBMAIL_NOTITLE")
 #end
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab)">$MailSubject<br /><small>
-$!record.Person&nbsp;$!{record.Date.Year}年$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}:$!{record.Date.Minute}</small></a>
+$!record.Person&nbsp;$!{record.Date.Year}${l10n.WEBMAIL_YEAR}$!{record.Date.Month}${l10n.WEBMAIL_MONTH}$!{record.Date.Day}${l10n.WEBMAIL_DAY} $!{record.Date.Hour}:$!{record.Date.Minute}</small></a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)
@@ -69,7 +69,7 @@ $!record.Person&nbsp;$!{record.Date.Year}年$!{record.Date.Month}月$!{record.Da
 #ALcell_contents_footer($career)
 #if($!result.currentTab == "receive")
 <ul class="submenu">
-<li>フォルダ移動:</li>
+<li>${l10n.WEBMAIL_MOVE_FOLDER}:</li>
 #foreach($record in $!result.FolderList)
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
 #if($result.FolderId != $record.FolderId)

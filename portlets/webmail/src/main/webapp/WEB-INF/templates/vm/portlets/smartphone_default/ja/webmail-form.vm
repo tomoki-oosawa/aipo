@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($title = 'メール作成')
-#set($linklist = [["アカウント一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
+#set($title = '$l10n.WEBMAIL_CREATE_EMAIL')
+#set($linklist = [["$l10n.WEBMAIL_LINK_ACCOUNTLIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
 
 
 #ALcell_pagetitle_iphone($career $title)
@@ -28,23 +28,23 @@
 #ALcell_errmsg($career $errmsgs)
 
 #ALcell_formheader($career $jslink $portlet)
-<h3>宛先#ALcell_must()</h3>
+<h3>$l10n.WEBMAIL_SETFIELDNAME_TO#ALcell_must()</h3>
 #ALtextfield('to' $!result.getAddrForCell($!result.To) '90%' 50 'active')
 
-<h3>CC</h3>
+<h3>$l10n.WEBMAIL_SETFIELDNAME_CC</h3>
 #ALtextfield('cc' $!result.getAddrForCell($!result.Cc) '90%' 50 'active')
 
-<h3>BCC</h3>
+<h3>$l10n.WEBMAIL_SETFIELDNAME_BCC</h3>
 #ALtextfield('bcc' $!result.getAddrForCell($!result.Bcc) '90%' 50 'active')
 
-<h3>件名</h3>
+<h3>$l10n.WEBMAIL_SETFIELDNAME_TO</h3>
 #ALtextfield('subject' $!result.Subject '90%' 50 'active')
 
-<h3>本文</h3>
+<h3>$l10n.WEBMAIL_SETFIELDNAME_BODY</h3>
 #ALtextarea('body' $!result.Body 6 '')
 
 <p class="center">
-#ALcell_submit($career "eventSubmit_doWebmail_send_mail" "送信する")
+#ALcell_submit($career "eventSubmit_doWebmail_send_mail" "$l10n.WEBMAIL_DO_SEND")
 </p>
 #ALcell_formfooter()
 

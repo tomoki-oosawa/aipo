@@ -18,33 +18,33 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($title = 'メールアカウント')
+#set($title = '$l10n.WEBMAIL_MAILACCOUNT')
 #set ($list = $result.List)
 #ALcell_pagetitle_iphone($career $title)
 #ALcell_contents_header($career)
 #if ($list.size() == 0)
-<p class="center">メールアカウントが未登録です。</p>
+<p class="center">$l10n.WEBMAIL_NO_REGISTERED_ACCOUNT</p>
 #else
 <ul class="multi_list">
 #foreach($menulist in $list)
 #ALcell_li_header($career)
 <span>${menulist.AccountName}
 #if(${menulist.AccountType.Value} == "1")
-(既定)
+$l10n.WEBMAIL_DEFAULT
 #end
 </span>
 <ul>
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email-send.gif" width="32" height="32" align="absmiddle" />　メール受信</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email-send.gif" width="32" height="32" align="absmiddle" />　$l10n.WEBMAIL_RECEIVE_MAIL</a>
 #ALcell_li_footer($career)
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email.gif" width="32" height="32" align="absmiddle" />　受信トレイ</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email.gif" width="32" height="32" align="absmiddle" />　$l10n.WEBMAIL_INBOX</a>
 #ALcell_li_footer($career)
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId}).addQueryData('tab', 'sent')"><img src="themes/iphone/img/icon/32/email-send.gif" width="32" height="32" align="absmiddle" />　送信トレイ</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId}).addQueryData('tab', 'sent')"><img src="themes/iphone/img/icon/32/email-send.gif" width="32" height="32" align="absmiddle" />　$l10n.WEBMAIL_OUTBOX</a>
 #ALcell_li_footer($career)
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email-write.gif" width="32" height="32" align="absmiddle" />　メール作成</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})"><img src="themes/iphone/img/icon/32/email-write.gif" width="32" height="32" align="absmiddle" />　$l10n.WEBMAIL_CREATE_EMAIL</a>
 #ALcell_li_footer($career)
 </ul>
 #ALcell_li_footer($career)
