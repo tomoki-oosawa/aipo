@@ -67,7 +67,7 @@ aipo.note.changeGroup = function(link, group, sel) {
 		var val2 = aimluck.io.escapeText("note_val_destuser2");
 
 
-    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">'+val1+'<\/option><option value="all">'+val2+'<\/option>');
+    aimluck.utils.form.createSelect("dest_user_id", "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=false", "userId", "aliasName", sel, '<option value="">'+val1+'<\/option><option value="all">'+val2+'<\/option>','class="w49"');
 }
 
 aipo.note.onReceiveMessage = function(msg){
