@@ -41,6 +41,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.quota.ALQuotaService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * フォームデータを管理するための抽象クラスです。 <br />
@@ -194,7 +195,8 @@ public abstract class ALAbstractFormData implements ALData {
 
       boolean res = false;
       if (isOverQuota()) {
-        msgList.add("ディスク容量を 100% 使用していますので、データ削除またはプラン変更をしてください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
       } else {
         res =
           (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
@@ -256,7 +258,8 @@ public abstract class ALAbstractFormData implements ALData {
 
       boolean res = false;
       if (isOverQuota()) {
-        msgList.add("ディスク容量を 100% 使用していますので、データ削除またはプラン変更をしてください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
       } else {
         res =
           (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(

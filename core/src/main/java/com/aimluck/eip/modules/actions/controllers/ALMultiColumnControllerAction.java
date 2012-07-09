@@ -60,6 +60,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * This action builds a context suitable for controllers handling grid
@@ -372,7 +373,8 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
         // Let's make sure their is a title
         // description.put(identityElement.getId(),
         // Localization.getString(rundata, "CUSTOMIZER_NOTITLESET"));
-        descriptions.put(identityElement.getId(), "説明なし");
+        descriptions.put(identityElement.getId(), ALLocalizationUtils
+          .getl10n("COMMON_NO_EXPLAINATION"));
       }
     }
 

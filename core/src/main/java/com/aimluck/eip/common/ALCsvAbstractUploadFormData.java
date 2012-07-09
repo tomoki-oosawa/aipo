@@ -31,6 +31,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSVデータを管理するための抽象クラスです。 <br />
@@ -92,11 +93,11 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
         attachmentName.setValue(attachmentItem.getName());
         return true;
       } else {
-        msgList.add("サイズが 0KB のファイルを追加することはできません。");
+        msgList.add(ALLocalizationUtils.getl10n("COMMON_NOT_ADD_FILE_ZERO_KB"));
         return false;
       }
     } else {
-      msgList.add("ファイルが見つかりません。");
+      msgList.add(ALLocalizationUtils.getl10n("COMMON_NO_FILE"));
       return false;
     }
 
@@ -228,7 +229,8 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     attachmentName = new ALStringField();
-    attachmentName.setFieldName("CSVファイル名");
+    attachmentName.setFieldName(ALLocalizationUtils
+      .getl10n("COMMON_CSV_FILE_NAME"));
     attachmentName.setTrim(true);
   }
 

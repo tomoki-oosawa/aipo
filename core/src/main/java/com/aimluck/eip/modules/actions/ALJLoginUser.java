@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログイン処理用のクラスです。 <br />
@@ -100,7 +101,8 @@ public class ALJLoginUser extends ActionEvent {
       if (!valid) {
         // username = "";
         data.setUser(JetspeedSecurity.getAnonymousUser());
-        data.setMessage("不正なログイン情報です。");
+        data
+          .setMessage(ALLocalizationUtils.getl10n("LOGINACTION_NO_USERID_PW"));
         // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
         data.getUser().setHasLoggedIn(Boolean.valueOf(false));
 
@@ -109,7 +111,8 @@ public class ALJLoginUser extends ActionEvent {
       // ここから
       if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
         data.setUser(JetspeedSecurity.getAnonymousUser());
-        data.setMessage("このユーザーはパソコンでのみログインできます。");
+        data.setMessage(ALLocalizationUtils
+          .getl10n("LOGINACTION_LOGIN_ONLY_PC"));
         data.getUser().setHasLoggedIn(Boolean.valueOf(false));
         return;
       }
@@ -261,7 +264,8 @@ public class ALJLoginUser extends ActionEvent {
         // ログイン無効ユーザに対してログイン画面を表示していた．
         // 対処方法：ログイン無効のユーザーを匿名ユーザーとして取り扱い処理する．
         data.setUser(JetspeedSecurity.getAnonymousUser());
-        data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
+        data.setMessage(ALLocalizationUtils
+          .getl10n("LOGINACTION_INVALIDATION_USER"));
         // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
         data.getUser().setHasLoggedIn(Boolean.valueOf(false));
         return;

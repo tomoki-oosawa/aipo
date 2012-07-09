@@ -27,6 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
@@ -350,15 +351,15 @@ public class ALBaseUser extends
     cal.setTime(super.getLastAccessDate());
     return str
       .append(cal.get(Calendar.YEAR))
-      .append("年")
+      .append(ALLocalizationUtils.getl10n("COMMON_YEAR"))
       .append((cal.get(Calendar.MONTH) + 1))
-      .append("月")
+      .append(ALLocalizationUtils.getl10n("COMMON_MONTH"))
       .append(cal.get(Calendar.DATE))
-      .append("日 ")
+      .append(ALLocalizationUtils.getl10n("COMMON_DAY"))
       .append(cal.get(Calendar.HOUR_OF_DAY))
-      .append("時")
+      .append(ALLocalizationUtils.getl10n("COMMON_HOUR"))
       .append(cal.get(Calendar.MINUTE))
-      .append("分")
+      .append(ALLocalizationUtils.getl10n("COMMON_MINUTE"))
       .toString();
   }
 

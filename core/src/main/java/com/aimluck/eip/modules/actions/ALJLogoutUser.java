@@ -37,6 +37,7 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログアウト処理用のクラスです。 <br />
@@ -137,7 +138,8 @@ public class ALJLogoutUser extends ActionEvent {
       try {
         data.getSession().invalidate();
       } catch (IllegalStateException ex) {
-        logger.debug("セッションは既に削除されています。");
+        logger.debug(ALLocalizationUtils
+          .getl10n("LOGOUTACTION_ALREADY_SESSION_DELETE"));
       }
     }
   }
