@@ -137,7 +137,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
     // テンプレート文字数制限
     ordertemplate.limitMaxLength(1000);
     // メモ文字数制限
-    note.limitMaxLength(1000);
+    note.limitMaxLength(10000);
   }
 
   /**

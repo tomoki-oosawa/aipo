@@ -172,7 +172,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
     // 申請経路文字数制限
     route.limitMaxLength(1000);
     // メモ文字数制限
-    note.limitMaxLength(1000);
+    note.limitMaxLength(10000);
   }
 
   /**

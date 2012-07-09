@@ -380,7 +380,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     price.limitMaxValue(1000000000);
     // メモの文字数制限
     note.setNotNull(true);
-    note.limitMaxLength(1000);
+    note.limitMaxLength(10000);
   }
 
   /**
