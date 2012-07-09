@@ -37,7 +37,7 @@ aipo.msgboard.toggleMenu=function (node,filters,event){
 	if (node.style.display == "none") {
         dojo.query("div.menubar").style("display", "none");
         node.style.left=rect.left+"px";
-        node.style.top=(rect.bottom+2)+"px";
+        node.style.top=(rect.bottom+window.scrollY+2)+"px";
         node.style.display="block";
     } else {
         dojo.query("div.menubar").style("display", "none");
