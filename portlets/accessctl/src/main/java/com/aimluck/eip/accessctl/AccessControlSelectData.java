@@ -44,6 +44,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -52,9 +53,8 @@ public class AccessControlSelectData extends
     ALAbstractSelectData<EipTAclRole, EipTAclRole> {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(AccessControlSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccessControlSelectData.class.getName());
 
   /** アクセスロールの総数 */
   private int aclRoleSum;
@@ -63,7 +63,7 @@ public class AccessControlSelectData extends
   private List<AccessControlFeatureBean> portletFeatureList;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -83,7 +83,7 @@ public class AccessControlSelectData extends
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -93,7 +93,7 @@ public class AccessControlSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -118,7 +118,7 @@ public class AccessControlSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -131,7 +131,7 @@ public class AccessControlSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -168,8 +168,12 @@ public class AccessControlSelectData extends
         rd.setAclExport(true);
       }
 
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(ALDateUtil.format(
+        record.getCreateDate(),
+        ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
+      rd.setUpdateDate(ALDateUtil.format(
+        record.getUpdateDate(),
+        ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -179,7 +183,7 @@ public class AccessControlSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -191,7 +195,7 @@ public class AccessControlSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */
@@ -246,8 +250,12 @@ public class AccessControlSelectData extends
         rd.addUserNameList(unamelist);
       }
 
-      rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
-      rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setCreateDate(ALDateUtil.format(
+        record.getCreateDate(),
+        ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
+      rd.setUpdateDate(ALDateUtil.format(
+        record.getUpdateDate(),
+        ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
       return rd;
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -260,25 +268,27 @@ public class AccessControlSelectData extends
   }
 
   /**
-   *
+   * 
    * @return
    */
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("acl_role_name", EipTAclRole.ROLE_NAME_PROPERTY);
-    map.putValue("feature_alias_name", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-          + "."
-          + EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
+    map.putValue(
+      "feature_alias_name",
+      EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+        + "."
+        + EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
     map.putValue("feature", EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-          + "."
-          + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
+      + "."
+      + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN);
 
     return map;
   }
 
   /**
-   *
+   * 
    * @return
    */
   public List<AccessControlFeatureBean> getPortletFeatureList() {
@@ -287,7 +297,7 @@ public class AccessControlSelectData extends
 
   /**
    * ロールの総数を返す． <BR>
-   *
+   * 
    * @return
    */
   public int getAclRoleSum() {

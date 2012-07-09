@@ -49,6 +49,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アクセスコントロールのフォームデータを管理するクラスです。 <BR>
@@ -120,19 +121,21 @@ public class AccessControlFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
     // ロール名
     acl_role_name = new ALStringField();
-    acl_role_name.setFieldName("ロール名");
+    acl_role_name.setFieldName(ALLocalizationUtils
+      .getl10n("ACCESSCTL_ROLE_NAME"));
     acl_role_name.setTrim(true);
 
     // 機能
     feature_id = new ALNumberField();
-    feature_id.setFieldName("ロール名");
+    feature_id.setFieldName(ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_NAME"));
 
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("ACCESSCTL_MEMO"));
     note.setTrim(false);
 
     acllist = new ALNumberField();
@@ -242,9 +245,9 @@ public class AccessControlFormData extends ALAbstractFormData {
         }
 
         if (query.fetchList().size() != 0) {
-          msgList.add("ロール名『 <span class='em'>"
-            + acl_role_name.toString()
-            + "</span> 』は既に登録されています。");
+          msgList.add(ALLocalizationUtils.getl10nFormat(
+            "ACCESSCTL_ALERT_ALREADY_CREATED",
+            acl_role_name.toString()));
         }
       } catch (Exception ex) {
         logger.error("Exception", ex);
@@ -271,12 +274,14 @@ public class AccessControlFormData extends ALAbstractFormData {
       && aclupdate.getValue() == 0
       && acldelete.getValue() == 0
       && aclexport.getValue() == 0) {
-      msgList.add("アクセス権限を選択してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("ACCESSCTL_ALERT_NO_FEATURE_SELECTED"));
     }
 
     // 所属メンバー
     if (memberList.size() == 0) {
-      msgList.add("所属メンバーを選択してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("ACCESSCTL_ALERT_NO_MEMBER_SELECTED"));
     }
 
     try {
@@ -312,7 +317,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       }
 
       if (rolequery.fetchList().size() != 0) {
-        msgList.add("同一機能の他のロールに所属メンバーがすでに登録されています。");
+        msgList.add(ALLocalizationUtils.getl10n("ACCESSCTL_ALERT_OTHER_ROLE"));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
