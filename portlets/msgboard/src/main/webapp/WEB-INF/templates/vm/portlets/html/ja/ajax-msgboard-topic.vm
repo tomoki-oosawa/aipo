@@ -55,7 +55,7 @@
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
 		<p class="caption">$l10n.MSGBOARD_GROUP</p>
-		<ul class="filtertype"data-type="post" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
 			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_GROUP_LIST</a></li>
 
 			#foreach($record in $result.postList)
@@ -68,7 +68,7 @@
 	</div>
 	<div>
 		<p class="caption">$l10n.MSGBOARD_PORTLET_CATEGORY</p>
-		<ul class="filtertype"data-type="category" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
 			<li #if (!$!result.issetFilter("category")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("category")) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.MSGBOARD_ALL_CATEGORY</a></li>
 			#foreach( $record in $result.CategoryList )
 			<li #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end  data-param="$!{record.CategoryId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!record.CategoryName</a></li>

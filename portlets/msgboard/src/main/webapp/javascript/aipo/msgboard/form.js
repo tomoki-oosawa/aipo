@@ -66,7 +66,7 @@ aipo.msgboard.filteredSearch=function(portlet_id){
 
 	var types=[];
 	var params=[];
-	dojo.query("ul.filtertype",dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
+	dojo.query("ul.filtertype_"+portlet_id,dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
 			//console.info(ul);
 			var type=ul.getAttribute("data-type");
 			types.push(type);
