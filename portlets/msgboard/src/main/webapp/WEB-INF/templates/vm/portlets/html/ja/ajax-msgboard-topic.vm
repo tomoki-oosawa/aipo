@@ -103,6 +103,11 @@
 #end
 </tbody>
 </table>
+<div class="auiSummaryMeta auiFilter clearfix">
+#if($result.List.size() != 0)
+#AUIajaxpageview('MsgboardTopicScreen' $result)
+#end
+</div>
 #ALformfooter()
 #else
 #ALformheader('Msgboard' $jslink $portlet)
