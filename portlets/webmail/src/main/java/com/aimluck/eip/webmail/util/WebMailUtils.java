@@ -104,6 +104,11 @@ public class WebMailUtils {
 
   public static final String UNREAD_MAIL = "unreadmailsummap";
 
+  /** スレッド生成時の排他制御用フラグ */
+  public static final int lck = 1;
+
+  public static final Integer KEY_SYNCHRONIZED_LOCK = Integer.valueOf(lck);
+
   public static final List<EipMMailAccount> getMailAccountNameList(int userId) {
     SelectQuery<EipMMailAccount> query = Database.query(EipMMailAccount.class);
 
@@ -316,7 +321,7 @@ public class WebMailUtils {
    */
   public static void receiveMailsThread(RunData rundata, Context context)
       throws Exception {
-    synchronized (ALPop3MailReceiveThread.KEY_SYNCHRONIZED_LOCK) {
+    synchronized (KEY_SYNCHRONIZED_LOCK) {
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       JetspeedUser user = (JetspeedUser) jdata.getUser();
 
