@@ -26,7 +26,7 @@ aipo.page.onLoadPageDialog = function(portlet_id){
      obj.focus();
   }
 
-}
+};
 
 aipo.page.onReceiveMessage = function(msg){
     if(!msg) {
@@ -34,13 +34,9 @@ aipo.page.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        location.reload();
+        location.href = location;
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
-}
-
-aipo.page.reloadTab = function(portletId) {
-	document.location.href = ptConfig[portletId].initUrl;
 };
