@@ -34,6 +34,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -53,6 +54,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -114,6 +117,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private int login_uid;
 
+  private String selectedUserId;
+
   private String edit_mode;
 
   private String alt_mode;
@@ -135,6 +140,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private int current_clock_out_time_minute;
 
+  /** アクセス権限の機能名 */
+  private final String aclPortletFeatureOther =
+    ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+
+  private ALAccessControlHandler aclHandler;
+
   /**
    * 
    * @param action
@@ -149,6 +160,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     login_uid = ALEipUtils.getUserId(rundata);
+    selectedUserId = rundata.getParameters().getString("userid", "");
 
     // 出勤・退勤時間
     old_clock_in_time_hour =
@@ -162,6 +174,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     timecard_system =
       ExtTimecardUtils.getEipTExtTimecardSystemCurrentUserId(rundata, context);
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    aclHandler = aclservice.getAccessControlHandler();
   }
 
   /**
@@ -367,11 +384,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             && current_clock_out_time_minute != -1
             || current_clock_out_time_hour != -1
             && current_clock_out_time_minute == -1) {
-            msgList.add(
-            ALLocalizationUtils.getl10nFormat(
+            msgList.add(ALLocalizationUtils.getl10nFormat(
               "EXTTIMECARD_ALERT_TYPE_CLOCKINTIME",
-              clock_in_time.getFieldName())
-              );
+              clock_in_time.getFieldName()));
           }
 
           /** 外出復帰時間が適切に入力されているかチェック */
@@ -382,12 +397,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             ALDateTimeField outgoing = (ALDateTimeField) field_out.get(this);
             ALDateTimeField comeback = (ALDateTimeField) field_come.get(this);
             if (!outgoing.isNotNullValue() || !comeback.isNotNullValue()) {
-              msgList.add(
-              ALLocalizationUtils.getl10nFormat(
+              msgList.add(ALLocalizationUtils.getl10nFormat(
                 "EXTTIMECARD_ALERT_TYPE_OUTGOING_COMEBACK",
                 outgoing_comeback.getFieldName(),
-                i)
-                );
+                i));
             }
           }
 
@@ -406,33 +419,24 @@ public class ExtTimecardFormData extends ALAbstractFormData {
               if (from <= to) {
                 if (clock_in_time.isNotNullValue()
                   && from < clock_in_time.getValue().getTime()) {
-                  msgList
-                    .add(
-                      ALLocalizationUtils.getl10nFormat(
-                        "EXTTIMECARD_ALERT_SELECT_OUTGOING_AFTER_PUNCH_IN",
-                        i)
-                        );
+                  msgList.add(ALLocalizationUtils.getl10nFormat(
+                    "EXTTIMECARD_ALERT_SELECT_OUTGOING_AFTER_PUNCH_IN",
+                    i));
                 }
                 if (clock_out_time.isNotNullValue()
                   && to > clock_out_time.getValue().getTime()) {
-                  msgList
-                    .add(
-                      ALLocalizationUtils.getl10nFormat(
-                        "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_PUNCH_OUT",
-                        i)
-                        );
+                  msgList.add(ALLocalizationUtils.getl10nFormat(
+                    "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_PUNCH_OUT",
+                    i));
                 }
                 HashMap<String, Long> from_to = new HashMap<String, Long>();
                 from_to.put("from", outgoing.getValue().getTime());
                 from_to.put("to", comeback.getValue().getTime());
                 list_from_to.add(from_to);
               } else {
-                msgList
-                  .add(
-                  	ALLocalizationUtils.getl10nFormat(
-                    "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_OUTGOING",
-                    i)
-                    );
+                msgList.add(ALLocalizationUtils.getl10nFormat(
+                  "EXTTIMECARD_ALERT_SELECT_COMEBACK_AFTER_OUTGOING",
+                  i));
               }
             } else if (ajustDate(outgoing, punch_date)
               && !ajustDate(comeback, punch_date)
@@ -783,12 +787,29 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
+
+    boolean hasOthersInsertAcl =
+      aclHandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeatureOther,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+
     try {
       // 新規オブジェクトモデル
       EipTExtTimecard timecard = Database.create(EipTExtTimecard.class);
 
-      // ユーザーID
-      timecard.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      if (!"".equals(selectedUserId)) {
+        // others data
+        if (hasOthersInsertAcl) {
+          timecard.setUserId(Integer.parseInt(selectedUserId));
+        } else {
+          msgList.add(ALLocalizationUtils.getl10n("COMMON_PERMISSION_DENIED"));
+          return false;
+        }
+      } else {
+        // self data
+        timecard.setUserId(Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      }
 
       Calendar cal = Calendar.getInstance();
       if (timecard_system.getChangeHour() > cal.get(Calendar.HOUR_OF_DAY)) {
@@ -900,6 +921,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
+
+    boolean hasOthersUpdateAcl =
+      aclHandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeatureOther,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
+
     try {
       if (!edit_mode.equals("")) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
@@ -908,6 +936,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       EipTExtTimecard timecard =
         ExtTimecardUtils.getEipTExtTimecard(rundata, context);
       if (timecard == null) {
+        return false;
+      }
+
+      Integer userId = timecard.getUserId();
+      if (login_uid != userId.intValue() && !hasOthersUpdateAcl) {
+        msgList.add(ALLocalizationUtils.getl10n("COMMON_PERMISSION_DENIED"));
         return false;
       }
 
@@ -1323,12 +1357,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    */
   public int getRestNum() {
     return Integer.parseInt(rest_num.getValue());
-    // if (this.rest_num == 0) {
-    // return 1;
-    // } else {
-    // return this.rest_num;
-    // }
-
   }
 
   /**
@@ -1361,6 +1389,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
+  }
+
+  public String getSelectedUserId() {
+    return selectedUserId;
   }
 
 }

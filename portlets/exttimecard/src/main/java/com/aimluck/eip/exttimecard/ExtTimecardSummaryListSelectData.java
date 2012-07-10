@@ -115,8 +115,11 @@ public class ExtTimecardSummaryListSelectData extends
   /** 閲覧権限の有無 */
   private boolean hasAclSummaryOther;
 
-  /** 他のユーザーの編集権限 */
+  /** 他のユーザーの更新権限 */
   private boolean hasAclUpdate;
+
+  /** 他のユーザーの追加権限 */
+  private boolean hasAclInsert;
 
   /** 他ユーザーのxlsエクスポート権限 */
   private boolean hasAclXlsExport;
@@ -266,12 +269,21 @@ public class ExtTimecardSummaryListSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+    // 他のユーザー更新権限
     hasAclUpdate =
       aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
 
+    // 他のユーザーの追加権限
+    hasAclInsert =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+
+    // 他のユーザーの編集権限
     hasAclXlsExport =
       aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
@@ -1278,6 +1290,10 @@ public class ExtTimecardSummaryListSelectData extends
 
   public boolean hasAclUpdate() {
     return hasAclUpdate;
+  }
+
+  public boolean hasAclInsert() {
+    return hasAclInsert;
   }
 
   public boolean hasAclXlsExport() {

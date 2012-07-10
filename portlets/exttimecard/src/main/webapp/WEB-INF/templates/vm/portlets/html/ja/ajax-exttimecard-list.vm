@@ -118,11 +118,14 @@
 #else
   #ALtdcellheaderAtt("")
 #end
-#set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
+#set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
+#set($formLink_ins = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date).addQueryData('userid', "$!result.TargetUserId"))
 #if($!result.TargetUserId == $!result.UserId)
   <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
 #elseif($!result.hasAclUpdate() && "$entityid" != "new")
   <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
+#elseif($!result.hasAclInsert() && "$entityid" == "new")
+  <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink_ins)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
 #else
   $rdlist.DateStr
 #end

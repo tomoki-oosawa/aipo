@@ -40,6 +40,7 @@
 
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
+<input type="hidden" name="userid" value="$!result.getSelectedUserId()" />
 #else
 <input type="hidden" name="mode" value="update" />
 #end
