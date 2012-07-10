@@ -165,15 +165,18 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             html += "<span class=\"dispUser color" + j +"\">" + text + "</span>";
         }
-        var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
-        if(pickedList){
-        	this.dropDown.removeMember(pickedList);
-			var p_mo = pickedList.options;
-			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
-			  opt.selected = true;
-			})(p_mo[i], i);
-			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
-        }
+        var isPicked=(dojo.byId("groupselect-"+this.tmpPortretId).value == dojo.byId("groupselect-defaulturl-"+this.tmpPortretId).value);
+        if(isPicked){
+        	var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
+            if(pickedList){
+            	this.dropDown.removeMember(pickedList);
+    			var p_mo = pickedList.options;
+    			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
+    			  opt.selected = true;
+    			})(p_mo[i], i);
+    			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
+            }	
+        }        
         input.innerHTML = html;
     },
     _openDropDown: function(){

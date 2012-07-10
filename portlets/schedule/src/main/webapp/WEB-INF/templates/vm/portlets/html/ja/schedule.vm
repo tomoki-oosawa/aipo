@@ -137,7 +137,12 @@
                         html += ' ';
                     }
                     params+="&m_id="+data[i].name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    mpicker.addOptionSync(data[i].userFacilityId,data[i].aliasName,true);
+					
+					var dataId = data[i].userFacilityId;
+					if(data[i].userFacilityType == 'F'){
+						dataId = 'f' + dataId;
+					}
+                    mpicker.addOptionSync(dataId,data[i].aliasName,true);
                 }
             },
             handle:function(){
