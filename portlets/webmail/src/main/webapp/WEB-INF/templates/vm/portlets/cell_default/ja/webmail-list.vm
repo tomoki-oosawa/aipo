@@ -19,18 +19,18 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_pageview','1')")
-#set($linklist = [["Webﾒｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
+#set($linklist = [["$l10n.WEBMAIL_WEBMAIL_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
 #if($!result.currentTab == "receive")
-#set($tabname = "受信")
+#set($tabname = "$l10n.WEBMAIL_RECEIVE")
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($result.FolderId))
 #if ($unreadNum > 0)
-#set($pagetitle = "${tabname}ﾄﾚｲ - ${result.SelectedFolder.FolderName}(${unreadNum})")
+#set($pagetitle = "${tabname}$l10n.WEBMAIL_TRAY_HALFWIDTH - ${result.SelectedFolder.FolderName}(${unreadNum})")
 #else
-#set($pagetitle = "${tabname}ﾄﾚｲ - ${result.SelectedFolder.FolderName}")
+#set($pagetitle = "${tabname}$l10n.WEBMAIL_TRAY_HALFWIDTH - ${result.SelectedFolder.FolderName}")
 #end
 #else
-#set($tabname = "送信")
-#set($pagetitle = "${tabname}ﾄﾚｲ")
+#set($tabname = "$l10n.WEBMAIL_SEND")
+#set($pagetitle = "${tabname}$l10n.WEBMAIL_TRAY_HALFWIDTH")
 #end
 #set ($StatStr = $!{result.StatStr})
 ## ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@
 
 <div class="message">$!{result.Error}</div>
 #if ($result.List.size() == 0)
-<div class="message">${tabname}ﾒｰﾙはありません。</div>
+<div class="message">${tabname}${l10n.WEBMAIL_NO_RECIEVEMAIL_HALFWIDTH}</div>
 #else
 
 #if($StatStr && !($StatStr == ''))
@@ -56,14 +56,14 @@ ${StatStr}
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
 #set($MailSubject = $!record.Subject)
 #elseif($!record.Subject)
-#set($MailSubject = "無題")
+#set($MailSubject = "$l10n.WEBMAIL_NOTITLE")
 #end
 #ALcell_li_header($career)
 <img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />
 <a href="$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab)">$MailSubject</a>
-（$!record.Person、$!{record.Date.Year}年$!{record.Date.Month}月$!{record.Date.Day}日 $!{record.Date.Hour}時$!{record.Date.Minute}分、$!{record.FileVolume}KB）
-##tdcell2("#menu('返信' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1') 'images/webmail/webmail_reply_mail.gif')" 'nowrap')
-##tdcell2("#menu('転送' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2') 'images/webmail/webmail_forward_mail.gif')" 'nowrap')
+（$!record.Person、$!{record.Date.Year}${l10n.WEBMAIL_YEAR}$!{record.Date.Month}${l10n.WEBMAIL_MONTH}$!{record.Date.Day}${l10n.WEBMAIL_DAY} $!{record.Date.Hour}${l10n.WEBMAIL_HOUR}$!{record.Date.Minute}${l10n.WEBMAIL_MINUTE}、$!{record.FileVolume}KB）
+##tdcell2("#menu('$l10n.WEBMAIL_MENU_REPLY' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1') 'images/webmail/webmail_reply_mail.gif')" 'nowrap')
+##tdcell2("#menu('$l10n.WEBMAIL_MENU_FORWARD' $!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2') 'images/webmail/webmail_forward_mail.gif')" 'nowrap')
 
 #ALcell_li_footer($career)
 #end
@@ -76,7 +76,7 @@ ${StatStr}
 
 #ALcell_hr($career '1')
 #if($!result.currentTab == "receive")
-ﾌｫﾙﾀﾞ移動:
+${l10n.WEBMAIL_MOVE_FOLDER_HALFWIDTH}:
 #foreach($record in $!result.FolderList)
 #set ($unreadNum = $result.getUnReadMailSumByFolderId($record.FolderId))
 #if($result.FolderId != $record.FolderId)

@@ -19,10 +19,10 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')")
-#set($linklist = [["Webﾒｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
+#set($linklist = [["$l10n.WEBMAIL_WEBMAIL_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
 #ALcell_pagetitle($career "$pagetitle")
 #if ($result.List.size() == 0)
-<div class="message">ﾒｰﾙｱｶｳﾝﾄはありません。</div>
+<div class="message">$l10n.WEBMAIL_NO_ACCOUNT_HALFWIDTH</div>
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
@@ -35,7 +35,7 @@
 $record.DefaultImageDescription
 #end
 <a href='$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_account','1').addQueryData('entityid',$record.AccountId)'>$!record.AccountName（$!record.MailAddress）</a>
-（新着：$newMailNum、未読：$countUnRead）
+（$l10n.WEBMAIL_NEW_ARRIVAL：$newMailNum、$l10n.WEBMAIL_UNREAD：$countUnRead）
 #ALcell_li_footer($career)
 #end
 </ul>

@@ -18,33 +18,33 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($title = 'ﾒｰﾙｱｶｳﾝﾄ')
+#set($title = $l10n.WEBMAIL_MAILACCOUNT_HALFWIDTH)
 #set ($list = $result.List)
 #ALcell_pagetitle($career $title)
 #if ($list.size() == 0)
-<div class="message">ﾒｰﾙｱｶｳﾝﾄが未登録です。</div>
+<div class="message">$l10n.WEBMAIL_NO_REGISTERED_ACCOUNT_HALFWIDTH</div>
 #else
 #if($career == "vodafone")
 <dl>
 #foreach($menulist in $list)
-${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") (既定) #end
+${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") $l10n.WEBMAIL_DEFAULT #end
 #ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ受信</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">受信ﾄﾚｲ</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId})">送信ﾄﾚｲ</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ作成</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_RECEIVE_MAIL_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_INBOX_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_OUTBOX_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_CREATE_EMAIL_HALFWIDTH</a>#ALcell_br($career)
 #end
 </dl>
 #else
 <ul>
 #foreach($menulist in $list)
 #ALcell_li_header($career)
-${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") (既定) #end
+${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") $l10n.WEBMAIL_DEFAULT #end
 #ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ受信</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">受信ﾄﾚｲ</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId}).addQueryData('tab', 'sent')">送信ﾄﾚｲ</a>#ALcell_br($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})">ﾒｰﾙ作成</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_receive_mails','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_RECEIVE_MAIL_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_received_mails','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_INBOX_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_sent_mails','1').addQueryData('accountid',${menulist.AccountId}).addQueryData('tab', 'sent')">$l10n.WEBMAIL_OUTBOX_HALFWIDTH</a>#ALcell_br($career)
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('accountid',${menulist.AccountId})">$l10n.WEBMAIL_CREATE_EMAIL_HALFWIDTH</a>#ALcell_br($career)
 
 #ALcell_li_footer($career)
 #end

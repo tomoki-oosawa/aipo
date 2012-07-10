@@ -19,24 +19,24 @@
 
 ## ---------------------------------------------------------------------------
 #if($!result.currentTab == "receive")
-#set($pagetitle = "受信ﾄﾚｲ")
-#set($person = "差出人")
+#set($pagetitle = "$l10n.WEBMAIL_INBOX_HALFWIDTH")
+#set($person = "$l10n.WEBMAIL_SENDER")
 #set($person_value = "$!{result.Detail.From}")
 #else
-#set($pagetitle = "送信ﾄﾚｲ")
-#set($person = "宛先")
+#set($pagetitle = "$l10n.WEBMAIL_OUTBOX_HALFWIDTH")
+#set($person = "$l10n.WEBMAIL_TO")
 #set($person_value = "$!{result.Detail.To}")
 #end
-#set($methodlist = [["ﾒｰﾙ返信", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["ﾒｰﾙ転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
-#set($linklist = [["ﾒｰﾙ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"],["Webﾒｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
-#ALcell_pagetitle($career "ﾒｰﾙ詳細")
-#ALcell_dt($career '件名')#ALcell_dd($career "$!{result.Detail.Subject}")
-#ALcell_dt($career '日付')
+#set($methodlist = [["$l10n.WEBMAIL_REPLY_HALFWIDTH", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["ﾒｰﾙ転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
+#set($linklist = [["$l10n.WEBMAIL_DO_WATCH_MAILLIST_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"],["$l10n.WEBMAIL_WEBMAIL_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
+#ALcell_pagetitle($career "$l10n.WEBMAIL_DETAIL_HAFLWIDTH")
+#ALcell_dt($career $l10n.WEBMAIL_TITLE)#ALcell_dd($career "$!{result.Detail.Subject}")
+#ALcell_dt($career $l10n.WEBMAIL_DATE)
 #ALcell_dd_header($career)
-$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分
+$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY $!{result.Detail.Date.Hour}$l10n.WEBMAIL_HOUR$!{result.Detail.Date.Minute}$l10n.WEBMAIL_MINUTE
 #ALcell_dd_footer($career)
 #ALcell_dt($career $person)#ALcell_dd($career "$person_value")
-#ALcell_dt($career '本文')#ALcell_dd($career "$!{result.Detail.Body}")
+#ALcell_dt($career $l10n.WEBMAIL_BODY)#ALcell_dd($career "$!{result.Detail.Body}")
 #ALcell_hr($career '1')
 #ALcell_linklist($career $methodlist)
 #ALcell_hr($career '1')
