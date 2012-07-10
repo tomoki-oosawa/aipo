@@ -127,6 +127,8 @@ public class TimelineSelectData extends
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
   private List<ALEipGroup> myGroupList = null;
 
+  private boolean isAdmin = false;
+
   /**
    * 
    * @param action
@@ -148,6 +150,7 @@ public class TimelineSelectData extends
     uid = ALEipUtils.getUserId(rundata);
     baseuser = (ALBaseUser) rundata.getUser();
     user = ALEipUtils.getALEipUser(rundata);
+    isAdmin = ALEipUtils.isAdmin(uid);
 
     // My グループの一覧を取得する．
     List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
@@ -581,7 +584,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }
@@ -698,7 +701,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }
@@ -859,7 +862,7 @@ public class TimelineSelectData extends
    * @return
    */
   public boolean isAdmin() {
-    return ALEipUtils.isAdmin(uid);
+    return isAdmin;
   }
 
   @Override
