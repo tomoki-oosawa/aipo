@@ -20,7 +20,8 @@
 #set ($currentPage = $result.CurrentPage)
 ## ---------------------------------------------------------------------------
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-	<input id="readHidden_$!{portlet.ID}" type="hidden" onclick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineContentScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage', '$pages');" />
+	<input id="readHidden_$!{portlet.ID}" type="hidden" onClick="aipo.timeline.onScroll('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineContentScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage', '$pages');" />
+	<input id="readHiddenClick_$!{portlet.ID}" type="hidden" onClick="aipo.timeline.onClick('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineContentScreen").addQueryData("start", $next))', '$!portlet.ID', '$currentPage', '$pages');" />
 #end
 #if($result.List && $result.List.size() > 0)
 #set ($last_timelineId = $result.List.get(0).TimelineId)

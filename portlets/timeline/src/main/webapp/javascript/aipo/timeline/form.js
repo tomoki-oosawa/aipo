@@ -55,36 +55,43 @@ aipo.timeline.showCommentAll = function(pid, tid) {
       });
 }
 
+
+aipo.timeline.onClick = function(url, pid, page, max) {
+		  try {
+			    dojo
+			        .xhrPost({
+			          portletId : pid,
+			          url : url,
+			          encoding : "utf-8",
+			          handleAs : "text",
+			          headers : {
+			            X_REQUESTED_WITH : "XMLHttpRequest"
+			          },
+			          load : function(data, event) {
+			            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
+			            page++;
+			            dojo.byId("content_" + pid + "_" + page).innerHTML = data;
+			            if(page == max){
+			            	dojo.byId("more_" + pid).style.display = "none";
+			            }
+			          }
+			        });
+			  } catch (e) {
+			    alert(e);
+			  }
+	}
+
+
 aipo.timeline.onScroll = function(url, pid, page, max) {
   var scrollTop = dojo.byId("timeline_" + pid).scrollTop;
   var clientHeight = dojo.byId("timeline_" + pid).clientHeight;
   var scrollHeight = dojo.byId("timeline_" + pid).scrollHeight;
   var remain = scrollHeight - clientHeight - scrollTop;
   if(dojo.byId("height_" + pid) == 0 || remain < 5){
-	  try {
-		    dojo
-		        .xhrPost({
-		          portletId : pid,
-		          url : url,
-		          encoding : "utf-8",
-		          handleAs : "text",
-		          headers : {
-		            X_REQUESTED_WITH : "XMLHttpRequest"
-		          },
-		          load : function(data, event) {
-		            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
-		            page++;
-		            dojo.byId("content_" + pid + "_" + page).innerHTML = data;
-		            if(page == max){
-		            	dojo.byId("more_" + pid).style.display = "none";
-		            }
-		          }
-		        });
-		  } catch (e) {
-		    alert(e);
-		  }
+	  aipo.timeline.onClick(url, pid, page, max);
   }
 }
+
 
 aipo.timeline.nextThumbnail = function(pid) {
 	  var page = dojo.byId("TimelinePage_" + pid);

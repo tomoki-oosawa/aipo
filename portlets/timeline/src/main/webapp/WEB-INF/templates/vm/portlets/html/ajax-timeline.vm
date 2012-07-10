@@ -170,7 +170,7 @@
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeight == 0)
 	#if($pages > $currentPage)
-		<div class="readMore"><a href="javascript:void(0);" onclick="dojo.byId('readHidden_$!{portlet.ID}').onclick()" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
+		<div class="readMore"><a href="javascript:void(0);" onClick="dojo.byId('readHidden_$!{portlet.ID}').onclick()" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
 	#end
   #end
   <div id="more_end_$!{portlet.ID}"></div>
