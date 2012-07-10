@@ -2092,17 +2092,17 @@ tr.disabled a {
 	line-height:28px;
 }
 .filterTip {
-	/*position:relative;*/
 	display:inline-block;
 	background:#e0e0e0;
 	color:#000;
 	margin:2px;
-	padding:0 7px;
+	padding:0 4px;
 	border-radius:3px;
 	-ms-border-radius:3px;
-	height:22px !important;
-	line-height:22px !important;
+	height:19px !important;
+	line-height:19px !important;
 	white-space:nowrap;
+	font-size:0.9em;
 }
 .filterInputField .filterTip {
 	padding-right:22px;
