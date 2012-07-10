@@ -34,7 +34,7 @@
 </div>
 </div>
 #if($result.List.size() != 0)
-#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);")
 #end
 </div>
 <div id="listMessageDiv"></div>
@@ -43,7 +43,7 @@
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUIbuttonAction("設備グループを追加する" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);")
 </p>
 </td></tr>
 #AUItablefooter()

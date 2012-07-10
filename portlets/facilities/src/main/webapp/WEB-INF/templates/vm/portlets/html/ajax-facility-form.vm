@@ -33,7 +33,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("facilityForm" $jslink $portlet "FacilityFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.facility.onReceiveMessage)")
+#ALajaxscreenformheader("facilityForm" $jslink $portlet "FacilityFormJSONScreen" "aimluck.io.selectAllOptions(this.group_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.facility.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else

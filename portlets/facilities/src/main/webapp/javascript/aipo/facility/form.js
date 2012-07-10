@@ -38,7 +38,7 @@ aipo.facility.onLoadFacilityDialog = function(portlet_id){
   }
 }
 aipo.facility.onLoadFacilityGroupDialog = function(portlet_id){
-	  var obj = dojo.byId("facility_name");
+	  var obj = dojo.byId("facility_group_name");
 	  if(obj){
 	     obj.focus();
 	  }
