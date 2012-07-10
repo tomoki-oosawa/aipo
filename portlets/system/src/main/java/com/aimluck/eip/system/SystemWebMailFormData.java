@@ -57,6 +57,7 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.system.util.SystemWebMailUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * Webメールフォームデータを管理するためのクラスです。 <br />
@@ -146,31 +147,33 @@ public class SystemWebMailFormData extends ALAbstractFormData {
   public void initField() {
     // メール作成のタイプ
     mailType = new ALNumberField();
-    mailType.setFieldName("タイプ");
+    mailType.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_TYPE"));
 
     // To
     to = new ALStringField();
-    to.setFieldName("宛先");
+    to.setFieldName(ALLocalizationUtils.getl10n("SYSTEM_SETFIELDNAME_TO"));
     to.setTrim(true);
 
     // CC
     cc = new ALStringField();
-    cc.setFieldName("CC");
+    cc.setFieldName(ALLocalizationUtils.getl10n("SYSTEM_SETFIELDNAME_CC"));
     cc.setTrim(true);
 
     // BCC
     bcc = new ALStringField();
-    bcc.setFieldName("BCC");
+    bcc.setFieldName(ALLocalizationUtils.getl10n("SYSTEM_SETFIELDNAME_BCC"));
     bcc.setTrim(true);
 
     // Subject
     subject = new ALStringField();
-    subject.setFieldName("件名");
+    subject.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SUBJECT"));
     subject.setTrim(true);
 
     // Body
     body = new ALStringField();
-    body.setFieldName("本文");
+    body.setFieldName(ALLocalizationUtils.getl10n("SYSTEM_SETFIELDNAME_BODY"));
     body.setTrim(false);
 
   }
@@ -209,17 +212,17 @@ public class SystemWebMailFormData extends ALAbstractFormData {
     String delim = ",";
     if (to.validate(msgList)
       && !SystemWebMailUtils.checkAddress(to.getValue(), delim)) {
-      msgList.add("『 <span class='em'>宛先</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_TO"));
     }
     if (cc.validate(msgList)
       && cc.getValue().trim().length() > 0
       && !SystemWebMailUtils.checkAddress(cc.getValue(), delim)) {
-      msgList.add("『 <span class='em'>CC</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_CC"));
     }
     if (bcc.validate(msgList)
       && bcc.getValue().trim().length() > 0
       && !SystemWebMailUtils.checkAddress(bcc.getValue(), delim)) {
-      msgList.add("『 <span class='em'>BCC</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_BCC"));
     }
     subject.validate(msgList);
     body.validate(msgList);
@@ -283,7 +286,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
 
       // 件名の値を検証
       if (subject.getValue() == null || subject.getValue().equals("")) {
-        subject.setValue("無題");
+        subject.setValue(ALLocalizationUtils.getl10n("SYSTEM_NOSUBJECT"));
       }
 
       // 返信メールの場合は，ヘッダを追加する．
@@ -352,19 +355,22 @@ public class SystemWebMailFormData extends ALAbstractFormData {
       if (success_send == ALSmtpMailSender.SEND_MSG_SUCCESS) {
       } else {
         if (success_send == ALSmtpMailSender.SEND_MSG_FAIL) {
-          msgList.add("メールを送信できませんでした。アカウント設定が間違っている可能性があります。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("SYSTEM_ALERT_ACCOUNT_SETTING_ERROR"));
         } else if (success_send == ALSmtpMailSender.SEND_MSG_OVER_MAIL_MAX_SIZE) {
           msgList.add(String.valueOf(FileuploadUtils.getMaxFileSize()).concat(
-            "MB を超えるサイズのメールは送信できません。"));
+            ALLocalizationUtils.getl10n("SYSTEM_ALERT_MAILSIZE_ERROR")));
         } else if (success_send == ALSmtpMailSender.SEND_MSG_FAIL_SMTP_AUTH) {
-          msgList.add("メールを送信できませんでした。SMTP認証の認証に失敗しました。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("SYSTEM_ALERT_SMTP_FAILED_ERROR"));
         }
 
         return false;
       }
     } catch (Exception e) {
       logger.error("Exception", e);
-      msgList.add("メールを送信できませんでした。アカウント設定が間違っている可能性があります。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("SYSTEM_ALERT_ACCOUNT_SETTING_ERROR"));
       return false;
     }
     return true;

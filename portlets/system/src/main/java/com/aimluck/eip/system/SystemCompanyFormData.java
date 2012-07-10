@@ -30,7 +30,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -38,10 +37,12 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.system.util.SystemUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 会社情報のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class SystemCompanyFormData extends ALAbstractFormData {
 
@@ -81,7 +82,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -94,52 +95,63 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
+  @Override
   public void initField() {
     // 会社名
     company_name = new ALStringField();
-    company_name.setFieldName("会社名");
+    company_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_COMPANY_NAME"));
     company_name.setTrim(true);
     // 郵便番号
     zipcode1 = new ALStringField();
-    zipcode1.setFieldName("郵便番号");
+    zipcode1.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_ZIPCODE"));
     zipcode1.setTrim(true);
     zipcode2 = new ALStringField();
-    zipcode2.setFieldName("郵便番号");
+    zipcode2.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_ZIPCODE"));
     zipcode2.setTrim(true);
     // 住所
     address = new ALStringField();
-    address.setFieldName("住所");
+    address.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_ADDRESS"));
     address.setTrim(true);
     // 電話番号
     telephone1 = new ALStringField();
-    telephone1.setFieldName("電話番号");
+    telephone1.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_TELEPHONE"));
     telephone1.setTrim(true);
     telephone2 = new ALStringField();
-    telephone2.setFieldName("電話番号");
+    telephone2.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_TELEPHONE"));
     telephone2.setTrim(true);
     telephone3 = new ALStringField();
-    telephone3.setFieldName("電話番号");
+    telephone3.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_TELEPHONE"));
     telephone3.setTrim(true);
     // FAX番号
     fax_number1 = new ALStringField();
-    fax_number1.setFieldName("FAX番号");
+    fax_number1.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_FAX_NUMBER"));
     fax_number1.setTrim(true);
     fax_number2 = new ALStringField();
-    fax_number2.setFieldName("FAX番号");
+    fax_number2.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_FAX_NUMBER"));
     fax_number2.setTrim(true);
     fax_number3 = new ALStringField();
-    fax_number3.setFieldName("FAX番号");
+    fax_number3.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_FAX_NUMBER"));
     fax_number3.setTrim(true);
 
   }
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -166,10 +178,10 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -179,7 +191,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
     if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
       if (!zipcode1.validate(dummy) || !zipcode2.validate(dummy)) {
-        msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_ZIPCODE"));
       }
     }
     if (!telephone1.getValue().equals("")
@@ -188,7 +200,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
       if (!telephone1.validate(dummy)
         || !telephone2.validate(dummy)
         || !telephone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_TELEPHONE"));
       }
     }
     if (!fax_number1.getValue().equals("")
@@ -197,7 +209,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
       if (!fax_number1.validate(dummy)
         || !fax_number2.validate(dummy)
         || !fax_number3.validate(dummy)) {
-        msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_FAX_NUMBER"));
       }
     }
 
@@ -206,7 +218,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -263,7 +275,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -280,7 +292,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -357,7 +369,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -374,7 +386,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getAddress() {
@@ -383,7 +395,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 会社名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getCompanyName() {
@@ -392,7 +404,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -401,7 +413,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -410,7 +422,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -419,7 +431,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone1() {
@@ -428,7 +440,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone2() {
@@ -437,7 +449,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTelephone3() {
@@ -446,7 +458,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode1() {
@@ -455,7 +467,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getZipcode2() {

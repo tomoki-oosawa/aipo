@@ -27,24 +27,24 @@
 
 #AUISummaryDiv()
 #AUIconfigheader($!{portlet.ID} "14em")
-#AUIconfigitem("会社情報を変更する" $linkCompany)
-#AUIconfigitem("メール通知を設定する" $linkWebmailOption)
-#AUIconfigitem("メールアカウントを設定する" $linkWebmailAccount)
+#AUIconfigitem($l10n.SYSTEM_CHANGE_COMPANYINFO $linkCompany)
+#AUIconfigitem($l10n.SYSTEM_SET_MAIL_INFORM $linkWebmailOption)
+#AUIconfigitem($l10n.SYSTEM_SET_MAILACCOUNT $linkWebmailAccount)
 #if($!{result.Detail.Sample} == "exist")
-#AUIconfigitem("サンプルデータを削除する" $linkSampleDelete)
+#AUIconfigitem($l10n.SYSTEM_DO_DELETE_SAMPLEDATA $linkSampleDelete)
 #end
-#AUIconfigitem("管理者パスワードを変更する" $linkAdminpassword)
+#AUIconfigitem($l10n.SYSTEM_DO_CHANGE_ADMINPASS $linkAdminpassword)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
 
 #if((!$config.getString("aipo.asp")) || ($config.getString("aipo.asp") != "true"))
 <div style="p">
-<h3>社内からのアクセス</h3>
-社内から『${alias}』 にアクセスするためのアドレスです。社内のユーザーには、このアドレスをご連絡ください。
+<h3>$l10n.SYSTEM_ACCESS_IN</h3>
+$l10n.SYSTEM_IN_ADDRESS_MSG1${alias}$l10n.SYSTEM_IN_ADDRESS_MSG2
 #ALformheader('internal' $jslink $portlet)
 #ALtableheaderWide()
 #ALtdcaptionheader()
-${alias}サイト（社内）
+${alias}$l10n.SYSTEM_SITE_IN
 #ALtdcaptionfooter()
 #ALtditem("$!result.Detail.LocalUrl")
 <tr>
@@ -57,12 +57,12 @@ ${alias}サイト（社内）
 </div>
 #end
 <br />
-<h3>社外からのアクセス</h3>
-社外から『${alias}』 にアクセスするためのアドレスです。社外のユーザーには、このアドレスをご連絡ください。
+<h3>$l10n.SYSTEM_ACCESS_OUTSIDE</h3>
+$l10n.SYSTEM_OUTSIDE_ADDRESS_MSG1${alias}$l10n.SYSTEM_OUTSIDE_ADDRESS_MSG2
 #ALformheader('network' $jslink $portlet)
 #ALtableheaderWide()
 #ALtdcaptionheader()
-${alias}サイト（社外）
+${alias}$l10n.SYSTEM_SITE_OUTSIDE
 #ALtdcaptionfooter()
 #ALtditem("$!result.Detail.GlobalUrl")
 <tr>

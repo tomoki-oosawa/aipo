@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "更新する")
-#set ($subtitle = 'ネットワーク情報編集')
+#set ($action_str = $l10n.SYSTEM_UPDATE)
+#set ($subtitle = $l10n.SYSTEM_CAUTION)
 #set ($event_submit = "eventSubmit_doSystem_update_network")
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -28,7 +28,7 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 <div style="padding:0px 0px 5px 0px">
-社内から 『${alias}』 にアクセスする際のアドレスを設定します。
+$l10n.SYSTEM_SET_ADDRESS_FROM_IN_MSG1${alias}$l10n.SYSTEM_SET_ADDRESS_FROM_IN_MSG2
 </div>
 #ALajaxscreenformheader("systemForm" $jslink $portlet "SystemNetworkInternalFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.system.onReceiveMessage)")
 #ALtableheaderWide()
@@ -45,7 +45,7 @@
 #ALtditem("#ALtextfield('port_internal' $!result.PortInternal '90%' 10 'disabled')")
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.system.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.SYSTEM_CLOSE onclick="aipo.system.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

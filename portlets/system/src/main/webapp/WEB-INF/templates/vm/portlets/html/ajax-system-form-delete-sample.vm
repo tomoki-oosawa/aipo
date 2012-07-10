@@ -19,8 +19,8 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($action_str = "削除する")
-#set ($subtitle = 'サンプルデータの削除')
+#set ($action_str = $l10n.SYSTEM_DELETE)
+#set ($subtitle = $l10n.SYSTEM_DELETE_SAMPLEDATA)
 #set ($event_submit = "eventSubmit_doDeletesample_form")
 #ALdialogheader($subtitle)
 ##ALerrmsg($errmsgs)
@@ -28,7 +28,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 
 #if(${desa}=="1")
-サンプルデータはすでに削除されています。
+$l10n.SYSTEM_SAMPLEDATA_ALREADY_DELETED
 #ALbuttonheader()
 #ALajaxbuttonClose()
 #ALbuttonfooter()
@@ -37,11 +37,11 @@
 #ALajaxscreenformheader("systemdeletesampleForm" $jslink $portlet "SystemDeleteSampleFormJSONScreen" "aimluck.io.submit(this,'$indicator_id', '$!portlet.ID', aipo.system.onReceiveMessage)")
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="secid" value="$secid" />
-<div class="caution">（注意）</div>
+<div class="caution">$l10n.SYSTEM_CAUTION</div>
 <div class="message small">
-Aipoのインストール時に登録されていたサンプルデータと、サンプルデータのカテゴリやテーマ、フォルダに含まれるデータを削除します。<br />
-一度データを削除しますと復旧はできませんので、万が一のため必ず${alias}のバックアップを取っていただいた上で実行をお願いいたします。<br />
-${alias}のバックアップにつきましては<a target="_blank" href="http://www.aipo.com/">こちらのホームページ</a>をご参照ください。
+$l10n.SYSTEM_DO_DELETE_SAMPLEDATA_MSG1
+$l10n.SYSTEM_DO_DELETE_SAMPLEDATA_MSG2${alias}$l10n.SYSTEM_DO_DELETE_SAMPLEDATA_MSG3
+${alias}$l10n.SYSTEM_ABOUT_BACKUP<a target="_blank" href="http://www.aipo.com/">$l10n.SYSTEM_THIS_HOMEPAGE</a>$l10n.SYSTEM_PLEASE_REFER
 <br />&nbsp;</div>
 
 #ALbuttonheader()

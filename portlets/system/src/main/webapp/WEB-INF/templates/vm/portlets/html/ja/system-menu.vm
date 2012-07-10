@@ -27,14 +27,14 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-		    {   caption: "ネットワーク情報を見る", iconClass:"menuBarIconNetworkInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSystem_info_network','1')"    },
-            {   caption: "${alias}のバージョンを見る", iconClass:"menuBarIconCellular", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSystem_version','1')"    }
+		    {   caption: "$l10n.SYSTEM_SHOW_NETWORKINFO", iconClass:"menuBarIconNetworkInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSystem_info_network','1')"    },
+            {   caption: "${alias}$l10n.SYSTEM_SHOW_VERSION", iconClass:"menuBarIconCellular", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSystem_version','1')"    }
 		,
 #if($chg_adminpasswd == "false")
-			{   caption: "会社情報を編集する", iconClass: "menuBarIconList", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountCompanyFormScreen").addQueryData("entityid","1")','$!portlet.ID',aipo.account_company.onLoadCompanyDialog);"   }
+			{   caption: "$l10n.SYSTEM_DO_EDIT_COMPANYINFO", iconClass: "menuBarIconList", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountCompanyFormScreen").addQueryData("entityid","1")','$!portlet.ID',aipo.account_company.onLoadCompanyDialog);"   }
 #else
-            {   caption: "会社情報を編集する", iconClass: "menuBarIconList", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountCompanyFormScreen").addQueryData("entityid","1")','$!portlet.ID',aipo.account_company.onLoadCompanyDialog);"    },
-            {   caption: "管理者パスワードを変更する", iconClass: "menuBarIconAccountPasswd" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountAdminFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.account_company.onLoadPasswdDialog);"    }
+            {   caption: "$l10n.SYSTEM_DO_EDIT_COMPANYINFO", iconClass: "menuBarIconList", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountCompanyFormScreen").addQueryData("entityid","1")','$!portlet.ID',aipo.account_company.onLoadCompanyDialog);"    },
+            {   caption: "$l10n.SYSTEM_DO_CHANGE_ADMINPASS", iconClass: "menuBarIconAccountPasswd" , url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountAdminFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.account_company.onLoadPasswdDialog);"    }
 #end
 
 		];

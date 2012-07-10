@@ -26,12 +26,12 @@
 	aipo.system.menuSelected = 1;
 //]]>
 </script>
-#set($tabs = [["バージョン情報", "",""]])
+#set($tabs = [["$l10n.SYSTEM_VERSIONINFO", "",""]])
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
 #ALspacebothheader()
 <div>
-<h3>${alias}のバージョン</h3>
+<h3>${alias}$l10n.SYSTEM_VERSION_OF</h3>
 <span style="padding-left:5px;">$!{result.Detail}</span>
 </div>
 #ALspacebothfooter()

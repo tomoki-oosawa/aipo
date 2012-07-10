@@ -38,6 +38,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.system.util.SystemUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『ネットワーク情報』のフォームデータを管理するクラス．
@@ -79,17 +80,19 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   public void initField() {
 
     protocol = new ALStringField();
-    protocol.setFieldName("プロトコル");
+    protocol.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_PROTOCOL"));
     protocol.setTrim(true);
 
     // IP アドレス（グローバル）
     ipaddress = new ALStringField();
-    ipaddress.setFieldName("IPアドレス");
+    ipaddress.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_IPADDRESS"));
     ipaddress.setTrim(true);
 
     // ポート番号
     port = new ALNumberField();
-    port.setFieldName("ポート番号");
+    port.setFieldName(ALLocalizationUtils.getl10n("SYSTEM_SETFIELDNAME_PORT"));
     port.setValue(80);
 
   }

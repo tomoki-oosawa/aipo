@@ -52,6 +52,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.system.util.SystemWebMailUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * Webメールアカウントのフォームデータを管理するためのクラスです。 <br />
@@ -159,99 +160,124 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     account_id = new ALNumberField();
-    account_id.setFieldName("アカウントID");
+    account_id.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_ACCOUNTID"));
 
     user_id = new ALNumberField();
-    user_id.setFieldName("ユーザID");
+    user_id.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_USERID"));
 
     account_name = new ALStringField();
-    account_name.setFieldName("メールアカウント名");
+    account_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_MAILACCOUNTNAME"));
     account_name.setTrim(true);
 
     account_type = new ALStringField();
-    account_type.setFieldName("アカウント種別");
+    account_type.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_ACCOUNT_TYPE"));
     account_type.setTrim(true);
 
     smtpserver_name = new ALStringField();
-    smtpserver_name.setFieldName("送信メールサーバ名（SMTP）");
+    smtpserver_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SERVER_SEND"));
     smtpserver_name.setTrim(true);
 
     pop3server_name = new ALStringField();
-    pop3server_name.setFieldName("受信メールサーバ名（POP3）");
+    pop3server_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SERVER_RECEIVE"));
     pop3server_name.setTrim(true);
 
     pop3user_name = new ALStringField();
-    pop3user_name.setFieldName("受信用ユーザーID");
+    pop3user_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_RECEIVE_ID"));
     pop3user_name.setTrim(true);
 
     pop3_password = new ALStringField();
-    pop3_password.setFieldName("受信用ユーザーパスワード");
+    pop3_password.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_RECEIVE_PW"));
     pop3_password.setTrim(true);
 
     mail_user_name = new ALStringField();
-    mail_user_name.setFieldName("名前");
+    mail_user_name.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_NAME"));
     mail_user_name.setTrim(true);
 
     mail_address = new ALStringField();
-    mail_address.setFieldName("メールアドレス");
+    mail_address.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_MAILADDRESS"));
     mail_address.setTrim(true);
 
     smtp_port = new ALNumberField();
-    smtp_port.setFieldName("送信ポート番号（SMTP）");
+    smtp_port.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_PORT_SEND"));
     smtp_port.setValue(DEF_SMTP_PORT);
 
     pop3_port = new ALNumberField();
-    pop3_port.setFieldName("受信ポート番号（POP3）");
+    pop3_port.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_PORT_RECEIVE"));
     pop3_port.setValue(DEF_POP3_PORT);
 
     auth_send_flg = new ALNumberField();
-    auth_send_flg.setFieldName("送信時の認証方式");
+    auth_send_flg.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SEND_AUTHENTICATION"));
     auth_send_flg.setValue(ALSmtpMailSender.AUTH_SEND_NONE);
 
     smtp_encryption_flag = new ALNumberField();
-    smtp_encryption_flag.setFieldName("送信時の暗号化方式");
+    smtp_encryption_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SEND_ENCRYPTION"));
     smtp_encryption_flag.setValue(0);
 
     auth_send_user_id = new ALStringField();
-    auth_send_user_id.setFieldName("SMTP認証用ユーザーID");
+    auth_send_user_id.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SMTP_ID"));
     auth_send_user_id.setTrim(true);
 
     auth_send_user_password = new ALStringField();
-    auth_send_user_password.setFieldName("SMTP認証用パスワード");
+    auth_send_user_password.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SMTP_PW"));
     auth_send_user_password.setTrim(true);
 
     auth_receive_flag = new ALNumberField();
-    auth_receive_flag.setFieldName("受信時の認証方式");
+    auth_receive_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_RECEIVE_AUTHENTICATION"));
     auth_receive_flag.setValue(ALPop3MailReceiver.AUTH_RECEIVE_NORMAL);
 
     pop3_encryption_flag = new ALNumberField();
-    pop3_encryption_flag.setFieldName("受信時の暗号化方式");
+    pop3_encryption_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_RECEIVE_ENCRYPTION"));
     pop3_encryption_flag.setValue(0);
 
     del_at_pop3_flg = new ALNumberField();
-    del_at_pop3_flg.setFieldName("受信後、サーバからメールを削除する");
+    del_at_pop3_flg.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_DELETE_MAIL_FROM_SERVER_AFTER_RECEIVE"));
     del_at_pop3_flg.setValue(0);
 
     del_at_pop3_before_days_flg = new ALNumberField();
-    del_at_pop3_before_days_flg.setFieldName("メール削除日数指定フラグ");
+    del_at_pop3_before_days_flg.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_DELETE_MAIL_DATE_FLUG"));
     del_at_pop3_before_days_flg.setValue(0);
 
     del_at_pop3_before_days = new ALNumberField();
-    del_at_pop3_before_days.setFieldName("メール削除日数");
+    del_at_pop3_before_days.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_DELETE_MAIL_DATE"));
     del_at_pop3_before_days.setValue(0);
 
     non_received_flg = new ALNumberField();
-    non_received_flg.setFieldName("受信済みメッセージは取り込まない");
+    non_received_flg.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_DONOT_INPORT_RECEIVEDMSG"));
     non_received_flg.setValue(1);
 
     create_date = new ALDateTimeField(SystemWebMailUtils.CREATED_DATE_FORMAT);
-    create_date.setFieldName("メールアカウント作成日");
+    create_date.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_MAILACCOUNT_CREATE_DATE"));
 
     update_date = new ALDateTimeField(SystemWebMailUtils.DATE_TIME_FORMAT);
-    update_date.setFieldName("メールアカウント最終更新日");
+    update_date.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_MAILACCOUNT_LAST_UPDATE_DATE"));
 
     signature = new ALStringField();
-    signature.setFieldName("署名");
+    signature.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_SIGN"));
     signature.setTrim(true);
   }
 
@@ -387,7 +413,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
     // メールアドレス
     if (mail_address.validate(msgList)
       && !ALStringUtil.isMailAddress(mail_address.getValue())) {
-      msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_SET_MAILADDRESS"));
     }
 
     // SMTPポート番号
@@ -748,7 +774,8 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
       EipMMailAccount account =
         query.setQualifier(exp1.andExp(exp2)).fetchSingle();
       if (account == null) {
-        msgList.add("指定したメールアカウントがデータベースに存在しません。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SYSTEM_ALERT_DONOT_EXIST_MAILACCOUNT_DB"));
         return false;
       }
 

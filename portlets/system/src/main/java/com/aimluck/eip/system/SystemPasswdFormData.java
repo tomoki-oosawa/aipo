@@ -28,7 +28,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -38,7 +37,9 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントのパスワードのフォームデータを管理するためのクラスです。 <br />
@@ -57,7 +58,7 @@ public class SystemPasswdFormData extends ALAbstractFormData {
 
   /**
    * 初期化する <BR>
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -79,12 +80,14 @@ public class SystemPasswdFormData extends ALAbstractFormData {
   public void initField() {
     // 新しいパスワード
     new_passwd = new ALStringField();
-    new_passwd.setFieldName("新しいパスワード");
+    new_passwd.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_NEWPW"));
     new_passwd.setTrim(true);
 
     // 新しいパスワード（確認用）
     new_passwd_confirm = new ALStringField();
-    new_passwd_confirm.setFieldName("新しいパスワード（確認用）");
+    new_passwd_confirm.setFieldName(ALLocalizationUtils
+      .getl10n("SYSTEM_SETFIELDNAME_NEWPW_CONFIRM"));
     new_passwd_confirm.setTrim(true);
 
   }
@@ -114,13 +117,13 @@ public class SystemPasswdFormData extends ALAbstractFormData {
     new_passwd_confirm.validate(msgList);
 
     if (!new_passwd.toString().equals(new_passwd_confirm.toString())) {
-      msgList.add("確認用のパスワードと一致しません。");
+      msgList.add(ALLocalizationUtils.getl10n("SYSTEM_ALERT_NEWPW_ERROR"));
     }
     return (msgList.size() == 0);
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -133,7 +136,7 @@ public class SystemPasswdFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -146,7 +149,7 @@ public class SystemPasswdFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -168,7 +171,8 @@ public class SystemPasswdFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SYSTEM_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
 
@@ -205,7 +209,7 @@ public class SystemPasswdFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
