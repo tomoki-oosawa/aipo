@@ -60,6 +60,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 週間スケジュール（グループ）の検索結果を管理するクラスです。
@@ -281,7 +282,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         && (userid.intValue() != record.getOwnerId().intValue())
         && !is_member) {
         // 名前
-        rd.setName("非公開");
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
         // 仮スケジュールかどうか
         rd.setTmpreserve(false);
       } else {

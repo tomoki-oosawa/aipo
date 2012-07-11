@@ -28,6 +28,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
@@ -36,7 +37,8 @@ public class UserFacilityListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "（ユーザー／設備の選択）";
+  private final String DEF_INITIAL_VALUE = ALLocalizationUtils
+    .getl10n("SCHEDULE_SELECT_FACILITY_AND_USER");
 
   /**
    * Initialize options

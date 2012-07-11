@@ -19,34 +19,34 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
+#set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
+#set ($action_str = $l10n.SCHEDULE_ADD)
 #set ($event_submit = "eventSubmit_doSchedule_insert")
-#set ($subtitle = "スケジュール追加")
+#set ($subtitle = $l10n.SCHEDULE_SCHEDULE_ADD)
 #elseif($!result.isCopy())
-#set ($indicator_str = "データを送信")
-#set ($action_str = "追加する")
+#set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
+#set ($action_str = $l10n.SCHEDULE_ADD)
 #set ($event_submit = "eventSubmit_doSchedule_insert")
-#set ($subtitle = "スケジュール追加(コピー)")
+#set ($subtitle = $l10n.SCHEDULE_SCHEDULE_COPY)
 #else
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
+#set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
+#set ($action_str = $l10n.SCHEDULE_UPDATE)
 #set ($event_submit = "eventSubmit_doSchedule_update")
-#set ($subtitle = "スケジュール編集")
+#set ($subtitle = $l10n.SCHEDULE_SCHEDULE_EDIT)
 #end
 #set($tabs = [[$subtitle , "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="schedule_val_category1" style="display:none;">（その他）</span>
-<span id="schedule_val_repeat1" style="display:none">繰り返す</span>
-<span id="schedule_val_repeat2" style="display:none">繰り返さない</span>
-<span id="schedule_val_span1" style="display:none">期間で指定する</span>
-<span id="schedule_val_span2" style="display:none">時間で指定する</span>
-<span id="schedule_val_confirm1" style="display:none">既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？</span>
-<span id="schedule_val_member1" style="display:none">参加ユーザー選択</span>
-<span id="schedule_val_member2" style="display:none">選択画面を隠す</span>
-<span id="schedule_val_facility1" style="display:none">設備選択</span>
+<span id="schedule_val_category1" style="display:none;">$l10n.SCHEDULE_OTHER</span>
+<span id="schedule_val_repeat1" style="display:none">$l10n.SCHEDULE_REPEATING</span>
+<span id="schedule_val_repeat2" style="display:none">$l10n.SCHEDULE_DONOT_REPEAT</span>
+<span id="schedule_val_span1" style="display:none">$l10n.SCHEDULE_SET_SPAN</span>
+<span id="schedule_val_span2" style="display:none">$l10n.SCHEDULE_SET_TIME</span>
+<span id="schedule_val_confirm1" style="display:none">$l10n.SCHEDULE_CONFIRM_CREATED_SCHEDULE</span>
+<span id="schedule_val_member1" style="display:none">$l10n.SCHEDULE_SELECT_ENTRY_USER</span>
+<span id="schedule_val_member2" style="display:none">$l10n.SCHEDULE_HIDE_SELECT_VIEW</span>
+<span id="schedule_val_facility1" style="display:none">$l10n.SCHEDULE_SELECT_FACILITY</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheaderCloseJS($subtitle "aipo.schedule.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -85,159 +85,157 @@
 ##ALtableheader("100%")
 #ALtableheaderWide()
 #if($mode!="new_form" && ($!{result.EditRepeatFlag.toString()} != "-1"))
-#ALtdcaption("編集範囲")
+#ALtdcaption($l10n.SCHEDULE_EDIT_RANGE)
 #ALtditemheader()
 <input name="edit_repeat_flag" type="radio" value="0"  id="edit_repeat_flag0_$!{portlet.ID}" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 0) checked="checked" #end onclick="aipo.schedule.formEditRepeatAll(this.form)"/>
-<label onclick="aipo.schedule.formEditRepeatAll(this.form)" for="edit_repeat_flag0_$!{portlet.ID}">すべての予定</label>
+<label onclick="aipo.schedule.formEditRepeatAll(this.form)" for="edit_repeat_flag0_$!{portlet.ID}">$l10n.SCHEDULE_ALL_SCHEDULE</label>
 #if($!ignore_viewdate == "false")
 <input name="edit_repeat_flag" type="radio" value="1" id="edit_repeat_flag1_$!{portlet.ID}" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1) checked="checked" #end onclick="aipo.schedule.formEditRepeatOne(this.form)"/>
-<label onclick="aipo.schedule.formEditRepeatOne(this.form)" for="edit_repeat_flag1_$!{portlet.ID}">$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日の予定のみ</label><br/>
+<label onclick="aipo.schedule.formEditRepeatOne(this.form)" for="edit_repeat_flag1_$!{portlet.ID}">$!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$l10n.SCHEDULE_ONLY</label><br/>
 #end
 #ALtditemfooter()
 #end
-#ALtdcaption("日時")
+#ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
     <div class="p">
-        <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
+        <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">～
-          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
+          <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
         </span>
       <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
         <input id="all_day_flag_checkbox" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag_checkbox" onclick="aipo.schedule.formSwitchAllDay(this)"/>
-        <label for="all_day_flag_checkbox">終日</label>
+        <label for="all_day_flag_checkbox">$l10n.SCHEDULE_ALL_DAY</label>
       </span>
     </div>
   </div>
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p">
-      <h3>繰り返しパターン</h3>
-      <p>
+      <h3>$l10n.SCHEDULE_REPEAT_TYPE</h3>
       <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
-      <label for="repeat_typeD">毎日</label>
-      </p>
+      <label for="repeat_typeD">$l10n.SCHEDULE_EVERY_DAY</label>
+      <br/>
       <input id="repeat_typeW" type="radio" value="W" #if ($!{result.RepeatType.toString()} == "W") checked="checked" #end name="repeat_type"/>
-      <label for="repeat_typeW">毎週</label>
-      <p>
+      <label for="repeat_typeW">$l10n.SCHEDULE_EVERY_WEEK</label>
       <input id="week_0_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_0"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_0_id">日</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_0_id">$l10n.SCHEDULE_SUNDAY</label>
       <input id="week_1_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_1"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_1_id">月</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_1_id">$l10n.SCHEDULE_MONDAY</label>
       <input id="week_2_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_2"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_2_id">火</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_2_id">$l10n.SCHEDULE_TUSEDAY</label>
       <input id="week_3_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_3"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_3_id">水</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_3_id">$l10n.SCHEDULE_WEDNESDAY</label>
       <input id="week_4_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_4"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_4_id">木</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_4_id">$l10n.SCHEDULE_THURSDAY</label>
       <input id="week_5_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_5"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_5_id">金</label>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_5_id">$l10n.SCHEDULE_FRIDAY</label>
       <input id="week_6_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_6"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_6_id">土</label>
-      </p>
+      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_6_id">$l10n.SCHEDULE_SATURDAY</label>
+      <br/>
       <input id="repeat_typeM" type="radio" value="M" #if ($!{result.RepeatType.toString()} == "M") checked="checked" #end name="repeat_type"/>
-      <label for="repeat_typeM">毎月</label>
+      <label for="repeat_typeM">$l10n.SCHEDULE_EVERY_MONTH</label>
       <select onchange="aipo.schedule.enableMonth(this.form)" name="month_day">
-        <option value="1" #if ($!{result.MonthDay.toString()} == "1") selected #end>1日</option>
-        <option value="2" #if ($!{result.MonthDay.toString()} == "2") selected #end>2日</option>
-        <option value="3" #if ($!{result.MonthDay.toString()} == "3") selected #end>3日</option>
-        <option value="4" #if ($!{result.MonthDay.toString()} == "4") selected #end>4日</option>
-        <option value="5" #if ($!{result.MonthDay.toString()} == "5") selected #end>5日</option>
-        <option value="6" #if ($!{result.MonthDay.toString()} == "6") selected #end>6日</option>
-        <option value="7" #if ($!{result.MonthDay.toString()} == "7") selected #end>7日</option>
-        <option value="8" #if ($!{result.MonthDay.toString()} == "8") selected #end>8日</option>
-        <option value="9" #if ($!{result.MonthDay.toString()} == "9") selected #end>9日</option>
-        <option value="10" #if ($!{result.MonthDay.toString()} == "10") selected #end>10日</option>
-        <option value="11" #if ($!{result.MonthDay.toString()} == "11") selected #end>11日</option>
-        <option value="12" #if ($!{result.MonthDay.toString()} == "12") selected #end>12日</option>
-        <option value="13" #if ($!{result.MonthDay.toString()} == "13") selected #end>13日</option>
-        <option value="14" #if ($!{result.MonthDay.toString()} == "14") selected #end>14日</option>
-        <option value="15" #if ($!{result.MonthDay.toString()} == "15") selected #end>15日</option>
-        <option value="16" #if ($!{result.MonthDay.toString()} == "16") selected #end>16日</option>
-        <option value="17" #if ($!{result.MonthDay.toString()} == "17") selected #end>17日</option>
-        <option value="18" #if ($!{result.MonthDay.toString()} == "18") selected #end>18日</option>
-        <option value="19" #if ($!{result.MonthDay.toString()} == "19") selected #end>19日</option>
-        <option value="20" #if ($!{result.MonthDay.toString()} == "20") selected #end>20日</option>
-        <option value="21" #if ($!{result.MonthDay.toString()} == "21") selected #end>21日</option>
-        <option value="22" #if ($!{result.MonthDay.toString()} == "22") selected #end>22日</option>
-        <option value="23" #if ($!{result.MonthDay.toString()} == "23") selected #end>23日</option>
-        <option value="24" #if ($!{result.MonthDay.toString()} == "24") selected #end>24日</option>
-        <option value="25" #if ($!{result.MonthDay.toString()} == "25") selected #end>25日</option>
-        <option value="26" #if ($!{result.MonthDay.toString()} == "26") selected #end>26日</option>
-        <option value="27" #if ($!{result.MonthDay.toString()} == "27") selected #end>27日</option>
-        <option value="28" #if ($!{result.MonthDay.toString()} == "28") selected #end>28日</option>
-        <option value="29" #if ($!{result.MonthDay.toString()} == "29") selected #end>29日</option>
-        <option value="30" #if ($!{result.MonthDay.toString()} == "30") selected #end>30日</option>
-        <option value="31" #if ($!{result.MonthDay.toString()} == "31") selected #end>31日</option>
+        <option value="1" #if ($!{result.MonthDay.toString()} == "1") selected #end>1$l10n.SCHEDULE_DAY</option>
+        <option value="2" #if ($!{result.MonthDay.toString()} == "2") selected #end>2$l10n.SCHEDULE_DAY</option>
+        <option value="3" #if ($!{result.MonthDay.toString()} == "3") selected #end>3$l10n.SCHEDULE_DAY</option>
+        <option value="4" #if ($!{result.MonthDay.toString()} == "4") selected #end>4$l10n.SCHEDULE_DAY</option>
+        <option value="5" #if ($!{result.MonthDay.toString()} == "5") selected #end>5$l10n.SCHEDULE_DAY</option>
+        <option value="6" #if ($!{result.MonthDay.toString()} == "6") selected #end>6$l10n.SCHEDULE_DAY</option>
+        <option value="7" #if ($!{result.MonthDay.toString()} == "7") selected #end>7$l10n.SCHEDULE_DAY</option>
+        <option value="8" #if ($!{result.MonthDay.toString()} == "8") selected #end>8$l10n.SCHEDULE_DAY</option>
+        <option value="9" #if ($!{result.MonthDay.toString()} == "9") selected #end>9$l10n.SCHEDULE_DAY</option>
+        <option value="10" #if ($!{result.MonthDay.toString()} == "10") selected #end>10$l10n.SCHEDULE_DAY</option>
+        <option value="11" #if ($!{result.MonthDay.toString()} == "11") selected #end>11$l10n.SCHEDULE_DAY</option>
+        <option value="12" #if ($!{result.MonthDay.toString()} == "12") selected #end>12$l10n.SCHEDULE_DAY</option>
+        <option value="13" #if ($!{result.MonthDay.toString()} == "13") selected #end>13$l10n.SCHEDULE_DAY</option>
+        <option value="14" #if ($!{result.MonthDay.toString()} == "14") selected #end>14$l10n.SCHEDULE_DAY</option>
+        <option value="15" #if ($!{result.MonthDay.toString()} == "15") selected #end>15$l10n.SCHEDULE_DAY</option>
+        <option value="16" #if ($!{result.MonthDay.toString()} == "16") selected #end>16$l10n.SCHEDULE_DAY</option>
+        <option value="17" #if ($!{result.MonthDay.toString()} == "17") selected #end>17$l10n.SCHEDULE_DAY</option>
+        <option value="18" #if ($!{result.MonthDay.toString()} == "18") selected #end>18$l10n.SCHEDULE_DAY</option>
+        <option value="19" #if ($!{result.MonthDay.toString()} == "19") selected #end>19$l10n.SCHEDULE_DAY</option>
+        <option value="20" #if ($!{result.MonthDay.toString()} == "20") selected #end>20$l10n.SCHEDULE_DAY</option>
+        <option value="21" #if ($!{result.MonthDay.toString()} == "21") selected #end>21$l10n.SCHEDULE_DAY</option>
+        <option value="22" #if ($!{result.MonthDay.toString()} == "22") selected #end>22$l10n.SCHEDULE_DAY</option>
+        <option value="23" #if ($!{result.MonthDay.toString()} == "23") selected #end>23$l10n.SCHEDULE_DAY</option>
+        <option value="24" #if ($!{result.MonthDay.toString()} == "24") selected #end>24$l10n.SCHEDULE_DAY</option>
+        <option value="25" #if ($!{result.MonthDay.toString()} == "25") selected #end>25$l10n.SCHEDULE_DAY</option>
+        <option value="26" #if ($!{result.MonthDay.toString()} == "26") selected #end>26$l10n.SCHEDULE_DAY</option>
+        <option value="27" #if ($!{result.MonthDay.toString()} == "27") selected #end>27$l10n.SCHEDULE_DAY</option>
+        <option value="28" #if ($!{result.MonthDay.toString()} == "28") selected #end>28$l10n.SCHEDULE_DAY</option>
+        <option value="29" #if ($!{result.MonthDay.toString()} == "29") selected #end>29$l10n.SCHEDULE_DAY</option>
+        <option value="30" #if ($!{result.MonthDay.toString()} == "30") selected #end>30$l10n.SCHEDULE_DAY</option>
+        <option value="31" #if ($!{result.MonthDay.toString()} == "31") selected #end>31$l10n.SCHEDULE_DAY</option>
       </select>
     </div>
     <div class="p">
-      <h3>繰り返し期間</h3>
+      <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
       <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag"/>
-      <label for="limit_flagOFF">繰り返し期間を指定しない</label>
+      <label for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
       <br />
       <input id="limit_flagON" type="radio"  #if ($!{result.LimitFlag.toString()} == "ON") checked="checked" #end value="ON" name="limit_flag"/>
-      <label for="limit_flagON">繰り返し期間を指定する</label>
+      <label for="limit_flagON">$l10n.SCHEDULE_SELECT_REPEAT_SPAN</label>
       <br />
-      <span dojoType="aipo.widget.DropdownDatepicker" id="limitStartDateSpan" widgetId="limitStartDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="開始日" hiddenId="limit_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitStartDateSub}"checked="checked" #end inputId="limit_start_date_input" dateId="limit_start_date" displayCheck="none"></span>
-            ～<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="終了日" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
+      <span dojoType="aipo.widget.DropdownDatepicker" id="limitStartDateSpan" widgetId="limitStartDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="limit_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitStartDateSub}"checked="checked" #end inputId="limit_start_date_input" dateId="limit_start_date" displayCheck="none"></span>
+            ～<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
     </div>
   </div>
   <div class="p">
-    <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">時間</h3>
+    <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">$l10n.SCHEDULE_TIME</h3>
     <div id="timeField"  style="display:#if($!{result.Span})none#end">
         <span id="startTimeSpan">
         <select name="start_date_hour" size="1">
             #foreach ( $num in [0..23] )
-            <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num時</option>
+            <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num$l10n.SCHEDULE_HOUR</option>
             #end
             </select>
             <select name="start_date_minute" size="1">
-            <option value="0" #if ($!result.StartDate.Minute == "0") selected="selected" #end>00分</option>
-            <option value="5" #if ($!result.StartDate.Minute == "5") selected="selected" #end>05分</option>
-            <option value="10" #if ($!result.StartDate.Minute == "10") selected="selected" #end>10分</option>
-            <option value="15" #if ($!result.StartDate.Minute == "15") selected="selected" #end>15分</option>
-            <option value="20" #if ($!result.StartDate.Minute == "20") selected="selected" #end>20分</option>
-            <option value="25" #if ($!result.StartDate.Minute == "25") selected="selected" #end>25分</option>
-            <option value="30" #if ($!result.StartDate.Minute == "30") selected="selected" #end>30分</option>
-            <option value="35" #if ($!result.StartDate.Minute == "35") selected="selected" #end>35分</option>
-            <option value="40" #if ($!result.StartDate.Minute == "40") selected="selected" #end>40分</option>
-            <option value="45" #if ($!result.StartDate.Minute == "45") selected="selected" #end>45分</option>
-            <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50分</option>
-            <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55分</option>
+            <option value="0" #if ($!result.StartDate.Minute == "0") selected="selected" #end>00$l10n.SCHEDULE_MINUTE</option>
+            <option value="5" #if ($!result.StartDate.Minute == "5") selected="selected" #end>05$l10n.SCHEDULE_MINUTE</option>
+            <option value="10" #if ($!result.StartDate.Minute == "10") selected="selected" #end>10$l10n.SCHEDULE_MINUTE</option>
+            <option value="15" #if ($!result.StartDate.Minute == "15") selected="selected" #end>15$l10n.SCHEDULE_MINUTE</option>
+            <option value="20" #if ($!result.StartDate.Minute == "20") selected="selected" #end>20$l10n.SCHEDULE_MINUTE</option>
+            <option value="25" #if ($!result.StartDate.Minute == "25") selected="selected" #end>25$l10n.SCHEDULE_MINUTE</option>
+            <option value="30" #if ($!result.StartDate.Minute == "30") selected="selected" #end>30$l10n.SCHEDULE_MINUTE</option>
+            <option value="35" #if ($!result.StartDate.Minute == "35") selected="selected" #end>35$l10n.SCHEDULE_MINUTE</option>
+            <option value="40" #if ($!result.StartDate.Minute == "40") selected="selected" #end>40$l10n.SCHEDULE_MINUTE</option>
+            <option value="45" #if ($!result.StartDate.Minute == "45") selected="selected" #end>45$l10n.SCHEDULE_MINUTE</option>
+            <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50$l10n.SCHEDULE_MINUTE</option>
+            <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55$l10n.SCHEDULE_MINUTE</option>
             </select>
         </span>～
         <span id="endTimeSpan">
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="" #if ($!result.isSameDate) selected="selected" #end>--時</option>
+            <option value="" #if ($!result.isSameDate) selected="selected" #end>--$l10n.SCHEDULE_HOUR</option>
             #foreach ( $num in [0..23] )
-            <option value="$num" #if (!$!result.isSameDate && $!result.EndDate.Hour == "$num") selected="selected" #end >$num時</option>
+            <option value="$num" #if (!$!result.isSameDate && $!result.EndDate.Hour == "$num") selected="selected" #end >$num$l10n.SCHEDULE_HOUR</option>
             #end
             </select>
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="0" #if ($!result.isSameDate || (!$!result.isSameDate && $!result.EndDate.Minute == "0")) selected="selected" #end>00分</option>
-            <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05分</option>
-            <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10分</option>
-            <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15分</option>
-            <option value="20" #if (!$!result.isSameDate && $!result.EndDate.Minute == "20") selected="selected" #end>20分</option>
-            <option value="25" #if (!$!result.isSameDate && $!result.EndDate.Minute == "25") selected="selected" #end>25分</option>
-            <option value="30" #if (!$!result.isSameDate && $!result.EndDate.Minute == "30") selected="selected" #end>30分</option>
-            <option value="35" #if (!$!result.isSameDate && $!result.EndDate.Minute == "35") selected="selected" #end>35分</option>
-            <option value="40" #if (!$!result.isSameDate && $!result.EndDate.Minute == "40") selected="selected" #end>40分</option>
-            <option value="45" #if (!$!result.isSameDate && $!result.EndDate.Minute == "45") selected="selected" #end>45分</option>
-            <option value="50" #if (!$!result.isSameDate && $!result.EndDate.Minute == "50") selected="selected" #end>50分</option>
-            <option value="55" #if (!$!result.isSameDate && $!result.EndDate.Minute == "55") selected="selected" #end>55分</option>
+            <option value="0" #if ($!result.isSameDate || (!$!result.isSameDate && $!result.EndDate.Minute == "0")) selected="selected" #end>00$l10n.SCHEDULE_MINUTE</option>
+            <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05$l10n.SCHEDULE_MINUTE</option>
+            <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10$l10n.SCHEDULE_MINUTE</option>
+            <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15$l10n.SCHEDULE_MINUTE</option>
+            <option value="20" #if (!$!result.isSameDate && $!result.EndDate.Minute == "20") selected="selected" #end>20$l10n.SCHEDULE_MINUTE</option>
+            <option value="25" #if (!$!result.isSameDate && $!result.EndDate.Minute == "25") selected="selected" #end>25$l10n.SCHEDULE_MINUTE</option>
+            <option value="30" #if (!$!result.isSameDate && $!result.EndDate.Minute == "30") selected="selected" #end>30$l10n.SCHEDULE_MINUTE</option>
+            <option value="35" #if (!$!result.isSameDate && $!result.EndDate.Minute == "35") selected="selected" #end>35$l10n.SCHEDULE_MINUTE</option>
+            <option value="40" #if (!$!result.isSameDate && $!result.EndDate.Minute == "40") selected="selected" #end>40$l10n.SCHEDULE_MINUTE</option>
+            <option value="45" #if (!$!result.isSameDate && $!result.EndDate.Minute == "45") selected="selected" #end>45$l10n.SCHEDULE_MINUTE</option>
+            <option value="50" #if (!$!result.isSameDate && $!result.EndDate.Minute == "50") selected="selected" #end>50$l10n.SCHEDULE_MINUTE</option>
+            <option value="55" #if (!$!result.isSameDate && $!result.EndDate.Minute == "55") selected="selected" #end>55$l10n.SCHEDULE_MINUTE</option>
             </select>
         </span></div>
   </div>
-  <span id="repeatButtonField" style="display:#if($!{result.Span})none#end"><input name="repeat_button" type="button" class="button" value=" #if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))繰り返す#else繰り返さない#end " onclick="aipo.schedule.formSwitchRepeat(this)" /></span>
-  <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")時間で指定する#else期間で指定する#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
+  <span id="repeatButtonField" style="display:#if($!{result.Span})none#end"><input name="repeat_button" type="button" class="button" value=" #if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))$l10n.SCHEDULE_REPEATING#else$l10n.SCHEDULE_DONOT_REPEAT#end " onclick="aipo.schedule.formSwitchRepeat(this)" /></span>
+  <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")$l10n.SCHEDULE_SET_TIME#else$l10n.SCHEDULE_SET_SPAN#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 #ALtditem("#ALtextfield('name' $!result.Name '100%' 50 'active')")
 
 #* 共有カテゴリ連携（ここから） *#
 #if($!result.isDisplayManHour())
-#ALtdcaption("共有カテゴリ")
+#ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditemheader()
 #ALselectpdheader("common_category_id" '90%' "");
 #ALselectfooter()
@@ -253,11 +251,11 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
-<p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">公開（スケジュールを全員に公開します）</label></p>
-<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">非公開（スケジュールの日時のみを全員に公開します）</label></p>
-<p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">完全に隠す（スケジュールをすべて非公開とします）</label></p>
+<p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_HIDDEN_PUBLIC</label></p>
 #ALtditemfooter()
-#ALtdcaption("参加ユーザー")
+#ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
 <div id="memberFieldButton">
 	<table style="width:98%;">
@@ -265,7 +263,7 @@
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
 				<td style="border:none;">
-					<input type="button" class="alignright" value="参加ユーザー選択" onclick="aipo.schedule.expandMember();" />
+					<input type="button" class="alignright" value="$l10n.SCHEDULE_SELECT_ENTRY_USER" onclick="aipo.schedule.expandMember();" />
 				</td>
 			</tr>
 		</tbody>
@@ -274,21 +272,21 @@
 <div id="memberField" style="display:none;">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">左側に参加ユーザーを追加してください。</div>
+    <div class="spaceTop spaceLeft small">$l10n.SCHEDULE_ADD_ENTRY_USER</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="参加ユーザー一覧"
+        memberToTitle="$l10n.SCHEDULE_ENTRY_USER_LIST"
         memberToId="member_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectPreOptionValue="$l10n.SCHEDULE_ALL_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -299,32 +297,32 @@
   <tr><td>
 #if($!{result.Owner} || $!{result.EditFlag.toString()} == "T")
     <div class="p">
-    	<div id="edit_control_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">参加ユーザーによる予定の編集権限を設定する</div>
+    	<div id="edit_control_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_EDIT_PERMISSION</div>
     	<div id="edit_control_context_$!{portlet.ID}" style="display:none;">
- 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">可（参加ユーザーは、この予定を編集／削除できます）</label><br/>
-  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">不可（参加ユーザーは、この予定を編集／削除できません）</label></div>
+ 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">$l10n.SCHEDULE_EDIT_THE_SCHEDULE</label><br/>
+  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label></div>
 	</div>
 #end
 #if($mode!="new_form" && $!result.Member)
     <div class="p">
-    	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">確定した予定を仮スケジュールに戻すかを設定する</div>
+    	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_RETURN_TEMP_SCHEDULE</div>
     	<div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
-   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">戻す（確定した予定を仮スケジュールに戻します）</label><br/>
-    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">戻さない（確定した予定を仮スケジュールに戻しません）</label></div>
+   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label><br/>
+    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label></div>
     </div>
 #end
 <div class="p">
-    	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">参加ユーザーへのメール通知を設定する</div>
+    	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_MAIL_DOR_ENTRY_USER</div>
     	<div id="mail_context_$!{portlet.ID}" style="display:none;">
-	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">通知する</label><br />
-	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if($!{result.MailFlag}=="N")checked="checked" #end><label for="mail_flag_N">通知しない</label>
+	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">$l10n.SCHEDULE_DO_INFORM</label><br />
+	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if($!{result.MailFlag}=="N")checked="checked" #end><label for="mail_flag_N">$l10n.SCHEDULE_DONT_INFORM</label>
 	   	</div>
 </div>
   </td></tr>
 </table>
 </div>
 #ALtditemfooter()
-#ALtdcaption('設備')
+#ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
 	<table style="width:98%;">
@@ -332,29 +330,29 @@
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
 				<td style="border:none;">
-					<input type="button" class="alignright" value="設備選択" onclick="aipo.schedule.expandMember();" />
+					<input type="button" class="alignright" value="$l10n.SCHEDULE_SELECT_FACILITY" onclick="aipo.schedule.expandMember();" />
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 <div id="facilityField" style="display:none;">
-    <div class="spaceTop spaceLeft small">左側に設備を追加してください。</div>
+    <div class="spaceTop spaceLeft small">$l10n.SCHEDULE_ADD_FACILITY</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
     id="facilityselect"
     widgetId="facilityselect"
     buttonAddId="button_facility_add"
     buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択設備一覧"
+    memberFromTitle="$l10n.SCHEDULE_SELECT_FACILITY_LIST"
     memberFromId="tmp_facility_from"
-    memberToTitle="設備一覧"
+    memberToTitle="$l10n.SCHEDULE_FACILITY_LIST"
     memberToId="facility_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
     memberFromOptionKey="facilityId"
     memberFromOptionValue="facilityName"
     groupSelectId="tmp_facility_group"
     groupSelectPreOptionKey="all"
-    groupSelectPreOptionValue="すべてのグループ"
+    groupSelectPreOptionValue="$l10n.SCHEDULE_ALL_GROUP"
     groupSelectOptionKey="facilityGroupId"
     groupSelectOptionValue="facilityGroupName"
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"

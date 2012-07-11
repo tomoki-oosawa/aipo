@@ -28,36 +28,36 @@
 #end
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="schedule_val_tooltip1" style="display:none;">読み込み中...</span>
-<span id="schedule_val_tooltip2" style="display:none;">場所</span>
-<span id="schedule_val_tooltip3" style="display:none;">参加者</span>
-<span id="schedule_val_tooltip4" style="display:none;">設備</span>
+<span id="schedule_val_tooltip1" style="display:none;">$l10n.SCHEDULE_READING</span>
+<span id="schedule_val_tooltip2" style="display:none;">$l10n.SCHEDULE_PLACE</span>
+<span id="schedule_val_tooltip3" style="display:none;">$l10n.SCHEDULE_MENBERS</span>
+<span id="schedule_val_tooltip4" style="display:none;">$l10n.SCHEDULE_FACILITY</span>
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if(${clientVer} && ${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#AUIbuttonAction("予定を追加する" "javascript:aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);")
+#AUIbuttonAction($l10n.SCHEDULE_ADD_SCHEDULE "javascript:aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);")
 </div>
 <div class="auiWidget clearfix">
     <table class="auiCalendar">
     	<tbody id="mc_table"><tr>
     	<th colspan="7" style="line-height:1.7em;">
-    		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>年<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>月</div>
+    		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>$l10n.SCHEDULE_YEAR<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>$l10n.SCHEDULE_MONTH</div>
 			<div class="floatRight">
     		<div class="auiSelectButton">
-    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前月へ" /></span></a></div>
-    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="翌月へ" /></span></a></div>
+    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="$l10n.SCHEDULE_PREV_MONTH" /></span></a></div>
+    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="$l10n.SCHEDULE_NEXT_MONTH" /></span></a></div>
     		</div>
 			</div>
     	</th>
     	</tr>
     	<tr class="week">
-    		<td class="sunday">日</td>
-    		<td>月</td>
-    		<td>火</td>
-    		<td>水</td>
-    		<td>木</td>
-    		<td>金</td>
-    		<td class="saturday">土</td>
+    		<td class="sunday">$l10n.SCHEDULE_SUNDAY</td>
+    		<td>$l10n.SCHEDULE_MONDAY</td>
+    		<td>$l10n.SCHEDULE_TUSEDAY</td>
+    		<td>$l10n.SCHEDULE_WEDNESDAY</td>
+    		<td>$l10n.SCHEDULE_THURSDAY</td>
+    		<td>$l10n.SCHEDULE_FRIDAY</td>
+    		<td class="saturday">$l10n.SCHEDULE_SATURDAY</td>
     	</tr>
     	#set($entityids = "")
     	#set($weekListSize = $result.MonthlyCalendarContainer.WeekList.size())

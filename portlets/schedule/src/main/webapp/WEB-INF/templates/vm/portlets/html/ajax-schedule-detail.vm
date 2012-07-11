@@ -19,14 +19,14 @@
 
 ## ---------------------------------------------------------------------------
 #set ($hasMember = false)
-#set ($tabs = [["スケジュール詳細", "",""]])
+#set ($tabs = [[$l10n.SCHEDULE_SCHEDULE_DETAIL, "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderPrint("スケジュール詳細" "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})")
+#ALdialogheaderPrint($l10n.SCHEDULE_SCHEDULE_DETAIL "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxdetailformheader("スケジュール")
+#ALajaxdetailformheader($l10n.SCHEDULE_SCHEDULE)
 <input type="hidden" name="edit_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('mode','form').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
 <input type="hidden" name="delete_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','delete').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
 <input type="hidden" name="change_status_url" value="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('mode','change_status').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})"/>
@@ -43,72 +43,72 @@
 #end
 #ALtableheaderWide()
 #if(!($!result.isActivity() || $!ignore_viewdate == "true"))
-#ALtdcaption("名前")
+#ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditemheader()
 $!{result.Detail.User.AliasName}
 #ALtditemfooter()
 #end
-#ALtdcaption("日時")
+#ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek} ～
-$!{result.Detail.EndDate.Year} 年 $!{result.Detail.EndDate.Month} 月 $!{result.Detail.EndDate.Day} 日 $!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.EndDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.EndDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.EndDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
-<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+<img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #else
-$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})
-<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
 #end
 #ALtditemfooter()
-#ALtdcaption('タイトル')
+#ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditem($!{result.Detail.Name})
 
 #* 共有カテゴリ連携（ここから）  *#
 #if($!result.isDisplayManHour())
-#ALtdcaption('共有カテゴリ')
+#ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditem($!{result.Detail.CommonCategoryName})
 #end
 #* 共有カテゴリ連携（ここまで）  *#
 
-#ALtdcaption('場所')
+#ALtdcaption($l10n.SCHEDULE_PLACE)
 #ALtditem($!{result.Detail.Place})
-#ALtdcaption('内容')
+#ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
-#ALtdcaption('公開区分')
+#ALtdcaption($l10n.SCHEDULE_PUBLIC)
 #ALtditemheader()
 #if($!result.Detail.isPublic())
-公開 （スケジュールを全員に公開します）
+$l10n.SCHEDULE_OPEN_PUBLIC
 #elseif(!$!result.Detail.isHidden())
-非公開 （スケジュールの日時のみを全員に公開します）
+$l10n.SCHEDULE_CLOSED_PUBLIC
 #else
-完全に隠す （スケジュールをすべて非公開とします）
+$l10n.SCHEDULE_HIDDEN_PUBLIC
 #end
 #ALtditemfooter()
-#ALtdcaption('参加ユーザー')
+#ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
     #if($!result.isActivity() || $!ignore_viewdate == "true" || !($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+        <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
-        <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
+        <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>
         #end
     <br/>
     #end
@@ -118,33 +118,33 @@ $!{result.Detail.Date2}
 #end
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
-#if($!{result.Detail.isEditable()}) 参加ユーザーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加ユーザー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
+#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $l10n.SCHEDULE_OUTSIDE_USER#end$l10n.SCHEDULE_YOU_DONOT_EDIT_AND_DELETE_THE_SCHEDULE#end
 </div>
 
 <div>
 #if($!{result.Detail.MailFlag} && $!{result.Detail.MailFlag} == "A")
-参加ユーザーにメール通知をおこないます。
+$l10n.SCHEDULE_MESSAGE_OF_SEND_EMAIL
 #elseif($!{result.Detail.MailFlag} && $!{result.Detail.MailFlag} == "I")
-更新時は参加ユーザーにメール通知をおこないません。
+$l10n.SCHEDULE_MESSAGE_OF_DONOT_SEND_EMAIL_IN_UPDATE
 #else
-参加ユーザーにメール通知をおこないません。
+$l10n.SCHEDULE_MESSAGE_OF_DONOT_SEND_EMAIL_FOR_USER
 #end
 </div>
 #end
 
 #ALtdcellfooter()
 
-#ALtdcaption('設備')
+#ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 #foreach($record in $!result.FacilityList)
 ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption('登録者')
-#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
-#ALtdcaption('更新者')
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年M月d日 H時mm分')}）")
+#ALtdcaption($l10n.SCHEDULE_CREATE_USER)
+#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
+#ALtdcaption($l10n.SCHEDULE_UPDATE_USER)
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）")
 #ALtablefooter()
 
 #ALbuttonheader()
@@ -152,37 +152,37 @@ ${record.FacilityName}<br/>
     <div align="left" style="padding:0px 0px 2px 0px">
     #if($viewDateEnable == "true" && $!ignore_viewdate == "false")
         #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
-        <h3>削除する場合の条件</h3>
+        <h3> $l10n.SCHEDULE_DELETE_CASE</h3>
         #set($prestr = "$!{result.Detail.User.AliasName} の")
 
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDateFormat}</label><br/>
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
             <input name="del_flag" type="radio" value="1"  id="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+            <label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">$l10n.SCHEDULE_DELETE_ONLY_THE_SCHEDULE_OF_ENTRY_USER $!{result.ViewDateFormat}</label><br/>
             <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
             #elseif(($hasMember || $!{result.Detail.Type}=="F") && ! $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label><br/>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
             <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(! $hasMember && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDateFormat}</label><br/>
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}この予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
             #else
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> ${prestr}この予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> ${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #end
@@ -190,14 +190,14 @@ ${record.FacilityName}<br/>
             #if($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()})
                 #if($!{result.Detail.isRepeat()})
                 <input name="del_flag" type="radio" value="3" id="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"> 自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します</label><br/>
+                <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">$l10n.SCHEDULE_DELETE_ONLY_MY_SCHEDULE $!{result.ViewDateFormat}</label><br/>
                 <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> 自分のこの予定を完全に削除します</label>
+                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
                 <input type="hidden" name="del_member_flag" value="1"/>
                 <input type="hidden" name="del_range_flag" value="0"/>
                 #else
                 <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> 自分のこの予定を完全に削除します</label>
+                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
                 <input type="hidden" name="del_member_flag" value="1"/>
                 <input type="hidden" name="del_range_flag" value="0"/>
                 #end
@@ -208,22 +208,22 @@ ${record.FacilityName}<br/>
         <h3>削除する場合の条件</h3>
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="0"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(($hasMember || $!{result.Detail.Type}=="F") && ! $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="0"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(! $hasMember && $!{result.Detail.isRepeat()})
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #else
             <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">参加ユーザー全員のこの予定を完全に削除します</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #end
@@ -248,7 +248,7 @@ ${record.FacilityName}<br/>
             #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
         #end
     #elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
-        #ALbutton('eventSubmit_doSchedule_change_status' '確定する' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'C', '$indicator_id', '$!portlet.ID')")
+        #ALbutton('eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_BE_DECIDED "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'C', '$indicator_id', '$!portlet.ID')")
         #if($!{result.Detail.isEditable()})
             #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
                 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
@@ -265,7 +265,7 @@ ${record.FacilityName}<br/>
             #end
         #end
     #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
-        #ALbutton('eventSubmit_doSchedule_change_status' '仮スケジュールに戻す' "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")
+        #ALbutton('eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_TEMP_SCHEDULE "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")
         #if($!{result.Detail.isEditable()})
             #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
             #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
@@ -277,7 +277,7 @@ ${record.FacilityName}<br/>
     #end
 
     #if($!{result.hasAuthoritySelfInsert()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
-    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" "コピーして登録する")
+    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_COPY)
     #end
 
     #ALajaxbuttonClose()

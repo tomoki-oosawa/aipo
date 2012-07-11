@@ -22,7 +22,7 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 
-<h3>アクセス権限の設定</h3>
+<h3>$l10n.SCHEDULE_ACCESS_PERMISSION_OF_SETTING</h3>
 
 ###AUISummaryDiv()
 ##<div class="floatRight">
@@ -39,15 +39,15 @@
 
 <div id="listmessageDiv"></div>
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するはユーザーはいません。</div>
+<div class="message">$l10n.SCHEDULE_MESSAGE_OF_NO_USER</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('ScheduleAdminAclListScreen' $result)
 </div>
 #AUIrowTableWide()
 <tr>
-<th class="w50">名前</th>
-<th>アクセス権限</th>
+<th class="w50">$l10n.SCHEDULE_NAME</th>
+<th>$l10n.SCHEDULE_ACCESS_PERMISSION</th>
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -55,7 +55,7 @@
 #set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminAclFormScreen').addQueryData('entityid', $!record.Key))
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.schedule_admin.onLoadScheduleAdminAclList')" >
 $!record.Name</a></td>
-<td>#if($record.Updated)変更あり#end</td>
+<td>#if($record.Updated)$l10n.SCHEDULE_UPDATED#end</td>
 </tr>
 #end
 #AUItablefooter()

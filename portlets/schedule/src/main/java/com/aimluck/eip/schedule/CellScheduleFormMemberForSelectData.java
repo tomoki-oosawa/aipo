@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -156,9 +157,11 @@ public class CellScheduleFormMemberForSelectData extends ALAbstractFormData {
   /*
    *
    */
+  @Override
   public void initField() {
     selectedgroup = new ALCellStringField();
-    selectedgroup.setFieldName("グループ");
+    selectedgroup.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_GROUP"));
   }
 
   /*

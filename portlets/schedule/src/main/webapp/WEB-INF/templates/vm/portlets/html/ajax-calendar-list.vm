@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["スケジュール一覧", ""]])
-#set ($tabs = [["スケジュール", "",""]])
+#set ($navilist = [[$l10n.SCHEDULE_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.SCHEDULE_SCHEDULE_LIST, ""]])
+#set ($tabs = [[$l10n.SCHEDULE_SCHEDULE, "",""]])
 ## ---------------------------------------------------------------------------
 
 <script language="JavaScript" type="text/javascript">

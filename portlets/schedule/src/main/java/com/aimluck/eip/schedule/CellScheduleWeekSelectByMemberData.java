@@ -46,6 +46,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 週間スケジュールの検索結果を管理するクラスです。
@@ -392,7 +393,7 @@ public class CellScheduleWeekSelectByMemberData extends
 
       boolean publicable = map.getEipTSchedule().getPublicFlag().equals("O");
       if (!publicable && !is_member) {
-        rd.setName("非公開");
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
       }
       boolean hidden = map.getEipTSchedule().getPublicFlag().equals("P");
       if (!hidden || is_member) {

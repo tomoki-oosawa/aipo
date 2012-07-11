@@ -39,6 +39,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールの状態変更を行うクラスです。
@@ -80,6 +81,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   /*
    *
    */
+  @Override
   public void initField() {
     // フィールドの初期化
     // 状態
@@ -94,7 +96,8 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
     } else {
       view_date.setValue(tmpView);
     }
-    view_date.setFieldName("指定日時");
+    view_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SELECT_DATE"));
   }
 
   /*

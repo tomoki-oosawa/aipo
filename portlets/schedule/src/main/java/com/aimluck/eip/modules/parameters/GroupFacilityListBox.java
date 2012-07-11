@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
@@ -41,7 +42,8 @@ public class GroupFacilityListBox extends ListBox {
 
   public static final String FACILITY_VALUE = "Facility";
 
-  private final String DEF_INITIAL_VALUE = "（全体／設備の選択）";
+  private final String DEF_INITIAL_VALUE = ALLocalizationUtils
+    .getl10n("SCHEDULE_SELECT_FACILITY_AND_ALL");
 
   /**
    * Initialize options
@@ -73,7 +75,8 @@ public class GroupFacilityListBox extends ListBox {
 
       // 設備一覧の登録
       groupKeys[count] = FACILITY_VALUE;
-      groupValues[count] = "設備一覧";
+      groupValues[count] =
+        ALLocalizationUtils.getl10n("SCHEDULE_FACILITY_LIST");
       count++;
 
       // 部署の登録

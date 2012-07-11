@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールの検索データを管理するクラスです。
@@ -43,7 +44,9 @@ public class ScheduleSearchResultData extends ScheduleResultData {
   }
 
   public String getDateFull() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'M'月'd'日（'E'）'");
+    SimpleDateFormat sdf =
+      new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
@@ -79,7 +82,9 @@ public class ScheduleSearchResultData extends ScheduleResultData {
   }
 
   public String getDateDetail() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy'年'M'月'd'日（'E'）'");
+    SimpleDateFormat sdf =
+      new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));

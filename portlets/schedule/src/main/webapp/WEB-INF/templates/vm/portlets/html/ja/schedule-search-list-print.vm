@@ -20,33 +20,33 @@
 ## ---------------------------------------------------------------------------
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.SCHEDULE_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.SCHEDULE_CLOSE" /></a>
 </div>
-※この枠の範囲の設定項目は、印刷へ反映されません。
+$l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <table>
 <tr>
-<th>表示する幅</th>
+<th>$l10n.SCHEDULE_WIDTH</th>
 <td>
 <select id="print_width">
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
-<option selected="selected" value="600px">600ピクセル</option>
-<option value="620px">620ピクセル</option>
-<option value="640px">640ピクセル</option>
-<option value="660px">660ピクセル</option>
-<option value="680px">680ピクセル</option>
-<option value="700px">700ピクセル</option>
-<option value="720px">720ピクセル</option>
-<option value="740px">740ピクセル</option>
-<option value="760px">760ピクセル</option>
-<option value="780px">780ピクセル</option>
-<option value="800px">800ピクセル</option>
+<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
+<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
+<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
+<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
+<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
+<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
+<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
+<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
+<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
+<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
+<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
 </select>
 </td>
 </tr>
 <tr>
-<th>文字サイズ</th>
+<th>$l10n.SCHEDULE_WORD_SIZE</th>
 <td><select id="print_word_size">
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
@@ -62,14 +62,14 @@
 </td>
 </tr>
 <tr>
-<th>その他表示設定</th>
+<th>l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
-<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
+<label><input id=print_icon type="checkbox" checked="checked" /> l10n.SCHEDULE_DISPLAY_ICON</label><br />
 </td>
 </tr>
 <tr>
-<th><input type="button" value="変更する" onclick="change_print_form()"/></th>
-<td><input type="button" value="印刷する" onclick="javascript:print();"/></td>
+<th><input type="button" value="l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
+<td><input type="button" value="l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
 </tr>
 </table>
 </div>
@@ -114,9 +114,9 @@ if(document.all!=undefined){
 <div id="printBody" style="width:600px;font-size:10pt;">
 #AUIrowTableWide()
 <tr>
-<th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>日時</th>
-<th #if(${client}=="IPHONE")class="w50"#else class="w40" #end>タイトル</th>
-<th class="w30 mb_hide">登録者</th>
+<th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>$l10n.SCHEDULE_DATE</th>
+<th #if(${client}=="IPHONE")class="w50"#else class="w40" #end>$l10n.SCHEDULE_TITLE</th>
+<th class="w30 mb_hide">$l10n.SCHEDULE_CREATE_USER</th>
 </tr>
 #foreach ($record in $result.ScheduleList)
 ##set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
@@ -124,16 +124,16 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if($record.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #end
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end</div></td>
 <td class="mb_hide"><div>$!{record.CreateUser.AliasName}</td>
 </tr>

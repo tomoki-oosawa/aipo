@@ -18,10 +18,10 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
+#set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
+#set ($action_str = $l10n.SCHEDULE_UPDATE)
 #set ($event_submit = "eventSubmit_doScheduleAdmin_acl_update")
-#set ($subtitle = "アクセス権限編集")
+#set ($subtitle = $l10n.SCHEDULE_EDIT_ACCESS_PERMISSION)
 
 #set($tabs = [[$subtitle , "",""]])
 #set ($indicator_id = "indicator-acl-")
@@ -31,12 +31,12 @@
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("scheduleAdminAclForm" $jslink $portlet "ScheduleAdminAclFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule_admin.onReceiveMessage)")
 
-<h3>対象者名</h3>
+<h3>$l10n.SCHEDULE_OBJECT_USER_NAME</h3>
 <p style="margin-bottom:15px;">$!result.CurrentData.Name</p>
 
-<h3>アクセス権限設定</h3>
+<h3>$l10n.SCHEDULE_ACCESS_PERMISSION_SETTING</h3>
 
-<small>左側にユーザーを追加し権限を変更してください。</small>
+<small>$l10n.SCHEDULE_MESSAGE_OF_CHANGE_PERMISSION</small>
 
 <div dojoType="aipo.widget.MemberAclSelectList"
         id="membernormalselect"
@@ -44,7 +44,7 @@
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="所属メンバー一覧"
+        memberToTitle="$l10n.SCHEDULE_MEMBER_LIST"
         memberToId="member_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserAllLiteJSONScreen').addQueryData('mode','grouponly').addQueryData('groupname','all')"
         memberFromOptionKey="key"
@@ -52,10 +52,10 @@
         memberValuesStr="$!result.AclData"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="all"
-        groupSelectPreOptionValue="すべてのユーザー、グループ"
+        groupSelectPreOptionValue="$l10n.SCHEDULE_ALL_USER_AND_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','post')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserAllLiteJSONScreen').addQueryData('mode','grouponly')">
 </div>
 

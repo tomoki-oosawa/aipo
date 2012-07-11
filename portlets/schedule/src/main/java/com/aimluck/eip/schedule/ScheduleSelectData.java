@@ -56,6 +56,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュール詳細表示の検索結果を管理するクラスです。
@@ -411,23 +412,43 @@ public class ScheduleSelectData extends
       rd.setRepeat(true);
       // 毎日
       if (ptn.charAt(0) == 'D') {
-        rd.addText("毎日");
+        rd.addText(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY"));
         count = 1;
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
-        rd.addText(new StringBuffer().append("毎週 ").append(
-          ptn.charAt(1) != '0' ? "日" : "").append(
-          ptn.charAt(2) != '0' ? "月" : "").append(
-          ptn.charAt(3) != '0' ? "火" : "").append(
-          ptn.charAt(4) != '0' ? "水" : "").append(
-          ptn.charAt(5) != '0' ? "木" : "").append(
-          ptn.charAt(6) != '0' ? "金" : "").append(
-          ptn.charAt(7) != '0' ? "土" : "").append(" 曜日").toString());
+        rd
+          .addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .append(
+              ptn.charAt(1) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SUNDAY") : "")
+            .append(
+              ptn.charAt(2) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_MONDAY") : "")
+            .append(
+              ptn.charAt(3) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_TUSEDAY") : "")
+            .append(
+              ptn.charAt(4) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_WEDNESDAY") : "")
+            .append(
+              ptn.charAt(5) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_THURSDAY") : "")
+            .append(
+              ptn.charAt(6) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_FRIDAY") : "")
+            .append(
+              ptn.charAt(7) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SATURDAY") : "")
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
+            .toString());
         count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
-        rd.addText(new StringBuffer().append("毎月 ").append(
-          Integer.parseInt(ptn.substring(1, 3))).append("日").toString());
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 3;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -446,12 +467,18 @@ public class ScheduleSelectData extends
           rd.setLimit(true);
           // 期限
           rd.addText(new StringBuffer().append(" （").append(
-            rd.getStartDate().getYear()).append("年").append(
-            rd.getStartDate().getMonth()).append("月").append(
-            rd.getStartDate().getDay()).append("日 から ").append(
-            rd.getEndDate().getYear()).append("年").append(
-            rd.getEndDate().getMonth()).append("月").append(
-            rd.getEndDate().getDay()).append("日 まで）").toString());
+            rd.getStartDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getStartDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getStartDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY")).append(
+            rd.getEndDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getEndDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getEndDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY")).toString());
         }
       }
       // 登録者
@@ -524,6 +551,14 @@ public class ScheduleSelectData extends
     return members;
   }
 
+  public String getViewDateFormat() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DELETE_ONLY_THE_SCHEDULE",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
   /**
    * 状態を取得します。
    * 
@@ -553,6 +588,16 @@ public class ScheduleSelectData extends
    */
   public String getViewtype() {
     return viewtype;
+  }
+
+  public String getUpdateUserAliasNameText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_OTHER_SELECT_USER",
+      ScheduleDetailResultData.class
+        .cast(getDetail())
+        .getUpdateUser()
+        .getAliasName()
+        .getValue());
   }
 
   /**

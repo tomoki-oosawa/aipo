@@ -25,9 +25,9 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["基本設定", "settings","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminSettingsListScreen')"])
+#set($tab = [$l10n.SCHEDULE_SETTINGS, "settings","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminSettingsListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["アクセス権限", "acl", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminAclListScreen')"])
+#set($tab = [$l10n.SCHEDULE_ACCESS_PERMISSION, "acl", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminAclListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>

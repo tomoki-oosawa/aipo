@@ -70,6 +70,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.util.ALServletUtils;
 
 /**
@@ -613,15 +614,15 @@ public class RemainderScheduleDaemon implements Daemon {
     body
       .append("--- ")
       .append(viewDate.getYear())
-      .append("年")
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_YEAR"))
       .append(viewDate.getMonth())
-      .append("月")
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
       .append(viewDate.getDay())
-      .append("日")
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
       .append(" ---")
       .append(CR)
       .append(CR);
-    body.append("[タイトル]").append(CR);
+    body.append(ALLocalizationUtils.getl10n("SCHEDULE_TITLE_SUB")).append(CR);
 
     if (schelist != null && schelist.size() > 0) {
       CellScheduleResultData rd = null;
@@ -629,34 +630,35 @@ public class RemainderScheduleDaemon implements Daemon {
       for (int i = 0; i < size; i++) {
         rd = (CellScheduleResultData) schelist.get(i);
         if (rd.isSpan()) {
-          body.append("・期間：");
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TERM"));
         } else {
           body.append("・").append(rd.getDate()).append("  ");
         }
         body.append(rd.getName());
 
         if (!rd.isPublic()) {
-          body.append("(非公開)");
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_CLOSE_PUBLIC"));
         }
 
         if (rd.isDuplicate()) {
-          body.append("(重複)");
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_DUPLICATE"));
         }
 
         if (rd.isRepeat()) {
-          body.append("(繰り返し)");
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_REPEAT"));
         }
         if (rd.isTmpreserve()) {
-          body.append("(仮)");
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TEMP"));
         }
 
         body.append(CR);
       }
     } else {
-      body.append("予定はありません。").append(CR);
+      body.append(ALLocalizationUtils.getl10n("SCHEDULE_NO_SCHEDULE")).append(
+        CR);
     }
     body.append(CR);
-    body.append("[ToDo]").append(CR);
+    body.append(ALLocalizationUtils.getl10n("SCHEDULE_TODO")).append(CR);
 
     if (todolist != null && todolist.size() > 0) {
       ScheduleToDoResultData todord = null;
@@ -666,22 +668,23 @@ public class RemainderScheduleDaemon implements Daemon {
         body.append("・").append(todord.getTodoName()).append(CR);
       }
     } else {
-      body.append("ToDoはありません。").append(CR);
+      body.append(ALLocalizationUtils.getl10n("SCHEDULE_NO_TODO")).append(CR);
     }
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO")).append(CR);
 
     String globalurl = getCellularUrl(useraddr);
     if (!(globalurl == null || globalurl.equals(""))) {
-      body.append("・社外").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_OUTSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(globalurl).append(CR);
     }
     if (!(localurl == null || "".equals(localurl))) {
-      body.append("・社内").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_INSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(localurl).append(CR).append(CR);
       body.append("---------------------");
     }

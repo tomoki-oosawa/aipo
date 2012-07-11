@@ -20,32 +20,32 @@
 ## ---------------------------------------------------------------------------
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="前の週へ">
-<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="前の週へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_WEEK">
+<img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="$l10n.SCHEDULE_PREV_WEEK" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="前の日へ">
-<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="前の日へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_DATE">
+<img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="$l10n.SCHEDULE_PREV_DATE" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
-$!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Day} 日 $!{result.ViewDate.DayOfWeek}
+$!{result.ViewDate.Year} $l10n.SCHEDULE_YEAR $!{result.ViewDate.Month} $l10n.SCHEDULE_MONTH $!{result.ViewDate.Day} $l10n.SCHEDULE_DAY $!{result.ViewDate.DayOfWeek}
 </span></td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="次の日へ">
-<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="次の日へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_DATE">
+<img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="$l10n.SCHEDULE_NEXT_DATE" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="次の週へ">
-<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="次の週へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_WEEK">
+<img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="$l10n.SCHEDULE_NEXT_WEEK" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="今日へ">
-<img src="images/schedule/schedule_today.gif" border="0" alt="今日へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_TODAY">
+<img src="images/schedule/schedule_today.gif" border="0" alt="$l10n.SCHEDULE_TODAY" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="前月へ">
-<img src="images/schedule/schedule_prevmonth.gif" border="0" alt="前月へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_MONTH">
+<img src="images/schedule/schedule_prevmonth.gif" border="0" alt="$l10n.SCHEDULE_PREV_MONTH" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="翌月へ">
-<img src="images/schedule/schedule_nextmonth.gif" border="0" alt="翌月へ" /></a>&nbsp;
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_MONTH">
+<img src="images/schedule/schedule_nextmonth.gif" border="0" alt="$l10n.SCHEDULE_NEXT_MONTH" /></a>&nbsp;
 </td>
 </tr></tbody></table>
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{result.ViewDate.toString()}))
-#ALformheader('スケジュール' $jslink $portlet)
+#ALformheader($l10n.SCHEDULE_SCHEDULE $jslink $portlet)
 #ALtableheaderCalendar("100%")
 #set($entityids = "")
 #set($todoListSize = $result.ToDoResultDataList.size())
@@ -60,7 +60,7 @@ $!{result.ViewDate.Year} 年 $!{result.ViewDate.Month} 月 $!{result.ViewDate.Da
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ${record.TodoName}
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 </a>
 </div>
@@ -83,12 +83,12 @@ ${record.TodoName}
 <div id="$!{portlet.ID}-$!{record.ScheduleId}" class="calerndarTermScheduleDiv small schedule-$!{portlet.ID}-$!{record.ScheduleId}">
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$record.Name
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </a>
 </div>
@@ -114,16 +114,16 @@ ${record.TodoName}
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{result.getResult($count).ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">$!{result.getResult($count).Name} </a>
 #if(! ${result.getResult($count).isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if($result.getResult($count).isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #end
 #if($result.getResult($count).isRepeat())
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
 #if($result.getResult($count).isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </div>
 </div>
@@ -154,16 +154,16 @@ ${record.TodoName}
 #set($entityids = "$!{entityids}$!{result.getResult($count).ScheduleId},")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{result.getResult($count).Name}</a>
 #if(! ${result.getResult($count).isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if($result.getResult($count).isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #end
 #if($result.getResult($count).isRepeat())
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
 #if($result.getResult($count).isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </div>
 </div>
@@ -186,7 +186,7 @@ ${record.TodoName}
 #end
 #end
 #if($!result.isDuplicate())
-#ALtdheadAtt("重複" "width='25'")
+#ALtdheadAtt($l10n.SCHEDULE_DUPLICATION "width='25'")
 #ALtditemheader()
 #foreach($record in $result.DuplicateScheduleList)
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
@@ -196,14 +196,14 @@ ${record.TodoName}
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.Name</a>
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #if($record.isRepeat())
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </div>
 </div>

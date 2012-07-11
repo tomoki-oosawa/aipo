@@ -20,32 +20,32 @@
 ## ---------------------------------------------------------------------------
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.SCHEDULE_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.SCHEDULE_CLOSE" /></a>
 </div>
-※この枠の範囲の設定項目は、印刷へ反映されません。
+$l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <table>
 <tr>
-<th>表示する幅</th>
+<th>$l10n.SCHEDULE_WIDTH</th>
 <td>
 <select id=print_width>
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
-<option selected="selected" value="600px">600ピクセル</option>
-<option value="620px">620ピクセル</option>
-<option value="640px">640ピクセル</option>
-<option value="660px">660ピクセル</option>
-<option value="680px">680ピクセル</option>
-<option value="700px">700ピクセル</option>
-<option value="720px">720ピクセル</option>
-<option value="740px">740ピクセル</option>
-<option value="760px">760ピクセル</option>
-<option value="780px">780ピクセル</option>
-<option value="800px">800ピクセル</option>
+<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
+<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
+<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
+<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
+<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
+<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
+<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
+<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
+<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
+<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
+<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
 </select>
 </tr>
 <tr>
-<th>文字サイズ</th>
+<th>$l10n.SCHEDULE_WORD_SIZE</th>
 <td><select id=print_word_size>
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
@@ -62,17 +62,17 @@
 </td>
 </tr>
 <tr>
-<th>その他表示設定</th>
+<th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
-<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
-<label><input id=print_term type="checkbox" checked="checked" /> 期間スケジュールを表示させる。</label><br />
-<label><input id=print_todo type="checkbox" checked="checked" /> ToDoを表示させる。</label><br />
-<label><input id=print_holiday type="checkbox" checked="checked" /> 祝日を表示する。</label><br />
+<label><input id=print_icon type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
+<label><input id=print_term type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_SPAN_SCHEDULE</label><br />
+<label><input id=print_todo type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
+<label><input id=print_holiday type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_HOLIDAY</label><br />
 ##<label><input type="checkbox" checked="checked" /> 記念日を表示する。</label></td>
 </tr>
 <tr>
-<th><input type="button" value="変更する" onclick="change_print_form()"/></th>
-<td><input type="button" value="印刷する" onclick="javascript:print();"/></td>
+<th><input type="button" value="$l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
+<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
 </tr>
 </table>
 </div>
@@ -195,13 +195,13 @@ if(document.all!=undefined){
 
 
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
-<div class="message">選択したグループには、ユーザーおよび設備が登録されていません。</div>
+<div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.getTargetGroupName().groupAliasName})
-<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStart.Year}年$!{result.ViewStart.Month}月$!{result.ViewStart.Day}日$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}年$!{result.ViewEnd.Month}月$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStart.Year}$l10n.SCHEDULE_YEAR$!{result.ViewStart.Month}$l10n.SCHEDULE_MONTH$!{result.ViewStart.Day}$l10n.SCHEDULE_DAY$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}$l10n.SCHEDULE_YEAR$!{result.ViewEnd.Month}$l10n.SCHEDULE_MONTH$!{result.ViewEnd.Day}$l10n.SCHEDULE_DAY$!{result.ViewEnd.DayOfWeek}</h1>
 #else
-<h1>$!{result.ViewStart.Year}年$!{result.ViewStart.Month}月$!{result.ViewStart.Day}日$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}年$!{result.ViewEnd.Month}月$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.ViewStart.Year}$l10n.SCHEDULE_YEAR$!{result.ViewStart.Month}$l10n.SCHEDULE_MONTH$!{result.ViewStart.Day}$l10n.SCHEDULE_DAY$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}$l10n.SCHEDULE_YEAR$!{result.ViewEnd.Month}$l10n.SCHEDULE_MONTH$!{result.ViewEnd.Day}$l10n.SCHEDULE_DAY$!{result.ViewEnd.DayOfWeek}</h1>
 #end
 
 #ALtableheaderCalendar("100%")
@@ -281,17 +281,17 @@ $record3.AliasName
 #if(${record4.TermResultData.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv small">$!{record4.TermResultData.WbrName}
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.WbrName}
-#if(!${record4.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
-#if(${record4.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />#end
+#if(!${record4.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
+#if(${record4.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />#end
 </a>
 #else
 <div class="calerndarTermScheduleDiv small">
 $!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if(${record4.TermResultData.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 #end
 </div>
@@ -309,7 +309,7 @@ $!{record4.TermResultData.WbrName}
 #set($show_tr = $show_tr + 1 )
 #end
 ### 期間スケジュール（ここまで） ###
-### １日もしくは繰り返しスケジュール（ここから） ###
+### １日もしくは$l10n.SCHEDULE_REPEATスケジュール（ここから） ###
 #if($show_tr > 0)
 <tr>
 #end
@@ -339,7 +339,7 @@ $!{record4.TermResultData.WbrName}
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="$l10n.SCHEDULE_ADD_SCHEDULES">$l10n.SCHEDULE_ADD_SCHEDULES</a>
 #end
 </div></div>
 </div>
@@ -363,16 +363,16 @@ $!{record4.TermResultData.WbrName}
 ##</div>
 #end
 #if(! ${record2.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if($record2.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #end
 #if(${record2.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
 #if($record2.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </div>
 </div>
@@ -385,7 +385,7 @@ $!{record4.TermResultData.WbrName}
 #else
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
-##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="$l10n.SCHEDULE_ADD_SCHEDULES">$l10n.SCHEDULE_ADD_SCHEDULES</a>
 #end
 
 </div></div>
@@ -398,7 +398,7 @@ $!{record4.TermResultData.WbrName}
 </tr>
 #end
 #set($show_tr = $show_tr + 1 )
-### １日もしくは繰り返しスケジュール（ここまで） ###
+### １日もしくは$l10n.SCHEDULE_REPEATスケジュール（ここまで） ###
 ### ToDoリスト（ここから） ###
 #foreach($todocontainer in ${result.getToDoContainer($record3.UserId.Value)})
 <tr>
@@ -417,7 +417,7 @@ $!{record4.TermResultData.WbrName}
 #end
 ToDo：$!{record.ToDoResultData.TodoName}
 #if(! ${record.ToDoResultData.isPublic()})
-<img class="icon_schedule" src="images/todo/todo_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/todo/todo_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 </a>
 </div>
@@ -510,7 +510,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <div class="calendarScheduleDiv"><div class="small">
 #if($!{result.hasAuthorityFacilityInsert()})
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
-##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="#$l10n.SCHEDULE_WILL_ADD_SCHEDULE">#$l10n.SCHEDULE_WILL_ADD_SCHEDULE</a>
 #end
 </div></div>
 </div>
@@ -533,16 +533,16 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 ##</div>
 #end
 #if(! ${record2.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="非公開" title="非公開" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
 #end
 #if($record2.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="重複スケジュール" title="重複スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #end
 #if(${record2.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="繰り返し" title="繰り返し" />
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
 #if($record2.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="仮スケジュール" title="仮スケジュール" />
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 </div>
 </div>
@@ -550,7 +550,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 <div class="calendarScheduleDiv"><div class="small">
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
-##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="予定追加">予定追加</a>
+##<a class="small addSchedule" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)" title="#$l10n.SCHEDULE_WILL_ADD_SCHEDULE">#$l10n.SCHEDULE_WILL_ADD_SCHEDULE</a>
 </div></div>
 #end
 #if($!{record.Date.Value.equals($result.Today.Value)})

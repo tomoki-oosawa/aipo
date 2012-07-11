@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -49,9 +50,8 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(CellScheduleSelectFormData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(CellScheduleSelectFormData.class.getName());
 
   /** <code>end_date</code> 表示日時 */
   protected ALCellDateField view_date;
@@ -62,8 +62,9 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   protected int currentYear;
 
   /*
-   * 
+   *
    */
+  @Override
   public void initField() {
   }
 
@@ -77,7 +78,8 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
 
     // 指定日時
     view_date = new ALCellDateField();
-    view_date.setFieldName("日付");
+    view_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_DATE"));
     view_date.setNotNull(true);
 
     view_date_str = "";
@@ -113,7 +115,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -131,7 +133,7 @@ public class CellScheduleSelectFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) throws ALDBErrorException,
       ALPageNotFoundException {
     if (view_date_str.length() == 0) {
-      msgList.add("『 日付 』を入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_TYPE_DATE"));
       return false;
     }
 

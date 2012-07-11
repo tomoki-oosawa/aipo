@@ -39,6 +39,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -170,7 +171,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       if ("C".equals(record.getPublicFlag())
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
-        rd.setName("非公開");
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
         // 仮スケジュールかどうか
         rd.setTmpreserve(false);
       } else {

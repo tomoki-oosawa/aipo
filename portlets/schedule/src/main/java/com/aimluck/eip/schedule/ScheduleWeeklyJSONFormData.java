@@ -56,6 +56,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 public class ScheduleWeeklyJSONFormData {
 
@@ -207,7 +208,8 @@ public class ScheduleWeeklyJSONFormData {
             bean.initField();
             bean.setResultData(rd);
             if (!rd.isPublic() && !rd.isMember()) {
-              bean.setName("非公開");
+              bean
+                .setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
             }
             bean.setColspanReal(col);
             bean.setIndex(k);
@@ -249,7 +251,7 @@ public class ScheduleWeeklyJSONFormData {
           bean.initField();
           bean.setResultData(rd);
           if (!rd.isPublic() && !rd.isMember()) {
-            bean.setName("非公開");
+            bean.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
           }
           bean.setIndex(i);
           if (!rd.isHidden() || rd.isMember()) {
@@ -538,7 +540,8 @@ public class ScheduleWeeklyJSONFormData {
 
             }
           } catch (Exception ex) {
-            msgList.add("メールを送信できませんでした。");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
             logger.error("Exception", ex);
             return false;
           }
@@ -707,7 +710,8 @@ public class ScheduleWeeklyJSONFormData {
             }
 
           } catch (Exception ex) {
-            msgList.add("メールを送信できませんでした。");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
             logger.error("Exception", ex);
             return false;
           }
@@ -865,7 +869,7 @@ public class ScheduleWeeklyJSONFormData {
 
           }
         } catch (Exception ex) {
-          msgList.add("メールを送信できませんでした。");
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
           logger.error("Exception", ex);
           return false;
         }
@@ -1032,13 +1036,14 @@ public class ScheduleWeeklyJSONFormData {
           }
 
         } catch (Exception ex) {
-          msgList.add("メールを送信できませんでした。");
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
           logger.error("Exception", ex);
           return false;
         }
       }
     } else {
-      msgList.add("そのスケジュールは編集することができません");
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_YOU_DONOT_EDIT_THE_SCHEDULE"));
       res = false;
     }
     return res;

@@ -30,15 +30,15 @@
 
 #if (${client} != "IPHONE")
 <ul>
-#set($tab = ["ブロック", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
+#set($tab = ["$l10n.SCHEDULE_BLOCK", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
+#set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["週", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
+#set($tab = ["$l10n.SCHEDULE_WEEK", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["月", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly')"])
+#set($tab = ["$l10n.SCHEDULE_MONTH", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a style="width:3em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["一覧", "list", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')"])
+#set($tab = ["$l10n.SCHEDULE_LIST", "list", "$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 #end
@@ -50,27 +50,27 @@
 <div class="auiSelectButton">
 <ul>
 #if($!top_form && $!top_form=='simple'&&${client} == "IPAD")
-<li style="width:3em;margin-right:3px;" title="今日へ">
+<li style="width:3em;margin-right:3px;" title="$l10n.SCHEDULE_TODAY">
 #else
-<li style="width:4em;margin-right:3px;" title="今日へ">
+<li style="width:4em;margin-right:3px;" title="$l10n.SCHEDULE_TODAY">
 #end
-<a href="javascript:void(0);" class="btn" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"]);'><span>今日</span></a>
+<a href="javascript:void(0);" class="btn" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"]);'><span>$l10n.SCHEDULE_THIS_DAY</span></a>
 </li>
-<li style="margin-right:3px;" title="前の週へ">
-<a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="前の週へ" /></span></a>
+<li style="margin-right:3px;" title="$l10n.SCHEDULE_PREV_WEEK">
+<a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="$l10n.SCHEDULE_PREV_WEEK" /></span></a>
 </li>
-<li title="前の日へ">
-<a href="javascript:void(0);" class="first arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="前の日へ" /></span></a>
+<li title="$l10n.SCHEDULE_PREV_DATE">
+<a href="javascript:void(0);" class="first arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="$l10n.SCHEDULE_PREV_DATE" /></span></a>
 </li>
-<li style="margin-right:3px;" title="次の日へ">
-<a href="javascript:void(0);" class="last arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="次の日へ" /></span></a>
+<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_DATE">
+<a href="javascript:void(0);" class="last arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="$l10n.SCHEDULE_NEXT_DATE" /></span></a>
 </li>
-<li style="margin-right:3px;" title="次の週へ">
-<a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="次の週へ" /></span></a>
+<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_WEEK">
+<a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);'><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="$l10n.SCHEDULE_NEXT_WEEK" /></span></a>
 </li>
 #if($!top_form && $!top_form=='simple')
-<li style="width: 3em;" title="$!{dayList}日">
-<a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}日</span></a>
+<li style="width: 3em;" title="$!{dayList}$l10n.SCHEDULE_DAY">
+<a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}$l10n.SCHEDULE_DAY</span></a>
 </li>
 #end
 </ul>
@@ -79,13 +79,13 @@
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1$l10n.SCHEDULE_DAY</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4$l10n.SCHEDULE_DAY</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7日</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7$l10n.SCHEDULE_DAY</a>
 </li>
 </ul>
 </div>
@@ -96,7 +96,7 @@
 #if(!$!top_form || $!top_form!='simple')</div>#end
 </div>
 
-<div class="indicator" id="indicator-$!portlet.ID">読み込み中...</div>
+<div class="indicator" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
 <!-- WRAPPER -->
     <table class="tableWrapper" id="tableWrapper_$!portlet.ID">
         <tbody>
@@ -127,12 +127,12 @@
                 			#end
 
                 			##施設グループ
-                        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>設備一覧</option>
+                        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>$l10n.SCHEDULE_FACILITY_LIST</option>
                             #foreach($record in $!result.FacilityGroupList)
                             	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
                             #end
                     		<option value="">----------</option>
-							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if("pickup"=="$result.SelectedGroup") selected="selected" #end>ユーザー選択</option>
+							<option value="pickup" #if("pickup"==$result.SelectedGroup) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
 						</select>
 						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" />
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">
@@ -145,12 +145,12 @@
 					#elseif(($!{hasAcl}) && $!{hasAcl} == "F")
 						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);">
                 			##施設グループ
-                        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>設備一覧</option>
+                        	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>$l10n.SCHEDULE_FACILITY_LIST</option>
                             #foreach($record in $!result.FacilityGroupList)
                             	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
                             #end
                     		<option value="">----------</option>
-							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if("pickup"=="$result.SelectedGroup") selected="selected" #end>ユーザー選択</option>
+							<option value="pickup" #if("pickup"==$result.SelectedGroup) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
 						</select>
 						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" />
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">

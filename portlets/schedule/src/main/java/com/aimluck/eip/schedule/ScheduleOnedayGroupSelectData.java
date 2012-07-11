@@ -64,6 +64,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * １日スケジュール（グループ）の検索結果を管理するクラスです。
@@ -530,7 +531,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         && (userid != record.getUserId().intValue())
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
-        rd.setName("非公開");
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
         // 仮スケジュールかどうか
         rd.setTmpreserve(false);
       } else {

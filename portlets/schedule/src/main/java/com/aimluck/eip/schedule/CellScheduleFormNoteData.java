@@ -65,6 +65,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -228,7 +229,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
           boolean check = false;
           if (old_ids.length != facilityList.size()) {
-            msgList.add(" 設備を予約する権限がありません ");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
             res = false;
           } else {
             for (int old_id : old_ids) {
@@ -241,7 +243,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
                 }
               }
               if (!check) {
-                msgList.add(" 設備を予約する権限がありません ");
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
                 res = false;
               }
               check = false;
@@ -249,7 +252,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           }
         } else {
           if (facilityList.size() > 0) {
-            msgList.add(" 設備を予約する権限がありません ");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
             res = false;
           }
         }
@@ -298,19 +302,23 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   public void initField() {
     // タイトル
     name = new ALStringField();
-    name.setFieldName("タイトル");
+    name.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TITLE"));
     name.setTrim(true);
     // 場所
     place = new ALStringField();
-    place.setFieldName("場所");
+    place.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_PLACE"));
     place.setTrim(true);
     // 内容
     note = new ALStringField();
-    note.setFieldName("内容");
+    note
+      .setFieldName(ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_NOTE"));
     note.setTrim(false);
     // 公開区分
     public_flag = new ALStringField();
-    public_flag.setFieldName("公開区分");
+    public_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_PUBLIC"));
     public_flag.setTrim(true);
     public_flag.setValue("O");
 
@@ -326,7 +334,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
     // 2007.3.28 ToDo連携
     common_category_id = new ALCellNumberField();
-    common_category_id.setFieldName("カテゴリ");
+    common_category_id.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_CATEGORY"));
     common_category_id.setValue(1);
 
     super.initField();
@@ -615,7 +624,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         && !facilityCheckAclPermission(
           rundata,
           ALAccessControlConstants.VALUE_ACL_INSERT)) {
-        msgList.add(" 設備を予約する権限がありません ");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
         return false;
       }
 
@@ -675,7 +685,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
+        String subject =
+          ALLocalizationUtils.getl10nFormat(
+            "SCHEDULE_SUB_SCHEDULE",
+            ALOrgUtilsService.getAlias());
         String org_id = ALOrgUtilsService.getAlias();
 
         // メール送信
@@ -706,7 +719,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
       }
     } catch (Exception ex) {
-      msgList.add("メールを送信できませんでした。");
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
       logger.error("Exception", ex);
       return false;
     }
@@ -779,7 +792,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
         if (old_ids.length != facilityList.size()) {
-          msgList.add(" 設備を予約する権限がありません ");
+          msgList.add(ALLocalizationUtils
+            .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
           return false;
         }
         boolean check = false;
@@ -793,7 +807,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             }
           }
           if (!check) {
-            msgList.add(" 設備を予約する権限がありません ");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
             return false;
           }
           check = false;
@@ -1147,6 +1162,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             ownerid);
         }
       }
+
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1162,7 +1178,10 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(form_data.getMemberList(), ALEipUtils
             .getUserId(rundata), false);
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
+        String subject =
+          ALLocalizationUtils.getl10nFormat(
+            "SCHEDULE_SUB_SCHEDULE",
+            ALOrgUtilsService.getAlias());
         String org_id = ALOrgUtilsService.getAlias();
 
         List<ALAdminMailMessage> messageList =
@@ -1192,7 +1211,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
       }
     } catch (Exception ex) {
-      msgList.add("メールを送信できませんでした。");
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
       logger.error("Exception", ex);
       return false;
     }

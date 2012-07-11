@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 詳細スケジュールの検索データを管理するクラスです。
@@ -84,9 +85,11 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     text = new ALStringField();
     text.setValue("");
     // 登録日時
-    createDate = new ALDateTimeField("yyyy年M月d日");
+    createDate =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("SCHEDULE_FORMAT"));
     // 更新日時
-    updateDate = new ALDateTimeField("yyyy年M月d日");
+    updateDate =
+      new ALDateTimeField(ALLocalizationUtils.getl10n("SCHEDULE_FORMAT"));
   }
 
   /**

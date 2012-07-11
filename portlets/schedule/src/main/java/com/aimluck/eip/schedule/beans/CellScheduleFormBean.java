@@ -38,6 +38,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.schedule.AbstractCellScheduleFormData;
 import com.aimluck.eip.schedule.util.CellScheduleUtils;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 携帯版スケジュールのフォームデータを管理するクラスです。
@@ -108,6 +109,7 @@ public class CellScheduleFormBean implements ALData, Cloneable {
   /** <code>currentYear</code> 現在の年 */
   private int current_year;
 
+  @Override
   public void initField() {
     initField(null, null, null);
   }
@@ -133,7 +135,8 @@ public class CellScheduleFormBean implements ALData, Cloneable {
     } else {
       start_date.setValue(tmpStart);
     }
-    start_date.setFieldName("開始日時");
+    start_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_START_DATE"));
 
     // 終了日時
     end_date = new ALCellDateTimeField("yyyy-MM-dd-HH-mm");
@@ -146,7 +149,8 @@ public class CellScheduleFormBean implements ALData, Cloneable {
     } else {
       end_date.setValue(tmpEnd);
     }
-    end_date.setFieldName("終了日時");
+    end_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
 
     // 指定日時
     view_date = new ALCellDateTimeField("yyyy-MM-dd");
@@ -155,66 +159,79 @@ public class CellScheduleFormBean implements ALData, Cloneable {
     } else {
       view_date.setValue(tmpView);
     }
-    view_date.setFieldName("指定日時");
+    view_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SELECT_DATE"));
 
     // 繰り返しタイプ
     repeat_type = new ALCellStringField();
-    repeat_type.setFieldName("繰り返しタイプ");
+    repeat_type.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_TYPE"));
     repeat_type.setValue("D");
     repeat_type.setTrim(true);
 
     // 日
     week_0 = new ALCellStringField();
-    week_0.setFieldName("日");
+    week_0.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SUNDAY"));
     week_0.setTrim(true);
 
     // 月
     week_1 = new ALCellStringField();
-    week_1.setFieldName("月");
+    week_1.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_MANDAY"));
     week_1.setTrim(true);
 
     // 火
     week_2 = new ALCellStringField();
-    week_2.setFieldName("火");
+    week_2.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TUSEDAY"));
     week_2.setTrim(true);
 
     // 水
     week_3 = new ALCellStringField();
-    week_3.setFieldName("水");
+    week_3.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_WEDNESDAY"));
     week_3.setTrim(true);
 
     // 木
     week_4 = new ALCellStringField();
-    week_4.setFieldName("木");
+    week_4.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_THURSDAY"));
     week_4.setTrim(true);
 
     // 金
     week_5 = new ALCellStringField();
-    week_5.setFieldName("金");
+    week_5.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_FRIDAY"));
     week_5.setTrim(true);
 
     // 土
     week_6 = new ALCellStringField();
-    week_6.setFieldName("土");
+    week_6.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
 
     // 繰り返し日（選択されたときのみ Validate する）
     month_day = new ALCellNumberField();
-    month_day.setFieldName("毎月の日");
+    month_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
     month_day.limitValue(1, 31);
 
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
-    limit_flag.setFieldName("繰り返し");
+    limit_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT"));
     limit_flag.setValue("OFF");
     limit_flag.setTrim(true);
 
     // 繰り返し期限
     limit_start_date = new ALCellDateField();
-    limit_start_date.setFieldName("繰り返し期限");
+    limit_start_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     limit_start_date.setValue(start_date.getValue());
     limit_end_date = new ALCellDateField();
-    limit_end_date.setFieldName("繰り返し期限");
+    limit_end_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     ALCellDateTimeField tmp_date = new ALCellDateTimeField("yyyy-MM-dd-HH-mm");
     if (tmpEnd == null || tmpEnd.equals("")) {
       if (tmpStart == null || tmpStart.equals("")) {
@@ -231,7 +248,8 @@ public class CellScheduleFormBean implements ALData, Cloneable {
 
     // 繰り返しスケジュールの編集フラグ
     edit_repeat_flag = new ALCellNumberField();
-    edit_repeat_flag.setFieldName("繰り返し編集範囲");
+    edit_repeat_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_EDIT_AREA"));
     edit_repeat_flag
       .setValue(AbstractCellScheduleFormData.FLAG_EDIT_REPEAT_DEF);
 
@@ -243,13 +261,15 @@ public class CellScheduleFormBean implements ALData, Cloneable {
 
     // 共有メンバーによる編集／削除権限フラグ
     edit_flag = new ALCellStringField();
-    edit_flag.setFieldName("編集／削除権限");
+    edit_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EDIT_DELETE_PERMISSION"));
     edit_flag.setTrim(true);
     edit_flag.setValue("T");
 
     // 仮スケジュールに戻すかどうか
     change_tmpreserve_flag = new ALCellStringField();
-    change_tmpreserve_flag.setFieldName("仮スケジュール");
+    change_tmpreserve_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TEMP_SCHEDULE"));
     change_tmpreserve_flag.setTrim(true);
     change_tmpreserve_flag.setValue("F");
 

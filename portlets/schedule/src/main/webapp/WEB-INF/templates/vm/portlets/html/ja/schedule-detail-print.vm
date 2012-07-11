@@ -20,33 +20,33 @@
 ## ---------------------------------------------------------------------------
 <div id="printHeader">
 <div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる" /></a>
+<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.SCHEDULE_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.SCHEDULE_CLOSE" /></a>
 </div>
-※この枠の範囲の設定項目は、印刷へ反映されません。
+$l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <table>
 <tr>
-<th>表示する幅</th>
+<th>$l10n.SCHEDULE_WIDTH</th>
 <td>
 <select id="print_width">
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
-<option selected="selected" value="600px">600ピクセル</option>
-<option value="620px">620ピクセル</option>
-<option value="640px">640ピクセル</option>
-<option value="660px">660ピクセル</option>
-<option value="680px">680ピクセル</option>
-<option value="700px">700ピクセル</option>
-<option value="720px">720ピクセル</option>
-<option value="740px">740ピクセル</option>
-<option value="760px">760ピクセル</option>
-<option value="780px">780ピクセル</option>
-<option value="800px">800ピクセル</option>
+<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
+<option value="620px">620$$l10n.SCHEDULE_PIXEL</option>
+<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
+<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
+<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
+<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
+<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
+<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
+<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
+<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
+<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
 </select>
 </td>
 </tr>
 <tr>
-<th>文字サイズ</th>
+<th>$l10n.SCHEDULE_WORD_SIZE</th>
 <td><select id="print_word_size">
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
@@ -62,14 +62,14 @@
 </td>
 </tr>
 <tr>
-<th>その他表示設定</th>
+<th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
-<label><input id=print_icon type="checkbox" checked="checked" /> 繰り返し・共有・仮登録などのアイコンを表示させる。</label><br />
+<label><input id=print_icon type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
 </td>
 </tr>
 <tr>
-<th><input type="button" value="変更する" onclick="change_print_form()"/></th>
-<td><input type="button" value="印刷する" onclick="javascript:print();"/></td>
+<th><input type="button" value="$l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
+<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
 </tr>
 </table>
 </div>
@@ -114,76 +114,76 @@ if(document.all!=undefined){
 
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.Detail.isSpan()})
-<h1>$!{result.User.AliasName} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.Detail.StartDate.DayOfWeek}</h1>
+<h1>$!{result.User.AliasName} $!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$!{result.Detail.StartDate.DayOfWeek}</h1>
 #else
-<h1>$!{result.User.AliasName} $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
+<h1>$!{result.User.AliasName} $!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
 #end
 
 <table><tbody>
 
-#ALtdcaption("名前")
+#ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditem($!{result.Detail.User.AliasName})
-#ALtdcaption("日時")
+#ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek} ～
-$!{result.Detail.EndDate.Year} 年 $!{result.Detail.EndDate.Month} 月 $!{result.Detail.EndDate.Day} 日 $!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.EndDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.EndDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.EndDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="繰り返し" title="繰り返し"/>
+<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #else
-$!{result.Detail.StartDate.Year} 年 $!{result.Detail.StartDate.Month} 月 $!{result.Detail.StartDate.Day} 日 $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
 #end
 #ALtditemfooter()
-#ALtdcaption('タイトル')
+#ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditem($!{result.Detail.Name})
 
 #* 共有カテゴリ連携（ここから）  *#
 
-#ALtdcaption('共有カテゴリ')
+#ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditem($!{result.Detail.CommonCategoryName})
 
 #* 共有カテゴリ連携（ここまで）  *#
 
-#ALtdcaption('場所')
+#ALtdcaption($l10n.SCHEDULE_PLACE)
 #ALtditem($!{result.Detail.Place})
-#ALtdcaption('内容')
+#ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
-#ALtdcaption('公開区分')
+#ALtdcaption($l10n.SCHEDULE_PUBLIC)
 #ALtditemheader()
 #if($!result.Detail.isPublic())
-公開 （スケジュールを全員に公開します）
+$l10n.SCHEDULE_OPEN_PUBLIC
 #elseif(!$!result.Detail.isHidden())
-非公開 （スケジュールの日時のみを全員に公開します）
+$l10n.SCHEDULE_CLOSED_PUBLIC
 #else
-完全に隠す （スケジュールをすべて非公開とします）
+$l10n.SCHEDULE_HIDDEN_PUBLIC
 #end
 #ALtditemfooter()
-#ALtdcaption('参加ユーザー')
+#ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="仮スケジュール" title="仮スケジュール"/>
+        <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
-        <img class="icon_schedule" src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="削除されました" title="削除されました"/>
+        <img class="icon_schedule" src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>
         #end
     <br/>
     #end
@@ -193,31 +193,31 @@ $!{result.Detail.Date2}
 #end
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
-#if($!{result.Detail.isEditable()}) 参加ユーザーは、このスケジュールを編集／削除できます。#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) 参加ユーザー#else ユーザー $!{result.Detail.UpdateUser.AliasName} 以外#endは、このスケジュールを編集／削除できません。#end
+#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $!{result.Detail.UpdateUserAliasNameText}#end$l10n.SCHEDULE_YOU_DONOT_EDIT_AND_DELETE_THE_SCHEDULE#end
 </div>
 
 <div>
 #if($!{result.Detail.MailFlag} == "A")
-更新時に参加ユーザーにメール通知をおこないます。
+$l10n.SCHEDULE_SEND_MAIL_FOR_UPDATING
 #else
-更新時に参加ユーザーにメール通知をおこないません。
+$l10n.SCHEDULE_DONOT_SEND_MAIL_FOR_UPDATING
 #end
 </div>
 #end
 
 #ALtdcellfooter()
 
-#ALtdcaption('設備')
+#ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 #foreach($record in $!result.FacilityList)
 ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption('登録者')
-#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate}）")
-#ALtdcaption('更新者')
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString('yyyy年MM月dd日 HH時mm分')}）")
+#ALtdcaption($l10n.SCHEDULE_CREATE_USER)
+#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
+#ALtdcaption($l10n.SCHEDULE_UPDATE_USER)
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_PERIOD)}）")
 
 
 </tbody></table>

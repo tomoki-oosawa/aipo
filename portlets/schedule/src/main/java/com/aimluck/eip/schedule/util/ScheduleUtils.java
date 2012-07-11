@@ -99,6 +99,7 @@ import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
@@ -1720,13 +1721,15 @@ public class ScheduleUtils {
 
           if (dateStr.length() != FORMAT_DATE_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add("『日付』で入力された年月日は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
           if (timeStr.length() != FORMAT_TIME_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add("『時間』で入力された時間は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -1737,7 +1740,8 @@ public class ScheduleUtils {
           sf.setValue(dateStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add("『日付』で入力された年月日は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -1747,7 +1751,8 @@ public class ScheduleUtils {
           sf.setValue(timeStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add("『時間』で入力された時間は存在しません");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
             continue;
           }
 
@@ -1760,7 +1765,8 @@ public class ScheduleUtils {
             try {
               date = sdf.parse(dateStr);
             } catch (Exception e) {
-              msgList.add("『日付』で入力された年月日は存在しません");
+              msgList.add(ALLocalizationUtils
+                .getl10n("SCHEDULE_MESSAGE_NON_DAY"));
               continue;
             }
           } else {
@@ -1774,7 +1780,8 @@ public class ScheduleUtils {
             try {
               time = sdf2.parse(timeStr);
             } catch (Exception e) {
-              msgList.add("『時間』で入力された時間は存在しません");
+              msgList.add(ALLocalizationUtils
+                .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
               continue;
             }
           } else {
@@ -1808,7 +1815,8 @@ public class ScheduleUtils {
 
           if (dateStr.length() != FORMAT_DATE_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add("『日付』で入力された年月日は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -1819,7 +1827,8 @@ public class ScheduleUtils {
           sf.setValue(dateStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add("『日付』で入力された年月日は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -1830,7 +1839,8 @@ public class ScheduleUtils {
           try {
             date = sdf.parse(dateStr);
           } catch (Exception e) {
-            msgList.add("『日付』で入力された年月日は存在しません");
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -1991,6 +2001,12 @@ public class ScheduleUtils {
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
 
+    if (end_date == null) {
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_TYPE_RIGHT_END_DATE"));
+      end_date = start_date;
+    }
+
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(start_date.getValue());
     Calendar endDate = Calendar.getInstance();
@@ -2033,15 +2049,15 @@ public class ScheduleUtils {
     int startyear = startDate.get(Calendar.YEAR);
     if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
       // 携帯画面用条件
-      msgList.add("『 <span class='em'>開始日時</span> 』は"
-        + YEAR_FIRST
-        + "年から"
-        + YEAR_END
-        + "年の間で指定してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_DATE",
+        YEAR_FIRST,
+        YEAR_END));
     }
     if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
-      msgList.add("『 <span class='em'>開始時間</span> 』は15分単位で指定してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_START_TIME_PER15"));
     }
 
     // 終了日時
@@ -2049,27 +2065,27 @@ public class ScheduleUtils {
     int endyear = endDate.get(Calendar.YEAR);
     if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
       // 携帯画面用条件
-      msgList.add("『 <span class='em'>終了日時</span> 』は"
-        + YEAR_FIRST
-        + "年から"
-        + YEAR_END
-        + "年の間で指定してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
+        YEAR_FIRST,
+        YEAR_END));
     }
     if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
-      msgList.add("『 <span class='em'>終了時間</span> 』は15分単位で指定してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_END_TIME_PER15"));
     }
 
     // 開始日時＆終了日時
     if (is_span) {
       if (end_date.getValue().before(start_date.getValue())) {
-        msgList
-          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
       }
     } else {
       if (end_date.getValue().before(start_date.getValue())) {
-        msgList
-          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の時間を指定してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
       }
     }
 
@@ -2084,13 +2100,15 @@ public class ScheduleUtils {
             && week_4.getValue() == null
             && week_5.getValue() == null
             && week_6.getValue() == null) {
-            msgList.add("『 <span class='em'>毎週</span> 』は曜日をひとつ以上指定してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
           }
         } else if ("M".equals(repeat_type.getValue())) {
           // 毎月の繰り返し
           if (month_day.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件
-            msgList.add("『 <span class='em'>毎月</span> 』は日にちを指定してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_MONTHLY"));
           } else {
             month_day.validate(msgList);
           }
@@ -2103,8 +2121,8 @@ public class ScheduleUtils {
             false)
             && limit_start_date.getValue().getDate().after(
               limit_end_date.getValue().getDate())) {
-            msgList
-              .add("『 <span class='em'>繰り返し期間終了日</span> 』は『 <span class='em'>繰り返し期間開始日</span> 』以降の日付を指定してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_END_DAY_TO_START_DAY"));
           }
 
           if (isCellPhone) {
@@ -2113,21 +2131,19 @@ public class ScheduleUtils {
             limitStartDate.setTime(limit_start_date.getValue().getDate());
             int limitstartyear = limitStartDate.get(Calendar.YEAR);
             if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)) {
-              msgList.add("『 <span class='em'>期限の開始日時</span> 』は"
-                + YEAR_FIRST
-                + "年から"
-                + YEAR_END
-                + "年の間で指定してください。");
+              msgList.add(ALLocalizationUtils.getl10nFormat(
+                "SCHEDULE_MESSAGE_SELECT_START_DATE_IN_THIS_TERM",
+                YEAR_FIRST,
+                YEAR_END));
             }
             Calendar limitEndDate = Calendar.getInstance();
             limitEndDate.setTime(limit_end_date.getValue().getDate());
             int limitendyear = limitEndDate.get(Calendar.YEAR);
             if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)) {
-              msgList.add("『 <span class='em'>期限の終了日時</span> 』は"
-                + YEAR_FIRST
-                + "年から"
-                + YEAR_END
-                + "年の間で指定してください。");
+              msgList.add(ALLocalizationUtils.getl10nFormat(
+                "SCHEDULE_MESSAGE_SELECT_END_DATE_IN_THIS_TERM",
+                YEAR_FIRST,
+                YEAR_END));
             }
           }
 
@@ -2200,8 +2216,8 @@ public class ScheduleUtils {
             sDate.add(Calendar.DATE, 1);
           }
           if (countAvailableDate < date_count) {
-            msgList
-              .add("予定の入る日が含まれる様に『 <span class='em'>繰り返し期間</span> 』を指定してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_SPAN_IN_THIS_TERM"));
           }
         }
 
@@ -2721,17 +2737,24 @@ public class ScheduleUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
-    body.append("さんが予定を追加しました。").append(CR).append(CR);
     body
-      .append("[タイトル]")
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"))
+      .append(CR)
+      .append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"))
       .append(CR)
       .append(schedule.getName().toString())
       .append(CR);
-    body.append("[日時]").append(CR).append(date_detail).append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"))
+      .append(CR)
+      .append(date_detail)
+      .append(CR);
 
     if (schedule.getPlace().toString().length() > 0) {
       body
-        .append("[場所] ")
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_PLACE"))
         .append(CR)
         .append(schedule.getPlace().toString())
         .append(CR);
@@ -2739,7 +2762,7 @@ public class ScheduleUtils {
 
     if (schedule.getNote().toString().length() > 0) {
       body
-        .append("[内容]")
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_NOTE"))
         .append(CR)
         .append(schedule.getNote().toString())
         .append(CR);
@@ -2748,7 +2771,8 @@ public class ScheduleUtils {
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append("[参加者]").append(CR);
+      body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS")).append(
+        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -2759,17 +2783,18 @@ public class ScheduleUtils {
       body.append(CR);
     }
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO")).append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
-      body.append("・社外").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_OUTSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_INSIDE_OFFICE"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
 
@@ -2805,18 +2830,26 @@ public class ScheduleUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
-    body.append("さんが予定を追加しました。").append(CR).append(CR);
     body
-      .append("[タイトル]")
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"))
+      .append(CR)
+      .append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"))
       .append(CR)
       .append(schedule.getName().toString())
       .append(CR);
-    body.append("[日時]").append(CR).append(date_detail).append(CR);
+    body
+      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"))
+      .append(CR)
+      .append(date_detail)
+      .append(CR);
 
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append("[参加者]").append(CR);
+      body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS")).append(
+        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
           body.append(", ");
@@ -2835,11 +2868,8 @@ public class ScheduleUtils {
       logger.error("Exception", ex);
       return "";
     }
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append("[").append(ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO")).append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
@@ -2864,28 +2894,40 @@ public class ScheduleUtils {
     boolean is_span = false;
     // 毎日
     if (ptn.charAt(0) == 'D') {
-      result.append("毎日");
+      result.append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY"));
       count = 1;
       // 毎週
     } else if (ptn.charAt(0) == 'W') {
-      result.append(new StringBuffer()
-        .append("毎週 ")
-        .append(ptn.charAt(1) != '0' ? "日" : "")
-        .append(ptn.charAt(2) != '0' ? "月" : "")
-        .append(ptn.charAt(3) != '0' ? "火" : "")
-        .append(ptn.charAt(4) != '0' ? "水" : "")
-        .append(ptn.charAt(5) != '0' ? "木" : "")
-        .append(ptn.charAt(6) != '0' ? "金" : "")
-        .append(ptn.charAt(7) != '0' ? "土" : "")
-        .append(" 曜日")
-        .toString());
+      result.append(new StringBuffer().append(
+        ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK")).append(
+        ptn.charAt(1) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
+          : "").append(
+        ptn.charAt(2) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
+          : "").append(
+        ptn.charAt(3) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
+          : "").append(
+        ptn.charAt(4) != '0' ? ALLocalizationUtils
+          .getl10n("SCHEDULE_WEDNESDAY") : "").append(
+        ptn.charAt(5) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
+          : "").append(
+        ptn.charAt(6) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
+          : "").append(
+        ptn.charAt(7) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
+          : "").append(
+        ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK")).toString());
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
       result
-        .append("毎月 ")
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
         .append(Integer.parseInt(ptn.substring(1, 3)))
-        .append("日")
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
         .toString();
       count = 3;
       // 期間
@@ -3811,8 +3853,11 @@ public class ScheduleUtils {
         RecentActivity != null && RecentActivity.isReplace(loginName);
 
       String title =
-        new StringBuilder("予定「").append(schedule.getName()).append(
-          isNew ? "」を追加しました。" : "」を編集しました。").toString();
+        new StringBuilder(ALLocalizationUtils
+          .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+          .append(schedule.getName())
+          .append(isNew ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE") : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+          .toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
           .append("&entityid=")
@@ -3845,8 +3890,11 @@ public class ScheduleUtils {
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
     String title =
-      new StringBuilder("予定「").append(schedule.getName()).append(
-        isNew ? "」を追加しました。" : "」を編集しました。").toString();
+      new StringBuilder(ALLocalizationUtils
+        .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+        .append(schedule.getName())
+        .append(isNew ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE") : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+        .toString();
     String portletParams =
       new StringBuilder("?template=ScheduleDetailScreen")
         .append("&entityid=")

@@ -18,16 +18,15 @@
  *#
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="schedule_val_tooltip1" style="display:none;">読み込み中...</span>
-<span id="schedule_val_tooltip2" style="display:none;">場所</span>
-<span id="schedule_val_tooltip3" style="display:none;">参加者</span>
-<span id="schedule_val_tooltip4" style="display:none;">設備</span>
+<span id="schedule_val_tooltip1" style="display:none;">$l10n.SCHEDULE_READING</span>
+<span id="schedule_val_tooltip2" style="display:none;">$l10n.SCHEDULE_PLACE</span>
+<span id="schedule_val_tooltip3" style="display:none;">$l10n.SCHEDULE_MENBERS</span>
+<span id="schedule_val_tooltip4" style="display:none;">$l10n.SCHEDULE_FACILITY</span>
 ## ---------------------------------------------------------------------------
 #set($schedulescreen = "ScheduleScreen")
-#set($tabs = [["個人・1日", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["個人・週間", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["個人・月間", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["グループ・1日", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["グループ・週間", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
+#set($tabs = [["$l10n.SCHEDULE_ONEDAY", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["$l10n.SCHEDULE_WEEKLY", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["$l10n.SCHEDULE_MONTHLY", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["$l10n.SCHEDULE_ONEDAY_GROUP", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["$l10n.SCHEDULE_WEEKLY_GROUP", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
 
 #ALspacebothheader()
-
 #parse("/portlets/html/ja/scheduleMacro.vm")
 ## One day
 #if ($!result.Viewtype == "calendar")

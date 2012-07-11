@@ -76,6 +76,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -429,7 +430,8 @@ public class ScheduleFormData extends ALAbstractFormData {
     } else {
       start_date.setValue(tmpStart);
     }
-    start_date.setFieldName("開始日時");
+    start_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_START_DATE"));
     // 終了日時
     end_date = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     if (tmpEnd == null || tmpEnd.equals("")) {
@@ -441,7 +443,8 @@ public class ScheduleFormData extends ALAbstractFormData {
     } else {
       end_date.setValue(tmpEnd);
     }
-    end_date.setFieldName("終了日時");
+    end_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
     // 開始日時と終了日時が同じか
     if (start_date.toString().equals(end_date.toString())) {
       is_same_date = true;
@@ -450,51 +453,63 @@ public class ScheduleFormData extends ALAbstractFormData {
     }
     // 繰り返しタイプ
     repeat_type = new ALStringField();
-    repeat_type.setFieldName("繰り返しタイプ");
+    repeat_type.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_TYPE"));
     repeat_type.setValue("D");
     repeat_type.setTrim(true);
     // 日
     week_0 = new ALStringField();
-    week_0.setFieldName("日");
+    week_0.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SUNDAY"));
     week_0.setTrim(true);
     // 月
     week_1 = new ALStringField();
-    week_1.setFieldName("月");
+    week_1.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_MANDAY"));
     week_1.setTrim(true);
     // 火
     week_2 = new ALStringField();
-    week_2.setFieldName("火");
+    week_2.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TUSEDAY"));
     week_2.setTrim(true);
     // 水
     week_3 = new ALStringField();
-    week_3.setFieldName("水");
+    week_3.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_WEDNESDAY"));
     week_3.setTrim(true);
     // 木
     week_4 = new ALStringField();
-    week_4.setFieldName("木");
+    week_4.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_THURSDAY"));
     week_4.setTrim(true);
     // 金
     week_5 = new ALStringField();
-    week_5.setFieldName("金");
+    week_5.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_FRIDAY"));
     week_5.setTrim(true);
     // 土
     week_6 = new ALStringField();
-    week_6.setFieldName("土");
+    week_6.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
     // 繰り返し日
     month_day = new ALNumberField();
-    month_day.setFieldName("繰り返す月");
+    month_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
     // 繰り返しフラグ
     limit_flag = new ALStringField();
-    limit_flag.setFieldName("繰り返し");
+    limit_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT"));
     limit_flag.setValue("OFF");
     limit_flag.setTrim(true);
     // 繰り返し期限
     limit_start_date = new ALDateField();
-    limit_start_date.setFieldName("繰り返し期限");
+    limit_start_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     limit_start_date.setValue(start_date.getValue());
     limit_end_date = new ALDateField();
-    limit_end_date.setFieldName("繰り返し期限");
+    limit_end_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     ALDateTimeField tmp_date = new ALDateTimeField("yyyy-MM-dd-HH-mm");
     if (tmpEnd == null || tmpEnd.equals("")) {
       if (tmpStart == null || tmpStart.equals("")) {
@@ -510,29 +525,35 @@ public class ScheduleFormData extends ALAbstractFormData {
     }
     // 終日フラグ
     all_day_flag = new ALStringField();
-    all_day_flag.setFieldName("終日");
+    all_day_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_ALL_DAY"));
     all_day_flag.setTrim(true);
     all_day_flag.setValue("OFF");
     // タイトル
     name = new ALStringField();
-    name.setFieldName("タイトル");
+    name.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TITLE"));
     name.setTrim(true);
     // 場所
     place = new ALStringField();
-    place.setFieldName("場所");
+    place.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_PLACE"));
     place.setTrim(true);
     // 内容
     note = new ALStringField();
-    note.setFieldName("内容");
+    note
+      .setFieldName(ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_NOTE"));
     note.setTrim(false);
     // 公開区分
     public_flag = new ALStringField();
-    public_flag.setFieldName("公開区分");
+    public_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_PUBLIC"));
     public_flag.setTrim(true);
     public_flag.setValue("O");
     // 繰り返しスケジュールの編集フラグ
     edit_repeat_flag = new ALNumberField();
-    edit_repeat_flag.setFieldName("繰り返し編集範囲");
+    edit_repeat_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_EDIT_AREA"));
     edit_repeat_flag.setValue(FLAG_EDIT_REPEAT_DEF);
 
     // 指定日時
@@ -542,17 +563,20 @@ public class ScheduleFormData extends ALAbstractFormData {
     } else {
       view_date.setValue(tmpView);
     }
-    view_date.setFieldName("指定日時");
+    view_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SELECT_DATE"));
 
     // 共有メンバーによる編集／削除権限フラグ
     edit_flag = new ALStringField();
-    edit_flag.setFieldName("編集／削除権限");
+    edit_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EDIT_DELETE_PERMISSION"));
     edit_flag.setTrim(true);
     edit_flag.setValue("T");
 
     // 仮スケジュールに戻すかどうか
     change_tmpreserve_flag = new ALStringField();
-    change_tmpreserve_flag.setFieldName("仮スケジュール");
+    change_tmpreserve_flag.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_TEMP_SCHEDULE"));
     change_tmpreserve_flag.setTrim(true);
     change_tmpreserve_flag.setValue("F");
 
@@ -573,7 +597,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     // 2007.3.28 ToDo連携
     common_category_id = new ALNumberField();
-    common_category_id.setFieldName("カテゴリ");
+    common_category_id.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_CATEGORY"));
     common_category_id.setValue(1);
   }
 
@@ -948,7 +973,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         rundata,
         ALAccessControlConstants.VALUE_ACL_INSERT)
         && f_size > 0) {
-        msgList.add(" 設備を予約する権限がありません ");
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
         return false;
       }
 
@@ -1225,7 +1251,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         }
       } catch (Exception ex) {
-        msgList.add("メールを送信できませんでした。");
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
         logger.error("Exception", ex);
         return false;
       }
@@ -1291,7 +1317,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         ALAccessControlConstants.VALUE_ACL_UPDATE)) {
         int[] old_ids = ScheduleUtils.getFacilityIds(schedule);
         if (old_ids.length != facilityList.size()) {
-          msgList.add(" 設備を予約する権限がありません ");
+          msgList.add(ALLocalizationUtils
+            .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
           return false;
         }
         boolean check = false;
@@ -1305,7 +1332,8 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
           if (!check) {
-            msgList.add(" 設備を予約する権限がありません ");
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_NO_PERMISSION_TO_MAKE_A_RESERVATION"));
             return false;
           }
           check = false;
@@ -1794,7 +1822,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
         }
       } catch (Exception ex) {
-        msgList.add("メールを送信できませんでした。");
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
         logger.error("Exception", ex);
         return false;
       }
