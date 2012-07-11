@@ -19,16 +19,18 @@
 
 ## ---------------------------------------------------------------------------
 #if($result.currentSubMenu=="requested")
-#set($subtitle='ワークフロー確認依頼一覧')
-#set($noresultmsg='依頼はありません。')
+#set ($title = "$l10n.WORKFLOW_APPLICANT")
+#set($subtitle='$l10n.WORKFLOW_WORKFLOW_CONFIRMATION_REQUEST_LIST')
+#set($noresultmsg='$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU')
 #else
-#set($subtitle='ワークフロー作成依頼一覧')
-#set($noresultmsg='作成分はありません。')
+#set ($title = "$l10n.WORKFLOW_APPROVER")
+#set($subtitle='$l10n.WORKFLOW_WORKFLOW_CREATION_REQUEST_LIST')
+#set($noresultmsg='$l10n.WORKFLOW_NO_WORKFLOW_YOU_CREATE')
 #end
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list','1')")
 
 ## ---------------------------------------------------------------------------
-#set($linklist = [["ワークフローへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','menu')"]])
+#set($linklist = [["$l10n.WORKFLOW_GO_WORKFLOW", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','menu')"]])
 #ALcell_pagetitle_iphone($career $subtitle)
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
@@ -40,11 +42,16 @@
 #end
 #ALcell_radius_header($career)
 #foreach ($record in $result.List)
+#if($result.currentSubMenu=="requested")
+#set ($user = $!record.ClientName)
+#else
+#set ($user = $!record.LastUpdateUser)
+#end
 #ALcell_li_header($career)
 <a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))"><strong>【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </strong><br>
-<small>
-##[$!{record.PriceStr}&nbsp;円]/
-[作成：$!record.CreateDate]/[最終更新：$!record.LastUpdateUser]/[進捗：$!record.StateString]</small></a>
+			<small>
+			##[$!{record.PriceStr}&nbsp;$l10n.WORKFLOW_YEN]/
+			[$l10n.WORKFLOW_CREATE：$!record.CreateDate]/[$title：$user]/[$l10n.WORKFLOW_SITUATION：$!record.StateString]</small></a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)

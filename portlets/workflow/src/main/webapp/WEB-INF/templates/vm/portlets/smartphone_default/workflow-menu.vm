@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($title = 'ワークフロー')
-#set($methodlist = [["確認依頼一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'requested')", "themes/iphone/img/icon/32/page-check.gif"],["作成依頼一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'created')", "themes/iphone/img/icon/32/page-edit.gif"]])
+#set($title = '$l10n.WORKFLOW_WORKFLOW')
+#set($methodlist = [["$l10n.WORKFLOW_CONFIRMATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'requested')", "themes/iphone/img/icon/32/page-check.gif"],["$l10n.WORKFLOW_CREATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'created')", "themes/iphone/img/icon/32/page-edit.gif"]])
 
 #ALcell_pagetitle_iphone($career "$title")
 #ALcell_contents_header($career)

@@ -62,7 +62,7 @@
 #ALtdhead("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowAllListScreen')")
 #ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowAllListScreen')" 'style="width:6em" class="center"')
 #ALtdheadAtt("#ALajaxsort('user_name' $l10n.WORKFLOW_APPLICANT $result 'WorkflowAllListScreen')" 'style="width:12em"')
-#ALtdheadAtt("$l10n.WORKFLOW_SETTLEMENT"'style="width:12em"')
+#ALtdheadAtt("$l10n.WORKFLOW_APPROVER" 'style="width:12em"')
 #ALtdheadAtt("#ALajaxsort('create_date' $l10n.WORKFLOW_CREATEDATE $result 'WorkflowAllListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)

@@ -178,7 +178,7 @@ ${count}$l10n.WORKFLOW_TH $record.CategoryName #if($record.RequestName.toString(
 <colgroup></colgroup>
 <tbody>
 <tr>
-#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.WORKFLOW_SETTLEENT_HISTORY#ALtdheadfooter()
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.WORKFLOW_APPROVE_HISTORY#ALtdheadfooter()
 </tr>
 
 #foreach ($record in $result.Detail.DecisionRecords)

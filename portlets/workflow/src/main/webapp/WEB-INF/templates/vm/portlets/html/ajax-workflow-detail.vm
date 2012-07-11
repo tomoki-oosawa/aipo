@@ -29,7 +29,7 @@
 <input type="hidden" name="secid" value="$secid" />
 
 #ALtableheaderAtt("listTable wide mb20")
-<caption>$l10n.WORKFLOW_SETTLEMENT_TO</caption>
+<caption>$l10n.WORKFLOW_APPROVE_CONTENT</caption>
 #ALtdcaption($l10n.WORKFLOW_FLOW_STATUS)
 #ALtditemheader()
 #if($!result.Detail.Progress.Value == "D" && $!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
@@ -79,7 +79,7 @@ $!result.Detail.RouteName
 #end
 #ALtablefooter()
 #ALtableheaderAtt("listTable wide mb10")
-<caption>$l10n.WORKFLOW_SETTLEENT_HISTORY</caption>
+<caption>$l10n.WORKFLOW_APPROVE_HISTORY</caption>
 ##<tr>
 ##ALtdheadThin("決裁")
 ##ALtdheadAtt("ユーザー名" "style='width:20%'")
@@ -99,12 +99,14 @@ $!{record.StatusString}
 #end
 #ALtdcellfooter()
 #ALtdcellheader()
-<span class="floatLeft w50">$!{record.UserAliasName}</span>
-<span class="floatLeft right w45">
+<div class="clearfix">
+<span class="floatRight">
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
 $!{record.UpdateDate}
 #end
 </span>
+<span class="floatLeft">$!{record.UserAliasName}</span>
+</div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALtextareaAtt('comment' $!record.NoteR 4 40 'text wide mt10')
@@ -130,7 +132,6 @@ $!{record.UpdateDate}
 </p>
 #end
 #else
-<br/>
 $!record.Note
 #end
 #ALtdcellfooter()

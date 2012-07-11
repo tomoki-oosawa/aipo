@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($methodlist = [["確認依頼一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'requested')"],["作成依頼一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'created')"]])
-#ALcell_pagetitle($career "ﾜｰｸﾌﾛｰ")
+#set($methodlist = [["$l10n.WORKFLOW_CONFIRMATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'requested')"],["$l10n.WORKFLOW_CREATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'created')"]])
+#ALcell_pagetitle($career "$l10n.WORKFLOW_WORKFLOW_HALFWIDTH")
 #ALcell_linklist($career $methodlist)
 #ALcell_hr($career '1')
 #ALtdcellFooterLink($career)

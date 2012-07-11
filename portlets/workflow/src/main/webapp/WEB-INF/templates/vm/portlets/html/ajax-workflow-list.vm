@@ -22,7 +22,7 @@
 #if($result.CurrentSubMenu == "requested")
 #set ($title = "$l10n.WORKFLOW_APPLICANT")
 #else
-#set ($title = "$l10n.WORKFLOW_SETTLEMENT")
+#set ($title = "$l10n.WORKFLOW_APPROVER")
 #end
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
