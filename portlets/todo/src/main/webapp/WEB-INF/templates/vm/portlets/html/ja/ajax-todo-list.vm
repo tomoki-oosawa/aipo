@@ -84,8 +84,8 @@
 <th>#ALajaxsort('todo_name' $l10n.TODO_TITLE $result 'ToDoListScreen')</th>
 <th class="wName">#ALajaxsort('user_name' $l10n.TODO_PREPARED $result 'ToDoListScreen')</th>
 <th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.TODO_CATEGORY $result 'ToDoListScreen')</th>
-#ALtdheadAtt("#ALajaxsort('end_date' $l10n.TODO_END_DATE $result 'ToDoListScreen')" 'class="thin center"')
-#ALtdheadAtt("#ALajaxsort('state' $l10n.TODO_STATE $result 'ToDoListScreen')" 'class="thin mb_hide center"')
+#ALtdheadAtt("#ALajaxsort('end_date' $l10n.TODO_END_DATE $result 'ToDoListScreen')" 'class="w10 center"')
+#ALtdheadAtt("#ALajaxsort('state' $l10n.TODO_STATE $result 'ToDoListScreen')" 'class="w10 mb_hide center"')
 </tr>
 #foreach ($record in $result.List)
 #if($!result.currentTab == "list")
