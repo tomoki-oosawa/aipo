@@ -43,6 +43,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
@@ -298,6 +299,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         request,
         mapHandler.getFlowStatus());
 
+    } catch (ALPageNotFoundException ex) {
+      Database.rollback();
+      msgList.add(ALLocalizationUtils
+        .getl10n("WORKFLOW_WORKFLOW_ALREADY_DELETED"));
+      logger.error("[WorkflowConfirmFormData]", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
