@@ -27,7 +27,7 @@ dojo.require("dojo.dnd.Manager");
 
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary: a Source object, which can be used as a DnD source, or a DnD target
-	
+
 	// object attributes (for markup)
 	isSource: true,
 	horizontal: false,
@@ -35,7 +35,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	skipForm: false,
 	withHandles: false,
 	accept: ["text"],
-	
+
 	constructor: function(node, params){
 		// summary: a constructor of the Source
 		// node: Node: node or node's id to build the source on
@@ -85,7 +85,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 		];
 	},
-	
+
 	// methods
 	checkAcceptance: function(source, nodes){
 		// summary: checks, if the target can accept nodes from this source
@@ -181,7 +181,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.dnd.Source.superclass.onMouseUp.call(this, e);
 		}
 	},
-	
+
 	// topic event processors
 	onDndSourceOver: function(source){
 		// summary: topic event processor for /dnd/source/over, called when detected a current source
@@ -311,7 +311,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
@@ -354,7 +354,26 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// e: Event: mouse event
 		if(!this.withHandles){ return true; }
 		for(var node = e.target; node && !dojo.hasClass(node, "dojoDndItem"); node = node.parentNode){
-			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
+			if(dojo.hasClass(node, "dojoDndHandle")){
+
+				//aタグを同時にクリックした場合には、aタグを優先させる
+				var event=e;
+				if (!event) {event = window.event; }
+				var pos={x:event.clientX,y:event.clientY};
+				var isCollapsed=false;
+				dojo.query("a",node).forEach(function(item){
+					if(!isCollapsed){
+						var rect=item.getBoundingClientRect();
+						isCollapsed=(rect.left<=pos.x && pos.x<=rect.right && rect.top<=pos.y && pos.y<=rect.bottom);
+					}
+				});
+				if(isCollapsed){
+					return false;
+				}
+				//----------------
+
+				return true;
+			}
 		}
 		return false;	// Boolean
 	}
@@ -362,7 +381,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 
 dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	// summary: a Target object, which can be used as a DnD target
-	
+
 	constructor: function(node, params){
 		// summary: a constructor of the Target --- see the Source constructor for details
 		this.isSource = false;

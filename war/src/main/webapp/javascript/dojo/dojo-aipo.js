@@ -67,7 +67,7 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 	}else{
 		// If at first you don't succeed ...
 		// If IE knows about the TZ, it appears before the year
-		// Capital letters or slash before a 4-digit year 
+		// Capital letters or slash before a 4-digit year
 		// at the end of string
 		var pat = /([A-Z\/]+) \d{4}$/;
 		if((match = str.match(pat))){
@@ -76,7 +76,7 @@ dojo.date.getTimezoneName = function(/*Date*/dateObject){
 		// Some browsers (e.g. Safari) glue the TZ on the end
 		// of toLocaleString instead of putting it in toString
 			str = dateObject.toLocaleString();
-			// Capital letters or slash -- end of string, 
+			// Capital letters or slash -- end of string,
 			// after space
 			pat = / ([A-Z\/]+)$/;
 			if((match = str.match(pat))){
@@ -120,7 +120,7 @@ dojo.date.compare = function(/*Date*/date1, /*Date?*/date2, /*String?*/portion){
 			date2.setFullYear(0, 0, 0);
 		}
 	}
-	
+
 	if(date1 > date2){ return 1; } // int
 	if(date1 < date2){ return -1; } // int
 	return 0; // int
@@ -410,7 +410,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	//	|		node: "nodeId",
 	//	|		showDuration: 500,
 	//	|		// hideDuration will default to "200"
-	//	|		showFunc: dojo.wipeIn, 
+	//	|		showFunc: dojo.wipeIn,
 	//	|		// hideFunc will default to "fadeOut"
 	//	|	});
 	//	|	t.show(100); // delay showing for 100ms
@@ -448,7 +448,7 @@ dojo.declare("dojo.fx.Toggler", null, {
 	//	The function that returns the dojo._Animation to show the node
 	showFunc: dojo.fadeIn,
 
-	// hideFunc: Function	
+	// hideFunc: Function
 	//	The function that returns the dojo._Animation to hide the node
 	hideFunc: dojo.fadeOut,
 
@@ -516,7 +516,7 @@ dojo.fx.wipeIn = function(/*Object*/ args){
 		}
 	}, args));
 
-	dojo.connect(anim, "onEnd", function(){ 
+	dojo.connect(anim, "onEnd", function(){
 		s.height = "auto";
 	});
 
@@ -552,17 +552,17 @@ dojo.fx.wipeOut = function(/*Object*/ args){
 
 dojo.fx.slideTo = function(/*Object?*/ args){
 	// summary
-	//		Returns an animation that will slide "node" 
+	//		Returns an animation that will slide "node"
 	//		defined in args Object from its current position to
 	//		the position defined by (args.left, args.top).
 	// example:
 	//	|	dojo.fx.slideTo({ node: node, left:"40", top:"50", unit:"px" }).play()
 
 	var node = (args.node = dojo.byId(args.node));
-	
+
 	var top = null;
 	var left = null;
-	
+
 	var init = (function(n){
 		return function(){
 			var cs = dojo.getComputedStyle(n);
@@ -677,7 +677,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 
 	var targetLocale = dojo.i18n.normalizeLocale(locale);
  	var bundlePackage = [moduleName, "nls", bundleName].join(".");
-	// NOTE: 
+	// NOTE:
 	//		When loading these resources, the packaging does not match what is
 	//		on disk.  This is an implementation detail, as this is just a
 	//		private data structure to hold the loaded resources.  e.g.
@@ -687,7 +687,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 	//		in memory it is more logical and efficient to store in a different
 	//		order.  Locales cannot use dashes, since the resulting path will
 	//		not evaluate as valid JS, so we translate them to underscores.
-	
+
 	//Find the best-match locale to load if we have available flat locales.
 	var bestLocale = "";
 	if(availableFlatLocales){
@@ -702,7 +702,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 		}
 		if(!bestLocale){
 			bestLocale = "ROOT";
-		}		
+		}
 	}
 
 	//See if the desired locale is already loaded.
@@ -748,7 +748,7 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 			}else{
 				bundle[jsLoc] = parent;
 			}
-			
+
 			if(availableFlatLocales){
 				//Stop the locale path searching if we know the availableFlatLocales, since
 				//the first call to this function will load the only bundle that is needed.
@@ -766,8 +766,8 @@ dojo.i18n._requireLocalization = function(/*String*/moduleName, /*String*/bundle
 
 (function(){
 	// If other locales are used, dojo.requireLocalization should load them as
-	// well, by default. 
-	// 
+	// well, by default.
+	//
 	// Override dojo.requireLocalization to do load the default bundle, then
 	// iterate through the extraLocale list and load those translations as
 	// well, unless a particular locale was requested.
@@ -894,7 +894,7 @@ if(!dojo._hasResource["dojo.cldr.supplemental"]){ //_hasResource checks added by
 		var weekendStart = {/*default is 6=Saturday*/
 			eg:5,il:5,sy:5,
 			'in':0,
-			ae:4,bh:4,dz:4,iq:4,jo:4,kw:4,lb:4,ly:4,ma:4,om:4,qa:4,sa:4,sd:4,tn:4,ye:4		
+			ae:4,bh:4,dz:4,iq:4,jo:4,kw:4,lb:4,ly:4,ma:4,om:4,qa:4,sa:4,sd:4,tn:4,ye:4
 		};
 
 		var weekendEnd = {/*default is 0=Sunday*/
@@ -946,7 +946,7 @@ dojo.regexp.buildGroupRE = function(/*Object|Array*/arr, /*Function*/re, /*Boole
 	//		A single value or an array of values.
 	// re:
 	//		A function. Takes one parameter and converts it to a regular
-	//		expression. 
+	//		expression.
 	// nonCapture:
 	//		If true, uses non-capturing match, otherwise matches are retained
 	//		by regular expression. Defaults to false
@@ -972,7 +972,7 @@ dojo.regexp.group = function(/*String*/expression, /*Boolean?*/nonCapture){
 	//		adds group match to expression
 	// nonCapture:
 	//		If true, uses non-capturing match, otherwise matches are retained
-	//		by regular expression. 
+	//		by regular expression.
 	return "(" + (nonCapture ? "?:":"") + expression + ")"; // String
 }
 
@@ -1007,9 +1007,9 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 	return out;	// String
 };
 
-dojo.string.substitute = function(	/*String*/template, 
-									/*Object or Array*/map, 
-									/*Function?*/transform, 
+dojo.string.substitute = function(	/*String*/template,
+									/*Object or Array*/map,
+									/*Function?*/transform,
 									/*Object?*/thisObject){
 	// summary:
 	//		Performs parameterized substitutions on a string. Throws an
@@ -1020,15 +1020,15 @@ dojo.string.substitute = function(	/*String*/template,
 	//		|	dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.",{name: "foo.html", info: {dir: "/temp"}});
 	//		both return
 	//			"File 'foo.html' is not found in directory '/temp'."
-	// template: 
+	// template:
 	//		a string with expressions in the form ${key} to be replaced or
 	//		${key:format} which specifies a format function.  NOTE syntax has
 	//		changed from %{key}
 	// map: where to look for substitutions
-	// transform: 
+	// transform:
 	//		a function to process all parameters before substitution takes
 	//		place, e.g. dojo.string.encodeXML
-	// thisObject: 
+	// thisObject:
 	//		where to look for optional format function; default to the global
 	//		namespace
 
@@ -1043,9 +1043,9 @@ dojo.string.substitute = function(	/*String*/template,
 dojo.string.trim = function(/*String*/ str){
 	// summary: trims whitespaces from both sides of the string
 	// description:
-	//	This version of trim() was taken from Steven Levithan's blog: 
+	//	This version of trim() was taken from Steven Levithan's blog:
 	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript.
-	//	The short yet good-performing version of this function is 
+	//	The short yet good-performing version of this function is
 	//	dojo.trim(), which is part of the base.
 	str = str.replace(/^\s+/, '');
 	for(var i = str.length - 1; i > 0; i--){
@@ -1178,7 +1178,7 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object?*/options){
 		}else if(options.selector != "time"){
 			var timezoneOffset = dateObject.getTimezoneOffset();
 			var absOffset = Math.abs(timezoneOffset);
-			time += (timezoneOffset > 0 ? "-" : "+") + 
+			time += (timezoneOffset > 0 ? "-" : "+") +
 				_(Math.floor(absOffset/60)) + ":" + _(absOffset%60);
 		}
 		formattedDate.push(time);
@@ -1225,7 +1225,7 @@ dojo.parser = new function(){
 			case "function":
 				if(d.isFunction(value)){
 					// IE gives us a function, even when we say something like onClick="foo"
-					// (in which case it gives us an invalid function "function(){ foo }"). 
+					// (in which case it gives us an invalid function "function(){ foo }").
 					//  Therefore, convert to string
 					value=value.toString();
 					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
@@ -1256,14 +1256,14 @@ dojo.parser = new function(){
 		// map from fully qualified name (like "dijit.Button") to structure like
 		// { cls: dijit.Button, params: {label: "string", disabled: "boolean"} }
 	};
-	
+
 	function getClassInfo(/*String*/ className){
 		// className:
 		//		fully qualified name (like "dijit.Button")
 		// returns:
 		//		structure like
-		//			{ 
-		//				cls: dijit.Button, 
+		//			{
+		//				cls: dijit.Button,
 		//				params: { label: "string", disabled: "boolean"}
 		//			}
 
@@ -1275,7 +1275,7 @@ dojo.parser = new function(){
 					"'. Did you spell the name correctly and use a full path, like 'dijit.form.Button'?");
 			}
 			var proto = cls.prototype;
-	
+
 			// get table of parameter names & types
 			var params={};
 			for(var name in proto){
@@ -1312,7 +1312,7 @@ dojo.parser = new function(){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a layout method to allow them to connect with
-		//		any children		
+		//		any children
 		var thelist = [];
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
@@ -1396,8 +1396,8 @@ dojo.parser = new function(){
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
 		d.forEach(thelist, function(instance){
-			if(	instance  && 
-				(instance.startup) && 
+			if(	instance  &&
+				(instance.startup) &&
 				((!instance.getParent) || (!instance.getParent()))
 			){
 				instance.startup();
@@ -1422,9 +1422,9 @@ dojo.parser = new function(){
 //after the a11y test.
 
 (function(){
-	var parseRunner = function(){ 
+	var parseRunner = function(){
 		if(djConfig["parseOnLoad"] == true){
-			dojo.parser.parse(); 
+			dojo.parser.parse();
 		}
 	};
 
@@ -1442,7 +1442,7 @@ dojo.parser._anon = {}; // why is this property required?
 dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
 	// summary:
 	//		Creates a reference to anonFuncPtr in thisObj with a completely
-	//		unique name. The new name is returned as a String. 
+	//		unique name. The new name is returned as a String.
 	var jpn = "$joinpoint";
 	var nso = (thisObj|| dojo.parser._anon);
 	if(dojo.isIE){
@@ -1907,7 +1907,7 @@ if(!dojo._hasResource["dojo.date.locale"]){ //_hasResource checks added by build
 			return null;
 		}
 
-		//TODO: implement a getWeekday() method in order to test 
+		//TODO: implement a getWeekday() method in order to test
 		//validity of input strings containing 'EEE' or 'EEEE'...
 		return result; // Date
 	};
@@ -1921,9 +1921,9 @@ if(!dojo._hasResource["dojo.date.locale"]){ //_hasResource checks added by build
 		applyLiteral = applyLiteral || identity;
 		applyAll = applyAll || identity;
 
-		//split on single quotes (which escape literals in date format strings) 
+		//split on single quotes (which escape literals in date format strings)
 		//but preserve escaped single quotes (e.g., o''clock)
-		var chunks = pattern.match(/(''|[^'])+/g); 
+		var chunks = pattern.match(/(''|[^'])+/g);
 		var literal = false;
 
 		dojo.forEach(chunks, function(chunk, i){
@@ -2170,7 +2170,7 @@ dojo.dnd.autoScrollNodes = function(e){
 				// console.debug(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
 				b.l += t.x + n.scrollLeft;
 				b.t += t.y + n.scrollTop;
-				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2), 
+				var w = Math.min(dojo.dnd.H_TRIGGER_AUTOSCROLL, b.w / 2),
 					h = Math.min(dojo.dnd.V_TRIGGER_AUTOSCROLL, b.h / 2),
 					rx = e.pageX - b.l, ry = e.pageY - b.t, dx = 0, dy = 0;
 				if(rx > 0 && rx < b.w){
@@ -2256,12 +2256,12 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 	*/
 
 	dojo.declare("dojo.dnd.Container", null, {
-		// summary: a Container object, which knows when mouse hovers over it, 
+		// summary: a Container object, which knows when mouse hovers over it,
 		//	and know over which element it hovers
-		
+
 		// object attributes (for markup)
 		skipForm: false,
-		
+
 		constructor: function(node, params){
 			// summary: a constructor of the Container
 			// node: Node: node or node's id to build the container on
@@ -2284,7 +2284,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 			// states
 			this.containerState = "";
 			dojo.addClass(this.node, "dojoDndContainer");
-			
+
 			// mark up children
 			if(!(params && params._skipStartup)){
 				this.startup();
@@ -2299,10 +2299,10 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 				dojo.connect(this.node, "onselectstart", this, "onSelectStart")
 			];
 		},
-		
+
 		// object attributes (for markup)
 		creator: function(){},	// creator function, dummy at the moment
-		
+
 		// abstract access to the map
 		getItem: function(/*String*/ key){
 			// summary: returns a data item by its key (id)
@@ -2317,7 +2317,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 			delete this.map[key];
 		},
 		forInItems: function(/*Function*/ f, /*Object?*/ o){
-			// summary: iterates over a data map skipping members, which 
+			// summary: iterates over a data map skipping members, which
 			//	are present in the empty object (IE and/or 3rd-party libraries).
 			o = o || dojo.global;
 			var m = this.map, e = dojo.dnd._empty;
@@ -2330,7 +2330,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 			// summary: removes all data items from the map
 			this.map = {};
 		},
-		
+
 		// methods
 		getAllNodes: function(){
 			// summary: returns a list (an array) of all valid child nodes
@@ -2381,7 +2381,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 		},
 		startup: function(){
 			// summary: collects valid child items and populate the map
-			
+
 			// set up the real parent node
 			this.parent = this.node;
 			if(this.parent.tagName.toLowerCase() == "table"){
@@ -2449,7 +2449,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 				dojo.stopEvent(e);
 			}
 		},
-		
+
 		// utilities
 		onOverEvent: function(){
 			// summary: this function is called once, when mouse is over our container
@@ -2502,7 +2502,7 @@ if(!dojo._hasResource["dojo.dnd.Container"]){ //_hasResource checks added by bui
 	});
 
 	dojo.dnd._createNode = function(tag){
-		// summary: returns a function, which creates an element of given tag 
+		// summary: returns a function, which creates an element of given tag
 		//	(SPAN by default) and sets its innerHTML to given text
 		// tag: String: a tag name or empty for SPAN
 		if(!tag){ return dojo.dnd._createSpan; }
@@ -2566,7 +2566,7 @@ dojo.provide("dojo.dnd.Selector");
 
 dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 	// summary: a Selector object, which knows how to select its children
-	
+
 	constructor: function(node, params){
 		// summary: a constructor of the Selector
 		// node: Node: node or node's id to build the selector on
@@ -2584,10 +2584,10 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 			dojo.connect(this.node, "onmousedown", this, "onMouseDown"),
 			dojo.connect(this.node, "onmouseup",   this, "onMouseUp"));
 	},
-	
+
 	// object attributes (for markup)
 	singular: false,	// is singular property
-	
+
 	// methods
 	getSelectedNodes: function(){
 		// summary: returns a list (an array) of selected nodes
@@ -2762,7 +2762,7 @@ dojo.declare("dojo.dnd.Selector", dojo.dnd.Container, {
 		// e: Event: mouse event
 		this.simpleSelection = false;
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
@@ -2931,7 +2931,7 @@ if(!dojo._hasResource["dojo.dnd.Manager"]){ //_hasResource checks added by build
 				dojo.connect(dojo.doc, "onkeyup",     this, "onKeyUp")
 			];
 			var c = "dojoDnd" + (copy ? "Copy" : "Move");
-			dojo.addClass(dojo.body(), c); 
+			dojo.addClass(dojo.body(), c);
 		},
 		canDrop: function(flag){
 			// summary: called to notify if the current target can accept items
@@ -2970,7 +2970,7 @@ if(!dojo._hasResource["dojo.dnd.Manager"]){ //_hasResource checks added by build
 				dojo.dnd.autoScroll(e);
 				dojo.marginBox(a.node, {l: e.pageX + this.OFFSET_X, t: e.pageY + this.OFFSET_Y});
 				var copy = Boolean(this.source.copyState(dojo.dnd.getCopyKeyState(e)));
-				if(this.copy != copy){ 
+				if(this.copy != copy){
 					this._setCopyStatus(copy);
 				}
 			}
@@ -2998,7 +2998,7 @@ if(!dojo._hasResource["dojo.dnd.Manager"]){ //_hasResource checks added by build
 				switch(e.keyCode){
 					case dojo.keys.CTRL:
 						var copy = Boolean(this.source.copyState(true));
-						if(this.copy != copy){ 
+						if(this.copy != copy){
 							this._setCopyStatus(copy);
 						}
 						break;
@@ -3014,7 +3014,7 @@ if(!dojo._hasResource["dojo.dnd.Manager"]){ //_hasResource checks added by build
 			// e: Event: keyboard event
 			if(this.avatar && e.keyCode == dojo.keys.CTRL){
 				var copy = Boolean(this.source.copyState(false));
-				if(this.copy != copy){ 
+				if(this.copy != copy){
 					this._setCopyStatus(copy);
 				}
 			}
@@ -3068,7 +3068,7 @@ dojo.provide("dojo.dnd.Source");
 
 dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	// summary: a Source object, which can be used as a DnD source, or a DnD target
-	
+
 	// object attributes (for markup)
 	isSource: true,
 	horizontal: false,
@@ -3076,7 +3076,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 	skipForm: false,
 	withHandles: false,
 	accept: ["text"],
-	
+
 	constructor: function(node, params){
 		// summary: a constructor of the Source
 		// node: Node: node or node's id to build the source on
@@ -3126,7 +3126,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.subscribe("/dnd/cancel", this, "onDndCancel")
 		];
 	},
-	
+
 	// methods
 	checkAcceptance: function(source, nodes){
 		// summary: checks, if the target can accept nodes from this source
@@ -3222,7 +3222,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 			dojo.dnd.Source.superclass.onMouseUp.call(this, e);
 		}
 	},
-	
+
 	// topic event processors
 	onDndSourceOver: function(source){
 		// summary: topic event processor for /dnd/source/over, called when detected a current source
@@ -3352,7 +3352,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		this._changeState("Source", "");
 		this._changeState("Target", "");
 	},
-	
+
 	// utilities
 	onOverEvent: function(){
 		// summary: this function is called once, when mouse is over our container
@@ -3395,7 +3395,25 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 		// e: Event: mouse event
 		if(!this.withHandles){ return true; }
 		for(var node = e.target; node && !dojo.hasClass(node, "dojoDndItem"); node = node.parentNode){
-			if(dojo.hasClass(node, "dojoDndHandle")){ return true; }
+			if(dojo.hasClass(node, "dojoDndHandle")){
+				//aタグを同時にクリックした場合には、aタグを優先させる
+				var event=e;
+				if (!event) {event = window.event; }
+				var pos={x:event.clientX,y:event.clientY};
+				var isCollapsed=false;
+				dojo.query("a",node).forEach(function(item){
+					if(!isCollapsed){
+						var rect=item.getBoundingClientRect();
+						isCollapsed=(rect.left<=pos.x && pos.x<=rect.right && rect.top<=pos.y && pos.y<=rect.bottom);
+					}
+				});
+				if(isCollapsed){
+					return false;
+				}
+				//----------------
+
+				return true;
+			}
 		}
 		return false;	// Boolean
 	}
@@ -3403,7 +3421,7 @@ dojo.declare("dojo.dnd.Source", dojo.dnd.Selector, {
 
 dojo.declare("dojo.dnd.Target", dojo.dnd.Source, {
 	// summary: a Target object, which can be used as a DnD target
-	
+
 	constructor: function(node, params){
 		// summary: a constructor of the Target --- see the Source constructor for details
 		this.isSource = false;
@@ -3429,7 +3447,7 @@ dojo.provide("dojo.dnd.Mover");
 
 dojo.declare("dojo.dnd.Mover", null, {
 	constructor: function(node, e, host){
-		// summary: an object, which makes a node follow the mouse, 
+		// summary: an object, which makes a node follow the mouse,
 		//	used as a default mover, and as a base class for custom movers
 		// node: Node: a node (or node's id) to be moved
 		// e: Event: a mouse event, which started the move;
@@ -3439,7 +3457,7 @@ dojo.declare("dojo.dnd.Mover", null, {
 		this.node = dojo.byId(node);
 		this.marginBox = {l: e.pageX, t: e.pageY};
 		this.mouseButton = e.button;
-		var h = this.host = host, d = node.ownerDocument, 
+		var h = this.host = host, d = node.ownerDocument,
 			firstEvent = dojo.connect(d, "onmousemove", this, "onFirstMove");
 		this.events = [
 			dojo.connect(d, "onmousemove", this, "onMouseMove"),
@@ -3503,7 +3521,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	handle: "",
 	delay: 0,
 	skip: false,
-	
+
 	constructor: function(node, params){
 		// summary: an object, which makes a node moveable
 		// node: Node: a node (or node's id) to be moved
@@ -3540,7 +3558,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 		dojo.forEach(this.events, dojo.disconnect);
 		this.events = this.node = this.handle = null;
 	},
-	
+
 	// mouse event processors
 	onMouseDown: function(e){
 		// summary: event processor for onmousedown, creates a Mover for the node
@@ -3578,13 +3596,13 @@ dojo.declare("dojo.dnd.Moveable", null, {
 			dojo.stopEvent(e);
 		}
 	},
-	
+
 	// local events
 	onMoveStart: function(/* dojo.dnd.Mover */ mover){
 		// summary: called before every move operation
 		dojo.publish("/dnd/move/start", [mover]);
-		dojo.addClass(dojo.body(), "dojoMove"); 
-		dojo.addClass(this.node, "dojoMoveItem"); 
+		dojo.addClass(dojo.body(), "dojoMove");
+		dojo.addClass(this.node, "dojoMoveItem");
 	},
 	onMoveStop: function(/* dojo.dnd.Mover */ mover){
 		// summary: called after every move operation
@@ -3595,7 +3613,7 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	onFirstMove: function(/* dojo.dnd.Mover */ mover){
 		// summary: called during the very first move notification,
 		//	can be used to initialize coordinates, can be overwritten.
-		
+
 		// default implementation does nothing
 	},
 	onMove: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
@@ -3608,13 +3626,13 @@ dojo.declare("dojo.dnd.Moveable", null, {
 	onMoving: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called before every incremental move,
 		//	can be overwritten.
-		
+
 		// default implementation does nothing
 	},
 	onMoved: function(/* dojo.dnd.Mover */ mover, /* Object */ leftTop){
 		// summary: called after every incremental move,
 		//	can be overwritten.
-		
+
 		// default implementation does nothing
 	}
 });
@@ -3629,7 +3647,7 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 		// object attributes (for markup)
 		constraints: function(){},
 		within: false,
-		
+
 		// markup methods
 		markupFactory: function(params, node){
 			return new dojo.dnd.move.constrainedMoveable(node, params);
@@ -3668,7 +3686,7 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 	dojo.declare("dojo.dnd.move.boxConstrainedMoveable", dojo.dnd.move.constrainedMoveable, {
 		// object attributes (for markup)
 		box: {},
-		
+
 		// markup methods
 		markupFactory: function(params, node){
 			return new dojo.dnd.move.boxConstrainedMoveable(node, params);
@@ -3705,8 +3723,8 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 			//	the rest is passed to the base class
 			var area = params && params.area;
 			this.constraints = function(){
-				var n = this.node.parentNode, 
-					s = dojo.getComputedStyle(n), 
+				var n = this.node.parentNode,
+					s = dojo.getComputedStyle(n),
 					mb = dojo._getMarginBox(n, s);
 				if(area == "margin"){
 					return mb;	// Object
@@ -3732,10 +3750,10 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 
 	dojo.dnd.move.constrainedMover = function(fun, within){
 		// summary: returns a constrained version of dojo.dnd.Mover
-		// description: this function produces n object, which will put a constraint on 
+		// description: this function produces n object, which will put a constraint on
 		//	the margin box of dragged object in absolute coordinates
 		// fun: Function: called on drag, and returns a constraint box
-		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle,
 		//	otherwise the constraint is applied to the left-top corner
 		var mover = function(node, e, notifier){
 			dojo.dnd.Mover.call(this, node, e, notifier);
@@ -3766,7 +3784,7 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 	dojo.dnd.move.boxConstrainedMover = function(box, within){
 		// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the specified box
 		// box: Object: a constraint box (l, t, w, h)
-		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle,
 		//	otherwise the constraint is applied to the left-top corner
 		return dojo.dnd.move.constrainedMover(function(){ return box; }, within);	// Object
 	};
@@ -3775,11 +3793,11 @@ if(!dojo._hasResource["dojo.dnd.move"]){ //_hasResource checks added by build. D
 		// summary: a specialization of dojo.dnd.constrainedMover, which constrains to the parent node
 		// area: String: "margin" to constrain within the parent's margin box, "border" for the border box,
 		//	"padding" for the padding box, and "content" for the content box; "content" is the default value.
-		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle, 
+		// within: Boolean: if true, constraints the whole dragged object withtin the rectangle,
 		//	otherwise the constraint is applied to the left-top corner
 		var fun = function(){
-			var n = this.node.parentNode, 
-				s = dojo.getComputedStyle(n), 
+			var n = this.node.parentNode,
+				s = dojo.getComputedStyle(n),
 				mb = dojo._getMarginBox(n, s);
 			if(area == "margin"){
 				return mb;	// Object
@@ -3851,7 +3869,7 @@ dojo.io.iframe = {
 		}
 		dojo.body().appendChild(cframe);
 		window[fname] = cframe;
-	
+
 		with(cframe.style){
 			if(dojo.isSafari < 3){
 				//We can't change the src in Safari 2.0.3 if absolute position. Bizarro.
@@ -3892,7 +3910,7 @@ dojo.io.iframe = {
 				}else{ //  if(d.isMozilla){
 					idoc = iframe.contentWindow;
 				}
-	
+
 				//For Safari (at least 2.0.3) and Opera, if the iframe
 				//has just been created but it doesn't have content
 				//yet, then iframe.document may be null. In that case,
@@ -3904,8 +3922,8 @@ dojo.io.iframe = {
 					idoc.location.replace(src);
 				}
 			}
-		}catch(e){ 
-			console.debug("dojo.io.iframe.setSrc: ", e); 
+		}catch(e){
+			console.debug("dojo.io.iframe.setSrc: ", e);
 		}
 	},
 
@@ -3992,7 +4010,7 @@ dojo.io.iframe = {
 				}catch(e){
 					value = e;
 				}finally{
-					ioArgs._callNext();				
+					ioArgs._callNext();
 				}
 				return value;
 			},
@@ -4016,7 +4034,7 @@ dojo.io.iframe = {
 
 		this._dfdQueue.push(dfd);
 		this._fireNextRequest();
-		
+
 		//Add it the IO watch queue, to get things like timeout support.
 		dojo._ioWatch(
 			dfd,
@@ -4078,7 +4096,7 @@ dojo.io.iframe = {
 						}
 					}
 				}
-				//IE requires going through getAttributeNode instead of just getAttribute in some form cases, 
+				//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
 				//so use it for all.  See #2844
 				var actnNode = fn.getAttributeNode("action");
 				var mthdNode = fn.getAttributeNode("method");
@@ -4127,7 +4145,7 @@ dojo.io.iframe = {
 		var ioArgs = dfd.ioArgs;
 		var args = ioArgs.args;
 		var fNode = args.form;
-	
+
 		if(fNode){
 			// remove all the hidden content inputs
 			var toClean = ioArgs._contentToClean;
@@ -4148,7 +4166,7 @@ dojo.io.iframe = {
 					fNode[key] = null;
 				}
 			}
-	
+
 			// restore original action + target
 			if(ioArgs["_originalAction"]){
 				fNode.setAttribute("action", ioArgs._originalAction);
@@ -4172,11 +4190,11 @@ if(!dojo._hasResource["dojo.data.util.filter"]){ //_hasResource checks added by 
 	dojo.provide("dojo.data.util.filter");
 
 	dojo.data.util.filter.patternToRegExp = function(/*String*/pattern, /*boolean?*/ ignoreCase){
-		//	summary:  
+		//	summary:
 		//		Helper function to convert a simple pattern to a regular expression for matching.
 		//	description:
 		//		Returns a regular expression object that conforms to the defined conversion rules.
-		//		For example:  
+		//		For example:
 		//			ca*   -> /^ca.*$/
 		//			*ca*  -> /^.*ca.*$/
 		//			*c\*a*  -> /^.*c\*a.*$/
@@ -4188,7 +4206,7 @@ if(!dojo._hasResource["dojo.data.util.filter"]){ //_hasResource checks added by 
 		//			* Means match anything, so ca* means match anything starting with ca
 		//			? Means match single character.  So, b?b will match to bob and bab, and so on.
 		//      	\ is an escape character.  So for example, \* means do not treat * as a match, but literal character *.
-		//				To use a \ as a character in the string, it must be escaped.  So in the pattern it should be 
+		//				To use a \ as a character in the string, it must be escaped.  So in the pattern it should be
 		//				represented by \\ to be treated as an ordinary \ character instead of an escape.
 		//
 		//	ignoreCase:
@@ -4232,7 +4250,7 @@ if(!dojo._hasResource["dojo.data.util.filter"]){ //_hasResource checks added by 
 		}else{
 			return new RegExp(rxp); //RegExp
 		}
-		
+
 	};
 
 	}
@@ -4249,11 +4267,11 @@ if(!dojo._hasResource["dojo.data.util.sorter"]){ //_hasResource checks added by 
 	dojo._hasResource["dojo.data.util.sorter"] = true;
 	dojo.provide("dojo.data.util.sorter");
 
-	dojo.data.util.sorter.basicComparator = function(	/*anything*/ a, 
+	dojo.data.util.sorter.basicComparator = function(	/*anything*/ a,
 														/*anything*/ b){
-		//	summary:  
+		//	summary:
 		//		Basic comparision function that compares if an item is greater or less than another item
-		//	description:  
+		//	description:
 		//		returns 1 if a > b, -1 if a < b, 0 if equal.
 		//		undefined values are treated as larger values so that they're pushed to the end of the list.
 
@@ -4268,9 +4286,9 @@ if(!dojo._hasResource["dojo.data.util.sorter"]){ //_hasResource checks added by 
 
 	dojo.data.util.sorter.createSortFunction = function(	/* attributes array */sortSpec,
 															/*dojo.data.core.Read*/ store){
-		//	summary:  
+		//	summary:
 		//		Helper function to generate the sorting function based off the list of sort attributes.
-		//	description:  
+		//	description:
 		//		The sort function creation will look for a property on the store called 'comparatorMap'.  If it exists
 		//		it will look in the mapping for comparisons function for the attributes.  If one is found, it will
 		//		use it instead of the basic comparator, which is typically used for strings, ints, booleans, and dates.
@@ -4286,7 +4304,7 @@ if(!dojo._hasResource["dojo.data.util.sorter"]){ //_hasResource checks added by 
 		//	store: object
 		//		The datastore object to look up item values from.
 		//
-		var sortFunctions=[];   
+		var sortFunctions=[];
 
 		function createSortFunction(attr, dir){
 			return function(itemA, itemB){
@@ -4300,7 +4318,7 @@ if(!dojo._hasResource["dojo.data.util.sorter"]){ //_hasResource checks added by 
 					}
 					comparator = store.comparatorMap[attr]||dojo.data.util.sorter.basicComparator;
 				}
-				comparator = comparator||dojo.data.util.sorter.basicComparator; 
+				comparator = comparator||dojo.data.util.sorter.basicComparator;
 				return dir * comparator(a,b); //int
 			};
 		}
@@ -4321,7 +4339,7 @@ if(!dojo._hasResource["dojo.data.util.sorter"]){ //_hasResource checks added by 
 					return ret;//int
 				}
 			}
-			return 0; //int  
+			return 0; //int
 		};  //  Function
 	};
 
@@ -4335,27 +4353,27 @@ if(!dojo._hasResource["dojo.data.util.simpleFetch"]){ //_hasResource checks adde
 	dojo.data.util.simpleFetch.fetch = function(/* Object? */ request){
 		//	summary:
 		//		The simpleFetch mixin is designed to serve as a set of function(s) that can
-		//		be mixed into other datastore implementations to accelerate their development.  
-		//		The simpleFetch mixin should work well for any datastore that can respond to a _fetchItems() 
+		//		be mixed into other datastore implementations to accelerate their development.
+		//		The simpleFetch mixin should work well for any datastore that can respond to a _fetchItems()
 		//		call by returning an array of all the found items that matched the query.  The simpleFetch mixin
 		//		is not designed to work for datastores that respond to a fetch() call by incrementally
 		//		loading items, or sequentially loading partial batches of the result
-		//		set.  For datastores that mixin simpleFetch, simpleFetch 
+		//		set.  For datastores that mixin simpleFetch, simpleFetch
 		//		implements a fetch method that automatically handles eight of the fetch()
 		//		arguments -- onBegin, onItem, onComplete, onError, start, count, sort and scope
 		//		The class mixing in simpleFetch should not implement fetch(),
-		//		but should instead implement a _fetchItems() method.  The _fetchItems() 
-		//		method takes three arguments, the keywordArgs object that was passed 
+		//		but should instead implement a _fetchItems() method.  The _fetchItems()
+		//		method takes three arguments, the keywordArgs object that was passed
 		//		to fetch(), a callback function to be called when the result array is
 		//		available, and an error callback to be called if something goes wrong.
 		//		The _fetchItems() method should ignore any keywordArgs parameters for
-		//		start, count, onBegin, onItem, onComplete, onError, sort, and scope.  
+		//		start, count, onBegin, onItem, onComplete, onError, sort, and scope.
 		//		The _fetchItems() method needs to correctly handle any other keywordArgs
-		//		parameters, including the query parameter and any optional parameters 
-		//		(such as includeChildren).  The _fetchItems() method should create an array of 
-		//		result items and pass it to the fetchHandler along with the original request object 
-		//		-- or, the _fetchItems() method may, if it wants to, create an new request object 
-		//		with other specifics about the request that are specific to the datastore and pass 
+		//		parameters, including the query parameter and any optional parameters
+		//		(such as includeChildren).  The _fetchItems() method should create an array of
+		//		result items and pass it to the fetchHandler along with the original request object
+		//		-- or, the _fetchItems() method may, if it wants to, create an new request object
+		//		with other specifics about the request that are specific to the datastore and pass
 		//		that as the request object to the handler.
 		//
 		//		For more information on this specific function, see dojo.data.api.Read.fetch()
@@ -4409,7 +4427,7 @@ if(!dojo._hasResource["dojo.data.util.simpleFetch"]){ //_hasResource checks adde
 				if (!requestObject.onItem) {
 					subset = items.slice(startIndex, endIndex);
 				}
-				requestObject.onComplete.call(scope, subset, requestObject);   
+				requestObject.onComplete.call(scope, subset, requestObject);
 			}
 		};
 		this._fetchItems(request, _fetchHandler, _errorHandler);
@@ -4433,7 +4451,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		//			{ name:'Fozzie Bear', wears:['hat', 'tie']},
 		//			{ name:'Miss Piggy', pets:'Foo-Foo'}
 		//		]}
-		//		Note that it can also contain an 'identifer' property that specified which attribute on the items 
+		//		Note that it can also contain an 'identifer' property that specified which attribute on the items
 		//		in the array of items that acts as the unique identifier for that item.
 		//
 		constructor: function(/* Object */ keywordParameters){
@@ -4448,14 +4466,14 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			//			...
 			//			typeN: function || object
 			//		}
-			//		Where if it is a function, it is assumed to be an object constructor that takes the 
+			//		Where if it is a function, it is assumed to be an object constructor that takes the
 			//		value of _value as the initialization parameters.  If it is an object, then it is assumed
 			//		to be an object of general form:
 			//		{
 			//			type: function, //constructor.
 			//			deserialize:	function(value) //The function that parses the value and constructs the object defined by type appropriately.
 			//		}
-		
+
 			this._arrayOfAllItems = [];
 			this._arrayOfTopLevelItems = [];
 			this._loadFinished = false;
@@ -4481,15 +4499,15 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			this._loadInProgress = false;	//Got to track the initial load to prevent duelling loads of the dataset.
 			this._queuedFetches = [];
 		},
-		
+
 		url: "",	// use "" rather than undefined for the benefit of the parser (#3539)
 
 		_assertIsItem: function(/* item */ item){
 			//	summary:
 			//		This function tests whether the item passed in is indeed an item in the store.
-			//	item: 
+			//	item:
 			//		The item to test for being contained by the store.
-			if(!this.isItem(item)){ 
+			if(!this.isItem(item)){
 				throw new Error("dojo.data.ItemFileReadStore: Invalid item argument.");
 			}
 		},
@@ -4497,25 +4515,25 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		_assertIsAttribute: function(/* attribute-name-string */ attribute){
 			//	summary:
 			//		This function tests whether the item passed in is indeed a valid 'attribute' like type for the store.
-			//	attribute: 
+			//	attribute:
 			//		The attribute to test for being contained by the store.
-			if(typeof attribute !== "string"){ 
+			if(typeof attribute !== "string"){
 				throw new Error("dojo.data.ItemFileReadStore: Invalid attribute argument.");
 			}
 		},
 
-		getValue: function(	/* item */ item, 
-							/* attribute-name-string */ attribute, 
+		getValue: function(	/* item */ item,
+							/* attribute-name-string */ attribute,
 							/* value? */ defaultValue){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getValue()
 			var values = this.getValues(item, attribute);
 			return (values.length > 0)?values[0]:defaultValue; // mixed
 		},
 
-		getValues: function(/* item */ item, 
+		getValues: function(/* item */ item,
 							/* attribute-name-string */ attribute){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getValues()
 
 			this._assertIsItem(item);
@@ -4524,7 +4542,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		getAttributes: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getAttributes()
 			this._assertIsItem(item);
 			var attributes = [];
@@ -4539,15 +4557,15 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 
 		hasAttribute: function(	/* item */ item,
 								/* attribute-name-string */ attribute) {
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.hasAttribute()
 			return this.getValues(item, attribute).length > 0;
 		},
 
-		containsValue: function(/* item */ item, 
-								/* attribute-name-string */ attribute, 
+		containsValue: function(/* item */ item,
+								/* attribute-name-string */ attribute,
 								/* anything */ value){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.containsValue()
 			var regexp = undefined;
 			if(typeof value === "string"){
@@ -4556,22 +4574,22 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			return this._containsValue(item, attribute, value, regexp); //boolean.
 		},
 
-		_containsValue: function(	/* item */ item, 
-									/* attribute-name-string */ attribute, 
+		_containsValue: function(	/* item */ item,
+									/* attribute-name-string */ attribute,
 									/* anything */ value,
 									/* RegExp?*/ regexp){
-			//	summary: 
+			//	summary:
 			//		Internal function for looking at the values contained by the item.
-			//	description: 
-			//		Internal function for looking at the values contained by the item.  This 
+			//	description:
+			//		Internal function for looking at the values contained by the item.  This
 			//		function allows for denoting if the comparison should be case sensitive for
 			//		strings or not (for handling filtering cases where string case should not matter)
-			//	
+			//
 			//	item:
 			//		The data item to examine for attribute values.
 			//	attribute:
 			//		The attribute to inspect.
-			//	value:	
+			//	value:
 			//		The value to match.
 			//	regexp:
 			//		Optional regular expression generated off value if value was of string type to handle wildcarding.
@@ -4588,7 +4606,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		isItem: function(/* anything */ something){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.isItem()
 			if(something && something[this._storeRefPropName] === this){
 				if(this._arrayOfAllItems[something[this._itemNumPropName]] === something){
@@ -4599,25 +4617,25 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		isItemLoaded: function(/* anything */ something){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.isItemLoaded()
 			return this.isItem(something); //boolean
 		},
 
 		loadItem: function(/* object */ keywordArgs){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.loadItem()
 			this._assertIsItem(keywordArgs.item);
 		},
 
 		getFeatures: function(){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getFeatures()
 			return this._features; //Object
 		},
 
 		getLabel: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getLabel()
 			if(this._labelAttr && this.isItem(item)){
 				return this.getValue(item,this._labelAttr); //String
@@ -4626,7 +4644,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		getLabelAttributes: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Read.getLabelAttributes()
 			if(this._labelAttr){
 				return [this._labelAttr]; //array
@@ -4634,16 +4652,16 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			return null; //null
 		},
 
-		_fetchItems: function(	/* Object */ keywordArgs, 
-								/* Function */ findCallback, 
+		_fetchItems: function(	/* Object */ keywordArgs,
+								/* Function */ findCallback,
 								/* Function */ errorCallback){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.util.simpleFetch.fetch()
 			var self = this;
 			var filter = function(requestArgs, arrayOfItems){
 				var items = [];
 				if(requestArgs.query){
-					var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false; 
+					var ignoreCase = requestArgs.queryOptions ? requestArgs.queryOptions.ignoreCase : false;
 
 					//See if there are any string values that can be regexp parsed first to avoid multiple regexp gens on the
 					//same value for each item examined.  Much more efficient.
@@ -4674,8 +4692,8 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 					}
 					findCallback(items, requestArgs);
 				}else{
-					// We want a copy to pass back in case the parent wishes to sort the array. 
-					// We shouldn't allow resort of the internal list, so that multiple callers 
+					// We want a copy to pass back in case the parent wishes to sort the array.
+					// We shouldn't allow resort of the internal list, so that multiple callers
 					// can get lists and sort without affecting each other.  We also need to
 					// filter out any null values that have been left as a result of deleteItem()
 					// calls in ItemFileWriteStore.
@@ -4695,14 +4713,14 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 
 				if(this._jsonFileUrl){
 					//If fetches come in before the loading has finished, but while
-					//a load is in progress, we have to defer the fetching to be 
+					//a load is in progress, we have to defer the fetching to be
 					//invoked in the callback.
 					if(this._loadInProgress){
 						this._queuedFetches.push({args: keywordArgs, filter: filter});
 					}else{
 						this._loadInProgress = true;
 						var getArgs = {
-								url: self._jsonFileUrl, 
+								url: self._jsonFileUrl,
 								handleAs: "json-comment-optional"
 							};
 						var getHandler = dojo.xhrGet(getArgs);
@@ -4711,7 +4729,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 								self._getItemsFromLoadedData(data);
 								self._loadFinished = true;
 								self._loadInProgress = false;
-								
+
 								filter(keywordArgs, self._getItemsArray(keywordArgs.queryOptions));
 								self._handleQueuedFetches();
 							}catch(e){
@@ -4741,7 +4759,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		_handleQueuedFetches: function(){
-			//	summary: 
+			//	summary:
 			//		Internal function to execute delayed request in the store.
 			//Execute any deferred fetches now.
 			if (this._queuedFetches.length > 0) {
@@ -4750,7 +4768,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 					var delayedQuery = fData.args;
 					var delayedFilter = fData.filter;
 					if(delayedFilter){
-						delayedFilter(delayedQuery, this._getItemsArray(delayedQuery.queryOptions)); 
+						delayedFilter(delayedQuery, this._getItemsArray(delayedQuery.queryOptions));
 					}else{
 						this.fetchItemByIdentity(delayedQuery);
 					}
@@ -4760,17 +4778,17 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		_getItemsArray: function(/*object?*/queryOptions){
-			//	summary: 
+			//	summary:
 			//		Internal function to determine which list of items to search over.
 			//	queryOptions: The query options parameter, if any.
 			if(queryOptions && queryOptions.deep) {
-				return this._arrayOfAllItems; 
+				return this._arrayOfAllItems;
 			}
 			return this._arrayOfTopLevelItems;
 		},
 
 		close: function(/*dojo.data.api.Request || keywordArgs || null */ request){
-			 //	summary: 
+			 //	summary:
 			 //		See dojo.data.api.Read.close()
 		},
 
@@ -4785,9 +4803,9 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			//
 			// 	returns: array
 			//		Array of items in store item format.
-			
+
 			// First, we define a couple little utility functions...
-			
+
 			function valueIsAnItem(/* anything */ aValue){
 				// summary:
 				//		Given any sort of value that could be in the raw json data,
@@ -4808,13 +4826,13 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 					(!dojo.isArray(aValue)) &&
 					(!dojo.isFunction(aValue)) &&
 					(aValue.constructor == Object) &&
-					(typeof aValue._reference == "undefined") && 
-					(typeof aValue._type == "undefined") && 
+					(typeof aValue._reference == "undefined") &&
+					(typeof aValue._type == "undefined") &&
 					(typeof aValue._value == "undefined")
 				);
 				return isItem;
 			}
-			
+
 			var self = this;
 			function addItemAndSubItemsToArrayOfAllItems(/* Item */ anItem){
 				self._arrayOfAllItems.push(anItem);
@@ -4856,13 +4874,13 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 				item[this._rootItemPropName]=true;
 			}
 
-			// Step 2: Walk through all the attribute values of all the items, 
+			// Step 2: Walk through all the attribute values of all the items,
 			// and replace single values with arrays.  For example, we change this:
 			//		{ name:'Miss Piggy', pets:'Foo-Foo'}
 			// into this:
 			//		{ name:['Miss Piggy'], pets:['Foo-Foo']}
-			// 
-			// We also store the attribute names so we can validate our store  
+			//
+			// We also store the attribute names so we can validate our store
 			// reference and item id special properties for the O(1) isItem
 			var allAttributeNames = {};
 			var key;
@@ -4894,9 +4912,9 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 				this._itemNumPropName += "_";
 			}
 
-			// Step 4: Some data files specify an optional 'identifier', which is 
-			// the name of an attribute that holds the identity of each item. 
-			// If this data file specified an identifier attribute, then build a 
+			// Step 4: Some data files specify an optional 'identifier', which is
+			// the name of an attribute that holds the identity of each item.
+			// If this data file specified an identifier attribute, then build a
 			// hash table of items keyed by the identity of the items.
 			var arrayOfValues;
 
@@ -4922,7 +4940,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 				this._features['dojo.data.api.Identity'] = Number;
 			}
 
-			// Step 5: Walk through all the items, and set each item's properties 
+			// Step 5: Walk through all the items, and set each item's properties
 			// for _storeRefPropName and _itemNumPropName, so that store.isItem() will return true.
 			for(i = 0; i < this._arrayOfAllItems.length; ++i){
 				item = this._arrayOfAllItems[i];
@@ -4936,13 +4954,13 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 			// We replace item-references with pointers to items.  For example, we change:
 			//		{ name:['Kermit'], friends:[{_reference:{name:'Miss Piggy'}}] }
 			// into this:
-			//		{ name:['Kermit'], friends:[miss_piggy] } 
+			//		{ name:['Kermit'], friends:[miss_piggy] }
 			// (where miss_piggy is the object representing the 'Miss Piggy' item).
 			//
 			// We replace type/value pairs with typed-literals.  For example, we change:
 			//		{ name:['Nelson Mandela'], born:[{_type:'Date', _value:'July 18, 1918'}] }
 			// into this:
-			//		{ name:['Kermit'], born:(new Date('July 18, 1918')) } 
+			//		{ name:['Kermit'], born:(new Date('July 18, 1918')) }
 			//
 			// We also generate the associate map for all items for the O(1) isItem function.
 			for(i = 0; i < this._arrayOfAllItems.length; ++i){
@@ -4955,7 +4973,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 							if(value._type && value._value){
 								var type = value._type; // examples: 'Date', 'Color', or 'ComplexNumber'
 								var mappingObj = this._datatypeMap[type]; // examples: Date, dojo.Color, foo.math.ComplexNumber, {type: dojo.Color, deserialize(value){ return new dojo.Color(value)}}
-								if(!mappingObj){ 
+								if(!mappingObj){
 									throw new Error("dojo.data.ItemFileReadStore: in the typeMap constructor arg, no object class was specified for the datatype '" + type + "'");
 								}else if(dojo.isFunction(mappingObj)){
 									arrayOfValues[j] = new mappingObj(value._value);
@@ -4978,12 +4996,12 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 										var candidateItem = this._arrayOfAllItems[k];
 										var found = true;
 										for(var refKey in referenceDescription){
-											if(candidateItem[refKey] != referenceDescription[refKey]){ 
-												found = false; 
+											if(candidateItem[refKey] != referenceDescription[refKey]){
+												found = false;
 											}
 										}
-										if(found){ 
-											arrayOfValues[j] = candidateItem; 
+										if(found){
+											arrayOfValues[j] = candidateItem;
 										}
 									}
 								}
@@ -4995,7 +5013,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		getIdentity: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Identity.getIdentity()
 			var identifier = this._features['dojo.data.api.Identity'];
 			if(identifier === Number){
@@ -5010,7 +5028,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		fetchItemByIdentity: function(/* Object */ keywordArgs){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Identity.fetchItemByIdentity()
 
 			// Hasn't loaded yet, we have to trigger the load.
@@ -5023,7 +5041,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 					}else{
 						this._loadInProgress = true;
 						var getArgs = {
-								url: self._jsonFileUrl, 
+								url: self._jsonFileUrl,
 								handleAs: "json-comment-optional"
 						};
 						var getHandler = dojo.xhrGet(getArgs);
@@ -5064,7 +5082,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 						var scope =  keywordArgs.scope?keywordArgs.scope:dojo.global;
 						keywordArgs.onItem.call(scope, item);
 					}
-				} 
+				}
 			}else{
 				// Already loaded.  We can just look it up and call back.
 				var item = this._getItemByIdentity(keywordArgs.identity);
@@ -5091,36 +5109,36 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 		},
 
 		getIdentityAttributes: function(/* item */ item){
-			//	summary: 
+			//	summary:
 			//		See dojo.data.api.Identity.getIdentifierAttributes()
-			 
+
 			var identifier = this._features['dojo.data.api.Identity'];
 			if(identifier === Number){
 				// If (identifier === Number) it means getIdentity() just returns
 				// an integer item-number for each item.  The dojo.data.api.Identity
-				// spec says we need to return null if the identity is not composed 
-				// of attributes 
+				// spec says we need to return null if the identity is not composed
+				// of attributes
 				return null; // null
 			}else{
 				return [identifier]; // Array
 			}
 		},
-		
+
 		_forceLoad: function(){
-			//	summary: 
+			//	summary:
 			//		Internal function to force a load of the store if it hasn't occurred yet.  This is required
-			//		for specific functions to work properly.  
+			//		for specific functions to work properly.
 			var self = this;
 			if(this._jsonFileUrl){
 					var getArgs = {
-						url: self._jsonFileUrl, 
+						url: self._jsonFileUrl,
 						handleAs: "json-comment-optional",
 						sync: true
 					};
 				var getHandler = dojo.xhrGet(getArgs);
 				getHandler.addCallback(function(data){
 					try{
-						//Check to be sure there wasn't another load going on concurrently 
+						//Check to be sure there wasn't another load going on concurrently
 						//So we don't clobber data that comes in on it.  If there is a load going on
 						//then do not save this data.  It will potentially clobber current data.
 						//We mainly wanted to sync/wait here.
@@ -5142,7 +5160,7 @@ if(!dojo._hasResource["dojo.data.ItemFileReadStore"]){ //_hasResource checks add
 				self._getItemsFromLoadedData(self._jsonData);
 				self._jsonData = null;
 				self._loadFinished = true;
-			} 
+			}
 		}
 	});
 	//Mix in the simple fetch implementation to this class.
@@ -5164,7 +5182,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			//			...
 			//			typeN: function || object
 			//		}
-			//		Where if it is a function, it is assumed to be an object constructor that takes the 
+			//		Where if it is a function, it is assumed to be an object constructor that takes the
 			//		value of _value as the initialization parameters.  It is serialized assuming object.toString()
 			//		serialization.  If it is an object, then it is assumed
 			//		to be an object of general form:
@@ -5177,11 +5195,11 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			// ItemFileWriteStore extends ItemFileReadStore to implement these additional dojo.data APIs
 			this._features['dojo.data.api.Write'] = true;
 			this._features['dojo.data.api.Notification'] = true;
-			
+
 			// For keeping track of changes so that we can implement isDirty and revert
 			this._pending = {
-				_newItems:{}, 
-				_modifiedItems:{}, 
+				_newItems:{},
+				_modifiedItems:{},
 				_deletedItems:{}
 			};
 
@@ -5190,11 +5208,11 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 					return dojo.date.stamp.toISOString(obj, {zulu:true});
 				}
 			}
-			
+
 			// this._saveInProgress is set to true, briefly, from when save() is first called to when it completes
 			this._saveInProgress = false;
-		}, 
-		
+		},
+
 		_assert: function(/* boolean */ condition){
 			if(!condition) {
 				throw new Error("assertion failed in ItemFileWriteStore");
@@ -5206,8 +5224,8 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			// this._assert((identifierAttribute === Number) || (dojo.isString(identifierAttribute)));
 			return identifierAttribute;
 		},
-		
-		
+
+
 	/* dojo.data.api.Write */
 
 		newItem: function(/* Object? */ keywordArgs, /* Object? */ parentInfo){
@@ -5237,18 +5255,18 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 					throw new Error("newItem() was not passed an single-valued identity");
 				}
 			}
-			
-			// make sure this identity is not already in use by another item, if identifiers were 
-			// defined in the file.  Otherwise it would be the item count, 
+
+			// make sure this identity is not already in use by another item, if identifiers were
+			// defined in the file.  Otherwise it would be the item count,
 			// which should always be unique in this case.
 			if(this._itemsByIdentity){
 				this._assert(typeof this._itemsByIdentity[newIdentity] === "undefined");
 			}
 			this._assert(typeof this._pending._newItems[newIdentity] === "undefined");
 			this._assert(typeof this._pending._deletedItems[newIdentity] === "undefined");
-			
+
 			var newItem = {};
-			newItem[this._storeRefPropName] = this;		
+			newItem[this._storeRefPropName] = this;
 			newItem[this._itemNumPropName] = this._arrayOfAllItems.length;
 			if(this._itemsByIdentity){
 				this._itemsByIdentity[newIdentity] = newItem;
@@ -5257,7 +5275,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 
 			//We need to construct some data for the onNew call too...
 			var pInfo = null;
-			
+
 			// Now we need to check to see where we want to assign this thingm if any.
 			if(parentInfo && parentInfo.parent && parentInfo.attribute){
 				pInfo = {
@@ -5289,23 +5307,23 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				newItem[this._rootItemPropName]=true;
 				this._arrayOfTopLevelItems.push(newItem);
 			}
-			
+
 			this._pending._newItems[newIdentity] = newItem;
-			
+
 			//Clone over the properties to the new item
 			for(var key in keywordArgs){
 				if(key === this._storeRefPropName || key === this._itemNumPropName){
 					// Bummer, the user is trying to do something like
 					// newItem({_S:"foo"}).  Unfortunately, our superclass,
 					// ItemFileReadStore, is already using _S in each of our items
-					// to hold private info.  To avoid a naming collision, we 
-					// need to move all our private info to some other property 
+					// to hold private info.  To avoid a naming collision, we
+					// need to move all our private info to some other property
 					// of all the items/objects.  So, we need to iterate over all
-					// the items and do something like: 
+					// the items and do something like:
 					//    item.__S = item._S;
 					//    item._S = undefined;
-					// But first we have to make sure the new "__S" variable is 
-					// not in use, which means we have to iterate over all the 
+					// But first we have to make sure the new "__S" variable is
+					// not in use, which means we have to iterate over all the
 					// items checking for that.
 					throw new Error("encountered bug in ItemFileWriteStore.newItem");
 				}
@@ -5318,7 +5336,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			this.onNew(newItem, pInfo); // dojo.data.api.Notification call
 			return newItem; // item
 		},
-		
+
 		_removeArrayElement: function(/* Array */ array, /* anything */ element){
 			var index = dojo.indexOf(array, element);
 			if (index != -1){
@@ -5327,25 +5345,25 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			}
 			return false;
 		},
-		
+
 		deleteItem: function(/* item */ item){
 			// summary: See dojo.data.api.Write.deleteItem()
 			this._assert(!this._saveInProgress);
 			this._assertIsItem(item);
 
 			// remove this item from the _arrayOfAllItems, but leave a null value in place
-			// of the item, so as not to change the length of the array, so that in newItem() 
+			// of the item, so as not to change the length of the array, so that in newItem()
 			// we can still safely do: newIdentity = this._arrayOfAllItems.length;
 			var indexInArrayOfAllItems = item[this._itemNumPropName];
 			this._arrayOfAllItems[indexInArrayOfAllItems] = null;
-			
+
 			var identity = this.getIdentity(item);
 			item[this._storeRefPropName] = null;
 			if(this._itemsByIdentity){
 				delete this._itemsByIdentity[identity];
 			}
 			this._pending._deletedItems[identity] = item;
-			
+
 			//Remove from the toplevel items, if necessary...
 			if(item[this._rootItemPropName]){
 				this._removeArrayElement(this._arrayOfTopLevelItems, item);
@@ -5358,20 +5376,20 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			// summary: See dojo.data.api.Write.set()
 			return this._setValueOrValues(item, attribute, value, true); // boolean
 		},
-		
+
 		setValues: function(/* item */ item, /* attribute-name-string */ attribute, /* array */ values){
 			// summary: See dojo.data.api.Write.setValues()
 			return this._setValueOrValues(item, attribute, values, true); // boolean
 		},
-		
+
 		unsetAttribute: function(/* item */ item, /* attribute-name-string */ attribute){
 			// summary: See dojo.data.api.Write.unsetAttribute()
 			return this._setValueOrValues(item, attribute, [], true);
 		},
-		
+
 		_setValueOrValues: function(/* item */ item, /* attribute-name-string */ attribute, /* anything */ newValueOrValues, /*boolean?*/ callOnSet){
 			this._assert(!this._saveInProgress);
-			
+
 			// Check for valid arguments
 			this._assertIsItem(item);
 			this._assert(dojo.isString(attribute));
@@ -5390,8 +5408,8 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 
 			var identity = this.getIdentity(item);
 			if(!this._pending._modifiedItems[identity]){
-				// Before we actually change the item, we make a copy of it to 
-				// record the original state, so that we'll be able to revert if 
+				// Before we actually change the item, we make a copy of it to
+				// record the original state, so that we'll be able to revert if
 				// the revert method gets called.  If the item has already been
 				// modified then there's no need to do this now, since we already
 				// have a record of the original state.
@@ -5411,12 +5429,12 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				// Now mark the item as dirty, and save the copy of the original state
 				this._pending._modifiedItems[identity] = copyOfItemState;
 			}
-			
+
 			// Okay, now we can actually change this attribute on the item
 			var success = false;
 			if(dojo.isArray(newValueOrValues) && newValueOrValues.length === 0){
 				// If we were passed an empty array as the value, that counts
-				// as "unsetting" the attribute, so we need to remove this 
+				// as "unsetting" the attribute, so we need to remove this
 				// attribute from the item.
 				success = delete item[attribute];
 				newValueOrValues = undefined; // used in the onSet Notification call below
@@ -5426,8 +5444,8 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 					var newValues = newValueOrValues;
 					// Unforunately, it's not safe to just do this:
 					//    newValueArray = newValues;
-					// Instead, we need to take each value in the values array and copy 
-					// it into the new array, so that our internal data structure won't  
+					// Instead, we need to take each value in the values array and copy
+					// it into the new array, so that our internal data structure won't
 					// get corrupted if the user mucks with the values array *after*
 					// calling setValues().
 					for(var j = 0; j < newValues.length; ++j){
@@ -5443,7 +5461,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 
 			// Now we make the dojo.data.api.Notification call
 			if(callOnSet){
-				this.onSet(item, attribute, oldValueOrValues, newValueOrValues); 
+				this.onSet(item, attribute, oldValueOrValues, newValueOrValues);
 			}
 			return success; // boolean
 		},
@@ -5460,11 +5478,11 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			}
 			return valueOrValues;
 		},
-		
+
 		_flatten: function(/* anything */ value){
 			if(this.isItem(value)){
 				var item = value;
-				// Given an item, return an serializable object that provides a 
+				// Given an item, return an serializable object that provides a
 				// reference to the item.
 				// For example, given kermit:
 				//    var kermit = store.newItem({id:2, name:"Kermit"});
@@ -5493,14 +5511,14 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				return value;
 			}
 		},
-		
+
 		_getNewFileContentString: function(){
-			// summary: 
+			// summary:
 			//		Generate a string that can be saved to a file.
 			//		The result should look similar to:
 			//		http://trac.dojotoolkit.org/browser/dojo/trunk/tests/data/countries.json
 			var serializableStructure = {};
-			
+
 			var identifierAttribute = this._getIdentifierAttribute();
 			if(identifierAttribute !== Number){
 				serializableStructure.identifier = identifierAttribute;
@@ -5534,18 +5552,18 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 			var prettyPrint = true;
 			return dojo.toJson(serializableStructure, prettyPrint);
 		},
-		
+
 		save: function(/* object */ keywordArgs){
 			// summary: See dojo.data.api.Write.save()
 			this._assert(!this._saveInProgress);
-			
+
 			// this._saveInProgress is set to true, briefly, from when save is first called to when it completes
 			this._saveInProgress = true;
-			
+
 			var self = this;
 			var saveCompleteCallback = function(){
 				self._pending = {
-					_newItems:{}, 
+					_newItems:{},
 					_modifiedItems:{},
 					_deletedItems:{}
 				};
@@ -5562,7 +5580,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 					keywordArgs.onError.call(scope);
 				}
 			};
-			
+
 			if(this._saveEverything){
 				var newFileContentString = this._getNewFileContentString();
 				this._saveEverything(saveCompleteCallback, saveFailedCallback, newFileContentString);
@@ -5577,7 +5595,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				saveCompleteCallback();
 			}
 		},
-		
+
 		revert: function(){
 			// summary: See dojo.data.api.Write.revert()
 			this._assert(!this._saveInProgress);
@@ -5605,7 +5623,7 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				}else{
 					modifiedItem = this._arrayOfAllItems[identity];
 				}
-				
+
 				// make the original item into a full-fledged item again
 				originalItem[this._storeRefPropName] = this;
 				modifiedItem[this._storeRefPropName] = null;
@@ -5613,14 +5631,14 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				// replace the modified item with the original one
 				var arrayIndex = modifiedItem[this._itemNumPropName];
 				this._arrayOfAllItems[arrayIndex] = originalItem;
-				
+
 				if(modifiedItem[this._rootItemPropName]){
 					arrayIndex = modifiedItem[this._itemNumPropName];
 					this._arrayOfTopLevelItems[arrayIndex] = originalItem;
 				}
 				if(this._itemsByIdentity){
 					this._itemsByIdentity[identity] = originalItem;
-				}			
+				}
 			}
 			for(identity in this._pending._deletedItems){
 				var deletedItem = this._pending._deletedItems[identity];
@@ -5635,19 +5653,19 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 				}
 			}
 			this._pending = {
-				_newItems:{}, 
-				_modifiedItems:{}, 
+				_newItems:{},
+				_modifiedItems:{},
 				_deletedItems:{}
 			};
 			return true; // boolean
 		},
-		
+
 		isDirty: function(/* item? */ item){
 			// summary: See dojo.data.api.Write.isDirty()
 			if(item){
 				// return true if the item is dirty
 				var identity = this.getIdentity(item);
-				return new Boolean(this._pending._newItems[identity] || 
+				return new Boolean(this._pending._newItems[identity] ||
 					this._pending._modifiedItems[identity] ||
 					this._pending._deletedItems[identity]); // boolean
 			}else{
@@ -5669,28 +5687,28 @@ if(!dojo._hasResource["dojo.data.ItemFileWriteStore"]){ //_hasResource checks ad
 
 	/* dojo.data.api.Notification */
 
-		onSet: function(/* item */ item, 
-						/*attribute-name-string*/ attribute, 
+		onSet: function(/* item */ item,
+						/*attribute-name-string*/ attribute,
 						/*object | array*/ oldValue,
 						/*object | array*/ newValue){
 			// summary: See dojo.data.api.Notification.onSet()
-			
-			// No need to do anything. This method is here just so that the 
-			// client code can connect observers to it. 
+
+			// No need to do anything. This method is here just so that the
+			// client code can connect observers to it.
 		},
 
 		onNew: function(/* item */ newItem, /*object?*/ parentInfo){
 			// summary: See dojo.data.api.Notification.onNew()
-			
-			// No need to do anything. This method is here just so that the 
-			// client code can connect observers to it. 
+
+			// No need to do anything. This method is here just so that the
+			// client code can connect observers to it.
 		},
 
 		onDelete: function(/* item */ deletedItem){
 			// summary: See dojo.data.api.Notification.onDelete()
-			
-			// No need to do anything. This method is here just so that the 
-			// client code can connect observers to it. 
+
+			// No need to do anything. This method is here just so that the
+			// client code can connect observers to it.
 		}
 
 	});
