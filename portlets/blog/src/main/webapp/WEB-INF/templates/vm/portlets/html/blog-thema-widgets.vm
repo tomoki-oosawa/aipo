@@ -30,7 +30,7 @@
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", "all"))', '$!portlet.ID');">$l10n.BLOG_NEW_ENTRY</a>
 </li>
 <li#if ($!result.OwnerId && $!result.OwnerId == $!result.LoginUid.toString()) class="active"#end>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", ${result.LoginUid}))', '$!p$l10n.BLOG_MY_ENTRYt.ID');">$l10n.BLOG_MY_ENTRY</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("ownerid", ${result.LoginUid}))', '$!portlet.ID');">$l10n.BLOG_MY_ENTRY</a>
 </li>
 </ul>
 </div>
