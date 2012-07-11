@@ -32,7 +32,7 @@
 <input type="hidden" id="isMac" value="${isMac}"></input>
 <div class="none" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
 <!-- WRAPPER -->
-    <table class="tableWrapper">
+    <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
         <tbody>
             <tr>
                 <td class="wide top">

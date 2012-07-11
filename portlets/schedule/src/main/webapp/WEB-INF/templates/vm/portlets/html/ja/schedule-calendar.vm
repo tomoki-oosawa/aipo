@@ -98,7 +98,7 @@
 
 <div class="indicator" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
 <!-- WRAPPER -->
-    <table class="tableWrapper" id="tableWrapper_$!portlet.ID">
+    <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
         <tbody>
             <tr>
                 <td class="wide top">
