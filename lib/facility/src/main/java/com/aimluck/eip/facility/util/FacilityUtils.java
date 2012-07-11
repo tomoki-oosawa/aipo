@@ -85,13 +85,21 @@ public class FacilityUtils {
       facilityIds.add(map.getEipMFacilityFacilityId().getFacilityId());
     }
 
-    SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
-    Expression fexp =
-      ExpressionFactory
-        .inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
-    fquery.setQualifier(fexp);
-    fquery.orderAscending(EipMFacility.SORT_PROPERTY);
-    List<EipMFacility> facility_list = fquery.fetchList();
+    List<EipMFacility> facility_list;
+
+    if (facilityIds.isEmpty()) {
+      // for empty
+      facility_list = new ArrayList<EipMFacility>(0);
+    } else {
+      SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+      Expression fexp =
+        ExpressionFactory.inDbExp(
+          EipMFacility.FACILITY_ID_PK_COLUMN,
+          facilityIds);
+      fquery.setQualifier(fexp);
+      fquery.orderAscending(EipMFacility.SORT_PROPERTY);
+      facility_list = fquery.fetchList();
+    }
 
     for (EipMFacility record : facility_list) {
       FacilityLiteBean bean = new FacilityLiteBean();

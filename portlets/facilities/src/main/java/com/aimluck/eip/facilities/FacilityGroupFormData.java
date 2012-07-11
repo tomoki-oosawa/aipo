@@ -42,7 +42,6 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備のフォームデータを管理するクラスです。 <BR>
@@ -80,9 +79,8 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
-
-    // :test
-
+    facilitygroupid =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID, "");
   }
 
   /**
@@ -128,10 +126,6 @@ public class FacilityGroupFormData extends ALAbstractFormData {
     boolean res = super.setFormData(rundata, context, msgList);
     try {
       if (res) {
-        if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-          facilitygroupid =
-            ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-        }
         String facilityIds[] =
           rundata.getParameters().getStrings("facility_to");
         if (facilityIds != null && facilityIds.length > 0) {

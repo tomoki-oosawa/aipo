@@ -28,16 +28,18 @@
 #set ($event_submit = "eventSubmit_doFacilitygroup_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
+#set ($d = '"')
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("facilitygroupForm" $jslink $portlet "FacilityGroupFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.facility.onReceiveMessage)")
+#ALajaxscreenformheader("facilitygroupForm" $jslink $portlet "FacilityGroupFormJSONScreen" "aimluck.io.selectAllOptions(this.facility_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.facility.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
 <input type="hidden" name="mode" value="update" />
+<input type="hidden" name="entityid" value="$!{result.FacilityGroupId}" />
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('facility_group_name'))")
@@ -53,7 +55,7 @@
     memberFromId="tmp_facility_from"
     memberToTitle="設備一覧"
     memberToId="facility_to"
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname','$!result.FacilityGroupId')"
+    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityLiteJSONScreen').addQueryData('groupname',"$!{result.FacilityGroupId}")"
     memberFromOptionKey="facilityId"
     memberFromOptionValue="facilityName"
     groupSelectId="tmp_group"

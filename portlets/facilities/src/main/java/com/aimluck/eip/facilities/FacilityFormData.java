@@ -239,14 +239,21 @@ public class FacilityFormData extends ALAbstractFormData {
       for (EipMFacilityGroupMap map : maps) {
         faclityGroupIdList.add(map.getGroupId());
       }
-      SelectQuery<EipMFacilityGroup> fquery =
-        Database.query(EipMFacilityGroup.class);
-      Expression exp =
-        ExpressionFactory.inDbExp(
-          EipMFacilityGroup.GROUP_ID_PK_COLUMN,
-          faclityGroupIdList);
-      fquery.setQualifier(exp);
-      facility_group_list = fquery.fetchList();
+
+      if (faclityGroupIdList.isEmpty()) {
+        // for empty
+        facility_group_list = new ArrayList<EipMFacilityGroup>(0);
+      } else {
+        SelectQuery<EipMFacilityGroup> fquery =
+          Database.query(EipMFacilityGroup.class);
+        Expression exp =
+          ExpressionFactory.inDbExp(
+            EipMFacilityGroup.GROUP_ID_PK_COLUMN,
+            faclityGroupIdList);
+        fquery.setQualifier(exp);
+        facility_group_list = fquery.fetchList();
+      }
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
