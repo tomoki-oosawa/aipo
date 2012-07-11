@@ -321,9 +321,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       EipTBlogThema thema = BlogUtils.getEipTBlogThema(rundata, context);
       if (thema == null || thema.getCreateUserId() == 0) {
         // テーマ「その他」は削除不可
-        msgList.add("テーマ『 <span class='em'>"
-          + thema.getThemaName()
-          + "</span> 』は削除できません。");
+        msgList.add("このテーマは削除できません。");
         return false;
       }
 
