@@ -156,7 +156,7 @@
   #if($result.ContentHeightMax == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
   #else
-    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
+    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHiddenClick_$!{portlet.ID}').onclick()">
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="if(aipo.hasOwnProperty('timeline')) {aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop'); }" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
