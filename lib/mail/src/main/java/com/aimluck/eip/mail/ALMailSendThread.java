@@ -29,8 +29,6 @@ import com.aimluck.eip.orm.Database;
  *
  */
 public class ALMailSendThread implements Runnable {
-  /** スレッド生成時の排他制御用フラグ */
-  public static final Integer KEY_SYNCHRONIZED_LOCK = Integer.valueOf(1);
 
   /** 受信結果のキー（新着メール数） */
   public static final String KEY_NEW_MAIL_NUM = "nmn";
