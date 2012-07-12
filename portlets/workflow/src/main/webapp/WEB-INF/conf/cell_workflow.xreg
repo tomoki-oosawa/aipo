@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>ﾜｰｸﾌﾛｰ</title>
-            <description>決済や有給の稟議に利用できるワークフローです。</description>
+            <description>決裁や有給の稟議に利用できるワークフローです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="workflow" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -82,7 +82,7 @@
         <security-ref parent="admin-view"/>
         <meta-info>
             <title>ワークフロー管理</title>
-            <description>決済や有給の稟議に利用できるワークフローです。</description>
+            <description>決裁や有給の稟議に利用できるワークフローです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="workflow-category-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
