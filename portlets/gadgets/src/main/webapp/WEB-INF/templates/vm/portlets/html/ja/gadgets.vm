@@ -29,6 +29,6 @@ aipo.container.assign(${assignData});
 
 </script>
 #else
-このアプリは現在利用できません。
+$l10n.GADGETS_APP_NOT_AVAILABLE_MSG
 #end
 

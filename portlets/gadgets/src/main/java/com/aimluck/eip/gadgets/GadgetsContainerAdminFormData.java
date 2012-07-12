@@ -35,9 +35,10 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
- * 
+ *
  */
 public class GadgetsContainerAdminFormData extends ALAbstractFormData {
 
@@ -55,21 +56,24 @@ public class GadgetsContainerAdminFormData extends ALAbstractFormData {
   private ALStringField activitySaveLimit;
 
   /**
-   * 
+   *
    */
   @Override
   public void initField() {
     lockedDomainRequired = new ALNumberField();
     lockedDomainSuffix = new ALStringField();
     lockedDomainSuffix.setTrim(true);
-    lockedDomainSuffix.setFieldName("ドメイン接尾語");
+    lockedDomainSuffix.setFieldName(ALLocalizationUtils
+      .getl10n("GADGETS_SETFIELDNAME_LOCKED_DOMAIN_SUFFIX"));
     checkActivityInterval = new ALStringField();
     checkActivityInterval.setTrim(true);
-    checkActivityInterval.setFieldName("あなた宛の自動更新");
+    checkActivityInterval.setFieldName(ALLocalizationUtils
+      .getl10n("GADGETS_SETFIELDNAME_CHECK_ACTIVITY_INTERVAL"));
     cacheGadgetXml = new ALNumberField();
     activitySaveLimit = new ALStringField();
     checkActivityInterval.setTrim(true);
-    checkActivityInterval.setFieldName("更新情報とあなた宛のお知らせの自動削除");
+    checkActivityInterval.setFieldName(ALLocalizationUtils
+      .getl10n("GADGETS_SETFIELDNAME_ACTIVITY_SAVE_LIMIT"));
 
   }
 

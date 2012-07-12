@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #if  ($mode=="new_form")
-#set ($action_str = "インストールする")
+#set ($action_str = $l10n.GADGETS_DO_INSTALL)
 #set ($event_submit = "eventSubmit_doGadgets_admin_insert")
-#set ($subtitle = 'アプリのインストール')
+#set ($subtitle = $l10n.GADGETS_INSTALL_APP)
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = 'アプリ編集')
+#set ($action_str = $l10n.GADGETS_UPDATE)
+#set ($subtitle = $l10n.GADGETS_APP_EDIT)
 #set ($event_submit = "eventSubmit_doGadgets_admin_update")
 #end
 ## ---------------------------------------------------------------------------
@@ -39,28 +39,28 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
-<a href="http://store.aipo.com/" target="_blank"><strong>Aipoストア</strong></a>でアプリを探すことができます。<br/><br/>
+<a href="http://store.aipo.com/" target="_blank"><strong>$l10n.GADGETS_AIPOSTORE</strong></a>$l10n.GADGETS_APP_FINDING_MSG<br/><br/>
 #if($mode=="new_form")
-外部のアプリあるいは独自のアプリをインストールする場合は、OpenSocialに準拠したガジェットXMLのURLを指定してください。
+$l10n.GADGETS_SELECT_GADGETSXML_URL_MSG
 #end
 #ALtableheaderWide()
-#ALtdcaptionAtt("#ALrequired('ガジェットURL')" "style='width:180px;'")
+#ALtdcaptionAtt("#ALrequired($l10n.GADGETS_GADGET_URL)" "style='width:180px;'")
 #ALtditemheader()
 #if($mode=="new_form")
-#ALtextfield('url' $!result.Url '70%' 255 'disabled')#ALcaution('（半角英数字）')
+#ALtextfield('url' $!result.Url '70%' 255 'disabled')#ALcaution($l10n.GADGETS_HALFWIDTH_ALPHANUM)
 #else
 $!result.UrlCR
 #end
 #ALtditemfooter()
 #if($mode!="new_form")
-#ALtdcaption("タイトル")
+#ALtdcaption($l10n.GADGETS_TITLE)
 #ALtditemheader()
 #if($!result.Detail.Icon.toString() != "")
 <img src="$!result.Icon" width="16" height="16" alt="$!result.Title" align="absmiddle" />
 #end
 $!result.Title
 #ALtditemfooter()
-#ALtdcaption("アプリの説明")
+#ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Description)
 #set($count = 0)
 #foreach ($service in $!result.OAuthConsumers)
@@ -81,20 +81,20 @@ $!service.AccessUrlCR<br/>
 <!-- option value="RSA-SHA1"  #if($!service.Type.Value == "RSA-SHA1") selected="selected" #end>RSA-SHA1</option -->
 </select>
 <h4>consumer key</h4>
-#ALtextfield("consumerKey$!{count}" $!service.ConsumerKey '70%' 255 'disabled')#ALcaution('（半角英数字）')
+#ALtextfield("consumerKey$!{count}" $!service.ConsumerKey '70%' 255 'disabled')#ALcaution($l10n.GADGETS_HALFWIDTH_ALPHANUM)
 <h4>consumer secret</h4>
-#ALtextfield("consumerSecret$!{count}" $!service.ConsumerSecret '70%' 255 'disabled')#ALcaution('（半角英数字）')
+#ALtextfield("consumerSecret$!{count}" $!service.ConsumerSecret '70%' 255 'disabled')#ALcaution($l10n.GADGETS_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
 #set($count = $count + 1)
 #end
 #end
 #ALtablefooter()
 #if($mode=="new_form")
-<p class="center"><label for="sendActivity"><input type="checkbox" id="sendActivity" name="sendActivity" value="true" checked="true"/>&nbsp;全員の更新情報へ通知する</label></p>
+<p class="center"><label for="sendActivity"><input type="checkbox" id="sendActivity" name="sendActivity" value="true" checked="true"/>&nbsp;$l10n.GADGETS_INFORM_FOR_ALL</label></p>
 <br/>
 #end
 #if($mode!="new_form")
-「更新する」をクリックすると、タイトル、アプリの説明、アイコン画像を最新のガジェットURLより取得して更新を行います。
+$l10n.GADGETS_UPDATING_MSG
 #end
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

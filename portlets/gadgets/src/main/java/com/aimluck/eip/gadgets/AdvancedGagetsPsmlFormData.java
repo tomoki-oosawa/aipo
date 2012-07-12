@@ -46,6 +46,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
@@ -98,7 +99,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
       boolean res = false;
       if (isOverQuota()) {
-        msgList.add("ディスク容量を 100% 使用していますので、データ削除またはプラン変更をしてください。");
+        msgList.add(ALLocalizationUtils.getl10n("GADGETS_ALERT_DISC_CAPACITY"));
       } else {
         res =
           (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
@@ -147,7 +148,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
     } else if (rundata.getParameters().getString("mode") == null
       || "".equals(rundata.getParameters().getString("mode"))) {
       success = false;
-      msgList.add("配置を選択してください。");
+      msgList.add(ALLocalizationUtils.getl10n("GADGETS_ALERT_SELECT_SETTING"));
     } else {
       success = super.updateFormData(rundata, context, msgList);
     }

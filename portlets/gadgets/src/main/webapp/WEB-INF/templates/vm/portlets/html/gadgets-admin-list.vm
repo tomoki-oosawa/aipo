@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["アプリ一覧", ""]])
+#set ($navilist = [[$l10n.GADGETS_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.GADGETS_APPLIST, ""]])
 ## ---------------------------------------------------------------------------
 
 <script language="JavaScript" type="text/javascript">

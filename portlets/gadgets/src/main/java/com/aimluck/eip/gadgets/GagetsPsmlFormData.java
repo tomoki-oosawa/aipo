@@ -52,6 +52,7 @@ import com.aimluck.eip.gadgets.util.PsmlUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
@@ -117,7 +118,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     note = new ALStringField();
-    note.setFieldName("テンプレート内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("GADGETS_SETFIELDNAME_NOTE"));
     note.setTrim(false);
     adminUser = false;
   }

@@ -45,6 +45,7 @@ import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest.Type;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -74,19 +75,21 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     url = new ALStringField();
-    url.setFieldName("ガジェットURL");
+    url.setFieldName(ALLocalizationUtils.getl10n("GADGETS_SETFIELDNAME_URL"));
     url.setTrim(true);
 
     title = new ALStringField();
-    title.setFieldName("タイトル");
+    title.setFieldName(ALLocalizationUtils
+      .getl10n("GADGETS_SETFIELDNAME_TITLE"));
     title.setTrim(true);
 
     description = new ALStringField();
-    description.setFieldName("アプリの説明");
+    description.setFieldName(ALLocalizationUtils
+      .getl10n("GADGETS_SETFIELDNAME_DESCRIPTION"));
     description.setTrim(true);
 
     icon = new ALStringField();
-    icon.setFieldName("アイコン画像");
+    icon.setFieldName(ALLocalizationUtils.getl10n("GADGETS_SETFIELDNAME_ICON"));
     icon.setTrim(true);
 
     oAuthConsumers = new ArrayList<ALOAuthConsumer>();
@@ -163,7 +166,8 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       metaData = ALApplicationService.getMetaData(url.getValue(), true);
       if (!ALEipConstants.MODE_UPDATE.equals(getMode())) {
         if (metaData == null) {
-          msgList.add("正しい  『 ガジェットURL 』 を指定してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("GADGETS_ALERT_SET_VALID_GADGET_URL"));
         }
       }
     }

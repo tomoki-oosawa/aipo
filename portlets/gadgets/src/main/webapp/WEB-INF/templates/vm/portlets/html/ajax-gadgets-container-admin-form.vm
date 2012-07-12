@@ -18,8 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "更新する")
-#set ($subtitle = 'コンテナ設定')
+#set ($action_str = $l10n.GADGETS_UPDATE)
+#set ($subtitle = $l10n.GADGETS_CONTAINER_SETTING)
 #set ($event_submit = "eventSubmit_doGadgets_container_admin_update")
 #set ($indicator_id = "indicator-dlg-")
 ##----------------------------------------------------------------------------------
@@ -32,36 +32,36 @@
 #ALtdcaption("Locked Domain")
 #ALtditemheader()
 <input name="lockedDomainRequired" type="checkbox" value="1" id="lockedDomainRequired_for" #if ($result.LockedDomainRequired.toString() == "1") checked="checked" #end/>
-<label for="lockedDomainRequired_for">有効</label>&nbsp;<input class="text" type="text" name="lockedDomainSuffix" value="$result.LockedDomainSuffix" />
+<label for="lockedDomainRequired_for">${l10n.GADGETS_ENABLE}</label>&nbsp;<input class="text" type="text" name="lockedDomainSuffix" value="$result.LockedDomainSuffix" />
 #ALtditemfooter()
-#ALtdcaption("あなた宛のお知らせの自動更新")
+#ALtdcaption($l10n.GADGETS_CHECK_ACTIVITY_INTERVAL)
 #ALtditemheader()
 <select name="checkActivityInterval">
-<option value="0" #if($result.CheckActivityInterval.toString() == "0") selected="selected"#end>自動更新しない</option>
-<option value="60" #if($result.CheckActivityInterval.toString() == "60") selected="selected"#end>1分毎</option>
-<option value="300" #if($result.CheckActivityInterval.toString() == "300") selected="selected"#end>5分毎</option>
-<option value="600" #if($result.CheckActivityInterval.toString() == "600") selected="selected"#end>10分毎</option>
-<option value="1800" #if($result.CheckActivityInterval.toString() == "1800") selected="selected"#end>30分毎</option>
-<option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>1時間毎</option>
+<option value="0" #if($result.CheckActivityInterval.toString() == "0") selected="selected"#end>$l10n.GADGETS_DONOT_CHECK_ACTIVITY</option>
+<option value="60" #if($result.CheckActivityInterval.toString() == "60") selected="selected"#end>$l10n.GADGETS_PER1</option>
+<option value="300" #if($result.CheckActivityInterval.toString() == "300") selected="selected"#end>$l10n.GADGETS_PER5</option>
+<option value="600" #if($result.CheckActivityInterval.toString() == "600") selected="selected"#end>$l10n.GADGETS_PER10</option>
+<option value="1800" #if($result.CheckActivityInterval.toString() == "1800") selected="selected"#end>$l10n.GADGETS_PER30</option>
+<option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>$l10n.GADGETS_PER60</option>
 </select>
 #ALtditemfooter()
-#ALtdcaption("更新情報とあなた宛のお知らせの<br/>保存期間")
+#ALtdcaption($l10n.GADGETS_ACTIVITY_SAVE_LIMIT)
 #ALtditemheader()
 <select name="activitySaveLimit">
-<option value="7" #if($result.ActivitySaveLimit.toString() == "7") selected="selected"#end>7日間</option>
-<option value="15" #if($result.ActivitySaveLimit.toString() == "15") selected="selected"#end>15日間</option>
-<option value="30" #if($result.ActivitySaveLimit.toString() == "30") selected="selected"#end>30日間</option>
-<option value="60" #if($result.ActivitySaveLimit.toString() == "60") selected="selected"#end>60日間</option>
-<option value="90" #if($result.ActivitySaveLimit.toString() == "90") selected="selected"#end>90日間</option>
+<option value="7" #if($result.ActivitySaveLimit.toString() == "7") selected="selected"#end>$l10n.GADGETS_7DAYS</option>
+<option value="15" #if($result.ActivitySaveLimit.toString() == "15") selected="selected"#end>$l10n.GADGETS_15DAYS</option>
+<option value="30" #if($result.ActivitySaveLimit.toString() == "30") selected="selected"#end>$l10n.GADGETS_30DAYS</option>
+<option value="60" #if($result.ActivitySaveLimit.toString() == "60") selected="selected"#end>$l10n.GADGETS_60DAYS</option>
+<option value="90" #if($result.ActivitySaveLimit.toString() == "90") selected="selected"#end>$l10n.GADGETS_90DAYS</option>
 </select>
 #ALtditemfooter()
-#ALtdcaption("ガジェットXMLのキャッシュ")
+#ALtdcaption($l10n.GADGETS_CACHE_GADGET_XML)
 #ALtditemheader()
 <input name="cacheGadgetXml" type="checkbox" value="1" id="cacheGadgetXml_for" #if ($result.CacheGadgetXml.toString() == "1") checked="checked" #end/>
-<label for="cacheGadgetXml_for">有効</label>
+<label for="cacheGadgetXml_for">${l10n.GADGETS_ENABLE}</label>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.gadgets_admin.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.GADGETS_CLOSE1 onclick="aipo.gadgets_admin.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

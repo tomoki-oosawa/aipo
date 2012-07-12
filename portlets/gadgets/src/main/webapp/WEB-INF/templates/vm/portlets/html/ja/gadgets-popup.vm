@@ -24,11 +24,11 @@
 <a href='javascript:aipo.container.setCountry("JP");aipo.container.setLanguage("ja");aipo.container.setView("popup");aipo.container.setNoCache("${nocache}");aipo.container.renderGadgetFromContext(${assignData});' id="gadgets-popup-action"></a>
 <div id="gadget-chrome-${portletId}-popup"><div style="height:300px"></div></div>
 #else
-このアプリは現在利用できません。
+$l10n.GADGETS_APP_NOT_AVAILABLE_MSG
 #end
 
 <div align="center">
-<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.common.hideDialog();">
+<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.GADGETS_CLOSE1 onclick="aipo.common.hideDialog();">
 </div>
 
 #ALdialogfooter()

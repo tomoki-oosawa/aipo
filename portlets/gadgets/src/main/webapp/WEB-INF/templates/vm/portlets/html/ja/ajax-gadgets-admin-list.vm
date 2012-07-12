@@ -26,51 +26,51 @@
 
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIbuttonAction("アプリを追加する" "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
+#AUIbuttonAction($l10n.GADGETS_DO_ADD_APP "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
 #AUIconfigheader($!{portlet.ID} "14em")
-#AUIconfigitem("アプリ配置を設定する" $linkPsml)
-#AUIconfigitem("コンテナを設定する" $linkContainer)
+#AUIconfigitem($l10n.GADGETS_DO_SET_APPSETTING $linkPsml)
+#AUIconfigitem($l10n.GADGETS_DO_SET_CONTAINER $linkContainer)
 #AUIconfigfooter()
 #AUISummaryDivfooter()
 
 #if(!$!{result.isAdminUser()})
 #if($!{result.getAttachStatus().equals("success")}||$!{result.getDefaultStatus().equals("success")}||$!{result.getAllUserStatus().equals("success")})
 <div class="p spaceBottom">
-#ALcaution("設定が完了しました。")
+#ALcaution($l10n.GADGETS_SUCCEEDED_SETTING)
 </div>
 #elseif($!{result.getAttachStatus().equals("error")}||$!{result.getDefaultStatus().equals("error")}||$!{result.getAllUserStatus().equals("error")})
 <div class="p spaceBottom">
-#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#ALcaution($l10n.GADGETS_FAILED_SETTING)
 </div>
 #end
 #else
 <div class="p spaceBottom">
 <input type="button" disabled="disabled" value="$action_str">
-<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
+<div class="spaceTop caution"><span class="small em">$l10n.GADGETS_USER_HAS_AUTH_MSG</span></div>
 </div>
 #end
 
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","all").addQueryData("filtertype","status"))">すべてのアプリ</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>有効のアプリ</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>無効のアプリ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","all").addQueryData("filtertype","status"))">$l10n.GADGETS_ALL_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>$l10n.GADGETS_ENABLE_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>$l10n.GADGETS_DISABLE_APP</option>
 </select>
 #ALformfooter()
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('アプリ')
+#ALajaxlistformheader($l10n.GADGETS_APP)
 #if($result.List.size() == 0)
-指定された条件に該当するアプリはありません。<br />
+$l10n.GADGETS_APP_NOT_EXIST_MSG<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#AUIajaxbuttonCheckboxDelete($l10n.GADGETS_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('GadgetsAdminListScreen' $result)
 #AUISummaryDivfooter()
@@ -82,8 +82,8 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("状態")
-#ALtdhead("アプリ名")
+#ALtdhead($l10n.GADGETS_STATUS)
+#ALtdhead($l10n.GADGETS_APP_NAME)
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -94,9 +94,9 @@
 #ALtdcellAtt("" "")
 #end
 #if($record.Type == "active")
-#ALtdcellAtt("有効" 'class="center" nowrap="nowrap"')
+#ALtdcellAtt($l10n.GADGETS_ENABLE 'class="center" nowrap="nowrap"')
 #else
-#ALtdcellAtt("無効" 'class="center" nowrap="nowrap"')
+#ALtdcellAtt($l10n.GADGETS_DISABLE 'class="center" nowrap="nowrap"')
 #end
 #if($record.Parent == "GadgetsTemplate")
 #set($appId = $!result.getStringNumber($!record.Name))
@@ -113,9 +113,9 @@
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxEnable('有効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
-#AUIajaxbuttonCheckboxDisable('無効にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.GADGETS_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 </div>
 #AUIajaxpageview('GadgetsAdminListScreen' $result)
 #AUISummaryDivfooter()
