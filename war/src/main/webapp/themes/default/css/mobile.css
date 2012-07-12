@@ -54,8 +54,10 @@ body {position:absolute}
 	background:#666666;
 }
 
-.hdActivity > div{
+.hdActivity div{
 	position:relative;
+}
+.hdActivity > div{
 	display:inline-block;
 	vertical-align:middle;
 }
