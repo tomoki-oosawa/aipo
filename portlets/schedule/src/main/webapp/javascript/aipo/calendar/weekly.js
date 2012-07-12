@@ -1281,10 +1281,10 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
                  */
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
-          this.setupTooltip();
+          this.setupTooltip(e);
         }
     },
-    setupTooltip: function() {
+    setupTooltip: function(e) {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
         if(!this.TooltipObject){
@@ -1296,6 +1296,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
 
                 aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
             });
+            this.TooltipObject._onHover(e);
         }
         aipo.calendar.objectlist.push(this.TooltipObject);
     },
@@ -1555,10 +1556,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
          */
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
-          this.setupTooltip();
+          this.setupTooltip(e);
         }
     },
-    setupTooltip: function() {
+    setupTooltip: function(e) {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
         if(!this.TooltipObject){
@@ -1570,6 +1571,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
 
                 aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
             });
+            this.TooltipObject._onHover(e);
         }
         aipo.calendar.objectlist.push(this.TooltipObject);
     },
