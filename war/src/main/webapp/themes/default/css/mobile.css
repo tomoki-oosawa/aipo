@@ -19,8 +19,21 @@ body {position:absolute}
 	top:0;
 	right:0;
 	width:45px;
-	line-height:40px;
+	line-height:45px;
+	height:45px;
+	padding:0;
+	text-align:center;
+	vertical-align:middle;
+	background:#333333 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.2)), color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
+	border-radius:6px 0 0 6px;
+	text-shadow:0 1px 0 rgba(0,0,0,0.3);
+	color:#FFF;
 }
+.hdActivity:hover{
+	background:#333333 -webkit-gradient(linear, left top, left bottom,from(rgba(255,255,255,0.2)),color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
+	border-radius:6px 0 0 6px;
+}
+
 .activityField {
 	display:table-cell;
 	width:45px;
@@ -40,6 +53,13 @@ body {position:absolute}
 .activityField:hover {
 	background:#666666;
 }
+
+.hdActivity > div{
+	position:relative;
+	display:inline-block;
+	vertical-align:middle;
+}
+
 .hdActivity div.active {
 	background:#666666
 		-webkit-gradient(
@@ -54,6 +74,21 @@ body {position:absolute}
 }
 #activitycheckerContainer {
 	margin-top:0;
+}
+#activitychecker {
+    right:auto;
+    top:5px;
+    font-size:11px;
+    height:25px;
+    line-height:28px !important;
+    min-width:24px;
+    background:-moz-linear-gradient(top, #e63439, #da1b1f);
+    background:-webkit-gradient(linear, left top, left bottom, from(#e63439), to(#da1b1f));
+    box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
+    border:none;
+    border-bottom:1px solid rgba(0, 0, 0, 0.3);
+    font-weight:bold;
+    text-shadow:0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
 td.container {
@@ -795,4 +830,3 @@ table.auiRowTable td.wTitl a {
 .mw15 {width:15%;}
 .mw10 {width:10%;}
 .mw5 {width:5%;}
-
