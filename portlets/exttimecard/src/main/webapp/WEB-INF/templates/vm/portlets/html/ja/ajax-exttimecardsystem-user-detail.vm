@@ -30,8 +30,8 @@ $!{result.Detail.StartTime} ～ $!{result.Detail.EndTime}
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()
-<h3>$l10n.EXTTIMECARD_WORKTIME_IN</h3><span class="strong">$!{result.Detail.WorktimeIn}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE<span class="strong">$!{result.Detail.ResttimeIn}</span>$l10n.EXTTIMECARD_MINUTE<br />
-<h3>$l10n.EXTTIMECARD_WORKTIME_OUT</h3><span class="strong">$!{result.Detail.WorktimeOut}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE<span class="strong">$!{result.Detail.ResttimeOut}</span>$l10n.EXTTIMECARD_MINUTE
+<h3>$l10n.EXTTIMECARD_WORKTIME_IN</h3>$!{result.Detail.WorkTimeInRestTimeInText}<br />
+<h3>$l10n.EXTTIMECARD_WORKTIME_OUT</h3>$!{result.Detail.WorkTimeOutRestTimeOutText}
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

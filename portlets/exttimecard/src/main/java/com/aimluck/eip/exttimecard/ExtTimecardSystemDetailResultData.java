@@ -21,6 +21,7 @@ package com.aimluck.eip.exttimecard;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード管理の勤務形態の情報を保持する。
@@ -59,8 +60,8 @@ public class ExtTimecardSystemDetailResultData extends
   private ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -101,6 +102,15 @@ public class ExtTimecardSystemDetailResultData extends
     return end_minute.getValueAsString();
   }
 
+  public String getSpan() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_HOUR_MINUTE_FORMAT_SPAN",
+      start_hour.toString(),
+      start_minute.toString(),
+      end_hour.toString(),
+      end_minute.toString());
+  }
+
   public String getWorkTimeIn() {
     return worktime_in.getValueAsString();
   }
@@ -109,12 +119,26 @@ public class ExtTimecardSystemDetailResultData extends
     return resttime_in.getValueAsString();
   }
 
+  public String getWorkTimeInRestTimeInText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_RESTTIME_FOR_WORKTIME",
+      worktime_in.toString(),
+      resttime_in.toString());
+  }
+
   public String getWorkTimeOut() {
     return worktime_out.getValueAsString();
   }
 
   public String getRestTimeOut() {
     return resttime_out.getValueAsString();
+  }
+
+  public String getWorkTimeOutRestTimeOutText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_RESTTIME_FOR_WORKTIME",
+      worktime_out.toString(),
+      resttime_out.toString());
   }
 
   public String getChangeHour() {

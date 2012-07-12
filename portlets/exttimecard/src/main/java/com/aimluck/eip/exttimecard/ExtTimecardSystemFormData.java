@@ -398,9 +398,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add(
-          ALLocalizationUtils.getl10nFormat("EXTTIMECARD_ALERT_ALREADY_ADDED_WORKING_ARRANGEMENTS", system_name.toString())
-          );
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "EXTTIMECARD_ALERT_ALREADY_ADDED_WORKING_ARRANGEMENTS",
+          system_name.toString()));
       }
 
       long start_time = start_hour.getValue() * 60 + start_minute.getValue();
@@ -523,6 +523,20 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
    */
   public ALNumberField getResttimeOut() {
     return this.resttime_out;
+  }
+
+  public String getWorkTimeInRestTimeInText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_INPUT_RESTTIME_FOR_WORKTIMEIN",
+      worktime_in.toString(),
+      resttime_in.toString());
+  }
+
+  public String getWorkTimeOutRestTimeOutText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_INPUT_RESTTIME_FOR_WORKTIMEOUT",
+      worktime_out.toString(),
+      resttime_out.toString());
   }
 
   /**

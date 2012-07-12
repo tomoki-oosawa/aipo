@@ -30,7 +30,7 @@ $!{result.Detail.SystemName}
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_WORKTIME)
 #ALtditemheader()
-${result.Detail.StartHour}$l10n.EXTTIMECARD_HOUR${result.Detail.StartMinute}$l10n.EXTTIMECARD_MINUTE ～ $!{result.Detail.EndHour}$l10n.EXTTIMECARD_HOUR${result.Detail.EndMinute}$l10n.EXTTIMECARD_MINUTE
+${result.Detail.Span}
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_START_DAY)
 #ALtditemheader()
@@ -38,8 +38,8 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()
-<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_IN</h3><p><span class="strong">$!{result.Detail.WorkTimeIn}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME<span class="strong">$!{result.Detail.RestTimeIn}</span>$l10n.EXTTIMECARD_MINUTE</p>
-<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_OUT</h3><p><span class="strong">$!{result.Detail.WorkTimeOut}</span>$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME<span class="strong">$!{result.Detail.RestTimeOut}</span>$l10n.EXTTIMECARD_MINUTE</p>
+<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_IN</h3><p>$!{result.Detail.WorkTimeInRestTimeInText}</p>
+<h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_OUT</h3><p>$!{result.Detail.WorkTimeOutRestTimeOutText}</p>
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_CHANGE_HOUR)
 #ALtditemheader()

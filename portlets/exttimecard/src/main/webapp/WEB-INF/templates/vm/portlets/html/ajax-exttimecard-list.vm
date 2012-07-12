@@ -34,7 +34,7 @@
 <li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_NEXT_MONTH class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt=$l10n.EXTTIMECARD_NEXT_MONTH /></span></a></li>
 </ul>
 </div>
-<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonth.Year} $l10n.EXTTIMECARD_YEAR $!{result.ViewMonth.Month} $l10n.EXTTIMECARD_MONTH</strong></div>
+<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
@@ -201,7 +201,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 
 #else
   #if($rdlist.IsNotNullClockInTime)
-        #ALtdcellAtt("$!{rd.ClockInTime.Hour}$l10n.EXTTIMECARD_HOUR$!{rd.ClockInTime.Minute}$l10n.EXTTIMECARD_MINUTE" "nowrap='nowrap' align='center'")
+        #ALtdcellAtt("$!{rd.ClockInTimeHourMinuteText}" "nowrap='nowrap' align='center'")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
@@ -219,7 +219,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
 
   #if($rdlist.IsNotNullClockOutTime)
-    #ALtdcellAtt("$!{rd.ClockOutTime.Hour}$l10n.EXTTIMECARD_HOUR$!{rd.ClockOutTime.Minute}$l10n.EXTTIMECARD_MINUTE" "nowrap='nowrap' align='center' ")
+    #ALtdcellAtt("$!{rd.ClockOutTimeHourMinuteText}" "nowrap='nowrap' align='center' ")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
@@ -285,7 +285,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 	#if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていないならボタンを出力
 	  #ALtdcellAtt($leaving "align='center' nowrap='nowrap'")
 	#end
-	
+
   	#if(!($rdlist.IsNotNullClockInTime)) ## 出勤ボタンが押されていない
   	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_OUTGOING</span></td>
   	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_COMEBACK</span></td>
@@ -294,7 +294,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   	  	#set($q = '"')
   	    #if($isOutgoing == 0) ## 外出していない
   	      #if($outgoings == "") ##一番最初だけ２つ（外出・復帰）とも表示
-            #set($outgoings = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")   
+            #set($outgoings = "<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
 			#set($comebacks = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_COMEBACK</span>")
       	  #else
   	        #set($outgoings = "$outgoings<br><input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_OUTGOING${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'outgoing');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_OUTGOING');dojo.byId('form$!portlet.ID').onsubmit();${q}>")

@@ -57,16 +57,12 @@
 #ALtdcaptionAtt("#ALrequired($l10n.EXTTIMECARD_RESTTIME)" "rowspan='2'")
 #ALtditemheader()
 <h3>$l10n.EXTTIMECARD_WORKTIME_IN</h3>
-<input class="text" name="worktime_in" value="$!result.WorktimeIn" type="text" size="2" maxlength="3">
-$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE
-<input class="text" name="resttime_in" value="$!result.ResttimeIn" type="text" size="2" maxlength="3">$l10n.EXTTIMECARD_MINUTE
+$!{result.WorkTimeInRestTimeInText}
 <div class="spaceTop">#ALcaution($l10n.EXTTIMECARD_ALERT_RESTTIME)</div>
 #ALtditemfooter()
 #ALtditemheader()
 <h3>$l10n.EXTTIMECARD_WORKTIME_OUT</h3>
-<input class="text" name="worktime_out" value="$!result.WorktimeOut" type="text" size="2" maxlength="3">
-$l10n.EXTTIMECARD_RESTTIME_FOR_WORKTIME_MINUTE
-<input class="text" name="resttime_out" value="$!result.ResttimeOut" type="text" size="2" maxlength="3">$l10n.EXTTIMECARD_MINUTE
+$!{result.WorkTimeOutRestTimeOutText}
 <div class="spaceTop">#ALcaution($l10n.EXTTIMECARD_ALERT_RESTTIME)</div>
 #ALtditemfooter()
 #ALtablefooter()

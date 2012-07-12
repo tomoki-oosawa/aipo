@@ -57,6 +57,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード検索データを管理するクラスです。 <BR>
@@ -1012,6 +1013,13 @@ public class ExtTimecardSelectData extends
    */
   public ALDateTimeField getViewMonth() {
     return viewMonth;
+  }
+
+  public String getViewMonthYearMonthText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_YEAR_MONTH_FORMAT",
+      viewMonth.getYear().toString(),
+      viewMonth.getMonth().toString());
   }
 
   /**

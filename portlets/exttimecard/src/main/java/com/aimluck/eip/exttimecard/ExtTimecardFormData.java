@@ -1168,6 +1168,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return clock_in_time;
   }
 
+  public String getClockInTimeHourMinuteText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_HOUR_MINUTE_FORMAT",
+      clock_in_time.getHour().toString(),
+      clock_in_time.getMinute().toString());
+  }
+
   /**
    * 退勤時間
    * 
@@ -1175,6 +1182,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    */
   public ALDateTimeField getClockOutTime() {
     return clock_out_time;
+  }
+
+  public String getClockOutTimeHourMinuteText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "EXTTIMECARD_HOUR_MINUTE_FORMAT",
+      clock_out_time.getHour().toString(),
+      clock_out_time.getMinute().toString());
   }
 
   /**
