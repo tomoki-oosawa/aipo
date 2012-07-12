@@ -89,15 +89,23 @@ $!result.Detail.RouteName
 #set ($confirm_view_flg = true)
 #foreach ($record in $result.Detail.DecisionRecords)
 <tr>
-#ALtdcellheaderAtt("class='caption'")
+
 #if($!record.Status.Value == "C")
+#ALtdcellheaderAtt("class='caption'")
 #if($confirm_view_flg)
 <span class="caution">$!{record.StatusString}</span>
 #end
-#elseif($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
-$!{record.StatusString}
-#end
 #ALtdcellfooter()
+#elseif($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
+#ALtdcellheaderAtt("class='caption'")
+$!{record.StatusString}
+#ALtdcellfooter()
+#else
+#ALtdcellheaderAtt("class='caption mb_hide'")
+#ALtdcellfooter()
+#end
+
+
 #ALtdcellheader()
 <div class="clearfix">
 <span class="floatRight">
