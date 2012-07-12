@@ -42,37 +42,37 @@ function submit2(form) {
 </script>
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_list','1')")
 ##set($toolbars = [["$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_list','1')", "images/icon/icon_list.gif", "ユーザー一覧"], ["$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_form','1').addQueryData('entityid', 'new')", "images/icon/icon_add.gif", "ユーザー追加"], ["$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_change_turn_form','1')", "images/account/account_change_turn.gif", "順番変更"]])
-#set($tabs = [["順番変更", "",""]])
+#set($tabs = [[$l10n.ACCOUNT_CHANGE_ORDER, "",""]])
 ##toolbar($toolbars)
 ##paddingheader(5)
 #ALtabheader($tabs "")
 ##paddingheader(5)
 #ALerrmsg($errmsgs)
 #if((! $!result.UserList) || $result.UserList.size() == 0)
-<div class="message">ユーザーは登録されていません。</div>
+<div class="message">$l10n.ACCOUNT_ALERT_NO_USER</div>
 #else
 <div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択したユーザーの順番を自由に変更できます。<br>
-Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
+$l10n.ACCOUNT_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("accountChangeTurnForm" $jslink $portlet "AccountUserChangeTurnFormJSONScreen" "aimluck.io.submit(this, aipo.account_user.onReceiveMessage)")
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="positions" value="">
 #ALtableheaderWide()
-#ALtdcaptionAtt("ALrequired(ユーザー一覧)" 'width="150" nowrap')
+#ALtdcaptionAtt("ALrequired($l10n.ACCOUNT_USER_LIST)" 'width="150" nowrap')
 <td class="item" width="100%">
 <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
 <td width="23"><table width="100%" border="0">
 <tr><td valign="top">
-<a href="javascript:doUpOptions10(document.forms[0].member_so)" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></td>
+<a href="javascript:doUpOptions10(document.forms[0].member_so)" title=$l10n.ACCOUNT_ACEND_ORDER_10><img src="images/account/account_up_10.gif" alt=$l10n.ACCOUNT_ACEND_ORDER_10 border="0"></a></td>
 </tr>
 <tr><td valign="top">
-<a href="javascript:doUpOptions(document.forms[0].member_so)" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></td>
+<a href="javascript:doUpOptions(document.forms[0].member_so)" title=$l10n.ACCOUNT_ACEND_ORDER_1><img src="images/account/account_up_1.gif" alt=$l10n.ACCOUNT_ACEND_ORDER_1 border="0"></a></td>
 </tr>
 <tr><td height="100%">&nbsp;</td></tr>
 <tr>
-<td valign="bottom"><a href="javascript:doDownOptions(document.forms[0].member_so)" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></td>
+<td valign="bottom"><a href="javascript:doDownOptions(document.forms[0].member_so)" title=$l10n.ACCOUNT_DECEND_ORDER_1><img src="images/account/account_down_1.gif" alt=$l10n.ACCOUNT_DECEND_ORDER_1 border="0"></a></td>
 </tr>
 <tr>
-<td valign="bottom"><a href="javascript:doDownOptions10(document.forms[0].member_so)" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></td>
+<td valign="bottom"><a href="javascript:doDownOptions10(document.forms[0].member_so)" title=$l10n.ACCOUNT_DECEND_ORDER_10><img src="images/account/account_down_10.gif" alt=$l10n.ACCOUNT_DECEND_ORDER_10 border="0"></a></td>
 </tr>
 </table></td>
 <td width="100%"><select name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">
@@ -89,7 +89,7 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 </table>
 </td>
 <tr>
-#ALtdcellAtt("#ALsubmit('eventSubmit_doAccount_change_turn_update' '更新する' 'setHiddenValue(this);submit2(this.form)')#ALsubmit('eventSubmit_doAccount_list' 'キャンセルする' 'setHiddenValue(this)')" )
+#ALtdcellAtt("#ALsubmit('eventSubmit_doAccount_change_turn_update' $l10n.ACCOUNT_UPDATE 'setHiddenValue(this);submit2(this.form)')#ALsubmit('eventSubmit_doAccount_list' $l10n.ACCOUNT_CANCEL 'setHiddenValue(this)')" )
 </tr>
 #ALtablefooter()
 #ALformfooter()

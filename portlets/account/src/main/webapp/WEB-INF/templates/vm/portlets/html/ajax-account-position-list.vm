@@ -28,20 +28,20 @@
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("役職を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUIbuttonAction($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 </p>
 </td></tr>
 #AUItablefooter()
 #else
 #AUIwideAreaHeader()
 #AUISummaryDiv()
-#AUIbuttonAction("役職を追加する" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUIbuttonAction($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('役職')
+#ALajaxlistformheader($l10n.ACCOUNT_POSITION)
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()
@@ -53,7 +53,7 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('position_name' '役職名' $result 'AccountPositionListScreen')")
+#ALtdhead("#ALajaxsort('position_name' $l10n.ACCOUNT_POSITION_NAME $result 'AccountPositionListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -68,7 +68,7 @@
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()

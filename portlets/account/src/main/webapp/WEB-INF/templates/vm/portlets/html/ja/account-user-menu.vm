@@ -27,16 +27,16 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-			{   caption: "ユーザー一覧を表示する", iconClass: "menuBarIconAccountUser", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_list','1')" },
-            {   caption: "ユーザーを追加する", iconClass: "menuBarIconAccountUserAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.account_user.onLoadUserDialog);"},
-            {   caption: "ユーザーの順番を変更する", iconClass: "menuBarIconAccountChangeTurn", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen")');"    }
+			{   caption: $l10n.ACCOUNT_SHOW_USER_LIST=, iconClass: "menuBarIconAccountUser", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_list','1')" },
+            {   caption: $l10n.ACCOUNT_USER_ADD, iconClass: "menuBarIconAccountUserAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.account_user.onLoadUserDialog);"},
+            {   caption: $l10n.ACCOUNT_USER_SORT, iconClass: "menuBarIconAccountChangeTurn", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen")');"    }
 		];
     if(aipo.account_user.menuSelected == "undefined"){
-       aipo.account_user.menuSelected = -1;  
+       aipo.account_user.menuSelected = -1;
     }
     var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
 
 });
 
 //]]>
-</script> 
+</script>

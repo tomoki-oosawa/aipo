@@ -27,9 +27,9 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-			{   caption: "ユーザー情報を見る", iconClass: "menuBarIconAccountUser", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccountedit_detail','1').addQueryData('entityid','1')"},
-			{   caption: "会社情報・部署情報を見る", iconClass: "menuBarIconCompanyInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','infocompost').addQueryData('entityid','1')"},
-            {   caption: "パスワードを変更する", iconClass: "menuBarIconAccountPasswd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPersonFormScreen").addQueryData("mode","passwdform")','$!portlet.ID',aipo.account_person.onLoadPersonPasswdDialog);"}     
+			{   caption: $l10n.ACCOUNT_WATCH_USER, iconClass: "menuBarIconAccountUser", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccountedit_detail','1').addQueryData('entityid','1')"},
+			{   caption: $l10n.ACCOUNT_WATCH_COMPANY_POST, iconClass: "menuBarIconCompanyInfo", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','infocompost').addQueryData('entityid','1')"},
+            {   caption: $l10n.ACCOUNT_DO_CHANGE_PASS, iconClass: "menuBarIconAccountPasswd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPersonFormScreen").addQueryData("mode","passwdform")','$!portlet.ID',aipo.account_person.onLoadPersonPasswdDialog);"}
 		];
 
     var menubar = new aimluck.widget.Menubar({id: "mbar", items: subMenu}, "portletMenu");
@@ -37,4 +37,4 @@ dojo.addOnLoad(function () {
 });
 
 //]]>
-</script> 
+</script>

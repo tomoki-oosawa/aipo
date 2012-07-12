@@ -218,14 +218,14 @@ function change_group(form, value) {
   var f_o = f.options;
   f_o.length = 0;
   if (value == 'all') {
-  add_option(f, '', '（選択してください）', false);
+  add_option(f, '', $l10n.ACCOUNT_ALERT_SELECT, false);
   #foreach($record2 in $!result.getUsers('LoginUser') )
     add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
   #end
   }
   #foreach($record in $!result.PostMap)
   if (value == $!record.PostId) {
-    add_option(f, '', '（選択してください）', false);
+    add_option(f, '', $l10n.ACCOUNT_ALERT_SELECT, false);
     #foreach($record2 in $!result.getUsers($!{record.GroupName.Value}) )
       add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
     #end
@@ -250,17 +250,17 @@ $!data.Message
 <input name="username" type="hidden" value="" />
 <div class="field clearfix">
 <span id="login_username_field">
-<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder="ユーザー名" /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">ユーザー名</span>
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder=$l10n.ACCOUNT_USER_ACCOUNT /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
 <select name='login_member' onChange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
-<option value='all'>（部署全体）</option>
+<option value='all'>$l10n.ACCOUNT_POST_ALL</option>
 #foreach( $record in $!result.PostMap )
 <option value='$!{record.PostId}'>$!record.PostName</option>
 #end
 </select><select name='member_username_list' class="select2" tabindex="2">
-<option value=''>（選択してください）</option>
+<option value=''>$l10n.ACCOUNT_ALERT_SELECT</option>
 #foreach($record in $!result.getUsers('LoginUser'))
 <option value='$!record.Name'>$!record.AliasName</option>
 #end
@@ -269,18 +269,18 @@ $!data.Message
 #end
 </div>
 <div class="field">
-<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" placeholder="パスワード" /><span class="guide" style="display:none;"  onclick="this.style.display='none';document.getElementById('password').focus();">パスワード</span>
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" placeholder=$l10n.ACCOUNT_PASS /><span class="guide" style="display:none;"  onclick="this.style.display='none';document.getElementById('password').focus();">$l10n.ACCOUNT_PASS</span>
 </div>
 <div class="clearfix">
 <div class="floatLeft">
 #if($enable_userlist)
 <p>
-<input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
+<input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.ACCOUNT_SELECT_FROM_USER_LIST</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ユーザー名を保存する</label></p>
+<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
 </div>
 <div class="floatRight">
-<input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
+<input name="login_submit" class="button" type="submit" value="$l10n.ACCOUNT_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
 </div>
 </div>
 </form>

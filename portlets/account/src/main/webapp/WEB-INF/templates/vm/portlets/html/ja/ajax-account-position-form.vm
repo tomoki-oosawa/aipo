@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.ACCOUNT_ADD)
 #set ($event_submit = "eventSubmit_doAccount_position_insert")
-#set ($subtitle = '役職追加')
+#set ($subtitle = $l10n.ACCOUNT_POSITION_ADDITION)
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = '役職編集')
+#set ($action_str = $l10n.ACCOUNT_UPDATE)
+#set ($subtitle = $l10n.ACCOUNT_POSITION_EDITION)
 #set ($event_submit = "eventSubmit_doAccount_position_update")
 #end
 #ALdialogheader($subtitle)
