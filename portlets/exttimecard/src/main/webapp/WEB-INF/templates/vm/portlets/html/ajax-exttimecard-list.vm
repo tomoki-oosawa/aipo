@@ -138,7 +138,7 @@
 #if($beforeafter > 0)
 
   #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
-    <td nowrap='nowrap' align='center' colspan='6' class="$class">
+    <td nowrap='nowrap' align='center' colspan='7' class="$class">
     #if($!{rd.IsTypeA})
 $l10n.EXTTIMECARD_ABSENT_DAY
     #elseif($!{rd.IsTypeH})

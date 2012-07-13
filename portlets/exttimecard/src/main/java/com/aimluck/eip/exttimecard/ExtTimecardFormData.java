@@ -329,15 +329,21 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         && !"punchout".equals(edit_mode)
         && !"outgoing".equals(edit_mode)
         && !"comeback".equals(edit_mode)) {
-        if (!old_clock_in_time_hour.equals(clock_in_time.getHour())
-          || !old_clock_in_time_minute.equals(clock_in_time.getMinute())
-          || !old_clock_out_time_hour.equals(clock_out_time.getHour())
-          || !old_clock_out_time_minute.equals(clock_out_time.getMinute())) {
-          if (Calendar.getInstance().getTime().after(punch_date.getValue())) {
+        // time has changed
+        if (isModify()) {
+          // Plans for the future is not checked
+          if (isNotFuture()) {
             reason.setNotNull(true);
             reason.validate(msgList);
           }
           remarks.validate(msgList);
+        }
+      }
+
+      if (!"P".equals(type.getValue())) {
+        if (isNotFuture()) {
+          reason.setNotNull(true);
+          reason.validate(msgList);
         }
       }
 
@@ -1407,6 +1413,17 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   public String getSelectedUserId() {
     return selectedUserId;
+  }
+
+  private boolean isModify() {
+    return !old_clock_in_time_hour.equals(clock_in_time.getHour())
+      || !old_clock_in_time_minute.equals(clock_in_time.getMinute())
+      || !old_clock_out_time_hour.equals(clock_out_time.getHour())
+      || !old_clock_out_time_minute.equals(clock_out_time.getMinute());
+  }
+
+  private boolean isNotFuture() {
+    return Calendar.getInstance().getTime().after(punch_date.getValue());
   }
 
 }
