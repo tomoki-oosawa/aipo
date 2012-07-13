@@ -832,3 +832,42 @@ table.auiRowTable td.wTitl a {
 .mw15 {width:15%;}
 .mw10 {width:10%;}
 .mw5 {width:5%;}
+
+/***************************************************
+    auiMbIcon
+--------------------------------------------------*/
+.auiMbIcon {
+	display:inline-block;
+	width:20px;
+	height:20px;
+	overflow:hidden;
+	vertical-align:middle;
+	background:url(../images/icon/auiMbIconSprites20120713.png) no-repeat;
+	background-size:20px;
+}
+#appsNavigation li .auiMbIcon {
+    margin:8px 10px 12px 10px;
+}
+.auiMbIconTimecard {background-position:0px -180px;}
+.auiMbIconTimeline {background-position:0px -420px;}
+.auiMbIconSchedule {background-position:0px -260px;}
+.auiMbIconInfo {background-position:0px -120px;}
+.auiMbIconBlog {background-position:0px -320px;}
+.auiMbIconBbs {background-position:0px -80px;}
+.auiMbIconTodo {background-position:0px -200px;}
+.auiMbIconFolder {background-position:0px -300px;}
+.auiMbIconWorkflow {background-position:0px -340px;}
+.auiMbIconNote {background-position:0px -140px;}
+.auiMbIconReport {background-position:0px -220px;}
+.auiMbIconMail {background-position:0px -360px;}
+.auiMbIconAddress {background-position:0px -320px;}
+.auiMbIconUsers {background-position:0px -240px;}
+.auiMbIconMemo {background-position:0px -160px;}
+.auiMbIconSetting {background-position:0px -280px;}
+.auiMbIconPc {background-position:0px -340px;}
+.auiMbIconLogout {background-position:0px -100px;}
+.auiMbIconList {
+	margin:10px;
+	background-size:24px;
+	background-position:-3px -482px;
+}

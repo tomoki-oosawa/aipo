@@ -2056,14 +2056,16 @@ ul.attachments span.deletebutton:hover{
 }
 .iconLike,
 .iconComment {
-	display:inline-block;
-	width:14px;
-	height:14px;
-	vertical-align:middle;
-	background:url('../images/icon/social_icons.gif') no-repeat;
+    display:inline-block;
+    width:14px;
+    height:14px;
+    vertical-align:middle;
+    background:url(../images/icon/auiIconSprites20120713.png) no-repeat;
 }
-.iconLike {background-position:-2px -2px;}
-.iconComment {background-position:-2px -17px;}
+*html .iconLike,
+*html .iconComment {background:url(../images/icon/auiIconSprites20120713.gif) no-repeat;}
+.iconLike {background-position:-2px -594px;}
+.iconComment {background-position:-2px -609px;}
 
 /* table Class */
 tr.disabled th, tr.disabled td {
@@ -2215,9 +2217,9 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 	border-radius:2px;
 	-ms-border-radius:2px;
 	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites.png) no-repeat;
+	background:url(../images/icon/auiIconSprites20120713.png) no-repeat;
 }
-*html .auiIcon {background:url(../images/icon/auiIconSprites.gif) no-repeat;}
+*html .auiIcon {background:url(../images/icon/auiIconSprites20120713.gif) no-repeat;}
 .auiIcon span {display:none;}
 
 a.auiIcon:hover {background-color:#999;}
