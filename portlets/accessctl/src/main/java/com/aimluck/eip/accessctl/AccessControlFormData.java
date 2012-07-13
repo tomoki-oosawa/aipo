@@ -28,6 +28,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -364,7 +365,11 @@ public class AccessControlFormData extends ALAbstractFormData {
           user.setUserId(tuser.getUserId().intValue());
           user.setName(tuser.getLoginName());
           user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-          memberList.add(user);
+          // 招待中ユーザでなければ追加
+          if (!JetspeedResources.CONFIRM_VALUE_PENDING.equals(tuser
+            .getConfirmValue())) {
+            memberList.add(user);
+          }
         }
       }
 

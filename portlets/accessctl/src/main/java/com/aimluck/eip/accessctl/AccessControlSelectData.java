@@ -25,6 +25,7 @@ import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -244,8 +245,14 @@ public class AccessControlSelectData extends
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
           tuser = map.getTurbineUser();
-          unamelist.add(new StringBuffer().append(tuser.getLastName()).append(
-            " ").append(tuser.getFirstName()).toString());
+          if (!JetspeedResources.CONFIRM_VALUE_PENDING.equals(tuser
+            .getConfirmValue())) {
+            unamelist.add(new StringBuffer()
+              .append(tuser.getLastName())
+              .append(" ")
+              .append(tuser.getFirstName())
+              .toString());
+          }
         }
         rd.addUserNameList(unamelist);
       }
