@@ -115,7 +115,7 @@
 
        var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+'$!portlet.ID'));
        var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
-		if(gselect.value=="pickup"){
+		if(gselect.value.indexOf("pickup")!=-1){
 			addtxt.removeClass("hide");
 		}else{
 			addtxt.addClass("hide");
@@ -124,43 +124,33 @@
 
 	var mpicker = dijit.byId("memberpicker-$!portlet.ID");
     if(mpicker){
-    	var select = dojo.byId('init_memberlist-$!portlet.ID');
-	        var s_o = select.options;
-	        for(var i = 0 ; i < s_o.length; i ++ ) {
-	            mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
-	    }
-
-        //メンバーリストの初期化
-    	var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
-		if(gselect.value=="pickup"){
-			initCalendar();
-		}else{
-			//メンバーリストを取得しに行く
-			var params="";
-			  dojo.xhrGet({
-                portletId:'$!portlet.ID',
-                url:gselect.value,
-                encoding: "utf-8",
-                handleAs: "json-comment-filtered",
-                load:function(data, event) {
-            		//paramsの編集+namesの変更
-            		var html="";
-            		mp.dropDown.removeMember(dojo.byId("member_to-"+'$!portlet.ID'));
-            		for(var i=0;i<data.length;i++){
-            			if (i != 0) {
-            				html += ' ';
-            			}
-            			params+="&m_id="+data[i].name;
-            			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-            			aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
-            		}
-            		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
-            	},
-				handle:function(){
-					initCalendar();
-				}
-			});
-		}
+        var params="";
+        dojo.xhrGet({
+            portletId:'$!portlet.ID',
+            url:gselect.value,
+            encoding: "utf-8",
+            handleAs: "json-comment-filtered",
+            load:function(data, event) {
+                //paramsの編集+namesの変更
+                var html="";
+                mp.dropDown.removeMember(dojo.byId("member_to-"+'$!portlet.ID'));
+                for(var i=0;i<data.length;i++){
+                    if (i != 0) {
+                        html += ' ';
+                    }
+                    params+="&m_id="+data[i].name.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+					
+					var dataId = data[i].userFacilityId;
+					if(data[i].userFacilityType == 'F'){
+						dataId = 'f' + dataId;
+					}
+                    mpicker.addOptionSync(dataId,data[i].aliasName,true);
+                }
+            },
+            handle:function(){
+                initCalendar();
+            }
+        });
     }
   };
 
