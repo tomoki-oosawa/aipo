@@ -329,21 +329,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         && !"punchout".equals(edit_mode)
         && !"outgoing".equals(edit_mode)
         && !"comeback".equals(edit_mode)) {
-        // time has changed
-        if (isModify()) {
+        // time has changed or not at work
+        if (isModify() || isNotAtWork()) {
           // Plans for the future is not checked
           if (isNotFuture()) {
             reason.setNotNull(true);
             reason.validate(msgList);
           }
-          remarks.validate(msgList);
-        }
-      }
-
-      if (!"P".equals(type.getValue())) {
-        if (isNotFuture()) {
-          reason.setNotNull(true);
-          reason.validate(msgList);
         }
       }
 
@@ -569,6 +561,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           }
         }
       }
+
+      remarks.validate(msgList);
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -1424,6 +1418,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private boolean isNotFuture() {
     return Calendar.getInstance().getTime().after(punch_date.getValue());
+  }
+
+  private boolean isNotAtWork() {
+    return !"P".equals(type.getValue());
   }
 
 }
