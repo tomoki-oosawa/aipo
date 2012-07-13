@@ -21,12 +21,17 @@ package com.aimluck.eip.mail.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.Part;
 import javax.mail.internet.ContentType;
+import javax.mail.internet.MimeUtility;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.sk_jp.mail.AttachmentsExtractor;
 import com.sk_jp.mail.MailUtility;
@@ -37,6 +42,9 @@ import com.sk_jp.mail.MailUtility;
  * 
  */
 public class ALAttachmentsExtractor extends AttachmentsExtractor {
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALAttachmentsExtractor.class.getName());
 
   private final int mode;
 
@@ -105,22 +113,29 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
   @Override
   public String getFileName(int index) throws MessagingException {
     Part part = attachmentParts.get(index);
-    String name = MailUtility.getFileName(part);
-    if (name == null) {
-      // 添付ファイル名が取得できない場合は、指定されていなかった場合か、
-      // あるいはmessage/*のパートの場合です。
-      // この場合は仮のファイル名を付けることとします。
-      if (part.isMimeType("message/*")) {
-        // If part is Message, create temporary filename.
-        name = "message" + index + ".eml";
-      } else if (part.isMimeType("text/html")) {
-        // If part is a HTML Message, create temporary filename.
-        name = "message" + index + ".html";
-      } else {
-        name = "file" + index + ".tmp";
+
+    try {
+      String name = MimeUtility.decodeText(part.getFileName());
+
+      if (name == null) {
+        // 添付ファイル名が取得できない場合は、指定されていなかった場合か、
+        // あるいはmessage/*のパートの場合です。
+        // この場合は仮のファイル名を付けることとします。
+        if (part.isMimeType("message/*")) {
+          // If part is Message, create temporary filename.
+          name = "message" + index + ".eml";
+        } else if (part.isMimeType("text/html")) {
+          // If part is a HTML Message, create temporary filename.
+          name = "message" + index + ".html";
+        } else {
+          name = "file" + index + ".tmp";
+        }
       }
+      return name;
+    } catch (UnsupportedEncodingException e) {
+      logger.error(e, e);
+      return null;
     }
-    return name;
   }
 
   /**
