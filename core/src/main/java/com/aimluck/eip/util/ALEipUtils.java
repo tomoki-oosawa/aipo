@@ -2104,7 +2104,7 @@ public class ALEipUtils {
    */
   public static boolean isMatchUserAgent(String expect, RunData rundata) {
     // User-Agent の取得
-    String userAgent = rundata.getUserAgent();
+    String userAgent = rundata.getUserAgent().trim();
     if (userAgent == null || "".equals(userAgent)) {
       return false;
     }
@@ -2248,5 +2248,32 @@ public class ALEipUtils {
       return false;
     }
     return true;
+  }
+
+  public static boolean isFileUploadable(RunData rundata) {
+
+    if (isMatchUserAgent("iPhone", rundata)) {
+      String iOSver = getIOSVersion(rundata.getUserAgent().trim());
+      if (iOSver.length() > 1) {
+        Integer num = Integer.parseInt(iOSver.substring(0, 1));
+        if (num.intValue() < 6) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  public static String getIOSVersion(String userAgent) {
+    Pattern pattern = Pattern.compile("OS\\s[0-9_]+");
+    Matcher matcher = pattern.matcher(userAgent);
+
+    if (matcher.find()) {
+      String words = matcher.group();
+      return words.replaceAll("OS\\s", "");
+    }
+
+    return "";
   }
 }

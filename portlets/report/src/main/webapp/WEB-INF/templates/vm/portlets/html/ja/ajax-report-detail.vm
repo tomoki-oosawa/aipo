@@ -122,7 +122,6 @@ ${record.Note}
 #end
 #ALformfooter()
 #if($!resultOnReportDetail)
-#ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
@@ -139,18 +138,22 @@ ${record.Note}
 #ALtditemheader()
 <textarea class="text wide" name="note" rows="5" cols="40">$!resultOnReportDetail.Note</textarea>
 #ALtditemfooter()
-#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
-#ALtditemheader()
-<div class="floatLeft mr10">
-<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
-</div>
-<ul id="attachments_$!portlet.ID" class="attachments">
-  #foreach($record in $!result.AttachmentFileNameList )
-   <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.REPORT_DELETE</span></li>
-  #end
-</ul>
-<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
-#ALtditemfooter()
+<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+<td class="caption">$l10n.REPORT_SETFIELDNAME_ATTACHMENT</td>
+<td>
+  <div class="clearfix">
+  <div class="floatLeft mr10">
+  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  </div>
+  <ul id="attachments_$!portlet.ID" class="attachments">
+    #foreach($record in $!result.AttachmentFileNameList )
+     <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.REPORT_DELETE</span></li>
+    #end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
 #ALtablefooter()
 #end
 #ALbuttonheader()

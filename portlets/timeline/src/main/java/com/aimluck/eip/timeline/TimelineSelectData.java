@@ -129,6 +129,8 @@ public class TimelineSelectData extends
 
   private boolean isAdmin = false;
 
+  private boolean isFileUploadable;
+
   /**
    * 
    * @param action
@@ -159,6 +161,8 @@ public class TimelineSelectData extends
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
     }
+
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -955,5 +959,9 @@ public class TimelineSelectData extends
    */
   public String getTargetGroupName() {
     return target_group_name;
+  }
+
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 }

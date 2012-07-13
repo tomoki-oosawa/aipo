@@ -88,6 +88,8 @@ public class CabinetSelectData extends
 
   private ALStringField target_keyword;
 
+  protected boolean isFileUploadable;
+
   /**
    * 
    * @param action
@@ -216,6 +218,8 @@ public class CabinetSelectData extends
     target_keyword = new ALStringField();
 
     super.init(action, rundata, context);
+
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -497,5 +501,9 @@ public class CabinetSelectData extends
    */
   public void setTableColumNum(int table_colum_num) {
     this.table_colum_num = table_colum_num;
+  }
+
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 }

@@ -59,6 +59,8 @@ public abstract class ALAbstractFormData implements ALData {
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
+  protected boolean isFileUploadable;
+
   /**
    * 初期化処理を行います。 <br />
    * <code>doViewForm/doInsert/doUpdate/doDelete</code> 実行時に呼ばれます。 <br />
@@ -88,6 +90,8 @@ public abstract class ALAbstractFormData implements ALData {
         }
       }
     }
+
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -609,6 +613,10 @@ public abstract class ALAbstractFormData implements ALData {
    */
   public void setMode(String string) {
     mode = string;
+  }
+
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 
 }

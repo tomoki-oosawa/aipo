@@ -106,6 +106,8 @@ public class ReportSelectData extends
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
+  private boolean isFileUploadable;
+
   /**
    * 
    * @param action
@@ -188,6 +190,7 @@ public class ReportSelectData extends
 
     super.init(action, rundata, context);
 
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -671,5 +674,9 @@ public class ReportSelectData extends
    */
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 }

@@ -172,7 +172,7 @@
 							#ALtextarea('note' $!resultOnTopicDetail.Note 5 40)
 						</td>
 					</tr>　
-					<tr>
+					<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
 						<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
 						<td>
 							<div class="clearfix">
