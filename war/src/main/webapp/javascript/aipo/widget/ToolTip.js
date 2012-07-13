@@ -23,7 +23,7 @@ dojo.provide("aipo.widget.ToolTip");
 dojo.require("dijit.Tooltip");
 
 dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
-   duration: 100, 
+   duration: 100,
    postCreate: function(){
             dojo.body().appendChild(this.domNode);
             this.bgIframe = new dijit.BackgroundIframe(this.domNode);
@@ -36,11 +36,11 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
             if(this.aroundNode && this.aroundNode === aroundNode){
                 return;
             }
-            
+
             if( aroundNode  == null || aroundNode == "undefined" ){
                 return;
             }
-            
+
             if( this.domNode ==null || this.domNode == "undefined" ){
                 return;
             }
@@ -49,9 +49,10 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
 
            // Firefox bug. when innerHTML changes to be shorter than previous
            // one, the node size will not be updated until it moves.
+            this.domNode.style.width = "150px";
             this.domNode.style.top = (this.domNode.offsetTop + 1) + "px";
-            try {	
-	            // position the element and change CSS according to position    
+            try {
+	            // position the element and change CSS according to position
 	            var align = this.isLeftToRight() ? {'BR': 'BL', 'BL': 'BR'} : {'BL': 'BR', 'BR': 'BL'};
 	            var pos = dijit.placeOnScreenAroundElement(this.domNode, aroundNode, align);
 	            this.domNode.className="dijitTooltip dijitTooltip" + (pos.corner=='BL' ? "Right" : "Left");//FIXME: might overwrite class
@@ -70,7 +71,7 @@ dojo.declare( "aipo.widget._MasterToolTip", [dijit._MasterTooltip], {
             //this.fadeIn.play();
             this.isShowingNow = true;
             this.aroundNode = aroundNode;
-            
+
             if (callback) {
                 callback(this.containerNode, targetNode);
             }
@@ -122,7 +123,7 @@ dojo.declare( "aipo.widget.ToolTip", [dijit.Tooltip], {
             this._callback = callback;
         },
         open: function(/*DomNode*/ target){
-            // summary: display the tooltip; usually not called directly.   
+            // summary: display the tooltip; usually not called directly.
             target = target || this._connectNodes[0];
             if(!target){ return; }
             if(this._showTimer){
@@ -146,7 +147,7 @@ dojo.declare( "aipo.widget.ToolTip", [dijit.Tooltip], {
             if(!this._showTimer){
                 var target = e.target;
                 aipo.widget.tmpX = e.pageX;
-                aipo.widget.tmpY = e.pageY; 
+                aipo.widget.tmpY = e.pageY;
                 this._showTimer = setTimeout(dojo.hitch(this, function(){this.open(target)}), this.showDelay);
             }
        },_onUnHover: function(/*Event*/ e){
@@ -156,7 +157,7 @@ dojo.declare( "aipo.widget.ToolTip", [dijit.Tooltip], {
                 clearTimeout(this._showTimer);
                 delete this._showTimer;
             }
-            this.close(); 
+            this.close();
         }
 });
 
