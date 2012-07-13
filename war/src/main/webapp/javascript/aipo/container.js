@@ -90,6 +90,7 @@ aipo.IfrGadgetService = function() {
     gadgets.rpc.register('set_title', this.setTitle);
     gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
     gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
+    gadgets.rpc.register('requestCheckTimeline', this.requestCheckTimeline);
     //gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
@@ -262,6 +263,20 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
         }
     }
 };
+
+aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
+	var num = 0;
+	dojo.query("#timelineOuter .elastic").forEach(function(item) {
+		if(item.value != item.defaultValue || item.focus()){
+			num++;
+		}
+	});
+	if(num == 0){
+		aipo.portletReload('timeline');
+	} else {
+		dojo.query(".newMessage").style('display', '');
+	}
+}
 
 aipo.IfrContainer = function() {
     shindig.Container.call(this);
