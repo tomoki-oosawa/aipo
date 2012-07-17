@@ -17,15 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#macro(ALtabElementMaximize $name $image)
+#macro(ALtabElementMaximize $name $imageclass)
 #set($break=false)
 #foreach($tab in $menus)
 	#if($break==false)
 		#if($tab.Name.toString()==$name)
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon $!{imageclass}"></i><span>$tab.Title</span></a></li>
 		#set($break=true)
 		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="themes/default/images/mobile/$image"></span>$tab.Title</a></li>
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon $!{imageclass}"></i><span>$tab.Title</span></a></li>
 		#set($break=true)
 		#end
 	#end
@@ -64,7 +64,7 @@ aipo.onloadSmartPhone = function(){
 		if(is_menu){
 			var elem = document.createElement('div');
 			elem.className = 'snDrawer';
-			elem.innerHTML = '<a href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png"></a>';
+			elem.innerHTML = '<a href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';
 			widgets_area.appendChild(elem);
 		}
 	}
@@ -126,7 +126,7 @@ function appsNaviSwitch() {
 </script>
 <div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
 <div id="appsNavigation"><div id="anInner">
-        <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><img src="themes/default/images/mobile/an_list.png"></a></div>
+        <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="auiMbIcon auiMbIconList"></i></a></div>
         <div class="anUser">
                 <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="顔写真" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="顔写真" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
@@ -134,21 +134,20 @@ function appsNaviSwitch() {
         <div class="anApps">
                 <h2>アプリ</h2>
                 <ul>
-#ALtabElementMaximize("Timeline" "an_timeline.png")
-#ALtabElementMaximize("Schedule" "an_schedule.png")
-#ALtabElementMaximize("ExtTimecard" "an_timecard.png")
-#ALtabElementMaximize("Activity" "an_info.png")
-#ALtabElementMaximize("Blog" "an_blog.png")
-#ALtabElementMaximize("Msgboard" "an_bbs.png")
-#ALtabElementMaximize("ToDo" "an_todo.png")
-#ALtabElementMaximize("Cabinet" "an_folder.png")
-#ALtabElementMaximize("Workflow" "an_workflow.png")
-#ALtabElementMaximize("Note" "an_note.png")
-#ALtabElementMaximize("Report" "an_report.png")
-#ALtabElementMaximize("WebMail" "an_mail.png")
-#ALtabElementMaximize("AddressBook" "an_address.png")
-#ALtabElementMaximize("UserList" "an_users.png")
-#ALtabElementMaximize("Memo" "an_memo.png")
+#ALtabElementMaximize("Timeline" "auiMbIconTimeline")
+#ALtabElementMaximize("Schedule" "auiMbIconSchedule")
+#ALtabElementMaximize("ExtTimecard" "auiMbIconTimecard")
+#ALtabElementMaximize("Blog" "auiMbIconBlog")
+#ALtabElementMaximize("Msgboard" "auiMbIconBbs")
+#ALtabElementMaximize("ToDo" "auiMbIconTodo")
+#ALtabElementMaximize("Cabinet" "auiMbIconFolder")
+#ALtabElementMaximize("Workflow" "auiMbIconWorkflow")
+#ALtabElementMaximize("Note" "auiMbIconNote")
+#ALtabElementMaximize("Report" "auiMbIconReport")
+#ALtabElementMaximize("WebMail" "auiMbIconMail")
+#ALtabElementMaximize("AddressBook" "auiMbIconAddress")
+#ALtabElementMaximize("UserList" "auiMbIconUsers")
+#ALtabElementMaximize("Memo" "auiMbIconMemo")
                 </ul>
         </div>
         <div class="anSetting">
