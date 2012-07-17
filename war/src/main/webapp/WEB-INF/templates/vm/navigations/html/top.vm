@@ -58,10 +58,12 @@ dojo.require("aipo.widget.DropdownActivityChecker");
 
 dojo.addOnLoad(function () {
     var num;
-    if(dojo.byId("messagechecker") != undefined && dojo.byId("activitychecker") != undefined) {
+    if(dojo.byId("messagechecker") != undefined  && dojo.byId("activitychecker") != undefined) {
     	num = parseInt(dojo.byId("activitychecker").innerHTML) + parseInt(dojo.byId("messagechecker").innerHTML);
-    } else {
+    } else if(dojo.byId("activitychecker") != undefined) {
     	num = parseInt(dojo.byId("activitychecker"));
+    } else {
+    	num = 0;
     }
     if (num == 0){
     	document.title = "Aipo+";
