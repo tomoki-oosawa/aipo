@@ -68,7 +68,7 @@ function hideErrorMessage(){
 }
 
 function getFileName(){
-    var filepath = dojo.byId('attachment').value;
+    var filepath = document.getElementById('attachment').value;
     if(filepath == "") return "";
 
     var filefolder_list = filepath.split("\\");

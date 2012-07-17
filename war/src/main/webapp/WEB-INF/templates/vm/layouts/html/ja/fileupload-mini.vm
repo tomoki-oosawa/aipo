@@ -36,14 +36,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
 #end
-<link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link type="image/x-icon" rel="icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/extend.css?$!{utils.CacheBust}" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/common.css?$!{utils.CacheBust}" media="screen,tv,print" />
 <link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/aui.css?$!{utils.CacheBust}" media="screen,tv,print" />
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile.css?$!{utils.CacheBust}" media="screen,tv,print"/>#end
-<link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/print.css?$!{utils.CacheBust}" media="print" />
-<link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body class="portlet_background" style="background-color:transparent" onLoad="get_data('$!portlet.ID')">
 #if("$isXDomain" == "true")
@@ -53,16 +48,12 @@
     cacheBust: '$!{utils.CacheBust}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.xd.js")
-#ALjavascript("javascript/aipo.xd.js")
 #else
 <script type="text/javascript">
   djConfig = {
     cacheBust: '$!{utils.CacheBust}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.js")
-#ALjavascript("javascript/aipo.js")
 #end
 #parse("/portlets/html/ja/fileupload-mini.vm")
 </body>
