@@ -1201,7 +1201,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
-            if(this.dragSource){this.dragSource.onScheduleClick(e);}
             return;
         }
 

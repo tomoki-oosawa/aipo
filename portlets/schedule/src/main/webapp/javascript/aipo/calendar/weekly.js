@@ -1196,7 +1196,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
-            if(this.dragSource){this.dragSource.onScheduleClick(e);}
             return;
         }
 
@@ -1251,7 +1250,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             return;
         }
         var uid = this.schedule.ownerId;
-
         aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index] + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail );
         //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
         aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
