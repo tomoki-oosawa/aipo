@@ -58,7 +58,7 @@ dojo.require("aipo.widget.DropdownActivityChecker");
 
 dojo.addOnLoad(function () {
     var num;
-    if(dojo.byId("messagechecker") != undefined) {
+    if(dojo.byId("messagechecker") != undefined && dojo.byId("activitychecker") != undefined) {
     	num = parseInt(dojo.byId("activitychecker").innerHTML) + parseInt(dojo.byId("messagechecker").innerHTML);
     } else {
     	num = parseInt(dojo.byId("activitychecker"));
