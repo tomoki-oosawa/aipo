@@ -1818,7 +1818,7 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 		}
 		dojo.byId("member_to_input-"+_portletId).innerHTML=html;
 	};
-	var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+_portletId));
+	var addtxt=dojo.query("#adduser-"+_portletId);
 	switch(obj.value.indexOf("pickup")){
 	case -1:
 		addtxt.addClass("hide");
