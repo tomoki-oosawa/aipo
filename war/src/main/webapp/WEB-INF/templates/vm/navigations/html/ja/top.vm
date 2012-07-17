@@ -57,6 +57,19 @@
 dojo.require("aipo.widget.DropdownActivityChecker");
 
 dojo.addOnLoad(function () {
+    var num;
+    if(dojo.byId("messagechecker") != undefined) {
+    	num = parseInt(dojo.byId("activitychecker").innerHTML) + parseInt(dojo.byId("messagechecker").innerHTML);
+    } else {
+    	num = parseInt(dojo.byId("activitychecker"));
+    }
+    if (num == 0){
+    	document.title = "Aipo+";
+    } else if (num > 99) {
+    	document.title = "(99+) Aipo+"
+    } else {
+    	document.title = "(" + num + ") Aipo+";
+    }
     var acHtml = document.getElementById("activitycheckerContainer");
     if(acHtml){
        var params = {

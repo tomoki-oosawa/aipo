@@ -235,6 +235,19 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             var appIdMap = {Workflow:"workflow", todo:"todo", Report:"report", Note:"note"};
             aipo.activityMax = data.max;
             var ac = dijit.byId("activitycheckerContainer");
+            var num;
+            if(dojo.byId("messagechecker") != undefined) {
+            	num = parseInt(unreadCount) + parseInt(dojo.byId("messagechecker").innerHTML);
+            } else {
+            	num = parseInt(unreadCount);
+            }
+            if (num == 0){
+            	document.title = "Aipo+";
+            } else if (num > 99) {
+            	document.title = "(99+) Aipo+"
+            } else {
+            	document.title = "(" + num + ") Aipo+";
+            }
             if (ac) {
                 ac.onCheckActivity(unreadCount);
                 for (key in data.activities) {
