@@ -19,6 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
+#set ($indicator_str = "データを送信")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
 <span id="blog_val_confirm1" style="display:none">$l10n.BLOG_CONFIRM_DELETE_COMMENT</span>
@@ -112,7 +113,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   #end
   </div>
   </div>
-  
+
   <div>
   ${record.Comment}
   </div>
