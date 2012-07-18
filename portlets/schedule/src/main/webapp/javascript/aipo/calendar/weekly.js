@@ -1586,6 +1586,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
     positionTo: 0,
     _isDragging: false,
     lastScroll: 0,
+    _isLocked: false,
     onMouseDown: function(e){
        this._isDragging = false;
        aimluck.dnd.DragMoveObject.prototype.onMouseDown.apply(this, arguments);
@@ -1607,6 +1608,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
     },
     onMouseMove: function(e){
+    	if(this._isLocked){
+    		return;
+    	}
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this._isDragging = true;
         var distance_scr = dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop - lastScroll;
@@ -1667,6 +1671,11 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
 
        this._isDragging = false;
        aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
+
+       this._isLocked = true;
+       setTimeout(function(){
+    	   this._isLocked = false;
+       }, 5000)
     }
 });
 
