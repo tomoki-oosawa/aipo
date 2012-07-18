@@ -1,4 +1,10 @@
-if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.calendar.weekly"],
+["require", "aimluck.dnd.Draggable"],
+["require", "aipo.widget.ToolTip"],
+["require", "aipo.widget.MemberNormalSelectList"],
+["require", "aipo.widget.GroupNormalSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.calendar.weekly"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -193,7 +199,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
          aipo.calendar.dummyDivObj = null;
     }
 
-    if(dojo.byId('groupselect-' + _portletId).value.indexOf("pickup") != -1){
+    if(dojo.byId('groupselect-' + _portletId).value =="pickup"){
     	_params += "&pickup=true";
     }
 
@@ -269,7 +275,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
             var simpleStyleFirst = "";
             var simpleStyle = "";
-            if(dojo.byId("top_form_" + this.portletId).value == "simple" && dojo.byId("view_type_" + this.portletId).value == "1"){
+            if(dojo.byId("top_form_" + _portletId).value == "simple" && dojo.byId("view_type_" + this.portletId).value == "1"){
                 simpleStyleFirst = "width: 100%;";
             	simpleStyle = "width: 0%;display: none;";
             }
@@ -288,7 +294,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
                 var simpleDisplayR = "";
-                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1" || dojo.byId("top_form_" + this.portletId).value=="simple" && dojo.byId("view_type_" + this.portletId).value == "4"){
+                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1" || dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
                   simpleDisplay = ' style="display: none;"';
                   for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
@@ -683,7 +689,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
 
-
             if (!ptConfig[_portletId].isScroll) {
                 dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
                 ptConfig[_portletId].isScroll = true;
@@ -694,7 +699,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 };
 
 // aipo.calendar.relocation
-aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) {
+aipo.calendar.relocation = function(_portletId, sum,scheduleDiv,scheduleDivLeft) {
     var i,j;
     var offsetW = 0.99;
     var scheduleDivWidth = 100 / 7;
@@ -1250,6 +1255,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             return;
         }
         var uid = this.schedule.ownerId;
+
         aipo.common.showDialog(ptConfig[this.portletId].detailUrl + "&entityId=" + this.schedule.scheduleId + "&view_date=" + ptConfig[this.portletId].jsonData.date[this.schedule.index] + "&userid=" + uid, this.portletId, aipo.schedule.onLoadScheduleDetail );
         //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
         aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
@@ -1272,17 +1278,18 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
             aipo.calendar.dummyDivObj.parentnode = this.node;
         }
         aipo.calendar.dummyDivObj.draggable = this;
+
         if(aipo.calendar.dummyDivObj.TooltipObject){
             aipo.calendar.dummyDivObj.TooltipObject.destroyRecursive();
             aipo.calendar.dummyDivObj.TooltipObject = null;
         }
-                 */
+        */
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
-          this.setupTooltip(e);
+          this.setupTooltip();
         }
     },
-    setupTooltip: function(e) {
+    setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
         if(!this.TooltipObject){
@@ -1294,7 +1301,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
 
                 aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
             });
-            this.TooltipObject._onHover(e);
         }
         aipo.calendar.objectlist.push(this.TooltipObject);
     },
@@ -1356,7 +1362,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         var distance = ptConfig[this.portletId].distance;
 
         var view_type=(dojo.byId("view_type_" + this.portletId) && dojo.byId("top_form_" + this.portletId) && dojo.byId("top_form_" + this.portletId).value == "simple")?dojo.byId("view_type_" + this.portletId).value:ptConfig[this.portletId].scheduleDivDaySum;
-
         var mouseX = aipo.calendar.getCurrentMouseX(this.portletId, e);
         _tmpIndex = mouseX.index;
         /*y = Math.floor(y/distance)*distance;
@@ -1425,8 +1430,8 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
                     tmpW = this.positionTo - tmpSchedule.index + 1;
                 }
             }
-            var width = 100 /view_type * tmpW;
-            var left = 100 /view_type * tmpL;
+            var width = 100 / view_type * tmpW;
+            var left = 100 / view_type * tmpL;
             /*
             if(dojo.byId("top_form_" + this.portletId).value=="simple"){
             	width = 100 * tmpW;
@@ -1455,12 +1460,10 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         var scheduleNode = this.dragSource.scheduleNode;
         var startDate, endDate;
 
-
         if(dojo.byId("top_form_" + this.portletId).value=="simple"){
         	startDate = ptConfig[this.portletId].jsonData.date[0];
         	endDate = ptConfig[this.portletId].jsonData.date[0];
         }
-
         if (type == 'center') {
             startDate = aipo.calendar.getDate(viewStart, tmpSchedule.indexReal + this.moveIndex) + "-00-00";
             endDate = aipo.calendar.getDate(viewStart, tmpSchedule.indexReal + this.moveIndex + tmpSchedule.colspanReal-1) + "-00-00";
@@ -1482,7 +1485,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
 
             }
         }
-
 
         this.positionFrom = -1;
         this.positionTo = -1;
@@ -1536,7 +1538,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
     onScheduleOver: function(e) {
         if(ptConfig[this.portletId].isTooltipEnable == false){return;}
         /*
-
         var ttdiv = dojo.byId("dummy_div_" + this.portletId);
         var left =  dojo.getComputedStyle(this.node).left ;
         var top =  dojo.getComputedStyle(this.node).top;
@@ -1551,13 +1552,13 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
             aipo.calendar.dummyDivObj.parentnode = this.node;
         }
         aipo.calendar.dummyDivObj.draggable = this;
-         */
+        */
         // IPADではツールチップ非表示
         if (scheduleTooltipEnable) {
-          this.setupTooltip(e);
+          this.setupTooltip();
         }
     },
-    setupTooltip: function(e) {
+    setupTooltip: function() {
         var schedule_id = this.schedule.scheduleId;
         var view_date = ptConfig[this.portletId].jsonData.endDate;
         if(!this.TooltipObject){
@@ -1569,7 +1570,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDraggable", [aimluck.dnd.Draggable
 
                 aipo.calendar.showTooltip(request_url, this.portletId, containerNode);
             });
-            this.TooltipObject._onHover(e);
         }
         aipo.calendar.objectlist.push(this.TooltipObject);
     },
@@ -1586,7 +1586,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
     positionTo: 0,
     _isDragging: false,
     lastScroll: 0,
-    _isLocked: false,
     onMouseDown: function(e){
        this._isDragging = false;
        aimluck.dnd.DragMoveObject.prototype.onMouseDown.apply(this, arguments);
@@ -1608,9 +1607,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
     },
     onMouseMove: function(e){
-    	if(this._isLocked){
-    		return;
-    	}
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this._isDragging = true;
         var distance_scr = dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop - lastScroll;
@@ -1671,11 +1667,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
 
        this._isDragging = false;
        aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
-
-       this._isLocked = true;
-       setTimeout(function(){
-    	   this._isLocked = false;
-       }, 5000)
     }
 });
 
@@ -1798,7 +1789,6 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDraggable", [aimluck.dnd.Dragga
 });
 
 
-
 aipo.schedule.initCalendar=function(_portletId){
 	for(var i =0; i < ptConfig[_portletId].scheduleDivDaySum; i++) {
       tmpDraggable = new aipo.calendar.WeeklyScheduleAddDraggable('scheduleDivAdd0'+i+'_'+_portletId , {idx: i});
@@ -1867,4 +1857,8 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 		break;
 	}
 }
+
+
 }
+
+}});
