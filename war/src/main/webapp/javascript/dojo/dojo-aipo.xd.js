@@ -2864,6 +2864,8 @@ if(!dojo._hasResource["dojo.dnd.Avatar"]){ //_hasResource checks added by build.
 					// or just clone the node and hope it works
 					node = this.manager.nodes[i].cloneNode(true);
 				node.id = "";
+				node.style.width=this.manager.nodes[i].clientWidth+"px";
+				node.style.height=this.manager.nodes[i].clientHeight+"px";
 				td.appendChild(node);
 				tr.appendChild(td);
 				dojo.style(tr, "opacity", (9 - i) / 10);
