@@ -53,19 +53,13 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     	var checker = dojo.byId("activitychecker");
         if (count > 99) {
         	checker.innerHTML = '99+';
-        	favicon.change('images/favicon/50.ico');
+        	dojo.removeClass("activitychecker", "zero");
         } else if (count == 0) {
         	checker.innerHTML = count;
-        	favicon.change('images/favicon.ico');
+        	dojo.addClass("activitychecker", "zero");
         } else {
         	checker.innerHTML = count;
-        	if(count >= 50) {
-              favicon.change('images/favicon/50.ico');
-        	} else if(count >= 20) {
-          	  favicon.change('images/favicon/20.ico');
-        	} else {
-        	  favicon.change('images/favicon/' + count + '.ico');
-        	}
+        	dojo.removeClass("activitychecker", "zero");
         }
     },
     onCheckBlank: function(/*evt*/ e){

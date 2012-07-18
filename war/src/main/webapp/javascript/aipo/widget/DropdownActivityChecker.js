@@ -50,21 +50,12 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
         if (count > 99) {
         	checker.innerHTML = '99+';
         	dojo.removeClass("activitychecker", "zero");
-        	favicon.change('images/favicon/50.ico');
         } else if (count == 0) {
         	checker.innerHTML = count;
         	dojo.addClass("activitychecker", "zero");
-        	favicon.change('images/favicon.ico');
         } else {
         	checker.innerHTML = count;
         	dojo.removeClass("activitychecker", "zero");
-        	if(count >= 50) {
-              favicon.change('images/favicon/50.ico');
-        	} else if(count >= 20) {
-          	  favicon.change('images/favicon/20.ico');
-        	} else {
-        	  favicon.change('images/favicon/' + count + '.ico');
-        	}
         }
     },
     onCheckBlank: function(/*evt*/ e){
