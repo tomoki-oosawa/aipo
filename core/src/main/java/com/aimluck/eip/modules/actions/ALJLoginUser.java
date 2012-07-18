@@ -45,6 +45,8 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.services.config.ALConfigHandler.Property;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -71,8 +73,21 @@ public class ALJLoginUser extends ActionEvent {
       String password = data.getParameters().getString("password", "");
 
       // セッションハイジャック対策
+      // 携帯の場合、URLからのログインはログイン画面にリダイレクト
+      if (ALCellularUtils.isCellularPhone(data)
+        && (username != null)
+        && (password != null)
+        && (data.getRequest().getMethod() == "GET")) {
+        String externalLoginUrl =
+          ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
+        if (!"".equals(externalLoginUrl)) { // ログイン画面へリダイレクト
+          data.setRedirectURI(externalLoginUrl);
+        }
+        data.getResponse().sendRedirect(data.getRedirectURI());
+
+      }
       // Cookieでセッションを管理していなければエラー画面を表示
-      if (!data.getRequest().isRequestedSessionIdFromCookie()) {
+      else if (!data.getRequest().isRequestedSessionIdFromCookie()) {
         data.setScreenTemplate("CookieError");
         return;
       }
@@ -85,6 +100,12 @@ public class ALJLoginUser extends ActionEvent {
       tmpname.limitMaxLength(16);
       tmpname.setValue(username);
       boolean valid = tmpname.validate(new ArrayList<String>());
+
+      // 携帯の簡単ログインについては、後でusername, passwordを取得
+      if (ALCellularUtils.isCellularPhone(data)
+        && (data.getParameters().getString("key", "").trim() != null)) {
+        valid = true;
+      }
 
       int length = username.length();
       for (int i1 = 0; i1 < length; i1++) {
