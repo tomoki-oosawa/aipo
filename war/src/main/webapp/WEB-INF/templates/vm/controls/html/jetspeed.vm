@@ -137,6 +137,7 @@ function appsNaviSwitch() {
 #ALtabElementMaximize("Timeline" "auiMbIconTimeline")
 #ALtabElementMaximize("Schedule" "auiMbIconSchedule")
 #ALtabElementMaximize("ExtTimecard" "auiMbIconTimecard")
+#ALtabElementMaximize("Activity" "auiMbIconInfo")
 #ALtabElementMaximize("Blog" "auiMbIconBlog")
 #ALtabElementMaximize("Msgboard" "auiMbIconBbs")
 #ALtabElementMaximize("ToDo" "auiMbIconTodo")
