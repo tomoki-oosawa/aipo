@@ -341,7 +341,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 var weeklyTermtailHtml;
 
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"||Element.clientWidth == Element.offsetWidth ){
+                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"||(Element.clientWidth > 0 && Element.offsetWidth > 0 && Element.clientWidth == Element.offsetWidth) ){
                 	weeklyTermtailHtml = "</div></td></tr>";
                 }else{
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
