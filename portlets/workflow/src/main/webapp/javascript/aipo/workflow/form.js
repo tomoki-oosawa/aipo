@@ -19,9 +19,6 @@
 
 dojo.provide("aipo.workflow");
 
-dojo.require("aipo.workflow.MemberNormalSelectList");
-dojo.require("dijit.form.ComboBox");
-
 var before = 0;
 
 aipo.workflow.onLoadWorkflowDetail = function(portlet_id){

@@ -34,9 +34,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/extend.css?$!{utils.CacheBust}" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/common.css?$!{utils.CacheBust}" media="screen,tv,print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}" media="screen,tv,print" />
+#if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
+#else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>#end
 </head>
 <body class="portlet_background" onLoad="get_data('$!portlet.ID')">
 #if($isXDomain == "true")
