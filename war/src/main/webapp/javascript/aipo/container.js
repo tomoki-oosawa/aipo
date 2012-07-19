@@ -242,11 +242,11 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             	num = parseInt(unreadCount);
             }
             if (!num){
-            	document.title = "Aipo+";
+            	document.title = djConfig.siteTitle;
             } else if (num > 99) {
-            	document.title = "(99+) Aipo+"
+            	document.title = "(99+) " + djConfig.siteTitle;
             } else {
-            	document.title = "(" + num + ") Aipo+";
+            	document.title = "(" + num + ") " + djConfig.siteTitle;
             }
             if (ac) {
                 ac.onCheckActivity(unreadCount);

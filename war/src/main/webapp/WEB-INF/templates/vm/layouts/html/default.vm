@@ -49,7 +49,8 @@
 <script type="text/javascript">
   djConfig = {
     xDomainBasePath: '$!{external_resources_url}/javascript',
-    cacheBust: '$!{utils.CacheBust}'
+    cacheBust: '$!{utils.CacheBust}',
+    siteTitle: '$!{alias}'
   };
 </script>
 #ALjavascript("javascript/dojo/dojo.xd.js")
@@ -57,7 +58,8 @@
 #else
 <script type="text/javascript">
   djConfig = {
-    cacheBust: '$!{utils.CacheBust}'
+    cacheBust: '$!{utils.CacheBust}',
+    siteTitle: '$!{alias}'
   };
 </script>
 #ALjavascript("javascript/dojo/dojo.js")
