@@ -65,7 +65,7 @@ dojo.addOnLoad(function () {
     } else {
     	num = 0;
     }
-    if (num == 0){
+    if (!num){
     	document.title = "Aipo+";
     } else if (num > 99) {
     	document.title = "(99+) Aipo+"
