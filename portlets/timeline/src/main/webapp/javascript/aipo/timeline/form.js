@@ -554,6 +554,7 @@ aipo.timeline.getNewMessage = function(url, pid){
 		        X_REQUESTED_WITH : "XMLHttpRequest"
 		      },
 		      load : function(data, event) {
+		    	  dojo.query(".message.first").removeClass("first");
 		    	  if(data.length > 0){
 		    		  var obj = dojo.byId("timeline_" + pid);
 		    		  var node = document.createElement("div");
