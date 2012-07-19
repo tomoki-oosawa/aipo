@@ -1648,8 +1648,8 @@ select {
 input[type=text],
 input[type=password] {
 	height:28px;
-	line-height/*\**/:28px\9;/*IEHack*/
-	padding:0 2px;
+	/*padding:0 2px;*/
+	padding:4px 2px;
 	vertical-align:middle;
 	border-radius:3px;
 	-ms-border-radius:3px;
@@ -1663,6 +1663,7 @@ input[type=password] {
 	height:26px;
 	line-height:26px;
 	max-width:99.2%;
+	padding:0 2px;
 }
 select {
 	padding:0.25em;
@@ -1832,6 +1833,14 @@ ul.attachments span.deletebutton:hover{
 	border-top:solid 1px #e6e6e6;
 	padding:4px;
 	background:#f0f0f0;
+}
+.tlInputControls li {
+	float:left;
+	background:none;
+	padding:0 0 0 5px;
+}
+.tlInputControls li:first-child {
+	padding:0;
 }
 
 .tlDisplayChanger {
@@ -2074,6 +2083,16 @@ tr.disabled th, tr.disabled td {
 }
 tr.disabled a {
 	color:#666666;
+}
+
+/***************************************************
+	dijitCalendar Plus
+--------------------------------------------------*/
+.dijitCalendarTimeContainer {
+	text-align:center;
+	padding:5px 0;
+	border-bottom:solid 1px #cdcdcd;
+	box-shadow:0 1px 0 #f9f9f9;
 }
 
 /***************************************************
