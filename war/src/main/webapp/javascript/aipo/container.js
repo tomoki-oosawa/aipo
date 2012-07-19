@@ -284,6 +284,9 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 			num++;
 		}
 	});
+	if(dojo.byId("modalDialog") != undefined && dojo.byId("modalDialog").style.display != "none") {
+		num++;
+	}
 	if(num == 0){
 		aipo.portletReload('timeline');
 	} else {
