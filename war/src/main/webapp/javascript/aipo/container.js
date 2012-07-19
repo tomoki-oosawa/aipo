@@ -241,7 +241,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             } else {
             	num = parseInt(unreadCount);
             }
-            if (num == 0){
+            if (!num){
             	document.title = "Aipo+";
             } else if (num > 99) {
             	document.title = "(99+) Aipo+"
