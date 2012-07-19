@@ -1808,12 +1808,13 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 		var html="";
 		mp.dropDown.removeMember(dojo.byId("member_to-"+_portletId));
 		for(var i=0;i<data.length;i++){
+			var aliasName = data[i].aliasName.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 			if (i != 0) {
 				html += ' ';
 			}
 			params+="&m_id="+data[i].name;
-			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
-			aimluck.io.addOption(dojo.byId("member_to-"+_portletId), data[i].name, data[i].aliasName, true);
+			html+="<span class=\"dispUser color" + i +"\">" + aliasName+ "</span>";
+			aimluck.io.addOption(dojo.byId("member_to-"+_portletId), data[i].name, aliasName, true);
 		}
 		dojo.byId("member_to_input-"+_portletId).innerHTML=html;
 	};
