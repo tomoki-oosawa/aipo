@@ -133,17 +133,9 @@ public class WebMailSelectData extends
       currentTab = tabParam;
     }
 
-    String tmpAccoundId =
-      ALEipUtils.getTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
-    if (tmpAccoundId == null || "".equals(tmpAccoundId)) {
-      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-accounts"));
-    }
-
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
+
       // アカウントID
       if (rundata.getParameters().containsKey(WebMailUtils.ACCOUNT_ID)) {
         ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, rundata
@@ -157,8 +149,14 @@ public class WebMailSelectData extends
           .getParameters()
           .getString(WebMailUtils.FOLDER_ID));
       }
+
     } else {
-      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, "0");
+
+      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-accounts"));
+
     }
 
     try {
