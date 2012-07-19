@@ -2680,3 +2680,8 @@ margin:0 3px 0 0;
 .pb40 {padding-bottom:40px !important;}
 .pl40 {padding-left:40px !important;}
 .pa40 {padding:40px !important;}
+
+/***************************************************
+	mobile class
+--------------------------------------------------*/
+.pc_hide {display:none !important;}

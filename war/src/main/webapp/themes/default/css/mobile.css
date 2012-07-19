@@ -71,6 +71,9 @@ body {position:absolute}
 		to(rgba(0,0,0,0))
 	);
 }
+#aipo_widget_ActivityList_0 {
+	width:100% !important;
+}
 .activityPopup {
 	/*width:280px;*/
 	width:90%;
@@ -526,65 +529,42 @@ table.listTable td.caption, table.subTable td.caption {
 	margin:6px 0;
 }
 /***************************************************
-	auiRowTable
+	auiMultiTable
 --------------------------------------------------*/
-/*
-table.auiRowTable tr {
+.auiMultiTable {
+	margin-bottom:20px;
+	border-top:1px solid #EEEEEE;
+}
+.wDays,.wType,.wTime {
+	width:auto;
+}
+.auiMultiTable tr {
+	float:left;
+	width:75%;
+}
+table tr.caption {
+	width:25%;
+}
+.auiMultiTable td ,
+.auiMultiTable th {
+	height:16px;
+}
+.auiMultiTable td {
+	padding:5px;
 	display:block;
-	padding:3px 0;
-	border-bottom:solid 1px #eee;
+	/*width: 95%;*/
+	text-align:left;
 }
-table.auiRowTable tr:hover td {
-	background:none;
-}
-table.auiRowTable th {display:none}
-table.auiRowTable td {
-	width:100%;
-	display:inline;
-	padding:0;
-	border:none;
-}
-table.auiRowTable td > div {display:inline}
-
-table.auiRowTable td.wTitle,
-table.auiRowTable td.wTitle > div {
+.auiMultiTable th {
+	background:#F4F4F4;
+	padding:5px;
 	display:block;
-	font-size:14px;
+	/*width: 88%;*/
+	border-bottom:1px solid #EEEEEE;
 }
-table.auiRowTable td.wTitle a {
-	display:block;
-	cursor:pointer;
+.doubleHeight {
+	height:33px !important;
 }
-table.auiRowTable td.wTitl a {
-}
-*/
-/* tableBbs */
-/*
-.tableBbs .wIcon,
-.tableBbs .wCreater {display:none}
-
-.tableBbs .wCategory,
-.tableBbs .wUpdater,
-.tableBbs .wDate {
-	font-size:smaller;
-	color:#666666;
-}
-.tableBbs .wCategory:after,
-.tableBbs .wUpdater:after {
-	content: " / ";
-}
-.wDate {}
-.wDateWeak {}
-.wDateFull {}
-.wCategory {}
-.wCopname {}
-.wCheckbox {}
-.wIcon {}
-.wMail {}
-.wPosition {}
-.wTel {}
-*/
-
 
 /***************************************************
 	auiScheduleList
@@ -819,6 +799,7 @@ table.auiRowTable td.wTitl a {
 --------------------------------------------------*/
 .mb_hide {display:none !important;}
 .mb_dialoghide{display:none !important;}
+.pc_hide {display:block !important;}
 
 /***************************************************
 	mobile width (mobile only resize)

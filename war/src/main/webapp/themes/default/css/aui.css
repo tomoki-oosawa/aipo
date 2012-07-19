@@ -1412,6 +1412,34 @@ table.auiRowTable tr:hover th {
 
 
 /***************************************************
+	auiMultiTable
+--------------------------------------------------*/
+.auiMultiTable {
+	border-collapse:collapse;
+}
+.auiMultiTable td {
+	padding: 8px 5px;
+}
+.auiMultiTable th {
+	background: none repeat scroll 0 0 #F0F0F0;
+	padding: 8px 5px;
+	text-align: left;
+	white-space: nowrap;
+}
+.auiMultiTable td {
+	border-bottom:1px solid #EEEEEE;
+}
+.wDays {
+	width:35px;
+}
+.wType {
+	width:60px;
+}
+.wTime {
+	width:85px;
+}
+
+/***************************************************
 	auiDirectoryList
 --------------------------------------------------*/
 .auiDirectoryList {
