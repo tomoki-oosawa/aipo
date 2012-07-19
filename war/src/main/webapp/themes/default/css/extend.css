@@ -535,6 +535,10 @@
     padding-right: 16px;
     padding-bottom: 16px;
 }
+.dijitTooltipContainer h4 {
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 
 
 /* Cabinet */
