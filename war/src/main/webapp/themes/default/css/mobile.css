@@ -72,7 +72,9 @@ body {position:absolute}
 	);
 }
 .activityPopup {
-	width:280px;
+	/*width:280px;*/
+	width:90%;
+	margin:0 auto;
 }
 #activitycheckerContainer {
 	margin-top:0;
