@@ -448,6 +448,10 @@ table.listTable td.caption, table.subTable td.caption {
 --------------------------------------------------*/
 .auiPopup {
 	max-width:300px;
+	margin:0 auto;
+}
+.dijitPopup {
+	width:100%;
 }
 
 #imageDialog {
