@@ -118,7 +118,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
 #end
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
-#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $l10n.SCHEDULE_OUTSIDE_USER#end$l10n.SCHEDULE_YOU_DONOT_EDIT_AND_DELETE_THE_SCHEDULE#end
+#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $!{result.OutsideUser}#end#end
 </div>
 
 <div>

@@ -96,6 +96,9 @@ public class ScheduleSelectData extends
   /** <code>user</code> ユーザー */
   private ALEipUser user;
 
+  /** <code>edituser</code> ユーザー */
+  private ALEipUser createuser;
+
   /** <code>hasAuthorityOtherEdit</code> アクセス権限 */
   private boolean hasAuthorityOtherEdit = false;
 
@@ -489,6 +492,7 @@ public class ScheduleSelectData extends
       rd.setUpdateUser(ALEipUtils.getALEipUser(record
         .getUpdateUserId()
         .intValue()));
+      createuser = rd.getCreateUser();
       // 登録日時
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
@@ -557,6 +561,12 @@ public class ScheduleSelectData extends
       view_date.getYear(),
       view_date.getMonth(),
       view_date.getDay());
+  }
+
+  public String getOutsideUser() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_OUTSIDE_USER",
+      createuser.getAliasName());
   }
 
   /**
