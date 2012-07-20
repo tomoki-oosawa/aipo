@@ -21,6 +21,7 @@ package com.aimluck.eip.timeline;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -241,7 +242,9 @@ public class TimelineFormData extends ALAbstractFormData {
         if (ALEipUtils.getParameter(rundata, context, "tlClipImage") != null) {
           String str = ALEipUtils.getParameter(rundata, context, "tlClipImage");
           URL u = new URL(str);
-          InputStream is = u.openStream();
+          URLConnection uc = u.openConnection();
+          uc.setRequestProperty("Referer", str); // Refererを記述
+          InputStream is = uc.getInputStream();
           url.setThumbnail(FileuploadUtils.getBytesShrink(
             is,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
