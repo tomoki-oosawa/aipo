@@ -539,6 +539,9 @@
 	overflow:hidden;
 	text-overflow:ellipsis;
 }
+.dijitTooltipContainer ul li {
+	overflow:hidden;
+}
 
 
 /* Cabinet */
