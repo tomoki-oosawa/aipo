@@ -52,12 +52,14 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
   }
 
   public void execute() {
+    beginTransaction();
     delegate.setParameters(parameters);
     dataContext.performQuery(delegate);
   }
 
   @Override
   public List<M> fetchList() {
+    beginTransaction();
     delegate.setParameters(parameters);
     @SuppressWarnings("unchecked")
     List<org.apache.cayenne.DataRow> dataRows =
@@ -74,6 +76,7 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
 
   @SuppressWarnings("unchecked")
   public List<DataRow> fetchListAsDataRow() {
+    beginTransaction();
     delegate.setParameters(parameters);
     return dataContext.performQuery(delegate);
   }

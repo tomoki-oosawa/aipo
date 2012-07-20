@@ -32,6 +32,7 @@ import javax.servlet.ServletConfig;
 
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.DeleteQuery;
@@ -1369,6 +1370,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedGroupProfile.PAGE_PROPERTY, true);
     }
 
+    beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedGroupProfile> list = dataContext.performQuery(query);
     return list;
@@ -1387,6 +1389,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedRoleProfile.PAGE_PROPERTY, true);
     }
 
+    beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedRoleProfile> list = dataContext.performQuery(query);
     return list;
@@ -1412,6 +1415,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         query.addOrdering(JetspeedUserProfile.PAGE_PROPERTY, true);
       }
 
+      beginTransaction(dataContext);
       List<JetspeedUserProfile> list = dataContext.performQuery(query);
       ALEipManager.getInstance().setUserProfile(locator, list);
       return list;
@@ -1635,4 +1639,10 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     return query;
   }
 
+  protected void beginTransaction(DataContext dataContext) {
+    if (Transaction.getThreadTransaction() == null) {
+      Transaction tx = dataContext.getParentDataDomain().createTransaction();
+      Transaction.bindThreadTransaction(tx);
+    }
+  }
 }

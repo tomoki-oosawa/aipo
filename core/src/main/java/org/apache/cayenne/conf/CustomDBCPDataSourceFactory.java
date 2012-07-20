@@ -30,7 +30,7 @@ import org.apache.commons.dbcp.ThreadPoolingDataSource;
 import org.apache.commons.pool.ObjectPool;
 
 /**
- * 
+ *
  */
 public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
     implements DataSourceFactoryDelegate {
@@ -66,13 +66,16 @@ public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
           parentConfiguration.getResourceLocator(),
           location);
     }
+
+    properties.getProperties().put("cayenne.dbcp.defaultAutoCommit", false);
+
     CustomDBCPDataSourceBuilder builder =
       new CustomDBCPDataSourceBuilder(properties);
     return builder.createDataSource();
   }
 
   /**
-   * 
+   *
    */
   @Override
   public void tearDown() {

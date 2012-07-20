@@ -28,6 +28,7 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.ObjAttribute;
@@ -49,7 +50,9 @@ public abstract class AbstractQuery<M> implements Query<M> {
     this.dataContext = dataContext;
   }
 
+  @Override
   public M fetchSingle() {
+    beginTransaction();
     List<M> list = fetchList();
     if (list.size() > 0) {
       return list.get(0);
@@ -57,6 +60,7 @@ public abstract class AbstractQuery<M> implements Query<M> {
     return null;
   }
 
+  @Override
   public void deleteAll() {
     List<M> list = fetchList();
     if (list.size() > 0) {
@@ -64,6 +68,7 @@ public abstract class AbstractQuery<M> implements Query<M> {
     }
   }
 
+  @Override
   public DataContext getDataContext() {
     return dataContext;
   }
@@ -144,5 +149,12 @@ public abstract class AbstractQuery<M> implements Query<M> {
       // ignore
     }
     return null;
+  }
+
+  protected void beginTransaction() {
+    if (Transaction.getThreadTransaction() == null) {
+      Transaction tx = dataContext.getParentDataDomain().createTransaction();
+      Transaction.bindThreadTransaction(tx);
+    }
   }
 }
