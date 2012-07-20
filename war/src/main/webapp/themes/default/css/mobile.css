@@ -794,6 +794,19 @@ table tr.caption {
 .menubar.multi > div:first-child .caption {
 	border-top:none;
 }
+
+/***************************************************
+	radioBlock
+--------------------------------------------------*/
+.radioBlock {
+	margin:0 0 1.5em;
+}
+.radioBlock label {
+	display: block;
+}
+.radioBlock input[type="radio"] {
+	vertical-align: 0;
+}
 /***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
