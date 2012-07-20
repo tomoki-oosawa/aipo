@@ -82,8 +82,6 @@ public class UserSelectData extends
 
   private boolean adminFilter;
 
-  private ALStringField tab;
-
   /** 一覧データ */
   private List<Object> list;
 
@@ -94,7 +92,6 @@ public class UserSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    tab = new ALStringField(ALEipUtils.getTemp(rundata, context, "tab"));
     searchWord = new ALStringField();
     ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "userposition");
 
@@ -574,7 +571,4 @@ public class UserSelectData extends
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
   }
 
-  public ALStringField getCurrentTab() {
-    return tab;
-  }
 }

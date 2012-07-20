@@ -32,15 +32,10 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.NameKana))
 #ALtdcaption($l10n.USERLIST_EMAIL)
 #ALtditem($result.getStringCR($!result.Detail.Email))
-#if($result.CurrentTab != "corp")
-#ALtdcaption($l10n.USERLIST_TELEPHONE)
-#ALtditem($!result.Detail.Telephone)
-#else
 #ALtdcaption($l10n.USERLIST_OUT_TELEPHONE)
 #ALtditem($!result.Detail.OutTelephone)
 #ALtdcaption($l10n.USERLIST_IN_TELEPHONE)
 #ALtditem($!result.Detail.InTelephone)
-#end
 #ALtdcaption($l10n.USERLIST_CELLULAR_PHONE)
 #ALtditem($!result.Detail.CellularPhone)
 #ALtdcaption($l10n.USERLIST_CELLULAR_MAIL)
