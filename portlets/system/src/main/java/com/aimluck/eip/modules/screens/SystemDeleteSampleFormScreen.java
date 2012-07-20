@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * サンプルデータを処理するクラスです。 <br />
@@ -75,6 +76,8 @@ public class SystemDeleteSampleFormScreen extends ALVelocityScreen {
 
       context.put("alias", ALOrgUtilsService.getAlias());
       context.put("desa", getFlag(rundata));
+
+      ALLocalizationUtils.getl10n(null);
 
       // Set layout
       String layout_template =
