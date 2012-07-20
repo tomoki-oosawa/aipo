@@ -59,7 +59,7 @@ span[type="button"] {
 	padding-left:8px;
 	font-size:11px;
 	vertical-align:middle;
-	/*border-left:solid 1px #e0e0e0; **reserved**/
+	white-space:nowrap;
 }
 .hdNavi div.active {
 	background:#ddd;
