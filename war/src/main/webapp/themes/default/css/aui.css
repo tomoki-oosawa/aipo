@@ -950,6 +950,9 @@ table.activityTable tr.unread td {
 	background:none;
 	white-space:nowrap;
 	overflow:hidden;
+	width:auto;
+	text-overflow: ellipsis;
+	white-space:nowrap;
 }
 .auiWidget li a:hover {
 	color:#000;
