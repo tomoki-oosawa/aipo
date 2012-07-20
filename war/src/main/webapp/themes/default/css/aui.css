@@ -2154,6 +2154,13 @@ tr.disabled a {
 	white-space:nowrap;
 	font-size:0.9em;
 }
+*:first-child+html .filterTip {/* IE7 Hack */
+	white-space:normal;
+	overflow:hidden;
+}
+*:first-child+html .filterTip > span {/* IE7 Hack */
+	white-space:normal;
+}
 .filterInputField .filterTip {
 	padding-right:22px;
 }
