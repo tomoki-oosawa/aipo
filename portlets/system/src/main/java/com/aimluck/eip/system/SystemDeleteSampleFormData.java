@@ -662,7 +662,7 @@ public class SystemDeleteSampleFormData extends ALAbstractFormData {
     List<EipTTimeline> timelineList1 = timelineQuery1.fetchList();
 
     List<Integer> timelineIds = new ArrayList<Integer>();
-    if (timelineList1 != null) {
+    if (timelineList1 != null && timelineList1.size() > 0) {
       for (EipTTimeline tmp : timelineList1) {
         timelineIds.add(tmp.getTimelineId());
       }
