@@ -1573,6 +1573,11 @@ $link.get(0)
   <tbody>
 #end
 
+#macro(AUImultiTableWide)
+<table class="auiMultiTable wide">
+  <tbody>
+#end
+
 #macro(AUItablefooter)
   </tbody>
 </table>

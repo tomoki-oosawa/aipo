@@ -83,38 +83,44 @@
 </select>
 </form>
 </div>
-#AUIrowTableWide()
-<tr>
-#ALtdheadW25($l10n.EXTTIMECARD_NAME)
-#ALtdheadW25($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
-#ALtdheadThin($l10n.EXTTIMECARD_WORK_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_OVERTIME_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_OFF_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_LATE_COMING_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_EARLY_LEAVING_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_ABSENT_DAY)
-#ALtdheadThin($l10n.EXTTIMECARD_PAID_HOLIDAY)
-#ALtdheadThin($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY)
-#ALtdheadThin($l10n.EXTTIMECARD_OTHER)
-#ALtdheadThin($l10n.EXTTIMECARD_NOT_INPUT)
-</tr>
+<div>
 #foreach ($key in $user_results)
+#AUImultiTableWide()
+#if($velocityCount == 1)
+<tr class="caption">
+#else
+<tr class="caption pc_hide">
+#end
+#ALtdhead($l10n.EXTTIMECARD_NAME)
+#ALtdhead($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
+#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='doubleHeight'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='doubleHeight'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='doubleHeight'")
+#ALtdhead($l10n.EXTTIMECARD_LATE_COMING_DAY)
+#ALtdhead($l10n.EXTTIMECARD_EARLY_LEAVING_DAY)
+#ALtdhead($l10n.EXTTIMECARD_ABSENT_DAY)
+#ALtdhead($l10n.EXTTIMECARD_PAID_HOLIDAY)
+#ALtdhead($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY)
+#ALtdhead($l10n.EXTTIMECARD_OTHER)
+#ALtdhead($l10n.EXTTIMECARD_NOT_INPUT)
+</tr>
 <tr>
 #ALtdcellAtt("$!{key.UserName}" "nowrap='nowrap'")
-#ALtdcellAtt("$!{key.SystemName}" "nowrap='nowrap'")
-#ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.LateComingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.EarlyLeavingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.AbsentDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.PaidHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.CompensatoryHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.OtherDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center'")
-#ALtdcellAtt("$!{key.NoInput}" "nowrap='nowrap' align='center'")
+#ALtdcellAtt("$!{key.SystemName}" "nowrap='nowrap' class='wType'")
+#ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
+#ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
+#ALtdcellAtt("$!{key.OffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
+#ALtdcellAtt("$!{key.LateComingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.EarlyLeavingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.AbsentDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.PaidHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.CompensatoryHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.OtherDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
+#ALtdcellAtt("$!{key.NoInput}" "nowrap='nowrap' align='center' class='wDays'")
 </tr>
-#end
 #AUItablefooter()
+#end
+</div>
 
 #end
 #AUIcontentsAreaFooter()
