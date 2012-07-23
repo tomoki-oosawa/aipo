@@ -21,8 +21,9 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch","all"))">$l10n.SCHEDULE_ALL_GROUP</option>
-        #if($result.GroupList.size() > 0)
+        #if($result.GroupList.size() && $result.GroupList.size() > 0)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch", "all"))" #if ($!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
 		#end
 		#foreach( $record in $result.MyGroupList )
@@ -34,7 +35,7 @@
         #foreach( $record in $result.PostMap )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch",$!{record.GroupName.toString()}).addQueryData("target_user_id_at_serch", "all"))" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
         #end
-			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch", "all"))" #if ($result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>----------</option>
+			<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch", "all"))" #if ("$result.CurrentFilter" && "$!result.CurrentFilter" == "$!record.Name.toString()") selected="selected" #end>----------</option>
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>$l10n.SCHEDULE_FACILITY_LIST</option>
         #foreach($record in $!result.FacilitiyGroupList)
         	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch",$!record.Name).addQueryData("target_user_id_at_serch","all"))" #if ($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
