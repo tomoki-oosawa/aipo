@@ -87,7 +87,7 @@ $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
 #ALtditem($!result.Detail.Message)
 #ALtdcaption($l10n.NOTE_CREATE_TIME)
 #ALtditem("$!{result.Detail.CreateDate.Year}$l10n.NOTE_YEAR$!{result.Detail.CreateDate.Month}$l10n.NOTE_MONTH$!{result.Detail.CreateDate.Day}$l10n.NOTE_DAY $!{result.Detail.CreateDate.Hour}$l10n.NOTE_HOUR$!{result.Detail.CreateDate.Minute}$l10n.NOTE_MINUTE")
-#if($!result.Detail.ConfirmDate.toString() != "")
+#if($!{result.Detail.ConfirmDate})
 #ALtdcaption($l10n.NOTE_CHECK_TIME)
 #ALtditem("$!{result.Detail.ConfirmDate.Year}$l10n.NOTE_YEAR$!{result.Detail.ConfirmDate.Month}$l10n.NOTE_MONTH$!{result.Detail.ConfirmDate.Day}$l10n.NOTE_DAY $!{result.Detail.ConfirmDate.Hour}$l10n.NOTE_HOUR$!{result.Detail.ConfirmDate.Minute}$l10n.NOTE_MINUTE")
 #end
