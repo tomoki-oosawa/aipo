@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.orm.query;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,6 +34,8 @@ import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
+
+import com.aimluck.eip.orm.Database;
 
 public abstract class AbstractQuery<M> implements Query<M> {
 
@@ -152,7 +155,22 @@ public abstract class AbstractQuery<M> implements Query<M> {
   }
 
   protected void beginTransaction() {
-    if (Transaction.getThreadTransaction() == null) {
+    boolean autoCommit = true;
+    try {
+      autoCommit =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getAutoCommit();
+    } catch (SQLException ignore) {
+
+    }
+
+    if (!autoCommit
+      && !Database.isJdbcPostgreSQL()
+      && Transaction.getThreadTransaction() == null) {
       Transaction tx = dataContext.getParentDataDomain().createTransaction();
       Transaction.bindThreadTransaction(tx);
     }

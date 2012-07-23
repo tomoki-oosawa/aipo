@@ -67,8 +67,6 @@ public class CustomDBCPDataSourceFactory extends DBCPDataSourceFactory
           location);
     }
 
-    properties.getProperties().put("cayenne.dbcp.defaultAutoCommit", false);
-
     CustomDBCPDataSourceBuilder builder =
       new CustomDBCPDataSourceBuilder(properties);
     return builder.createDataSource();

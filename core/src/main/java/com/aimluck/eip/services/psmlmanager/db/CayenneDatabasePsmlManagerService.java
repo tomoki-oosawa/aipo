@@ -21,6 +21,7 @@ package com.aimluck.eip.services.psmlmanager.db;
 
 import java.io.File;
 import java.io.FileReader;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1640,7 +1641,22 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   }
 
   protected void beginTransaction(DataContext dataContext) {
-    if (Transaction.getThreadTransaction() == null) {
+    boolean autoCommit = true;
+    try {
+      autoCommit =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getAutoCommit();
+    } catch (SQLException ignore) {
+
+    }
+
+    if (!autoCommit
+      && !Database.isJdbcPostgreSQL()
+      && Transaction.getThreadTransaction() == null) {
       Transaction tx = dataContext.getParentDataDomain().createTransaction();
       Transaction.bindThreadTransaction(tx);
     }
