@@ -45,7 +45,9 @@ $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 <tr>
 #ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'UserListListScreen')")
 #ALtdhead($l10n.USERLIST_POST_NAME)
-#ALtdheadAtt($l10n.USERLIST_POSITION 'class="mb_hide"')
+#ALtdheadheaderAtt('class="w15 mb_hid"')
+$l10n.USERLIST_POSITION
+#ALtdheadfooter()
 #ALtdheadAtt($l10n.USERLIST_EMAIL 'class="w25 mb_hide"')
 #ALtdheadAtt($l10n.USERLIST_OUT_TELEPHONE 'class="mb_hide"')
 #ALtdheadAtt($l10n.USERLIST_IN_TELEPHONE 'class="mb_hide"')
@@ -67,7 +69,9 @@ $post
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt($result.getStringCR($!record.PositionName) "class='mb_hide' nowrap='nowrap'")
+#ALtdcellheader()
+<div>$result.getStringCR($!record.PositionName)</div>
+#ALtdcellfooter()
 #ALtdcellAtt("$!record.Email" "class='mb_hide'")
 #ALtdcellAtt("$!record.OutTelephone" "class='mb_hide' nowrap='nowrap'")
 #ALtdcellAtt("$!record.InTelephone" "class='mb_hide' nowrap='nowrap'")
