@@ -149,55 +149,43 @@ ${record.FacilityName}<br/>
 
 #ALbuttonheader()
 #if( !$!result.isActivity() && ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
-    <div align="left" style="padding:0px 0px 2px 0px">
+    <div align="left" style="padding:0px 0px 2px 0px" class="radioBlock">
     #if($viewDateEnable == "true" && $!ignore_viewdate == "false")
         #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
         <h3> $l10n.SCHEDULE_DELETE_CASE</h3>
         #set($prestr = "$!{result.Detail.User.AliasName} の")
 
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDateFormat}</label><br/>
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
-            <input name="del_flag" type="radio" value="1"  id="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)">$l10n.SCHEDULE_DELETE_ONLY_THE_SCHEDULE_OF_ENTRY_USER $!{result.ViewDateFormat}</label><br/>
-            <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"><input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>${prestr} $!{result.ViewDateFormat}</label><br/>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
+            <label for="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"><input name="del_flag" type="radio" value="1"  id="$!{portlet.ID}del_flag_1_id" onclick="aipo.schedule.delFlag1(this.form)"/>$l10n.SCHEDULE_DELETE_ONLY_THE_SCHEDULE_OF_ENTRY_USER $!{result.ViewDateFormat}</label><br/>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"><input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
             #elseif(($hasMember || $!{result.Detail.Type}=="F") && ! $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
-            <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label><br/>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"><input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(! $hasMember && $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">${prestr} $!{result.ViewDateFormat}</label><br/>
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"><input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>${prestr} $!{result.ViewDateFormat}</label><br/>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"/>${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
             #else
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"> ${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #end
         #else
             #if($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()})
                 #if($!{result.Detail.isRepeat()})
-                <input name="del_flag" type="radio" value="3" id="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)">$l10n.SCHEDULE_DELETE_ONLY_MY_SCHEDULE $!{result.ViewDateFormat}</label><br/>
-                <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
+                <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"><input name="del_flag" type="radio" value="3" id="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"/>$l10n.SCHEDULE_DELETE_ONLY_MY_SCHEDULE $!{result.ViewDateFormat}</label><br/>
+                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
                 <input type="hidden" name="del_member_flag" value="1"/>
                 <input type="hidden" name="del_range_flag" value="0"/>
                 #else
-                <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
+                <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE</label>
                 <input type="hidden" name="del_member_flag" value="1"/>
                 <input type="hidden" name="del_range_flag" value="0"/>
                 #end
@@ -207,23 +195,19 @@ ${record.FacilityName}<br/>
        #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
         <h3>削除する場合の条件</h3>
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"><input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="0"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(($hasMember || $!{result.Detail.Type}=="F") && ! $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"><input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="0"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #elseif(! $hasMember && $!{result.Detail.isRepeat()})
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #else
-            <input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)">$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #end
