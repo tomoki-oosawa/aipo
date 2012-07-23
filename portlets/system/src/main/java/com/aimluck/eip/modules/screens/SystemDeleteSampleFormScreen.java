@@ -77,7 +77,7 @@ public class SystemDeleteSampleFormScreen extends ALVelocityScreen {
       context.put("alias", ALOrgUtilsService.getAlias());
       context.put("desa", getFlag(rundata));
 
-      ALLocalizationUtils.getl10n(null);
+      context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
 
       // Set layout
       String layout_template =
