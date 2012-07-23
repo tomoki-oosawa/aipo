@@ -33,6 +33,7 @@ import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 
 public abstract class AbstractQuery<M> implements Query<M> {
 
@@ -152,7 +153,9 @@ public abstract class AbstractQuery<M> implements Query<M> {
   }
 
   protected void beginTransaction() {
-    if (Transaction.getThreadTransaction() == null) {
+    boolean res =
+      JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
+    if (res && Transaction.getThreadTransaction() == null) {
       Transaction tx = dataContext.getParentDataDomain().createTransaction();
       Transaction.bindThreadTransaction(tx);
     }

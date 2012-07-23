@@ -58,6 +58,7 @@ import org.apache.jetspeed.services.psmlmanager.PsmlImporter;
 import org.apache.jetspeed.services.psmlmanager.PsmlManagerService;
 import org.apache.jetspeed.services.psmlmanager.db.DBUtils;
 import org.apache.jetspeed.services.psmlmanager.db.DatabasePsmlManager;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -1640,7 +1641,9 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   }
 
   protected void beginTransaction(DataContext dataContext) {
-    if (Transaction.getThreadTransaction() == null) {
+    boolean res =
+      JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
+    if (res && Transaction.getThreadTransaction() == null) {
       Transaction tx = dataContext.getParentDataDomain().createTransaction();
       Transaction.bindThreadTransaction(tx);
     }
