@@ -660,7 +660,7 @@ dojo.addOnLoad(function () {
        var mp = new aipo.widget.DropdownMemberFacilitypicker(params , mpHTML);
        ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker = mp;
 
-       var addtxt=dojo.query(".addUser",dojo.byId("memberpicker-"+'$!portlet.ID'));
+       var addtxt=dojo.query("#adduser-"+portletId);
        var gselect = document.getElementById("groupselect-"+'$!portlet.ID');
 		if(gselect.value=="pickup"){
 			addtxt.removeClass("hide");
