@@ -2151,11 +2151,30 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
       Database.commit();
 
-      TimelineUtils.deleteTimelineActivity(
-        rundata,
-        context,
-        "Schedule",
-        schedule.getScheduleId().toString());
+      if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL
+        && del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
+        TimelineUtils.deleteTimelineActivity(
+          rundata,
+          context,
+          "Schedule",
+          schedule.getScheduleId().toString());
+      } else if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ONE) {
+        SelectQuery<EipTScheduleMap> query2 =
+          Database.query(EipTScheduleMap.class);
+        Expression exp11 =
+          ExpressionFactory.matchExp(
+            EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+            Integer.valueOf(rundata.getParameters().getString("entityid")));
+        query2.andQualifier(exp11);
+        List<EipTScheduleMap> scheduleMap = query2.fetchList();
+        if (scheduleMap.size() == 0) {
+          TimelineUtils.deleteTimelineActivity(
+            rundata,
+            context,
+            "Schedule",
+            schedule.getScheduleId().toString());
+        }
+      }
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

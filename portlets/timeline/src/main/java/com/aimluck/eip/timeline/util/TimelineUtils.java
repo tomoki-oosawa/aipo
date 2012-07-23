@@ -177,7 +177,17 @@ public class TimelineUtils {
       Expression exp03 =
         ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, topicid);
 
-      if (isSuperUser) {
+      // scheduleの時
+      String del_member_value = null;
+      if (rundata.getParameters().containsKey("del_member_flag")) {
+        del_member_value = rundata.getParameters().getString("del_member_flag");
+      }
+
+      if (del_member_value != null) {
+        if (del_member_value.equals("0") || del_member_value.equals("1")) {
+          query.andQualifier((exp02).orExp(exp03));
+        }
+      } else if (isSuperUser) {
         query.andQualifier((exp02).orExp(exp03));
       } else {
         query.andQualifier((exp01.andExp(exp02)).orExp(exp03));
@@ -194,7 +204,12 @@ public class TimelineUtils {
       int size = topics.size();
       for (int i = 0; i < size; i++) {
         EipTTimeline topic = topics.get(i);
-        if (topic.getOwnerId().intValue() == userid || isSuperUser) {
+        if (del_member_value != null) {
+          if (del_member_value.equals("0") || del_member_value.equals("1")) {
+            isdelete = true;
+            break;
+          }
+        } else if (topic.getOwnerId().intValue() == userid || isSuperUser) {
           isdelete = true;
           break;
         }
