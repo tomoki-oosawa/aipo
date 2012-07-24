@@ -189,6 +189,11 @@ public class CabinetFileResultData implements ALData {
     return ALEipUtils.getMessageList(note.getValue());
   }
 
+  public String getNoteHtml() {
+    return ALCommonUtils.replaceToAutoCR(ALEipUtils.getMessageList(note
+      .getValue()));
+  }
+
   /**
    * @param string
    */
@@ -249,6 +254,10 @@ public class CabinetFileResultData implements ALData {
 
   public String getPosition() {
     return position;
+  }
+
+  public String getPositionHtml() {
+    return ALCommonUtils.replaceToAutoCR(position.toString());
   }
 
   public void setPosition(String str) {

@@ -22,6 +22,7 @@ package com.aimluck.eip.cabinet;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -68,6 +69,7 @@ public class CabinetFolderResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     folder_id = new ALNumberField();
     folder_name = new ALStringField();
@@ -94,6 +96,10 @@ public class CabinetFolderResultData implements ALData {
     return folder_name;
   }
 
+  public String getFolderNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(folder_name.toString());
+  }
+
   /**
    * @param i
    */
@@ -112,6 +118,10 @@ public class CabinetFolderResultData implements ALData {
     return position;
   }
 
+  public String getPositionHtml() {
+    return ALCommonUtils.replaceToAutoCR(position.toString());
+  }
+
   public void setPosition(String str) {
     position = str;
   }
@@ -121,6 +131,11 @@ public class CabinetFolderResultData implements ALData {
    */
   public String getNote() {
     return ALEipUtils.getMessageList(note.getValue());
+  }
+
+  public String getNoteHtml() {
+    return ALCommonUtils.replaceToAutoCR(ALEipUtils.getMessageList(
+      note.getValue()).toString());
   }
 
   /**

@@ -27,15 +27,15 @@
 #if($result.CurrentPage)<input type="hidden" name="start" VALUE="$result.CurrentPage">#end
 #ALtableheaderWide()
 #ALtdcaption('タイトル')
-#ALtditem($!result.Detail.FileTitle)
+#ALtditem($!result.Detail.FileTitleHtml)
 #ALtdcaption('ファイル名')
 #ALtditemheader()
 <a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${result.Detail.FileId}).addPathInfo("f",${result.Detail.URLEncodedFileName})">$!result.Detail.WbrFileName</a>
 #ALtditemfooter()
 #ALtdcaption('位置')
-#ALtditem("$!result.Detail.Position")
+#ALtditem("$!result.Detail.PositionHtml")
 #ALtdcaption('メモ')
-#ALtditem($!result.Detail.Note)
+#ALtditem($!result.Detail.NoteHtml)
 #ALtdcaption('ダウンロード数')
 #ALtditem("$!{result.Detail.Counter} 回")
 #ALtdcaption('ファイル容量')
