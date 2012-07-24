@@ -842,7 +842,7 @@ public class WorkflowUtils {
     String[] temp =
       {
         ALLocalizationUtils.getl10n("WORKFLOW_HIGH"),
-        ALLocalizationUtils.getl10n("WORKFLOW_FEW_LOW"),
+        ALLocalizationUtils.getl10n("WORKFLOW_FEW_HIGH"),
         ALLocalizationUtils.getl10n("WORKFLOW_USUALLY"),
         ALLocalizationUtils.getl10n("WORKFLOW_FEW_LOW"),
         ALLocalizationUtils.getl10n("WORKFLOW_LOW") };
