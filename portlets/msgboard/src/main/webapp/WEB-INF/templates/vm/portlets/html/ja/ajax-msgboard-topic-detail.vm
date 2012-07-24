@@ -32,7 +32,7 @@
 	#end
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
 	<caption>
-	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryName</span>$!{result.ParentTopic.TopicName}
+	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryNameHtml</span>$!{result.ParentTopic.TopicNameHtml}
 	</caption>
 		<tbody>
 			<tr>
