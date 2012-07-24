@@ -27,6 +27,8 @@ import java.util.Map;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 
+import com.aimluck.eip.orm.Database;
+
 public class SQLTemplate<M> extends AbstractQuery<M> {
 
   protected org.apache.cayenne.query.SQLTemplate delegate;
@@ -55,6 +57,7 @@ public class SQLTemplate<M> extends AbstractQuery<M> {
     beginTransaction();
     delegate.setParameters(parameters);
     dataContext.performQuery(delegate);
+    Database.commit(dataContext);
   }
 
   @Override
