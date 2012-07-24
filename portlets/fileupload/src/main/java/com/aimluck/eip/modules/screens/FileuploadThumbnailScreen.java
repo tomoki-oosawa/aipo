@@ -48,6 +48,8 @@ public class FileuploadThumbnailScreen extends RawScreen {
   /** サムネイル画像 */
   private byte[] file = null;
 
+  private Date lastModified = null;
+
   /**
    * 
    * @param rundata
@@ -84,6 +86,14 @@ public class FileuploadThumbnailScreen extends RawScreen {
     this.file = file;
   }
 
+  protected void setLastModified(Date date) {
+    this.lastModified = date;
+  }
+
+  protected Date getLastModified() {
+    return this.lastModified;
+  }
+
   /**
    * 
    * @param rundata
@@ -104,6 +114,9 @@ public class FileuploadThumbnailScreen extends RawScreen {
       Date expired = calendar.getTime();
       response.setDateHeader("Expires ", expired.getTime());
 
+      if (this.lastModified != null) {
+        response.setDateHeader("Last-Modified", this.lastModified.getTime());
+      }
       // ファイル内容の出力
       out = response.getOutputStream();
 

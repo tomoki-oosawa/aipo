@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.Date;
+
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -60,6 +62,10 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
 
       if (photo == null) {
         return;
+      }
+      Date date = user.getPhotoModified();
+      if (date != null) {
+        super.setLastModified(date);
       }
 
       super.setFile(photo);

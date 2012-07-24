@@ -157,7 +157,7 @@
 	<div id="commentField_$!{portlet.ID}_$!{record.TimelineId}" class="commentField" style="display:none">
 		<div id="avatar_$!{record.TimelineId}" class="avatar mr10">
 			#if(${result.hasMyPhoto()})
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}))" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}).addQueryData("t", ${result.MyUser.PhotoModified}))" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#else
 				<img src="images/common/avatar_default3.png" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#end
@@ -285,7 +285,7 @@
 	<div id="commentField_$!{portlet.ID}_$!{record2.TimelineId}" class="commentField" style="display:none">
 		<div id="avatar_$!{record2.TimelineId}" class="avatar mr10">
 			#if(${result.hasMyPhoto()})
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}))" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.UserId}).addQueryData("t", ${result.MyUser.PhotoModified}))" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#else
 				<img src="images/common/avatar_default3.png" alt="$!{result.MyUser.AliasName}" width="32" height="32" />
 			#end
