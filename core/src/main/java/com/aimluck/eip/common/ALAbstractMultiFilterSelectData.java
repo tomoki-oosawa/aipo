@@ -91,7 +91,10 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
     String[] vals = val.split(",");
     current_filterMap.clear();
     for (int i = 0, n = Math.min(keys.length, vals.length); i < n; i++) {
-      if (keys[i] != null && keys[i] != "" && vals[i] != null && vals[i] != "") {
+      if (keys[i] != null
+        && !"".equals(keys[i])
+        && vals[i] != null
+        && !"".equals(vals[i])) {
         List<String> childs =
           new ArrayList<String>(Arrays.asList(vals[i].trim().split(" ")));
         if (current_filterMap.containsKey(keys[i])) {

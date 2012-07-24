@@ -52,8 +52,8 @@ public class WorkflowCategoryDetailResultData extends
   protected ALStringField route;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -172,7 +172,7 @@ public class WorkflowCategoryDetailResultData extends
 
     boolean bool;
 
-    if (route.getValue() == null || route.getValue() == "") {
+    if (route.getValue() == null || "".equals(route.getValue())) {
       bool = false;
     } else {
       bool = true;

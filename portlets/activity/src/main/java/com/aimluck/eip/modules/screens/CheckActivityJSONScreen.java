@@ -75,7 +75,7 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
       Long max = null;
       try {
         String maxStr = rundata.getParameters().getString("max");
-        if (maxStr != null && maxStr != "") {
+        if (maxStr != null && !"".equals(maxStr)) {
           max = Long.valueOf(maxStr);
         }
       } catch (Throwable t) {
