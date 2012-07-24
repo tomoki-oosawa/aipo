@@ -27,7 +27,7 @@ CREATE TABLE `activity` (
   `module_id` int(11) NOT NULL,
   `portlet_params` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   `priority` double DEFAULT NULL,
-  `title` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

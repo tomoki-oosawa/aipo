@@ -11,7 +11,7 @@
 		<db-attribute name="MODULE_ID" type="INTEGER"/>
 		<db-attribute name="PORTLET_PARAMS" type="VARCHAR" length="99"/>
 		<db-attribute name="PRIORITY" type="FLOAT"/>
-		<db-attribute name="TITLE" type="VARCHAR" isMandatory="true" length="99"/>
+		<db-attribute name="TITLE" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="activity_map">

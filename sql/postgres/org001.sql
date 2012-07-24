@@ -1152,7 +1152,7 @@ CREATE TABLE activity (
     MODULE_ID INTEGER NOT NULL,
     PORTLET_PARAMS varchar(99) NULL,
     PRIORITY float NULL,
-    TITLE varchar(99) NOT NULL,
+    TITLE varchar(255) NOT NULL,
     UPDATE_DATE timestamp with time zone NULL,
     PRIMARY KEY (ID)
 )
