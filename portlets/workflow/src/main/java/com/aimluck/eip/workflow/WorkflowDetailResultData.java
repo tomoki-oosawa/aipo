@@ -60,8 +60,8 @@ public class WorkflowDetailResultData extends WorkflowResultData {
   private ALStringField route_name;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -182,7 +182,7 @@ public class WorkflowDetailResultData extends WorkflowResultData {
   public boolean getHasRootName() {
     boolean bool;
 
-    if (route_name.getValue() == null || route_name.getValue() == "") {
+    if (route_name.getValue() == null || "".equals(route_name.getValue())) {
       bool = false;
     } else {
       bool = true;
