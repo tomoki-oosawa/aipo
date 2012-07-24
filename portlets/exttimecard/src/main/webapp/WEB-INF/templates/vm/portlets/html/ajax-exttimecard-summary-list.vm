@@ -105,8 +105,8 @@
 #ALtdhead($l10n.EXTTIMECARD_NOT_INPUT)
 </tr>
 <tr>
-#ALtdcellAtt("$!{key.UserName}" "nowrap='nowrap'")
-#ALtdcellAtt("$!{key.SystemName}" "nowrap='nowrap' class='wType'")
+#ALtdcellAtt("$!{key.UserNameHtml}" "")
+#ALtdcellAtt("$!{key.SystemNameHtml}" "class='wType'")
 #ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")

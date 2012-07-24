@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * 一日分のタイムカード(出勤・退勤の履歴)を保持する。<br>
@@ -90,9 +91,10 @@ public class ExtTimecardSummaryResultData implements ALData {
   private String systemName = null;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     work_day = new ALNumberField(0);
     work_hour = new ALNumberField(0);
@@ -388,12 +390,20 @@ public class ExtTimecardSummaryResultData implements ALData {
     return user_name;
   }
 
+  public String getUserNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(user_name);
+  }
+
   public void setSystemName(String systemName) {
     this.systemName = systemName;
   }
 
   public String getSystemName() {
     return systemName;
+  }
+
+  public String getSystemNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(systemName);
   }
 
   /**
