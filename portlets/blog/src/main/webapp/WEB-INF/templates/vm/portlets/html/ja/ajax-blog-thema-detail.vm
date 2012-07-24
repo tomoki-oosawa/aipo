@@ -26,7 +26,7 @@
 #ALajaxdetailformheader("$l10n.BLOG_THEME")
 #ALtableheaderWide()
 #ALtdcaption($l10n.BLOG_THEME_NAME)
-#ALtditem($!result.Detail.ThemaName)
+#ALtditem($!result.Detail.ThemaNameHtml)
 #ALtdcaption($l10n.BLOG_MEMO)
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.BLOG_CREATE_USER_NAME)

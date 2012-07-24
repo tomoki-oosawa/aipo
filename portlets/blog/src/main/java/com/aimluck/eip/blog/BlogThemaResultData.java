@@ -25,6 +25,7 @@ import java.util.List;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -64,6 +65,7 @@ public class BlogThemaResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     thema_id = new ALNumberField();
     thema_name = new ALStringField();
@@ -82,6 +84,10 @@ public class BlogThemaResultData implements ALData {
    */
   public ALStringField getThemaName() {
     return thema_name;
+  }
+
+  public String getThemaNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(thema_name.toString());
   }
 
   /**

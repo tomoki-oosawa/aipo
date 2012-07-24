@@ -31,8 +31,8 @@
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
 <table class="listTable wide">
 <caption>
-<span class="floatRight" style="font-weight:normal; color:#434343;">$!{result.Detail.ThemaName}</span>
-$!{result.Detail.Title}
+<span class="floatRight" style="font-weight:normal; color:#434343;">$!{result.Detail.ThemaNameHtml}</span>
+$!{result.Detail.TitleHtml}
 </cation>
 <tr>
 <td>

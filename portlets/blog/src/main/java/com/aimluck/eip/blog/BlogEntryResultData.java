@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -124,6 +125,10 @@ public class BlogEntryResultData implements ALData {
     return thema_name.toString();
   }
 
+  public String getThemaNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(thema_name.toString());
+  }
+
   /**
    * @return
    */
@@ -136,6 +141,10 @@ public class BlogEntryResultData implements ALData {
    */
   public String getTitle() {
     return title.toString();
+  }
+
+  public String getTitleHtml() {
+    return ALCommonUtils.replaceToAutoCR(title.toString());
   }
 
   /**
