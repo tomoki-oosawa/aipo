@@ -26,7 +26,7 @@
 #ALajaxdetailformheader($l10n.TODO_TODO_CATEGORY)
 #ALtableheaderWide()
 #ALtdcaption($l10n.TODO_CATEGORY_NAME)
-#ALtditem($!result.Detail.CategoryName)
+#ALtditem($!result.Detail.CategoryNameHtml)
 
 #ALtdcaption($l10n.TODO_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)

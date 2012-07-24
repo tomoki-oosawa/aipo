@@ -80,6 +80,10 @@ public class ToDoCategoryResultData implements ALData {
     return category_name.toString();
   }
 
+  public String getCategoryNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+  }
+
   /**
    * @return
    */
