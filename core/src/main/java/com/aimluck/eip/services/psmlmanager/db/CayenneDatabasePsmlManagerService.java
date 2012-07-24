@@ -1643,9 +1643,14 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   protected void beginTransaction(DataContext dataContext) {
     boolean res =
       JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
-    if (res && Transaction.getThreadTransaction() == null) {
-      Transaction tx = dataContext.getParentDataDomain().createTransaction();
-      Transaction.bindThreadTransaction(tx);
+    if (!res) {
+      return;
+    }
+    Transaction tx = Transaction.getThreadTransaction();
+    if (tx == null || Transaction.STATUS_ROLLEDBACK == tx.getStatus()) {
+      Transaction.bindThreadTransaction(dataContext
+        .getParentDataDomain()
+        .createTransaction());
     }
   }
 }
