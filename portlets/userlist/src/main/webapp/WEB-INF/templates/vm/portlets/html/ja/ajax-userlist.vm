@@ -28,6 +28,7 @@
 <div class="floatLeft"><div class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;">&nbsp;</div></div>
 </form>
 #AUISummaryDivfooter()
+#if($result.List)
 #if($result.List.size() == 0)
 $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 #else
@@ -46,5 +47,6 @@ $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 </tr>
 #end
 #ALtablefooter()
+#end
 #end
 
