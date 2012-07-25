@@ -696,7 +696,7 @@
 
 dojo.addOnLoad(function () {
   initCalendar['$!{portlet.ID}'](false);
-  #if($!top_form == 'simple')
+  #if($!top_form && $!top_form == 'simple')
     aipo.calendar.changeDisypayPeriod('$!{dayList}', '$!portlet.ID');
   #else
     aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');
