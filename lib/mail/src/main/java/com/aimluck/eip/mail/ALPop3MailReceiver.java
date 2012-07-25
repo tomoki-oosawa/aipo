@@ -260,26 +260,30 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
             new ALPop3Message((POP3Message) tmpMessage, i + 1);
           if (tmpMessage.getSize() <= ALMailUtils.getMaxMailSize()) {
             // 受信可能なメール容量以下であれば，登録する．
-            receiveFolder.saveMail(alPop3MailMessage, orgId);
-            if (rcontext.getDelete()) {
-              // 受信したメールを POP3 サーバ上から削除する
-              tmpMessage.setFlag(Flags.Flag.DELETED, rcontext.getDelete());
-            } else {
-              if (rcontext.getEnableSavingDays()) {
-                // 指定日数を過ぎたメールを削除する（ヘッダ Received の日付で判断する）．
-                Date receivedDate = ALMailUtils.getReceivedDate(tmpMessage);
-                if (receivedDate != null && receivedDate.before(limitDate)) {
-                  // 受信したメールを POP3 サーバ上から削除する
-                  tmpMessage.setFlag(Flags.Flag.DELETED, true);
+            if (receiveFolder.saveMail(alPop3MailMessage, orgId)) {
+              if (rcontext.getDelete()) {
+                // 受信したメールを POP3 サーバ上から削除する
+                tmpMessage.setFlag(Flags.Flag.DELETED, rcontext.getDelete());
+              } else {
+                if (rcontext.getEnableSavingDays()) {
+                  // 指定日数を過ぎたメールを削除する（ヘッダ Received の日付で判断する）．
+                  Date receivedDate = ALMailUtils.getReceivedDate(tmpMessage);
+                  if (receivedDate != null && receivedDate.before(limitDate)) {
+                    // 受信したメールを POP3 サーバ上から削除する
+                    tmpMessage.setFlag(Flags.Flag.DELETED, true);
+                  }
                 }
               }
+              receivedUIDL.add(nowReceivedUID);
+              receivedMailNum++;
             }
           } else {
-            receiveFolder.saveDefectiveMail(alPop3MailMessage, orgId);
+            if (receiveFolder.saveDefectiveMail(alPop3MailMessage, orgId)) {
+              receivedUIDL.add(nowReceivedUID);
+              receivedMailNum++;
+            }
             overMailMaxSize = true;
           }
-          receivedUIDL.add(nowReceivedUID);
-          receivedMailNum++;
 
           ALStaticObject.getInstance().updateAccountStat(
             rcontext.getAccountId(),
