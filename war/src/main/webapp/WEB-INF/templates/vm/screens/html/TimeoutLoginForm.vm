@@ -264,7 +264,7 @@ $!data.getMessage().toString()
 <input name="redirect" type="hidden" value="$!data.getUser().getTemp("redirect")" />
 <div class="field clearfix">
 <span id="login_username_field">
-<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('member_username').focus();">ユーザー名</span>
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder=$l10n.ACCOUNT_USER_ACCOUNT /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
@@ -283,8 +283,7 @@ $!data.getMessage().toString()
 #end
 </div>
 <div class="field">
-<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('password').focus();">パスワード</span>
-</div>
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" placeholder=$l10n.ACCOUNT_PASS /><span class="guide" style="display:none;"  onclick="this.style.display='none';document.getElementById('password').focus();">$l10n.ACCOUNT_PASS</span></div>
 <div class="clearfix">
 <div class="floatLeft">
 #if($enable_userlist)
@@ -300,6 +299,28 @@ $!data.getMessage().toString()
 </div></div>
 <!-- /auiLoginBox -->
 <script language="JavaScript" type="text/JavaScript">
+	<!--
+init();
+
+if(!('placeholder' in document.createElement('input'))){
+	//以下placeholder機能が存在しない場合
+
+	var onblur=function(){
+      if(this.value==''){
+      	this.nextSibling.style.display='block'
+      }
+	};
+
+	dojo.query("input[placeholder],textarea[placeholder]")
+	.connect("onfocus",function(){
+		this.nextSibling.style.display='none';
+	}).connect("onblur",onblur)
+	.forEach(function(obj){
+		onblur.apply(obj);
+	});
+}
+//-->
+
 //<![CDATA[
 
 init();
