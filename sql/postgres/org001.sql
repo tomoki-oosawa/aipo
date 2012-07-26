@@ -1703,10 +1703,10 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(171,'timecard_timecard_self','タ�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(172,'timecard_timecard_other','タイムカード（他人のタイムカード）操作',45);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(181,'cabinet_file','共有フォルダ（ファイル）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(182,'cabinet_folder','共有フォルダ（フォルダ）操作',30);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(191,'manhour_summary_self','プロジェクト管理（自分の工数）操作',1);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(192,'manhour_summary_other','プロジェクト管理（他ユーザーの工数）操作',1);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(193,'manhour_common_category','プロジェクト管理（自分の共有カテゴリ）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(194,'manhour_common_category_other','プロジェクト管理（他ユーザーの共有カテゴリ）操作',27);
+-- INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(191,'manhour_summary_self','プロジェクト管理（自分の工数）操作',1);
+-- INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(192,'manhour_summary_other','プロジェクト管理（他ユーザーの工数）操作',1);
+-- INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(193,'manhour_common_category','プロジェクト管理（自分の共有カテゴリ）操作',31);
+-- INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(194,'manhour_common_category_other','プロジェクト管理（他ユーザーの共有カテゴリ）操作',27);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','アプリ配置',29);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(211,'report_self','報告書（自分の報告書）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(212,'report_other','報告書（他ユーザーの報告書）操作',3);
@@ -1756,10 +1756,10 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(23,'共有フォルダ（ファイル）管理
 INSERT INTO EIP_T_ACL_ROLE VALUES(24,'共有フォルダ（フォルダ）管理者',182,30,'＊編集、削除は詳細表示の権限を持っていないと使用できません');
 
 -- manhour
-INSERT INTO EIP_T_ACL_ROLE VALUES(25,'プロジェクト管理（自分の工数）管理者',191,1,NULL);
-INSERT INTO EIP_T_ACL_ROLE VALUES(26,'プロジェクト管理（他ユーザーの工数）管理者',192,1,NULL);
-INSERT INTO EIP_T_ACL_ROLE VALUES(27,'プロジェクト管理（自分の共有カテゴリ）管理者',193,31,NULL);
-INSERT INTO EIP_T_ACL_ROLE VALUES(28,'プロジェクト管理（他ユーザーの共有カテゴリ）管理者',194,3,NULL);
+-- INSERT INTO EIP_T_ACL_ROLE VALUES(25,'プロジェクト管理（自分の工数）管理者',191,1,NULL);
+-- INSERT INTO EIP_T_ACL_ROLE VALUES(26,'プロジェクト管理（他ユーザーの工数）管理者',192,1,NULL);
+-- INSERT INTO EIP_T_ACL_ROLE VALUES(27,'プロジェクト管理（自分の共有カテゴリ）管理者',193,31,NULL);
+-- INSERT INTO EIP_T_ACL_ROLE VALUES(28,'プロジェクト管理（他ユーザーの共有カテゴリ）管理者',194,3,NULL);
 
 --portlet
 INSERT INTO EIP_T_ACL_ROLE VALUES(29,'アプリ配置管理者',201,29,NULL);
