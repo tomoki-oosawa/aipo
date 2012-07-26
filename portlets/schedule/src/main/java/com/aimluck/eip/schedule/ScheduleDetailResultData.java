@@ -24,6 +24,7 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -113,6 +114,10 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   @Override
   public ALStringField getPlace() {
     return place;
+  }
+
+  public String getPlaceHtml() {
+    return ALCommonUtils.replaceToAutoCR(place.toString());
   }
 
   /**

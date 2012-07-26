@@ -45,7 +45,7 @@
 #if(!($!result.isActivity() || $!ignore_viewdate == "true"))
 #ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditemheader()
-$!{result.Detail.User.AliasName}
+$!{result.Detail.User.AliasNameHtml}
 #ALtditemfooter()
 #end
 #ALtdcaption($l10n.SCHEDULE_DATE)
@@ -75,7 +75,7 @@ $!{result.Detail.Date2}
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
-#ALtditem($!{result.Detail.Name})
+#ALtditem($!{result.Detail.WbrName})
 
 #* 共有カテゴリ連携（ここから）  *#
 #if($!result.isDisplayManHour())
@@ -85,7 +85,7 @@ $!{result.Detail.Date2}
 #* 共有カテゴリ連携（ここまで）  *#
 
 #ALtdcaption($l10n.SCHEDULE_PLACE)
-#ALtditem($!{result.Detail.Place})
+#ALtditem($!{result.Detail.PlaceHtml})
 #ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
 #ALtdcaption($l10n.SCHEDULE_PUBLIC)
@@ -137,7 +137,7 @@ $l10n.SCHEDULE_MESSAGE_OF_DONOT_SEND_EMAIL_FOR_USER
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 #foreach($record in $!result.FacilityList)
-${record.FacilityName}<br/>
+${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
@@ -153,7 +153,7 @@ ${record.FacilityName}<br/>
     #if($viewDateEnable == "true" && $!ignore_viewdate == "false")
         #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
         <h3> $l10n.SCHEDULE_DELETE_CASE</h3>
-        #set($prestr = "$!{result.Detail.User.AliasName} の")
+        #set($prestr = "$!{result.Detail.User.AliasNameHtml} の")
 
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
             <label for="$!{portlet.ID}del_flag_3_id" onclick="aipo.schedule.delFlag3(this.form)"><input name="del_flag" type="radio" value="3"  id="$!{portlet.ID}del_flag_3_id" checked="checked" onclick="aipo.schedule.delFlag3(this.form)"/>${prestr} $!{result.ViewDateFormat}</label><br/>

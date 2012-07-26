@@ -21,6 +21,7 @@ package com.aimluck.eip.common;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
@@ -85,6 +86,10 @@ public class ALEipUser implements ALData {
    */
   public ALStringField getAliasName() {
     return alias_name;
+  }
+
+  public String getAliasNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(alias_name.toString());
   }
 
   /**

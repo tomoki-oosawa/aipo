@@ -32,6 +32,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -101,6 +102,10 @@ public class FacilityResultData implements ALData {
    */
   public ALStringField getFacilityName() {
     return facility_name;
+  }
+
+  public String getFacilityNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(facility_name.toString());
   }
 
   /**
