@@ -41,6 +41,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.security.JetspeedSecurityCache;
 import org.apache.jetspeed.services.security.LoginException;
 import org.apache.jetspeed.util.Base64;
 import org.apache.jetspeed.util.ServiceUtil;
@@ -110,6 +111,10 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     JetspeedUser loginuser = (JetspeedUser) data.getUser();
+
+    if (isLogin(loginuser)) {
+      JetspeedSecurityCache.load(loginuser.getUserName());
+    }
 
     if (ALSessionUtils.isImageRequest(data)) {
       if (isLogin(loginuser)) {

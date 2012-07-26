@@ -52,6 +52,7 @@ import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -169,6 +170,7 @@ public class Database {
   @SuppressWarnings("unchecked")
   public static <M> M get(DataContext dataContext, Class<M> modelClass,
       Object primaryKey) {
+    beginSelectTransaction(dataContext);
     return (M) DataObjectUtils.objectForPK(dataContext, modelClass, primaryKey);
   }
 
@@ -196,6 +198,7 @@ public class Database {
   @SuppressWarnings("unchecked")
   public static <M> M get(DataContext dataContext, Class<M> modelClass,
       String key, Object value) {
+    beginSelectTransaction(dataContext);
     return (M) dataContext.refetchObject(new ObjectId(modelClass
       .getSimpleName(), key, value));
   }
@@ -535,6 +538,20 @@ public class Database {
       } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
       }
+    }
+  }
+
+  public static void beginSelectTransaction(DataContext dataContext) {
+    boolean res =
+      JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
+    if (!res) {
+      return;
+    }
+    Transaction tx = Transaction.getThreadTransaction();
+    if (tx == null || Transaction.STATUS_ROLLEDBACK == tx.getStatus()) {
+      Transaction.bindThreadTransaction(dataContext
+        .getParentDataDomain()
+        .createTransaction());
     }
   }
 

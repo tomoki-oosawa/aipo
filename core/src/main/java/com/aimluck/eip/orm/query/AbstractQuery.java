@@ -28,12 +28,12 @@ import org.apache.cayenne.CayenneDataObject;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.DbEntity;
 import org.apache.cayenne.map.ObjAttribute;
 import org.apache.cayenne.map.ObjEntity;
-import org.apache.jetspeed.services.resources.JetspeedResources;
+
+import com.aimluck.eip.orm.Database;
 
 public abstract class AbstractQuery<M> implements Query<M> {
 
@@ -53,7 +53,7 @@ public abstract class AbstractQuery<M> implements Query<M> {
 
   @Override
   public M fetchSingle() {
-    beginTransaction();
+    Database.beginSelectTransaction(dataContext);
     List<M> list = fetchList();
     if (list.size() > 0) {
       return list.get(0);
@@ -152,17 +152,4 @@ public abstract class AbstractQuery<M> implements Query<M> {
     return null;
   }
 
-  protected void beginTransaction() {
-    boolean res =
-      JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
-    if (!res) {
-      return;
-    }
-    Transaction tx = Transaction.getThreadTransaction();
-    if (tx == null || Transaction.STATUS_ROLLEDBACK == tx.getStatus()) {
-      Transaction.bindThreadTransaction(dataContext
-        .getParentDataDomain()
-        .createTransaction());
-    }
-  }
 }

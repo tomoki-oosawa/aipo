@@ -29,6 +29,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.map.DbAttribute;
 import org.apache.cayenne.map.ObjEntity;
 
+import com.aimluck.eip.orm.Database;
+
 public class SelectQuery<M> extends AbstractQuery<M> {
 
   protected CustomSelectQuery delegate;
@@ -75,7 +77,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   @Override
   @SuppressWarnings("unchecked")
   public List<M> fetchList() {
-    beginTransaction();
+    Database.beginSelectTransaction(dataContext);
     if (delegate.isFetchingDataRows()) {
       List<DataRow> dataRows = dataContext.performQuery(delegate);
       List<M> results = new ArrayList<M>();
@@ -93,7 +95,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   }
 
   public List<DataRow> fetchListAsDataRow() {
-    beginTransaction();
+    Database.beginSelectTransaction(dataContext);
     delegate.setFetchingDataRows(true);
     @SuppressWarnings("unchecked")
     List<DataRow> dataRows = dataContext.performQuery(delegate);
@@ -123,7 +125,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   }
 
   public int getCount() {
-    beginTransaction();
+    Database.beginSelectTransaction(dataContext);
     countQuery.setCustomColumns(getPrimaryKey());
     return countQuery.count(dataContext, delegate.isDistinct());
   }

@@ -32,7 +32,6 @@ import javax.servlet.ServletConfig;
 
 import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.access.DataContext;
-import org.apache.cayenne.access.Transaction;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.DeleteQuery;
@@ -58,7 +57,6 @@ import org.apache.jetspeed.services.psmlmanager.PsmlImporter;
 import org.apache.jetspeed.services.psmlmanager.PsmlManagerService;
 import org.apache.jetspeed.services.psmlmanager.db.DBUtils;
 import org.apache.jetspeed.services.psmlmanager.db.DatabasePsmlManager;
-import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -1371,7 +1369,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedGroupProfile.PAGE_PROPERTY, true);
     }
 
-    beginTransaction(dataContext);
+    Database.beginSelectTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedGroupProfile> list = dataContext.performQuery(query);
     return list;
@@ -1390,7 +1388,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedRoleProfile.PAGE_PROPERTY, true);
     }
 
-    beginTransaction(dataContext);
+    Database.beginSelectTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedRoleProfile> list = dataContext.performQuery(query);
     return list;
@@ -1416,7 +1414,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         query.addOrdering(JetspeedUserProfile.PAGE_PROPERTY, true);
       }
 
-      beginTransaction(dataContext);
+      Database.beginSelectTransaction(dataContext);
       List<JetspeedUserProfile> list = dataContext.performQuery(query);
       ALEipManager.getInstance().setUserProfile(locator, list);
       return list;
@@ -1638,19 +1636,5 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     }
 
     return query;
-  }
-
-  protected void beginTransaction(DataContext dataContext) {
-    boolean res =
-      JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
-    if (!res) {
-      return;
-    }
-    Transaction tx = Transaction.getThreadTransaction();
-    if (tx == null || Transaction.STATUS_ROLLEDBACK == tx.getStatus()) {
-      Transaction.bindThreadTransaction(dataContext
-        .getParentDataDomain()
-        .createTransaction());
-    }
   }
 }
