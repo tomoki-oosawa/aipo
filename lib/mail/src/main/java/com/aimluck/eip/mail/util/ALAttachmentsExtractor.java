@@ -115,7 +115,19 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
     Part part = attachmentParts.get(index);
 
     try {
-      String name = MimeUtility.decodeText(part.getFileName());
+
+      String name = "AttachmentFile";
+      if (part.getFileName() != null) {
+        name = MimeUtility.decodeText(part.getFileName());
+      } else {
+        String contentType = part.getContentType();
+        if (contentType != null && !contentType.isEmpty()) {
+          if (contentType.indexOf("text/html") != -1) {
+            // ignore html mail part
+            return null;
+          }
+        }
+      }
 
       if (name == null) {
         // 添付ファイル名が取得できない場合は、指定されていなかった場合か、
