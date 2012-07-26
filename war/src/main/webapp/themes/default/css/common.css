@@ -327,6 +327,9 @@ html > body #wrapper { *ExceptIE6*
 .roundMainWrapper {
 	padding:10px;
 }
+*:first-child+html .roundMainWrapper {/* IE7 Hack */
+	padding-bottom:30px;
+}
 .roundTopMain {
 	background:#FFF;
 }
