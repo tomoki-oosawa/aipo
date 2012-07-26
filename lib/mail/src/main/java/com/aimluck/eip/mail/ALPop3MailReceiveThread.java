@@ -73,7 +73,7 @@ public class ALPop3MailReceiveThread implements Runnable {
   public static final int PROCESS_STAT_NONPROCESSING = -101;
 
   /** データベース ID */
-  private DataContext dataContext = null;
+  private String orgId = null;
 
   /** ユーザー ID */
   private String userId = null;
@@ -95,9 +95,9 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @param userId
    * @param mailAccountId
    */
-  public ALPop3MailReceiveThread(DataContext dataContext, JetspeedUser user,
+  public ALPop3MailReceiveThread(String orgId, JetspeedUser user,
       int mailAccountId, int processType) {
-    this.dataContext = dataContext;
+    this.orgId = orgId;
     this.mailAccountId = mailAccountId;
     this.processType = processType;
 
@@ -117,8 +117,7 @@ public class ALPop3MailReceiveThread implements Runnable {
 
     try {
 
-      DataContext.bindThreadDataContext(dataContext);
-      String orgId = Database.getDomainName();
+      DataContext.bindThreadDataContext(Database.createDataContext(orgId));
 
       EipMMailAccount account =
         ALMailUtils.getMailAccount(Integer.parseInt(userId), mailAccountId);

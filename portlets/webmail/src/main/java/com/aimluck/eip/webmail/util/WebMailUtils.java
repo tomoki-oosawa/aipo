@@ -347,7 +347,7 @@ public class WebMailUtils {
         // メールと接続してなければ新規にスレッドを生成
         Runnable receiver =
           new ALPop3MailReceiveThread(
-            Database.createDataContext(Database.getDomainName()),
+            Database.getDomainName(),
             user,
             accountId,
             ALPop3MailReceiveThread.PROCESS_TYPE_RECEIVEMAIL);

@@ -64,7 +64,7 @@ public class ALMailSendThread implements Runnable {
   public static final int PROCESS_STAT_NONPROCESSING = -101;
 
   /** データベース ID */
-  private DataContext dataContext = null;
+  private String orgId = null;
 
   private ALAdminMailContext adminMailContext = null;
 
@@ -76,16 +76,15 @@ public class ALMailSendThread implements Runnable {
     return ALMailFactoryService.getInstance().getMailHandler();
   }
 
-  public ALMailSendThread(DataContext dataContext,
-      ALAdminMailContext adminMailContext) {
-    this.dataContext = dataContext;
+  public ALMailSendThread(String orgId, ALAdminMailContext adminMailContext) {
+    this.orgId = orgId;
     this.adminMailContext = adminMailContext;
   }
 
   @Override
   public void run() {
     try {
-      DataContext.bindThreadDataContext(this.dataContext);
+      DataContext.bindThreadDataContext(Database.createDataContext(orgId));
       getService().sendAdminMail(adminMailContext);
     } catch (Exception e) {
       logger.error("[ALMailService]", e);

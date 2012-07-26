@@ -54,9 +54,7 @@ public class ALMailService {
       final ALAdminMailContext adminMailContext) throws Exception {
 
     Runnable sender =
-      new ALMailSendThread(
-        Database.createDataContext(Database.getDomainName()),
-        adminMailContext);
+      new ALMailSendThread(Database.getDomainName(), adminMailContext);
 
     Thread mailthread = new Thread(sender);
     mailthread.start();
