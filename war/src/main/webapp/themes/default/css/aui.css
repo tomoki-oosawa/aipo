@@ -2274,9 +2274,9 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 	border-radius:2px;
 	-ms-border-radius:2px;
 	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites20120713.png) no-repeat;
+	background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
 }
-*html .auiIcon {background:url(../images/icon/auiIconSprites20120713.gif) no-repeat;}
+*html .auiIcon {background:url(../images/icon/auiIconSprites20120726.gif) no-repeat;}
 .auiIcon span {display:none;}
 
 a.auiIcon:hover {background-color:#999;}
@@ -2396,6 +2396,25 @@ a.auiIconUsers:hover {background-position:0px -544px;}
 a.auiIconSearch:hover {background-position:0px -576px;}
 *html .auiIconSearch {background-position:0px -560px;}/*IE6*/
 *html a.auiIconSearch:hover {background-position:0px -560px;}/*IE6*/
+
+
+
+/***************************************************
+	auiIcon
+--------------------------------------------------*/
+.auiIconArrow {
+	display:inline-block;
+	width:15px;
+	height:18px;
+	vertical-align:middle;
+	background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
+}
+*html .auiIconArrow {background:url(../images/icon/auiIconSprites20120726.gif) no-repeat;}
+.auiIconArrowLeft {background-position:0 -367px;}
+.auiIconArrowLeftW {background-position:0 -623px;}
+.auiIconArrowRight {background-position:0 -399px;}
+.auiIconArrowRightW {background-position:0 -655px;}
+
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
