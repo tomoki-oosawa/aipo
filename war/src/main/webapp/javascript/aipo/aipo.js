@@ -74,10 +74,10 @@ aipo.getCookie=function (strName) {
   return strReturn;
 }
 
-aipo.setCookie =function(strName, strValue,path) {
+aipo.setCookie =function(strName, strValue,path,time) {
   var dtExpire = new Date();
-  dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
-  if(typeof path =='undefined')
+  dtExpire.setTime(dtExpire.getTime() + (typeof time !='number'?10*24*60*60*1000:time));
+  if(typeof path =='undefined' || path==null)
 	  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
   else
 	  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path="+path;

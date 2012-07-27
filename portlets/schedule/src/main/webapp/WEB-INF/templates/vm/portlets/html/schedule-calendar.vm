@@ -79,13 +79,13 @@
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/')">1$l10n.SCHEDULE_DAY</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/',365*24*60*60*1000)">1$l10n.SCHEDULE_DAY</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/')">4$l10n.SCHEDULE_DAY</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/',365*24*60*60*1000)">4$l10n.SCHEDULE_DAY</a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/')">7$l10n.SCHEDULE_DAY</a>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/',365*24*60*60*1000)">7$l10n.SCHEDULE_DAY</a>
 </li>
 </ul>
 </div>
