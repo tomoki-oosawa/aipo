@@ -31,9 +31,9 @@ var tmpUsername = "";
 function set_username(form){
 #if($enable_userlist)
   if(form.login_type.checked){
-  	form.username.value = form.member_username_list.options[form.member_username_list.selectedIndex].value;
+    form.username.value = form.member_username_list.options[form.member_username_list.selectedIndex].value;
   }else{
-  	form.username.value = form.member_username.value;
+    form.username.value = form.member_username.value;
   }
 #else
   form.username.value = form.member_username.value;
@@ -47,14 +47,12 @@ function submit2(form) {
 #if($enable_userlist)
   set_cookie("login_type", form.login_type.checked);
 #end
-  if (form.save_password.checked) {
+  if (form.save_username.checked) {
     set_cookie("username", form.username.value);
-    set_cookie("password", form.password.value);
   } else {
     remove_cookie("username");
-    remove_cookie("password");
   }
-  set_cookie("save_password", form.save_password.checked);
+  set_cookie("save_username", form.save_username.checked);
 }
 
 function init() {
@@ -62,27 +60,27 @@ function init() {
   var form = document.forms[0];
   var logintypeStr = get_cookie("login_type");
   var logintypeObj = form.login_type;
-  var savePassStr = get_cookie("save_password");
-  var savePassObj = form.save_password;
+  var saveUsernameStr = get_cookie("save_username");
+  var saveUsernameObj = form.save_username;
   if (logintypeStr == "false") {
     logintypeObj.checked = false;
   } else {
     logintypeObj.checked = true;
   }
-  if (savePassStr == "true") {
-    savePassObj.checked = true;
+  if (saveUsernameStr == "true") {
+    saveUsernameObj.checked = true;
   } else {
-    savePassObj.checked = false;
+    saveUsernameObj.checked = false;
   }
   change_login_type(form, logintypeObj);
 #else
   var form = document.forms[0];
-  var savePassStr = get_cookie("save_password");
-  var savePassObj = form.save_password;
-  if (savePassStr == "true") {
-    savePassObj.checked = true;
+  var saveUsernameStr = get_cookie("save_username");
+  var saveUsernameObj = form.save_username;
+  if (saveUsernameStr == "true") {
+    saveUsernameObj.checked = true;
   } else {
-    savePassObj.checked = false;
+    saveUsernameObj.checked = false;
   }
   change_login_type(form);
 #end
@@ -91,7 +89,7 @@ function init() {
 function set_input_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
     }
   } else {
@@ -101,12 +99,12 @@ function set_input_value(form) {
   usernameObj.value = usernameStr;
 #if($enable_userlist)
   if(form.login_type.checked){
-  	form.member_username_list.options[form.member_username_list.selectedIndex].value = usernameStr;
+    form.member_username_list.options[form.member_username_list.selectedIndex].value = usernameStr;
   }else{
-  	form.member_username.value = usernameStr;
-  	if(form.member_username.value!=''){
-  	  form.member_username.nextSibling.style.display = "none";
-  	}
+    form.member_username.value = usernameStr;
+    if(form.member_username.value!=''){
+      form.member_username.nextSibling.style.display = "none";
+    }
   }
 #else
   form.member_username.value = usernameStr;
@@ -115,18 +113,12 @@ function set_input_value(form) {
   }
 #end
 
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
-    if(form.password.value!=''){
-  	  form.password.nextSibling.style.display = "none";
-  	}
-  }
 }
 
 function set_select_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_password.checked) {
+    if (form.save_username.checked) {
       usernameStr = get_cookie("username");
     }
   } else {
@@ -141,11 +133,8 @@ function set_select_value(form) {
     }
   }
 #end
-  if (form.save_password.checked) {
-    form.password.value = get_cookie("password");
-    if(form.password.value!=''){
-  	  form.password.nextSibling.style.display = "none";
-  	}
+  if (form.save_username.checked) {
+    form.username.value = get_cookie("username");
   }
 }
 
@@ -222,14 +211,14 @@ function change_group(form, value) {
   var f_o = f.options;
   f_o.length = 0;
   if (value == 'all') {
-  add_option(f, '', '（選択してください）', false);
+  add_option(f, '', '$l10n.ACCOUNT_ALERT_SELECT', false);
   #foreach($record2 in $!alEipUtils.getUsers('LoginUser') )
     add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
   #end
   }
   #foreach($record in $!alEipManager.PostMap)
   if (value == $!record.PostId) {
-    add_option(f, '', '（選択してください）', false);
+    add_option(f, '', '$l10n.ACCOUNT_ALERT_SELECT', false);
     #foreach($record2 in $!alEipUtils.getUsers($!{record.GroupName.Value}) )
       add_option(f, '$!{record2.Name}', '$!{record2.AliasName}', false);
     #end
@@ -269,12 +258,12 @@ $!data.getMessage().toString()
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
 <select name='login_member' onchange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
-<option value='all'>（部署全体）</option>
+<option value='all'>$l10n.ACCOUNT_POST_ALL</option>
 #foreach( $record in $!alEipManager.PostMap )
 <option value='$!{record.PostId}'>$!record.PostName</option>
 #end
 </select><select name='member_username_list' class="select2" tabindex="2">
-<option value=''>（選択してください）</option>
+<option value=''>$l10n.ACCOUNT_ALERT_SELECT</option>
 #foreach($record in $!alEipUtils.getUsers('LoginUser'))
 <option value='$!record.Name'>$!record.AliasName</option>
 #end
@@ -289,35 +278,35 @@ $!data.getMessage().toString()
 #if($enable_userlist)
 <p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ログイン情報を保存する</label></p>
+<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
 </div>
 <div class="floatRight">
-<input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
+<input name="login_submit" class="button" type="submit" value="$l10n.ACCOUNT_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
 </div>
 </div>
 </form>
 </div></div>
 <!-- /auiLoginBox -->
 <script language="JavaScript" type="text/JavaScript">
-	<!--
+    <!--
 init();
 
 if(!('placeholder' in document.createElement('input'))){
-	//以下placeholder機能が存在しない場合
+    //以下placeholder機能が存在しない場合
 
-	var onblur=function(){
+    var onblur=function(){
       if(this.value==''){
-      	this.nextSibling.style.display='block'
+        this.nextSibling.style.display='block'
       }
-	};
+    };
 
-	dojo.query("input[placeholder],textarea[placeholder]")
-	.connect("onfocus",function(){
-		this.nextSibling.style.display='none';
-	}).connect("onblur",onblur)
-	.forEach(function(obj){
-		onblur.apply(obj);
-	});
+    dojo.query("input[placeholder],textarea[placeholder]")
+    .connect("onfocus",function(){
+        this.nextSibling.style.display='none';
+    }).connect("onblur",onblur)
+    .forEach(function(obj){
+        onblur.apply(obj);
+    });
 }
 //-->
 
