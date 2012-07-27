@@ -373,7 +373,10 @@ public class ReportFormData extends ALAbstractFormData {
       }
 
       List<EipTReportFile> files = ReportUtils.getEipTReportFile(report);
-      int size3 = files.size();
+      int size3 = 0;
+      if (files != null) {
+        size3 = files.size();
+      }
       FileuploadLiteBean filebean = null;
       for (int i = 0; i < size3; i++) {
         EipTReportFile file = files.get(i);
