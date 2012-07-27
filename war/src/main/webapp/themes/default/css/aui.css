@@ -2100,10 +2100,10 @@ ul.attachments span.deletebutton:hover{
     width:14px;
     height:14px;
     vertical-align:middle;
-    background:url(../images/icon/auiIconSprites20120713.png) no-repeat;
+    background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
 }
 *html .iconLike,
-*html .iconComment {background:url(../images/icon/auiIconSprites20120713.gif) no-repeat;}
+*html .iconComment {background:url(../images/icon/auiIconSprites20120726.png) no-repeat;}
 .iconLike {background-position:-2px -594px;}
 .iconComment {background-position:-2px -609px;}
 
