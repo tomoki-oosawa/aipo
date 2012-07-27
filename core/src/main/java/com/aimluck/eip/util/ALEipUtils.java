@@ -380,7 +380,7 @@ public class ALEipUtils {
       Portlets portlets =
         ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
       if (portlets == null) {
-        return null;
+        return hash;
       }
       for (@SuppressWarnings("unchecked")
       Iterator<Entry> it = portlets.getEntriesIterator(); it.hasNext();) {
@@ -408,7 +408,7 @@ public class ALEipUtils {
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
-      return null;
+      return hash;
     }
     return hash;
   }
