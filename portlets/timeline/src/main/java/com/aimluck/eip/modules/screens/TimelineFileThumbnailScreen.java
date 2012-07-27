@@ -43,11 +43,11 @@ public class TimelineFileThumbnailScreen extends FileuploadThumbnailScreen {
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTTimelineFile Timelinefile =
-        TimelineUtils.getEipTTimelineFile(rundata);
+      EipTTimelineFile file = TimelineUtils.getEipTTimelineFile(rundata);
 
-      super.setFile(Timelinefile.getFileThumbnail());
-      super.setFileName(Timelinefile.getFileName());
+      super.setFile(file.getFileThumbnail());
+      super.setFileName(file.getFileName());
+      super.setLastModified(file.getCreateDate());
       super.doOutput(rundata);
     } catch (Exception e) {
       logger.error("[ERROR]", e);

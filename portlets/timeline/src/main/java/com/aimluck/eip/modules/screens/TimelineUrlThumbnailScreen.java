@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.Date;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -43,10 +45,12 @@ public class TimelineUrlThumbnailScreen extends FileuploadThumbnailScreen {
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTTimelineUrl Timelineurl = TimelineUtils.getEipTTimelineUrl(rundata);
+      EipTTimelineUrl file = TimelineUtils.getEipTTimelineUrl(rundata);
 
-      super.setFile(Timelineurl.getThumbnail());
-      super.setFileName(Timelineurl.getTitle());
+      super.setFile(file.getThumbnail());
+      super.setFileName(file.getTitle());
+      // EipTTimelineUrl に更新時間のカラムがないため、現在時間で代替
+      super.setLastModified(new Date());
       super.doOutput(rundata);
     } catch (Exception e) {
       logger.error("[ERROR]", e);
