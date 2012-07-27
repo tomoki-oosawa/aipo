@@ -131,6 +131,9 @@ public class TimelineSelectData extends
 
   private boolean isFileUploadable;
 
+  /** AppNameからportletIdを取得するハッシュ */
+  private HashMap<String, String> portletIdFromAppId;
+
   /**
    * 
    * @param action
@@ -141,6 +144,8 @@ public class TimelineSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    portletIdFromAppId = ALEipUtils.getPortletFromAppIdMap(rundata);
 
     ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "update_date");
     ALEipUtils.setTemp(
@@ -310,6 +315,7 @@ public class TimelineSelectData extends
       rd.setParams(record.getParams());
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
+      rd.setPortletId(portletIdFromAppId.get(record.getAppId()));
 
       if (!users.contains(record.getOwnerId())) {
         users.add(record.getOwnerId());
@@ -588,7 +594,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }
@@ -705,7 +711,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }

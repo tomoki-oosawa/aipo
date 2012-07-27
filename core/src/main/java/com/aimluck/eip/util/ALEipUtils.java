@@ -368,6 +368,52 @@ public class ALEipUtils {
   }
 
   /**
+   * 指定したポートレット ID を持つポートレットのオブジェクトを取得します。
+   * 
+   * @param rundata
+   * @param portletId
+   * @return 自ポートレット
+   */
+  public static HashMap<String, String> getPortletFromAppIdMap(RunData rundata) {
+    HashMap<String, String> hash = new HashMap<String, String>();
+    try {
+      Portlets portlets =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      if (portlets == null) {
+        return null;
+      }
+      for (@SuppressWarnings("unchecked")
+      Iterator<Entry> it = portlets.getEntriesIterator(); it.hasNext();) {
+        Entry next = it.next();
+        if (!hash.containsKey(next.getParent())) {
+          hash.put(next.getParent(), next.getId());
+        }
+      }
+      {
+        Portlets[] portletList = portlets.getPortletsArray();
+
+        if (portletList == null) {
+          return hash;
+        }
+
+        for (Portlets portlet : portletList) {
+          Entry[] entries = portlet.getEntriesArray();
+          if (entries == null) {
+            continue;
+          }
+          for (Entry entry : entries) {
+            hash.put(entry.getParent(), entry.getId());
+          }
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+    return hash;
+  }
+
+  /**
    * リクエストが自ポートレットに対するものであるかを返します。 <br />
    * true となる場合、そのポートレットに対するフォーム送信となります。
    * 

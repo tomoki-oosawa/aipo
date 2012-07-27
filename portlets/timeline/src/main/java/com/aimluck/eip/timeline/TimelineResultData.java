@@ -96,6 +96,9 @@ public class TimelineResultData implements ALData {
   /** 更新情報の場合のURLのGETparams */
   private ALStringField params;
 
+  /** 更新情報の場合のportletId */
+  private String portletId;
+
   /** いいね！の数 */
   private int likeCount;
 
@@ -561,6 +564,20 @@ public class TimelineResultData implements ALData {
           Integer.valueOf((int) this.owner_id.getValue()));
     }
     return user;
+  }
+
+  /**
+   * @param portletId セットする portletId
+   */
+  public void setPortletId(String portletId) {
+    this.portletId = portletId;
+  }
+
+  /**
+   * @return portletId
+   */
+  public String getPortletId() {
+    return portletId;
   }
 
 }
