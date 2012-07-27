@@ -7,6 +7,6 @@ UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 45 WHERE `feature_id` = 172 
 -- 20120711
 
 -- 20120724
-ALTER TABLE activity CHANGE COLUMN title title varchar(255);
+ALTER TABLE activity CHANGE COLUMN title title varchar(255) NOT NULL;
 -- 20120724
 
