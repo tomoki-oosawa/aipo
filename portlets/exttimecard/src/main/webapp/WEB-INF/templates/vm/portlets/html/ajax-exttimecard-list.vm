@@ -30,8 +30,8 @@
 <div class="auiSelectButton floatLeft">
 <ul class="floatLeft">
 <li style="margin-right:10px;"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_CURRENT_MONTH class="btn" style="width:4em;"><span>$l10n.EXTTIMECARD_CURRENT_MONTH</span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_PREV_MONTH class="first arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt=$l10n.EXTTIMECARD_PREV_MONTH /></span></a></li>
-<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_NEXT_MONTH class="last arrow"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt=$l10n.EXTTIMECARD_NEXT_MONTH /></span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_PREV_MONTH class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+<li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title=$l10n.EXTTIMECARD_TO_NEXT_MONTH class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 </ul>
 </div>
 <div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonthYearMonthText}</strong></div>

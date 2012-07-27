@@ -74,14 +74,14 @@
     <div class="auiSelectButton floatLeft">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="前へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_l.gif"/></span></a></li>
+	    <li title="前へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #else
-	    <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_l.gif" alt=""/></span></a></li>
+	    <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="次へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_r.gif"/></span></a></li>
+        <li title="次へ"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #else
-	    <li title="次へ"><a href="javascript:void(0);" class="last arrow"><span><img src="themes/$!result.Theme/images/icon/icon_arrow_r.gif" alt=""/></span></a></li>
+	    <li title="次へ"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #end
       </ul>
     </div>

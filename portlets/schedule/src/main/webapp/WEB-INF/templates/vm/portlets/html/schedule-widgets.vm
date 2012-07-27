@@ -44,8 +44,8 @@
     		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>$l10n.SCHEDULE_YEAR<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>$l10n.SCHEDULE_MONTH</div>
 			<div class="floatRight">
     		<div class="auiSelectButton">
-    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="$l10n.SCHEDULE_PREV_MONTH" /></span></a></div>
-    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="$l10n.SCHEDULE_NEXT_MONTH" /></span></a></div>
+    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()" title="$l10n.SCHEDULE_PREV_MONTH"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></div>
+    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()" title="$l10n.SCHEDULE_NEXT_MONTH"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></div>
     		</div>
 			</div>
     	</th>

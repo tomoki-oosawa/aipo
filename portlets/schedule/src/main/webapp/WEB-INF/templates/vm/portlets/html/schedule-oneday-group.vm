@@ -46,16 +46,16 @@
 <a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');"><span>$l10n.SCHEDULE_THIS_DAY</span></a>
 </li>
 <li style="margin-right:3px;" title="$l10n.SCHEDULE_PREV_WEEK">
-<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l_w.gif" alt="$l10n.SCHEDULE_PREV_WEEK" /></span></a>
+<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowLeftW"></i></span></a>
 </li>
 <li title="$l10n.SCHEDULE_PREV_DATE">
-<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_l.gif" alt="$l10n.SCHEDULE_PREV_DATE" /></span></a>
+<a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a>
 </li>
 <li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_DATE">
-<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r.gif" alt="$l10n.SCHEDULE_NEXT_DATE" /></span></a>
+<a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a>
 </li>
 <li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_WEEK">
-<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><img src="themes/$!theme/images/icon/icon_arrow_r_w.gif" alt="$l10n.SCHEDULE_NEXT_WEEK" /></span></a>
+<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 </ul>
 </div>
