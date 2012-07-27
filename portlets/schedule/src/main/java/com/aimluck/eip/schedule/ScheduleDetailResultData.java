@@ -87,10 +87,12 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     text.setValue("");
     // 登録日時
     createDate =
-      new ALDateTimeField(ALLocalizationUtils.getl10n("SCHEDULE_FORMAT"));
+      new ALDateTimeField(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
     // 更新日時
     updateDate =
-      new ALDateTimeField(ALLocalizationUtils.getl10n("SCHEDULE_FORMAT"));
+      new ALDateTimeField(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
   }
 
   /**
