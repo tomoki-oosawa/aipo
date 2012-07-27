@@ -38,8 +38,6 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-<div class="message"><span>$l10n.WEBMAIL_CAPACITY_MSG $!{result.MaxFileSize} $l10n.WEBMAIL_MAX_MB</span><br />
-<span>$l10n.WEBMAIL_CHARACTERS_MSG<br /><a href="javascript:aipo.webmail.open_help('${context_path}/help/unusualchar.html')">$l10n.WEBMAIL_REFER_DETAIL</a></span></div><br />
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WebMailFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.webmail.onReceiveMessage)")
 <input type="hidden" name="mode" value="insert" />
 <input type="hidden" name="mailtype" value="$!result.MailType">
@@ -81,7 +79,7 @@
 </tr>
 #ALtablefooter()
 #ALbuttonheader()
-<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.WEBMAIL_DO_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.WEBMAIL_DO_SEND" onclick="aimluck.io.setHiddenValue(this);">
 <input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.common.hideDialog();if(dojo.isIE==8){location.reload();}">
 #ALbuttonfooter()
 #ALformfooter()

@@ -25,7 +25,6 @@
 ## ---------------------------------------------------------------------------
 
 <div class="spaceAll"><h4>$subtitle</h4>
-<div class="spaceLeft">$l10n.WEBMAIL_SELECT_EMAIL<br>$l10n.WEBMAIL_MULTICHOICE_MSG</div>
 #ALajaxdetailformheader("webmailAddressbookForm")
 #ALdialogtableheaderWide()
 <tr>
