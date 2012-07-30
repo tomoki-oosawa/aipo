@@ -332,13 +332,73 @@ table.activityTable tr.unread td {
 	max-height:1000px;
 }
 /***************************************************
+	auiPortlet
+--------------------------------------------------*/
+.auiPortlet {
+	background:url(../images/common/portlet_x.gif) repeat-x bottom center;
+}
+.auiPortletHead {
+	position:relative;
+	background:url(../images/common/portlet_x.gif) repeat-x left -175px;
+	height:45px;
+}
+.auiPortletHead .inner {
+	background:url(../images/common/portlet_x.gif) no-repeat left 0;
+	height:45px;
+}
+.auiPortletTitle {
+	float:left;
+	padding:13px 0 0 12px;
+	white-space:nowrap;
+}
+.auiPortletTitle a {
+	background:url(../images/common/portlet_x.gif) no-repeat left -148px;
+	padding-left:18px;
+}
+.auiPortletTool {
+	background:url(../images/common/portlet_x.gif) no-repeat right -50px;
+	position:absolute;
+	top:0;
+	right:0;
+	float:right;
+	min-width:25px;
+	height:32px;
+	padding:13px 10px 0 0;
+}
+.auiPortletTool > div {
+	float:left;
+	padding:0 5px;
+	border-left:solid 1px #dbdbdb;
+	background:#fff;
+	box-shadow:-5px 0 3px #fff;
+	white-space:nowrap;
+}
+.auiPortletBody {
+	background:#fff url(../images/common/portlet_l.gif) repeat-y left 0;
+}
+.auiPortletBody .inner {
+	background:url(../images/common/portlet_r.gif) repeat-y right 0;
+	padding:4px 22px 0 22px;
+	min-height:100px;
+}
+.auiPortletBody .inner *:first-child {
+	margin-top:0;
+}
+.auiPortletFoot {
+	background:url(../images/common/portlet_x.gif) no-repeat left -102px;
+}
+.auiPortletFoot .inner {
+	background:url(../images/common/portlet_x.gif) no-repeat right -124px;
+	height:20px;
+}
+
+/***************************************************
 	auiListWrapper
 --------------------------------------------------*/
 .auiListWrapper {
 	height:305px;
 	overflow-y:auto;
 }
-
 /***************************************************
 	userList
 --------------------------------------------------*/

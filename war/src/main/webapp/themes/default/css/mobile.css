@@ -13,6 +13,7 @@ body {position:absolute}
 	position:absolute;
 	right:0;
 	padding-top:0;
+	z-index:1;
 }
 .hdActivity {
 	position:absolute;
@@ -104,6 +105,30 @@ td.container {
 }
 
 
+
+/***************************************************
+	auiPortlet
+--------------------------------------------------*/
+.auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle a, .auiPortletTool, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
+	background-image:none;
+}
+.auiPortletHead .inner {
+	height:auto;
+}
+.auiPortletTitle {
+	float:none;
+}
+.auiPortletTool {
+	display:none;
+}
+.auiPortletBody .inner {
+	padding:0 5px;
+}
+.auiPortletFoot {
+	display:none;
+}
+
+
 /***************************************************
 	set PortletOuter
 --------------------------------------------------*/
@@ -113,7 +138,8 @@ td.container {
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
 	background-image:none;
 }
-#roundWrapper table.roundBlockWrapperTop {
+#roundWrapper table.roundBlockWrapperTop,
+.auiPortletHead {
 	background:#666666
 		-webkit-gradient(
 		linear, left top, left bottom,
@@ -126,7 +152,10 @@ td.container {
 	margin-bottom:5px;
 }
 #roundWrapper table.roundBlockWrapperTop td.roundBlockIcon {display:none}
-#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle {
+#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle,
+.auiPortletTitle {
+	height:44px;
+	line-height:44px;
 	padding:0;
 	background-image:none;
 	text-align:center;
@@ -137,9 +166,11 @@ td.container {
 	font-weight:bold;
 	text-shadow:0 1px 0 rgba(0,0,0,0.8);
 }
-#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a {
+#roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a,
+.auiPortletTitle a {
 	color:#ffffff;
 	text-decoration:none;
+	padding:0;
 }
 #roundWrapper table.roundBlockWrapperTop td.roundBlockTitle a:hover {color:#ffffff}
 #roundWrapper .roundBlockWrapperBottom {padding:0;}
