@@ -35,6 +35,7 @@ import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -144,6 +145,8 @@ public class CustomizeFormScreen extends ALVelocityScreen {
       rundata.getParameters().setString("js_peid", pid);
 
       context.put("controller", tabPortlets.getController().getName());
+      context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+        ALEipConstants.SECURE_ID));
 
       ALEipUtils.setupContext(rundata, context);
       // putData(rundata, context);

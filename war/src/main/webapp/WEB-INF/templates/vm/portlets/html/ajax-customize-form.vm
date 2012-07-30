@@ -35,7 +35,7 @@
 <input type="hidden" name="portlet_id" value="$!{js_peid}" />
 <input type="hidden" name="mode" value="add" />
 <!--
-<form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}/${action}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+<form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 -->
 <input type="hidden" name="secid" value="$secid" />
 
