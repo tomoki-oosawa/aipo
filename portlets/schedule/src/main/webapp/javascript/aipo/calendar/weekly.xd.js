@@ -275,7 +275,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
             var simpleStyleFirst = "";
             var simpleStyle = "";
-            if(dojo.byId("top_form_" + _portletId).value == "simple" && dojo.byId("view_type_" + this.portletId).value == "1"){
+            var isSimple = dojo.byId("top_form_" + this.portletId).value == "simple";
+            var isOneSpan = dojo.byId("view_type_" + this.portletId).value == "1";
+            var isFourSpan = dojo.byId("view_type_" + this.portletId).value == "4";
+            var isIPad = window.navigator.userAgent.toLowerCase().indexOf("ipad") >= 0;
+            if(isSimple && isOneSpan){
                 simpleStyleFirst = "width: 100%;";
             	simpleStyle = "width: 0%;display: none;";
             }
@@ -294,11 +298,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
                 var simpleDisplayR = "";
-                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1" || dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
+                if(isSimple && ( isOneSpan || isFourSpan)){
                   simpleDisplay = ' style="display: none;"';
                   for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
-                    if(item.index==0 || (dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4" && item.index < 4)){
+                    if(item.index==0 || ( isSimple && isFourSpan && item.index < 4 )){
                     	simpleDisplay = "";
                     	simpleDisplayR = " weeklyTermRightR";
                     	break;
@@ -319,13 +323,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
 
                 //IPADはスクロールバーを表示しないので表示調節用の列を削除
-                var ipad_border=(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1")?"border-right:0":"";
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1")
+                var ipad_border = scheduleTooltipEnable !== true && isSimple && isOneSpan ? "border-right:0":"";
+                if(scheduleTooltipEnable!==true && isSimple && isOneSpan )
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td  colspan="2" nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
                 else
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
 
-                if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
+                if(isSimple && isFourSpan){
 	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
@@ -347,13 +351,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 var weeklyTermtailHtml;
 
-                if(scheduleTooltipEnable!==true && dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"||(Element.clientWidth > 0 && Element.offsetWidth > 0 && Element.clientWidth == Element.offsetWidth) ){
+                if(scheduleTooltipEnable!==true && isSimple && isOneSpan ||(Element.clientWidth > 0 && Element.offsetWidth > 0 && Element.clientWidth == Element.offsetWidth) ){
                 	weeklyTermtailHtml = "</div></td></tr>";
                 }else{
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
-                if(window.navigator.userAgent.toLowerCase().indexOf("ipad") !== -1 && dojo.byId("top_form_" + _portletId).value !=="simple" && dojo.byId("view_type_" + _portletId).value == "1"){
+                if( !isIPad ){
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }
 
@@ -540,7 +544,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
 
-                    if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "4"){
+                    if(isSimple && isFourSpan){
                     	var rowspanday = item.rowspan;
                     	if(item.rowspan + item.index > 4){
                     		rowspanday = rowspanday - (item.rowspan + item.index - 4);
@@ -556,7 +560,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     }
 
                     var simpleDisplay = "";
-                    if(dojo.byId("top_form_" + _portletId).value=="simple" && dojo.byId("view_type_" + _portletId).value == "1"){
+                    if(isSimple && isOneSpan){
                     	width = 100;
                         simpleDisplay = ((item.index==0) ? "" : "display: none;");
                     }
@@ -1029,7 +1033,7 @@ dojo.declare("aipo.calendar.DummyDivObject", null, {
         this.node = dojo.byId(node);
         this.events = [
             dojo.connect(this.node, "onmousedown", this, "onMouseDown"),
-            dojo.connect(this.node, "onmouseover", this, "onMouseOver"),
+            dojo.connect(this.node, "onmouseover", this, "onMouseOver")
         ];
      },
      onMouseDown: function(e){
