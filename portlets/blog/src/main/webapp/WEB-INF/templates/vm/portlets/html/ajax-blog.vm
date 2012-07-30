@@ -29,11 +29,11 @@
 </select>
 </form>
 </div>
-#if ($result.List.size() != 0)
+#if ($result.List && $result.List.size() != 0)
 #AUIajaxpageview('BlogScreen' $result)
 #end
 </div>
-#if($result.List.size() == 0)
+#if($result.List && $result.List.size() == 0)
 <div class="message">$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME</div>
 #else
 <div id="auiBlogEntries">
