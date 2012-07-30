@@ -169,7 +169,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value=$l10n.TIMELINE_POST_COMMENT />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'comment');#if("$!timelineViewType" == 'detail')aipo.timeline.hideDialog();#end" value=$l10n.TIMELINE_POST_COMMENT />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
@@ -297,7 +297,7 @@
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
-					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');#if($timelineViewType == 'detail')aipo.timeline.hideDialog();#end" value=$l10n.TIMELINE_POST_COMMENT />
+					<input href="javascript:void(0)" type="submit" class="auiButton"  onclick="aipo.timeline.addHiddenValue(dojo.byId('commentForm_$!{portlet.ID}_$!{record2.TimelineId}'), 'mode', 'comment');#if("$!timelineViewType" == 'detail')aipo.timeline.hideDialog();#end" value=$l10n.TIMELINE_POST_COMMENT />
 				</div>
 				<div class="floatRight">
 						<div class="tlInputMention">
