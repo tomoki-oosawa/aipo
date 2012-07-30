@@ -77,7 +77,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   @Override
   @SuppressWarnings("unchecked")
   public List<M> fetchList() {
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     if (delegate.isFetchingDataRows()) {
       List<DataRow> dataRows = dataContext.performQuery(delegate);
       List<M> results = new ArrayList<M>();
@@ -95,7 +95,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   }
 
   public List<DataRow> fetchListAsDataRow() {
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     delegate.setFetchingDataRows(true);
     @SuppressWarnings("unchecked")
     List<DataRow> dataRows = dataContext.performQuery(delegate);
@@ -125,7 +125,7 @@ public class SelectQuery<M> extends AbstractQuery<M> {
   }
 
   public int getCount() {
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     countQuery.setCustomColumns(getPrimaryKey());
     return countQuery.count(dataContext, delegate.isDistinct());
   }

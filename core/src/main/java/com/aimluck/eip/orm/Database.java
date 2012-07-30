@@ -54,6 +54,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
+import com.aimluck.eip.orm.access.CustomTransaction;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 
@@ -170,7 +171,7 @@ public class Database {
   @SuppressWarnings("unchecked")
   public static <M> M get(DataContext dataContext, Class<M> modelClass,
       Object primaryKey) {
-    beginSelectTransaction(dataContext);
+    beginTransaction(dataContext);
     return (M) DataObjectUtils.objectForPK(dataContext, modelClass, primaryKey);
   }
 
@@ -198,7 +199,7 @@ public class Database {
   @SuppressWarnings("unchecked")
   public static <M> M get(DataContext dataContext, Class<M> modelClass,
       String key, Object value) {
-    beginSelectTransaction(dataContext);
+    beginTransaction(dataContext);
     return (M) dataContext.refetchObject(new ObjectId(modelClass
       .getSimpleName(), key, value));
   }
@@ -300,6 +301,7 @@ public class Database {
    * @param dataContext
    */
   public static void commit(DataContext dataContext) {
+    beginTransaction(dataContext);
     dataContext.commitChanges();
     Transaction threadTransaction = Transaction.getThreadTransaction();
     if (threadTransaction != null) {
@@ -332,6 +334,7 @@ public class Database {
    */
   public static void rollback(DataContext dataContext) {
     try {
+      beginTransaction(dataContext);
       dataContext.rollbackChanges();
     } catch (Throwable t) {
       logger.warn("[Database] rollback", t);
@@ -541,17 +544,17 @@ public class Database {
     }
   }
 
-  public static void beginSelectTransaction(DataContext dataContext) {
+  public static void beginTransaction(DataContext dataContext) {
     boolean res =
       JetspeedResources.getBoolean("aipo.jdbc.aggregateTransaction");
     if (!res) {
       return;
     }
     Transaction tx = Transaction.getThreadTransaction();
-    if (tx == null || Transaction.STATUS_ROLLEDBACK == tx.getStatus()) {
-      Transaction.bindThreadTransaction(dataContext
-        .getParentDataDomain()
-        .createTransaction());
+    if (tx == null) {
+      CustomTransaction ctx = new CustomTransaction();
+      ctx.begin();
+      Transaction.bindThreadTransaction(ctx);
     }
   }
 

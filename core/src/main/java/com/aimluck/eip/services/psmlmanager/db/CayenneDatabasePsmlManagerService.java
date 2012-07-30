@@ -1369,7 +1369,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedGroupProfile.PAGE_PROPERTY, true);
     }
 
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedGroupProfile> list = dataContext.performQuery(query);
     return list;
@@ -1388,7 +1388,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       query.addOrdering(JetspeedRoleProfile.PAGE_PROPERTY, true);
     }
 
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedRoleProfile> list = dataContext.performQuery(query);
     return list;
@@ -1414,7 +1414,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
         query.addOrdering(JetspeedUserProfile.PAGE_PROPERTY, true);
       }
 
-      Database.beginSelectTransaction(dataContext);
+      Database.beginTransaction(dataContext);
       List<JetspeedUserProfile> list = dataContext.performQuery(query);
       ALEipManager.getInstance().setUserProfile(locator, list);
       return list;

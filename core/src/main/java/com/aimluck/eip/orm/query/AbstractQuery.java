@@ -53,7 +53,7 @@ public abstract class AbstractQuery<M> implements Query<M> {
 
   @Override
   public M fetchSingle() {
-    Database.beginSelectTransaction(dataContext);
+    Database.beginTransaction(dataContext);
     List<M> list = fetchList();
     if (list.size() > 0) {
       return list.get(0);
