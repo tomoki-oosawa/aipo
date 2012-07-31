@@ -51,6 +51,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 部署のフォームデータを管理するクラスです。 <BR>
@@ -129,47 +130,51 @@ public class AccountPostFormData extends ALAbstractFormData {
 
     // 部署名
     post_name = new ALStringField();
-    post_name.setFieldName("部署名");
+    post_name.setFieldName(ALLocalizationUtils.getl10n("ACCOUNT_POST_NAME"));
     post_name.setTrim(true);
 
     // 郵便番号
     zipcode1 = new ALStringField();
-    zipcode1.setFieldName("郵便番号");
+    zipcode1.setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_ZIPCODE"));
     zipcode1.setTrim(true);
     zipcode2 = new ALStringField();
-    zipcode2.setFieldName("郵便番号");
+    zipcode2.setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_ZIPCODE"));
     zipcode2.setTrim(true);
 
     // 住所
     address = new ALStringField();
-    address.setFieldName("住所");
+    address.setFieldName(ALLocalizationUtils.getl10n("ACCOUNT_POST_ADDRESS"));
     address.setTrim(true);
 
     // 電話番号（外線）
     post_out_telephone1 = new ALStringField();
-    post_out_telephone1.setFieldName("電話番号（外線）");
+    post_out_telephone1.setFieldName(ALLocalizationUtils
+      .getl10n("ACCOUNT_OUT_TELEPHONE"));
     post_out_telephone1.setTrim(true);
     post_out_telephone2 = new ALStringField();
-    post_out_telephone2.setFieldName("電話番号（外線）");
+    post_out_telephone2.setFieldName(ALLocalizationUtils
+      .getl10n("ACCOUNT_OUT_TELEPHONE"));
     post_out_telephone2.setTrim(true);
     post_out_telephone3 = new ALStringField();
-    post_out_telephone3.setFieldName("電話番号（外線）");
+    post_out_telephone3.setFieldName(ALLocalizationUtils
+      .getl10n("ACCOUNT_OUT_TELEPHONE"));
     post_out_telephone3.setTrim(true);
 
     // 電話番号（内線）
     post_in_telephone = new ALStringField();
-    post_in_telephone.setFieldName("電話番号（内線）");
+    post_in_telephone.setFieldName(ALLocalizationUtils
+      .getl10n("ACCOUNT_IN_TELEPHONE"));
     post_in_telephone.setTrim(true);
 
     // FAX番号
     fax_number1 = new ALStringField();
-    fax_number1.setFieldName("FAX番号");
+    fax_number1.setFieldName(ALLocalizationUtils.getl10n("ACCOUNT_FAX_NUMBER"));
     fax_number1.setTrim(true);
     fax_number2 = new ALStringField();
-    fax_number2.setFieldName("FAX番号");
+    fax_number2.setFieldName(ALLocalizationUtils.getl10n("ACCOUNT_FAX_NUMBER"));
     fax_number2.setTrim(true);
     fax_number3 = new ALStringField();
-    fax_number3.setFieldName("FAX番号");
+    fax_number3.setFieldName(ALLocalizationUtils.getl10n("ACCOUNT_FAX_NUMBER"));
     fax_number3.setTrim(true);
 
     if (is_join_member) {
@@ -273,7 +278,7 @@ public class AccountPostFormData extends ALAbstractFormData {
     address.validate(msgList);
 
     if (post_name.toString().lastIndexOf("/") != -1) {
-      msgList.add("部署名に『 <span class='em'>/</span> 』を用いることはできません。");
+      msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_SET_OTHER_NAME"));
     }
 
     try {
@@ -295,9 +300,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("部署名『 <span class='em'>"
-          + post_name
-          + "</span> 』は既に登録されています。");
+        msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_POST_EXIST"));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -306,7 +309,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
     if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
       if (!zipcode1.validate(dummy) || !zipcode2.validate(dummy)) {
-        msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_WITHIN_SEVEN"));
       }
     }
     if (!post_out_telephone1.getValue().equals("")
@@ -315,7 +318,8 @@ public class AccountPostFormData extends ALAbstractFormData {
       if (!post_out_telephone1.validate(dummy)
         || !post_out_telephone2.validate(dummy)
         || !post_out_telephone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("ACCOUNT_POST_SET_TELEPHON_EXTERNAL_NOMBER"));
       }
     }
 
@@ -325,8 +329,7 @@ public class AccountPostFormData extends ALAbstractFormData {
     Matcher matcher = pattern.matcher(post_in_telephone.getValue());
     Boolean ext_validater = matcher.matches();
     if (ext_validater) {
-      msgList
-        .add("『  <span class='em'> 電話番号（内線） </span>』は 15 文字以下でハイフン（-）または半角数字で入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_WITHIN_SIXTEEN"));
 
     }
     // post_in_telephone.validate(msgList);
@@ -337,7 +340,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       if (!fax_number1.validate(dummy)
         || !fax_number2.validate(dummy)
         || !fax_number3.validate(dummy)) {
-        msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_SET_FAX_NOMBER"));
       }
     }
     return (msgList.size() == 0);
@@ -348,7 +351,7 @@ public class AccountPostFormData extends ALAbstractFormData {
    * 
    * @param rundata
    * @param context
-   * @param msgList
+   * @param msgListF
    * @return
    */
   @Override
