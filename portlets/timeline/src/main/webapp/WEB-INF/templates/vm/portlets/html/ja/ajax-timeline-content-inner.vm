@@ -88,7 +88,7 @@
 			#end
 		</div>
 	</div>
-	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments" >
+	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments mb0" >
 		<div id="like_$!{record.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
 			<span class="iconLike"></span>
 			<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCountText}
@@ -217,7 +217,7 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end">
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end mb0">
 <div id="like_$!{record2.TimelineId}" class="commentCaption"#if($record2.LikeCount <= 0) style="display:none" #end>
 		<span class="iconLike"></span>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCountText}
