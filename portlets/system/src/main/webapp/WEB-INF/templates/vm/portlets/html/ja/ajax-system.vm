@@ -26,7 +26,7 @@
 ## ---------------------------------------------------------------------------
 
 #AUISummaryDiv()
-#AUIconfigheader($!{portlet.ID} "14em")
+#AUIconfigheader($!{portlet.ID} "16em")
 #AUIconfigitem($l10n.SYSTEM_CHANGE_COMPANYINFO $linkCompany)
 #AUIconfigitem($l10n.SYSTEM_SET_MAIL_INFORM $linkWebmailOption)
 #AUIconfigitem($l10n.SYSTEM_SET_MAILACCOUNT $linkWebmailAccount)
