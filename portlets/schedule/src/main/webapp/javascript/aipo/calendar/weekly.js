@@ -29,6 +29,8 @@ dojo.require("aipo.widget.GroupNormalSelectList");
 aipo.calendar.objectlist = Array();
 aipo.calendar.maximum_to = 30;
 
+aipo.calendar.noscrollbar = false;
+
 
 function hasClass(ele,cls) {
 	return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
@@ -281,12 +283,14 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>";
 
             var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
-            if(Element.clientWidth == Element.offsetWidth){
+            if(Element.clientWidth>0&&Element.offsetWidth>0){
+            	if(Element.clientWidth == Element.offsetWidth) aipo.calendar.noscrollbar=true;
+            	else aipo.calendar.noscrollbar=false;
+            }
+            if(aipo.calendar.noscrollbar){
               	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
-              	if(dojo.byId('isMac').value != 0){
               	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
               	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-              	}
             }
 
             	dojo.forEach(data.termSchedule, function(itemList) {
@@ -304,12 +308,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                   }
                 }
 
-                if(Element.clientWidth == Element.offsetWidth){
+                if(aipo.calendar.noscrollbar){
                   	simpleDisplayR = " weeklyTermRightRnone";
-                  	if(dojo.byId('isMac').value != 0){
                   	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
                   	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-                  	}
                 }
 
 
@@ -344,17 +346,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 }
 
                 var weeklyTermtailHtml;
-
-               if(scheduleTooltipEnable!==true && isSimple && isOneSpan ||(Element.clientWidth > 0 && Element.offsetWidth > 0 && Element.clientWidth == Element.offsetWidth) ){
-                	weeklyTermtailHtml = "</div></td></tr>";
+                if(scheduleTooltipEnable!==true && isSimple && isOneSpan || aipo.calendar.noscrollbar ){
+                   	weeklyTermtailHtml = "</div></td></tr>";
                 }else{
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                  }
-
-                if( !isIPad ){
-                	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
-                }
-
                 termTableHtml += weeklyTermtailHtml;
 
                 l_count++;

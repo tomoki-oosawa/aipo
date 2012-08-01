@@ -701,6 +701,7 @@ dojo.addOnLoad(function () {
   #else
     aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');
   #end
+  aipo.calendar.populateWeeklySchedule('$!portlet.ID');
 });
 
 //]]>
