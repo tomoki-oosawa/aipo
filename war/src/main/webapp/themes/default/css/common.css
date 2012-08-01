@@ -144,13 +144,7 @@ div.outer {
 	margin-bottom:2px;
 	margin-top:2px;
 }
-<<<<<<< .mine
-/*
-.clearfix:after,
-.inner:after {
-=======
 .clearfix:after {
->>>>>>> .r3865
 	content:".";
 	display:block;
 	height:0;
@@ -160,23 +154,6 @@ div.outer {
 .clearfix {
 	display:inline-block;
 }
-<<<<<<< .mine
-*/
-.clearfix, .inner {zoom:1;}
-.clearfix:after, .inner:after{
-	content: ""; 
-	display: block; 
-	clear: both;
-}
-/* Hides from IE-mac \*/
-* html .clearfix, * html .inner {height:1%;}
-.clearfix, .inner {display:block;}
-/* End hides from IE-mac */
-.clear {clear:both;}
-
-
-
-=======
 /* Hides from IE-mac \*/ * html .clearfix {
 	height:1%;
 }
@@ -186,7 +163,6 @@ div.outer {
 /* End hides from IE-mac */ .clear {
 	clear:both;
 }
->>>>>>> .r3865
 .alignleft {
 	float:left;
 }

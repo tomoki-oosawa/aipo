@@ -1865,12 +1865,12 @@ ul.attachments span.deletebutton:hover{
 	padding:4px;
 	background:#f0f0f0;
 }
-.tlInputControls .floatRight li {
+.tlInputControls li {
 	float:left;
 	background:none;
 	padding:0 0 0 5px;
 }
-.tlInputControls .floatRight li:first-child {
+.tlInputControls li:first-child {
 	padding:0;
 }
 
