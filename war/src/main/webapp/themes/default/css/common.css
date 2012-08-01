@@ -144,29 +144,23 @@ div.outer {
 	margin-bottom:2px;
 	margin-top:2px;
 }
-.clearfix:after,
-.inner:after {
+.clearfix:after {
 	content:".";
 	display:block;
 	height:0;
 	clear:both;
 	visibility:hidden;
 }
-.clearfix.
-.inner {
+.clearfix {
 	display:inline-block;
 }
-/* Hides from IE-mac \*/
-* html .clearfix,
-* html .inner {
+/* Hides from IE-mac \*/ * html .clearfix {
 	height:1%;
 }
-.clearfix,
-.inner {
+.clearfix {
 	display:block;
 }
-/* End hides from IE-mac */ .clear,
-.inner {
+/* End hides from IE-mac */ .clear {
 	clear:both;
 }
 .alignleft {
