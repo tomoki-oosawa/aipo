@@ -30,6 +30,11 @@
 <script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
 #end
 
+#macro(ALjavascriptdefer $file)
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}" defer="defer"></script>
+#end
+
+
 #macro(ALbuttonLink $title $url $image)
 <a class="button" href="$!utils.escapeXML($url)" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
 #end
