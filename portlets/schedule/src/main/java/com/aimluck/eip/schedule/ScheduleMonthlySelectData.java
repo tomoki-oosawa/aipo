@@ -1176,7 +1176,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     if (hasAclviewOther) {
       return myGroupList;
     } else {
-      return null;
+      return new ArrayList<ALEipGroup>(0);
     }
   }
 
