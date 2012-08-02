@@ -833,7 +833,7 @@ public class ExtTimecardSelectData extends
     if (hasAclSummaryOther) {
       return myGroupList;
     } else {
-      return null;
+      return new ArrayList<ALEipGroup>(0);
     }
   }
 
