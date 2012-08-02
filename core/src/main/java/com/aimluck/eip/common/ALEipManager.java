@@ -137,17 +137,18 @@ public class ALEipManager {
     return users.get(userId);
   }
 
+  @SuppressWarnings("unchecked")
   public Map<Integer, ALEipUser> getUsers(List<Integer> users) {
     Map<Integer, ALEipUser> results =
       new HashMap<Integer, ALEipUser>(users.size());
+    Map<Integer, ALEipUser> map = new HashMap<Integer, ALEipUser>(users.size());
+
     List<Integer> fetchUsers = new ArrayList<Integer>(users.size());
 
     HttpServletRequest request = HttpServletRequestLocator.get();
 
     if (request != null) {
-      @SuppressWarnings("unchecked")
-      Map<Integer, ALEipUser> map =
-        (Map<Integer, ALEipUser>) request.getAttribute(USERS_KEY);
+      map = (Map<Integer, ALEipUser>) request.getAttribute(USERS_KEY);
       if (map != null) {
         for (Integer userId : users) {
           ALEipUser user = map.get(userId);
@@ -158,6 +159,7 @@ public class ALEipManager {
           }
         }
       } else {
+        map = new HashMap<Integer, ALEipUser>(users.size());
         fetchUsers.addAll(users);
       }
     } else {
@@ -207,12 +209,13 @@ public class ALEipManager {
           .getTime() : 0);
 
         results.put(model.getUserId(), eipUser);
+        map.put(model.getUserId(), eipUser);
       }
     }
 
     // requestに登録
     if (request != null) {
-      request.setAttribute(USERS_KEY, results);
+      request.setAttribute(USERS_KEY, map);
     }
 
     return results;
