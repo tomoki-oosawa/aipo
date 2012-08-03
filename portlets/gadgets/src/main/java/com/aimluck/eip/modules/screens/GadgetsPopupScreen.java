@@ -40,6 +40,7 @@ import com.aimluck.eip.services.social.ALSocialApplicationHandler.Property;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -53,6 +54,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
+    context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
 
     String appId = rundata.getParameters().getString("aid");
     ALApplication app =
