@@ -279,13 +279,17 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
 
 aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 	var num = 0;
-	dojo.query("#timelineOuter .elastic").forEach(function(item) {
-		if(item.value != item.defaultValue || item.focus()){
+
+	var submit = dojo.byId('getTimelineOnClick').innerHTML;
+	if(submit != 'true'){
+		dojo.query("#timelineOuter .elastic").forEach(function(item) {
+			if(item.value != item.defaultValue || item.focus()){
+				num++;
+			}
+		});
+		if(dojo.byId("modalDialog") != undefined && dojo.byId("modalDialog").style.display != "none") {
 			num++;
 		}
-	});
-	if(dojo.byId("modalDialog") != undefined && dojo.byId("modalDialog").style.display != "none") {
-		num++;
 	}
 	if(num == 0){
 		aipo.portletReload('timeline');

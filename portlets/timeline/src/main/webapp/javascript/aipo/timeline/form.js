@@ -283,6 +283,8 @@ aipo.timeline.onReceiveMessage = function(msg) {
       arrDialog.hide();
     }
     aipo.portletReload('timeline');
+  }else{
+    dojo.byId('getTimelineOnClick').innerHTML=''
   }
   if (dojo.byId("messageDiv_" + pid)) {
     dojo.byId("messageDiv_" + pid).innerHTML = msg;
@@ -508,6 +510,8 @@ aipo.timeline.write = function(inthis, indicator_id, pid) {
 	aipo.timeline.addText(dojo.byId('form' + pid), pid);
 	aipo.timeline.addHiddenValue(dojo.byId('form' + pid), 'mode', 'insert');
 	aimluck.io.setHiddenValue(inthis);
+	// 投稿中に、自分のポストを新着と勘違いするのを防ぐ
+	dojo.byId('getTimelineOnClick').innerHTML='true';
 }
 
 aipo.timeline.setMinHeight = function(pid){

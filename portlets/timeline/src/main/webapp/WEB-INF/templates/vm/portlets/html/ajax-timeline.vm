@@ -27,6 +27,7 @@
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_id3 = "indicator-dlg3-")
 ## ---------------------------------------------------------------------------
+<img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
 <div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
@@ -47,6 +48,7 @@
   <div id="messageDiv_$!portlet.ID"></div>
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
+    <span id="getTimelineOnClick" style="display:none;"></span>
 	<input href="javascript:void(0)" type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value=$l10n.TIMELINE_POST />
   </div>
   <div class="floatRight">
