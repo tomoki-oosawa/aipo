@@ -346,10 +346,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 }
 
                 var weeklyTermtailHtml;
-                if(scheduleTooltipEnable!==true && isSimple && isOneSpan || aipo.calendar.noscrollbar ){
-                   	weeklyTermtailHtml = "</div></td></tr>";
-                }else{
+                if(!(scheduleTooltipEnable!==true && isSimple && isOneSpan) || !aipo.calendar.noscrollbar ){
                 	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+                }else{
+                   	weeklyTermtailHtml = "</div></td></tr>";
                  }
                 termTableHtml += weeklyTermtailHtml;
 
