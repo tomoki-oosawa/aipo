@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
 ## ---------------------------------------------------------------------------
-#if($!result.AccountId != 0)
+#if($!result.AccountId && $!result.AccountId != 0)
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft w30">
 <form class="auiForm">
