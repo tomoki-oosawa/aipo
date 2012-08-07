@@ -148,6 +148,7 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setLastNameKana(tuser.getLastNameKana());
       baseuser.setFirstNameKana(tuser.getFirstNameKana());
       baseuser.setPhoto(tuser.getPhoto());
+      baseuser.setPhotoSmartphone(tuser.getPhotoSmartphone());
       baseuser.setCreatedUserId((tuser.getCreatedUserId() != null) ? tuser
         .getCreatedUserId()
         .intValue() : 0);
@@ -155,7 +156,9 @@ public class ALUserManagement extends TurbineBaseService implements
         .getUpdatedUserId()
         .intValue() : 0);
       baseuser.setPhotoModified(tuser.getPhotoModified());
+      baseuser.setPhotoModifiedSmartphone(tuser.getPhotoModifiedSmartphone());
       baseuser.setHasPhoto("T".equals(tuser.getHasPhoto()));
+      baseuser.setHasPhotoSmartphone("T".equals(tuser.getHasPhotoSmartphone()));
       return baseuser;
     } catch (Exception e) {
       logger.error("[ALUserManagement]", e);
@@ -293,10 +296,13 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setLastNameKana(baseuser.getLastNameKana());
       tuser.setFirstNameKana(baseuser.getFirstNameKana());
       tuser.setPhoto(baseuser.getPhoto());
+      tuser.setPhotoSmartphone(baseuser.getPhotoSmartphone());
       tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
       tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
       tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
       tuser.setPhotoModified(baseuser.getPhotoModified());
+      tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
+      tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {
@@ -362,11 +368,13 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setLastNameKana(baseuser.getLastNameKana());
     tuser.setFirstNameKana(baseuser.getFirstNameKana());
     tuser.setPhoto(baseuser.getPhoto());
+    tuser.setPhotoSmartphone(baseuser.getPhotoSmartphone());
     tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
     tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
     tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
     tuser.setPhotoModified(new Date());
-
+    tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
+    tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる

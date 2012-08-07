@@ -63,6 +63,8 @@ public class ALBaseUser extends
 
   public static final String PHOTO = "PHOTO";
 
+  public static final String PHOTO_SMARTPHONE = "PHOTO_SMARTPHONE";
+
   public static final String CREATED_USER_ID = "CREATED_USER_ID";
 
   public static final String UPDATED_USER_ID = "UPDATED_USER_ID";
@@ -73,7 +75,12 @@ public class ALBaseUser extends
 
   public static final String PHOTO_MODIFIED = "PHOTO_MODIFIED";
 
+  public static final String PHOTO_MODIFIED_SMARTPHONE =
+    "PHOTO_MODIFIED_SMARTPHONE";
+
   public static final String HAS_PHOTO = "HAS_PHOTO";
+
+  public static final String HAS_PHOTO_SMARTPHONE = "HAS_PHOTO_SMARTPHONE";
 
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -250,10 +257,36 @@ public class ALBaseUser extends
 
   /**
    * 
+   * @return byte[]
+   */
+  public byte[] getPhotoSmartphone() {
+    Object obj = getPerm(PHOTO_SMARTPHONE);
+
+    if (obj instanceof byte[]) {
+      return (byte[]) obj;
+    }
+
+    if (obj == null || "".equals(obj)) {
+      return null;
+    }
+
+    return ((String) obj).getBytes();
+  }
+
+  /**
+   * 
    * @param v
    */
-  public void setPhoto(byte[] b) {
-    setPerm(PHOTO, b);
+  public void setPhoto(byte[] v) {
+    setPerm(PHOTO, v);
+  }
+
+  /**
+   * 
+   * @param b
+   */
+  public void setPhotoSmartphone(byte[] b) {
+    setPerm(PHOTO_SMARTPHONE, b);
   }
 
   /**
@@ -377,11 +410,23 @@ public class ALBaseUser extends
     return "T".equals(hasPhoto);
   }
 
+  public boolean hasPhotoSmartphone() {
+    String hasPhotoSmartphone = (String) getPerm(HAS_PHOTO_SMARTPHONE);
+    return "T".equals(hasPhotoSmartphone);
+  }
+
   /**
    *
    */
   public void setHasPhoto(boolean hasPhoto) {
     setPerm(HAS_PHOTO, hasPhoto ? "T" : "F");
+  }
+
+  /**
+  *
+  */
+  public void setHasPhotoSmartphone(boolean hasPhotoSmartphone) {
+    setPerm(HAS_PHOTO_SMARTPHONE, hasPhotoSmartphone ? "T" : "F");
   }
 
   /**
@@ -392,9 +437,26 @@ public class ALBaseUser extends
   }
 
   /**
+   * @param dd
+   */
+  public void setPhotoModifiedSmartphone(Date dd) {
+    setPerm(PHOTO_MODIFIED_SMARTPHONE, dd);
+  }
+
+  /**
    * @return
    */
   public Date getPhotoModified() {
     return (Date) (getPerm(PHOTO_MODIFIED));
+  }
+
+  /**
+   * @return
+   */
+  public Date getPhotoModifiedSmartphone() {
+    if (getPerm(PHOTO_MODIFIED_SMARTPHONE) == null) {
+      return new Date();
+    }
+    return (Date) (getPerm(PHOTO_MODIFIED_SMARTPHONE));
   }
 }

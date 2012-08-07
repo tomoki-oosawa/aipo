@@ -10,3 +10,8 @@ UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 45 WHERE `feature_id` = 172 
 ALTER TABLE activity CHANGE COLUMN title title varchar(255) NOT NULL;
 -- 20120724
 
+-- 20120807
+ALTER TABLE turbine_user  ADD PHOTO_SMARTPHONE bytea;
+ALTER TABLE turbine_user  ADD HAS_PHOTO_SMARTPHONE  VARCHAR (1) DEFAULT 'F';
+ALTER TABLE turbine_user  ADD PHOTO_MODIFIED_SMARTPHONE TIMESTAMP;
+-- 20120807

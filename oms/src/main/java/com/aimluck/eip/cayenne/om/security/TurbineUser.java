@@ -41,6 +41,14 @@ public class TurbineUser extends _TurbineUser {
 
   public static final String PHOTO_MODIFIED_COLUMN = "PHOTO_MODIFIED";
 
+  public static final String PHOTO_SMARTPHONE_COLUMN = "PHOTO_SMARTPHONE";
+
+  public static final String HAS_PHOTO_SMARTPHONE_COLUMN =
+    "HAS_PHOTO_SMARTPHONE";
+
+  public static final String PHOTO_MODIFIED_SMARTPHONE_COLUMN =
+    "PHOTO_MODIFIED_SMARTPHONE";
+
   public Integer getUserId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(USER_ID_PK_COLUMN);

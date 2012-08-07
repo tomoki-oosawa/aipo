@@ -134,6 +134,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  /** 顔写真データ */
+  private byte[] facePhoto_smartphone;
+
   /** パスワード変更の可否．変更する場合は，false． */
   private boolean dontUpdatePasswd = false;
 
@@ -266,13 +269,25 @@ public class AccountEditFormData extends ALAbstractFormData {
           if (filebean.getFileId() != 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
-            facePhoto =
+
+            facePhoto_smartphone =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
                 folderName,
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                msgList);
+            String[] acceptExts2 = ImageIO.getWriterFormatNames();
+            facePhoto =
+              FileuploadUtils.getBytesShrinkFilebean(
+                orgId,
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts2,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList);
@@ -610,6 +625,9 @@ public class AccountEditFormData extends ALAbstractFormData {
       if (filebean != null) {
         if (filebean.getFileId() != 0) {
           // 顔写真を登録する．
+          user.setPhotoSmartphone(facePhoto_smartphone);
+          user.setHasPhotoSmartphone(true);
+          user.setPhotoModifiedSmartphone(new Date());
           user.setPhoto(facePhoto);
           user.setHasPhoto(true);
           user.setPhotoModified(new Date());
@@ -617,6 +635,9 @@ public class AccountEditFormData extends ALAbstractFormData {
       } else if (delete_photo) {
         user.setPhoto(null);
         user.setHasPhoto(false);
+        user.setPhotoSmartphone(null);
+        user.setHasPhotoSmartphone(false);
+
       }
 
       // 新しいパスワードをセットする

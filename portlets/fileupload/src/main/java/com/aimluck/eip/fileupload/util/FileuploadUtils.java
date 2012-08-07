@@ -79,6 +79,12 @@ public class FileuploadUtils {
   /** 画像サムネイルのサイズ（縦幅） */
   public static final int DEF_THUMBNAIL_HEIGHT = 86;
 
+  /** スマートフォンの画像サムネイルのサイズ（横幅） */
+  public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 64;
+
+  /** スマートフォンの画像サムネイルのサイズ（縦幅） */
+  public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 64;
+
   /** 現在の添付ファイル数 */
   public static final String KEY_NOW_SIZE = "nsize";
 

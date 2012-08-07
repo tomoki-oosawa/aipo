@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -28,6 +31,8 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.util.ALCellularUtils;
 
 /**
  * 顔写真を画像データとして出力するクラスです。 <br />
@@ -58,14 +63,42 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
       ALBaseUser user =
         (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
 
-      byte[] photo = user.getPhoto();
+      byte[] photo;
+      if (!ALCellularUtils.isSmartPhone(rundata)) {
+        photo = user.getPhoto();
 
-      if (photo == null) {
-        return;
-      }
-      Date date = user.getPhotoModified();
-      if (date != null) {
-        super.setLastModified(date);
+        if (photo == null) {
+          return;
+        }
+        Date date = user.getPhotoModified();
+        if (date != null) {
+          super.setLastModified(date);
+        }
+      } else {
+        photo = user.getPhotoSmartphone();
+
+        if (photo == null && user.getPhoto() == null) {
+          return;
+        } else if (photo == null && user.getPhoto() != null) {
+          // スマホ用サムネがなければ作ってしまう。
+          InputStream tmpStream = new ByteArrayInputStream(user.getPhoto());
+          byte[] shrinkPhoto =
+            FileuploadUtils.getBytesShrink(
+              tmpStream,
+              FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+              new ArrayList<String>());
+          user.setPhotoSmartphone(shrinkPhoto);
+          user.setHasPhotoSmartphone(true);
+          user.setPhotoModifiedSmartphone(new Date());
+          JetspeedSecurity.saveUser(user);
+          photo = shrinkPhoto;
+        }
+
+        Date date = user.getPhotoModifiedSmartphone();
+        if (date != null) {
+          super.setLastModified(date);
+        }
       }
 
       super.setFile(photo);

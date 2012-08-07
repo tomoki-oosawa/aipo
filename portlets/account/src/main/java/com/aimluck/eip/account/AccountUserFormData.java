@@ -190,6 +190,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  /** 顔写真データ(スマートフォン） */
+  private byte[] facePhoto_smartphone;
+
   /** ログインしている人のユーザーID */
   private int login_uid;
 
@@ -352,8 +355,19 @@ public class AccountUserFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList);
+            facePhoto_smartphone =
+              FileuploadUtils.getBytesShrinkFilebean(
+                orgId,
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                msgList);
           } else {
             facePhoto = null;
+            facePhoto_smartphone = null;
           }
         }
       }
@@ -809,9 +823,12 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
         if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
+          user.setPhotoSmartphone(facePhoto_smartphone);
           user.setPhoto(facePhoto);
           user.setHasPhoto(true);
+          user.setHasPhotoSmartphone(true);
           user.setPhotoModified(new Date());
+          user.setPhotoModifiedSmartphone(new Date());
         }
 
         // ユーザーを追加
@@ -969,6 +986,9 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (filebean != null) {
           if (filebean.getFileId() != 0) {
             // 顔写真を登録する．
+            user.setPhotoSmartphone(facePhoto_smartphone);
+            user.setPhotoModifiedSmartphone(new Date());
+            user.setHasPhotoSmartphone(true);
             user.setPhoto(facePhoto);
             user.setPhotoModified(new Date());
             user.setHasPhoto(true);
@@ -976,6 +996,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         } else {
           user.setPhoto(null);
           user.setHasPhoto(false);
+          user.setPhotoModifiedSmartphone(null);
+          user.setHasPhotoSmartphone(false);
         }
 
         user.setEmail(email.getValue());
@@ -1033,6 +1055,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setLastNameKana(user.getLastNameKana());
           currentUser.setHasPhoto(user.hasPhoto());
           currentUser.setPhotoModified(user.getPhotoModified());
+          currentUser.setHasPhotoSmartphone(user.hasPhoto());
+          currentUser.setPhotoModifiedSmartphone(user
+            .getPhotoModifiedSmartphone());
         }
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
