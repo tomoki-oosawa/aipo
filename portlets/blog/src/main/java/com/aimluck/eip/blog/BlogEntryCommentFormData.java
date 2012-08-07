@@ -363,6 +363,10 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       }
     }
 
+    if (userIdList.isEmpty()) {
+      return new ArrayList<ALEipUser>(0);
+    }
+
     // ユーザーIDからユーザー情報を取得する。
     SelectQuery<TurbineUser> userQuery = Database.query(TurbineUser.class);
     Expression userExp =
