@@ -454,8 +454,9 @@ public class ALBaseUser extends
    * @return
    */
   public Date getPhotoModifiedSmartphone() {
-    if (getPerm(PHOTO_MODIFIED_SMARTPHONE) == null) {
-      return new Date();
+    if (getPerm(PHOTO_MODIFIED_SMARTPHONE) == null
+      || "".equals(getPerm(PHOTO_MODIFIED_SMARTPHONE))) {
+      return null;
     }
     return (Date) (getPerm(PHOTO_MODIFIED_SMARTPHONE));
   }
