@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 /**
  * 入力フィールドで取り扱う文字列に対するユーティリティクラスです。 <br />
- *
+ * 
  */
 public class ALStringUtil {
 
@@ -39,7 +39,7 @@ public class ALStringUtil {
 
   /**
    * メールアドレス形式であるかを判定します。
-   *
+   * 
    * @param argStr
    *          チェック対象文字列
    * @return メールアドレス形式であればtrue、それ以外はfalse。
@@ -55,7 +55,7 @@ public class ALStringUtil {
 
   /**
    * 携帯電話のメールアドレス形式であるかを判定します。
-   *
+   * 
    * @param argStr
    *          チェック対象文字列
    * @return メールアドレス形式であればtrue、それ以外はfalse。
@@ -63,7 +63,7 @@ public class ALStringUtil {
   public static boolean isCellPhoneMailAddress(String str) {
     Pattern mailPattern =
       Pattern.compile(
-        "[\\w\\.\\-\\_\\/]+@([\\w\\-]+\\.)+[\\w\\-]+",
+        "[\\w\\.\\-\\_\\+\\p{Punct}]+@([\\w\\-]+\\.)+[\\w\\-]+",
         Pattern.CASE_INSENSITIVE);
     Matcher objMch = mailPattern.matcher(str);
     return objMch.matches();
@@ -71,7 +71,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字が半角カナかどうかを判定します。
-   *
+   * 
    * @param chr
    *          チェック対象文字
    * @return 半角カナならば true,それ以外は false
@@ -82,7 +82,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字列が半角数字のみかをどうかを判定します。
-   *
+   * 
    * @param String
    *          str チェックする文字列
    * @return 半角数字のみであればtrue、それ以外はfalse。
@@ -98,7 +98,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字列に含まれるひらがなをカタカナに変換します。
-   *
+   * 
    * @param str
    * @return
    */
@@ -118,7 +118,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
-   *
+   * 
    * @param str
    * @return
    */
@@ -132,7 +132,7 @@ public class ALStringUtil {
 
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
-   *
+   * 
    * @param str
    * @param pos
    * @param length
@@ -177,7 +177,7 @@ public class ALStringUtil {
 
   /**
    * HTML文字列におけるメタ文字を置き換え、無害化します。
-   *
+   * 
    * @param argStr
    *          メタ文字列
    * @return 変換後文字列
@@ -217,7 +217,7 @@ public class ALStringUtil {
 
   /**
    * 無害化(サニタイジング)された文字列を復元します。
-   *
+   * 
    * @param str
    *          サニタイジングされた文字を含む文字列
    * @return サニタイジング前文字列
@@ -325,7 +325,7 @@ public class ALStringUtil {
 
   /**
    * 指定した文字が記号であるかを返します
-   *
+   * 
    * @param ch
    * @return
    */
