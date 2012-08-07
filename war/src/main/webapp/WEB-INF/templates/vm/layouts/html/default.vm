@@ -41,7 +41,6 @@
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
 #else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
 #end
-<link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body onload="aipo.container.renderGadgets()">

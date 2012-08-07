@@ -41,11 +41,9 @@
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
 #else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
 #end
-<link rel="stylesheet" type="text/css" href="$!{external_resources_url}/themes/$!{theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body onload="aipo.container.renderGadgets()">
-<span id="aipo_alias" style="display:none;">$!{alias}</span>
 #if("$isXDomain" == "true")
 <script type="text/javascript">
   djConfig = {
@@ -257,6 +255,6 @@ dojo.addOnLoad(function() {
 </script>
 
 <iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
-#ALjavascript("javascript/aipo/common.js")
+#ALjavascriptdefer("javascript/aipo/common.js")
 </body>
 </html>
