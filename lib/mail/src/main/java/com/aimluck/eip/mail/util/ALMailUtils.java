@@ -1769,7 +1769,7 @@ public class ALMailUtils {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
 
       Expression exp =
-        ExpressionFactory.matchDbExp(EipTMail.FOLDER_ID_PROPERTY, folder
+        ExpressionFactory.matchExp(EipTMail.FOLDER_ID_PROPERTY, folder
           .getFolderId());
       List<EipTMail> mail_list = query.andQualifier(exp).fetchList();
 
