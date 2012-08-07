@@ -191,6 +191,9 @@ public class ALUserManagement extends TurbineBaseService implements
       throw new UserException(message, e);
     }
     try {
+      if (null == user) {
+        return null;
+      }
       JetspeedUser juser = row2UserObject(user);
       return juser;
     } catch (IllegalStateException e) {
@@ -198,7 +201,7 @@ public class ALUserManagement extends TurbineBaseService implements
       throw e;
     } catch (UserException e) {
       String message = "Failed to retrieve user '" + principal.getName() + "'";
-      logger.error(message, e);
+      logger.warn(message, e);
       throw new UserException(message, e);
     }
   }
