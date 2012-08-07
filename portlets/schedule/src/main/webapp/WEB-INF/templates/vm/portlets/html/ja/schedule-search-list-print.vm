@@ -62,14 +62,14 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 </td>
 </tr>
 <tr>
-<th>l10n.SCHEDULE_SET_OTHER_VIEW</th>
+<th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
-<label><input id=print_icon type="checkbox" checked="checked" /> l10n.SCHEDULE_DISPLAY_ICON</label><br />
+<label><input id=print_icon type="checkbox" checked="checked" />$l10n.SCHEDULE_DISPLAY_ICON</label><br />
 </td>
 </tr>
 <tr>
-<th><input type="button" value="l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
-<td><input type="button" value="l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
+<th><input type="button" value="$l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
+<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
 </tr>
 </table>
 </div>

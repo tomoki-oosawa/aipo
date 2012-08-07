@@ -37,11 +37,11 @@
 <meta name="copyright" content="${copyright}" />
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
 <meta name="robots" content="noindex,follow" />
-<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico" />
-<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css"/>
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css" media="print" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css"/>
+<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}"/>
 <!--
 #if($isXDomain == "true")
 <script type="text/javascript">
