@@ -62,17 +62,17 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 <table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
 <td width="23"><table width="100%" border="0">
 <tr><td valign="top">
-<a href="javascript:doUpOptions10(document.forms[0].member_so)" title=$l10n.ACCOUNT_ACEND_ORDER_10><img src="images/account/account_up_10.gif" alt=$l10n.ACCOUNT_ACEND_ORDER_10 border="0"></a></td>
+<a href="javascript:doUpOptions10(document.forms[0].member_so)" title="$l10n.ACCOUNT_ACEND_ORDER_10"><img src="images/account/account_up_10.gif" alt="$l10n.ACCOUNT_ACEND_ORDER_10" border="0"></a></td>
 </tr>
 <tr><td valign="top">
-<a href="javascript:doUpOptions(document.forms[0].member_so)" title=$l10n.ACCOUNT_ACEND_ORDER_1><img src="images/account/account_up_1.gif" alt=$l10n.ACCOUNT_ACEND_ORDER_1 border="0"></a></td>
+<a href="javascript:doUpOptions(document.forms[0].member_so)" title="$l10n.ACCOUNT_ACEND_ORDER_1"><img src="images/account/account_up_1.gif" alt="$l10n.ACCOUNT_ACEND_ORDER_1" border="0"></a></td>
 </tr>
 <tr><td height="100%">&nbsp;</td></tr>
 <tr>
-<td valign="bottom"><a href="javascript:doDownOptions(document.forms[0].member_so)" title=$l10n.ACCOUNT_DECEND_ORDER_1><img src="images/account/account_down_1.gif" alt=$l10n.ACCOUNT_DECEND_ORDER_1 border="0"></a></td>
+<td valign="bottom"><a href="javascript:doDownOptions(document.forms[0].member_so)" title="$l10n.ACCOUNT_DECEND_ORDER_1"><img src="images/account/account_down_1.gif" alt="$l10n.ACCOUNT_DECEND_ORDER_1" border="0"></a></td>
 </tr>
 <tr>
-<td valign="bottom"><a href="javascript:doDownOptions10(document.forms[0].member_so)" title=$l10n.ACCOUNT_DECEND_ORDER_10><img src="images/account/account_down_10.gif" alt=$l10n.ACCOUNT_DECEND_ORDER_10 border="0"></a></td>
+<td valign="bottom"><a href="javascript:doDownOptions10(document.forms[0].member_so)" title="$l10n.ACCOUNT_DECEND_ORDER_10"><img src="images/account/account_down_10.gif" alt="$l10n.ACCOUNT_DECEND_ORDER_10" border="0"></a></td>
 </tr>
 </table></td>
 <td width="100%"><select name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">

@@ -247,7 +247,7 @@ $!data.Message
 <input name="username" type="hidden" value="" />
 <div class="field clearfix">
 <span id="login_username_field">
-<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder=$l10n.ACCOUNT_USER_ACCOUNT /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder="$l10n.ACCOUNT_USER_ACCOUNT" /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
@@ -266,7 +266,7 @@ $!data.Message
 #end
 </div>
 <div class="field">
-<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" placeholder=$l10n.ACCOUNT_PASS /><span class="guide" style="display:none;"  onclick="this.style.display='none';document.getElementById('password').focus();">$l10n.ACCOUNT_PASS</span>
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" placeholder="$l10n.ACCOUNT_PASS" /><span class="guide" style="display:none;"  onclick="this.style.display='none';document.getElementById('password').focus();">$l10n.ACCOUNT_PASS</span>
 </div>
 <div class="clearfix">
 <div class="floatLeft">

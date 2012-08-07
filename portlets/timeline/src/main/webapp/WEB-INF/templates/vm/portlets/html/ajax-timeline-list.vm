@@ -48,7 +48,7 @@
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
     <span id="getTimelineOnClick" style="display:none;"></span>
-	<input href="javascript:void(0)" type="submit"  id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value=$l10n.TIMELINE_POST />
+	<input href="javascript:void(0)" type="submit"  id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
   </div>
   <div class="floatRight">
 	<div class="tlInputMention">

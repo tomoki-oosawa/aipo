@@ -86,11 +86,11 @@
 #ALtditem("#ALtextfield('todo_name' $!result.TodoName '90%' 50 'active')")
 #ALtdcaption($!result.getFieldName("start_date"))
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="startdatepicker" widgetId="startdatepicker"  iconURL="images/icon/icon_date.gif" iconAlt=$l10n.TODO_START_DATE hiddenId="start_date" #if ($!result.StartDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartDate.Year}/$!{result.StartDate.Month}/$!{result.StartDate.Day}"checked="checked" #end inputId="input_startdate" dateId="start_date" displayCheck=""></div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="startdatepicker" widgetId="startdatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.TODO_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartDate.Year}/$!{result.StartDate.Month}/$!{result.StartDate.Day}"checked="checked" #end inputId="input_startdate" dateId="start_date" displayCheck=""></div>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("end_date"))
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="enddatepicker" widgetId="enddatepicker"  iconURL="images/icon/icon_date.gif" iconAlt=$l10n.TODO_END_DATE #if ($!result.EndDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndDate.Year}/$!{result.EndDate.Month}/$!{result.EndDate.Day}" #end dateId="end_date"></div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="enddatepicker" widgetId="enddatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.TODO_END_DATE" #if ($!result.EndDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndDate.Year}/$!{result.EndDate.Month}/$!{result.EndDate.Day}" #end dateId="end_date"></div>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("priority"))
 #ALtditemheader()

@@ -42,7 +42,7 @@
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 <form class="auiForm" name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
-<input type="hidden" name="_name" value=$l10n.EXTTIMECARD_USER />
+<input type="hidden" name="_name" value="$l10n.EXTTIMECARD_USER" />
 <input type="hidden" name="secid" value="$secid" />
 #if($result.List.size() == 0)
 $l10n.EXTTIMECARD_ALERT_NO_USER<br />

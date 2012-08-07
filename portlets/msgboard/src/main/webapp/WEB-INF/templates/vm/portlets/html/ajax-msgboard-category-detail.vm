@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(MsgboardajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value=$l10n.MSGBOARD_DELETE onclick="aipo.msgboard.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.MSGBOARD_DELETE" onclick="aipo.msgboard.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($l10n.MSGBOARD_CATEGORY_DETAIL)
@@ -36,13 +36,13 @@
 #ALtdcaption($l10n.MSGBOARD_CHANGE_VIEWS)
 #ALtditemheader()
 #set($accessFlag = $!result.Detail.AccessFlag.toString())
-#if($accessFlag == "0") 
+#if($accessFlag == "0")
 $l10n.MSGBOARD_ALL_REPLY_ALL_VIEWS
-#elseif($accessFlag == "1") 
+#elseif($accessFlag == "1")
 $l10n.MSGBOARD_ALL_MEMBER_MEMBER_VIEWS
-#elseif($accessFlag == "2") 
+#elseif($accessFlag == "2")
 $l10n.MSGBOARD_MEMBER_REPLY_MEMBER_VIEWS
-#elseif($accessFlag == "3") 
+#elseif($accessFlag == "3")
 $l10n.MSGBOARD_OWN_REPLY_OWE_VIEWS
 #end
 #if($accessFlag == "1" || $accessFlag == "2")

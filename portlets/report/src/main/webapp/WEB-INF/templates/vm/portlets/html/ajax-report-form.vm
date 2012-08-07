@@ -65,14 +65,14 @@
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle=$l10n.REPORT_MEMVER_LIST
+        memberToTitle="$l10n.REPORT_MEMVER_LIST"
         memberToId="members"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue=$l10n.REPORT_ALL_GROUP
+        groupSelectPreOptionValue="$l10n.REPORT_ALL_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -86,7 +86,7 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('createDate'))")
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt=$l10n.REPORT_DATE hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.REPORT_DATE" hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
 <br />
 <select name="startDate_hour" size="1">
 #foreach ( $num in [0..23] )
@@ -146,14 +146,14 @@
         buttonAddId="button_map_add"
         buttonRemoveId="button_map_remove"
         memberFromId="tmp_map_from"
-        memberToTitle=$l10n.REPORT_NOTIFY_POSITION_LIST
+        memberToTitle="$l10n.REPORT_NOTIFY_POSITION_LIST"
         memberToId="positions"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_map_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue=$l10n.REPORT_ALL_GROUP
+        groupSelectPreOptionValue="$l10n.REPORT_ALL_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -168,7 +168,7 @@
 #ALtablefooter()
 
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value=$l10n.REPORT_ADD onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

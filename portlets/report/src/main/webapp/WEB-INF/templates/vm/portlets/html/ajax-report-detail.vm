@@ -70,9 +70,9 @@ $!record.AliasName<br />
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MapList)
 #if($result.ParentReport.getStatus($record.UserId.Value) == "R")
-<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.REPORT_READ title=$l10n.REPORT_READ/>
+<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_READ" title="$l10n.REPORT_READ"/>
 #else
-<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.REPORT_UNREAD title=$l10n.REPORT_UNREAD/>
+<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_UNREAD" title="$l10n.REPORT_UNREAD"/>
 #end
 $!record.AliasName
 <br />
@@ -157,7 +157,7 @@ ${record.Note}
 #ALtablefooter()
 #end
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value=$l10n.REPORT_ADD onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

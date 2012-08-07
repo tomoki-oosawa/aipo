@@ -61,7 +61,7 @@
 <label for="cacheGadgetXml_for">${l10n.GADGETS_ENABLE}</label>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.GADGETS_CLOSE1 onclick="aipo.gadgets_admin.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.GADGETS_CLOSE1" onclick="aipo.gadgets_admin.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

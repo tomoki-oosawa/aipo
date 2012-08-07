@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 <div class="tlInputAttachment">
 <div class="floatRight">
-  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title=$l10n.TIMELINE_DELETION>
+  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title="$l10n.TIMELINE_DELETION">
     <span>x</span>
   </a>
 </div>
@@ -44,13 +44,13 @@
       <div class="auiSummaryMeta clearfix" id="auiSummaryMeta_$portlet.ID" style="display:none">
       <div class="auiSelectButton floatLeft" id="timelineSelectButton_$!{portlet.ID}">
         <ul class="floatLeft mr10">
-          <li title=$l10n.TIMELINE_PREV>
-            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID')" title=$l10n.TIMELINE_PREV class="first arrow">
+          <li title="$l10n.TIMELINE_PREV">
+            <a href="javascript:void(0);" onclick="aipo.timeline.prevThumbnail('$portlet.ID')" title="$l10n.TIMELINE_PREV" class="first arrow">
               <span><i class="auiIconArrow auiIconArrowLeft"></i></span>
             </a>
           </li>
-          <li title=$l10n.TIMELINE_NEXT>
-            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID')" title=$l10n.TIMELINE_NEXT class="last arrow">
+          <li title="$l10n.TIMELINE_NEXT">
+            <a href="javascript:void(0);" onclick="aipo.timeline.nextThumbnail('$portlet.ID')" title="$l10n.TIMELINE_NEXT" class="last arrow">
               <span><i class="auiIconArrow auiIconArrowRight"></i></span>
             </a>
           </li>
@@ -62,7 +62,7 @@
       </div>
       </div>
       <div style="clear:both" id="ViewThumbnail_$!{portlet.ID}" style="display:none">
-        <input type="checkbox" value=$l10n.TIMELINE_DONOT_VIEW_THUMBNAIL id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
+        <input type="checkbox" value="$l10n.TIMELINE_DONOT_VIEW_THUMBNAIL" id="checkbox_$!{portlet.ID}" onclick="aipo.timeline.viewThumbnail('$portlet.ID')">
         <label for="checkbox_$!{portlet.ID}">$l10n.TIMELINE_DONOT_VIEW_THUMBNAIL</label>
       </div>
     #end

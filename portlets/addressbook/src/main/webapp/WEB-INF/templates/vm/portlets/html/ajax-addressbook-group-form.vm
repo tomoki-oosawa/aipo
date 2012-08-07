@@ -54,14 +54,14 @@
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle=$l10n.ADDRESSBOOK_BELONG_MEMBER_LIST
+        memberToTitle="$l10n.ADDRESSBOOK_BELONG_MEMBER_LIST"
         memberToId="address_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','all')"
         memberFromOptionKey="addressId"
         memberFromOptionValue="fullName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="all"
-        groupSelectPreOptionValue=$l10n.ADDRESSBOOK_ALL_GROUP
+        groupSelectPreOptionValue="$l10n.ADDRESSBOOK_ALL_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')"
