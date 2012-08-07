@@ -462,6 +462,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 if(item.tmpreserve) {
                     name += '<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" alt="仮スケジュール" title="仮スケジュール" align="top" class="icon" />';
                 }
+                while((left + width) > 100){
+                	width *= 0.99;
+                }
                 html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%; z-index: 0; visibility: hidden;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
                 count++;
             });
