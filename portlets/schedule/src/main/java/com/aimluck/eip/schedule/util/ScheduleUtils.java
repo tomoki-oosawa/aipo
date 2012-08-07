@@ -3672,11 +3672,7 @@ public class ScheduleUtils {
     select.append(" eip_t_schedule.public_flag,");
     select.append(" eip_t_schedule.repeat_pattern,");
     select.append(" eip_t_schedule.create_user_id,");
-    if (isSearch) {
-      select.append(" eip_t_schedule.note,");
-      select.append(" eip_t_schedule_map.user_id,");
-      select.append(" eip_t_schedule_map.type,");
-    } else if (isiCal) {
+    if (isSearch || isiCal) {
       select.append(" eip_t_schedule.note,");
     }
     select.append(" eip_t_schedule.edit_flag,");
@@ -3775,7 +3771,11 @@ public class ScheduleUtils {
     StringBuilder last = new StringBuilder();
 
     last
-      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule_map.type DESC,eip_t_schedule.update_date DESC,eip_t_schedule_map.user_id");
+      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule.update_date DESC");
+
+    if (!isSearch) {
+      last.append(" ,eip_t_schedule_map.type DESC, eip_t_schedule_map.user_id");
+    }
 
     SQLTemplate<VEipTScheduleList> countQuery =
       Database
@@ -3856,7 +3856,10 @@ public class ScheduleUtils {
         new StringBuilder(ALLocalizationUtils
           .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
           .append(schedule.getName())
-          .append(isNew ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE") : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+          .append(
+            isNew
+              ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
+              : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
           .toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
@@ -3893,7 +3896,10 @@ public class ScheduleUtils {
       new StringBuilder(ALLocalizationUtils
         .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
         .append(schedule.getName())
-        .append(isNew ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE") : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+        .append(
+          isNew
+            ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
+            : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
         .toString();
     String portletParams =
       new StringBuilder("?template=ScheduleDetailScreen")
