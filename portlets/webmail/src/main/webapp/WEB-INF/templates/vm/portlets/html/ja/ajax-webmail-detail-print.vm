@@ -110,8 +110,8 @@ $l10n.WEBMAIL_NOT_REFLECT_MSG
 </td>
 </tr>
 </table>
-<input type="button" value=$l10n.WEBMAIL_DO_CHANGE onclick="change_print_form()"/>
-<input type="button" value=$l10n.WEBMAIL_DO_PRINT onclick="javascript:print();"/>
+<input type="button" value="$l10n.WEBMAIL_DO_CHANGE" onclick="change_print_form()"/>
+<input type="button" value="$l10n.WEBMAIL_DO_PRINT" onclick="javascript:print();"/>
 </form>
 </div>
 <script type="text/javascript" language="JavaScript">

@@ -55,7 +55,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete($l10n.ADDRESSBOOK_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.addressbook.onListReceiveMessage")
 #set($dlLink =  $!utils.escapeXML($jslink.getTemplate('AddressBookWordXlsExportScreen').addPathInfo("mode", "ajaxsearch").addPathInfo('filter', "$!result.getCurrentFilter()").addPathInfo('filtertype', 'group').addPathInfo("tab", "$!result.currentTab")))
-<a class="auiButton" title=$l10n.ADDRESSBOOK_DOWNLOAD_LIST href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >$l10n.ADDRESSBOOK_DOWNLOAD_LIST</a>
+<a class="auiButton" title="$l10n.ADDRESSBOOK_DOWNLOAD_LIST" href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >$l10n.ADDRESSBOOK_DOWNLOAD_LIST</a>
 <input type="hidden" name="sword" value="$!result.searchWord"/>
 </div>
 #AUIajaxpageview(${pageviewscreen} $result)
@@ -80,7 +80,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');">$!record.Name</a></div>
 #if($!record.PublicFlag.toString() == 'F')
-<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.ADDRESSBOOK_CLOSE_PUBLIC title=$l10n.ADDRESSBOOK_CLOSE_PUBLIC />
+<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.ADDRESSBOOK_CLOSE_PUBLIC" title="$l10n.ADDRESSBOOK_CLOSE_PUBLIC" />
 #end
 #ALtdcellfooter()
 #ALtdcellheader()

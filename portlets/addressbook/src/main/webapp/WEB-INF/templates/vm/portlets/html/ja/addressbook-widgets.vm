@@ -27,7 +27,7 @@
 #if("$button_flag"=="true")
 #AUIbuttonAction($l10n.ADDRESSBOOK_ADDRESS_ADD "javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);")
 #else
-<a title=$l10n.ADDRESSBOOK_ADDRESS_ADD href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">$l10n.ADDRESSBOOK_ADDRESS_ADD</a>
+<a title="$l10n.ADDRESSBOOK_ADDRESS_ADD" href="javascript:aipo.common.showDialog('$addAddress','$!portlet.ID',aipo.addressbook.onLoadAddressbookDialog);" class="auiButtonBold">$l10n.ADDRESSBOOK_ADDRESS_ADD</a>
 #end
 </div>
 <div class="auiWidget clearfix">

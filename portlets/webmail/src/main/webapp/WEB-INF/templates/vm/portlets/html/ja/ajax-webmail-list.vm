@@ -68,8 +68,8 @@
 #end
 #ALselectfooter()
 #end
-<a class="auiButton" title=$l10n.WEBMAIL_RECEIVE_MAIL href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');aipo.webmail.onProcessingTimer();">
-<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt=$l10n.WEBMAIL_RECEIVE_MAIL></span>
+<a class="auiButton" title="$l10n.WEBMAIL_RECEIVE_MAIL" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');aipo.webmail.onProcessingTimer();">
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt="$l10n.WEBMAIL_RECEIVE_MAIL"></span>
 </a>
 #if($StatStr && !($StatStr == ''))
 <span class="indicator" id="indicator-$!portlet.ID">$StatStr</span>
@@ -142,8 +142,8 @@ $MailSubject
 #end
 #ALselectfooter()
 #end
-<a class="auiButton" title=$l10n.WEBMAIL_RECEIVE_MAIL href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');aipo.webmail.onProcessingTimer();">
-<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt=$l10n.WEBMAIL_RECEIVE_MAIL></span>
+<a class="auiButton" title="$l10n.WEBMAIL_RECEIVE_MAIL" href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve')', '$!portlet.ID');aipo.webmail.onProcessingTimer();">
+<span><img src='images/icon/icon_reload.gif' width='18' height='18' alt="$l10n.WEBMAIL_RECEIVE_MAIL"></span>
 </a>
 </div>
 #if($result.List.size() != 0)

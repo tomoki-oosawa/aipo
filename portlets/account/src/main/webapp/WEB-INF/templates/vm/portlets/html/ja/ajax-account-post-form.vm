@@ -66,14 +66,14 @@
     buttonAddId="button_member_add"
     buttonRemoveId="button_member_remove"
     memberFromId="tmp_member_from"
-    memberToTitle=$l10n.ACCOUNT_BELONG_MEMBER_LIST
+    memberToTitle="$l10n.ACCOUNT_BELONG_MEMBER_LIST"
     memberToId="member_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
     memberFromOptionKey="name"
     memberFromOptionValue="aliasName"
     groupSelectId="tmp_group"
     groupSelectPreOptionKey="LoginUser"
-    groupSelectPreOptionValue=$l10n.ACCOUNT_ALL_GLOUP
+    groupSelectPreOptionValue="$l10n.ACCOUNT_ALL_GLOUP"
     groupSelectOptionKey="groupId"
     groupSelectOptionValue="name"
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"

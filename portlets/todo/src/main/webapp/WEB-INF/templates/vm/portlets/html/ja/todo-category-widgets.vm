@@ -27,7 +27,7 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-<a title=$l10n.TODO_TODO_ADD href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);" class="auiButtonBold">$l10n.TODO_TODO_ADD</a>
+<a title="$l10n.TODO_TODO_ADD" href="javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.todo.onLoadTodoDialog);" class="auiButtonBold">$l10n.TODO_TODO_ADD</a>
 </div>
 <div class="auiWidget clearfix">
 ##AUIwidgetViewPageMenuList($menues $!result.currentTab)

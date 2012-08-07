@@ -28,7 +28,7 @@
 #ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
 	#if(! $!{result.ParentTopic.isPublic()})
-		<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC>
+		<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.MSGBOARD_CLOSE_PUBLIC" title="$l10n.MSGBOARD_CLOSE_PUBLIC">
 	#end
 ##&gt;&nbsp;$!{result.ParentTopic.TopicName}
 	<caption>

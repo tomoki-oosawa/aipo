@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(WebmailajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value=$l10n.WEBMAIL_DELETE onclick="aipo.webmail.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.WEBMAIL_DELETE" onclick="aipo.webmail.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($l10n.WEBMAIL_FOLDER)

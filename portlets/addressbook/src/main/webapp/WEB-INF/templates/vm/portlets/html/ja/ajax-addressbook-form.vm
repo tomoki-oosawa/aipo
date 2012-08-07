@@ -131,9 +131,9 @@ $l10n.ADDRESSBOOK_POST_SIGN &nbsp;#ALtextfield('comp_zipcode1' $!result.CompZipc
     widgetId="groupnormalselect"
     buttonAddId="button_group_add"
     buttonRemoveId="button_group_remove"
-    memberFromTitle=$l10n.ADDRESSBOOK_GROUP_LIST
+    memberFromTitle="$l10n.ADDRESSBOOK_GROUP_LIST"
     memberFromId="tmp_group_from"
-    memberToTitle=$l10n.ADDRESSBOOK_BELONG_GROUP
+    memberToTitle="$l10n.ADDRESSBOOK_BELONG_GROUP"
     memberToId="group_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')"
     memberFromOptionKey="groupId"

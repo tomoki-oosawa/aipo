@@ -31,7 +31,7 @@ $l10n.GADGETS_APP_NOT_AVAILABLE_MSG
 #end
 
 <div align="center">
-<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.GADGETS_CLOSE1 onclick="aipo.common.hideDialog();">
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.GADGETS_CLOSE1" onclick="aipo.common.hideDialog();">
 </div>
 
 #ALdialogfooter()

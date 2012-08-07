@@ -79,7 +79,7 @@
 #ALtdcaption($!result.getFieldName("photo"))
 #ALtditemheader()
 #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form").addQueryData("msize","1"))
-<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value=$l10n.ACCOUNT_ADD_FILE class="button" name="add_attachment"/>
+<input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="$l10n.ACCOUNT_ADD_FILE" class="button" name="add_attachment"/>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
 	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.ACCOUNT_DELETION</span></li>
@@ -96,9 +96,9 @@
     widgetId="groupnormalselect"
     buttonAddId="button_group_add"
     buttonRemoveId="button_group_remove"
-    memberFromTitle=$l10n.ACCOUNT_POST_LIST
+    memberFromTitle="$l10n.ACCOUNT_POST_LIST"
     memberFromId="tmp_group_from"
-    memberToTitle=$l10n.ACCOUNT_BELONG_POST
+    memberToTitle="$l10n.ACCOUNT_BELONG_POST"
     memberToId="group_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
     memberFromOptionKey="groupId"

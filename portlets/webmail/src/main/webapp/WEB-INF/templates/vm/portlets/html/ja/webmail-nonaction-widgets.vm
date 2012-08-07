@@ -29,7 +29,7 @@
 
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-<a title=$l10n.WEBMAIL_DO_CREATE_EMAIL href="javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);" class="auiButtonBold">$l10n.WEBMAIL_DO_CREATE_EMAIL</a>
+<a title="$l10n.WEBMAIL_DO_CREATE_EMAIL" href="javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);" class="auiButtonBold">$l10n.WEBMAIL_DO_CREATE_EMAIL</a>
 </div>
 
 #if($!result.MailAccountList && $!result.MailAccountList.size() > 0)

@@ -38,10 +38,10 @@ $l10n.WEBMAIL_MULTICHOICE_MSG</div>
 <tr>
 <td class="caption" width="30%" nowrap="">$l10n.WEBMAIL_FILTERLIST</td>
 <td width="5%">
-<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('filter_so_$!portlet.ID'))" title=$l10n.WEBMAIL_ACEND_ORDER_10><img src="images/account/account_up_10.gif" alt=$l10n.WEBMAIL_ACEND_ORDER_10 border="0"></a></div>
-<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('filter_so_$!portlet.ID'))" title=$l10n.WEBMAIL_ACEND_ORDER_1><img src="images/account/account_up_1.gif" alt=$l10n.WEBMAIL_ACEND_ORDER_1 border="0"></a></div>
-<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('filter_so_$!portlet.ID'))" title=$l10n.WEBMAIL_DECEND_ORDER_1><img src="images/account/account_down_1.gif" alt=$l10n.WEBMAIL_DECEND_ORDER_1 border="0"></a></div>
-<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('filter_so_$!portlet.ID'))" title=$l10n.WEBMAIL_DECEND_ORDER_10><img src="images/account/account_down_10.gif" alt=$l10n.WEBMAIL_DECEND_ORDER_10 border="0"></a></div>
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('filter_so_$!portlet.ID'))" title="$l10n.WEBMAIL_ACEND_ORDER_10"><img src="images/account/account_up_10.gif" alt="$l10n.WEBMAIL_ACEND_ORDER_10" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('filter_so_$!portlet.ID'))" title="$l10n.WEBMAIL_ACEND_ORDER_1"><img src="images/account/account_up_1.gif" alt="$l10n.WEBMAIL_ACEND_ORDER_1" border="0"></a></div>
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('filter_so_$!portlet.ID'))" title="$l10n.WEBMAIL_DECEND_ORDER_1"><img src="images/account/account_down_1.gif" alt="$l10n.WEBMAIL_DECEND_ORDER_1" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('filter_so_$!portlet.ID'))" title="$l10n.WEBMAIL_DECEND_ORDER_10"><img src="images/account/account_down_10.gif" alt="$l10n.WEBMAIL_DECEND_ORDER_10" border="0"></a></div>
 </td>
 <td width="65%">
 <select id="filter_so_$!portlet.ID" name="filter_so" size="20" multiple="multiple" style="WIDTH: 100%">

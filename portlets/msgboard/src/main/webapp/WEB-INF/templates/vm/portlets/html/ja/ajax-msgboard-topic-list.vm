@@ -66,7 +66,7 @@
 <div>
 $!record.CategoryName
 #if(! ${record.isPublic()})
-<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt=$l10n.MSGBOARD_CLOSE_PUBLIC title=$l10n.MSGBOARD_CLOSE_PUBLIC />
+<img class="img_icon" src="images/msgboard/msgboard_secret.gif" alt="$l10n.MSGBOARD_CLOSE_PUBLIC" title="$l10n.MSGBOARD_CLOSE_PUBLIC" />
 #end
 </div>
 </td>

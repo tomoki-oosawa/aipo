@@ -96,7 +96,7 @@ ${l10n.GADGETS_NOT_SET}<br/>
 #if($!isAdmin)
 <img src="images/common/dot.gif" width="1" height="1" onload="if(!aipo.gadgets_admin){dojo.require('aipo.gadgets_admin.form');}" />
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
-<input name="ajaxbuttonDelete" class="button" type="button" value=$l10n.GADGETS_DO_UNINSTALL onclick="aipo.gadgets_admin.ajaxDeleteSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')', '$indicator_id', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);"/>
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.GADGETS_DO_UNINSTALL" onclick="aipo.gadgets_admin.ajaxDeleteSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')', '$indicator_id', '$!portlet.ID', aipo.gadgets_admin.onReceiveMessage);"/>
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()

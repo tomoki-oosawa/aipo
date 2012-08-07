@@ -48,7 +48,7 @@
 #ALtextfield('to' $!result.To '60%' 512 'disable')
 ##ALbutton('addressbook' $l10n.WEBMAIL_ADDRESSBOOK 'open_addressbook()')
 #if($result.hasAuthorityAddressBook())
-<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value=$l10n.WEBMAIL_ADDRESSBOOK class="button" name="open_addressbook"/>
+<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', aipo.webmail.onLoadAddressbookDialog);" value="$l10n.WEBMAIL_ADDRESSBOOK" class="button" name="open_addressbook"/>
 #end
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('cc')")

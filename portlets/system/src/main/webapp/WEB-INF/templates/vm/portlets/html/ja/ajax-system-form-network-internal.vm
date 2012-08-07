@@ -35,8 +35,8 @@ $l10n.SYSTEM_SET_ADDRESS_FROM_IN_MSG1${alias}$l10n.SYSTEM_SET_ADDRESS_FROM_IN_MS
 #ALtdcaption("#ALrequired($!result.getFieldName('protocol'))")
 #ALtdcellheader()
 <select name="protocol">
-  <option value="http" #if($!result.Protocol.Value == "http")selected="selected"#end>http</option>	
-  <option value="https" #if($!result.Protocol.Value == "https")selected="selected"#end>https</option>	
+  <option value="http" #if($!result.Protocol.Value == "http")selected="selected"#end>http</option>
+  <option value="https" #if($!result.Protocol.Value == "https")selected="selected"#end>https</option>
 </select>
 #ALtdcellfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('ipaddress_internal'))")
@@ -45,7 +45,7 @@ $l10n.SYSTEM_SET_ADDRESS_FROM_IN_MSG1${alias}$l10n.SYSTEM_SET_ADDRESS_FROM_IN_MS
 #ALtditem("#ALtextfield('port_internal' $!result.PortInternal '90%' 10 'disabled')")
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value=$l10n.SYSTEM_CLOSE onclick="aipo.system.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.SYSTEM_CLOSE" onclick="aipo.system.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
