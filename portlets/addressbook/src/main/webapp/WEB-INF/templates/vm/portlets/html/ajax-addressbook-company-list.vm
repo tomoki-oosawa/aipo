@@ -19,6 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set ($button_flag = "true")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>$l10n.ADDRESSBOOK_COMPANY_MANAGEMENT</h2>
