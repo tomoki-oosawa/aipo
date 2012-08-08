@@ -33,7 +33,7 @@
     #else
       <div class="tlClipImage" id="tlClipImage_$!{portlet.ID}_${velocityCount}_untiview" style="display:none">
     #end
-        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" src="$!record" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
+        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" src="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'ProxyScreen').addQueryData('url', $!record))" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
       </div>
   #end
   <div class="tlClipContents">

@@ -171,6 +171,7 @@ aipo.timeline.refreshImageList = function(pid, i) {
 
 		var imgNode = document.createElement('img');
 		imgNode.src = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").src;
+		imgNode.name = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").name;
 
 		divNode.appendChild(imgNode);
 		info.parentNode.insertBefore(divNode, info);
@@ -466,7 +467,7 @@ aipo.timeline.addText = function(form, pid){
 	  if(dojo.byId("tlInputClip_" + pid).innerHTML.length > 1){
 	    var page = dojo.byId("TimelinePage_" + pid);
 	    if(dojo.byId("tlClipImage_" + pid + "_" + page.value) != null && dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display != "none"){
-		    aipo.timeline.addHiddenValue(form, "tlClipImage", dojo.byId("tlClipImage_" + pid + "_" + page.value).children[0].src);
+		    aipo.timeline.addHiddenValue(form, "tlClipImage", dojo.byId("tlClipImage_" + pid + "_" + page.value).children[0].name);
 	    }
 	    aipo.timeline.addHiddenValue(form, "tlClipTitle", dojo.byId("tlClipTitle_" + pid).children[0].innerHTML);
 	    if(dojo.byId("tlClipUrl_" + pid).children[0].innerHTML){
