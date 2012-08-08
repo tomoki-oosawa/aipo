@@ -283,7 +283,7 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 	var submit = dojo.byId('getTimelineOnClick').innerHTML;
 	if(submit != 'true'){
 		dojo.query("#timelineOuter .elastic").forEach(function(item) {
-			if(item.value != item.defaultValue || item.focus()){
+			if(item.value != item.defaultValue){
 				num++;
 			}
 		});
