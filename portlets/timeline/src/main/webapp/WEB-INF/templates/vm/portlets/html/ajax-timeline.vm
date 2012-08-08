@@ -21,20 +21,20 @@
 #set ($indicator_id = "indicator-list-")
 #set ($pages = $result.PagesNum)
 #set ($currentPage = $result.CurrentPage)
-#set ($nextPage = $currentPage + 1)
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 #set ($timelineViewType = "list")
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_id3 = "indicator-dlg3-")
+#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
 ## ---------------------------------------------------------------------------
 <img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
 <div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />
 <input type="hidden" id="flag_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="none" />
-<input type="hidden" id="height_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="$result.ContentHeight" />
+<input type="hidden" id="height_$!{portlet.ID}" name="flag_$!{portlet.ID}" value="$result.ContentHeightMax" />
 <div id="inputField">
-#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage, 0)")
+#ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
 
 <div class="tlInputMention" style="position:relative">
   <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
@@ -49,30 +49,31 @@
   <div class="floatRight">
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
     <span id="getTimelineOnClick" style="display:none;"></span>
-	<input href="javascript:void(0)" type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
+	<input href="javascript:void(0)" type="submit"  id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
   </div>
   <div class="floatRight">
 	<div class="tlInputMention">
 		#ALajaxIndicatorglay("$indicator_id" "$!portlet.ID" "&nbsp;")
 	</div>
 	</div>
-  <div class="floatLeft mr10">
-    <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" >
+  <div class="floatLeft mr10 #if(!$result.isFileUploadable())mb_hide#end">
+    <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" style="height:30px; width:150px;" scrolling="no" >
     </iframe>
   </div>
-  <ul id="attachments_$!{portlet.ID}" class="attachments">
-    #foreach($record in $!result.AttachmentFileNameList )
+    <ul id="attachments_$!{portlet.ID}" class="attachments #if(!$result.isFileUploadable())mb_hide#end">
+      #foreach($record in $!result.AttachmentFileNameList )
       <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.TIMELINE_DELETION</span></li>
-    #end
-  </ul>
+      #end
+    </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 </div>
 #ALformfooter()
 </div>
 
 <div class="newMessage" id="newMessage_$!portlet.ID" style="display:none; clear:both">
-	<a href="javascript:void(0)" onclick="aipo.timeline.getNewMessage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "TimelineNewMessageScreen"))', '$!{portlet.ID}')">$l10n.TIMELINE_NEW_MESSAGE</a>
+	<a href="javascript:void(0)" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}'); aipo.portletReload('timeline')">$l10n.TIMELINE_NEW_MESSAGE</a>
 </div>
+
 #if($result.List.size() == 0)
 		<div class="tlDisplayChanger">
 			<div class="btn">
@@ -83,12 +84,12 @@
 						#else
 						#foreach( $record in $result.MyGroupList)
 						#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
-							$!record.AliasName
+						$!record.AliasName
 						#end
 						#end
 						#foreach($record in $result.PostMap)
 						#if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")
-							$!record.PostName
+						$!record.PostName
 						#end
 						#end
 						#end
@@ -97,7 +98,6 @@
 			</div>
 			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 				<ul>
-					#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
 					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 					#foreach( $record in $result.MyGroupList)
 					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
@@ -119,7 +119,7 @@
 		</div>
 	</div>
 #else
-	<div class="tlDisplayChanger">
+  	<div class="tlDisplayChanger">
 		<div class="btn">
 			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
 				<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
@@ -155,10 +155,10 @@
 			</ul>
 		</div>
 	</div>
-  #if($result.ContentHeight == 0)
+  #if($result.ContentHeightMax == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
   #else
-    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeight}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
+    <div id="timeline_$!{portlet.ID}" class="timeline" style="height: ${result.ContentHeightMax}px; overflow-y: scroll; overflow-x: hidden; clear:both" onScroll="dojo.byId('readHidden_$!{portlet.ID}').onclick()">
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="if(aipo.hasOwnProperty('timeline')) {aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop'); }" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
@@ -170,7 +170,7 @@
     #end
   #end
   <div id="more_$!{portlet.ID}">
-  #if($result.ContentHeight == 0)
+  #if($result.ContentHeightMax == 0)
 	#if($pages > $currentPage)
 		<div class="readMore"><a href="javascript:void(0);" onClick="dojo.byId('readHiddenClick_$!{portlet.ID}').onclick()" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
 	#end

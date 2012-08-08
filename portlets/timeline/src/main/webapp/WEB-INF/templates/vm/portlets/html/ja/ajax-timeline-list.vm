@@ -25,6 +25,7 @@
 #set ($timelineViewType = "list")
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_id3 = "indicator-dlg3-")
+#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
 ## ---------------------------------------------------------------------------
 <img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
 <div id="timelineOuter">
@@ -70,7 +71,7 @@
 </div>
 
 <div class="newMessage" id="newMessage_$!portlet.ID" style="display:none; clear:both">
-	<a href="javascript:void(0)" onclick="aipo.portletReload('timeline')">$l10n.TIMELINE_NEW_MESSAGE</a>
+	<a href="javascript:void(0)" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}'); aipo.portletReload('timeline')">$l10n.TIMELINE_NEW_MESSAGE</a>
 </div>
 
 #if($result.List.size() == 0)
@@ -97,7 +98,6 @@
 			</div>
 			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
 				<ul>
-					#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
 					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 					#foreach( $record in $result.MyGroupList)
 					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
