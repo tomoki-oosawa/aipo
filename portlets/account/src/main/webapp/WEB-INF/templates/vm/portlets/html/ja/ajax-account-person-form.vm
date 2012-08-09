@@ -66,7 +66,7 @@ $!result.LoginName
 </div>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.ShrinkFileName</span><span class="deletebutton" onclick="aipo.fileupload.removeFileFromList(this.parentNode.parentNode, this.parentNode, '$!{portlet.ID}');aipo.account_person.setDeletePhotoValue('$!{portlet.ID}');">$l10n.ACCOUNT_DELETION</span></li>
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aipo.fileupload.removeFileFromList(this.parentNode.parentNode, this.parentNode, '$!{portlet.ID}');aipo.account_person.setDeletePhotoValue('$!{portlet.ID}');">$l10n.ACCOUNT_DELETION</span></li>
 	<li><img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", ${record.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" style="display:block" /></li>
 	#end
 </ul>
