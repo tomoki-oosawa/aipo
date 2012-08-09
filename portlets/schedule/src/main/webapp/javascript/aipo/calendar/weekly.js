@@ -682,7 +682,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
             var Element = dojo.byId("weeklyScrollPane_" + _portletId);
-            if((Element.clientWidth == Element.offsetWidth) && !isIPad){
+            if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
             	if(dojo.byId("weeklySpan-" + _portletId) != null){
             		dojo.byId("weeklySpan-" + _portletId).style.display = "none";
             	}
