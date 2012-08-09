@@ -2777,6 +2777,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     return view_date;
   }
 
+  public String getOnlyViewDateText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_ONLY_DATE_FORMAT",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
   public int getInt(long num) {
     return (int) num;
   }

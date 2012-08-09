@@ -322,11 +322,9 @@ public class ToDoFormData extends ALAbstractFormData {
       if (is_new_category
         && Database.query(EipTTodoCategory.class, exp).andQualifier(
           exp2.orExp(exp3)).fetchList().size() != 0) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("TODO_CATEGORY_NAME_ALREADY_REGISTERED")
-          + (category_name.toString())
-          + (ALLocalizationUtils
-            .getl10n("TODO_CATEGORY_NAME_ALRESDY_REGISTERED_END")));
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "TODO_CATEGORY_NAME_ALREADY_REGISTERED",
+          category_name.toString()));
       }
 
     } catch (Exception ex) {

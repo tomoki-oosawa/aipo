@@ -990,6 +990,15 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     return facilitymap.get(fid).getSchedule();
   }
 
+  @Override
+  public String getViewDateText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      getViewDate().getYear(),
+      getViewDate().getMonth(),
+      getViewDate().getDay());
+  }
+
   /**
    * 指定した設備のrowsを取得します。
    * 

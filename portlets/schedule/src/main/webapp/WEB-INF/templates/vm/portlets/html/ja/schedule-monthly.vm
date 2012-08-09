@@ -64,7 +64,7 @@
 </li>
 </ul>
 </div>
-<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewMonth.Year}$l10n.SCHEDULE_YEAR$!{result.ViewMonth.Month}$l10n.SCHEDULE_MONTH</strong></div>
+<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewMonthText}</strong></div>
 </div>
 
 </div>

@@ -826,4 +826,20 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   public TurbineGroup getTargetGroupName() {
     return target_group_name;
   }
+
+  public String getViewStartFormat() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      getViewStart().getYear(),
+      getViewStart().getMonth(),
+      getViewStart().getDay());
+  }
+
+  public String getViewEndFormat() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      getViewEnd().getYear(),
+      getViewEnd().getMonth(),
+      getViewEnd().getDay());
+  }
 }

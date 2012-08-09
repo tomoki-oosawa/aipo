@@ -341,4 +341,20 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     return mail_flag;
   }
 
+  public String getStartDateFormatSpace() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT",
+      getStartDate().getYear(),
+      getStartDate().getMonth(),
+      getStartDate().getDay());
+  }
+
+  public String getEndDateFormatSpace() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT",
+      getEndDate().getYear(),
+      getEndDate().getMonth(),
+      getEndDate().getDay());
+  }
+
 }

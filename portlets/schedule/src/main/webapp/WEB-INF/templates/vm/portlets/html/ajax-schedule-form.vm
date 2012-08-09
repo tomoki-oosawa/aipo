@@ -91,7 +91,7 @@
 <label onclick="aipo.schedule.formEditRepeatAll(this.form)" for="edit_repeat_flag0_$!{portlet.ID}">$l10n.SCHEDULE_ALL_SCHEDULE</label>
 #if($!ignore_viewdate == "false")
 <input name="edit_repeat_flag" type="radio" value="1" id="edit_repeat_flag1_$!{portlet.ID}" #if ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1) checked="checked" #end onclick="aipo.schedule.formEditRepeatOne(this.form)"/>
-<label onclick="aipo.schedule.formEditRepeatOne(this.form)" for="edit_repeat_flag1_$!{portlet.ID}">$!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$l10n.SCHEDULE_ONLY</label><br/>
+<label onclick="aipo.schedule.formEditRepeatOne(this.form)" for="edit_repeat_flag1_$!{portlet.ID}">$!{result.OnlyViewDateText}</label><br/>
 #end
 #ALtditemfooter()
 #end

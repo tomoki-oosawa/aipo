@@ -193,7 +193,7 @@ if(document.all!=undefined){
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
-<h1>$!{result.TargetName}&nbsp;$!{result.ViewMonth.Year}$l10n.SCHEDULE_YEAR$!{result.ViewMonth.Month}$l10n.SCHEDULE_MONTH</h1>
+<h1>$!{result.TargetName}&nbsp;$!{result.ViewMonthText}</h1>
 
 #ALtableheaderCalendar("100%")
 

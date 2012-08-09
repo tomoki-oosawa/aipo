@@ -846,6 +846,13 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     return viewMonth;
   }
 
+  public String getViewMonthText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_MONTH_FORMAT",
+      viewMonth.getYear(),
+      viewMonth.getMonth());
+  }
+
   /**
    * 今日を取得します。
    * 

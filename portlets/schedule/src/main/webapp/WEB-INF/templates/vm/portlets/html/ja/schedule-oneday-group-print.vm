@@ -198,7 +198,7 @@ if(document.all!=undefined){
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
-<h1>#if($!{result.getTargetGroupName().groupAliasName})$!{result.getTargetGroupName().groupAliasName}#end $!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$!{result.ViewDate.DayOfWeek}</h1>
+<h1>#if($!{result.getTargetGroupName().groupAliasName})$!{result.getTargetGroupName().groupAliasName}#end $!{result.ViewDateText}$!{result.ViewDate.DayOfWeek}</h1>
 
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{result.ViewDate.toString()}))
 #set($entityids = "")

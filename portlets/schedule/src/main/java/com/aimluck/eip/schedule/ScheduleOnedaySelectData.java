@@ -54,10 +54,11 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.todo.util.ToDoUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュール1日表示の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
@@ -145,7 +146,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   private String userName;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -286,7 +287,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -397,7 +398,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -456,7 +457,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -468,7 +469,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -610,7 +611,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -620,7 +621,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -629,7 +630,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -646,7 +647,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -664,7 +665,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 検索後の処理を行います。
-   * 
+   *
    */
   private void postDoList() {
     int index = (endHour - startHour) * 4 + rowIndex;
@@ -782,16 +783,24 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示する日付を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewDate() {
     return viewDate;
   }
 
+  public String getViewDateText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT",
+      viewDate.getYear(),
+      viewDate.getMonth(),
+      viewDate.getDay());
+  }
+
   /**
    * 次の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextDate() {
@@ -800,7 +809,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 前の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevDate() {
@@ -809,7 +818,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 前の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevWeek() {
@@ -818,7 +827,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 次の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextWeek() {
@@ -827,7 +836,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 今日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getToday() {
@@ -836,7 +845,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 先月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -845,7 +854,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 来月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -854,7 +863,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * スケジュールを取得します。
-   * 
+   *
    * @param index
    * @return
    */
@@ -864,7 +873,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示開始時間を取得します。
-   * 
+   *
    * @return
    */
   public int getStartHour() {
@@ -873,7 +882,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示終了時間を取得します。
-   * 
+   *
    * @return
    */
   public int getEndHour() {
@@ -889,7 +898,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -898,7 +907,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 重複スケジュールがあるかどうか
-   * 
+   *
    * @return
    */
   public boolean isDuplicate() {
@@ -907,7 +916,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 重複スケジュールリストを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -926,7 +935,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示日付（テンポラリ）を設定します。
-   * 
+   *
    * @param date
    */
   public void setTmpViewDate(String date) {
@@ -935,7 +944,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * Rowspanを取得します。
-   * 
+   *
    * @param hour
    * @return
    */
@@ -958,7 +967,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

@@ -59,7 +59,7 @@
 </li>
 </ul>
 </div>
-<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewDate.Year}$l10n.SCHEDULE_YEAR$!{result.ViewDate.Month}$l10n.SCHEDULE_MONTH$!{result.ViewDate.Day}$l10n.SCHEDULE_DAY$!{result.ViewDate.DayOfWeek}</strong></div>
+<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewDateText}$l10n.SCHEDULE_DAY$!{result.ViewDate.DayOfWeek}</strong></div>
 </div>
 
 </div>

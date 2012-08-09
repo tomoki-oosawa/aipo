@@ -382,4 +382,21 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   public List<ScheduleResultData> getScheduleList() {
     return con.getScheduleList();
   }
+
+  public String getViewStartFormat() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      getViewStart().getYear(),
+      getViewStart().getMonth(),
+      getViewStart().getDay());
+  }
+
+  public String getViewEndFormat() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      getViewEnd().getYear(),
+      getViewEnd().getMonth(),
+      getViewEnd().getDay());
+  }
+
 }

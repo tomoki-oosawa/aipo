@@ -300,7 +300,9 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_POST_EXIST"));
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_POST_EXIST",
+          post_name.toString()));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);

@@ -51,8 +51,8 @@ $!{result.Detail.User.AliasNameHtml}
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek} ～
-$!{result.Detail.EndDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.EndDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.EndDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
 #end
@@ -64,7 +64,7 @@ $!{result.Detail.Date2}
 #end
 <img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #else
-$!{result.Detail.StartDate.Year} $l10n.SCHEDULE_YEAR $!{result.Detail.StartDate.Month} $l10n.SCHEDULE_MONTH $!{result.Detail.StartDate.Day} $l10n.SCHEDULE_DAY $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>

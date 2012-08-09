@@ -199,9 +199,9 @@ if(document.all!=undefined){
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.getTargetGroupName().groupAliasName})
-<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStart.Year}$l10n.SCHEDULE_YEAR$!{result.ViewStart.Month}$l10n.SCHEDULE_MONTH$!{result.ViewStart.Day}$l10n.SCHEDULE_DAY$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}$l10n.SCHEDULE_YEAR$!{result.ViewEnd.Month}$l10n.SCHEDULE_MONTH$!{result.ViewEnd.Day}$l10n.SCHEDULE_DAY$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.getViewEndFormat}$!{result.ViewEnd.DayOfWeek}</h1>
 #else
-<h1>$!{result.ViewStart.Year}$l10n.SCHEDULE_YEAR$!{result.ViewStart.Month}$l10n.SCHEDULE_MONTH$!{result.ViewStart.Day}$l10n.SCHEDULE_DAY$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Year}$l10n.SCHEDULE_YEAR$!{result.ViewEnd.Month}$l10n.SCHEDULE_MONTH$!{result.ViewEnd.Day}$l10n.SCHEDULE_DAY$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.getViewEndFormat}$!{result.ViewEnd.DayOfWeek}</h1>
 #end
 
 #ALtableheaderCalendar("100%")

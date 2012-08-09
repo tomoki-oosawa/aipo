@@ -563,6 +563,14 @@ public class ScheduleSelectData extends
       view_date.getDay());
   }
 
+  public String getViewDateFormatText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT_NOSPACE",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
   public String getOutsideUser() {
     return ALLocalizationUtils.getl10nFormat(
       "SCHEDULE_OUTSIDE_USER",

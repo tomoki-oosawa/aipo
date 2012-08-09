@@ -60,7 +60,7 @@
 </li>
 </ul>
 </div>
-<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewStart.Year}$l10n.SCHEDULE_YEAR$!{result.ViewStart.Month}$l10n.SCHEDULE_MONTH$!{result.ViewStart.Day}$l10n.SCHEDULE_DAY$!{result.ViewStart.DayOfWeek}</strong></div>
+<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}</strong></div>
 </div>
 
 </div>
