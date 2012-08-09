@@ -37,6 +37,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -162,7 +163,7 @@ public class FileuploadFormData extends ALAbstractFormData {
     // 添付可能数のチェック
     if (maxSize > 0) {
       if (maxSize == 1 && nowSize == 1) {
-        
+
       } else if (nowSize >= maxSize) {
         msgList.add("これ以上、ファイルを追加することはできません。");
       }
@@ -240,7 +241,7 @@ public class FileuploadFormData extends ALAbstractFormData {
       filebean = new FileuploadBean();
       filebean.setFolderName(folderName.getValue());
       filebean.setFileId(fileId);
-      filebean.setFileName(realfilename);
+      filebean.setFileName(ALCommonUtils.compressString(realfilename, 10));
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
