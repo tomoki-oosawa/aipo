@@ -22,7 +22,6 @@ package com.aimluck.eip.fileupload.beans;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * アップロードファイルのBeanです。 <br />
@@ -130,7 +129,7 @@ public class FileuploadLiteBean implements ALData, Cloneable {
    * @return
    */
   public String getFileName() {
-    return ALCommonUtils.compressString(file_name.getValue(), 10);
+    return file_name.getValue();
   }
 
   public String getURLEncodedValue() {
