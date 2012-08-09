@@ -82,7 +82,7 @@
 <input type="button" onclick="aipo.fileupload.openAttachment('$!utils.escapeXML($att_url)', '$!portlet.ID');" value="$l10n.ACCOUNT_ADD_FILE" class="button" name="add_attachment"/>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.ACCOUNT_DELETION</span></li>
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.ShrinkFileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.ACCOUNT_DELETION</span></li>
 	#end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName">

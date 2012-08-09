@@ -50,6 +50,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -700,6 +701,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
    */
   public ALStringField getFileName() {
     return file_name;
+  }
+
+  public String getShrinkFileName() {
+    return ALCommonUtils.compressString(file_name.getValue(), 10);
   }
 
   /**
