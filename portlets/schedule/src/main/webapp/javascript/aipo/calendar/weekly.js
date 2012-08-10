@@ -29,8 +29,6 @@ dojo.require("aipo.widget.GroupNormalSelectList");
 aipo.calendar.objectlist = Array();
 aipo.calendar.maximum_to = 30;
 
-aipo.calendar.noscrollbar = false;
-
 
 function hasClass(ele,cls) {
 	return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
@@ -67,14 +65,14 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			dateCell.innerHTML = "<span>1日</span>";
 			childBody.className = "weeklyRight";
 			if(i == 0) {
-				child.className = "weeklyHeadRightR";
+				child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
 				child.style.width = "100%";
 				childBody.style.width = "100%";
 				childTerm.style.width = "100%";
 				addClass(childTerm, "weeklyTermRightR");
 				add.style.width = "100%";
 			} else {
-				child.className = "weeklyHeadRight";
+				child.className = "weeklyHeadRight" + " weeklyHeadRightborder" + i + "_" + pid;
 				child.style.width = "0%";
 				child.style.display = "none";
 				childBody.style.width = "0%";
@@ -105,14 +103,14 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 				add.style.left = i * 25 + "%";
 				add.style.display = "";
 				if(i < 3) {
-					child.className = "weeklyHeadRight";
+					child.className = "weeklyHeadRight" + " weeklyHeadRightborder" + i + "_" + pid;
 				} else if(i == 3) {
-					child.className = "weeklyHeadRightR";
+					child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
 					childBody.className = "weeklyRightR";
 					addClass(childTerm, "weeklyTermRightR");
 				}
 			} else {
-				child.className = "weeklyHeadRight";
+				child.className = "weeklyHeadRight" + " weeklyHeadRightborder" + i + "_" + pid;
 				child.style.width = "0%";
 				child.style.display = "none";
 				childBody.style.width = "0%";
@@ -142,11 +140,11 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 				removeClass(childTerm, "weeklyTermRightR");
 			}
 			if(i < 6) {
-				child.className = "weeklyHeadRight";
+				child.className = "weeklyHeadRight" + " weeklyHeadRightborder" + i + "_" + pid;
 				childBody.className = "weeklyRight";
 				removeClass(childTerm, "weeklyTermRightR");
 			} else {
-				child.className = "weeklyHeadRightR";
+				child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
 				childBody.className = "weeklyRightR";
 				addClass(childTerm, "weeklyTermRightR");
 			}
@@ -283,15 +281,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>";
 
             var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
-            if(Element.clientWidth>0&&Element.offsetWidth>0){
-            	if(Element.clientWidth == Element.offsetWidth) aipo.calendar.noscrollbar=true;
-            	else aipo.calendar.noscrollbar=false;
-            }
-            if(aipo.calendar.noscrollbar){
-              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
-              	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
-              	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-            }
+//            if(Element.clientWidth == Element.offsetWidth){
+//              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
+//              	if(dojo.byId('isMac').value != 0){
+//              	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+//              	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+//              	}
+//            }
 
             	dojo.forEach(data.termSchedule, function(itemList) {
                 var simpleDisplay = "";
@@ -308,11 +304,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                   }
                 }
 
-                if(aipo.calendar.noscrollbar){
-                  	simpleDisplayR = " weeklyTermRightRnone";
-                  	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
-                  	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-                }
+//                if(Element.clientWidth == Element.offsetWidth){
+//                  	simpleDisplayR = " weeklyTermRightRnone";
+//                  	if(dojo.byId('isMac').value != 0){
+//                  	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+//                  	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+//                  	}
+//                }
 
 
                 var item = null;
@@ -326,28 +324,28 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
 
                 if(isSimple && isFourSpan){
-	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay3-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 75%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay3-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 75%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
                 }else{
-                	termTableHtml += '<div class="weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                	termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+                    termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                     termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
                 }
 
                 var weeklyTermtailHtml;
                 if(!(scheduleTooltipEnable!==true && isSimple && isOneSpan) || !aipo.calendar.noscrollbar ){
-                	weeklyTermtailHtml = "</div></td><td width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
+                	weeklyTermtailHtml = "</div></td><td class=\"weeklyTermTailTd_" + _portletId  + "\" width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
                 }else{
                    	weeklyTermtailHtml = "</div></td></tr>";
                  }
@@ -461,9 +459,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 }
                 if(item.tmpreserve) {
                     name += '<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" alt="仮スケジュール" title="仮スケジュール" align="top" class="icon" />';
-                }
-                while((left + width) > 100){
-                	width *= 0.99;
                 }
                 html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%; z-index: 0; visibility: hidden;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
                 count++;
@@ -680,11 +675,27 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 l_count++;
             });
 
+
             obj_content = dojo.byId('content-'+_portletId);
             dojo.style(obj_content, "visibility" , "visible");
             obj_indicator = dojo.byId('indicator-'+_portletId);
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
+            var Element = dojo.byId("weeklyScrollPane_" + _portletId);
+            if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
+            	if(dojo.byId("weeklySpan-" + _portletId) != null){
+            		dojo.byId("weeklySpan-" + _portletId).style.display = "none";
+            	}
+            	dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
+            	if(isSimple && !isFourSpan){
+            		dojo.query('.weeklyHeadRightborder0_' + _portletId).style("borderRight", "none");
+            		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("borderRight", "none");
+            	} else {
+            		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");
+            		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");            		
+            	}
+            }
+
 
 
             if (!ptConfig[_portletId].isScroll) {
@@ -694,6 +705,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             ptConfig[_portletId].isTooltipEnable = true;
         }
     });
+
+
 };
 
 // aipo.calendar.relocation
@@ -753,18 +766,26 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
 
 
         	 for (i=0; i<sum; i++) {
+        		 var width;
+        		 var left;
         	        if (overlapNumArray[i] != 0) {
         	               if (positionLeftArray[i] < positionLeftArray[i+1])
-        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW * singleWidth + "%");
+        	            	   width = (scheduleDivWidth * 2 / (overlapNumArray[i]+1)) * 0.8 * offsetW * singleWidth;
         	            else if (resizeWidthArray[i]==0)
-        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW * singleWidth +"%");
+        	            	width = (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i]) * offsetW * singleWidth;
         	            else
-        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW * singleWidth +"%");
+        	            	width = (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1)) * 0.2 - (scheduleDivWidth/(overlapNumArray[i]+1)) * (resizeWidthArray[i]-1)) * offsetW * singleWidth;
         	        }
         	        else
-        	            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW * singleWidth +"%");
+        	        	width = scheduleDivWidth * offsetW * singleWidth;
 
-        	        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i])) * singleWidth+"%");
+        	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
+
+        	        if(left + width > 100){
+        	        	width = 100 - left;
+        	        }
+	                dojo.style(scheduleDiv[i], "width", width + "%");
+        	        dojo.style(scheduleDiv[i], "left", left + "%");
         	        dojo.style(scheduleDiv[i], "visibility", "visible" );
         	     }
 }
