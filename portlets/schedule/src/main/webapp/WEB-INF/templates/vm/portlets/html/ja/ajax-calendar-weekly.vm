@@ -71,31 +71,31 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyHeadRights'>
-                              <div class='weeklyHeadRightborder0_$!portlet.ID weeklyHeadRight'  style="left:0%">
+                              <div class='weeklyHeadRight'  style="left:0%">
                                 <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday0-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder1_$!portlet.ID weeklyHeadRight' style="left: 14.2857%;">
+                              <div class='weeklyHeadRight' style="left: 14.2857%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay1-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday1-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder2_$!portlet.ID weeklyHeadRight' style="left: 28.5714%;">
+                              <div class='weeklyHeadRight' style="left: 28.5714%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay2-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday2-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder3_$!portlet.ID weeklyHeadRight' style="left: 42.8571%;">
+                              <div class='weeklyHeadRight' style="left: 42.8571%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay3-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday3-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder4_$!portlet.ID weeklyHeadRight' style="left: 57.1429%;">
+                              <div class='weeklyHeadRight' style="left: 57.1429%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay4-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday4-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder5_$!portlet.ID weeklyHeadRight' style="left: 71.4286%;">
+                              <div class='weeklyHeadRight' style="left: 71.4286%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay5-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday5-$!portlet.ID">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder6_$!portlet.ID weeklyHeadRightR' style="left: 85.7143%;">
+                              <div class='weeklyHeadRightR' style="left: 85.7143%;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay6-$!portlet.ID">&nbsp;</div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday6-$!portlet.ID">&nbsp;</div>
                               </div>
@@ -118,25 +118,25 @@
                           </td>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div class='weeklyTermRights'>
-                              <div class='weeklyHeadRightborder0_$!portlet.ID weeklyTermRight weeklyTermRightL' id='termDay0-$!portlet.ID' #if(${client} == "IPAD" && $!top_form == 'simple') style="left:0%;border-right:0;" #else style="left: 0%;" #end>
+                              <div class='weeklyTermRight weeklyTermRightL' id='termDay0-$!portlet.ID' #if(${client} == "IPAD" && $!top_form == 'simple') style="left:0%;border-right:0;" #else style="left: 0%;" #end>
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder1_$!portlet.ID weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;">
+                              <div class='weeklyTermRight' id='termDay1-$!portlet.ID' style="left: 14.2857%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder2_$!portlet.ID weeklyTermRight' id='termDay2-$!portlet.ID' style="left: 28.5714%;">
+                              <div class='weeklyTermRight' id='termDay2-$!portlet.ID' style="left: 28.5714%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder3_$!portlet.ID weeklyTermRight' id='termDay3-$!portlet.ID' style="left: 42.8571%;">
+                              <div class='weeklyTermRight' id='termDay3-$!portlet.ID' style="left: 42.8571%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder4_$!portlet.ID weeklyTermRight' id='termDay4-$!portlet.ID' style="left: 57.1429%;">
+                              <div class='weeklyTermRight' id='termDay4-$!portlet.ID' style="left: 57.1429%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder5_$!portlet.ID weeklyTermRight' id='termDay5-$!portlet.ID' style="left: 71.4286%;">
+                              <div class='weeklyTermRight' id='termDay5-$!portlet.ID' style="left: 71.4286%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
-                              <div class='weeklyHeadRightborder6_$!portlet.ID weeklyTermRight weeklyTermRightR' id='termDay6-$!portlet.ID' style="left: 85.7143%;">
+                              <div class='weeklyTermRight weeklyTermRightR' id='termDay6-$!portlet.ID' style="left: 85.7143%;">
                                 <div class="weeklyTermRightTop">&nbsp;</div>
                               </div>
                               <div id="termScheduleDivAdd_$!portlet.ID" class="termScheduleDivAdd" style="left: 0%; z-index: 1;">&nbsp;</div>
@@ -144,7 +144,7 @@
                           </td>
                           #if(${client} == "IPAD" && $!top_form == 'simple'||${isMac} == 1)
 							#else
-						  <td class="weeklyTermTailTd_$!portlet.ID" width="18">
+						  <td width="18">
                             <div class="weeklyTermTail">&nbsp;</div>
                           </td>
 						 #end
