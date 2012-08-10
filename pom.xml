@@ -167,7 +167,6 @@
   </pluginRepositories>
 
   <modules>
-    <module>commons</module>
     <module>jetspeed</module>
     <module>oms</module>
     <module>core</module>
