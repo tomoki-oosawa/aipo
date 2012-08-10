@@ -382,7 +382,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     // 共有設備を選択している場合、公開区分で完全に隠すを選択できないようにする
     if ("P".equals(public_flag.getValue())
       && form_data.getFacilityMemberList().size() > 0) {
-      msgList.add("「完全に隠す」を選択している場合は、共有設備を追加できません。");
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_HIDE"));
     }
 
     return super.validate(msgList);
