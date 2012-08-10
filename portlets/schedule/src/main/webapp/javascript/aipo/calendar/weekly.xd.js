@@ -698,8 +698,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     });
 };
 
-//aipo.calendar.relocation
-aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) {
+// aipo.calendar.relocation
+aipo.calendar.relocation = function(_portletId, sum,scheduleDiv,scheduleDivLeft) {
     var i,j;
     var offsetW = 0.99;
     var scheduleDivWidth = 100 / 7;
@@ -755,26 +755,18 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
 
 
         	 for (i=0; i<sum; i++) {
-        		 var width;
-        		 var left;
         	        if (overlapNumArray[i] != 0) {
         	               if (positionLeftArray[i] < positionLeftArray[i+1])
-        	            	   width = (scheduleDivWidth * 2 / (overlapNumArray[i]+1)) * 0.8 * offsetW * singleWidth;
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth * 2 / (overlapNumArray[i]+1))*0.8 * offsetW * singleWidth + "%");
         	            else if (resizeWidthArray[i]==0)
-        	            	width = (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i]) * offsetW * singleWidth;
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i]) * offsetW * singleWidth +"%");
         	            else
-        	            	width = (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1)) * 0.2 - (scheduleDivWidth/(overlapNumArray[i]+1)) * (resizeWidthArray[i]-1)) * offsetW * singleWidth;
+        	                dojo.style(scheduleDiv[i], "width", (scheduleDivWidth - (scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i] - (scheduleDivWidth*2/(overlapNumArray[i]+1))*0.2 - (scheduleDivWidth/(overlapNumArray[i]+1))*(resizeWidthArray[i]-1)) * offsetW * singleWidth +"%");
         	        }
         	        else
-        	        	width = scheduleDivWidth * offsetW * singleWidth;
+        	            dojo.style(scheduleDiv[i], "width", scheduleDivWidth * offsetW * singleWidth +"%");
 
-        	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
-
-        	        if(left + width > 100){
-        	        	width = 100 - left;
-        	        }
-	                dojo.style(scheduleDiv[i], "width", width + "%");
-        	        dojo.style(scheduleDiv[i], "left", left + "%");
+        	        dojo.style(scheduleDiv[i], "left", (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1))*positionLeftArray[i])) * singleWidth+"%");
         	        dojo.style(scheduleDiv[i], "visibility", "visible" );
         	     }
 }
