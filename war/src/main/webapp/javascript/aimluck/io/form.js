@@ -386,6 +386,9 @@ aimluck.io.createOptions = function(selectId, params) {
 }
 
 aimluck.io.addFileToList =function(ul,fileid,filename){
+	if(ul.parentNode.style.display == "none") {
+		ul.parentNode.style.display = "";
+	}
 	if (document.all) {
 	    var li = document.createElement("li");
 	    li.setAttribute('data-fileid',fileid);

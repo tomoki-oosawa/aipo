@@ -40,8 +40,16 @@
   <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
   <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:5px; left:5px">$l10n.TIMELINE_LETS_SHARE</span>
 </div>
-
 <div class="clearfix tlInputClip" id="tlInputClip_$!{portlet.ID}">
+</div>
+
+<div class="tlInputAttachment" style="display: none">
+  <p class="tlInputAttachmentTitle">添付ファイル</p>
+  <ul id="attachments_$!{portlet.ID}" class="attachments #if(!$result.isFileUploadable())mb_hide#end">
+    #foreach($record in $!result.AttachmentFileNameList )
+    <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.TIMELINE_DELETION</span></li>
+    #end
+  </ul>
 </div>
 
 <div class="tlInputControls clearfix">
@@ -55,16 +63,11 @@
 	<div class="tlInputMention">
 		#ALajaxIndicatorglay("$indicator_id" "$!portlet.ID" "&nbsp;")
 	</div>
-	</div>
+  </div>
   <div class="floatLeft mr10 #if(!$result.isFileUploadable())mb_hide#end">
     <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" style="height:30px; width:150px;" scrolling="no" >
     </iframe>
   </div>
-    <ul id="attachments_$!{portlet.ID}" class="attachments #if(!$result.isFileUploadable())mb_hide#end">
-      #foreach($record in $!result.AttachmentFileNameList )
-      <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.TIMELINE_DELETION</span></li>
-      #end
-    </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 </div>
 #ALformfooter()

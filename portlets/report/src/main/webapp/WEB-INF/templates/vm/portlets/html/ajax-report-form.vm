@@ -121,7 +121,7 @@
 <td class="caption">$l10n.REPORT_SETFIELDNAME_ATTACHMENT</td>
 <td>
   <div class="clearfix">
-  <div class="floatLeft mr10">
+  <div>
   	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
   </div>
   	<ul id="attachments_$!{portlet.ID}" class="attachments">
