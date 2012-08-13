@@ -21,7 +21,7 @@
 #parse("/portlets/cell_default/ja/schedule-form-title.vm")
 
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_member','1')")
-#set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #if ($!{result.isCopy()})
 #set($event_submit = "eventSubmit_doSchedule_form_copy")
 #else
@@ -41,7 +41,7 @@
 
 #if ($!{result.isRepeat()})
 <input type="hidden" name="repeat_type" value="$!{result.FormData.RepeatType}">
-#if ($!{result.FormData.RepeatType.toString()} == "W") 
+#if ($!{result.FormData.RepeatType.toString()} == "W")
 #if ($!{result.FormData.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
 #if ($!{result.FormData.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
 #if ($!{result.FormData.Week2.toString()} == "TRUE") <input type="hidden" name="week_2" value="TRUE"> #end
@@ -74,12 +74,12 @@
 
 
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
-<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}"> 
+<input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
-#ALcell_center_header($career)参加ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
+#ALcell_center_header($career)$l10n.SCHEDULE_SELECT_MEMBER#ALcell_center_footer($career)
 #ALcell_hr($career '1')
 #if($memberlist.size() == 0)
-所属するﾕｰｻﾞｰがいません。
+$l10n.SCHEDULE_NO_USER_BELONGS
 #else
 
 #if($result.PagesNum > 1)
@@ -89,12 +89,12 @@
 #if ($pages > 1)
 #ALcell_center_header($career)
 #if($currentPage > 1)
-#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" "&lt;前")
+#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" $l10n.SCHEDULE_SUB_PREVIOUS)
 <input type="hidden" name="prev" value="$pre">
 #end
 $currentPage/$pages
 #if($pages > $currentPage)
-#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" "次&gt;")
+#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" $l10n.SCHEDULE_SUB_NEXT)
 <input type="hidden" name="next" value="$next">
 #end
 #ALcell_center_footer($career)
@@ -108,7 +108,7 @@ $currentPage/$pages
 #end
 #end
 #end
-	
+
 
 #if($result.PagesNum > 1)
 #set($pages = $result.PagesNum)
@@ -118,18 +118,18 @@ $currentPage/$pages
 #ALcell_hr($career '1')
 #ALcell_center_header($career)
 #if($currentPage > 1)
-#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" "&lt;前")
+#set($pre = $currentPage - 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_prev" $l10n.SCHEDULE_SUB_PREVIOUS)
 #end
 $currentPage/$pages
 #if($pages > $currentPage)
-#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" "次&gt;")
+#set($next = $currentPage + 1) #ALcell_submit($career "eventSubmit_doSchedule_form_member_next" $l10n.SCHEDULE_SUB_NEXT)
 #end
 #ALcell_center_footer($career)
 #end
 #end
 
 #ALcell_hr($career '1')
-#ALcell_submit($career "$event_submit" "追加する")
+#ALcell_submit($career "$event_submit" $l10n.SCHEDULE_ADD)
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

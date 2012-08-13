@@ -20,50 +20,50 @@
 ## ---------------------------------------------------------------------------
 #set ($event_submit = "eventSubmit_doSchedule_form")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','O')"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','R')"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','S')"]])
-#set($linklist = [["ｽｹｼﾞｭｰﾙ(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], ["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($methodlist = [[$l10n.SCHEDULE_REGISTER_ONEDAY, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','O')"], [$l10n.SCHEDULE_TO_REPEAT_REGISTRATION, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','R')"], [$l10n.SCHEDULE_TO_SPAN_REGISTRATION, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type','S')"]])
+#set($linklist = [[$l10n.SCHEDULE_ONEDAY_LIST, "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], [$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #set ($hasMember = false)
-#ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ詳細")
+#ALcell_pagetitle($career $l10n.SCHEDULE_CELL_SCHEDULE_DETAIL)
 #ALcell_dl_header($career)
-#ALcell_dt($career '名前')#ALcell_dd($career "$!{result.Detail.User.AliasName}")
-#ALcell_dt($career '日時')#ALcell_dd_header($career)
+#ALcell_dt($career $l10n.SCHEDULE_NAME)#ALcell_dd($career "$!{result.Detail.User.AliasName}")
+#ALcell_dt($career $l10n.SCHEDULE_DATE)#ALcell_dd_header($career)
 #if($!{result.Detail.isSpan()})
 $!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}から
 $!{result.Detail.EndDate.Year}/$!{result.Detail.EndDate.Month}/$!{result.Detail.EndDate.Day}$!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-(非公開)
+$l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}
 $!{result.Detail.DateForCell}
 #if(! ${result.Detail.isPublic()})
-(非公開)
+$l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
-(繰り返し)
+$l10n.SCHEDULE_SUB_REPEAT
 #else
 $!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}
 $!{result.Detail.DateForCell}
 #if(! ${result.Detail.isPublic()})
-(非公開)
+$l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})
-(仮)
+$l10n.SCHEDULE_SUB_TEMP
 #end
 #ALcell_dd_footer($career)
-#ALcell_dt($career 'タイトル')#ALcell_dd($career "$!{result.Detail.Name}")
-#ALcell_dt($career '場所')#ALcell_dd($career "$!{result.Detail.Place}")
-#ALcell_dt($career '内容')#ALcell_dd($career "$!{result.Detail.Note}")
-#ALcell_dt($career '公開区分')#ALcell_dd_header($career)
+#ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_TITLE)#ALcell_dd($career "$!{result.Detail.Name}")
+#ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_PLACE)#ALcell_dd($career "$!{result.Detail.Place}")
+#ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_NOTE)#ALcell_dd($career "$!{result.Detail.Note}")
+#ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_PUBLIC)#ALcell_dd_header($career)
 #if($!result.Detail.isPublic())
-公開
+$l10n.SCHEDULE_OPEN_PUBLIC_WORD
 #elseif(!$!result.Detail.isHidden())
-非公開
+$l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 #else
-完全に隠す
+$l10n.SCHEDULE_HIDE_ALL
 #end
 #ALcell_dd_footer($career)
-#ALcell_dt($career '参加ﾒﾝﾊﾞｰ')
+#ALcell_dt($career $l10n.SCHEDULE_MEMBERS)
 #if($!result.MemberList.size() > 1)
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
@@ -71,10 +71,10 @@ $!{result.Detail.DateForCell}
 #ALcell_dd_header($career)
 $!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "T")
-(仮)
+$l10n.SCHEDULE_SUB_TEMP
 #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
 #set($counter = $counter + 1)
-(削除)
+$l10n.SCHEDULE_SUB_DELETE
 #end
 #ALcell_dd_footer($career)
 #end
@@ -84,20 +84,20 @@ $!record.AliasName
 #end
 #if($hasMember)
 #ALcell_dd_header($career)
-#if($!{result.Detail.isEditable()})[編集/削除：可]#else[編集/削除：不可]#end
+#if($!{result.Detail.isEditable()})$l10n.SCHEDULE_CAN_EDIT_DELETE#else$l10n.SCHEDULE_CANNOT_EDIT_DELETE#end
 #ALcell_dd_footer($career)
 #end
 #end
 
-#ALcell_dt($career '共有設備')
+#ALcell_dt($career $l10n.SCHEDULE_SHARED_FACILITIES)
 #foreach($record in $!result.FacilityList)
 #ALcell_dd_header($career)
 ${record.FacilityName}
 #ALcell_dd_footer($career)
 #end
 
-#ALcell_dt($career '登録者')#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
-#ALcell_dt($career '更新者')#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
+#ALcell_dt($career $l10n.SCHEDULE_CREATE_USER)#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
+#ALcell_dt($career $l10n.SCHEDULE_UPDATE_USER)#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
 #ALcell_dl_footer($career)
 #ALcell_hr($career '1')
 #ALcell_formheader($career $jslink $portlet)
@@ -114,24 +114,24 @@ ${record.FacilityName}
 <input type="hidden" name="is_first" value="true">
 
 #if($!{result.Detail.isOwner()})
-#ALcell_submit($career "$event_submit" '編集する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
+#ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' $l10n.SCHEDULE_DELETE)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="C">
-#ALcell_submit($career 'eventSubmit_doSchedule_change_status' '確定する')
+#ALcell_submit($career 'eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_BE_DECIDED)
 #if($!{result.Detail.isEditable()})
-#ALcell_submit($career "$event_submit" '編集する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
+#ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' $l10n.SCHEDULE_DELETE)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="T">
-#ALcell_submit($career 'eventSubmit_doSchedule_change_status' '仮の予定にする')
+#ALcell_submit($career 'eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_BE_TEMP_SCHEDULE)
 #if($!{result.Detail.isEditable()})
-#ALcell_submit($career "$event_submit" '編集する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' '削除する')
-#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' 'コピーして登録する')
+#ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' $l10n.SCHEDULE_DELETE)
+#ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #end
 #end
 #ALcell_formfooter()

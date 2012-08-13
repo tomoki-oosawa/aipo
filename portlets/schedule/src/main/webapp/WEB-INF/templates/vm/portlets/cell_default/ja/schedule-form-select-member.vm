@@ -18,10 +18,10 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($title = "ｽｹｼﾞｭｰﾙを表示するﾒﾝﾊﾞを選択して下さい")
+#set ($title = $l10n.SCHEDULE_SELECT_MEMBER_TEXT)
 #set($pagelink = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectmember','1')")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_member','1')")
-#set($linklist = [["ｸﾞﾙｰﾌﾟの選択へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"],["自分のｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_TO_SELECT_GROUP, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"],[$l10n.SCHEDULE_MY_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_pagetitle($career $title)
 #ALcell_hr($career '1')
 
@@ -36,9 +36,9 @@
 ##set($membersize = $!{result.MemberList.size()})
 
 #if($memberlist.size() == 0)
-所属するﾕｰｻﾞｰがいません。
+$l10n.SCHEDULE_NO_USER_BELONGS
 #else
-*選択しない場合は自分のｽｹｼﾞｭｰﾙが表示されます
+$l10n.SCHEDULE_DISPLAY_YOUR_SCHEDULE
 #ALcell_br($career)
 #if($result.PagesNum > 1)
 #ALcell_hr($career '1')
@@ -57,7 +57,7 @@
 #end
 
 #ALcell_hr($career '1')
-#ALcell_submit($career "eventSubmit_doSchedule_menu_select_member" "表示する")
+#ALcell_submit($career "eventSubmit_doSchedule_menu_select_member" $l10n.SCHEDULE_DISPLAY)
 #end
 
 #ALcell_formfooter()

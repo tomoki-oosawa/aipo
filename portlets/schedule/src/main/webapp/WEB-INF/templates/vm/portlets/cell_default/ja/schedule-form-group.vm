@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #parse("/portlets/cell_default/ja/schedule-form-title.vm")
 
-#set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_errmsg($career $errmsgs)
 #if($errmsgs && !($errmsgs.size() == 0))
 #ALcell_hr($career '1')
@@ -67,27 +67,27 @@
 <input type="hidden" name="edit_flag" value="$!{result.FormData.EditFlag.toString()}">
 <input type="hidden" name="change_tmpreserve_flag" value="$!{result.FormData.ChangeTmpreserveFlag.toString()}">
 
-#ALcell_center_header($career)参加ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
+#ALcell_center_header($career)$l10n.SCHEDULE_SELECT_MEMBER#ALcell_center_footer($career)
 #ALcell_hr($career '1')
-ﾕｰｻﾞｰの所属するｸﾞﾙｰﾌﾟを選択してください。
+$l10n.SCHEDULE_SELECT_USERS_GROUP
 #ALcell_hr($career '1')
-<input name="selectedgroup" type="radio" value="all" checked>（全体）#ALcell_br($career)
+<input name="selectedgroup" type="radio" value="all" checked>$l10n.SCHEDULE_WHOLE#ALcell_br($career)
 #if($result.GroupList.size() > 0)
 #ALcell_hr($career '1')
-Myｸﾞﾙｰﾌﾟ#ALcell_br($career)
+$l10n.SCHEDULE_MYGROUP#ALcell_br($career)
 #foreach( $record in $result.GroupList )
 <input name="selectedgroup" type="radio" value="$!{record.Name}">$!record.AliasName#ALcell_br($career)
 #end
 #end
 #if($!result.PostMap.size() > 0)
 #ALcell_hr($career '1')
-部署#ALcell_br($career)
+$l10n.SCHEDULE_POST#ALcell_br($career)
 #foreach( $record in $!result.PostMap )
 <input name="selectedgroup" type="radio" value="$!{record.GroupName}">$!record.PostName#ALcell_br($career)
 #end
 #end
 #ALcell_hr($career '1')
-#ALcell_submit($career "eventSubmit_doSchedule_form_member" "ﾕｰｻﾞｰ選択へ")
+#ALcell_submit($career "eventSubmit_doSchedule_form_member" $l10n.SCHEDULE_SELECT_USER)
 ##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')

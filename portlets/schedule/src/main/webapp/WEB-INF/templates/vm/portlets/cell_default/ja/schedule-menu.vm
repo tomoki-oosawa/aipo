@@ -19,14 +19,16 @@
 
 ## ---------------------------------------------------------------------------
 ## add by motegi1019 start
-#set($otherlist = [["別のﾕｰｻﾞｰのｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"]])
+#set($otherlist = [[$l10n.SCHEDULE_ANOTHER_USER_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"]])
 ## add by motegi1019 end
-#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','O')"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','R')"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','S')"]])
-#set($menulist = [["次の週へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1').addQueryData('start_date', $nextweek)"], ["前の週へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu', '1').addQueryData('start_date', $prevweek)"], ["今週に戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu', '1').addQueryData('start_date', $!now)"],["週を指定", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectday','1').addQueryData('view_date', $!daylist.get(0))"]])
+#set($methodlist = [[$l10n.SCHEDULE_REGISTER_ONEDAY, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','O')"], [$l10n.SCHEDULE_TO_REPEAT_REGISTRATION, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','R')"], [$l10n.SCHEDULE_TO_SPAN_REGISTRATION, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('schedule_type','S')"]])
+#set($menulist = [[$l10n.SCHEDULE_NEXT_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1').addQueryData('start_date', $nextweek)"], [$l10n.SCHEDULE_PREV_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu', '1').addQueryData('start_date', $prevweek)"], [$l10n.SCHEDULE_BACK_THIS_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu', '1').addQueryData('start_date', $!now)"],[$l10n.SCHEDULE_SELECUT_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectday','1').addQueryData('view_date', $!daylist.get(0))"]])
 ###set ($menulist_schedule = [["ｽｹｼﾞｭｰﾙ(1日)", ""], ["表示(今日)", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1').addQueryData('tab','oneday').addQueryData('view_date', $today)"], ["表示(日付指定)", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectday','1')"], ["登録(1日)", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new')"], ["登録(繰り返し)", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new')"], ["登録(期間)", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new')"]])
 ###set ($menulist = [$menulist_schedule])
 ###ALcell_menulist($career 'ｽｹｼﾞｭｰﾙ' $menulist)
-#ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ($!daylist.get(0).replace('-','/') - $!daylist.get(6).replace('-','/'))")
+#set($span = "($!daylist.get(0).replace('-','/') - $!daylist.get(6).replace('-','/'))")
+#set($title = "$l10n.SCHEDULE_SCHEDULE_CELL$span")
+#ALcell_pagetitle($career $title)
 
 ## add by motegi1019 start
 #ALcell_linklist($career $otherlist)
@@ -39,10 +41,10 @@
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1').addQueryData('tab','oneday').addQueryData('view_date', $!daylist.get($daycount))">$!daylist.get($daycount).substring($yearindex).replace('-','/')$!weekdaylist.get($daycount)</a>
 #foreach($schedule in $!record)
 #ALcell_li_header($career)
-#if($schedule.Repeat)期間：#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
+#if($schedule.Repeat)$l10n.SCHEDULE_TERM：#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
 <a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{schedule.ScheduleId}).addQueryData('view_date', $!daylist.get($daycount))">$schedule.Name</a>
-#if(!$schedule.Public)#ALcell_br($career) &nbsp;(非公開)#end
-#if(!$schedule.Repeat && $schedule.Pattern != 'N')#ALcell_br($career) &nbsp;(繰り返し)#end
+#if(!$schedule.Public)#ALcell_br($career) &nbsp;$l10n.SCHEDULE_SUB_CLOSE_PUBLIC#end
+#if(!$schedule.Repeat && $schedule.Pattern != 'N')#ALcell_br($career) &nbsp;$l10n.SCHEDULE_SUB_REPEAT#end
 #ALcell_li_footer($career)
 #end
 

@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールの検索データを管理するクラスです。
@@ -629,6 +630,13 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   public String getType() {
     return this.type.toString();
+  }
+
+  public String getSpanDateText() {
+    return ALLocalizationUtils.getl10nFormat("SCHEDULE_UNTIL_SPAN", start_date
+      .getYear(), start_date.getMonth(), start_date.getDay(), start_date
+      .getDayOfWeek(), end_date.getYear(), end_date.getMonth(), end_date
+      .getDay(), end_date.getDayOfWeek());
   }
 
 }

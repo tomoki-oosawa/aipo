@@ -19,26 +19,26 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'O')"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'R')"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'S')"]])
-#set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
-#ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ(1日)一覧")
+#set($methodlist = [[$l10n.SCHEDULE_REGISTER_ONEDAY, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'O')"], [$l10n."登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'R')"], [$l10n."登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('schedule_type', 'S')"]])
+#set($linklist = [[$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#ALcell_pagetitle($career $l10n.SCHEDULE_ONEDAY_LIST_SUB)
 
-$!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevWeek.toString()})">前週へ</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevDate.toString()})">前日へ</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.Today.toString()})">今日</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextDate.toString()})">翌日へ</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextWeek.toString()})">翌週へ</a>
+$!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEndFormatMonth} $!{result.ViewEnd.DayOfWeek}
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevWeek.toString()})">$l10n.SCHEDULE_PREV_WEEK_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_PREV_DAY_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXT_DAY_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextWeek.toString()})">$l10n.SCHEDULE_NEXT_WEEK_CELL</a>
 
 
 #ALcell_hr($career '1')
-日  9..0..3..6.#ALcell_br($career)
+$l10n.SCHEDULE_DAY  9..0..3..6.#ALcell_br($career)
 #foreach($record in $result.Container.DayList)
 <a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('tab', 'oneday').addQueryData('view_date', $!{record.Date.toString()})">$!{record.Date.Day} $!{record.Date.DayOfWeek}</a>
 
 #if( ! $record.isSpanNull() )
 #if(! ${record.SpanResultData.isPublic()})
-非公開
+$l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 #end
 #if($record.SpanResultData.isShowDetail())
 #set($addScheduleLink = "$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{record.SpanResultData.ScheduleId})")

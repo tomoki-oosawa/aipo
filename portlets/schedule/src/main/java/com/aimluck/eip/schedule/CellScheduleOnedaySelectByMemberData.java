@@ -297,4 +297,16 @@ public class CellScheduleOnedaySelectByMemberData extends
   public void setPortletId(String id) {
     portletId = id;
   }
+
+  public String getAliasNameText() {
+    return ALLocalizationUtils.getl10nFormat("SCHEDULE_GO_SCHEDULE", targerUser
+      .getAliasName()
+      .toString());
+  }
+
+  public String getAliasNameOnedayListText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_ONES_ONEDAY_LIST",
+      targerUser.getAliasName().toString());
+  }
 }

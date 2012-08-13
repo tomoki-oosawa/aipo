@@ -29,6 +29,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
@@ -46,7 +47,7 @@ public class CellScheduleSelectFormByMemberData extends
   private ALEipUser targerUser;
 
   /*
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -70,5 +71,11 @@ public class CellScheduleSelectFormByMemberData extends
 
   public void setTargerUser(ALEipUser targerUser) {
     this.targerUser = targerUser;
+  }
+
+  public String getAliasNameText() {
+    return ALLocalizationUtils.getl10nFormat("SCHEDULE_GO_SCHEDULE", targerUser
+      .getAliasName()
+      .toString());
   }
 }

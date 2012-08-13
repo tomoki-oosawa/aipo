@@ -415,4 +415,10 @@ public class CellScheduleWeekSelectByMemberData extends
   public String getAclPortletFeature() {
     return aclPortletFeature;
   }
+
+  public String getAliasNameText() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_ONES_SCHEDULE",
+      targerUser.getAliasName().toString());
+  }
 }

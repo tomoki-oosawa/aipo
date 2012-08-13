@@ -577,6 +577,30 @@ public class ScheduleSelectData extends
       createuser.getAliasName());
   }
 
+  public String getViewDateFormatNoly() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_ONLY_DATE_FORMAT",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
+  public String getViewDateTextDeleteOwn() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DELETE_ONLY_MY_SCHEDULE_TEXT",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
+  public String getViewDateTextDeleteAll() {
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DELETE_ALL_SCHEDULE_TEXT",
+      view_date.getYear(),
+      view_date.getMonth(),
+      view_date.getDay());
+  }
+
   /**
    * 状態を取得します。
    * 

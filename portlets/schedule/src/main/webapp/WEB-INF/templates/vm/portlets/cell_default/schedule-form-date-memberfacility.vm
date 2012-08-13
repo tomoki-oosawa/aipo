@@ -30,22 +30,22 @@
 </ul>
 #if($!{result.isOwner()} || $!{result.FormData.EditFlag.toString()} == "T")
 #ALcell_br($career)
-編集/削除の可否：#ALcell_br($career)
-<input name="edit_flag" type="radio" value="T" #if ($!{result.FormData.EditFlag.toString()} == "T") checked="checked" #end>可#ALcell_br($career)
-<input name="edit_flag" type="radio" value="F" #if ($!{result.FormData.EditFlag.toString()} == "F") checked="checked" #end>不可
+$l10n.SCHEDULE_RIGHT_AND_WRONG#ALcell_br($career)
+<input name="edit_flag" type="radio" value="T" #if ($!{result.FormData.EditFlag.toString()} == "T") checked="checked" #end>$l10n.SCHEDULE_PASS#ALcell_br($career)
+<input name="edit_flag" type="radio" value="F" #if ($!{result.FormData.EditFlag.toString()} == "F") checked="checked" #end>$l10n.SCHEDULE_DISAPPROVE
 #end
 #if($mode != "new_form" && $!result.isMember())
 #ALcell_br($career)
-仮ｽｹｼﾞｭｰﾙへの変更：#ALcell_br($career)
-<input name="change_tmpreserve_flag" type="radio" value="T" #if ($!{result.FormData.ChangeTmpreserveFlag.toString()} == "T") checked="checked" #end>戻す#ALcell_br($career)
-<input name="change_tmpreserve_flag" type="radio" value="F" #if ($!{result.FormData.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end>戻さない
+$l10n.SCHEDULE_UPDATE_TO_TEMP_SCHEDULE#ALcell_br($career)
+<input name="change_tmpreserve_flag" type="radio" value="T" #if ($!{result.FormData.ChangeTmpreserveFlag.toString()} == "T") checked="checked" #end>$l10n.SCHEDULE_BRING_BACK#ALcell_br($career)
+<input name="change_tmpreserve_flag" type="radio" value="F" #if ($!{result.FormData.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end>$l10n.SCHEDULE_NOT_BRING_BACK
 #end
 #ALcell_hr($career '1')
 #end
 
 #set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
 #if($fmembersize > 0)
-共有設備：#ALcell_br($career)
+$l10n.SCHEDULE_SHARED_FACILITIES：#ALcell_br($career)
 <ul>
 #foreach($record in $!{result.FormData.FacilityMemberList})
 #ALcell_li_header($career)$!{record.FacilityName}#ALcell_li_footer($career)

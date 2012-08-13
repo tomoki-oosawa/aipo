@@ -19,16 +19,16 @@
 
 ## --------------------------------------------------------------------------
 #if($!{result.isOneday()})
-#set ($title = "ｽｹｼﾞｭｰﾙ(1日)")
+#set ($title = $l10n.SCHEDULE_SCHEDULE_ONEDAY)
 #elseif($!{result.isRepeat()})
-#set ($title = "ｽｹｼﾞｭｰﾙ(繰り返し)")
+#set ($title = $l10n.SCHEDULE_SCHEDULE_REPEAT)
 #else
-#set ($title = "ｽｹｼﾞｭｰﾙ(期間)")
+#set ($title = $l10n.SCHEDULE_SCHEDULE_TERM)
 #end
 
 #if($mode == "new_form")
-#set ($title = $title.concat("登録"))
+#set ($title = $title.concat($l10n.SCHEDULE_REGISTER))
 #else
-#set ($title = $title.concat("編集"))
+#set ($title = $title.concat($l10n.SCHEDULE_EDITING))
 #end
 #ALcell_pagetitle($career $title)

@@ -20,15 +20,15 @@
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)")
 ##set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
-#set($linklist = [["$result.TargerUser.AliasName さんのｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)"]])
-#ALcell_pagetitle($career "$result.TargerUser.AliasName さんのｽｹｼﾞｭｰﾙ(1日)一覧")
-$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.ViewDate.DayOfWeek}#ALcell_br($career)
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.PrevDate.toString()})">前日</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.Today.toString()})">今日</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.NextDate.toString()})">翌日</a>
+#set($linklist = [["$result.AliasNameText", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)"]])
+#ALcell_pagetitle($career "$result.AliasNameOnedayListText")
+$!{result.ViewDateNospaceText}$!{result.ViewDate.DayOfWeek}#ALcell_br($career)
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_YESTERDAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXTDAY</a>
 #ALcell_hr($career '1')
 #if($!{result.List.size()} <= 0)
-予定はありません。
+$l10n.SCHEDULE_NO_SCHEDULE
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
@@ -42,14 +42,14 @@ $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}�
 #if(!${record.isPublic()} && !${record.isMember()})
 <span>
 #if($schedule.Repeat)
-期間：
+$l10n.SCHEDULE_TERM：
 #else
 $!{record.Date}#ALcell_br($career)
 #end
-非公開
-#if($record.isDuplicate())(重複)#end
-#if($record.isRepeat())(繰り返し)#end
-#if($record.isTmpreserve())(仮)#end
+$l10n.SCHEDULE_CLOSE_PUBLIC_WORD
+#if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end
+#if($record.isRepeat())$l10n.SCHEDULE_SUB_REPEAT#end
+#if($record.isTmpreserve())$l10n.SCHEDULE_SUB_TEMP#end
 </span>
 
 #else
@@ -59,12 +59,12 @@ $!{record.Date}#ALcell_br($career)
 #if(!$!{record.isSpan()})
 $!{record.Date}#ALcell_br($career)
 #else
-期間：
+$l10n.SCHEDULE_TERM：
 #end
 $!{record.Name}
-#if($record.isDuplicate())(重複)#end
-#if($record.isRepeat())(繰り返し)#end
-#if($record.isTmpreserve())(仮)#end
+#if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end
+#if($record.isRepeat())$l10n.SCHEDULE_SUB_REPEAT#end
+#if($record.isTmpreserve())$l10n.SCHEDULE_SUB_TEMP#end
 </a>
 
 #end
@@ -78,7 +78,7 @@ $!{record.Name}
 #end
 #ALcell_hr($career '1')
 #if($!{result.ToDoResultDataList.size()} <= 0)
-ToDoはありません。
+$l10n.SCHEDULE_NO_TODO
 #else
 <ul>
 #foreach($record in $result.ToDoResultDataList)

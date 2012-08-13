@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($linklist = [["ｽｹｼﾞｭｰﾙ(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], ["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_ONEDAY_LIST, "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], [$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
@@ -32,67 +32,67 @@
 #else
 #set ($hasMember = false)
 #end
-#ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ削除")
+#ALcell_pagetitle($career $l10n.SCHEDULE_SCHEDULE_DELETE)
 #ALcell_formheader($career $jslink $portlet)
-削除条件：#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_CONDITOPN：#ALcell_br($career)
 #if($!{result.Detail.isOwner()})
 #if($hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteOwn}#ALcell_br($career)
 <input name="del_flag" type="radio" value="2">
-自分のこの予定を完全に削除します#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE#ALcell_br($career)
 <input name="del_flag" type="radio" value="1">
-参加ﾒﾝﾊﾞｰ全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteAll}#ALcell_br($career)
 <input name="del_flag" type="radio" value="0">
-参加ﾒﾝﾊﾞｰ全員のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_ALL_MEMBER_SCHEDULE
 #elseif($hasMember && ! $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="2" checked>
-自分のこの予定を完全に削除します#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE#ALcell_br($career)
 <input name="del_flag" type="radio" value="0">
-参加ﾒﾝﾊﾞｰ全員のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_ALL_MEMBER_SCHEDULE
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteOwn}#ALcell_br($career)
 <input name="del_flag" type="radio" value="2">
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #else
 <input name="del_flag" type="radio" value="2" checked>
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #end
 #else
 #if($!{result.Detail.isEditable()})
 #if($hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteOwn}#ALcell_br($career)
 <input name="del_flag" type="radio" value="2">
-自分のこの予定を完全に削除します#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE#ALcell_br($career)
 <input name="del_flag" type="radio" value="1">
-参加ﾒﾝﾊﾞｰ全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteAll}#ALcell_br($career)
 <input name="del_flag" type="radio" value="0">
-参加ﾒﾝﾊﾞｰ全員のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_ALL_MEMBER_SCHEDULE
 #elseif($hasMember && ! $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="2" checked>
-自分のこの予定を完全に削除します#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE#ALcell_br($career)
 <input name="del_flag" type="radio" value="0">
-参加ﾒﾝﾊﾞｰ全員のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_ALL_MEMBER_SCHEDULE
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteOwn}#ALcell_br($career)
 <input name="del_flag" type="radio" value="2">
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #else
 <input name="del_flag" type="radio" value="2" checked>
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #end
 #else
 #if($!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみを削除します#ALcell_br($career)
+$!{result.ViewDateTextDeleteOwn}#ALcell_br($career)
 <input name="del_flag" type="radio" value="2">
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #else
 <input name="del_flag" type="radio" value="2" checked>
-自分のこの予定を完全に削除します
+$l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 #end
 #end
 #end
@@ -100,7 +100,7 @@
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
 #ALcell_hr($career '1')
-#ALcell_submit($career 'eventSubmit_doSchedule_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_delete' $l10n.SCHEDULE_DELETE)
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

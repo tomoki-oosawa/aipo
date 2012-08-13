@@ -57,6 +57,7 @@ import com.aimluck.eip.schedule.ScheduleChangeStatusFormData;
 import com.aimluck.eip.schedule.ScheduleOnedaySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのアクションクラスです。
@@ -70,13 +71,13 @@ public class CellScheduleAction extends ALBaseAction {
 
   private final String[] weekday_str = {
     "",
-    "(日)",
-    "(月)",
-    "(火)",
-    "(水)",
-    "(木)",
-    "(金)",
-    "(土)" };
+    ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_MONDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY_CELL"),
+    ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY_CELL") };
 
   /**
    * 
@@ -167,7 +168,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -861,7 +862,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-            .equals("weekly-group"))) {
+          .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;

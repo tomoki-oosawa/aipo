@@ -19,15 +19,15 @@
 
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
-#set($linklist = [["ｽｹｼﾞｭｰﾙ(1日)一覧へ", "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], ["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_ONEDAY_LIST, "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], [$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 
-#ALcell_pagetitle($career "繰り返しｽｹｼﾞｭｰﾙ編集")
+#ALcell_pagetitle($career $l10n.SCHEDULE_EDIT_REPEAT_SCHEDULE)
 #ALcell_formheader($career $jslink $portlet)
-編集範囲：#ALcell_br($career)
+$l10n.SCHEDULE_EDIT_RANGE：#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="0" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) checked="checked" #end>
-すべての予定#ALcell_br($career)
+$l10n.SCHEDULE_ALL_SCHEDULE#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="1" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 1) checked="checked" #end>
-$!{result.FormData.ViewDate.Year}年$!{result.FormData.ViewDate.Month}月$!{result.FormData.ViewDate.Day}日の予定のみ
+$!{result.FormData.OnlyViewDateText}
 #ALcell_br($career)#ALcell_br($career)
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.FormData.ViewDate.toString()}">

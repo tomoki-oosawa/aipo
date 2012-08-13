@@ -18,20 +18,20 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($linklist = [["$result.TargerUser.AliasName さんのｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember',$!{result.TargerUser.UserId})"]])
-#ALcell_pagetitle($career "ｽｹｼﾞｭｰﾙ表示日付指定")
+#set($linklist = [["$result.AliasNameText", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember',$!{result.TargerUser.UserId})"]])
+#ALcell_pagetitle($career $l10n.SCHEDULE_SELECT_DATE)
 #ALcell_errmsg($career $errmsgs)
 #if($errmsgs && !($errmsgs.size() == 0))
 #ALcell_hr($career '1')
 #end
 #ALcell_formheader($career $jslink $portlet)
-日付：#ALcell_br($career)
+$l10n.SCHEDULE_CELL_DATE：#ALcell_br($career)
 #ALcell_textfield($career 'view_date' "$!{result.ViewDateDate}" 8 8 'istyle="4"' 'n')
-#ALcell_br($career)(例)#ALcell_br($career)2005/1/1→20050101
+#ALcell_br($career)$l10n.SCHEDULE_SAMPLE#ALcell_br($career)$l10n.SCHEDULE_SAMPLE_DATE_ONLY
 #ALcell_br($career)
 #ALcell_hr($career '1')
 <input type="hidden" name="selectedmember" value="$!{result.TargerUser.UserId}">
-#ALcell_submit($career 'eventSubmit_doSchedule_show_selectday_select_member' '表示する')
+#ALcell_submit($career 'eventSubmit_doSchedule_show_selectday_select_member' $l10n.SCHEDULE_DISPLAY)
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

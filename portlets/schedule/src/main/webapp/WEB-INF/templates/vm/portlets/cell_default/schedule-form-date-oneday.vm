@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($linklist = [["ｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
+#set($linklist = [[$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_errmsg($career $errmsgs)
 #if($errmsgs && !($errmsgs.size() == 0))
 #ALcell_hr($career '1')
@@ -34,13 +34,13 @@
 <input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
 
 <input type="hidden" name="end_date_date" value="$!{result.FormData.StartDateDate}">
-日付：#ALcell_textfield($career 'start_date_date' "$!{result.FormData.StartDateDate}" 8 8 '' 'n')
-#ALcell_br($career)(例)#ALcell_br($career)2005/1/1→20050101
+$l10n.SCHEDULE_CELL_DATE：#ALcell_textfield($career 'start_date_date' "$!{result.FormData.StartDateDate}" 8 8 '' 'n')
+#ALcell_br($career)$l10n.SCHEDULE_SAMPLE#ALcell_br($career)2005/1/1→20050101
 #ALcell_hr($career '1')
 
-時間：#ALcell_br($career)
-#ALcell_textfield($career 'start_date_time' "$!{result.FormData.StartDateTime}" 4 4 '' 'n') から#ALcell_textfield($career 'end_date_time' "$!{result.FormData.EndDateTime}" 4 4 '' 'n')
-#ALcell_br($career)(例)10:30→1030#ALcell_br($career)（15分単位）
+$l10n.SCHEDULE_TIME：#ALcell_br($career)
+#ALcell_textfield($career 'start_date_time' "$!{result.FormData.StartDateTime}" 4 4 '' 'n') $l10n.SCHEDULE_FROM#ALcell_textfield($career 'end_date_time' "$!{result.FormData.EndDateTime}" 4 4 '' 'n')
+#ALcell_br($career)$l10n.SCHEDULE_SAMPLE_TIME#ALcell_br($career)$l10n.SCHEDULE_PER_15MINUTES
 
 #ALcell_hr($career '1')
 #parse("/portlets/cell_default/ja/schedule-form-date-memberfacility.vm")
@@ -48,10 +48,10 @@
 #if($!{result.EntityId} && $!{result.EntityId} != 'new')
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 #end
-#ALcell_submit($career "eventSubmit_doSchedule_form_note" "次へ")
-#ALcell_submit($career "eventSubmit_doSchedule_form_group" "参加ﾕｰｻﾞｰ選択")
+#ALcell_submit($career "eventSubmit_doSchedule_form_note" $l10n.SCHEDULE_NEXT)
+#ALcell_submit($career "eventSubmit_doSchedule_form_group" $l10n.SCHEDULE_SELECT_MEMBER)
 #if(! $!{result.isSpan()})
-#ALcell_submit($career "eventSubmit_doSchedule_form_facility_group" "共有設備選択")
+#ALcell_submit($career "eventSubmit_doSchedule_form_facility_group" $l10n.SCHEDULE_SELECT_SHARED_FACILITIES)
 #end
 ##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
