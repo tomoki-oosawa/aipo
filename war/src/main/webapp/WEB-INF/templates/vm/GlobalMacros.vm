@@ -398,11 +398,11 @@
 #end
 
 #macro(ALajaxbuttonEdit $url)
-<input name="ajaxbuttonEdit" class="button" type="button" value="編集する" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)');" />
+<input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)');" />
 #end
 
 #macro(ALajaxbuttonEditCallback $url $portlet_id $callback)
-<input name="ajaxbuttonEdit" class="button" type="button" value="編集する" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+<input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
 #macro(ALajaxbuttonNameEditCallback $url $portlet_id $callback $name)
@@ -410,19 +410,19 @@
 #end
 
 #macro(ALajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value="削除する" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+	<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 
 #macro(ALajaxbuttonClose)
-<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.common.hideDialog();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialog();" />
 #end
 
 #macro(ALajaxbuttonDialogSubClose)
-<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.common.hideDialogSub();" />
+	<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialogSub();" />
 #end
 
 #macro(ALajaxbuttonCancel)
-<input name="ajaxbuttonCancel" class="button" type="button" value="キャンセルする" onclick="aipo.common.hideDialog();" />
+<input name="ajaxbuttonCancel" class="button" type="button" value="$l10n.COMMON_CANCEL" onclick="aipo.common.hideDialog();" />
 #end
 
 #macro(ALrequired $title)

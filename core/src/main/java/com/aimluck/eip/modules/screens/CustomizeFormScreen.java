@@ -39,6 +39,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -150,6 +151,8 @@ public class CustomizeFormScreen extends ALVelocityScreen {
 
       ALEipUtils.setupContext(rundata, context);
       // putData(rundata, context);
+
+      context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
 
       String layout_template = "portlets/html/ja/ajax-customize-form.vm";
       setTemplate(rundata, context, layout_template);
