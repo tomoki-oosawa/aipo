@@ -24,7 +24,9 @@
 ## add by motegi1019 end
 #set($linklist = [[$l10n.SCHEDULE_BACK_USER_SELECT, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectmember','1')"]])
 #set($menulist = [[$l10n.SCHEDULE_NEXT_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('start_date', $nextweek)"], [$l10n.SCHEDULE_PREV_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('eventSubmit_doSchedule_menu_select_member', '1').addQueryData('start_date', $prevweek)"], [$l10n.SCHEDULE_BACK_THIS_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member', '1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('start_date', $!now)"],[$l10n.SCHEDULE_SELECUT_WEEK, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectday_select_member','1').addQueryData('view_date', $!daylist.get(0)).addQueryData('selectedmember', $result.TargerUser.UserId)"]])
-#ALcell_pagetitle($career "$result.AliasNameText($!daylist.get(0).replace('-','/') - $!daylist.get(6).replace('-','/'))")
+#set($span = "($!daylist.get(0).replace('-','/') - $!daylist.get(6).replace('-','/'))")
+#set($title = "$result.AliasNameText$span")
+#ALcell_pagetitle($career $title)
 
 ## add by motegi1019 start
 #ALcell_linklist($career $otherlist)
