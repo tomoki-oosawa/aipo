@@ -763,11 +763,19 @@ public class ALDefaultSocialApplicationHanlder extends
       query.where(Operations.ne(Activity.LOGIN_NAME_PROPERTY, loginName));
     }
     String targetLoginName = request.getTargetLoginName();
+    boolean targetLoginNameLimit = request.isTargetLoginNameLimit();
     if (targetLoginName != null && targetLoginName.length() > 0) {
-
-      query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
-        + "."
-        + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName, "-1"));
+      if (!targetLoginNameLimit) {
+        // 更新情報
+        query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
+          + "."
+          + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName, "-1"));
+      } else {
+        // あなた(自分)宛のお知らせ
+        query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
+          + "."
+          + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName));
+      }
     }
     String appId = request.getAppId();
     if (appId != null && appId.length() > 0) {
@@ -986,11 +994,11 @@ public class ALDefaultSocialApplicationHanlder extends
               + " AND owner_id = #bind($userId) "
               + " AND app_id = #bind($appId) "
               + " AND external_id = #bind($externalId); ";
-          Database.sql(EipTTimeline.class, timelineSql).param(
-            "parentId",
-            parentId).param("title", request.getTitle()).param(
-            "portletParams",
-            request.getPortletParams())
+          Database
+            .sql(EipTTimeline.class, timelineSql)
+            .param("parentId", parentId)
+            .param("title", request.getTitle())
+            .param("portletParams", request.getPortletParams())
             .param("userId", request.getUserId())
             .param("appId", request.getAppId())
             .param("externalId", request.getExternalId())

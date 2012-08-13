@@ -44,6 +44,9 @@ public class ALActivityGetRequest {
 
   private float priority = -1f;
 
+  // 自分宛のお知らせかどうかのフラグ
+  private boolean targetLoginNameLimit = false;
+
   /**
    * @return limit
    */
@@ -180,6 +183,12 @@ public class ALActivityGetRequest {
     return this;
   }
 
+  public ALActivityGetRequest withTargetLoginNameLimit(
+      boolean targetLoginNameLimit) {
+    setTargetLoginNameLimit(targetLoginNameLimit);
+    return this;
+  }
+
   /**
    * @param priority
    *          セットする priority
@@ -218,5 +227,20 @@ public class ALActivityGetRequest {
    */
   public void setMax(long max) {
     this.max = max;
+  }
+
+  /**
+   * @param targetLoginNameLimit
+   *          セットする targetLoginNameLimit
+   */
+  public void setTargetLoginNameLimit(boolean targetLoginNameLimit) {
+    this.targetLoginNameLimit = targetLoginNameLimit;
+  }
+
+  /**
+   * @return targetLoginNameLimit
+   */
+  public boolean isTargetLoginNameLimit() {
+    return targetLoginNameLimit;
   }
 }

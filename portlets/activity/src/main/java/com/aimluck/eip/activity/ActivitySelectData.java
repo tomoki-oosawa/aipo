@@ -98,8 +98,12 @@ public class ActivitySelectData extends
     int limit = getRowsNum();
     String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
     ResultList<ALActivity> list =
-      ALActivityService.getList(new ALActivityGetRequest().withTargetLoginName(
-        loginName).withPriority(1f).withLimit(limit).withPage(page));
+      ALActivityService.getList(new ALActivityGetRequest()
+        .withTargetLoginName(loginName)
+        .withPriority(1f)
+        .withLimit(limit)
+        .withPage(page)
+        .withTargetLoginNameLimit(true));
     setPageParam(list.getTotalCount());
     return list;
   }
