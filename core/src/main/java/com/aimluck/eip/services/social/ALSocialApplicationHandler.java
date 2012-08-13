@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -35,11 +37,13 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALActivityCount;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALOAuthConsumer;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
@@ -49,7 +53,6 @@ import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationPutRequest;
 import com.aimluck.eip.services.social.model.ALOAuthConsumerPutRequest;
-import com.aimluck.eip.util.ALServletUtils;
 
 /**
  *
@@ -146,6 +149,14 @@ public abstract class ALSocialApplicationHandler {
       public String defaultValue() {
         return "30";
       }
+    },
+
+    CONTAINER_URL("containerUrl") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("aipo.container.url");
+      }
+
     };
 
     private final String property;
@@ -195,13 +206,22 @@ public abstract class ALSocialApplicationHandler {
   }
 
   protected String getMetaDataUrl() {
-    String baseUrl = ALServletUtils.getRequestBaseUrl();
+    String baseUrl = ALContainerConfigService.get(Property.CONTAINER_URL);
+    if (baseUrl == null || baseUrl.length() == 0) {
+      HttpServletRequest request = HttpServletRequestLocator.get();
+      Integer port = request.getServerPort();
+      String scheme = request.getScheme();
+      baseUrl = scheme + "://127.0.0.1:" + port;
+    }
     return baseUrl + "/gadgets/metadata";
   }
 
   public Map<String, ALGadgetSpec> getMetaData(List<String> specUrls,
       String view, boolean isDetail, boolean nocache) {
     Map<String, ALGadgetSpec> maps = new HashMap<String, ALGadgetSpec>();
+    if (specUrls == null || specUrls.size() == 0) {
+      return maps;
+    }
     try {
 
       HttpClient httpClient = new HttpClient();
