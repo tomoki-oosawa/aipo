@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="commons/src/main/java"/>
 	<classpathentry kind="src" path="portlets/timeline/src/test/java"/>
 	<classpathentry kind="src" path="portlets/timeline/src/main/java"/>
 	<classpathentry kind="src" path="portlets/userlist/src/main/java"/>
 	<classpathentry kind="src" path="portlets/psml/src/main/java"/>
-	<classpathentry kind="src" output="target/test-classes" path="commons/src/test/java"/>
 	<classpathentry kind="src" path="jetspeed/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="jetspeed/src/test/java"/>
 	<classpathentry kind="src" path="core/src/main/java"/>
