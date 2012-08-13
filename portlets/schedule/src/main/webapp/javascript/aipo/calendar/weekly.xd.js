@@ -284,7 +284,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	simpleStyle = "width: 0%;display: none;";
             }
 
-            termTableHtml += "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"100%\"><tbody>";
+            termTableHtml += "<table id=\"termTable_" + this.portletId + "\" style=\"width:100%;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>";
 
             var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
 //            if(Element.clientWidth == Element.offsetWidth){
@@ -688,20 +688,69 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
             var Element = dojo.byId("weeklyScrollPane_" + _portletId);
+
             if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
             	if(dojo.byId("weeklySpan-" + _portletId) != null){
-				dojo.byId("weeklySpan-" + _portletId).style.display = "none";
-            }
-            	dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
-            	if(isSimple && !isFourSpan){
-            		dojo.query('.weeklyHeadRightborder0_' + _portletId).style("borderRight", "none");
-            		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("borderRight", "none");
-            	} else {
-            		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");
-            		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");
+            		dojo.byId("weeklySpan-" + _portletId).style.display = "none";
             	}
-            }
+            	dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
+            	if(dojo.byId("termTable_" + _portletId) != null){
+            		dojo.query('termTable_' + _portletId).style("width", "99.9999%");
+            	}
 
+                	if(isSimple && isOneSpan){
+                		dojo.query('.weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
+                		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
+                		dojo.byId("weeklyRight0-" + _portletId).style.borderRightStyle = "";
+                    	if(isIPad){
+                    		if(dojo.byId("weeklyRight0-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight0-" + _portletId).className.indexOf("saturday")  >= 0){
+                    			dojo.query('.scroll_width').style("padding-right", "1px");
+        					}else{
+        						dojo.query('.scroll_width').style("padding-right", "0px");
+        					}
+                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+                    	}else{
+                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+                    	}
+                	} else if(isSimple && isFourSpan){
+
+                    	if(isIPad){
+                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
+                    		dojo.query('.scroll_width').style("padding-right", "0px");
+                    	}else{
+                    		dojo.byId("weeklyRight3-" + _portletId).style.borderRightStyle = "none";
+                    		dojo.query('.weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
+                    		dojo.query('._weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
+                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+                    	}
+                	}else{
+
+                    	if(isIPad){
+                    		dojo.query('.scroll_width').style("padding-right", "0px");
+                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
+                    	}else{
+                    		if(window.navigator.userAgent.toLowerCase().indexOf("chrome") >= 0 && (dojo.byId("weeklyRight6-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight6-" + _portletId).className.indexOf("saturday"))  >= 0){
+                    			dojo.query('.scroll_width').style("padding-right", "1px");
+                    			dojo.query('.weeklyTableHead').style("padding-right", "1px");
+                    		}else{
+                    			dojo.query('.scroll_width').style("padding-right", "0px");
+                    			dojo.query('.weeklyTableHead').style("padding-right", "0px");
+                    		}
+                    		dojo.byId("weeklyRight6-" + _portletId).style.borderRightStyle = "none";
+                    		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
+                    		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
+
+                    	}
+                	}
+
+
+            }else if(Element.clientWidth != Element.offsetWidth && Element.offsetWidth - Element.clientWidth != 18){
+            	if(dojo.byId("weeklySpan-" + _portletId) != null){
+            		dojo.byId("weeklySpan-" + _portletId).width = (Element.offsetWidth - Element.clientWidth  + 1) + "px";
+            	}
+            	dojo.query(".weeklyTermTailTd_" + _portletId).width = (Element.offsetWidth - Element.clientWidth + 1) + "px";
+            	dojo.query(".weeklyTermTail").style("width",  ((Element.offsetWidth - Element.clientWidth + 1) + "px"));
+            }
 
 
             if (!ptConfig[_portletId].isScroll) {
