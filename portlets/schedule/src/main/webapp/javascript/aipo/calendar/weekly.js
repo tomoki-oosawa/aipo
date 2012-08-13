@@ -692,7 +692,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("borderRight", "none");
             	} else {
             		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");
-            		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");            		
+            		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("borderRight", "none");
             	}
             }
 
@@ -782,7 +782,7 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
         	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
 
         	        if(left + width > 100){
-        	        	width = 100 - left;
+        	        	width = 100;
         	        }
 	                dojo.style(scheduleDiv[i], "width", width + "%");
         	        dojo.style(scheduleDiv[i], "left", left + "%");
