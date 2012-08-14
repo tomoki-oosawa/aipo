@@ -27,11 +27,11 @@ dojo.addOnLoad(function () {
 
     var subMenu =
 		[
-		      {   caption: "設備一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_list','1')"    },
-		      {   caption: "設備グループ一覧を見る", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacilitygroup_list','1')"    },
-			  {   caption: "設備を追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"},
-			  {   caption: "設備グループを追加する", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);"},
-			  {   caption: "設備の順番を変更する", iconClass: "menuBarIconAccountChangeTurn", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityChangeTurnFormScreen")');"   }
+		      {   caption: "$l10n.FACILITIES_SHOW_FACILITY_LIST", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacility_list','1')"    },
+		      {   caption: "$l10n.FACILITIES_SHOW_FACILITYGROUP_LIST", iconClass: "menuBarIconList", url: "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doFacilitygroup_list','1')"    },
+			  {   caption: "$l10n.FACILITIES_ADD_FACILITY", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityDialog);"},
+			  {   caption: "$l10n.FACILITIES_ADD_FACILITYGROUP", iconClass: "menuBarIconAdd", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);"},
+			  {   caption: "$l10n.FACILITIES_SORT_FACILITY", iconClass: "menuBarIconAccountChangeTurn", url: "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityChangeTurnFormScreen")');"   }
 		];
 
     if(aipo.facility.menuSelected == "undefined"){
