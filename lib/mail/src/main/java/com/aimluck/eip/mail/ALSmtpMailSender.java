@@ -180,6 +180,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
     // session.setDebug(true);
 
     try {
+
       // メッセージを生成
       msg = new ALLocalMailMessage(session);
       // 送信元メールアドレスと送信者名をセット
@@ -199,25 +200,31 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         setRecipient(msg, Message.RecipientType.BCC, mcontext.getBcc());
       }
 
+      // メールの件名をセット
+      msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
+      // メールの送信日時をセット
+      msg.setSentDate(new Date());
+
       if (mcontext.getFilePaths() == null) {
         // メールの本文をセット
         msg.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
-        // ALMailUtils.setTextContent(msg, mcontext.getMsgText());
+        setHeader(msg, mcontext);
       } else {
         String[] checkedFilePaths = mcontext.getFilePaths();
         int checkedFilePathsLength = checkedFilePaths.length;
         if (checkedFilePathsLength <= 0) {
           // MultiPart にせず，メールの本文をセット
           msg.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
-          // ALMailUtils.setTextContent(msg, mcontext.getMsgText());
+          setHeader(msg, mcontext);
         } else {
+          setHeader(msg, mcontext);
           // 複数のボディを格納するマルチパートオブジェクトを生成
           Multipart multiPart = new MimeMultipart();
 
           // テキストのボディパートを作成
           MimeBodyPart mimeText = new MimeBodyPart();
           // メールの内容を指定
-          mimeText.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
+          mimeText.setText(mcontext.getMsgText(), CHARSET_ISO2022JP);
           // １つ目のボディパートを追加
           multiPart.addBodyPart(mimeText);
 
@@ -264,40 +271,40 @@ public abstract class ALSmtpMailSender implements ALMailSender {
         }
       }
 
-      // メールの形式をセット
-      msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
-      msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
-      msg.setHeader(
-        ALLocalMailMessage.X_Mailer,
-        ALLocalMailMessage.X_Mailer_Value);
-      // メールの件名をセット
-      msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
-      // メールの送信日時をセット
-      msg.setSentDate(new Date());
-
-      // 追加ヘッダをセットする
-      Map<String, String> headers = mcontext.getAdditionalHeaders();
-      if (headers != null && !headers.isEmpty()) {
-        synchronized (headers) {
-          String key = null;
-          String value = null;
-          Map.Entry<String, String> entry = null;
-          for (Iterator<Map.Entry<String, String>> i =
-            headers.entrySet().iterator(); i.hasNext();) {
-            entry = i.next();
-            key = entry.getKey();
-            value = entry.getValue();
-            msg.setHeader(key, value);
-          }
-        }
-      }
-
     } catch (Exception e) {
       logger.error("Exception", e);
       return null;
     }
 
     return msg;
+  }
+
+  private void setHeader(ALLocalMailMessage msg, ALSmtpMailContext mcontext)
+      throws Exception {
+
+    // メールの形式をセット
+    msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
+    msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
+    msg.setHeader(
+      ALLocalMailMessage.X_Mailer,
+      ALLocalMailMessage.X_Mailer_Value);
+
+    // 追加ヘッダをセットする
+    Map<String, String> headers = mcontext.getAdditionalHeaders();
+    if (headers != null && !headers.isEmpty()) {
+      synchronized (headers) {
+        String key = null;
+        String value = null;
+        Map.Entry<String, String> entry = null;
+        for (Iterator<Map.Entry<String, String>> i =
+          headers.entrySet().iterator(); i.hasNext();) {
+          entry = i.next();
+          key = entry.getKey();
+          value = entry.getValue();
+          msg.setHeader(key, value);
+        }
+      }
+    }
   }
 
   /**
