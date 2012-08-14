@@ -198,43 +198,18 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       if (mcontext.getBcc() != null) {
         setRecipient(msg, Message.RecipientType.BCC, mcontext.getBcc());
       }
-      // メールの形式をセット
-      msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
-      msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
-      msg.setHeader(
-        ALLocalMailMessage.X_Mailer,
-        ALLocalMailMessage.X_Mailer_Value);
-      // メールの件名をセット
-      msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
-      // メールの送信日時をセット
-      msg.setSentDate(new Date());
-
-      // 追加ヘッダをセットする
-      Map<String, String> headers = mcontext.getAdditionalHeaders();
-      if (headers != null) {
-        synchronized (headers) {
-          String key = null;
-          String value = null;
-          Map.Entry<String, String> entry = null;
-          for (Iterator<Map.Entry<String, String>> i =
-            headers.entrySet().iterator(); i.hasNext();) {
-            entry = i.next();
-            key = entry.getKey();
-            value = entry.getValue();
-            msg.setHeader(key, value);
-          }
-        }
-      }
 
       if (mcontext.getFilePaths() == null) {
         // メールの本文をセット
-        ALMailUtils.setTextContent(msg, mcontext.getMsgText());
+        msg.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
+        // ALMailUtils.setTextContent(msg, mcontext.getMsgText());
       } else {
         String[] checkedFilePaths = mcontext.getFilePaths();
         int checkedFilePathsLength = checkedFilePaths.length;
         if (checkedFilePathsLength <= 0) {
           // MultiPart にせず，メールの本文をセット
-          ALMailUtils.setTextContent(msg, mcontext.getMsgText());
+          msg.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
+          // ALMailUtils.setTextContent(msg, mcontext.getMsgText());
         } else {
           // 複数のボディを格納するマルチパートオブジェクトを生成
           Multipart multiPart = new MimeMultipart();
@@ -242,7 +217,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
           // テキストのボディパートを作成
           MimeBodyPart mimeText = new MimeBodyPart();
           // メールの内容を指定
-          mimeText.setText(mcontext.getMsgText(), CHARSET_ISO2022JP);
+          mimeText.setText(mcontext.getMsgText() + "\r\n", CHARSET_ISO2022JP);
           // １つ目のボディパートを追加
           multiPart.addBodyPart(mimeText);
 
@@ -286,6 +261,34 @@ public abstract class ALSmtpMailSender implements ALMailSender {
 
           // マルチパートオブジェクトをメッセージに設定
           msg.setContent(multiPart);
+        }
+      }
+
+      // メールの形式をセット
+      msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
+      msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
+      msg.setHeader(
+        ALLocalMailMessage.X_Mailer,
+        ALLocalMailMessage.X_Mailer_Value);
+      // メールの件名をセット
+      msg.setSubject(ALMailUtils.encodeWordJIS(mcontext.getSubject()));
+      // メールの送信日時をセット
+      msg.setSentDate(new Date());
+
+      // 追加ヘッダをセットする
+      Map<String, String> headers = mcontext.getAdditionalHeaders();
+      if (headers != null && !headers.isEmpty()) {
+        synchronized (headers) {
+          String key = null;
+          String value = null;
+          Map.Entry<String, String> entry = null;
+          for (Iterator<Map.Entry<String, String>> i =
+            headers.entrySet().iterator(); i.hasNext();) {
+            entry = i.next();
+            key = entry.getKey();
+            value = entry.getValue();
+            msg.setHeader(key, value);
+          }
         }
       }
 

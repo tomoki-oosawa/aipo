@@ -597,10 +597,7 @@ public class ALMailUtils {
   public static String encodeWordJIS(String s) {
     try {
       return "=?ISO-2022-JP?B?"
-        + new String(Base64
-          .encodeBase64(CharCodeConverter.sjisToJis(UnicodeCorrecter
-            .correctToCP932(s)
-            .getBytes("Windows-31J"))))
+        + new String(Base64.encodeBase64(s.getBytes("ISO-2022-JP")))
         + "?=";
     } catch (UnsupportedEncodingException e) {
       throw new RuntimeException("CANT HAPPEN");

@@ -228,12 +228,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   public String getBodyText() {
     String text = null;
     try {
-      text =
-        UnicodeCorrecter.correctToCP932(MultipartUtility
-          .getFirstPlainText(this));
-      // FirstPlainPartExtractor h = new FirstPlainPartExtractor();
-      // MultipartUtility.process(this, h);
-      // text = UnicodeCorrecter.correctToCP932(h.getText());
+      text = MultipartUtility.getFirstPlainText(this);
     } catch (Exception e) {
       logger.error("Exception", e);
     }
