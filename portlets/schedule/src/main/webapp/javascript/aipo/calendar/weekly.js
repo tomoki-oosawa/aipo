@@ -259,9 +259,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             }
             var count = 0;
             var l_count = 0;
+            var m_count = 0;
             var html = '';
             var termHtml = '';
             var termTableHtml = '';
+            var termScheduleItemGarageHtml = '';
             var tmpHeight = [];
             var tmpNode1, tmpNode2, tmpNode3, tmpNode4;
             var startEnd = data.startDate.substring(0,4) + "年" + parseInt(data.startDate.substring(5,7),10) + "月" + parseInt(data.startDate.substring(8,10),10) + "日" + data.dayOfWeek[0];
@@ -294,11 +296,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 var simpleDisplayR = "";
                 if(isSimple && ( isOneSpan || isFourSpan)){
                   simpleDisplay = ' style="display: none;"';
+                  m_count++;
                   for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
                     if(item.index==0 || ( isSimple && isFourSpan && item.index < 4 )){
                     	simpleDisplay = "";
                     	simpleDisplayR = " weeklyTermRightR";
+                        m_count--;
                     	break;
                     }
                   }
@@ -319,9 +323,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 //IPADはスクロールバーを表示しないので表示調節用の列を削除
                 var ipad_border= scheduleTooltipEnable !==true && isSimple && isOneSpan ? "border-right:0":"";
                 if(scheduleTooltipEnable!==true && isSimple && isOneSpan )
-                	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td  colspan="2" nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
+                	termTableHtml += '<tr'+simpleDisplay+'><td colspan="2" nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
                 else
-                	termTableHtml += '<tr'+simpleDisplay+'><td width="50"><div class="weeklyTermLeft" id="weeklyTermLeft"><div class="weeklyTermLeftTop">&nbsp;</div></div></td><td nowrap="nowrap" width="100%" valign="top"><div class="weeklyTermRights">';
+                	termTableHtml += '<tr'+simpleDisplay+'><td nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
 
                 if(isSimple && isFourSpan){
 	                termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
@@ -331,7 +335,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
 	                termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
+	                termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' +  (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
                 }else{
                 	termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                     termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
@@ -340,22 +344,23 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                     termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                     termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
                     termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="termScheduleGarage"> </div>'
+                    termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' + (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
                 }
 
                 var weeklyTermtailHtml;
-                if(!(scheduleTooltipEnable!==true && isSimple && isOneSpan) || !aipo.calendar.noscrollbar ){
-                	weeklyTermtailHtml = "</div></td><td class=\"weeklyTermTailTd_" + _portletId  + "\" width=\"18\"><div class=\"weeklyTermTail\">&nbsp;</div></td></tr>";
-                }else{
-                   	weeklyTermtailHtml = "</div></td></tr>";
-                 }
-                termTableHtml += weeklyTermtailHtml;
+                termTableHtml += "</div></td></tr>";
 
                 l_count++;
             });
            termTableHtml += "</tbody></table>"
-           dojo.byId('termScheduleGarage-'+_portletId).innerHTML=termTableHtml;
-           dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (18 * (l_count + 1)) + "px";
+           dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
+           dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
+           dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
+           dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
+           dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
+           if((l_count - m_count) > 0) {
+             dojo.byId('weeklyTermTailTd_' + _portletId).style.display = "";
+           }
 
             for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
