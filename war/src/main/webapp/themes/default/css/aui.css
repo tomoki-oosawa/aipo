@@ -1765,6 +1765,7 @@ input[type=password] {
 	border:1px solid #c9c9c9;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
+	-webkit-box-sizing: border-box;
 	background-color:#fff;
 }
 *:first-child+html input[type=text],
