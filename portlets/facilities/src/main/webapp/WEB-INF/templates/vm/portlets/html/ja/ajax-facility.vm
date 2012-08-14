@@ -27,22 +27,22 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["設備", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen')"])
+#set($tab = ["$l10n.FACILITIES_FACILITY", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["設備グループ", "group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupListScreen')"])
+#set($tab = ["$l10n.FACILITIES_FACILITYGROUP", "group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:8em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
 </div>
 #if($result.getAllFacilitySum() != 0)
-#AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
 #end
 #AUISummaryDivfooter()
 #if($result.getAllFacilitySum() != 0)
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen").addQueryData("filter","").addQueryData("filtertype","group_id"))">すべての設備グループ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen").addQueryData("filter","").addQueryData("filtertype","group_id"))">$l10n.FACILITIES_FACILITYGROUP_ALL</option>
 #foreach( $record in $result.AllFacilityGroup )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityListScreen").addQueryData("filter",$!record.GroupId).addQueryData("filtertype","group_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupId.toString()) selected="selected" #end>$!record.GroupName</option>
 #end
@@ -51,22 +51,22 @@
 #AUISummaryDivfooter()
 #end
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader('設備')
+#ALajaxlistformheader("$l10n.FACILITIES_FACILITY")
 #if($result.getAllFacilitySum() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("設備を追加する" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
 #elseif($result.List.size() == 0)
-指定された条件に該当する設備はありません。<br />
+$l10n.FACILITIES_MSG_NO_FACILITIES<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
-#AUIajaxbuttonLink('設備の順番を変更する' $orderFacility)
+#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonLink("$l10n.FACILITIES_SORT_FACILITY" $orderFacility)
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('FacilityListScreen' $result)
@@ -79,8 +79,8 @@
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('facility_name' '設備名' $result 'FacilityListScreen')")
-#ALtdhead("設備グループ名")
+#ALtdhead("#ALajaxsort('facility_name' $l10n.FACILITIES_FACILITY_NAME $result 'FacilityListScreen')")
+#ALtdhead("$l10n.FACILITIES_FACILITYGROUP_NAME")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -105,8 +105,8 @@ $!group.GroupName
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
-#AUIajaxbuttonLink('設備の順番を変更する' $orderFacility)
+#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonLink("$l10n.FACILITIES_SORT_FACILITY" $orderFacility)
 </div>
 #AUIajaxpageview('FacilityListScreen' $result)
 #AUISummaryDivfooter()

@@ -19,12 +19,12 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.FACILITIES_ADD")
 #set ($event_submit = "eventSubmit_doFacility_insert")
-#set ($subtitle = '設備追加')
+#set ($subtitle = "$l10n.FACILITIES_ADDITION_FACILITY")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = '設備編集')
+#set ($action_str = "$l10n.FACILITIES_UPDATE")
+#set ($subtitle = "$l10n.FACILITIES_EDITING_FACILITY")
 #set ($event_submit = "eventSubmit_doFacility_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -46,18 +46,18 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
-#ALtdcaption('設備グループ')
+#ALtdcaption("$l10n.FACILITIES_FACILITYGROUP")
 #ALtditemheader()
 ##foreach($record in $!result.FacilityGroupList)<option value="$!record.GroupId">$!record.GroupName</option>#end
-<div class="spaceTop spaceLeft small">左側にグループを追加してください。</div>
+<div class="spaceTop spaceLeft small">$l10n.FACILITIES_MSG_ADD_GROUP</div>
 <div dojoType="aipo.widget.GroupNormalSelectList"
     id="facilitygroupselect"
     widgetId="facilitygroupselect"
     buttonAddId="button_facility_add"
     buttonRemoveId="button_facility_remove"
-    memberFromTitle="選択設備グループ一覧"
+    memberFromTitle="$l10n.FACILITIES_FACILITYGROUP_FROM_LIST"
     memberFromId="tmp_group_from"
-    memberToTitle="設備グループ一覧"
+    memberToTitle="$l10n.FACILITIES_FACILITYGROUP_LIST"
     memberToId="group_to"
     memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupLiteJSONScreen').addQueryData('mode','post')"
     memberFromOptionKey="facilityGroupId"

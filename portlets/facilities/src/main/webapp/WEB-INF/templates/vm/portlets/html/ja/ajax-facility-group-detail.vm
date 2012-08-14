@@ -20,15 +20,15 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("設備グループ詳細")
+#ALdialogheader("$l10n.FACILITIES_FACILITYGROUP_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("設備グループ")
+#ALajaxdetailformheader("$l10n.FACILITIES_FACILITYGROUP")
 #ALtableheaderWide()
-#ALtdcaption('設備グループ名')
+#ALtdcaption("$l10n.FACILITIES_FACILITYGROUP_NAME")
 #ALtditemheader()
 $!result.Detail.GroupName
 #ALtditemfooter()
-#ALtdcaption('設備リスト')
+#ALtdcaption("$l10n.FACILITIES_FACILITY_FACILITIES")
 #ALtditemheader()
 #foreach($record in $!result.Detail.getFacilityListByGroupId($!{result.Detail.GroupId.toString()}))
 $!record.FacilityName<br />
