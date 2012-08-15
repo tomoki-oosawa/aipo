@@ -20,12 +20,12 @@
 ## ---------------------------------------------------------------------------
 #if($result.currentSubMenu=="requested")
 #set ($title = "$l10n.WORKFLOW_APPLICANT")
-#set($subtitle='$l10n.WORKFLOW_WORKFLOW_CONFIRMATION_REQUEST_LIST')
-#set($noresultmsg='$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU')
+#set($subtitle="$l10n.WORKFLOW_WORKFLOW_CONFIRMATION_REQUEST_LIST")
+#set($noresultmsg="$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU")
 #else
 #set ($title = "$l10n.WORKFLOW_APPROVER")
-#set($subtitle='$l10n.WORKFLOW_WORKFLOW_CREATION_REQUEST_LIST')
-#set($noresultmsg='$l10n.WORKFLOW_NO_WORKFLOW_YOU_CREATE')
+#set($subtitle="$l10n.WORKFLOW_WORKFLOW_CREATION_REQUEST_LIST")
+#set($noresultmsg="$l10n.WORKFLOW_NO_WORKFLOW_YOU_CREATE")
 #end
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list','1')")
 

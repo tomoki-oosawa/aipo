@@ -394,8 +394,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
     // カテゴリID
     if (category_id.getValue() == 1 && request_name.getValue().length() == 0) {
-      msgList
-        .add("『 <span class='em'>カテゴリ</span> 』をその他以外に変更するか、『 <span class='em'>タイトル</span> 』を入力してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat("WORKFLOW_ALERT_NO_TITLE"));
     }
     // リクエスト名
     request_name.validate(msgList);
@@ -406,9 +405,9 @@ public class WorkflowFormData extends ALAbstractFormData {
 
     // 申請先
     if (memberList == null || memberList.size() <= 0) {
-      msgList.add("『 <span class='em'>申請先</span> 』を指定してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat("WORKFLOW_ALERT_TO"));
     } else if (!(memberList.get(0) instanceof ALEipUser)) {
-      msgList.add("申請先のユーザーが全て無効、もしくは削除されています。有効なユーザーが一人以上いる経路を選択してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat("WORKFLOW_ALERT_NO_ROUTE"));
     }
 
     return (msgList.size() == 0);

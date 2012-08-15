@@ -165,9 +165,9 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add("分類名『 <span class='em'>"
-          + category_name.toString()
-          + "</span> 』は既に登録されています。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "WORKFLOW_ALERT_CATEGORY_ALREADY_CREATED",
+          category_name.toString()));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);
@@ -332,7 +332,8 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
       if (category.getCategoryId().intValue() == 1) {
         // カテゴリ「その他」は削除不可
-        msgList.add("分類名『 <span class='em'>その他</span> 』は削除できません。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("WORKFLOW_ALERT_CATEGORY_DELETE_OTHER"));
         return false;
       }
 

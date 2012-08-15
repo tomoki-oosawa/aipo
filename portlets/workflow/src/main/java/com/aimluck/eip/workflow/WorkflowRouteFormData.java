@@ -200,12 +200,12 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add("申請経路名『 <span class='em'>"
-          + route_name.toString()
-          + "</span> 』は既に登録されています。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "WORKFLOW_ALERT_ROUTE_ALREADY_CREATED",
+          route_name.toString()));
       }
       if (route.getValue() == null) {
-        msgList.add("『 <span class='em'>申請先</span> 』を指定してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat("WORKFLOW_ALERT_TO"));
       }
     } catch (Exception ex) {
       logger.error("Exception", ex);

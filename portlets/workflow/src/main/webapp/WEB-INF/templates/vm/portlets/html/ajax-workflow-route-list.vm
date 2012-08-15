@@ -50,10 +50,10 @@
 #else
   #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
   <div id="listMessageDiv"></div>
-  #ALajaxlistformheader('$l10n.WORKFLOW_APPLICATION_ROUTE')
+  #ALajaxlistformheader("$l10n.WORKFLOW_APPLICATION_ROUTE")
   #AUISummaryDiv()
     <div class="floatLeft">
-    #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
+    #AUIajaxbuttonCheckboxDelete("$l10n.WORKFLOW_DO_REMOVE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
     </div>
     #AUIajaxpageview('WorkflowRouteListScreen' $result)
   #AUISummaryDivfooter()
@@ -88,7 +88,7 @@
   </table>
   #AUISummaryDiv()
     <div class="floatLeft">
-      #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
+      #AUIajaxbuttonCheckboxDelete("$l10n.WORKFLOW_DO_REMOVE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
     </div>
     #AUIajaxpageview('WorkflowCategoryListScreen' $result)
   #AUISummaryDivfooter()
