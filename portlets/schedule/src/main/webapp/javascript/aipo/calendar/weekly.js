@@ -352,15 +352,18 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
                 l_count++;
             });
-           termTableHtml += "</tbody></table>"
-           dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
-           dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
-           dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
-           dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
-           dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
-           if((l_count - m_count) > 0) {
-             dojo.byId('weeklyTermTailTd_' + _portletId).style.display = "";
-           }
+            termTableHtml += "</tbody></table>"
+            dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
+            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
+            dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
+            dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
+            dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
+            if((l_count - m_count) > 0) {
+        	  var tailId = dojo.byId('weeklyTermTailTd_' + _portletId);
+        	  if(tailId != null){
+        		  tailId.style.display = "";
+        	  }
+            }
 
             for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
