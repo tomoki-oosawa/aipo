@@ -95,7 +95,7 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 dojo.require("aimluck.widget.Dialog");
 
 dojo.addOnLoad(function() {
-
+	aipo.customize.positionInitialize();
     #if (!${tutorialForbid} && $data.User.hasLoggedIn())
     aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
     #end
@@ -190,7 +190,7 @@ dojo.addOnLoad(function() {
                 var params = '';
                 var cols = dojo.query('.container');
                 for(var c = 0; c < cols.length ; c++){
-                    var rows = dojo.query('.dojoDndItem .roundBlockContent > div', cols[c]);
+                    var rows = dojo.query('.dojoDndItem .dndIdentifier > div', cols[c]);
                     var reverse = false;
                     if (rows.length >= 2) {
                         var top = rows[0];

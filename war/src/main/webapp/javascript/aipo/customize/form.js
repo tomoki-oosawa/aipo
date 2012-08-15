@@ -19,6 +19,12 @@
 
 dojo.provide("aipo.customize");
 
+aipo.customize.positionInitialize=function(){
+	dojo.query(".body-child").forEach(function(item){
+		dojo.place(item,dojo.query("body")[0],"last");
+	});
+};
+
 aipo.customize.onReceiveMessage = function(msg){
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
@@ -33,9 +39,32 @@ aipo.customize.onReceiveMessage = function(msg){
 
 aipo.customize.showMenu = function(portlet_id) {
 	var menuNode = dojo.query('#menubar_' + portlet_id);
+	var buttonNode= dojo.query('#menubar_button_' + portlet_id);
+	if(menuNode.length==0 || buttonNode.length==0)return;//error
+
+	var rect=buttonNode[0].getBoundingClientRect();
+	var html=document.documentElement.getBoundingClientRect();
 	if (menuNode.style('display') == 'none') {
-        dojo.query('div.menubar').style('display', 'none');
-        menuNode.style('display', 'block');
+		dojo.query('div.menubar').style('display', 'none');
+		 var scroll={
+        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
+        	top:document.documentElement.scrollTop||document.body.scrollTop
+        };
+		menuNode.style("opacity","0");
+		menuNode.style("display","block");
+
+		if(html.right-menuNode[0].clientWidth>rect.left){
+			menuNode.style("left",rect.left+scroll.left+"px");
+        }else{
+        	menuNode.style("left",rect.right-menuNode[0].clientWidth+scroll.left+"px");
+        }
+         if(html.bottom-menuNode[0].clientHeight>rect.bottom){
+        	 menuNode.style("top",rect.bottom+scroll.top+"px");
+        }else{
+        	menuNode.style("top",rect.top-menuNode[0].clientHeight+scroll.top+"px");
+        }
+        menuNode.style("opacity","1");
+
         if(dojo.byId("timeline_"+portlet_id) && (dojo.query('div.timeline').length == 1)){
     		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
     	}

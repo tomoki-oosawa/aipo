@@ -164,149 +164,141 @@ function appsNaviSwitch() {
         </div>
 </div></div>
 <!-- /mobileNavigation -->
-	#else
-                            <!-- MAIN TAB -->
-                            <div id="auiTabs" class="clearfix">
-                              <ul>
-			#foreach ( $tab in $tabs )
-#set($selected = $tab.Link && ($tab.isSelected() == true))
-                               <li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
-                                  <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
-                                  <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-                                  <div class="setting">
-                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
-                                        #if (${client} == "IPAD")
-                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
-                                        #else
-                                        #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
-                                        #if ($tab.isSelected() == true)
-											#set($activeurlselected=$clink)
-										#end
-										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
-                                        #end
-                                  #end#end
-                                  </div>
-                                  </div>
-                                </li>
-#set($beforeselected =$selected)
-			#end
-
-								#if ($data.User.getUserName()!="admin")
-									<li class="addTab">
-										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="メニュータブを追加"><span>+</span></a>
-									</li>
-								#end
-                              </ul>
-                            </div>
-							#if("$!{activeurlselected}"!="")
-							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
-                            #else
-                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
-							#end
-							<!-- /MAIN TAB -->
+#else
+<!-- MAIN TAB -->
+<div id="auiTabs" class="clearfix">
+	<ul>
+	#foreach ( $tab in $tabs )
+		#set($selected = $tab.Link && ($tab.isSelected() == true))
+		<li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
+			<div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
+				<div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
+				<div class="setting">
+				#if ($!tab.Authority)#foreach ($action in $tab.Actions)
+					#if (${client} == "IPAD")
+					<a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+					#else
+					#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
+					#if ($tab.isSelected() == true)
+						#set($activeurlselected=$clink)
+					#end
+					<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+					#end
+				#end#end
+				</div>
+			</div>
+		</li>
+		#set($beforeselected =$selected)
+	#end
+		#if ($data.User.getUserName()!="admin")
+			<li class="addTab">
+				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="メニュータブを追加"><span>+</span></a>
+			</li>
 		#end
-                            <!-- MAIN OUTER -->
-                            <!-- roundWrapper -->
-							<div id="roundWrapper">
-								<!-- MAIN OUTER -->
-								<div class="roundMainWrapper">
-		                            ##<table class="tableWrapper">
-		                              ##<tbody>
-		                                ##<tr>
-		                                  ##<td class="wide top">
-		                                    ##<div class="roundTopMain clearfix">
-		                                      ##<div class="roundRightMain">
-		                                        ##<div class="roundBottomMain">
-		                                          ##<div class="roundLeftMain">
-		                                            ##<div class="roundTopLeftMain">
-		                                              ##<div class="roundTopRightMain">
-		                                                ##<div class="roundBottomRightMain">
-		                                                  ##<div class="roundBottomLeftMain">
-		                                                    ##<div class="roundMainWrapper">
+	</ul>
+</div>
+#if("$!{activeurlselected}"!="")
+	<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
+#else
+	<input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
+#end
+<!-- /MAIN TAB -->
+#end
+<!-- MAIN OUTER -->
+<div class="roundMainWrapper">
+    ##<table class="tableWrapper">
+      ##<tbody>
+        ##<tr>
+          ##<td class="wide top">
+            ##<div class="roundTopMain clearfix">
+              ##<div class="roundRightMain">
+                ##<div class="roundBottomMain">
+                  ##<div class="roundLeftMain">
+                    ##<div class="roundTopLeftMain">
+                      ##<div class="roundTopRightMain">
+                        ##<div class="roundBottomRightMain">
+                          ##<div class="roundBottomLeftMain">
+                            ##<div class="roundMainWrapper">
 $portlet.getContent($data)
-	                                                    	##</div>
-		                                                  ##</div>
-		                                                ##</div>
-		                                              ##</div>
-		                                            ##</div>
-		                                          ##</div>
-		                                        ##</div>
-		                                      ##</div>
-		                                    ##</div>
-		                                  ##</td>
-		                                ##</tr>
-		                              ##</tbody>
-		                            ##</table>
-		                            <!-- /MAIN OUTER  -->
-		                        </div>
-		                    </div>
+                        	##</div>
+                          ##</div>
+                        ##</div>
+                      ##</div>
+                    ##</div>
+                  ##</div>
+                ##</div>
+              ##</div>
+            ##</div>
+          ##</td>
+        ##</tr>
+      ##</tbody>
+    ##</table>
+</div>
+<!-- /MAIN OUTER  -->
 #else
 #if (!$data.User.hasLoggedIn())
-$!portlet.getContent($data)
+	$!portlet.getContent($data)
 #else
-                                                              <!-- PORTLET OUTER -->
-                                                              <div class="dojoDndItem $!portlet.ID">
-                                                              <div class="roundTopBlock clearfix">
-                                                                <div class="roundRightBlock">
-                                                                  <div class="roundBottomBlock">
-                                                                    <div class="roundLeftBlock">
-                                                                      <div class="roundTopLeftBlock">
-                                                                        <div class="roundTopRightBlock">
-                                                                          <div class="roundBottomRightBlock" >
-                                                                            <div class="roundBottomLeftBlock">
-                                                                              <table class="roundBlockWrapperTop">
-                                                                                <tbody>
-                                                                                  <tr>
-#if( !$!isMaximized  && $portlet.isShowTitleBar($data))
-                                                                                    <td class="roundBlockTitle wide #if (${client} != "IPAD")dojoDndHandle#end"><a href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID))">$!utils.escapeXML($portlet_instance.Title)</a></td>
-#foreach ( $function in $functions )
-                                                                                    <td class="roundBlockIcon"><a #if($function.Screen) href="javascript:void(0);" #if($!{function.AfterFunction}) onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID',${function.AfterFunction});" #else onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID');" #end #else href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("mode",$function.Mode))"#end>$function.Caption</a></td>
-#end
-<td class="roundBlockIcon last">
-    #foreach ( $action in $actions )
-
-        #if (${client} == "IPAD")
-        <a href="$!utils.escapeXML(${action.Link})" title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
-        #else
-        <a href="javascript:void(0);" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('$!{portlet.ID}');" title="${action.Alt}" ></a>
+<!-- PORTLET OUTER -->
+<div class="dojoDndItem auiPortlet $!portlet.ID">
+	<div class="auiPortletHead"><div class="inner #if (${client} != "IPAD")dojoDndHandle#end">
+	#if( !$!isMaximized  && $portlet.isShowTitleBar($data))
+		<div class="auiPortletTitle">
+			<a href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID))">$!utils.escapeXML($portlet_instance.Title)</a>
+		</div>
+		<div class="auiPortletTool">
+      #if($functions.size()==1)
+			<div class="auiPortletAction">
+        #foreach ( $function in $functions )
+				<a #if($function.Screen) href="javascript:void(0);" #if($!{function.AfterFunction}) onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID',${function.AfterFunction});" #else onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$function.Mode).addQueryData("entityid","new"))','$!portlet.ID');" #end #else href="$!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("mode",$function.Mode))"#end>$function.Caption</a>
         #end
-
-    #end
-    #if (${client} != "IPAD")
-    <div class="menubar" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
-<ul>
-#foreach ( $action in $actions )<li><a href="$!utils.escapeXML(${action.Link})">設定</a></li>#end
-#if($accessControl == "true")<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">削除</a></li>#end
-</ul>
-    </div>
-    #end
-</td>
-
-#else
-                                                                                    <td class="roundBlockTitle dojoDndHandle">$!utils.escapeXML($portlet_instance.Title)</td>
-                                                                                    <td class="roundBlockMenu dojoDndHandle"><span id="portletMenu"></span></td>
-                                                                                    <td class="endcap"></td>
-#end
-                                                                                </tr>
-                                                                                </tbody>
-                                                                              </table>
-                                                                              <div class="roundBlockWrapperBottom clearfix">
-                                                                                <div class="roundBlockContent">
-                                                                                  <div dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
-$!portlet.getContent($data)
-                                                                                  </div>
-                                                                                </div>
-                                                                              </div>
-                                                                            </div>
-                                                                          </div>
-                                                                        </div>
-                                                                      </div>
-                                                                    </div>
-                                                                  </div>
-                                                                </div>
-                                                              </div>
-                                                              </div>
-                                                              <!-- /PORTLET OUTER -->
+			</div>
+      #end
+			<div class="auiPortletSetting">
+				#foreach ( $action in $actions )
+					#if (${client} == "IPAD")
+					<a href="$!utils.escapeXML(${action.Link})" title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
+					#else
+					<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('$!{portlet.ID}');" title="${action.Alt}" ></a>
+					#end
+				#end
+				#if (${client} != "IPAD")
+			    <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
+					<ul>
+					#foreach ( $action in $actions)
+						<li><a href="$!utils.escapeXML(${action.Link})">設定</a></li>
+					#end
+					#if($accessControl == "true")
+						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">削除</a></li>
+					#end
+					</ul>
+			    </div>
+			    #end
+			</div>
+		</div>
+	#else
+		<div class="auiPortletTitle">
+			<a href="javascript:void(0)">$!utils.escapeXML($portlet_instance.Title)</a>
+		</div>
+		<div class="auiPortletTool">
+			<div class="auiPortletAction">
+				<span id="portletMenu"></span>
+			</div>
+			<div class="auiPortletSetting">
+			</div>
+		</div>
+	#end
+	</div></div>
+	<!-- auiPortletBody -->
+	<div class="auiPortletBody dndIdentifier">
+    <div class="inner" dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
+    $!portlet.getContent($data)
+	  </div>
+  </div>
+	<!-- /auiPortletBody -->
+	<div class="auiPortletFoot"><div class="inner"></div></div>
+</div>
+<!-- /PORTLET OUTER -->
 #end
 #end
 
