@@ -142,21 +142,24 @@ public class UserFacilityUtils {
     }
 
     SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
-    Expression fexp =
-      ExpressionFactory
-        .inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, facilityIds);
-    fquery.setQualifier(fexp);
-    fquery.orderAscending(EipMFacility.SORT_PROPERTY);
-    List<EipMFacility> facility_list = fquery.fetchList();
+    if (facilityIds.size() > 0) {
+      Expression fexp =
+        ExpressionFactory.inDbExp(
+          EipMFacility.FACILITY_ID_PK_COLUMN,
+          facilityIds);
+      fquery.setQualifier(fexp);
+      fquery.orderAscending(EipMFacility.SORT_PROPERTY);
+      List<EipMFacility> facility_list = fquery.fetchList();
 
-    for (EipMFacility record : facility_list) {
-      UserFacilityLiteBean bean = new UserFacilityLiteBean();
-      bean.initField();
-      bean.setUserFacilityId(record.getFacilityId().intValue());
-      bean.setAliasName(record.getFacilityName());
-      bean.setName("f" + record.getFacilityId());
-      bean.setUserFacilityType("F");
-      facilityAllList.add(bean);
+      for (EipMFacility record : facility_list) {
+        UserFacilityLiteBean bean = new UserFacilityLiteBean();
+        bean.initField();
+        bean.setUserFacilityId(record.getFacilityId().intValue());
+        bean.setAliasName(record.getFacilityName());
+        bean.setName("f" + record.getFacilityId());
+        bean.setUserFacilityType("F");
+        facilityAllList.add(bean);
+      }
     }
     return facilityAllList;
   }
