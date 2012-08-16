@@ -470,11 +470,11 @@ public class ReportReplyFormData extends ALAbstractFormData {
       Integer userId = topic.getUserId();
       if (!userId.equals(loginUserId) && !userIdList.contains(userId)) {
         userIdList.add(userId);
+      }
+    }
 
-      }
-      if (userIdList.isEmpty()) {
-        return new ArrayList<ALEipUser>(0);
-      }
+    if (userIdList.isEmpty()) {
+      return new ArrayList<ALEipUser>(0);
     }
 
     // ユーザーIDからユーザー情報を取得する。
