@@ -124,7 +124,7 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 #if($record.isDuplicate())
 <img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />

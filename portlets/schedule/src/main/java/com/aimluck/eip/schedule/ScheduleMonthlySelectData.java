@@ -503,7 +503,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         && (userid_int != record.getOwnerId().intValue())
         && !is_member) {
         // 名前
-        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
         // 仮スケジュールかどうか
         rd.setTmpreserve(false);
       } else {

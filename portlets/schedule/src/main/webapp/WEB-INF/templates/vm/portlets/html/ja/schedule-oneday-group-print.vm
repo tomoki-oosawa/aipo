@@ -268,7 +268,7 @@ $record3.AliasName
 
 ${record.TodoName}
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 </a>
 </div>
@@ -290,7 +290,7 @@ ${record.TodoName}
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
@@ -302,7 +302,7 @@ $record.WbrName
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
@@ -340,7 +340,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 #if($record.isDuplicate())
 <img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
@@ -414,7 +414,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 <img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #if(${record.isRepeat()})
@@ -499,7 +499,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 #if($record.isDuplicate())
 <img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
@@ -563,7 +563,7 @@ $record.WbrName
 #end
 
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC" />
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
 <img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
 #if(${record.isRepeat()})

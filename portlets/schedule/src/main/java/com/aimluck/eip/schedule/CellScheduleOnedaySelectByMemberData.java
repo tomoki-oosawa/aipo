@@ -246,7 +246,7 @@ public class CellScheduleOnedaySelectByMemberData extends
       // 非公開／完全に隠す　に対応
       boolean publicable = record.getPublicFlag().equals("O");
       if (!publicable && !is_member) {
-        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
       }
       boolean hidden = record.getPublicFlag().equals("P");
       if (hidden && !is_member) {

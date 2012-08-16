@@ -209,7 +209,7 @@ public class ScheduleWeeklyJSONFormData {
             bean.setResultData(rd);
             if (!rd.isPublic() && !rd.isMember()) {
               bean
-                .setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+                .setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
             }
             bean.setColspanReal(col);
             bean.setIndex(k);
@@ -251,7 +251,7 @@ public class ScheduleWeeklyJSONFormData {
           bean.initField();
           bean.setResultData(rd);
           if (!rd.isPublic() && !rd.isMember()) {
-            bean.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+            bean.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
           }
           bean.setIndex(i);
           if (!rd.isHidden() || rd.isMember()) {

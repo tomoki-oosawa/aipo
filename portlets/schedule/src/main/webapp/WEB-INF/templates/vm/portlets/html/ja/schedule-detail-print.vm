@@ -129,20 +129,20 @@ if(document.all!=undefined){
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} ～
 $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #else
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC" title="$l10n.SCHEDULE_CLOSE_PUBLIC"/>
+<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})

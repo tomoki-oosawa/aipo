@@ -531,7 +531,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         && (userid != record.getUserId().intValue())
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
-        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
         // 仮スケジュールかどうか
         rd.setTmpreserve(false);
       } else {

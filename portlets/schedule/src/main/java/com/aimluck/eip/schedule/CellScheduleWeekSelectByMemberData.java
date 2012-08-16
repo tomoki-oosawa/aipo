@@ -393,7 +393,7 @@ public class CellScheduleWeekSelectByMemberData extends
 
       boolean publicable = map.getEipTSchedule().getPublicFlag().equals("O");
       if (!publicable && !is_member) {
-        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC"));
+        rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
       }
       boolean hidden = map.getEipTSchedule().getPublicFlag().equals("P");
       if (!hidden || is_member) {
