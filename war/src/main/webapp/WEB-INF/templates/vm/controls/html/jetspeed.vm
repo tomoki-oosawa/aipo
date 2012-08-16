@@ -205,7 +205,8 @@ function appsNaviSwitch() {
 <!-- /MAIN TAB -->
 #end
 <!-- MAIN OUTER -->
-<div class="roundMainWrapper">
+<div id="roundWrapper">
+  <div class="roundMainWrapper">
     ##<table class="tableWrapper">
       ##<tbody>
         ##<tr>
@@ -233,6 +234,7 @@ $portlet.getContent($data)
         ##</tr>
       ##</tbody>
     ##</table>
+  </div>
 </div>
 <!-- /MAIN OUTER  -->
 #else
