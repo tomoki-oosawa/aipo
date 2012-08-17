@@ -180,6 +180,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	       to_size = t_o.length;
 	       if(to_size == 0){
 	           _params += "&m_id=" + aipo.schedule.login_id;
+	           _params += "&m_empty=empty";
+	           dojo.byId("calender_m_empty_" + _portletId).style.display = "";
+	       }else{
+	    	   _params += "&m_empty=";
+	    	   dojo.byId("calender_m_empty_" + _portletId).style.display = "none";
 	       }
 	       for(i = 0 ; i < to_size; i++ ) {
 	           t_o[i].selected = true;

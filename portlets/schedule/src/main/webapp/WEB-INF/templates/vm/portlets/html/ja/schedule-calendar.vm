@@ -161,6 +161,7 @@
 						##データ保存時に競合したためユーザー選択の保持用に別に用意
 						<select multiple="multiple" class="hide" id="picked_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
+					<div class="message" id="calender_m_empty_$!portlet.ID" style="display:none;">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
                     <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>
                         <tr>
