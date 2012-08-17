@@ -845,11 +845,22 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
         	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
 
         	        if(left + width > 100){
-        	        	width = 100;
+        	        	width = 100 - left;
         	        }
-	                dojo.style(scheduleDiv[i], "width", width + "%");
+
+        	        // GoogleChromeでは予定の右端の縦線が消えないように、幅を切り捨て整数化しておく。
+        	        var userAgent = window.navigator.userAgent.toLowerCase();
+        	        if(userAgent.indexOf("chrome") > -1){
+    	                dojo.style(scheduleDiv[i], "width", Math.floor(width) + "%");
+        	        }
+        	        else{
+    	                dojo.style(scheduleDiv[i], "width", width + "%");
+
+        	        }
         	        dojo.style(scheduleDiv[i], "left", left + "%");
         	        dojo.style(scheduleDiv[i], "visibility", "visible" );
+
+
         	     }
 }
 
