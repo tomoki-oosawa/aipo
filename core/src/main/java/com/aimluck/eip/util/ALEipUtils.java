@@ -1061,6 +1061,8 @@ public class ALEipUtils {
               new BufferedWriter(new OutputStreamWriter(
                 out,
                 ALEipConstants.DEF_CONTENT_ENCODING));
+            context
+              .put("l10n", ALLocalizationUtils.createLocalization(rundata));
             Template templete =
               Velocity.getTemplate("screens/html/AjaxPageNotFound.vm");
             templete.merge(context, writer);
