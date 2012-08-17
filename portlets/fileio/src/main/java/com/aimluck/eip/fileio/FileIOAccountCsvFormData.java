@@ -59,6 +59,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『アカウント』のフォームデータを管理するクラスです。 <BR>
@@ -132,60 +133,67 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ユーザー名");
+    username.setFieldName(ALLocalizationUtils.getl10n("FILEIO_USER_NAME"));
     username.setTrim(true);
     // パスワード
     password = new ALStringField();
-    password.setFieldName("パスワード");
+    password.setFieldName(ALLocalizationUtils.getl10n("FILEIO_PASSWORD"));
     password.setTrim(true);
     // 名
     firstname = new ALStringField();
-    firstname.setFieldName("名前（名）");
+    firstname.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FILEIO_LAST_NAME"));
     firstname.setTrim(true);
     // 姓
     lastname = new ALStringField();
-    lastname.setFieldName("名前（姓）");
+    lastname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_FIRST_NAME"));
     lastname.setTrim(true);
     // メールアドレス
     email = new ALStringField();
-    email.setFieldName("メールアドレス");
+    email.setFieldName(ALLocalizationUtils.getl10n("FILEIO_MAILADDRESS"));
     email.setTrim(true);
     // 内線番号
     in_telephone = new ALStringField();
-    in_telephone.setFieldName("電話番号（内線）");
+    in_telephone.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_EXTENTION_TELL_NUMBER"));
     in_telephone.setTrim(true);
 
     // 外線番号
     out_telephone = new ALStringField();
-    out_telephone.setFieldName("電話番号（外線）");
+    out_telephone.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_OUTSIDE_TELL_NUMBER"));
     out_telephone.setTrim(true);
     // 携帯番号
     cellular_phone = new ALStringField();
-    cellular_phone.setFieldName("電話番号（携帯）");
+    cellular_phone.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE"));
     cellular_phone.setTrim(true);
 
     // 携帯アドレス
     cellular_mail = new ALStringField();
-    cellular_mail.setFieldName("携帯メールアドレス");
+    cellular_mail.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE_ADDRESS"));
     cellular_mail.setTrim(true);
     // 名（フリガナ）
     first_name_kana = new ALStringField();
-    first_name_kana.setFieldName("名前（フリガナ）");
+    first_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_NAME_SPELL"));
     first_name_kana.setTrim(true);
     // 姓（フリガナ）
     last_name_kana = new ALStringField();
-    last_name_kana.setFieldName("名前（フリガナ）");
+    last_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_NAME_SPELL"));
     last_name_kana.setTrim(true);
 
     // 部署名
     post_name_list = new ArrayList<String>();
     post_name = new ALStringField();
-    post_name.setFieldName("部署名");
+    post_name.setFieldName(ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"));
     post_name.setTrim(true);
 
     // 役職
     position_name = new ALStringField();
-    position_name.setFieldName("役職");
+    position_name.setFieldName(ALLocalizationUtils.getl10n("FILEIO_POST"));
     position_name.setTrim(true);
 
     setPostNotFound(false);
@@ -263,20 +271,19 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         || "anon".equals(usernamestr)
         || usernamestr.startsWith(ALEipUtils.dummy_user_head)
         || !username.validate(msgList)) {
-        msgList
-          .add("『 <span class='em'>ユーザー名</span> 』は 16 文字以下の英数字と記号で入力してください。『 <span class='em'>ユーザー名</span> 』として、「admin」「template」「anon」「先頭に dummy_ がつくユーザー名」は登録することができません。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_USER_NAME_CAUTION"));
         username.setValue(null);
       }
 
       if (usernamestr != null
         && !AccountUtils.isValidSymbolUserName(usernamestr)) {
         StringBuffer msg =
-          new StringBuffer("『 <span class='em'>ユーザー名</span> 』に使用できる記号は");
+          new StringBuffer(ALLocalizationUtils.getl10n("FILEIO_USER_NAME_MARK"));
         List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
         for (String symbol : symbols) {
           msg.append("『").append(symbol).append("』");
         }
-        msg.append("のみです。");
+        msg.append(ALLocalizationUtils.getl10n("FILEIO_ONLY"));
         msgList.add(msg.toString());
         username.setValue(null);
       }
@@ -295,7 +302,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       if (existedUserMap.containsKey(usernamestr)) {
         TurbineUser tmpuser2 = existedUserMap.get(usernamestr);
         if (!("F".equals(tmpuser2.getDisabled()))) {
-          msgList.add("<span class='em'>一度削除したユーザー名は複数登録できません</span>");
+          msgList.add(ALLocalizationUtils
+            .getl10n("FILEIO_NOT_MULTIPLE_REGISTRATION"));
           username.setValue(null);
         }
       }
@@ -338,7 +346,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         || (email.getValue() != null && email.getValue().trim().length() > 0 && !ALStringUtil
           .isMailAddress(email.getValue()))) {
         email.setValue(null);
-        msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_MAILADDRESS_CAUTION"));
       }
     } else {
       email.setValue("");
@@ -360,11 +368,12 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
           || out_tels[1].length() > 4
           || out_tels[2].length() > 4) {
           out_telephone.setValue(null);
-          msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("FILEIO_PHONE_NUMBER_CAUTION"));
         }
       } else {
         out_telephone.setValue(null);
-        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_PHONE_NUMBER_CAUTION"));
       }
     } else {
       out_telephone.setValue("");
@@ -379,7 +388,8 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
       if (!mc.matches()) {
         in_telephone.setValue(null);
-        msgList.add("『 <span class='em'>内線番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("FILEIO_EXTENTION_NUMBER_CAUTION"));
       }
     } else {
       in_telephone.setValue("");
@@ -400,11 +410,13 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
           || cell_tels[1].length() > 4
           || cell_tels[2].length() > 4) {
           cellular_phone.setValue(null);
-          msgList.add("『 <span class='em'>携帯電話番号</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("FILEIO_CELLPHONE_NUMBER_CAUTION"));
         }
       } else {
         cellular_phone.setValue(null);
-        msgList.add("『 <span class='em'>携帯電話番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("FILEIO_CELLPHONE_NUMBER_CAUTION"));
       }
     } else {
       cellular_phone.setValue("");
@@ -415,11 +427,13 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       && !cellular_mail.getValue().equals("")) {
       if (!cellular_mail.validate(msgList)) {
         cellular_mail.setValue(null);
-        msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("FILEIO_CELLPHONE_MAILADDRESS_CAUTION"));
       } else if (cellular_mail.getValue().trim().length() > 0
         && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
         cellular_mail.setValue(null);
-        msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("FILEIO_CELLPHONE_MAILADDRESS_CAUTION"));
       }
     } else {
       cellular_mail.setValue("");
@@ -438,10 +452,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         if (post.validate(msgList)) {
           if ((!st[k].equals("")) && (getEipMPost(post) == null)) {
             setPostNotFound(true);
-            msgList.add("<span class='em'>部署が見つかりませんでした。</span>");
+            msgList.add(ALLocalizationUtils.getl10n("FILEIO_NO_POST"));
           }
         } else {
-          msgList.add("『 <span class='em'>部署名</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils.getl10n("FILEIO_NO_POST_NAME"));
           post_name.setValue(null);
           break;
         }
@@ -465,11 +479,11 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       && !position_name.getValue().equals("")) {
       if (!position_name.validate(msgList)) {
         position_name.setValue(null);
-        msgList.add("『 <span class='em'>役職名</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_NO_POSITION_CAUTION"));
       } else if ((!position_name.toString().equals(""))
         && (getEipMPosition() == null)) {
         setPositionNotFound(true);
-        msgList.add("<span class='em'>役職が見つかりませんでした。</span>");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_NO_POSITION"));
       }
     } else {
       position_name.setValue("");
@@ -515,7 +529,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       .getInstance()
       .getDataSyncHandler()
       .checkConnect()) {
-      msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+      msgList.add(ALLocalizationUtils.getl10n("FILEIO_FAILED"));
       return false;
     }
 

@@ -44,6 +44,7 @@ import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『スケジュール』のフォームデータを管理するクラスです。 <BR>
@@ -116,62 +117,66 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ユーザー名");
+    username.setFieldName(ALLocalizationUtils.getl10n("FILEIO_USER_NAME"));
     username.setTrim(true);
     // ログインID
     userfullname = new ALStringField();
-    userfullname.setFieldName("ログインID");
+    userfullname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_LOGIN_ID"));
     userfullname.setTrim(true);
 
     // スケジュール
     schedulename = new ALStringField();
-    schedulename.setFieldName("スケジュール");
+    schedulename.setFieldName(ALLocalizationUtils.getl10n("FILEIO_SCHEDULE"));
     schedulename.setTrim(true);
     schedulename.setValue("");
 
     // 場所
     place = new ALStringField();
-    place.setFieldName("場所");
+    place.setFieldName(ALLocalizationUtils.getl10n("FILEIO_PLACE"));
     place.setTrim(true);
     place.setValue("");
 
     // 詳細
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("FILEIO_CONTENTS"));
     note.setTrim(true);
     note.setValue("");
 
     // 入力日時
     create_date = new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
-    create_date.setFieldName("入力日時");
+    create_date.setFieldName(ALLocalizationUtils.getl10n("FILEIO_INPUT_DATE"));
     create_date.setValue("");
 
     // 開始日
     start_date = new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_FORMAT);
-    start_date.setFieldName("開始日付");
+    start_date
+      .setFieldName(ALLocalizationUtils.getl10n("FILEIO_BEGINNING_DAY"));
 
     // 終了日
     end_date = new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_FORMAT);
-    end_date.setFieldName("終了日付");
+    end_date.setFieldName(ALLocalizationUtils.getl10n("FILEIO_ENDING_DAY"));
 
     // 開始時刻
     start_time =
       new ALDateTimeField(FileIOScheduleCsvUtils.DEFAULT_TIME_FORMAT);
-    start_time.setFieldName("開始時刻");
+    start_time.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_BEGINNING_TIME"));
 
     // 終了時刻
     end_time = new ALDateTimeField(FileIOScheduleCsvUtils.DEFAULT_TIME_FORMAT);
-    end_time.setFieldName("終了時刻");
+    end_time.setFieldName(ALLocalizationUtils.getl10n("FILEIO_ENDING_TIME"));
 
     // 開始日時
     start_date_time =
       new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
-    start_date_time.setFieldName("開始日時");
+    start_date_time.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_BEGINNING_DATE"));
 
     // 終了日時
     end_date_time =
       new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_TIME_FORMAT);
-    end_date_time.setFieldName("終了日時");
+    end_date_time.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_ENDING_DATE"));
 
     start_date_time.setValue("");
     end_date_time.setValue("");
@@ -261,19 +266,22 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
     if (!start_date.validate(msgList)) {
       start_date.setValue("");
-      msgList.add("『 <span class='em'>開始日付</span> 』が正しく入力されていません。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("FILEIO_BEGINNING_DAY_NOT_CORRECT"));
     }
     if (!end_date.validate(msgList)) {
       end_date.setValue("");
-      msgList.add("『 <span class='em'>終了日付</span> 』が正しく入力されていません。");
+      msgList.add(ALLocalizationUtils.getl10n("FILEIO_ENDING_DAY_NOT_CORRECT"));
     }
 
     if (start_time.toString().equals("") && !end_time.toString().equals("")) {
-      msgList.add("『 <span class='em'>開始時刻</span> 』が正しく入力されていません。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("FILEIO_BEGINNING_TIME_NOT_CORRECT"));
     }
 
     if (!start_time.toString().equals("") && end_time.toString().equals("")) {
-      msgList.add("『 <span class='em'>終了時刻</span> 』が正しく入力されていません。");
+      msgList
+        .add(ALLocalizationUtils.getl10n("FILEIO_ENDING_TIME_NOT_CORRECT"));
     }
 
     if (!FileIOScheduleCsvUtils.checkDateAcross(
@@ -281,16 +289,18 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
       start_time,
       end_date,
       end_time)) {
-      msgList.add("日付を跨いでの入力は出来ません。");
+      msgList.add(ALLocalizationUtils.getl10n("FILEIO_NO_MULTI_DATE"));
     }
 
     if (!start_time.validate(msgList)) {
       start_time.setValue("");
-      msgList.add("『 <span class='em'>開始時刻</span> 』が正しく入力されていません。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("FILEIO_BEGINNING_TIME_NOT_CORRECT"));
     }
     if (!end_time.validate(msgList)) {
       end_time.setValue("");
-      msgList.add("『 <span class='em'>終了時刻</span> 』が正しく入力されていません。");
+      msgList
+        .add(ALLocalizationUtils.getl10n("FILEIO_ENDING_TIME_NOT_CORRECT"));
     }
 
     try {
@@ -302,18 +312,19 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
     if (!start_date_time.validate(msgList)) {
       start_date_time.setValue("");
-      msgList.add("『 <span class='em'>開始日時</span> 』が正しく入力されていません。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("FILEIO_BEGINNING_DATE_NOT_CORRECT"));
     }
     if (!end_date_time.validate(msgList)) {
       end_date_time.setValue("");
-      msgList.add("『 <span class='em'>終了日時</span> 』が正しく入力されていません。");
+      msgList
+        .add(ALLocalizationUtils.getl10n("FILEIO_ENDING_DATE_NOT_CORRECT"));
     }
 
     if (!end_date_time.toString().equals("")
       && !start_date_time.toString().equals("")) {
       if (end_date_time.getValue().before(start_date_time.getValue())) {
-        msgList
-          .add("『 <span class='em'>終了日時</span> 』は『 <span class='em'>開始日時</span> 』以降の日付を指定してください。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_DATE_NOT_CORRECT"));
         start_date.setValue("");
         end_date.setValue("");
         start_time.setValue("");

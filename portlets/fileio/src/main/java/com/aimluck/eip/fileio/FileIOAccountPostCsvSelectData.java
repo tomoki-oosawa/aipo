@@ -32,6 +32,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだ部署情報を表示するクラス．
@@ -209,7 +210,8 @@ public class FileIOAccountPostCsvSelectData extends
         } else {
           collectList.add(data);
         }
-        if (!formData.getPostName().toString().equals("部署名")) {
+        if (!formData.getPostName().toString().equals(
+          ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"))) {
           if (ErrCount == 0) {
             if (!b_err) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -326,7 +328,8 @@ public class FileIOAccountPostCsvSelectData extends
         data.setInTelephone(formData.getInTelephone().getValue());
         data.setFaxNumber(formData.getFaxNumber().getValue());
         data.setIsError(iserror);
-        if (!formData.getPostName().toString().equals("部署名")) {
+        if (!formData.getPostName().toString().equals(
+          ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"))) {
           list.add(data);
         }
       } catch (Exception e) {
@@ -338,6 +341,20 @@ public class FileIOAccountPostCsvSelectData extends
     }
 
     return list;
+  }
+
+  public String getLineCount2() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_ERROR_NUMBER",
+      getLineCount(),
+      getErrorCount());
+  }
+
+  public String getLineCount3() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_REGISTER_NUMBER",
+      getLineCount(),
+      getNotErrorCount());
   }
 
 }

@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.schedule.ScheduleDetailResultData;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 public class FileIOScheduleCsvData extends ScheduleDetailResultData {
 
@@ -53,6 +54,13 @@ public class FileIOScheduleCsvData extends ScheduleDetailResultData {
    */
   public int getLineCount() {
     return line_count;
+
+  }
+
+  public String getLineCounttest() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_ERROR_NUMBER",
+      getLineCount());
   }
 
   @Override

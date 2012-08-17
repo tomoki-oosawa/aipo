@@ -32,6 +32,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだアドレス帳情報を表示するクラス．
@@ -268,8 +269,10 @@ public class FileIOAddressBookCsvSelectData extends
           collectList.add(data);
         }
 
-        if ((!formData.getFirstName().toString().equals("名前（名）"))
-          && (!formData.getCompanyName().toString().equals("会社名"))) {
+        if ((!formData.getFirstName().toString().equals(
+          ALLocalizationUtils.getl10n("FILEIO_FILEIO_LAST_NAME")))
+          && (!formData.getCompanyName().toString().equals(
+            ALLocalizationUtils.getl10n("FILEIO_COMPANY_NAME")))) {
           if (ErrCount == 0) {
             if (!b_err) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -409,8 +412,10 @@ public class FileIOAddressBookCsvSelectData extends
         } else {
           data.setIsError(iserror);
         }
-        if ((!formData.getFirstName().toString().equals("名前（名）"))
-          && (!formData.getCompanyName().toString().equals("会社名"))) {
+        if ((!formData.getFirstName().toString().equals(
+          ALLocalizationUtils.getl10n("FILEIO_FILEIO_LAST_NAME")))
+          && (!formData.getCompanyName().toString().equals(
+            ALLocalizationUtils.getl10n("FILEIO_COMPANY_NAME")))) {
           list.add(data);
         }
       } catch (Exception e) {
@@ -431,5 +436,19 @@ public class FileIOAddressBookCsvSelectData extends
    */
   public void setIsCompanyOnly(boolean flag) {
     is_company_only = flag;
+  }
+
+  public String getLineCount2() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_ERROR_NUMBER",
+      getLineCount(),
+      getErrorCount());
+  }
+
+  public String getLineCount3() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_REGISTER_NUMBER",
+      getLineCount(),
+      getNotErrorCount());
   }
 }

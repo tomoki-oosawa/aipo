@@ -37,6 +37,7 @@ import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだスケジュール情報を表示するクラス．
@@ -217,7 +218,8 @@ public class FileIOScheduleCsvSelectData extends
           ErrorCode += "," + Integer.toString(line);
           ErrorCode += "\n";
         }
-        if (!formData.getUserFullName().toString().equals("名前")) {
+        if (!formData.getUserFullName().toString().equals(
+          ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
           if (ErrCount == 0) {
             if (errmsg.size() == 0) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -327,6 +329,20 @@ public class FileIOScheduleCsvSelectData extends
    */
   public void setIsAutoTime(String flag) {
     autotime_flg = flag;
+  }
+
+  public String getLineCount2() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_ERROR_NUMBER",
+      getLineCount(),
+      getErrorCount());
+  }
+
+  public String getLineCount3() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_REGISTER_NUMBER",
+      getLineCount(),
+      getNotErrorCount());
   }
 
 }

@@ -44,6 +44,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
@@ -213,7 +214,8 @@ public class FileIOAccountCsvSelectData
         e_line.append(",\"\"");
       }
 
-      if (formData.getUserName().toString().equals("ユーザー名")) {
+      if (formData.getUserName().toString().equals(
+        ALLocalizationUtils.getl10n("FILEIO_USER_NAME"))) {
         setLineCount(getLineCount() - 1);
 
         ErrorCode += e_line.toString();
@@ -409,7 +411,8 @@ public class FileIOAccountCsvSelectData
         reader.nextToken();
       }
 
-      if (formData.getUserName().toString().equals("ユーザー名")) {
+      if (formData.getUserName().toString().equals(
+        ALLocalizationUtils.getl10n("FILEIO_USER_NAME"))) {
         continue;
       }
 
@@ -547,5 +550,19 @@ public class FileIOAccountCsvSelectData
    */
   public boolean overMaxUser() {
     return overMaxUser;
+  }
+
+  public String getLineCount2() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_ERROR_NUMBER",
+      getLineCount(),
+      getErrorCount());
+  }
+
+  public String getLineCount3() {
+    return ALLocalizationUtils.getl10nFormat(
+      "FILEIO_REGISTER_NUMBER",
+      getLineCount(),
+      getNotErrorCount());
   }
 }

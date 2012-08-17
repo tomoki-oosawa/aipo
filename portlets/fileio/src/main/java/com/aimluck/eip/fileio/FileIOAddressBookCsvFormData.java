@@ -51,6 +51,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アドレス帳用入力フォームデータです。
@@ -172,6 +173,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   }
 
+  @Override
   public void initField() {
     groups = new ArrayList<AddressBookGroupResultData>();
     groupModelList = new ArrayList<EipMAddressGroup>();
@@ -179,123 +181,146 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     group_names = new ALStringField();
 
     lastname = new ALStringField();
-    lastname.setFieldName("名前(姓)");
+    lastname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_FIRST_NAME"));
     lastname.setTrim(true);
     firstname = new ALStringField();
-    firstname.setFieldName("名前(名)");
+    firstname.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FILEIO_LAST_NAME"));
     firstname.setTrim(true);
     last_name_kana = new ALStringField();
-    last_name_kana.setFieldName("フリガナ(姓)");
+    last_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FIRST_NAME_SPELL"));
     last_name_kana.setTrim(true);
     first_name_kana = new ALStringField();
-    first_name_kana.setFieldName("フリガナ(名)");
+    first_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FIRST_NAME_SPELL"));
     first_name_kana.setTrim(true);
     email = new FileIOStringField();
-    email.setFieldName("メールアドレス");
+    email.setFieldName(ALLocalizationUtils.getl10n("FILEIO_MAILADDRESS"));
     email.setTrim(true);
 
     // 電話番号
     telephone1 = new ALStringField();
-    telephone1.setFieldName("電話番号");
+    telephone1.setFieldName(ALLocalizationUtils.getl10n("FILEIO_PHONE_NUMBER"));
     telephone1.setTrim(true);
     telephone2 = new ALStringField();
-    telephone2.setFieldName("電話番号");
+    telephone2.setFieldName(ALLocalizationUtils.getl10n("FILEIO_PHONE_NUMBER"));
     telephone2.setTrim(true);
     telephone3 = new ALStringField();
-    telephone3.setFieldName("電話番号");
+    telephone3.setFieldName(ALLocalizationUtils.getl10n("FILEIO_PHONE_NUMBER"));
     telephone3.setTrim(true);
 
     // 携帯番号
     cellular_phone1 = new ALStringField();
-    cellular_phone1.setFieldName("電話番号（携帯）");
+    cellular_phone1.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE"));
     cellular_phone1.setTrim(true);
     cellular_phone2 = new ALStringField();
-    cellular_phone2.setFieldName("電話番号（携帯）");
+    cellular_phone2.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE"));
     cellular_phone2.setTrim(true);
     cellular_phone3 = new ALStringField();
-    cellular_phone3.setFieldName("電話番号（携帯）");
+    cellular_phone3.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE"));
     cellular_phone3.setTrim(true);
 
     cellular_mail = new FileIOStringField();
-    cellular_mail.setFieldName("携帯メールアドレス");
+    cellular_mail.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE_ADDRESS"));
     cellular_mail.setTrim(true);
     company_id = new ALNumberField();
-    company_id.setFieldName("会社");
+    company_id.setFieldName(ALLocalizationUtils.getl10n("FILEIO_COMPANY"));
     position_name = new ALStringField();
-    position_name.setFieldName("役職");
+    position_name.setFieldName(ALLocalizationUtils.getl10n("FILEIO_POST"));
     position_name.setTrim(true);
     public_flag = new ALStringField();
-    public_flag.setFieldName("公開区分");
+    public_flag.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_OPEN_DIVISION"));
     public_flag.setTrim(true);
     create_user = new ALStringField();
-    create_user.setFieldName("作成者");
+    create_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_AUTHOR"));
     update_user = new ALStringField();
-    update_user.setFieldName("更新者");
+    update_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_MODIFIED_BY"));
     create_date = new ALDateField();
-    create_date.setFieldName("作成日");
+    create_date.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_CREATION_DATE"));
     update_date = new ALDateField();
-    update_date.setFieldName("最終更新日");
+    update_date.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_LAST_MODIFIED"));
 
     // 会社情報
     company_name = new ALStringField();
-    company_name.setFieldName("会社名");
+    company_name.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_COMPANY_NAME"));
     company_name.setTrim(true);
     company_name_kana = new ALStringField();
-    company_name_kana.setFieldName("会社名(フリガナ)");
+    company_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_COMPANU_NAME_SPELL"));
     company_name_kana.setTrim(true);
     post_name = new FileIOStringField();
-    post_name.setFieldName("部署名");
+    post_name.setFieldName(ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"));
     post_name.setTrim(true);
     comp_zipcode1 = new ALStringField();
-    comp_zipcode1.setFieldName("郵便番号");
+    comp_zipcode1.setFieldName(ALLocalizationUtils.getl10n("FILEIO_POST_CODE"));
     comp_zipcode1.setTrim(true);
     comp_zipcode2 = new ALStringField();
-    comp_zipcode2.setFieldName("郵便番号");
+    comp_zipcode2.setFieldName(ALLocalizationUtils.getl10n("FILEIO_POST_CODE"));
     comp_zipcode2.setTrim(true);
     comp_address = new FileIOStringField();
-    comp_address.setFieldName("住所");
+    comp_address.setFieldName(ALLocalizationUtils.getl10n("FILEIO_ADDRESS"));
     comp_address.setTrim(true);
     comp_telephone1 = new ALStringField();
-    comp_telephone1.setFieldName("電話番号");
+    comp_telephone1.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_PHONE_NUMBER"));
     comp_telephone1.setTrim(true);
     comp_telephone2 = new ALStringField();
-    comp_telephone2.setFieldName("電話番号");
+    comp_telephone2.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_PHONE_NUMBER"));
     comp_telephone2.setTrim(true);
     comp_telephone3 = new ALStringField();
-    comp_telephone3.setFieldName("電話番号");
+    comp_telephone3.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_PHONE_NUMBER"));
     comp_telephone3.setTrim(true);
     comp_fax_number1 = new ALStringField();
-    comp_fax_number1.setFieldName("FAX番号");
+    comp_fax_number1.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FAX_NUMBER"));
     comp_fax_number1.setTrim(true);
     comp_fax_number2 = new ALStringField();
-    comp_fax_number2.setFieldName("FAX番号");
+    comp_fax_number2.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FAX_NUMBER"));
     comp_fax_number2.setTrim(true);
     comp_fax_number3 = new ALStringField();
-    comp_fax_number3.setFieldName("FAX番号");
+    comp_fax_number3.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FAX_NUMBER"));
     comp_fax_number3.setTrim(true);
     comp_url = new FileIOStringField();
-    comp_url.setFieldName("URL");
+    comp_url.setFieldName(ALLocalizationUtils.getl10n("FILEIO_URL"));
     comp_url.setTrim(true);
 
     telephone_full = new FileIOStringField();
-    telephone_full.setFieldName("電話番号");
+    telephone_full.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_PHONE_NUMBER"));
     telephone_full.setTrim(true);
     cellular_phone_full = new FileIOStringField();
-    cellular_phone_full.setFieldName("電話番号（携帯）");
+    cellular_phone_full.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_MOBILE_PHONE"));
     cellular_phone_full.setTrim(true);
     comp_zipcode_full = new FileIOStringField();
-    comp_zipcode_full.setFieldName("郵便番号");
+    comp_zipcode_full.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_POST_CODE"));
     comp_zipcode_full.setTrim(true);
     comp_telephone_full = new FileIOStringField();
-    comp_telephone_full.setFieldName("電話番号");
+    comp_telephone_full.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_PHONE_NUMBER"));
     comp_telephone_full.setTrim(true);
     comp_fax_number_full = new FileIOStringField();
-    comp_fax_number_full.setFieldName("FAX番号");
+    comp_fax_number_full.setFieldName(ALLocalizationUtils
+      .getl10n("FILEIO_FAX_NUMBER"));
     comp_fax_number_full.setTrim(true);
 
     // ユーザー名
     username = new ALStringField();
-    username.setFieldName("ユーザー名");
+    username.setFieldName(ALLocalizationUtils.getl10n("FILEIO_USER_NAME"));
     username.setTrim(true);
 
     public_flag.setValue("T");
@@ -570,7 +595,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
     if (email.getValue().trim().length() > 0
       && !ALStringUtil.isMailAddress(email.getValue())) {
-      msgList.add("『 <span class='em'>メールアドレス</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("FILEIO_MAILADDRESS_CAUTION"));
       email.setValidate(false);
       email.setValue(null);
     }
@@ -582,7 +607,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       if (!telephone1.validate(dummy)
         || !telephone2.validate(dummy)
         || !telephone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_PHONE_NUMBER_CAUTION"));
         telephone_full.setValidate(false);
         telephone_full.setValue(null);
       } else {
@@ -603,7 +628,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       if (!cellular_phone1.validate(dummy)
         || !cellular_phone2.validate(dummy)
         || !cellular_phone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号（携帯）</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("FILEIO_CELLPHONE_NUMBER_CAUTION2"));
         cellular_phone_full.setValidate(true);
         cellular_phone_full.setValue(null);
       } else {
@@ -616,7 +642,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
     if (cellular_mail.getValue().trim().length() > 0
       && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
-      msgList.add("『 <span class='em'>携帯メールアドレス</span> 』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("FILEIO_CELLPHONE_MAILADDRESS_CAUTION"));
       cellular_mail.setValidate(false);
       cellular_mail.setValue(null);
     }
@@ -641,7 +668,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       } else {
         if (!company_name.validate(msgList)) {
           company_name.setValue(null);
-          msgList.add("『 <span class='em'>会社名</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("FILEIO_COMPANY_NAME_CAUTION"));
         }
         // 会社名フリガナのカタカナへの変換
         company_name_kana.setValue(ALStringUtil
@@ -649,26 +677,30 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
             .convertH2ZKana(company_name_kana.toString())));
         if (!company_name_kana.validate(dummy)) {
           company_name_kana.setValue(null);
-          msgList.add("『 <span class='em'>会社名フリガナ</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10n("FILEIO_COMPANY_NAME_SPELL_CAUTION"));
         }
 
         if ((company_name.getValue() != null && company_name_kana.getValue() != null)) {
           if (!company_name.getValue().equals("")
             && company_name_kana.getValue().equals("")) {
-            msgList.add("『 <span class='em'>会社名フリガナ</span> 』を正しく入力してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("FILEIO_COMPANY_NAME_SPELL_CAUTION"));
           }
         }
 
         if (!post_name.validate(msgList)) {
           post_name.setValue(null);
           post_name.setValidate(false);
-          msgList.add("『 <span class='em'>郵便番号</span> 』を正しく入力してください。");
+          msgList
+            .add(ALLocalizationUtils.getl10n("FILEIO_POSTAL_CODE_CAUTION"));
         }
 
         if (!comp_zipcode1.getValue().equals("")
           || !comp_zipcode2.getValue().equals("")) {
           if (!comp_zipcode1.validate(dummy) || !comp_zipcode2.validate(dummy)) {
-            msgList.add("『 <span class='em'>郵便番号</span> 』を正しく入力してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("FILEIO_POSTAL_CODE_CAUTION"));
             comp_zipcode_full.setValidate(false);
             comp_zipcode_full.setValue(null);
           } else {
@@ -681,7 +713,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         if (!comp_address.validate(msgList)) {
           comp_address.setValidate(false);
           comp_address.setValue(null);
-          msgList.add("『 <span class='em'>住所</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils.getl10n("FILEIO_ADDRESS_CAUTION"));
         }
 
         if (!comp_telephone1.getValue().equals("")
@@ -690,7 +722,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
           if (!comp_telephone1.validate(dummy)
             || !comp_telephone2.validate(dummy)
             || !comp_telephone3.validate(dummy)) {
-            msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("FILEIO_PHONE_NUMBER_CAUTION"));
             comp_telephone_full.setValidate(false);
             comp_telephone_full.setValue(null);
           } else {
@@ -707,7 +740,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
           if (!comp_fax_number1.validate(dummy)
             || !comp_fax_number2.validate(dummy)
             || !comp_fax_number3.validate(dummy)) {
-            msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
+            msgList.add(ALLocalizationUtils
+              .getl10n("FILEIO_FAX_NUMBER_CAUTION"));
             comp_fax_number_full.setValidate(false);
             comp_fax_number_full.setValue(null);
           } else {
@@ -721,7 +755,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         if (!comp_url.validate(msgList)) {
           comp_url.setValidate(false);
           comp_url.setValue(null);
-          msgList.add("『 <span class='em'>URL</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils.getl10n("FILEIO_URL_CAUTION"));
         }
       }
     }
@@ -827,7 +861,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         uid = 1;
       }
     } catch (ALDBErrorException e) {
-      //logger.error(e);
+      // logger.error(e);
       // return false;
       uid = 1;
       user = null;

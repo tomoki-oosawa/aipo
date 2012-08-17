@@ -25,6 +25,7 @@ import java.util.List;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 public class FileIOAccountCsvResultData implements ALData {
 
@@ -58,17 +59,18 @@ public class FileIOAccountCsvResultData implements ALData {
   /**
    * 各フィールドを初期化 <BR>
    */
+  @Override
   public void initField() {
     line_count = 0;
     // 部署名
     post_name_list = new ArrayList<String>();
     post_name = new ALStringField();
-    post_name.setFieldName("部署名");
+    post_name.setFieldName(ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"));
     post_name.setTrim(true);
 
     // 役職
     position_name = new ALStringField();
-    position_name.setFieldName("役職");
+    position_name.setFieldName(ALLocalizationUtils.getl10n("FILEIO_POST"));
     position_name.setTrim(true);
     user = null;
 
