@@ -255,6 +255,6 @@ dojo.addOnLoad(function() {
 </script>
 
 <iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
-#ALjavascrip("javascript/aipo/common.js")
+#ALjavascript("javascript/aipo/common.js")
 </body>
 </html>
