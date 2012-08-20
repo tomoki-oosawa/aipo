@@ -19,12 +19,12 @@
 
 ## ---------------------------------------------------------------------------
 #if($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.CABINET_DO_ADD")
 #set ($event_submit = "eventSubmit_doCabinet_file_insert")
-#set ($subtitle = 'ファイル追加')
+#set ($subtitle = "$l10n.CABINET_ADD_FILE")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = 'ファイル編集')
+#set ($action_str = "$l10n.CABINET_UPDATE")
+#set ($subtitle = "$l10n.CABINET_EDITE_FILE")
 #set ($event_submit = "eventSubmit_doCabinet_file_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -52,14 +52,14 @@
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #if($mode=="edit_form")
-    <li data-fileid="1" data-filename="$!result.FileName"><span>$!result.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+    <li data-fileid="1" data-filename="$!result.FileName"><span>$!result.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">"$l10n.CABINET_DELET"</span></li>
     #end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
   </div>
 </td>
 </tr>
-#ALtdcaption("位置")
+#ALtdcaption("$l10n.CABINET_POSISHION")
 #ALtditemheader()
 <select name="folder_id" style="WIDTH: 70%">
 #foreach($record in $!result.FolderHierarchyList)
@@ -81,7 +81,7 @@
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.CABINET_DO_ADD" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

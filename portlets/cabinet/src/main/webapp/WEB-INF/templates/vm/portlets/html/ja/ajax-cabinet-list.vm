@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($tabs = [["共有ファイル", "", ""]])
+#set ($tabs = [["$l10n.CABINET_SHARED_FILE", "", ""]])
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderFormScreen").addQueryData("entityid","new").addQueryData("mode","new")))
 #set ($indicator_id = "indicator-list-")
@@ -31,7 +31,7 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
 <input type="hidden" name="template" value="CabinetListScreen"/>
 <input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.CABINET_SEARCH</a>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">
 <div class="indicator" id="search-indicator-list-$!{portlet.ID}" style="display:none;">&nbsp;</div>
 </div>
@@ -40,19 +40,19 @@
 
 #if($result.isAccessible())
 <form name="cabinetlist$!portlet.ID" id="cabinetlist$!portlet.ID" action="#" method="post" onsubmit="aipo.cabinet.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileSearchListScreen'))','$!portlet.ID'); return false;">
-<input type="hidden" name="_name" value="ファイル" />
+<input type="hidden" name="_name" value="$l10n.CABINET_FILE" />
 <input type="hidden" name="secid" value="$secid" />
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 
 <div id="listmessageDiv"></div>
 
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するファイルはありません。</div>
+<div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
 #if($result.isEditable())
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
@@ -69,12 +69,12 @@
 ##<th class="thin">編集</th>
 #end
 
-#ALtdheadAtt("#ALajaxsort('file_name' 'ファイル' $result 'CabinetListScreen')" "class='mb_hide'")
-#ALtdhead("#ALajaxsort('file_title' 'タイトル' $result 'CabinetListScreen')")
-#ALtdheadAtt("更新者" "class='thin mb_hide'")
-#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'CabinetListScreen')" "class='thin mb_hide center'")
-#ALtdheadAtt("#ALajaxsort('counter' 'DL数' $result 'CabinetListScreen')" "class='thin mb_hide center'")
-#ALtdheadAtt("#ALajaxsort('file_size' '容量（KB）' $result 'CabinetListScreen')" "class='thin mb_hide'")
+#ALtdheadAtt("#ALajaxsort('file_name' $l10n.CABINET_FILE $result 'CabinetListScreen')" "class='mb_hide'")
+#ALtdhead("#ALajaxsort('file_title' $l10n.CABINET_TITLE $result 'CabinetListScreen')")
+#ALtdheadAtt($l10n.CABINET_MODIFIED "class='thin mb_hide'")
+#ALtdheadAtt("#ALajaxsort('update_date' $l10n.CABINET_UPDATE_DATE $result 'CabinetListScreen')" "class='thin mb_hide center'")
+#ALtdheadAtt("#ALajaxsort('counter' $l10n.CABINET_DL_TIME $result 'CabinetListScreen')" "class='thin mb_hide center'")
+#ALtdheadAtt("#ALajaxsort('file_size' $l10n.CABINET_CAPACITY_KB $result 'CabinetListScreen')" "class='thin mb_hide'")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -109,7 +109,7 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
 #if($result.isEditable())
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
@@ -117,7 +117,7 @@
 #end
 </form>
 #else
-このフォルダを表示する権限がありません。
+$l10n.CABINET_NOT_PERMISSION_VIEW
 #end
 
 

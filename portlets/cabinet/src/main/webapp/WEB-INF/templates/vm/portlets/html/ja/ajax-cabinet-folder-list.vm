@@ -22,19 +22,19 @@
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderFormScreen").addQueryData("entityid","new").addQueryData("mode","new")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>フォルダの管理</h2>
+<h2>$l10n.CABINET_MANAGEMENT_FOLDER</h2>
 
 <div class="auiSummaryMeta clearfix"><p>
-#AUIbuttonAction("フォルダを追加する" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
+#AUIbuttonAction("$l10n.CABINET_DO_ADD_FOLDER" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader('フォルダー' $jslink $portlet)
+#ALformheader("$l10n.CABINET_FOLDER" $jslink $portlet)
 #AUIrowTableWide()
 <tr>
-#ALtdheadAtt("フォルダ名" 'style=""')
-#ALtdheadAtt("更新者" 'style="width:8em"')
-#ALtdheadAtt("更新日" 'style="width:6em"')
+#ALtdheadAtt("$l10n.CABINET_FOLDER_NAME" 'style=""')
+#ALtdheadAtt("$l10n.CABINET_MODIFIED" 'style="width:8em"')
+#ALtdheadAtt("$l10n.CABINET_UPDATE_DATE" 'style="width:6em"')
 </tr>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())

@@ -21,37 +21,37 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(CabinetajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value="削除する" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.CABINET_DO_DELET" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
-#ALdialogheader("共有フォルダ")
+#ALdialogheader("$l10n.CABINET_CABINET_FOLDER")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
-#ALajaxdetailformheader("フォルダ")
+#ALajaxdetailformheader("$l10n.CABINET_FOLDER")
 #if($result.CurrentPage)<input type="hidden" name="start" VALUE="$result.CurrentPage">#end
 #ALtableheaderWide()
-#ALtdcaption('フォルダ名')
+#ALtdcaption("$l10n.CABINET_FOLDER_NAME")
 #ALtditem($!result.Detail.FolderNameHtml)
-#ALtdcaption('位置')
+#ALtdcaption("$l10n.CABINET_POSISHION")
 #ALtditem("$!result.Detail.PositionHtml")
-#ALtdcaption('メモ')
+#ALtdcaption("$l10n.CABINET_MEMO")
 #ALtditem($!result.Detail.NoteHtml)
-#ALtdcaption('閲覧／変更')
+#ALtdcaption("$l10n.CABINET_VIEW_OR_CHANGE")
 #ALtditemheader()
 #set($accessFlag = $!result.Detail.AccessFlag.toString())
 #if($accessFlag == "0")
-全てのユーザーが閲覧／追加／編集／削除可。
+$l10n.CABINET_ALL_ADD_EDIT_DELETE_BROWSE
 #elseif($accessFlag == "1")
-全てのユーザーが閲覧可。所属メンバーのみ追加／編集／削除可。
+$l10n.CABINET_ALL_ADD_MEMBER_EDIT_DELET_BROWSE
 #elseif($accessFlag == "2")
-所属メンバーのみ閲覧／追加／編集／削除可。
+$l10n.CABINET_MEMBER_ADD_EDIT_DELET_BROWSE
 #elseif($accessFlag == "3")
-自分のみ閲覧／追加／編集／削除可。
+$l10n.CABINET_OWN_ADD_EDIE_DELET_BROWSE
 #end
 #if($accessFlag == "1" || $accessFlag == "2")
 <div style="padding-top:2px;">
 #ALtableheaderSimple("100%")
-#ALtdcaptionAtt('所属メンバー' 'width="100" nowrap')
+#ALtdcaptionAtt("$l10n.CABINET_MEMBER" 'width="100" nowrap')
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
@@ -65,11 +65,11 @@ $!record.AliasName <br />
 </div>
 #end
 #ALtditemfooter()
-#ALtdcaption('登録者')
+#ALtdcaption("$l10n.BLOG_CREATE_USER_NAME")
 #ALtditemheader()
 $!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()
-#ALtdcaption('更新者')
+#ALtdcaption("$l10n.BLOG_UPDATE_USER_NAME")
 #ALtditemheader()
 $!{result.Detail.UpdateUser} #if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
 #ALtditemfooter()

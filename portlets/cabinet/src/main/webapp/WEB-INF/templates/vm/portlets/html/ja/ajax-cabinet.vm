@@ -22,7 +22,7 @@
 <div class="floatLeft w30">
 <form class="auiForm">
 #ALselectpdheader("folder_id" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",0))">すべてのフォルダ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",0))">$l10n.CABINET_ALL_FOLDER</option>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())
 #set($space = '')
@@ -43,10 +43,10 @@
 </div>
 
 #if (!$result.isAccessible())
-<div class="message">このフォルダを表示する権限がありません。</div>
+<div class="message">$l10n.CABINET_NOT_PERMISSION_VIEW</div>
 #else
 #if ($result.List.size() == 0)
-<div class="message">指定したフォルダにファイルはありません。</div>
+<div class="message">$l10n.CABINET_NOTHING_FILE_IN_FOLDER</div>
 #else
 #if($result.TableColumNum == 4)
 #ALformheader('Cabinet' $jslink $portlet)
