@@ -73,5 +73,5 @@
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()
 #ALformfooter()
-#end
 #AUIcontentsAreaFooter()
+#end
