@@ -69,7 +69,9 @@ aipo.timeline.onClick = function(url, pid, page, max) {
 			          },
 			          load : function(data, event) {
 			            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
-			            page++;
+			            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
+			            dojo.byId("content_" + pid + "_" + page).removeChild(dojo.byId("content_" + pid + "_" + page).children[0]);
+			        	page++;
 			            dojo.byId("content_" + pid + "_" + page).innerHTML = data;
 			            if(page == max){
 			            	dojo.byId("more_" + pid).style.display = "none";
