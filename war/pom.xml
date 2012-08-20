@@ -146,7 +146,6 @@
                 <include>../../../../target/aipo/javascript/aipo/timeline/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/page/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/tutorial/tutorial.js</include>
-                <include>../../../../target/aipo/javascript/aipo/calendar/weekly.js</include>
               </includes>
             </aggregation>
             <aggregation>
