@@ -710,6 +710,8 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
+dojo.require("aipo.calendar.weekly");
+
 dojo.addOnLoad(function () {
   initCalendar['$!{portlet.ID}'](false);
   #if($!top_form && $!top_form == 'simple')
