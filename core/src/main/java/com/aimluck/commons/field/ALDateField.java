@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 入力フィールドを表すクラス（年月日用）です。 <br />
@@ -35,7 +36,7 @@ import com.aimluck.commons.utils.ALStringUtil;
 public class ALDateField extends ALAbstractField {
 
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = 5926176023655878545L;
 
@@ -89,7 +90,9 @@ public class ALDateField extends ALAbstractField {
 
     if (!isNotNullValue()) {
       if (isNotNull()) {
-        msgList.add("『 <span class='em'>" + fieldName + "</span> 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME_SPAN",
+          fieldName));
         return false;
       }
     } else {
@@ -101,20 +104,22 @@ public class ALDateField extends ALAbstractField {
         // PostgreSQLは暦として常にグレゴリオ暦が採用されているため)
         int year = value.getYear();
         if (year <= 1582) {
-          msgList.add("『 " + fieldName + " 』には1583年以降の日付を入力してください。");
+          msgList.add(ALLocalizationUtils.getl10nFormat(
+            "COMMONS_FIELD_ERROR_DATE",
+            fieldName));
           return false;
         }
 
       } catch (NumberFormatException ex) {
 
-        msgList.add("『 <span class='em'>"
-          + fieldName
-          + "</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_ERROR_SPAN",
+          fieldName));
         return false;
       } catch (ALIllegalDateException ex) {
-        msgList.add(" 『 <span class='em'>"
-          + fieldName
-          + "</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_ERROR_SPAN",
+          fieldName));
         return false;
       }
     }

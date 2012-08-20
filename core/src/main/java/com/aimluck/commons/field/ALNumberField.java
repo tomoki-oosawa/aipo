@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 入力フィールドを表すクラス（数字用）です。 <br />
@@ -205,35 +206,35 @@ public class ALNumberField extends ALAbstractField {
     if (!isNotNullValue()) {
       if (isNotNull()) {
         // 必須入力属性で値が設定されていない場合
-        msgList.add("『 <span class='em'>" + fieldName + "</span> 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME_SPAN",
+          fieldName));
         return false;
       }
     } else {
       if (!isNumberValue()) {
         // 有効な数値が設定されていない場合
-        msgList.add("『 <span class='em'>"
-          + fieldName
-          + "</span> 』に正しい数値を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_CORRECT_NUMBER_CAUTION_SPAN",
+          fieldName));
         return false;
       } else {
         if (isLimitValue()) { // 値制限がある場合
           long longValue = getValue();
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
-            msgList.add("『 <span class='em'>"
-              + fieldName
-              + "</span> 』には"
-              + getMinValue()
-              + "以上の値を入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_NUMBER_CAUTION_LESS",
+              fieldName,
+              getMinValue()));
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
-            msgList.add("『 <span class='em'>"
-              + fieldName
-              + "</span> 』には"
-              + getMaxValue()
-              + "以下の値を入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_NUMBER_CAUTION_OVER",
+              fieldName,
+              getMaxValue()));
             return false;
           }
         }
@@ -296,5 +297,4 @@ public class ALNumberField extends ALAbstractField {
   public String toString() {
     return ALStringUtil.sanitizing(value);
   }
-
 }

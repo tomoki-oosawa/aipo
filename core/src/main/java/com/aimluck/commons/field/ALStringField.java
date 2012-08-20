@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 入力フィールドを表すクラス（文字列用）です。 <br />
@@ -256,17 +257,18 @@ public class ALStringField extends ALAbstractField {
     if (!isNotNullValue()) {
       if (isNotNull()) {
         // 必須入力属性で値が設定されていない場合
-        msgList.add("『 <span class='em'>" + fieldName + "</span> 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME_SPAN",
+          fieldName));
         return false;
       }
     } else {
       if (!isValidCharacterType()) {
         // 設定されている文字セット以外の文字を含む場合
-        msgList.add("『 <span class='em'>"
-          + fieldName
-          + "</span> 』は"
-          + getCharTypeByName()
-          + "で入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_CHAR_TYPE_BY_NAME_SPAN",
+          fieldName,
+          getCharTypeByName()));
         return false;
       } else {
         if (isLimitLength()) {
@@ -274,20 +276,18 @@ public class ALStringField extends ALAbstractField {
           int len = value.length();
           if (len < getMinLength()) {
             // 文字列長が最小値を下回る場合
-            msgList.add("『 <span class='em'>"
-              + fieldName
-              + "</span> 』は"
-              + getMinLength()
-              + "文字以上で入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_LENGTH_CAUTION_LESS_SPAN",
+              fieldName,
+              getMinLength()));
             return false;
           }
           if (len > getMaxLength()) {
             // 文字列長が最大値を上回る場合
-            msgList.add("『 <span class='em'>"
-              + fieldName
-              + "</span> 』は"
-              + getMaxLength()
-              + "文字以下で入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_LENGTH_CAUTION_OVER_SPAN",
+              fieldName,
+              getMaxLength()));
             return false;
           }
         }
@@ -400,21 +400,23 @@ public class ALStringField extends ALAbstractField {
   protected String getCharTypeByName() {
     switch (characterType) {
       case TYPE_ALPHABET:
-        return "半角英字";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_ALPHABET");
       case TYPE_NUMBER:
-        return "半角数字";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_NUMBER");
       case TYPE_HANKAKUKANA:
-        return "半角カナ";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_HANKAKUKANA");
       case TYPE_MULTIBYTE:
-        return "全角文字";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_MULTIBYTE");
       case TYPE_ALPHABET_NUMBER:
-        return "半角英数字";
+        return ALLocalizationUtils
+          .getl10n("COMMONS_FIELD_TYPE_ALPHABET_NUMBER");
       case TYPE_ALPHABET_NUMBER_HANKAKUKANA:
-        return "半角英数字カナ";
+        return ALLocalizationUtils
+          .getl10n("COMMONS_FIELD_TYPE_ALPHABET_NUMBER_HANKAKUKANA");
       case TYPE_SYMBOL:
-        return "半角記号";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_SYMBOL");
       case TYPE_ASCII:
-        return "半角英数字";
+        return ALLocalizationUtils.getl10n("COMMONS_FIELD_TYPE_ASCII");
     }
     // 文字種別無指定
     return "";

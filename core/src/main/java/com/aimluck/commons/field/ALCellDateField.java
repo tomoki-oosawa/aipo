@@ -22,6 +22,8 @@ package com.aimluck.commons.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aimluck.eip.util.ALLocalizationUtils;
+
 /**
  * 携帯電話用の入力フィールドを表すクラス（年月日用）です。 <br />
  * 
@@ -29,7 +31,7 @@ import java.util.List;
 public class ALCellDateField extends ALDateField {
 
   /**
-   * 
+   *
    */
   private static final long serialVersionUID = -8240954278261905509L;
 
@@ -64,7 +66,9 @@ public class ALCellDateField extends ALDateField {
 
     if (!isNotNullValue()) {
       if (isNotNull()) {
-        msgList.add("『 " + fieldName + " 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME",
+          fieldName));
         return false;
       }
     } else {
@@ -76,15 +80,21 @@ public class ALCellDateField extends ALDateField {
         // PostgreSQLは暦として常にグレゴリオ暦が採用されているため)
         int year = value.getYear();
         if (year <= 1582) {
-          msgList.add("『 " + fieldName + " 』には1583年以降の日付を入力してください。");
+          msgList.add(ALLocalizationUtils.getl10nFormat(
+            "COMMONS_FIELD_ERROR_DATE",
+            fieldName));
           return false;
         }
 
       } catch (NumberFormatException ex) {
-        msgList.add("『 " + fieldName + " 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_ERROR",
+          fieldName));
         return false;
       } catch (ALIllegalDateException ex) {
-        msgList.add(" 『 " + fieldName + " 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_ERROR",
+          fieldName));
         return false;
       }
 

@@ -22,6 +22,8 @@ package com.aimluck.commons.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aimluck.eip.util.ALLocalizationUtils;
+
 /**
  * 携帯電話用の入力フィールドを表すクラス（文字列用）です。 <br />
  * 
@@ -64,34 +66,33 @@ public class ALCellStringField extends ALStringField {
 
     if (!isNotNullValue()) {
       if (isNotNull()) {
-        msgList.add("『 " + fieldName + " 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME",
+          fieldName));
         return false;
       }
     } else {
       if (!isValidCharacterType()) {
-        msgList.add("『 "
-          + fieldName
-          + " 』は"
-          + getCharTypeByName()
-          + "で入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_CHAR_TYPE_BY_NAME",
+          fieldName,
+          getCharTypeByName()));
         return false;
       } else {
         if (isLimitLength()) {
           int len = valueByteLength();
           if (len < getMinLength()) {
-            msgList.add("『 "
-              + fieldName
-              + " 』は"
-              + getMinLength()
-              + "文字以上で入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_LENGTH_CAUTION_LESS",
+              fieldName,
+              getMinLength()));
             return false;
           }
           if (len > getMaxLength()) {
-            msgList.add("『 "
-              + fieldName
-              + " 』は"
-              + getMaxLength()
-              + "文字以下で入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_LENGTH_CAUTION_OVER",
+              fieldName,
+              getMaxLength()));
             return false;
           }
         }

@@ -22,6 +22,8 @@ package com.aimluck.commons.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aimluck.eip.util.ALLocalizationUtils;
+
 /**
  * 携帯電話用の入力フィールドを表すクラス（数字用）です。 <br />
  * 
@@ -74,33 +76,35 @@ public class ALCellNumberField extends ALNumberField {
     if (!isNotNullValue()) {
       if (isNotNull()) {
         // 必須入力属性で値が設定されていない場合
-        msgList.add("『 " + fieldName + " 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME",
+          fieldName));
         return false;
       }
     } else {
       if (!isNumberValue()) {
         // 有効な数値が設定されていない場合
-        msgList.add("『 " + fieldName + " 』に正しい数値を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_CORRECT_NUMBER_CAUTION",
+          fieldName));
         return false;
       } else {
         if (isLimitValue()) { // 値制限がある場合
           long longValue = getValue();
           if (longValue < getMinValue()) {
             // 設定値が最小値を下回る場合
-            msgList.add("『 "
-              + fieldName
-              + " 』には"
-              + getMinValue()
-              + "以上の値を入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_NUMBER_CAUTION_LESS",
+              fieldName,
+              getMinValue()));
             return false;
           }
           if (longValue > getMaxValue()) {
             // 設定値が最大値を上回る場合
-            msgList.add("『 "
-              + fieldName
-              + " 』には"
-              + getMaxValue()
-              + "以下の値を入力してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "COMMONS_FIELD_INPUT_NUMBER_CAUTION_OVER",
+              fieldName,
+              getMaxValue()));
             return false;
           }
         }

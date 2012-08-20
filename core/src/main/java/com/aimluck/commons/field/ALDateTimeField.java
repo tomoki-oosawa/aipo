@@ -29,6 +29,7 @@ import java.util.TimeZone;
 
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 入力フィールドを表すクラス（年月日時分用）です。 <br />
@@ -163,16 +164,18 @@ public class ALDateTimeField extends ALAbstractField {
     if (!isNotNullValue()) {
       if (isNotNull()) {
         // 必須入力属性で値が設定されていない場合
-        msgList.add("『	<span class='em'>" + fieldName + "</span> 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME_SPAN",
+          fieldName));
         return false;
       }
     } else {
       // 日付として正しいかを調べる
       String dateStr = translateDate(calendar.getTime(), format);
       if (dateStr == null) {
-        msgList.add("『 <span class='em'>"
-          + fieldName
-          + "</span> 』を正しい日付形式で指定してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_DATE_TYPE_CAUTION_SPAN",
+          fieldName));
         return false;
       }
     }

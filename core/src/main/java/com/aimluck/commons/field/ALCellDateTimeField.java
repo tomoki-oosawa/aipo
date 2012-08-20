@@ -22,6 +22,8 @@ package com.aimluck.commons.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aimluck.eip.util.ALLocalizationUtils;
+
 /**
  * 携帯電話用の入力フィールドを表すクラス（年月日時分用）です。 <br />
  * 
@@ -64,13 +66,17 @@ public class ALCellDateTimeField extends ALDateTimeField {
 
     if (!isNotNullValue()) {
       if (isNotNull()) {
-        msgList.add("『	" + fieldName + " 』を入力してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME",
+          fieldName));
         return false;
       }
     } else {
       String dateStr = translateDate(calendar.getTime(), format);
       if (dateStr == null) {
-        msgList.add("『 " + fieldName + " 』を正しい日付形式で指定してください。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_DATE_TYPE_CAUTION",
+          fieldName));
         return false;
       }
     }
