@@ -2198,10 +2198,10 @@ ul.attachments span.deletebutton:hover{
     width:14px;
     height:14px;
     vertical-align:middle;
-    background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
+    background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
 *html .iconLike,
-*html .iconComment {background:url(../images/icon/auiIconSprites20120726.png) no-repeat;}
+*html .iconComment {background:url(../images/icon/auiIconSprites20120820.png) no-repeat;}
 .iconLike {background-position:-2px -594px;}
 .iconComment {background-position:-2px -609px;}
 
@@ -2372,9 +2372,9 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 	border-radius:2px;
 	-ms-border-radius:2px;
 	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
+	background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
-*html .auiIcon {background:url(../images/icon/auiIconSprites20120726.gif) no-repeat;}
+*html .auiIcon {background:url(../images/icon/auiIconSprites20120820.gif) no-repeat;}
 .auiIcon span {display:none;}
 
 a.auiIcon:hover {background-color:#999;}
@@ -2495,7 +2495,25 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 *html .auiIconSearch {background-position:0px -560px;}/*IE6*/
 *html a.auiIconSearch:hover {background-position:0px -560px;}/*IE6*/
 
+.auiIconTmpreserve {background-position:0px -688px;}
+a.auiIconTmpreserve:hover {background-position:0px -688px;}
+*html .auiIconTmpreserve {background-position:0px -688px;}/*IE6*/
+*html a.auiIconTmpreserve:hover {background-position:0px -688px;}/*IE6*/
 
+.auiIconOverlap {background-position:0px -704px;}
+a.auiIconOverlap:hover {background-position:0px -704px;}
+*html .auiIconOverlap {background-position:0px -704px;}/*IE6*/
+*html a.auiIconOverlap:hover {background-position:0px -704px;}/*IE6*/
+
+.auiIconRepeat {background-position:0px -720px;}
+a.auiIconRepeat:hover {background-position:0px -720px;}
+*html .auiIconRepeat {background-position:0px -720px;}/*IE6*/
+*html a.auiIconRepeat:hover {background-position:0px -720px;}/*IE6*/
+
+.auiIconSecret {background-position:0px -736px;}
+a.auiIconSecret:hover {background-position:0px -736px;}
+*html .auiIconSecret {background-position:0px -736px;}/*IE6*/
+*html a.auiIconSecret:hover {background-position:0px -736px;}/*IE6*/
 
 /***************************************************
 	auiIcon
@@ -2505,9 +2523,9 @@ a.auiIconSearch:hover {background-position:0px -576px;}
 	width:15px;
 	height:18px;
 	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites20120726.png) no-repeat;
+	background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
-*html .auiIconArrow {background:url(../images/icon/auiIconSprites20120726.gif) no-repeat;}
+*html .auiIconArrow {background:url(../images/icon/auiIconSprites20120820.gif) no-repeat;}
 .auiIconArrowLeft {background-position:0 -367px;}
 .auiIconArrowLeftW {background-position:0 -623px;}
 .auiIconArrowRight {background-position:0 -399px;}
