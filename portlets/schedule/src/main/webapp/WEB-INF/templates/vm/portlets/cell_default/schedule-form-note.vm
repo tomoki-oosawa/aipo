@@ -48,7 +48,7 @@ $l10n.SCHEDULE_TIME:
 <BLOCKQUOTE>
 $!{result.FormData.StartDateTime2}$l10n.SCHEDULE_FROM$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
-#if($isDuplicateFacility=="true")
+#if("$!isDuplicateFacility"=="true")
 <BLOCKQUOTE>
 $l10n.SCHEDULE_ALERT_DUPLICATIVE_FACILITIES
 </BLOCKQUOTE>
@@ -63,7 +63,7 @@ $l10n.SCHEDULE_TIME:
 $!{result.FormData.StartDateDate2}#ALcell_br($career)
 $!{result.FormData.StartDateTime2}$l10n.SCHEDULE_FROM$!{result.FormData.EndDateTime2}
 </BLOCKQUOTE>
-#if($isDuplicateFacility=="true")
+#if("$!isDuplicateFacility"=="true")
 <BLOCKQUOTE>
 $l10n.SCHEDULE_ALERT_DUPLICATIVE_FACILITIES
 </BLOCKQUOTE>
