@@ -65,6 +65,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモフォームデータを管理するためのクラスです。
@@ -734,36 +735,54 @@ public class NoteFormData extends ALAbstractFormData {
       && (!company_name.getValue().equals(""))) {
       body.append(company_name);
     }
-    body.append(client_name).append("様から伝言があります。").append(CR).append(CR);
-
-    body.append("[受付時間]").append(CR);
     body
-      .append(accept_date.getMonth())
-      .append("月")
-      .append(accept_date.getDay())
-      .append("日")
-      .append(accept_date.getHour())
-      .append("時")
-      .append(accept_date.getMinute())
-      .append("分")
+      .append(client_name)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_YOU_GOT_MESSAGE"))
+      .append(CR)
       .append(CR);
-    body.append("[用件]").append(CR);
+
+    body
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLERK_TIME"))
+      .append(CR);
+    body.append(accept_date.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      accept_date.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      accept_date.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      accept_date.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE")).append(CR);
+    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SUBJECT")).append(
+      CR);
     if ("0".equals(subject_type.getValue())) {
       body.append(custom_subject.getValue()).append(CR);
     } else if ("1".equals(subject_type.getValue())) {
-      body.append("再度電話します").append(CR);
+      body.append(ALLocalizationUtils.getl10nFormat("NOTE_CALL_AGAIN")).append(
+        CR);
     } else if ("2".equals(subject_type.getValue())) {
-      body.append("電話をしてください").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CALL_BACK"))
+        .append(CR);
     } else if ("3".equals(subject_type.getValue())) {
-      body.append("電話がありました").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TELL_ME"))
+        .append(CR);
     } else if ("4".equals(subject_type.getValue())) {
-      body.append("伝言があります").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TAKE_A_MESSAGE"))
+        .append(CR);
     }
 
-    body.append("[依頼者情報]").append(CR).append("名前：").append(client_name);
+    body
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_INFORMATION"))
+      .append(CR)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_NAME"))
+      .append(client_name);
     if (company_name.getValue() != null
       && (!company_name.getValue().equals(""))) {
-      body.append(CR).append("所属：").append(company_name);
+      body.append(CR).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CAMPANY")).append(
+        company_name);
     }
     if (telephone1 != null
       && telephone2 != null
@@ -773,7 +792,8 @@ public class NoteFormData extends ALAbstractFormData {
       && !telephone3.getValue().equals("")) {
       body
         .append(CR)
-        .append("[電話番号]")
+        .append(
+          ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CELLILAR_PHONE"))
         .append(CR)
         .append(telephone1)
         .append("-")
@@ -783,11 +803,19 @@ public class NoteFormData extends ALAbstractFormData {
     }
     if (email_address.getValue() != null
       && (!email_address.getValue().equals(""))) {
-      body.append(CR).append("[メール]").append(CR).append(email_address);
+      body
+        .append(CR)
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_EMAIL"))
+        .append(CR)
+        .append(email_address);
     }
 
     if (message.getValue() != null && (!message.getValue().equals(""))) {
-      body.append(CR).append("[本文]").append(CR).append(message.getValue());
+      body
+        .append(CR)
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_MESSAGE"))
+        .append(CR)
+        .append(message.getValue());
     }
 
     ALBaseUser user = null;
@@ -801,24 +829,30 @@ public class NoteFormData extends ALAbstractFormData {
     String username =
       new StringBuffer().append(user.getLastName()).append(" ").append(
         user.getFirstName()).toString();
-    body.append(CR).append("[送信者]").append(CR).append(username);
+    body
+      .append(CR)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SRC_USER"))
+      .append(CR)
+      .append(username);
     String e_mail_addr = user.getEmail();
     if (!e_mail_addr.equals("")) {
       body.append("(").append(e_mail_addr).append(")");
     }
     body.append(CR);
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_KAKKO")).append(
+      ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MAIL_ACCESS_TO")).append(CR);
     if (enableAsp) {
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
     } else {
-      body.append("・社外").append(CR);
+      body.append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_OUTSIDE_CAMPANY")).append(
+        CR);
       body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_INSIDE_CAMPANY"))
+        .append(CR);
       body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
     }
     body.append("---------------------").append(CR);
@@ -840,36 +874,54 @@ public class NoteFormData extends ALAbstractFormData {
       && (!company_name.getValue().equals(""))) {
       body.append(company_name);
     }
-    body.append(client_name).append("様から伝言があります。").append(CR).append(CR);
-
-    body.append("[受付時間]").append(CR);
     body
-      .append(accept_date.getMonth())
-      .append("月")
-      .append(accept_date.getDay())
-      .append("日")
-      .append(accept_date.getHour())
-      .append("時")
-      .append(accept_date.getMinute())
-      .append("分")
+      .append(client_name)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_YOU_GOT_MESSAGE"))
+      .append(CR)
       .append(CR);
-    body.append("[用件]").append(CR);
+
+    body
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLERK_TIME"))
+      .append(CR);
+    body.append(accept_date.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      accept_date.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      accept_date.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      accept_date.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE")).append(CR);
+    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SUBJECT")).append(
+      CR);
     if ("0".equals(subject_type.getValue())) {
       body.append(custom_subject.getValue()).append(CR);
     } else if ("1".equals(subject_type.getValue())) {
-      body.append("再度電話します").append(CR);
+      body.append(ALLocalizationUtils.getl10nFormat("NOTE_CALL_AGAIN")).append(
+        CR);
     } else if ("2".equals(subject_type.getValue())) {
-      body.append("電話をしてください").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CALL_BACK"))
+        .append(CR);
     } else if ("3".equals(subject_type.getValue())) {
-      body.append("電話がありました").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TELL_ME"))
+        .append(CR);
     } else if ("4".equals(subject_type.getValue())) {
-      body.append("伝言があります").append(CR);
+      body
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TAKE_A_MESSAGE"))
+        .append(CR);
     }
 
-    body.append("[依頼者情報]").append(CR).append("名前：").append(client_name);
+    body
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_INFORMATION"))
+      .append(CR)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_NAME"))
+      .append(client_name);
     if (company_name.getValue() != null
       && (!company_name.getValue().equals(""))) {
-      body.append(CR).append("所属：").append(company_name);
+      body.append(CR).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CAMPANY")).append(
+        company_name);
     }
     if (telephone1 != null
       && telephone2 != null
@@ -879,7 +931,8 @@ public class NoteFormData extends ALAbstractFormData {
       && !telephone3.getValue().equals("")) {
       body
         .append(CR)
-        .append("[電話番号]")
+        .append(
+          ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CELLILAR_PHONE"))
         .append(CR)
         .append(telephone1)
         .append("-")
@@ -889,11 +942,19 @@ public class NoteFormData extends ALAbstractFormData {
     }
     if (email_address.getValue() != null
       && (!email_address.getValue().equals(""))) {
-      body.append(CR).append("[メール]").append(CR).append(email_address);
+      body
+        .append(CR)
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_EMAIL"))
+        .append(CR)
+        .append(email_address);
     }
 
     if (message.getValue() != null && (!message.getValue().equals(""))) {
-      body.append(CR).append("[本文]").append(CR).append(message.getValue());
+      body
+        .append(CR)
+        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_MESSAGE"))
+        .append(CR)
+        .append(message.getValue());
     }
 
     ALBaseUser user = null;
@@ -908,7 +969,11 @@ public class NoteFormData extends ALAbstractFormData {
     String username =
       new StringBuffer().append(user.getLastName()).append(" ").append(
         user.getFirstName()).toString();
-    body.append(CR).append("[送信者]").append(CR).append(username);
+    body
+      .append(CR)
+      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SRC_USER"))
+      .append(CR)
+      .append(username);
     String e_mail_addr = user.getEmail();
     if (e_mail_addr != null && !e_mail_addr.equals("")) {
       body.append("(").append(e_mail_addr).append(")");
@@ -924,11 +989,9 @@ public class NoteFormData extends ALAbstractFormData {
 
     body.append(CR);
     body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
+    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_KAKKO")).append(
+      ALOrgUtilsService.getAlias()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MAIL_ACCESS_TO")).append(CR);
     body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
       ALCellularUtils.getCellularKey(destUser)).append(CR);
     body.append("---------------------").append(CR);
