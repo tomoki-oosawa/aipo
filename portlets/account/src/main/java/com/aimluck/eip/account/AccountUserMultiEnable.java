@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数有効化するためのクラス． <BR>
@@ -62,7 +63,8 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
 

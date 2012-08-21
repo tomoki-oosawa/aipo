@@ -37,10 +37,12 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数無効化するためのクラス． <BR>
- *
+ * 
  */
 public class AccountUserMultiDisable extends ALAbstractCheckList {
 
@@ -49,7 +51,7 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
     .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param values
@@ -66,7 +68,8 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
 

@@ -48,6 +48,8 @@ import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数削除するためのクラス． <BR>
@@ -77,7 +79,8 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
 

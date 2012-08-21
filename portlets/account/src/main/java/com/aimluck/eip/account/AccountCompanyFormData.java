@@ -38,6 +38,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 会社情報のフォームデータを管理するクラスです。 <BR>
@@ -101,38 +102,45 @@ public class AccountCompanyFormData extends ALAbstractFormData {
   public void initField() {
     // 会社名
     company_name = new ALStringField();
-    company_name.setFieldName("会社名");
+    company_name.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_COMPANY_NAME"));
     company_name.setTrim(true);
     // 郵便番号
     zipcode1 = new ALStringField();
-    zipcode1.setFieldName("郵便番号");
+    zipcode1.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_ZIPCODE"));
     zipcode1.setTrim(true);
     zipcode2 = new ALStringField();
-    zipcode2.setFieldName("郵便番号");
+    zipcode2.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_ZIPCODE"));
     zipcode2.setTrim(true);
     // 住所
     address = new ALStringField();
-    address.setFieldName("住所");
+    address.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_ADDRESS"));
     address.setTrim(true);
     // 電話番号
     telephone1 = new ALStringField();
-    telephone1.setFieldName("電話番号");
+    telephone1.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_TELEPHONE"));
     telephone1.setTrim(true);
     telephone2 = new ALStringField();
-    telephone2.setFieldName("電話番号");
+    telephone2.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_TELEPHONE"));
     telephone2.setTrim(true);
     telephone3 = new ALStringField();
-    telephone3.setFieldName("電話番号");
+    telephone3.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_TELEPHONE"));
     telephone3.setTrim(true);
     // FAX番号
     fax_number1 = new ALStringField();
-    fax_number1.setFieldName("FAX番号");
+    fax_number1.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_FAX_NUMBER"));
     fax_number1.setTrim(true);
     fax_number2 = new ALStringField();
-    fax_number2.setFieldName("FAX番号");
+    fax_number2.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_FAX_NUMBER"));
     fax_number2.setTrim(true);
     fax_number3 = new ALStringField();
-    fax_number3.setFieldName("FAX番号");
+    fax_number3.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_FAX_NUMBER"));
     fax_number3.setTrim(true);
 
   }

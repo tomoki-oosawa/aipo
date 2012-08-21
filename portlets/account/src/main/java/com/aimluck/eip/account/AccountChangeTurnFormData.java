@@ -44,6 +44,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントの順番情報のフォームデータを管理するためのクラスです。 <br />
@@ -86,7 +87,8 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("ユーザ名リスト");
+    positions.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USERNAME_LIST"));
     positions.setTrim(true);
   }
 
@@ -195,8 +197,8 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
             if (!(unameValue.charAt(i1) == "_".charAt(0)
               || unameValue.charAt(i1) == "-".charAt(0) || unameValue
                 .charAt(i1) == ".".charAt(0))) {
-              msgList
-                .add("『 <span class='em'>ログイン名</span> 』に使用できる記号は「-」「.」「_」のみです。");
+              msgList.add(ALLocalizationUtils
+                .getl10nFormat("ACCOUNT_ALERT_LOGINNAME_CHAR0"));
               break;
             }
           }

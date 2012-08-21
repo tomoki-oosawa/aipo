@@ -78,6 +78,7 @@ import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントのフォームデータを管理するクラスです。 <BR>
@@ -231,87 +232,105 @@ public class AccountUserFormData extends ALAbstractFormData {
   public void initField() {
     // ログイン名
     username = new ALStringField();
-    username.setFieldName("ログイン名");
+    username.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_LOGIN_NAME"));
     username.setTrim(true);
     // パスワード
     password = new ALStringField();
-    password.setFieldName("パスワード");
+    password.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_PASS"));
     password.setTrim(true);
     // パスワード2
     password2 = new ALStringField();
-    password2.setFieldName("パスワード（確認用）");
+    password2.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_PASSWORD_COMF"));
     password2.setTrim(true);
     // 名
     firstname = new ALStringField();
-    firstname.setFieldName("名前（名）");
+    firstname.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_LASTNAME"));
     firstname.setTrim(true);
     // 姓
     lastname = new ALStringField();
-    lastname.setFieldName("名前（姓）");
+    lastname.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_FIRSTNAME"));
     lastname.setTrim(true);
     // メールアドレス
     email = new ALStringField();
-    email.setFieldName("メールアドレス");
+    email.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_USER_EMAIL"));
     email.setTrim(true);
     // アカウント有効/無効
     disabled = new ALStringField();
-    disabled.setFieldName("アカウント有効/無効");
+    disabled.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_ENABLE_DISABLE"));
     disabled.setTrim(true);
     // 内線番号
     in_telephone = new ALStringField();
-    in_telephone.setFieldName("電話番号（内線）");
+    in_telephone.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_IN_TELEPHONE"));
     in_telephone.setTrim(true);
 
     // 外線番号
     out_telephone1 = new ALStringField();
-    out_telephone1.setFieldName("電話番号（外線）");
+    out_telephone1.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_OUT_TELEPHONE"));
     out_telephone1.setTrim(true);
     out_telephone2 = new ALStringField();
-    out_telephone2.setFieldName("電話番号（外線）");
+    out_telephone2.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_OUT_TELEPHONE"));
     out_telephone2.setTrim(true);
     out_telephone3 = new ALStringField();
-    out_telephone3.setFieldName("電話番号（外線）");
+    out_telephone3.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_OUT_TELEPHONE"));
     out_telephone3.setTrim(true);
 
     // 携帯番号
     cellular_phone1 = new ALStringField();
-    cellular_phone1.setFieldName("電話番号（携帯）");
+    cellular_phone1.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_CELLULAR_PHONE"));
     cellular_phone1.setTrim(true);
     cellular_phone2 = new ALStringField();
-    cellular_phone2.setFieldName("電話番号（携帯）");
+    cellular_phone2.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_CELLULAR_PHONE"));
     cellular_phone2.setTrim(true);
     cellular_phone3 = new ALStringField();
-    cellular_phone3.setFieldName("電話番号（携帯）");
+    cellular_phone3.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_CELLULAR_PHONE"));
     cellular_phone3.setTrim(true);
 
     // 携帯アドレス
     cellular_mail = new ALStringField();
-    cellular_mail.setFieldName("携帯メールアドレス");
+    cellular_mail.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_CELLULAR_MAIL"));
     cellular_mail.setTrim(true);
     // 名（フリガナ）
     first_name_kana = new ALStringField();
-    first_name_kana.setFieldName("名前（フリガナ）");
+    first_name_kana.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_NAME_KANA"));
     first_name_kana.setTrim(true);
     // 姓（フリガナ）
     last_name_kana = new ALStringField();
-    last_name_kana.setFieldName("名前（フリガナ）");
+    last_name_kana.setFieldName(ALLocalizationUtils
+      .getl10nFormat(ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_USER_NAME_KANA")));
     last_name_kana.setTrim(true);
     // 顔写真
     photo = new ALStringField();
-    photo.setFieldName("顔写真");
+    photo.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_USER_PHOTO"));
     photo.setTrim(true);
 
     // 部署ID
     post_id = new ALNumberField();
-    post_id.setFieldName("部署");
+    post_id.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_POST"));
 
     // 役職ID
     position_id = new ALNumberField();
-    position_id.setFieldName("役職");
+    position_id.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_POSITION"));
 
     // 管理者権限を付与するか
     is_admin = new ALStringField();
-    is_admin.setFieldName("管理者にする");
+    is_admin
+      .setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_ADMIN_ON"));
     is_admin.setTrim(true);
 
     post = new AccountPostFormData();
@@ -501,7 +520,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       if (!password.getValue().equals(password2.getValue())) {
         msgList
-          .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+          .add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PASSWORD"));
       } else {
         password.validate(msgList);
         password2.validate(msgList);
@@ -512,8 +531,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         dontUpdatePasswd = true;
       } else {
         if (!password.getValue().equals(password2.getValue())) {
-          msgList
-            .add("『 <span class='em'>パスワード</span> 』と『 <span class='em'>パスワード（確認用）</span> 』を正しく入力してください。");
+          msgList.add(ALLocalizationUtils
+            .getl10nFormat("ACCOUNT_ALERT_PASSWORD"));
         } else {
           password.validate(msgList);
           password2.validate(msgList);
@@ -537,7 +556,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     if (email.getValue() != null
       && email.getValue().trim().length() > 0
       && !ALStringUtil.isMailAddress(email.getValue())) {
-      msgList.add("『 <span class='em'> メールアドレス </span>』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_EMAIL"));
     }
 
     if (!out_telephone1.getValue().equals("")
@@ -547,7 +566,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       if (!out_telephone1.validate(dummy)
         || !out_telephone2.validate(dummy)
         || !out_telephone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号（外線）</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_POST_SET_TELEPHON_EXTERNAL_NOMBER"));
       } else {
         // 電話番号の長さチェック
         int req_size =
@@ -572,8 +592,8 @@ public class AccountUserFormData extends ALAbstractFormData {
     Matcher matcher = pattern.matcher(in_telephone.getValue());
     Boolean ext_validater = matcher.matches();
     if (ext_validater) {
-      msgList
-        .add("『  <span class='em'> 電話番号（内線） </span>』は 15 文字以下でハイフン（-）または半角数字で入力してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_POST_WITHIN_SIXTEEN"));
 
     }
 
@@ -583,7 +603,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       if (!cellular_phone1.validate(dummy)
         || !cellular_phone2.validate(dummy)
         || !cellular_phone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号（携帯）</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_TELEPHONE_MOBILE"));
       }
     }
 
@@ -591,12 +612,13 @@ public class AccountUserFormData extends ALAbstractFormData {
     cellular_mail.validate(msgList);
     if (cellular_mail.getValue().trim().length() > 0
       && !ALStringUtil.isCellPhoneMailAddress(cellular_mail.getValue())) {
-      msgList.add("『 <span class='em'> 携帯メールアドレス </span>』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ALERT_EMAIL_MOBILE"));
     }
 
     // 顔写真
     if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
-      msgList.add("『 <span class='em'>顔写真</span> 』にはJpeg画像を指定してください。");
+      msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO"));
     }
 
     if (is_new_post) {
@@ -708,7 +730,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         filebean.initField();
         filebean.setFolderName("");
         filebean.setFileId(0);
-        filebean.setFileName("以前の写真ファイル");
+        filebean.setFileName(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_OLD_PHOTO"));
       }
 
       postList =
@@ -748,7 +771,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
 
@@ -906,7 +930,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
       if (is_new_post) {
@@ -1099,7 +1124,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
       String user_name =
@@ -1181,7 +1207,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
       String user_name =
@@ -1240,7 +1267,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
         return false;
       }
       logger.debug("enddeleteFormData");
