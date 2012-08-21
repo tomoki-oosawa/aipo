@@ -2221,6 +2221,11 @@ public class ALEipUtils {
       clientVer = String.valueOf(userAgent.charAt(userAgent.indexOf("OS") + 3));
     }
 
+    if (isIE(userAgent)) {
+      client = "IE";
+      clientVer = getIEVersion(userAgent);
+    }
+
     if (request != null) {
       request.setAttribute(key, client);
       request.setAttribute(keyVer, clientVer);
@@ -2231,6 +2236,10 @@ public class ALEipUtils {
     map.put(client, clientVer);
 
     return map.entrySet().iterator().next();
+  }
+
+  public static boolean isIE(String userAgent) {
+    return userAgent.matches(".*((MSIE)+ [0-9]\\.[0-9]).*");
   }
 
   /**
@@ -2324,6 +2333,18 @@ public class ALEipUtils {
     if (matcher.find()) {
       String words = matcher.group();
       return words.replaceAll("OS\\s", "");
+    }
+
+    return "";
+  }
+
+  public static String getIEVersion(String userAgent) {
+    Pattern pattern = Pattern.compile("MSIE\\s[0-9_]+");
+    Matcher matcher = pattern.matcher(userAgent);
+
+    if (matcher.find()) {
+      String words = matcher.group();
+      return words.replaceAll("MSIE\\s", "");
     }
 
     return "";
