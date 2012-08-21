@@ -247,7 +247,7 @@
               </td>
 						  #end
 						  </tr>
-						<tr>
+						<tr id="weeklyTermTr_$!portlet.ID">
 						<td width="50">
                           <div class='weeklyTermLeft' id='weeklyTermLeft'>
                             <div class="weeklyTermLeftTop" id="weeklyTermLeftTopTall-$!portlet.ID">&nbsp;</div>

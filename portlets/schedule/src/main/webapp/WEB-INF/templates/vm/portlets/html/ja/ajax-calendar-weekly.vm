@@ -149,7 +149,7 @@
                           </td>
 						 #end
                         </tr>
-						<tr>
+						<tr id="weeklyTermTr_$!portlet.ID">
 						<td colspan="9">
 						<div id="termScheduleGarage-$!portlet.ID" class="termScheduleGarage" style="z-index: -1;">&nbsp;</div>
 						</td>

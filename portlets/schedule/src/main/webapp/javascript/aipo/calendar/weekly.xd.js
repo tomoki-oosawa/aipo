@@ -476,6 +476,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%; z-index: 0; visibility: hidden;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
                 count++;
             });
+            var termFlg = true;
+            if(html == ""){
+            	termFlg = false;
+            }
             html += "<div id=\"dummy_div_" +  _portletId + "\" class=\"scheduleDivAdd dummy_div\" style=\" position:absolute; width: 0px; height : 0px; left: 0px; top: -10000px; Filter: Alpha(Opacity=10);opacity:.10; background-color:#FFFFFF; \">&nbsp;</div>"
             dojo.byId('scheduleGarage-' + _portletId).innerHTML = html;
 
@@ -695,6 +699,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             obj_indicator = dojo.byId('indicator-'+_portletId);
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
+
+            if(termFlg){
+               	dojo.byId('weeklyTermTr_' + _portletId).style.display = "";
+           	}else{
+           		dojo.byId('weeklyTermTr_' + _portletId).style.display = "none";
+           	}
+
             var Element = dojo.byId("weeklyScrollPane_" + _portletId);
 
             if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
