@@ -310,8 +310,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     // 姓（フリガナ）
     last_name_kana = new ALStringField();
     last_name_kana.setFieldName(ALLocalizationUtils
-      .getl10nFormat(ALLocalizationUtils
-        .getl10nFormat("ACCOUNT_USER_NAME_KANA")));
+      .getl10nFormat("ACCOUNT_USER_NAME_KANA"));
     last_name_kana.setTrim(true);
     // 顔写真
     photo = new ALStringField();
