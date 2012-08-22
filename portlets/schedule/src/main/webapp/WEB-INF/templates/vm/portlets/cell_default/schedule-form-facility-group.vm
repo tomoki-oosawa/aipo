@@ -74,7 +74,7 @@ $l10n.SCHEDULE_SELECT_GROUP_TEXT
 <input name="selectedgroup" type="radio" value="all" checked>$l10n.SCHEDULE_WHOLE#ALcell_br($career)
 #if($result.FacilityGroupList.size() > 0)
 #ALcell_hr($career '1')
-ｸﾞﾙｰﾌﾟ#ALcell_br($career)
+$l10n.SCHEDULE_GROUP#ALcell_br($career)
 #foreach( $record in $result.FacilityGroupList )
 <input name="selectedgroup" type="radio" value="$!{record.GroupId}">$!record.GroupName#ALcell_br($career)
 #end
