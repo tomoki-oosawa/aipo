@@ -205,7 +205,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
         if (ALCellularUtils.isSmartPhone(data) && "admin".equals(username)) {
           data.setUser(JetspeedSecurity.getAnonymousUser());
-          data.setMessage("このユーザーはパソコンでのみログインできます。");
+          data.setMessage(ALLocalizationUtils
+            .getl10n("LOGINACTION_LOGIN_ONLY_PC"));
           data.getUser().setHasLoggedIn(Boolean.valueOf(false));
         } else {
 
@@ -215,7 +216,8 @@ public class ALSessionValidator extends JetspeedSessionValidator {
               JetspeedSecurity.saveUser(loginuser);
             } else {
               data.setUser(JetspeedSecurity.getAnonymousUser());
-              data.setMessage("このユーザーは現在無効化されています。担当者様にご確認ください。");
+              data.setMessage(ALLocalizationUtils
+                .getl10n("LOGINACTION_INVALIDATION_USER"));
               data.getUser().setHasLoggedIn(Boolean.valueOf(false));
             }
           } catch (LoginException e) {
