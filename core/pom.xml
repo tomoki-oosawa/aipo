@@ -47,11 +47,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.aimluck.commons</groupId>
-      <artifactId>aipo-commons</artifactId>
-      <version>${aipo.version}</version>
-    </dependency>
-    <dependency>
       <groupId>com.aimluck.eip</groupId>
       <artifactId>aipo-oms</artifactId>
       <version>${aipo.version}</version>

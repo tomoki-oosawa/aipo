@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import com.aimluck.eip.util.ALLocalizationUtils;
+
 /**
  * 入力フィールドで取り扱う日付に対するユーティリティクラスです。 <br />
  * 
@@ -200,27 +202,28 @@ public class ALDateUtil {
    */
   public static String getDayOfWeek(Calendar cal) {
     String res = "";
+
     switch (cal.get(Calendar.DAY_OF_WEEK)) {
       case Calendar.SUNDAY:
-        res = "（日）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY_CELL");
         break;
       case Calendar.MONDAY:
-        res = "（月）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_MONDAY_CELL");
         break;
       case Calendar.TUESDAY:
-        res = "（火）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY_CELL");
         break;
       case Calendar.WEDNESDAY:
-        res = "（水）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY_CELL");
         break;
       case Calendar.THURSDAY:
-        res = "（木）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY_CELL");
         break;
       case Calendar.FRIDAY:
-        res = "（金）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY_CELL");
         break;
       case Calendar.SATURDAY:
-        res = "（土）";
+        res = ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY_CELL");
         break;
     }
     return res;
