@@ -481,9 +481,9 @@ public class AccountUserFormData extends ALAbstractFormData {
             Database.query(TurbineUser.class, exp);
           List<TurbineUser> ulist = query.fetchList();
           if (ulist.size() > 0) {
-            msgList.add("ログイン名『 <span class='em'>"
-              + username
-              + "</span> 』はすでに登録されています。別のログイン名で登録してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "ACCOUNT_ALERT_LOGINNAME_DUP",
+              username));
           }
         } catch (Exception ex) {
           logger.error("Exception", ex);
@@ -492,14 +492,14 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       if (!AccountUtils.isValidSymbolUserName(username.getValue())) {
-        StringBuffer msg =
-          new StringBuffer("『 <span class='em'>ログイン名</span> 』に使用できる記号は");
+        StringBuffer msg = new StringBuffer("");
         List<String> symbols = Arrays.asList(AccountUtils.USER_NAME_SYMBOLS);
         for (String symbol : symbols) {
-          msg.append("『").append(symbol).append("』");
+          msg.append(symbol);
         }
-        msg.append("のみです。");
-        msgList.add(msg.toString());
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_ALERT_LOGINNAME_CHAR1",
+          msg.toString()));
       }
 
       // ユーザー名の先頭にdummy_が含まれるかの確認
@@ -507,9 +507,9 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (username.getValue().length() > 5) {
           if (ALEipUtils.dummy_user_head.equals((username.getValue())
             .substring(0, 6))) {
-            msgList.add("ログイン名の先頭に『 <span class='em'>"
-              + ALEipUtils.dummy_user_head
-              + "</span> 』は使用出来ません。別のログイン名で登録してください。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "ACCOUNT_ALERT_LOGINNAME_DUMMY",
+              ALEipUtils.dummy_user_head));
           }
         }
       }
@@ -578,9 +578,9 @@ public class AccountUserFormData extends ALAbstractFormData {
             + out_telephone2.getMaxLength()
             + out_telephone3.getMaxLength();
         if (req_size > limit_size) {
-          msgList.add("『 <span class='em'>電話番号（外線）</span> 』を"
-            + limit_size
-            + "桁以内で正しく入力してください。");
+          msgList.add(ALLocalizationUtils.getl10nFormat(
+            "ACCOUNT_ALERT_LOGINNAME_PHONE_IN",
+            limit_size));
         }
       }
     }
@@ -636,18 +636,17 @@ public class AccountUserFormData extends ALAbstractFormData {
         && ALEipUtils.isEnabledUser(tuser.getUserId())
         && is_admin.getValue().equals("false")) {
         if (login_uid == tuser.getUserId()) {
-          msgList
-            .add("ログインしているユーザーの『 <span class='em'>管理者権限</span> 』を無くすことは出来ません。");
+          msgList.add(ALLocalizationUtils
+            .getl10nFormat("ACCOUNT_ALERT_DISABLE_LOGINUSERADMIN"));
         }
         boolean wasAdmin = ALEipUtils.isAdmin(tuser.getUserId());
         if (wasAdmin) {
           // 更新で、有効なユーザーの管理者権限を無くす場合
           if (!AccountUtils.isAdminDeletable()) {
-            msgList
-              .add("このユーザーの『 <span class='em'>管理者権限</span> 』を削除できません。最低でも "
-                + Integer.valueOf(ALConfigService
-                  .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
-                + " 人の管理者権限を持ったユーザーが必要です。");
+            msgList.add(ALLocalizationUtils.getl10nFormat(
+              "ACCOUNT_ALERT_DELETE_ADMIN",
+              Integer.valueOf(ALConfigService
+                .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
           }
         }
       }
@@ -761,7 +760,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       int user_num = ALEipUtils.getCurrentUserNum(rundata);
       int max_user = ALEipUtils.getLimitUsers();
       if ((max_user > 0) && (user_num + 1 > max_user)) {
-        msgList.add("ユーザー数が利用制限を超えています。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_NUMOFUSERS_LIMIT"));
         return false;
       }
 
@@ -1147,18 +1147,18 @@ public class AccountUserFormData extends ALAbstractFormData {
       TurbineUser target_user = list.get(0);
 
       if (target_user.getLoginName().equals(rundata.getUser().getUserName())) {
-        msgList.add("ログイン中のユーザを無効にすることは出来ません。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_DISABLE_LOGINUSER"));
         return false;
       }
 
       if (ALEipUtils.isAdmin(target_user.getUserId())
         && !AccountUtils.isAdminDeletable()) {
-        msgList.add("ユーザー『 <span class='em'>"
-          + target_user.getLoginName()
-          + "</span> 』は管理者権限を持っているため、無効にできません。<br />最低でも"
-          + Integer.valueOf(ALConfigService
-            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
-          + " 人の管理者権限を持ったユーザーが必要です。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_ALERT_DISABLE_ADMIN",
+          target_user.getLoginName(),
+          Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
         return false;
       }
 
@@ -1286,18 +1286,18 @@ public class AccountUserFormData extends ALAbstractFormData {
           user_name);
 
       if (user.getLoginName().equals(rundata.getUser().getUserName())) {
-        msgList.add("ログイン中のユーザを削除することは出来ません。");
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_DELETE_LOGINUSER"));
         return false;
       }
 
       if (ALEipUtils.isAdmin(user.getUserId())
         && !AccountUtils.isAdminDeletable()) {
-        msgList.add("ユーザー『 <span class='em'>"
-          + user.getLoginName()
-          + "</span> 』は管理者権限を持っているため、削除できません。<br />最低でも"
-          + Integer.valueOf(ALConfigService
-            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
-          + " 人の管理者権限を持ったユーザーが必要です。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_ALERT_DELETE_USER",
+          user.getLoginName(),
+          Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
         return false;
       }
 

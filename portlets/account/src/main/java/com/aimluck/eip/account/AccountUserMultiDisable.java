@@ -38,7 +38,6 @@ import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数無効化するためのクラス． <BR>
@@ -88,7 +87,8 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
       // 予めバリデーション
       for (TurbineUser user : ulist) {
         if (user.getLoginName().equals(rundata.getUser().getUserName())) {
-          msgList.add("ログイン中のユーザを無効にすることは出来ません。");
+          msgList.add(ALLocalizationUtils
+            .getl10nFormat("ACCOUNT_ALERT_DISABLE_LOGINUSER"));
           return false;
         }
         if (ALEipUtils.isAdmin(user.getUserId())) {
@@ -97,10 +97,10 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
       }
 
       if (!AccountUtils.isAdminDeletable(admin_count)) {
-        msgList.add("最低でも"
-          + Integer.valueOf(ALConfigService
-            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))
-          + " 人の管理者権限を持ったログイン可能なユーザーが必要です。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_ALERT_NUMOFADMINS_LIMIT",
+          Integer.valueOf(ALConfigService
+            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
         return false;
       }
 
