@@ -205,25 +205,25 @@ public class ALDateUtil {
 
     switch (cal.get(Calendar.DAY_OF_WEEK)) {
       case Calendar.SUNDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_SUNDAY_CELL");
         break;
       case Calendar.MONDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_MONDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_MONDAY_CELL");
         break;
       case Calendar.TUESDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_TUSEDAY_CELL");
         break;
       case Calendar.WEDNESDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_WEDNESDAY_CELL");
         break;
       case Calendar.THURSDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_THURSDAY_CELL");
         break;
       case Calendar.FRIDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_FRIDAY_CELL");
         break;
       case Calendar.SATURDAY:
-        res = ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY_CELL");
+        res = ALLocalizationUtils.getl10n("COMMONS_UTILS_SATURDAY_CELL");
         break;
     }
     return res;
