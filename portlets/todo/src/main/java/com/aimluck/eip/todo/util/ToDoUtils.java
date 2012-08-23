@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.todo.util;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,10 +29,16 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
+import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDateUtil;
@@ -748,5 +755,77 @@ public class ToDoUtils {
     body.append(ALOrgUtilsService.getAlias()).append(CR);
 
     return body.toString();
+  }
+
+  /**
+   * todo-notification-mail.vmからパソコンへ送信するメールの内容を作成する．
+   * 
+   * @return
+   * @throws ALDBErrorException
+   */
+  public static String createMsgForPcTmpl(RunData rundata, EipTTodo todo,
+      List<ALEipUser> memberList, boolean isNew) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+    context.put("isNew", isNew);
+    context.put("todoName", todo.getTodoName().toString());
+    context.put("turbineUser", ALEipUtils.getALEipUser(
+      todo.getTurbineUser().getUserId()).getAliasName());
+    context.put("hasStartDate", !isEmptyDate(todo.getStartDate()));
+    context.put("startDate", ALDateUtil.format(
+      todo.getStartDate(),
+      "yyyy年M月d日（E）"));
+    context.put("hasEndDate", !isEmptyDate(todo.getEndDate()));
+    context
+      .put("endDate", ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日（E）"));
+    context.put("state", todo.getState().toString());
+    context.put("priority", todo.getPriority());
+    context.put("hasNote", todo.getNote().toString().length() > 0);
+    context.put("note", todo.getNote().toString());
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/todo-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/todo-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 }

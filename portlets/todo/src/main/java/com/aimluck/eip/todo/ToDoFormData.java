@@ -584,16 +584,16 @@ public class ToDoFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ToDoUtils.createMsgForPc(
+              message.setPcBody(ToDoUtils.createMsgForPcTmpl(
                 rundata,
                 todo,
                 memberList,
-                false));
-              message.setCellularBody(ToDoUtils.createMsgForPc(
+                true));
+              message.setCellularBody(ToDoUtils.createMsgForPcTmpl(
                 rundata,
                 todo,
                 memberList,
-                false));
+                true));
               messageList.add(message);
             }
             ALMailService.sendAdminMailAsync(new ALAdminMailContext(
@@ -775,12 +775,12 @@ public class ToDoFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ToDoUtils.createMsgForPc(
+              message.setPcBody(ToDoUtils.createMsgForPcTmpl(
                 rundata,
                 todo,
                 memberList,
                 false));
-              message.setCellularBody(ToDoUtils.createMsgForPc(
+              message.setCellularBody(ToDoUtils.createMsgForPcTmpl(
                 rundata,
                 todo,
                 memberList,

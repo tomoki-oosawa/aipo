@@ -1,0 +1,44 @@
+${loginUser}##
+#if($hasEmail)(${email})#end##
+さんがToDoを##
+#if($isNew)##
+追加##
+#else##
+編集##
+#end##
+しました。
+
+[ToDo詳細]
+${todoName}
+[担当者]
+${turbineUser}
+#if($hasStartDate)
+[開始日]
+${startDate}
+#end
+#if($hasEndDate)
+[締切日]
+${endDate}
+#end
+[進捗]
+${state}%
+[優先度]
+${priority}
+#if($hasNote)
+[メモ]
+${note}
+#end
+
+[${serviceAlias}へのアクセス]
+#if($enableASP)
+　${globalurl}
+#else
+・社外
+　${globalurl}
+・社内
+　${localurl}
+#end
+
+
+---------------------
+${serviceAlias}
