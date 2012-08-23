@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.schedule.util;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -48,6 +50,7 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -2731,77 +2734,84 @@ public class ScheduleUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"))
-      .append(CR)
-      .append(CR);
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"))
-      .append(CR)
-      .append(schedule.getName().toString())
-      .append(CR);
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"))
-      .append(CR)
-      .append(date_detail)
-      .append(CR);
 
-    if (schedule.getPlace().toString().length() > 0) {
-      body
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_PLACE"))
-        .append(CR)
-        .append(schedule.getPlace().toString())
-        .append(CR);
-    }
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
 
-    if (schedule.getNote().toString().length() > 0) {
-      body
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_NOTE"))
-        .append(CR)
-        .append(schedule.getNote().toString())
-        .append(CR);
-    }
+      context.put("userName", loginUser.getAliasName().toString());
+      context.put("mailAddress", user.getEmail());
+      context.put("addScheduleMSG", ALLocalizationUtils
+        .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
+      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
+      context.put("titleName", schedule.getName().toString());
+      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
+      context.put("dateDetail", date_detail);
 
-    if (memberList != null) {
-      int size = memberList.size();
-      int i;
-      body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS")).append(
-        CR);
-      for (i = 0; i < size; i++) {
-        if (i != 0) {
-          body.append(", ");
-        }
-        ALEipUser member = memberList.get(i);
-        body.append(member.getAliasName());
+      if (schedule.getPlace().toString().length() > 0) {
+        context.put("place", ALLocalizationUtils.getl10n("SCHEDULE_SUB_PLACE"));
+        context.put("placeName", schedule.getPlace().toString());
       }
-      body.append(CR);
-    }
-    body.append(CR);
-    body.append("[").append(ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO")).append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_OUTSIDE_OFFICE"))
-        .append(CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_INSIDE_OFFICE"))
-        .append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
-    }
 
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
+      if (schedule.getNote().toString().length() > 0) {
+        context.put("note", ALLocalizationUtils.getl10n("SCHEDULE_SUB_NOTE"));
+        context.put("noteContent", schedule.getNote().toString());
+      }
 
-    return body.toString();
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersName", body.toString());
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+
+      if (enableAsp) {
+        context.put("globalUrl1", "　" + ALMailUtils.getGlobalurl());
+      } else {
+        context.put("outsideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+        context.put("Globalurl2", "　" + ALMailUtils.getGlobalurl());
+        context.put("insideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_INSIDE_OFFICE"));
+        context.put("globalUrl3", "　" + ALMailUtils.getLocalurl());
+      }
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/createSchedule.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (Exception e) {
+      String traces = "";
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+      traces += "\n" + message + "\n" + e.toString();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -2824,57 +2834,76 @@ public class ScheduleUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"))
-      .append(CR)
-      .append(CR);
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"))
-      .append(CR)
-      .append(schedule.getName().toString())
-      .append(CR);
-    body
-      .append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"))
-      .append(CR)
-      .append(date_detail)
-      .append(CR);
 
-    if (memberList != null) {
-      int size = memberList.size();
-      int i;
-      body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS")).append(
-        CR);
-      for (i = 0; i < size; i++) {
-        if (i != 0) {
-          body.append(", ");
-        }
-        ALEipUser member = memberList.get(i);
-        body.append(member.getAliasName());
-      }
-      body.append(CR);
-    }
-    body.append(CR);
-
-    ALEipUser destUser;
+    StringWriter out = null;
     try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("userName", loginUser.getAliasName().toString());
+      context.put("mailAddress", user.getEmail());
+      context.put("addScheduleMSG", ALLocalizationUtils
+        .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
+      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
+      context.put("titleName", schedule.getName().toString());
+      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
+      context.put("dateDetail", date_detail);
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersName", body.toString());
+      }
+
+      ALEipUser destUser;
+      try {
+        destUser = ALEipUtils.getALEipUser(destUserID);
+      } catch (ALDBErrorException ex) {
+        logger.error("Exception", ex);
+        return "";
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+
+      context.put("globalUrl1", "　"
+        + ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/createSchedule.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (Exception e) {
+      String traces = "";
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+      traces += "\n" + message + "\n" + e.toString();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
     }
-    body.append("[").append(ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO")).append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-    return body.toString();
+    return null;
   }
 
   public static String getMsgDate(EipTSchedule schedule) {
