@@ -11,7 +11,7 @@ ALTER TABLE activity CHANGE COLUMN title title varchar(255) NOT NULL;
 -- 20120724
 
 -- 20120807
-ALTER TABLE `turbine_user`  ADD `PHOTO_SMARTPHONE` blob;
-ALTER TABLE `turbine_user`  ADD `HAS_PHOTO_SMARTPHONE`  varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F';
-ALTER TABLE `turbine_user`  ADD `PHOTO_MODIFIED_SMARTPHONE`  datetime DEFAULT NULL;
+ALTER TABLE `turbine_user`  ADD `photo_smartphone` blob;
+ALTER TABLE `turbine_user`  ADD `has_photo_smartphone`  varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F';
+ALTER TABLE `turbine_user`  ADD `photo_modified_smartphone`  datetime DEFAULT NULL;
 -- 20120807
