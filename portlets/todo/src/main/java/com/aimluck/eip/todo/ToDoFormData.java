@@ -499,6 +499,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
+      todo.setUserId(login_user_id);
       TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
       todo.setTurbineUser(tuser);
       // 開始日
@@ -695,6 +696,7 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
+      todo.setUserId(login_user_id);
       TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
       todo.setTurbineUser(tuser);
       // 開始日
