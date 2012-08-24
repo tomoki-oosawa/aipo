@@ -760,6 +760,20 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             	dojo.query(".weeklyTermTail").style("width",  ((Element.offsetWidth - Element.clientWidth + 1) + "px"));
             }
 
+            if(l_count == 0){
+            	dojo.byId("termScheduleContainer-" + _portletId).style.height = "0px";
+            }else{
+            }
+
+            dojo.byId("weeklyTableHead_" + _portletId).style.marginTop = "5px";
+            var headHeight = dojo.byId("weeklyTableHead_" + _portletId).offsetHeight;
+            var trHeight = dojo.byId("weeklyTermTr_" + _portletId).offsetHeight;
+        	headHeight += 5;
+            headHeight -= trHeight;
+            trHeight -= trHeight % 17;
+            headHeight += trHeight;
+            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.overflow = "hidden";
+            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.height = headHeight + "px"
 
             if (!ptConfig[_portletId].isScroll) {
                 dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;

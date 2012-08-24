@@ -60,7 +60,8 @@
 					<span style="padding-left: 10px;" title="$l10n.SCHEDULE_MESSAGE_OF_DISPLAY_SETTING" ><input type="checkbox" id="showAll-$!portlet.ID" onclick='onCheckShowAll(this)' value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end /><label for="showAll-$!portlet.ID">$l10n.SCHEDULE_DISPLAY_SHARE_SCHEDULE</label></span>
 				    #end
                     </div>
-                    <table class="weeklyTableHead" cellspacing="0" cellpadding="0" border="0" width="100%">
+                    <div id="weeklyTableHeadWrapper_$!portlet.ID" style="width:100%;">
+                    <table class="weeklyTableHead" id="weeklyTableHead_$!portlet.ID" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>
                         <tr>
                           <td width="50">
@@ -156,6 +157,7 @@
 						</tr>
                       </tbody>
                     </table>
+                    </div>
                     <div class="tableBorderM">&nbsp;</div>
                     <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
                       <table cellspacing="0" cellpadding="0" border="0" width="100%">
