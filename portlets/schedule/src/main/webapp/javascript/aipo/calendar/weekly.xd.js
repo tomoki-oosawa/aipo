@@ -775,6 +775,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.overflow = "hidden";
             dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.height = headHeight + "px"
 
+            var day_index = 0;
+            for(day_index = 0; day_index < 7; day_index++){
+            	if(dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("saturday")  >= 0){
+            		dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).style.height = "95%";
+            	}
+            }
+
             if (!ptConfig[_portletId].isScroll) {
                 dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
                 ptConfig[_portletId].isScroll = true;
