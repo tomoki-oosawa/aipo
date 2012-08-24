@@ -24,6 +24,9 @@ dojo._hasResource["aimluck.io"] = true;
 aimluck.namespace("aimluck.io");
 dojo.provide("aimluck.io");
 
+dojo.require("dojo.string");
+dojo.requireLocalization("aipo", "locale");
+
 aimluck.io.submit = function(form, indicator_id, portlet_id, callback) {
     aimluck.io.disableForm(form, true);
 
@@ -171,8 +174,16 @@ aimluck.io.actionSubmitReturn = function(button, rtn) {
   button.form.submit();
 }
 
+//webmail
 aimluck.io.deleteSubmit = function(button) {
-  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
+		dw_del : nlsStrings.DW_DEL,
+		dw_this : nlsStrings.DW_THIS,
+		dw_name : button.form._name.value
+	  });
+	// この'+button.form._name.value+'を削除してよろしいですか?
+	if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1';
@@ -180,17 +191,33 @@ aimluck.io.deleteSubmit = function(button) {
   }
 }
 
+//timeline
 aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
-    aimluck.io.disableForm(button.form, true);
+  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+  var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
+	dw_del : nlsStrings.DW_DEL,
+	dw_this : nlsStrings.DW_THIS,
+	dw_name : button.form._name.value
+  });
+  // 'この'+button.form._name.value+'を削除してよろしいですか？'
+  if(confirm(confirmString)) {
+	aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
     aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
   }
 }
 
+//account
 aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u6709\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+  var confirmString = dojo.string.substitute(nlsStrings.ENABLESUBMIT_STR, {
+		enableSubmit_this : nlsStrings.ENABLESUBMIT_THIS,
+		enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
+		enablesubmit_name:button.form._name.value
+  });
+  // この'+button.form._name.value+'を有効化してよろしいですか？
+  if(confirm(confilmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -198,8 +225,16 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id, re
   }
 }
 
+//account
 aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u7121\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+  var confirmString = dojo.string.substitute(nlsStrings.DISABLESUBMIT_STR, {
+    disableSubmit_this : nlsStrings.DISABLESUBMIT_THIS,
+    disableSubmit_disable : nlsStrings.DISABLESUBMIT_DISABLE,
+    disableSubmit_name:button.form._name.value
+  });
+  // この'+button.form._name.value+'を無効化してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -208,7 +243,14 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id, r
 }
 
 aimluck.io.deleteSubmitReturn = function(button, rtn) {
-  if(confirm('\u3053\u306e'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
+		dw_del : nlsStrings.DW_DEL,
+		dw_this : nlsStrings.DW_THIS,
+		dw_name : button.form._name.value
+	  });
+	// この'+button.form._name.value+'を削除してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1&action=' + rtn;
@@ -217,7 +259,14 @@ aimluck.io.deleteSubmitReturn = function(button, rtn) {
 }
 
 aimluck.io.multiDeleteSubmit = function(button) {
-  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWS_STR, {
+		dws_del : nlsStrings.DWS_DEL,
+		dws_sel : nlsStrings.DWS_SEL,
+		dws_name : button.form._name.value
+	  });
+	// 選択した'+button.form._name.value+'を削除してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1';
@@ -226,7 +275,14 @@ aimluck.io.multiDeleteSubmit = function(button) {
 }
 
 aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u524a\u9664\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWS_STR, {
+		dws_del : nlsStrings.DWS_DEL,
+		dws_sel : nlsStrings.DWS_SEL,
+		dws_name : button.form._name.value
+	  });
+	// 選択した'+button.form._name.value+'を削除してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -235,7 +291,14 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_i
 }
 
 aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u6709\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.MULTIENABLESUBMIT_STR, {
+			multiEnableSubmit_sel : nlsStrings.MULTIENABLESUBMIT_SEL,
+			multiEnableSubmit_enable : nlsStrings.MULTIENABLESUBMIT_ENABLE,
+			multiEnableSubmit_name:button.form._name.value
+	  });
+	// 選択した'+button.form._name.value+'を有効化してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -244,7 +307,14 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id, portlet_i
 }
 
 aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('\u9078\u629e\u3057\u305f'+button.form._name.value+'\u3092\u7121\u52b9\u5316\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f')) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.MULTIDISABLESUBMIT_STR, {
+			multiDisableSubmit_sel : nlsStrings.MULTIDISABLESUBMIT_SEL,
+			multiDisableSubmit_disable : nlsStrings.MULTIDISABLESUBMIT_DISABLE,
+			multiDisableSubmit_name:button.form._name.value
+	  });
+	// 選択した'+button.form._name.value+'を無効化してよろしいですか？
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
@@ -298,13 +368,21 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
     if(form.elements[i].checked) cnt++;
   }
   if(cnt == 0){
-    alert("\u30c1\u30a7\u30c3\u30af\u30dc\u30c3\u30af\u30b9\u3092\uff11\u3064\u4ee5\u4e0a\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002");
+		var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+		var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
+			verifycb_sel : nlsStrings.VERIFYCB_SEL,
+			verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
+			verifycb_cb : nlsStrings.VERIFYCB_CB,
+		});
+		// "チェックボックスを１つ以上選択してください。"
+		alert(alertString);
     return false;
   }else{
     return action(button);
   }
 }
 
+//msgboard,gadgets
 aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url, indicator_id, portlet_id, receive ) {
   var cnt=0;
   var i;
@@ -312,7 +390,14 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url, indicator_id
     if(form.elements[i].checked) cnt++;
   }
   if(cnt == 0){
-    alert("\u30c1\u30a7\u30c3\u30af\u30dc\u30c3\u30af\u30b9\u3092\uff11\u3064\u4ee5\u4e0a\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044\u3002");
+		var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+		var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
+			verifycb_sel : nlsStrings.VERIFYCB_SEL,
+			verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
+			verifycb_cb : nlsStrings.VERIFYCB_CB,
+		});
+		// "チェックボックスを１つ以上選択してください。"
+		alert(alertString);
     return false;
   }else{
     return action(button, url, indicator_id, portlet_id, receive );
@@ -389,6 +474,69 @@ aimluck.io.createOptions = function(selectId, params) {
   });
 }
 
+aimluck.io.addFileToList =function(ul,fileid,filename){
+	if(ul.parentNode.style.display == "none") {
+		ul.parentNode.style.display = "";
+	}
+	if (document.all) {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+
+	   return ul.appendChild(li);
+  } else {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    return ul.appendChild(li);
+  }
+}
+
+aimluck.io.replaceFileToList =function(ul,fileid,filename){
+	if (document.all) {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    ul.innerHTML="";
+	   return ul.appendChild(li);
+  } else {
+	    var li = document.createElement("li");
+	    li.setAttribute('data-fileid',fileid);
+	    li.setAttribute('data-filename',filename);
+
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    ul.innerHTML="";
+	    return ul.appendChild(li);
+  }
+}
+
+aimluck.io.removeFileFromList = function(ul,li){
+	return ul.removeChild(li);
+}
+
+aimluck.io.createSelectFromFileList = function(form, pid){
+    var ul = dojo.byId("attachments_" + pid);
+    var select = document.createElement("select");
+    select.style.display="none";
+    select.id="attachments_select";
+    select.multiple="multiple";
+    select.name ="attachments";
+
+    var lilist=ul.children;
+    for(var i=0;i<lilist.length;i++){
+    	var option =document.createElement("option");
+    	option.value=lilist[i].getAttribute("data-fileid");
+    	option.text=lilist[i].getAttribute("data-filename");
+    	option.selected=true;
+    	select.appendChild(option);
+    }
+    form.appendChild(select);
+}
+
 aimluck.io.addOption = function(select, value, text, is_selected) {
   if (document.all) {
     var option = document.createElement("OPTION");
@@ -397,11 +545,11 @@ aimluck.io.addOption = function(select, value, text, is_selected) {
     option.selected = is_selected;
     if (select.options.length == 1 && select.options[0].value == ""){
         select.options.remove(0);
-        //selectsub.options.remove(0);
+        // selectsub.options.remove(0);
       }
       select.add(option, select.options.length);
-    //selectsub.add(option, select.options.length);
-    //select.options[length].selected = is_selected;
+    // selectsub.add(option, select.options.length);
+    // select.options[length].selected = is_selected;
   } else {
     var option = document.createElement("OPTION");
     option.value = value;
@@ -409,11 +557,11 @@ aimluck.io.addOption = function(select, value, text, is_selected) {
     option.selected = is_selected;
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
-        //selectsub.removeChild(select.options[0]);
+        // selectsub.removeChild(select.options[0]);
     }
     select.insertBefore(option, select.options[select.options.length]);
-    //selectsub.insertBefore(option, select.options[select.options.length]);
-    //select.options[length].selected = is_selected;
+    // selectsub.insertBefore(option, select.options[select.options.length]);
+    // select.options[length].selected = is_selected;
   }
 }
 
@@ -483,7 +631,7 @@ aimluck.io.switchCheckbox = function(checkbox) {
   if (checkbox.checked) {
     for (i = 0; i < checkbox.form.elements.length; i++) {
       element = checkbox.form.elements[i];
-      if(! element.disabled){
+      if(!element.disabled && element.type=="checkbox"){
         element.checked = true;
       }
     }
@@ -491,7 +639,7 @@ aimluck.io.switchCheckbox = function(checkbox) {
   else {
     for (i = 0; i < checkbox.form.elements.length; i++) {
       element = checkbox.form.elements[i];
-      if(! element.disabled){
+      if(!element.disabled && element.type=="checkbox"){
         element.checked = false;
       }
     }
@@ -529,7 +677,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 }
 
                 if(portlet){
-                	ptConfig[portlet_id].reloadUrl= ptConfig[portlet_id].initUrl;
+                	ptConfig[portlet_id].reloadUrl=ptConfig[portlet_id].initUrl;
                 	portlet._isDownloaded = true;
                 	portlet.setContent(html);
                 }
