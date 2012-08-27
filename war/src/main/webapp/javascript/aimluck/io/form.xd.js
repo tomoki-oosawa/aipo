@@ -372,7 +372,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
 		var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
 			verifycb_sel : nlsStrings.VERIFYCB_SEL,
 			verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
-			verifycb_cb : nlsStrings.VERIFYCB_CB,
+			verifycb_cb : nlsStrings.VERIFYCB_CB
 		});
 		// "チェックボックスを１つ以上選択してください。"
 		alert(alertString);
@@ -394,7 +394,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url, indicator_id
 		var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
 			verifycb_sel : nlsStrings.VERIFYCB_SEL,
 			verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
-			verifycb_cb : nlsStrings.VERIFYCB_CB,
+			verifycb_cb : nlsStrings.VERIFYCB_CB
 		});
 		// "チェックボックスを１つ以上選択してください。"
 		alert(alertString);
