@@ -35,7 +35,7 @@
 	ENABLESUBMIT_THIS:"this",
 	ENABLESUBMIT_ENABLE:"Enable",
 	ENABLESUBMIT_STR:"${enableSubmit_enable} ${enableSubmit_this} ${enableSubmit_name}?",
-	//この'+button.form._name.value+'を無効化してよろしいですか？
+	// この'+button.form._name.value+'を無効化してよろしいですか？
 	DISABLESUBMIT_THIS:"this",
 	DISABLESUBMIT_DISABLE:"Disable",
 	DISABLESUBMIT_STR:"${disableSubmit_disable} ${disableSubmit_this} ${disableSubmit_name}?",
@@ -43,8 +43,30 @@
 	MULTIENABLESUBMIT_SEL:"selected",
 	MULTIENABLESUBMIT_ENABLE:"Enable",
 	MULTIENABLESUBMIT_STR:"${multiEnableSubmit_enable} ${multiEnableSubmit_sel} ${multiEnableSubmit_name}?",
-	//選択した'+button.form._name.value+'を無効化してよろしいですか？
+	// 選択した'+button.form._name.value+'を無効化してよろしいですか？
 	MULTIDISABLESUBMIT_SEL:"selected",
 	MULTIDISABLESUBMIT_DISABLE:"Disable",
-	MULTIDISABLESUBMIT_STR:"${multiDisableSubmit_disable} ${multiDisableSubmit_sel} ${multiDisableSubmit_name}?"
+	MULTIDISABLESUBMIT_STR:"${multiDisableSubmit_disable} ${multiDisableSubmit_sel} ${multiDisableSubmit_name}?",
+		// "[エラー] 読み込みができませんでした。"
+	XHRERROR_STR:"[${xhrError_error}] ${xhrError_loading} ${xhrError_failed}.",
+	XHRERROR_ERROR:"Error",
+	XHRERROR_LOADING:"Loading",
+	XHRERROR_FAILED:"failed",
+		// "[エラー] タイムアウトしました。"
+	XHRTIMEOUT_STR: "[${xhrTimeout_error}] ${xhrTimeout_timeout}.",
+	XHRTIMEOUT_ERROR:"Error",
+	XHRTIMEOUT_TIMEOUT:"Timeout",
+		// 年月日表示
+	DATE_FORMAT:"${tyear}/${tmonth}/${tdate}(${tday})     ",
+	DISABLED_DATE:"---- / -- / -- /     ",
+	// 読み込み中...
+	LOADING_STR:"Loading...",
+	// 削除
+	DELETE_STR:"Delete",
+    //指定しない
+	NOT_SPECIFIED_STR:"Not specified",
+	//　＜ 追加　
+	ADDBTN_STR:"  < Add  ",
+		//　削除　
+	DELETEBTN_STR:"  Delete  "
 }

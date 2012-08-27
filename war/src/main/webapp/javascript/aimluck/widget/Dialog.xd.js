@@ -29,6 +29,8 @@ dojo.provide("aimluck.widget.DialogUnderlay");
 dojo.provide("aimluck.widget.Timeout");
 
 dojo.require("dijit.Dialog");
+dojo.requireLocalization("aipo", "locale");
+var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 
 dojo.declare(
     "aimluck.widget.DialogUnderlay",
@@ -73,7 +75,8 @@ dojo.declare(
     [dijit.Dialog],
     {
         widgetId: null,
-        loadingMessage:"<div class='indicatorDialog'><div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div></div>",
+        //読み込み中...
+        loadingMessage:"<div class='indicatorDialog'><div class='indicator'>"+nlsStrings.LOADING_STR+"</div></div>",
         templateString:null,
         templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",//<div dojoAttachPoint=\"titleBar\" class=\"modalDialogTitleBar\" tabindex=\"0\" waiRole=\"dialog\">&nbsp;</div>
         duration: 10,

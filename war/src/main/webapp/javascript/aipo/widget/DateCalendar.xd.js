@@ -25,6 +25,8 @@ dojo._hasResource["aipo.widget.DateCalendar"] = true;
 dojo.provide("aipo.widget.DateCalendar");
 
 dojo.require("dijit._Calendar");
+dojo.require("dojo.string");
+dojo.requireLocalization("aipo", "locale");
 
 dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
     dateId: "",
@@ -48,8 +50,15 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
         var dayNames = dojo.date.locale.getNames('days', this.dayWidth, 'standAlone', this.lang);
         var tday = dayNames[date.getDay()];
 
+		var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+		var dateString = dojo.string.substitute(nlsStrings.DATE_FORMAT, {
+			year : tyear,
+			month : tmonth,
+			date : tdate,
+			day:tday
+		});
         var viewvalue = dojo.byId(this.dateId+'_view');
-        viewvalue.innerHTML = tyear+"\u5e74"+tmonth+"\u6708"+tdate+"\u65e5\uff08"+tday+"\uff09";
+        viewvalue.innerHTML=dateString;
         var hiddendate = dojo.byId(this.dateId);
         hiddendate.value = tyear+"/"+tmonth+"/"+tdate;
         var hiddendate_year = dojo.byId(this.dateId+'_year');
@@ -64,8 +73,9 @@ dojo.declare("aipo.widget.DateCalendar", [dijit._Calendar], {
     disabledCalendar: function(/*boolean*/bool) {
         if(bool){
            var viewvalue = dojo.byId(this.dateId+'_view');
-           viewvalue.innerHTML = "---- \u5e74 -- \u6708 -- \u65e5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
+           var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+           //"---- 年 -- 月 -- 日      "
+           viewvalue.innerHTML =nlsStrings.DISABLED_DATE;
            var hiddendate_year = dojo.byId(this.dateId+'_year');
            hiddendate_year.value = "";
            var hiddendate_month = dojo.byId(this.dateId+'_month');

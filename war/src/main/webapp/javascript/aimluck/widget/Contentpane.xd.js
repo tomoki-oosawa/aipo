@@ -25,12 +25,15 @@ dojo._hasResource["aimluck.widget.Contentpane"] = true;
 dojo.provide("aimluck.widget.Contentpane");
 
 dojo.require("dijit.layout.ContentPane");
+dojo.requireLocalization("aipo", "locale");
+var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 
 dojo.declare(
 	"aimluck.widget.Contentpane",
 	[dijit.layout.ContentPane],
 	{
-        loadingMessage:"<div class='indicator'>\u8aad\u307f\u8fbc\u307f\u4e2d...</div>",
+		//読み込み中...
+        loadingMessage:"<div class='indicator'>"+nlsStrings.LOADING_STR+"</div>",
         errorMessage:"",
         extractContent: false,
         parseOnLoad: true,
@@ -55,7 +58,7 @@ dojo.declare(
         },
 		_downloadExternalContent: function(){
 			this._onUnloadHandler();
-	
+
 			// display loading message
 			// TODO: maybe we should just set a css class with a loading image as background?
 			/*
@@ -71,11 +74,11 @@ dojo.declare(
                 content: this.params,
 			    headers: { X_REQUESTED_WITH: "XMLHttpRequest" }
 			};
-	
+
 			if(dojo.isObject(this.ioArgs)){
 				dojo.mixin(getArgs, this.ioArgs);
 			}
-	
+
 			var hand = this._xhrDfd = (this.ioMethod || dojo.xhrPost)(getArgs);
 
 			hand.addCallback(function(html){
@@ -91,7 +94,7 @@ dojo.declare(
 				delete self._xhrDfd;
 				return html;
 			});
-	
+
 			hand.addErrback(function(err){
 				if(!hand.cancelled){
 					// show error message in the pane
@@ -101,7 +104,7 @@ dojo.declare(
 				return err;
 			});
 		}
-    }	
+    }
 );
 
 }

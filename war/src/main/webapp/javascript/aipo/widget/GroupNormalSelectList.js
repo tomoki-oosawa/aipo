@@ -23,6 +23,8 @@ dojo.provide("aipo.widget.GroupNormalSelectList");
 
 dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
+dojo.requireLocalization("aipo", "locale");
+var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 
 dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templated], {
     inputWidth: "95%",
@@ -38,10 +40,10 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     memberFromUrl:"",
     memberFromOptionKey:"",
     memberFromOptionValue:"",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:335px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\"\u3000\u524a\u9664\u3000\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\"\u3000\uff1c \u8ffd\u52a0\u3000\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:335px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.DELETEBTN_STR+"\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.ADDBTN_STR+"\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
-        
+
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
@@ -63,7 +65,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
         if (select.options.length == 1 && select.options[0].value == ""){
           select.options.remove(0);
         }
-        select.add(option, select.options.length);  
+        select.add(option, select.options.length);
       } else {
         var option = document.createElement("OPTION");
         option.value = value;
@@ -204,7 +206,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     onMemberRemoveClick: function(/*Event*/ evt){
        this.removeMemberSync();
     }
-  
+
 });
 
 }

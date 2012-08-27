@@ -35,7 +35,7 @@
 	ENABLESUBMIT_THIS:"\u3053\u306e",
 	ENABLESUBMIT_ENABLE:"\u6709\u52b9\u5316",
 	ENABLESUBMIT_STR:"${enableSubmit_this}${enableSubmit_name}\u3092${enableSubmit_enable}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
-	//この'+button.form._name.value+'を無効化してよろしいですか？
+	// この'+button.form._name.value+'を無効化してよろしいですか？
 	DISABLESUBMIT_THIS:"\u3053\u306e",
 	DISABLESUBMIT_DISABLE:"\u7121\u52b9\u5316",
 	DISABLESUBMIT_STR:"${disableSubmit_this}${disableSubmit_name}\u3092${disableSubmit_disable}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
@@ -43,9 +43,31 @@
 	MULTIENABLESUBMIT_SEL:"\u9078\u629e\u3057\u305f",
 	MULTIENABLESUBMIT_ENABLE:"\u6709\u52b9\u5316",
 	MULTIENABLESUBMIT_STR:"${multiEnableSubmit_sel}${multiEnableSubmit_name}\u3092${multiEnableSubmit_enable}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
-	//選択した'+button.form._name.value+'を無効化してよろしいですか？
+	// 選択した'+button.form._name.value+'を無効化してよろしいですか？
 	MULTIDISABLESUBMIT_SEL:"\u9078\u629e\u3057\u305f",
 	MULTIDISABLESUBMIT_DISABLE:"\u7121\u52b9\u5316",
 	MULTIDISABLESUBMIT_STR:"${multiDisableSubmit_sel}${multiDisableSubmit_name}\u3092${multiDisableSubmit_disable}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
+	// "[エラー] 読み込みができませんでした。"
+	XHRERROR_STR:"[${xhrError_error}] ${xhrError_loading}\u304c${xhrError_failed}。",
+	XHRERROR_ERROR:"\u30a8\u30e9\u30fc",
+	XHRERROR_LOADING:"\u8aad\u307f\u8fbc\u307f",
+	XHRERROR_FAILED:"\u3067\u304d\u307e\u305b\u3093\u3067\u3057\u305f",
+	// "[エラー] タイムアウトしました。"
+	XHRTIMEOUT_STR: "[${xhrTimeout_error}] ${xhrTimeout_timeout}\u3057\u307e\u3057\u305f\u3002",
+	XHRTIMEOUT_ERROR:"\u30a8\u30e9\u30fc",
+	XHRTIMEOUT_TIMEOUT:"\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8",
+	// 年月日表示 tyear+"年"+tmonth+"月"+tdate+"日（"+tday+"）"
+	DATE_FORMAT:"${tyear}\u5e74${tmonth}\u6708${tdate}\u65e5\uff08${tday}\uff09",
+	DISABLED_DATE:"---- \u5e74 -- \u6708 -- \u65e5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+	// 読み込み中...
+	LOADING_STR:"\u8aad\u307f\u8fbc\u307f\u4e2d...",
+	// 削除
+	DELETE_STR:"\u524a\u9664",
+    //指定しない
+	NOT_SPECIFIED_STR:"\u0020\u6307\u5b9a\u3057\u306a\u3044",
+	//　＜ 追加　
+	ADDBTN_STR:"\u3000\uff1c \u8ffd\u52a0\u3000",
+	//　削除　
+	DELETEBTN_STR:"\u3000\u524a\u9664\u3000"
 
 }
