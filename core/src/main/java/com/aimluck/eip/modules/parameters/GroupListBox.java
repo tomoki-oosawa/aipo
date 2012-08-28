@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 部署とマイグループをListBoxで返すクラスです。 <br />
@@ -40,7 +41,8 @@ public class GroupListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "（全体）";
+  private final String DEF_INITIAL_VALUE = ALLocalizationUtils
+    .getl10nFormat("GROUPLISTBOX_ALL");
 
   /**
    * 表示オプションを初期化します。

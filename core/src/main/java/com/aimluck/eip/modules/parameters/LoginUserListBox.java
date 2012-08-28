@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログインユーザーの一覧をListBoxで返すクラスです。 <br />
@@ -34,7 +35,8 @@ public class LoginUserListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "（ユーザー選択）";
+  private final String DEF_INITIAL_VALUE = ALLocalizationUtils
+    .getl10nFormat("LOGINUSERLISTBOX_ALL");
 
   /**
    * 表示オプションを初期化します。
