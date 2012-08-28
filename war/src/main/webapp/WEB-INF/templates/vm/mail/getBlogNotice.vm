@@ -1,0 +1,14 @@
+${userLastName} $!{userFirstName}$!{mailAddress}${mailNoticeMSG}
+
+${comment}
+${commentValue}
+
+${accessToAlias}
+#if(${globalUrl1})
+　${globalUrl1}
+#else
+${outsideOffice}　${globalurl2}
+${insideOffice}　${globalUrl3}
+#end
+---------------------
+${Alias}

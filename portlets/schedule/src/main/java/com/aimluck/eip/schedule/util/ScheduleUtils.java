@@ -2747,18 +2747,18 @@ public class ScheduleUtils {
       context.put("addScheduleMSG", ALLocalizationUtils
         .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
-      context.put("titleName", schedule.getName().toString());
+      context.put("titleValue", schedule.getName().toString());
       context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
-      context.put("dateDetail", date_detail);
+      context.put("dateValue", date_detail);
 
       if (schedule.getPlace().toString().length() > 0) {
         context.put("place", ALLocalizationUtils.getl10n("SCHEDULE_SUB_PLACE"));
-        context.put("placeName", schedule.getPlace().toString());
+        context.put("placeValue", schedule.getPlace().toString());
       }
 
       if (schedule.getNote().toString().length() > 0) {
         context.put("note", ALLocalizationUtils.getl10n("SCHEDULE_SUB_NOTE"));
-        context.put("noteContent", schedule.getNote().toString());
+        context.put("noteValue", schedule.getNote().toString());
       }
 
       if (memberList != null) {
@@ -2774,7 +2774,7 @@ public class ScheduleUtils {
           ALEipUser member = memberList.get(i);
           body.append(member.getAliasName());
         }
-        context.put("menbersName", body.toString());
+        context.put("menbersList", body.toString());
       }
 
       context.put("Alias", ALOrgUtilsService.getAlias());
@@ -2782,14 +2782,14 @@ public class ScheduleUtils {
         .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
       if (enableAsp) {
-        context.put("globalUrl1", "　" + ALMailUtils.getGlobalurl());
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
       } else {
         context.put("outsideOffice", ALLocalizationUtils
           .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
-        context.put("Globalurl2", "　" + ALMailUtils.getGlobalurl());
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
         context.put("insideOffice", ALLocalizationUtils
           .getl10n("SCHEDULE_INSIDE_OFFICE"));
-        context.put("globalUrl3", "　" + ALMailUtils.getLocalurl());
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
       }
 
       out = new StringWriter();
@@ -2847,9 +2847,9 @@ public class ScheduleUtils {
       context.put("addScheduleMSG", ALLocalizationUtils
         .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
-      context.put("titleName", schedule.getName().toString());
+      context.put("titleValue", schedule.getName().toString());
       context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
-      context.put("dateDetail", date_detail);
+      context.put("dateValue", date_detail);
 
       if (memberList != null) {
         int size = memberList.size();
@@ -2864,7 +2864,7 @@ public class ScheduleUtils {
           ALEipUser member = memberList.get(i);
           body.append(member.getAliasName());
         }
-        context.put("menbersName", body.toString());
+        context.put("menbersList", body.toString());
       }
 
       ALEipUser destUser;
@@ -2879,8 +2879,7 @@ public class ScheduleUtils {
       context
         .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
-      context.put("globalUrl1", "　"
-        + ALMailUtils.getGlobalurl()
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
         + "?key="
         + ALCellularUtils.getCellularKey(destUser));
 

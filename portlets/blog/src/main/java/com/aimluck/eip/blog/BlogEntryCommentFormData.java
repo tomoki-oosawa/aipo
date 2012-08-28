@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.blog;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,6 +33,8 @@ import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -61,6 +65,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログエントリー・コメントのフォームデータを管理するクラスです。 <BR>
@@ -384,7 +389,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   private String createMsgForPc(RunData rundata) {
     String CR = System.getProperty("line.separator");
     ALEipUser user = ALEipUtils.getALEipUser(rundata);
-    StringBuffer body = new StringBuffer();
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
 
     ALBaseUser user2 = null;
@@ -396,39 +400,67 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     } catch (Exception e) {
       return "";
     }
-    String username =
-      new StringBuffer().append(user2.getLastName()).append(" ").append(
-        user2.getFirstName()).toString();
-    body.append(username);
+    StringWriter out = null;
     String e_mail_addr = user2.getEmail();
-    if (!e_mail_addr.equals("")) {
-      body.append("(").append(e_mail_addr).append(")");
+
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("userLastName", user2.getLastName());
+      context.put("userFirstName", user2.getFirstName());
+
+      if (!e_mail_addr.equals("")) {
+        context.put("mailAddress", "(" + e_mail_addr + ")");
+      }
+
+      context.put("mailNoticeMSG", ALLocalizationUtils
+        .getl10n("BLOG_YOU_GOT_MAIL_NOTICE"));
+
+      context.put("comment", ALLocalizationUtils
+        .getl10n("BLOG_MAIL_NOTICE_COMMENT"));
+      context.put("commentValue", comment.getValue());
+
+      context.put("accessToAlias", "["
+        + ALOrgUtilsService.getAlias()
+        + ALLocalizationUtils.getl10n("BLOG_MAIL_NOTICE_ACCESS_TO")
+        + "]");
+
+      if (enableAsp) {
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      } else {
+        context.put("outsideOffice", ALLocalizationUtils
+          .getl10n("BLOG_MAIL_NOTICE_OUTSIDE_OFFICE"));
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
+        context.put("insideOffice", ALLocalizationUtils
+          .getl10n("BLOG_MAIL_NOTICE_INSIDE_OFFICE"));
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
+      }
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/getBlogNotice.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (Exception e) {
+      String traces = "";
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+      traces += "\n" + message + "\n" + e.toString();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
     }
+    return null;
 
-    body.append("さんから日記にコメントがつきました。");
-
-    body.append(CR).append(CR);
-
-    body.append("[コメント]").append(CR).append(comment.getValue()).append(CR);
-
-    body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body.append("・社外").append(CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
-    }
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-
-    return body.toString();
   }
 
   /**
@@ -439,7 +471,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   private String createMsgForCellPhone(RunData rundata, int destUserID) {
     String CR = System.getProperty("line.separator");
     ALEipUser user = ALEipUtils.getALEipUser(rundata);
-    StringBuffer body = new StringBuffer();
     ALBaseUser user2 = null;
     try {
       user2 =
@@ -449,39 +480,67 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     } catch (Exception e) {
       return "";
     }
-    String username =
-      new StringBuffer().append(user2.getLastName()).append(" ").append(
-        user2.getFirstName()).toString();
-    body.append(username);
+    StringWriter out = null;
     String e_mail_addr = user2.getEmail();
-    if (!e_mail_addr.equals("")) {
-      body.append("(").append(e_mail_addr).append(")");
-    }
 
-    body.append("さんから日記にコメントがつきました。");
-    body.append(CR).append(CR);
-
-    body.append("[コメント]").append(CR).append(comment.getValue()).append(CR);
-
-    body.append(CR);
-    ALEipUser destUser;
     try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
-    }
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
 
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-    return body.toString();
+      context.put("userLastName", user2.getLastName());
+      context.put("userFirstName", user2.getFirstName());
+
+      if (!e_mail_addr.equals("")) {
+        context.put("mailAddress", "(" + e_mail_addr + ")");
+      }
+
+      context.put("mailNoticeMSG", ALLocalizationUtils
+        .getl10n("BLOG_YOU_GOT_MAIL_NOTICE"));
+
+      context.put("comment", ALLocalizationUtils
+        .getl10n("BLOG_MAIL_NOTICE_COMMENT"));
+      context.put("commentValue", comment.getValue());
+
+      ALEipUser destUser;
+      try {
+        destUser = ALEipUtils.getALEipUser(destUserID);
+      } catch (ALDBErrorException ex) {
+        logger.error("Exception", ex);
+        return "";
+      }
+
+      context.put("accessToAlias", "["
+        + ALOrgUtilsService.getAlias()
+        + ALLocalizationUtils.getl10n("BLOG_MAIL_NOTICE_ACCESS_TO")
+        + "]");
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/getBlogNotice.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (Exception e) {
+      String traces = "";
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+      traces += "\n" + message + "\n" + e.toString();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
   }
 
   /**

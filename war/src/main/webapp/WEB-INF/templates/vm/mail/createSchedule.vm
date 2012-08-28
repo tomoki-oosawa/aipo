@@ -1,28 +1,28 @@
 ${userName}(${mailAddress})${addScheduleMSG}
 
 ${title}
-${titleName}
+${titleValue}
 ${date}
-${dateDetail}
-#if(${placeName})
+${dateValue}
+#if(${placeValue})
 ${place}
-${placeName}
+${placeValue}
 #end
-#if(${noteContent})
+#if(${noteValue})
 ${note}
-${noteContent}
+${noteValue}
 #end
-#if(${menbersName})
+#if(${menbersList})
 ${menbers}
-${menbersName}
+${menbersList}
 #end
 
-[${Alias}${accessTo}
-#if(${Alias})
-${globalUrl1}
+[${Alias}${accessTo}]
+#if(${globalUrl1})
+　${globalUrl1}
 #else
-${outsideOffice}${globalUrl2}
-${insideOffice}${globalUrl3}
+${outsideOffice}　${globalurl2}
+${insideOffice}　${globalUrl3}
 #end
 ---------------------
 ${Alias}
