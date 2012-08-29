@@ -17,448 +17,156 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.blog;
+dojo.provide("aipo.blog");
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.jar.Attributes;
+dojo.require("aipo.widget.DropdownDatepicker");
 
-import javax.imageio.ImageIO;
-
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
-
-import com.aimluck.eip.blog.util.BlogUtils;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
-import com.aimluck.eip.common.ALAbstractSelectData;
-import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
-import com.aimluck.eip.util.ALCommonUtils;
-import com.aimluck.eip.util.ALEipUtils;
-
-/**
- * ブログエントリー検索データを管理するクラスです。 <BR>
- *
- */
-public class BlogEntryLatestSelectData extends
-    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
-
-  /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(BlogEntryLatestSelectData.class.getName());
-
-  /** テーマ一覧 */
-  private List<BlogThemaResultData> themaList;
-
-  /** エントリーの総数 */
-  private int entrySum;
-
-  private List<BlogFileResultData> photoList;
-
-  private int uid;
-
-  /** 新着コメントがついたエントリー ID */
-  private int newEntryId;
-
-  /** ユーザーがコメントした記事の一覧 */
-  private List<BlogEntryResultData> commentHistoryList;
-
-  /** コメントした記事が一覧に表示される日数 */
-  private final int DELETE_DATE = 7;
-
-  /** 記事コメント記入履歴の最大数 */
-  private final int MAX_COMMENT_HISTORY_COUNT = 20;
-
-  private final List<Integer> users = new ArrayList<Integer>();
-
-  /**
-   *
-   * @param action
-   * @param rundata
-   * @param context
-   * @throws ALPageNotFoundException
-   * @throws ALDBErrorException
-   */
-  @Override
-  public void init(ALAction action, RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
-
-    uid = ALEipUtils.getUserId(rundata);
-
-    super.init(action, rundata, context);
-  }
-
-  private void loadPhotos() throws Exception {
-    photoList = new ArrayList<BlogFileResultData>();
-
-    // String[] ext = { ".jpg", ".jpeg", ".JPG", ".JPEG" };
-    String[] ext = ImageIO.getWriterFormatNames();
-
-    SelectQuery<EipTBlogFile> query = Database.query(EipTBlogFile.class);
-    Expression exp01 =
-      ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY, "%" + ext[0]);
-    query.setQualifier(exp01);
-    for (int i = 1; i < ext.length; i++) {
-      Expression exp02 =
-        ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY, "%" + ext[i]);
-      query.orQualifier(exp02);
+aipo.blog.onLoadBlogDialog = function(pid){
+    var obj = dojo.byId("title");
+    if(obj){
+        obj.focus();
     }
+}
 
-    query.orderDesending(EipTBlogFile.UPDATE_DATE_PROPERTY);
-    query.limit(5);
-    List<EipTBlogFile> list = query.fetchList();
-    if (list != null && list.size() > 0) {
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTBlogFile record = list.get(i);
-        BlogFileResultData file = new BlogFileResultData();
-        file.initField();
-        file.setFileId(record.getFileId().longValue());
-        file.setOwnerId(record.getOwnerId().longValue());
-        file.setEntryId(record.getEipTBlogEntry().getEntryId().longValue());
-        file.setEntryTitle(record.getEipTBlogEntry().getTitle());
-        photoList.add(file);
-      }
+aipo.blog.onLoadBlogThemaDialog = function(pid){
+    var obj = dojo.byId("thema_name");
+    if(obj){
+        obj.focus();
     }
-  }
+}
 
-  private void loadCommentHistoryList(RunData rundata) throws Exception {
-    commentHistoryList = new ArrayList<BlogEntryResultData>();
-    Integer thisUserId = Integer.valueOf(uid);
-    Object beforeEntryId = null;
+aipo.blog.onLoadBlogDetailDialog = function(portlet_id){
+    aipo.portletReload('whatsnew');
+}
 
-    SelectQuery<EipTBlogComment> comment_query =
-      Database.query(EipTBlogComment.class);
-    // ユーザーがコメントした記事のリストをEntryId順に作成
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, thisUserId);
-    comment_query.setQualifier(exp1);
-    Expression exp2 =
-      ExpressionFactory.greaterExp(
-        EipTBlogComment.UPDATE_DATE_PROPERTY,
-        reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
-    comment_query.andQualifier(exp2);
-    comment_query.orderAscending("eipTBlogEntry");
-    List<EipTBlogComment> aList = comment_query.fetchList();
-
-    // リストからcommentHistoryListを作成する
-    for (EipTBlogComment record : aList) {
-      EipTBlogEntry entry = record.getEipTBlogEntry();
-      if (entry.getOwnerId().equals(thisUserId)) {
-        continue;
-      }
-      if (entry.getEntryId().equals(beforeEntryId)) {
-        continue;
-      } else {
-        beforeEntryId = entry.getEntryId();
-      }
-      BlogEntryResultData rd = new BlogEntryResultData();
-      rd.initField();
-      rd.setEntryId(entry.getEntryId().longValue());
-      rd.setOwnerId(entry.getOwnerId().longValue());
-      rd.setTitle(ALCommonUtils
-        .compressString(entry.getTitle(), getStrLength()));
-      rd.setTitleDate(record.getUpdateDate());
-
-      SelectQuery<EipTBlogComment> cquery =
-        Database.query(EipTBlogComment.class).select(
-          EipTBlogComment.COMMENT_ID_PK_COLUMN);
-      Expression cexp =
-        ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
-          + "."
-          + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
-      cquery.setQualifier(cexp);
-      List<EipTBlogComment> list = cquery.fetchList();
-      if (list != null && list.size() > 0) {
-        rd.setCommentsNum(list.size());
-      }
-      rd.setThemaId(entry.getEipTBlogThema().getThemaId().intValue());
-      rd.setThemaName(entry.getEipTBlogThema().getThemaName());
-      commentHistoryList.add(rd);
-
-      if (!users.contains(entry.getOwnerId())) {
-        users.add(entry.getOwnerId());
-      }
+aipo.blog.onLoadBlogCommentDialog = function(pid){
+    var obj = dojo.byId("comment");
+    if(obj){
+        obj.focus();
     }
-    // コメント日時の新しい順に並び替え
-    Collections.sort(commentHistoryList, getDateComparator());
-    // コメント記入履歴数制限をかける
-    if (commentHistoryList.size() > MAX_COMMENT_HISTORY_COUNT) {
-      commentHistoryList.subList(
-        MAX_COMMENT_HISTORY_COUNT,
-        commentHistoryList.size()).clear();
+    aipo.portletReload('whatsnew');
+}
+
+aipo.blog.expandImageWidth = function(img) {
+  var class_name = img.className;
+  if(! class_name.match(/width_auto/i)) {
+    img.className = img.className.replace( /\bwidth_thumbs\b/g, "width_auto");
+  } else {
+    img.className = img.className.replace( /\bwidth_auto\b/g, "width_thumbs");
+  }
+}
+
+aipo.blog.ExpandImage = function(url) {
+  var im = new Image();
+  im.src = url;
+  var imwidth = im.width;
+  if (screen.width < im.width){
+    imwidth = screen.width;
+  }
+  var imheight = im.height;
+  if (screen.height < im.height){
+    imheight = screen.height;
+  }
+  var x = (screen.width  - imwidth) / 2;
+  var y = (screen.height - imheight) / 2;
+  var popup = window.open("image","_blank","left=+x+","top=+y+","width=+imwidth+","height=+imheight+","scrollbars=yes","resizable=yes");
+  popup.window.document.open();
+  popup.window.document.write('<html><head><title>'+im.alt+'</title></head><body style="margin:0;padding:0;border:0;"><img src="'+im.src+'" width="100%" alt="" /></body></html>');
+  popup.window.document.close();
+}
+
+aipo.blog.formSwitchThemaInput = function(button) {
+    if(button.form.is_new_thema.value == 'TRUE' || button.form.is_new_thema.value == 'true') {
+
+    	button.value = aimluck.io.escapeText("blog_val_switch1");
+        aipo.blog.formThemaInputOff(button.form);
+    } else {
+		button.value = aimluck.io.escapeText("blog_val_switch2");
+        aipo.blog.formThemaInputOn(button.form);
     }
-  }
+}
 
-  /**
-   * @param rundata
-   * @param context
-   */
-  public void loadThemaList(RunData rundata, Context context) {
-    // テーマ一覧
-    themaList = BlogUtils.getThemaList(rundata, context);
-  }
+aipo.blog.formThemaInputOn = function(form) {
+    dojo.byId('blogThemaSelectField').style.display = "none";
+    dojo.byId('blogThemaInputField').style.display = "";
 
-  /**
-   * 一覧データを取得します。 <BR>
-   *
-   * @param rundata
-   * @param context
-   * @return
-   */
-  @Override
-  public ResultList<EipTBlogEntry> selectList(RunData rundata, Context context) {
-    try {
-      loadPhotos();
-      loadCommentHistoryList(rundata);
+    form.is_new_thema.value = 'TRUE';
+}
 
-      SelectQuery<EipTBlogEntry> query = getSelectQuery(rundata, context);
-      buildSelectQueryForListView(query);
-      query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
-      ResultList<EipTBlogEntry> list = query.getResultList();
-      // エントリーの総数をセットする．
-      entrySum = list.getTotalCount();
-      return list;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
-    }
-  }
+aipo.blog.formThemaInputOff = function(form) {
+    dojo.byId('blogThemaInputField').style.display = "none";
+    dojo.byId('blogThemaSelectField').style.display = "";
 
-  /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
-   *
-   * @param rundata
-   * @param context
-   * @return
-   */
-  private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
-      Context context) {
-    SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
-    return buildSelectQueryForFilter(query, rundata, context);
-  }
+    form.is_new_thema.value = 'FALSE';
+}
 
-  /**
-   * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
-   * @param obj
-   * @return
-   */
-  @Override
-  protected Object getResultData(EipTBlogEntry record) {
-    try {
-      BlogEntryResultData rd = new BlogEntryResultData();
-      rd.initField();
-      rd.setEntryId(record.getEntryId().longValue());
-      rd.setOwnerId(record.getOwnerId().longValue());
-      rd.setTitle(ALCommonUtils.compressString(
-        record.getTitle(),
-        getStrLength()));
-      rd.setNote(record.getNote().replaceAll("\\r\\n", " ").replaceAll(
-        "\\n",
-        " ").replaceAll("\\r", " "));
-      rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
+aipo.blog.onReceiveMessage = function(msg){
+    //送信時に作成した場合selectを削除。
+	var select=dojo.byId("attachments_select");
+	if(typeof select!="undefined"&& select!=null)
+		select.parentNode.removeChild(select);
 
-      if (record.getEipTBlogThema() != null) {
-        rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
-        rd.setThemaName(record.getEipTBlogThema().getThemaName());
-      }
-
-      rd.setAllowComments("T".equals(record.getAllowComments()));
-      rd.setTitleDate(record.getCreateDate());
-
-      List<?> list = record.getEipTBlogComments();
-      if (list != null && list.size() > 0) {
-        rd.setCommentsNum(list.size());
-      }
-
-      if (!users.contains(record.getOwnerId())) {
-        users.add(record.getOwnerId());
-      }
-
-      return rd;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
-    }
-  }
-
-  /**
-   * 詳細データを取得します。 <BR>
-   *
-   * @param rundata
-   * @param context
-   * @return
-   */
-  @Override
-  public EipTBlogEntry selectDetail(RunData rundata, Context context) {
-    return null;
-  }
-
-  /**
-   * ResultData に値を格納して返します。（詳細データ） <BR>
-   *
-   * @param obj
-   * @return
-   */
-  @Override
-  protected Object getResultDataDetail(EipTBlogEntry obj) {
-    return null;
-  }
-
-  public List<BlogFileResultData> getPhotoList() {
-    return photoList;
-  }
-
-  public int getLoginUid() {
-    return uid;
-  }
-
-  /**
-   * エントリーの総数を返す． <BR>
-   *
-   * @return
-   */
-  public int getEntrySum() {
-    return entrySum;
-  }
-
-  /**
-   * @return themaList
-   */
-  public List<BlogThemaResultData> getThemaList() {
-    return themaList;
-  }
-
-  public int getNewEntryId() {
-    return newEntryId;
-  }
-
-  /**
-   * @return
-   *
-   */
-  @Override
-  protected Attributes getColumnMap() {
-    Attributes map = new Attributes();
-    map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
-    map.putValue("update", EipTBlogFile.UPDATE_DATE_PROPERTY);
-    return map;
-  }
-
-  /**
-   *
-   * @param id
-   * @return
-   */
-  public boolean isMatch(int id1, long id2) {
-    return id1 == (int) id2;
-  }
-
-  /**
-   * ユーザーがコメントした記事の一覧を返す。
-   */
-  public List<BlogEntryResultData> getCommentHistoryList() {
-    return commentHistoryList;
-  }
-
-  /**
-   * TitleDateの新しい順に並び替える。
-   *
-   * @param type
-   * @param name
-   * @return
-   */
-  public static Comparator<BlogEntryResultData> getDateComparator() {
-    Comparator<BlogEntryResultData> com = null;
-    com = new Comparator<BlogEntryResultData>() {
-      @Override
-      public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
-        Date date0 = (obj0).getTitleDate().getValue();
-        Date date1 = (obj1).getTitleDate().getValue();
-        if (date0.compareTo(date1) < 0) {
-          return 1;
-        } else if (date0.equals(date1)) {
-          return 0;
-        } else {
-          return -1;
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(arrDialog){
+            arrDialog.hide();
         }
-      }
-    };
-    return com;
-  }
-
-  /**
-   * 日付文字列をjava.util.Date型へ変換します。
-   *
-   * @param str
-   *          変換対象の文字列
-   * @return 変換後のjava.util.Dateオブジェクト
-   */
-  public static Date toDate(String str) {
-    try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
-      // parseメソッドでDate型に変換します。
-      Date date = sdf.parse(str);
-      return date;
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
+        aipo.portletReload('blog');
+        aipo.portletReload('timeline');
     }
-  }
+    if (dojo.byId('messageDiv')) {
+        dojo.byId('messageDiv').innerHTML = msg;
+    }
+}
 
-  /**
-   * 引数dateの日時からday日前の日時を返します。
-   *
-   * @param date
-   * @param day
-   */
-  public Date reduceDate(Date date, int day) {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
-    cal.add(Calendar.DAY_OF_MONTH, -day);
-    return cal.getTime();
-  }
+aipo.blog.onListReceiveMessage = function(msg){
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(arrDialog){
+            arrDialog.hide();
+        }
+        aipo.portletReload('blog');
+    }
+    if (dojo.byId('listmessageDiv')) {
+        dojo.byId('listmessageDiv').innerHTML = msg;
+    }
+}
 
-  /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
-   *
-   * @return
-   */
-  @Override
-  public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
-  }
+aipo.blog.onSubmitSerchButton = function(form,url,p_id){
+    var exec_url = url;
+    var search_params = [["sword",form.sword.value]];
+    aipo.viewPage(exec_url, p_id, search_params);
 
-  @Override
-  public boolean doViewList(ALAction action, RunData rundata, Context context) {
-    boolean result = super.doViewList(action, rundata, context);
-    loadAggregateUsers();
-    return result;
-  }
+    if(form.sword.value == ""){
+       return false;
+    }
+    aipo.viewPage(exec_url, p_id);
+}
 
-  protected void loadAggregateUsers() {
-    ALEipManager.getInstance().getUsers(users);
-  }
+aipo.blog.delCommentReply = function(button, id, indicator_id, p_id) {
 
+	var val1 = aimluck.io.escapeText("blog_val_confirm1");
+
+
+  if(confirm(val1)) {
+    disableButton(button.form);
+    var url = button.form.action + '&mode=commentdel&' + button.name + '=1&comment_id='+id;
+    aimluck.io.disableForm(button.form, true);
+    aimluck.io.setHiddenValue(button);
+    button.form.action = url;
+    aimluck.io.submit(button.form, indicator_id, p_id, aipo.blog.onReceiveMessage);
+  }
+}
+
+aipo.blog.delBlogEntry = function(button, indicator_id, p_id) {
+
+	var val2 = aimluck.io.escapeText("blog_val_confirm2");
+  if(confirm(val2)) {
+    disableButton(button.form);
+    var url = button.form.action + '&mode=delete&' + button.name + '=1';
+    aimluck.io.disableForm(button.form, true);
+    aimluck.io.setHiddenValue(button);
+    button.form.action = url;
+    aimluck.io.submit(button.form,indicator_id,p_id,aipo.blog.onReceiveMessage);
+  }
 }
