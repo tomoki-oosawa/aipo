@@ -25,13 +25,18 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -42,10 +47,12 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -60,7 +67,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class BlogEntryLatestSelectData extends
-    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
+    ALAbstractMultiFilterSelectData<EipTBlogEntry, EipTBlogEntry> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -90,6 +98,15 @@ public class BlogEntryLatestSelectData extends
 
   private final List<Integer> users = new ArrayList<Integer>();
 
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
+
+  /** テーマ　ID */
+  private String themaId = "";
+
+  /** テーマの初期値を取得する */
+  private String filterType = "";
+
   /**
    * 
    * @param action
@@ -104,6 +121,21 @@ public class BlogEntryLatestSelectData extends
 
     uid = ALEipUtils.getUserId(rundata);
 
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
+    // テーマの初期値を取得する
+    try {
+      filterType = rundata.getParameters().getString("filtertype", "");
+      if (filterType.equals("thema")) {
+        String themaId = rundata.getParameters().getString("filter", "");
+        if (!themaId.equals("")) {
+          this.themaId = themaId;
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
     super.init(action, rundata, context);
   }
 
@@ -242,6 +274,88 @@ public class BlogEntryLatestSelectData extends
       logger.error("Exception", ex);
       return null;
     }
+  }
+
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  @Override
+  protected SelectQuery<EipTBlogEntry> buildSelectQueryForFilter(
+      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context) {
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+    }
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+
+    if (search != null && !"".equals(search)) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTBlogEntry.NOTE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTBlogEntry.TITLE_PROPERTY, "%"
+          + search
+          + "%");
+      SelectQuery<EipTBlogEntry> q = Database.query(EipTBlogEntry.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTBlogEntry> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTBlogEntry item : queryList) {
+        /*
+         * if (item.getParentId() != 0 &&
+         * !resultid.contains(item.getParentId())) {
+         * resultid.add(item.getParentId()); } else if
+         * (!resultid.contains(item.getTopicId())) {
+         * resultid.add(item.getTopicId()); }
+         */
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+    }
+    return query;
   }
 
   /**
@@ -461,4 +575,36 @@ public class BlogEntryLatestSelectData extends
     ALEipManager.getInstance().getUsers(users);
   }
 
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   * 部署の一覧を取得する．
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12g-filtertypes"));
+  }
+
+  public String getThemaId() {
+    return themaId;
+  }
 }

@@ -19,15 +19,62 @@
 
 ## ---------------------------------------------------------------------------
 <div class="auiSummaryMeta clearfix">
-<div class="floatLeft w30">
-<form class="auiForm">
-#ALselectpdheader("target_thema" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid","all"))">$l10n.BLOG_ALL_THEME</option>
-#foreach( $record in $result.ThemaList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogScreen").addQueryData("themeid",$!record.ThemaId))" #if ($!result.ThemeId && $!result.ThemeId == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
-#end
-</select>
-</form>
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogLatestScreen")' />
+	<div class="filters" id="filters_$!{portlet.ID}">#*
+		*##if(!$!result.issetFilter("post"))#*
+			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_GROUP_LIST</span></a>#*
+		 *##else#*
+		 	*##set($break=false)#*
+		 	*##foreach($record in $result.postList)#*
+		 		*##if(!$break)#*
+				*##if($!result.issetFilter("post",$!{record.Name}))#*
+					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
+		 			*##set($break=true)#*
+		 		*##end#*
+		 	*##end#end#*
+
+		 	*##foreach($record in $result.PostMap)#if(!$break)#*
+				*##if($!result.issetFilter("post",$!{record.GroupName}))#*
+					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
+		 			*##set($break=true)#*
+		 		*##end#*
+		 	*##end#end#*
+		 *##end#*
+		 *##if(!$!result.issetFilter("thema"))#*
+			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_ALL_THEMA</span></a>#*
+		 *##else#*
+		 	*##set($break=false)#*
+		 	*##foreach($record in $result.ThemaList)#if(!$break)#*
+		 		*##if ($!result.issetFilter("thema",$!{record.ThemaId}))#*
+					*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.ThemaName</span></a>#*
+		 			*##set($break=true)#*
+		 		*##end#*
+		 	*##end#end#*
+		*##end#*
+	*#</div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+		<p class="caption">$l10n.BLOG_GROUP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$l10n.BLOG_GROUP_LIST</a></li>
+
+			#foreach($record in $result.postList)
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">$l10n.BLOG_PORTLET_THEMA</p>
+		<ul class="filtertype_$!portlet.ID"data-type="thema" data-defaultparam="0">
+			<li #if (!$!result.issetFilter("thema")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("thema")) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$l10n.BLOG_ALL_THEMA</a></li>
+			#foreach( $record in $result.themaList )
+			<li #if ($!result.issetFilter("thema",$!{record.ThemaId})) class="selected" #end  data-param="$!{record.ThemaId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("thema",$!{record.ThemaId})) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$!record.ThemaName</a></li>
+			#end
+		</ul>
+	</div>
 </div>
 #if ($result.List && $result.List.size() != 0)
 #AUIajaxpageview('BlogScreen' $result)
