@@ -141,8 +141,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     password.setTrim(true);
     // 名
     firstname = new ALStringField();
-    firstname.setFieldName(ALLocalizationUtils
-      .getl10n("FILEIO_FILEIO_LAST_NAME"));
+    firstname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_LAST_NAME"));
     firstname.setTrim(true);
     // 姓
     lastname = new ALStringField();
