@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.blog.BlogEntryLatestSelectData;
+import com.aimluck.eip.blog.BlogEntrySelectData;
 import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -47,7 +47,7 @@ public class BlogScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
+      BlogEntrySelectData listData = new BlogEntrySelectData();
       listData.initField();
       listData.loadThemaList(rundata, context);
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(

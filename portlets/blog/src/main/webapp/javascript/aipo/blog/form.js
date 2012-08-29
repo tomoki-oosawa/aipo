@@ -17,258 +17,448 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.blog");
+package com.aimluck.eip.blog;
 
-dojo.require("aipo.widget.MemberNormalSelectList");
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.jar.Attributes;
 
-/*通常画面用*/
-//aipo.blog.addMouseListener=function(portlet_id){
-//	dojo.query(".menubarOpenButton",dojo.byId("filters_"+portlet_id))
-//		.forEach(
-//	function(button){
-//			 addMouseListener(filter);
-//	});
-//};
+import javax.imageio.ImageIO;
 
-//aipo.js setMouseLisnerを利用
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
-aipo.blog.toggleMenu=function (node,filters,event){
-	var rect=filters.getBoundingClientRect();
-	var html=document.documentElement.getBoundingClientRect();
-	if (node.style.display == "none") {
-        dojo.query("div.menubar").style("display", "none");
-
-        var scroll={
-        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
-        	top:document.documentElement.scrollTop||document.body.scrollTop
-        };
-        node.style.opacity="0";
-        node.style.display="block";
-        if(html.right-node.clientWidth>rect.left){
-       		node.style.left=rect.left+scroll.left+"px";
-        }else{
-        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
-        }
-         if(html.bottom-node.clientHeight>rect.bottom){
-       		node.style.top=rect.bottom+scroll.top+"px";
-        }else{
-        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
-        }
-        node.style.opacity="";
-    } else {
-        dojo.query("div.menubar").style("display", "none");
-    }
-};
+import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
+import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 検索バーの幅を調節する。
- * @param portlet_id
+ * ブログエントリー検索データを管理するクラスです。 <BR>
+ *
  */
-aipo.blog.initFilterSearch=function(portlet_id){
-	var q=dojo.byId("q"+portlet_id);
-	var filters=dojo.byId('filters_'+portlet_id);
-	if(filters && q){
-		q.style.paddingLeft=filters.offsetWidth+"px";
-	}
-};
+public class BlogEntryLatestSelectData extends
+    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
 
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(BlogEntryLatestSelectData.class.getName());
 
-/**
- * urlを整形して送信。
- */
-aipo.blog.filteredSearch=function(portlet_id){
-	//filtertype
+  /** テーマ一覧 */
+  private List<BlogThemaResultData> themaList;
 
-	var baseuri=dojo.byId("baseuri_"+portlet_id).value;
+  /** エントリーの総数 */
+  private int entrySum;
 
-	var types=[];
-	var params=[];
-	dojo.query("ul.filtertype_"+portlet_id,dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
-			//console.info(ul);
-			var type=ul.getAttribute("data-type");
-			types.push(type);
+  private List<BlogFileResultData> photoList;
 
-			var activeli=dojo.query("li.selected",ul)[0];
-			if(activeli){
-				var param=activeli.getAttribute("data-param");
-				params.push(param);
-			}else{
-				params.push(ul.getAttribute("data-defaultparam"));
-			}
-		}
-	);
-	var q=dojo.byId("q"+portlet_id);
-	var search =q?encodeURIComponent(q.value):"";
-	baseuri+="&filter="+params.join(",");
-	baseuri+="&filtertype="+types.join(",");
-	baseuri+="&keyword="+search;
-	aipo.viewPage(baseuri,portlet_id);
-};
+  private int uid;
 
-/**
- * 指定したフィルタにデフォルト値を設定する。(または消す)
- * @param portlet_id
- * @param thisnode
- * @param event
- */
-aipo.blog.filterSetDefault=function(portlet_id,type){
-	var ul=dojo.query("ul.filtertype[data-type="+type+"]",dojo.byId("searchForm_"+portlet_id))[0];
-	var defval=ul.getAttribute("data-defaultparam");
-	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
-	aipo.blog.filterSelect(ul,defaultli);
-	aipo.blog.filteredSearch(portlet_id);
-};
+  /** 新着コメントがついたエントリー ID */
+  private int newEntryId;
 
-aipo.blog.filterSelect=function(ul,li){
-	dojo.query("li",ul).removeClass("selected");
-	dojo.query(li).addClass("selected");
-};
-/**
- * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
- * @param portlet_id
- * @param thisnode
- * @param event
- */
-aipo.blog.filterClick=function(portlet_id,thisnode,event){
-	var li=thisnode.parentNode;
-	var ul=li.parentNode;
-	var param=li.getAttribute("data-param");//liのdata-param
-	aipo.blog.filterSelect(ul,li);
-	aipo.blog.filteredSearch(portlet_id);
-};
-aipo.blog.onLoadMsgboardDetail = function(portlet_id){
-  aipo.portletReload('whatsnew');
-}
+  /** ユーザーがコメントした記事の一覧 */
+  private List<BlogEntryResultData> commentHistoryList;
 
-aipo.blog.onLoadMsgboardDialog = function(portlet_id){
-  var obj = dojo.byId("topic_name");
-  if(obj){
-     obj.focus();
-  }
-}
+  /** コメントした記事が一覧に表示される日数 */
+  private final int DELETE_DATE = 7;
 
-aipo.blog.onChangeFilter=aipo.blog.onChangeSearch=function (baseuri,portlet_id){
-	var search = encodeURIComponent(dojo.byId("q").value);
-	baseuri+="?template=MsgboardTopicListScreen";
-	baseuri+="&filter="+dojo.byId("topic").value;
-	baseuri+="&filtertype=category";
-	baseuri+="&search="+search;
-	aipo.viewPage(baseuri,portlet_id);
-}
+  /** 記事コメント記入履歴の最大数 */
+  private final int MAX_COMMENT_HISTORY_COUNT = 20;
 
-aipo.blog.onLoadCategoryDialog = function(portlet_id){
-  var obj = dojo.byId("category_name");
-  if(obj){
-     obj.focus();
+  private final List<Integer> users = new ArrayList<Integer>();
+
+  /**
+   *
+   * @param action
+   * @param rundata
+   * @param context
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  @Override
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    uid = ALEipUtils.getUserId(rundata);
+
+    super.init(action, rundata, context);
   }
 
-  var mpicker = dijit.byId("membernormalselect");
-  if(mpicker){
-    var select = dojo.byId('init_memberlist');
-    var i;
-    var s_o = select.options;
-    if (s_o.length == 1 && s_o[0].value == "") return;
-    for(i = 0 ; i < s_o.length; i ++ ) {
-        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
+  private void loadPhotos() throws Exception {
+    photoList = new ArrayList<BlogFileResultData>();
+
+    // String[] ext = { ".jpg", ".jpeg", ".JPG", ".JPEG" };
+    String[] ext = ImageIO.getWriterFormatNames();
+
+    SelectQuery<EipTBlogFile> query = Database.query(EipTBlogFile.class);
+    Expression exp01 =
+      ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY, "%" + ext[0]);
+    query.setQualifier(exp01);
+    for (int i = 1; i < ext.length; i++) {
+      Expression exp02 =
+        ExpressionFactory.likeExp(EipTBlogFile.TITLE_PROPERTY, "%" + ext[i]);
+      query.orQualifier(exp02);
+    }
+
+    query.orderDesending(EipTBlogFile.UPDATE_DATE_PROPERTY);
+    query.limit(5);
+    List<EipTBlogFile> list = query.fetchList();
+    if (list != null && list.size() > 0) {
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        EipTBlogFile record = list.get(i);
+        BlogFileResultData file = new BlogFileResultData();
+        file.initField();
+        file.setFileId(record.getFileId().longValue());
+        file.setOwnerId(record.getOwnerId().longValue());
+        file.setEntryId(record.getEipTBlogEntry().getEntryId().longValue());
+        file.setEntryTitle(record.getEipTBlogEntry().getTitle());
+        photoList.add(file);
+      }
     }
   }
-}
 
+  private void loadCommentHistoryList(RunData rundata) throws Exception {
+    commentHistoryList = new ArrayList<BlogEntryResultData>();
+    Integer thisUserId = Integer.valueOf(uid);
+    Object beforeEntryId = null;
 
+    SelectQuery<EipTBlogComment> comment_query =
+      Database.query(EipTBlogComment.class);
+    // ユーザーがコメントした記事のリストをEntryId順に作成
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTBlogComment.OWNER_ID_PROPERTY, thisUserId);
+    comment_query.setQualifier(exp1);
+    Expression exp2 =
+      ExpressionFactory.greaterExp(
+        EipTBlogComment.UPDATE_DATE_PROPERTY,
+        reduceDate(Calendar.getInstance().getTime(), DELETE_DATE));
+    comment_query.andQualifier(exp2);
+    comment_query.orderAscending("eipTBlogEntry");
+    List<EipTBlogComment> aList = comment_query.fetchList();
 
-aipo.blog.showMember = function(button) {
-  dojo.byId('Block-GroupMember-Show').style.display="";
-  dojo.byId('is_member').value = "TRUE";
-}
+    // リストからcommentHistoryListを作成する
+    for (EipTBlogComment record : aList) {
+      EipTBlogEntry entry = record.getEipTBlogEntry();
+      if (entry.getOwnerId().equals(thisUserId)) {
+        continue;
+      }
+      if (entry.getEntryId().equals(beforeEntryId)) {
+        continue;
+      } else {
+        beforeEntryId = entry.getEntryId();
+      }
+      BlogEntryResultData rd = new BlogEntryResultData();
+      rd.initField();
+      rd.setEntryId(entry.getEntryId().longValue());
+      rd.setOwnerId(entry.getOwnerId().longValue());
+      rd.setTitle(ALCommonUtils
+        .compressString(entry.getTitle(), getStrLength()));
+      rd.setTitleDate(record.getUpdateDate());
 
-aipo.blog.hideMember = function(button) {
-  dojo.byId('Block-GroupMember-Show').style.display="none";
-  dojo.byId('member_to').options.length = 0;
-  dojo.byId('is_member').value = "FALSE";
-}
+      SelectQuery<EipTBlogComment> cquery =
+        Database.query(EipTBlogComment.class).select(
+          EipTBlogComment.COMMENT_ID_PK_COLUMN);
+      Expression cexp =
+        ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
+          + "."
+          + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
+      cquery.setQualifier(cexp);
+      List<EipTBlogComment> list = cquery.fetchList();
+      if (list != null && list.size() > 0) {
+        rd.setCommentsNum(list.size());
+      }
+      rd.setThemaId(entry.getEipTBlogThema().getThemaId().intValue());
+      rd.setThemaName(entry.getEipTBlogThema().getThemaName());
+      commentHistoryList.add(rd);
 
-aipo.blog.expandImageWidth = function(img) {
-  var class_name = img.className;
-  if(! class_name.match(/width_auto/i)) {
-    img.className = img.className.replace( /\bwidth_thumbs\b/g, "width_auto");
-  } else {
-    img.className = img.className.replace( /\bwidth_auto\b/g, "width_thumbs");
-  }
-}
-
-aipo.blog.formSwitchCategoryInput = function(button) {
-    if(button.form.is_new_category.value == 'TRUE' || button.form.is_new_category.value == 'true') {
-        button.value = aimluck.io.escapeText("blog_val_switch1");
-        aipo.blog.formCategoryInputOff(button.form);
-    } else {
-        button.value = aimluck.io.escapeText("blog_val_switch2");
-        aipo.blog.formCategoryInputOn(button.form);
+      if (!users.contains(entry.getOwnerId())) {
+        users.add(entry.getOwnerId());
+      }
     }
-}
+    // コメント日時の新しい順に並び替え
+    Collections.sort(commentHistoryList, getDateComparator());
+    // コメント記入履歴数制限をかける
+    if (commentHistoryList.size() > MAX_COMMENT_HISTORY_COUNT) {
+      commentHistoryList.subList(
+        MAX_COMMENT_HISTORY_COUNT,
+        commentHistoryList.size()).clear();
+    }
+  }
 
-aipo.blog.formCategoryInputOn = function(form) {
-    dojo.byId('blogCategorySelectField').style.display = "none";
-    dojo.byId('blogCategoryInputField').style.display = "";
+  /**
+   * @param rundata
+   * @param context
+   */
+  public void loadThemaList(RunData rundata, Context context) {
+    // テーマ一覧
+    themaList = BlogUtils.getThemaList(rundata, context);
+  }
 
-    form.is_new_category.value = 'TRUE';
-}
+  /**
+   * 一覧データを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  @Override
+  public ResultList<EipTBlogEntry> selectList(RunData rundata, Context context) {
+    try {
+      loadPhotos();
+      loadCommentHistoryList(rundata);
 
-aipo.blog.formCategoryInputOff = function(form) {
-    dojo.byId('blogCategoryInputField').style.display = "none";
-    dojo.byId('blogCategorySelectField').style.display = "";
+      SelectQuery<EipTBlogEntry> query = getSelectQuery(rundata, context);
+      buildSelectQueryForListView(query);
+      query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
+      ResultList<EipTBlogEntry> list = query.getResultList();
+      // エントリーの総数をセットする．
+      entrySum = list.getTotalCount();
+      return list;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
 
-    form.is_new_category.value = 'FALSE';
-}
+  /**
+   * 検索条件を設定した SelectQuery を返します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
+      Context context) {
+    SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
+    return buildSelectQueryForFilter(query, rundata, context);
+  }
 
-aipo.blog.onReceiveMessage = function(msg){
-    //送信時に作成した場合selectを削除。
-	var select=dojo.byId("attachments_select");
-	if(typeof select!="undefined"&& select!=null)
-		select.parentNode.removeChild(select);
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
+  /**
+   * ResultData に値を格納して返します。（一覧データ） <BR>
+   *
+   * @param obj
+   * @return
+   */
+  @Override
+  protected Object getResultData(EipTBlogEntry record) {
+    try {
+      BlogEntryResultData rd = new BlogEntryResultData();
+      rd.initField();
+      rd.setEntryId(record.getEntryId().longValue());
+      rd.setOwnerId(record.getOwnerId().longValue());
+      rd.setTitle(ALCommonUtils.compressString(
+        record.getTitle(),
+        getStrLength()));
+      rd.setNote(record.getNote().replaceAll("\\r\\n", " ").replaceAll(
+        "\\n",
+        " ").replaceAll("\\r", " "));
+      rd.setBlogId(record.getEipTBlog().getBlogId().intValue());
+
+      if (record.getEipTBlogThema() != null) {
+        rd.setThemaId(record.getEipTBlogThema().getThemaId().intValue());
+        rd.setThemaName(record.getEipTBlogThema().getThemaName());
+      }
+
+      rd.setAllowComments("T".equals(record.getAllowComments()));
+      rd.setTitleDate(record.getCreateDate());
+
+      List<?> list = record.getEipTBlogComments();
+      if (list != null && list.size() > 0) {
+        rd.setCommentsNum(list.size());
+      }
+
+      if (!users.contains(record.getOwnerId())) {
+        users.add(record.getOwnerId());
+      }
+
+      return rd;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
+  }
+
+  /**
+   * 詳細データを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  @Override
+  public EipTBlogEntry selectDetail(RunData rundata, Context context) {
+    return null;
+  }
+
+  /**
+   * ResultData に値を格納して返します。（詳細データ） <BR>
+   *
+   * @param obj
+   * @return
+   */
+  @Override
+  protected Object getResultDataDetail(EipTBlogEntry obj) {
+    return null;
+  }
+
+  public List<BlogFileResultData> getPhotoList() {
+    return photoList;
+  }
+
+  public int getLoginUid() {
+    return uid;
+  }
+
+  /**
+   * エントリーの総数を返す． <BR>
+   *
+   * @return
+   */
+  public int getEntrySum() {
+    return entrySum;
+  }
+
+  /**
+   * @return themaList
+   */
+  public List<BlogThemaResultData> getThemaList() {
+    return themaList;
+  }
+
+  public int getNewEntryId() {
+    return newEntryId;
+  }
+
+  /**
+   * @return
+   *
+   */
+  @Override
+  protected Attributes getColumnMap() {
+    Attributes map = new Attributes();
+    map.putValue("thema", EipTBlogThema.THEMA_ID_PK_COLUMN);
+    map.putValue("update", EipTBlogFile.UPDATE_DATE_PROPERTY);
+    return map;
+  }
+
+  /**
+   *
+   * @param id
+   * @return
+   */
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
+  }
+
+  /**
+   * ユーザーがコメントした記事の一覧を返す。
+   */
+  public List<BlogEntryResultData> getCommentHistoryList() {
+    return commentHistoryList;
+  }
+
+  /**
+   * TitleDateの新しい順に並び替える。
+   *
+   * @param type
+   * @param name
+   * @return
+   */
+  public static Comparator<BlogEntryResultData> getDateComparator() {
+    Comparator<BlogEntryResultData> com = null;
+    com = new Comparator<BlogEntryResultData>() {
+      @Override
+      public int compare(BlogEntryResultData obj0, BlogEntryResultData obj1) {
+        Date date0 = (obj0).getTitleDate().getValue();
+        Date date1 = (obj1).getTitleDate().getValue();
+        if (date0.compareTo(date1) < 0) {
+          return 1;
+        } else if (date0.equals(date1)) {
+          return 0;
+        } else {
+          return -1;
         }
-        aipo.portletReload('blog');
-        aipo.portletReload('timeline');
-    }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
-    }
-}
-
-aipo.blog.onListReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('blog');
-    }
-    if (dojo.byId('listmessageDiv')) {
-        dojo.byId('listmessageDiv').innerHTML = msg;
-    }
-}
-
-aipo.blog.ajaxCheckboxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  aimluck.io.ajaxVerifyCheckbox( button.form, aipo.blog.ajaxMultiDeleteSubmit, button, url, indicator_id, portlet_id, receive );
-}
-
-aipo.blog.ajaxMultiDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('選択した'+button.form._name.value+'を削除してよろしいですか？なお、カテゴリに含まれるトピックはすべて削除されます。')) {
-    aimluck.io.disableForm(button.form, true);
-    aimluck.io.setHiddenValue(button);
-    button.form.action = url;
-    aimluck.io.submit(button.form,indicator_id,portlet_id,receive);
+      }
+    };
+    return com;
   }
-}
 
-aipo.blog.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-  if(confirm('この'+button.form._name.value+'を削除してよろしいですか？なお、カテゴリに含まれるトピックはすべて削除されます。')) {
-    aimluck.io.disableForm(button.form, true);
-    aimluck.io.setHiddenValue(button);
-    button.form.action = url;
-    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+  /**
+   * 日付文字列をjava.util.Date型へ変換します。
+   *
+   * @param str
+   *          変換対象の文字列
+   * @return 変換後のjava.util.Dateオブジェクト
+   */
+  public static Date toDate(String str) {
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      // parseメソッドでDate型に変換します。
+      Date date = sdf.parse(str);
+      return date;
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+      return null;
+    }
   }
+
+  /**
+   * 引数dateの日時からday日前の日時を返します。
+   *
+   * @param date
+   * @param day
+   */
+  public Date reduceDate(Date date, int day) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    cal.add(Calendar.DAY_OF_MONTH, -day);
+    return cal.getTime();
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   *
+   * @return
+   */
+  @Override
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER;
+  }
+
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean result = super.doViewList(action, rundata, context);
+    loadAggregateUsers();
+    return result;
+  }
+
+  protected void loadAggregateUsers() {
+    ALEipManager.getInstance().getUsers(users);
+  }
+
 }
