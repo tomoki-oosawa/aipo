@@ -316,8 +316,12 @@ public class TimelineSelectData extends
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
       String AppId = record.getAppId();
+      // ToDoUtils.java・BlogUtils.javaに修正を加えてあるので、以下の６行はその内不要になる。
       if ("todo".equals(AppId)) {
         AppId = "ToDo";
+      }
+      if ("blog".equals(AppId)) {
+        AppId = "Blog";
       }
       rd.setPortletId(portletIdFromAppId.get(AppId));
 

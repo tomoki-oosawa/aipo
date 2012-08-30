@@ -642,7 +642,7 @@ public class ToDoUtils {
     if (recipients != null && recipients.size() > 0) {
       // 個人向け通知
       ALActivityService.create(new ALActivityPutRequest()
-        .withAppId("todo")
+        .withAppId("ToDo")
         .withLoginName(loginName)
         .withUserId(
           todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
@@ -656,7 +656,7 @@ public class ToDoUtils {
     if (todo.getPublicFlag().equals("T")) {
       // 全体向けアクティビティー
       ALActivityService.create(new ALActivityPutRequest()
-        .withAppId("todo")
+        .withAppId("ToDo")
         .withUserId(
           todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
             .getUserId())

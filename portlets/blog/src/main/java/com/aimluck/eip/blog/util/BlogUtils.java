@@ -141,6 +141,7 @@ public class BlogUtils {
       throws ALDBErrorException {
     String entryid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    // rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     try {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // Todo IDが空の場合
@@ -341,7 +342,13 @@ public class BlogUtils {
   public static EipTBlogEntry getEipTBlogParentEntry(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     String entryid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    // ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    // midorikawa
+    // if (entryid == null) {
+    // entryid =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    // }
+    // midorikawaend
     try {
       if (entryid == null || Integer.valueOf(entryid) == null) {
         // トピック ID が空の場合
@@ -852,7 +859,7 @@ public class BlogUtils {
         .append(blog.getEntryId())
         .toString();
     ALActivityService.create(new ALActivityPutRequest()
-      .withAppId("blog")
+      .withAppId("Blog")
       .withLoginName(loginName)
       .withUserId(blog.getOwnerId())
       .withPortletParams(portletParams)
