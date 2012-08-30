@@ -21,6 +21,112 @@ dojo.provide("aipo.todo");
 
 dojo.require("aipo.widget.DropdownDatepicker");
 
+aipo.todo.toggleMenu=function (node,filters,event){
+	var rect=filters.getBoundingClientRect();
+	var html=document.documentElement.getBoundingClientRect();
+	if (node.style.display == "none") {
+        dojo.query("div.menubar").style("display", "none");
+
+        var scroll={
+        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
+        	top:document.documentElement.scrollTop||document.body.scrollTop
+        };
+        node.style.opacity="0";
+        node.style.display="block";
+        if(html.right-node.clientWidth>rect.left){
+       		node.style.left=rect.left+scroll.left+"px";
+        }else{
+        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
+        }
+         if(html.bottom-node.clientHeight>rect.bottom){
+       		node.style.top=rect.bottom+scroll.top+"px";
+        }else{
+        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
+        }
+        node.style.opacity="";
+    } else {
+        dojo.query("div.menubar").style("display", "none");
+    }
+};
+
+/**
+ * 検索バーの幅を調節する。
+ * @param portlet_id
+ */
+aipo.todo.initFilterSearch=function(portlet_id){
+	var q=dojo.byId("q"+portlet_id);
+	var filters=dojo.byId('filters_'+portlet_id);
+	if(filters && q){
+		q.style.paddingLeft=filters.offsetWidth+"px";
+	}
+};
+
+
+/**
+ * urlを整形して送信。
+ */
+aipo.todo.filteredSearch=function(portlet_id){
+	//filtertype
+
+	var baseuri=dojo.byId("baseuri_"+portlet_id).value;
+
+	var types=[];
+	var params=[];
+	dojo.query("ul.filtertype_"+portlet_id,dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
+			//console.info(ul);
+			var type=ul.getAttribute("data-type");
+			types.push(type);
+
+			var activeli=dojo.query("li.selected",ul)[0];
+			if(activeli){
+				var param=activeli.getAttribute("data-param");
+				params.push(param);
+			}else{
+				params.push(ul.getAttribute("data-defaultparam"));
+			}
+		}
+	);
+	var q=dojo.byId("q"+portlet_id);
+	var search =q?encodeURIComponent(q.value):"";
+	baseuri+="&filter="+params.join(",");
+	baseuri+="&filtertype="+types.join(",");
+	baseuri+="&keyword="+search;
+	aipo.viewPage(baseuri,portlet_id);
+};
+
+/**
+ * 指定したフィルタにデフォルト値を設定する。(または消す)
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.todo.filterSetDefault=function(portlet_id,type){
+	var ul=dojo.query("ul.filtertype[data-type="+type+"]",dojo.byId("searchForm_"+portlet_id))[0];
+	var defval=ul.getAttribute("data-defaultparam");
+	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
+	aipo.todo.filterSelect(ul,defaultli);
+	aipo.todo.filteredSearch(portlet_id);
+};
+
+aipo.todo.filterSelect=function(ul,li){
+	dojo.query("li",ul).removeClass("selected");
+	dojo.query(li).addClass("selected");
+};
+/**
+ * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.todo.filterClick=function(portlet_id,thisnode,event){
+	var li=thisnode.parentNode;
+	var ul=li.parentNode;
+	var param=li.getAttribute("data-param");//liのdata-param
+	aipo.todo.filterSelect(ul,li);
+	aipo.todo.filteredSearch(portlet_id);
+};
+
+
 aipo.todo.onLoadTodoDialog = function(portlet_id){
   var url_userlist = dojo.byId('urlUserlist'+portlet_id).value;
   var login_user_id = dojo.byId('loginUser'+portlet_id).value;

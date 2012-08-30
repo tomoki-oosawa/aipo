@@ -28,6 +28,8 @@ import java.util.List;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.portal.PortletConfig;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -827,5 +829,27 @@ public class ToDoUtils {
     writer.flush();
     String ret = writer.getBuffer().toString();
     return ret;
+  }
+
+  /**
+   * 
+   * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
+   * 
+   * 
+   * @param rundata
+   * @param context
+   * @param config
+   * @return
+   */
+  public static String passPSML(RunData rundata, Context context, String key,
+      String value) {
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    PortletConfig config = portlet.getPortletConfig();
+    if (value == null || "".equals(value)) {
+      value = config != null ? config.getInitParameter(key) : "";
+    } else {
+      ALEipUtils.setPsmlParameters(rundata, context, key, value);
+    }
+    return value;
   }
 }

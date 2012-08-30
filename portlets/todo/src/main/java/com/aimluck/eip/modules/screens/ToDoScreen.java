@@ -22,6 +22,7 @@ package com.aimluck.eip.modules.screens;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -57,12 +58,19 @@ public class ToDoScreen extends ALVelocityScreen {
       if ("update".equals(mode)) {
         updateState(rundata, context, portlet);
       }
+      ParameterParser parser = rundata.getParameters();
+
+      ToDoUtils.passPSML(rundata, context, "p12f-filters", parser
+        .getString(ALEipConstants.LIST_FILTER));
+      ToDoUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+        .getString(ALEipConstants.LIST_FILTER_TYPE));
 
       // 選択しているタブ情報の削除
       ALEipUtils.removeTemp(rundata, context, "tab");
 
       ToDoSelectData listData = new ToDoSelectData();
       listData.initField();
+      listData.loadCategoryList(rundata);
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1a-rows")));
@@ -70,7 +78,6 @@ public class ToDoScreen extends ALVelocityScreen {
         .getPortletConfig()
         .getInitParameter("p0e-rows")));
       listData.setStrLength(0);
-      listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-todo.vm";

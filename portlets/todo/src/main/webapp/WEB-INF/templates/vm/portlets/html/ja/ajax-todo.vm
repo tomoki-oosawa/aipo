@@ -17,20 +17,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-<div class="auiSummaryMeta clearfix" style="#if($result.List.size() == 0 && $result.TableColumNum != 4);display:none#end">
-<div class="floatLeft w30">
-<form class="auiForm">
-#ALselectpdheader("target_category" "100%#if($result.TableColumNum != 4);display:none#end" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter","").addQueryData("filtertype","category"))">$l10n.TODO_ALL_CATEGORY</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-</select>
-</form>
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen")' />
+	<div class="filters" id="filters_$!{portlet.ID}">
+		 #if(!$!result.issetFilter("post"))
+			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_GLOUP</span></a>
+		   #else 
+		 	 #set($break=false)
+		 	 #foreach($record in $result.postList)
+		 		 #if(!$break)
+				 #if($!result.issetFilter("post",$!{record.Name}))
+					 #<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
+		 			 #set($break=true)
+		 		 #end
+		 	 #end#end
+
+		 	 #foreach($record in $result.PostMap)#if(!$break)
+			 	 #if($!result.issetFilter("post",$!{record.GroupName}))
+				<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>
+		 			#set($break=true)
+		 		#end
+		 	 #end#end
+		  #end
+		  #if(!$!result.issetFilter("category"))
+			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_CATEGORY</span></a>
+		  #else 
+		 	 #set($break=false)
+		 	 #foreach($record in $result.CategoryList)#if(!$break)
+		 		 #if ($!result.issetFilter("category",$!{record.CategoryId}))
+					 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></a>
+		 			 #set($break=true)
+		 		 #end
+		 	 #end#end
+		#end
+	 </div>
 </div>
-#if ($result.List.size() != 0)
-#AUIajaxpageview('ToDoScreen' $result)
-#end
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+		<p class="caption">$l10n.TODO_GLOUP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)'>$l10n.TODO_ALL_GLOUP</a></li>
+
+			#foreach($record in $result.postList)
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">$l10n.TODO_CATEGORY</p>
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
+			<li #if (!$!result.issetFilter("category")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("category")) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)'>$l10n.TODO_ALL_CATEGORY</a></li>
+			#foreach( $record in $result.CategoryList )
+			<li #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end  data-param="$!{record.CategoryId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)'>$!record.CategoryName</a></li>
+			#end
+		</ul>
+	</div>
 </div>
 
 #if ($result.List.size() == 0)
@@ -59,6 +103,11 @@
 #end
 </tbody>
 </table>
+<div class="auiSummaryMeta auiFilter clearfix">
+#if($result.List.size() != 0)
+#AUIajaxpageview('ToDoScreen' $result)
+#end
+</div>
 #ALformfooter()
 #else
 #ALformheader('ToDo' $jslink $portlet)
@@ -80,5 +129,10 @@
 </tbody>
 </table>
 #ALformfooter()
+<div class="auiSummaryMeta auiFilter clearfix">
+#if($result.List.size() != 0)
+#AUIajaxpageview('ToDoScreen' $result)
+#end
+</div>
 #end
 #end

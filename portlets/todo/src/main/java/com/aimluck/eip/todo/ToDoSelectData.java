@@ -20,12 +20,16 @@
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -40,7 +44,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -64,8 +68,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * ToDo検索データを管理するクラスです。 <BR>
  * 
  */
-public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
-    implements ALData {
+public class ToDoSelectData extends
+    ALAbstractMultiFilterSelectData<EipTTodo, EipTTodo> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -77,6 +81,9 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   /** カテゴリ一覧 */
   private List<ToDoCategoryResultData> categoryList;
 
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
+
   /** ToDo の総数 */
   private int todoSum;
 
@@ -87,8 +94,6 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
 
   private String target_user_id;
 
-  private ALStringField target_keyword;
-
   private List<ALEipGroup> myGroupList;
 
   private int login_user_id;
@@ -98,6 +103,15 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   private boolean hasAclDeleteTodoOther;
 
   private int table_colum_num;
+
+  /** カテゴリの初期値を取得する */
+  private String filterType = "";
+
+  /** カテゴリ　ID */
+  private String categoryId = "";
+
+  /** ターゲット　 */
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -110,6 +124,18 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+
+    String filter =
+      ALEipUtils.getTemp(
+        rundata,
+        context,
+        "com.aimluck.eip.todo.ToDoSelectDatafilter");
+    String filtertype =
+      ALEipUtils.getTemp(
+        rundata,
+        context,
+        "com.aimluck.eip.todo.ToDoSelectDatafiltertype");
+
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(
@@ -154,8 +180,30 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
         login_user_id,
         ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
         ALAccessControlConstants.VALUE_ACL_DELETE);
+
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
+    // カテゴリの初期値を取得する
+    try {
+      filterType = rundata.getParameters().getString("filtertype", "");
+      if (filterType.equals("category")) {
+        String categoryId = rundata.getParameters().getString("filter", "");
+        if (!categoryId.equals("")) {
+          this.categoryId = categoryId;
+        } else {
+          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+          this.categoryId =
+            portlet.getPortletConfig().getInitParameter("p3a-category");
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("Exception", ex);
+    }
+
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
+
   }
 
   /**
@@ -180,6 +228,7 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     try {
       if (ToDoUtils.hasResetFlag(rundata, context)) {
         ToDoUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
       }
       if (ToDoUtils.hasResetKeywordFlag(rundata, context)) {
         ToDoUtils.resetKeyword(rundata, context, this.getClass().getName());
@@ -198,10 +247,10 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
 
-      ResultList<EipTTodo> resultList = query.getResultList();
-      setPageParam(resultList.getTotalCount());
-      todoSum = resultList.getTotalCount();
-      return resultList;
+      ResultList<EipTTodo> list = query.getResultList();
+      setPageParam(list.getTotalCount());
+      todoSum = list.getTotalCount();
+      return list;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
@@ -282,6 +331,84 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     }
 
     return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  // :TODO
+  @Override
+  protected SelectQuery<EipTTodo> buildSelectQueryForFilter(
+      SelectQuery<EipTTodo> query, RunData rundata, Context context) {
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+    }
+
+    // String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+    // if (search != null && !"".equals(search)) {
+    // current_search = search;
+    // Expression ex1 =
+    // ExpressionFactory.likeExp(EipTTodo.NOTE_PROPERTY, "%" + search + "%");
+    // Expression ex2 =
+    // ExpressionFactory.likeExp(EipTTodo.TODO_NAME_PROPERTY, "%"
+    // + search
+    // + "%");
+    // SelectQuery<EipTTodo> q = Database.query(EipTTodo.class);
+    // q.andQualifier(ex1.orExp(ex2));
+    // List<EipTTodo> queryList = q.fetchList();
+    // List<Integer> resultid = new ArrayList<Integer>();
+    // for (EipTTodo item : queryList) {
+    // if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
+    // resultid.add(item.getParentId());
+    // } else if (!resultid.contains(item.getTodoId())) {
+    // resultid.add(item.getTodoId());
+    // }
+    // }
+    // if (resultid.size() == 0) {
+    // // 検索結果がないことを示すために-1を代入
+    // resultid.add(-1);
+    // }
+    // Expression ex =
+    // ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, resultid);
+    // query.andQualifier(ex);
+    // }
+    return query;
   }
 
   /**
@@ -506,19 +633,15 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
     return target_group_name;
   }
 
+  public void setTargetGroupName(String target_group_name) {
+    this.target_group_name = target_group_name;
+  }
+
   /**
    * @return target_user_id
    */
   public String getTargetUserId() {
     return target_user_id;
-  }
-
-  /**
-   * 
-   * @return
-   */
-  public Map<Integer, ALEipPost> getPostMap() {
-    return ALEipManager.getInstance().getPostMap();
   }
 
   /**
@@ -583,5 +706,38 @@ public class ToDoSelectData extends ALAbstractSelectData<EipTTodo, EipTTodo>
    */
   public void setTableColumNum(int table_colum_num) {
     this.table_colum_num = table_colum_num;
+  }
+
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   * 部署の一覧を取得する．
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12g-filtertypes"));
+  }
+
+  public String getCategoryId() {
+    return categoryId;
   }
 }

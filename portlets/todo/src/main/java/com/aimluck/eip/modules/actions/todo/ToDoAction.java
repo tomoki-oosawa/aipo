@@ -93,8 +93,7 @@ public class ToDoAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p0e-rows")));
 
-    // デフォルトカテゴリ設定の適用
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+    listData.setFiltersPSML(portlet, context, rundata);
 
     if (listData.getTableColumNum() == 4) {
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
@@ -114,6 +113,13 @@ public class ToDoAction extends ALBaseAction {
       ALEipConstants.LIST_SORT_TYPE_DESC);
 
     /*
+     * ALEipUtils.setTemp( rundata, context, LIST_SORT_STR,
+     * EipTTodo.UPDATE_DATE_PROPERTY);
+     * 
+     * ALEipUtils.setTemp( rundata, context, LIST_SORT_TYPE_STR,
+     * ALEipConstants.LIST_SORT_TYPE_DESC);
+     */
+    /*
      * ToDoSelectData listData = new ToDoSelectData(); listData.initField();
      * listData.setRowsNum(Integer.parseInt(portlet .getPortletConfig()
      * .getInitParameter("p1a-rows")));
@@ -124,6 +130,7 @@ public class ToDoAction extends ALBaseAction {
     listData.loadCategoryList(rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "todo");
+
   }
 
   /**
