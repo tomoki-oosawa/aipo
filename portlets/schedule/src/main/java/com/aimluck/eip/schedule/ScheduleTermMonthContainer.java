@@ -56,10 +56,10 @@ public class ScheduleTermMonthContainer implements ALData {
     viewStartCal = Calendar.getInstance();
     viewStartCal.setTime(cal.getTime());
     for (int i = 1; i <= 6; i++) {
-      if ((i == 5 || i == 6)
-        && (cal.get(Calendar.MONTH) != vcal.get(Calendar.MONTH))) {
-        break;
-      }
+      // if ((i == 5 || i == 6)
+      // && (cal.get(Calendar.MONTH) != vcal.get(Calendar.MONTH))) {
+      // break;
+      // }
       weekList = new ArrayList<ScheduleTermWeekContainer>();
       map.put(Integer.valueOf(i - 1), weekList);
       // 一週間ずらす
