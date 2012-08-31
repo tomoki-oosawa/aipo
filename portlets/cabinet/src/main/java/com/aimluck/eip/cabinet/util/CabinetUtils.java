@@ -70,6 +70,8 @@ public class CabinetUtils {
   /** セッションの識別子 */
   public static final String KEY_FOLDER_ID = "folder_id";
 
+  public static final String KEY_POST_NAME = "post_name";
+
   /** 共有ファイルを保管するディレクトリのカテゴリキーの指定 */
   public static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.cabinet.categorykey",

@@ -21,7 +21,9 @@ package com.aimluck.eip.cabinet;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -39,6 +41,9 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -85,6 +90,13 @@ public class CabinetSelectData extends
   public void setIsNormalContext(boolean flg) {
     isNormalContext = flg;
   }
+
+  /** 部署一覧 */
+  private List<ALEipGroup> myGroupList;
+
+  private String post_name;
+
+  private String post_alias_name;
 
   private ALStringField target_keyword;
 
@@ -197,6 +209,35 @@ public class CabinetSelectData extends
       }
     }
 
+    List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
+    myGroupList = new ArrayList<ALEipGroup>();
+    int length = myGroups.size();
+    for (int i = 0; i < length; i++) {
+      myGroupList.add(myGroups.get(i));
+    }
+
+    if (rundata.getParameters().containsKey(CabinetUtils.KEY_POST_NAME)) {
+      String tmppid =
+        rundata.getParameters().getString(CabinetUtils.KEY_POST_NAME);
+      post_name = tmppid;
+      ALEipUtils.setPsmlParameters(rundata, context, "p3b-post", post_name);
+    } else {
+      try {
+        post_name =
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3b-post");
+      } catch (Exception e) {
+        post_name = "";
+      }
+    }
+    if (post_name == null) {
+      post_name = "";
+    }
+
+    updatePostNames();
+
     folder_hierarchy_list = CabinetUtils.getFolderList();
     if (folder_hierarchy_list != null && folder_hierarchy_list.size() > 0) {
       int size = folder_hierarchy_list.size();
@@ -257,9 +298,16 @@ public class CabinetSelectData extends
           LIST_SORT_TYPE_STR,
           ALEipConstants.LIST_SORT_TYPE_DESC);
       }
+
       buildSelectQueryForListViewSort(query, rundata, context);
 
       ResultList<EipTCabinetFile> list = query.getResultList();
+
+      /*
+       * if (post_id > 0) { for (int i = list.size() - 1; i >= 0; i--) { int
+       * creator = list.get(i).getCreateUserId(); if (!isMemberOfGroup(creator,
+       * post_id)) { list.remove(i); } } }
+       */
 
       // ファイル総数をセットする．
       if (list == null) {
@@ -289,7 +337,6 @@ public class CabinetSelectData extends
         ExpressionFactory.matchDbExp(
           EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
           Integer.valueOf(selected_folderinfo.getFolderId()));
-
       query.setQualifier(exp);
     } else {
       // アクセス制御
@@ -298,7 +345,6 @@ public class CabinetSelectData extends
           EipTCabinetFile.FOLDER_ID_PROPERTY,
           CabinetUtils.getAuthorizedVisibleFolderIds(rundata));
       query.andQualifier(exp);
-
     }
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       // 選択したキーワードを指定する．
@@ -310,6 +356,17 @@ public class CabinetSelectData extends
       Expression target_exp3 =
         ExpressionFactory.likeExp(EipTCabinetFile.NOTE_PROPERTY, keyword);
       query.andQualifier(target_exp1.orExp(target_exp2.orExp(target_exp3)));
+    }
+
+    if (!(post_name.equals("") || post_name.equals("0"))) {
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      List<Integer> userId = ALEipUtils.getUserIds(post_name);
+      userIds.addAll(userId);
+      Expression exp =
+        ExpressionFactory.inExp(
+          EipTCabinetFile.CREATE_USER_ID_PROPERTY,
+          userIds);
+      query.andQualifier(exp);
     }
 
     query.distinct(true);
@@ -505,5 +562,51 @@ public class CabinetSelectData extends
 
   public boolean isFileUploadable() {
     return isFileUploadable;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public List<ALEipGroup> getMyGroupList() {
+    return myGroupList;
+  }
+
+  public void updatePostNames() {
+    post_alias_name = "";
+    if (post_name.equals("") || post_name.equals("0")) {
+      post_alias_name = ALLocalizationUtils.getl10n("CABINET_ALL_GROUP");
+      return;
+    } else {
+      List<ALEipGroup> mgl = myGroupList;
+      for (java.util.Iterator<ALEipGroup> i = mgl.iterator(); i.hasNext();) {
+        ALEipGroup n = i.next();
+        if (n.getName().toString().equals(post_name)) {
+          post_alias_name = n.getAliasName().toString();
+          return;
+        }
+      }
+      Map<Integer, ALEipPost> pm = getPostMap();
+      for (java.util.Iterator<ALEipPost> i = pm.values().iterator(); i
+        .hasNext();) {
+        ALEipPost n = i.next();
+        if (n.getGroupName().toString().equals(post_name)) {
+          post_alias_name = n.getPostName().toString();
+          return;
+        }
+      }
+    }
+  }
+
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public String getSelectedPostAliasName() {
+    return post_alias_name;
+  }
+
+  public String getSelectedPostName() {
+    return post_name;
   }
 }
