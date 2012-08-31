@@ -27,7 +27,7 @@
 		 	 #foreach($record in $result.postList)
 		 		 #if(!$break)
 				 #if($!result.issetFilter("post",$!{record.Name}))
-					 #<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
+					 <a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
 		 			 #set($break=true)
 		 		 #end
 		 	 #end#end
@@ -54,7 +54,7 @@
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
-		<p class="caption">$l10n.TODO_GLOUP</p>
+		<p class="caption">$l10n.COMMON_GROUP</p>
 		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
 			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.todo.filterClick("$!portlet.ID",this,event)'>$l10n.TODO_ALL_GLOUP</a></li>
 
