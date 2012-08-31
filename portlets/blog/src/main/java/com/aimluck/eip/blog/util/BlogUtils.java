@@ -842,17 +842,16 @@ public class BlogUtils {
     return true;
   }
 
-  public static void createNewBlogActivity(EipTBlogEntry blog, String loginName) {
+  public static void createNewBlogActivity(EipTBlogEntry blog,
+      String loginName, boolean isNew) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Blog", blog.getEntryId(), 0f);
     boolean isDeletePrev =
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
     String title =
-      new StringBuilder("ブログ「")
-        .append(blog.getTitle())
-        .append("」を書きました。")
-        .toString();
+      new StringBuilder("ブログ「").append(blog.getTitle()).append(
+        isNew ? "」を書きました。" : "」を編集しました。").toString();
     String portletParams =
       new StringBuilder("?template=BlogDetailScreen")
         .append("&entityid=")

@@ -422,7 +422,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
         // アクティビティ
         String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
-        BlogUtils.createNewBlogActivity(entry, loginName);
+        BlogUtils.createNewBlogActivity(entry, loginName, true);
       }
     } catch (Exception ex) {
       Database.rollback();
@@ -617,6 +617,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
         insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
         Database.commit();
+
+        // アクティビティ
+        String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
+        BlogUtils.createNewBlogActivity(entry, loginName, false);
 
         // イベントログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
