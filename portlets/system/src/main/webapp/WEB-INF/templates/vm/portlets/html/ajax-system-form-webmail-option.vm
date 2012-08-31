@@ -60,6 +60,15 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_workflow" type="checkbox" value="1" id="cell_flg_workflow_id" #if ($result.CellFlgWorkflow.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_workflow_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
+
+#ALtdcaption($l10n.SYSTEM_ADD_REPORT_OTHERS)
+#ALtditemheader()
+<input name="pc_flg_report" type="checkbox" value="1" id="pc_flg_report_id" #if ($result.PcFlgReport.toString() == "1") checked="checked" #end/>
+<label for="pc_flg_report_id">$l10n.SYSTEM_INFORM_PC</label>
+<input name="cell_flg_report" type="checkbox" value="1" id="cell_flg_report_id" #if ($result.CellFlgReport.toString() == "1") checked="checked" #end/>
+<label for="cell_flg_report_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
+#ALtditemfooter()
+
 #*
 #ALtdcaption($l10n.SYSTEM_INFORM_TIME)
 #ALtditemheader()

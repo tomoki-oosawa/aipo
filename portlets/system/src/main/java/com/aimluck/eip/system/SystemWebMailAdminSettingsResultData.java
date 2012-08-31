@@ -43,6 +43,9 @@ public class SystemWebMailAdminSettingsResultData implements ALData {
   /** メール送信時のメッセージ種別(掲示板返信) */
   private ALNumberField msg_type_msgboard;
 
+  /** メール送信時のメッセージ種別(報告書) */
+  private ALNumberField msg_type_report;
+
   /** メール通知時間 */
   private ALStringField msg_inform_time_hour;
 
@@ -55,6 +58,7 @@ public class SystemWebMailAdminSettingsResultData implements ALData {
     msg_type_blog = new ALNumberField();
     msg_type_workflow = new ALNumberField();
     msg_type_msgboard = new ALNumberField();
+    msg_type_report = new ALNumberField();
     msg_inform_time_hour = new ALStringField();
     msg_inform_time_minute = new ALStringField();
   }
@@ -96,12 +100,21 @@ public class SystemWebMailAdminSettingsResultData implements ALData {
   }
 
   /**
-   * メール送信時のメッセージ種別掲示板返信)
+   * メール送信時のメッセージ種別(掲示板返信)
    * 
    * @return
    */
   public ALNumberField getMsgTypeMsgboard() {
     return msg_type_msgboard;
+  }
+
+  /**
+   * メール送信時のメッセージ種別(報告書)
+   * 
+   * @return
+   */
+  public ALNumberField getMsgTypeReport() {
+    return msg_type_report;
   }
 
   /**
@@ -157,6 +170,14 @@ public class SystemWebMailAdminSettingsResultData implements ALData {
    */
   public void setMsgTypeMsgboard(int i) {
     msg_type_msgboard.setValue(i);
+  }
+
+  /**
+   * メール送信時のメッセージ種別(報告書)
+   * 
+   */
+  public void setMsgTypeReport(int i) {
+    msg_type_report.setValue(i);
   }
 
   /**
