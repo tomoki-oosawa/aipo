@@ -1782,6 +1782,13 @@ div.scheduleDivAdd {
 	height:864px;
 	background-color:#ddd;
 }
+div.scheduleDivRightLine {
+	width: 1px;
+	float: right;
+	border-right-width: 1px;
+	border-right-style: solid;
+	height: 100%;
+}
 div.scheduleDivTgt {
 	position:absolute;
 	top:0;

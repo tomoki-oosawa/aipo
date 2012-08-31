@@ -467,7 +467,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 if(item.tmpreserve) {
                     name += '<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" alt="仮スケジュール" title="仮スケジュール" align="top" class="icon" />';
                 }
-                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%; z-index: 0; visibility: hidden;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
+                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
                 count++;
             });
             html += "<div id=\"dummy_div_" +  _portletId + "\" class=\"scheduleDivAdd dummy_div\" style=\" position:absolute; width: 0px; height : 0px; left: 0px; top: -10000px; Filter: Alpha(Opacity=10);opacity:.10; background-color:#FFFFFF; \">&nbsp;</div>"
@@ -860,21 +860,11 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
         	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
 
         	        if(left + width > 100){
-        	        	width = 100;
+        	        	width = 100 - left;
+        	        	if(width < 0)
+        	        		width  = 0;
         	        }
-
-        	        // GoogleChromeでは予定の右端の縦線が消えないように、幅を切り捨て整数化しておく。
-        	        var userAgent = window.navigator.userAgent.toLowerCase();
-        	        if(userAgent.indexOf("chrome") > -1){
-            	        if(left + width > 100){
-            	        	width = 100 - left;
-            	        }
-    	                dojo.style(scheduleDiv[i], "width", Math.floor(width) + "%");
-        	        }
-        	        else{
-    	                dojo.style(scheduleDiv[i], "width", width + "%");
-
-        	        }
+    	            dojo.style(scheduleDiv[i], "width", width + "%");
         	        dojo.style(scheduleDiv[i], "left", left + "%");
         	        dojo.style(scheduleDiv[i], "visibility", "visible" );
 
