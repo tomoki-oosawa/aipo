@@ -90,6 +90,9 @@ public class WebMailSelectData extends
 
   private String orgId;
 
+  /** メール受信スレッドの状態 */
+  private String mailReceiveThreadStatus;
+
   /** 受信トレイと送信トレイ */
   private ALFolder folder;
 
@@ -122,6 +125,11 @@ public class WebMailSelectData extends
     orgId = Database.getDomainName();
     userId = ALEipUtils.getUserId(rundata);
     user = (JetspeedUser) ((JetspeedRunData) rundata).getUser();
+
+    // メール受信スレッドの状態を取得
+    mailReceiveThreadStatus =
+      ALEipUtils.getTemp(rundata, context, "start_recieve");
+    ALEipUtils.removeTemp(rundata, context, "start_recieve");
 
     String tabParam = rundata.getParameters().getString("tab");
     currentTab = ALEipUtils.getTemp(rundata, context, "tab");
@@ -590,6 +598,9 @@ public class WebMailSelectData extends
   }
 
   public String getStatStr() {
-    return ALPop3MailReceiveThread.getReceiveMailResultStr(user, accountId);
+    return ALPop3MailReceiveThread.getReceiveMailResultStr(
+      user,
+      accountId,
+      mailReceiveThreadStatus);
   }
 }

@@ -52,6 +52,8 @@ public class WebMailListScreen extends ALVelocityScreen {
 
       if ("recieve".equals(mode)) {
         // メニューからメール受信をクリックしてきた場合
+        // メール受信開始状態にする
+        ALEipUtils.setTemp(rundata, context, "start_recieve", "1");
         WebMailUtils.receiveMailsThread(rundata, context);
       }
       // if ("stoprecieving".equals(mode)) {

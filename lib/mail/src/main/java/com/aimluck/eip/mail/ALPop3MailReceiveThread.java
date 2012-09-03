@@ -270,11 +270,16 @@ public class ALPop3MailReceiveThread implements Runnable {
    * @param user
    * @return
    */
-  public static boolean isReceiving(User user, int mailAccountId) {
+  public static boolean isReceiving(User user, int mailAccountId,
+      String mailReceiveThreadStatus) {
     Object objRS =
       ALStaticObject.getInstance().getAccountStat(
         mailAccountId,
         KEY_RECEIVE_STAT);
+    // メール受信を開始しているかどうかをチェック
+    if ("1".equals(mailReceiveThreadStatus)) {
+      return true;
+    }
     if (objRS == null || (Integer) objRS != PROCESS_STAT_PROCESSING) {
       return false;
     }
@@ -299,10 +304,11 @@ public class ALPop3MailReceiveThread implements Runnable {
     return ((Integer) obj).intValue();
   }
 
-  public static String getReceiveMailResultStr(User user, int mailAccountId) {
+  public static String getReceiveMailResultStr(User user, int mailAccountId,
+      String mailReceiveThreadStatus) {
     String msg = null;
 
-    if (isReceiving(user, mailAccountId)) {
+    if (isReceiving(user, mailAccountId, mailReceiveThreadStatus)) {
       StringBuffer sb = new StringBuffer();
 
       Object objRMAN =
