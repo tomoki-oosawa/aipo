@@ -32,8 +32,8 @@
 </div>
 <div class="menubar multi" id="menubar_filter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
+    <p class="caption">$l10n.CABINET_FOLDER</p>
 		<ul class="filtertype_folder_$!portlet.ID" data-type="post" data-defaultparam="0">
-			<p class="caption">$l10n.CABINET_FOLDER</p>
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id","0")))
 			<li data-param="0" ><a href="javascript:void(0)" #if(!$!result.SelectedFolderInfo || $!result.SelectedFolderInfo.FolderId.longValue()==0) class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','0')" >$l10n.CABINET_ALL_FOLDER</a></li>
 			#foreach($record in $!result.FolderHierarchyList)
@@ -51,8 +51,8 @@
 		</ul>
 	</div>
 	<div>
+    <p class="caption">$l10n.CABINET_GROUP</p>
 		<ul class="filtertype_group_$!portlet.ID"data-type="post" data-defaultparam="0">
-			<p class="caption">$l10n.CABINET_GROUP</p>
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("post_name","0")))
 			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
 
