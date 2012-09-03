@@ -301,7 +301,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   	      #end
   	    #else
   	      #if($comebacks != "") ##一番最初以外は改行が必要
-  	        #set($comebacks = "$comebacks<br>");
+  	        #set($comebacks = "$comebacks<br>")
       	  #end
 		  #set($comebacks = "$comebacks<input type=${q}button${q} value=${q}$l10n.EXTTIMECARD_COMEBACK${q} class=${q}auiButtonBold${q} onclick=${q}aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'comeback');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'outgoing', '$l10n.EXTTIMECARD_COMEBACK');dojo.byId('form$!portlet.ID').onsubmit();${q}>")
   	    #end
