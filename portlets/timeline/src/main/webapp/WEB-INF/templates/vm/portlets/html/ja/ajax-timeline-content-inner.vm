@@ -183,7 +183,7 @@
 </div>
 #end
 #foreach ($record2 in $record.CoActivityList)
-<div class="messageContents text_exposed_show #if($velocityCount>=2) ellipsis#end">
+<div class="messageContents text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end">
 	#if($velocityCount==1)
 	<div class="name">$!record.OwnerName</div>
 	#end
@@ -218,7 +218,7 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2) ellipsis#end mb0">
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end mb0">
 <div id="like_$!{record2.TimelineId}" class="commentCaption"#if($record2.LikeCount <= 0) style="display:none" #end>
 		<span class="iconLike"></span>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCountText}
