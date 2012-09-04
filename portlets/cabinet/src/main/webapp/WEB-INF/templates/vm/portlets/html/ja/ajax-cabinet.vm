@@ -26,7 +26,7 @@
 	#else
 	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>
 	#end
-	#if($!result.SelectedFolderInfo.FolderId && "$!result.SelectedFolderInfo.FolderId" != "0")
+	#if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")
 	<a href="javascript:void(0);" id="filter_folder_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedFolderInfo.FolderName</span></a>
 	#end
 </div>
@@ -52,7 +52,7 @@
     <p class="caption">$l10n.CABINET_FOLDER</p>
 		<ul class="filtertype_folder_$!portlet.ID" data-type="post" data-defaultparam="0">
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id","0")))
-			<li data-param="0" ><a href="javascript:void(0)" #if(!$!result.SelectedFolderInfo || $!result.SelectedFolderInfo.FolderId.longValue()==0) class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','0')" >$l10n.CABINET_ALL_FOLDER</a></li>
+			<li data-param="0" ><a href="javascript:void(0)" #if(!$!result.SelectedFolderInfo || "$!result.SelectedFolderInfo.FolderId"=="0") class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','0')" >$l10n.CABINET_ALL_FOLDER</a></li>
 			#foreach($record in $!result.FolderHierarchyList)
 			#if($record.isAuthorizedVisible())
 			#set($space = '')
@@ -62,7 +62,7 @@
 			#end
 			#end
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",$!record.FolderId)))
-			<li data-param="$!record.FolderId"><a href="javascript:void(0)" #if($!result.SelectedFolderInfo.FolderId==$!record.FolderId) class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','$!record.FolderId')" >${space}${record.FolderName}</a></li>
+			<li data-param="$!record.FolderId"><a href="javascript:void(0)" #if("$!result.SelectedFolderInfo.FolderId"=="$!record.FolderId") class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','$!record.FolderId')" >${space}${record.FolderName}</a></li>
 			#end
 			#end
 		</ul>
