@@ -120,6 +120,15 @@ public class MsgboardTopicSelectData extends
   /** ターゲット　 */
   private ALStringField target_keyword;
 
+  /** グループID */
+  private String postId = "";
+
+  /** カテゴリ名 */
+  private String categoryName = "";
+
+  /** グループ名 */
+  private String postName = "";
+
   /**
    * 
    * @param action
@@ -187,6 +196,7 @@ public class MsgboardTopicSelectData extends
             portlet.getPortletConfig().getInitParameter("p3a-category");
         }
       }
+      updateCategoryName();
     } catch (Exception ex) {
       logger.error("Exception", ex);
     }
@@ -339,6 +349,13 @@ public class MsgboardTopicSelectData extends
 
     super.buildSelectQueryForFilter(query, rundata, context);
 
+    if (current_filterMap.containsKey("category")) {
+      // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
+      List<String> categoryIds = current_filterMap.get("category");
+      categoryId = categoryIds.get(0).toString();
+      updateCategoryName();
+    }
+
     if (current_filterMap.containsKey("post")) {
       // 部署を含んでいる場合デフォルトとは別にフィルタを用意
 
@@ -355,6 +372,9 @@ public class MsgboardTopicSelectData extends
       Expression exp =
         ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, userIds);
       query.andQualifier(exp);
+
+      postId = postIds.get(0).toString();
+      updatePostName();
     }
 
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
@@ -820,5 +840,47 @@ public class MsgboardTopicSelectData extends
 
   public String getCategoryId() {
     return categoryId;
+  }
+
+  public String getPostId() {
+    return postId;
+  }
+
+  private void updateCategoryName() {
+    categoryName = "";
+    for (int i = 0; i < categoryList.size(); i++) {
+      String cid = categoryList.get(i).getCategoryId().toString();
+      if (cid.equals(categoryId.toString())) {
+        categoryName = categoryList.get(i).getCategoryName().toString();
+        return;
+      }
+    }
+  }
+
+  public String getCategoryName() {
+    return categoryName;
+  }
+
+  private void updatePostName() {
+    postName = "";
+    for (int i = 0; i < postList.size(); i++) {
+      String pid = postList.get(i).getName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = postList.get(i).getAliasName().toString();
+        return;
+      }
+    }
+    Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+    for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+      String pid = item.getValue().getGroupName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = item.getValue().getPostName().toString();
+        return;
+      }
+    }
+  }
+
+  public String getPostName() {
+    return postName;
   }
 }

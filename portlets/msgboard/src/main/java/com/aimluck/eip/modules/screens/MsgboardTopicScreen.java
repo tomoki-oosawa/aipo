@@ -68,6 +68,8 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
         updateState(rundata, context, portlet);
       }
 
+      context.put("ajax_onloadimage", "true");
+
       ParameterParser parser = rundata.getParameters();
 
       MsgboardUtils.passPSML(rundata, context, "p12f-filters", parser

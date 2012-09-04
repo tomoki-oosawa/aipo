@@ -30,12 +30,36 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+<div class="auiSummaryMeta auiFilter clearfix">
+<form class="auiSearch floatLeft" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+
+<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen")' />
+<div class="filterInputField">
 <input type="hidden" name="template" value="MsgboardTopicListScreen"/>
-<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+
+<div class="filters" id="filters_$!portlet.ID">#*
+*##if("$!result.PostName"!="")#*
+	*#<span class="filterTip">#*
+		*#<span>$!result.PostName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.msgboard.filterSetDefault("$!portlet.ID","post");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*##if("$!result.CategoryName"!="")#*
+	*#<span class="filterTip">#*
+		*#<span>$!result.CategoryName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.msgboard.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*#</div>
+
+<a href="javascript:void(0);" class="btn menubarOpenButton filterDropDrawer" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);" title="フィルタ">
+	<span><i class="auiIcon auiIconArwBottom"></i></span>
+</a>
+<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onFocus='aipo.msgboard.initFilterSearch("$!portlet.ID");'/>
+</div>
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.MSGBOARD_SEARCH</a>
 </form>
+
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
@@ -79,6 +103,33 @@ $!record.CategoryName
 #AUIajaxpageview('MsgboardTopicListScreen' $result)
 </div>
 #end
+
+<div class="menubar multi " id="menubar_filter_$!portlet.ID" style="width: 260px; display: none;">
+	<div>
+		<p class="caption">グループ</p>
+		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
+			<li data-param="0" #if("$!result.postId"==""||"$!result.postId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"==""||"$!result.postId"=="0") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>すべてのグループ</a></li>
+		#foreach($record in $result.postList)
+		 	<li data-param="$!record.Name" #if("$!result.postId"=="$!record.Name") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"=="$!record.Name") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
+		#end
+		#foreach($record in $result.PostMap)
+		 	<li data-param="$!record.GroupName" #if("$!result.postId"=="$!record.GroupName") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"=="$!record.GroupName") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!{record.PostName}</a></li>
+		#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">カテゴリ</p>
+		<ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="0">
+			<li data-param="0" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>すべてのカテゴリ</a></li>
+		#foreach($record in $result.CategoryList)
+		 	<li data-param="$!record.CategoryId" #if("$!result.CategoryId"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"=="$!record.CategoryId") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
+		#end
+		</ul>
+	</div>
+</div>
+
+<img src="images/common/dot.gif" width="1" height="1" onload='document.getElementById("q$!{portlet.ID}").style.paddingLeft=document.getElementById("filters_$!{portlet.ID}").offsetWidth+"px";' />
+
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <!-- END Contents Area -->

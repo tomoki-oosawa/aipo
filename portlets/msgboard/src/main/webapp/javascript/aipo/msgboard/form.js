@@ -37,7 +37,7 @@ aipo.msgboard.toggleMenu=function (node,filters,event){
 	var html=document.documentElement.getBoundingClientRect();
 	if (node.style.display == "none") {
         dojo.query("div.menubar").style("display", "none");
-        
+
         var scroll={
         	left:document.documentElement.scrollLeft||document.body.scrollLeft,
         	top:document.documentElement.scrollTop||document.body.scrollTop
@@ -83,7 +83,7 @@ aipo.msgboard.filteredSearch=function(portlet_id){
 
 	var types=[];
 	var params=[];
-	dojo.query("ul.filtertype_"+portlet_id,dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
+	dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
 			//console.info(ul);
 			var type=ul.getAttribute("data-type");
 			types.push(type);
@@ -112,7 +112,7 @@ aipo.msgboard.filteredSearch=function(portlet_id){
  * @param event
  */
 aipo.msgboard.filterSetDefault=function(portlet_id,type){
-	var ul=dojo.query("ul.filtertype[data-type="+type+"]",dojo.byId("searchForm_"+portlet_id))[0];
+	var ul=dojo.query("ul.filtertype[data-type="+type+"]")[0];
 	var defval=ul.getAttribute("data-defaultparam");
 	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
 	aipo.msgboard.filterSelect(ul,defaultli);
