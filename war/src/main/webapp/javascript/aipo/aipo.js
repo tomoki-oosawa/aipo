@@ -113,6 +113,7 @@ aipo.reloadPage = function(portletId) {
 };
 
 var setMouseListener=function(){
+	aipo.customize.positionInitialize();
     dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
         dojo.connect(element, 'onmouseenter', null, function(){
             dojo.addClass(this, 'customizeMenuIconMouseenter');
