@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicScreen")' />
-	<div class="filters" id="filters_$!{portlet.ID}">#*
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
 		*##if(!$!result.issetFilter("post"))#*
 			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.MSGBOARD_GROUP_LIST</span></a>#*
 		 *##else#*
@@ -51,6 +51,12 @@
 		 	*##end#end#*
 		*##end#*
 	*#</div>
+
+	<div class="floatRight">
+	#if($result.List.size() != 0)
+	#AUIajaxpageview('MsgboardTopicScreen' $result)
+	#end
+	</div>
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
@@ -103,11 +109,6 @@
 #end
 </tbody>
 </table>
-<div class="auiSummaryMeta auiFilter clearfix">
-#if($result.List.size() != 0)
-#AUIajaxpageview('MsgboardTopicScreen' $result)
-#end
-</div>
 #ALformfooter()
 #else
 #ALformheader('Msgboard' $jslink $portlet)
@@ -129,10 +130,5 @@
 </tbody>
 </table>
 #ALformfooter()
-<div class="auiSummaryMeta auiFilter clearfix">
-#if($result.List.size() != 0)
-#AUIajaxpageview('MsgboardTopicScreen' $result)
-#end
-</div>
 #end
 #end
