@@ -93,7 +93,7 @@ $!postname.AliasName
 <div class="floatLeft">
 <select name="system_id" style="width:180px;">
 #foreach( $record in $result.SystemList )
-<option value="$!{record.SystemId}">$!record.SystemName</option>
+<option value="$!{record.SystemId}">$!{utils.escapeXML($!record.SystemName)}</option>
 #end
 </select>
 $l10n.EXTTIMECARD_CHANGE_SYSTEMNAME
