@@ -138,23 +138,11 @@ scheduleTooltipEnable = false;
 
 #if ("$!{client}" != "IPAD")
 dojo.require("dojo.dnd.Source");
+dojo.require("aipo.customize.form");
 
 dojo.addOnLoad(function() {
-     dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
-        dojo.connect(element, 'onmouseenter', null, function(){
-            dojo.addClass(this, 'customizeMenuIconMouseenter');
-        });
-        dojo.connect(element, 'onmouseleave', null, function(){
-            dojo.removeClass(this, 'customizeMenuIconMouseenter');
-        });
-    });
 
-    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
-        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
-            aipo.customize.hideMenu();
-        }
-    });
-
+     aipo.customize.addAutoHideMenuTrigger();
 
     var containers = dojo.query('.container');
     var containerSources = [];

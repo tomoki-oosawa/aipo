@@ -31,10 +31,9 @@
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta auiFilter clearfix">
-<form class="auiSearch floatLeft" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
-
-<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen")' />
+<form class="auiSearch floatLeft" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen")' />
 <input type="hidden" name="template" value="MsgboardTopicListScreen"/>
 
 <div class="filters" id="filters_$!portlet.ID">#*
@@ -52,12 +51,10 @@
 *##end#*
 *#</div>
 
-<a href="javascript:void(0);" class="btn menubarOpenButton filterDropDrawer" onclick="aipo.msgboard.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);" title="フィルタ">
-	<span><i class="auiIcon auiIconArwBottom"></i></span>
-</a>
-<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onFocus='aipo.msgboard.initFilterSearch("$!portlet.ID");'/>
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.msgboard.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),event);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" style="width:480px;"/>
 </div>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.MSGBOARD_SEARCH</a>
+<a href="javascript:void(0);" class="auiButtonSearch" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;">$l10n.MSGBOARD_SEARCH</a>
 </form>
 
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
@@ -104,7 +101,13 @@ $!record.CategoryName
 </div>
 #end
 
-<div class="menubar multi " id="menubar_filter_$!portlet.ID" style="width: 260px; display: none;">
+#ALformfooter()
+#AUIcontentsAreaFooter()
+<!-- END Contents Area -->
+
+<img src="images/common/dot.gif" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; } aipo.customize.addAutoHideMenuTrigger();' />
+
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none;">
 	<div>
 		<p class="caption">グループ</p>
 		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
@@ -127,11 +130,5 @@ $!record.CategoryName
 		</ul>
 	</div>
 </div>
-
-<img src="images/common/dot.gif" width="1" height="1" onload='document.getElementById("q$!{portlet.ID}").style.paddingLeft=document.getElementById("filters_$!{portlet.ID}").offsetWidth+"px";' />
-
-#ALformfooter()
-#AUIcontentsAreaFooter()
-<!-- END Contents Area -->
 
 #parse("/portlets/html/ja/msgboard-widgets.vm")

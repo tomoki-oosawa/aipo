@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-dojo.provide("aipo.customize");
+dojo.provide("aipo.customize.form");
 
 aipo.customize.positionInitialize=function(){
 	dojo.query(".body-child").forEach(function(item){
@@ -175,3 +175,21 @@ aipo.customize.submit = function(url, portlet_id, callback) {
     } catch(E) {
     };
 }
+
+aipo.customize.addAutoHideMenuTrigger = function(){
+	dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
+        dojo.connect(element, 'onmouseenter', null, function(){
+            dojo.addClass(this, 'customizeMenuIconMouseenter');
+        });
+        dojo.connect(element, 'onmouseleave', null, function(){
+            dojo.removeClass(this, 'customizeMenuIconMouseenter');
+        });
+    });
+
+    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
+            aipo.customize.hideMenu();
+        }
+    });
+}
+
