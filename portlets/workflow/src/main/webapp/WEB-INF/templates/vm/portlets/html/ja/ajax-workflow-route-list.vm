@@ -90,7 +90,7 @@
     <div class="floatLeft">
       #AUIajaxbuttonCheckboxDelete("$l10n.WORKFLOW_DO_REMOVE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
     </div>
-    #AUIajaxpageview('WorkflowCategoryListScreen' $result)
+    #AUIajaxpageview('WorkflowRouteListScreen' $result)
   #AUISummaryDivfooter()
   #ALformfooter()
   #AUISummaryDivfooter()
