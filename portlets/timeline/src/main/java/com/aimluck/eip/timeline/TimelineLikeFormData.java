@@ -32,9 +32,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
+import com.aimluck.eip.cayenne.om.social.Activity;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -43,6 +45,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
@@ -203,20 +206,43 @@ public class TimelineLikeFormData extends ALAbstractFormData {
           TimelineUtils.getEipTTimelineParentEntry(rundata, context);
         // アクティビティ
         TimelineLikeSelectData likelist = new TimelineLikeSelectData();
-        if (likelist.getLikeList(timeline_id).size() == 1) {
-          String loginName =
-            ALEipUtils.getALEipUser(user_id).getName().getValue();
-          String targetLoginName =
-            ALEipUtils
-              .getALEipUser(parententry.getOwnerId())
-              .getName()
-              .getValue();
-          TimelineUtils.createNewLikeActivity(
-            parententry,
-            loginName,
-            targetLoginName);
+
+        String loginName =
+          ALEipUtils.getALEipUser(user_id).getName().getValue();
+        String targetLoginName =
+          ALEipUtils
+            .getALEipUser(parententry.getOwnerId())
+            .getName()
+            .getValue();
+        if (likelist.getLikeList(timeline_id).size() > 1
+          && !loginName.equals(targetLoginName)) {
+          ALEipUser lastuser = ALEipUtils.getALEipUser(loginName);
+          String lastuserName = lastuser.getAliasName().getValue();
+          loginName =
+            lastuserName + ALLocalizationUtils.getl10n("TIMELINE_OTHER");
+
+          SelectQuery<Activity> query = Database.query(Activity.class);
+          Expression exp1 =
+            ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, String
+              .valueOf(parententry.getTimelineId()));
+          Expression exp2 =
+            ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "timeline");
+
+          query.setQualifier(exp1);
+          query.andQualifier(exp2);
+          List<Activity> maps = query.fetchList();
+          Database.deleteAll(maps);
+
+          Database.commit();
+
         }
+
+        TimelineUtils.createNewLikeActivity(
+          parententry,
+          loginName,
+          targetLoginName);
       }
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
