@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class ToDoMultiDelete extends ALAbstractCheckList {
 
@@ -88,7 +88,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -137,7 +137,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -148,7 +148,7 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

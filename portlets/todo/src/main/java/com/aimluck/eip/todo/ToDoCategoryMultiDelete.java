@@ -75,10 +75,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
       ExpressionFactory.noMatchExp(EipTTodoCategory.USER_ID_PROPERTY, Integer
         .valueOf(ALEipUtils.getUserId(rundata)));
     Expression exp2 =
-      ExpressionFactory.matchDbExp(
-        EipTTodoCategory.CATEGORY_ID_PK_COLUMN,
-        values);
-
+      ExpressionFactory.inDbExp(EipTTodoCategory.CATEGORY_ID_PK_COLUMN, values);
     if (Database
       .query(EipTTodoCategory.class)
       .andQualifier(exp1.andExp(exp2))
