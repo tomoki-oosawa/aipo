@@ -76,6 +76,10 @@ aipo.timeline.onClick = function(url, pid, page, max) {
 			            if(page == max){
 			            	dojo.byId("more_" + pid).style.display = "none";
 			            }
+			            var obj_indicator = dojo.byId("indicator-dlg2-" + pid);
+			            if(obj_indicator){
+			               dojo.style(obj_indicator, "display" , "none");
+			            }
 			          }
 			        });
 			  } catch (e) {
@@ -584,6 +588,15 @@ aipo.timeline.displayIndicator = function(url, portletId, indicator_id, post){
     }
 
     aipo.viewPage(url, portletId);
+
+    obj_indicator = dojo.byId(indicator_id + portletId);
+}
+
+aipo.timeline.displayIndicatorNotViewPage = function(portletId, indicator_id){
+    var obj_indicator = dojo.byId(indicator_id + portletId);
+    if(obj_indicator){
+       dojo.style(obj_indicator, "display" , "");
+    }
 
     obj_indicator = dojo.byId(indicator_id + portletId);
 }

@@ -24,6 +24,7 @@
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'TimelineUrlScreen'))")
 #set ($timelineViewType = "list")
 #set ($indicator_id = "indicator-dlg-")
+#set ($indicator_id2 = "indicator-dlg2-")
 #set ($indicator_id3 = "indicator-dlg3-")
 #set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
 ## ---------------------------------------------------------------------------
@@ -172,10 +173,15 @@
 	  <div id="content_$!{portlet.ID}_${i}"></div>
     #end
   #end
+  <div class="floatRight">
+	<div class="tlInputMention">
+		#ALajaxIndicatorglay("$indicator_id2" "$!portlet.ID" "&nbsp;")
+	</div>
+  </div>
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeightMax == 0)
 	#if($pages > $currentPage)
-		<div class="readMore"><a href="javascript:void(0);" onClick="dojo.byId('readHiddenClick_$!{portlet.ID}').onclick()" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
+		<div class="readMore"><a href="javascript:void(0);" onClick="aipo.timeline.displayIndicatorNotViewPage('$!{portlet.ID}', '$indicator_id2'); dojo.byId('readHiddenClick_$!{portlet.ID}').onclick();" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
 	#end
   #end
   <div id="more_end_$!{portlet.ID}"></div>
