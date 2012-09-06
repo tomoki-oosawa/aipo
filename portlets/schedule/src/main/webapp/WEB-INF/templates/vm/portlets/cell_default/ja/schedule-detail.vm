@@ -47,9 +47,7 @@ $!{result.Detail.DateForCell}
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 #end
-#if($!{result.Detail.isTmpreserve()})
-$l10n.SCHEDULE_SUB_TEMP
-#end
+
 #ALcell_dd_footer($career)
 #ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_TITLE)#ALcell_dd($career "$!{result.Detail.Name}")
 #ALcell_dt($career $l10n.SCHEDULE_SETFIELDNAME_PLACE)#ALcell_dd($career "$!{result.Detail.Place}")
@@ -70,9 +68,8 @@ $l10n.SCHEDULE_HIDE_ALL
 #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
 #ALcell_dd_header($career)
 $!record.AliasName
-#if($result.getStatus($record.UserId.Value) == "T")
-$l10n.SCHEDULE_SUB_TEMP
-#elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
+
+#if($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
 #set($counter = $counter + 1)
 $l10n.SCHEDULE_SUB_DELETE
 #end
@@ -119,7 +116,7 @@ ${record.FacilityName}
 #ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
 <input type="hidden" name="status" value="C">
-#ALcell_submit($career 'eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_BE_DECIDED)
+
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
 #ALcell_submit($career 'eventSubmit_doSchedule_form_delete' $l10n.SCHEDULE_DELETE)

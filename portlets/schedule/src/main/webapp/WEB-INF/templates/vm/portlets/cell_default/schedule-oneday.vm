@@ -53,9 +53,7 @@ $l10n.SCHEDULE_SUB_DUPLICATE
 #if($record.isRepeat())
 $l10n.SCHEDULE_SUB_REPEAT
 #end
-#if($record.isTmpreserve())
-$l10n.SCHEDULE_SUB_TEMP
-#end
+
 #ALcell_li_footer($career)
 #else
 ##予定追加1

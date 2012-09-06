@@ -303,14 +303,7 @@
   	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label></div>
 	</div>
 #end
-#if($mode!="new_form" && $!result.Member)
-    <div class="p">
-    	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_RETURN_TEMP_SCHEDULE</div>
-    	<div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
-   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label><br/>
-    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label></div>
-    </div>
-#end
+
 <div class="p">
     	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_MAIL_DOR_ENTRY_USER</div>
     	<div id="mail_context_$!{portlet.ID}" style="display:none;">

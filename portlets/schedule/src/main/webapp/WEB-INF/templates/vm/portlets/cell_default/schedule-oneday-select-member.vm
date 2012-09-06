@@ -49,7 +49,7 @@ $!{record.Date}#ALcell_br($career)
 $l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 #if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end
 #if($record.isRepeat())$l10n.SCHEDULE_SUB_REPEAT#end
-#if($record.isTmpreserve())$l10n.SCHEDULE_SUB_TEMP#end
+
 </span>
 
 #else
@@ -64,7 +64,7 @@ $l10n.SCHEDULE_TERM：
 $!{record.Name}
 #if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end
 #if($record.isRepeat())$l10n.SCHEDULE_SUB_REPEAT#end
-#if($record.isTmpreserve())$l10n.SCHEDULE_SUB_TEMP#end
+
 </a>
 
 #end

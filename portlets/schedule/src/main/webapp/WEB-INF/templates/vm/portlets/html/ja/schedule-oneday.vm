@@ -87,9 +87,7 @@ ${record.TodoName}
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
-#if(${record.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
-#end
+
 </a>
 </div>
 </td>
@@ -122,9 +120,7 @@ ${record.TodoName}
 #if($result.getResult($count).isRepeat())
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-#if($result.getResult($count).isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
-#end
+
 </div>
 </div>
 #ALtdcellfooter()
@@ -162,9 +158,7 @@ ${record.TodoName}
 #if($result.getResult($count).isRepeat())
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-#if($result.getResult($count).isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
-#end
+
 </div>
 </div>
 #ALtdcellfooter()
@@ -202,9 +196,7 @@ ${record.TodoName}
 #if($record.isRepeat())
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-#if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
-#end
+
 </div>
 </div>
 
