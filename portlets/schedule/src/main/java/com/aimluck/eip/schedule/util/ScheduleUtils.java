@@ -2975,7 +2975,8 @@ public class ScheduleUtils {
         result.append(date_field.toString());
       }
       time_field.setValue(schedule.getStartDate());
-      result.append(" ").append(time_field.toString()).append("～");
+      // メールの場合は期間を表すのに - を用いる
+      result.append(" ").append(time_field.toString()).append(" - ");
       time_field.setValue(schedule.getEndDate());
       result.append(time_field.toString()).append(" ");
     } else {
@@ -2984,7 +2985,7 @@ public class ScheduleUtils {
       date_field.setValue(start);
       result.append(date_field.toString());
       if (!start.equals(end)) {
-        result.append("～");
+        result.append(" - ");
         date_field.setValue(end);
         result.append(date_field.toString());
       }
@@ -2997,7 +2998,7 @@ public class ScheduleUtils {
         // schedule.setLimit(true);
         // 期限
         date_field.setValue(schedule.getStartDate());
-        result.append(" （").append(date_field.toString()).append("～");
+        result.append(" （").append(date_field.toString()).append(" - ");
         date_field.setValue(schedule.getEndDate());
         result.append(date_field.toString()).append("）").toString();
       }
