@@ -133,11 +133,15 @@ public class CabinetSelectData extends
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
         if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+          String fidParam =
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID);
           ALEipUtils.setTemp(
             rundata,
             context,
             CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+            fidParam);
+          ALEipUtils
+            .setPsmlParameters(rundata, context, "p3a-folder", fidParam);
         }
       }
       String tmpfid =
@@ -170,11 +174,15 @@ public class CabinetSelectData extends
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
         if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+          String fidParam =
+            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID);
           ALEipUtils.setTemp(
             rundata,
             context,
             CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+            fidParam);
+          ALEipUtils
+            .setPsmlParameters(rundata, context, "p3a-folder", fidParam);
         }
       }
       String tmpfid =

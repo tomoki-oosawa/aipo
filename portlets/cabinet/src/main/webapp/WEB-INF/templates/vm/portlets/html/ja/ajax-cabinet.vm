@@ -61,7 +61,7 @@
 			#set($space = "${space}&nbsp;&nbsp;&nbsp;")
 			#end
 			#end
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id",$!record.FolderId)))
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("folder_id","$!record.FolderId")))
 			<li data-param="$!record.FolderId"><a href="javascript:void(0)" #if("$!result.SelectedFolderInfo.FolderId"=="$!record.FolderId") class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','$!record.FolderId')" >${space}${record.FolderName}</a></li>
 			#end
 			#end

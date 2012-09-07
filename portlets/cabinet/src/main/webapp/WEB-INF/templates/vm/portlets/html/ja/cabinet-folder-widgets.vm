@@ -28,7 +28,7 @@
 </div>
 <div id="subNavigation" class="auiWidget clearfix">
 <div class="auiDirectoryList">
-<div class="d0#if(!$result.SelectedFolderInfo) active #end"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,0).addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">$l10n.CABINET_ALL_FOLDER</span></a></div>
+<div class="d0#if(!$result.SelectedFolderInfo) active #end"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,'0').addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">$l10n.CABINET_ALL_FOLDER</span></a></div>
 #foreach($record in $!result.FolderHierarchyList)
 #set($index = $record.HierarchyIndex + 1)
 ##全フォルダを表示するのでvisibleの条件は無視
