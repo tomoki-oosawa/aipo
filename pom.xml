@@ -275,6 +275,7 @@
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>2.4.0</version>
         <configuration>
+          <onlyAnalyze>com.aimluck.-</onlyAnalyze>
           <effort>Max</effort>
           <findbugsXmlOutput>true</findbugsXmlOutput>
           <xmlOutput>true</xmlOutput>
