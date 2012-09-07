@@ -192,7 +192,7 @@ $l10n.SCHEDULE_ADD_NOTE
 <div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv small">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
-
+#if(${record4.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />#end
 </a>
 #else
 <div class="calerndarTermScheduleDiv small">
@@ -200,7 +200,9 @@ $!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
 #end
-
+#if(${record4.TermResultData.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #end
 </div>
 #ALtdcellfooter()
@@ -288,7 +290,9 @@ $!{record4.TermResultData.WbrName}
 #if(${record2.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record2.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 </div>
 #end
 #end
@@ -444,7 +448,9 @@ $!{record.ToDoResultData.TodoName}
 #if(${record2.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record2.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #end
 #end
 #end

@@ -647,6 +647,9 @@ public class RemainderScheduleDaemon implements Daemon {
         if (rd.isRepeat()) {
           body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_REPEAT"));
         }
+        if (rd.isTmpreserve()) {
+          body.append(ALLocalizationUtils.getl10n("SCHEDULE_SUB_TEMP"));
+        }
 
         body.append(CR);
       }

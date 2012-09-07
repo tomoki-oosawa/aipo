@@ -216,7 +216,9 @@ ${record.TodoName}
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
-
+#if(${record.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #else
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
@@ -225,7 +227,9 @@ $record.WbrName
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
-
+#if(${record.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #end
 </a>
 </div>
@@ -266,7 +270,9 @@ $record.WbrName
 #if(${record.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #ALtdcellfooter()
 #else
 #if ($!{result.hasAuthoritySelfInsert()})
@@ -338,7 +344,9 @@ $record.WbrName
 #if(${record.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #ALtdcellfooter()
 #else
 #if ($!{result.hasAuthoritySelfInsert()})
@@ -424,7 +432,9 @@ $record.WbrName
 #if(${record.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #ALtdcellfooter()
 #else
 #if($!{result.hasAuthorityFacilityInsert()})
@@ -488,7 +498,9 @@ $record.WbrName
 #if(${record.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end
 #else
 #if ($!{result.hasAuthoritySelfInsert()})
 #if ($!{result.isMatch($record3.UserId.Value)})

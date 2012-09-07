@@ -118,7 +118,9 @@
 #if(${record.isRepeat()})
 <img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
 #end
-</div></td>
+#if($record.isTmpreserve())
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+#end</div></td>
 <td class="mb_hide"><div>$!{record.NoteShort}</div></td>
 <td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>

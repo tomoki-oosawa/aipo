@@ -145,7 +145,9 @@ $!{result.Detail.Date2}
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 #end
-
+#if($!{result.Detail.isTmpreserve()})
+<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
+#end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditem($!{result.Detail.Name})
@@ -178,7 +180,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-
+        <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <img class="icon_schedule" src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>

@@ -46,7 +46,9 @@ $!{result.Detail.DateForCell}
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 #end
-
+#if($!{result.Detail.isTmpreserve()})
+$l10n.SCHEDULE_SUB_TEMP
+#end
 #ALcell_dd_footer($career)
 #ALcell_dt($career $l10n.SCHEDULE_TITLE)#ALcell_dd($career "$!{result.Detail.Name}")
 #ALcell_dt($career $l10n.SCHEDULE_PLACE)#ALcell_dd($career "$!{result.Detail.Place}")
@@ -67,7 +69,9 @@ $l10n.SCHEDULE_HIDE_ALL
 #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
 #ALcell_dd_header($career)
 $!record.AliasName
-#if($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
+#if($result.getStatus($record.UserId.Value) == "T")
+$l10n.SCHEDULE_SUB_TEMP
+#elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
 #set($counter = $counter + 1)
 $l10n.SCHEDULE_SUB_DELETE
 #end

@@ -70,6 +70,9 @@ $!{result.Detail.Date2}
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 #end
+#if($!{result.Detail.isTmpreserve()})
+<img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
+#end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditem($!{result.Detail.WbrName})
@@ -101,7 +104,9 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
 #foreach($record in $!result.MemberList)
     #if($!result.isActivity() || $!ignore_viewdate == "true" || !($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
     $!record.AliasName
-        #if($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
+        #if($result.getStatus($record.UserId.Value) == "T")
+        <img src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
+        #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>
         #end
@@ -227,7 +232,7 @@ ${record.FacilityNameHtml}<br/>
             #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
         #end
     #elseif($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()})
-
+        #ALbutton('eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_BE_DECIDED "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'C', '$indicator_id', '$!portlet.ID')")
         #if($!{result.Detail.isEditable()})
             #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
                 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
@@ -244,10 +249,10 @@ ${record.FacilityNameHtml}<br/>
             #end
         #end
     #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
-
+        #ALbutton('eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_TEMP_SCHEDULE "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")
         #if($!{result.Detail.isEditable()})
             #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
-
+            #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
         #end
         #if($!{result.hasAuthoritySelfDelete()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
             #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
