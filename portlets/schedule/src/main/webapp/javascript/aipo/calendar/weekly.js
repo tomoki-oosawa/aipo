@@ -365,45 +365,57 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
 
             for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
-               tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
-               tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
-               tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
-               tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
-               tmpNode1.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
-               tmpNode2.innerHTML = data.holiday[i];
-               if (data.dayOfWeek[i] == "（土）") {
-                   dojo.addClass(tmpNode1, "saturday");
-                   dojo.addClass(tmpNode2, "saturday");
-                   dojo.addClass(tmpNode3, "saturday");
-                   dojo.addClass(tmpNode4, "saturday");
-               } else {
-                   dojo.removeClass(tmpNode1, "saturday");
-                   dojo.removeClass(tmpNode2, "saturday");
-                   dojo.removeClass(tmpNode3, "saturday");
-                   dojo.removeClass(tmpNode4, "saturday");
-               }
-               if (data.dayOfWeek[i] == "（日）") {
-                   dojo.addClass(tmpNode1, "sunday");
-                   dojo.addClass(tmpNode2, "sunday");
-                   dojo.addClass(tmpNode3, "sunday");
-                   dojo.addClass(tmpNode4, "sunday");
-               } else {
-                   dojo.removeClass(tmpNode1, "sunday");
-                   dojo.removeClass(tmpNode2, "sunday");
-                   dojo.removeClass(tmpNode3, "sunday");
-                   dojo.removeClass(tmpNode4, "sunday");
-               }
-               if (data.holiday[i]) {
-                   dojo.addClass(tmpNode1, "holiday");
-                   dojo.addClass(tmpNode2, "holiday");
-                   dojo.addClass(tmpNode3, "holiday");
-                   dojo.addClass(tmpNode4, "holiday");
-               } else {
-                   dojo.removeClass(tmpNode1, "holiday");
-                   dojo.removeClass(tmpNode2, "holiday");
-                   dojo.removeClass(tmpNode3, "holiday");
-                   dojo.removeClass(tmpNode4, "holiday");
-               }
+                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
+                tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
+                tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
+                tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
+                tmpNode1.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
+                tmpNode2.innerHTML = data.holiday[i];
+                var temptoday = data.today + "-00-00";
+                if (data.dayOfWeek[i] == "（土）") {
+                    dojo.addClass(tmpNode1, "saturday");
+                    dojo.addClass(tmpNode2, "saturday");
+                    dojo.addClass(tmpNode3, "saturday");
+                    dojo.addClass(tmpNode4, "saturday");
+                } else {
+                    dojo.removeClass(tmpNode1, "saturday");
+                    dojo.removeClass(tmpNode2, "saturday");
+                    dojo.removeClass(tmpNode3, "saturday");
+                    dojo.removeClass(tmpNode4, "saturday");
+                }
+                if (data.dayOfWeek[i] == "（日）") {
+                    dojo.addClass(tmpNode1, "sunday");
+                    dojo.addClass(tmpNode2, "sunday");
+                    dojo.addClass(tmpNode3, "sunday");
+                    dojo.addClass(tmpNode4, "sunday");
+                } else {
+                    dojo.removeClass(tmpNode1, "sunday");
+                    dojo.removeClass(tmpNode2, "sunday");
+                    dojo.removeClass(tmpNode3, "sunday");
+                    dojo.removeClass(tmpNode4, "sunday");
+                }
+                if (data.holiday[i]) {
+                    dojo.addClass(tmpNode1, "holiday");
+                    dojo.addClass(tmpNode2, "holiday");
+                    dojo.addClass(tmpNode3, "holiday");
+                    dojo.addClass(tmpNode4, "holiday");
+                } else {
+                    dojo.removeClass(tmpNode1, "holiday");
+                    dojo.removeClass(tmpNode2, "holiday");
+                    dojo.removeClass(tmpNode3, "holiday");
+                    dojo.removeClass(tmpNode4, "holiday");
+                }
+                if (temptoday==data.date[i]) {
+                    dojo.addClass(tmpNode1, "today");
+                    dojo.addClass(tmpNode2, "today");
+                    dojo.addClass(tmpNode3, "today");
+                    dojo.addClass(tmpNode4, "today");
+                } else {
+                    dojo.removeClass(tmpNode1, "today");
+                    dojo.removeClass(tmpNode2, "today");
+                    dojo.removeClass(tmpNode3, "today");
+                    dojo.removeClass(tmpNode4, "today");
+                }
             }
 
             dojo.forEach(data.schedule, function(item) {
@@ -515,8 +527,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
              l_count = 0;
             dojo.forEach(data.termSchedule, function(itemList) {
                 var item = null;
+                var temptoday =　data.today + "-00-00";
                 termHtml = "";
-
                 for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
                    tmpNode5 = dojo.byId('termDay' + i + '-' + l_count + '-' + _portletId);
                    if (data.dayOfWeek[i] == "（土）") {
@@ -534,8 +546,12 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                    } else {
                        dojo.removeClass(tmpNode5, "holiday");
                    }
+                   if (temptoday==data.date[i]) {
+                       dojo.addClass(tmpNode5, "today");
+                   } else {
+                       dojo.removeClass(tmpNode5, "today");
+                   }
                 }
-
                 for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
 
