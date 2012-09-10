@@ -2101,6 +2101,7 @@ ul.attachments span.deletebutton:hover{
 .thumbBlock img {
 	max-width:200px;
 	max-height:200px;
+	height:auto;
 	padding:4px;
 	border:solid 1px #cccccc;
 }
