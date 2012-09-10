@@ -147,12 +147,14 @@ public class ALCSVUtils {
   private static String arrayToString(List<String> arg) {
     int i;
     String str = "";
+    StringBuffer buf = new StringBuffer();
     for (i = 0; i < arg.size(); i++) {
       if (i != 0) {
-        str += ",";
+        buf.append(",");
       }
-      str += arg.get(i).toString();
+      buf.append(arg.get(i).toString());
     }
+    str = buf.toString();
     return str;
   }
 
