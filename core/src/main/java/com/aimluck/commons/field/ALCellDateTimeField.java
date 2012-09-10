@@ -73,7 +73,7 @@ public class ALCellDateTimeField extends ALDateTimeField {
       }
     } else {
       String dateStr = translateDate(calendar.getTime(), format);
-      if (dateStr == null) {
+      if ("Unknown".equals(dateStr) || "".equals(dateStr)) {
         msgList.add(ALLocalizationUtils.getl10nFormat(
           "COMMONS_FIELD_DATE_TYPE_CAUTION",
           fieldName));
