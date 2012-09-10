@@ -113,9 +113,11 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     <br/>
     #end
 #end
-#if($counter < ($!result.MemberList.size() - 1))
+
+#if(($!result.MemberList.size() ) && $counter < ($!result.MemberList.size() - 1) )
 #set ($hasMember = true)
 #end
+
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
 #if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $!{result.OutsideUser}#end#end
