@@ -124,14 +124,22 @@ public class ALDateContainer implements Serializable {
    * @param date
    */
   public void setDate(Date date) {
-    this.date = date;
+    if (date != null) {
+      this.date = (Date) date.clone();
+    }
 
     try {
       Calendar calendar = new GregorianCalendar();
-      calendar.setTime(date);
-      year = Integer.toString(calendar.get(Calendar.YEAR));
-      month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
-      day = Integer.toString(calendar.get(Calendar.DATE));
+      if (date == null) {
+        year = null;
+        month = null;
+        day = null;
+      } else {
+        calendar.setTime(date);
+        year = Integer.toString(calendar.get(Calendar.YEAR));
+        month = Integer.toString(calendar.get(Calendar.MONTH) + 1);
+        day = Integer.toString(calendar.get(Calendar.DATE));
+      }
     } catch (Throwable ex) {
       year = null;
       month = null;
@@ -283,7 +291,7 @@ public class ALDateContainer implements Serializable {
    */
   public Date getDate() throws NumberFormatException, ALIllegalDateException {
     if (date != null) {
-      return date;
+      return (Date) date.clone();
     }
 
     int yearNum = getYear();
@@ -295,7 +303,7 @@ public class ALDateContainer implements Serializable {
 
       calendar.setLenient(false);
       date = calendar.getTime();
-      return date;
+      return (Date) date.clone();
     } catch (IllegalArgumentException ex) {
       throw new ALIllegalDateException("Year = "
         + year
