@@ -165,7 +165,7 @@ dojo.declare(
             //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
             var _tmpNode = dojo.byId('weeklyScrollPane_'+this._portlet_id);
             if(_tmpNode){
-                if (aipo.schedule.tmpScroll == "undefined") {
+                if (typeof aipo.schedule.tmpScroll == "undefined") {
                     dojo.byId('weeklyScrollPane_'+this._portlet_id).scrollTop = ptConfig[this._portlet_id].contentScrollTop;
                 } else {
                     dojo.byId('weeklyScrollPane_'+this._portlet_id).scrollTop = aipo.schedule.tmpScroll;
