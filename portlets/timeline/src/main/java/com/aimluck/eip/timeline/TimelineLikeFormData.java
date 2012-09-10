@@ -219,7 +219,10 @@ public class TimelineLikeFormData extends ALAbstractFormData {
           ALEipUser lastuser = ALEipUtils.getALEipUser(loginName);
           String lastuserName = lastuser.getAliasName().getValue();
           loginName =
-            lastuserName + ALLocalizationUtils.getl10n("TIMELINE_OTHER");
+            ALLocalizationUtils.getl10nFormat(
+              "TIMELINE_OTHER",
+              lastuserName,
+              likelist.getLikeList(timeline_id).size());
 
           SelectQuery<Activity> query = Database.query(Activity.class);
           Expression exp1 =
