@@ -18,13 +18,13 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if  ($mode=="new_form")
+#if  ("$!mode"=="new_form")
 #set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
 #set ($action_str = $l10n.MSGBOARD_ADD)
 #set ($subtitle = $l10n.MSGBOARD_TOPIC_ADD)
 #set ($event_submit = "eventSubmit_doMsgboard_insert")
 #set ($action_utl = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen')")
-#elseif($mode=="edit_form")
+#elseif("$!mode"=="edit_form")
 #set ($indicator_str = $l10n.MSGBOARD_SEND_DATA)
 #set ($action_str = $l10n.MSGBOARD_UPDATE)
 #set ($subtitle = $l10n.MSGBOARD_TOPIC_EDIT)
@@ -49,14 +49,14 @@
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
 <input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
-#if($mode=="new_form")
+#if("$!mode"=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
 
-#if($mode=="new_form"||$mode=="edit_form")
+#if("$!mode"=="new_form"||"$!mode"=="edit_form")
 #ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="msgboardCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
