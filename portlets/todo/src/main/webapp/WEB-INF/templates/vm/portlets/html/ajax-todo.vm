@@ -19,10 +19,10 @@
 ## ---------------------------------------------------------------------------
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen")' />
-	<div class="filters" id="filters_$!{portlet.ID}">
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
 		 #if(!$!result.issetFilter("post"))
 			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_GLOUP</span></a>
-		   #else 
+		   #else
 		 	 #set($break=false)
 		 	 #foreach($record in $result.postList)
 		 		 #if(!$break)
@@ -41,7 +41,7 @@
 		  #end
 		  #if(!$!result.issetFilter("category"))
 			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_CATEGORY</span></a>
-		  #else 
+		  #else
 		 	 #set($break=false)
 		 	 #foreach($record in $result.CategoryList)#if(!$break)
 		 		 #if ($!result.issetFilter("category",$!{record.CategoryId}))
@@ -51,6 +51,11 @@
 		 	 #end#end
 		#end
 	 </div>
+	<div class="floatRight">
+	#if($result.List.size() != 0)
+	#AUIajaxpageview('ToDoScreen' $result)
+	#end
+	</div>
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
@@ -103,11 +108,6 @@
 #end
 </tbody>
 </table>
-<div class="auiSummaryMeta auiFilter clearfix">
-#if($result.List.size() != 0)
-#AUIajaxpageview('ToDoScreen' $result)
-#end
-</div>
 #ALformfooter()
 #else
 #ALformheader('ToDo' $jslink $portlet)
@@ -129,10 +129,5 @@
 </tbody>
 </table>
 #ALformfooter()
-<div class="auiSummaryMeta auiFilter clearfix">
-#if($result.List.size() != 0)
-#AUIajaxpageview('ToDoScreen' $result)
-#end
-</div>
 #end
 #end
