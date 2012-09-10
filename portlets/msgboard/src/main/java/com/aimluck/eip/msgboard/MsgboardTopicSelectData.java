@@ -848,11 +848,13 @@ public class MsgboardTopicSelectData extends
 
   private void updateCategoryName() {
     categoryName = "";
-    for (int i = 0; i < categoryList.size(); i++) {
-      String cid = categoryList.get(i).getCategoryId().toString();
-      if (cid.equals(categoryId.toString())) {
-        categoryName = categoryList.get(i).getCategoryName().toString();
-        return;
+    if (categoryList != null) {
+      for (int i = 0; i < categoryList.size(); i++) {
+        String cid = categoryList.get(i).getCategoryId().toString();
+        if (cid.equals(categoryId.toString())) {
+          categoryName = categoryList.get(i).getCategoryName().toString();
+          return;
+        }
       }
     }
   }
