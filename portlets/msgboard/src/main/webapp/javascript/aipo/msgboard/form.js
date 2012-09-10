@@ -97,7 +97,8 @@ aipo.msgboard.filteredSearch=function(portlet_id){
 			}
 		}
 	);
-	var search = encodeURIComponent(dojo.byId("q"+portlet_id).value);
+	var q=dojo.byId("q"+portlet_id);
+	var search = q?encodeURIComponent(q.value);
 	baseuri+="&filter="+params.join(",");
 	baseuri+="&filtertype="+types.join(",");
 	baseuri+="&keyword="+search;
