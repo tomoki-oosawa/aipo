@@ -327,6 +327,11 @@ public class ToDoFormData extends ALAbstractFormData {
           category_name.toString()));
       }
 
+      // 担当者が存在するかどうかチェックを行います。
+      if (Database.get(TurbineUser.class, user_id.getValue()) == null) {
+        msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_NO_PREPARED"));
+      }
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
