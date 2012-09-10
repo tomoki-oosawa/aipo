@@ -511,6 +511,10 @@ public class WebMailFormData extends ALAbstractFormData {
             String newAttachmentFileName = String.valueOf(fileId);
             String realfilename = filenames[i];
 
+            if (realfilename == null) {
+              continue;
+            }
+
             ALStorageService.createNewTmpFile(
               msg.getInputStream(i),
               userId,
