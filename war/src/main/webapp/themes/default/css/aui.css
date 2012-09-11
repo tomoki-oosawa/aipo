@@ -217,6 +217,27 @@ img.avatar,
 	right:0;
 	top:0;
 }
+
+.auiPopupMeta {
+	width:100%;
+	margin-top:10px;
+}
+.auiPopupTitle {
+	position:absolute;
+	max-width:90%;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+.auiPopupClose {
+	float:right;
+}
+.auiPopupClose a {
+	display:block;
+	background:#ffffff;
+}
+
+
 .auiPopup h2,
 #activityListPane h2 {
 	padding:0 0 5px;
@@ -309,7 +330,7 @@ table.activityTable tr.unread td {
 /* imgPopup */
 .imgPopup {
 	position:absolute;
-	overflow:hidden;
+	/*overflow:hidden;*/
 }
 .imgPopup .imgBody {
 	text-align:center;
