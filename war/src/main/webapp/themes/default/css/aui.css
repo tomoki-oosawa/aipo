@@ -1898,7 +1898,7 @@ ul.attachments span.deletebutton:hover{
 }
 #timelineOuter .message {
 	margin:0;
-	padding:10px 0;
+	padding:10px 0 0;
 	clear:both;
 	border-top: 1px solid #dcdcdc;
 }
@@ -2021,6 +2021,7 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline .messageContents {
 	padding-left:60px;
+	margin-bottom:10px;
 }
 .timeline .comments {
 	margin:0 0 10px 60px;
@@ -2031,9 +2032,9 @@ ul.attachments span.deletebutton:hover{
 	margin-top:10px;
 	margin-bottom:10px;
 }
-.timeline .message .comments:last-child {
+/*.timeline .message .comments:last-child {
 	margin-bottom:0;
-}
+}*/
 .timeline .comments .messageContents {
 	padding-left:42px;
 	margin:0;
@@ -2161,7 +2162,7 @@ ul.attachments span.deletebutton:hover{
 }
 .timeline .message > .more {
 	line-height:1.6;
-	margin:10px 0 0 60px;
+	margin:0 0 10px 60px;
 }
 
 .timeline .commentInputDummy {
