@@ -431,7 +431,7 @@ public class WorkflowAllSelectData extends
         .getAliasName()
         .getValue());
 
-      String state = new String();
+      String state = "";
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         state = ALLocalizationUtils.getl10n("WORKFLOW_COMPLETION");
       } else if (WorkflowUtils.DB_PROGRESS_WAIT.equals(record.getProgress())) {
