@@ -490,7 +490,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         userIdList.add(userId);
       }
     }
-    userIdList.add(new Integer(-1));
+    userIdList.add(Integer.valueOf(-1));
 
     // ユーザーIDからユーザー情報を取得する。
     SelectQuery<TurbineUser> userQuery = Database.query(TurbineUser.class);
