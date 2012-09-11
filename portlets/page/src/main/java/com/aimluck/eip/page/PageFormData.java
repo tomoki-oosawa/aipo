@@ -225,9 +225,6 @@ public class PageFormData extends ALAbstractFormData {
       if (portlets != null) {
         // 個人設定 と システム管理の位置を一つ後ろにずらす
         List<Portlets> portletList = Arrays.asList(portlets.getPortletsArray());
-        if (portletList == null) {
-          return false;
-        }
 
         int length = portletList.size();
         if (length >= MAX_PAGE_NUM) {
