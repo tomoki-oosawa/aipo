@@ -514,7 +514,7 @@ public class BlogUtils {
   public static ALBaseUser getBaseUser(int userid) {
     String uid = String.valueOf(userid);
     try {
-      if (uid == null) {
+      if ("".equals(uid)) {
         logger.debug("Empty ID...");
         return null;
       }
