@@ -103,17 +103,16 @@ public class ALStringUtil {
    * @return
    */
   public static String convertHiragana2Katakana(String str) {
-    String ret = "";
+    StringBuffer buf = new StringBuffer();
     for (int i = 0; i < str.length(); i++) {
       char code = str.charAt(i);
       if ((code >= 0x3041) && (code <= 0x3093)) {
-        ret = ret + (char) (code + 0x60);
-        ;
+        buf.append((char) (code + 0x60));
       } else {
-        ret = ret + code;
+        buf.append(code);
       }
     }
-    return ret;
+    return buf.toString();
   }
 
   /**
