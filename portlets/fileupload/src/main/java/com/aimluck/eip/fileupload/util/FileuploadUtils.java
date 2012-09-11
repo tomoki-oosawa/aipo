@@ -162,14 +162,23 @@ public class FileuploadUtils {
       }
 
       BufferedReader reader = null;
+      InputStream file = null;
       try {
-        reader =
-          new BufferedReader(new InputStreamReader(ALStorageService.getFile(
-            FOLDER_TMP_FOR_ATTACHMENT_FILES,
-            ALEipUtils.getUserId(rundata)
-              + ALStorageService.separator()
-              + folderName,
-            fileids[i] + EXT_FILENAME), FILE_ENCODING));
+        try {
+          file =
+            ALStorageService.getFile(
+              FOLDER_TMP_FOR_ATTACHMENT_FILES,
+              ALEipUtils.getUserId(rundata)
+                + ALStorageService.separator()
+                + folderName,
+              fileids[i] + EXT_FILENAME);
+        } catch (Exception e) {
+          logger.info("Exception", e);
+        }
+        if (file == null) {
+          continue;
+        }
+        reader = new BufferedReader(new InputStreamReader(file, FILE_ENCODING));
         String line = reader.readLine();
         if (line == null || line.length() <= 0) {
           continue;
@@ -181,10 +190,14 @@ public class FileuploadUtils {
         filebean.setFileId(fileid);
         filebean.setFileName(line);
         fileNameList.add(filebean);
+
       } catch (Exception e) {
         logger.error("Exception", e);
       } finally {
         try {
+          if (reader == null) {
+            continue;
+          }
           reader.close();
         } catch (Exception e) {
           logger.error("Exception", e);
