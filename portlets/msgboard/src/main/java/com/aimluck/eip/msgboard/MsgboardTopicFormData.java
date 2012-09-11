@@ -249,9 +249,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // オブジェクトモデルを取得
       EipTMsgboardTopic topic =
         MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
-      if ("".equals(topic)) {
-        return false;
-      }
 
       // トピック名
       topic_name.setValue(topic.getTopicName());
