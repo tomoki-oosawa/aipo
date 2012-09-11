@@ -458,7 +458,7 @@ public class NoteUtils {
 
     try {
       String user_id = Integer.toString(ALEipUtils.getUserId(rundata));
-      if (user_id == null) {
+      if ("".equals(user_id)) {
         return false;
       }
 
