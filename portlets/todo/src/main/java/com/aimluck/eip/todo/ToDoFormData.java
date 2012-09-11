@@ -504,7 +504,6 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      todo.setUserId(login_user_id);
       TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
       todo.setTurbineUser(tuser);
       // 開始日
@@ -564,7 +563,12 @@ public class ToDoFormData extends ALAbstractFormData {
         // 個人向け通知の宛先登録
         recipients.add(todo.getTurbineUser().getLoginName());
       }
-      ToDoUtils.createToDoActivity(todo, loginName, recipients, true);
+      ToDoUtils.createToDoActivity(
+        todo,
+        loginName,
+        recipients,
+        true,
+        login_user_id);
 
       // メール送信
       if (aclPortletFeature
@@ -701,7 +705,6 @@ public class ToDoFormData extends ALAbstractFormData {
       // カテゴリID
       todo.setEipTTodoCategory(category);
       // ユーザーID
-      todo.setUserId(login_user_id);
       TurbineUser tuser = Database.get(TurbineUser.class, user_id.getValue());
       todo.setTurbineUser(tuser);
       // 開始日
@@ -758,7 +761,12 @@ public class ToDoFormData extends ALAbstractFormData {
         // 個人向け通知の宛先登録
         recipients.add(todo.getTurbineUser().getLoginName());
       }
-      ToDoUtils.createToDoActivity(todo, loginName, recipients, false);
+      ToDoUtils.createToDoActivity(
+        todo,
+        loginName,
+        recipients,
+        false,
+        login_user_id);
 
       // メール送信
       if (aclPortletFeature

@@ -624,7 +624,7 @@ public class ToDoUtils {
    * @param isNew
    */
   public static void createToDoActivity(EipTTodo todo, String loginName,
-      List<String> recipients, boolean isNew) {
+      List<String> recipients, boolean isNew, int operationUserId) {
 
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Todo", todo.getTodoId(), 1f);
@@ -644,9 +644,7 @@ public class ToDoUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("ToDo")
         .withLoginName(loginName)
-        .withUserId(
-          todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
-            .getUserId())
+        .withUserId(operationUserId)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
         .withTitle(title)
@@ -657,9 +655,7 @@ public class ToDoUtils {
       // 全体向けアクティビティー
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("ToDo")
-        .withUserId(
-          todo.getUserId() == null ? todo.getTurbineUser().getUserId() : todo
-            .getUserId())
+        .withUserId(operationUserId)
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withTitle(title)
