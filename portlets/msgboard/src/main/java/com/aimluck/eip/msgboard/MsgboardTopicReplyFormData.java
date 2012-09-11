@@ -348,8 +348,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       Database.commit();
 
-      List<ALEipUser> memberList = new ArrayList<ALEipUser>();
-      memberList = selectMsgMember(rundata, context);
+      List<ALEipUser> memberList = selectMsgMember(rundata, context);
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
