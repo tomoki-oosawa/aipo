@@ -89,7 +89,7 @@
 			#end
 		</div>
 	</div>
-	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments #if($record.LikeCount==0&&$record.CoTopicList.size()==0)mb0#end" >
+	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments #if($record.LikeCount==0||$record.CoTopicList.size()==0)mb0#end" >
 		<div id="like_$!{record.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
 			<span class="iconLike"></span>
 			<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCountText}
