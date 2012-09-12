@@ -89,7 +89,7 @@
 			#end
 		</div>
 	</div>
-	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments mb0" >
+	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments #if($record.LikeCount==0&&$record.CoTopicList.size()==0)mb0#end" >
 		<div id="like_$!{record.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
 			<span class="iconLike"></span>
 			<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCountText}
@@ -182,8 +182,12 @@
 	</div>
 </div>
 #end
+#set($existcomment=0)
 #foreach ($record2 in $record.CoActivityList)
 <div class="messageContents text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end">
+	#if(($record2.LikeCount!=0||$record2.CoTopicList.size()!=0)||$velocityCount==1)
+		#set($existcomment = $existcomment + 1)
+	#end
 	#if($velocityCount==1)
 	<div class="name">$!record.OwnerName</div>
 	#end
@@ -218,7 +222,7 @@
 		#end
 	</div>
 </div>
-<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end mb0">
+<div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end #if($record2.LikeCount>0||$record2.CoTopicList.size()>0)mb0#end">
 <div id="like_$!{record2.TimelineId}" class="commentCaption"#if($record2.LikeCount <= 0) style="display:none" #end>
 		<span class="iconLike"></span>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialogSub('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCountText}
@@ -310,7 +314,7 @@
 	</div>
 </div>
 #end
-#if($record.CoActivityList.size()>=2)
+#if($record.CoActivityList.size()>=2&&$existcomment<$record.CoActivityList.size())
 <p class="more"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">$l10n.TIMELINE_SHOE_OTHER_MESSAG</a></p>
 #end
 </div>

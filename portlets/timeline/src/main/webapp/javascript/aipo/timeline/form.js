@@ -38,6 +38,7 @@ aipo.timeline.addLike = function(form, name, value) {
 
 aipo.timeline.showCommentField = function(pid, tid) {
   dojo.byId('comments_' + pid + '_' + tid).style.display = "block";//コメントを開く時は常に
+  dojo.query('#comments_' + pid + '_' + tid).removeClass('mb0');
   dojo.byId('commentField_' + pid + '_' + tid).style.display = "";
   dojo.byId('note_' + pid + '_' + tid).focus();
   dojo.byId('note_' + pid + '_' + tid).style.color = 'black';
