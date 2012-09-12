@@ -1070,6 +1070,13 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
             target_user_id = userId;
           }
           ALEipUtils.setTemp(rundata, context, target_key, target_user_id);
+        } else if (facilityList != null && facilityList.size() > 0) {
+          // 設備グループで表示を切り替えた場合,
+          // 設備グループリストの一番初めの設備を
+          // 表示するため、設備 ID を設定する.
+          FacilityResultData rd = facilityList.get(0);
+          target_user_id = "f" + rd.getFacilityId().getValue();
+          ALEipUtils.setTemp(rundata, context, target_key, target_user_id);
         }
       }
     }
