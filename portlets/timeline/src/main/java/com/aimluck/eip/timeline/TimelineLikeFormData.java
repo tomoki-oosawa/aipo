@@ -222,7 +222,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
             ALLocalizationUtils.getl10nFormat(
               "TIMELINE_OTHER",
               lastuserName,
-              likelist.getLikeList(timeline_id).size());
+              likelist.getLikeList(timeline_id).size() - 1);
 
           SelectQuery<Activity> query = Database.query(Activity.class);
           Expression exp1 =
