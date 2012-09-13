@@ -599,8 +599,7 @@ public class ReportFormData extends ALAbstractFormData {
             report,
             memberList,
             mapList,
-            true,
-            destMember.getUserId()));
+            true));
           messageList.add(message);
         }
 
@@ -771,8 +770,7 @@ public class ReportFormData extends ALAbstractFormData {
             report,
             memberList,
             mapList,
-            false,
-            destMember.getUserId()));
+            false));
           messageList.add(message);
         }
 

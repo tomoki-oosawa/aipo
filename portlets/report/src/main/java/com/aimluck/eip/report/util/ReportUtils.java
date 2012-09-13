@@ -21,6 +21,7 @@ package com.aimluck.eip.report.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,12 +35,18 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
@@ -931,7 +938,9 @@ public class ReportUtils {
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTReport report,
-      List<ALEipUser> memberList, List<ALEipUser> mapList, Boolean type) {
+      List<ALEipUser> memberList, List<ALEipUser> mapList, Boolean isNew)
+      throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -945,90 +954,88 @@ public class ReportUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
-      type
-        ? ALLocalizationUtils.getl10n("REPORT_ADD_MSG")
-        : ALLocalizationUtils.getl10n("REPORT_UPDATED_MSG")).append(CR).append(
-      CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
-      .append(CR)
-      .append(report.getReportName().toString())
-      .append(CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_CREATEDATE") + "]")
-      .append(CR)
-      .append(
-        translateDate(report.getCreateDate(), ALLocalizationUtils
-          .getl10n("REPORT_TIME")))
-      .append(CR);
-
-    if (report.getNote().toString().length() > 0) {
-      body
-        .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_NOTE") + "]")
-        .append(CR)
-        .append(report.getNote().toString())
-        .append(CR);
-    }
-
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+    context.put("isNew", isNew);
+    // タイトル
+    context.put("getReportName", report.getReportName());
+    // 日時（年月日分秒）
+    ALDateTimeField alDateTimeField = new ALDateTimeField();
+    alDateTimeField.setValue(report.getCreateDate());
+    StringBuffer createDate = new StringBuffer();
+    createDate.append(alDateTimeField.getYear()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_YEAR")).append(
+      alDateTimeField.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      alDateTimeField.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      alDateTimeField.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      alDateTimeField.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+    context.put("createDate", createDate);
+    // 内容
+    context.put("getNote", report.getNote());
+    // 社内参加者
+    StringBuffer reportName = new StringBuffer();
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append(
-        "["
-          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_MENVERS")
-          + "]").append(CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
-          body.append(", ");
+          reportName.append(", ");
         }
         ALEipUser member = memberList.get(i);
-        body.append(member.getAliasName());
+        reportName.append(member.getAliasName());
       }
-      body.append(CR);
     }
-
+    context.put("reportName", reportName);
+    // 通知先
+    StringBuffer eipTReportMemberMap = new StringBuffer();
     if (mapList != null) {
       int size = mapList.size();
       int i;
-      body.append(
-        "[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_POSITIONS") + "]").append(
-        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
-          body.append(", ");
+          eipTReportMemberMap.append(", ");
         }
         ALEipUser member = mapList.get(i);
-        body.append(member.getAliasName());
+        eipTReportMemberMap.append(member.getAliasName());
       }
-      body.append(CR);
     }
-    body.append(CR);
-    body.append("[").append(ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body
-        .append("・" + ALLocalizationUtils.getl10n("REPORT_OUTSIDE_OFFICE"))
-        .append(CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body
-        .append("・" + ALLocalizationUtils.getl10n("REPORT_IN_OFFICE"))
-        .append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    context.put("eipTReportMemberMap", eipTReportMemberMap);
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/report-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/report-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-
-    return body.toString();
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   /**
@@ -1038,9 +1045,12 @@ public class ReportUtils {
    */
   public static String createMsgForCellPhone(RunData rundata,
       EipTReport report, List<ALEipUser> memberList, List<ALEipUser> mapList,
-      Boolean type, int destUserID) {
+      Boolean isNew) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
+
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
       user =
@@ -1050,77 +1060,88 @@ public class ReportUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
-      type
-        ? ALLocalizationUtils.getl10n("REPORT_ADD_MSG")
-        : ALLocalizationUtils.getl10n("REPORT_UPDATED_MSG")).append(CR).append(
-      CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
-      .append(CR)
-      .append(report.getReportName().toString())
-      .append(CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_CREATEDATE") + "]")
-      .append(CR)
-      .append(
-        translateDate(report.getCreateDate(), ALLocalizationUtils
-          .getl10n("REPORT_TIME")))
-      .append(CR);
-
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+    context.put("isNew", isNew);
+    // タイトル
+    context.put("getReportName", report.getReportName());
+    // 日時
+    ALDateTimeField alDateTimeField = new ALDateTimeField();
+    alDateTimeField.setValue(report.getCreateDate());
+    StringBuffer createDate = new StringBuffer();
+    createDate.append(alDateTimeField.getYear()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_YEAR")).append(
+      alDateTimeField.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      alDateTimeField.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      alDateTimeField.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      alDateTimeField.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+    context.put("createDate", createDate);
+    // 内容
+    context.put("getNote", report.getNote());
+    // 社内参加者
+    StringBuffer reportName = new StringBuffer();
     if (memberList != null) {
       int size = memberList.size();
       int i;
-      body.append(
-        "["
-          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_MENVERS")
-          + "]").append(CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
-          body.append(", ");
+          reportName.append(", ");
         }
         ALEipUser member = memberList.get(i);
-        body.append(member.getAliasName());
+        reportName.append(member.getAliasName());
       }
-      body.append(CR);
     }
+    context.put("reportName", reportName);
+    // 通知先
+    StringBuffer eipTReportMemberMap = new StringBuffer();
     if (mapList != null) {
       int size = mapList.size();
       int i;
-      body.append(
-        "[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_POSITIONS") + "]").append(
-        CR);
       for (i = 0; i < size; i++) {
         if (i != 0) {
-          body.append(", ");
+          eipTReportMemberMap.append(", ");
         }
         ALEipUser member = mapList.get(i);
-        body.append(member.getAliasName());
+        eipTReportMemberMap.append(member.getAliasName());
       }
-      body.append(CR);
     }
-    body.append(CR);
-
-    ALEipUser destUser;
+    context.put("eipTReportMemberMap", eipTReportMemberMap);
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
     try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/report-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/report-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    body.append("[").append(ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10n("REPORT_ACCESS") + "]").append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-    return body.toString();
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   /**
@@ -1149,19 +1170,20 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
+    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
+      ALLocalizationUtils.getl10n("REPORT_REPLY_MSG")).append(CR).append(CR);
     body
-      .append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG"))
-      .append(ALLocalizationUtils.getl10n("REPORT_REPLY_MSG"))
-      .append(CR)
-      .append(CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
+      .append(
+        "["
+          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME")
+          + "]")
       .append(CR)
       .append(reportparentreport.getReportName().toString())
       .append(CR);
     body.append(
-      "[" + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE") + "]").append(
-      CR).append(
+      "["
+        + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE")
+        + "]").append(CR).append(
       translateDate(report.getCreateDate(), ALLocalizationUtils
         .getl10n("REPORT_TIME"))).append(CR);
 
@@ -1219,19 +1241,20 @@ public class ReportUtils {
     if (!"".equals(user.getEmail())) {
       body.append("(").append(user.getEmail()).append(")");
     }
+    body.append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG")).append(
+      ALLocalizationUtils.getl10n("REPORT_REPLY_MSG")).append(CR).append(CR);
     body
-      .append(ALLocalizationUtils.getl10n("REPORT_REPORT_MSG"))
-      .append(ALLocalizationUtils.getl10n("REPORT_REPLY_MSG"))
-      .append(CR)
-      .append(CR);
-    body
-      .append("[" + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME") + "]")
+      .append(
+        "["
+          + ALLocalizationUtils.getl10n("REPORT_SETFIELDNAME_REPORT_NAME")
+          + "]")
       .append(CR)
       .append(reportparentreport.getReportName().toString())
       .append(CR);
     body.append(
-      "[" + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE") + "]").append(
-      CR).append(
+      "["
+        + ALLocalizationUtils.getl10n("REPORT_RETURN_REPORT_CREATEDATE")
+        + "]").append(CR).append(
       translateDate(report.getCreateDate(), ALLocalizationUtils
         .getl10n("REPORT_TIME"))).append(CR);
     body.append(CR);

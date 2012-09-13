@@ -1,0 +1,38 @@
+${loginUser}##
+#if($hasEmail)(${email})#end##
+さんが報告書を##
+#if(#$isNew)##
+追加##
+#else##
+編集##
+#end##
+しました。
+
+[タイトル]
+${getReportName}
+[日時]
+${createDate}
+[内容]
+${getNote}
+[社内参加者]
+${reportName}
+[通知先]
+${eipTReportMemberMap}
+
+[${serviceAlias}へのアクセス]
+#if($enableASP)
+ ${globalurl}
+#else
+・社外
+  ${globalurl}
+・社内
+  ${localurl}
+#end
+
+---------------------
+${serviceAlias}
+
+
+
+
+
