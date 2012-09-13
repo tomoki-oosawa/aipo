@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.note;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,9 +32,14 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.localization.LocalizationService;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -63,7 +70,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
-import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -370,6 +376,8 @@ public class NoteFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
 
+    EipTNote note;
+
     // 追加送信先タイプ
     int add_dest_type_int = 0;
 
@@ -377,7 +385,7 @@ public class NoteFormData extends ALAbstractFormData {
       Date nowDate = Calendar.getInstance().getTime();
 
       // 新規オブジェクトモデル
-      EipTNote note = Database.create(EipTNote.class);
+      note = Database.create(EipTNote.class);
       // 送信元ユーザ ID（アカウント ID）
       note.setOwnerId(Integer.toString(ALEipUtils.getUserId(rundata)));
       // 依頼者名
@@ -480,9 +488,11 @@ public class NoteFormData extends ALAbstractFormData {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
           message.setPcSubject(subject);
           message.setCellularSubject(subject);
-          message.setPcBody(createMsgForPc());
-          message
-            .setCellularBody(createMsgForCellPhone(destMember.getUserId()));
+          message.setPcBody(createMsgForPc(rundata, note, memberList));
+          message.setCellularBody(createMsgForCellPhone(
+            rundata,
+            note,
+            memberList));
           messageList.add(message);
         }
         ALMailService.sendAdminMailAsync(new ALAdminMailContext(
@@ -726,139 +736,115 @@ public class NoteFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  private String createMsgForPc() {
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer();
+  private String createMsgForPc(RunData rundata, EipTNote note,
+      List<ALEipUser> memberList) throws ALDBErrorException {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
 
-    if (company_name.getValue() != null
-      && (!company_name.getValue().equals(""))) {
-      body.append(company_name);
-    }
-    body
-      .append(client_name)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_YOU_GOT_MESSAGE"))
-      .append(CR)
-      .append(CR);
-
-    body
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLERK_TIME"))
-      .append(CR);
-    body.append(accept_date.getMonth()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
-      accept_date.getDay()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
-      accept_date.getHour()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
-      accept_date.getMinute()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE")).append(CR);
-    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SUBJECT")).append(
-      CR);
-    if ("0".equals(subject_type.getValue())) {
-      body.append(custom_subject.getValue()).append(CR);
-    } else if ("1".equals(subject_type.getValue())) {
-      body.append(ALLocalizationUtils.getl10nFormat("NOTE_CALL_AGAIN")).append(
-        CR);
-    } else if ("2".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CALL_BACK"))
-        .append(CR);
-    } else if ("3".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TELL_ME"))
-        .append(CR);
-    } else if ("4".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TAKE_A_MESSAGE"))
-        .append(CR);
-    }
-
-    body
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_INFORMATION"))
-      .append(CR)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_NAME"))
-      .append(client_name);
-    if (company_name.getValue() != null
-      && (!company_name.getValue().equals(""))) {
-      body.append(CR).append(
-        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CAMPANY")).append(
-        company_name);
-    }
-    if (telephone1 != null
-      && telephone2 != null
-      && telephone3 != null
-      && !telephone1.getValue().equals("")
-      && !telephone2.getValue().equals("")
-      && !telephone3.getValue().equals("")) {
-      body
-        .append(CR)
-        .append(
-          ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CELLILAR_PHONE"))
-        .append(CR)
-        .append(telephone1)
-        .append("-")
-        .append(telephone2)
-        .append("-")
-        .append(telephone3);
-    }
-    if (email_address.getValue() != null
-      && (!email_address.getValue().equals(""))) {
-      body
-        .append(CR)
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_EMAIL"))
-        .append(CR)
-        .append(email_address);
-    }
-
-    if (message.getValue() != null && (!message.getValue().equals(""))) {
-      body
-        .append(CR)
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_MESSAGE"))
-        .append(CR)
-        .append(message.getValue());
-    }
-
+    ALEipUser loginUser = null;
     ALBaseUser user = null;
+    StringWriter out = null;
+
     try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
       user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(src_user_id
-          .getValue()));
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
     } catch (Exception e) {
       return "";
     }
-    String username =
-      new StringBuffer().append(user.getLastName()).append(" ").append(
-        user.getFirstName()).toString();
-    body
-      .append(CR)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SRC_USER"))
-      .append(CR)
-      .append(username);
-    String e_mail_addr = user.getEmail();
-    if (!e_mail_addr.equals("")) {
-      body.append("(").append(e_mail_addr).append(")");
-    }
-    body.append(CR);
-    body.append(CR);
-    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_KAKKO")).append(
-      ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MAIL_ACCESS_TO")).append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body.append(
-        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_OUTSIDE_CAMPANY")).append(
-        CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_INSIDE_CAMPANY"))
-        .append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
-    }
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
 
-    return body.toString();
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("clientName", note.getClientName());
+      context.put("companyName", note.getCompanyName());
+
+      // 受付時間
+      ALDateTimeField alDateTimeField = new ALDateTimeField();
+      alDateTimeField.setValue(note.getAcceptDate());
+      StringBuffer acceptDate = new StringBuffer();
+      acceptDate.append(alDateTimeField.getMonth()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+        alDateTimeField.getDay()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+        alDateTimeField.getHour()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+        alDateTimeField.getMinute()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+
+      context.put("acceptDate", acceptDate);
+      // 用件
+      String subjectType = note.getSubjectType();
+      String subject = "";
+      if ("0".equals(subjectType)) {
+        subject = note.getCustomSubject();
+      } else if ("1".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
+      } else if ("2".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
+      } else if ("3".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
+      } else if ("4".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
+      }
+      context.put("subjectType", subject);
+
+      // 依頼者情報
+      context.put("clientName", note.getClientName());
+      context.put("companyName", note.getCompanyName());
+      // 電話番号
+      context.put("telephone", note.getTelephone());
+      // メール
+      // context.put("hasemailAddress", !note.getEmailAddress().equals(""));
+      context.put("emailAddress", note.getEmailAddress());
+      // 本文
+      context.put("message", note.getMessage());
+      // 送信者
+      context.put("loginUser", loginUser.getAliasName().toString());
+      context.put("hasEmail", !user.getEmail().equals(""));
+      context.put("email", user.getEmail());
+
+      // サービス
+      context.put("serviceAlias", ALOrgUtilsService.getAlias());
+      // サービス（Aipo）へのアクセス
+      context.put("enableAsp", enableAsp);
+      context.put("globalurl", ALMailUtils.getGlobalurl());
+      context.put("localurl", ALMailUtils.getLocalurl());
+      CustomLocalizationService locService =
+        (CustomLocalizationService) ServiceUtil
+          .getServiceByName(LocalizationService.SERVICE_NAME);
+      String lang = locService.getLocale(rundata).getLanguage();
+      out = new StringWriter();
+      if (lang != null && !lang.equals("en")) {
+        service.handleRequest(context, "portlets/mail/"
+          + lang
+          + "/note-notification-mail.vm", out);
+        out.flush();
+        return out.toString();
+      } else {
+        service.handleRequest(
+          context,
+          "portlets/mail/note-notification-mail.vm",
+          out);
+        out.flush();
+        return out.toString();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -866,137 +852,115 @@ public class NoteFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  private String createMsgForCellPhone(int destUserID) {
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer();
+  private String createMsgForCellPhone(RunData rundata, EipTNote note,
+      List<ALEipUser> memberList) throws ALDBErrorException {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
 
-    if (company_name.getValue() != null
-      && (!company_name.getValue().equals(""))) {
-      body.append(company_name);
-    }
-    body
-      .append(client_name)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_YOU_GOT_MESSAGE"))
-      .append(CR)
-      .append(CR);
-
-    body
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLERK_TIME"))
-      .append(CR);
-    body.append(accept_date.getMonth()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
-      accept_date.getDay()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
-      accept_date.getHour()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
-      accept_date.getMinute()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE")).append(CR);
-    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SUBJECT")).append(
-      CR);
-    if ("0".equals(subject_type.getValue())) {
-      body.append(custom_subject.getValue()).append(CR);
-    } else if ("1".equals(subject_type.getValue())) {
-      body.append(ALLocalizationUtils.getl10nFormat("NOTE_CALL_AGAIN")).append(
-        CR);
-    } else if ("2".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CALL_BACK"))
-        .append(CR);
-    } else if ("3".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TELL_ME"))
-        .append(CR);
-    } else if ("4".equals(subject_type.getValue())) {
-      body
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_TAKE_A_MESSAGE"))
-        .append(CR);
-    }
-
-    body
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_INFORMATION"))
-      .append(CR)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_NAME"))
-      .append(client_name);
-    if (company_name.getValue() != null
-      && (!company_name.getValue().equals(""))) {
-      body.append(CR).append(
-        ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CAMPANY")).append(
-        company_name);
-    }
-    if (telephone1 != null
-      && telephone2 != null
-      && telephone3 != null
-      && !telephone1.getValue().equals("")
-      && !telephone2.getValue().equals("")
-      && !telephone3.getValue().equals("")) {
-      body
-        .append(CR)
-        .append(
-          ALLocalizationUtils.getl10nFormat("NOTE_MAIL_CLIENT_CELLILAR_PHONE"))
-        .append(CR)
-        .append(telephone1)
-        .append("-")
-        .append(telephone2)
-        .append("-")
-        .append(telephone3);
-    }
-    if (email_address.getValue() != null
-      && (!email_address.getValue().equals(""))) {
-      body
-        .append(CR)
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_EMAIL"))
-        .append(CR)
-        .append(email_address);
-    }
-
-    if (message.getValue() != null && (!message.getValue().equals(""))) {
-      body
-        .append(CR)
-        .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_MESSAGE"))
-        .append(CR)
-        .append(message.getValue());
-    }
-
+    ALEipUser loginUser = null;
     ALBaseUser user = null;
+    StringWriter out = null;
+
     try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
       user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(src_user_id
-          .getValue()));
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
     } catch (Exception e) {
       return "";
     }
 
-    String username =
-      new StringBuffer().append(user.getLastName()).append(" ").append(
-        user.getFirstName()).toString();
-    body
-      .append(CR)
-      .append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_SRC_USER"))
-      .append(CR)
-      .append(username);
-    String e_mail_addr = user.getEmail();
-    if (e_mail_addr != null && !e_mail_addr.equals("")) {
-      body.append("(").append(e_mail_addr).append(")");
-    }
-
-    ALEipUser destUser;
     try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
-    }
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
 
-    body.append(CR);
-    body.append(CR);
-    body.append(ALLocalizationUtils.getl10nFormat("NOTE_MAIL_KAKKO")).append(
-      ALOrgUtilsService.getAlias()).append(
-      ALLocalizationUtils.getl10nFormat("NOTE_MAIL_ACCESS_TO")).append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-    return body.toString();
+      context.put("clientName", note.getClientName());
+      context.put("companyName", note.getCompanyName());
+
+      // 受付時間
+      ALDateTimeField alDateTimeField = new ALDateTimeField();
+      alDateTimeField.setValue(note.getAcceptDate());
+      StringBuffer acceptDate = new StringBuffer();
+      acceptDate.append(alDateTimeField.getMonth()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+        alDateTimeField.getDay()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+        alDateTimeField.getHour()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+        alDateTimeField.getMinute()).append(
+        ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+
+      context.put("acceptDate", acceptDate);
+      // 用件
+      String subjectType = note.getSubjectType();
+      String subject = "";
+      if ("0".equals(subjectType)) {
+        subject = note.getCustomSubject();
+      } else if ("1".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
+      } else if ("2".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
+      } else if ("3".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
+      } else if ("4".equals(subjectType)) {
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
+      }
+      context.put("subjectType", subject);
+
+      // 依頼者情報
+      context.put("clientName", note.getClientName());
+      context.put("companyName", note.getCompanyName());
+      // 電話番号
+      context.put("telephone", note.getTelephone());
+      // メール
+      // context.put("hasemailAddress", !note.getEmailAddress().equals(""));
+      context.put("emailAddress", note.getEmailAddress());
+      // 本文
+      context.put("message", note.getMessage());
+      // 送信者
+      context.put("loginUser", loginUser.getAliasName().toString());
+      context.put("hasEmail", !user.getEmail().equals(""));
+      context.put("email", user.getEmail());
+
+      // サービス
+      context.put("serviceAlias", ALOrgUtilsService.getAlias());
+      // サービス（Aipo）へのアクセス
+      context.put("enableAsp", enableAsp);
+      context.put("globalurl", ALMailUtils.getGlobalurl());
+      context.put("localurl", ALMailUtils.getLocalurl());
+      CustomLocalizationService locService =
+        (CustomLocalizationService) ServiceUtil
+          .getServiceByName(LocalizationService.SERVICE_NAME);
+      String lang = locService.getLocale(rundata).getLanguage();
+      out = new StringWriter();
+      if (lang != null && !lang.equals("en")) {
+        service.handleRequest(context, "portlets/mail/"
+          + lang
+          + "/note-notification-mail.vm", out);
+        out.flush();
+        return out.toString();
+      } else {
+        service.handleRequest(
+          context,
+          "portlets/mail/note-notification-mail.vm",
+          out);
+        out.flush();
+        return out.toString();
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
   }
 
   /**

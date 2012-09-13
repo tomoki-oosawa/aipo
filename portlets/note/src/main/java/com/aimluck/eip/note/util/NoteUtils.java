@@ -19,21 +19,29 @@
 
 package com.aimluck.eip.note.util;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
+import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
@@ -42,14 +50,20 @@ import com.aimluck.eip.cayenne.om.portlet.EipTNoteMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALActivity;
+import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモのユーティリティクラスです
@@ -813,4 +827,205 @@ public class NoteUtils {
     }
   }
 
+  /**
+   * note-notification-mail.vmからパソコンへ送信するメールの内容を作成する．
+   * 
+   * @return
+   */
+  @SuppressWarnings("unused")
+  private String createMsgForPc(RunData rundata, EipTNote note,
+      List<ALEipUser> memberList) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+
+    context.put("clientName", note.getClientName());
+    context.put("companyName", note.getCompanyName());
+
+    // 受付時間
+    ALDateTimeField alDateTimeField = new ALDateTimeField();
+    alDateTimeField.setValue(note.getAcceptDate());
+    StringBuffer acceptDate = new StringBuffer();
+    acceptDate.append(alDateTimeField.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      alDateTimeField.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      alDateTimeField.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      alDateTimeField.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+    context.put("acceptDate", acceptDate);
+
+    // 用件
+    String subjectType = note.getSubjectType();
+    String subject = "";
+    if ("0".equals(subjectType)) {
+      subject = note.getCustomSubject();
+    } else if ("1".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
+    } else if ("2".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
+    } else if ("3".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
+    } else if ("4".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
+    }
+    context.put("subjectType", subject);
+
+    // 依頼者情報
+    context.put("clientName", note.getClientName());
+    context.put("companyName", note.getCompanyName());
+    // 電話番号
+    context.put("telephone", note.getTelephone());
+    // メール
+    // context.put("hasemailAddress", !note.getEmailAddress().equals(""));
+    context.put("emailAddress", note.getEmailAddress());
+    // 本文
+    context.put("message", note.getMessage());
+    // 送信者
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/note-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/note-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
+  }
+
+  @SuppressWarnings("unused")
+  private String createMsgCellPhone(RunData rundata, EipTNote note,
+      List<ALEipUser> memberList) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+
+    context.put("clientName", note.getClientName());
+    context.put("companyName", note.getCompanyName());
+
+    // 受付時間
+    ALDateTimeField alDateTimeField = new ALDateTimeField();
+    alDateTimeField.setValue(note.getAcceptDate());
+    StringBuffer acceptDate = new StringBuffer();
+    acceptDate.append(alDateTimeField.getMonth()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MONTH")).append(
+      alDateTimeField.getDay()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_DAY")).append(
+      alDateTimeField.getHour()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_HOUR")).append(
+      alDateTimeField.getMinute()).append(
+      ALLocalizationUtils.getl10nFormat("NOTE_MINUTE"));
+    context.put("acceptDate", acceptDate);
+
+    // 用件
+    String subjectType = note.getSubjectType();
+    String subject = "";
+    if ("0".equals(subjectType)) {
+      subject = note.getCustomSubject();
+    } else if ("1".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
+    } else if ("2".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
+    } else if ("3".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
+    } else if ("4".equals(subjectType)) {
+      subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
+    }
+    context.put("subjectType", subject);
+    // 依頼者情報
+    context.put("clientName", note.getClientName());
+    context.put("companyName", note.getCompanyName());
+    // 電話番号
+    context.put("telephone", note.getTelephone());
+    // メール
+    // context.put("hasemailAddress", !note.getEmailAddress().equals(""));
+    context.put("emailAddress", note.getEmailAddress());
+    // 本文
+    context.put("message", note.getMessage());
+    // 送信者
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/note-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/note-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
+  }
 }

@@ -1,0 +1,39 @@
+${companyName}##
+${clientName}##
+様から伝言があります。
+
+[受付時間]
+${acceptDate}
+[用件]
+${subjectType}
+[依頼者情報]
+名前：${clientName}
+所属：${companyName}
+[電話番号]
+${telephone}
+[メール]
+${emailAddress}
+[本文]
+${message}
+[送信者]
+${loginUser}##
+#if($hasEmail)(${email})#end
+
+
+[${serviceAlias}へのアクセス]
+#if($enableASP)
+ ${globalurl}
+#else
+・社外
+  ${globalurl}
+・社内
+  ${localurl}
+#end
+
+---------------------
+${serviceAlias}
+
+
+
+
+
