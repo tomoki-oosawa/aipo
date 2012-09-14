@@ -286,6 +286,9 @@ public class CabinetSelectData extends
       if (CabinetUtils.hasResetFlag(rundata, context)) {
         CabinetUtils.resetFilter(rundata, context, this.getClass().getName());
         target_keyword.setValue("");
+        post_name = "0";
+        ALEipUtils.setPsmlParameters(rundata, context, "p3b-post", post_name);
+        updatePostNames();
       } else {
         target_keyword
           .setValue(CabinetUtils.getTargetKeyword(rundata, context));

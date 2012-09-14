@@ -27,10 +27,34 @@
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
+<div class="auiSummaryMeta auiFilter clearfix">
+<form class="auiSearch floatLeft" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetListScreen')" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
 <input type="hidden" name="template" value="CabinetListScreen"/>
-<input class="text floatLeft" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
+
+<div class="filterInputField">
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen")' />
+
+<div class="filters" id="filters_$!portlet.ID">#*
+*##if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")#*
+	*#<span class="filterTip">#*
+	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))#*
+		*#<span>$!result.SelectedPostAliasName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeGroup("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*##if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")#*
+	*#<span class="filterTip">#*
+	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("folder_id","0")))#*
+		*#<span>$!result.SelectedFolderInfo.FolderName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeFolder("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*#</div>
+
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.cabinet.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" style="width:480px;"/>
+</div>
+
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.CABINET_SEARCH</a>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">
 <div class="indicator" id="search-indicator-list-$!{portlet.ID}" style="display:none;">&nbsp;</div>
@@ -47,74 +71,13 @@
 <div id="listmessageDiv"></div>
 
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta clearfix">
-<div class="floatLeft">
-
-<div class="auiForm filters" id="filters_$!{portlet.ID}">
-	#if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="auiButton menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>
-	#else
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="auiButton menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>
-	#end
-</div>
-<div class="menubar" id="menubar_filter_$!portlet.ID" style="width:160px;display:none;">
-	<div>
-		<ul class="filtertype_group_$!portlet.ID"data-type="post" data-defaultparam="0">
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))
-			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
-
-			#foreach($record in $result.MyGroupList)
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.Name)))
-			<li data-param="$!record.Name"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.Name") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.Name')" >$!record.AliasName</a></li>
-			#end
-
-			#foreach($record in $result.PostMap)
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.GroupName)))
-			<li data-param="$!record.GroupName"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.GroupName") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.GroupName')" >$!record.PostName</a></li>
-			#end
-		</ul>
-	</div>
-</div>
-
-</div>
-</div>
 <div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-
-<div class="auiForm filters" id="filters_$!{portlet.ID}">
-	#if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="auiButton menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>
-	#else
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="auiButton menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>
-	#end
-
 #if($result.isEditable())
 #AUIajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
-</div>
-
-<div class="menubar" id="menubar_filter_$!portlet.ID" style="width:160px;display:none;">
-	<div>
-		<ul class="filtertype_group_$!portlet.ID"data-type="post" data-defaultparam="0">
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))
-			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
-
-			#foreach($record in $result.MyGroupList)
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.Name)))
-			<li data-param="$!record.Name"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.Name") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.Name')" >$!record.AliasName</a></li>
-			#end
-
-			#foreach($record in $result.PostMap)
-			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.GroupName)))
-			<li data-param="$!record.GroupName"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.GroupName") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.GroupName')" >$!record.PostName</a></li>
-			#end
-		</ul>
-	</div>
-</div>
-
-
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
 </div>
@@ -181,7 +144,47 @@
 $l10n.CABINET_NOT_PERMISSION_VIEW
 #end
 
-
 #AUIcontentsAreaFooter()
+
+<img src="images/common/dot.gif" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; } aipo.customize.addAutoHideMenuTrigger();' />
+
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+    	<p class="caption">$l10n.CABINET_GROUP</p>
+		<ul class="filtertype_group_$!portlet.ID"data-type="post" data-defaultparam="0">
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))
+			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
+
+			#foreach($record in $result.MyGroupList)
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.Name)))
+			<li data-param="$!record.Name"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.Name") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.Name')" >$!record.AliasName</a></li>
+			#end
+
+			#foreach($record in $result.PostMap)
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name",$record.GroupName)))
+			<li data-param="$!record.GroupName"><a href="javascript:void(0)" #if("$!result.SelectedPostName"=="$!record.GroupName") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','$record.GroupName')" >$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+    	<p class="caption">$l10n.CABINET_FOLDER</p>
+		<ul class="filtertype_folder_$!portlet.ID" data-type="folder" data-defaultparam="0">
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("folder_id","0")))
+			<li data-param="0" ><a href="javascript:void(0)" #if(!$!result.SelectedFolderInfo || "$!result.SelectedFolderInfo.FolderId"=="0") class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','0')" >$l10n.CABINET_ALL_FOLDER</a></li>
+			#foreach($record in $!result.FolderHierarchyList)
+			#if($record.isAuthorizedVisible())
+			#set($space = '')
+			#if(${record.HierarchyIndex} > 0)
+			#foreach($index in [1..${record.HierarchyIndex}])
+			#set($space = "${space}&nbsp;&nbsp;&nbsp;")
+			#end
+			#end
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("folder_id","$!record.FolderId")))
+			<li data-param="$!record.FolderId"><a href="javascript:void(0)" #if("$!result.SelectedFolderInfo.FolderId"=="$!record.FolderId") class="selected" #end onclick="aipo.cabinet.onChangeFolder('$url','$!portlet.ID','$!record.FolderId')" >${space}${record.FolderName}</a></li>
+			#end
+			#end
+		</ul>
+	</div>
+</div>
 
 #parse("/portlets/html/ja/cabinet-widgets.vm")

@@ -114,7 +114,7 @@ aipo.cabinet.hideMember = function(button) {
   dojo.byId('is_member').value = "FALSE";
 }
 
-aipo.cabinet.toggleMenu = function(node,filter){
+aipo.cabinet.toggleMenu = function(node,filter,alwaysPulldown){
 	var rect=filter.getBoundingClientRect();
 	var html=document.documentElement.getBoundingClientRect();
 	if (node.style.display == "none") {
@@ -131,7 +131,7 @@ aipo.cabinet.toggleMenu = function(node,filter){
         }else{
         	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
         }
-         if(html.bottom-node.clientHeight>rect.bottom){
+         if(html.bottom-node.clientHeight>rect.bottom||alwaysPulldown){
        		node.style.top=rect.bottom+scroll.top+"px";
         }else{
         	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
