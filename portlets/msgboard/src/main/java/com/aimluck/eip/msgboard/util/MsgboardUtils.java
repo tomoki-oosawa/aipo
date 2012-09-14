@@ -21,6 +21,7 @@ package com.aimluck.eip.msgboard.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -33,11 +34,17 @@ import org.apache.jetspeed.om.security.UserIdPrincipal;
 import org.apache.jetspeed.portal.PortletConfig;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
@@ -65,7 +72,6 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
-import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
@@ -1281,7 +1287,9 @@ public class MsgboardUtils {
    * @return
    */
   public static String createReplyMsgForPc(RunData rundata,
-      EipTMsgboardTopic topic, EipTMsgboardTopic parenttopic) {
+      EipTMsgboardTopic parenttopic, EipTMsgboardTopic topic,
+      List<ALEipUser> memberList) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -1295,42 +1303,50 @@ public class MsgboardUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body.append("さんが掲示板").append("に返信しました。").append(CR).append(CR);
-    body.append("[タイトル]").append(CR).append(
-      parenttopic.getTopicName().toString()).append(CR);
 
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+
+    context.put("topicName", parenttopic.getTopicName().toString());
+
+    StringBuffer Note = new StringBuffer();
     if (topic.getNote().toString().length() > 0) {
-      body
-        .append("[返信内容]")
-        .append(CR)
-        .append(topic.getNote().toString())
-        .append(CR);
+      Note.append(topic.getNote().toString());
     }
-    body.append(CR);
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    if (enableAsp) {
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-    } else {
-      body.append("・社外").append(CR);
-      body.append("　").append(ALMailUtils.getGlobalurl()).append(CR);
-      body.append("・社内").append(CR);
-      body.append("　").append(ALMailUtils.getLocalurl()).append(CR).append(CR);
+    context.put("note", Note);
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/msgboard-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/msgboard-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-
-    return body.toString();
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   /**
@@ -1339,9 +1355,13 @@ public class MsgboardUtils {
    * @return
    */
   public static String createReplyMsgForCellPhone(RunData rundata,
-      EipTMsgboardTopic topic, EipTMsgboardTopic parenttopic, int destUserID) {
+      EipTMsgboardTopic parenttopic, EipTMsgboardTopic topic,
+      List<ALEipUser> memberList) throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
+
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
       user =
@@ -1351,34 +1371,50 @@ public class MsgboardUtils {
     } catch (Exception e) {
       return "";
     }
-    String CR = System.getProperty("line.separator");
-    StringBuffer body = new StringBuffer("");
-    body.append(loginUser.getAliasName().toString());
-    if (!"".equals(user.getEmail())) {
-      body.append("(").append(user.getEmail()).append(")");
-    }
-    body.append("さんが掲示板").append("に返信しました。").append(CR).append(CR);
-    body.append("[タイトル]").append(CR).append(
-      parenttopic.getTopicName().toString()).append(CR);
-    body.append(CR);
 
-    ALEipUser destUser;
-    try {
-      destUser = ALEipUtils.getALEipUser(destUserID);
-    } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
-      return "";
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+
+    context.put("topicName", parenttopic.getTopicName().toString());
+
+    StringBuffer Note = new StringBuffer();
+    if (topic.getNote().toString().length() > 0) {
+      Note.append(topic.getNote().toString());
     }
-    body
-      .append("[")
-      .append(ALOrgUtilsService.getAlias())
-      .append("へのアクセス]")
-      .append(CR);
-    body.append("　").append(ALMailUtils.getGlobalurl()).append("?key=").append(
-      ALCellularUtils.getCellularKey(destUser)).append(CR);
-    body.append("---------------------").append(CR);
-    body.append(ALOrgUtilsService.getAlias()).append(CR);
-    return body.toString();
+    context.put("note", Note);
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/msgboard-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/msgboard-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   /**

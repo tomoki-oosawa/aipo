@@ -430,12 +430,14 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             message.setCellularSubject(subject);
             message.setPcBody(MsgboardUtils.createReplyMsgForPc(
               rundata,
+              parenttopic,
               topic,
-              parenttopic));
-            message.setCellularBody(MsgboardUtils.createReplyMsgForPc(
+              memberList));
+            message.setCellularBody(MsgboardUtils.createReplyMsgForCellPhone(
               rundata,
+              parenttopic,
               topic,
-              parenttopic));
+              memberList));
             messageList.add(message);
           }
           ALMailService.sendAdminMailAsync(new ALAdminMailContext(

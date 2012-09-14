@@ -1,0 +1,27 @@
+${loginUser}##
+#if($hasEmail)(${email})#end##
+さんが掲示板に返信しました。
+
+[タイトル]
+${topicName}
+
+[返信内容]
+${note}
+
+[${serviceAlias}へのアクセス]
+#if($enableASP)
+ ${globalurl}
+#else
+・社外
+  ${globalurl}
+・社内
+  ${localurl}
+#end
+
+---------------------
+${serviceAlias}
+
+
+
+
+
