@@ -820,12 +820,12 @@ $item.get(0)
 <div class="dojoDndItem auiPortlet">
 	<div class="auiPortletHead"><div class="inner">
 		<div class="auiPortletTitle">$!portlet.Title</div>
-		##<div class="auiPortletTool">
+		<div class="auiPortletTool">
 			##現行必要ない。
 			##<div class="auiPortletAction"><a href="#">トピック追加</a></div>
 			##カスタマイズはトップページのみに表示されているので、これもまた必要ない。
 			##<div class="auiPortletSetting"><a href="javascript:void(0);" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('${portlet_id}');" title="カスタマイズ"></a></div>
-		##</div>
+		</div>
 	</div></div>
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody"><div class="inner">
