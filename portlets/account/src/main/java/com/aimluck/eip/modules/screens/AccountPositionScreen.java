@@ -59,7 +59,7 @@ public class AccountPositionScreen extends ALVelocityScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccountPositionScreen] Exception.", ex);
+      logger.error("AccountPositionScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

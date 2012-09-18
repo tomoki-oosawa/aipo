@@ -603,7 +603,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
         }
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }
@@ -721,7 +721,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
         todoList.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

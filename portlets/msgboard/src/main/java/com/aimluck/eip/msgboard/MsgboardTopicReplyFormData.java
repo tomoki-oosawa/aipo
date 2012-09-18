@@ -448,7 +448,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         }
       } catch (Exception ex) {
         msgList.add("メールを送信できませんでした。");
-        logger.error("Exception", ex);
+        logger.error("msgboard", ex);
         return false;
       }
     } catch (Exception e) {
@@ -635,7 +635,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
     try {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
     }
 
     return res;

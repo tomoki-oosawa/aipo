@@ -112,7 +112,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
         memoLiteList.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
     }
   }
 
@@ -143,7 +143,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
 
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }
@@ -235,7 +235,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       rd.setCreateDate(record.getCreateDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }
@@ -276,7 +276,7 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }

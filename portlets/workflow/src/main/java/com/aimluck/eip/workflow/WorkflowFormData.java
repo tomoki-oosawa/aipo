@@ -311,7 +311,7 @@ public class WorkflowFormData extends ALAbstractFormData {
           fileuploadList = FileuploadUtils.getFileuploadList(rundata);
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("workflow", ex);
       }
 
       category_id.getValue();
@@ -468,7 +468,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -559,7 +559,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -707,7 +707,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -871,7 +871,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;

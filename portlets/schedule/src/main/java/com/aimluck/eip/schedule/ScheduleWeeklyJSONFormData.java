@@ -307,7 +307,7 @@ public class ScheduleWeeklyJSONFormData {
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return false;
     }
   }
@@ -338,7 +338,7 @@ public class ScheduleWeeklyJSONFormData {
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return false;
     }
   }
@@ -432,7 +432,7 @@ public class ScheduleWeeklyJSONFormData {
       endDate.setValue(end_date);
       viewDate.setValue(view_date);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return false;
     }
     return true;
@@ -544,7 +544,7 @@ public class ScheduleWeeklyJSONFormData {
           } catch (Exception ex) {
             msgList
               .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-            logger.error("Exception", ex);
+            logger.error("schedule", ex);
             return false;
           }
         }
@@ -714,7 +714,7 @@ public class ScheduleWeeklyJSONFormData {
           } catch (Exception ex) {
             msgList
               .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-            logger.error("Exception", ex);
+            logger.error("schedule", ex);
             return false;
           }
 
@@ -872,7 +872,7 @@ public class ScheduleWeeklyJSONFormData {
           }
         } catch (Exception ex) {
           msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-          logger.error("Exception", ex);
+          logger.error("schedule", ex);
           return false;
         }
 
@@ -1039,7 +1039,7 @@ public class ScheduleWeeklyJSONFormData {
 
         } catch (Exception ex) {
           msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-          logger.error("Exception", ex);
+          logger.error("schedule", ex);
           return false;
         }
       }

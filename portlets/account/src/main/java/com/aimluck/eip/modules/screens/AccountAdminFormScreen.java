@@ -50,7 +50,7 @@ public class AccountAdminFormScreen extends ALVelocityScreen {
     try {
       doAccount_adminpasswd_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AccountAdminFormScreen] Exception.", ex);
+      logger.error("AccountAdminFormScreen.doOutput.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

@@ -86,7 +86,7 @@ public class TimecardAction extends ALBaseAction {
         doTimecard_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
     }
 
   }

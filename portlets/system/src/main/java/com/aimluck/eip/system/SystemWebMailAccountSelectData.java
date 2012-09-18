@@ -153,7 +153,7 @@ public class SystemWebMailAccountSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -227,7 +227,7 @@ public class SystemWebMailAccountSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -261,7 +261,7 @@ public class SystemWebMailAccountSelectData extends
       rd.setSmtpEncryptionFlag(record.getSmtpEncryptionFlg());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }

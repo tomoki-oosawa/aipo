@@ -177,7 +177,7 @@ public class AjaxScheduleMonthlySelectData extends
       monthCon.initField();
       monthCon.setViewMonth(cal, tmpCal);
     } catch (Exception e) {
-      // logger.error("Exception", e);
+      // logger.error("schedule", e);
     }
 
     // 次の月、前の月

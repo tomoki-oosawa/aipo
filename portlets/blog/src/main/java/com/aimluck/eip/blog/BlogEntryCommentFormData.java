@@ -226,7 +226,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("[BlogEntryCommentFormData]", e);
+      logger.error("BlogEntryCommentFormData.deleteFormData", e);
       throw new ALDBErrorException();
     }
     return true;
@@ -325,7 +325,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       }
     } catch (Exception e) {
       Database.rollback();
-      logger.error("[BlogEntryCommentFormData]", e);
+      logger.error("BlogEntryCommentFormData.insertFormData", e);
       throw new ALDBErrorException();
     }
     return true;
@@ -507,7 +507,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       try {
         destUser = ALEipUtils.getALEipUser(destUserID);
       } catch (ALDBErrorException ex) {
-        logger.error("Exception", ex);
+        logger.error("BlogEntryCommentFormData.createMsgForCellPhone", ex);
         return "";
       }
 

@@ -302,7 +302,7 @@ public class TimelineFormData extends ALAbstractFormData {
         topic.getCreateDate().toString());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return false;
     }
     return true;
@@ -411,7 +411,7 @@ public class TimelineFormData extends ALAbstractFormData {
       try {
         fileuploadList = TimelineUtils.getFileuploadList(rundata);
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("timeline", ex);
       }
     }
     return res;

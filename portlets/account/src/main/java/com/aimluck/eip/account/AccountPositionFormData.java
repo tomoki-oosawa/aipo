@@ -50,9 +50,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AccountPositionFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(AccountPositionFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccountPositionFormData.class.getName());
 
   /** 役職名 */
   private ALStringField position_name;
@@ -78,6 +77,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
    * 
    * 
    */
+  @Override
   public void initField() {
 
     // 役職名
@@ -118,7 +118,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
               ALEipConstants.ENTITY_ID));
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AccountPositionFormData.setFormData", ex);
       }
     }
     return res;
@@ -163,7 +163,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPositionFormData.validate", ex);
       return false;
     }
 
@@ -189,7 +189,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
       }
       position_name.setValue(record.getPositionName());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPositionFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -220,7 +220,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
       ALEipManager.getInstance().reloadPosition();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPositionFormData.insertFormData", ex);
       return false;
     }
     return true;
@@ -249,7 +249,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
       ALEipManager.getInstance().reloadPosition();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPositionFormData.updateFormData", ex);
       return false;
     }
     return true;
@@ -289,7 +289,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
       ALEipManager.getInstance().reloadPosition();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPositionFormData.deleteFormData", ex);
       return false;
     }
     return true;

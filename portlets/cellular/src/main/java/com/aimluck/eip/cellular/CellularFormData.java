@@ -219,7 +219,7 @@ public class CellularFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cellular", ex);
       return false;
     }
     return res;

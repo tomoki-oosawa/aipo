@@ -24,14 +24,12 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.addressbook.AddressBookCompanySelectData;
 import com.aimluck.eip.addressbook.AddressBookCompanyWordSelectData;
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳の会社情報の一覧を処理するクラスです。
- *
+ * 
  */
 public class AddressBookCompanyListScreen extends AddressBookScreen {
 
@@ -40,7 +38,7 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
     .getLogger(AddressBookCompanyListScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -50,25 +48,23 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
 
     try {
 
-        // 会社情報検索
-        AddressBookCompanyWordSelectData listData =
-          new AddressBookCompanyWordSelectData();
-        listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
-          rundata,
-          context).getPortletConfig().getInitParameter("p1b-rows")));
-        listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
-          rundata,
-          context).getPortletConfig().getInitParameter("p3a-strlen")));
-        listData.doViewList(this, rundata, context);
-        setTemplate(
-          rundata,
-          context,
-          "portlets/html/ja/ajax-addressbook-company-list.vm");
-
-
+      // 会社情報検索
+      AddressBookCompanyWordSelectData listData =
+        new AddressBookCompanyWordSelectData();
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1b-rows")));
+      listData.setStrLength(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p3a-strlen")));
+      listData.doViewList(this, rundata, context);
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ja/ajax-addressbook-company-list.vm");
 
     } catch (Exception ex) {
-      logger.error("[AddressBookCompanyListScreen] Exception.", ex);
+      logger.error("AddressBookCompanyListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

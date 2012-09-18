@@ -164,7 +164,7 @@ public class ToDoMultiStateUpdate extends ALAbstractCheckList {
             }
           } catch (Exception ex) {
             msgList.add("メールを送信できませんでした。");
-            logger.error("Exception", ex);
+            logger.error("todo", ex);
             return false;
           }
         }

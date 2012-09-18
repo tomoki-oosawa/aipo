@@ -159,7 +159,7 @@ public class NoteGroupSelectData extends
         return query.getResultList();
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -190,7 +190,7 @@ public class NoteGroupSelectData extends
       rd.setUserName(user.getLastName() + " " + user.getFirstName());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }

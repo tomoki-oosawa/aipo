@@ -286,7 +286,7 @@ public class DeleteSampleFormData extends ALAbstractFormData {
       updateFlag(rundata);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("deletesample", ex);
       return false;
     }
 

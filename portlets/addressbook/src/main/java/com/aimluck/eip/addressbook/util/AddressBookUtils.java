@@ -100,7 +100,7 @@ public class AddressBookUtils {
       }
       return groups.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookUtils.getEipMAddressGroup", ex);
       return null;
     }
   }
@@ -138,7 +138,7 @@ public class AddressBookUtils {
       }
       return companys.get(0);
     } catch (Exception ex) {
-      logger.error("Exception ", ex);
+      logger.error("AddressBookUtils.getEipMAddressbookCompany", ex);
       return null;
     }
   }
@@ -174,7 +174,7 @@ public class AddressBookUtils {
       }
       return aList;
     } catch (Exception ex) {
-      logger.error("Exception ", ex);
+      logger.error("AddressBookUtils.getMyGroupNames", ex);
     }
     return null;
   }
@@ -238,7 +238,7 @@ public class AddressBookUtils {
       }
       return addresses.get(0);
     } catch (Exception ex) {
-      logger.error("Exception ", ex);
+      logger.error("AddressBookUtils.getEipMAddressbook", ex);
       return null;
     }
   }
@@ -288,7 +288,7 @@ public class AddressBookUtils {
       }
       return groupMap;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookUtils.getGroupMap", ex);
       return null;
     }
   }
@@ -312,7 +312,7 @@ public class AddressBookUtils {
       logger.debug("AddressbookUtils getGroups out");
       return groups;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookUtils.getGroups", ex);
       return null;
     }
   }
@@ -361,7 +361,7 @@ public class AddressBookUtils {
         resultList.add(st);
       }
     } catch (Exception ex) {
-      logger.error("[AddressbookUtils]", ex);
+      logger.error("AddressbookUtils.getGroupMember", ex);
     }
     return resultList;
   }
@@ -528,7 +528,7 @@ public class AddressBookUtils {
         res.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookUtils.getMyGroups", ex);
     }
     return res;
   }

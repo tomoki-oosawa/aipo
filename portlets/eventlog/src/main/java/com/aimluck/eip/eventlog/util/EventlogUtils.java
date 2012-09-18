@@ -158,7 +158,7 @@ public class EventlogUtils {
       }
       return logs.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -261,7 +261,7 @@ public class EventlogUtils {
       String dataName = group.getGroupName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -283,7 +283,7 @@ public class EventlogUtils {
       String dataName = company.getCompanyName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -307,7 +307,7 @@ public class EventlogUtils {
           address.getLastName()).toString();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -328,7 +328,7 @@ public class EventlogUtils {
       String dataName = thema.getThemaName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -349,7 +349,7 @@ public class EventlogUtils {
       String dataName = todo.getTodoName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -371,7 +371,7 @@ public class EventlogUtils {
       String dataName = category.getCategoryName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -392,7 +392,7 @@ public class EventlogUtils {
       String dataName = blog.getTitle();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -417,7 +417,7 @@ public class EventlogUtils {
           + request.getRequestName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -439,7 +439,7 @@ public class EventlogUtils {
       String dataName = category.getCategoryName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -461,7 +461,7 @@ public class EventlogUtils {
       String dataName = account.getAccountName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -482,7 +482,7 @@ public class EventlogUtils {
       String dataName = timecard.getReason();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -503,7 +503,7 @@ public class EventlogUtils {
       String dataName = schedule.getName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -536,7 +536,7 @@ public class EventlogUtils {
       String dataName = subject + " (" + note.getClientName() + ")";
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -557,7 +557,7 @@ public class EventlogUtils {
       String dataName = group.getGroupName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -579,7 +579,7 @@ public class EventlogUtils {
       String dataName = topic.getTopicName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -601,7 +601,7 @@ public class EventlogUtils {
       String dataName = category.getCategoryName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -623,7 +623,7 @@ public class EventlogUtils {
       String dataName = file.getFileTitle();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -645,7 +645,7 @@ public class EventlogUtils {
       String dataName = file.getFolderName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -667,7 +667,7 @@ public class EventlogUtils {
       String dataName = category.getName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -688,7 +688,7 @@ public class EventlogUtils {
       String dataName = memo.getMemoName();
       return dataName;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }

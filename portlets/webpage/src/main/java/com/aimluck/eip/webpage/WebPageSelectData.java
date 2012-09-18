@@ -72,7 +72,7 @@ public class WebPageSelectData extends
     try {
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webpage", ex);
       return null;
     }
   }
@@ -88,7 +88,7 @@ public class WebPageSelectData extends
     try {
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webpage", ex);
       return null;
     }
   }
@@ -107,7 +107,7 @@ public class WebPageSelectData extends
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       return portlet;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webpage", ex);
       return null;
     }
   }
@@ -147,7 +147,7 @@ public class WebPageSelectData extends
       rd.setMaximizedHeight(MaximizedHeight);
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webpage", ex);
       return null;
     }
   }

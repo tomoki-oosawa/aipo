@@ -170,7 +170,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
 
@@ -203,7 +203,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       // メモ
       description.setValue(thema.getDescription());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
     return true;
@@ -257,7 +257,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
       return false;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
     return true;
@@ -299,7 +299,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
         thema_name.getValue());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
     return true;
@@ -341,7 +341,7 @@ public class BlogThemaFormData extends ALAbstractFormData {
         thema_name.getValue());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
     return true;

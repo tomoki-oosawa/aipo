@@ -385,7 +385,7 @@ public class ManHourSelectData extends
       List<EipTScheduleMap> list = query.fetchList();
       return new ResultList<EipTScheduleMap>(sortByDummySchedule(list));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("manhour", ex);
       return null;
     }
   }
@@ -704,7 +704,7 @@ public class ManHourSelectData extends
       }
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("manhour", ex);
       return null;
     }
   }

@@ -165,7 +165,7 @@ public class BlogUtils {
       ALEipUtils.redirectPageNotFound(rundata);
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getEipTBlogEntry", ex);
       throw new ALDBErrorException();
     }
   }
@@ -200,7 +200,7 @@ public class BlogUtils {
       }
       return themas.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getEipTBlogThema", ex);
       return null;
     }
   }
@@ -217,7 +217,7 @@ public class BlogUtils {
       EipTBlogThema thema = Database.get(EipTBlogThema.class, thema_id);
       return thema;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getEipTBlogThema", ex);
       return null;
     }
   }
@@ -238,7 +238,7 @@ public class BlogUtils {
       }
       return blogs.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getEipTBlog", ex);
       return null;
     }
   }
@@ -275,7 +275,7 @@ public class BlogUtils {
       }
       return comments.get(0);
     } catch (Exception ex) {
-      logger.error("[BlogUtils]", ex);
+      logger.error("BlogUtils.getEipTBlogComment", ex);
       throw new ALDBErrorException();
 
     }
@@ -324,7 +324,7 @@ public class BlogUtils {
       }
       return files.get(0);
     } catch (Exception ex) {
-      logger.error("[BlogUtils]", ex);
+      logger.error("BlogUtils.getEipTBlogFile", ex);
       throw new ALDBErrorException();
 
     }
@@ -371,7 +371,7 @@ public class BlogUtils {
       EipTBlogEntry entry = entrys.get(0);
       return entry;
     } catch (Exception ex) {
-      logger.error("[EntryUtils]", ex);
+      logger.error("BlogUtils.getEipTBlogParentEntry", ex);
       throw new ALDBErrorException();
 
     }
@@ -405,7 +405,7 @@ public class BlogUtils {
       themaList.add(lastRd);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getThemaList", ex);
       return null;
     }
     return themaList;
@@ -499,7 +499,7 @@ public class BlogUtils {
         list.add(user);
       }
     } catch (Exception ex) {
-      logger.error("[BlogUtils]", ex);
+      logger.error("BlogUtils.getBlogUserResultDataList", ex);
     }
     return list;
   }
@@ -520,7 +520,7 @@ public class BlogUtils {
       }
       return (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getBaseUser", ex);
       return null;
     }
   }
@@ -641,7 +641,7 @@ public class BlogUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getPortletURIinPersonalConfigPane", ex);
       return null;
     }
     return null;
@@ -746,12 +746,12 @@ public class BlogUtils {
             filebean.setFileName(line);
             fileNameList.add(filebean);
           } catch (Exception e) {
-            logger.error("Exception", e);
+            logger.error("BlogUtils.getFileuploadList", e);
           } finally {
             try {
               reader.close();
             } catch (Exception e) {
-              logger.error("Exception", e);
+              logger.error("BlogUtils.getFileuploadList", e);
             }
           }
         }
@@ -790,7 +790,7 @@ public class BlogUtils {
           fileNameList.add(filebean);
         }
       } catch (Exception ex) {
-        logger.error("[BlogUtils] Exception.", ex);
+        logger.error("BlogUtils.getFileuploadList", ex);
       }
     }
     return fileNameList;
@@ -818,7 +818,7 @@ public class BlogUtils {
 
       return files;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogUtils.getEipTBlogFileList", ex);
       return null;
     }
   }

@@ -137,7 +137,7 @@ public class CellScheduleOnedaySelectByMemberData extends
         todoList.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }
@@ -273,7 +273,7 @@ public class CellScheduleOnedaySelectByMemberData extends
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }

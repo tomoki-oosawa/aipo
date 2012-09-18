@@ -96,7 +96,7 @@ public class CellMsgboardAction extends MsgboardAction {
         doMsgboard_topic_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
     }
 
   }

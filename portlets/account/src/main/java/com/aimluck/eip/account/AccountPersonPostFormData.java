@@ -192,7 +192,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPersonPostFormData.loadFormData", ex);
       return false;
     }
     return true;

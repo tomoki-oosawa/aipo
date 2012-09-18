@@ -54,7 +54,7 @@ public class AccountPersonScreen extends ALVelocityScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccountPersonScreen] Exception.", ex);
+      logger.error("AccountPersonScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

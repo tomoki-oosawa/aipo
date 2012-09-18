@@ -242,7 +242,7 @@ public class FileuploadFormData extends ALAbstractFormData {
       filebean.setFileId(fileId);
       filebean.setFileName(realfilename);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileupload", ex);
       return false;
     }
     return true;

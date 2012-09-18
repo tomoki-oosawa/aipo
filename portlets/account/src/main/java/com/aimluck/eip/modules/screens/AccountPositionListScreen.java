@@ -58,7 +58,7 @@ public class AccountPositionListScreen extends AccountPositionScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccountPositionListScreen] Exception.", ex);
+      logger.error("AccountPositionListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

@@ -98,7 +98,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return false;
     }
     return true;

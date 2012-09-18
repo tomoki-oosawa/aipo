@@ -87,7 +87,7 @@ public class AccessControlFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccessControlFormJSONScreen]", e);
+      logger.error("AccessControlFormJSONScreen.getJSONString", e);
     }
 
     return result;

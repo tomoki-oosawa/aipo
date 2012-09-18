@@ -123,7 +123,7 @@ public class CabinetAction extends ALBaseAction {
         doCabinet_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
     }
 
   }

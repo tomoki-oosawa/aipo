@@ -198,7 +198,7 @@ public class MsgboardTopicSelectData extends
       }
       updateCategoryName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
     }
 
     target_keyword = new ALStringField();
@@ -243,7 +243,7 @@ public class MsgboardTopicSelectData extends
       topicSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return null;
 
     }
@@ -454,7 +454,7 @@ public class MsgboardTopicSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return null;
     }
 

@@ -90,7 +90,7 @@ public class MyGroupAction extends ALBaseAction {
         doMygroup_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
     }
   }
 
@@ -308,7 +308,7 @@ public class MyGroupAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return null;
     }
     return null;

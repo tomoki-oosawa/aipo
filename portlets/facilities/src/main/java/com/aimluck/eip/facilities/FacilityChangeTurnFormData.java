@@ -126,7 +126,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return res;
@@ -166,7 +166,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
     try {
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("facilities", e);
       return false;
     }
   }
@@ -206,7 +206,7 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("facilities", e);
       res = false;
     }
     return res;

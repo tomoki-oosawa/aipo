@@ -75,7 +75,7 @@ public class ExtTimecardSystemSelectData extends
       systemSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -136,7 +136,7 @@ public class ExtTimecardSystemSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -171,7 +171,7 @@ public class ExtTimecardSystemSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }

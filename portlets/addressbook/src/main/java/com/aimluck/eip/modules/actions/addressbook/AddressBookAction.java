@@ -107,7 +107,7 @@ public class AddressBookAction extends ALBaseAction {
         // }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookAction.buildMaximizedContext", ex);
     }
   }
 

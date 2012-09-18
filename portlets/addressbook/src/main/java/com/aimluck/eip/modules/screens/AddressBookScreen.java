@@ -86,7 +86,7 @@ public class AddressBookScreen extends ALVelocityScreen {
       }
 
     } catch (Exception ex) {
-      logger.error("[AddressBookScreen] Exception.", ex);
+      logger.error("AddressBookScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

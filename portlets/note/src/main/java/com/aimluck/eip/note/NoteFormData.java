@@ -469,7 +469,7 @@ public class NoteFormData extends ALAbstractFormData {
       NoteUtils.sendNoteActivity(note, user.getName().getValue(), recipients);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return false;
     }
 
@@ -510,7 +510,7 @@ public class NoteFormData extends ALAbstractFormData {
 
       } catch (Exception ex) {
         msgList.add("メールを送信できませんでした。");
-        logger.error("Exception", ex);
+        logger.error("note", ex);
         return false;
       }
     }
@@ -558,7 +558,7 @@ public class NoteFormData extends ALAbstractFormData {
       // 伝言メモを削除
       return NoteUtils.deleteNotes(rundata, context, delNoteIdList, msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return false;
     }
   }

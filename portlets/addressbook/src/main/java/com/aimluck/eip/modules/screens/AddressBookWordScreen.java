@@ -33,7 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳検索ボックスを処理するクラスです。
- *
+ * 
  */
 public class AddressBookWordScreen extends ALVelocityScreen {
 
@@ -44,7 +44,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
   private String mode = null;
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -89,7 +89,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
           "portlets/html/ja/ajax-addressbook-list.vm");
       }
     } catch (Exception ex) {
-      logger.error("[AddressBookWordScreen] Exception.", ex);
+      logger.error("AddressBookWordScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

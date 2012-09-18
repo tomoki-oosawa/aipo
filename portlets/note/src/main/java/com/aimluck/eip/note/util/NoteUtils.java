@@ -158,7 +158,7 @@ public class NoteUtils {
       }
       return notes.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -201,7 +201,7 @@ public class NoteUtils {
       }
       return maps.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -258,7 +258,7 @@ public class NoteUtils {
 
       return noteMaps;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -289,7 +289,7 @@ public class NoteUtils {
       }
       userId = (destUserList.get(0)).getUserId().toString();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
     return userId;
@@ -320,7 +320,7 @@ public class NoteUtils {
       }
       userName = (destUserList.get(0)).getLoginName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
     return userName;
@@ -344,7 +344,7 @@ public class NoteUtils {
 
       return (TurbineGroup) JetspeedSecurity.getGroup(id);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -525,7 +525,7 @@ public class NoteUtils {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return false;
     }
     return true;
@@ -622,7 +622,7 @@ public class NoteUtils {
       List<EipTNote> list = query.fetchList();
       newNoteAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return 0;
     }
     return newNoteAllSum;
@@ -658,7 +658,7 @@ public class NoteUtils {
       query.andQualifier(exp4);
       return query;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -678,7 +678,7 @@ public class NoteUtils {
       List<EipTNote> list = query.fetchList();
       unreadNotesAllSum = (list != null && list.size() > 0) ? list.size() : 0;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return 0;
     }
     return unreadNotesAllSum;
@@ -714,7 +714,7 @@ public class NoteUtils {
       query.andQualifier(exp4);
       return query;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -773,7 +773,7 @@ public class NoteUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
     return null;

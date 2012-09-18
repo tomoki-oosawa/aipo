@@ -124,7 +124,7 @@ public class PageUtils {
 
       updateLayoutPositions(portlets);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return false;
     }
     return true;
@@ -184,7 +184,7 @@ public class PageUtils {
       // PsmlManager.refresh(((JetspeedRunData)
       // rundata).getCustomizedProfile());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
     }
   }
 
@@ -223,7 +223,7 @@ public class PageUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return null;
     }
     return null;
@@ -270,7 +270,7 @@ public class PageUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return null;
     }
     return null;

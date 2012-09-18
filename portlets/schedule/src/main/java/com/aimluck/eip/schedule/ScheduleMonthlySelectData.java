@@ -267,7 +267,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       monthTodoCon.initField();
       monthTodoCon.setViewMonth(cal5, tmpCal5);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
     // 表示終了日時
     viewEndCrt.setValue(cal.getTime());
@@ -352,7 +352,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     }
 
     // ToDo 表示設定
@@ -580,7 +580,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールをコンテナに格納
       monthCon.addResultData(rd);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }
@@ -696,7 +696,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

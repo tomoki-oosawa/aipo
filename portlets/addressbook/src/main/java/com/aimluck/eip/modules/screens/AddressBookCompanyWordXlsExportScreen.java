@@ -93,7 +93,9 @@ public class AddressBookCompanyWordXlsExportScreen extends ALXlsScreen {
     try {
       setupAddressBookSheet(rundata, context, wb);
     } catch (Exception e) {
-      logger.error("AddressBookCsvExportScreen", e);
+      logger.error(
+        "AddressBookCompanyWordXlsExportScreen.createHSSFWorkbook",
+        e);
       return false;
     }
     return true;

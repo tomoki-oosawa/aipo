@@ -217,7 +217,7 @@ public class ReportSelectData extends
       ResultList<EipTReport> list = query.getResultList();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -376,7 +376,7 @@ public class ReportSelectData extends
         .intValue());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -608,7 +608,7 @@ public class ReportSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }

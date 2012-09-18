@@ -88,7 +88,7 @@ public class SystemUtils {
       logger.error("UnknownUserException : UserID = " + userid);
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -119,7 +119,7 @@ public class SystemUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
     }
     return result;
   }

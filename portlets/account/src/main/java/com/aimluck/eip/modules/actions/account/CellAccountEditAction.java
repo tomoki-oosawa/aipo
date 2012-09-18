@@ -133,7 +133,7 @@ public class CellAccountEditAction extends ALBaseAction {
         doAccountedit_configlogin(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CellAccountEditAction.buildMaximizedContext", ex);
     }
   }
 

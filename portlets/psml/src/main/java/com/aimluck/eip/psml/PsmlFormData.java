@@ -214,7 +214,7 @@ public class PsmlFormData extends ALAbstractFormData {
       ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_SUCCESS);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("psml", ex);
       ALEipUtils.setTemp(rundata, context, ATTACH_VIEW_STATUS, UPDATE_ERROR);
       return false;
     }
@@ -243,7 +243,7 @@ public class PsmlFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("psml", ex);
       ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_ERROR);
       return false;
     }
@@ -280,7 +280,7 @@ public class PsmlFormData extends ALAbstractFormData {
         .setTemp(rundata, context, ALL_USER_VIEW_STATUS, UPDATE_SUCCESS);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("psml", ex);
       ALEipUtils.setTemp(rundata, context, ALL_USER_VIEW_STATUS, UPDATE_ERROR);
       return false;
     }

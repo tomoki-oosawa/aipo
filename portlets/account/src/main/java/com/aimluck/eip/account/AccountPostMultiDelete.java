@@ -93,7 +93,7 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPostMultiDelete.action", ex);
       return false;
     }
     return true;
@@ -124,7 +124,7 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPostMultiDelete.getEipMPosts", ex);
       list = null;
     }
     return list;

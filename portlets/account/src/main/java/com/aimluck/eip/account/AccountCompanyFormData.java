@@ -264,7 +264,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountCompanyFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -358,7 +358,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountCompanyFormData.updateFormData", ex);
       return false;
     }
     return true;

@@ -218,7 +218,7 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       weekCon.initField();
       weekCon.setViewStartDate(cal2);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
     // 表示終了日時
     viewEndCrt.setValue(cal2.getTime());
@@ -428,7 +428,7 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールをコンテナに格納
       weekCon.addResultData(rd);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }
@@ -529,7 +529,7 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

@@ -89,7 +89,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
       rd.setNote(record.getNote());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }

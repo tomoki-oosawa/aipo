@@ -90,7 +90,7 @@ public class ExtTimecardAction extends ALBaseAction {
         doExtTimecard_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
     }
   }
 

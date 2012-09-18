@@ -110,7 +110,7 @@ public class TimecardUtils {
       }
       return timecards.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }
@@ -152,7 +152,7 @@ public class TimecardUtils {
 
       return slist.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }

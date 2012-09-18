@@ -132,7 +132,7 @@ public class BlogCommonThemaSelectData extends
       }
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogCommonThemaSelectData.selectList", ex);
       return null;
     }
   }

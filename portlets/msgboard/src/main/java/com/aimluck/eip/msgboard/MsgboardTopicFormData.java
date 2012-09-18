@@ -272,7 +272,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return false;
     }
     return true;
@@ -490,7 +490,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return false;
     }
     return true;
@@ -555,7 +555,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       return false;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       msgList.add("エラーが発生しました。");
       return false;
     }
@@ -659,7 +659,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return false;
     }
     return true;
@@ -683,7 +683,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
     try {
       fileuploadList = MsgboardUtils.getFileuploadList(rundata);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
     }
 
     return res;

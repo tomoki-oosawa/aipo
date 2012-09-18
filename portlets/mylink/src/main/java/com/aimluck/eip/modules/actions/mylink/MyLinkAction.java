@@ -89,7 +89,7 @@ public class MyLinkAction extends ALBaseAction {
         setTemplate(rundata, "mylink-list");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mylink", ex);
     }
   }
 
@@ -143,7 +143,7 @@ public class MyLinkAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mylink", ex);
     }
     setResultData(linkList);
     putData(rundata, context);

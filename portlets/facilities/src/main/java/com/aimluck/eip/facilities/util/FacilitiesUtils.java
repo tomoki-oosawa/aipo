@@ -75,7 +75,7 @@ public class FacilitiesUtils {
 
       return facility;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -110,7 +110,7 @@ public class FacilitiesUtils {
       }
       return facilities.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -137,7 +137,7 @@ public class FacilitiesUtils {
         facilityAllList.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
     }
     return facilityAllList;
   }
@@ -400,7 +400,7 @@ public class FacilitiesUtils {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -422,7 +422,7 @@ public class FacilitiesUtils {
         facilityAllList.add(data);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
     }
 
     return facilityAllList;
@@ -455,7 +455,7 @@ public class FacilitiesUtils {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       List<EipMFacility> list = new ArrayList<EipMFacility>();
       return list;
     }

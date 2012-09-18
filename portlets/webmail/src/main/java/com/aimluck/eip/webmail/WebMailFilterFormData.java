@@ -312,7 +312,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
       // フォルダ一覧
       loadMailFolderList(rundata, context);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return true;
@@ -511,7 +511,7 @@ public class WebMailFilterFormData extends ALAbstractFormData {
         folderList.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
     }
   }
 

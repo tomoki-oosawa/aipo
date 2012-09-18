@@ -330,7 +330,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("gadgets", e);
       return false;
     }
     return true;
@@ -358,7 +358,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       ALApplicationService.disable(appId);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("gadgets", e);
       return false;
     }
     return true;

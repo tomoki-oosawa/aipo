@@ -212,7 +212,7 @@ public class WebMailAdminSettingsFormData extends ALAbstractFormData {
         (int) notify_time_hour.getValue(),
         (int) notify_time_minute.getValue());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
     }
     return true;
   }

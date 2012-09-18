@@ -222,7 +222,7 @@ public class WorkflowUtils {
       // logger.error("[WorkflowUtils]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -251,7 +251,7 @@ public class WorkflowUtils {
 
       return query.fetchList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -281,7 +281,7 @@ public class WorkflowUtils {
 
       return query.fetchList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
 
@@ -323,7 +323,7 @@ public class WorkflowUtils {
       }
       return requests.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -370,7 +370,7 @@ public class WorkflowUtils {
       }
       return requests.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -437,7 +437,7 @@ public class WorkflowUtils {
       }
       return maps;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -478,7 +478,7 @@ public class WorkflowUtils {
       }
       return categories.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -497,7 +497,7 @@ public class WorkflowUtils {
 
       return category;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -530,7 +530,7 @@ public class WorkflowUtils {
 
       return categoryList;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -571,7 +571,7 @@ public class WorkflowUtils {
       }
       return routes.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -589,7 +589,7 @@ public class WorkflowUtils {
 
       return route;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -623,7 +623,7 @@ public class WorkflowUtils {
 
       return routeList;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -763,7 +763,7 @@ public class WorkflowUtils {
         ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -799,7 +799,7 @@ public class WorkflowUtils {
       }
       return requests;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -1028,7 +1028,7 @@ public class WorkflowUtils {
       // msgList.addAll(errors);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -1627,7 +1627,7 @@ public class WorkflowUtils {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("workflow", e);
       return false;
     }
     return true;
@@ -1739,7 +1739,7 @@ public class WorkflowUtils {
       firstName = (destUserList.get(0)).getFirstName();
       lastName = (destUserList.get(0)).getLastName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
     return buffer.append(lastName).append(" ").append(firstName).toString();
@@ -1770,7 +1770,7 @@ public class WorkflowUtils {
       }
       userName = (destUserList.get(0)).getLoginName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
     return userName;
@@ -1824,7 +1824,7 @@ public class WorkflowUtils {
       }
       return destUserList.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -1855,7 +1855,7 @@ public class WorkflowUtils {
       return ("T".equals(disabled) || "N".equals(disabled));
 
     } catch (ALDBErrorException e) {
-      logger.error("Exception", e);
+      logger.error("workflow", e);
       return true;
     }
 

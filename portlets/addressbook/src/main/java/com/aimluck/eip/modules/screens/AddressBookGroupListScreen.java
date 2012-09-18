@@ -62,7 +62,7 @@ public class AddressBookGroupListScreen extends AddressBookScreen {
         context,
         "portlets/html/ja/ajax-addressbook-group-list.vm");
     } catch (Exception ex) {
-      logger.error("[AddressBookGroupListScreen] Exception.", ex);
+      logger.error("AddressBookGroupListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

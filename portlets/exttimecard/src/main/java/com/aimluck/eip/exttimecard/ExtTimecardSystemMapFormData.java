@@ -122,7 +122,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
       worktime_out.setValue(record.getWorktimeOut());
       resttime_out.setValue(record.getResttimeOut());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -153,7 +153,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;

@@ -173,7 +173,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
       port_internal.setValue(record.getPortInternal().longValue());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
     return true;
@@ -225,7 +225,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
     return true;

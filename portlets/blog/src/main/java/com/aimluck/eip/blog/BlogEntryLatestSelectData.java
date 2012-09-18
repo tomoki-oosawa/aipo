@@ -134,7 +134,7 @@ public class BlogEntryLatestSelectData extends
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
     }
     super.init(action, rundata, context);
   }
@@ -271,7 +271,7 @@ public class BlogEntryLatestSelectData extends
       entrySum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }
@@ -411,7 +411,7 @@ public class BlogEntryLatestSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }
@@ -535,7 +535,7 @@ public class BlogEntryLatestSelectData extends
       Date date = sdf.parse(str);
       return date;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }

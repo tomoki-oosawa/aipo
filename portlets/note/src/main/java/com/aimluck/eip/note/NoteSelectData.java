@@ -192,7 +192,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -500,7 +500,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       return rd;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }

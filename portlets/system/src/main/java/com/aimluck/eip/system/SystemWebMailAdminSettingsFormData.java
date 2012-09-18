@@ -240,7 +240,7 @@ public class SystemWebMailAdminSettingsFormData extends ALAbstractFormData {
         (int) notify_time_hour.getValue(),
         (int) notify_time_minute.getValue());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("system", e);
     }
     return true;
   }

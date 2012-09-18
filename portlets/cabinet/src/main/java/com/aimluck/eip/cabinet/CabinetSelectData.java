@@ -328,7 +328,7 @@ public class CabinetSelectData extends
       }
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }
@@ -428,7 +428,7 @@ public class CabinetSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }
@@ -480,7 +480,7 @@ public class CabinetSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }

@@ -99,7 +99,7 @@ public class FacilityGroupSelectData extends
 
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -134,7 +134,7 @@ public class FacilityGroupSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -166,7 +166,7 @@ public class FacilityGroupSelectData extends
       rd.setGroupName(record.getGroupName());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }

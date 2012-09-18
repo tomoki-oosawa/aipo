@@ -94,7 +94,7 @@ public class AddressBookGroupSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupSelectData.selectList", ex);
       return null;
     }
   }
@@ -125,7 +125,7 @@ public class AddressBookGroupSelectData extends
       rd.setPublicFlag(record.getPublicFlag());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupSelectData.getResultData", ex);
       return null;
     }
   }

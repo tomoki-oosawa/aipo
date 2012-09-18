@@ -87,7 +87,7 @@ public class AccountPersonAction extends ALBaseAction {
         doAccountperson_detail(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPersonAction.buildMaximizedContext", ex);
     }
   }
 
@@ -214,7 +214,7 @@ public class AccountPersonAction extends ALBaseAction {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPersonAction.getPortletURIinPersonalConfigPane", ex);
       return null;
     }
     return null;

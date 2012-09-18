@@ -94,7 +94,7 @@ public class AccountPostFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccountPostFormJSONScreen]", e);
+      logger.error("AccountPostFormJSONScreen.getJSONString", e);
     }
 
     return result;

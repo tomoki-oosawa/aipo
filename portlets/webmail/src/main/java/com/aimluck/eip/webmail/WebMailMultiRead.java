@@ -89,7 +89,7 @@ public class WebMailMultiRead extends ALAbstractCheckList {
           .valueOf(accountId));
       folder.readMails(values);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return true;

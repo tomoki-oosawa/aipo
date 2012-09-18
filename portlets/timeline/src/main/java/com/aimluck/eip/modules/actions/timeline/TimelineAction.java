@@ -89,7 +89,7 @@ public class TimelineAction extends ALBaseAction {
       prepareService(rundata, context);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
     }
   }
 

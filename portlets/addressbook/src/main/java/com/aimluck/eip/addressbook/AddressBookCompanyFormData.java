@@ -99,6 +99,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     company_name = new ALStringField();
     company_name.setFieldName("会社名");
@@ -304,7 +305,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
       url.setValue(company.getUrl());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -393,7 +394,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
       return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyFormData.insertFormData", ex);
       return false;
     }
   }
@@ -477,7 +478,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyFormData.updateFormData", ex);
       return false;
     }
     return true;
@@ -554,7 +555,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyFormData.deleteFormData", ex);
       return false;
     }
     return true;

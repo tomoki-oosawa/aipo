@@ -232,7 +232,7 @@ public class WorkflowAllSelectData extends
       requestSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }
@@ -448,7 +448,7 @@ public class WorkflowAllSelectData extends
         ALLocalizationUtils.getl10n("WORKFLOW_YEAR_MONTH_DAY_HOUR_MINIT")));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }

@@ -50,7 +50,7 @@ public class AccountPostFormScreen extends ALVelocityScreen {
     try {
       doAccount_post_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AccountPostFormScreen] Exception.", ex);
+      logger.error("AccountPostFormScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

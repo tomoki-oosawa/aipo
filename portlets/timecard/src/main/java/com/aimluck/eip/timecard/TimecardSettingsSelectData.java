@@ -98,7 +98,7 @@ public class TimecardSettingsSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }

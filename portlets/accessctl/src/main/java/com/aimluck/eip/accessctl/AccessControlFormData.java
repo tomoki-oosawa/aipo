@@ -206,7 +206,7 @@ public class AccessControlFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.setFormData", ex);
       res = false;
     }
 
@@ -251,7 +251,7 @@ public class AccessControlFormData extends ALAbstractFormData {
             acl_role_name.toString()));
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AccessControlFormData.validate", ex);
         return false;
       }
     }
@@ -321,7 +321,7 @@ public class AccessControlFormData extends ALAbstractFormData {
         msgList.add(ALLocalizationUtils.getl10n("ACCESSCTL_ALERT_OTHER_ROLE"));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.validate", ex);
       return false;
     }
 
@@ -408,7 +408,7 @@ public class AccessControlFormData extends ALAbstractFormData {
         aclexport);
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -451,7 +451,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.deleteFormData", ex);
       return false;
     }
     return true;
@@ -502,7 +502,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.insertFormData", ex);
       return false;
     }
     return true;
@@ -552,7 +552,7 @@ public class AccessControlFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccessControlFormData.updateFormData", ex);
       return false;
     }
     return true;

@@ -99,7 +99,7 @@ public class WorkflowAction extends ALBaseAction {
         doWorkflow_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
     }
 
   }

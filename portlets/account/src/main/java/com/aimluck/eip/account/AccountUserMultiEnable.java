@@ -112,7 +112,7 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
       return true;
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserMultiEnable.action", e);
       return false;
     }
   }

@@ -229,7 +229,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       weekCon.initField();
       weekCon.setViewStartDate(cal2);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
     // 表示終了日時
     viewEndCrt.setValue(cal2.getTime());
@@ -552,7 +552,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       profile.store();
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return false;
     }
     return true;
@@ -683,7 +683,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       weekCon.addResultData(rd, show_all);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }
@@ -783,7 +783,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

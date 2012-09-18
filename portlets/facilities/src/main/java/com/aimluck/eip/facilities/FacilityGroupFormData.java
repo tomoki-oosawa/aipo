@@ -146,7 +146,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       res = false;
     }
     return res;
@@ -189,7 +189,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
 
@@ -244,7 +244,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
           .getFacilitiesFromSelectQuery(fquery));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return true;
@@ -282,7 +282,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       // orm.doDelete(facility);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return true;
@@ -318,7 +318,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return true;
@@ -388,7 +388,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return true;

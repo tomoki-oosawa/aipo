@@ -84,7 +84,7 @@ public class ActivityAction extends ALBaseAction {
     try {
       doActivity_list(rundata, context);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ActivityAction.buildMaximizedContext", ex);
     }
 
   }

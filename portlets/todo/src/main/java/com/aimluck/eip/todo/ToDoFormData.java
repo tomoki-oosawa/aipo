@@ -333,7 +333,7 @@ public class ToDoFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return false;
     }
 
@@ -355,7 +355,7 @@ public class ToDoFormData extends ALAbstractFormData {
             msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_SET_TDATE"));
           }
         } catch (Exception e) {
-          logger.error("Exception", e);
+          logger.error("todo", e);
         }
       }
     }
@@ -423,7 +423,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
       addon_schedule_flg.setValue(todo.getAddonScheduleFlg());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return false;
     }
     return true;
@@ -614,7 +614,7 @@ public class ToDoFormData extends ALAbstractFormData {
           }
         } catch (Exception ex) {
           msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_DONOT_SEND"));
-          logger.error("Exception", ex);
+          logger.error("todo", ex);
           return false;
         }
       }
@@ -665,7 +665,7 @@ public class ToDoFormData extends ALAbstractFormData {
       return false;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_GET_ERROR"));
       return false;
     }
@@ -810,7 +810,7 @@ public class ToDoFormData extends ALAbstractFormData {
           }
         } catch (Exception ex) {
           msgList.add(ALLocalizationUtils.getl10n("TODO_ALERT_DONOT_SEND"));
-          logger.error("Exception", ex);
+          logger.error("todo", ex);
           return false;
         }
       }

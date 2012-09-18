@@ -213,7 +213,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return null;
     }
     return rd;
@@ -233,7 +233,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
         facilityIdAllList.add(record.getFacilityId());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     }
     return facilityIdAllList;
   }

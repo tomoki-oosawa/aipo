@@ -50,7 +50,7 @@ public class AccountCompanyFormScreen extends ALVelocityScreen {
     try {
       doAccount_company_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AccountCompanyFormScreen] Exception.", ex);
+      logger.error("AccountCompanyFormScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

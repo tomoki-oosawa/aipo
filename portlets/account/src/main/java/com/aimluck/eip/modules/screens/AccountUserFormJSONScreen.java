@@ -38,7 +38,7 @@ import com.aimluck.eip.common.ALEipConstants;
 
 /**
  * ユーザーアカウントをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class AccountUserFormJSONScreen extends ALJSONScreen {
 
@@ -148,7 +148,7 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccountUserFormJSONScreen]", e);
+      logger.error("AccountUserFormJSONScreen.getJSONString", e);
     }
 
     return result;

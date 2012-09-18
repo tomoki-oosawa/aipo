@@ -271,7 +271,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       folder_name.setValue(folder.getFolderName());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return true;

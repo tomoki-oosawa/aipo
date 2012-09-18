@@ -289,14 +289,14 @@ public class NewsFormData extends ALAbstractFormData {
       body = sb.toString();
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("news", ex);
       body = "";
     } finally {
       try {
         reader.close();
         conn.disconnect();
       } catch (Exception e) {
-        logger.error("Exception", e);
+        logger.error("news", e);
         return "";
       }
     }

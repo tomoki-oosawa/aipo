@@ -104,7 +104,7 @@ public class BlogThemaSelectData extends
       themaSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }

@@ -600,7 +600,7 @@ public class RemainderScheduleDaemon implements Daemon {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
 
       return null;
     }
@@ -738,7 +738,7 @@ public class RemainderScheduleDaemon implements Daemon {
       // 最新のユーザ情報を取得する．
       eipUser = ALEipUtils.getALEipUser(useraddr.getUserId().intValue());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return "";
     }
 
@@ -891,13 +891,13 @@ public class RemainderScheduleDaemon implements Daemon {
       this.send_time_minutes = Integer.valueOf(timestr.substring(3, 5));
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     } finally {
       if (input != null) {
         try {
           input.close();
         } catch (IOException iex) {
-          logger.error("Exception", iex);
+          logger.error("schedule", iex);
         }
       }
     }

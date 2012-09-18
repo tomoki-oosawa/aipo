@@ -120,7 +120,7 @@ public class WhatsNewUtils {
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("whatsnew", e);
     }
   }
 
@@ -186,7 +186,7 @@ public class WhatsNewUtils {
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("whatsnew", e);
     }
   }
 
@@ -349,7 +349,7 @@ public class WhatsNewUtils {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("whatsnew", e);
     }
   }
 
@@ -770,7 +770,7 @@ public class WhatsNewUtils {
       }
       return maps;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("whatsnew", ex);
       return null;
     }
   }

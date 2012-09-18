@@ -187,7 +187,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return false;
     }
 
@@ -221,7 +221,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
       // メモ
       note.setValue(category.getNote());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return false;
     }
     return true;

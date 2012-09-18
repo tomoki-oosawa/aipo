@@ -198,7 +198,7 @@ public class ToDoSelectData extends
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
 
     target_keyword = new ALStringField();
@@ -252,7 +252,7 @@ public class ToDoSelectData extends
       todoSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -468,7 +468,7 @@ public class ToDoSelectData extends
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -560,7 +560,7 @@ public class ToDoSelectData extends
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }

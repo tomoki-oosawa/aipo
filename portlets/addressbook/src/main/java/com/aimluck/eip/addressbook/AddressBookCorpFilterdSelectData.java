@@ -102,7 +102,7 @@ public class AddressBookCorpFilterdSelectData extends
       }
       groupList = AddressBookUtils.getMyGroups(rundata);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpFilterdSelectData.loadMygroupList", ex);
     }
   }
 
@@ -123,7 +123,7 @@ public class AddressBookCorpFilterdSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpFilterdSelectData.selectList", ex);
       return null;
     }
   }
@@ -147,7 +147,7 @@ public class AddressBookCorpFilterdSelectData extends
 
       return ALEipUtils.getBaseUser(Integer.valueOf(userId).intValue());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpFilterdSelectData.selectDetail", ex);
       return null;
     }
   }
@@ -162,7 +162,7 @@ public class AddressBookCorpFilterdSelectData extends
     try {
       return AddressBookUtils.getCorpResultData(record, getStrLength());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpFilterdSelectData.getResultData", ex);
       return null;
     }
   }
@@ -206,7 +206,7 @@ public class AddressBookCorpFilterdSelectData extends
       rd.setUpdateDate(ALDateUtil.format(record.getModified(), "yyyy年M月d日"));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpFilterdSelectData.getResultDataDetail", ex);
       return null;
     }
   }

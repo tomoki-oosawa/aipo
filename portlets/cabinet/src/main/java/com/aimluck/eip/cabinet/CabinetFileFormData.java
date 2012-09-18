@@ -224,7 +224,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         file_name.setValue(filebean.getFileName());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
     }
 
     return res;
@@ -370,7 +370,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       folderName = Integer.toString(file.getFolderId());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;
@@ -424,7 +424,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;
@@ -536,7 +536,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       res = true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return res;
@@ -665,7 +665,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;

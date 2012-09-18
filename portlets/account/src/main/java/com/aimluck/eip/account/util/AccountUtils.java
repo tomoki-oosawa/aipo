@@ -106,7 +106,7 @@ public class AccountUtils {
       logger.error("UnknownUserException : UserID = " + userid);
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUtils.getBaseUser", ex);
       return null;
     }
   }
@@ -143,7 +143,7 @@ public class AccountUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUtils.getEipMCompany", ex);
     }
     return result;
   }
@@ -180,7 +180,7 @@ public class AccountUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUtils.getEipMPost", ex);
     }
     return result;
   }
@@ -212,7 +212,7 @@ public class AccountUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUtils.getEipMPosition", ex);
     }
     return result;
   }
@@ -329,7 +329,7 @@ public class AccountUtils {
       disabled = (destUserList.get(0)).getDisabled();
       return ("T".equals(disabled) || "N".equals(disabled));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUtils.getUserIsDisabledOrDeleted", ex);
       return true;
     }
   }
@@ -408,7 +408,7 @@ public class AccountUtils {
       }
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountUtils.acceptWorkflow", e);
       return false;
     }
   }
@@ -453,7 +453,7 @@ public class AccountUtils {
       }
       return minimum_admin <= admin_count_will;
     } catch (JetspeedSecurityException e) {
-      logger.error("Exception", e);
+      logger.error("AccountUtils.isAdminDeletable", e);
       return false;
     }
   }

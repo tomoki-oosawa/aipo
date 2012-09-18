@@ -239,7 +239,7 @@ public class LicenseFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("license", ex);
       return false;
     }
     return true;

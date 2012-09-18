@@ -94,7 +94,7 @@ public class AccountPositionFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccountPositionFormJSONScreen]", e);
+      logger.error("AccountPositionFormJSONScreen.getJSONString", e);
     }
 
     return result;

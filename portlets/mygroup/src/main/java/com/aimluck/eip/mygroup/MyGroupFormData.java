@@ -174,7 +174,7 @@ public class MyGroupFormData extends ALAbstractFormData {
           }
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("mygroup", ex);
       }
     }
     return res;
@@ -260,7 +260,7 @@ public class MyGroupFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return false;
     }
 
@@ -293,7 +293,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       facilityList.addAll(FacilitiesUtils.getFacilityList(record.getName()));
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return false;
     }
     return true;
@@ -359,7 +359,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return false;
     }
     return true;
@@ -372,7 +372,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       fg.setEipMFacility(facility);
       fg.setTurbineGroup(turbine_group);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("mygroup", e);
     }
   }
 
@@ -473,7 +473,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return false;
     }
     return true;
@@ -530,7 +530,7 @@ public class MyGroupFormData extends ALAbstractFormData {
       ALEipUtils.reloadMygroup(rundata);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return false;
     }
     return true;

@@ -58,7 +58,7 @@ public class AccountUserChangeTurnFormJSONScreen extends ALJSONScreen {
       }
 
     } catch (Exception e) {
-      logger.error("[AccountUserChangeTurnFormJSONScreen]", e);
+      logger.error("AccountUserChangeTurnFormJSONScreen.getJSONString", e);
     }
 
     return result;

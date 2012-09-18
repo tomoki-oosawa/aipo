@@ -103,7 +103,7 @@ public class MsgboardTopicMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return false;
     }
     return true;

@@ -95,7 +95,7 @@ public class AddressBookCompanyFormJSONScreen extends ALJSONScreen {
 
       }
     } catch (Exception e) {
-      logger.error("[AddressBookCompanyFormJSONScreen]", e);
+      logger.error("AddressBookCompanyFormJSONScreen.getJSONString", e);
     }
 
     return result;

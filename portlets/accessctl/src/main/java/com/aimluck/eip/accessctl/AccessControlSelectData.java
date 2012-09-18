@@ -112,7 +112,7 @@ public class AccessControlSelectData extends
       aclRoleSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlSelectData.selectList", ex);
       return null;
     }
   }
@@ -177,7 +177,7 @@ public class AccessControlSelectData extends
         ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlSelectData.getResultData", ex);
       return null;
     }
   }
@@ -265,7 +265,7 @@ public class AccessControlSelectData extends
         ALLocalizationUtils.getl10n("ACCESSCTL_DATE_FORMAT")));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlSelectData.getResultDataDetail", ex);
       return null;
     }
   }

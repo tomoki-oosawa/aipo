@@ -142,7 +142,7 @@ public class MemoFormData extends ALAbstractFormData {
       // メモ
       note.setValue(memo.getNote());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return false;
     }
     return true;
@@ -190,7 +190,7 @@ public class MemoFormData extends ALAbstractFormData {
         memo.getMemoName());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return false;
     }
     return true;
@@ -238,7 +238,7 @@ public class MemoFormData extends ALAbstractFormData {
         memo.getMemoName());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return false;
     }
     return true;
@@ -286,7 +286,7 @@ public class MemoFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_MEMO,
         memo.getMemoName());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return false;
     }
     return true;

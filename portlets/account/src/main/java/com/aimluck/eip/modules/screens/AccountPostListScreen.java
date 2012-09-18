@@ -58,7 +58,7 @@ public class AccountPostListScreen extends AccountPostScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccountPostListScreen] Exception.", ex);
+      logger.error("AccountPostListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

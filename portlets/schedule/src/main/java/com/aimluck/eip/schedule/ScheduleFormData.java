@@ -668,7 +668,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("schedule", ex);
       }
     }
     return res;
@@ -1252,7 +1252,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       } catch (Exception ex) {
         msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-        logger.error("Exception", ex);
+        logger.error("schedule", ex);
         return false;
       }
     }
@@ -1823,7 +1823,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       } catch (Exception ex) {
         msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-        logger.error("Exception", ex);
+        logger.error("schedule", ex);
         return false;
       }
     }

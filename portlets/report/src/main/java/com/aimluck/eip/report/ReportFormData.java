@@ -255,7 +255,7 @@ public class ReportFormData extends ALAbstractFormData {
         }
         fileuploadList = ReportUtils.getFileuploadList(rundata);
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("report", ex);
       }
     }
     return res;
@@ -389,7 +389,7 @@ public class ReportFormData extends ALAbstractFormData {
         fileuploadList.add(filebean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     return true;
@@ -471,7 +471,7 @@ public class ReportFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     return true;
@@ -562,7 +562,7 @@ public class ReportFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     try {
@@ -613,7 +613,7 @@ public class ReportFormData extends ALAbstractFormData {
       }
     } catch (Exception ex) {
       msgList.add(ALLocalizationUtils.getl10n("REPORT_ALERT_DONOT_SEND"));
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     return true;
@@ -733,7 +733,7 @@ public class ReportFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     try {
@@ -784,7 +784,7 @@ public class ReportFormData extends ALAbstractFormData {
       }
     } catch (Exception ex) {
       msgList.add(ALLocalizationUtils.getl10n("REPORT_ALERT_DONOT_SEND"));
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return false;
     }
     return true;

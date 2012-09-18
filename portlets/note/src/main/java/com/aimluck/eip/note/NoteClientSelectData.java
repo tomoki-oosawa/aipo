@@ -109,7 +109,7 @@ public class NoteClientSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }
@@ -213,7 +213,7 @@ public class NoteClientSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return null;
     }
   }

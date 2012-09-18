@@ -108,7 +108,7 @@ public class MemoMultiDelete extends ALAbstractCheckList {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return false;
     }
     return true;

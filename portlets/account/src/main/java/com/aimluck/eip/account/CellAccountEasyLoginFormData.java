@@ -90,7 +90,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
       String uid = baseUser.getCelluarUId();
       enableEasyLogin = (uid != null && uid.length() > 0);
     } catch (Exception e) {
-      logger.error("[CellAccountEasyLoginFormData]", e);
+      logger.error("CellAccountEasyLoginFormData.init", e);
       ALEipUtils.redirectPageNotFound(rundata);
       return;
     }
@@ -100,6 +100,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // 携帯電話の固有 ID
     cellular_uid = new ALStringField();
@@ -157,7 +158,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
       // ユーザー情報を更新
       JetspeedSecurity.saveUser(baseUser);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CellAccountEasyLoginFormData.insertFormData", ex);
       return false;
     }
 
@@ -194,7 +195,7 @@ public class CellAccountEasyLoginFormData extends ALAbstractFormData {
       // ユーザー情報を更新
       JetspeedSecurity.saveUser(baseUser);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CellAccountEasyLoginFormData.deleteFormData", ex);
       return false;
     }
     return true;

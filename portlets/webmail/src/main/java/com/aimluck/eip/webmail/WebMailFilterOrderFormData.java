@@ -152,7 +152,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return res;
@@ -196,7 +196,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
     try {
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
       return false;
     }
   }
@@ -256,7 +256,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         Database.commit();
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
       res = false;
     }
     return res;

@@ -287,7 +287,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("BlogEntryFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -350,7 +350,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("BlogEntryFormData.deleteFormData", ex);
       return false;
     }
     return true;
@@ -426,7 +426,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("BlogEntryFormData.insertFormData", ex);
       return false;
     }
     return res;
@@ -517,7 +517,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
 
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("BlogEntryFormData.insertAttachmentFiles", e);
     }
     return true;
   }
@@ -538,7 +538,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       blog_id.setValue(blog.getBlogId().longValue());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("BlogEntryFormData.", ex);
       return false;
     }
     return true;
@@ -630,7 +630,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("BlogEntryFormData.", ex);
       return false;
     }
     return res;
@@ -661,7 +661,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         blogthema.setFormData(rundata, context, msgList);
         fileuploadList = BlogUtils.getFileuploadList(rundata);
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("BlogEntryFormData.", ex);
       }
     }
     return res;

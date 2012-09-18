@@ -315,7 +315,7 @@ public class ReportUtils {
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("report", e);
       return false;
     }
     return true;
@@ -358,7 +358,7 @@ public class ReportUtils {
       ALEipUtils.redirectPageNotFound(rundata);
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       throw new ALDBErrorException();
     }
   }
@@ -384,7 +384,7 @@ public class ReportUtils {
 
       return query.fetchList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -451,7 +451,7 @@ public class ReportUtils {
       }
       return maps;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -481,7 +481,7 @@ public class ReportUtils {
       }
       return maps;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -513,7 +513,7 @@ public class ReportUtils {
       }
       return members;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return null;
     }
   }
@@ -728,12 +728,12 @@ public class ReportUtils {
             filebean.setFileName(line);
             fileNameList.add(filebean);
           } catch (Exception e) {
-            logger.error("Exception", e);
+            logger.error("report", e);
           } finally {
             try {
               reader.close();
             } catch (Exception e) {
-              logger.error("Exception", e);
+              logger.error("report", e);
             }
           }
         }
@@ -1263,7 +1263,7 @@ public class ReportUtils {
     try {
       destUser = ALEipUtils.getALEipUser(destUserID);
     } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
       return "";
     }
     body.append("[").append(ALOrgUtilsService.getAlias()).append(

@@ -208,7 +208,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         msgList.add(ALLocalizationUtils.getl10nFormat("WORKFLOW_ALERT_TO"));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     // カテゴリ名
@@ -277,7 +277,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -309,7 +309,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         routeobj.getRouteName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -351,7 +351,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         routeobj.getRouteName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -399,7 +399,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
         routeobj.getRouteName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;

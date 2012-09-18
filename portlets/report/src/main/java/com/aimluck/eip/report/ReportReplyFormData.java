@@ -414,7 +414,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
           ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
 
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("report", ex);
         return false;
       }
 
@@ -620,7 +620,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
     try {
       fileuploadList = FileuploadUtils.getFileuploadList(rundata);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("report", ex);
     }
 
     return res;

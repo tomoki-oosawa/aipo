@@ -88,7 +88,7 @@ public class MyGroupSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return null;
     }
   }

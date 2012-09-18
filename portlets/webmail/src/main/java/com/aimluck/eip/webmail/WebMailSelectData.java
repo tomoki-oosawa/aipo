@@ -293,7 +293,7 @@ public class WebMailSelectData extends
       loadUnreadMailSumMap(rundata, context);
       return folder.getIndexRows(rundata, context);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -431,7 +431,7 @@ public class WebMailSelectData extends
       rd.setBody(msg.getBodyText());
       rd.setAttachmentFileNames(msg.getAttachmentFileNameArray());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
     }
     return rd;
   }

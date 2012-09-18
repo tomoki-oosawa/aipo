@@ -247,7 +247,7 @@ public class ExtTimecardSummaryListSelectData extends
         ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userid);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
     }
 
     // アクセス権
@@ -484,7 +484,7 @@ public class ExtTimecardSummaryListSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -516,7 +516,7 @@ public class ExtTimecardSummaryListSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -570,7 +570,7 @@ public class ExtTimecardSummaryListSelectData extends
         usermap.put(user_id, list);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
     return null;

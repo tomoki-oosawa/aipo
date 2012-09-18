@@ -390,7 +390,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUserFormData.setFormData", ex);
       res = false;
     }
     return res;
@@ -486,7 +486,7 @@ public class AccountUserFormData extends ALAbstractFormData {
               username));
           }
         } catch (Exception ex) {
-          logger.error("Exception", ex);
+          logger.error("AccountUserFormData.validate", ex);
           return false;
         }
       }
@@ -651,7 +651,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.validate", e);
       return false;
     }
 
@@ -737,7 +737,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.loadFormData", e);
       return false;
     }
   }
@@ -905,7 +905,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         folderName);
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.insertFormData", e);
       res = false;
     }
     return res;
@@ -1097,7 +1097,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         ALEipUtils.getUserId(rundata),
         folderName);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.updateFormData", e);
       res = false;
     }
     return res;
@@ -1180,7 +1180,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.disableFormData", e);
       return false;
     }
     return true;
@@ -1241,7 +1241,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.enableFormData", e);
       return false;
     }
     return true;
@@ -1409,7 +1409,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       return true;
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserFormData.deleteFormData", e);
       return false;
     }
   }

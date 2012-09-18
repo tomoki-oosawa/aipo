@@ -720,7 +720,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       }
     } catch (Exception ex) {
       msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return false;
     }
 
@@ -1212,7 +1212,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       }
     } catch (Exception ex) {
       msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return false;
     }
     return true;

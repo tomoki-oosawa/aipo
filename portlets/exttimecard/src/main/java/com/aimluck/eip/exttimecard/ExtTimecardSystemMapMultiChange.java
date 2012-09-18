@@ -101,7 +101,7 @@ public class ExtTimecardSystemMapMultiChange extends ALAbstractCheckList {
       return true;
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("exttimecard", e);
       return false;
     }
   }

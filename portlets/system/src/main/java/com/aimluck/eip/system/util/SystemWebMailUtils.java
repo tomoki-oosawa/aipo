@@ -406,7 +406,7 @@ public class SystemWebMailUtils {
       }
       return folder;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -450,7 +450,7 @@ public class SystemWebMailUtils {
       }
       return folder;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -490,7 +490,7 @@ public class SystemWebMailUtils {
       }
       return filter;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -535,7 +535,7 @@ public class SystemWebMailUtils {
       }
       return filter;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return null;
     }
   }
@@ -572,7 +572,7 @@ public class SystemWebMailUtils {
       }
       return filter.getSortOrder();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return 0;
     }
   }

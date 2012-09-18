@@ -226,7 +226,7 @@ public class TimelineSelectData extends
       context.put("contentHeightMax", contentHeightMax);
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return null;
 
     }
@@ -271,7 +271,7 @@ public class TimelineSelectData extends
       context.put("contentHeightMax", contentHeightMax);
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return null;
 
     }
@@ -331,7 +331,7 @@ public class TimelineSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return null;
     }
   }

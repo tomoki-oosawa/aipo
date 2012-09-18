@@ -49,7 +49,7 @@ public class AddressBookCompanyFormScreen extends ALVelocityScreen {
     try {
       doAddressBook_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AddressBookCompanyFormScreen] Exception.", ex);
+      logger.error("AddressBookCompanyFormScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

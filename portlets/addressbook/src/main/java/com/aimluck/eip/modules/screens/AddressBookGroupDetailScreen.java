@@ -52,7 +52,7 @@ public class AddressBookGroupDetailScreen extends ALVelocityScreen {
         "portlets/html/ja/ajax-addressbook-group-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[AddressBookGroupDetailScreen] Exception.", ex);
+      logger.error("AddressBookGroupDetailScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

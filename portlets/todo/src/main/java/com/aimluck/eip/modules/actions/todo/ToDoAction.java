@@ -160,7 +160,7 @@ public class ToDoAction extends ALBaseAction {
         doTodo_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
   }
 
@@ -491,7 +491,7 @@ public class ToDoAction extends ALBaseAction {
       }
       setTemplate(rundata, "todo-category-detail");
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("todo", e);
     }
   }
 

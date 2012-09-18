@@ -134,7 +134,7 @@ public class AccountEditSelectData extends
       return rd;
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountEditSelectData.getResultDataDetail", ex);
       return null;
     }
   }

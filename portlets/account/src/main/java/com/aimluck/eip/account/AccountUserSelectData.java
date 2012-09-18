@@ -106,7 +106,7 @@ public class AccountUserSelectData extends
       registeredUserNum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUserSelectData.selectList", ex);
       return null;
     }
   }
@@ -164,7 +164,7 @@ public class AccountUserSelectData extends
           TurbineUser.USER_ID_PK_COLUMN,
           admin_ids));
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AccountUserSelectData.getSelectQuery", ex);
       }
       return query;
     } else if (!"post".equals(filtertype)
@@ -300,7 +300,7 @@ public class AccountUserSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUserSelectData.getResultData", ex);
       return null;
     }
   }
@@ -342,7 +342,7 @@ public class AccountUserSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountUserSelectData.getResultDataDetail", ex);
       return null;
     }
   }

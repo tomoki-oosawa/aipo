@@ -117,7 +117,7 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupMultiDelete.action", ex);
       return false;
     }
     return true;

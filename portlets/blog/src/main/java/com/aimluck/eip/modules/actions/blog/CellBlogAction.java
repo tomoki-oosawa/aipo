@@ -112,7 +112,7 @@ public class CellBlogAction extends BlogAction {
         doBlog_entry_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
     }
 
   }

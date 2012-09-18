@@ -93,7 +93,7 @@ public class TimelineLikeSelectData extends
       ResultList<EipTTimelineLike> list = query.getResultList();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return null;
 
     }
@@ -146,7 +146,7 @@ public class TimelineLikeSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timeline", ex);
       return null;
     }
   }

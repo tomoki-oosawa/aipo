@@ -207,7 +207,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       myGroupURI =
         ScheduleUtils.getPortletURIinPersonalConfigPane(rundata, "MyGroup");
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     }
   }
 
@@ -366,7 +366,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       // 週間種スケジュールコンテナに格納
       weekCon.addResultData(rd);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return null;
     }
     return rd;
@@ -526,7 +526,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         facilityIdAllList.add(record.getFacilityId());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     }
     return facilityIdAllList;
   }
@@ -620,7 +620,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

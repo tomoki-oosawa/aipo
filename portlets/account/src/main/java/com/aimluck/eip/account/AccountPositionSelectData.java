@@ -83,7 +83,7 @@ public class AccountPositionSelectData extends
       return query.getResultList();
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPositionSelectData.selectList", ex);
       return null;
     }
   }

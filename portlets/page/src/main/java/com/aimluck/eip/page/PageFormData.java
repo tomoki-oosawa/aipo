@@ -197,7 +197,7 @@ public class PageFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return false;
     }
     return true;
@@ -314,7 +314,7 @@ public class PageFormData extends ALAbstractFormData {
         PageUtils.updateLayoutPositions(portlets);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return false;
     }
     return true;
@@ -367,7 +367,7 @@ public class PageFormData extends ALAbstractFormData {
       PageUtils.doSave(rundata, context);
       PageUtils.updateLayoutPositions(portlets);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return false;
     }
     return true;
@@ -395,7 +395,7 @@ public class PageFormData extends ALAbstractFormData {
       values.add(portletId);
       result = PageUtils.deletePages(rundata, context, values, msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("page", ex);
       return false;
     }
     return result;

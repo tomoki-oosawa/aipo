@@ -90,7 +90,7 @@ public class CellAddressBookAction extends ALBaseAction {
         doAddressbook_menu(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CellAddressBookAction.buildMaximizedContext", ex);
     }
   }
 

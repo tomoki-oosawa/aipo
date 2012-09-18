@@ -58,7 +58,7 @@ public class AccountAdminFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccountAdminFormJSONScreen]", e);
+      logger.error("AccountAdminFormJSONScreen.getJSONString", e);
     }
 
     return result;

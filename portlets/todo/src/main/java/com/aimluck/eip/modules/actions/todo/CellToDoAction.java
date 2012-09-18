@@ -79,7 +79,7 @@ public class CellToDoAction extends ToDoAction {
         doTodo_menu(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
 
   }

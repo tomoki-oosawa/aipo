@@ -119,7 +119,7 @@ public class AddressBookCompanyWordSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyWordSelectData.selectList", ex);
       return null;
     }
   }
@@ -162,7 +162,7 @@ public class AddressBookCompanyWordSelectData extends
       rd.setUrl(record.getUrl());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanyWordSelectData.selectDetail", ex);
       return null;
     }
   }

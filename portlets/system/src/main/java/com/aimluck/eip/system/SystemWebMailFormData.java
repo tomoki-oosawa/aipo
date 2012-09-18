@@ -264,7 +264,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
       folder.deleteMail(index);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("system", e);
       return false;
     }
     return true;
@@ -368,7 +368,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
         return false;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("system", e);
       msgList.add(ALLocalizationUtils
         .getl10n("SYSTEM_ALERT_ACCOUNT_SETTING_ERROR"));
       return false;
@@ -473,7 +473,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
           body.setValue(replies.toString());
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("system", ex);
       }
 
       if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
@@ -502,7 +502,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
       }
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("system", e);
       return false;
     }
   }
@@ -549,7 +549,7 @@ public class SystemWebMailFormData extends ALAbstractFormData {
         body.setValue(bodybuf.toString());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
     }
 
     return res;

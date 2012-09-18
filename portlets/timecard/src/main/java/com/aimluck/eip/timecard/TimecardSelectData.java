@@ -246,7 +246,7 @@ public class TimecardSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }
@@ -288,7 +288,7 @@ public class TimecardSelectData extends
 
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }
@@ -365,7 +365,7 @@ public class TimecardSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }
@@ -385,7 +385,7 @@ public class TimecardSelectData extends
       rd.setWorkDate(record.getWorkDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }

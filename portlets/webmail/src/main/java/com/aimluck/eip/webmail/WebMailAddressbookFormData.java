@@ -142,7 +142,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
     }
   }
 
@@ -198,7 +198,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
         }
 
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("webmail", ex);
       }
     }
     return res;
@@ -215,7 +215,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
     try {
       res = setFormData(rundata, context, msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return res;
@@ -305,7 +305,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
         groupId,
         Integer.valueOf(userId));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -335,7 +335,7 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
 
       return query.fetchList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }

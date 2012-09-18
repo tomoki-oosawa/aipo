@@ -294,7 +294,7 @@ public class SystemDeleteSampleFormData extends ALAbstractFormData {
       updateFlag(rundata);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
 

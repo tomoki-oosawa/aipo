@@ -564,7 +564,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
       remarks.validate(msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return (msgList.size() == 0);
@@ -640,7 +640,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           this.punch_date.setValue(buffer.toString());
 
         } catch (Exception e) {
-          logger.error("Exception", e);
+          logger.error("exttimecard", e);
         }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
         String session_date = rundata.getParameters().get("date");
@@ -750,7 +750,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         .toString());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -770,7 +770,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     try {
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -904,7 +904,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -1030,7 +1030,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
 
@@ -1064,7 +1064,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         super.doInsert(action, rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -1401,7 +1401,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
     }
   }
 

@@ -314,7 +314,7 @@ public class AccountEditFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountEditFormData.setFormData", ex);
       res = false;
     }
     return res;
@@ -547,7 +547,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountEditFormData.loadFormData", e);
       return false;
     }
   }
@@ -568,7 +568,7 @@ public class AccountEditFormData extends ALAbstractFormData {
         email.setValue(user.getEmail());
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountEditFormData.loadEmail", e);
     }
   }
 
@@ -700,7 +700,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountEditFormData.updateFormData", e);
       return false;
     }
   }

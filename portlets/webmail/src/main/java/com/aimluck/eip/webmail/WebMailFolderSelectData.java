@@ -210,7 +210,7 @@ public class WebMailFolderSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }

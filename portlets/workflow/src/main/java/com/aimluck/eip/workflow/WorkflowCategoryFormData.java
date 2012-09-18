@@ -170,7 +170,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
           category_name.toString()));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     // カテゴリ名
@@ -220,7 +220,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         route.setValue(category.getEipTWorkflowRoute().getRoute());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -257,7 +257,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         category.getCategoryName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -305,7 +305,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         category.getCategoryName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;
@@ -371,7 +371,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
         category.getCategoryName());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;

@@ -105,7 +105,7 @@ public class AddressBookListScreen extends AddressBookScreen {
         }
       }
     } catch (Exception ex) {
-      logger.error("[AddressBookListScreen] Exception.", ex);
+      logger.error("AddressBookListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

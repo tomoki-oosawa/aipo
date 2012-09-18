@@ -54,7 +54,7 @@ public class ActivityAllScreen extends ALVelocityScreen {
       String layout_template = "portlets/html/ja/ajax-activity-all.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ActivityAllListScreen] Exception.", ex);
+      logger.error("ActivityAllListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

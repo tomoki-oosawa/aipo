@@ -118,7 +118,7 @@ public class CheckActivityJSONScreen extends ALJSONScreen {
 
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[CheckActivityJSONScreen]", e);
+      logger.error("CheckActivityJSONScreen.getJSONString", e);
     }
 
     return result;

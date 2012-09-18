@@ -97,7 +97,7 @@ public class AddressBookMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookMultiDelete.action", ex);
       return false;
     }
     return true;

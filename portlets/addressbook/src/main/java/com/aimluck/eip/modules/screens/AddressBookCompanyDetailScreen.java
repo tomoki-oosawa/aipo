@@ -62,7 +62,7 @@ public class AddressBookCompanyDetailScreen extends ALVelocityScreen {
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[AddressBookCompanyDetailScreen] Exception.", ex);
+      logger.error("AddressBookCompanyDetailScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

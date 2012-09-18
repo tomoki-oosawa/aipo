@@ -171,7 +171,7 @@ public class FileIOAccountCsvUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
     }
     return result;
   }
@@ -203,7 +203,7 @@ public class FileIOAccountCsvUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
     }
     return result;
   }

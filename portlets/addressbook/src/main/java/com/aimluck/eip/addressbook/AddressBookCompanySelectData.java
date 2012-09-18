@@ -97,7 +97,7 @@ public class AddressBookCompanySelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanySelectData.selectList", ex);
       return null;
     }
   }
@@ -126,7 +126,7 @@ public class AddressBookCompanySelectData extends
         Database.get(EipMAddressbookCompany.class, Integer.valueOf(companyId));
       return record;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanySelectData.selectDetail", ex);
       return null;
     }
   }
@@ -158,7 +158,7 @@ public class AddressBookCompanySelectData extends
       rd.setUrl(record.getUrl());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanySelectData.getResultData", ex);
       return null;
     }
   }
@@ -186,7 +186,7 @@ public class AddressBookCompanySelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCompanySelectData.getResultDataDetail", ex);
       return null;
     }
 

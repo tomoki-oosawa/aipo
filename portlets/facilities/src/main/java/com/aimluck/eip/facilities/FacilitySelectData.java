@@ -112,7 +112,7 @@ public class FacilitySelectData extends
 
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -145,7 +145,7 @@ public class FacilitySelectData extends
       rd.setFacilityName(record.getFacilityName());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }
@@ -235,7 +235,7 @@ public class FacilitySelectData extends
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return null;
     }
   }

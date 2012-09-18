@@ -482,7 +482,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         facilityIdAllList.add(record.getFacilityId());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
     }
     return facilityIdAllList;
   }
@@ -595,7 +595,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       }
       con.addResultData(rd, startHour, endHour, getViewDate());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
       return null;
     }
     return rd;
@@ -716,7 +716,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return;
     }
   }

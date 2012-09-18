@@ -58,7 +58,7 @@ public class AccountUserListScreen extends AccountUserScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccountUserListScreen] Exception.", ex);
+      logger.error("AccountUserListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

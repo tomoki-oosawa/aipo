@@ -463,7 +463,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;
@@ -580,7 +580,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           folder_hierarchy_list,
           delete_parent_id);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;
@@ -657,7 +657,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       res = true;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return res;
@@ -738,7 +738,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
         folder_name.getValue());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;

@@ -150,7 +150,7 @@ public class WhatsNewSelectData extends
 
       return new ResultList<WhatsNewContainer>(list);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("whatsnew", ex);
       return null;
     }
 

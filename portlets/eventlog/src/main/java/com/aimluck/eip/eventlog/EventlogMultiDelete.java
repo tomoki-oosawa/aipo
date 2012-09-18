@@ -71,7 +71,7 @@ public class EventlogMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return false;
     }
     return true;

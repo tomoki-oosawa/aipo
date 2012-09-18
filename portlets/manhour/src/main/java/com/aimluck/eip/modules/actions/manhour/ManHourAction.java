@@ -96,7 +96,7 @@ public class ManHourAction extends ALBaseAction {
         doManhour_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("manhour", ex);
     }
 
   }

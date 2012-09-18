@@ -324,7 +324,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.loadGroupList", ex);
     }
   }
 
@@ -372,7 +372,7 @@ public class AddressBookFormData extends ALAbstractFormData {
         groups.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.loadGroups", ex);
     }
   }
 
@@ -397,7 +397,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.loadCompanyList", ex);
     }
   }
 
@@ -651,7 +651,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       owner_id = address.getOwnerId();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -773,7 +773,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.insertFormData", ex);
       return false;
     }
   }
@@ -824,7 +824,7 @@ public class AddressBookFormData extends ALAbstractFormData {
         name);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.deleteFormData", ex);
       return false;
     }
     return true;
@@ -973,7 +973,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.updateFormData", ex);
       return false;
     }
     return true;
@@ -1017,7 +1017,7 @@ public class AddressBookFormData extends ALAbstractFormData {
           groups.add(group);
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AddressBookFormData.setFormData", ex);
       }
     }
     return res;
@@ -1344,7 +1344,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       company_id.setValue(company.getCompanyId().longValue());
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookFormData.insertCompanyData", ex);
       return false;
     }
     return true;

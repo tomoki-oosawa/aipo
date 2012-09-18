@@ -731,7 +731,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("fileio", e);
       res = false;
     }
 

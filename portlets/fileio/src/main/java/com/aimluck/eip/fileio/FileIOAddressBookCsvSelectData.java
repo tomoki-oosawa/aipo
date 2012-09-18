@@ -99,7 +99,7 @@ public class FileIOAddressBookCsvSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
       return null;
     }
   }

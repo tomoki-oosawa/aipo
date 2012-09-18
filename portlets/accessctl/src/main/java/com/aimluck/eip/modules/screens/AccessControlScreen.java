@@ -57,7 +57,7 @@ public class AccessControlScreen extends ALVelocityScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[AccessControlScreen] Exception.", ex);
+      logger.error("AccessControlScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

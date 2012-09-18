@@ -51,7 +51,7 @@ public class LicenseUtils {
     try {
       return Database.query(AipoLicense.class).fetchSingle();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("license", ex);
       return null;
     }
   }

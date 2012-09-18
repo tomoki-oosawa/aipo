@@ -121,7 +121,7 @@ public class WorkflowCategoryMultiDelete extends ALAbstractCheckList {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return false;
     }
     return true;

@@ -108,7 +108,7 @@ public class WorkflowRouteSelectData extends
       routeSum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }

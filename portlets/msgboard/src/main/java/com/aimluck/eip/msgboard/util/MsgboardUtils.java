@@ -724,7 +724,7 @@ public class MsgboardUtils {
         categoryList.add(otherRd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
       return null;
     }
     return categoryList;
@@ -808,12 +808,12 @@ public class MsgboardUtils {
             filebean.setFileName(line);
             fileNameList.add(filebean);
           } catch (Exception e) {
-            logger.error("Exception", e);
+            logger.error("msgboard", e);
           } finally {
             try {
               reader.close();
             } catch (Exception e) {
-              logger.error("Exception", e);
+              logger.error("msgboard", e);
             }
           }
         }
@@ -951,7 +951,7 @@ public class MsgboardUtils {
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("msgboard", e);
       return false;
     }
     return true;

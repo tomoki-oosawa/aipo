@@ -95,7 +95,7 @@ public class WebMailAction extends ALBaseAction {
         doWebmail_list(rundata, context);
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
     }
   }
 

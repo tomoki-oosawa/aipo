@@ -180,7 +180,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       outgoing_add_flag.setValue(record.getOutgoingAddFlag());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -228,7 +228,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -262,7 +262,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       Database.commit();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -303,7 +303,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM,
         record.getSystemName());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;
@@ -411,7 +411,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           .getl10n("EXTTIMECARD_ALERT_SELECT_CHANGE_HOUR"));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
 

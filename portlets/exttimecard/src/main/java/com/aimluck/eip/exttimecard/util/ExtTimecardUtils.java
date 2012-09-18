@@ -129,7 +129,7 @@ public class ExtTimecardUtils {
       }
       return timecards.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -170,7 +170,7 @@ public class ExtTimecardUtils {
       }
       return slist.get(0).getEipTExtTimecardSystem();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -190,7 +190,7 @@ public class ExtTimecardUtils {
       }
       return slist.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -211,7 +211,7 @@ public class ExtTimecardUtils {
       }
       return slist;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -248,7 +248,7 @@ public class ExtTimecardUtils {
 
       return slist.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }

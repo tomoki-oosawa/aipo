@@ -120,7 +120,7 @@ public class BlogUserSelectData extends
       return new ResultList<BlogUserResultData>(list2, getCurrentPage(), list2
         .size(), list2.size());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }

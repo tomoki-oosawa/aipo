@@ -135,7 +135,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return false;
     }
     return true;

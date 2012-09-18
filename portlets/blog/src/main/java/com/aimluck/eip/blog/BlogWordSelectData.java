@@ -118,7 +118,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
         list = new ArrayList<DataRow>();
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
     int totalSize = list.size();
@@ -189,7 +189,7 @@ public class BlogWordSelectData extends ALAbstractSelectData<DataRow, DataRow> {
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }

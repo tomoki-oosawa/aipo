@@ -51,7 +51,7 @@ public class AccountUserChangeTurnFormScreen extends ALVelocityScreen {
     try {
       doAccount_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AccountUserChangeTurnFormScreen] Exception.", ex);
+      logger.error("AccountUserChangeTurnFormScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

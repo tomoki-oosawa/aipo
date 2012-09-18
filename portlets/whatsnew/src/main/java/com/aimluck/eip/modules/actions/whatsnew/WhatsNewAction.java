@@ -90,7 +90,7 @@ public class WhatsNewAction extends ALBaseAction {
         doWhatsnew_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("whatsnew", ex);
     }
 
   }

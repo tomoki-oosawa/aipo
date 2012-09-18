@@ -461,7 +461,7 @@ public class WebMailUtils {
       }
       return folder;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -505,7 +505,7 @@ public class WebMailUtils {
       }
       return folder;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -545,7 +545,7 @@ public class WebMailUtils {
       }
       return filter;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -590,7 +590,7 @@ public class WebMailUtils {
       }
       return filter;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -627,7 +627,7 @@ public class WebMailUtils {
       }
       return filter.getSortOrder();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return 0;
     }
   }
@@ -717,7 +717,7 @@ public class WebMailUtils {
         res.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
     }
     return res;
   }

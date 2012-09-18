@@ -238,7 +238,7 @@ public class TimecardFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return false;
     }
 
@@ -329,7 +329,7 @@ public class TimecardFormData extends ALAbstractFormData {
       update_date.setValue(timecard.getUpdateDate());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return false;
     }
     return true;
@@ -362,7 +362,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return false;
     }
     return true;
@@ -405,7 +405,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return false;
     }
     return true;
@@ -446,7 +446,7 @@ public class TimecardFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return false;
     }
     return true;

@@ -240,7 +240,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("gadgets", ex);
       ALEipUtils.setTemp(rundata, context, DEFAULT_VIEW_STATUS, UPDATE_ERROR);
       return false;
     }

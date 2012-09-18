@@ -305,7 +305,7 @@ public class CellScheduleWeekSelectByMemberData extends
             p1 = (a).getEipTSchedule();
             p2 = (b).getEipTSchedule();
           } catch (Exception e) {
-            logger.error("Exception", e);
+            logger.error("schedule", e);
           }
 
           // 期間スケジュールを先頭に表示

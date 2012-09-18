@@ -152,7 +152,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
       port.setValue(record.getPort().longValue());
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
     return true;
@@ -204,7 +204,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
     return true;

@@ -59,7 +59,7 @@ public class AccountCompanyFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[AccountCompanyFormJSONScreen]", e);
+      logger.error("AccountCompanyFormJSONScreen.getJSONString", e);
     }
 
     return result;

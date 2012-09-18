@@ -91,7 +91,7 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return false;
     }
     return true;

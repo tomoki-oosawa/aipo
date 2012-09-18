@@ -253,7 +253,7 @@ public class TimecardSummaryListSelectData extends
         ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, userid);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
     }
 
     // アクセス権
@@ -312,7 +312,7 @@ public class TimecardSummaryListSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }
@@ -370,7 +370,7 @@ public class TimecardSummaryListSelectData extends
 
       return null;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("timecard", ex);
       return null;
     }
   }

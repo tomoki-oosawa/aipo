@@ -168,7 +168,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       group_name.validate(msgList);
       public_flag.validate(msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.validate", ex);
       return false;
     }
     return msgList.size() == 0;
@@ -223,7 +223,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
           addresses.add(rd);
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AddressBookGroupFormData.setFormData", ex);
         throw new ALDBErrorException();
       }
     }
@@ -268,7 +268,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       // 公開区分
       public_flag.setValue(group.getPublicFlag());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -336,7 +336,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.loadAddresses", ex);
       return false;
     }
     return true;
@@ -388,7 +388,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.insertFormData", ex);
       return false;
     }
   }
@@ -455,7 +455,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.updateFormData", ex);
       return false;
     }
     return true;
@@ -524,7 +524,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.deleteFormData", ex);
       return false;
     }
     return true;
@@ -612,7 +612,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookGroupFormData.loadFilter", ex);
     }
   }
 

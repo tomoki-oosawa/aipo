@@ -260,7 +260,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
           }
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("fileio", ex);
       }
     }
     return res;
@@ -474,7 +474,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
       post_id = record.getPostId().intValue();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
       return false;
     }
     return true;

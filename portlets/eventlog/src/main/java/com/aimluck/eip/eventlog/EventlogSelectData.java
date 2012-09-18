@@ -157,7 +157,7 @@ public class EventlogSelectData extends
 
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -228,7 +228,7 @@ public class EventlogSelectData extends
       rd.setNote(record.getNote());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }
@@ -287,7 +287,7 @@ public class EventlogSelectData extends
       }
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("eventlog", ex);
       return null;
     }
   }

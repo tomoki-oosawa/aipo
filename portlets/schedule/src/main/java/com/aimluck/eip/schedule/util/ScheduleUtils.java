@@ -911,7 +911,7 @@ public class ScheduleUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return null;
     }
     return null;
@@ -1000,7 +1000,7 @@ public class ScheduleUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return null;
     }
     return null;
@@ -1063,7 +1063,7 @@ public class ScheduleUtils {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return null;
     }
     return null;
@@ -1871,7 +1871,7 @@ public class ScheduleUtils {
 
       res = true;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("schedule", ex);
       return false;
     }
     return res;
@@ -2279,7 +2279,7 @@ public class ScheduleUtils {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
   }
 
@@ -2515,7 +2515,7 @@ public class ScheduleUtils {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
   }
 
@@ -2555,7 +2555,7 @@ public class ScheduleUtils {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("schedule", e);
     }
   }
 
@@ -2871,7 +2871,7 @@ public class ScheduleUtils {
       try {
         destUser = ALEipUtils.getALEipUser(destUserID);
       } catch (ALDBErrorException ex) {
-        logger.error("Exception", ex);
+        logger.error("schedule", ex);
         return "";
       }
 

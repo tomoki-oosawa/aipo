@@ -82,7 +82,7 @@ public class MemoAction extends ALBaseAction {
     try {
       doMemo_list(rundata, context);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
     }
 
   }

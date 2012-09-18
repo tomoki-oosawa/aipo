@@ -98,7 +98,7 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPositionMultiDelete.action", ex);
       return false;
     }
     return true;
@@ -129,7 +129,7 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPositionMultiDelete.getEipMPositions", ex);
       list = null;
     }
     return list;

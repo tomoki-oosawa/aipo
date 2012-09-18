@@ -198,7 +198,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
         null);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountPasswdFormData.updateFormData", e);
       res = false;
     }
     return res;

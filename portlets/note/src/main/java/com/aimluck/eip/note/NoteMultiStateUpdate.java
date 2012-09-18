@@ -82,7 +82,7 @@ public class NoteMultiStateUpdate extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("note", ex);
       return false;
     }
     return true;

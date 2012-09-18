@@ -118,7 +118,7 @@ public class UserSelectData extends
       registeredUserNum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("userlist", ex);
       return null;
     }
   }
@@ -171,7 +171,7 @@ public class UserSelectData extends
           TurbineUser.USER_ID_PK_COLUMN,
           admin_ids));
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("userlist", ex);
       }
     }
 
@@ -385,7 +385,7 @@ public class UserSelectData extends
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("userlist", ex);
       return null;
     }
   }

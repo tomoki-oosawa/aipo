@@ -113,7 +113,7 @@ public class WorkflowCategorySelectData extends
       categorySum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("workflow", ex);
       return null;
     }
   }

@@ -77,7 +77,7 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
     } catch (ALPermissionException e) {
       ALEipUtils.redirectPermissionError(rundata);
     } catch (Exception ex) {
-      logger.error("[AddressBookDetailScreen] Exception.", ex);
+      logger.error("AddressBookDetailScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

@@ -202,7 +202,7 @@ public class SystemPasswdFormData extends ALAbstractFormData {
         null);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("system", e);
       res = false;
     }
     return res;

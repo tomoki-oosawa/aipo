@@ -95,7 +95,7 @@ public class AddressBookWordSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
       list = query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookWordSelectData.selectList", ex);
       return null;
     }
     return list;
@@ -161,7 +161,7 @@ public class AddressBookWordSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookWordSelectData.getResultData", ex);
       return null;
     }
   }

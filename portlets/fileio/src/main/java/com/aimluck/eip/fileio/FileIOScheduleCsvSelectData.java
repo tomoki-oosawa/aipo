@@ -114,7 +114,7 @@ public class FileIOScheduleCsvSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
       return null;
     }
   }

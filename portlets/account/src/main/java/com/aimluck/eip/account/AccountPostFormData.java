@@ -228,7 +228,7 @@ public class AccountPostFormData extends ALAbstractFormData {
           }
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("AccountPostFormData.setFormData", ex);
       }
     }
     return res;
@@ -305,7 +305,7 @@ public class AccountPostFormData extends ALAbstractFormData {
           post_name.toString()));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPostFormData.validate", ex);
       return false;
     }
 
@@ -416,7 +416,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPostFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -521,7 +521,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       post_id = record.getPostId().intValue();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPostFormData.insertFormData", ex);
       return false;
     }
     return true;
@@ -630,7 +630,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPostFormData.updateFormData", ex);
       return false;
     }
     return true;
@@ -677,7 +677,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccountPostFormData.deleteFormData", ex);
       return false;
     }
     return true;
@@ -805,7 +805,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       return ALEipUtils.getUsers(groupname);
       // return getUsers2(groupname);
     } catch (Exception e) {
-      logger.error("[ERROR}", e);
+      logger.error("AccountPostFormData.getUsers", e);
       return new ArrayList<ALEipUser>();
     }
   }

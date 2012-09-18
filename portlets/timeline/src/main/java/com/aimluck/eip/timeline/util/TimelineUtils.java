@@ -551,12 +551,12 @@ public class TimelineUtils {
             filebean.setFileName(line);
             fileNameList.add(filebean);
           } catch (Exception e) {
-            logger.error("Exception", e);
+            logger.error("timeline", e);
           } finally {
             try {
               reader.close();
             } catch (Exception e) {
-              logger.error("Exception", e);
+              logger.error("timeline", e);
             }
           }
         }

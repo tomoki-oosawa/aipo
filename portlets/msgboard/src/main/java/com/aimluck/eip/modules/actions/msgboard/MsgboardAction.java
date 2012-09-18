@@ -123,7 +123,7 @@ public class MsgboardAction extends ALBaseAction {
         doMsgboard_topic_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("msgboard", ex);
     }
 
   }

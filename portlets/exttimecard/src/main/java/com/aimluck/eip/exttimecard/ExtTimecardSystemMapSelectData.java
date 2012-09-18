@@ -168,7 +168,7 @@ public class ExtTimecardSystemMapSelectData extends
         getRowsNum(),
         list.getTotalCount());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -253,7 +253,7 @@ public class ExtTimecardSystemMapSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }

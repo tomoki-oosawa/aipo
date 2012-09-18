@@ -91,7 +91,7 @@ public class WebMailAccountMultiDelete extends ALAbstractCheckList {
         .parseInt(accountId));
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return false;
     }
     return true;

@@ -102,7 +102,7 @@ public class CellWebMailAccountSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -157,7 +157,7 @@ public class CellWebMailAccountSelectData extends
       rd.setAccountType(record.getAccountType());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }

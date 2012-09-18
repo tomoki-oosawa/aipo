@@ -122,7 +122,7 @@ public class CabinetFileMultiDelete extends ALAbstractCheckList {
       }
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return false;
     }
     return true;

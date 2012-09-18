@@ -155,7 +155,7 @@ public class ToDoCategorySelectData extends
       categorySum = list.getTotalCount();
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -217,7 +217,7 @@ public class ToDoCategorySelectData extends
         .getAliasName()
         .getValue());
     } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
     rd.setNote(record.getNote());
     return rd;
@@ -246,7 +246,7 @@ public class ToDoCategorySelectData extends
         .getAliasName()
         .getValue());
     } catch (ALDBErrorException ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
     rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
     rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));

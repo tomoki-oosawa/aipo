@@ -161,7 +161,7 @@ public class SystemNetworkSelectData extends
         }
 
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("system", ex);
         rd.setSample(SystemNetworkResultData.EXIST);
         return null;
       }

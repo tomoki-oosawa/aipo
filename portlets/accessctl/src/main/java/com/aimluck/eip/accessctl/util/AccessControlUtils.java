@@ -80,7 +80,7 @@ public class AccessControlUtils {
       }
       return (aclroles.get(0));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlUtils.getEipTAclRole", ex);
       return null;
     }
   }
@@ -110,7 +110,7 @@ public class AccessControlUtils {
       }
       return aclroles;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccessControlUtils.getEipTAclUserRoleMaps", ex);
       return null;
     }
   }

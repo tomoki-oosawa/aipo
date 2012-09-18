@@ -192,7 +192,7 @@ public class FileuploadUtils {
         fileNameList.add(filebean);
 
       } catch (Exception e) {
-        logger.error("Exception", e);
+        logger.error("fileupload", e);
       } finally {
         try {
           if (reader == null) {
@@ -200,7 +200,7 @@ public class FileuploadUtils {
           }
           reader.close();
         } catch (Exception e) {
-          logger.error("Exception", e);
+          logger.error("fileupload", e);
         }
       }
     }
@@ -268,7 +268,7 @@ public class FileuploadUtils {
 
       result = output.toByteArray();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("fileupload", e);
       return null;
     }
     return result;
@@ -335,7 +335,7 @@ public class FileuploadUtils {
 
       result = out.toByteArray();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("fileupload", e);
       result = null;
     } finally {
       try {
@@ -343,7 +343,7 @@ public class FileuploadUtils {
           is.close();
         }
       } catch (Exception e) {
-        logger.error("Exception", e);
+        logger.error("fileupload", e);
         result = null;
       }
     }
@@ -380,7 +380,7 @@ public class FileuploadUtils {
 
       result = out.toByteArray();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("fileupload", e);
       result = null;
     } finally {
       try {
@@ -388,7 +388,7 @@ public class FileuploadUtils {
           is.close();
         }
       } catch (Exception e) {
-        logger.error("Exception", e);
+        logger.error("fileupload", e);
         result = null;
       }
     }

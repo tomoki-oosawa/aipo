@@ -155,7 +155,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountChangeTurnFormData.setFormData", ex);
       return false;
     }
     return res;
@@ -222,7 +222,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
     try {
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("AccountChangeTurnFormData.loadFormData", e);
       return false;
     }
   }
@@ -278,7 +278,7 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountChangeTurnFormData.updateFormData", e);
       res = false;
     }
     return res;

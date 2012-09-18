@@ -96,7 +96,7 @@ public class FacilityMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("facilities", ex);
       return false;
     }
     return true;

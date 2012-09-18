@@ -85,7 +85,7 @@ public class AccountPostSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AccountPostSelectData.selectList", ex);
       return null;
     }
   }

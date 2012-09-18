@@ -96,7 +96,7 @@ public class ActivityNotifyEnableJSONScreen extends ALJSONScreen {
           .equals(desktopNotificationParam)));
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserPrefUpdateJSONScreen]", e);
+      logger.error("ActivityNotifyEnableJSONScreen.getJSONString", e);
     }
 
     return result;

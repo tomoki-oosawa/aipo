@@ -144,7 +144,7 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
       return msgList.size() == 0;
     } catch (Exception e) {
       Database.rollback();
-      logger.error("Exception", e);
+      logger.error("AccountUserMultiDisable.action", e);
       return false;
     }
   }

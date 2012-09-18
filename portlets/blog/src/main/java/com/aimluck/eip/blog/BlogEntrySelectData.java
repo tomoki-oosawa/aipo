@@ -222,7 +222,7 @@ public class BlogEntrySelectData extends
 
       return list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }
@@ -297,7 +297,7 @@ public class BlogEntrySelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }
@@ -315,7 +315,7 @@ public class BlogEntrySelectData extends
       EipTBlogEntry obj = BlogUtils.getEipTBlogEntry(rundata, context);
       return obj;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }
@@ -423,7 +423,7 @@ public class BlogEntrySelectData extends
       return rd;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
       return null;
     }
   }

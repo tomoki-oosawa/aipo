@@ -267,7 +267,7 @@ public class WebMailFormData extends ALAbstractFormData {
       folder.deleteMail(index);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
       return false;
     }
     return true;
@@ -388,7 +388,7 @@ public class WebMailFormData extends ALAbstractFormData {
         return false;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
       msgList.add("メールを送信できませんでした。アカウント設定が間違っている可能性があります。");
       return false;
     }
@@ -494,7 +494,7 @@ public class WebMailFormData extends ALAbstractFormData {
           body.setValue(replies.toString());
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("webmail", ex);
       }
 
       if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
@@ -533,7 +533,7 @@ public class WebMailFormData extends ALAbstractFormData {
       }
       return true;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("webmail", e);
       return false;
     }
   }
@@ -581,7 +581,7 @@ public class WebMailFormData extends ALAbstractFormData {
         body.setValue(bodybuf.toString());
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
     }
 
     return res;

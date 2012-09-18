@@ -418,7 +418,7 @@ public class ExtTimecardSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -496,7 +496,7 @@ public class ExtTimecardSelectData extends
       return null;
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -591,7 +591,7 @@ public class ExtTimecardSelectData extends
         return null;
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }
@@ -634,7 +634,7 @@ public class ExtTimecardSelectData extends
       }
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("exttimecard", ex);
       return null;
     }
   }

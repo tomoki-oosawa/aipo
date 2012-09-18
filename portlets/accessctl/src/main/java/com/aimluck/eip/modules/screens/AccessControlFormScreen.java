@@ -50,7 +50,7 @@ public class AccessControlFormScreen extends ALVelocityScreen {
     try {
       doAccessControl_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[AccessControlFormScreen] Exception.", ex);
+      logger.error("AccessControlFormScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

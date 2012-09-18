@@ -87,7 +87,7 @@ public class UserListAction extends ALBaseAction {
       listData.doViewList(this, rundata, context);
       setTemplate(rundata, "userlist-list.vm");
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("userlist", ex);
     }
   }
 

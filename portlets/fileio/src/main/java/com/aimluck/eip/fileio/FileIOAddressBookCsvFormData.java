@@ -386,7 +386,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
     }
   }
 
@@ -433,7 +433,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         groups.add(rd);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
     }
   }
 
@@ -454,7 +454,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
     }
   }
 
@@ -835,7 +835,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     // update_date.setValue(address.getUpdateDate());
     //
     // } catch (Exception ex) {
-    // logger.error("Exception", ex);
+    // logger.error("fileio", ex);
     // return false;
     // }
     // return true;
@@ -955,7 +955,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
       return false;
     }
   }
@@ -1004,7 +1004,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
           groupModelList.add(group);
         }
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("fileio", ex);
       }
     }
     return res;
@@ -1527,7 +1527,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       company_id.setValue(company.getCompanyId().longValue());
     } catch (Exception ex) {
       logger.debug("AddressBookFormData insertFormData out / false");
-      logger.error("Exception", ex);
+      logger.error("fileio", ex);
       return false;
     }
     return true;

@@ -59,7 +59,7 @@ public class MyGroupUtils {
 
       return (TurbineGroup) JetspeedSecurity.getGroup(id);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("mygroup", ex);
       return null;
     }
   }

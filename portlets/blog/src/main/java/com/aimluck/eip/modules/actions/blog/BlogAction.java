@@ -126,7 +126,7 @@ public class BlogAction extends ALBaseAction {
         doBlog_entry_list(rundata, context);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("blog", ex);
     }
 
   }

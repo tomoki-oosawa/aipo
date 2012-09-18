@@ -146,7 +146,7 @@ public class CabinetUtils {
       }
       return folders.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }
@@ -184,7 +184,7 @@ public class CabinetUtils {
 
       return files.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }
@@ -211,7 +211,7 @@ public class CabinetUtils {
 
       return files;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }

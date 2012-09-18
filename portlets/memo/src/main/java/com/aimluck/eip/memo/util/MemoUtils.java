@@ -106,7 +106,7 @@ public class MemoUtils {
     } catch (ALPageNotFoundException pageNotFound) {
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }
@@ -272,7 +272,7 @@ public class MemoUtils {
       // logger.error(pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }
@@ -317,7 +317,7 @@ public class MemoUtils {
       // logger.error(pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("memo", ex);
       return null;
     }
   }

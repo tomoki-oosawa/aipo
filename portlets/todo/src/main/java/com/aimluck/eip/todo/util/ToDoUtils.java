@@ -149,7 +149,7 @@ public class ToDoUtils {
       // logger.error("[ToDoUtils]", pageNotFound);
       throw pageNotFound;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -188,7 +188,7 @@ public class ToDoUtils {
       }
       return todoList.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -228,7 +228,7 @@ public class ToDoUtils {
 
       return categoryList.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       throw new ALDBErrorException();
     }
   }
@@ -244,7 +244,7 @@ public class ToDoUtils {
     try {
       return Database.get(EipTTodoCategory.class, category_id);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
       return null;
     }
   }
@@ -599,7 +599,7 @@ public class ToDoUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("todo", ex);
     }
 
     // その他追加

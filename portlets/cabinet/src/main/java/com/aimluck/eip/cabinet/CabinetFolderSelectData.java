@@ -340,7 +340,7 @@ public class CabinetFolderSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cabinet", ex);
       return null;
     }
   }

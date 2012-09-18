@@ -92,7 +92,7 @@ public class AddressBookCorpWordSelectData extends
       buildSelectQueryForListViewSort(query, rundata, context);
       list = query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpWordSelectData.selectList", ex);
       return null;
     }
     return list;
@@ -119,7 +119,7 @@ public class AddressBookCorpWordSelectData extends
     try {
       return AddressBookUtils.getCorpResultData(obj, getStrLength());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpWordSelectData.getResultData", ex);
       return null;
     }
   }
@@ -289,7 +289,7 @@ public class AddressBookCorpWordSelectData extends
         myGroupList.add(myGroups.get(i));
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("AddressBookCorpWordSelectData.loadGroups", ex);
     }
   }
 

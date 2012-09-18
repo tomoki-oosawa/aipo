@@ -156,7 +156,7 @@ public class WebMailAccountSelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -230,7 +230,7 @@ public class WebMailAccountSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }
@@ -263,7 +263,7 @@ public class WebMailAccountSelectData extends
       rd.setSmtpEncryptionFlag(record.getSmtpEncryptionFlg());
       return rd;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("webmail", ex);
       return null;
     }
   }

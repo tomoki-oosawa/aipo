@@ -542,7 +542,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
       create_date.setValue(account.getCreateDate());
       update_date.setValue(account.getUpdateDate());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
     return true;
@@ -828,7 +828,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
       }
       return super.setFormData(rundata, context, msgList);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("system", ex);
       return false;
     }
   }

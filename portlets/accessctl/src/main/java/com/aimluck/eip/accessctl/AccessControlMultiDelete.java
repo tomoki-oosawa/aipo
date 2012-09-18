@@ -70,7 +70,7 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
       Database.commit();
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("AccessControlMultiDelete.action", ex);
       return false;
     }
     return true;

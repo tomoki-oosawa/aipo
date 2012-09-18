@@ -79,7 +79,7 @@ public class CellularUtils {
       }
       result = list.get(0);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("cellular", ex);
     }
     return result;
   }
