@@ -5,7 +5,7 @@ ${progress}
 ${content}
 
 [${serviceAlias}へのアクセス]
-#if($enableASP)
+#if($enableAsp)
  ${globalurl}
 #else
 ・社外
