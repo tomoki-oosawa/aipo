@@ -1,0 +1,18 @@
+${user_email}${message}
+
+[決裁状況]
+${progress}
+${content}
+
+[${serviceAlias}へのアクセス]
+#if($enableASP)
+ ${globalurl}
+#else
+・社外
+  ${globalurl}
+・社内
+  ${localurl}
+#end
+
+---------------------
+${serviceAlias}

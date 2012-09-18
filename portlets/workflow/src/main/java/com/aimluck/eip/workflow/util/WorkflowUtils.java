@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.workflow.util;
 
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,15 +33,20 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.fulcrum.localization.LocalizationService;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
@@ -71,7 +77,6 @@ import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
-import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.workflow.WorkflowCategoryResultData;
@@ -1013,8 +1018,7 @@ public class WorkflowUtils {
         message.setPcBody(WorkflowUtils.createMsgForPc(rundata, request));
         message.setCellularBody(WorkflowUtils.createMsgForCellPhone(
           rundata,
-          request,
-          destMember.getUserId()));
+          request));
         messageList.add(message);
       }
 
@@ -1086,18 +1090,18 @@ public class WorkflowUtils {
       for (ALEipUserAddr userAddr : userAddressList) {
 
         ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
-
-        String msgForPc =
-          msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser, false, mailBean);
-
-        String msgForCell =
-          msgForCellPrefix + createMsgAtUpdateSuffix(rcptUser, true, mailBean);
-
+        /*
+         * String msgForPc = msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser,
+         * false, mailBean);
+         * 
+         * String msgForCell = msgForCellPrefix +
+         * createMsgAtUpdateSuffix(rcptUser, true, mailBean);
+         */
         ALAdminMailMessage message = new ALAdminMailMessage(userAddr);
         message.setPcSubject(mailBean.getSubject());
         message.setCellularSubject(mailBean.getSubject());
-        message.setPcBody(msgForPc);
-        message.setCellularBody(msgForCell);
+        message.setPcBody(createMsgForPc(rundata, request));
+        message.setCellularBody(createMsgForPc(rundata, request));
         messageList.add(message);
 
       }
@@ -1143,11 +1147,12 @@ public class WorkflowUtils {
 
         ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
 
-        String msgForPc =
-          msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser, false, mailBean);
+        String msgForPc = msgForPcPrefix;// + createMsgAtUpdateSuffix(rcptUser,
+                                         // false, mailBean);
 
-        String msgForCell =
-          msgForCellPrefix + createMsgAtUpdateSuffix(rcptUser, true, mailBean);
+        String msgForCell = msgForCellPrefix; // +
+                                              // createMsgAtUpdateSuffix(rcptUser,
+                                              // true, mailBean);
 
         ALMailUtils.sendMailDelegateOne(mailBean.getOrgId(), mailBean
           .getLoginUserId(), userAddr, mailBean.getSubject(), mailBean
@@ -1209,12 +1214,12 @@ public class WorkflowUtils {
     }
   }
 
-  public static String createMsgAtUpdateSuffix(ALEipUser user, boolean isCell,
-      WorkflowMailBean mailBean) {
-    return getMessageAipoUri(user, isCell, ALMailUtils.CR, mailBean)
-      + getMessageSignature(ALMailUtils.CR, mailBean);
-  }
-
+  /*
+   * public static String createMsgAtUpdateSuffix(ALEipUser user, boolean
+   * isCell, WorkflowMailBean mailBean) { return getMessageAipoUri(user, isCell,
+   * ALMailUtils.CR, mailBean) + getMessageSignature(ALMailUtils.CR, mailBean);
+   * }
+   */
   public static String getMessageHead(Type flowStatus, String CR)
       throws Exception {
     StringBuilder body = new StringBuilder("");
@@ -1269,8 +1274,10 @@ public class WorkflowUtils {
     return body.toString();
   }
 
+  // [タイトル][申請日][申請内容]
   public static String getMessageContent(EipTWorkflowRequest request,
       String CR, boolean isCell, WorkflowMailBean mailBean) {
+
     StringBuilder body = new StringBuilder("");
 
     body.append("[").append(
@@ -1308,57 +1315,43 @@ public class WorkflowUtils {
         .append(ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO"))
         .append("]")
         .append(CR)
-        .append(request.getNote())
-        .append(CR);
+        .append(request.getNote());
     }
-
-    if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_AMOUNT"))
-        .append(CR)
-        .append(request.getPrice())
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_YEN"))
-        .append(CR);
-    }
-
-    body.append(CR);
-    body.append("[").append(mailBean.getAipoAlias()).append(
-      ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO")).append("]").append(CR);
-
+    /*
+     * if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
+     * body .append(ALLocalizationUtils.getl10n("WORKFLOW_AMOUNT")) .append(CR)
+     * .append(request.getPrice())
+     * .append(ALLocalizationUtils.getl10n("WORKFLOW_YEN")) .append(CR); }
+     */
+    /*
+     * body.append(CR); body.append("[").append(mailBean.getAipoAlias()).append(
+     * ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO")).append("]");
+     */
     return body.toString();
   }
 
-  public static String getMessageAipoUri(ALEipUser user, boolean isCell,
-      String CR, WorkflowMailBean mailBean) {
-    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
-
-    StringBuilder body = new StringBuilder("");
-
-    if (isCell) {
-      body.append("　").append(mailBean.getGlobalUrl()).append("?key=").append(
-        ALCellularUtils.getCellularKey(user)).append(CR);
-    } else {
-      if (enableAsp) {
-        body.append("　").append(mailBean.getGlobalUrl()).append(CR);
-      } else {
-        body
-          .append(ALLocalizationUtils.getl10n("WORKFLOW_EXTERNAL"))
-          .append(CR);
-        body.append("　").append(mailBean.getGlobalUrl()).append(CR);
-        body.append(ALLocalizationUtils.getl10n("WORKFLOW_HOUSE")).append(CR);
-        body.append("　").append(mailBean.getLocalUrl()).append(CR).append(CR);
-      }
-    }
-    return body.toString();
-  }
-
-  public static String getMessageSignature(String CR, WorkflowMailBean mailBean) {
-    StringBuilder body = new StringBuilder("");
-    body.append("---------------------").append(CR);
-    body.append(mailBean.getAipoAlias()).append(CR);
-    return body.toString();
-  }
-
+  /*
+   * public static String getMessageAipoUri(ALEipUser user, boolean isCell,
+   * String CR, WorkflowMailBean mailBean) { boolean enableAsp =
+   * JetspeedResources.getBoolean("aipo.asp", false);
+   * 
+   * StringBuilder body = new StringBuilder("");
+   * 
+   * if (isCell) {
+   * body.append("　").append(mailBean.getGlobalUrl()).append("?key=").append(
+   * ALCellularUtils.getCellularKey(user)).append(CR); } else { if (enableAsp) {
+   * body.append("　").append(mailBean.getGlobalUrl()).append(CR); } else { body
+   * .append(ALLocalizationUtils.getl10n("WORKFLOW_EXTERNAL")) .append(CR);
+   * body.append("　").append(mailBean.getGlobalUrl()).append(CR);
+   * body.append(ALLocalizationUtils.getl10n("WORKFLOW_HOUSE")).append(CR);
+   * body.append("　").append(mailBean.getLocalUrl()).append(CR).append(CR); } }
+   * return body.toString(); }
+   * 
+   * public static String getMessageSignature(String CR, WorkflowMailBean
+   * mailBean) { StringBuilder body = new StringBuilder("");
+   * body.append("---------------------").append(CR);
+   * body.append(mailBean.getAipoAlias()).append(CR); return body.toString(); }
+   */
   /**
    * パソコンへ送信するメールの内容を作成する．
    * 
@@ -1366,6 +1359,8 @@ public class WorkflowUtils {
    */
   public static String createMsgForPc(RunData rundata,
       EipTWorkflowRequest request) {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     String CR = ALMailUtils.CR;
 
     WorkflowMailBean mailBean = new WorkflowMailBean();
@@ -1389,55 +1384,73 @@ public class WorkflowUtils {
       logger.error("[WorkflowUtils]", e);
       return "";
     }
-    StringBuffer body = new StringBuffer("");
-    body.append(auser.getAliasName().toString());
+    // 依頼者とemail
+    StringBuffer user_email = new StringBuffer("");
+    user_email.append(auser.getAliasName().toString());
     if (!tuser.getEmail().equals("")) {
-      body.append("(").append(tuser.getEmail()).append(")");
+      user_email.append("(").append(tuser.getEmail()).append(")");
     }
+    context.put("user_email", user_email);
 
+    // （さんの申請は承認されました。など）
+    StringBuffer message = new StringBuffer("");
     if ("D".equals(request.getProgress())) {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body.append(
-        ALLocalizationUtils.getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK")).append(
-        CR);
+      message
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"));
     } else if ("A".equals(request.getProgress())) {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED")).append(CR);
+      message
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"));
     } else {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"))
-        .append(CR);
+      message.append(ALLocalizationUtils
+        .getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"));
     }
+    context.put("message", message);
 
-    body.append(getMessageContent(request, CR, false, mailBean));
-    body.append(createMsgAtUpdateSuffix(auser, false, mailBean));
+    // 決裁状況
+    StringBuffer progress = new StringBuffer("");
+    if ("D".equals(request.getProgress())) {
+      progress.append(ALLocalizationUtils
+        .getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK"));
+    } else if ("A".equals(request.getProgress())) {
+      progress.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED"));
+    } else {
+      progress.append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"));
+    }
+    context.put("progress", progress);
 
-    return body.toString();
+    // タイトル,申請日,重要度,申請内容
+    context.put("content", getMessageContent(request, CR, false, mailBean));
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/workflow-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/workflow-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   /**
@@ -1446,10 +1459,10 @@ public class WorkflowUtils {
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
-      EipTWorkflowRequest request, int destUserID) {
-
+      EipTWorkflowRequest request) {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     String CR = ALMailUtils.CR;
-
     WorkflowMailBean mailBean = new WorkflowMailBean();
     mailBean.setOrgId(Database.getDomainName());
     mailBean.setSubject("["
@@ -1471,66 +1484,73 @@ public class WorkflowUtils {
       logger.error("[WorkflowUtils]", e);
       return "";
     }
-
-    StringBuffer body = new StringBuffer("");
-    body.append(auser.getAliasName().toString());
+    // 依頼者とemail
+    StringBuffer user_email = new StringBuffer("");
+    user_email.append(auser.getAliasName().toString());
     if (!tuser.getEmail().equals("")) {
-      body.append("(").append(tuser.getEmail()).append(")");
+      user_email.append("(").append(tuser.getEmail()).append(")");
     }
+    context.put("user_email", user_email);
 
+    // （さんの申請は承認されました。など）
+    StringBuffer message = new StringBuffer("");
     if ("D".equals(request.getProgress())) {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body.append(
-        ALLocalizationUtils.getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK")).append(
-        CR);
+      message
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_DENIAL_MSG"));
     } else if ("A".equals(request.getProgress())) {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED")).append(CR);
+      message
+        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_ACCEPT_MSG"));
     } else {
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"))
-        .append(CR)
-        .append(CR);
-      body
-        .append("[")
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_FLOW_STATUS"))
-        .append("]")
-        .append(CR);
-      body
-        .append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"))
-        .append(CR);
+      message.append(ALLocalizationUtils
+        .getl10n("WORKFLOW_RECEIVE_REQUEST_MSG"));
     }
+    context.put("message", message);
 
-    body.append(getMessageContent(request, CR, true, mailBean));
-    body.append(createMsgAtUpdateSuffix(auser, true, mailBean));
-
-    return body.toString();
-  }
-
-  public static boolean hasWorkFlowAuthority(List<ALEipUser> memberList) {
-    int size = memberList.size();
-    List<ALNumberField> userIds = new ArrayList<ALNumberField>();
-    for (int i = 0; i < size; i++) {
-      userIds.add(memberList.get(i).getUserId());
+    // 決裁状況
+    StringBuffer progress = new StringBuffer("");
+    if ("D".equals(request.getProgress())) {
+      progress.append(ALLocalizationUtils
+        .getl10n("WORKFLOW_NEED_TO_CHECK_PASSBACK"));
+    } else if ("A".equals(request.getProgress())) {
+      progress.append(ALLocalizationUtils.getl10n("WORKFLOW_CONFIRMED"));
+    } else {
+      progress.append(ALLocalizationUtils.getl10n("WORKFLOW_WAITING_DECISION"));
     }
+    context.put("progress", progress);
 
-    return false;
+    // タイトル,申請日,重要度,申請内容
+    context.put("content", getMessageContent(request, CR, false, mailBean));
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && !lang.equals("en")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/workflow-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/workflow-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
   }
 
   public static boolean insertFileDataDelegate(RunData rundata,
