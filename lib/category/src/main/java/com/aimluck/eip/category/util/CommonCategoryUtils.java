@@ -58,8 +58,8 @@ public class CommonCategoryUtils {
    */
   public static EipTCommonCategory getEipTCommonCategory(Long category_id) {
     try {
-      EipTCommonCategory result = Database.get(EipTCommonCategory.class,
-        category_id);
+      EipTCommonCategory result =
+        Database.get(EipTCommonCategory.class, category_id);
 
       if (result == null) {
         logger.debug("[CommonCategoryUtils] Not found ID...");
@@ -67,7 +67,7 @@ public class CommonCategoryUtils {
       }
       return result;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategoryUtils.getEipTCommonCategory", ex);
       return null;
     }
   }
@@ -80,8 +80,8 @@ public class CommonCategoryUtils {
    */
   public static EipTCommonCategory getEipTCommonCategory(RunData rundata,
       Context context) {
-    String category_id = ALEipUtils.getTemp(rundata, context,
-      ALEipConstants.ENTITY_ID);
+    String category_id =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (category_id == null || Integer.valueOf(category_id) == null) {
         logger.debug("[CommonCategoryUtils] Empty ID...");
@@ -89,7 +89,7 @@ public class CommonCategoryUtils {
       }
       return getEipTCommonCategory(Long.valueOf(category_id));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategoryUtils.getEipTCommonCategory", ex);
       return null;
     }
   }
@@ -104,11 +104,13 @@ public class CommonCategoryUtils {
     List<CommonCategoryLiteBean> list = new ArrayList<CommonCategoryLiteBean>();
 
     try {
-      SelectQuery<EipTCommonCategory> query = Database
-        .query(EipTCommonCategory.class);
+      SelectQuery<EipTCommonCategory> query =
+        Database.query(EipTCommonCategory.class);
 
-      Expression exp = ExpressionFactory.noMatchDbExp(
-        EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN, Integer.valueOf(1));
+      Expression exp =
+        ExpressionFactory.noMatchDbExp(
+          EipTCommonCategory.COMMON_CATEGORY_ID_PK_COLUMN,
+          Integer.valueOf(1));
       query.setQualifier(exp).orderAscending(EipTCommonCategory.NAME_PROPERTY);
 
       List<EipTCommonCategory> commoncategory_list = query.fetchList();
@@ -121,7 +123,7 @@ public class CommonCategoryUtils {
         list.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategoryUtils.getCommonCategoryLiteBeans", ex);
     }
     return list;
   }
@@ -142,11 +144,15 @@ public class CommonCategoryUtils {
       return true;
     }
 
-    ALAccessControlFactoryService aclservice = (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-      .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-    boolean hasAuthority = aclhandler.hasAuthority(ALEipUtils
-      .getUserId(rundata), pfeature, defineAclType);
+    boolean hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
 
     return hasAuthority;
   }
@@ -159,13 +165,15 @@ public class CommonCategoryUtils {
   public static void setDefaultCommonCategoryToSchedule(
       EipTCommonCategory category) {
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
-    Expression exp = ExpressionFactory.matchExp(
-      EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY, category
-        .getCommonCategoryId());
-    List<EipTScheduleMap> schedulemap_list = query.andQualifier(exp).fetchList();
+    Expression exp =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.COMMON_CATEGORY_ID_PROPERTY,
+        category.getCommonCategoryId());
+    List<EipTScheduleMap> schedulemap_list =
+      query.andQualifier(exp).fetchList();
     if (schedulemap_list != null) {
-      EipTCommonCategory tmpCategory = CommonCategoryUtils
-        .getEipTCommonCategory(Long.valueOf(1));
+      EipTCommonCategory tmpCategory =
+        CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
       for (EipTScheduleMap record : schedulemap_list) {
         record.setEipTCommonCategory(tmpCategory);
       }

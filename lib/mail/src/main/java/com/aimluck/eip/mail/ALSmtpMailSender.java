@@ -272,7 +272,7 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       }
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALSmtpMailSender.createMessage", e);
       return null;
     }
 
@@ -372,13 +372,13 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       ALFolder sendFolder = getALFolder();
       sendFolder.saveMail(msg, null);
     } catch (AuthenticationFailedException ex) {
-      logger.error("Exception", ex);
+      logger.error("ALSmtpMailSender.send", ex);
       return SEND_MSG_FAIL_SMTP_AUTH;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALSmtpMailSender.send", ex);
       return SEND_MSG_FAIL;
     } catch (Throwable e) {
-      logger.error("Throwable", e);
+      logger.error("ALSmtpMailSender.send", e);
       return SEND_MSG_FAIL;
     }
 

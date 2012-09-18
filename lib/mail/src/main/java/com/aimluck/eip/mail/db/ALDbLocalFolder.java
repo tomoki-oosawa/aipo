@@ -94,7 +94,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
       return msg;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALDbLocalFolder]", t);
+      logger.error("ALDbLocalFolder.getMail", t);
       return null;
     }
   }
@@ -118,7 +118,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
         new ALLocalMailMessage(Session.getDefaultInstance(prop), input);
       input.close();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALDbLocalFolder.readMail", ex);
     }
     return localmsg;
 
@@ -136,7 +136,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
       insertMailToDB((MimeMessage) mail, null, true, true);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALDbLocalFolder.saveMail", ex);
       return false;
     }
     return true;
@@ -154,7 +154,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
     try {
       insertMailToDB((MimeMessage) mail, null, false, false);
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALDbLocalFolder.saveDefectiveMail", ex);
       return false;
     }
     return true;
@@ -191,7 +191,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALDbLocalFolder]", t);
+      logger.error("ALDbLocalFolder.deleteMail", t);
       return false;
     }
     return true;

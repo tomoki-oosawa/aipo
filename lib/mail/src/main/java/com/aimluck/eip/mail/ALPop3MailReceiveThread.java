@@ -154,7 +154,7 @@ public class ALPop3MailReceiveThread implements Runnable {
         }
       }
     } catch (Exception e) {
-      logger.error("[ALFilePop3MailReceiveThread]", e);
+      logger.error("ALFilePop3MailReceiveThread.run", e);
     } finally {
       Database.tearDown();
       ob.updateAccountStat(
@@ -200,7 +200,7 @@ public class ALPop3MailReceiveThread implements Runnable {
       Database.commit(dataContext);
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("[ALFilePop3MailReceiveThread]", ex);
+      logger.error("ALFilePop3MailReceiveThread.receiveMail", ex);
       result = ALPop3MailReceiver.RECEIVE_MSG_FAIL;
       return result;
     }
@@ -227,7 +227,7 @@ public class ALPop3MailReceiveThread implements Runnable {
       res = handler.getNewMailSum(rcontext);
 
     } catch (Exception ex) {
-      logger.error("[ALFilePop3MailReceiveThread]", ex);
+      logger.error("ALFilePop3MailReceiveThread.checkNewMailNum", ex);
       res = -1;
     }
     return res;

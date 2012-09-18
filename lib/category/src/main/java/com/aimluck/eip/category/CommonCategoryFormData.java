@@ -148,7 +148,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
           + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategoryFormData.validate", ex);
       return false;
     }
 
@@ -183,7 +183,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
       // メモ
       note.setValue(category.getNote());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategoryFormData.loadFormData", ex);
       return false;
     }
     return true;
@@ -219,7 +219,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         name.getValue());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[CommonCategoryFormData]", t);
+      logger.error("CommonCategoryFormData.insertFormData", t);
       return false;
     }
     return true;
@@ -280,7 +280,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         name.getValue());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[CommonCategoryFormData]", t);
+      logger.error("CommonCategoryFormData.updateFormData", t);
       return false;
     }
     return true;
@@ -341,7 +341,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
         categoryName);
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[CommonCategoryFormData]", t);
+      logger.error("CommonCategoryFormData.deleteFormData", t);
       return false;
     }
     return true;

@@ -67,7 +67,6 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
     logActionEvent(entity_id, portlet_type, note, mode);
   }
 
-
   private void logActionEvent(int entity_id, int portlet_type, String note) {
 
     // rundataの取得
@@ -87,7 +86,8 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
     }
   }
 
-  private void logActionEvent(int entity_id, int portlet_type, String note, String mode) {
+  private void logActionEvent(int entity_id, int portlet_type, String note,
+      String mode) {
 
     // rundataの取得
     RunData rundata = ALEventlogFactoryService.getInstance().getRunData();
@@ -104,7 +104,6 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
     // ログを保存
     saveEvent(event_type, uid, portlet_type, entity_id, ip_addr, note);
   }
-
 
   /**
    * Login処理
@@ -208,7 +207,7 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("Exception", ex);
+      logger.error("ALActionEventlogHandler.saveEvent", ex);
       return false;
     }
   }

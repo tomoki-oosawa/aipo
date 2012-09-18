@@ -30,7 +30,7 @@ import com.aimluck.eip.user.util.UserUtils;
 
 /**
  * グループ情報をJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class UserGroupLiteJSONScreen extends ALJSONScreen {
 
@@ -63,12 +63,12 @@ public class UserGroupLiteJSONScreen extends ALJSONScreen {
             false));
       } else if ("mygroup_and_post".equals(mode)) {
         json =
-            JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
-              rundata,
-              true,
-              true,
-              false));
-        } else {
+          JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
+            rundata,
+            true,
+            true,
+            false));
+      } else {
         json =
           JSONArray.fromObject(UserUtils.getUserGroupLiteBeans(
             rundata,
@@ -79,7 +79,7 @@ public class UserGroupLiteJSONScreen extends ALJSONScreen {
 
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserLiteJSONScreen]", e);
+      logger.error("UserGroupLiteJSONScreen.getJSONString", e);
     }
 
     return result;

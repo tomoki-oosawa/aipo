@@ -77,7 +77,7 @@ public class UserFacilityLiteJSONScreen extends ALJSONScreen {
       }
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserLiteJSONScreen]", e);
+      logger.error("UserFacilityLiteJSONScreen.getJSONString", e);
     }
 
     return result;

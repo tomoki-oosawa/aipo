@@ -63,7 +63,7 @@ public class FacilityUtils {
         facilityAllList.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("FacilityUtils.getFacilityLiteBeans", ex);
     }
     return facilityAllList;
   }
@@ -144,7 +144,7 @@ public class FacilityUtils {
         facilityGroupAllList.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("FacilityUtils.getFacilityFromGroupName", ex);
     }
     return facilityGroupAllList;
   }

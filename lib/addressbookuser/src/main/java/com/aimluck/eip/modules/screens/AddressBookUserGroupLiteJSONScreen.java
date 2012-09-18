@@ -54,7 +54,7 @@ public class AddressBookUserGroupLiteJSONScreen extends ALJSONScreen {
 
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserLiteJSONScreen]", e);
+      logger.error("AddressBookUserGroupLiteJSONScreen.getJSONString", e);
     }
 
     return result;

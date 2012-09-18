@@ -49,7 +49,7 @@ public class FacilityGroupLiteJSONScreen extends ALJSONScreen {
 
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[FacilityGroupLiteJSONScreen]", e);
+      logger.error("FacilityGroupLiteJSONScreen.getJSONString", e);
     }
 
     return result;

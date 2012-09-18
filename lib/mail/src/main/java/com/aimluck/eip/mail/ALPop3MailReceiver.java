@@ -297,7 +297,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       // POP3 サーバとの接続を閉じる
       close(pop3Store, pop3Folder, null);
     } catch (AuthenticationFailedException ae) {
-      logger.error("Exception", ae);
+      logger.error("ALPop3MailReceiver.receive", ae);
       // 受信済みの最新の UID の一覧を保存する．
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
@@ -314,7 +314,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_AUTH;
     } catch (MessagingException me) {
-      logger.error("Exception", me);
+      logger.error("ALPop3MailReceiver.receive", me);
       // 受信済みの最新の UID の一覧を保存する．
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
@@ -331,7 +331,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_CONNECT;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALPop3MailReceiver.receive", e);
       // 受信済みの最新の UID の一覧を保存する．
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
@@ -348,7 +348,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_EXCEPTION;
     } catch (Throwable t) {
-      logger.error("Throwable", t);
+      logger.error("ALPop3MailReceiver.receive", t);
       // 受信済みの最新の UID の一覧を保存する．
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
@@ -380,10 +380,10 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
         receiveFolder.close();
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALPop3MailReceiver.receive", e);
       return RECEIVE_MSG_FAIL_EXCEPTION;
     } catch (Throwable t) {
-      logger.error("Throwable", t);
+      logger.error("ALPop3MailReceiver.receive", t);
       return RECEIVE_MSG_FAIL_OUTOFMEMORY;
     }
 
@@ -408,7 +408,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
         receiveFolder.close();
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALPop3MailReceiver.close", e);
     }
   }
 
@@ -450,14 +450,14 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
         pop3UserPasswd);
       res = pop3Store.isConnected();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALPop3MailReceiver.isAuthenticatedUser", ex);
       res = false;
     } finally {
       if (pop3Store != null && pop3Store.isConnected()) {
         try {
           pop3Store.close();
         } catch (MessagingException ex) {
-          logger.error("Exception", ex);
+          logger.error("ALPop3MailReceiver.isAuthenticatedUser", ex);
           res = false;
         }
       }
@@ -561,7 +561,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       // POP3 サーバとの接続を閉じる
       close(pop3Store, pop3Folder, receiveFolder);
     } catch (MessagingException e) {
-      logger.error("Exception", e);
+      logger.error("ALPop3MailReceiver.getNewMailSum", e);
       // POP3 サーバとの接続を閉じる
       close(pop3Store, pop3Folder, null);
       return -1;

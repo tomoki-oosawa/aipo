@@ -87,7 +87,7 @@ public class ALMailSendThread implements Runnable {
       DataContext.bindThreadDataContext(Database.createDataContext(orgId));
       getService().sendAdminMail(adminMailContext);
     } catch (Exception e) {
-      logger.error("[ALMailService]", e);
+      logger.error("ALMailSendThread.run", e);
     } finally {
       Database.tearDown();
     }

@@ -236,7 +236,7 @@ public class ALEventlogUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEventlogUtils.getPortletName", ex);
       return null;
     }
     return null;

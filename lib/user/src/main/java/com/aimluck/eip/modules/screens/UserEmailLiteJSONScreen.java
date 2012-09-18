@@ -64,7 +64,7 @@ public class UserEmailLiteJSONScreen extends ALJSONScreen {
       }
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserEmailLiteJSONScreen]", e);
+      logger.error("UserEmailLiteJSONScreen.getJSONString", e);
     }
 
     return result;

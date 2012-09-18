@@ -180,7 +180,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         + getMailMassageFileName()));
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.readMail", e);
     }
   }
 
@@ -196,7 +196,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         folderPath,
         getMailMassageFileName());
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.saveMail", e);
     }
   }
 
@@ -216,7 +216,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         fileName);
 
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.saveAttachmentFile", e);
     }
   }
 
@@ -230,7 +230,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     try {
       text = MultipartUtility.getFirstPlainText(this);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getBodyText", e);
     }
     return text;
   }
@@ -249,7 +249,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         sb.append(MailUtility.decodeText(line)).append(ALMailUtils.CR);
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getHeader", e);
       return "";
     }
     return UnicodeCorrecter.correctToCP932(sb.toString());
@@ -285,7 +285,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       MultipartUtility.process(this, h);
       filenames = h.getFileNames();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getAttachmentFileNameArray", e);
       return null;
     }
     return filenames;
@@ -362,7 +362,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       boolean hasAttachments = (h.getCount() > 0) ? true : false;
       return hasAttachments;
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.isHtmlMail", e);
       return false;
     }
   }
@@ -391,7 +391,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         return true;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.hasAttachments", e);
       return false;
     }
     return false;
@@ -410,7 +410,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       MultipartUtility.process(this, h);
       in = h.getInputStream(attachmentIndex);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getInputStream", e);
       return null;
     }
     return in;
@@ -429,7 +429,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       MultipartUtility.process(this, h);
       filename = h.getFileName(attachmentIndex);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getFileName", e);
       return null;
     }
     return filename;
@@ -443,7 +443,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       writeTo(output);
       b = output.toByteArray();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALLocalMailMessage.getSize", e);
       return -1;
     } finally {
       try {

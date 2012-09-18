@@ -222,7 +222,7 @@ public abstract class ALAbstractFolder implements ALFolder {
             preson += "，...";
           }
         } catch (RuntimeException ex) {
-          logger.error("Exception", ex);
+          logger.error("ALAbstractFolder.insertMailToDB", ex);
           preson = "--";
         }
       } else {
@@ -303,7 +303,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALAbstractFolder]", t);
+      logger.error("ALAbstractFolder.insertMailToDB", t);
       return false;
     }
     return true;
@@ -356,7 +356,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       setPageParam(resultList.getTotalCount());
       return resultList;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALAbstractFolder.getIndexRows", ex);
       return null;
     }
   }

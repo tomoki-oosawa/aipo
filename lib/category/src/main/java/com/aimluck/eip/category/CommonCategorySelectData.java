@@ -137,7 +137,7 @@ public class CommonCategorySelectData extends
 
       return query.getResultList();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("CommonCategorySelectData.selectList", ex);
       return null;
     }
   }

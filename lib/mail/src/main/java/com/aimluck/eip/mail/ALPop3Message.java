@@ -130,7 +130,7 @@ public class ALPop3Message extends POP3Message implements ALMailMessage {
       writer.flush();
       writer.close();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALPop3Message.saveDefectiveMail", e);
     }
   }
 }

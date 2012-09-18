@@ -84,7 +84,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error(e, e);
+      logger.error("ALDefaultStorageHanlder.saveFile", e);
     } finally {
       if (os != null) {
         try {
@@ -128,7 +128,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error(e, e);
+      logger.error("ALDefaultStorageHanlder.createNewFile", e);
     } finally {
       if (os != null) {
         try {
@@ -169,7 +169,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error(e, e);
+      logger.error("ALDefaultStorageHanlder.createNewFile", e);
     } finally {
       if (os != null) {
         try {
@@ -225,7 +225,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
           bos.write(c);
         }
       } catch (IOException e) {
-        logger.error(e, e);
+        logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
       } finally {
 
         IOUtils.closeQuietly(bis);
@@ -240,7 +240,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
             + EXT_FILENAME), "UTF-8"));
         w.println(realFileName);
       } catch (IOException e) {
-        logger.error(e, e);
+        logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
       } finally {
         if (w != null) {
           try {
@@ -252,9 +252,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         }
       }
     } catch (FileNotFoundException e) {
-      logger.error(e, e);
+      logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
     } catch (IOException e) {
-      logger.error(e, e);
+      logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
     }
   }
 
@@ -307,14 +307,14 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       destChannel = new FileOutputStream(to).getChannel();
       destChannel.transferFrom(srcChannel, 0, srcChannel.size());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALDefaultStorageHanlder.copyFile", ex);
       res = false;
     } finally {
       if (destChannel != null) {
         try {
           destChannel.close();
         } catch (IOException ex) {
-          logger.error("Exception", ex);
+          logger.error("ALDefaultStorageHanlder.copyFile", ex);
           res = false;
         }
       }
@@ -322,7 +322,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         try {
           srcChannel.close();
         } catch (IOException ex) {
-          logger.error("Exception", ex);
+          logger.error("ALDefaultStorageHanlder.copyFile", ex);
           res = false;
         }
       }
@@ -605,7 +605,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
       }
     } catch (Exception e) {
-      logger.error(e);
+      logger.error("ALDefaultStorageHanlder.deleteOldFolder", e);
       return false;
     }
     return flag;

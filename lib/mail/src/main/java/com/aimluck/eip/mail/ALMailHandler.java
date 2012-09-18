@@ -70,7 +70,7 @@ public abstract class ALMailHandler {
       result = receiver.receive(orgId);
     } catch (Exception e) {
       result = ALMailReceiver.RECEIVE_MSG_FAIL;
-      logger.error("Exception", e);
+      logger.error("ALMailHandler.receive", e);
     }
     return result;
 
@@ -113,7 +113,7 @@ public abstract class ALMailHandler {
       // sender.setAuthType(authSendFlag, authSendUserId, authSendUserPassword);
       result = sender.send(mcontext);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailHandler.send", e);
       result = ALMailSender.SEND_MSG_FAIL;
     }
     return result;
@@ -130,7 +130,7 @@ public abstract class ALMailHandler {
       // sender.setAuthType(authSendFlag, authSendUserId, authSendUserPassword);
       result = sender.send(mcontext);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailHandler.sendAdmin", e);
       result = ALMailSender.SEND_MSG_FAIL;
     }
     return result;
@@ -170,7 +170,7 @@ public abstract class ALMailHandler {
 
       return query;
     } catch (Exception e) {
-      logger.error("error", e);
+      logger.error("ALMailHandler.getUnReadMailQuery", e);
       return null;
     }
   }
@@ -268,7 +268,7 @@ public abstract class ALMailHandler {
         result = -1;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailHandler.getNewMailSum", e);
       result = -1;
     }
     return result;

@@ -72,7 +72,9 @@ public class AddressBookUserUtils {
         list.add(address);
       }
     } catch (Exception e) {
-      logger.error("[AddressBookUserUtils]", e);
+      logger.error(
+        "AddressBookUserUtils.getAddressBookUserLiteBeansFromGroup",
+        e);
     }
 
     return list;
@@ -108,7 +110,7 @@ public class AddressBookUserUtils {
         list.add(bean);
       }
     } catch (Exception e) {
-      logger.error("[AddressBookUserUtils]", e);
+      logger.error("AddressBookUserUtils.getAddressBookUserGroupLiteBeans", e);
     }
     return list;
   }
@@ -138,7 +140,9 @@ public class AddressBookUserUtils {
         list.add(bean);
       }
     } catch (Exception e) {
-      logger.error("[AddressBookUserUtils]", e);
+      logger.error(
+        "AddressBookUserUtils.getAddressBookUserEmailLiteBeansFromGroup",
+        e);
     }
 
     return list;

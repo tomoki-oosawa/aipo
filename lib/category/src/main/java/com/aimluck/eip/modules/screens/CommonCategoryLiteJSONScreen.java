@@ -50,7 +50,7 @@ public class CommonCategoryLiteJSONScreen extends ALJSONScreen {
           .getCommonCategoryLiteBeans(rundata));
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("CommonCategoryLiteJSONScreen.getJSONString", e);
     }
 
     return result;

@@ -145,7 +145,7 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
       }
       return name;
     } catch (UnsupportedEncodingException e) {
-      logger.error(e, e);
+      logger.error("ALAttachmentsExtractor.getFileName", e);
       return null;
     }
   }

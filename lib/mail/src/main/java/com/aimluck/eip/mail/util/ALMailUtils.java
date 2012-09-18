@@ -238,7 +238,7 @@ public class ALMailUtils {
       }
       return account;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getMailAccount", ex);
       return null;
     }
   }
@@ -263,7 +263,7 @@ public class ALMailUtils {
       }
       accountName = mailAccount.getAccountName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getAccountName", ex);
       return null;
     }
     return accountName;
@@ -311,7 +311,7 @@ public class ALMailUtils {
       }
       msg.setText(UnicodeCorrecter.correctToISO2022JP(sb.toString()));
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getReplyMessage", e);
       return null;
     }
     return msg;
@@ -359,7 +359,7 @@ public class ALMailUtils {
       }
       msg.setText(UnicodeCorrecter.correctToISO2022JP(sb.toString()));
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getForwardMessage", e);
       return null;
     }
     return msg;
@@ -393,7 +393,7 @@ public class ALMailUtils {
       lines = new String[tokens.size()];
       lines = tokens.toArray(lines);
     } catch (Exception ioe) {
-      logger.error("Exception", ioe);
+      logger.error("ALMailUtils.getLines", ioe);
       try {
         reader.close();
       } catch (IOException e) {
@@ -626,7 +626,7 @@ public class ALMailUtils {
           new InternetAddress(addressStr, ALMailUtils.encodeWordJIS(name));
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getInternetAddress", e);
       return null;
     }
     return address;
@@ -641,13 +641,13 @@ public class ALMailUtils {
           .getFile(filePath + ".txt"), ALEipConstants.DEF_CONTENT_ENCODING));
       line = reader.readLine();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getFileNameFromText", e);
     } finally {
       if (reader != null) {
         try {
           reader.close();
         } catch (IOException ex) {
-          logger.error("Exception", ex);
+          logger.error("ALMailUtils.getFileNameFromText", ex);
         }
       }
     }
@@ -695,7 +695,7 @@ public class ALMailUtils {
         return null;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getDecryptedMailAccountPasswd", e);
       return null;
     }
     return decryptedData;
@@ -730,7 +730,7 @@ public class ALMailUtils {
       encryptedData =
         cryptPBEWithMD5AndDES(Cipher.ENCRYPT_MODE, password, data);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.getEncryptedMailAccountPasswd", e);
       return null;
     }
     return encryptedData;
@@ -784,7 +784,7 @@ public class ALMailUtils {
       // Encrypt/Decrypt the cleartext
       ciphertext = pbeCipher.doFinal(data);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMailUtils.cryptPBEWithMD5AndDES", e);
       return null;
     }
     return ciphertext;
@@ -933,7 +933,7 @@ public class ALMailUtils {
       }
       return account;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getEipMMailAccountForAdmin", ex);
       return null;
     }
   }
@@ -965,7 +965,7 @@ public class ALMailUtils {
       }
       return account;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getFirstEipMMailAccount", ex);
       return null;
     }
   }
@@ -1118,7 +1118,7 @@ public class ALMailUtils {
         mailAccount.getAccountName());
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALMailUtils]", t);
+      logger.error("ALMailUtils.insertMailAccountData", t);
       return false;
     }
     return true;
@@ -1470,7 +1470,7 @@ public class ALMailUtils {
 
       return userAddress;
     } catch (ALDBErrorException e) {
-      logger.error("[ALMailUtils]", e);
+      logger.error("ALMailUtils.getALEipUserAddrByUserId", e);
       return null;
     }
 
@@ -1505,7 +1505,7 @@ public class ALMailUtils {
         useraddr.setCellMailAddr(baseuser.getCellularMail());
         resList.add(useraddr);
       } catch (Exception ex) {
-        logger.error("Exception", ex);
+        logger.error("ALMailUtils.getALEipUserAddrs", ex);
       }
     }
 
@@ -1539,7 +1539,7 @@ public class ALMailUtils {
       }
       return mail_notify_conf.getNotifyFlg().intValue();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getSendDestType", ex);
       return VALUE_MSGTYPE_DEST_NONE;
     }
   }
@@ -1575,7 +1575,7 @@ public class ALMailUtils {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALMailUtils]", t);
+      logger.error("ALMailUtils.setSendDestType", t);
       return false;
     }
     return true;
@@ -1616,7 +1616,7 @@ public class ALMailUtils {
       }
       localurl = ALServletUtils.getAccessUrl(ipaddress, port_internal, false);
     } catch (SocketException e) {
-      logger.error("[ALMailUtils]", e);
+      logger.error("ALMailUtils.getLocalurl", e);
     }
     return localurl;
   }
@@ -1638,7 +1638,7 @@ public class ALMailUtils {
       }
       return result;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getEipMMailNotifyConf", ex);
       return null;
     }
   }
@@ -1666,7 +1666,7 @@ public class ALMailUtils {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[ALMailUtils]", t);
+      logger.error("ALMailUtils.setNotifyTime", t);
       return false;
     }
   }
@@ -1696,7 +1696,7 @@ public class ALMailUtils {
 
       return sb.toString();
     } catch (Exception e) {
-      logger.error("error", e);
+      logger.error("ALMailUtils.getNotifyTime", e);
       return null;
     }
   }
@@ -1745,7 +1745,7 @@ public class ALMailUtils {
       }
       return res.size() == 0 ? folder_list : res;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getEipTMailFolderAll", ex);
       return null;
     }
   }
@@ -1776,7 +1776,7 @@ public class ALMailUtils {
       }
       return mail_list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getEipTMails", ex);
       return null;
     }
   }
@@ -1807,7 +1807,7 @@ public class ALMailUtils {
       }
       return filter_list;
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALMailUtils.getEipTMailFilters", ex);
       return null;
     }
   }

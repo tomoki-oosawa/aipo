@@ -60,7 +60,7 @@ public class AddressBookUserEmailLiteJSONScreen extends ALJSONScreen {
       }
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserLiteJSONScreen]", e);
+      logger.error("AddressBookUserEmailLiteJSONScreen.getJSONString", e);
     }
 
     return result;

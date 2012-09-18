@@ -143,7 +143,7 @@ public class UserPrefUpdateJSONScreen extends ALJSONScreen {
       json = new JSONObject();
       result = json.toString();
     } catch (Exception e) {
-      logger.error("[UserPrefUpdateJSONScreen]", e);
+      logger.error("UserPrefUpdateJSONScreen.getJSONString", e);
     }
 
     return result;

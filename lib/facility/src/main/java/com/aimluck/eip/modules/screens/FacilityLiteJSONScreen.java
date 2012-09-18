@@ -59,7 +59,7 @@ public class FacilityLiteJSONScreen extends ALJSONScreen {
         result = json.toString();
       }
     } catch (Exception e) {
-      logger.error("[FacilityLiteJSONScreen]", e);
+      logger.error("FacilityLiteJSONScreen.getJSONString", e);
     }
 
     return result;

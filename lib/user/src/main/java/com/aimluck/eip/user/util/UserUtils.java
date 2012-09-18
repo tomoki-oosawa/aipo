@@ -209,7 +209,7 @@ public class UserUtils {
         }
       }
     } catch (Exception e) {
-      logger.error("[UserUtils]", e);
+      logger.error("UserUtils.getUserGroupLiteBeans", e);
     }
     return list;
   }
