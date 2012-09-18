@@ -109,7 +109,7 @@ public abstract class ALAbstractFormData implements ALData {
       ALAbstractField field = (ALAbstractField) f.get(this);
       fieldName = field.getFieldName();
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALAbstractFormData.getFieldName", ex);
     }
     return fieldName;
   }
@@ -457,7 +457,7 @@ public abstract class ALAbstractFormData implements ALData {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALAbstractFormData.setFormData", ex);
       return false;
     }
     return true;

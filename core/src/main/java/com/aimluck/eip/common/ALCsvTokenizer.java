@@ -101,7 +101,7 @@ public class ALCsvTokenizer {
       return true;
     } catch (IOException ie) {
       eof = -1;
-      logger.error("[ERROR]", ie);
+      logger.error("ALCsvTokenizer.init", ie);
       return false;
     }
 

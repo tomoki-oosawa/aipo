@@ -384,7 +384,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
       // session
       doCancel(rundata, context);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCustomizeAction.doDefault", e);
     }
   }
 
@@ -595,7 +595,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
       // session
       doCancel(rundata, context);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCustomizeAction.doUpdate", e);
     }
   }
 }

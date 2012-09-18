@@ -229,7 +229,7 @@ public class Customize extends Action {
       }
 
     } catch (Exception e) {
-      logger.error("exit error", e);
+      logger.error("Customize.exit", e);
     }
     data.setRedirectURI(jsLink.toString());
     JetspeedLinkFactory.putInstance(jsLink);

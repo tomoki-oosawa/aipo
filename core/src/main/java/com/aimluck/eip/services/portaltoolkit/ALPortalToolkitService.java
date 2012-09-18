@@ -120,7 +120,7 @@ public class ALPortalToolkitService extends JetspeedPortalToolkitService {
           continue;
         }
       } catch (JetspeedException e) {
-        logger.error("Exception", e);
+        logger.error("ALPortalToolkitService.getSet", e);
         continue;
       }
 

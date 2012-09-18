@@ -257,7 +257,7 @@ public class ALCommonUtils {
       }
       res = sb.toString();
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCommonUtils.getSecureRandomString", e);
       return null;
     }
 
@@ -276,7 +276,7 @@ public class ALCommonUtils {
       byte seed[] = random.generateSeed(DEF_RANDOM_LENGTH);
       random.setSeed(seed);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCommonUtils.getSecureRandom", e);
       return null;
     }
     return random;
@@ -360,7 +360,7 @@ public class ALCommonUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALCommonUtils.getPortletURIinPersonalConfigPane", ex);
       return null;
     }
     return null;
@@ -420,7 +420,7 @@ public class ALCommonUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALCommonUtils.getPortletURIinPersonalConfigPeid", ex);
       return null;
     }
     return null;

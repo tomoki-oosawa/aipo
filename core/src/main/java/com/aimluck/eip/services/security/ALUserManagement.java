@@ -161,7 +161,7 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setHasPhotoSmartphone("T".equals(tuser.getHasPhotoSmartphone()));
       return baseuser;
     } catch (Exception e) {
-      logger.error("[ALUserManagement]", e);
+      logger.error("ALUserManagement.row2UserObject", e);
       return null;
     }
   }

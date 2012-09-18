@@ -77,7 +77,7 @@ public abstract class ALCSVScreen extends RawScreen {
       out.flush();
       out.close();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("ALCSVScreen.doOutput", e);
     }
 
   }

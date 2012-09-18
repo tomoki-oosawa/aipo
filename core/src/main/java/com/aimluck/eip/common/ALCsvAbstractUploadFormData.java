@@ -196,7 +196,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
       }
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALCsvAbstractUploadFormData.updateFormData", ex);
       return false;
     }
 
@@ -216,7 +216,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
     try {
       ALStorageService.deleteFile(getTempFilePath());
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALCsvAbstractUploadFormData.deleteFormData", ex);
       return false;
     }
 

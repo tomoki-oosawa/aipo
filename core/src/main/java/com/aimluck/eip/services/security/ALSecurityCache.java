@@ -372,7 +372,7 @@ public class ALSecurityCache extends TurbineBaseService implements
         savePermissionsToRequest(perms);
       }
     } catch (JetspeedSecurityException e) {
-      logger.error("Exception", e);
+      logger.error("ALSecurityCache.loadRolePermissions", e);
     }
   }
 

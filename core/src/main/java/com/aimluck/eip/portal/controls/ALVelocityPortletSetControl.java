@@ -302,7 +302,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
           return 0;
         }
       } catch (ClassCastException e) {
-        logger.error("Exception in compare", e);
+        logger.error("ALVelocityPortletSetControl.compare", e);
         return 0;
       }
     }

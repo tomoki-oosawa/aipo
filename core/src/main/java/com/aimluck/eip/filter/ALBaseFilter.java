@@ -81,7 +81,7 @@ public class ALBaseFilter implements Filter {
             (HttpServletRequest) request,
             (HttpServletResponse) response));
       } catch (Exception e) {
-        logger.error(e, e);
+        logger.error("ALBaseFilter.doFilter", e);
       }
       ServletContextLocator.set(filterConfig.getServletContext());
       HttpServletRequestLocator.set((HttpServletRequest) request);

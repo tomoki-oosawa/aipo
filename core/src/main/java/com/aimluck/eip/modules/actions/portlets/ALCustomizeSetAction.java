@@ -824,7 +824,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         }
       }
     } catch (ProfileException e) {
-      logger.error("Exception", e);
+      logger.error("ALCustomizeSetAction.getSecurityReference", e);
     }
     return null;
   }
@@ -905,7 +905,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         }
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCustomizeSetAction.doLayout", e);
     }
   }
 
@@ -991,7 +991,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         }
       }
     } catch (Exception e) {
-      logger.error("[ALCustomizeSetAction]", e);
+      logger.error("ALCustomizeSetAction.doSkin", e);
     }
   }
 
@@ -1019,7 +1019,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       set.getPortletConfig().setSecurityRef(securityRef);
       portlets.setSecurityRef(securityRef);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALCustomizeSetAction.doSecurity", e);
     }
   }
 
@@ -1045,7 +1045,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-          .hasMediaType(mediaType))
+            .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")
         && ALPortalApplicationService.isActive(entry.getName())) {
         list.add(entry);
@@ -1218,7 +1218,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))) {
+              .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();

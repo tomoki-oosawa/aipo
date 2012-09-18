@@ -207,7 +207,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       }
       context.put("portlets", table);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMultiColumnControllerAction.buildNormalContext", e);
     }
   }
 
@@ -632,7 +632,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
         }
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALMultiColumnControllerAction.doControl", e);
     }
   }
 

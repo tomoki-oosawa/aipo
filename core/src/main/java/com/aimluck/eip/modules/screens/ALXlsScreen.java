@@ -83,7 +83,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
     } catch (ALPermissionException e) {
       ALEipUtils.redirectPermissionError(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("ALXlsScreen.doOutput", e);
     }
   }
 
@@ -112,7 +112,7 @@ public abstract class ALXlsScreen extends RawScreen implements ALAction {
 
       return wb;
     } catch (Exception e) {
-      logger.error("[ALXlsScreen]", e);
+      logger.error("ALXlsScreen.createXLSFile", e);
       return null;
     }
   }

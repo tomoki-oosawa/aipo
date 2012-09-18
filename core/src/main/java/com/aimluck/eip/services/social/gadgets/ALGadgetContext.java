@@ -107,7 +107,7 @@ public class ALGadgetContext {
       token.setActiveUrl(activeUrl);
       return token.encrypt();
     } catch (Exception ex) {
-      logger.error(ex, ex);
+      logger.error("ALGadgetContext.getSecureToken", ex);
       return "";
     }
   }

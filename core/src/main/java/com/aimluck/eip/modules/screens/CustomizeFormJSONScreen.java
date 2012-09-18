@@ -91,7 +91,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
         doLayout(rundata, context);
       }
     } catch (Exception e) {
-      logger.error("[CustomizeFormJSONScreen]", e);
+      logger.error("CustomizeFormJSONScreen.getJSONString", e);
     }
     return result;
   }
@@ -591,7 +591,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("CustomizeFormJSONScreen.setController", e);
     }
   }
 }

@@ -361,7 +361,7 @@ public class ALEipUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getPortlet", ex);
       return null;
     }
     return null;
@@ -407,7 +407,7 @@ public class ALEipUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getPortletFromAppIdMap", ex);
       return hash;
     }
     return hash;
@@ -483,7 +483,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error("[ALEipUtils]", t);
+      logger.error("ALEipUtils.getUsers", t);
     }
 
     return list;
@@ -535,7 +535,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error("[ALEipUtils]", t);
+      logger.error("ALEipUtils.getUsersIncludingN", t);
     }
 
     return list;
@@ -577,7 +577,7 @@ public class ALEipUtils {
         list.add(tuser.getUserId());
       }
     } catch (Throwable t) {
-      logger.error("[ALEipUtils]", t);
+      logger.error("ALEipUtils.getUsersFromPost", t);
     }
 
     return list;
@@ -627,7 +627,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error("[ALEipUtils]", t);
+      logger.error("ALEipUtils.getUsersFromPost", t);
     }
 
     return list;
@@ -658,7 +658,7 @@ public class ALEipUtils {
         list.add(user);
       }
     } catch (Throwable t) {
-      logger.error("[ALEipUtils]", t);
+      logger.error("ALEipUtils.getUsersFromSelectQuery", t);
     }
     return list;
   }
@@ -753,7 +753,7 @@ public class ALEipUtils {
       }
       return (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getBaseUser", ex);
       return null;
     }
   }
@@ -865,7 +865,7 @@ public class ALEipUtils {
       }
 
     } catch (JetspeedSecurityException ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("ALEipUtils.changePost", ex);
       throw new ALDBErrorException();
     }
     return true;
@@ -895,7 +895,7 @@ public class ALEipUtils {
         ulist.add(group);
       }
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("ALEipUtils.reloadMygroup", ex);
       throw new ALDBErrorException();
     }
 
@@ -944,7 +944,7 @@ public class ALEipUtils {
         facilityGroupAllList.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getFacilityGroups", ex);
     }
     return facilityGroupAllList;
   }
@@ -966,7 +966,7 @@ public class ALEipUtils {
         facilityGroupAllList.add(bean);
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getALEipGroups", ex);
     }
     return facilityGroupAllList;
   }
@@ -997,7 +997,7 @@ public class ALEipUtils {
       companyName = record.getCompanyName();
 
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("ALEipUtils.getCompanyName", ex);
       companyName = null;
     }
 
@@ -1083,11 +1083,11 @@ public class ALEipUtils {
       return true;
     } catch (TurbineException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectPageNotFound", e);
       return false;
     } catch (IOException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectPageNotFound", e);
       return false;
     }
   }
@@ -1137,11 +1137,11 @@ public class ALEipUtils {
       return true;
     } catch (TurbineException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectDBError", e);
       return false;
     } catch (IOException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectDBError", e);
       return false;
     }
   }
@@ -1310,11 +1310,11 @@ public class ALEipUtils {
       return true;
     } catch (TurbineException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectPermissionError", e);
       return false;
     } catch (IOException e) {
 
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.redirectPermissionError", e);
       return false;
     }
   }
@@ -1655,7 +1655,7 @@ public class ALEipUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getPortletURI", ex);
       return null;
     }
     return null;
@@ -1710,7 +1710,7 @@ public class ALEipUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getPortletURItoTopPage", ex);
       return null;
     }
     return null;
@@ -1894,7 +1894,7 @@ public class ALEipUtils {
         return result.intValue();
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALEipUtils.getLimitUsers", e);
     }
     return 0;
   }
@@ -1925,7 +1925,7 @@ public class ALEipUtils {
       registeredUserNum = size - 2;
     } catch (Exception ex) {
       logger.error("ユーザー情報をDBから取得できませんでした。");
-      logger.error("[ALEipUtils]", ex);
+      logger.error("ALEipUtils.getCurrentUserNumEnabledOnly", ex);
       return -1;
     }
     return registeredUserNum;
@@ -1957,7 +1957,7 @@ public class ALEipUtils {
       registeredUserNum = size - 2;
     } catch (Exception ex) {
       logger.error("ユーザー情報をDBから取得できませんでした。");
-      logger.error("[ALEipUtils]", ex);
+      logger.error("ALEipUtils.getCurrentUserNum", ex);
       return -1;
     }
     return registeredUserNum;
@@ -1984,7 +1984,7 @@ public class ALEipUtils {
       res = role != null;
     } catch (JetspeedSecurityException e) {
       logger.error("管理者ロールが存在しません。");
-      logger.error("[ALEipUtils]", e);
+      logger.error("ALEipUtils.isAdmin", e);
     }
     return res;
   }
@@ -2135,7 +2135,7 @@ public class ALEipUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.getFirstPortletId", ex);
       return null;
     }
     return null;
@@ -2307,7 +2307,7 @@ public class ALEipUtils {
       profile.store();
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipUtils.setPsmlParameters", ex);
       return false;
     }
     return true;

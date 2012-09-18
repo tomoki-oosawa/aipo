@@ -126,7 +126,7 @@ public class VelocityParameterPresentationStyle extends
         TemplateLocator.locateParameterTemplate(data, template);
       result = TurbineVelocity.handleRequest(context, templatePath);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("VelocityParameterPresentationStyle.getContent", e);
       // Fallback to input text box presentation style
       result =
         "<input type=\"text\" name=\"" + name + "\" value=\"" + value + "\"";

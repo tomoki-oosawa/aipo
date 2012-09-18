@@ -250,7 +250,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         context.put("menus", getMenus(portlets, rundata, context));
       }
     } catch (Exception e) {
-      logger.error("[ALVelocityPortletControl]", e);
+      logger.error("ALVelocityPortletControl.getContent", e);
     }
 
     String theme = getConfig().getInitParameter("theme", "default.vm");
@@ -382,7 +382,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       try {
         jsLink = JetspeedLinkFactory.getInstance(rundata);
       } catch (Exception e) {
-        logger.error("Exception in buildActionList", e);
+        logger.error("ALVelocityPortletControl.buildActionList", e);
       }
       // action.setLink( jsLink.setPortletById(portlet.getID())
       // .addQueryData("action", getAction( action.getName()))
@@ -436,7 +436,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         i++;
       }
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("ALVelocityPortletControl.buildFunctionList", e);
     }
 
     return functions;
@@ -947,7 +947,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           return 0;
         }
       } catch (ClassCastException e) {
-        logger.error("Exception in compare", e);
+        logger.error("ALVelocityPortletControl.compare", e);
         return 0;
       }
     }

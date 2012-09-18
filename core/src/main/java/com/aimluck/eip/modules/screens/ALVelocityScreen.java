@@ -91,7 +91,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       writer.flush();
       writer.close();
     } catch (Exception e) {
-      logger.error("[ALVelocityScreen]", e);
+      logger.error("ALVelocityScreen.setTemplate", e);
     }
   }
 
@@ -118,7 +118,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       }
 
     } catch (Exception ex) {
-      logger.error("[ALVelocityScreen] Exception.", ex);
+      logger.error("ALVelocityScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

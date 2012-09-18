@@ -103,7 +103,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
       out.flush();
       out.close();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("ALJSONScreen.doOutput", e);
     }
 
   }

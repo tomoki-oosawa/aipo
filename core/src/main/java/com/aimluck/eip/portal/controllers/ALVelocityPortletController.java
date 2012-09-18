@@ -106,7 +106,7 @@ public class ALVelocityPortletController extends AbstractPortletController {
       try {
         ActionLoader.getInstance().exec(rundata, actionName);
       } catch (Exception e) {
-        logger.error("Exception", e);
+        logger.error("ALVelocityPortletController.getContent", e);
       }
     }
 

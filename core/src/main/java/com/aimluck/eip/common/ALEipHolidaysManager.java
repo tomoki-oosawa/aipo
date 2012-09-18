@@ -170,7 +170,7 @@ public class ALEipHolidaysManager {
       }
        */
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALEipHolidaysManager.loadHolidays", ex);
       return;
     }
   }

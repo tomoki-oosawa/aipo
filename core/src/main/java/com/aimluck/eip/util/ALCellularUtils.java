@@ -365,7 +365,7 @@ public class ALCellularUtils {
         }
       }
     } catch (Exception ex) {
-      logger.error("Exception", ex);
+      logger.error("ALCellularUtils.getPortletURIForCell", ex);
       return null;
     }
     return null;

@@ -119,7 +119,7 @@ public class MyPagesListBox extends VelocityParameterPresentationStyle {
 
       context.put("pages", entries);
     } catch (Exception e) {
-      logger.error("Exception", e);
+      logger.error("MyPagesListBox.buildContext", e);
     }
 
   }

@@ -250,7 +250,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           } catch (org.apache.jetspeed.services.security.UnknownUserException unknownUser) {
             logger.warn("Username from the cookie was not found: " + userName);
           } catch (Exception other) {
-            logger.error("[ALSessionValidator]", other);
+            logger.error("ALSessionValidator.doPerform", other);
           }
         }
       }

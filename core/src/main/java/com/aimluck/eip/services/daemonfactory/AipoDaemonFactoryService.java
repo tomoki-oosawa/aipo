@@ -95,14 +95,14 @@ public class AipoDaemonFactoryService extends JetspeedDaemonFactoryService {
       return daemon;
 
     } catch (ClassNotFoundException e) {
-      logger.error("Exception", e);
+      logger.error("AipoDaemonFactoryService.getDaemon", e);
       throw new DaemonException("daemon not found: " + e.getMessage());
     } catch (InstantiationException e) {
-      logger.error("Exception", e);
+      logger.error("AipoDaemonFactoryService.getDaemon", e);
       throw new DaemonException("couldn't instantiate daemon: "
         + e.getMessage());
     } catch (IllegalAccessException e) {
-      logger.error("Exception", e);
+      logger.error("AipoDaemonFactoryService.getDaemon", e);
       throw new DaemonException(e.getMessage());
     }
 
