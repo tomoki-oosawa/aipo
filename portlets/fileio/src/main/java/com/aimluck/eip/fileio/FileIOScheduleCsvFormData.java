@@ -933,16 +933,17 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   }
 
   public String getLoginNameString() {
+    StringBuffer buf = new StringBuffer();
     String result = "";
     for (ScheduleCsvUser user : userList) {
-      result += user.getName();
-      result += ", ";
+      buf.append(user.getName());
+      buf.append(", ");
     }
 
     if (result.length() > 1) {
       result = result.substring(0, result.length() - 2);
     }
 
-    return result;
+    return buf.toString();
   }
 }
