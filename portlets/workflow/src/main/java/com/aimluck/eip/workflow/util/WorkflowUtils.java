@@ -1090,13 +1090,6 @@ public class WorkflowUtils {
       for (ALEipUserAddr userAddr : userAddressList) {
 
         ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
-        /*
-         * String msgForPc = msgForPcPrefix + createMsgAtUpdateSuffix(rcptUser,
-         * false, mailBean);
-         * 
-         * String msgForCell = msgForCellPrefix +
-         * createMsgAtUpdateSuffix(rcptUser, true, mailBean);
-         */
         ALAdminMailMessage message = new ALAdminMailMessage(userAddr);
         message.setPcSubject(mailBean.getSubject());
         message.setCellularSubject(mailBean.getSubject());
@@ -1147,12 +1140,9 @@ public class WorkflowUtils {
 
         ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
 
-        String msgForPc = msgForPcPrefix;// + createMsgAtUpdateSuffix(rcptUser,
-                                         // false, mailBean);
+        String msgForPc = msgForPcPrefix;
 
-        String msgForCell = msgForCellPrefix; // +
-                                              // createMsgAtUpdateSuffix(rcptUser,
-                                              // true, mailBean);
+        String msgForCell = msgForCellPrefix;
 
         ALMailUtils.sendMailDelegateOne(mailBean.getOrgId(), mailBean
           .getLoginUserId(), userAddr, mailBean.getSubject(), mailBean
@@ -1214,12 +1204,6 @@ public class WorkflowUtils {
     }
   }
 
-  /*
-   * public static String createMsgAtUpdateSuffix(ALEipUser user, boolean
-   * isCell, WorkflowMailBean mailBean) { return getMessageAipoUri(user, isCell,
-   * ALMailUtils.CR, mailBean) + getMessageSignature(ALMailUtils.CR, mailBean);
-   * }
-   */
   public static String getMessageHead(Type flowStatus, String CR)
       throws Exception {
     StringBuilder body = new StringBuilder("");
@@ -1317,41 +1301,9 @@ public class WorkflowUtils {
         .append(CR)
         .append(request.getNote());
     }
-    /*
-     * if (request.getPrice() != null && (request.getPrice().intValue() > 0)) {
-     * body .append(ALLocalizationUtils.getl10n("WORKFLOW_AMOUNT")) .append(CR)
-     * .append(request.getPrice())
-     * .append(ALLocalizationUtils.getl10n("WORKFLOW_YEN")) .append(CR); }
-     */
-    /*
-     * body.append(CR); body.append("[").append(mailBean.getAipoAlias()).append(
-     * ALLocalizationUtils.getl10n("WORKFLOW_ACCESS_TO")).append("]");
-     */
     return body.toString();
   }
 
-  /*
-   * public static String getMessageAipoUri(ALEipUser user, boolean isCell,
-   * String CR, WorkflowMailBean mailBean) { boolean enableAsp =
-   * JetspeedResources.getBoolean("aipo.asp", false);
-   * 
-   * StringBuilder body = new StringBuilder("");
-   * 
-   * if (isCell) {
-   * body.append("　").append(mailBean.getGlobalUrl()).append("?key=").append(
-   * ALCellularUtils.getCellularKey(user)).append(CR); } else { if (enableAsp) {
-   * body.append("　").append(mailBean.getGlobalUrl()).append(CR); } else { body
-   * .append(ALLocalizationUtils.getl10n("WORKFLOW_EXTERNAL")) .append(CR);
-   * body.append("　").append(mailBean.getGlobalUrl()).append(CR);
-   * body.append(ALLocalizationUtils.getl10n("WORKFLOW_HOUSE")).append(CR);
-   * body.append("　").append(mailBean.getLocalUrl()).append(CR).append(CR); } }
-   * return body.toString(); }
-   * 
-   * public static String getMessageSignature(String CR, WorkflowMailBean
-   * mailBean) { StringBuilder body = new StringBuilder("");
-   * body.append("---------------------").append(CR);
-   * body.append(mailBean.getAipoAlias()).append(CR); return body.toString(); }
-   */
   /**
    * パソコンへ送信するメールの内容を作成する．
    * 
