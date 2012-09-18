@@ -418,9 +418,6 @@ table.activityTable tr.unread td {
 	background:url(../images/common/portlet_r.gif) repeat-y right 0;
 	padding:4px 22px 0 22px;
 }
-.auiPortletBody .inner *:first-child {
-	margin-top:0;
-}
 .auiPortletBody .inner:after{
 	content:".";display:block;height:0;clear:both;visibility:hidden;
 }
