@@ -61,7 +61,6 @@ aipo.todo.initFilterSearch=function(portlet_id){
 	}
 };
 
-
 /**
  * urlを整形して送信。
  */
@@ -72,7 +71,7 @@ aipo.todo.filteredSearch=function(portlet_id){
 
 	var types=[];
 	var params=[];
-	dojo.query("ul.filtertype_"+portlet_id,dojo.byId("searchForm_"+portlet_id)).forEach(function(ul){
+	dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
 			//console.info(ul);
 			var type=ul.getAttribute("data-type");
 			types.push(type);
@@ -101,7 +100,7 @@ aipo.todo.filteredSearch=function(portlet_id){
  * @param event
  */
 aipo.todo.filterSetDefault=function(portlet_id,type){
-	var ul=dojo.query("ul.filtertype[data-type="+type+"]",dojo.byId("searchForm_"+portlet_id))[0];
+	var ul=dojo.query("ul.filtertype[data-type="+type+"]")[0];
 	var defval=ul.getAttribute("data-defaultparam");
 	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
 	aipo.todo.filterSelect(ul,defaultli);
@@ -112,6 +111,7 @@ aipo.todo.filterSelect=function(ul,li){
 	dojo.query("li",ul).removeClass("selected");
 	dojo.query(li).addClass("selected");
 };
+
 /**
  * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
  * @param portlet_id
@@ -125,7 +125,6 @@ aipo.todo.filterClick=function(portlet_id,thisnode,event){
 	aipo.todo.filterSelect(ul,li);
 	aipo.todo.filteredSearch(portlet_id);
 };
-
 
 aipo.todo.onLoadTodoDialog = function(portlet_id){
   var url_userlist = dojo.byId('urlUserlist'+portlet_id).value;
@@ -217,5 +216,3 @@ aipo.todo.doKeywordSearch = function(baseuri, portlet_id) {
     params[1] = ["keyword", dojo.byId("q"+portlet_id).value];
     aipo.viewPage(baseuri, portlet_id, params);
 }
-
-
