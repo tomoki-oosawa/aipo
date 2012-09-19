@@ -524,11 +524,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       out.flush();
       return out.toString();
     } catch (Exception e) {
-      StringBuffer buf = new StringBuffer();
+      StringBuffer trace = new StringBuffer();
       String message = e.getMessage();
       logger.warn(message, e);
       e.printStackTrace();
-      buf.append("\n").append(message).append("\n").append(e.toString());
+      trace.append("\n").append(message).append("\n").append(e.toString());
     } finally {
       if (out != null) {
         try {
