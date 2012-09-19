@@ -817,30 +817,41 @@ $item.get(0)
 ##                                                               </div>
 ## #end
 <!-- PORTLET OUTER -->
-<div class="dojoDndItem auiPortlet">
-	<div class="auiPortletHead"><div class="inner">
-		<div class="auiPortletTitle">$!portlet.Title</div>
-		<div class="auiPortletTool">
-			##現行必要ない。
-			##<div class="auiPortletAction"><a href="#">トピック追加</a></div>
-			##カスタマイズはトップページのみに表示されているので、これもまた必要ない。
-			##<div class="auiPortletSetting"><a href="javascript:void(0);" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('${portlet_id}');" title="カスタマイズ"></a></div>
-		</div>
-	</div></div>
-	<!-- auiPortletBody -->
-	<div class="auiPortletBody"><div class="inner">
-		<div class="roundBlockWrapperBottom clearfix">
-			<div class="roundBlockContent">
-				<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
+<div class="roundTopBlock clearfix">
+	<div class="roundRightBlock">
+		<div class="roundBottomBlock">
+			<div class="roundLeftBlock">
+				<div class="roundTopLeftBlock">
+					<div class="roundTopRightBlock">
+						<div class="roundBottomRightBlock" >
+							<div class="roundBottomLeftBlock">
+								<table class="roundBlockWrapperTop">
+									<tbody>
+										<tr>
+											<td class="roundBlockTitle">$!portlet.Title</td>
+											<td class="roundBlockMenu"></td>
+											<td class="endcap"></td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="roundBlockWrapperBottom clearfix">
+									<div class="roundBlockContent">
+										<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
 #end
 
 #macro(ALcontentfooter)
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div></div>
-	<!-- /auiPortletBody -->
-	<div class="auiPortletFoot"><div class="inner"></div></div>
+	</div>
+</div>
+<!-- /auiPortletBody -->
 </div>
 <!-- /PORTLET OUTER -->
 #end
