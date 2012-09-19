@@ -294,17 +294,17 @@ public class PsmlUtils {
    * @return
    */
   public static String PSMLEncode(String psml) {
-    String target = "";
+    StringBuffer buf = new StringBuffer();
     char a[] = psml.toCharArray();
     for (char cha : a) {
       String tmp = String.valueOf(cha);
       if (!tmp.matches("\\p{ASCII}*")) {
-        target += NCREncode(tmp, 16);
+        buf.append(NCREncode(tmp, 16));
       } else {
-        target += tmp;
+        buf.append(tmp);
       }
     }
-    return target;
+    return buf.toString();
   }
 
   public static String NCREncode(String str, int radix) {
