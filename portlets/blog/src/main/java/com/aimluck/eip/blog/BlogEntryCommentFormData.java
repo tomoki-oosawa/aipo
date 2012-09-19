@@ -387,7 +387,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @return
    */
   private String createMsgForPc(RunData rundata) {
-    String CR = System.getProperty("line.separator");
     ALEipUser user = ALEipUtils.getALEipUser(rundata);
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
 
@@ -445,11 +444,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       out.flush();
       return out.toString();
     } catch (Exception e) {
-      String traces = "";
+      StringBuffer trace = new StringBuffer();
       String message = e.getMessage();
       logger.warn(message, e);
       e.printStackTrace();
-      traces += "\n" + message + "\n" + e.toString();
+      trace.append("\n").append(message).append("\n").append(e.toString());
     } finally {
       if (out != null) {
         try {
@@ -469,7 +468,6 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
    * @return
    */
   private String createMsgForCellPhone(RunData rundata, int destUserID) {
-    String CR = System.getProperty("line.separator");
     ALEipUser user = ALEipUtils.getALEipUser(rundata);
     ALBaseUser user2 = null;
     try {
@@ -526,11 +524,11 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       out.flush();
       return out.toString();
     } catch (Exception e) {
-      String traces = "";
+      StringBuffer buf = new StringBuffer();
       String message = e.getMessage();
       logger.warn(message, e);
       e.printStackTrace();
-      traces += "\n" + message + "\n" + e.toString();
+      buf.append("\n").append(message).append("\n").append(e.toString());
     } finally {
       if (out != null) {
         try {
