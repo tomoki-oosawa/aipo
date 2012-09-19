@@ -114,7 +114,7 @@ public class ALCsvTokenizer {
    */
   public String nextToken() {
     int ch;
-    String str = "";
+    StringBuffer buf = new StringBuffer();
     line = false;
     inquote = false;
     if (eof == -1) {
@@ -122,7 +122,7 @@ public class ALCsvTokenizer {
     }
 
     try {
-      str = "";
+      buf = new StringBuffer();
       if (flag_reminder_csv) {
         ch = newline_r_reminder;
         flag_reminder_csv = false;
@@ -133,7 +133,7 @@ public class ALCsvTokenizer {
         inquote = true;
       }
       if ((ch == ',') && (!inquote)) {
-        return str;
+        return buf.toString();
       } else if (((ch == '\n') || (ch == '\r')) && (!inquote)) {
         if (ch == '\r') {
           eof = ch = in.read();
@@ -144,13 +144,13 @@ public class ALCsvTokenizer {
         }
         line = true;
         // eof = (ch = in.read());
-        return str;
+        return buf.toString();
       } else {
         while (eof != -1) {
           if (ch == '\n' || ch == '\r' && (inquote)) {
-            str += "\r\n";
+            buf.append("\r\n");
           } else if (ch != '\"') {
-            str += (char) ch;
+            buf.append((char) ch);
           }
           eof = (ch = in.read());
           if (ch == '\r' && (!inquote)) {
@@ -159,7 +159,7 @@ public class ALCsvTokenizer {
             if (ch != '\n' && eof != -1) {
               flag_reminder_csv = true;
               newline_r_reminder = ch;
-              return str;
+              return buf.toString();
             }
           }
           if (ch == '\"') {
@@ -167,21 +167,21 @@ public class ALCsvTokenizer {
             if (ch != '\"') {
               inquote = !inquote;
             } else if (inquote) {
-              str += "\"";
+              buf.append("\"");
             }
           }
           if (eof == -1) {
-            return str;
+            return buf.toString();
           }
           if (((ch == ',') || (ch == '\n')) && (!inquote)) {
             if (ch == '\n') {
               line = true;
             }
-            return str;
+            return buf.toString();
           }
         }
       }
-      return str;
+      return buf.toString();
     } catch (IOException ie) {
       eof = -1;
       return "";

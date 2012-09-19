@@ -104,16 +104,16 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
    * @return
    */
   protected String makeOutputItem(String str) {
-    String res = "";
+    StringBuffer buf = new StringBuffer();
     char ch;
     for (int i = 0; i < str.length(); i++) {
       ch = str.charAt(i);
       if (ch == '\"') {
-        res += ch;
+        buf.append((ch));
       }
-      res += ch;
+      buf.append((ch));
     }
-    return res;
+    return buf.toString();
   }
 
   /**
