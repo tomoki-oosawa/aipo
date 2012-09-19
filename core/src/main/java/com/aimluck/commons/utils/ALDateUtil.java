@@ -225,6 +225,8 @@ public class ALDateUtil {
       case Calendar.SATURDAY:
         res = ALLocalizationUtils.getl10n("COMMONS_UTILS_SATURDAY_CELL");
         break;
+      default:
+        return null;
     }
     return res;
   }
