@@ -35,12 +35,12 @@
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.visible() && $record.isAuthorizedVisible())
 #if($record.HierarchyIndex <= 0)
-<nobr>#if($record.isOpened()) <img src="themes/$!theme/images/icon/folder_open.gif"> #else <img src="themes/$!theme/images/icon/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
+<nobr>#if($record.isOpened()) <img src="themes/$!theme/images/icon/folder_open.gif" alt=""> #else <img src="themes/$!theme/images/icon/folder_close.gif" alt=""> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
 #end</nobr><br>
 #else
 #set($imgwidth = 16 * $record.HierarchyIndex)
-<nobr><img src="images/blank.gif" height="10" width="$imgwidth">#if($record.isOpened())  <img src="themes/$!theme/images/icon/folder_open.gif"> #else <img src="themes/$!theme/images/icon/folder_close.gif"> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
+<nobr><img src="images/blank.gif" height="10" width="$imgwidth" alt="">#if($record.isOpened())  <img src="themes/$!theme/images/icon/folder_open.gif" alt=""> #else <img src="themes/$!theme/images/icon/folder_close.gif" alt=""> #end #if($result.SelectedFolderInfo.FolderId == $record.FolderId) <b>${record.FolderName}</b> #else
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" >${record.FolderName}</a>
 #end</nobr><br>
 #end
