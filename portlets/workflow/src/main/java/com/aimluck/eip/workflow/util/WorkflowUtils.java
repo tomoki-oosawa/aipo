@@ -1089,7 +1089,6 @@ public class WorkflowUtils {
         new ArrayList<ALAdminMailMessage>();
       for (ALEipUserAddr userAddr : userAddressList) {
 
-        ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
         ALAdminMailMessage message = new ALAdminMailMessage(userAddr);
         message.setPcSubject(mailBean.getSubject());
         message.setCellularSubject(mailBean.getSubject());
@@ -1137,13 +1136,8 @@ public class WorkflowUtils {
 
     try {
       for (ALEipUserAddr userAddr : userAddressList) {
-
-        ALEipUser rcptUser = ALEipUtils.getALEipUser(userAddr.getUserId());
-
         String msgForPc = msgForPcPrefix;
-
         String msgForCell = msgForCellPrefix;
-
         ALMailUtils.sendMailDelegateOne(mailBean.getOrgId(), mailBean
           .getLoginUserId(), userAddr, mailBean.getSubject(), mailBean
           .getSubject(), msgForPc, msgForCell, ALMailUtils
