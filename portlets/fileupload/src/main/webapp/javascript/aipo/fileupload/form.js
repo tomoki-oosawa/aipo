@@ -105,4 +105,34 @@ aipo.fileupload.removeFileFromList=function(ul, li, pid){
 	return ul.removeChild(li);
 };
 
+aipo.fileupload.YoutubeDialog
+
+aipo.fileupload.showYoutubeDialog = function(vid, url, portlet_id, callback) {
+    if(!aipo.fileupload.YoutubeDialog){
+    	aipo.fileupload.YoutubeDialog = new aipo.fileupload.widget.YoutubeDialog({widgetId:'YoutubeDialog', _portlet_id: portlet_id, _callback:callback}, "YoutubeDialog");
+    }else{
+    	aipo.fileupload.YoutubeDialog.setCallback(portlet_id, callback);
+    }
+    if(aipo.fileupload.YoutubeDialog){
+    	aipo.fileupload.YoutubeDialog.setHref(url);
+    	aipo.fileupload.YoutubeDialog.show();
+    }
+};
+
+aipo.fileupload.hideYoutubeDialog = function() {
+    var arrDialog = dijit.byId("aipo_fileupload_widget_YoutubeDialog_0");
+
+    if(arrDialog){
+      arrDialog.hide();
+    }
+};
+
+aipo.fileupload.onLoadYoutube=function(image){
+	var dialog=dojo.byId('youtubeDialog');
+	dialog.style.width=image.width+"px";
+	dialog.style.height=image.height+"px";
+	aipo.fileupload.YoutubeDialog._position();//再調整
+	dojo.query("#youtubeDialog").removeClass("preLoadImage");
+};
+
 

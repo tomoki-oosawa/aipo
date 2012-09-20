@@ -44,11 +44,17 @@ public class TimelineUrlResultData implements ALData {
   /** Url */
   private ALStringField url;
 
+  /** YouTube動画Id */
+  private ALStringField youtubeId;
+
   /** メモ */
   private ALStringField body;
 
   /** サムネイルの有無 */
   private boolean thumbnailFlag;
+
+  /** YouTubeの判断 */
+  private boolean youtubeFlag;
 
   /**
    *
@@ -61,7 +67,9 @@ public class TimelineUrlResultData implements ALData {
     title = new ALStringField();
     url = new ALStringField();
     body = new ALStringField();
+    youtubeId = new ALStringField();
     setThumbnailFlag(false);
+    setYoutubeFlag(false);
   }
 
   /**
@@ -174,6 +182,36 @@ public class TimelineUrlResultData implements ALData {
 
   public void setThumbnailFlag(boolean thumbnailFlag) {
     this.thumbnailFlag = thumbnailFlag;
+  }
+
+  /**
+   * @return youtubeFlag
+   */
+  public boolean isYoutubeFlag() {
+    return youtubeFlag;
+  }
+
+  /**
+   * @param youtubeFlag
+   *          セットする youtubeFlag
+   */
+  public void setYoutubeFlag(boolean youtubeFlag) {
+    this.youtubeFlag = youtubeFlag;
+  }
+
+  /**
+   * @return youtubeId
+   */
+  public ALStringField getYoutubeId() {
+    return youtubeId;
+  }
+
+  /**
+   * @param youtubeId
+   *          セットする youtubeId
+   */
+  public void setYoutubeId(String str) {
+    youtubeId.setValue(str);
   }
 
 }

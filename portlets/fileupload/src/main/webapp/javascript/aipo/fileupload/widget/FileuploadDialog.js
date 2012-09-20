@@ -19,6 +19,8 @@
 
 dojo.provide("aipo.fileupload.widget.FileuploadDialog");
 dojo.provide("aipo.fileupload.widget.FileuploadDialogUnderlay");
+dojo.provide("aipo.fileupload.widget.YoutubeDialog");
+dojo.provide("aipo.fileupload.widget.YoutubeDialogUnderlay");
 
 dojo.require("aimluck.widget.Dialog");
 
@@ -47,6 +49,65 @@ dojo.declare(
             }
 
             this._underlay = new aipo.fileupload.widget.FileuploadDialogUnderlay();
+
+            var node = this.domNode;
+            this._fadeIn = dojo.fx.combine(
+                [dojo.fadeIn({
+                    node: node,
+                    duration: this.duration
+                 }),
+                 dojo.fadeIn({
+                    node: this._underlay.domNode,
+                    duration: this.duration,
+                    onBegin: dojo.hitch(this._underlay, "show")
+                 })
+                ]
+            );
+
+            this._fadeOut = dojo.fx.combine(
+                [dojo.fadeOut({
+                    node: node,
+                    duration: this.duration,
+                    onEnd: function(){
+                        node.style.display="none";
+                    }
+                 }),
+                 dojo.fadeOut({
+                    node: this._underlay.domNode,
+                    duration: this.duration,
+                    onEnd: dojo.hitch(this._underlay, "hide")
+                 })
+                ]
+            );
+        }
+    }
+);
+
+dojo.declare(
+    "aipo.fileupload.widget.YoutubeDialogUnderlay",
+    [aimluck.widget.DialogUnderlay],
+    {
+       templateString: "<div class='fileuploadViewDialogUnderlayWrapper  modalDialogUnderlayWrapper' id='${id}_underlay'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
+    }
+
+);
+
+dojo.declare(
+    "aipo.fileupload.widget.YoutubeDialog",
+    [aimluck.widget.Dialog],
+    {
+        loadingMessage:"<div class='indicator'>読み込み中...</div>",
+        templateCssString:"youtubeDialog",
+        templateString:"<div id='youtubeDialog' class='auiPopup imgPopup ${templateCssString}' dojoattachpoint='wrapper'></div>",
+        _setup: function(){
+
+            this._modalconnects = [];
+
+            if(this.titleBar){
+                this._moveable = new dojo.dnd.Moveable(this.domNode, { handle: this.titleBar });
+            }
+
+            this._underlay = new aipo.fileupload.widget.YoutubeDialogUnderlay();
 
             var node = this.domNode;
             this._fadeIn = dojo.fx.combine(

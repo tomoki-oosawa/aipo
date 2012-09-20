@@ -40,6 +40,12 @@ public class TimelineUrlBeans {
   /** メモ */
   private String body;
 
+  /** YouTube動画Id */
+  private String youtubeId;
+
+  /** YouTubeの判断 */
+  private boolean youtubeFlag;
+
   /**
    * @return images
    */
@@ -102,6 +108,36 @@ public class TimelineUrlBeans {
    */
   public void setBody(String body) {
     this.body = body;
+  }
+
+  /**
+   * @return youtubeId
+   */
+  public String getYoutubeId() {
+    return youtubeId;
+  }
+
+  /**
+   * @param youtubeId
+   *          セットする youtubeId
+   */
+  public void setYoutubeId(String youtubeId) {
+    this.youtubeId = youtubeId;
+  }
+
+  /**
+   * @return youtubeFlag
+   */
+  public boolean isYoutubeFlag() {
+    return youtubeFlag;
+  }
+
+  /**
+   * @param youtubeFlag
+   *          セットする youtubeFlag
+   */
+  public void setYoutubeFlag(boolean youtubeFlag) {
+    this.youtubeFlag = youtubeFlag;
   }
 
 }

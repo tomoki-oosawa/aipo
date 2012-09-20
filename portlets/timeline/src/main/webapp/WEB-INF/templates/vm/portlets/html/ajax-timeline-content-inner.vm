@@ -45,6 +45,7 @@
 #end#end
 </div>#end
 				#foreach ($attachmentUrl in $record.UrlList)
+					#if(!$attachmentUrl.isYoutubeFlag())
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
 							#if ($attachmentUrl.isThumbnailFlag())
@@ -57,6 +58,11 @@
 							<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$attachmentUrl.Body</div>
 						</div>
 					</div>
+					#else
+					<div class="tlImageBlock clearfix">
+						<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="http://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" width="480" height="360"></a>
+					</div>
+					#end
 				#end
 			#end
 		</div>

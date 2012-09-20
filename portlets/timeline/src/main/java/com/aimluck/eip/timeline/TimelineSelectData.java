@@ -470,6 +470,17 @@ public class TimelineSelectData extends
         flag = true;
       }
       rd.setThumbnailFlag(flag);
+      if (model.getUrl().startsWith("http://www.youtube.com")) {
+        String youtubeId = model.getUrl();
+        int startpoint = youtubeId.indexOf("v=");
+        int endpoint = youtubeId.indexOf("&", startpoint);
+        if (endpoint == -1) {
+          endpoint = youtubeId.length();
+        }
+        youtubeId = youtubeId.substring(startpoint + 2, endpoint);
+        rd.setYoutubeId(youtubeId);
+        rd.setYoutubeFlag(true);
+      }
       rdList.add(rd);
 
       result.put(id, rdList);
