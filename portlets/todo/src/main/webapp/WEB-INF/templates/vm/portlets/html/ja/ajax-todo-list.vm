@@ -29,39 +29,27 @@
 <input type="hidden" name="template" value="ToDoListScreen"/>
 <div class="filterInputField">
 <div class="filters" id="filters_$!portlet.ID">
-#if(!$!result.issetFilter("post"))
-<span class="filterTip">
-<span>$l10n.TODO_ALL_GLOUP</span>
-<a href="javascript:void(0)" class="btn" onclick="this.parentNode.style.display='none'"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#else
+
 #foreach($record in $result.PostMap)
 #if($!result.issetFilter("post",$!{record.GroupName}))
 <span class="filterTip">
 <span>$!record.PostName</span>
 <a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
 </span>
-#end#end#end
-#if(!$!result.issetFilter("category"))
-<span class="filterTip">
-<span>$l10n.TODO_ALL_CATEGORY</span>
-<a href="javascript:void(0)" onclick="this.parentNode.style.display='none'"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#else
+#end#end
+
 #foreach($record in $result.CategoryList)
 #if($!result.issetFilter("category",$!{record.CategoryId}))
 <span class="filterTip">
 <span>$!record.CategoryName</span>
 <a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','category')"><i class="auiIcon auiIconDelete"></i></a>
 </span>
-#end#end#end
+#end#end
 </div>
-<a href"javascript:void(0)" class="btn menubarOpenButton filterDropDrawer" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event)">
-<span><i class="auiIcon auiIconArwBottom"></i></span>
-</a>
-<input class="text" type="text" name="keyword" id="q$!portlet.ID" style="margin-right:5px;" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' />
+<a href"javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event)"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" style="width:480px;" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' />
 </div>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!portlet.ID').onsubmit();">$l10n.TODO_SEARCH</a>
+<a class="auiButtonSearch" onclick="dojo.byId('searchForm_$!portlet.ID').onsubmit();">$l10n.TODO_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!portlet.ID" "&nbsp;")</div>
 </div>
