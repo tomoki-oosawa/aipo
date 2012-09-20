@@ -178,7 +178,13 @@ public class TimelineFormData extends ALAbstractFormData {
 
       EipTTimeline parent = Database.get(EipTTimeline.class, (long) parentid);
 
-      return TimelineUtils.deleteTimelineFromParent(rundata, context, parent);
+      if (parent != null) {
+        return TimelineUtils.deleteTimelineFromParent(rundata, context, parent);
+      } else {
+        // DBからの削除処理よりもページリロードが先に実行され,削除済みにもかかわらず表示されたままになっているトピックについて
+        // 再度 削除する が押された時には,ページリロードを行う
+        return true;
+      }
 
     } catch (Exception e) {
       Database.rollback();
