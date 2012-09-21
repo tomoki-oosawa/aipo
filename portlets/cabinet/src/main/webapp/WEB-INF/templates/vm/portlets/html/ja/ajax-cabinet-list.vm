@@ -70,7 +70,7 @@
 
 <div id="listmessageDiv"></div>
 
-#if($result.List.size() == 0)
+#if($result.List.size() && $result.List.size() == 0)
 <div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
 #else
 <div class="auiSummaryMeta clearfix">
