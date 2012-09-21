@@ -54,7 +54,7 @@
 	*#</div>
 ## 追加
 	<div class="floatRight">
-	#if($result.List.size() != 0)
+	#if($result.List.size() && $result.List.size() != 0)
 	#AUIajaxpageview('BlogScreen' $result)
 	#end
 	</div>
