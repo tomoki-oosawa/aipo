@@ -2266,7 +2266,7 @@ tr.disabled a {
 	display:inline-block;
 	background:#e0e0e0;
 	color:#000;
-	margin:2px;
+	margin:2px !important;
 	padding:0 4px;
 	border-radius:3px;
 	-ms-border-radius:3px;
