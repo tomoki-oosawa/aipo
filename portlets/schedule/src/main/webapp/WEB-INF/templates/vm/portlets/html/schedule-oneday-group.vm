@@ -153,9 +153,8 @@
 </th>
 #end
 </tr>
-
 #foreach($record3 in $result.MemberList)
-<tr>
+
 #if($result.isDuplicate())
 #set($duplirowcount = ${result.getDuplicateScheduleListRowCount($record3.UserId.Value)})
 #if($duplirowcount > 0)
@@ -188,6 +187,7 @@ $l10n.SCHEDULE_ADD_NOTE
 #else
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 #end
+<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ${record.TodoName}
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
@@ -366,7 +366,6 @@ $record.WbrName
 #if($endrow == $endRowResult)
 </tr>
 #end
-</tr>
 #end
 
 #set($startrow2 = $startrow)
