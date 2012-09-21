@@ -168,11 +168,11 @@ public class FileIOAccountCsvSelectData
     int line = 0;
 
     String ErrorCode = "";
-    StringBuilder e_line = new StringBuilder();
 
     // 最終行まで読み込む
     while (reader.eof != -1) {
       line++;
+      StringBuilder e_line = new StringBuilder();
       boolean same_user = false;
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
