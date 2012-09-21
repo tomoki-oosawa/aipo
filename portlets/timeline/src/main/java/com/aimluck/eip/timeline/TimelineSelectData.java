@@ -470,7 +470,10 @@ public class TimelineSelectData extends
         flag = true;
       }
       rd.setThumbnailFlag(flag);
-      if (model.getUrl().startsWith("http://www.youtube.com")) {
+
+      String url = model.getUrl();
+      if (url.startsWith("http://www.youtube.com")
+        || url.startsWith("https://www.youtube.com")) {
         String youtubeId = model.getUrl();
         int startpoint = youtubeId.indexOf("v=");
         int endpoint = youtubeId.indexOf("&", startpoint);
@@ -613,7 +616,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }
@@ -730,7 +733,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            .contains("-1"))) {
             iter.remove();
           }
         }

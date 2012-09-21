@@ -127,12 +127,10 @@ aipo.fileupload.hideYoutubeDialog = function() {
     }
 };
 
-aipo.fileupload.onLoadYoutube=function(image){
-	var dialog=dojo.byId('youtubeDialog');
-	dialog.style.width=image.width+"px";
-	dialog.style.height=image.height+"px";
-	aipo.fileupload.YoutubeDialog._position();//再調整
+aipo.fileupload.onLoadYoutube=function(frame){
+	var dialog=dojo.byId('aipo_fileupload_widget_YoutubeDialog_0');
+	dialog.style.width=frame.width+"px";
+	aipo.fileupload.YoutubeDialog._position();
 	dojo.query("#youtubeDialog").removeClass("preLoadImage");
 };
-
 

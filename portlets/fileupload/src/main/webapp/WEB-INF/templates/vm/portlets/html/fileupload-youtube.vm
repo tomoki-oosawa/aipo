@@ -19,9 +19,9 @@
 ## ---------------------------------------------------------------------------
 ## ---------------------------------------------------------------------------
 <div class="imgBody">
-	<iframe width="640" height="360" src="http://www.youtube.com/embed/$vid?wmode=transparent&amp;autoplay=1" frameborder="0" allowfullscreen=""></iframe>
+	<iframe width="640" height="360" src="${scheme}://www.youtube.com/embed/$vid?wmode=transparent&amp;autoplay=1" frameborder="0" allowfullscreen=""></iframe>
 </div>
 <div class="auiPopupMeta clearfix">
 	<div class="auiPopupTitle">$title</div>
-	<div class="auiPopupClose"><a <a href="javascript:void(0)" onclick="aipo.fileupload.hideYoutubeDialog();"><i class="auiIcon auiIconDelete" title="閉じる"></i></a></div>
+	<div class="auiPopupClose"><a href="javascript:void(0)" onclick="aipo.fileupload.hideYoutubeDialog();"><i class="auiIcon auiIconDelete" title="閉じる"></i></a></div>
 </div>

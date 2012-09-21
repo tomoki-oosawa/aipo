@@ -97,8 +97,8 @@ dojo.declare(
     [aimluck.widget.Dialog],
     {
         loadingMessage:"<div class='indicator'>読み込み中...</div>",
-        templateCssString:"youtubeDialog",
-        templateString:"<div id='youtubeDialog' class='auiPopup imgPopup ${templateCssString}' dojoattachpoint='wrapper'></div>",
+        templateCssString:"auiPopup imgPopup youtubeDialog",
+        templateString:"<div id='youtubeDialog' class='${templateCssString}' dojoattachpoint='wrapper'></div>",
         _setup: function(){
 
             this._modalconnects = [];

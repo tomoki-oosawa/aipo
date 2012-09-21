@@ -32,7 +32,7 @@ dojo.declare(
     "aipo.fileupload.widget.FileuploadViewDialogUnderlay",
     [aimluck.widget.DialogUnderlay],
     {
-       templateString: "<div class='fileuploadDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
+       templateString: "<div class='fileuploadViewDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
     }
 
 );
@@ -43,7 +43,7 @@ dojo.declare(
     {
         loadingMessage:"<div class='indicator'>読み込み中...</div>",
         templateCssString:"auiPopup imgPopup fileuploadViewDialog",
-        templateString:"<div id='fileuploadViewDialog' class='${templateCssString}' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
+        templateString:"<div id='fileuploadViewDialog' class='${templateCssString}' dojoattachpoint='wrapper' onclick='aipo.fileupload.hideImageDialog()'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
         _setup: function(){
 
             this._modalconnects = [];
@@ -83,6 +83,12 @@ dojo.declare(
                  })
                 ]
             );
+        },
+        onLoad: function(){
+            // when href is specified we need to reposition
+            // the dialog after the data is loaded
+            this._position();
+            aimluck.widget.Dialog.superclass.onLoad.call(this);
         }
     }
 );
