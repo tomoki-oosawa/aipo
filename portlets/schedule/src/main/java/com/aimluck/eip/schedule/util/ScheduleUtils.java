@@ -3909,7 +3909,7 @@ public class ScheduleUtils {
         .withExternalId(String.valueOf(schedule.getScheduleId())));
 
       if (isDeletePrev) {
-        RecentActivity.Delete();
+        RecentActivity.delete();
       }
     }
   }
@@ -3947,7 +3947,7 @@ public class ScheduleUtils {
       .withExternalId(String.valueOf(schedule.getScheduleId())));
 
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 

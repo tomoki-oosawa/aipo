@@ -1183,7 +1183,7 @@ public class MsgboardUtils {
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 
@@ -1238,7 +1238,7 @@ public class MsgboardUtils {
         .withExternalId(String.valueOf(topic.getTopicId())));
     }
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 

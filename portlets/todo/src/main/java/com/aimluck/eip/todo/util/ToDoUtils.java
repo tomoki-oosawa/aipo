@@ -664,7 +664,7 @@ public class ToDoUtils {
     }
 
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 

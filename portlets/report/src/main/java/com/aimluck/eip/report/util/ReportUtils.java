@@ -883,7 +883,7 @@ public class ReportUtils {
         .withExternalId(String.valueOf(report.getReportId())));
 
       if (isDeletePrev) {
-        RecentActivity.Delete();
+        RecentActivity.delete();
       }
     }
   }
@@ -927,7 +927,7 @@ public class ReportUtils {
         .withExternalId(String.valueOf(report.getReportId())));
 
       if (isDeletePrev) {
-        RecentActivity.Delete();
+        RecentActivity.delete();
       }
     }
   }

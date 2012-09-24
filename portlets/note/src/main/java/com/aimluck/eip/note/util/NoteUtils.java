@@ -822,7 +822,7 @@ public class NoteUtils {
         .withExternalId(String.valueOf(note.getNoteId())));
 
       if (isDeletePrev) {
-        RecentActivity.Delete();
+        RecentActivity.delete();
       }
     }
   }

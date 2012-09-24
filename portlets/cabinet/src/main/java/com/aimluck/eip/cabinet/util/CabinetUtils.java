@@ -787,7 +787,7 @@ public class CabinetUtils {
 
     Database.commit();
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 

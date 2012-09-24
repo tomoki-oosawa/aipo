@@ -1911,7 +1911,7 @@ public class WorkflowUtils {
         .withExternalId(String.valueOf(request.getRequestId())));
 
       if (isDeletePrev) {
-        RecentActivity.Delete();
+        RecentActivity.delete();
       }
     }
   }

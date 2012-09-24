@@ -867,7 +867,7 @@ public class BlogUtils {
       .withExternalId(String.valueOf(blog.getEntryId())));
 
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 
@@ -901,7 +901,7 @@ public class BlogUtils {
       .withExternalId(String.valueOf(blog.getEntryId())));
 
     if (isDeletePrev) {
-      RecentActivity.Delete();
+      RecentActivity.delete();
     }
   }
 
