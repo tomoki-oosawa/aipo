@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.common;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -252,7 +253,12 @@ public class ALBaseUser extends
       return null;
     }
 
-    return ((String) obj).getBytes();
+    try {
+      return ((String) obj).getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
+    } catch (UnsupportedEncodingException e) {
+      logger.error("ALBaseUser.getPhoto", e);
+      return ((String) obj).getBytes();
+    }
   }
 
   /**
@@ -270,7 +276,12 @@ public class ALBaseUser extends
       return null;
     }
 
-    return ((String) obj).getBytes();
+    try {
+      return ((String) obj).getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
+    } catch (UnsupportedEncodingException e) {
+      logger.error("ALBaseUser.getPhotoSmartphone", e);
+      return ((String) obj).getBytes();
+    }
   }
 
   /**
