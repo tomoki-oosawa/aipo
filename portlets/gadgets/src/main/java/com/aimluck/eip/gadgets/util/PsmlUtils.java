@@ -61,25 +61,27 @@ public class PsmlUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(PsmlUtils.class.getName());
 
-  public static String ADMIN_NAME = "admin";
+  public static final String ADMIN_NAME = "admin";
 
-  public static String ANON_NAME = "anon";
+  public static final String ANON_NAME = "anon";
 
-  public static String TEMPLATE_NAME = "template";
+  public static final String TEMPLATE_NAME = "template";
 
-  public static String DEFAULT_PAGE_NAME = "default.psml";
+  public static final String DEFAULT_PAGE_NAME = "default.psml";
 
-  public static String ADMIN_PORTRET_ID = "101";
+  public static final String ADMIN_PORTRET_ID = "101";
 
-  public static String ATTRIBUTE_ID = "id";
+  public static final String ATTRIBUTE_ID = "id";
 
-  public static String ELEMENT_ENTRY = "entry";
+  public static final String ELEMENT_ENTRY = "entry";
 
-  public static String ELEMENT_PARAMETER = "parameter";
+  public static final String ELEMENT_PARAMETER = "parameter";
 
-  public static String DEFAULT_TIMELINE_PAGE_NAME = "defaultTimeline.psml";
+  public static final String DEFAULT_TIMELINE_PAGE_NAME =
+    "defaultTimeline.psml";
 
-  public static String DEFAULT_SCHEDULE_PAGE_NAME = "defaultSchedule.psml";
+  public static final String DEFAULT_SCHEDULE_PAGE_NAME =
+    "defaultSchedule.psml";
 
   public static String ParsePsml(String psml) throws Exception {
     try {
