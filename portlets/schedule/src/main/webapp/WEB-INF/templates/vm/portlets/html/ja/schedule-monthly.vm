@@ -101,7 +101,8 @@
         #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
-        #if($result.FacilityList.isEmpty())<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">$l10n.SCHEDULE_PLEASE_SELECT_FACILITY</option>#end
+        #if( $!result.TargetGroupName.equals("Facility") || $!result.TargetGroupName.startsWith("f_") )<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">$l10n.SCHEDULE_PLEASE_SELECT_FACILITY</option>
+        #elseif( $!result.TargetGroupName )<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none"))">$l10n.SCHEDULE_PLEASE_SELECT_MEMBER</option>#end
         #foreach($record in $!result.Users)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
         #end
