@@ -613,6 +613,10 @@ table.listTable td.caption, table.subTable td.caption {
 	width:100%;
 	height:auto;
 }
+.auiPopup iframe {
+	max-width:100% !important;
+	height:auto !important;
+}
 /***************************************************
 	login
 --------------------------------------------------*/
