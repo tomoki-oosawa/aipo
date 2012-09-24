@@ -33,7 +33,7 @@ import javax.servlet.ServletResponse;
  */
 public class ALDigestAuthenticationFilter implements Filter {
 
-  public static String REQUIRE_DIGEST_AUTH = "com.aipo.requireDigestAuth";
+  public static final String REQUIRE_DIGEST_AUTH = "com.aipo.requireDigestAuth";
 
   /**
    * @param filterConfig
