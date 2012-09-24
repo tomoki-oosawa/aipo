@@ -143,7 +143,7 @@
 
 <img src="images/common/dot.gif" alt="" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; } aipo.customize.addAutoHideMenuTrigger();' />
 
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:390px; display:none; top:85px; left:276px;">
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none; top:85px; left:276px;">
 <div>
 <p class="caption">$l10n.COMMON_GROUP</p>
 <ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
