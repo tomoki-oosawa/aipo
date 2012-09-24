@@ -38,7 +38,7 @@ public class ALKanaMapTable {
   public static final int INDEX_HANKAKU_DAKUTEN = 1;
 
   /** 半角と全角の変換テーブル */
-  protected static final char[][][] TABLE_HANKAKU2ZENKAKU = new char[][][] {
+  static final char[][][] TABLE_HANKAKU2ZENKAKU = new char[][][] {
     { { '｡' }, { '。' } },
     { { '｢' }, { '「' } },
     { { '｣' }, { '」' } },
