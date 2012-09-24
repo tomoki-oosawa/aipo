@@ -19,11 +19,19 @@
 
 package com.aimluck.commons.utils;
 
+import java.io.Serializable;
+
 /**
  * 半角文字の比較用クラスです。 <br />
  * 
  */
-public class ALHankakuComparator<T> extends ALAbstractComparator<T> {
+public class ALHankakuComparator<T> extends ALAbstractComparator<T> implements
+    Serializable {
+
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
 
   /**
    * コンストラクタ

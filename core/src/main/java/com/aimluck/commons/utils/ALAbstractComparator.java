@@ -19,13 +19,20 @@
 
 package com.aimluck.commons.utils;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * 半角文字の比較用クラスです。 <br />
  * 
  */
-public abstract class ALAbstractComparator<T> implements Comparator<T> {
+public abstract class ALAbstractComparator<T> implements Comparator<T>,
+    Serializable {
+
+  /**
+   *
+   */
+  private static final long serialVersionUID = 1L;
 
   /**
    * コンストラクタ
@@ -38,6 +45,7 @@ public abstract class ALAbstractComparator<T> implements Comparator<T> {
    * 指定されたオブジェクトを比較します。
    * 
    */
+  @Override
   public int compare(Object obj1, Object obj2) {
     return compare(getCharArray(obj1), getCharArray(obj2));
   }
