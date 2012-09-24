@@ -36,7 +36,7 @@
     	#if(!$result.YoutubeFlag)
         <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" name="$!record" src="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'ProxyScreen').addQueryData('url', $!record))" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
         #else
-        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" name="$!record" src="http://i.ytimg.com/vi/$result.YoutubeId/default.jpg" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
+        <img id="tlClipImage_$!{portlet.ID}_${velocityCount}_img" name="$!record" src="https://i.ytimg.com/vi/$result.YoutubeId/default.jpg" onload="aipo.timeline.refreshImageList('$portlet.ID', '$velocityCount');">
         #end
       </div>
   #end

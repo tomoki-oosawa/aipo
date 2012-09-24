@@ -60,7 +60,7 @@
 					</div>
 					#else
 					<div class="tlImageBlock clearfix">
-						<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="http://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" width="480" height="360"></a>
+						<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="https://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" width="480" height="360"></a>
 					</div>
 					#end
 				#end
