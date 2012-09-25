@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.MetaInfo;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.registry.PortletEntry;
@@ -35,9 +36,11 @@ import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.util.CustomizeUtils;
@@ -111,6 +114,25 @@ public class CustomizeFormScreen extends ALVelocityScreen {
       }
       context.put("runs", portletList);
 
+      Portlets[] portletArrays =
+        (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
+          .getPortletsArray();
+      ALStringField pageTitle = new ALStringField();
+      String mypageId = "";
+      for (Portlets p : portletArrays) {
+        if ("マイページ".equals(p.getTitle())) {
+          mypageId = p.getId();
+        }
+        if (p.getId().equals(pid)) {
+          MetaInfo info = p.getMetaInfo();
+          pageTitle.setValue(info.getTitle());
+        }
+      }
+
+      context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
+      context.put("mypageId", mypageId);
+      context.put("pageTitle", pageTitle);
+
       int start = rundata.getParameters().getInt("start", -1);
       if (start < 0) {
         start = 0;
@@ -153,6 +175,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
       // putData(rundata, context);
 
       context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
+      context.put("utils", new ALCommonUtils());
 
       String layout_template = "portlets/html/ja/ajax-customize-form.vm";
       setTemplate(rundata, context, layout_template);

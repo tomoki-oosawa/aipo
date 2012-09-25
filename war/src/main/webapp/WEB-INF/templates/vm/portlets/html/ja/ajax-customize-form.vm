@@ -30,7 +30,7 @@
 <div id="messageDiv"></div>
 
 <form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
-<input type="hidden" name="_name" value="customizeForm" />
+<input type="hidden" name="_name" value="ページ" />
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="portlet_id" value="$!{js_peid}" />
 <input type="hidden" name="mode" value="add" />
@@ -38,6 +38,15 @@
 <form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 -->
 <input type="hidden" name="secid" value="$secid" />
+
+<h3>ページ名</h3>
+<p style="margin-bottom:10px">
+#if($isMypage)
+$!pageTitle
+#else
+#ALtextfield('pageTitle' $!pageTitle '90%' 10 'active')
+#end
+</p>
 
 <h3>配置の選択</h3>
 <input type="hidden" name="controller" value="$!controller" />
@@ -101,7 +110,7 @@
 </div>
 <input type="hidden" name="size" value="30"/>
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALsubmit($event_submit $action_str)#if(!$isMypage)#ALajaxbuttonDelete("$!jslink.getPortletById($!{js_peid}).addQueryData('template','PageFormJSONScreen').addQueryData('mode', 'delete').addQueryData('entityid',$!{js_peid})" "$indicator_id" "$!js_peid" "function(){ location.href='$!{jslink}/js_pane/$!{mypageId}' }")#end#ALajaxbuttonClose()
 #ALbuttonfooter()
 </form>
 #ALdialogfooter()

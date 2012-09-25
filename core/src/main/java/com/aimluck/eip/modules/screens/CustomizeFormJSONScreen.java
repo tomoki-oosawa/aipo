@@ -179,6 +179,24 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     }
     // --------------------------------------------------------------------------
 
+    Portlets[] portletArrays =
+      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
+        .getPortletsArray();
+    String pageTitle = rundata.getParameters().getString("pageTitle");
+    if (pageTitle != null
+      && pageTitle.length() > 0
+      && !"マイページ".equals(pageTitle)) {
+      for (Portlets p : portletArrays) {
+        if (p.getId().equals(pid)) {
+          MetaInfo info = p.getMetaInfo();
+          if (info != null) {
+            info.setTitle(pageTitle);
+          }
+          p.setTitle(pageTitle);
+        }
+      }
+    }
+
     // 理由等 ：追加したポートレットを PSML に保存する．
     if (portlets != null) {
       doSaveAddAction(rundata, context, portlets);
