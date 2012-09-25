@@ -309,9 +309,6 @@ public class TimelineFormData extends ALAbstractFormData {
 
     } catch (Exception ex) {
       logger.error("timeline", ex);
-      if (ex.getCause().toString().matches(".*SQLException.*")) {
-        msgList.add("不正な入力です。");
-      }
       return false;
     }
     return true;

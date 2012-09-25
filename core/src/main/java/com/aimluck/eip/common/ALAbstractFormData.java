@@ -215,10 +215,6 @@ public abstract class ALAbstractFormData implements ALData {
       action.setResultData(this);
       if (!msgList.isEmpty()) {
         action.addErrorMessages(msgList);
-      } else {
-        System.out.println(this);
-        msgList.add("不正な入力です。");
-        action.addErrorMessages(msgList);
       }
       action.putData(rundata, context);
 
