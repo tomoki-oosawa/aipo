@@ -141,12 +141,12 @@ public class ScheduleWeeklyJSONFormData {
   public String doViewList(ALAction action, RunData rundata, Context context,
       List<String> msgList) {
     try {
-  
+
       doCheckAclPermission(
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
-  
+
       AjaxScheduleResultData rd;
       ScheduleBean bean;
       List<List<ScheduleBean>> termScheduleList =
@@ -208,8 +208,8 @@ public class ScheduleWeeklyJSONFormData {
             bean.initField();
             bean.setResultData(rd);
             if (!rd.isPublic() && !rd.isMember()) {
-              bean
-              .setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
+              bean.setName(ALLocalizationUtils
+                .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
             }
             bean.setColspanReal(col);
             bean.setIndex(k);
@@ -253,12 +253,15 @@ public class ScheduleWeeklyJSONFormData {
           bean.initField();
           bean.setResultData(rd);
           if (!rd.isPublic() && !rd.isMember()) {
-            bean.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
+            bean.setName(ALLocalizationUtils
+              .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
           }
           bean.setIndex(i);
-          if (!(rundata.getParameters().getString("m_empty").equals("empty"))
-            && (!rd.isHidden() || rd.isMember())) {
-            scheduleList.add(bean);
+          if (rundata.getParameters().getString("m_empty") != null) {
+            if (!(rundata.getParameters().getString("m_empty").equals("empty"))
+              && (!rd.isHidden() || rd.isMember())) {
+              scheduleList.add(bean);
+            }
           }
         }
       }
