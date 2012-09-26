@@ -2550,7 +2550,15 @@ a.auiIconSecret:hover {background-position:0px -736px;}
 .auiIconArrowLeftW {background-position:0 -623px;}
 .auiIconArrowRight {background-position:0 -399px;}
 .auiIconArrowRightW {background-position:0 -655px;}
-
+.auiIconArrowHead {
+	display:inline-block;
+	width:15px;
+	height:20px;
+	margin-left:5px;
+	vertical-align:middle;
+	background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
+	background-position:0 -430px;
+}
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {

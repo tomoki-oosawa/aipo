@@ -45,7 +45,7 @@
 			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
 			<i class="auiIconArrowHead"></i>
 		</a>
-        <div class="menubar body-child" id="menubar_200" style="position:absolute; right:25px; top:31px; display:none;">
+        <div class="menubar body-child" id="menubar_200" style="position:absolute; right:25px; top:35px; display:none;">
             <ul>
             	<li>
 					#if ($data.User.getUserName()!="admin")
