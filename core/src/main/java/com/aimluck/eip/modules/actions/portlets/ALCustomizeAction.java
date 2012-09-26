@@ -229,6 +229,7 @@ public class ALCustomizeAction extends VelocityPortletAction {
             hidden = true;
           default:
             clone.setType(null);
+            break;
         }
         String value;
         if (instance.getAttribute(name, null) != null) {
