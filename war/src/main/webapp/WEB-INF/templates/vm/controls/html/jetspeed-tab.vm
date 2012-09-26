@@ -33,26 +33,30 @@ $portlet.getContent($data)
                             <div id="auiTabs" class="clearfix">
                               <ul>
 #foreach ( $tab in $tabs )
-#set($selected = $tab.Link && ($tab.isSelected() == true))
+	#set($tabtempTitle = "$tab.Title")
+	#set($selected = $tab.Link && ($tab.isSelected() == true))
+	#if($tabtempTitle!="個人設定")
                                <li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
                                   <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
+
                                   <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-                                  <div class="setting">
-                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
-                                        #if (${client} == "IPAD")
-                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
-                                        #else
-                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
-										#if ($tab.isSelected() == true)
-											#set($activeurlselected=$clink)
-										#end
-                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
-                                        #end
-                                  #end#end
-                                  </div>
+	                                  <div class="setting">
+	                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
+	                                        #if (${client} == "IPAD")
+	                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+	                                        #else
+	                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
+											#if ($tab.isSelected() == true)
+												#set($activeurlselected=$clink)
+											#end
+	                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+	                                        #end
+	                                  #end#end
+	                                  </div>
                                   </div>
                                 </li>
-#set($beforeselected =$selected)
+	#set($beforeselected =$selected)
+	#end
 #end
 								#if ($data.User.getUserName()!="admin")
 									<li class="addTab">

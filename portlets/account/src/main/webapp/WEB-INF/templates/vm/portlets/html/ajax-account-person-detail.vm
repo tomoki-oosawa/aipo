@@ -18,9 +18,9 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
+#set ($subtitle = "ユーザー情報")
 ## ---------------------------------------------------------------------------
-
+#ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
 <div class="auiSummaryMeta clearfix">
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )

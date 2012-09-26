@@ -74,6 +74,17 @@ aipo.customize.showMenu = function(portlet_id) {
     }
 }
 
+aipo.customize.showMenuButtonOnly = function(portlet_id) {
+	var menuNode = dojo.query('#menubar_' + portlet_id);
+	if (menuNode.style('display') == 'none') {
+		menuNode.style("display","block");
+        menuNode.style("opacity","1");
+    } else {
+		menuNode.style("display","none");
+        menuNode.style("opacity","0");
+    }
+}
+
 aipo.customize.showMenuSchedule = function(portlet_id) {
 	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
 	if (menuNode.style('display') == 'none') {

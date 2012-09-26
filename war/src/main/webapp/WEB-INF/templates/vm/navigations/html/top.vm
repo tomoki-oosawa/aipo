@@ -28,9 +28,11 @@
 #if ($data.User.getUserName()!="admin")
     <div class="hdActivity" title="お知らせ"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">お知らせ</span></div></div>
 #end
+		<!-- /hdActivity -->
+
     <div class="hdUserName">
-    	#if ($data.User.getUserName()!="admin")
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonFormScreen'))');">
+		<a href="javascript:void(0);" id="menubar_button_200" class="arrow_bottom" onclick="aipo.customize.showMenuButtonOnly('200');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ">
+		#if ($data.User.getUserName()!="admin")
 			#if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="顔写真" />
 			#else
@@ -39,13 +41,26 @@
 			#if($!data.User.CompanyId >= 1)
 				$!data.User.getCompanyName($!data.User.CompanyId)
 			#end
-			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-			</a>
-		#else
-			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
 		#end
-    </div>
-    <div class="hdLogout"><input type="button" value="ログアウト" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'" /></div>
+			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+			<i class="auiIconArrowHead"></i>
+		</a>
+        <div class="menubar body-child" id="menubar_200" style="position:absolute; right:25px; top:31px; display:none;">
+            <ul>
+            	<li>
+					#if ($data.User.getUserName()!="admin")
+						<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonScreen'))');">
+							ユーザー情報</a>
+					#else
+						$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+					#end
+				</li>
+            	<li><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'MyGroup').addQueryData('template','MyGroupScreen'))');">
+						Myグループ</a></li>
+            	<li class="last"><a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">ログアウト</a></li>
+            </ul>
+        </div>
+	</div>
   </div>
 </div></div>
 #end
