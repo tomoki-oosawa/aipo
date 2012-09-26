@@ -51,7 +51,7 @@
 *##end#*
 *#</div>
 
-<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.msgboard.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),event);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.msgboard.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" style="width:480px;"/>
 </div>
 <a href="javascript:void(0);" class="auiButtonSearch" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;">$l10n.MSGBOARD_SEARCH</a>

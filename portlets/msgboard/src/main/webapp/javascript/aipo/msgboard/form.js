@@ -49,7 +49,7 @@ aipo.msgboard.toggleMenu=function (node,filters,event){
         }else{
         	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
         }
-         if(html.bottom-node.clientHeight>rect.bottom){
+         if(html.bottom-node.clientHeight>rect.bottom||event){
        		node.style.top=rect.bottom+scroll.top+"px";
         }else{
         	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
