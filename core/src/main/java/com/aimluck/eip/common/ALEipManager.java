@@ -370,7 +370,6 @@ public class ALEipManager {
       _map.put(feature.getFeatureId(), feature.getFeatureName());
     }
 
-    roleMap = new HashMap<String, EipTAclRole>();
     String _featureName;
     for (EipTAclRole _role : roleList) {
       _featureName = _map.get(_role.getFeatureId().intValue());
