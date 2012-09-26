@@ -18,7 +18,12 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
+#if(!$result.CurrentFilter)
+#set ($filter = "")
+#else
+#set ($filter = $result.CurrentFilter)
+#end
+#set ($filtertype=$result.CurrentFilterType)
 <div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
@@ -92,7 +97,7 @@
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","Facility"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "Facility") selected="selected" #end>$l10n.SCHEDULE_FACILITY_LIST</option>
         #foreach($record in $!result.FacilitiyGroupList)
-        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "f_$!record.Name.toString()") selected="selected" #end>$!record.AliasName</option>
+        <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "f_$!record.Name.toString()") selected="selected" #set($filtertemp="$!record.Name") #set($filtertypetemp="facilitygroup") #end>$!record.AliasName</option>
         #end
     </select>
     <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
@@ -135,7 +140,12 @@
 #else
 <tr>
 #end
-<td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
+#set ($screen = 'ScheduleListScreen')
+
+#if($filter=="all")#set($filter="")#end
+#if($filtertemp && $filtertypetemp)#set($filter="$filtertemp")#set($filtertype="$filtertypetemp")#else#set($filtertype="group")#end
+#set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group').addQueryData('view_date',$record.DateDay).addQueryData('filter',$filter).addQueryData('filtertype',$filtertype)"])
+<td  #if(${client}!="IPHONE")nowrap="nowrap" #end><a  href="javascript:void(0);"onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">${record.DateFull}</a></td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 &nbsp;#if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />

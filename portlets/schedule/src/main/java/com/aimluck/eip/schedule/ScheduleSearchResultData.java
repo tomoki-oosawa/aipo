@@ -21,6 +21,7 @@ package com.aimluck.eip.schedule;
 
 import java.text.SimpleDateFormat;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
@@ -34,6 +35,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 public class ScheduleSearchResultData extends ScheduleResultData {
 
   private ALEipUser createUser;
+
+  private ALDateTimeField DateDay;
 
   private ALStringField note;
 
@@ -54,7 +57,15 @@ public class ScheduleSearchResultData extends ScheduleResultData {
       b.append(sdf.format(getStartDate().getValue())).append(" ").append(
         getDate2());
     }
+
     return b.toString();
+  }
+
+  public ALDateTimeField getDateDay() {
+    DateDay = new ALDateTimeField("yyyy-MM-dd");
+    DateDay.setValue(getViewDate());
+    return DateDay;
+
   }
 
   /**
