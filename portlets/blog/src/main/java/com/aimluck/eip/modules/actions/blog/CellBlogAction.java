@@ -257,7 +257,6 @@ public class CellBlogAction extends BlogAction {
       + "のﾌﾞﾛｸﾞ");
 
     // ユーザー一覧を得る
-    List<ALEipUser> list = new ArrayList<ALEipUser>();
     SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
     Expression exp1 =
       ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
@@ -271,7 +270,7 @@ public class CellBlogAction extends BlogAction {
     Expression exp11 =
       ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
     query.setQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp11))));
-    list = ALEipUtils.getUsersFromSelectQuery(query);
+    List<ALEipUser> list = ALEipUtils.getUsersFromSelectQuery(query);
     context.put("users", list);
 
     BlogEntrySelectData listData = new BlogEntrySelectData();
