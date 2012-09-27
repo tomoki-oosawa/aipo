@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -218,7 +217,6 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         new String[EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY];// 外出
       String[] come_back =
         new String[EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY];// 復帰
-      List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 
       if (tclistrd.getRd() == null) {
 
@@ -269,7 +267,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
           type.equals(EipTExtTimecard.TYPE_COMPENSATORY) ? "1" : "0";
         other_day = type.equals(EipTExtTimecard.TYPE_ETC) ? "1" : "0";
 
-        list = tclistrd.getOutgoingComeback_xls();
+        List<Map<String, String>> list = tclistrd.getOutgoingComeback_xls();
         for (int j = 0; j < EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY; j++) {
           Map<String, String> map = list.get(j);
           out_going[j] = map.get("outgoing");
