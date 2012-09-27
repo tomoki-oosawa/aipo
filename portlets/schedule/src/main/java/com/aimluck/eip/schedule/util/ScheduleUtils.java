@@ -2797,11 +2797,9 @@ public class ScheduleUtils {
       out.flush();
       return out.toString();
     } catch (Exception e) {
-      String traces = "";
       String message = e.getMessage();
       logger.warn(message, e);
       e.printStackTrace();
-      traces += "\n" + message + "\n" + e.toString();
     } finally {
       if (out != null) {
         try {
@@ -2888,11 +2886,9 @@ public class ScheduleUtils {
       out.flush();
       return out.toString();
     } catch (Exception e) {
-      String traces = "";
       String message = e.getMessage();
       logger.warn(message, e);
       e.printStackTrace();
-      traces += "\n" + message + "\n" + e.toString();
     } finally {
       if (out != null) {
         try {
