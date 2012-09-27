@@ -187,7 +187,11 @@ public class MsgboardUtils {
       // アクセス権限チェック
       EipTMsgboardCategory category = topic.getEipTMsgboardCategory();
       boolean accessible = false;
-      if (category.getPublicFlag().equals("T")) {
+      if (category == null) {
+        // 掲示板画面を表示後カテゴリが削除された場合
+        logger.debug("[MsgboardTopic] Not found Category...");
+        throw new ALPageNotFoundException();
+      } else if (category.getPublicFlag().equals("T")) {
         accessible = true;
       } else {
         @SuppressWarnings("unchecked")
