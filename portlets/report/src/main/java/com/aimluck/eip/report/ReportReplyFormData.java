@@ -354,8 +354,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
       Database.commit();
 
       // 更新情報を送るユーザーを取得する
-      List<ALEipUser> recipientList = new ArrayList<ALEipUser>();
-      recipientList = getRecipientList(rundata, context);
+      List<ALEipUser> recipientList = getRecipientList(rundata, context);
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
