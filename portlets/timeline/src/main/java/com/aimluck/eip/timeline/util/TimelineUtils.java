@@ -159,6 +159,45 @@ public class TimelineUtils {
    *          カテゴリテーブルをJOINするかどうか
    * @return
    */
+  public static List<EipTTimeline> getEipTTimelineListToDeleteAllUserTopic(
+      RunData rundata, Context context, boolean isSuperUser, int topicid)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+
+      Expression exp02 =
+        ExpressionFactory.matchDbExp(
+          EipTTimeline.TIMELINE_ID_PK_COLUMN,
+          topicid);
+      Expression exp03 =
+        ExpressionFactory.matchExp(EipTTimeline.PARENT_ID_PROPERTY, topicid);
+
+      query.andQualifier((exp02).orExp(exp03));
+
+      List<EipTTimeline> topics = query.fetchList();
+      if (topics == null || topics.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[Timeline] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      return topics;
+    } catch (Exception ex) {
+      logger.error("[TimelineUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
+  }
+
+  /**
+   * トピックオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param isSuperUser
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
   public static List<EipTTimeline> getEipTTimelineListToDeleteTopic(
       RunData rundata, Context context, boolean isSuperUser, int topicid)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -1068,7 +1107,7 @@ public class TimelineUtils {
 
     try {
       if (parent != null) {
-        deleteTimelineFromParent(rundata, context, parent);
+        deleteTimelineFromParent(rundata, context, appId, parent);
       }
     } catch (ALDBErrorException e) {
       e.printStackTrace();
@@ -1077,7 +1116,8 @@ public class TimelineUtils {
   }
 
   public static boolean deleteTimelineFromParent(RunData rundata,
-      Context context, EipTTimeline parent) throws ALDBErrorException {
+      Context context, String appId, EipTTimeline parent)
+      throws ALDBErrorException {
     try {
       int uid = ALEipUtils.getUserId(rundata);
       String orgId = Database.getDomainName();
@@ -1085,9 +1125,15 @@ public class TimelineUtils {
       // オブジェクトモデルを取得
       List<EipTTimeline> list;
 
-      list =
-        getEipTTimelineListToDeleteTopic(rundata, context, ALEipUtils
-          .isAdmin(rundata), parent.getTimelineId());
+      if (appId.equals("Cabinet")) {
+        list =
+          getEipTTimelineListToDeleteAllUserTopic(rundata, context, ALEipUtils
+            .isAdmin(rundata), parent.getTimelineId());
+      } else {
+        list =
+          getEipTTimelineListToDeleteTopic(rundata, context, ALEipUtils
+            .isAdmin(rundata), parent.getTimelineId());
+      }
 
       if (list == null) {
         // 指定した トピック ID のレコードが見つからない場合
