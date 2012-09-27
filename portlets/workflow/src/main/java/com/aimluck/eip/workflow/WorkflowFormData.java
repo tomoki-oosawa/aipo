@@ -937,7 +937,6 @@ public class WorkflowFormData extends ALAbstractFormData {
         int routeArrayLength = routeArray.length;
 
         // ユーザー一覧を得る
-        List<ALEipUser> list = new ArrayList<ALEipUser>();
         SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
         Expression exp11 =
           ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
@@ -957,7 +956,7 @@ public class WorkflowFormData extends ALAbstractFormData {
         exp = exp.andExp(exp11);
 
         query.setQualifier(exp);
-        list = ALEipUtils.getUsersFromSelectQuery(query);
+        List<ALEipUser> list = ALEipUtils.getUsersFromSelectQuery(query);
         StringBuffer result = new StringBuffer();
 
         ALEipUser user = null;
