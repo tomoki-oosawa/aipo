@@ -44,6 +44,8 @@
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body onload="aipo.container.renderGadgets()">
+<div id="modalDialog" class="modalDialog" style="display:none"></div>
+<div id="imageDialog" class="modalDialog imageDialog" style="display:none"></div>
 #if("$isXDomain" == "true")
 <script type="text/javascript">
   djConfig = {
@@ -87,8 +89,6 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 
 </div>
 <!-- /WRAPPER -->
-<div id="modalDialog" class="modalDialog" style="display:none"></div>
-<div id="imageDialog" class="modalDialog imageDialog" style="display:none"></div>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
@@ -99,12 +99,6 @@ dojo.addOnLoad(function() {
     #if (!${tutorialForbid} && $data.User.hasLoggedIn())
     aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
     #end
-
-    var params = {
-        widgetId:'modalDialog'
-    };
-    new aimluck.widget.Dialog(params, "modalDialog");
-    //dojo.disconnect(dojo, "loaded", "_dialog");
 #if ($data.User.hasLoggedIn())
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
