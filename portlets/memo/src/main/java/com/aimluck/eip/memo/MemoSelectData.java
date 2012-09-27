@@ -81,12 +81,6 @@ public class MemoSelectData extends ALAbstractSelectData<EipTMemo, EipTMemo>
         .getPortletConfig()
         .getInitParameter("p2a-sort"));
     }
-    // カテゴリの初期値を取得する
-    try {
-      String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    } catch (Exception ex) {
-      logger.debug("Exception", ex);
-    }
 
     target_keyword = new ALStringField();
   }
