@@ -878,11 +878,6 @@ public class RemainderScheduleDaemon implements Daemon {
 
     long now_millis = cal.getTimeInMillis();
 
-    @SuppressWarnings("unused")
-    int now_hour = cal.get(Calendar.HOUR_OF_DAY);
-    @SuppressWarnings("unused")
-    int now_minutes = cal.get(Calendar.MINUTE);
-
     // プロパティファイルから送信時間(this.send_time_hour)の読み込み
     FileInputStream input = null;
     try {

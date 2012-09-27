@@ -385,9 +385,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
     String filter_type =
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE_TYPE);
-    String crt_key = null;
-    Attributes map = getColumnMap();
-
     if (filter == null || filter_type == null || filter.equals("")) {
 
       members = new ArrayList<ALEipUser>();
@@ -407,11 +404,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         Arrays.asList(userid),
         null);
     }
-
-    crt_key = map.getValue(filter_type);
-    // if (crt_key == null) {
-    // return new ArrayList<VEipTScheduleList>();
-    // }
 
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
@@ -827,6 +819,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     return target_group_name;
   }
 
+  @Override
   public String getViewStartFormat() {
     return ALLocalizationUtils.getl10nFormat(
       "SCHEDULE_DATE_FORMAT_NOSPACE",
@@ -835,6 +828,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       getViewStart().getDay());
   }
 
+  @Override
   public String getViewEndFormat() {
     return ALLocalizationUtils.getl10nFormat(
       "SCHEDULE_DATE_FORMAT_NOSPACE",

@@ -346,8 +346,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
     String filter_type =
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE_TYPE);
-    String crt_key = null;
-    Attributes map = getColumnMap();
     if (filter == null
       || filter_type == null
       || filter.equals("")
@@ -369,7 +367,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         Arrays.asList(userid),
         null);
     }
-    crt_key = map.getValue(filter_type);
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
 
