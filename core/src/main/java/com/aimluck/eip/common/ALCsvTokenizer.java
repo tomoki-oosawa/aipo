@@ -114,7 +114,6 @@ public class ALCsvTokenizer {
    */
   public String nextToken() {
     int ch;
-    StringBuffer buf = new StringBuffer();
     line = false;
     inquote = false;
     if (eof == -1) {
@@ -122,7 +121,7 @@ public class ALCsvTokenizer {
     }
 
     try {
-      buf = new StringBuffer();
+      StringBuffer buf = new StringBuffer();
       if (flag_reminder_csv) {
         ch = newline_r_reminder;
         flag_reminder_csv = false;
