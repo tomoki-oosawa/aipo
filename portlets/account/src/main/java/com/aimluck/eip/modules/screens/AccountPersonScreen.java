@@ -50,7 +50,14 @@ public class AccountPersonScreen extends ALVelocityScreen {
       AccountEditSelectData detailData = new AccountEditSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-account-person-detail.vm";
+      String type = rundata.getParameters().getString("type", "");
+      String layout_template;
+      if (type.equals("popup")) {
+        layout_template =
+          "portlets/html/ja/ajax-account-person-detail-popup.vm";
+      } else {
+        layout_template = "portlets/html/ja/ajax-account-person-detail.vm";
+      }
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

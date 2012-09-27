@@ -33,9 +33,7 @@ $portlet.getContent($data)
                             <div id="auiTabs" class="clearfix">
                               <ul>
 #foreach ( $tab in $tabs )
-	#set($tabtempTitle = "$tab.Title")
 	#set($selected = $tab.Link && ($tab.isSelected() == true))
-	#if($tabtempTitle!="個人設定")
                                <li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
                                   <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
 
@@ -56,7 +54,6 @@ $portlet.getContent($data)
                                   </div>
                                 </li>
 	#set($beforeselected =$selected)
-	#end
 #end
 								#if ($data.User.getUserName()!="admin")
 									<li class="addTab">

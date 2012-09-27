@@ -19,10 +19,8 @@
 
 ## ---------------------------------------------------------------------------
 #set($tabs = [["グループ一覧", "",""]])
-#set ($subtitle = "Myグループ")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
-<div id="messageDiv"></div>
+
 #if($result.List.size() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
@@ -74,8 +72,5 @@
 		#AUIajaxpageview('MyGroupListScreen' $result)
 	#AUISummaryDivfooter()
 #ALformfooter()
-##ALbuttonheader()
-##ALajaxbuttonClose()
-##ALbuttonfooter()
+
 #end
-#ALdialogfooter()

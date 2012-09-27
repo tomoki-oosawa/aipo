@@ -77,7 +77,19 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   @Override
   public void buildContext(RunData rundata, Context context) {
     if (getPortlet() instanceof PortletSet) {
-      context.put("tabs", getTabs((PortletSet) getPortlet(), rundata, context));
+
+      Collection<PortletTab> tabs =
+        getTabs((PortletSet) getPortlet(), rundata, context);
+
+      // remove "個人設定"
+      // for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+      // PortletTab tab = i.next();
+      // if (tab.getTitle().toString().equals("個人設定")) {
+      // i.remove();
+      // }
+      // }
+
+      context.put("tabs", tabs);
     }
   }
 

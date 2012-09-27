@@ -18,10 +18,9 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($subtitle = "ユーザー情報")
+
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
-<div id="messageDiv"></div>
+
 <div class="auiSummaryMeta clearfix">
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
@@ -83,4 +82,3 @@ $l10n.ACCOUNT_USER_NOT_CREATE
 #ALtdcaption($l10n.ACCOUNT_FAX_NUMBER)
 #ALtditem($!result.Detail.CompanyFaxNumber)
 #ALtablefooter()
-#ALdialogfooter()

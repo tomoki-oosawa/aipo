@@ -55,9 +55,15 @@ public class MyGroupScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-mygroup.vm";
-      setTemplate(rundata, context, layout_template);
+      String type = rundata.getParameters().getString("type", "");
+      String layout_template;
+      if (type.equals("popup")) {
+        layout_template = "portlets/html/ja/ajax-mygroup-popup.vm";
+      } else {
+        layout_template = "portlets/html/ja/ajax-mygroup.vm";
+      }
 
+      setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MyGroupScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

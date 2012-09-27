@@ -40,26 +40,26 @@
 			#end
 			#if($!data.User.CompanyId >= 1)
 				$!data.User.getCompanyName($!data.User.CompanyId)
-			#end
-		#end
-			$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-			<i class="auiIconArrowHead"></i>
-		</a>
-        <div class="menubar body-child" id="menubar_200" style="position:absolute; right:25px; top:35px; display:none;">
-            <ul>
-            	<li>
-					#if ($data.User.getUserName()!="admin")
-						<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonScreen'))');">
-							ユーザー情報</a>
-					#else
-						$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-					#end
-				</li>
-            	<li><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'MyGroup').addQueryData('template','MyGroupScreen'))');">
-						Myグループ</a></li>
-            	<li class="last"><a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">ログアウト</a></li>
-            </ul>
-        </div>
+      #end
+    #end
+    $utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
+		<i class="auiIconArrowHead"></i>
+    </a>
+    <div class="menubar body-child" id="menubar_200" style="position:absolute; right:25px; top:35px; display:none;">
+        <ul>
+    			#if ($data.User.getUserName()!="admin")
+          <li>
+    				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonScreen').addQueryData('type', 'popup'))');">ユーザー情報</a>
+    			</li>
+          <li>
+            <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'MyGroup').addQueryData('template','MyGroupScreen').addQueryData('type', 'popup'))');">Myグループ</a>
+          </li>
+          #end
+        	<li class="last">
+            <a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">ログアウト</a>
+          </li>
+        </ul>
+    </div>
 	</div>
   </div>
 </div></div>
