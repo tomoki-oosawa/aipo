@@ -125,17 +125,6 @@ public class ToDoSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    String filter =
-      ALEipUtils.getTemp(
-        rundata,
-        context,
-        "com.aimluck.eip.todo.ToDoSelectDatafilter");
-    String filtertype =
-      ALEipUtils.getTemp(
-        rundata,
-        context,
-        "com.aimluck.eip.todo.ToDoSelectDatafiltertype");
-
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(
