@@ -55,9 +55,8 @@ public class TimelineUrlScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      TimelineUrlBeans listdata = new TimelineUrlBeans();
       String url = ALEipUtils.getParameter(rundata, context, "url");
-      listdata = TimelineUtils.perseFromUrl(url);
+      TimelineUrlBeans listdata = TimelineUtils.perseFromUrl(url);
       if (listdata != null) {
         setResultData(listdata);
         putData(rundata, context);
