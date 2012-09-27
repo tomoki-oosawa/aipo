@@ -616,7 +616,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-            .contains("-1"))) {
+              .contains("-1"))) {
             iter.remove();
           }
         }
@@ -733,7 +733,7 @@ public class TimelineSelectData extends
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
             || userlist.contains(user.getName().toString()) || userlist
-            .contains("-1"))) {
+              .contains("-1"))) {
             iter.remove();
           }
         }
@@ -916,18 +916,7 @@ public class TimelineSelectData extends
   protected void setupLists(RunData rundata, Context context) {
 
     target_group_name = getTargetGroupName(rundata, context);
-    boolean fgroup_flag = false;
-    String target_group_id = "";
     current_filter = target_group_name;
-    String[] target = target_group_name.split(";");
-    String[] target2 = target_group_name.split("_");
-    if ("f".equals(target[0])) {
-      target_group_id = target[1];
-    }
-    if ("f".equals(target2[0])) {
-      target_group_id = target2[1];
-      fgroup_flag = true;
-    }
     if ((!target_group_name.equals("")) && (!target_group_name.equals("all"))) {
       userList = ALEipUtils.getUsers(target_group_name);
     } else if ((!target_group_name.equals(""))
