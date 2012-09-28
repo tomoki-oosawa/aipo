@@ -47,6 +47,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -122,6 +123,8 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
 
     String portletId = portlets.getID();
 
@@ -176,6 +179,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       }
 
       PortletTab tab = new PortletTab();
+      tab.setId(p.getID());
 
       // Handle the portlet title
       String title = null;
@@ -223,6 +227,9 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    * Utilty class describing a Tab elemnt in the template Velocity Context
    */
   public class PortletTab {
+
+    private String id = null;
+
     private final ALStringField title = new ALStringField();
 
     private boolean selected = false;
@@ -234,6 +241,14 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
     private int position = -1;
 
     private boolean authority = true;
+
+    public String getId() {
+      return id;
+    }
+
+    public void setId(String id) {
+      this.id = id;
+    }
 
     public ALStringField getTitle() {
       return this.title;

@@ -74,6 +74,35 @@ aipo.customize.showMenu = function(portlet_id) {
     }
 }
 
+aipo.customize.showMenuForTab = function(tab_id) {
+	var menuNode = dojo.query('#menubar_' + tab_id);
+	var buttonNode= dojo.query('#menubar_button_' + tab_id);
+	if(menuNode.length==0 || buttonNode.length==0)return;//error
+
+	var rect=buttonNode[0].getBoundingClientRect();
+	var html=document.documentElement.getBoundingClientRect();
+	if (menuNode.style('display') == 'none') {
+		dojo.query('div.menubar').style('display', 'none');
+		 var scroll={
+        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
+        	top:document.documentElement.scrollTop||document.body.scrollTop
+        };
+		menuNode.style("opacity","0");
+		menuNode.style("display","block");
+        menuNode.style("position","absolute");
+
+		if(html.right-menuNode[0].clientWidth>rect.left){
+			menuNode.style("left",rect.left+scroll.left+"px");
+        }else{
+        	menuNode.style("left",rect.right-menuNode[0].clientWidth+scroll.left+"px");
+        }
+       	 menuNode.style("top",rect.bottom+scroll.top+"px");
+        menuNode.style("opacity","1");
+    } else {
+        aipo.customize.hideMenu(tab_id);
+    }
+}
+
 aipo.customize.showMenuButtonOnly = function(portlet_id) {
 	var menuNode = dojo.query('#menubar_' + portlet_id);
 	if (menuNode.style('display') == 'none') {
@@ -147,6 +176,12 @@ aipo.customize.setController = function(portlet_id, sender) {
 
 aipo.customize.deletesubmit = function(url, portlet_id, callback) {
     if (confirm('このアプリを削除してもよろしいですか？')) {
+        aipo.customize.submit(url, portlet_id, callback);
+    }
+}
+
+aipo.customize.deleteTabSubmit = function(url, portlet_id, callback) {
+    if (confirm('このページを削除してもよろしいですか？')) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }

@@ -38,16 +38,32 @@ $portlet.getContent($data)
                                   <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
 
                                   <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-	                                  <div class="setting">
+	                                  <div class="setting" style="position:relative;">
 	                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
 	                                        #if (${client} == "IPAD")
 	                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
 	                                        #else
+
 	                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
 											#if ($tab.isSelected() == true)
 												#set($activeurlselected=$clink)
 											#end
-	                                        <a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
+											<a href="javascript:void(0);" id="menubar_button_tab_$!{tab.Id}" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ"></a>
+											<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
+											<ul>
+												<li>
+												<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">追加アプリの設定</a>
+					    						</li>
+												#if($!tab.Title.Value != "マイページ")
+												<li>
+													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('type', 'popup'))')">ページ編集</a>
+												</li>
+												<li class="last">
+													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){window.location.reload();})">削除</a>
+												</li>
+												#end
+											</ul>
+											</div>
 	                                        #end
 	                                  #end#end
 	                                  </div>
