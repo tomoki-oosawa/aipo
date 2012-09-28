@@ -1652,7 +1652,7 @@ $item.get(0)
 	    <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" title="次へ" class="last arrow" title="次の $nextCount 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+        <li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="次の $nextCount 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #else
 	    <li title="次へ"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #end
