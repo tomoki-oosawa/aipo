@@ -590,7 +590,7 @@ table.activityTable tr.unread td {
 /* last */
 #auiTabs .last .setting {
 	padding-right:20px;
-	background:url(../images/tab.png) right -150px no-repeat;
+	background:url(../images/tab.png?20120928) right -150px no-repeat;
 }
 /* active */
 #auiTabs .active .title {
