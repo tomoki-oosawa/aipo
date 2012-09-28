@@ -251,9 +251,9 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
-<p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>
-<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
-<p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_HIDDEN_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_HIDDEN_PUBLIC</label></p>
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
@@ -299,23 +299,23 @@
     <div class="p">
     	<div id="edit_control_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_EDIT_PERMISSION</div>
     	<div id="edit_control_context_$!{portlet.ID}" style="display:none;">
- 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">$l10n.SCHEDULE_EDIT_THE_SCHEDULE</label><br/>
-  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ($!{result.EditFlag.toString()} == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label></div>
+ 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "T") checked="checked" #end><label for="edit_control_flagT_$!{portlet.ID}">$l10n.SCHEDULE_EDIT_THE_SCHEDULE</label><br/>
+  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "F") checked="checked" #end><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label></div>
 	</div>
 #end
 #if($mode!="new_form" && $!result.Member)
     <div class="p">
     	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_RETURN_TEMP_SCHEDULE</div>
     	<div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
-   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label><br/>
-    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ($!{result.ChangeTmpreserveFlag.toString()} == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label></div>
+   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "T")  checked="checked" #end><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label><br/>
+    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "F") checked="checked" #end><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label></div>
     </div>
 #end
 <div class="p">
     	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_MAIL_DOR_ENTRY_USER</div>
     	<div id="mail_context_$!{portlet.ID}" style="display:none;">
-	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if($!{result.MailFlag}=="A")checked="checked" #end><label for="mail_flag_A">$l10n.SCHEDULE_DO_INFORM</label><br />
-	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if($!{result.MailFlag}=="N")checked="checked" #end><label for="mail_flag_N">$l10n.SCHEDULE_DONT_INFORM</label>
+	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if("$!{result.MailFlag}"=="A") checked="checked" #end><label for="mail_flag_A">$l10n.SCHEDULE_DO_INFORM</label><br />
+	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if("$!{result.MailFlag}"=="N") checked="checked" #end><label for="mail_flag_N">$l10n.SCHEDULE_DONT_INFORM</label>
 	   	</div>
 </div>
   </td></tr>
