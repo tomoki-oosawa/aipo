@@ -43,7 +43,7 @@
 </ul>
 </div>
 #ALbuttonheader()
-<p class="rightBtn pt10" onclick="aipo.common.hideDialogSub();" ><button>$l10n.TIMELINE_CLOSE</button></p>
+<p class="rightBtn pt10" onclick="aipo.common.hideDialog();" ><button>$l10n.TIMELINE_CLOSE</button></p>
 #ALbuttonfooter()
 </div>
 
