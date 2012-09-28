@@ -45,7 +45,7 @@ aipo.common.showDialogSub = function(url, portlet_id, callback) {
 	 var userAgent = window.navigator.userAgent.toLowerCase();
 	 dojo.query(".roundBlockContent").addClass("mb_dialoghide");
     if(! arrDialogSub){
-       arrDialogSub = new aimluck.widget.DialogSub({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback ,templateString:"<div id='modalDialogSub' class='modalDialogSub' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
+       arrDialogSub = new aimluck.widget.DialogSub({widgetId:'modalDialog', _portlet_id: portlet_id, _callback:callback ,templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
 }, "modalDialog");
     }else{
        arrDialogSub.setCallback(portlet_id, callback);
