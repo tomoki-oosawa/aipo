@@ -18,6 +18,8 @@
  */
 
 dojo.provide("aipo.eventlog");
+dojo.require("dojo.string");
+dojo.requireLocalization("aipo", "locale");
 
 aipo.eventlog.onReceiveMessage = function(msg){
     if(!msg) {
@@ -33,8 +35,13 @@ aipo.eventlog.onReceiveMessage = function(msg){
 }
 
 aipo.eventlog.downloadCvn = function(flag_over_size,max,url){
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	var confirmString = dojo.string.substitute(nlsStrings.EVENTLOG_STR, {
+		eventlog_max : max
+	  });
+
 	if(flag_over_size){
-		alert("一覧の総数が"+max+"件を超えています。\n日付の範囲を変更してください。");
+		alert(confirmString);
 	}else{
 		window.location.href=url;
 	}
