@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.Registry;
@@ -959,7 +960,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    * @param rundata
    * @param context
    * @param msgList
-   * @return
+   * @return true 成功 false 失敗
    * @throws ALDBErrorException
    */
   @Override
@@ -1204,11 +1205,18 @@ public class ScheduleFormData extends ALAbstractFormData {
           true,
           ownerid);
       }
-
+    } catch (CayenneRuntimeException e) {
+      if (e.getCause().getMessage().indexOf("Incorrect string value:") == 0) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_UNAVAILABLE_CHARACTER"));
+      }
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
-      throw new ALDBErrorException();
+      return false;
     }
     if (ScheduleUtils.MAIL_FOR_ALL.equals(schedule.getMailFlag())
       || ScheduleUtils.MAIL_FOR_INSERT.equals(schedule.getMailFlag())) {
