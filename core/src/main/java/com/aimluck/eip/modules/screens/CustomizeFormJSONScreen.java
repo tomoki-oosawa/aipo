@@ -343,15 +343,6 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
   }
 
   protected void maintainUserSelections(RunData rundata) throws Exception {
-    int size = rundata.getParameters().getInt("size", 0);
-    int previous = rundata.getParameters().getInt("previous", -1);
-
-    @SuppressWarnings("unused")
-    int start = 0;
-    if (previous >= 0) {
-      start = previous + size;
-    }
-
     String[] pnames = rundata.getParameters().getStrings("pname");
     Map<String, PortletEntry> userSelections =
       CustomizeUtils.getUserSelections(rundata);
