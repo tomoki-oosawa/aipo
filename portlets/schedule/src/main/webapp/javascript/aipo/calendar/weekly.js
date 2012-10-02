@@ -369,7 +369,13 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
                 tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
                 tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
-                tmpNode1.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
+                var tmpNode1_a = dojo.byId('weeklyDay' + i + '_element_a-' + _portletId);
+                tmpNode1_a.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
+                if(location.href.toString().toLowerCase().indexOf((_portletId+"?action=controls.Maximize").toLowerCase())>0){
+                	tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10)).split("ScheduleScreen").join("ScheduleListScreen");
+                }else{
+                    tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10));
+                }
                 tmpNode2.innerHTML = data.holiday[i];
                 var temptoday = data.today + "-00-00";
                 if (data.dayOfWeek[i] == "（土）") {
