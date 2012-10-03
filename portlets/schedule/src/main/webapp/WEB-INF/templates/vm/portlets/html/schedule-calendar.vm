@@ -172,7 +172,6 @@
                               <div class="weeklyHeadLeftBottom">&nbsp;</div>
                             </div>
                           </td>
-                          <br>
                           <td nowrap="nowrap" width="100%" valign="top">
                             <div id="weeklyHeadRights-$!portlet.ID" class='weeklyHeadRights'>
                               <div id="weeklyHeadRightborder-$!portlet.ID" class="weeklyHeadRightborder0_$!portlet.ID weeklyHeadRight#if($!top_form && $!top_form == 'simple')R#end" style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end border-right: block;">
