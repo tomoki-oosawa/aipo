@@ -55,6 +55,8 @@ public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
     String id = ALEipUtils.getParameter(rundata, context, "id");
     String title = "";
 
+    boolean isAndroid = ALEipUtils.isAndroidBrowser(rundata);
+
     SelectQuery<EipTTimelineUrl> query = Database.query(EipTTimelineUrl.class);
     query.where(Operations.in(EipTTimelineUrl.TIMELINE_ID_PROPERTY, id));
     List<EipTTimelineUrl> list = query.fetchList();
@@ -66,6 +68,7 @@ public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
     context.put("jslink", JetspeedLinkFactory.getInstance(rundata));
     context.put("vid", vid);
     context.put("title", title);
+    context.put("android", isAndroid);
 
     putData(rundata, context);
 

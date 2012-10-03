@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 ## ---------------------------------------------------------------------------
 <div class="imgBody">
-	<iframe onload="aipo.fileupload.onLoadYoutube(this)" width="640" height="360" src="${scheme}://www.youtube.com/embed/$vid?wmode=transparent&amp;autoplay=1" frameborder="0" allowfullscreen=""></iframe>
+	<iframe onload="aipo.fileupload.onLoadYoutube(this)"#if(!$android) width="640" height="360"#end src="${scheme}://www.youtube.com/embed/$vid?wmode=transparent&amp;autoplay=1" frameborder="0" allowfullscreen=""></iframe>
 </div>
 <div class="auiPopupMeta clearfix">
 	<div class="auiPopupTitle">$title</div>
