@@ -70,5 +70,9 @@
 		//　削除　
 	DELETEBTN_STR:"  Delete  ",
 	//"一覧の総数が"+max+"件を超えています。\n日付の範囲を変更してください。"
-	EVENTLOG_STR:"The total number of the list is over ${max}. \nPlease chanege the range of years."
+	EVENTLOG_STR:"The total number of the list is over ${max}. \nPlease chanege the range of years.",
+	// 新しく入力する
+	NEW_INPUT_STR:"New entry",
+	// 一覧から選択する
+	SELECT_FROM_LIST_STR:"Select from the list."
 }

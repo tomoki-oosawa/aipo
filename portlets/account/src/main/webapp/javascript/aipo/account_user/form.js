@@ -41,11 +41,13 @@ aipo.account_user.onLoadUserDialog = function(portlet_id){
 }
 
 aipo.account_user.formSwitchPostInput = function(button) {
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+
     if(button.form.is_new_post.value == 'TRUE' || button.form.is_new_post.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = nlsStrings.NEW_INPUT_STR;
         aipo.account_user.formPostInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = nlsStrings.SELECT_FROM_LIST_STR;
         aipo.account_user.formPostInputOn(button.form);
     }
 }
@@ -66,11 +68,13 @@ aipo.account_user.formPostInputOff = function(form) {
 
 
 aipo.account_user.formSwitchPositionInput = function(button) {
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+
     if(button.form.is_new_position.value == 'TRUE' || button.form.is_new_position.value == 'true') {
-        button.value = '新しく入力する';
+        button.value = nlsStrings.NEW_INPUT_STR;
         aipo.account_user.formPositionInputOff(button.form);
     } else {
-        button.value = '一覧から選択する';
+        button.value = nlsStrings.SELECT_FROM_LIST_STR;
         aipo.account_user.formPositionInputOn(button.form);
     }
 }
