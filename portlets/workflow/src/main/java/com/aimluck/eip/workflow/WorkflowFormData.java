@@ -966,8 +966,9 @@ public class WorkflowFormData extends ALAbstractFormData {
             user = list.get(j);
             String userid = user.getUserId().toString();
             if (userid.equals(routeArray[i])) {
+              String rootNumber = String.valueOf(j + 1) + ". ";
               result.append(user.getName()).append(",").append(
-                user.getAliasName().toString()).append(",");
+                rootNumber + user.getAliasName().toString()).append(",");
             }
           }
         }
