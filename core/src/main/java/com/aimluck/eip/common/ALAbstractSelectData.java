@@ -41,6 +41,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 検索データを管理するための抽象クラスです。 <br />
@@ -448,6 +449,14 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
     return rows_num;
   }
 
+  public String getRowsNum2() {
+    return ALLocalizationUtils.getl10nFormat("WAR_BEFORE_NUMBER", rows_num);
+  }
+
+  public String getRowsNum3() {
+    return ALLocalizationUtils.getl10nFormat("WAR_NEXT_NUMBER", rows_num);
+  }
+
   /**
    * 総件数を取得します。
    * 
@@ -455,6 +464,28 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
    */
   public int getCount() {
     return count;
+  }
+
+  public String getCount2() {
+    return ALLocalizationUtils.getl10nFormat(
+      "WAR_ISSUE_NUMBER",
+      (getCurrentPage() - 1) * getRowsNum() + 1);
+  }
+
+  public String getCount3() {
+    return ALLocalizationUtils.getl10nFormat("WAR_ALL_NUMBER", count);
+  }
+
+  public String getCount4() {
+    if (getCurrentPage() * getRowsNum() < getCount()) {
+      return ALLocalizationUtils.getl10nFormat(
+        "WAR_ISSUE_NUMBER_EXPRESSION",
+        getCount());
+    } else {
+      return ALLocalizationUtils.getl10nFormat(
+        "WAR_ISSUE_NUMBER_EXPRESSION",
+        getCurrentPage() * getRowsNum());
+    }
   }
 
   /**
