@@ -29,26 +29,25 @@
                 <table class="roundBlockWrapperTop">
                   <tbody>
                     <tr>
-                      <td class="roundBlockTitle wide">データベースエラー</td>
-                      <td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div></td>
+                      <td class="roundBlockTitle wide">$l10n.WAR_DATABASE_ERROR</td>
+                      <td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.WEBMAIL_CLOSE1" width="19" height="20" border="0" align="top" title="$l10n.WEBMAIL_CLOSE1"/></div></td>
                     </tr>
                   </tbody>
                 </table>
                 <div class="roundBlockWrapperBottom clearfix">
                   <div class="roundBlockContent">
 <div style="padding:5px;" >
-ご迷惑をお掛けいたしまして誠に申し訳ございません。<br />
-お探しのページが見つかりません。以下の原因が考えられます。<br />
+$l10n.WAR_NOT_FOUND_PAGE_AND_REASON
 <div style="padding:5px;">
 <ul>
-<li>データが削除されている</li>
-<li>URLの指定が間違えている</li>
-<li>データベースが停止している</li>
+<li>$l10n.WAR_DELETE_DATA</li>
+<li>$l10n.ERROR_WRONG_URL</li>
+<li>$l10n.WAR_STOP_DATABACE</li>
 </ul>
 </div>
 </div>
 #if($config.getString("support.mail"))
-恐れ入りますが、URLの指定に誤りがございません際には、システム管理者様までお問い合わせください。
+$l10n.WAR_INQUILY
 <br />
 [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
 #end

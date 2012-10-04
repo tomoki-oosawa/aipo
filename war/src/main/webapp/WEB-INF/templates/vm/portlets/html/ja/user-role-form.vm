@@ -41,7 +41,7 @@ limitations under the License.
 *#
 
 <h3>${l10n.USER_ROLE_FORM_ROLES_FOR_VM}$user.LastName $user.FirstName<h3>
-#set ( $headings = ["ロール名", "割り当て"] )
+#set ( $headings = ["$l10n.ACCESSCTL_ROLE_NAME", "$l10n.WAR_RATION"] )
 
 <form method="post" action="$jslink.getPaneByName("UserBrowser").addPathInfo($jslink.ActionKey,"portlets.security.UserRoleUpdateAction")">
 
@@ -70,7 +70,7 @@ limitations under the License.
        <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_ROLE_FORM_UPDATE_VM}"/>
     <td>
       <td>
-         $!msg         
+         $!msg
       </td>
   </tr>
 </table>

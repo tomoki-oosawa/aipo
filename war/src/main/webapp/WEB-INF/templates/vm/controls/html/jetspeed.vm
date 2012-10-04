@@ -128,11 +128,11 @@ function appsNaviSwitch() {
 <div id="appsNavigation"><div id="anInner">
         <div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="auiMbIcon auiMbIconList"></i></a></div>
         <div class="anUser">
-                <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="顔写真" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="顔写真" width="20" height="20"/>#end </div>
+                <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="$l10n.USERLIST_PHOTO" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="$l10n.USERLIST_PHOTO" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
         </div>
         <div class="anApps">
-                <h2>アプリ</h2>
+                <h2>$l10n.GADGETS_APP</h2>
                 <ul>
 #ALtabElementMaximize("Timeline" "auiMbIconTimeline")
 #ALtabElementMaximize("Schedule" "auiMbIconSchedule")
@@ -152,11 +152,11 @@ function appsNaviSwitch() {
                 </ul>
         </div>
         <div class="anSetting">
-                <h2>設定</h2>
+                <h2>$l10n.WAR_SET_UP</h2>
                 <ul>
                         <!--<li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_setting.png" /></span>個人設定</a></li>
                         <li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_pc.png" /></span>PC版表示へ変更</a></li>-->
-                        <li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><img src="themes/default/images/mobile/an_logout.png" /></span>ログアウト</a></li>
+                        <li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><img src="themes/default/images/mobile/an_logout.png" /></span>$l10n.TOP_LOGOUT</a></li>
                 </ul>
         </div>
         <div class="anFooter">
@@ -192,7 +192,7 @@ function appsNaviSwitch() {
 	#end
 		#if ($data.User.getUserName()!="admin")
 			<li class="addTab">
-				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="メニュータブを追加"><span>+</span></a>
+				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="$l10n.WAR_ADD_MENU_TUB"><span>+</span></a>
 			</li>
 		#end
 	</ul>
@@ -268,10 +268,10 @@ $portlet.getContent($data)
 			    <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
 					<ul>
 					#foreach ( $action in $actions)
-						<li><a href="$!utils.escapeXML(${action.Link})">設定</a></li>
+						<li><a href="$!utils.escapeXML(${action.Link})">$l10n.WAR_SET_UP</a></li>
 					#end
 					#if($accessControl == "true")
-						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">削除</a></li>
+						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">$l10n.CUSTOMIZER_DELETE</a></li>
 					#end
 					</ul>
 			    </div>

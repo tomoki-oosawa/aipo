@@ -18,19 +18,19 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($tabs = [["アプリ追加", "",""]])
+#set ($tabs = [["$l10n.WAR_ADD_APP", "",""]])
 ## ---------------------------------------------------------------------------
 ##ALtabheader($tabs "")
 #ALspacebothheader()
 <form name="add_portlet" action="${jslink.Template}/${jslink.ActionKey}/${action}" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 <input type="hidden" name="secid" value="$secid" />
-<div class="message">追加するアプリを選択してください。</div>
+<div class="message">$l10n.WAR_SELECT_ADD_APPLICATION</div>
 #ALtableheaderWide()
 <tr>
-#ALtdheadThin("追加")
-#ALtdheadThin("選択数")
-#ALtdheadW25("タイトル")
-#ALtdheadW50("説明")
+#ALtdheadThin("$l10n.CUSTOMIZER_ADD")
+#ALtdheadThin("$l10n.WAR_SELECT_NUMBER")
+#ALtdheadW25("$l10n.CUSTOMIZER_TITLE")
+#ALtdheadW50("$l10n.REGISTRY_EDITOR_PORTLET_DESCRIPTION")
 </tr>
 #foreach ($portlet in $browser)
 #set ($portletCount=0)
@@ -65,7 +65,7 @@
 #ALtablefooter()
 <input type="hidden" name="size" value="30"/>
 #ALbuttonheader()
-#ALbutton('eventSubmit_doAdd' '追加する' 'aimluck.io.checkboxActionSubmit(this)')#ALsubmit('eventSubmit_doCancel' 'キャンセルする')
+#ALbutton('eventSubmit_doAdd' $l10n.TODO_ADD 'aimluck.io.checkboxActionSubmit(this)')#ALsubmit('eventSubmit_doCancel' $l10n.ACCOUNT_CANCEL)
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()

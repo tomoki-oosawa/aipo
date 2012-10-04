@@ -25,7 +25,7 @@
 <meta http-equiv="Content-Language" content="ja" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 #if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
-<title>添付ファイルの選択</title>
+<title>$l10n.WAR_SELECT_FILE</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
 <meta http-equiv="Content-Style-Type" content="text/css" />

@@ -65,14 +65,14 @@ Display the details of a group.
         #else
           #set ($gname = $group.Name)
         #end
-        #formCell ("グループ名" "name" $gname)
+        #formCell ("$l10n.ADDRESSBOOK_GROUP_NAME" "name" $gname)
       </tr>
       <tr>
         <td align="$ui.buttonAlignment" bgcolor="$!{skin.TitleBackgroundColor}">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
-          *#            
+          *#
 
           #if ($mode == "update")
             <input type="submit" name="eventSubmit_doUpdate" value="${l10n.GROUP_FORM_UPDATE_GROUP_VM}"/>
@@ -83,11 +83,11 @@ Display the details of a group.
           #end
       </td>
       <td>
-         $!msg         
+         $!msg
       </td>
     </tr>
   </table>
-    
+
   <input type="hidden" name="entityid" value="$!group.Name"/>
 </div>
 </form>

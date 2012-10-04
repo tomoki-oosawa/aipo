@@ -40,7 +40,7 @@ limitations under the License.
 *#
 
 <h3>${l10n.USER_GROUP_FORM_GROUPS_FOR_VM}$user.FirstName $user.LastName<h3>
-#set ( $headings = ["グループ名", "割り当て"] )
+#set ( $headings = ["$l10n.ADDRESSBOOK_GROUP_NAME", "$l10n.WAR_RATION"] )
 
 <form method="post" action="$jslink.getPaneByName("UserBrowser").addPathInfo($jslink.ActionKey,"portlets.security.UserGroupUpdateAction")">
 
@@ -58,7 +58,7 @@ limitations under the License.
         <tr>
           #entryCell ($group.Name)
           #formCheckBox ($group.Name $selected.get($velocityCount).booleanValue())
-		  
+
         </tr>
         #end
       </table>
@@ -66,11 +66,11 @@ limitations under the License.
   </tr>
   <tr>
     <td>
-       <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_GROUP_FORM_UPDATE_VM}"/> 
+       <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_GROUP_FORM_UPDATE_VM}"/>
 	   <input type="button" name="Done" Value="Done" onClick="location.href='$jslink.getPaneByName("UserBrowser")'">
     <td>
       <td>
-         $!msg         
+         $!msg
       </td>
   </tr>
 </table>

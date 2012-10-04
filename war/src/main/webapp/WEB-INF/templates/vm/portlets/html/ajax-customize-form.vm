@@ -18,10 +18,10 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($indicator_str = "データを送信")
-#set ($action_str = "更新する")
+#set ($indicator_str = "$l10n.TODO_SEND_DATA")
+#set ($action_str = "$l10n.EXTTIMECARD_UPDATE")
 #set ($event_submit = "eventSubmit_doTodo_insert")
-#set ($subtitle = '追加アプリの設定')
+#set ($subtitle = "$l10n.WAR_SET_UP_APPLICATION")
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
@@ -48,31 +48,31 @@ $!pageTitle
 #end
 </p>
 
-<h3>配置の選択</h3>
+<h3>$l10n.WAR_SELECT_POSITION</h3>
 <input type="hidden" name="controller" value="$!controller" />
 <table class="tableWrapper controllerTable">
 <tbody>
 <tr>
-<td width="72" align="left" nowrap="nowrap" id="OneColumn" #if($!controller == 'OneColumn') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_100.gif" alt="レイアウト [ 100% ]" title="レイアウト [ 100% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="left" nowrap="nowrap" id="TwoColumns" #if($!controller == 'TwoColumns') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_50-50.gif" alt="レイアウト [ 50% | 50% ]" title="レイアウト [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap" id="TwoColumnsRight" #if($!controller == 'TwoColumnsRight') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_25-75.gif" alt="レイアウト [ 25% | 75% ]" title="レイアウト [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap" id="TwoColumnsLeft" #if($!controller == 'TwoColumnsLeft') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_75-25.gif" alt="レイアウト [ 75% | 25% ]" title="レイアウト [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="left" nowrap="nowrap" id="ThreeColumnsSymetric" #if($!controller == 'ThreeColumnsSymetric') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_33-33-33.gif" alt="レイアウト [ 33% | 33% | 33% ]" title="レイアウト [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap" id="ThreeColumns" #if($!controller == 'ThreeColumns') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_25-50-25.gif" alt="レイアウト [ 25% | 50% | 25% ]" title="レイアウト [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="OneColumn" #if($!controller == 'OneColumn') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_100.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="TwoColumns" #if($!controller == 'TwoColumns') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_50-50.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="TwoColumnsRight" #if($!controller == 'TwoColumnsRight') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_25-75.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="TwoColumnsLeft" #if($!controller == 'TwoColumnsLeft') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_75-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="ThreeColumnsSymetric" #if($!controller == 'ThreeColumnsSymetric') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_33-33-33.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap" id="ThreeColumns" #if($!controller == 'ThreeColumns') class="selected" #end><a href="javascript:void(0);" onclick="aipo.customize.setController('$!js_peid', this)"><img src="images/layout/layout_25-50-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
 <td width="99%"></td>
 </tr>
 </tbody>
 </table>
 <br/>
 
-<h3>追加アプリの選択</h3>
+<h3>$l10n.WAR_SELECT_APPLICATION</h3>
 <div style="height:300px;overflow:scroll;overflow-x:hidden;">
 <table class="listTable" style="margin-top:0">
 <tr>
-#ALtdheadThin("追加")
-#ALtdheadThin("現在数")
-#ALtdheadW25("タイトル")
-#ALtdheadW50("説明")
+#ALtdheadThin("$l10n.CUSTOMIZER_ADD")
+#ALtdheadThin("$l10n.WAR_NUMBER")
+#ALtdheadW25("$l10n.CUSTOMIZER_TITLE")
+#ALtdheadW50("$l10n.REGISTRY_EDITOR_PORTLET_DESCRIPTION")
 </tr>
 ###foreach ($portlet in $browser)
 #foreach ($portlet in $portlets)

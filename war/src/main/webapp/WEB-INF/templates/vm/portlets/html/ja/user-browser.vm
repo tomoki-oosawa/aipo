@@ -41,7 +41,7 @@ limitations under the License.
 
 *#
 
-#set ( $headings = ["ユーザー名","姓", "名", "電子メール", "アクション"] )
+#set ( $headings = ["$l10n.USER_BROWSER_USER_NAME_VM","$l10n.WAR_LASTNAME", "$l10n.WAR_FIRSTNAME", "$l10n.WAR_EMAIL", "$l10n.CUSTOMIZER_ACTION"] )
 #set ( $filter = $data.getRequest().getParameter("filter_value") )
 #set ( $filter_type = $data.getRequest().getParameter("filter_type") )
 #set ( $regexp = $data.getRequest().getParameter("filter_regexp") )
@@ -52,7 +52,7 @@ limitations under the License.
 <b>${l10n.USER_BROWSER_FILTER_STRING_CASE_VM}</b> <input type="Text" name="filter_value" value="$!filter"/>
 <select name="filter_type">
   <option value="filter_type_username" #if ($filter_type == "filter_type_username") selected #end>${l10n.USER_BROWSER_USER_NAME_VM}</option>
-  <option value="filter_type_lastname" #if ($filter_type == "filter_type_lastname") selected #end>${l10n.USER_BROWSER_LAST_NAME_VM}</option>  
+  <option value="filter_type_lastname" #if ($filter_type == "filter_type_lastname") selected #end>${l10n.USER_BROWSER_LAST_NAME_VM}</option>
 </select>
 <input type="submit" value="${l10n.USER_BROWSER_FILTER_VM}"/>
 <INPUT TYPE="CHECKBOX" NAME="filter_regexp" #if($!regexp) checked #end/>${l10n.USER_BROWSER_USE_REGULAR_EXPRESS_VM}<table>

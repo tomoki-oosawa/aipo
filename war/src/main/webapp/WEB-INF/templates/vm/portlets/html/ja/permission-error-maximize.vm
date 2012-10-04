@@ -19,8 +19,8 @@
 
 
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-アクセス権限がありません。システム管理者にお問い合わせください。<br />
+$l10n.WAR_NO_ACCESSCL<br />
 <br />
-<a href="javascript:history.back()">戻る</a>
+<a href="javascript:history.back()">$l10n.WORKFLOW_BACK</a>
 #ALcontentfooter()
 

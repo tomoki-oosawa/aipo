@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 <div id="footer">
 ${copyright_short} #if ($data.User.hasLoggedIn())
-&nbsp;<a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">ホーム</a>&nbsp;<a href="$!jslink.setAction($config.getString('action.logout'))" class="btn">ログアウト</a>
+&nbsp;<a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">$l10n.HOME</a>&nbsp;<a href="$!jslink.setAction($config.getString('action.logout'))" class="btn">$l10n.TOP_LOGOUT</a>
 #end
 </div>
 </div>

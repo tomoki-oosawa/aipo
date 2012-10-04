@@ -55,17 +55,17 @@
 #end$theLink#end
 
 #macro(ALajaxIndicator $indicator_id $portlet_id $msg)
-#if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
+#if($msg == '') #set ($tmpmsg = "$l10n.EXTTIMECARD_SEND_DATA") #else #set ($tmpmsg = $msg) #end
 <div class="indicator" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</div>
 #end
 
 #macro(ALajaxIndicatorglay $indicator_id $portlet_id $msg)
-#if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
+#if($msg == '') #set ($tmpmsg = "$l10n.EXTTIMECARD_SEND_DATA") #else #set ($tmpmsg = $msg) #end
 <div class="indicatorglay" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</div>
 #end
 
 #macro(ALajaxIndicatorSpan $indicator_id $portlet_id $msg)
-#if($msg == '') #set ($tmpmsg = "データを送信しています...") #else #set ($tmpmsg = $msg) #end
+#if($msg == '') #set ($tmpmsg = "$l10n.EXTTIMECARD_SEND_DATA") #else #set ($tmpmsg = $msg) #end
 <span class="indicator" id="${indicator_id}${portlet_id}" style="display:none;">$tmpmsg</span>
 #end
 
@@ -474,6 +474,9 @@
 #set($to = $result.Count )
 #else
 #set($to = $currentPage * $rowsNum )
+#set($from2 = $result.Count2)
+#set($count3 = $result.Count3)
+#set($to2 = $result.Count4)
 #end
 <div class="clearfix">
   <div class="alignleft small">
@@ -481,14 +484,14 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">前へ</a></li>
+	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">$l10n.TIMELINE_PREV</a></li>
 #else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">次へ</a></li>
+        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">$l10n.TIMELINE_NEXT</a></li>
 #else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
 #end
 #foreach($page in [1..$pages])
         <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
@@ -497,7 +500,7 @@
     </div>
 #end
   </div>
-  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+  <div class="alignright small" style="margin-top:5px;">$from2 ～ $to2 $count3</div>
 </div>
 #end
 
@@ -512,14 +515,14 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">前へ</a></li>
+	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">$l10n.TIMELINE_PREV</a></li>
 #else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">次へ</a></li>
+        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">$l10n.TIMELINE_NEXT</a></li>
 #else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
 #end
 #foreach($page in [1..$pages])
         <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
@@ -543,6 +546,9 @@
 #set($to = $result.Count )
 #else
 #set($to = $currentPage * $rowsNum )
+#set($from2 = $result.Count2)
+#set($count3 = $result.Count3)
+#set($to2 = $result.Count4)
 #end
 
 #set($nextLeftPage = 1 )
@@ -576,14 +582,14 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">前へ</a></li>
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">$l10n.TIMELINE_PREV</a></li>
 #else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">次へ</a></li>
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">$l10n.TIMELINE_NEXT</a></li>
 #else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
 #end
 #if($showLeftRest && $currentPage > ${pageRange})
 #foreach($page in [1..${pageTrimRange}])
@@ -605,7 +611,7 @@
     </div>
 #end
   </div>
-  <div class="alignright small" style="margin-top:5px;">$from 件 ～ $to 件表示 [ 計 $count 件 ]</div>
+  <div class="alignright small" style="margin-top:5px;">$from2 ～ $to2 $count3</div>
 </div>
 #end
 
@@ -655,14 +661,14 @@
     <div class="pagination">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">前へ</a></li>
+	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">$l10n.TIMELINE_PREV</a></li>
 #else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">前へ</a></li>
+	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">次へ</a></li>
+        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">$l10n.TIMELINE_NEXT</a></li>
 #else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">次へ</a></li>
+        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
 #end
 #if($showLeftRest && $currentPage > ${pageRange})
 #foreach($page in [1..${pageTrimRange}])
@@ -868,12 +874,12 @@ $item.get(0)
 				<tr>
 #if($portlet_id!="")
 	<td class="roundBlockTitle" style="width:89%">$title</td>
-	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="印刷画面を開く" title="印刷画面を開く" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/>
+	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
 	</td>
 #else
 	<td class="roundBlockTitle wide">$title</td>
 	<td class="roundBlockIcon last">
-		<div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+		<div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
 	</td>
 #end
 				</tr>
@@ -888,7 +894,7 @@ $item.get(0)
 			<tbody>
 				<tr>
 					<td class="roundBlockTitle wide">$title</td>
-					<td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="$js" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div></td>
+					<td class="roundBlockIcon last"><div style="float:right"><img style="cursor:pointer" onclick="$js" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div></td>
 				</tr>
 			</tbody>
 		</table>
@@ -909,7 +915,7 @@ $item.get(0)
         <div class="menuIcon"></div>
       </li>
     </ul>
-    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('fileuploadDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('fileuploadDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
   </div>
   <div class="clearfix">
     ##<div class="roundTopMain">
@@ -950,7 +956,7 @@ $item.get(0)
         <div class="menuIcon"></div>
       </li>
     </ul>
-    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('addressbookDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="top" title="閉じる"/></div>
+    <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('addressbookDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
   </div>
   <div class="clearfix">
     ##<div class="roundTopMain">
@@ -1194,7 +1200,7 @@ $item.get(0)
 #end
 
 #macro(ALcell_mustmessage)
-（※）印は必須項目です
+$l10n.WAR_GRABALMACRO_REQUIRED_ITEM
 #end
 
 #macro(ALcell_must)
@@ -1207,9 +1213,9 @@ $item.get(0)
 #set($rowsNum = $result.RowsNum)
 #if ($pages > 1)
 #ALcell_center_header($career)
-#if($currentPage > 1) #set($pre = $currentPage - 1) <a href="$!{link}&start=$pre" class="btn_left"> &lt;前 </a> #end
+#if($currentPage > 1) #set($pre = $currentPage - 1) <a href="$!{link}&start=$pre" class="btn_left"> &lt;$l10n.WAR_BEFORE </a> #end
 $currentPage/$pages
-#if($pages > $currentPage) #set($next = $currentPage + 1) <a class="btn_right" href="$!{link}&start=$next"> 次&gt; </a> #end
+#if($pages > $currentPage) #set($next = $currentPage + 1) <a class="btn_right" href="$!{link}&start=$next"> $l10n.WAR_NEXT&gt; </a> #end
 #ALcell_center_footer($career)
 #end
 #end
@@ -1464,7 +1470,7 @@ $link.get(0)
 #macro(ALtdcellFooterLink $career)
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 <div style="background:#005699;"><img src="themes/$!result.Theme/images/common/dot.gif" width="1" height="1" /></div>
-<div style="background:$config.getString("aipo.color.cell.vm.menu.bottom"); text-align:center;"><a href="$!jslink.getAction('controls.Restore',$!portlet.ID)" accesskey="0">[0] TOPへ</a> | <a href="$jslink.setAction($config.getString('action.logout'))">ﾛｸﾞｱｳﾄ</a></div>
+<div style="background:$config.getString("aipo.color.cell.vm.menu.bottom"); text-align:center;"><a href="$!jslink.getAction('controls.Restore',$!portlet.ID)" accesskey="0">[0] $l10n.WAR_GROBALMACRO_TOP</a> | <a href="$jslink.setAction($config.getString('action.logout'))">$l10n.CELL_LOGOUT</a></div>
 #end
 
 
@@ -1512,26 +1518,26 @@ $link.get(0)
 
 #macro(ALcell_msgboard_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.TopicName}</h3>
-<p class="mt0 fssmaller right">投稿日：$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
-投稿者：$!{detail.OwnerName}　カテゴリ：$!{detail.CategoryName}</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
+$l10n.BLOG_POSTING_NAME：$!{detail.OwnerName}　$l10n.WORKFLOW_CATEGORY：$!{detail.CategoryName}</p>
 $!{detail.Note}
 #end
 
 #macro(ALcell_blog_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.Title}</h3>
 ##$!{detail.CreateDate}
-<p class="mt0 fssmaller right">投稿日：$!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />投稿者：$!detail.OwnerName　ﾃｰﾏ：$!{detail.ThemaName}</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAME：$!detail.OwnerName　$l10n.BLOG_THEME_CELL：$!{detail.ThemaName}</p>
 $!{detail.Note}
 #end
 
 #macro(ALcell_msgboard_comment $career $comment )
-<p class="mt0 fssmaller right">投稿日：$!comment.UpdateDate<br />投稿者：$!comment.OwnerName　##ｶﾃｺﾞﾘ：$!{comment.ParentTopic.CategoryName}
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　##ｶﾃｺﾞﾘ：$!{comment.ParentTopic.CategoryName}
 </p>
 $!{comment.Note}
 #end
 
 #macro(ALcell_blog_comment $career $comment )
-<p class="mt0 fssmaller right">投稿日：$!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />投稿者：$!comment.OwnerName　</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　</p>
 $!{comment.Comment}
 #end
 
@@ -1628,18 +1634,20 @@ $item.get(0)
 #set($pages = $result.PagesNum)
 #set($currentPage = $result.CurrentPage)
 #set($rowsNum = $result.RowsNum)
+#set($rowsNum2 = $result.RowsNum2)
+#set($rowsNum3 = $result.RowsNum3)
 #set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ($currentPage * $rowsNum > $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum3 + 1)
+#if ($currentPage * $rowsNum3 > $result.Count)
 #set($to = $result.Count )
 #else
-#set($to = $currentPage * $rowsNum )
+#set($to = $currentPage * $rowsNum3 )
 #end
 
 #if(($currentPage + 1) == $pages)
 #set($nextCount = $count - $to)
 #else
-#set($nextCount = $rowsNum)
+#set($nextCount = $rowsNum3)
 #end
 <div class="floatRight">
   <div class="count">$from ～ $to / $count</div>
@@ -1647,14 +1655,14 @@ $item.get(0)
     <div class="auiSelectButton floatLeft">
       <ul class="floatLeft">
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="前へ"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="前の $rowsNum 件"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="$rowsNum2"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #else
-	    <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="次の $nextCount 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+        <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="$l10n.TIMELINE_NEXT"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #else
-	    <li title="次へ"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+	    <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #end
       </ul>
     </div>
@@ -1704,13 +1712,13 @@ $item.get(0)
 
 #macro(AUIsearchresult $keyword)
 #if($!keyword && $!keyword != "")
-<div class="floatLeft auiSearchResult">検索結果：$!keyword</div>
+<div class="floatLeft auiSearchResult">$l10n.CABINET_SEARCH_RESULT：$!keyword</div>
 #end
 #end
 
 #macro(AUInewsearchresult $keyword)
 #if($!keyword && $!keyword != "")
-<div class="auiSummaryMeta auiSearchResult">検索結果：$!keyword</div>
+<div class="auiSummaryMeta auiSearchResult">$l10n.CABINET_SEARCH_RESULT：$!keyword</div>
 #end
 #end
 
@@ -1759,7 +1767,7 @@ $item.get(0)
 
 #macro(AUIconfigheader $portlet_id $width)
 <div class="floatRight clearfix relative">
-<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting"></span> 設定</a></div>
+<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting"></span> $l10n.WAR_SET_UP</a></div>
 <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; display: none; ">
 <ul>
 #end

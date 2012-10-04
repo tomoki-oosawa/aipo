@@ -26,10 +26,10 @@
 #end
 #set ($psmlEntry = $jetspeed.EntryFromRequest)
 #set ($securitySource = $jetspeed.getSecuritySource($psmlEntry))
-#set ($navilist = [["トップ", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["表示カスタマイズ", ""]])
-#set ($tabs = [["表示カスタマイズ", "",""]])
+#set ($navilist = [["$l10n.TODO_TOP", "$!jslink.Template.addQueryData($jslink.ActionKey, $action).addQueryData('js_peid', $data.getJs_peid()).addQueryData('eventSubmit_doCancel', '1')"], ["$l10n.WAR_INDICATION_CUSTOMIZE", ""]])
+#set ($tabs = [["$l10n.WAR_INDICATION_CUSTOMIZE", "",""]])
 ## ---------------------------------------------------------------------------
-#set ($settingtitle = "$!{portlet.Title}設定")
+#set ($settingtitle = "$!{portlet.Title}$l10n.WAR_SET_UP")
 #ALcontentheader($!{settingtitle} $navilist)
 #ALspacebothheader()
 #if ($!mtype)
@@ -43,7 +43,7 @@
 <input name="js_peid" type="hidden" value="$data.getJs_peid()" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderWide()
-#ALtdcaption("アプリ名")
+#ALtdcaption("$l10n.GADGETS_APP_NAME")
 #ALtditem("#ALtextfield('current_title' $!current_title '75%' 50 'active')")
 #set ($counter=0)
 #foreach ( $param in $parameters )
@@ -76,7 +76,7 @@ $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit('eventSubmit_doUpdate' '更新する')#ALsubmitCancel('eventSubmit_doCancel' 'キャンセルする')
+#ALsubmit('eventSubmit_doUpdate' $l10n.TODO_UPDATE)#ALsubmitCancel('eventSubmit_doCancel' $l10n.ACCOUNT_CANCEL)
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()

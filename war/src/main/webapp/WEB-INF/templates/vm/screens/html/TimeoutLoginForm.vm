@@ -232,14 +232,14 @@ function change_group(form, value) {
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
 <div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
-<h3>セッションがタイムアウトしました。</h3>
+<h3>$l10n.WAR_SESSION_TIMEOUT</h3>
 <div class="loginAlert">
-ログインした状態で長時間操作をしなかったため、サーバとの接続が切断されました。
-下のログインフォームから再度ログインしてください。
+$l10n.WAR_NO_OPERATION_FOR_A_LONGTIME_AND_DISCONNECT_SURVER
+$l10n.WAR_AGAIN_FROM_UNDER_LOGIN_FORM
 #if(!$!data.getMessage().toString().startsWith("__errLicenseType:"))
 $!data.getMessage().toString()
 #else
-一般ユーザーではログインできません
+$l10n.WAR_CANNOT_LOGIN_COMMON_USER
 #end
 </div>
 <form name="frm" action="${context_path}/portal/?${jslink.ActionKey}=${config.getString("action.login")}" onsubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
@@ -276,7 +276,7 @@ $!data.getMessage().toString()
 <div class="clearfix">
 <div class="floatLeft">
 #if($enable_userlist)
-<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
+<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.WORKFLOW_SELECT_MEMBER_FROM_LIST</label></p>
 #end
 <p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
 </div>

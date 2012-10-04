@@ -26,7 +26,7 @@
   </div>
   <div class="hdNavi">
 #if ($data.User.getUserName()!="admin")
-    <div class="hdActivity" title="お知らせ"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">お知らせ</span></div></div>
+    <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div></div>
 #end
 		<!-- /hdActivity -->
 
@@ -34,9 +34,9 @@
 		<a href="javascript:void(0);" id="menubar_button_200" class="arrow_bottom" onclick="aipo.customize.showMenuButtonOnly('200');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ">
 		#if ($data.User.getUserName()!="admin")
 			#if ($data.User.hasPhoto())
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="顔写真" />
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />
 			#else
-				<img src="images/common/avatar_default3.png" class="avatar" alt="顔写真"/>
+				<img src="images/common/avatar_default3.png" class="avatar" alt="$l10n.USERLIST_PHOTO"/>
 			#end
 			#if($!data.User.CompanyId >= 1)
 				$!data.User.getCompanyName($!data.User.CompanyId)

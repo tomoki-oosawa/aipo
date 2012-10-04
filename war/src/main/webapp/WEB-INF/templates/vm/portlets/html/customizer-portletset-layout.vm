@@ -19,32 +19,32 @@
 
 ## ---------------------------------------------------------------------------
 #if($!set) #set($portletsum = $!set.size()) #else #set($portletsum = 0) #end
-#set($tabs = [["レイアウト設定", "",""]])
+#set($tabs = [["$l10n.WAR_SET_UP_LAYOUT", "",""]])
 ## ---------------------------------------------------------------------------
 ##ALtabheader($tabs "")
 #ALspacebothheader()
 #if($portletsum <= 0)
-<div class="message">「アプリ追加」ボタンでアプリを追加してください。</div>
+<div class="message">$l10n.WAR_ADD_APPLICATION_BUTTON</div>
 #else
-<h3>配置の選択</h3>
-<div class="message">以下のボタンでレイアウトを選んでください。</div>
+<h3>$l10n.WAR_SELECT_POSITION</h3>
+<div class="message">$l10n.WAR_SELECT_LAYOUT_BUTTON</div>
 <table class="tableWrapper">
 <tbody>
 <tr>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.gif" alt="レイアウト [ 100% ]" title="レイアウト [ 100% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.gif" alt="レイアウト [ 50% | 50% ]" title="レイアウト [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.gif" alt="レイアウト [ 25% | 75% ]" title="レイアウト [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.gif" alt="レイアウト [ 75% | 25% ]" title="レイアウト [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.gif" alt="レイアウト [ 33% | 33% | 33% ]" title="レイアウト [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.gif" alt="レイアウト [ 25% | 50% | 25% ]" title="レイアウト [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
+<td width="72" align="left" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
 <td width="99%"></td>
 </tr>
 </tbody>
 </table>
 <br />
-<h3>アプリの配置</h3>
-<div class="message">アプリの位置を <img src="images/up.gif" alt="上へ移動" />&nbsp;<img src="images/down.gif" alt="下へ移動" />&nbsp;<img src="images/left.gif" alt="左へ移動" />&nbsp;<img src="images/right.gif" alt="右へ移動" />&nbsp;ボタンで自由に変更できます。</div>
-<div class="message">また、不要なアプリを <img src="images/close.gif" alt="削除" /> ボタンで削除することができます。</div>
+<h3>$l10n.WAR_ARRANGE_APP</h3>
+$l10n.WAR_ARRANGE_APP_UP_DOWN
+$l10n.WAR_DELETE_APP
 <table class="tableWrapper">
 <tbody>
 $data.User.setTemp("customizer",$customizer)

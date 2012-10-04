@@ -20,15 +20,15 @@
 ## ---------------------------------------------------------------------------
 ##pagetitle
 #ALcell_hr($career '')#ALcell_center_header($career)
-${alias}からのお知らせ
+$l10n.WAR_ALIAS_INFO
 #ALcell_center_footer($career)#ALcell_hr($career '')
-グループウェア 『アイポ5』 の試用期間が完了しました。 #ALcell_br($career)
-ご利用いただき誠にありがとうございました。 #ALcell_br($career)
-引き続きご利用いただくためには「アイポ5 オレンジライセンス」のご購入が必要となります。
-「アイポ5 オレンジライセンス」のご購入は以下のサイトからお求めいただけます。#ALcell_br($career)
-納期は7営業日以内のお届けとなります。#ALcell_br($career)
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE_CELL1 #ALcell_br($career)
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE_CELL2 #ALcell_br($career)
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE_CELL3
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE_CELL4#ALcell_br($career)
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE_CELL5#ALcell_br($career)
 
-なお、試用期間中に入力したデータも引き続きご利用いただけますので、 ご安心ください。 #ALcell_br($career)
-ご不明な点などございましたら、以下のサイトからお問い合わせください。#ALcell_br($career)
+$l10n.WAR_USE_DATA_INQUILY_CELL1 #ALcell_br($career)
+$l10n.WAR_USE_DATA_INQUILY_CELL2#ALcell_br($career)
 <a href="http://aipostyle.com/inquiry/" target="_blank">http://aipostyle.com/inquiry/ </a>
 #ALcell_br($career)

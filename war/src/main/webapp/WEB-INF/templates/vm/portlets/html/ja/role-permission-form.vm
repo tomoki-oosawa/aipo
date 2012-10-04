@@ -42,7 +42,7 @@ limitations under the License.
 *#
 
 <h3>${l10n.ROLE_PERMISSION_FORM_PERMISSIONS_FOR_ROLE_VM}$role.Name<h3>
-#set ( $headings = ["パーミッション名", "割り当て"] )
+#set ( $headings = ["$l10n.WAR_PERMISSION_NAME", "$l10n.WAR_RATION"] )
 
 <form method="post" action="$jslink.getPaneByName("RoleBrowser").addPathInfo($jslink.ActionKey,"portlets.security.RolePermissionUpdateAction")">
 
@@ -71,7 +71,7 @@ limitations under the License.
        <input type="submit" name="eventSubmit_doUpdate" value="${l10n.ROLE_PERMISSION_FORM_UPDATE_VM}"/>
     <td>
       <td>
-         $!msg         
+         $!msg
       </td>
   </tr>
 </table>

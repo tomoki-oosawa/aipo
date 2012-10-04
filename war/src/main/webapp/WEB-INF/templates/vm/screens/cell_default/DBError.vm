@@ -21,15 +21,15 @@
 ##pagetitle
 #ALcell_hr($career '')#ALcell_center_header($career)
 ## ${alias}からのお知らせ
-データベースエラー
+$l10n.WAR_DATABASE_ERROR
 #ALcell_center_footer($career)#ALcell_hr($career '')
-データベース処理中にエラーが発生しました。以下の原因が考えられます。#ALcell_br($career)#ALcell_br($career)
+$l10n.WAR_DATABASE_ERROR_AND_REASON#ALcell_br($career)#ALcell_br($career)
 <ul>
-#ALcell_li_header($career)URLの指定が間違えている#ALcell_li_footer($career)
-#ALcell_li_header($career)データベースが停止している#ALcell_li_footer($career)
-#ALcell_li_header($career)${alias}のインストールに失敗している#ALcell_li_footer($career)
+#ALcell_li_header($career)$l10n.ERROR_WRONG_URL#ALcell_li_footer($career)
+#ALcell_li_header($career)$l10n.WAR_STOP_DATABACE#ALcell_li_footer($career)
+#ALcell_li_header($career)$l10n.WAR_ALIAS_FAILED_INSTALL#ALcell_li_footer($career)
 </ul>
 #ALcell_br($career)
-ログアウト後、再度処理を行ってください。#ALcell_br($career)
+$l10n.WAR_AGAIN#ALcell_br($career)
 #ALcell_hr($career '1')
-<a href="${context_path}/portal">戻る</a>
+<a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>

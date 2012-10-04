@@ -18,5 +18,5 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<ul>現在、このアプリを利用できません。</ul>
-<a href="${context_path}/portal">戻る</a>
+<ul>$l10n.WAR_CANNOT_USE_APP</ul>
+<a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>

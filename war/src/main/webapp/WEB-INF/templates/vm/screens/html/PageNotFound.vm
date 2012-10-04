@@ -23,7 +23,7 @@
 <td class="tl" width="18" height="40"><img src="images/common/dot.gif" width="18" height="40" alt="" /></td>
 <td  height="40" valign="middle" class="t"><table width="100%" height="38"  border="0" cellpadding="0" cellspacing="0"><tbody>
 <tr>
-<td width="100%" nowrap="nowrap">ページが見つかりません</td>
+<td width="100%" nowrap="nowrap">$l10n.ERROR_PAGE_NOT_FOUND1</td>
 </tr>
 </tbody></table></td>
 <td class="tr" width="18" height="40"><img src="images/common/dot.gif" width="18" height="40" alt="" /></td>
@@ -40,19 +40,18 @@
 <table  border="0" cellspacing="0" cellpadding="0"><tbody>
 <tr>
 <td nowrap="nowrap">
-指定されたページは現在、利用できません。以下の原因が考えられます。<br />
-・URLの指定が間違えている<br />
-・${alias}のインストールに失敗している<br /><br />
+$l10n.ERROR_CANNOT_USE_PAGE<br />
+$l10n.ERROR_WRONG_URL2<br />
+・$l10n.WAR_ALIAS_FAILED_INSTALL<br /><br />
 #if($config.getString("support.mail"))
  <br />
-恐れ入りますが、URLの指定に誤りがございません際には、弊社サポート
-までお問い合わせください。
+$l10n.WAR_NO_ERROR_URL_INQUILY
  <br />
 [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
  <br />
  <br />
 #end
-<a href="${context_path}/portal">戻る</a>
+<a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>
 </td>
 </tr>
 </tbody></table>

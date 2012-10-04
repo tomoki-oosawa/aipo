@@ -23,6 +23,6 @@
 <div id="header">
     <h1><a href="$!jslink.addQueryData('action','controls.Restore')"><img src="${context_path}/themes/wm/img/logo.gif" width="61" height="23" /></a></h1>
     #if ($data.User.hasLoggedIn())
-    <div class="menu"><a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">ホーム</a>&nbsp;<a href="$jslink.setAction($config.getString('action.logout'))" class="btn">ログアウト</a></div>
+    <div class="menu"><a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">$l10n.HOME</a>&nbsp;<a href="$jslink.setAction($config.getString('action.logout'))" class="btn">$l10n.TOP_LOGOUT</a></div>
     #end
 </div>

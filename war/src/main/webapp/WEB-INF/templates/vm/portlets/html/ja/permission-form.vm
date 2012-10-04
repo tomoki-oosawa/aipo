@@ -66,14 +66,14 @@ Display the details of a permission.
         #else
             #set ($pname = $permission.Name)
         #end
-        #formCell ("パーミッション名" "name" $pname)
+        #formCell ("$l10n.WAR_PERMISSION_NAME" "name" $pname)
       </tr>
       <tr>
         <td align="$ui.buttonAlignment" bgcolor="$!{skin.TitleBackgroundColor}">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
-          *#            
+          *#
 
           #if ($mode == "update")
             <input type="submit" name="eventSubmit_doUpdate" value="${l10n.PERMISSION_FORM_UPDATE_PERMISSION_VM}"/>
@@ -84,11 +84,11 @@ Display the details of a permission.
           #end
       </td>
       <td>
-         $!msg         
+         $!msg
       </td>
     </tr>
   </table>
-    
+
   <input type="hidden" name="entityid" value="$!permission.Name"/>
 </div>
 </form>

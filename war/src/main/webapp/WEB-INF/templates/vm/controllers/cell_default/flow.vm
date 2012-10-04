@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if($data.User.hasLoggedIn())
-#ALcell_pagetitle($career "TOPﾒﾆｭｰ")
+#ALcell_pagetitle($career "$l10n.CELL_TOP_MENU")
 
 #set($count=1)
 ##<ul>
@@ -31,7 +31,7 @@
 ## add Logout link
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
 <div style="background:#005699;"><img src="themes/default/images/common/dot.gif" width="1" height="1" /></div>
-<div style="background:#cccccc; text-align:center;"><a href="$jslink.setAction($config.getString('action.logout'))">ﾛｸﾞｱｳﾄ</a></div>
+<div style="background:#cccccc; text-align:center;"><a href="$jslink.setAction($config.getString('action.logout'))">$l10n.CELL_LOGOUT</a></div>
 #else
 
 

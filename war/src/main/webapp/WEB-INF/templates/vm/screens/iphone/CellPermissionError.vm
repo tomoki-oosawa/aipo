@@ -19,11 +19,11 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#ALcell_pagetitle_iphone($career "アクセス権限エラー")
+#ALcell_pagetitle_iphone($career "$l10n.WAR_ACCESSPM_ERROR")
 #ALcell_contents_header($career)
 
-アクセス権限がないため、このページを表示できません。<br />
+$l10n.WAR_NO_ACCESSPM_NO_PAGE<br />
 <br />
-<a class="btn" href="${context_path}/portal">戻る</a>
+<a class="btn" href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>
 
 #ALcell_contents_footer($career)

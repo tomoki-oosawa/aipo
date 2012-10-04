@@ -22,22 +22,17 @@
 <div align="center" style="width:500px;">
   <br/>
   <div style="text-align:left">
-  <h3>試用期間終了のお知らせ</h3>
+  <h3>$l10n.WAR_FINISH_TRIAL_PERIOD</h3>
   <br/>
-グループウェア 『アイポ5』 の試用期間が完了しました。 <br />
-ご利用いただき誠にありがとうございました。 <br />
-引き続きご利用いただくためには「アイポ5 オレンジライセンス」のご購入が必要となります。
-「アイポ5 オレンジライセンス」のご購入は以下のサイトからお求めいただけます。<br />
-納期は7営業日以内のお届けとなります。<br />
+$l10n.WAR_FINISH_TRIAL_PERIOD_AND_OREANGE_LICENCE
 <br />
-<h4>グループウェア 『アイポ5』  価格・購入</h4>
+<h4>$l10n.WAR_PURCHASE_PRICE_</h4>
 <a href="http://aipostyle.com/price/" target="_blank">http://aipostyle.com/price/ </a><br />
 <br />
 <br />
-なお、試用期間中に入力したデータも引き続きご利用いただけますので、 ご安心ください。 <br />
-ご不明な点などございましたら、以下のサイトからお問い合わせください。<br />
+$l10n.WAR_USE_DATA_INQUILY
 <br />
-<h4>グループウェア 『アイポ5』 のお問い合わせ先 </h4>
+<h4>$l10n.WAR_AIPO5_INQUILY </h4>
 <a href="http://aipostyle.com/inquiry/" target="_blank">http://aipostyle.com/inquiry/ </a><br/>
   </div>
   <br/>

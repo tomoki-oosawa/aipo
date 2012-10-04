@@ -75,27 +75,27 @@ Display the details of a user.
           #set ($lname = $user.LastName)
           #set ($email = $user.Email)
           #set ($disabled = $user.Disabled)
-        #end 
+        #end
         #if (($mode == "delete") || ($mode=="update"))
-          #formReadOnlyCell ("ユーザー名" "username" $name)
+          #formReadOnlyCell ("$l10n.USER_BROWSER_USER_NAME_VM" "username" $name)
         #else
-          #formCell ("ユーザー名" "username" $name)
+          #formCell ("$l10n.USER_BROWSER_USER_NAME_VM" "username" $name)
         #end
       </tr>
-      <tr>        
-        #formPasswordCell ("パスワード" "password" $pw)
+      <tr>
+        #formPasswordCell ("$l10n.WEBMAIL_PASSWORD" "password" $pw)
       </tr>
       <tr>
-        #formCell ("名前(姓)" "lastname" $lname)
+        #formCell ("$l10n.USER_BROWSER_LAST_NAME_VM" "lastname" $lname)
       </tr>
       <tr>
-        #formCell ("名前(名)" "firstname" $fname)
+        #formCell ("$l10n.ADDRESSBOOK_SETFIELDNAME_FIRSTNAME" "firstname" $fname)
       </tr>
       <tr>
-        #formCell ("電子メール" "email" $email)
+        #formCell ("$l10n.WAR_EMAIL" "email" $email)
       </tr>
       <tr>
-        #formCheckBox2 ("無効" "disabled" $disabled)
+        #formCheckBox2 ("$l10n.ACTIVITY_INVALID" "disabled" $disabled)
       </tr>
 #if ($user.Confirmed != "PENDING")
       <tr>
@@ -109,10 +109,10 @@ Display the details of a user.
 #end
 #if (($mode == "delete") || ($mode=="update"))
       <tr>
-        <td><b>${l10n.USER_FORM_PASSWORD_LAST_CHANGE_VM}</b></td>      
+        <td><b>${l10n.USER_FORM_PASSWORD_LAST_CHANGE_VM}</b></td>
         <td>$!user.PasswordChanged</td>
       </tr>
-#end      
+#end
   </table>
 
  #if ( $config.getBoolean("newuser.approval.enable") == true )
@@ -145,7 +145,7 @@ Display the details of a user.
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
-          *#            
+          *#
 
           #if ($mode == "update")
             <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_FORM_UPDATE_USER_VM}"/>
@@ -156,11 +156,11 @@ Display the details of a user.
           #end
       </td>
       <td>
-         $!msg         
+         $!msg
       </td>
     </tr>
   </table>
-    
+
   <input type="hidden" name="entityid" value="$!user.UserName"/>
 </div>
 </form>

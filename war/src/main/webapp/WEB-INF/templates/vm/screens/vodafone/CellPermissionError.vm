@@ -18,5 +18,5 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<ul>#ALcell_li_header($career)アクセス権限がありません。システム管理者にお問い合わせください。</ul>
-<a href="${context_path}/portal">戻る</a>
+<ul>#ALcell_li_header($career)$l10n.WAR_NO_ACCESSCL</ul>
+<a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>

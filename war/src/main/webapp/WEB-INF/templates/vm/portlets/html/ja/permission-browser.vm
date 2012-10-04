@@ -41,7 +41,7 @@ limitations under the License.
 
 *#
 
-#set ( $headings = ["パーミッション名", "アクション"] )
+#set ( $headings = ["$l10n.WAR_PERMISSION_NAME", "$l10n.CUSTOMIZER_ACTION"] )
 
 <table>
 
@@ -58,7 +58,7 @@ limitations under the License.
         <tr>
           #entryCell ($permission.Name)
           <td>
-            #if ($config.getVector("services.JetspeedSecurity.system.permissions").contains($permission.Name) == false)              
+            #if ($config.getVector("services.JetspeedSecurity.system.permissions").contains($permission.Name) == false)
             <a href="$jslink.getPaneByName("PermissionForm").addPathInfo("entityid",$permission.Name).addQueryData("mode","delete")">${l10n.PERMISSION_BROWSER_REMOVE_VM}</a>
             #else
             &nbsp;

@@ -20,17 +20,17 @@
 ## ---------------------------------------------------------------------------
 ##pagetitle
 #ALcell_hr($career '')#ALcell_center_header($career)
-${alias}からのお知らせ
+$l10n.WAR_ALIAS_INFO
 #ALcell_center_footer($career)#ALcell_hr($career '')
-ｻｰﾊﾞとの接続が切断されました。以下の原因が考えられます。#ALcell_br($career)#ALcell_br($career)
+$l10n.WAR_SURVER_DISCONNECTION_AND_REASON#ALcell_br($career)#ALcell_br($career)
 <ul>
-#ALcell_li_header($career)ﾛｸﾞｲﾝした状態で長時間操作をしなかった#ALcell_li_footer($career)
+#ALcell_li_header($career)$l10n.WAR_NO_OPERATION_FOR_A_LONGTIME#ALcell_li_footer($career)
 </ul>
 #ALcell_br($career)
-再度ﾛｸﾞｲﾝしてください。#ALcell_br($career)
+$l10n.WAR_AGAIN3#ALcell_br($career)
 #ALcell_hr($career '1')
 #if($!data.getUser().getTemp("company_id"))
-<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}">$l10n.WAR_CELL_LOGIN</a>
 #else
-<a href="${context_path}/">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${context_path}/">$l10n.WAR_CELL_LOGIN</a>
 #end

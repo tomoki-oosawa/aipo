@@ -31,7 +31,7 @@
 								#if($data.User.isAdmin() && $data.User.UserName != "admin")
                             	<!-- START GUIDE -->
                             	<div id="startGuide" #if (${start_guide_popup}) style="display:block;" #else  style="display:none;"  #end>
-                            		<div class="close"><a href="javascript:void(0);" onclick="$!{onclickClose}"><img src="images/close.gif" alt="閉じる" width="19" height="20" border="0" align="absmiddle" title="閉じる" /></a></div>
+                            		<div class="close"><a href="javascript:void(0);" onclick="$!{onclickClose}"><img src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="absmiddle" title="$l10n.COMMON_CLOSE" /></a></div>
                             		<div class="clearfix">
                             			<div class="guideContents">
                             				<p>新しいアプリを使ってみましょう</p>
@@ -48,8 +48,8 @@
 							<div id="footText">
                             	<div class="copyright">$!{alias_copyright} $!{version} $!{copyright}</div>
 								#if($data.User.isAdmin() && $data.User.UserName != "admin")
-                            		<div id="guide_on" #if (${start_guide_popup}) style="display:none;" #else  style="display:inline;"  #end><a href="javascript:void(0);" onclick="$!{onclickOpen}">スタートガイド</a></div>
-									<div id="guide_off" #if (${start_guide_popup}) style="display:inline;" #else  style="display:none;"  #end><a href="javascript:void(0);" onclick="$!{onclickClose}">スタートガイド</a></div>
+                            		<div id="guide_on" #if (${start_guide_popup}) style="display:none;" #else  style="display:inline;"  #end><a href="javascript:void(0);" onclick="$!{onclickOpen}">$l10n.WAR_START_GUIDE</a></div>
+									<div id="guide_off" #if (${start_guide_popup}) style="display:inline;" #else  style="display:none;"  #end><a href="javascript:void(0);" onclick="$!{onclickClose}">$l10n.WAR_START_GUIDE</a></div>
 								#end
 
                            </div>

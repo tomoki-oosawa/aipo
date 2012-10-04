@@ -20,9 +20,9 @@
 ## ---------------------------------------------------------------------------
 #set ($customize-mode = $!data.PageSessionState.getAttribute("customize-mode"))
 #if  ($customize-mode == "layout")
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["レイアウト設定", ""]])
+#set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["$l10n.WAR_SET_UP_LAYOUT", ""]])
 #elseif($customize-mode == "add")
-#set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["レイアウト設定", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["アプリ追加", ""]])
+#set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["$l10n.WAR_SET_UP_LAYOUT", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["$l10n.WAR_ADD_APP", ""]])
 #end
 ## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/javascript">

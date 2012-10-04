@@ -65,14 +65,14 @@ Display the details of a role.
         #else
             #set ($rname = $role.Name)
         #end
-        #formCell ("ロール名" "name" $rname)
+        #formCell ("$l10n.ACCESSCTL_ROLE_NAME" "name" $rname)
       </tr>
       <tr>
         <td align="$ui.buttonAlignment" bgcolor="$!{skin.TitleBackgroundColor}">
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
-          *#            
+          *#
 
           #if ($mode == "update")
             <input type="submit" name="eventSubmit_doUpdate" value="${l10n.ROLE_FORM_UPDATE_ROLE_VM}"/>
@@ -83,11 +83,11 @@ Display the details of a role.
           #end
       </td>
       <td>
-         $!msg         
+         $!msg
       </td>
     </tr>
   </table>
-    
+
   <input type="hidden" name="entityid" value="$!role.Name"/>
 </div>
 </form>

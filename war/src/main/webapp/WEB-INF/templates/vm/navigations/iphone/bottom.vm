@@ -22,8 +22,8 @@
 <p id="copy">${copyright_short}</p>
 #if ($data.User.hasLoggedIn())
 <ul>
-<li><a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">ホーム</a></li>
-<li><a href="$!jslink.setAction($config.getString('action.logout'))" class="btn">ログアウト</a></li>
+<li><a href="$!jslink.addQueryData('action','controls.Restore')" class="btn">$l10n.HOME</a></li>
+<li><a href="$!jslink.setAction($config.getString('action.logout'))" class="btn">$l10n.TOP_LOGOUT</a></li>
 </ul>
 #end
 </div>

@@ -73,7 +73,7 @@ $portlet.getContent($data)
 #end
 								#if ($data.User.getUserName()!="admin")
 									<li class="addTab">
-										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="メニュータブを追加"><span>+</span></a>
+										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="$l10n.WAR_ADD_MENU_TUB"><span>+</span></a>
 									</li>
 								#end
                               </ul>
@@ -108,7 +108,7 @@ $portlet.getContent($data)
 															#AUIrowTableWide()
 															<tr><td colspan="4" class="auiNoData">
 															<p class="mh10">
-															<a title="アプリを追加する" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">アプリを追加する</a>
+															<a title="$l10n.WAR_ADD_APPLICATION" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
 															</p>
 															</td></tr>
 															#AUItablefooter()

@@ -243,13 +243,13 @@ function change_group(form, value) {
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
 <div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
-<h3>セッションエラー</h3>
+<h3>$l10n.WAR_SESSION_ERROR</h3>
 <div class="loginAlert">
-Cookieが有効になっていない、あるいはCookieに対応していない端末です。
+$l10n.WAR_NO_COOKIE
 #if(!$!data.getMessage().toString().startsWith("__errLicenseType:"))
 $!data.getMessage().toString()
 #else
-一般ユーザーではログインできません
+$l10n.WAR_CANNOT_LOGIN_COMMON_USER
 #end
 </div>
 <form name="frm" action="${context_path}/portal/?${jslink.ActionKey}=${config.getString("action.login")}" onsubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
@@ -263,17 +263,17 @@ $!data.getMessage().toString()
 <input name="redirect" type="hidden" value="$!data.getUser().getTemp("redirect")" />
 <div class="field clearfix">
 <span id="login_username_field">
-<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('member_username').focus();">ユーザー名</span>
+<input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
 </span>
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
 <select name='login_member' onchange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
-<option value='all'>（部署全体）</option>
+<option value='all'>$l10n.ACCOUNT_POST_ALL</option>
 #foreach( $record in $!alEipManager.PostMap )
 <option value='$!{record.PostId}'>$!record.PostName</option>
 #end
 </select><select name='member_username_list' class="select2" tabindex="2">
-<option value=''>（選択してください）</option>
+<option value=''>$l10n.NOTE_SELECT_BRACKET</option>
 #foreach($record in $!alEipUtils.getUsers('LoginUser'))
 <option value='$!record.Name'>$!record.AliasName</option>
 #end
@@ -282,17 +282,17 @@ $!data.getMessage().toString()
 #end
 </div>
 <div class="field">
-<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('password').focus();">パスワード</span>
+<input class="text" id="password" name="password" type="password" value='' maxlength="50" style="ime-mode:disabled" tabindex="3" onfocus="this.nextSibling.style.display='none'" onblur="if(this.value==''){this.nextSibling.style.display='block'}" /><span class="guide" onclick="this.style.display='none';document.getElementById('password').focus();">$l10n.ACCOUNT_PASSWORDMSG</span>
 </div>
 <div class="clearfix">
 <div class="floatLeft">
 #if($enable_userlist)
-<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">ユーザー一覧から選択する</label></p>
+<p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.WORKFLOW_SELECT_MEMBER_FROM_LIST</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">ログイン情報を保存する</label></p>
+<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.WAR_SAVE_LOGIN_INFO</label></p>
 </div>
 <div class="floatRight">
-<input name="login_submit" class="button" type="submit" value="ログイン" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
+<input name="login_submit" class="button" type="submit" value="$l10n.LOGIN_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />
 </div>
 </div>
 </form>

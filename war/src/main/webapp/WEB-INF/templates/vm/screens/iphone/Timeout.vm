@@ -19,15 +19,15 @@
 
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#ALcell_pagetitle_iphone($career "セッションタイムアウト")
+#ALcell_pagetitle_iphone($career "$l10n.WAR_SESSION_TIMEOUT2")
 #ALcell_contents_header($career)
 
-ログインした状態で長時間操作をしなかったため、サーバとの接続が切断されました。<br />
-下のログインフォームから再度ログインしてください。<br />
+$l10n.WAR_NO_OPERATION_FOR_A_LONGTIME_AND_DISCONNECT_SURVER<br />
+$l10n.WAR_AGAIN_FROM_UNDER_LOGIN_FORM<br />
 <br />
 #if($!data.getUser().getTemp("company_id"))
-<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}" class="btn">ログイン画面へ</a>
+<a href="${context_path}/portal/org/${data.getUser().getTemp("company_id")}" class="btn">$l10n.WAR_TOP_LOGIN</a>
 #else
-<a href="${context_path}/" class="btn">ログイン画面へ</a>
+<a href="${context_path}/" class="btn">$l10n.WAR_TOP_LOGIN</a>
 #end
 #ALcell_contents_footer($career)

@@ -28,20 +28,19 @@
 <tr>
 <td nowrap="nowrap">
 #if(!$alias)
-<strong>セッションがタイムアウトしました。</strong><br /><br />
-ブラウザが切り替わらない場合は、再読み込みをお願いいたします。
+<strong>$l10n.WAR_SESSION_TIMEOUT</strong><br /><br />
+$l10n.WAR_RELOADING
 <div dojoType="aimluck.widget.Timeout" redirecturl="$!jslink.getPortletById($!portlet.ID)" >timeout</div>
 #else
-<strong>ページを表示できません。</strong><br /><br />
-指定されたページは現在、利用できません。以下の原因が考えられます。<br /><br />
-・URLの指定が間違えている<br />
-・${alias}のインストールに失敗している<br /><br />
-ログアウトをしていただき、再度ログインしてください。
+<strong>$l10n.WAR_NO_PAGE</strong><br /><br />
+$l10n.ERROR_CANNOT_USE_PAGE<br /><br />
+$l10n.ERROR_WRONG_URL2<br />
+・$l10n.WAR_ALIAS_FAILED_INSTALL<br /><br />
+$l10n.WAR_AGAIN2
 
 #if($config.getString("support.mail"))
  <br />
-恐れ入りますが、URLの指定に誤りがございません際には、弊社サポート
-までお問い合わせください。
+$l10n.WAR_NO_ERROR_URL_INQUILY
  <br />
 [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
  <br />

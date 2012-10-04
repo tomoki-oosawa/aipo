@@ -41,7 +41,7 @@ limitations under the License.
 
 *#
 
-#set ( $headings = ["グループ名", "アクション"] )
+#set ( $headings = ["$l10n.ADDRESSBOOK_GROUP_NAME", "$l10n.CUSTOMIZER_ACTION"] )
 
 <table>
 

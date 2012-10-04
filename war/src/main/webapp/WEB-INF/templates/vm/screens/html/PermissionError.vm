@@ -23,17 +23,17 @@
 <div class="center" style="width:500px;">
 <br />
 <div style="text-align:left">
-<h3>アクセス権限エラー</h3>
+<h3>$l10n.WAR_ACCESSPM_ERROR</h3>
 <br />
-アクセス権限がないため、ページを表示できませんでした。<br /><br />
+$l10n.WAR_NO_ACCESSPM_NO_PAGE2<br /><br />
 
 #if($config.getString("support.mail"))
-恐れ入りますが、URLの指定に誤りがございません際には、システム管理者様までお問い合わせください。
+$l10n.WAR_INQUILY
 <br />
 [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
 #end
 
-<a href="${context_path}/portal">戻る</a>
+<a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>
 </div>
 </div>
 </center>
