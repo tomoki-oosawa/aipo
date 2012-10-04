@@ -175,13 +175,13 @@ aipo.customize.setController = function(portlet_id, sender) {
 }
 
 aipo.customize.deletesubmit = function(url, portlet_id, callback) {
-    if (confirm('このアプリを削除してもよろしいですか？')) {
+	if (confirm(ALLocalizationUtils.getl10nFormat("CUSTOMIZE_APPLICATION_DELETE_CAUTION")) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }
 
 aipo.customize.deleteTabSubmit = function(url, portlet_id, callback) {
-    if (confirm('このページを削除してもよろしいですか？')) {
+	if (confirm(ALLocalizationUtils.getl10nFormat("CUSTOMIZE_APPLICATION_DELETE_CAUTION")) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }

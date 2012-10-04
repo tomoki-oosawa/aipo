@@ -471,7 +471,6 @@ aimluck.io.createOptions = function(selectId, params) {
 }
 
 aimluck.io.addFileToList =function(ul,fileid,filename){
-	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	if(ul.parentNode.style.display == "none") {
 		ul.parentNode.style.display = "";
 	}
@@ -479,7 +478,7 @@ aimluck.io.addFileToList =function(ul,fileid,filename){
 	    var li = document.createElement("li");
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">$l10n.CUSTOMIZER_DELETE</span>";
 
 	   return ul.appendChild(li);
   } else {
@@ -487,18 +486,17 @@ aimluck.io.addFileToList =function(ul,fileid,filename){
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
 
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">$l10n.CUSTOMIZER_DELETE</span>";
 	    return ul.appendChild(li);
   }
 }
 
 aimluck.io.replaceFileToList =function(ul,fileid,filename){
-	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	if (document.all) {
 	    var li = document.createElement("li");
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">$l10n.CUSTOMIZER_DELETE</span>";
 	    ul.innerHTML="";
 	   return ul.appendChild(li);
   } else {
@@ -506,7 +504,7 @@ aimluck.io.replaceFileToList =function(ul,fileid,filename){
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
 
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">$l10n.CUSTOMIZER_DELETE</span>";
 	    ul.innerHTML="";
 	    return ul.appendChild(li);
   }
