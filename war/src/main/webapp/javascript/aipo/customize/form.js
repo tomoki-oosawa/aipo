@@ -18,6 +18,8 @@
  */
 
 dojo.provide("aipo.customize.form");
+dojo.require("dojo.string");
+dojo.requireLocalization("aipo", "locale");
 
 aipo.customize.positionInitialize=function(){
 	dojo.query(".body-child").forEach(function(item){
@@ -175,13 +177,13 @@ aipo.customize.setController = function(portlet_id, sender) {
 }
 
 aipo.customize.deletesubmit = function(url, portlet_id, callback) {
-	if (confirm(ALLocalizationUtils.getl10nFormat("CUSTOMIZE_APPLICATION_DELETE_CAUTION")) {
+	if (confirm($l10n.CUSTOMIZE_APPLICATION_DELETE_CAUTION)) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }
 
 aipo.customize.deleteTabSubmit = function(url, portlet_id, callback) {
-	if (confirm(ALLocalizationUtils.getl10nFormat("CUSTOMIZE_APPLICATION_DELETE_CAUTION")) {
+	if (confirm($l10n.CUSTOMIZE_APPLICATION_DELETE_CAUTION)) {
         aipo.customize.submit(url, portlet_id, callback);
     }
 }
