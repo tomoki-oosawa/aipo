@@ -22,14 +22,14 @@
 
 <portlets>
     <metainfo>
-        <title>ユーザーホーム</title>
+        <title>$l10n.PSML_USERHOME</title>
     </metainfo>
     <security-ref parent="owner-view"/>
     <control name="TabControl"/>
     <controller name="TabController"/>
     <portlets>
         <metainfo>
-            <title>ホーム</title>
+            <title>$l10n.HOME</title>
         </metainfo>
         <security-ref parent="owner-only"/>
         <layout position="0" size="-1"/>
@@ -79,7 +79,7 @@
     </portlets>
     <portlets>
         <metainfo>
-            <title>個人設定</title>
+            <title>$l10n.PERSONAL</title>
         </metainfo>
         <security-ref parent="owner-view"/>
         <layout position="1" size="-1"/>

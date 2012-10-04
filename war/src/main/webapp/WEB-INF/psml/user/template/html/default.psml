@@ -33,7 +33,7 @@
 		<metainfo>
 			<description>
 			</description>
-			<title>マイページ</title>
+			<title>$l10n.PSML_MYPAGE</title>
 		</metainfo>
 		<security-ref parent="owner-only" />
 		<layout position="4" size="-1" />
@@ -111,7 +111,7 @@
 	</portlets>
 	<portlets>
 		<metainfo>
-			<title>個人設定</title>
+			<title>$l10n.PERSONAL</title>
 		</metainfo>
 		<security-ref parent="owner-view" />
 		<layout position="6" size="-1" />
