@@ -22,7 +22,7 @@
 
 <portlets id="01">
     <metainfo>
-        <title>$l10n.PSML_SYSTEM_HOME</title>
+        <title>システム管理者ホーム</title>
     </metainfo>
     <security-ref parent="admin-view"/>
     <layout position="-1" size="-1"/>
@@ -30,7 +30,7 @@
     <controller name="TabController"/>
     <portlets id="101">
         <metainfo>
-            <title>$l10n.PSML_SYSTEM</title>
+            <title>システム管理</title>
         </metainfo>
         <security-ref parent="admin-view"/>
         <layout position="0" size="-1"/>

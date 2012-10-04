@@ -23,7 +23,7 @@
 <portlets id="01">
     <security-ref parent="anon-view_admin-all"/>
     <metainfo>
-        <title>$l10n.PSML_LOGIN_PAGE</title>
+        <title>Aipoログインページ</title>
     </metainfo>
     <controller name="OneColumn" />
     <entry type="ref" parent="AccountLogin" />
