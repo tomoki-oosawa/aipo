@@ -1634,20 +1634,18 @@ $item.get(0)
 #set($pages = $result.PagesNum)
 #set($currentPage = $result.CurrentPage)
 #set($rowsNum = $result.RowsNum)
-#set($rowsNum2 = $result.RowsNum2)
-#set($rowsNum3 = $result.RowsNum3)
 #set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum3 + 1)
-#if ($currentPage * $rowsNum3 > $result.Count)
+#set($from = ($currentPage - 1 ) * $rowsNum + 1)
+#if ($currentPage * $rowsNum > $result.Count)
 #set($to = $result.Count )
 #else
-#set($to = $currentPage * $rowsNum3 )
+#set($to = $currentPage * $rowsNum )
 #end
 
 #if(($currentPage + 1) == $pages)
 #set($nextCount = $count - $to)
 #else
-#set($nextCount = $rowsNum3)
+#set($nextCount = $rowsNum)
 #end
 <div class="floatRight">
   <div class="count">$from ～ $to / $count</div>
@@ -1655,12 +1653,12 @@ $item.get(0)
     <div class="auiSelectButton floatLeft">
       <ul class="floatLeft">
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="$rowsNum2"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="前の $rowsNum 件"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #else
 	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="$l10n.TIMELINE_NEXT"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+        <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="次の $nextCount 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #else
 	    <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #end
