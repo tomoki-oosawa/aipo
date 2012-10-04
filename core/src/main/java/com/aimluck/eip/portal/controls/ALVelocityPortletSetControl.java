@@ -79,8 +79,9 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   public void buildContext(RunData rundata, Context context) {
     if (getPortlet() instanceof PortletSet) {
 
-      Collection<PortletTab> tabs =
-        getTabs((PortletSet) getPortlet(), rundata, context);
+      PortletSet set = (PortletSet) getPortlet();
+
+      Collection<PortletTab> tabs = getTabs(set, rundata, context);
 
       // remove "個人設定"
       // for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
@@ -91,6 +92,15 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       // }
 
       context.put("tabs", tabs);
+      String mypageId = "";
+      int count = 0;
+      for (Enumeration<?> en = set.getPortlets(); en.hasMoreElements(); count++) {
+        Portlet p = (Portlet) en.nextElement();
+        if ("マイページ".equals(p.getTitle())) {
+          mypageId = p.getID();
+        }
+      }
+      context.put("mypageId", mypageId);
     }
   }
 

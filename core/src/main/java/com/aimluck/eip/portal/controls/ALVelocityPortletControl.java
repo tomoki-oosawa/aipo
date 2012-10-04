@@ -257,6 +257,15 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
         context.put("tabs", tabs);
         context.put("menus", getMenus(portlets, rundata, context));
+
+        String mypageId = "";
+        for (Portlets p : portlets.getPortletsArray()) {
+          if ("マイページ".equals(p.getTitle())) {
+            mypageId = p.getId();
+          }
+        }
+        context.put("mypageId", mypageId);
+
       }
     } catch (Exception e) {
       logger.error("ALVelocityPortletControl.getContent", e);
