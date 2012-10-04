@@ -371,6 +371,11 @@ aipo.timeline.increaseLikeValue = function(timelineId){
 	}
 	var likeNum = parseInt(likeLinkString.substring(0, likeLinkString.length - 1)) + 1;
 	if(div.style.display == 'none'){
+		if(div.parentElement.nextElementSibling == null) {
+			div.parentElement.className="comments";
+		} else if(div.parentElement.nextElementSibling.tagName == "P") {
+			div.parentElement.className="comments";
+		}
 		div.style.display = '';
 	}
 	if (dojo.isFF > 0) {
