@@ -27,10 +27,10 @@
 #if($result.CurrentPage)<input type="hidden" name="start" VALUE="$result.CurrentPage">#end
 #ALtableheaderWide()
 #ALtdcaption("$l10n.CABINET_TITLE")
-#ALtditem($!result.Detail.FileTitleHtml)
+#ALtditem("$!result.Detail.FileTitleHtml")
 #ALtdcaption("$l10n.CABINET_FILE_NAME")
 #ALtditemheader()
-<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${result.Detail.FileId}).addPathInfo("f",${result.Detail.URLEncodedFileName})">$!result.Detail.WbrFileName</a>
+<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$!jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${result.Detail.FileId}).addPathInfo("f",${result.Detail.URLEncodedFileName})">$!result.Detail.WbrFileName</a>
 #ALtditemfooter()
 #ALtdcaption("$l10n.CABINET_POSISHION")
 #ALtditem("$!result.Detail.PositionHtml")
