@@ -88,7 +88,7 @@
 		#foreach( $record in $result.MyGroupList )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{record.Name.toString()}).addQueryData("target_user_id","none"))" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
-        #if($!result.PostMap.size() > 0)
+        #if($result.PostMap && $!result.PostMap.size() > 0)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
 		#end
         #foreach( $record in $result.PostMap )

@@ -41,7 +41,7 @@
 <input name="$jslink.ActionKey" type="hidden" value="$action" />
 #end
 <input name="js_peid" type="hidden" value="$data.getJs_peid()" />
-<input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="secid" value="$!secid" />
 #ALtableheaderWide()
 #ALtdcaption("$l10n.GADGETS_APP_NAME")
 #ALtditem("#ALtextfield('current_title' $!current_title '75%' 50 'active')")

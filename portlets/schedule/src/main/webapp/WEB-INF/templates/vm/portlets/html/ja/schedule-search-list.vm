@@ -23,7 +23,11 @@
 #else
 #set ($filter = $result.CurrentFilter)
 #end
+#if(!$result.CurrentFilterType)
+#set ($filtertype = "")
+#else
 #set ($filtertype=$result.CurrentFilterType)
+#end
 <div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
