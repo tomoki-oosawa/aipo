@@ -214,10 +214,10 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id, re
   var confirmString = dojo.string.substitute(nlsStrings.ENABLESUBMIT_STR, {
 		enableSubmit_this : nlsStrings.ENABLESUBMIT_THIS,
 		enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
-		enablesubmit_name:button.form._name.value
+		enableSubmit_name:button.form._name.value
   });
   // この'+button.form._name.value+'を有効化してよろしいですか？
-  if(confirm(confilmString)) {
+  if(confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = url;
