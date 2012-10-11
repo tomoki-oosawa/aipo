@@ -162,12 +162,23 @@ public class BlogEntryLatestSelectData extends
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTBlogFile record = list.get(i);
+        long fileId = record.getFileId().longValue();
         BlogFileResultData file = new BlogFileResultData();
         file.initField();
-        file.setFileId(record.getFileId().longValue());
-        file.setOwnerId(record.getOwnerId().longValue());
-        file.setEntryId(record.getEipTBlogEntry().getEntryId().longValue());
-        file.setEntryTitle(record.getEipTBlogEntry().getTitle());
+        file.setFileId(fileId);
+        file.setOwnerId(Database
+          .get(EipTBlogFile.class, fileId)
+          .getOwnerId()
+          .longValue());
+        file.setEntryId(Database
+          .get(EipTBlogFile.class, fileId)
+          .getEipTBlogEntry()
+          .getEntryId()
+          .longValue());
+        file.setEntryTitle(Database
+          .get(EipTBlogFile.class, fileId)
+          .getEipTBlogEntry()
+          .getTitle());
         photoList.add(file);
       }
     }
