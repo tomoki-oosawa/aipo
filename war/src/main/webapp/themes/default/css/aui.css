@@ -367,27 +367,26 @@ table.activityTable tr.unread td {
 --------------------------------------------------*/
 
 .auiPortlet {
-	background:url(../images/common/portlet_x.gif) repeat-x bottom center;
+	background:url(../images/common/portlet_x.gif?20121011) repeat-x bottom center;
 }
 .auiPortletHead {
-	background:url(../images/common/portlet_x.gif) repeat-x left -175px;
+	background:url(../images/common/portlet_x.gif?20121011) repeat-x left -189px;
 	height:45px;
 }
 .auiPortletHead .inner {
-	background:url(../images/common/portlet_x.gif) no-repeat left 0;
+	background:url(../images/common/portlet_x.gif?20121011) no-repeat left 0;
 	height:45px;
 }
 .auiPortletTitle {
 	float:left;
-	padding:13px 0 0 12px;
+	padding:13px 0 0 30px;
 	white-space:nowrap;
+	background:url(../images/common/portlet_x.gif?20121011) no-repeat left -144px;
 }
 .auiPortletTitle a {
-	background:url(../images/common/portlet_x.gif) no-repeat left -148px;
-	padding-left:18px;
 }
 .auiPortletTool {
-	background:url(../images/common/portlet_x.gif) no-repeat right -50px;
+	background:url(../images/common/portlet_x.gif?20121011) no-repeat right -50px;
 	top:0;
 	right:0;
 	float:right;
@@ -422,10 +421,10 @@ table.activityTable tr.unread td {
 	content:".";display:block;height:0;clear:both;visibility:hidden;
 }
 .auiPortletFoot {
-	background:url(../images/common/portlet_x.gif) no-repeat left -102px;
+	background:url(../images/common/portlet_x.gif?20121011) no-repeat left -102px;
 }
 .auiPortletFoot .inner {
-	background:url(../images/common/portlet_x.gif) no-repeat right -124px;
+	background:url(../images/common/portlet_x.gif?20121011) no-repeat right -124px;
 	height:20px;
 }
 
@@ -2473,29 +2472,29 @@ a.auiIconMinus:hover {background-position:0px -352px;}
 *html .auiIconMinus {background-position:0px -336px;}/*IE6*/
 *html a.auiIconMinus:hover {background-position:0px -336px;}/*IE6*/
 
-.auiIconArwLeft {background-position:0px -368px !important;}
-.auiIconArwLeft_w {background-position:0px -384px !important;}
-a.auiIconArwLeft:hover {background-position:0px -384px !important;}
-*html .auiIconArwLeft {background-position:0px -368px !important;}/*IE6*/
-*html a.auiIconArwLeft:hover {background-position:0px -368px !important;}/*IE6*/
+.auiIconArwLeft {background-position:0px -368px;}
+.auiIconArwLeft_w {background-position:0px -384px;}
+a.auiIconArwLeft:hover {background-position:0px -384px;}
+*html .auiIconArwLeft {background-position:0px -368px;}/*IE6*/
+*html a.auiIconArwLeft:hover {background-position:0px -368px;}/*IE6*/
 
-.auiIconArwRight {background-position:0px -400px !important;}
-.auiIconArwRight_w {background-position:0px -416px !important;}
-a.auiIconArwRight:hover {background-position:0px -416px !important;}
-*html .auiIconArwRight {background-position:0px -400px !important;}/*IE6*/
-*html a.auiIconArwRight:hover {background-position:0px -400px !important;}/*IE6*/
+.auiIconArwRight {background-position:0px -400px;}
+.auiIconArwRight_w {background-position:0px -416px;}
+a.auiIconArwRight:hover {background-position:0px -416px;}
+*html .auiIconArwRight {background-position:0px -400px;}/*IE6*/
+*html a.auiIconArwRight:hover {background-position:0px -400px;}/*IE6*/
 
-.auiIconArwBottom {background-position:0px -432px !important;}
-.auiIconArwBottom_w {background-position:0px -448px !important;}
-a.auiIconArwBottom:hover {background-position:0px -448px !important;}
-*html .auiIconArwBottom {background-position:0px -432px !important;}/*IE6*/
-*html a.auiIconArwBottom:hover {background-position:0px -432px !important;}/*IE6*/
+.auiIconArwBottom {background-position:0px -432px;}
+.auiIconArwBottom_w {background-position:0px -448px;}
+a.auiIconArwBottom:hover {background-position:0px -448px;}
+*html .auiIconArwBottom {background-position:0px -432px;}/*IE6*/
+*html a.auiIconArwBottom:hover {background-position:0px -432px;}/*IE6*/
 
-.auiIconArwTop {background-position:0px -464px !important;}
-.auiIconArwTop_w {background-position:0px -480px !important;}
-a.auiIconArwTop:hover {background-position:0px -480px !important;}
-*html .auiIconArwTop {background-position:0px -464px !important;}/*IE6*/
-*html a.auiIconArwTop:hover {background-position:0px -464px !important;}/*IE6*/
+.auiIconArwTop {background-position:0px -464px;}
+.auiIconArwTop_w {background-position:0px -480px;}
+a.auiIconArwTop:hover {background-position:0px -480px;}
+*html .auiIconArwTop {background-position:0px -464px;}/*IE6*/
+*html a.auiIconArwTop:hover {background-position:0px -464px;}/*IE6*/
 
 .auiIconImage {background-position:0px -496px;}
 .auiIconImage_w {background-position:0px -512px;}
