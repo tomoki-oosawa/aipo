@@ -2473,29 +2473,29 @@ a.auiIconMinus:hover {background-position:0px -352px;}
 *html .auiIconMinus {background-position:0px -336px;}/*IE6*/
 *html a.auiIconMinus:hover {background-position:0px -336px;}/*IE6*/
 
-.auiIconArwLeft {background-position:0px -368px;}
-.auiIconArwLeft_w {background-position:0px -384px;}
-a.auiIconArwLeft:hover {background-position:0px -384px;}
-*html .auiIconArwLeft {background-position:0px -368px;}/*IE6*/
-*html a.auiIconArwLeft:hover {background-position:0px -368px;}/*IE6*/
+.auiIconArwLeft {background-position:0px -368px !important;}
+.auiIconArwLeft_w {background-position:0px -384px !important;}
+a.auiIconArwLeft:hover {background-position:0px -384px !important;}
+*html .auiIconArwLeft {background-position:0px -368px !important;}/*IE6*/
+*html a.auiIconArwLeft:hover {background-position:0px -368px !important;}/*IE6*/
 
-.auiIconArwRight {background-position:0px -400px;}
-.auiIconArwRight_w {background-position:0px -416px;}
-a.auiIconArwRight:hover {background-position:0px -416px;}
-*html .auiIconArwRight {background-position:0px -400px;}/*IE6*/
-*html a.auiIconArwRight:hover {background-position:0px -400px;}/*IE6*/
+.auiIconArwRight {background-position:0px -400px !important;}
+.auiIconArwRight_w {background-position:0px -416px !important;}
+a.auiIconArwRight:hover {background-position:0px -416px !important;}
+*html .auiIconArwRight {background-position:0px -400px !important;}/*IE6*/
+*html a.auiIconArwRight:hover {background-position:0px -400px !important;}/*IE6*/
 
-.auiIconArwBottom {background-position:0px -432px;}
-.auiIconArwBottom_w {background-position:0px -448px;}
-a.auiIconArwBottom:hover {background-position:0px -448px;}
-*html .auiIconArwBottom {background-position:0px -432px;}/*IE6*/
-*html a.auiIconArwBottom:hover {background-position:0px -432px;}/*IE6*/
+.auiIconArwBottom {background-position:0px -432px !important;}
+.auiIconArwBottom_w {background-position:0px -448px !important;}
+a.auiIconArwBottom:hover {background-position:0px -448px !important;}
+*html .auiIconArwBottom {background-position:0px -432px !important;}/*IE6*/
+*html a.auiIconArwBottom:hover {background-position:0px -432px !important;}/*IE6*/
 
-.auiIconArwTop {background-position:0px -464px;}
-.auiIconArwTop_w {background-position:0px -480px;}
-a.auiIconArwTop:hover {background-position:0px -480px;}
-*html .auiIconArwTop {background-position:0px -464px;}/*IE6*/
-*html a.auiIconArwTop:hover {background-position:0px -464px;}/*IE6*/
+.auiIconArwTop {background-position:0px -464px !important;}
+.auiIconArwTop_w {background-position:0px -480px !important;}
+a.auiIconArwTop:hover {background-position:0px -480px !important;}
+*html .auiIconArwTop {background-position:0px -464px !important;}/*IE6*/
+*html a.auiIconArwTop:hover {background-position:0px -464px !important;}/*IE6*/
 
 .auiIconImage {background-position:0px -496px;}
 .auiIconImage_w {background-position:0px -512px;}
@@ -2550,15 +2550,7 @@ a.auiIconSecret:hover {background-position:0px -736px;}
 .auiIconArrowLeftW {background-position:0 -623px;}
 .auiIconArrowRight {background-position:0 -399px;}
 .auiIconArrowRightW {background-position:0 -655px;}
-.auiIconArrowHead {
-	display:inline-block;
-	width:15px;
-	height:20px;
-	margin-left:5px;
-	vertical-align:middle;
-	background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
-	background-position:0 -430px;
-}
+
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
