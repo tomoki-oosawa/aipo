@@ -64,7 +64,7 @@ $l10n.SCHEDULE_SUB_TEMP
 </ul>
 #end
 #ALcell_hr($career '1')
-#if($!{result.ToDoResultDataList.size()} <= 0)
+#if( ($!{result.ToDoResultDataList.size()}) && $!{result.ToDoResultDataList.size()} <= 0)
 $l10n.SCHEDULE_NO_TODO
 #else
 <ul>
