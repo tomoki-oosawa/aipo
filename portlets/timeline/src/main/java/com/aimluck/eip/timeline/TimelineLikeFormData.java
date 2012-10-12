@@ -193,57 +193,77 @@ public class TimelineLikeFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      // 新規オブジェクトモデル
-      EipTTimelineLike like = Database.create(EipTTimelineLike.class);
-      like.setOwnerId(user_id);
-      like.setTimelineId(timeline_id);
-      like.setCreateDate(Calendar.getInstance().getTime());
-      Database.commit();
 
-      if (like.getOwnerId() != 0) {
-        // オブジェクトモデルを取得
-        EipTTimeline parententry =
-          TimelineUtils.getEipTTimelineParentEntry(rundata, context);
-        // アクティビティ
-        TimelineLikeSelectData likelist = new TimelineLikeSelectData();
+      SelectQuery<EipTTimelineLike> query =
+        Database.query(EipTTimelineLike.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTTimelineLike.OWNER_ID_PROPERTY, user_id);
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTTimelineLike.TIMELINE_ID_PROPERTY,
+          timeline_id);
 
-        String loginName =
-          ALEipUtils.getALEipUser(user_id).getName().getValue();
-        String targetLoginName =
-          ALEipUtils
-            .getALEipUser(parententry.getOwnerId())
-            .getName()
-            .getValue();
-        if (likelist.getLikeList(timeline_id).size() > 1
-          && !loginName.equals(targetLoginName)) {
-          ALEipUser lastuser = ALEipUtils.getALEipUser(loginName);
-          String lastuserName = lastuser.getAliasName().getValue();
-          loginName =
-            ALLocalizationUtils.getl10nFormat(
-              "TIMELINE_OTHER",
-              lastuserName,
-              likelist.getLikeList(timeline_id).size() - 1);
+      query.setQualifier(exp1);
+      query.andQualifier(exp2);
+      List<EipTTimelineLike> fetchList = query.fetchList();
+      int count = fetchList.size();
 
-          SelectQuery<Activity> query = Database.query(Activity.class);
-          Expression exp1 =
-            ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, String
-              .valueOf(parententry.getTimelineId()));
-          Expression exp2 =
-            ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "timeline");
+      // DBへの格納処理よりもページリロードが先に実行され,格納済みにもかかわらず表示されていないトピックについて
+      // 再度「いいね！」が押された時には,格納処理を行わない。
+      if (count == 0) {
+        // 新規オブジェクトモデル
+        EipTTimelineLike like = Database.create(EipTTimelineLike.class);
+        like.setOwnerId(user_id);
+        like.setTimelineId(timeline_id);
+        like.setCreateDate(Calendar.getInstance().getTime());
 
-          query.setQualifier(exp1);
-          query.andQualifier(exp2);
-          List<Activity> maps = query.fetchList();
-          Database.deleteAll(maps);
+        Database.commit();
 
-          Database.commit();
+        if (like.getOwnerId() != 0) {
+          // オブジェクトモデルを取得
+          EipTTimeline parententry =
+            TimelineUtils.getEipTTimelineParentEntry(rundata, context);
+          // アクティビティ
+          TimelineLikeSelectData likelist = new TimelineLikeSelectData();
 
+          String loginName =
+            ALEipUtils.getALEipUser(user_id).getName().getValue();
+          String targetLoginName =
+            ALEipUtils
+              .getALEipUser(parententry.getOwnerId())
+              .getName()
+              .getValue();
+          if (likelist.getLikeList(timeline_id).size() > 1
+            && !loginName.equals(targetLoginName)) {
+            ALEipUser lastuser = ALEipUtils.getALEipUser(loginName);
+            String lastuserName = lastuser.getAliasName().getValue();
+            loginName =
+              ALLocalizationUtils.getl10nFormat(
+                "TIMELINE_OTHER",
+                lastuserName,
+                likelist.getLikeList(timeline_id).size() - 1);
+
+            SelectQuery<Activity> dQuery = Database.query(Activity.class);
+            Expression exp3 =
+              ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, String
+                .valueOf(parententry.getTimelineId()));
+            Expression exp4 =
+              ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "timeline");
+
+            dQuery.setQualifier(exp3);
+            dQuery.andQualifier(exp4);
+            List<Activity> maps = dQuery.fetchList();
+            Database.deleteAll(maps);
+
+            Database.commit();
+
+          }
+
+          TimelineUtils.createNewLikeActivity(
+            parententry,
+            loginName,
+            targetLoginName);
         }
-
-        TimelineUtils.createNewLikeActivity(
-          parententry,
-          loginName,
-          targetLoginName);
       }
 
     } catch (Exception ex) {
