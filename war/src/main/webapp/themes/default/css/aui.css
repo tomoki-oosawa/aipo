@@ -1240,7 +1240,6 @@ button:active {
 }
 .auiButton img,
 .auiButtonSmall img {
-	>padding:2px 0;
 	display:inline;
 	vertical-align:middle;
 }
