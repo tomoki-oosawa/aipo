@@ -34,10 +34,10 @@ aipo.eventlog.onReceiveMessage = function(msg){
     }
 }
 
-aipo.eventlog.downloadCvn = function(flag_over_size,max,url){
+aipo.eventlog.downloadCvn = function(flag_over_size,eventlog_max,url){
 	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	var confirmString = dojo.string.substitute(nlsStrings.EVENTLOG_STR, {
-		eventlog_max : max
+		max : eventlog_max
 	  });
 
 	if(flag_over_size){
