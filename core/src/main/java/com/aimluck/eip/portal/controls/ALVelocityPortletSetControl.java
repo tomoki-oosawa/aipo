@@ -93,8 +93,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
       context.put("tabs", tabs);
       String mypageId = "";
-      int count = 0;
-      for (Enumeration<?> en = set.getPortlets(); en.hasMoreElements(); count++) {
+      for (Enumeration<?> en = set.getPortlets(); en.hasMoreElements();) {
         Portlet p = (Portlet) en.nextElement();
         if ("マイページ".equals(p.getTitle())) {
           mypageId = p.getID();
@@ -114,7 +113,6 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    * @param portlet
    *          the base portlet to explore for children @
    */
-  @SuppressWarnings("finally")
   private Collection<PortletTab> getTabs(PortletSet portlets, RunData rundata,
       Context context) {
     TreeSet<PortletTab> tabs =
@@ -149,8 +147,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       }
     }
 
-    int count = 0;
-    for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements(); count++) {
+    for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements();) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
       if ("Activity".equals(p.getName())
@@ -236,7 +233,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   /**
    * Utilty class describing a Tab elemnt in the template Velocity Context
    */
-  public class PortletTab {
+  public static class PortletTab {
 
     private String id = null;
 
@@ -315,7 +312,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    * Used to correctly order tabs based on the position value that is found each
    * PortletTab's parent Portlet's PortletConfig object.
    */
-  public class PortletTabComparator implements Comparator<PortletTab> {
+  public static class PortletTabComparator implements Comparator<PortletTab> {
 
     /**
      * 
