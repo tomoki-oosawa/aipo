@@ -279,6 +279,23 @@ public class ExtTimecardSelectData extends
         default_query.getResultList();
       if (!map_list.isEmpty()) {
         startDay = map_list.get(0).getEipTExtTimecardSystem().getStartDay();
+      } else {
+        EipTExtTimecardSystem system =
+          Database.get(EipTExtTimecardSystem.class, 1);
+        if (system != null) {
+          try {
+            Date now = new Date();
+            EipTExtTimecardSystemMap rd = new EipTExtTimecardSystemMap();
+            rd.setEipTExtTimecardSystem(system);
+            int userid = Integer.parseInt(target_user_id);
+            rd.setUserId(userid);
+            rd.setCreateDate(now);
+            rd.setUpdateDate(now);
+            Database.commit();
+            startDay = system.getStartDay();
+          } catch (Exception ignore) {
+          }
+        }
       }
     }
 
