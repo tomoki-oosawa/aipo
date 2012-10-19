@@ -24,7 +24,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -993,61 +992,6 @@ public class ExtTimecardSummaryListSelectData extends
       list.add(summary_rd);
     }
     return list;
-  }
-
-  /**
-   * @return
-   */
-  public List<Integer> getDateListKeys() {
-    try {
-      List<Integer> list = new ArrayList<Integer>();
-      Set<Integer> set = datemap.keySet();
-      Iterator<Integer> iter = set.iterator();
-      while (iter.hasNext()) {
-        list.add(iter.next());
-      }
-
-      if (list.size() > 1) {
-        for (int i = 0; i < list.size() - 1; i++) {
-          ExtTimecardSummaryResultData listrd1 = datemap.get(list.get(i));
-          ExtTimecardSummaryResultData listrd2 = datemap.get(list.get(i + 1));
-          int listrd1_size = listrd1.getList().size();
-          if (listrd1_size > 0) {
-            ExtTimecardResultData listrd1_lastrd =
-              listrd1.getList().get(listrd1_size - 1);
-
-            ExtTimecardResultData listrd2_firstrd = listrd2.getList().get(0);
-            if (ExtTimecardUtils.WORK_FLG_OFF.equals(listrd2_firstrd
-              .getWorkFlag()
-              .getValue())
-              && ExtTimecardUtils.WORK_FLG_ON.equals(listrd1_lastrd
-                .getWorkFlag()
-                .getValue())
-              && !sameDay(
-                listrd1_lastrd.getWorkDate().getValue(),
-                listrd2_firstrd.getWorkDate().getValue())) {
-
-              Date d = listrd2_firstrd.getWorkDate().getValue();
-              Calendar cal = Calendar.getInstance();
-              cal.setTime(d);
-              cal.set(Calendar.HOUR_OF_DAY, 0);
-              cal.set(Calendar.MINUTE, 0);
-
-              ExtTimecardResultData dummyrd = new ExtTimecardResultData();
-              dummyrd.initField();
-              dummyrd.setWorkFlag(ExtTimecardUtils.WORK_FLG_DUMMY);
-              dummyrd.setWorkDate(cal.getTime());
-
-              listrd1.addExtTimecardResultData(dummyrd);
-            }
-          }
-        }
-      }
-      return list;
-    } catch (Exception e) {
-      logger.error("[ExtTimecardSummaryListSelectData]", e);
-      return null;
-    }
   }
 
   /**
