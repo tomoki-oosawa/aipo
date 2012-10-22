@@ -797,6 +797,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         // 作成日
         // 以下のメソッドは動作しないため、ALBaseUserにてオーバーライド
         // user.setCreateDate(now);
+        user.setEmail(email.getValue());
         user.setCreated(now);
         user.setModified(now);
         user.setLastLogin(now);
