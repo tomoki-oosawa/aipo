@@ -80,6 +80,7 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     context.put("nsize", rundata.getParameters().getString(
       FileuploadUtils.KEY_NOW_SIZE,
       "0"));
+    context.put("edit_str", rundata.getParameters().getString("edit_str", ""));
 
     HttpServletResponse response = rundata.getResponse();
     response

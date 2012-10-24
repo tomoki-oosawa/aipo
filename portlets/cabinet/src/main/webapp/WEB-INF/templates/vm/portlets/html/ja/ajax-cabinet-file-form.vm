@@ -22,10 +22,12 @@
 #set ($action_str = "$l10n.CABINET_DO_ADD")
 #set ($event_submit = "eventSubmit_doCabinet_file_insert")
 #set ($subtitle = "$l10n.CABINET_ADD_FILE")
+#set ($edit_str = "new")
 #else
 #set ($action_str = "$l10n.CABINET_UPDATE")
 #set ($subtitle = "$l10n.CABINET_EDITE_FILE")
 #set ($event_submit = "eventSubmit_doCabinet_file_update")
+#set ($edit_str = "edit")
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -48,7 +50,7 @@
 <td>
   <div class="clearfix">
   <div>
-  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform').addQueryData('edit_str',$!{edit_str})" frameborder="0" scrolling="no" ></iframe>
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #if($mode=="edit_form")

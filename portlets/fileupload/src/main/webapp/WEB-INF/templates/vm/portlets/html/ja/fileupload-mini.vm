@@ -21,6 +21,11 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doFileupload_insert")
 #set($tabs = [["ファイルアップロード", "",""]])
+#if($edit_str=="edit")
+#set ($upload_str = "ファイルを変更する")
+#else
+#set ($upload_str = "ファイルを追加する")
+#end
 ## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/JavaScript">
 <!--
@@ -108,7 +113,7 @@ function submitMini(form, portletId){
 <div id="uploadContainer">
 <span id="inputField">
 <div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block;">
-<span style="position:absolute;top:0;left:50%;width:9em;margin-left:-4.5em;" class="uploadText">ファイルを追加する</span>
+<span style="position:absolute;top:0;left:50%;width:9em;margin-left:-4.5em;" class="uploadText">$upload_str</span>
 <input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0);" onchange="submitMini(this.form, '$!portlet.ID');">
 </div>
 </span>
