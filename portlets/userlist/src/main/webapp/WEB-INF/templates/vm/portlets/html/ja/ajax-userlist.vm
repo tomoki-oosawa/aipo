@@ -23,7 +23,7 @@
 #AUISummaryDiv()
 <form class="auiSearch auiForm" name="userlist$!portlet.ID" id="userlist$!portlet.ID" action="#" method="post" onsubmit="aipo.userlist.onSubmitSearchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserListScreen')','$!portlet.ID','', '$indicator_id'); return false;">
 <input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('userlist$!portlet.ID').onsubmit();">$l10n.USERLIST_SEARCH</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('userlist$!portlet.ID').onsubmit();">$!l10n.USERLIST_SEARCH</a>
 <input name="mode" type="hidden" value="ajaxsearch" />
 <div class="floatLeft"><div class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;">&nbsp;</div></div>
 </form>
