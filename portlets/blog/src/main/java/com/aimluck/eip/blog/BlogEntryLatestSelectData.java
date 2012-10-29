@@ -167,7 +167,6 @@ public class BlogEntryLatestSelectData extends
         file.setFileId(record.getFileId().longValue());
         file.setOwnerId(record.getOwnerId().longValue());
         file.setEntryId(record.getEipTBlogEntry().getEntryId().longValue());
-        file.setEntryTitle(record.getEipTBlogEntry().getTitle());
         photoList.add(file);
       }
     }
