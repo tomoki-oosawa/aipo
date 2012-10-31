@@ -256,6 +256,10 @@ public class AddressBookWordSelectData extends
         ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_PHONE_PROPERTY, "%"
           + word
           + "%");
+      Expression exp18 =
+        ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_MAIL_PROPERTY, "%"
+          + word
+          + "%");
 
       Expression exp21 =
         ExpressionFactory.likeExp(
@@ -307,9 +311,9 @@ public class AddressBookWordSelectData extends
 
       if (word != null && !"".equals(word)) {
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35).orExp(exp36));
+          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp21).orExp(
+          exp22).orExp(exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(
+          exp34).orExp(exp35).orExp(exp36));
       }
     }
 
