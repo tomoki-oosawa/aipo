@@ -219,6 +219,11 @@ public class EventlogSelectData extends
       rd.setUserFullName(user == null ? "" : new StringBuffer().append(
         user.getLastName()).append(" ").append(user.getFirstName()).toString());
 
+      if (user.getLastName().trim().equals("")
+        && user.getFirstName().trim().equals("")) {
+        rd.setUserFullName(record.getTurbineUser().getEmail());
+      }
+
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
@@ -259,10 +264,21 @@ public class EventlogSelectData extends
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
       rd.setEventlogId(record.getEventlogId().longValue());
-      rd.setUserFullName(ALEipUtils.getUserFullName(record
-        .getTurbineUser()
-        .getUserId()
-        .intValue()));
+
+      String userFullName =
+        ALEipUtils.getUserFullName(record
+          .getTurbineUser()
+          .getUserId()
+          .intValue());
+
+      if (userFullName != null && !userFullName.trim().equals("")) {
+        rd.setUserFullName(userFullName);
+      }
+
+      if (userFullName == null || userFullName.trim().equals("")) {
+        rd.setUserFullName(record.getTurbineUser().getEmail());
+      }
+
       rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
