@@ -1161,6 +1161,12 @@ button {
 	line-height:26px;
 	padding:0 0.7em;
 }
+*:first-child+html input.auiButton,
+*:first-child+html input.auiButtonAction,
+*:first-child+html input.auiButtonBold,
+*:first-child+html input.auiButtonSearch {
+	padding:0 3px;
+}
 
 input[type=submit],
 input[type=button],
@@ -1192,8 +1198,8 @@ button.auiButtonSmall {
 *:first-child+html input[type=reset],
 *:first-child+html button,
 *:first-child+html .auiButtonSmall {/* IE7 Hack */
-	line-height:1.4em !important;
-	overflow:visible;
+	/*line-height:1.4em !important;
+	overflow:visible;*/
 }
 .auiButton:hover,
 .auiButtonBold:hover,
