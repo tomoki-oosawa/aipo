@@ -797,6 +797,9 @@ table.activityTable tr.unread td {
 	left:5px;
 	color:#999;
 }
+*:first-child+html #auiLoginBox .guide {
+	margin:0.75em 0 0 0;
+}
 #auiLoginBox input.text {
 	width:100%;
 	height:3em;
@@ -1240,6 +1243,7 @@ button:active {
 }
 .auiButton img,
 .auiButtonSmall img {
+	>padding:2px 0;
 	display:inline;
 	vertical-align:middle;
 }
