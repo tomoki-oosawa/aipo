@@ -263,9 +263,12 @@ public class TimelineFormData extends ALAbstractFormData {
         }
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipTitle") != null) {
-          url.setTitle(ALEipUtils
-            .getParameter(rundata, context, "tlClipTitle")
-            .substring(0, 127));
+          String tlClipTitle =
+            ALEipUtils.getParameter(rundata, context, "tlClipTitle");
+          if (tlClipTitle.length() > 127) {
+            tlClipTitle = tlClipTitle.substring(0, 127);
+          }
+          url.setTitle(tlClipTitle);
         }
 
         url.setUrl(ALEipUtils.getParameter(rundata, context, "tlClipUrl"));
