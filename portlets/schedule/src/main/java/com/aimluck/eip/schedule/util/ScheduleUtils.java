@@ -1731,8 +1731,8 @@ public class ScheduleUtils {
 
           if (timeStr.length() != FORMAT_TIME_LEN) {
             // 文字列の長さが正しくない場合
-            msgList
-              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
             continue;
           }
 
