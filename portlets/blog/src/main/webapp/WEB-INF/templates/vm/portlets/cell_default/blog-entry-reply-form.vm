@@ -30,7 +30,7 @@
 #ALcell_formheader($career $jslink $portlet)
 $l10n.BLOG_COMMENT_CELL_ENTRY#ALcell_must()#ALcell_br($career)
 #ALcell_textarea($career 'comment' '' 6 14 '' 'h')
-<input type="hidden" name="entryid" value="$entityid">
+<input type="hidden" name="entityid" value="$entityid">
 <input type="hidden" name="mode" value="comment" />
 #ALcell_hr($career '1')
 #ALcell_submit($career $event_submit $action_str)
