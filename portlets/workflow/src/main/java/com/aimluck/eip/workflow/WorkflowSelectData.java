@@ -190,6 +190,9 @@ public class WorkflowSelectData extends
     try {
       previous_id = new ALNumberField();
       String previd = rundata.getParameters().getString("prvid");
+      if (previd == null) {
+        previd = rundata.getParameters().getString("entityid");
+      }
       previous_id.setValue(previd);
     } catch (Exception e) {
       previous_id = null;
