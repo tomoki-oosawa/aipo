@@ -56,7 +56,7 @@ $portlet.getContent($data)
 					    						</li>
 												#if($!tab.Title.Value != "マイページ")
 												<li>
-													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('type', 'popup'))')">ページ編集</a>
+													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('type', 'popup'))')">編集</a>
 												</li>
 												<li class="last">
 													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
