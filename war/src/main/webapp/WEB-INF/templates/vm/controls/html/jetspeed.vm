@@ -287,6 +287,7 @@ $portlet.getContent($data)
 				<span id="portletMenu"></span>
 			</div>
 			<div class="auiPortletSetting">
+				<span id="portletMenu"></span>
 			</div>
 		</div>
 	#end
