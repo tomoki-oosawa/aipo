@@ -52,12 +52,9 @@ $portlet.getContent($data)
 											<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
 											<ul>
 												<li>
-												<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">アプリ設定</a>
+												<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
 					    						</li>
 												#if($!tab.Title.Value != "マイページ")
-												<li>
-													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('type', 'popup'))')">編集</a>
-												</li>
 												<li class="last">
 													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
 												</li>
