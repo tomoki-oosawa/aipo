@@ -162,6 +162,7 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
     company_name_kana.limitMaxLength(50);
     post_name.limitMaxLength(50);
     address.limitMaxLength(50);
+    url.setCharacterType(ALStringField.TYPE_ASCII);
     url.limitMaxLength(50);
 
     // 郵便番号
