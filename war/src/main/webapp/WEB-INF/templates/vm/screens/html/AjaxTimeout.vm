@@ -25,4 +25,8 @@ window.location.href = '$!{redirectUrl}';
 
 //]]>
 </script>
-<div dojoType="aimluck.widget.Timeout" redirecturl="$!jslink.getPortletById($!portlet.ID)" >timeout</div>
+<div dojoType="aimluck.widget.Timeout" redirecturl="$!jslink.getPortletById($!portlet.ID)" >
+  <div class="tlInputAttachment">
+  Aipoのログインセッションがタイムアウトされました。再度<a href="$!jslink.getPortletById($!portlet.ID)">ログイン</a>をお願いいたします。
+  </div>
+</div>
