@@ -606,3 +606,12 @@ aipo.timeline.displayIndicatorNotViewPage = function(portletId, indicator_id){
 
     obj_indicator = dojo.byId(indicator_id + portletId);
 }
+
+aipo.timeline.resizeThumbnailTag = function(elem){
+    if (elem.hasOwnProperty('naturalWidth')){
+        if (elem.naturalWidth < 86) {        
+          dojo.style(elem, 'width', elem.naturalWidth + 'px');
+          dojo.style(elem, 'padding', '0 ' + (86 - elem.naturalWidth)/2 + 'px');
+        } 
+      }
+};
