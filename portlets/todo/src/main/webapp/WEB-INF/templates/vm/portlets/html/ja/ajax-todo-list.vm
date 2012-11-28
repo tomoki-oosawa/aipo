@@ -30,6 +30,14 @@
 <div class="filterInputField">
 <div class="filters" id="filters_$!portlet.ID">
 
+#foreach($record in $result.postList)
+#if($!result.issetFilter("post",$!{record.Name}))
+<span class="filterTip">
+<span>$!record.AliasName</span>
+<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end#end
+
 #foreach($record in $result.PostMap)
 #if($!result.issetFilter("post",$!{record.GroupName}))
 <span class="filterTip">
@@ -148,6 +156,9 @@
 <p class="caption">$l10n.COMMON_GROUP</p>
 <ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 <li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$l10n.TODO_ALL_GLOUP</a></li>
+#foreach($record in $result.postList)
+<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
+#end
 #foreach($record in $result.PostMap)
 <li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
 #end
