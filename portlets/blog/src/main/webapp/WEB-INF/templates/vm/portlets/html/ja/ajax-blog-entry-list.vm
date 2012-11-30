@@ -58,7 +58,8 @@
 <div class='entryText'>${record.CompressedNote}</div>
 <div class="entryFooter">
 <div class="floatRight">${record.TitleDate}｜${record.OwnerName}</div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaDetailScreen").addQueryData("entityid",$!record.ThemaId))');">$!record.ThemaNameHtml</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("themeid", $!record.ThemaId.toString()))', '$!portlet.ID');">$!record.ThemaNameHtml</a>
+
 </div>
 </div>
 </div>
