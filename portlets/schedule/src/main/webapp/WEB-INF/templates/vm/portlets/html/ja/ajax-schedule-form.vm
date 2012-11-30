@@ -252,7 +252,7 @@
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>
-<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "C") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
+<p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "C") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
 <p><input name="public_flag" type="radio" value="P" id="public_flagP_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "P") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/><label for="public_flagP_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_HIDDEN_PUBLIC</label></p>
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_ENTRY_USER)

@@ -477,9 +477,9 @@ aipo.schedule.formAllDayOff = function(checkbox) {
 
 aipo.schedule.formPublicOn = function(form) {
     if(form.is_span.value != 'TRUE' && form.is_span.value != 'true'){
-        form.is_facility.value = "TRUE";
+        dojo.byId('facilityFieldButton').style.display = "block";
     }
-    dojo.byId('facilityFieldButton').style.display = "block";
+    form.is_facility.value = "TRUE";
     aipo.schedule.shrinkFacility();
 }
 
@@ -757,7 +757,7 @@ aipo.schedule.showScheduleAddDialog=function(td,event,url,portlet_id,callback){
     var pos={x:event.clientX,y:event.clientY};
 
 	var isCollapsed=false;
-	
+
 	dojo.query("a",td).forEach(function(item){
 		if(!isCollapsed){
 			var rect=item.getBoundingClientRect();
