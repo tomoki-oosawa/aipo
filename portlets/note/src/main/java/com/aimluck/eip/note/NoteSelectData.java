@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -51,6 +52,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -608,12 +610,34 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       Expression ex6 =
         ExpressionFactory
           .likeExp(EipTNote.MESSAGE_PROPERTY, "%" + search + "%");
-      SelectQuery<EipTNote> q = Database.query(EipTNote.class);
-      q
-        .andQualifier(ex6
-          .orExp(ex5.orExp(ex4.orExp(ex3.orExp(ex2.orExp(ex1))))));
-      List<EipTNote> queryList = q.fetchList();
+
+      StringBuilder body = new StringBuilder();
+      body.append("SELECT EIP_T_NOTE_MAP.NOTE_ID");
+      body.append(" FROM EIP_T_NOTE_MAP");
+      body.append(" INNER JOIN EIP_T_NOTE");
+      body.append(" ON EIP_T_NOTE_MAP.NOTE_ID = EIP_T_NOTE.NOTE_ID");
+      body.append(" INNER JOIN TURBINE_USER");
+      body
+        .append(" ON CAST(EIP_T_NOTE_MAP.USER_ID AS INT) = TURBINE_USER.USER_ID");
+      body.append(" WHERE TURBINE_USER.FIRST_NAME LIKE #bind($search)");
+      body.append(" OR TURBINE_USER.LAST_NAME LIKE #bind($search)");
+      body.append(" OR TURBINE_USER.FIRST_NAME_KANA LIKE #bind($search)");
+      body.append(" OR TURBINE_USER.LAST_NAME_KANA LIKE #bind($search);");
+
+      SQLTemplate<EipTNoteMap> Query =
+        Database.sql(EipTNoteMap.class, body.toString()).param(
+          "search",
+          "%" + search + "%");
+      List<DataRow> fetch = Query.fetchListAsDataRow();
       List<Integer> resultid = new ArrayList<Integer>();
+      for (DataRow row : fetch) {
+        resultid.add(((Integer) row.get("note_id")).intValue());
+      }
+
+      SelectQuery<EipTNote> q = Database.query(EipTNote.class);
+      q.andQualifier((ex6
+        .orExp(ex5.orExp(ex4.orExp(ex3.orExp(ex2.orExp(ex1)))))));
+      List<EipTNote> queryList = q.fetchList();
       for (EipTNote item : queryList) {
         if (item.getNoteId() != 0 && !resultid.contains(item.getNoteId())) {
           resultid.add(item.getNoteId());
