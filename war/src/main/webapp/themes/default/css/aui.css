@@ -1346,7 +1346,7 @@ button[disabled]:hover {
 	position:relative;
 }
 .auiSearch input.text {
-/*	width:20em;*/
+	min-width:480px;
 }
 .auiSearch input.date {
 	width:7em;
@@ -2320,6 +2320,10 @@ tr.disabled a {
 .filterInputField {
 	float:left;
 	position:relative;
+}
+.filterInputField input.text {
+	width:auto;
+	min-width:auto;
 }
 *:first-child+html .filterInputField {
 	overflow:hidden;
