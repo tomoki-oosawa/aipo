@@ -1345,7 +1345,7 @@ button[disabled]:hover {
 .auiSearch {
 	position:relative;
 }
-.auiSearch input.text {
+.auiSearch input.long {
 	min-width:480px;
 }
 .auiSearch input.date {
