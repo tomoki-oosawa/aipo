@@ -502,6 +502,26 @@ public class Database {
     return url != null && url.startsWith("jdbc:postgresql");
   }
 
+  public static boolean isJdbcMySQL() {
+
+    DataContext dataContext = DataContext.getThreadDataContext();
+    String url = null;
+    try {
+      url =
+        dataContext
+          .getParentDataDomain()
+          .getNode(Database.getDomainName() + "domainNode")
+          .getDataSource()
+          .getConnection()
+          .getMetaData()
+          .getURL();
+    } catch (SQLException e) {
+      logger.warn(e.getMessage(), e);
+    }
+
+    return url != null && url.startsWith("jdbc:mysql");
+  }
+
   protected static DBCPDataSourceFactory createDataSourceFactory() {
     String property =
       System.getProperty("com.aimluck.eip.orm.DataSourceFactory");
@@ -556,6 +576,15 @@ public class Database {
       ctx.begin();
       Transaction.bindThreadTransaction(ctx);
     }
+  }
+
+  public static String castToIntRawColumn(String column) {
+    if (isJdbcMySQL()) {
+      return "CAST(" + column + " AS UNSIGNED)";
+    } else if (isJdbcPostgreSQL()) {
+      return "CAST(" + column + " AS INT)";
+    }
+    return column;
   }
 
   private Database() {

@@ -612,17 +612,18 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
           .likeExp(EipTNote.MESSAGE_PROPERTY, "%" + search + "%");
 
       StringBuilder body = new StringBuilder();
-      body.append("SELECT EIP_T_NOTE_MAP.NOTE_ID");
-      body.append(" FROM EIP_T_NOTE_MAP");
-      body.append(" INNER JOIN EIP_T_NOTE");
-      body.append(" ON EIP_T_NOTE_MAP.NOTE_ID = EIP_T_NOTE.NOTE_ID");
-      body.append(" INNER JOIN TURBINE_USER");
-      body
-        .append(" ON CAST(EIP_T_NOTE_MAP.USER_ID AS INT) = TURBINE_USER.USER_ID");
-      body.append(" WHERE TURBINE_USER.FIRST_NAME LIKE #bind($search)");
-      body.append(" OR TURBINE_USER.LAST_NAME LIKE #bind($search)");
-      body.append(" OR TURBINE_USER.FIRST_NAME_KANA LIKE #bind($search)");
-      body.append(" OR TURBINE_USER.LAST_NAME_KANA LIKE #bind($search);");
+      body.append("SELECT eip_t_note_map.note_id");
+      body.append(" FROM eip_t_note_map");
+      body.append(" INNER JOIN eip_t_note");
+      body.append(" ON eip_t_note_map.note_id = eip_t_note.note_id");
+      body.append(" INNER JOIN turbine_user");
+      body.append(" ON ").append(
+        Database.castToIntRawColumn("eip_t_note_map.user_id")).append(
+        " = turbine_user.user_id");
+      body.append(" WHERE turbine_user.first_name LIKE #bind($search)");
+      body.append(" OR turbine_user.last_name like #bind($search)");
+      body.append(" OR turbine_user.first_name_kana LIKE #bind($search)");
+      body.append(" OR turbine_user.last_name_kana LIKE #bind($search);");
 
       SQLTemplate<EipTNoteMap> Query =
         Database.sql(EipTNoteMap.class, body.toString()).param(
