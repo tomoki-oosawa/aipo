@@ -27,7 +27,7 @@
 #ALcell_formheader($career $jslink $portlet)
 <h3>記事検索</h3>
 #ALtextfield('sword' $!result.SearchWord '90%' 50 'active')
-#ALcell_submit($career 'eventSubmit_doBlog_search_list' "検索する")
+#ALcell_submit($career 'eventSubmit_doBlog_search_list' "検索")
 #ALcell_formfooter()
 <h3>検索結果</h3>
 #if (!$result.List || $!{result.List.size()} <= 0)
