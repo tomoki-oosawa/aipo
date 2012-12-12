@@ -127,5 +127,8 @@
 		<entry parent="Page">
 			<layout position="2" size="-1" />
 		</entry>
+		<entry parent="Cellular">
+			<layout position="3" size="-1"/>
+		</entry>
 	</portlets>
 </portlets>
