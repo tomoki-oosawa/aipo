@@ -405,7 +405,7 @@ public class UserSelectData extends
     data.setPositionName(ALEipUtils.getPositionName(model.getPositionId()));
     data.setDisabled(model.getDisabled());
     data.setHasPhoto("T".equals(model.getHasPhoto()));
-
+    data.setPhotoModified(model.getPhotoModified().getTime());
   }
 
   private String getAliasName(String firstName, String lastName) {

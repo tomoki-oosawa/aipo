@@ -43,7 +43,7 @@ $!result.Detail.Name
 #ALtdcaption($l10n.USERLIST_PHOTO)
 #ALtditemheader()
 #if($!{result.Detail.hasPhoto()})
-<img class="avatar" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}))" alt="$l10n.USERLIST_PHOTO" align="absmiddle" />
+<img class="avatar" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("t",$!{result.Detail.PhotoModified}))" alt="$l10n.USERLIST_PHOTO" align="absmiddle" />
 #else
 $l10n.USERLIST_NOT_CREATE
 #end
