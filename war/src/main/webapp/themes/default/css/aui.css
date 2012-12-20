@@ -376,6 +376,7 @@ table.activityTable tr.unread td {
 .auiPortletHead .inner {
 	background:url(../images/common/portlet_x.gif?20121011) no-repeat left 0;
 	height:45px;
+	position:relative;
 }
 .auiPortletTitle {
 	float:left;
@@ -393,6 +394,7 @@ table.activityTable tr.unread td {
 	min-width:25px;
 	height:32px;
 	padding:13px 10px 0 0;
+	position:absolute;
 }
 .auiPortletTool > div {
 	float:left;
