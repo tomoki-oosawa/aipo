@@ -63,6 +63,9 @@ public class TimelineAction extends ALBaseAction {
 
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();
+    listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p1a-rows")));
 
     prepareService(rundata, context);
 
@@ -104,6 +107,9 @@ public class TimelineAction extends ALBaseAction {
       throws Exception {
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();
+    listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p2a-rows")));
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(20);

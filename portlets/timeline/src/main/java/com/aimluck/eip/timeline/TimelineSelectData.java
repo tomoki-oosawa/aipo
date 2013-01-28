@@ -207,23 +207,6 @@ public class TimelineSelectData extends
             useridList);
       }
 
-      // 件数をセットする．
-      topicSum = list.getTotalCount();
-      // 表示する高さを調節する
-      contentHeight =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p1a-rows"));
-      context.put("contentHeight", contentHeight);
-
-      // 表示する高さを調節する
-      contentHeightMax =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-rows"));
-      context.put("contentHeightMax", contentHeightMax);
       return list;
     } catch (Exception ex) {
       logger.error("timeline", ex);
@@ -252,23 +235,6 @@ public class TimelineSelectData extends
           minId,
           useridList);
 
-      // 件数をセットする．
-      topicSum = list.getTotalCount();
-      // 表示する高さを調節する
-      contentHeight =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p1a-rows"));
-      context.put("contentHeight", contentHeight);
-
-      // 表示する高さを調節する
-      contentHeightMax =
-        Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-rows"));
-      context.put("contentHeightMax", contentHeightMax);
       return list;
     } catch (Exception ex) {
       logger.error("timeline", ex);
@@ -980,5 +946,14 @@ public class TimelineSelectData extends
 
   public boolean isFileUploadable() {
     return isFileUploadable;
+  }
+
+  /**
+   * @param table_colum_num
+   *          セットする table_colum_num
+   */
+  public void setContentHeightMax(int height) {
+    contentHeight = height;
+    contentHeightMax = height;
   }
 }
