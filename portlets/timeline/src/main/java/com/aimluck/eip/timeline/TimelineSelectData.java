@@ -949,8 +949,8 @@ public class TimelineSelectData extends
   }
 
   /**
-   * @param table_colum_num
-   *          セットする table_colum_num
+   * @param ContentHeightMax
+   *          セットする ContentHeightMax
    */
   public void setContentHeightMax(int height) {
     contentHeight = height;
