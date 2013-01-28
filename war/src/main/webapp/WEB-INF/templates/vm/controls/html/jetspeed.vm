@@ -174,7 +174,8 @@ function appsNaviSwitch() {
 			<div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
 				<div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
 				<div class="setting">
-				#if ($!tab.Authority)#foreach ($action in $tab.Actions)
+				#if ($!tab.Authority)
+					#foreach ($action in $tab.Actions)
 					#if (${client} == "IPAD")
 					<a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
 					#else
@@ -190,13 +191,14 @@ function appsNaviSwitch() {
 						</li>
 						#if($!tab.Title.Value != "マイページ")
 						<li class="last">
-							<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
+							<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$!{secid}))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
 						</li>
 						#end
 					</ul>
 					</div>
 					#end
-				#end#end
+				    #end
+				 #end
 				</div>
 			</div>
 		</li>

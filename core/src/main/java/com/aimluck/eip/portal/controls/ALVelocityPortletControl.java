@@ -64,6 +64,7 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALFunction;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -196,6 +197,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_DELETE);
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
     String showDelete = "false";
     if (hasAuthority) {
       showDelete = "true";
@@ -603,6 +606,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
 
     JetspeedRunData jdata = (JetspeedRunData) rundata;
 
