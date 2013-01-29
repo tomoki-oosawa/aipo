@@ -199,73 +199,92 @@ public class UserSelectData extends
       String transWord =
         ALStringUtil.convertHiragana2Katakana(ALStringUtil
           .convertH2ZKana(searchWordValue));
+      transWord = transWord.replace("　", " "); // 全角スペースを半角スペースに変換する
+      String[] transWords = transWord.split(" ");
 
-      Expression exp11 =
-        ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp12 =
-        ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp13 =
-        ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp14 =
-        ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp15 =
-        ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp16 =
-        ExpressionFactory.likeExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-          + "."
-          + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-          + "."
-          + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + searchWord + "%");
-      Expression exp21 =
-        ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp22 =
-        ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp23 =
-        ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
-          + searchWordValue
-          + "%");
-      Expression exp31 =
-        ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-          + transWord
-          + "%");
-      Expression exp32 =
-        ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-          + transWord
-          + "%");
-      Expression exp33 =
-        ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-          + transWord
-          + "%");
-      Expression exp34 =
-        ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-          + transWord
-          + "%");
-      Expression exp35 =
-        ExpressionFactory.likeExp(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-          + "."
-          + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-          + "."
-          + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
-      if (searchWordValue != null && !"".equals(searchWordValue)) {
-        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
-          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
+      for (int i = 0; i < transWords.length; i++) {
+        Expression exp11 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp12 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp13 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp14 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp15 =
+          ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp16 =
+          ExpressionFactory.likeExp(
+            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+              + "."
+              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+              + "."
+              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            "%" + searchWord + "%");
+        Expression exp21 =
+          ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp22 =
+          ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp23 =
+          ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        Expression exp31 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp32 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp33 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp34 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp35 =
+          ExpressionFactory.likeExp(
+            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+              + "."
+              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+              + "."
+              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            "%" + transWords[i] + "%");
+        if (searchWordValue != null && !"".equals(searchWordValue)) {
+          query.andQualifier(exp11
+            .orExp(exp12)
+            .orExp(exp13)
+            .orExp(exp14)
+            .orExp(exp15)
+            .orExp(exp16)
+            .orExp(exp21)
+            .orExp(exp22)
+            .orExp(exp23)
+            .orExp(exp31)
+            .orExp(exp32)
+            .orExp(exp33)
+            .orExp(exp34)
+            .orExp(exp35));
+        }
+        query.distinct();
       }
-      query.distinct();
     }
     return query;
   }
