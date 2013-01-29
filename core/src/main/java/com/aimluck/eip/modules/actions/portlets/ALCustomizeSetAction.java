@@ -269,7 +269,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
     if ("add".equals(mode)) // build context for add mode
     {
-      ALEipUtils.CheckAclPermissionForCustomize(
+      ALEipUtils.checkAclPermissionForCustomize(
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
@@ -855,7 +855,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
   /** Updates the customized portlet entry */
   public void doLayout(RunData rundata, Context context) {
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       rundata,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);

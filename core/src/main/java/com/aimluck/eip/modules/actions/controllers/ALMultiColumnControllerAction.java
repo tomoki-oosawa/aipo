@@ -456,7 +456,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     JetspeedRunData jdata = (JetspeedRunData) data;
 
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_DELETE);
@@ -514,7 +514,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doLeft(RunData data, Context context) {
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
@@ -539,7 +539,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doRight(RunData data, Context context) {
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
@@ -564,7 +564,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doUp(RunData data, Context context) {
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
@@ -589,7 +589,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   @SuppressWarnings({ "unchecked", "rawtypes" })
   public void doDown(RunData data, Context context) {
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);

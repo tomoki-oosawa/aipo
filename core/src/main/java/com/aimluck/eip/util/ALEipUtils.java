@@ -1842,7 +1842,7 @@ public class ALEipUtils {
    * 
    * @return
    */
-  public static boolean CheckAclPermissionForCustomize(RunData rundata,
+  public static boolean checkAclPermissionForCustomize(RunData rundata,
       Context context, int defineAclType) {
     try {
       if (defineAclType == 0) {

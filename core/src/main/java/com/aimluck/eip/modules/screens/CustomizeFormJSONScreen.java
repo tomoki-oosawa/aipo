@@ -211,7 +211,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
 
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       rundata,
       context,
       ALAccessControlConstants.VALUE_ACL_DELETE);
@@ -288,7 +288,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
 
     // アクセス権限のチェック
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       rundata,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
@@ -569,7 +569,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
   /** Updates the customized portlet entry */
   private void setController(RunData rundata, Context context, Portlets portlets) {
-    ALEipUtils.CheckAclPermissionForCustomize(
+    ALEipUtils.checkAclPermissionForCustomize(
       rundata,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
