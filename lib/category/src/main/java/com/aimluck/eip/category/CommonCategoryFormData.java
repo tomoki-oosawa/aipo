@@ -246,7 +246,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
       boolean authority_edit =
         CommonCategoryUtils
-          .CheckPermission(
+          .checkPermission(
             rundata,
             context,
             ALAccessControlConstants.VALUE_ACL_UPDATE,
@@ -307,7 +307,7 @@ public class CommonCategoryFormData extends ALAbstractFormData {
 
       boolean authority_delete =
         CommonCategoryUtils
-          .CheckPermission(
+          .checkPermission(
             rundata,
             context,
             ALAccessControlConstants.VALUE_ACL_DELETE,

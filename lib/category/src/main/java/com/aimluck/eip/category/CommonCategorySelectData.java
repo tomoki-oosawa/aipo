@@ -86,7 +86,7 @@ public class CommonCategorySelectData extends
 
     authority_list =
       CommonCategoryUtils
-        .CheckPermission(
+        .checkPermission(
           rundata,
           context,
           ALAccessControlConstants.VALUE_ACL_LIST,
@@ -94,7 +94,7 @@ public class CommonCategorySelectData extends
 
     authority_detail =
       CommonCategoryUtils
-        .CheckPermission(
+        .checkPermission(
           rundata,
           context,
           ALAccessControlConstants.VALUE_ACL_DETAIL,
@@ -102,7 +102,7 @@ public class CommonCategorySelectData extends
 
     authority_edit =
       CommonCategoryUtils
-        .CheckPermission(
+        .checkPermission(
           rundata,
           context,
           ALAccessControlConstants.VALUE_ACL_UPDATE,
@@ -110,7 +110,7 @@ public class CommonCategorySelectData extends
 
     authority_delete =
       CommonCategoryUtils
-        .CheckPermission(
+        .checkPermission(
           rundata,
           context,
           ALAccessControlConstants.VALUE_ACL_DELETE,

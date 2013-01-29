@@ -133,7 +133,7 @@ public class CommonCategoryUtils {
    * 
    * @return
    */
-  public static boolean CheckPermission(RunData rundata, Context context,
+  public static boolean checkPermission(RunData rundata, Context context,
       int defineAclType, String pfeature) {
 
     if (defineAclType == 0) {
