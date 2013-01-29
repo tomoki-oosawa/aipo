@@ -114,18 +114,19 @@ public class RegistryEntryListBox extends VelocityParameterPresentationStyle {
     String mediaType = jdata.getProfile().getMediaType();
     String regName = (String) getParm(OPTION_REGISTRY, Registry.PORTLET);
     boolean sort =
-      (new Boolean((String) getParm(OPTION_SORT, "true"))).booleanValue();
+      (Boolean.valueOf((String) getParm(OPTION_SORT, "true"))).booleanValue();
     boolean selectHidden =
-      (new Boolean((String) getParm(OPTION_SELECT_HIDDEN, "false")))
+      (Boolean.valueOf((String) getParm(OPTION_SELECT_HIDDEN, "false")))
         .booleanValue();
     String nullIfEmpty = (String) getParm(OPTION_NULL_IF_EMPTY, "true");
     boolean setLabel =
-      (new Boolean((String) getParm(OPTION_SET_LABEL, "false"))).booleanValue();
+      (Boolean.valueOf((String) getParm(OPTION_SET_LABEL, "false")))
+        .booleanValue();
     boolean disabledIfWML =
-      (new Boolean((String) getParm(OPTION_DISABLED_IF_WML, "false")))
+      (Boolean.valueOf((String) getParm(OPTION_DISABLED_IF_WML, "false")))
         .booleanValue();
     boolean selectIfSimple =
-      (new Boolean((String) getParm(OPTION_SELECT_IF_SIMPLE, "false")))
+      (Boolean.valueOf((String) getParm(OPTION_SELECT_IF_SIMPLE, "false")))
         .booleanValue();
     String defaultEntry = null;
 
@@ -149,7 +150,7 @@ public class RegistryEntryListBox extends VelocityParameterPresentationStyle {
         Parameter simpleParam =
           ((PortletInfoEntry) entry).getParameter("simple");
         if (simpleParam != null) {
-          selected = new Boolean(simpleParam.getValue()).booleanValue();
+          selected = Boolean.valueOf(simpleParam.getValue()).booleanValue();
         } else {
           selected = false;
         }
@@ -162,6 +163,7 @@ public class RegistryEntryListBox extends VelocityParameterPresentationStyle {
     // Perform optional sort of list box items
     if (sort) {
       Collections.sort(list, new Comparator<RegistryEntry>() {
+        @Override
         public int compare(RegistryEntry o1, RegistryEntry o2) {
           String t1 =
             ((o1).getTitle() != null) ? (o1).getTitle() : (o1).getName();
