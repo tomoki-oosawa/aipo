@@ -77,7 +77,7 @@ public class PsmlUtils {
 
   public static final String ELEMENT_PARAMETER = "parameter";
 
-  public static String ParsePsml(String psml) throws Exception {
+  public static String parsePsml(String psml) throws Exception {
     try {
       Document dom = loadXMLFrom(psml);
 

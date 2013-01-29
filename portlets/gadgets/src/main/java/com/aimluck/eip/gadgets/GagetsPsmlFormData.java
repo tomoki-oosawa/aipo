@@ -208,7 +208,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
     try {
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsml(psml);
       if (psml == null) {
         return false;
       }
@@ -239,7 +239,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
         DBUtils.portletsToBytes(doc.getPortlets(), PsmlUtils
           .getMapping(rundata));
       psml = new String(psmlByte);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsml(psml);
       if (psml == null) {
         return false;
       }

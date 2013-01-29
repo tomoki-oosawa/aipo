@@ -204,7 +204,7 @@ public class PsmlFormData extends ALAbstractFormData {
     try {
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsml(psml);
       psml = PsmlUtils.PSMLEncode(psml);
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
 
@@ -232,7 +232,7 @@ public class PsmlFormData extends ALAbstractFormData {
         DBUtils.portletsToBytes(doc.getPortlets(), PsmlUtils
           .getMapping(rundata));
       psml = new String(psmlByte);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsml(psml);
       psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);
@@ -255,7 +255,7 @@ public class PsmlFormData extends ALAbstractFormData {
     try {
       String psml;
       psml = PsmlDBUtils.getMyHtmlPsml(rundata);
-      psml = PsmlUtils.ParsePsml(psml);
+      psml = PsmlUtils.parsePsml(psml);
       psml = PsmlUtils.PSMLEncode(psml);
 
       PsmlDBUtils.checkAndFixInconsistency(PsmlUtils.TEMPLATE_NAME);

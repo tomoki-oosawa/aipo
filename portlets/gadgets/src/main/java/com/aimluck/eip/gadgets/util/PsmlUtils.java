@@ -83,7 +83,7 @@ public class PsmlUtils {
   public static final String DEFAULT_SCHEDULE_PAGE_NAME =
     "defaultSchedule.psml";
 
-  public static String ParsePsml(String psml) throws Exception {
+  public static String parsePsml(String psml) throws Exception {
     try {
       Document dom = loadXMLFrom(psml);
       if (dom == null) {
