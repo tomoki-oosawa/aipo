@@ -58,7 +58,7 @@
 
 	#if (${client} == "IPAD")
 	dojo.query(".scroll_width").style("width", "17px");
-	#if($!top_form=='simple')
+	#if("$!top_form" == 'simple')
 	dojo.query(".scroll_width").style("width", "3%");
  	#end
 	#end
