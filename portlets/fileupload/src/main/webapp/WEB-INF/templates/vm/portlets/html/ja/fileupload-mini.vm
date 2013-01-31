@@ -21,7 +21,7 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doFileupload_insert")
 #set($tabs = [["ファイルアップロード", "",""]])
-#if($edit_str=="edit")
+#if(($edit_str) && ("$edit_str" == "edit"))
 #set ($upload_str = "ファイルを変更する")
 #else
 #set ($upload_str = "ファイルを追加する")
