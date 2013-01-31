@@ -313,8 +313,10 @@ $!{record.TermResultData.Name}
 #set ($col_span = $col_span - 1)
 ##end
 #else
-<td class="term${color_style}${color_style_holiday}${color_style_othermonth}" #if($col_span > 0 ) style="display:none" #else style="display:" #end></td>
+<td class="term${color_style}${color_style_holiday}${color_style_othermonth}" #if(($col_span) && ($col_span > 0 )) style="display:none" #else style="display:" #end></td>
+#if(($col_span))
 #set ($col_span = $col_span - 1)
+#end
 #end
 #end
 </tr>
