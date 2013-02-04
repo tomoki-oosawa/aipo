@@ -236,9 +236,12 @@ public class WorkflowFormData extends ALAbstractFormData {
             query1.setQualifier(exp1);
 
             List<EipTWorkflowRoute> list1 = query1.fetchList();
+            String route = "";
 
-            EipTWorkflowRoute record = list1.get(0);
-            String route = record.getRoute();
+            if (list1 != null && list1.size() > 0) {
+              EipTWorkflowRoute record = list1.get(0);
+              route = record.getRoute();
+            }
 
             if (!"".equals(route)) {
               StringTokenizer st = new StringTokenizer(route, ",");
