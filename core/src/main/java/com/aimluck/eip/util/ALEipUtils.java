@@ -744,13 +744,13 @@ public class ALEipUtils {
    *          ユーザID
    * @return
    */
-  public static ALBaseUser getBaseUser(int userid) {
+  public static ALBaseUser getBaseUser(Integer userid) {
+    if (userid == null) {
+      logger.debug("Empty ID...");
+      return null;
+    }
     String uid = String.valueOf(userid);
     try {
-      if (uid == null) {
-        logger.debug("Empty ID...");
-        return null;
-      }
       return (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
     } catch (Exception ex) {
       logger.error("ALEipUtils.getBaseUser", ex);
