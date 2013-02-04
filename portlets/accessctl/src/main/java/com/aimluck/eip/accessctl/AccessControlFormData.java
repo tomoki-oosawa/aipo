@@ -317,7 +317,8 @@ public class AccessControlFormData extends ALAbstractFormData {
         rolequery.andQualifier(exp13);
       }
 
-      if (rolequery.fetchList().size() != 0) {
+      List<EipTAclRole> roleList = rolequery.fetchList();
+      if (roleList != null && roleList.size() != 0) {
         msgList.add(ALLocalizationUtils.getl10n("ACCESSCTL_ALERT_OTHER_ROLE"));
       }
     } catch (Exception ex) {
