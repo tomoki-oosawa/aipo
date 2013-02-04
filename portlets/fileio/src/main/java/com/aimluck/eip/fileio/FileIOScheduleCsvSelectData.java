@@ -292,7 +292,6 @@ public class FileIOScheduleCsvSelectData extends
       date.setValue(formData.getStartDateTime().toString());
       data.setStartDate(date.getValue());
     } catch (Exception e) {
-      data.setStartDate(null);
       errmsg.add("start date is null");
     }
 
@@ -300,7 +299,6 @@ public class FileIOScheduleCsvSelectData extends
       date.setValue(formData.getEndDateTime().toString());
       data.setEndDate(date.getValue());
     } catch (Exception e) {
-      data.setEndDate(null);
       errmsg.add("end date is null");
     }
 
