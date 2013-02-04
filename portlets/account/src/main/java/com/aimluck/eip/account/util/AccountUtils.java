@@ -401,7 +401,9 @@ public class AccountUtils {
             }
           } else {
             // 次の人が見つからなければ、最後まで行ったことになるので終了
-            workflow_request_map.getEipTWorkflowRequest().setProgress("A");
+            if (workflow_request_map.getEipTWorkflowRequest() != null) {
+              workflow_request_map.getEipTWorkflowRequest().setProgress("A");
+            }
             break;
           }
         }
