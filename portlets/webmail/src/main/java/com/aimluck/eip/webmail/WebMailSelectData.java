@@ -507,10 +507,14 @@ public class WebMailSelectData extends
    * 
    * @return
    */
-  public int getUnReadMailSumByFolderId(int folder_id) {
-    int result;
+  public int getUnReadMailSumByFolderId(Integer folder_id) {
+    int result = 0;
     try {
-      result = unreadMailSumMap.get(folder_id);
+      if (folder_id != null) {
+        if (unreadMailSumMap.containsKey(folder_id)) {
+          result = unreadMailSumMap.get(folder_id);
+        }
+      }
     } catch (Exception e) {
       logger.error("[WebMailSelectData]", e);
       result = 0;
