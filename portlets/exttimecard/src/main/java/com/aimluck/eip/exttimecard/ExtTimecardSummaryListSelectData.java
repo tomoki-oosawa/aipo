@@ -32,7 +32,6 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -222,11 +221,6 @@ public class ExtTimecardSummaryListSelectData extends
     try {
       // スケジュールを表示するユーザ ID をセッションに設定する．
       String userFilter = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
-      if (userFilter == null || userFilter.equals("")) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        userFilter = portlet.getPortletConfig().getInitParameter("p3a-user");
-      }
-
       if (userFilter != null && (!userFilter.equals(""))) {
         int paramId = -1;
         try {
