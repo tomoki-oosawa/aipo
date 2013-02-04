@@ -247,8 +247,10 @@ public class ExtTimecardSystemMapSelectData extends
       rd.setUserId(userid);
       rd.setName(user.getAliasName().getValue());
       rd.setLoginName(user.getName().toString());
-      rd.setSystemId(record.getEipTExtTimecardSystem().getSystemId());
-      rd.setSystemName(record.getEipTExtTimecardSystem().getSystemName());
+      if (record.getEipTExtTimecardSystem() != null) {
+        rd.setSystemId(record.getEipTExtTimecardSystem().getSystemId());
+        rd.setSystemName(record.getEipTExtTimecardSystem().getSystemName());
+      }
       rd.setPostNameList(AccountUtils.getPostBeanList(userid));
 
       return rd;
