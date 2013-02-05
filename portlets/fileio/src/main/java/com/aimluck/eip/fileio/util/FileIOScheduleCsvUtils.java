@@ -182,11 +182,14 @@ public class FileIOScheduleCsvUtils {
 
   public static boolean isSpan(ALDateTimeField startDateTime,
       ALDateTimeField endDateTime) {
-    if (Integer.parseInt(startDateTime.getHour()) == 0
-      && Integer.parseInt(startDateTime.getMinute()) == 0
-      && Integer.parseInt(endDateTime.getHour()) == 0
-      && Integer.parseInt(endDateTime.getMinute()) == 0) {
-      return true;
+    try {
+      if (Integer.parseInt(startDateTime.getHour()) == 0
+        && Integer.parseInt(startDateTime.getMinute()) == 0
+        && Integer.parseInt(endDateTime.getHour()) == 0
+        && Integer.parseInt(endDateTime.getMinute()) == 0) {
+        return true;
+      }
+    } catch (NumberFormatException e) {
     }
     return false;
   }
