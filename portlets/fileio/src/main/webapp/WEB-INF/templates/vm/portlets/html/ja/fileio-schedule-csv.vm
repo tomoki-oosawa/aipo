@@ -41,7 +41,7 @@ function event_account_csv_page(button,page) {
 }
 
 function event_account_csv_regist(button) {
-  if(confirm('$l10n.FILEIO_ADD_BULK_ADDRESS_BOOK')) {
+  if(confirm('$l10n.FILEIO_ADD_BULK_SCHEDULE')) {
     disableButton(button.form);
     button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1';
     button.form.submit();
@@ -411,7 +411,7 @@ $!record.EndDate.toString($l10n.FILEIO_PERIOD)
 #elseif($result.getErrorCount() > 0)
 #ALtdcellAtt("#ALauibutton('eventSubmit_doSchedule_insert_csv' $l10n.FILEIO_REGISTER_ONLY_NORMAL_PART 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
 #else
-#ALtdcellAtt("#ALauibutton('eventSubmit_doSchedule_insert_csv' $l10n.FILEIO_RESISTER 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
+#ALtdcellAtt("#ALauibutton('eventSubmit_doSchedule_insert_csv' $l10n.FILEIO_DO_REGISTER 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
 #end
 </tr>
 </table>
