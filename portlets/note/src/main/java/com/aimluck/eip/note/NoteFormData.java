@@ -819,7 +819,7 @@ public class NoteFormData extends ALAbstractFormData {
           .getServiceByName(LocalizationService.SERVICE_NAME);
       String lang = locService.getLocale(rundata).getLanguage();
       out = new StringWriter();
-      if (lang != null && !lang.equals("en")) {
+      if (lang != null && lang.equals("ja")) {
         service.handleRequest(context, "portlets/mail/"
           + lang
           + "/note-notification-mail.vm", out);
