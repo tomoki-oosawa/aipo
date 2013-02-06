@@ -1735,10 +1735,10 @@ table.auiCalendar .selected a {
 	border-bottom:solid 1px #eee;
 }
 .entryBody {
-	margin-left:60px;
-}
-.dojoDndItem .entryBody {
 	margin-left:40px;
+}
+#auiContentsArea .entryBody {
+	margin-left:60px;
 }
 .entryHeader {
 	padding:0 0 1em 0;
