@@ -328,7 +328,7 @@ public class ScheduleSelectData extends
         if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
           statusList.put(map.getUserId(), map.getStatus());
           // 表示するユーザーの場合
-          if (map.getUserId().intValue() == userid) {
+          if (map.getUserId().intValue() == loginuserid) {
             // 仮スケジュールかどうか
             rd.setTmpreserve("T".equals(map.getStatus()));
             // 確定スケジュールかどうか
@@ -498,7 +498,8 @@ public class ScheduleSelectData extends
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());
       // ログインユーザーID
-      if (ignoreViewdate) {
+      if (ignoreViewdate
+        || ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(type)) {
         rd.setLoginuser(false);
         for (ALEipUser member : members) {
           ALNumberField memberId = member.getUserId();
