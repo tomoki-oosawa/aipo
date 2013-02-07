@@ -283,7 +283,9 @@ public abstract class ALSmtpMailSender implements ALMailSender {
       throws Exception {
 
     // メールの形式をセット
-    msg.setHeader(ALLocalMailMessage.CONTENT_TYPE, "text/plain");
+    msg.setHeader(
+      ALLocalMailMessage.CONTENT_TYPE,
+      "text/plain; charset=ISO-2022-JP");
     msg.setHeader(ALLocalMailMessage.CONTENT_TRANSFER_ENCORDING, "7bit");
     msg.setHeader(
       ALLocalMailMessage.X_Mailer,
