@@ -389,7 +389,7 @@ $!{record.ToDoResultData.TodoName}
 #ALtdheadAtt("$record3.FacilityName" "$rowspanstr")
 #foreach($record in ${result.getFacilityContainer($record3.FacilityId.Value).DayList})
 #if($record.ScheduleList.size() > 0 ||$!{result.hasAuthorityFacilityInsert()})
-	#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
+	#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId})")
 	#set($onclick="onclick='aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)'")
 #end
 

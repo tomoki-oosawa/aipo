@@ -424,7 +424,7 @@ $!{record.ToDoResultData.TodoName}
 #if(! ${record2.isDummy()})
 #if($record2.isShowDetail())
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid', $record3.FacilityId.Value)")
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid',$!{record3.FacilityId})")
 <div class="calendarScheduleDiv">
 
 <div class="small">${record2.Date}</div>
