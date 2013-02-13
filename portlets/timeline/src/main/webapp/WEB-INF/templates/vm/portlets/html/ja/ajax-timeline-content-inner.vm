@@ -49,7 +49,7 @@
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
 							#if ($attachmentUrl.isThumbnailFlag())
-							<img class="width_thumbs" onload="aipo.timeline.resizeThumbnailTag(this);" border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})" />
+							<img class="width_thumbs" onload="if(aipo && aipo.timeline && aipo.timeline.resizeThumbnailTag){aipo.timeline.resizeThumbnailTag(this);}else{dojo.connect(null,'onload',this,function(){aipo.timeline.resizeThumbnailTag(this);});} " border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})" />
 							#end
 						</div>
 						<div class="tlClipContents">
