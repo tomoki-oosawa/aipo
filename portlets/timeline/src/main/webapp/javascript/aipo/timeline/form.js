@@ -608,10 +608,14 @@ aipo.timeline.displayIndicatorNotViewPage = function(portletId, indicator_id){
 }
 
 aipo.timeline.resizeThumbnailTag = function(elem){
-    if (elem.hasOwnProperty('naturalWidth')){
-        if (elem.naturalWidth < 86) {        
-          dojo.style(elem, 'width', elem.naturalWidth + 'px');
-          dojo.style(elem, 'padding', '0 ' + (86 - elem.naturalWidth)/2 + 'px');
-        } 
-      }
+	function getImage(src){
+		var img=new Image();
+		img.src=src;
+		return img;
+	}
+	var img=getImage(elem.src);
+    if (img.width < 86) {
+          dojo.style(elem, 'width', img.width + 'px');
+          dojo.style(elem, 'padding', '0 ' + (86 - img.width)/2 + 'px');
+    }
 };
