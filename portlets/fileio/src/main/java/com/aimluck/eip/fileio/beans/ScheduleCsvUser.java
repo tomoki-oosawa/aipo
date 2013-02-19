@@ -162,12 +162,13 @@ public class ScheduleCsvUser {
         Operations.eq(TurbineUser.DISABLED_PROPERTY, "F")).fetchSingle();
 
     if (user == null) {
-
       user =
         Database.query(TurbineUser.class).where(
           Operations.eq(TurbineUser.EMAIL_PROPERTY, name.getValue())).where(
           Operations.eq(TurbineUser.DISABLED_PROPERTY, "F")).fetchSingle();
       if (user == null) {
+        name.setValue("");// error化
+        alias_name.setValue("---");
         throw new Exception();
       } else {
         this.name.limitMaxLength(50);
@@ -189,6 +190,7 @@ public class ScheduleCsvUser {
           .getValue()))).fetchSingle();
 
     if (user == null) {
+
       throw new Exception();
     }
 
