@@ -1378,7 +1378,7 @@ public class WorkflowUtils {
     String lang = locService.getLocale(rundata).getLanguage();
     StringWriter writer = new StringWriter();
     try {
-      if (lang != null && !lang.equals("en")) {
+      if (lang != null && lang.equals("ja")) {
         Template template =
           Velocity.getTemplate("portlets/mail/"
             + lang
@@ -1478,7 +1478,7 @@ public class WorkflowUtils {
     String lang = locService.getLocale(rundata).getLanguage();
     StringWriter writer = new StringWriter();
     try {
-      if (lang != null && !lang.equals("en")) {
+      if (lang != null && lang.equals("ja")) {
         Template template =
           Velocity.getTemplate("portlets/mail/"
             + lang
