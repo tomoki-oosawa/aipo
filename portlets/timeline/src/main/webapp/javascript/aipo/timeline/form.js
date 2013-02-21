@@ -619,3 +619,22 @@ aipo.timeline.resizeThumbnailTag = function(elem){
           dojo.style(elem, 'padding', '0 ' + (86 - img.width)/2 + 'px');
     }
 };
+
+aipo.timeline.inactiveFileAttachments=function(pid){
+	//ファイルアップロードのあるダイアログと競合するためidを一時的に変更
+	var obj=dojo.byId("attachments_"+pid);
+	if(obj)obj.id="attachments_"+pid+"-dialog";
+
+	obj=dojo.byId("folderName_"+pid);
+	if(obj)obj.id="folderName_"+pid+"-dialog";
+};
+
+aipo.timeline.activeFileAttachments=function(pid){
+	//dialogを閉じた時に呼び出される。
+	//idを元に戻す
+	var obj=dojo.byId("attachments_"+pid+"-dialog");
+	if(obj)obj.id="attachments_"+pid;
+
+	obj=dojo.byId("folderName_"+pid+"-dialog");
+	if(obj)obj.id="folderName_"+pid;
+};

@@ -198,7 +198,7 @@
 	<div class="name">$!record.OwnerName</div>
 	#end
 	<div class="body">
-		<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true&userid=$!{record.OwnerId}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$record2.PreviewNote</a>
+		<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true&userid=$!{record.OwnerId}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$record2.PreviewNote</a>
 	</div>
 	<div class="time">
 		$!{record2.UpdateDate}
