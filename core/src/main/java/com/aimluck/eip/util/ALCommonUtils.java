@@ -434,4 +434,8 @@ public class ALCommonUtils {
     }
     return CACHE_BUST;
   }
+
+  public static boolean isAndroidBrowser(RunData rundata) {
+    return ALEipUtils.isAndroidBrowser(rundata);
+  }
 }
