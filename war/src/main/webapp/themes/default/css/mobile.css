@@ -355,6 +355,7 @@ td.container {
 	padding:0;
 	background:none;
 	overflow:hidden;
+	background:#333333;
 }
 #appsNavigation a {
 	text-decoration:none;
@@ -503,11 +504,9 @@ td.container {
 --------------------------------------------------*/
 .auiSearch {
 }
-
 .auiSearch input.long {
 	min-width:0 !important;
 }
-
 .auiSearch input.text {
 }
 .auiButtonSearch {
