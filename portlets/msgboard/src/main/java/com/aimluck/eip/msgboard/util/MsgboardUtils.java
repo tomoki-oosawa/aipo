@@ -1199,7 +1199,7 @@ public class MsgboardUtils {
    * @param recipients
    */
   public static void createNewTopicActivity(EipTMsgboardTopic topic,
-      String loginName, List<String> recipient) {
+      String loginName, List<String> recipient, EipTMsgboardTopic childTopic) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Msgboard", topic.getTopicId(), 1f);
     boolean isDeletePrev =
@@ -1216,7 +1216,7 @@ public class MsgboardUtils {
           "&entityid=").append(topic.getTopicId()).toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
-        .withUserId(topic.getOwnerId())
+        .withUserId(childTopic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipient)
@@ -1234,7 +1234,7 @@ public class MsgboardUtils {
           "&entityid=").append(topic.getTopicId()).toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
-        .withUserId(topic.getOwnerId())
+        .withUserId(childTopic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withTitle(b.toString())
@@ -1247,12 +1247,12 @@ public class MsgboardUtils {
   }
 
   public static void createNewCommentActivity(EipTMsgboardTopic topic,
-      String loginName) {
-    createNewCommentActivity(topic, loginName, null);
+      String loginName, EipTMsgboardTopic childTopic) {
+    createNewCommentActivity(topic, loginName, null, childTopic);
   }
 
   public static void createNewCommentActivity(EipTMsgboardTopic topic,
-      String loginName, List<String> recipients) {
+      String loginName, List<String> recipients, EipTMsgboardTopic childTopic) {
     String title =
       new StringBuilder("掲示板「")
         .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
@@ -1266,7 +1266,7 @@ public class MsgboardUtils {
     if (recipients != null && recipients.size() > 0) {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
-        .withUserId(topic.getOwnerId())
+        .withUserId(childTopic.getOwnerId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
@@ -1275,7 +1275,7 @@ public class MsgboardUtils {
         .withExternalId(String.valueOf(topic.getTopicId())));
     } else {
       ALActivityService.create(new ALActivityPutRequest()
-        .withUserId(topic.getOwnerId())
+        .withUserId(childTopic.getOwnerId())
         .withAppId("Msgboard")
         .withLoginName(loginName)
         .withPortletParams(portletParams)

@@ -364,7 +364,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         // 更新情報
         MsgboardUtils.createNewCommentActivity(parenttopic, user
           .getName()
-          .getValue());
+          .getValue(), topic);
         // あなた宛のお知らせ
         List<String> recipient = new ArrayList<String>();
         for (int i = 0; i < memberList.size(); i++) {
@@ -372,7 +372,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         }
         MsgboardUtils.createNewTopicActivity(parenttopic, user
           .getName()
-          .toString(), recipient);
+          .toString(), recipient, topic);
       } else {
         List<Integer> userIds =
           MsgboardUtils.getWhatsNewInsertList(rundata, topic
@@ -396,7 +396,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
           // 更新情報
           MsgboardUtils.createNewCommentActivity(parenttopic, user
             .getName()
-            .getValue(), recipients);
+            .getValue(), recipients, topic);
           // あなた宛のお知らせ
           List<String> recipient = new ArrayList<String>();
           for (int i = 0; i < memberList.size(); i++) {
@@ -404,7 +404,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
           }
           MsgboardUtils.createNewTopicActivity(parenttopic, user
             .getName()
-            .toString(), recipient);
+            .toString(), recipient, topic);
         }
       }
       // 添付ファイル保存先のフォルダを削除
