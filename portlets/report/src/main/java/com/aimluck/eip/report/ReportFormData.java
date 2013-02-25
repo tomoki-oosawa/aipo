@@ -215,7 +215,7 @@ public class ReportFormData extends ALAbstractFormData {
         if (startDate.toString().equals("")) {
           Calendar cal = Calendar.getInstance();
           cal.set(Calendar.MINUTE, (int) Math
-            .floor(cal.get(Calendar.MINUTE) / 5) * 5); // 5分刻みに調整
+            .floor(cal.get(Calendar.MINUTE) / 5.0) * 5); // 5分刻みに調整
           startDate.setValue(cal.getTime());
           endDate.setValue(cal.getTime());
         } else {
