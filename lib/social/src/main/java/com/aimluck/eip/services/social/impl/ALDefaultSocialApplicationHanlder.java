@@ -811,9 +811,6 @@ public class ALDefaultSocialApplicationHanlder extends
 
       // priority は 0 <= 1 の間
       Float priority = request.getPriority();
-      if (priority == null) {
-        priority = 0f;
-      }
       if (priority < 0) {
         priority = 0f;
       }
