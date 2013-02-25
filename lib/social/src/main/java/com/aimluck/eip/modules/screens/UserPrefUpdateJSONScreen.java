@@ -43,7 +43,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class UserPrefUpdateJSONScreen extends ALJSONScreen {
 
@@ -98,7 +98,7 @@ public class UserPrefUpdateJSONScreen extends ALJSONScreen {
                 .arrayToString(testArray, ",");
           } else {
             newValue = String.valueOf(value);
-            if (newValue == null) {
+            if ("null".equals(newValue)) {
               newValue = "";
             }
           }
