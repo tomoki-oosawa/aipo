@@ -219,7 +219,8 @@ public class EventlogSelectData extends
       rd.setUserFullName(user == null ? "" : new StringBuffer().append(
         user.getLastName()).append(" ").append(user.getFirstName()).toString());
 
-      if (user.getLastName().trim().equals("")
+      if (user != null
+        && user.getLastName().trim().equals("")
         && user.getFirstName().trim().equals("")) {
         rd.setUserFullName(record.getTurbineUser().getEmail());
       }
