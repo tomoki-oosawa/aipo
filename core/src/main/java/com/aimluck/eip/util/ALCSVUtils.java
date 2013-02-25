@@ -152,7 +152,7 @@ public class ALCSVUtils {
       if (i != 0) {
         buf.append(",");
       }
-      buf.append(arg.get(i).toString());
+      buf.append(arg.get(i));
     }
     str = buf.toString();
     return str;
