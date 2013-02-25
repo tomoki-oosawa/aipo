@@ -2080,16 +2080,9 @@ public class ScheduleUtils {
     }
 
     // 開始日時＆終了日時
-    if (is_span) {
-      if (end_date.getValue().before(start_date.getValue())) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
-      }
-    } else {
-      if (end_date.getValue().before(start_date.getValue())) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
-      }
+    if (end_date.getValue().before(start_date.getValue())) {
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
     }
 
     if (is_repeat) {
