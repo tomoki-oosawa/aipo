@@ -387,13 +387,21 @@ aipo.timeline.increaseLikeValue = function(timelineId){
 
 aipo.timeline.increaseComLikeValue = function(timelineId){
 	var a = dojo.query("#likeCount_" + timelineId)[0];
-	var likeLinkString = a.innerText;
+	if (dojo.isFF > 0) {
+		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
+	} else {
+		var likeLinkString = a.innerText;
+	}
 	var likeNum = parseInt(likeLinkString) + 1;
 	if(a.style.display == 'none'){
 		a.style.display = '';
 		likeNum = 1;
 	}
-	a.innerHTML = a.innerHTML.replace(a.innerText, likeNum);
+	if (dojo.isFF > 0) {
+		a.innerHTML = a.innerHTML.replace(a.textContent, likeNum); // FirefoxではinnerTextが動作しないため
+	} else {
+		a.innerHTML = a.innerHTML.replace(a.innerText, likeNum);
+	}
 }
 
 aipo.timeline.decreaseLikeValue = function(timelineId){
@@ -416,12 +424,20 @@ aipo.timeline.decreaseLikeValue = function(timelineId){
 
 aipo.timeline.decreaseComLikeValue = function(timelineId){
 	var a = dojo.query("#likeCount_" + timelineId)[0];
-	var likeLinkString = a.innerText;
+	if (dojo.isFF > 0) {
+		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
+	} else {
+		var likeLinkString = a.innerText;
+	}
 	var likeNum = parseInt(likeLinkString) - 1;
 	if(likeNum <= 0){
 		a.style.display = 'none';
 	}
-	a.innerHTML = a.innerHTML.replace(a.innerText, likeNum);
+	if (dojo.isFF > 0) {
+		a.innerHTML = a.innerHTML.replace(a.textContent, likeNum); // FirefoxではinnerTextが動作しないため
+	} else {
+		a.innerHTML = a.innerHTML.replace(a.innerText, likeNum);
+	}
 }
 
 aipo.timeline.onListReceiveMessage = function(msg) {
