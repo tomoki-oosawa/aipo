@@ -20,6 +20,7 @@
 package com.aimluck.eip.exttimecard;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -30,6 +31,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -80,6 +82,10 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
       }
 
       for (EipTExtTimecardSystem record : list) {
+        // 対応するタイムカードデータを取得
+        // 削除する前にタイムカードデータの勤務形態をとりあえず通常に変更
+        setAllTimecardMapDefault(record);
+        // 勤務形態の削除
         Database.delete(record);
 
         // イベントログに保存
@@ -97,4 +103,27 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
     return true;
   }
 
+  private void setAllTimecardMapDefault(EipTExtTimecardSystem work) {
+    Expression exp1 =
+      ExpressionFactory.matchExp(
+        EipTExtTimecardSystemMap.EIP_TEXT_TIMECARD_SYSTEM_PROPERTY,
+        work);
+    List<EipTExtTimecardSystemMap> list =
+      Database
+        .query(EipTExtTimecardSystemMap.class)
+        .setQualifier(exp1)
+        .fetchList();
+    if (list.size() > 0) {
+      EipTExtTimecardSystem system =
+        Database.get(EipTExtTimecardSystem.class, 1);
+      if (system != null) {
+        Date now = new Date();
+        for (EipTExtTimecardSystemMap item : list) {
+          item.setEipTExtTimecardSystem(system);
+          item.setUpdateDate(now);
+        }
+      }
+      Database.commit();
+    }
+  }
 }
