@@ -302,14 +302,12 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
       }
-      if (receiveFolder != null) {
-        receiveFolder.saveUID(receivedUIDL);
-        if (receivedUIDL != null) {
-          receivedUIDL.clear();
-        }
-        // 新着メール数を保存する．
-        receiveFolder.setNewMailNum(receivedMailNum);
+      receiveFolder.saveUID(receivedUIDL);
+      if (receivedUIDL != null) {
+        receivedUIDL.clear();
       }
+      // 新着メール数を保存する．
+      receiveFolder.setNewMailNum(receivedMailNum);
       // サーバとのコネクションを切断する．
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_AUTH;
@@ -319,14 +317,12 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
       }
-      if (receiveFolder != null) {
-        receiveFolder.saveUID(receivedUIDL);
-        if (receivedUIDL != null) {
-          receivedUIDL.clear();
-        }
-        // 新着メール数を保存する．
-        receiveFolder.setNewMailNum(receivedMailNum);
+      receiveFolder.saveUID(receivedUIDL);
+      if (receivedUIDL != null) {
+        receivedUIDL.clear();
       }
+      // 新着メール数を保存する．
+      receiveFolder.setNewMailNum(receivedMailNum);
       // サーバとのコネクションを切断する．
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_CONNECT;
@@ -336,14 +332,12 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
       }
-      if (receiveFolder != null) {
-        receiveFolder.saveUID(receivedUIDL);
-        if (receivedUIDL != null) {
-          receivedUIDL.clear();
-        }
-        // 新着メール数を保存する．
-        receiveFolder.setNewMailNum(receivedMailNum);
+      receiveFolder.saveUID(receivedUIDL);
+      if (receivedUIDL != null) {
+        receivedUIDL.clear();
       }
+      // 新着メール数を保存する．
+      receiveFolder.setNewMailNum(receivedMailNum);
       // サーバとのコネクションを切断する．
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_EXCEPTION;
@@ -353,14 +347,12 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       if (!finishedReceiving) {
         receivedUIDL.remove(nowReceivedUID);
       }
-      if (receiveFolder != null) {
-        receiveFolder.saveUID(receivedUIDL);
-        if (receivedUIDL != null) {
-          receivedUIDL.clear();
-        }
-        // 新着メール数を保存する．
-        receiveFolder.setNewMailNum(receivedMailNum);
+      receiveFolder.saveUID(receivedUIDL);
+      if (receivedUIDL != null) {
+        receivedUIDL.clear();
       }
+      // 新着メール数を保存する．
+      receiveFolder.setNewMailNum(receivedMailNum);
       // サーバとのコネクションを切断する．
       close(pop3Store, pop3Folder, receiveFolder);
       return RECEIVE_MSG_FAIL_OUTOFMEMORY;
@@ -368,17 +360,15 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
     try {
       // 受信済みの最新の UID の一覧を保存する．
-      if (receiveFolder != null) {
-        receiveFolder.saveUID(receivedUIDL);
-        if (receivedUIDL != null) {
-          receivedUIDL.clear();
-        }
-        // 新着メール数を保存する．
-        receiveFolder.setNewMailNum(receivedMailNum);
-
-        // ローカルフォルダを閉じる．
-        receiveFolder.close();
+      receiveFolder.saveUID(receivedUIDL);
+      if (receivedUIDL != null) {
+        receivedUIDL.clear();
       }
+      // 新着メール数を保存する．
+      receiveFolder.setNewMailNum(receivedMailNum);
+
+      // ローカルフォルダを閉じる．
+      receiveFolder.close();
     } catch (Exception e) {
       logger.error("ALPop3MailReceiver.receive", e);
       return RECEIVE_MSG_FAIL_EXCEPTION;
