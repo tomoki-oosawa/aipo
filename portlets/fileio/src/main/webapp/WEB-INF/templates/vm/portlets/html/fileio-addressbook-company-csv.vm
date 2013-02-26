@@ -232,7 +232,7 @@ function hide_Attention(){
 </div>
 <div id="Schedule_Attention" class="AttentionGroup" style="display:none">
 	<p>
-		ユーザー名 と 名前 の両方が指定されている場合は、ユーザー名を優先してユーザーを検索し、登録します。
+		メールアドレス と 名前 の両方が指定されている場合は、メールアドレスを優先してユーザーを検索し、登録します。
 	</p>
 </div>
 
