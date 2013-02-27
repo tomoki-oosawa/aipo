@@ -871,37 +871,139 @@ public class BlogUtils {
     }
   }
 
-  public static void createNewCommentActivity(EipTBlogEntry blog,
-      String loginName, List<String> recipients) {
-    recipients.remove(loginName);
+  // public static void createNewCommentActivity(EipTBlogEntry blog,
+  // String loginName, List<String> recipients) {
+  // recipients.remove(loginName);
+  //
+  // ALActivity RecentActivity =
+  // ALActivity.getRecentActivity("Blog", blog.getEntryId(), 1f);
+  // boolean isDeletePrev =
+  // RecentActivity != null && RecentActivity.isReplace(loginName);
+  //
+  // String title =
+  // new StringBuilder("ブログ「")
+  // .append(ALCommonUtils.compressString(blog.getTitle(), 30))
+  // .append("」にコメントしました。")
+  // .toString();
+  // String portletParams =
+  // new StringBuilder("?template=BlogDetailScreen")
+  // .append("&entityid=")
+  // .append(blog.getEntryId())
+  // .toString();
+  // ALActivityService.create(new ALActivityPutRequest()
+  // .withAppId("Blog")
+  // .withUserId(blog.getOwnerId())
+  // .withLoginName(loginName)
+  // .withPortletParams(portletParams)
+  // .withRecipients(recipients)
+  // .withTitle(title)
+  // .withPriority(1f)
+  // .withExternalId(String.valueOf(blog.getEntryId())));
+  //
+  // if (isDeletePrev) {
+  // RecentActivity.delete();
+  // }
+  // }
 
+  /**
+   * アクティビティを通知先・社内参加者の「あなた宛のお知らせ」に表示させる（返信用）
+   * 
+   * @param topic
+   * @param loginName
+   * @param recipients
+   */
+  public static void createNewBlogTopicActivity(EipTBlogEntry blog,
+      String loginName, List<String> recipient, EipTBlogComment blogcomment) {
+    // recipient.remove(loginName);
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Blog", blog.getEntryId(), 1f);
     boolean isDeletePrev =
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
-    String title =
-      new StringBuilder("ブログ「")
+    if (recipient != null) {
+      StringBuilder b = new StringBuilder("ブログ「");
+
+      b
         .append(ALCommonUtils.compressString(blog.getTitle(), 30))
-        .append("」にコメントしました。")
-        .toString();
+        .append("」")
+        .append("にコメントしました。");
+
+      String portletParams =
+        new StringBuilder("?template=BlogDetailScreen")
+          .append("&entityid=")
+          .append(blog.getEntryId())
+          .toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Blog")
+        .withUserId(blogcomment.getOwnerId())
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipient)
+        .withTitle(b.toString())
+        .withPriority(1f)
+        .withExternalId(String.valueOf(blog.getEntryId())));
+    } else {
+      StringBuilder b = new StringBuilder("ブログ「");
+
+      b
+        .append(ALCommonUtils.compressString(blog.getTitle(), 30))
+        .append("」")
+        .append("にコメントしました。");
+
+      String portletParams =
+        new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+          "&entityid=").append(blog.getEntryId()).toString();
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Blog")
+        .withUserId(blogcomment.getOwnerId())
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTitle(b.toString())
+        .withPriority(1f)
+        .withExternalId(String.valueOf(blog.getEntryId())));
+    }
+    if (isDeletePrev) {
+      RecentActivity.delete();
+    }
+  }
+  
+  public static void createNewCommentActivity(EipTBlogEntry blog,
+	      String loginName, EipTBlogComment blogcomment) {
+	    createNewCommentActivity(blog, loginName, null, blogcomment);
+    }
+
+  public static void createNewCommentActivity(EipTBlogEntry blog,
+      String loginName, List<String> recipients, EipTBlogComment blogcomment) {
+
+    String title =
+      new StringBuilder("ブログ「").append(
+        ALCommonUtils.compressString(blog.getTitle(), 30)).append("」に").append(
+        "コメントしました。").toString();
     String portletParams =
       new StringBuilder("?template=BlogDetailScreen")
         .append("&entityid=")
         .append(blog.getEntryId())
         .toString();
-    ALActivityService.create(new ALActivityPutRequest()
-      .withAppId("Blog")
-      .withUserId(blog.getOwnerId())
-      .withLoginName(loginName)
-      .withPortletParams(portletParams)
-      .withRecipients(recipients)
-      .withTitle(title)
-      .withPriority(1f)
-      .withExternalId(String.valueOf(blog.getEntryId())));
 
-    if (isDeletePrev) {
-      RecentActivity.delete();
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Blog")
+        .withUserId(blogcomment.getOwnerId())
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTitle(title)
+        .withPriority(0f)
+        .withExternalId(String.valueOf(blog.getEntryId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withUserId(blogcomment.getOwnerId())
+        .withAppId("Blog")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTitle(title)
+        .withPriority(0f)
+        .withExternalId(String.valueOf(blog.getEntryId())));
     }
   }
 

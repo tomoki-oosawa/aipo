@@ -281,12 +281,19 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
       List<ALEipUser> recipientList = getRecipientList(rundata, context);
 
       // アクティビティ
-      String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
+      ALEipUser loginName = ALEipUtils.getALEipUser(uid);
+      BlogUtils.createNewCommentActivity(
+        entry,
+        loginName.getName().getValue(),
+        blogcomment);
+      // あなた宛のお知らせ
       List<String> recipientNameList = new ArrayList<String>();
       for (ALEipUser recipient : recipientList) {
-        recipientNameList.add(recipient.getName().getValue());
+        recipientNameList.add(recipient.getName().toString());
       }
-      BlogUtils.createNewCommentActivity(entry, loginName, recipientNameList);
+      BlogUtils.createNewBlogTopicActivity(entry, loginName
+        .getName()
+        .toString(), recipientNameList, blogcomment);
 
       // メール送信
       if (sendEmailToPC || sendEmailToCellular) {
