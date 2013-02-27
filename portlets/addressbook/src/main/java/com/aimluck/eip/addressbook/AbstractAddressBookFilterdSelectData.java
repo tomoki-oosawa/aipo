@@ -51,9 +51,8 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
   /** logger */
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService
-      .getLogger(AbstractAddressBookFilterdSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AbstractAddressBookFilterdSelectData.class.getName());
 
   /** 「全て」を意味する検索用インデックス */
   private static final String INDEX_STR_ALL = "-1";
@@ -226,7 +225,7 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
 
     // インデックスによる検索
     switch (idx) {
-      // ア行
+    // ア行
       case 1:
         Expression exp01 =
           ExpressionFactory.greaterOrEqualExp(lastNameKana, "ア");
@@ -303,6 +302,12 @@ public abstract class AbstractAddressBookFilterdSelectData<M1, M2> extends
           ExpressionFactory.greaterOrEqualExp(lastNameKana, "ヴ");
         query.andQualifier(exp100.orExp(exp101));
         break;
+      // default
+      default:
+        Expression exp111 = ExpressionFactory.lessExp(lastNameKana, "");
+        Expression exp112 =
+          ExpressionFactory.greaterOrEqualExp(lastNameKana, "");
+        query.andQualifier(exp111.orExp(exp112));
     }
   }
 
