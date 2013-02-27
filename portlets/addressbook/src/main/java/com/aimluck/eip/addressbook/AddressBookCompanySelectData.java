@@ -344,6 +344,12 @@ public class AddressBookCompanySelectData extends
           ExpressionFactory.greaterOrEqualExp(companyNameKana, "ヴ");
         query.andQualifier(exp100.orExp(exp101));
         break;
+      // default
+      default:
+        Expression exp111 = ExpressionFactory.lessExp(companyNameKana, "");
+        Expression exp112 =
+          ExpressionFactory.greaterOrEqualExp(companyNameKana, "");
+        query.andQualifier(exp111.orExp(exp112));
     }
   }
 
