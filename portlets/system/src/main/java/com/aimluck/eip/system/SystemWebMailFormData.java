@@ -319,9 +319,8 @@ public class SystemWebMailFormData extends ALAbstractFormData {
           reference.append(" ").append(in_reply_tos);
         }
 
-        if (reference.toString() != null || (!reference.toString().equals(""))) {
-          map.put("References", reference.toString());
-        }
+        map.put("References", reference.toString());
+
       }
 
       if (map != null && map.size() == 0) {

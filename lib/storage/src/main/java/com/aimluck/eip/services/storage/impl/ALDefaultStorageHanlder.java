@@ -403,11 +403,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       fileInputStream.close();
 
       byte[] fileArray = output.toByteArray();
-      if (fileArray != null) {
-        size = fileArray.length;
-      } else {
-        size = -1;
-      }
+      size = fileArray.length;
       output.close();
     } catch (FileNotFoundException e) {
       return -1;

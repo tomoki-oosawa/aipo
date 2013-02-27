@@ -307,17 +307,16 @@ public class WhatsNewUtils {
           return;
         }
 
-        if (entries != null && entries.size() > 0) {
-          EipTWhatsNew parent = entries.get(0);
-          Integer parentid = parent.getWhatsNewId();
-          boolean hasReadFlag = false;
-          // 既に自分の既読フラグがあるか調べる
-          for (int i = 1; i < entries.size(); i++) {
-            if ((entries.get(i)).getUserId().intValue() == uid) {
-              hasReadFlag = true;
-              break;
-            }
+        EipTWhatsNew parent = entries.get(0);
+        Integer parentid = parent.getWhatsNewId();
+        boolean hasReadFlag = false;
+        // 既に自分の既読フラグがあるか調べる
+        for (int i = 1; i < entries.size(); i++) {
+          if ((entries.get(i)).getUserId().intValue() == uid) {
+            hasReadFlag = true;
+            break;
           }
+
           if (!hasReadFlag) {
             // 既読フラグの登録
             EipTWhatsNew entry = null;
