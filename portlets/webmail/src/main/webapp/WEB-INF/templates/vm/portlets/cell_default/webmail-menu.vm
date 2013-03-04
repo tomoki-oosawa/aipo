@@ -18,12 +18,17 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_dowebmail_menu','1')")
 #set($title = $l10n.WEBMAIL_MAILACCOUNT_HALFWIDTH)
 #set ($list = $result.List)
 #ALcell_pagetitle($career $title)
 #if ($list.size() == 0)
 <div class="message">$l10n.WEBMAIL_NO_REGISTERED_ACCOUNT_HALFWIDTH</div>
 #else
+#if($result.PagesNum > 1)
+#ALcell_hr($career '1')
+#ALcell_pageview($career $link $result)
+#end
 #if($career == "vodafone")
 <dl>
 #foreach($menulist in $list)
@@ -49,6 +54,10 @@ ${menulist.AccountName} #if(${menulist.AccountType.Value} == "1") $l10n.WEBMAIL_
 #ALcell_li_footer($career)
 #end
 </ul>
+#end
+#if($result.PagesNum > 1)
+#ALcell_hr($career '1')
+#ALcell_pageview($career $link $result)
 #end
 #end
 
