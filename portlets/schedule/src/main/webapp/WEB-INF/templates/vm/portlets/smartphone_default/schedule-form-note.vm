@@ -45,7 +45,7 @@ $!{result.FormData.LimitEndDateDate2}まで
 #end
 <h3>時間</h3>
 $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}まで
-#if($isDuplicateFacility=="true")
+#if($!{isDuplicateFacility} && $!{isDuplicateFacility} == "true")
 設備予約が重複しています。
 #end
 #elseif($!{result.isSpan()})
@@ -57,7 +57,7 @@ $!{result.FormData.EndDateDate2}まで
 $!{result.FormData.StartDateDate2}
 <h3>時間</h3>
 $!{result.FormData.StartDateTime2}から$!{result.FormData.EndDateTime2}まで
-#if($isDuplicateFacility=="true")
+#if($!{isDuplicateFacility} && $!{isDuplicateFacility} == "true")
 設備予約が重複しています。
 #end
 #end
