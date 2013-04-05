@@ -195,41 +195,45 @@ public class BlogEntryLatestSelectData extends
     for (EipTBlogComment record : aList) {
       try {
         EipTBlogEntry entry = record.getEipTBlogEntry();
-        if (entry.getOwnerId().equals(thisUserId)) {
-          continue;
-        }
-        if (entry.getEntryId().equals(beforeEntryId)) {
-          continue;
-        } else {
-          beforeEntryId = entry.getEntryId();
-        }
-        BlogEntryResultData rd = new BlogEntryResultData();
-        rd.initField();
-        rd.setEntryId(entry.getEntryId().longValue());
-        rd.setOwnerId(entry.getOwnerId().longValue());
-        rd.setTitle(ALCommonUtils.compressString(
-          entry.getTitle(),
-          getStrLength()));
-        rd.setTitleDate(record.getUpdateDate());
+        if (entry != null) {
+          if (entry.getOwnerId().equals(thisUserId)) {
+            continue;
+          }
+          if (entry.getEntryId().equals(beforeEntryId)) {
+            continue;
+          } else {
+            beforeEntryId = entry.getEntryId();
+          }
+          BlogEntryResultData rd = new BlogEntryResultData();
+          rd.initField();
+          rd.setEntryId(entry.getEntryId().longValue());
+          rd.setOwnerId(entry.getOwnerId().longValue());
+          rd.setTitle(ALCommonUtils.compressString(
+            entry.getTitle(),
+            getStrLength()));
+          rd.setTitleDate(record.getUpdateDate());
 
-        SelectQuery<EipTBlogComment> cquery =
-          Database.query(EipTBlogComment.class).select(
-            EipTBlogComment.COMMENT_ID_PK_COLUMN);
-        Expression cexp =
-          ExpressionFactory.matchDbExp(EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
-            + "."
-            + EipTBlogEntry.ENTRY_ID_PK_COLUMN, entry.getEntryId());
-        cquery.setQualifier(cexp);
-        List<EipTBlogComment> list = cquery.fetchList();
-        if (list != null && list.size() > 0) {
-          rd.setCommentsNum(list.size());
-        }
-        rd.setThemaId(entry.getEipTBlogThema().getThemaId().intValue());
-        rd.setThemaName(entry.getEipTBlogThema().getThemaName());
-        commentHistoryList.add(rd);
+          SelectQuery<EipTBlogComment> cquery =
+            Database.query(EipTBlogComment.class).select(
+              EipTBlogComment.COMMENT_ID_PK_COLUMN);
+          Expression cexp =
+            ExpressionFactory.matchDbExp(
+              EipTBlogComment.EIP_TBLOG_ENTRY_PROPERTY
+                + "."
+                + EipTBlogEntry.ENTRY_ID_PK_COLUMN,
+              entry.getEntryId());
+          cquery.setQualifier(cexp);
+          List<EipTBlogComment> list = cquery.fetchList();
+          if (list != null && list.size() > 0) {
+            rd.setCommentsNum(list.size());
+          }
+          rd.setThemaId(entry.getEipTBlogThema().getThemaId().intValue());
+          rd.setThemaName(entry.getEipTBlogThema().getThemaName());
+          commentHistoryList.add(rd);
 
-        if (!users.contains(entry.getOwnerId())) {
-          users.add(entry.getOwnerId());
+          if (!users.contains(entry.getOwnerId())) {
+            users.add(entry.getOwnerId());
+          }
         }
       } catch (Exception e) {
         logger.warn("[loadCommentHistoryList]", e);
