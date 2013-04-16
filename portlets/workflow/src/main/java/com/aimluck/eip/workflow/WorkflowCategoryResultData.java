@@ -38,15 +38,23 @@ public class WorkflowCategoryResultData implements ALData {
   /** カテゴリテンプレート */
   protected ALStringField ordertemplate;
 
+  /** 申請経路 */
+  protected ALStringField hasRouteName;
+
+  /** 申請経路名 */
+  protected ALStringField routeName;
+
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();
     ordertemplate = new ALStringField();
+    hasRouteName = new ALStringField();
+    routeName = new ALStringField();
   }
 
   /**
@@ -89,6 +97,40 @@ public class WorkflowCategoryResultData implements ALData {
    */
   public void setOrderTemplate(String string) {
     ordertemplate.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setRouteName(String string) {
+    routeName.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setRoute(String string) {
+    hasRouteName.setValue(string);
+  }
+
+  /**
+   * @param
+   */
+  public ALStringField getRouteName() {
+    return routeName;
+  }
+
+  public boolean getHasRouteName() {
+
+    boolean bool;
+
+    if (routeName.getValue() == null || "".equals(routeName.getValue())) {
+      bool = false;
+    } else {
+      bool = true;
+    }
+
+    return bool;
   }
 
 }

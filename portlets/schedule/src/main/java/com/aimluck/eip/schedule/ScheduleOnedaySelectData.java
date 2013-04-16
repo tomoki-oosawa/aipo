@@ -243,7 +243,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
     viewDateCal.add(Calendar.MONTH, -1);
     prevMonth.setValue(viewDateCal.getTime());
 
-    resultData = new ScheduleResultData[(endHour - startHour) * 4 * 2];
+    resultData = new ScheduleResultData[(endHour - startHour) * 12 * 2];
     dlist = new ArrayList<ScheduleResultData>();
     Calendar cal2 = Calendar.getInstance();
     cal2.setTime(viewDate.getValue());
@@ -254,7 +254,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
     rowspanMap = new HashMap<Integer, Integer>();
     for (int i = startHour; i <= endHour; i++) {
-      rowspanMap.put(Integer.valueOf(i), Integer.valueOf(4));
+      rowspanMap.put(Integer.valueOf(i), Integer.valueOf(12));
     }
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewDate.toString()
@@ -531,21 +531,21 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
 
       // Oneday
       boolean dup = false;
-      int sta = startHour * 4;
-      int eta = endHour * 4;
+      int sta = startHour * 12;
+      int eta = endHour * 12;
       int st =
         Integer.parseInt(rd.getStartDate().getHour())
-          * 4
+          * 12
           + Integer.parseInt(rd.getStartDate().getMinute())
-          / 15;
+          / 5;
       int ed =
         Integer.parseInt(rd.getEndDate().getHour())
-          * 4
+          * 12
           + Integer.parseInt(rd.getEndDate().getMinute())
-          / 15;
+          / 5;
       if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
         && rd.getEndDate().getHour().equals("0")) {
-        ed = 4 * 24;
+        ed = 12 * 24;
       }
       if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
         if (sta > st) {
@@ -561,7 +561,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
           rd.setRowspan(1);
           Integer rowspan =
             rowspanMap.get(Integer.valueOf(rd.getStartDate().getHour()));
-          if (rowspan.intValue() > 4) {
+          if (rowspan.intValue() > 12) {
             (resultData[tmpIndex]).setDuplicate(true);
             rd.setDuplicate(true);
           }
@@ -578,13 +578,13 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
           Calendar cal = Calendar.getInstance();
           cal.setTime(viewDate.getValue());
           cal.add(Calendar.HOUR, startHour);
-          int hour = (count - tmpRowIndex) / 4;
-          int min = ((count - tmpRowIndex) % 4) * 15;
+          int hour = (count - tmpRowIndex) / 12;
+          int min = ((count - tmpRowIndex) % 12) * 5;
           cal.add(Calendar.HOUR, hour);
           cal.add(Calendar.MINUTE, min);
           rd2.setStartDate(cal.getTime());
-          hour = (st - sta - count) / 4;
-          min = ((st - sta - count) % 4) * 15;
+          hour = (st - sta - count) / 12;
+          min = ((st - sta - count) % 12) * 5;
           cal.add(Calendar.HOUR, hour);
           cal.add(Calendar.MINUTE, min);
           rd2.setEndDate(cal.getTime());
@@ -668,7 +668,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
    * 
    */
   private void postDoList() {
-    int index = (endHour - startHour) * 4 + rowIndex;
+    int index = (endHour - startHour) * 12 + rowIndex;
     if (index > count) {
       ScheduleResultData rd = new ScheduleResultData();
       rd.setFormat("yyyy-MM-dd-HH-mm");
@@ -677,13 +677,13 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
       Calendar cal = Calendar.getInstance();
       cal.setTime(viewDate.getValue());
       cal.add(Calendar.HOUR, startHour);
-      int hour = (count - rowIndex) / 4;
-      int min = ((count - rowIndex) % 4) * 15;
+      int hour = (count - rowIndex) / 12;
+      int min = ((count - rowIndex) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setStartDate(cal.getTime());
-      hour = (index - count) / 4;
-      min = ((index - count) % 4) * 15;
+      hour = (index - count) / 12;
+      min = ((index - count) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setEndDate(cal.getTime());

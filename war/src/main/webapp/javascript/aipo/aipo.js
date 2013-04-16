@@ -256,6 +256,13 @@ aipo.userAgent={
 	isAndroid:function(){
 		return this.__userAgent.indexOf("android") > -1;
 	},
+	isAndroid2:function(){
+		var version = this.androidVersion();
+		return !!version && version[1]==2;
+	},
+	androidVersion:function(){
+		return this.__userAgent.match(/android ([\d]+)\.([\d]+)\.([\d]+)/);
+	},
 	isIphone:function(){
 		return this.__userAgent.indexOf("iphone") > -1;
 	},
@@ -282,4 +289,12 @@ aipo.escapeHTML = function(value) {
     };
 
     return String(value).replace(/[<>&"']/g, replaceChars);
+};
+
+
+aipo.arrayContains=function(a,val){//:TODO binary search
+	for(var i=0;i<a.length;i++){
+		if(a[i]==val)return true;
+	}
+	return false;
 };

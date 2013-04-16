@@ -70,16 +70,16 @@
 #end
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin($l10n.EXTTIMECARD_DATE)
-#ALtdheadAtt($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS "class='thin mb_hide'")
-#ALtdheadThin($l10n.EXTTIMECARD_PUNCH_IN)
-#ALtdheadThin($l10n.EXTTIMECARD_PUNCH_OUT)
-#ALtdheadThin($l10n.EXTTIMECARD_OUTGOING)
-#ALtdheadThin($l10n.EXTTIMECARD_COMEBACK)
-#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='thin mb_hide'")
-#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='thin mb_hide'")
-#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='thin mb_hide'")
-#ALtdheadAtt($l10n.EXTTIMECARD_REASON_REMARKS "class='wide mb_hide'")
+#ALtdheadAtt($l10n.EXTTIMECARD_DATE "class='thin center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS "class='thin mb_hide center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_PUNCH_IN "class='thin center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_PUNCH_OUT "class='thin center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OUTGOING "class='thin center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_COMEBACK "class='thin center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='thin mb_hide center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='thin mb_hide center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='thin mb_hide center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_REASON_REMARKS "class='wide mb_hide center'")
 </tr>
 
 #foreach ($rdlist in $result.DateListKeys)

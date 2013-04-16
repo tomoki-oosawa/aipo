@@ -229,10 +229,10 @@ if(document.all!=undefined){
 ##<img src="images/common/dot.gif" width="15" height="1" alt="" />
 #ALtdheadfooter()
 #if($todocolcount > 0)
-#ALtdheadAtt("ToDo" "class='groupOneday' colspan='$todocolcount'")
+#ALtdheadAtt("ToDo" "class='groupOneday' colspan='1' style='width:10%'")
 #end
 #if($termcolcount > 0)
-#ALtdheadAtt("$l10n.SCHEDULE_TERM" "class='groupOneday' colspan='$termcolcount'")
+#ALtdheadAtt($l10n.SCHEDULE_TERM "class='groupOneday' colspan='1' style='width:10%'")
 #end
 #foreach($hour in [$!{result.StartHour}..$endHour])
 #set($colspan = $result.getColspan($hour) )
@@ -260,9 +260,9 @@ $record3.AliasName
 #ALtdheadfooter()
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
+#ALtdcellheaderAtt("rowspan='$duplirowmax'")
 #foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
 
-#ALtdcellheaderAtt("rowspan='$duplirowmax'")
 <div class="calendarScheduleDiv">
 <div class="small">
 
@@ -273,18 +273,18 @@ ${record.TodoName}
 </a>
 </div>
 </div>
+#end
 #ALtdcellfooter()
 #end
-#end
-#if($userTodoCount < $todocolcount)
+#if($userTodoCount == 0 && $todocolcount > 0)
 #set($todorestcount = $todocolcount - $userTodoCount)
-#ALtdcellAtt("" "colspan='$todorestcount'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここから） ###
 #set($userTermCount = $result.getTermResultDataList($record3.UserId.Value).size())
 #if($userTermCount > 0)
-#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 <td rowspan="$duplirowmax">
+#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
@@ -311,12 +311,12 @@ $record.WbrName
 #end
 </div>
 #end
+#end
 #ALtdcellfooter()
 #end
-#end
-#if($userTermCount < $termcolcount)
+#if($userTermCount == 0 && $termcolcount > 0)
 #set($termrestcount = $termcolcount - $userTermCount)
-#ALtdcellAtt("" "colspan='$termrestcount'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここまで） ###
 
@@ -389,7 +389,7 @@ $record.WbrName
 
 #set($endRowResult = 0)
 #foreach($hour in [$!{result.StartHour}..$endHour])
-#set($endRowResult = $endRowResult + 4)
+#set($endRowResult = $endRowResult + 12)
 #end
 
 #if($startrow == 0)
@@ -539,7 +539,7 @@ $record.WbrName
 
 #set($endRowResult = 0)
 #foreach($hour in [$!{result.StartHour}..$endHour])
-#set($endRowResult = $endRowResult + 4)
+#set($endRowResult = $endRowResult + 12)
 #end
 #if($startrow == 0)
 #if($colspan != $endRowResult)

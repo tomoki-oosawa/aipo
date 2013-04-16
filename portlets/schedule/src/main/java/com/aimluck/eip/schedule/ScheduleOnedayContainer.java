@@ -63,7 +63,7 @@ public class ScheduleOnedayContainer implements ALData {
   private ScheduleOnedayResultData dummyList;
 
   /*
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -82,7 +82,7 @@ public class ScheduleOnedayContainer implements ALData {
    * @param endHour
    */
   public void initHour(int startHour, int endHour) {
-    rows = new int[(endHour - startHour) * 4 + 1];
+    rows = new int[(endHour - startHour) * 12 + 1];
     int size = rows.length;
     for (int i = 0; i < size; i++) {
       rows[i] = 1;
@@ -104,21 +104,21 @@ public class ScheduleOnedayContainer implements ALData {
     rd2.initField();
     // Oneday
     boolean dup = false;
-    int sta = startHour * 4;
-    int eta = endHour * 4;
+    int sta = startHour * 12;
+    int eta = endHour * 12;
     int st =
       Integer.parseInt(rd.getStartDate().getHour())
-        * 4
+        * 12
         + Integer.parseInt(rd.getStartDate().getMinute())
-        / 15;
+        / 5;
     int ed =
       Integer.parseInt(rd.getEndDate().getHour())
-        * 4
+        * 12
         + Integer.parseInt(rd.getEndDate().getMinute())
-        / 15;
+        / 5;
     if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
       && rd.getEndDate().getHour().equals("0")) {
-      ed = 4 * 24;
+      ed = 12 * 24;
     }
     if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
       if (sta > st) {
@@ -148,13 +148,13 @@ public class ScheduleOnedayContainer implements ALData {
         Calendar cal = Calendar.getInstance();
         cal.setTime(viewDate.getValue());
         cal.add(Calendar.HOUR, startHour);
-        int hour = (count - tmpRowIndex) / 4;
-        int min = ((count - tmpRowIndex) % 4) * 15;
+        int hour = (count - tmpRowIndex) / 12;
+        int min = ((count - tmpRowIndex) % 12) * 5;
         cal.add(Calendar.HOUR, hour);
         cal.add(Calendar.MINUTE, min);
         rd2.setStartDate(cal.getTime());
-        hour = (st - sta - count) / 4;
-        min = ((st - sta - count) % 4) * 15;
+        hour = (st - sta - count) / 12;
+        min = ((st - sta - count) % 12) * 5;
         cal.add(Calendar.HOUR, hour);
         cal.add(Calendar.MINUTE, min);
         rd2.setEndDate(cal.getTime());
@@ -216,21 +216,21 @@ public class ScheduleOnedayContainer implements ALData {
     int tmpRowIndex = 0;
     int dRowIndex = 0;
     // 重複スケジュールでのrows加算
-    int sta = startHour * 4;
-    int eta = endHour * 4;
+    int sta = startHour * 12;
+    int eta = endHour * 12;
     int st =
       Integer.parseInt(rd3.getStartDate().getHour())
-        * 4
+        * 12
         + Integer.parseInt(rd3.getStartDate().getMinute())
-        / 15;
+        / 5;
     int ed =
       Integer.parseInt(rd3.getEndDate().getHour())
-        * 4
+        * 12
         + Integer.parseInt(rd3.getEndDate().getMinute())
-        / 15;
+        / 5;
     if (!(rd3.getStartDate().getDay().equals(rd3.getEndDate().getDay()))
       && rd3.getEndDate().getHour().equals("0")) {
-      ed = 4 * 24;
+      ed = 12 * 24;
     }
     if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
       if (sta > st) {
@@ -255,24 +255,24 @@ public class ScheduleOnedayContainer implements ALData {
       rd2.setFormat("yyyy-MM-dd-HH-mm");
       rd2.initField();
       // Oneday
-      sta = startHour * 4;
-      eta = endHour * 4;
+      sta = startHour * 12;
+      eta = endHour * 12;
       st =
         Integer.parseInt(dupList2.get(i).getStartDate().getHour())
-          * 4
+          * 12
           + Integer.parseInt(dupList2.get(i).getStartDate().getMinute())
-          / 15;
+          / 5;
       ed =
         Integer.parseInt(dupList2.get(i).getEndDate().getHour())
-          * 4
+          * 12
           + Integer.parseInt(dupList2.get(i).getEndDate().getMinute())
-          / 15;
+          / 5;
       if (!(dupList2.get(i).getStartDate().getDay().equals(dupList2
         .get(i)
         .getEndDate()
         .getDay()))
         && dupList2.get(i).getEndDate().getHour().equals("0")) {
-        ed = 4 * 24;
+        ed = 12 * 24;
       }
       if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
         if (sta > st) {
@@ -298,13 +298,13 @@ public class ScheduleOnedayContainer implements ALData {
             Calendar cal = Calendar.getInstance();
             cal.setTime(viewDate.getValue());
             cal.add(Calendar.HOUR, startHour);
-            int hour = (dcount - tmpRowIndex) / 4;
-            int min = ((dcount - tmpRowIndex) % 4) * 15;
+            int hour = (dcount - tmpRowIndex) / 12;
+            int min = ((dcount - tmpRowIndex) % 12) * 5;
             cal.add(Calendar.HOUR, hour);
             cal.add(Calendar.MINUTE, min);
             rd2.setStartDate(cal.getTime());
-            hour = (st - sta - dcount) / 4;
-            min = ((st - sta - dcount) % 4) * 15;
+            hour = (st - sta - dcount) / 12;
+            min = ((st - sta - dcount) % 12) * 5;
             cal.add(Calendar.HOUR, hour);
             cal.add(Calendar.MINUTE, min);
             rd2.setEndDate(cal.getTime());
@@ -316,7 +316,7 @@ public class ScheduleOnedayContainer implements ALData {
           } else if (st - sta - dcount == 0) {
 
           } else {
-            int index = (endHour - startHour) * 4 + dRowIndex;
+            int index = (endHour - startHour) * 12 + dRowIndex;
             if (index > dcount) {
               ScheduleOnedayResultData rd = new ScheduleOnedayResultData();
               rd.setFormat("yyyy-MM-dd-HH-mm");
@@ -325,13 +325,13 @@ public class ScheduleOnedayContainer implements ALData {
               Calendar cal = Calendar.getInstance();
               cal.setTime(viewDate.getValue());
               cal.add(Calendar.HOUR, startHour);
-              int hour = (dcount - dRowIndex) / 4;
-              int min = ((dcount - dRowIndex) % 4) * 15;
+              int hour = (dcount - dRowIndex) / 12;
+              int min = ((dcount - dRowIndex) % 12) * 5;
               cal.add(Calendar.HOUR, hour);
               cal.add(Calendar.MINUTE, min);
               rd.setStartDate(cal.getTime());
-              hour = (index - dcount) / 4;
-              min = ((index - dcount) % 4) * 15;
+              hour = (index - dcount) / 12;
+              min = ((index - dcount) % 12) * 5;
               cal.add(Calendar.HOUR, hour);
               cal.add(Calendar.MINUTE, min);
               rd.setEndDate(cal.getTime());
@@ -344,18 +344,18 @@ public class ScheduleOnedayContainer implements ALData {
             dcount = 0;
             dRowIndex = 0;
             tmpRowIndex = dRowIndex;
-            sta = startHour * 4;
+            sta = startHour * 12;
             if (st - sta - dcount > 0) {
               Calendar cal = Calendar.getInstance();
               cal.setTime(viewDate.getValue());
               cal.add(Calendar.HOUR, startHour);
-              int hour = (dcount - tmpRowIndex) / 4;
-              int min = ((dcount - tmpRowIndex) % 4) * 15;
+              int hour = (dcount - tmpRowIndex) / 12;
+              int min = ((dcount - tmpRowIndex) % 12) * 5;
               cal.add(Calendar.HOUR, hour);
               cal.add(Calendar.MINUTE, min);
               rd2.setStartDate(cal.getTime());
-              hour = (st - sta - dcount) / 4;
-              min = ((st - sta - dcount) % 4) * 15;
+              hour = (st - sta - dcount) / 12;
+              min = ((st - sta - dcount) % 12) * 5;
               cal.add(Calendar.HOUR, hour);
               cal.add(Calendar.MINUTE, min);
               rd2.setEndDate(cal.getTime());
@@ -371,13 +371,13 @@ public class ScheduleOnedayContainer implements ALData {
             Calendar cal = Calendar.getInstance();
             cal.setTime(viewDate.getValue());
             cal.add(Calendar.HOUR, startHour);
-            int hour = (dcount - tmpRowIndex) / 4;
-            int min = ((dcount - tmpRowIndex) % 4) * 15;
+            int hour = (dcount - tmpRowIndex) / 12;
+            int min = ((dcount - tmpRowIndex) % 12) * 5;
             cal.add(Calendar.HOUR, hour);
             cal.add(Calendar.MINUTE, min);
             rd2.setStartDate(cal.getTime());
-            hour = (st - sta - dcount) / 4;
-            min = ((st - sta - dcount) % 4) * 15;
+            hour = (st - sta - dcount) / 12;
+            min = ((st - sta - dcount) % 12) * 5;
             cal.add(Calendar.HOUR, hour);
             cal.add(Calendar.MINUTE, min);
             rd2.setEndDate(cal.getTime());
@@ -405,7 +405,7 @@ public class ScheduleOnedayContainer implements ALData {
    * @param viewDate
    */
   public void last(int startHour, int endHour, ALDateTimeField viewDate) {
-    int index = (endHour - startHour) * 4 + rowIndex;
+    int index = (endHour - startHour) * 12 + rowIndex;
     if (index > count) {
       ScheduleOnedayResultData rd = new ScheduleOnedayResultData();
       rd.setFormat("yyyy-MM-dd-HH-mm");
@@ -414,13 +414,13 @@ public class ScheduleOnedayContainer implements ALData {
       Calendar cal = Calendar.getInstance();
       cal.setTime(viewDate.getValue());
       cal.add(Calendar.HOUR, startHour);
-      int hour = (count - rowIndex) / 4;
-      int min = ((count - rowIndex) % 4) * 15;
+      int hour = (count - rowIndex) / 12;
+      int min = ((count - rowIndex) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setStartDate(cal.getTime());
-      hour = (index - count) / 4;
-      min = ((index - count) % 4) * 15;
+      hour = (index - count) / 12;
+      min = ((index - count) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setEndDate(cal.getTime());
@@ -439,13 +439,13 @@ public class ScheduleOnedayContainer implements ALData {
       Calendar cal = Calendar.getInstance();
       cal.setTime(viewDate.getValue());
       cal.add(Calendar.HOUR, startHour);
-      int hour = (dcount - rowIndex) / 4;
-      int min = ((dcount - rowIndex) % 4) * 15;
+      int hour = (dcount - rowIndex) / 12;
+      int min = ((dcount - rowIndex) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setStartDate(cal.getTime());
-      hour = (index - dcount) / 4;
-      min = ((index - dcount) % 4) * 15;
+      hour = (index - dcount) / 12;
+      min = ((index - dcount) % 12) * 5;
       cal.add(Calendar.HOUR, hour);
       cal.add(Calendar.MINUTE, min);
       rd.setEndDate(cal.getTime());

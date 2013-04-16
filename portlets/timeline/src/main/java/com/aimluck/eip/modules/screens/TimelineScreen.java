@@ -60,6 +60,9 @@ public class TimelineScreen extends ALVelocityScreen {
       }
       TimelineSelectData listData = new TimelineSelectData();
       listData.initField();
+      listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1a-rows", "0")));
       listData.setRowsNum(rows);
       listData.setScrollTop(scrollTop);
       listData.doViewList(this, rundata, context);

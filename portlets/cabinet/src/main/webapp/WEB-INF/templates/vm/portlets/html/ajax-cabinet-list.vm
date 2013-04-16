@@ -95,7 +95,7 @@
 
 #ALtdheadAtt("#ALajaxsort('file_name' $l10n.CABINET_FILE $result 'CabinetListScreen')" "class='mb_hide'")
 #ALtdhead("#ALajaxsort('file_title' $l10n.CABINET_TITLE $result 'CabinetListScreen')")
-#ALtdheadAtt($l10n.CABINET_MODIFIED "class='thin mb_hide'")
+#ALtdheadAtt("#ALajaxsort('update_user' $l10n.CABINET_MODIFIED $result 'CabinetListScreen')" "class='thin mb_hide'")
 #ALtdheadAtt("#ALajaxsort('update_date' $l10n.CABINET_UPDATE_DATE $result 'CabinetListScreen')" "class='thin mb_hide center'")
 #ALtdheadAtt("#ALajaxsort('counter' $l10n.CABINET_DL_TIME $result 'CabinetListScreen')" "class='thin mb_hide center'")
 #ALtdheadAtt("#ALajaxsort('file_size' $l10n.CABINET_CAPACITY_KB $result 'CabinetListScreen')" "class='thin mb_hide'")

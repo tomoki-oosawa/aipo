@@ -102,7 +102,7 @@ public class JetspeedSessionValidator extends TemplateSessionValidator {
             if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
               // cookie is present and correct - log the user in
               data.setUser(user);
-              user.setHasLoggedIn(Boolean.valueOf(true));
+              user.setHasLoggedIn(Boolean.TRUE);
               user.updateLastLogin();
               data.save();
             }

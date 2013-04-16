@@ -199,8 +199,8 @@ public class UserSelectData extends
       String transWord =
         ALStringUtil.convertHiragana2Katakana(ALStringUtil
           .convertH2ZKana(searchWordValue));
-      transWord = transWord.replace("　", " "); // 全角スペースを半角スペースに変換する
-      String[] transWords = transWord.split(" ");
+      transWord = transWord.replace("　", "").replace(" ", ""); // 全角/半角スペースを削除
+      String[] transWords = transWord.split(""); // 1文字ずつに分解
 
       for (int i = 0; i < transWords.length; i++) {
         Expression exp11 =
@@ -502,7 +502,7 @@ public class UserSelectData extends
 
     Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
     for (TurbineUserGroupRole role : roleList) {
-      map.put(role.getTurbineUser().getUserId(), Boolean.valueOf(true));
+      map.put(role.getTurbineUser().getUserId(), Boolean.TRUE);
     }
 
     return map;

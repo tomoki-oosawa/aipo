@@ -57,10 +57,13 @@
 <div style="margin:0.5em 0;">
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_folder_list','1')">$l10n.WEBMAIL_MANAGEMENT_FOLDER</a>
 </div>
+#if("${client}" != "IPHONE")
 </div>
 #end
-
-<div class="auiWidget clearfix">
+#end
+#if("${client}" != "IPHONE")
+	<div class ="auiWidget clearfix">
+#end
 <ul>
 #foreach( $record in $result.MailAccountList )
 <li#if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="active"#end>

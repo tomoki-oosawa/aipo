@@ -443,7 +443,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       company_name.limitMaxLength(50);
       // 会社名カナ
       company_name_kana.setNotNull(true);
-      company_name.limitMaxLength(50);
+      company_name_kana.limitMaxLength(50);
       // 部署名
       post_name.limitMaxLength(50);
       // 会社郵便番号

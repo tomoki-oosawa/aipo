@@ -964,12 +964,14 @@ public class WorkflowFormData extends ALAbstractFormData {
 
         ALEipUser user = null;
         int listsize = list.size();
+        int k = 1;
         for (int i = 0; i < routeArrayLength; i++) {
           for (int j = 0; j < listsize; j++) {
             user = list.get(j);
             String userid = user.getUserId().toString();
             if (userid.equals(routeArray[i])) {
-              String rootNumber = String.valueOf(j + 1) + ". ";
+              String rootNumber = k + ". ";
+              k++;
               result.append(user.getName()).append(",").append(
                 rootNumber + user.getAliasName().toString()).append(",");
             }

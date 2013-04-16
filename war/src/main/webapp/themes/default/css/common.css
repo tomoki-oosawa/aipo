@@ -2057,6 +2057,10 @@ table.calendar div.calerndarTodoDiv {
 	text-align:center;
 	background-color:#FFE5E5;
 }
+.calerndarTodoDiv.border {
+background-color:#FFE5E5;
+border:1px solid #ffb9b9;
+}
 div.calerndarTodoDiv a:link, div.calerndarTodoDiv a:visited {
 	display:block;
 	text-decoration:none;

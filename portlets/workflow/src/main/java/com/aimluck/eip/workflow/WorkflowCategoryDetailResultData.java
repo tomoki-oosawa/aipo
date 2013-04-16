@@ -125,6 +125,7 @@ public class WorkflowCategoryDetailResultData extends
   /**
    * @param string
    */
+  @Override
   public ALStringField getRouteName() {
     return route_name;
   }
@@ -132,6 +133,7 @@ public class WorkflowCategoryDetailResultData extends
   /**
    * @param string
    */
+  @Override
   public void setRouteName(String string) {
     route_name.setValue(string);
   }
@@ -139,14 +141,15 @@ public class WorkflowCategoryDetailResultData extends
   /**
    * @param string
    */
+  @Override
   public void setRoute(String string) {
     route.setValue(string);
   }
 
   /**
-   * @param string
+   * @param
    */
-  public ALStringField getRoute(String string) {
+  public ALStringField getRoute() {
     return route;
   }
 

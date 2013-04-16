@@ -97,7 +97,7 @@ public class AccountPersonAction extends ALBaseAction {
     // Maximize maxmize = new Maximize();
     // maxmize.doPerform(rundata);
 
-    context.put("isMaximized", Boolean.valueOf(true));
+    context.put("isMaximized", Boolean.TRUE);
 
     context.put("PURL_AccountEdit", getPortletURIinPersonalConfigPane(
       rundata,

@@ -228,7 +228,14 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
   public String getBodyText() {
     String text = null;
     try {
+      String contentType = this.getContentType();
+
+      // au iPhone 対策
+      this.setHeader("Content-Type", contentType
+        .replace("cp932", "Windows-31J"));
       text = MultipartUtility.getFirstPlainText(this);
+      this.setHeader("Content-Type", contentType);
+
     } catch (Exception e) {
       logger.error("ALLocalMailMessage.getBodyText", e);
     }
@@ -524,6 +531,42 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       return addresses;
     } else {
       return super.getRecipients(recipienttype);
+    }
+  }
+
+  /**
+   * TO，CC，BCC のフォーマットをチェックしない場合は strict = false
+   * 
+   * @param recipienttype
+   * @param strict
+   * @return
+   * @throws MessagingException
+   */
+  public Address[] getRecipients(
+      javax.mail.Message.RecipientType recipienttype, boolean strict)
+      throws MessagingException {
+    if (strict) {
+      return getRecipients(recipienttype);
+    } else {
+      String recipients = this.getHeader(recipienttype.toString(), null);
+      if (recipients == null) {
+        return super.getRecipients(recipienttype);
+      }
+      int index = 0;
+      String token = null;
+      StringTokenizer st = new StringTokenizer(recipients, ",");
+      Address[] addresses = new InternetAddress[st.countTokens()];
+      while (st.hasMoreTokens()) {
+        token = st.nextToken();
+        try {
+          addresses[index] = new InternetAddress(token, false);
+        } catch (AddressException ae) {
+          addresses[index] = new InternetAddress();
+          ((InternetAddress) addresses[index]).setAddress(token);
+        }
+        index++;
+      }
+      return addresses;
     }
   }
 

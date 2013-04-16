@@ -438,4 +438,8 @@ public class ALCommonUtils {
   public static boolean isAndroidBrowser(RunData rundata) {
     return ALEipUtils.isAndroidBrowser(rundata);
   }
+
+  public static boolean isAndroid2Browser(RunData rundata) {
+    return ALEipUtils.isAndroid2Browser(rundata);
+  }
 }

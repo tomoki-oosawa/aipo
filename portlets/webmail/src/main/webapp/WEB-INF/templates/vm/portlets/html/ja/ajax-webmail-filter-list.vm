@@ -54,6 +54,7 @@
 #AUIajaxpageview('WebMailFilterListScreen' $result)
 </div>
 #AUISummaryDivfooter()
+#ALformfooter()
 #AUIrowTableWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
@@ -64,8 +65,8 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.FilterId' type='checkbox' value='$!record.FilterId' />" 'align="center"')
-#ALtdcell("$!record.SortOrder")
+#ALtdcellAtt("<input name='check$!record.FilterId' type='checkbox' value='$!record.FilterId'/>" 'align="center"')
+#ALtdcellAtt("$!record.SortOrder" "class='right'")
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterDetailScreen").addQueryData("filterid",$record.FilterId))');">$!record.FilterName</a>

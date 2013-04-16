@@ -91,18 +91,18 @@
 #else
 <tr class="caption pc_hide">
 #end
-#ALtdhead($l10n.EXTTIMECARD_NAME)
-#ALtdhead($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
-#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='doubleHeight'")
-#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='doubleHeight'")
-#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='doubleHeight'")
-#ALtdhead($l10n.EXTTIMECARD_LATE_COMING_DAY)
-#ALtdhead($l10n.EXTTIMECARD_EARLY_LEAVING_DAY)
-#ALtdhead($l10n.EXTTIMECARD_ABSENT_DAY)
-#ALtdhead($l10n.EXTTIMECARD_PAID_HOLIDAY)
-#ALtdhead($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY)
-#ALtdhead($l10n.EXTTIMECARD_OTHER)
-#ALtdhead($l10n.EXTTIMECARD_NOT_INPUT)
+#ALtdheadAtt($l10n.EXTTIMECARD_NAME "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='doubleHeight center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='doubleHeight center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='doubleHeight center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_LATE_COMING_DAY "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_EARLY_LEAVING_DAY "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_ABSENT_DAY "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_PAID_HOLIDAY "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_OTHER "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_NOT_INPUT "class='center'")
 </tr>
 <tr>
 #ALtdcellAtt("$!{key.UserNameHtml}" "")

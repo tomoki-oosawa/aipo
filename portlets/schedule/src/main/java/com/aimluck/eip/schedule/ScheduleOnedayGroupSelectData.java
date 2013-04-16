@@ -166,7 +166,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       groups = ALEipUtils.getMyGroups(rundata);
       facilitiyGroups = ALEipUtils.getALEipGroups();
       userid = ALEipUtils.getUserId(rundata);
-      rows = new int[(endHour - startHour) * 4 + 1];
+      rows = new int[(endHour - startHour) * 12 + 1];
       int size = rows.length;
       for (int i = 0; i < size; i++) {
         rows[i] = 1;
@@ -789,10 +789,18 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    * @return
    */
   public int getColspan(int hour) {
-    return rows[(hour - startHour) * 4]
-      + rows[(hour - startHour) * 4 + 1]
-      + rows[(hour - startHour) * 4 + 2]
-      + rows[(hour - startHour) * 4 + 3];
+    return rows[(hour - startHour) * 12]
+      + rows[(hour - startHour) * 12 + 1]
+      + rows[(hour - startHour) * 12 + 2]
+      + rows[(hour - startHour) * 12 + 3]
+      + rows[(hour - startHour) * 12 + 4]
+      + rows[(hour - startHour) * 12 + 5]
+      + rows[(hour - startHour) * 12 + 6]
+      + rows[(hour - startHour) * 12 + 7]
+      + rows[(hour - startHour) * 12 + 8]
+      + rows[(hour - startHour) * 12 + 9]
+      + rows[(hour - startHour) * 12 + 10]
+      + rows[(hour - startHour) * 12 + 11];
   }
 
   /**

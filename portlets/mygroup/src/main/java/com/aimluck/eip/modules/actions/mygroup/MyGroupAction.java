@@ -97,7 +97,7 @@ public class MyGroupAction extends ALBaseAction {
   private void setupMaximized(RunData rundata, Context context)
       throws Exception {
 
-    context.put("isMaximized", Boolean.valueOf(true));
+    context.put("isMaximized", Boolean.TRUE);
 
     context.put("PURL_AccountEdit", getPortletURIinPersonalConfigPane(
       rundata,

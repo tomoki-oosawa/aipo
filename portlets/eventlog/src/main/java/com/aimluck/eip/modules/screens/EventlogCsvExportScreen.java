@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -103,10 +104,10 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
       SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
 
       Date startDay =
-        DateFormat.getDateInstance().parse(
+        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
           rundata.getParameters().get("start_day"));
       Date endDay =
-        DateFormat.getDateInstance().parse(
+        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
           rundata.getParameters().get("end_day"));
       Calendar cal = Calendar.getInstance();
       cal.setTime(endDay);

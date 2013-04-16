@@ -160,6 +160,10 @@ public class WorkflowCategorySelectData extends
     rd.setCategoryName(ALCommonUtils.compressString(
       record.getCategoryName(),
       getStrLength()));
+    if (record.getEipTWorkflowRoute() != null) {
+      rd.setRoute(record.getEipTWorkflowRoute().getRoute());
+      rd.setRouteName(record.getEipTWorkflowRoute().getRouteName());
+    }
     return rd;
   }
 
@@ -199,6 +203,9 @@ public class WorkflowCategorySelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("category_name", EipTWorkflowCategory.CATEGORY_NAME_PROPERTY);
+    map.putValue(
+      "route_name",
+      EipTWorkflowCategory.EIP_TWORKFLOW_ROUTE_PROPERTY);
     return map;
   }
 

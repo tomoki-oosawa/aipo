@@ -136,14 +136,14 @@
 #set($endHour = $!{result.EndHour} - 1)
 #ALtableheaderCalendar("100%")
 <tr>
-#ALtdheadheader()
+#ALtdheadAtt("" "class='w10'")
 ##<img src="images/common/dot.gif" width="15" height="1" alt="" />
 #ALtdheadfooter()
 #if($todocolcount > 0)
-#ALtdheadAtt("ToDo" "class='groupOneday' colspan='$todocolcount'")
+#ALtdheadAtt("ToDo" "class='w10' colspan='1'")
 #end
 #if($termcolcount > 0)
-#ALtdheadAtt($l10n.SCHEDULE_TERM "class='groupOneday' colspan='$termcolcount'")
+#ALtdheadAtt($l10n.SCHEDULE_TERM "class='w10' colspan='1'")
 #end
 #foreach($hour in [$!{result.StartHour}..$endHour])
 #set($colspan = $result.getColspan($hour) )
@@ -177,16 +177,16 @@ $l10n.SCHEDULE_ADD_NOTE
 #ALtdheadfooter()
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
-#foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
 #ALtdcellheaderAtt("style='background-color:#FFE5E5;'rowspan='$duplirowmax'")
-<div class="calendarScheduleDiv">
+#foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
+<div class="calerndarTodoDiv left border">
 <div class="small">
 #if($result.isMatch($record.UserId.Value))
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 #else
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 #end
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
+##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ${record.TodoName}
 #if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
@@ -194,21 +194,21 @@ ${record.TodoName}
 </a>
 </div>
 </div>
+#end
 #ALtdcellfooter()
 #end
-#end
-#if($userTodoCount < $todocolcount)
+#if($userTodoCount == 0 && $todocolcount > 0)
 #set($todorestcount = $todocolcount - $userTodoCount)
-#ALtdcellAtt("" "colspan='$todorestcount'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここから） ###
 #set($userTermCount = $result.getTermResultDataList($record3.UserId.Value).size())
 #if($userTermCount > 0)
-#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 <td rowspan="$duplirowmax">
+#foreach($record in ${result.getTermResultDataList($record3.UserId.Value)})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
-<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
+<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small left">
 <a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
@@ -219,7 +219,7 @@ ${record.TodoName}
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end
 #else
-<div class="calerndarTermScheduleDiv small">
+<div class="calerndarTermScheduleDiv small left">
 $record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
@@ -232,12 +232,12 @@ $record.WbrName
 #end
 </a>
 </div>
+#end
 #ALtdcellfooter()
 #end
-#end
-#if($userTermCount < $termcolcount)
+#if($userTermCount == 0 && $termcolcount > 0)
 #set($termrestcount = $termcolcount - $userTermCount)
-#ALtdcellAtt("" "colspan='$termrestcount'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここまで） ###
 
@@ -312,7 +312,7 @@ $record.WbrName
 
 #set($endRowResult = 0)
 #foreach($hour in [$!{result.StartHour}..$endHour])
-#set($endRowResult = $endRowResult + 4)
+#set($endRowResult = $endRowResult + 12)
 #end
 
 #if($startrow == 0)
@@ -465,7 +465,7 @@ $record.WbrName
 
 #set($endRowResult = 0)
 #foreach($hour in [$!{result.StartHour}..$endHour])
-#set($endRowResult = $endRowResult + 4)
+#set($endRowResult = $endRowResult + 12)
 #end
 #if($startrow == 0)
 #if($colspan != $endRowResult)

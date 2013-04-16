@@ -472,6 +472,8 @@ public class Database {
         logger.error(e.getMessage(), e);
       } catch (CayenneException e) {
         logger.error(e.getMessage(), e);
+      } catch (Throwable t) {
+        logger.warn(t.getMessage(), t);
       } finally {
         Transaction.bindThreadTransaction(null);
       }

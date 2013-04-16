@@ -57,7 +57,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     .getLogger(ALVelocityScreen.class.getName());
 
   /** コンテントタイプ */
-  private static final String CONTENT_TYPE = "text/json;charset="
+  private static final String CONTENT_TYPE = "text/html;charset="
     + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /** 表示モード */

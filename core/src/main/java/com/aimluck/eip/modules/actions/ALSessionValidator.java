@@ -147,15 +147,10 @@ public class ALSessionValidator extends JetspeedSessionValidator {
             String username = decoded.substring(0, pos);
             String password = decoded.substring(pos + 1);
 
-            try {
-              JetspeedUser juser = JetspeedSecurity.login(username, password);
-              if (juser != null && "F".equals(juser.getDisabled())) {
-                JetspeedSecurity.saveUser(juser);
-              } else {
-                requireAuth(hres);
-                return;
-              }
-            } catch (LoginException e) {
+            JetspeedUser juser = JetspeedSecurity.login(username, password);
+            if (juser != null && "F".equals(juser.getDisabled())) {
+              JetspeedSecurity.saveUser(juser);
+            } else {
               requireAuth(hres);
               return;
             }
@@ -207,7 +202,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           data.setUser(JetspeedSecurity.getAnonymousUser());
           data.setMessage(ALLocalizationUtils
             .getl10n("LOGINACTION_LOGIN_ONLY_PC"));
-          data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+          data.getUser().setHasLoggedIn(Boolean.FALSE);
         } else {
 
           try {
@@ -218,7 +213,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
               data.setUser(JetspeedSecurity.getAnonymousUser());
               data.setMessage(ALLocalizationUtils
                 .getl10n("LOGINACTION_INVALIDATION_USER"));
-              data.getUser().setHasLoggedIn(Boolean.valueOf(false));
+              data.getUser().setHasLoggedIn(Boolean.FALSE);
             }
           } catch (LoginException e) {
           }
@@ -242,7 +237,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
             loginuser = JetspeedSecurity.getUser(userName);
             if (loginuser.getPerm("logincookie", "").equals(loginCookieValue)) {
               data.setUser(loginuser);
-              loginuser.setHasLoggedIn(Boolean.valueOf(true));
+              loginuser.setHasLoggedIn(Boolean.TRUE);
               loginuser.updateLastLogin();
               data.save();
             }

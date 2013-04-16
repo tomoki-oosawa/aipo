@@ -2186,6 +2186,31 @@ public class ALEipUtils {
     return isMatchUserAgent("Android", rundata);
   }
 
+  public static boolean isAndroid2Browser(RunData rundata) {
+    int[] version = getAndroidVersion(rundata);
+    return version != null && version[0] == 2;
+  }
+
+  public static int[] getAndroidVersion(RunData rundata) {
+    final String userAgent = rundata.getUserAgent().trim();
+    if (userAgent == null || "".equals(userAgent)) {
+      return null;
+    }
+    Pattern androidVersion =
+      Pattern.compile(
+        "Android ([\\d]+).([\\d]+).([\\d]+)",
+        Pattern.CASE_INSENSITIVE);
+    Matcher matcher = androidVersion.matcher(userAgent);
+    if (matcher.find()) {
+      return new int[] {
+        Integer.parseInt(matcher.group(1)),
+        Integer.parseInt(matcher.group(2)),
+        Integer.parseInt(matcher.group(3)) };
+    } else {
+      return null;
+    }
+  }
+
   public static String getClientVersion(RunData rundata) {
     return getClientVersion(rundata.getUserAgent().trim());
   }

@@ -222,7 +222,7 @@ public class CellAddressBookAction extends ALBaseAction {
    */
   public void doAddressbook_addr_search_list(RunData rundata, Context context)
       throws Exception {
-    context.put("isSerchRes", Boolean.valueOf(true));
+    context.put("isSerchRes", Boolean.TRUE);
 
     AbstractAddressBookWordSelectData<?, ?> listData =
       AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
@@ -267,7 +267,7 @@ public class CellAddressBookAction extends ALBaseAction {
       .getInitParameter("p1a-rows")));
     listData.doViewList(this, rundata, context);
 
-    context.put("isSerchRes", Boolean.valueOf(true));
+    context.put("isSerchRes", Boolean.TRUE);
 
     setTemplate(rundata, "addressbook-company-list.vm");
   }

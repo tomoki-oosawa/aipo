@@ -182,7 +182,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     }
     //
 
-    user.setHasLoggedIn(Boolean.valueOf(true));
+    user.setHasLoggedIn(Boolean.TRUE);
 
     try {
       user.updateLastLogin();
@@ -215,7 +215,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     try {
       user =
         JetspeedUserManagement.getUser(new UserNamePrincipal(anonymousUser));
-      user.setHasLoggedIn(Boolean.valueOf(false));
+      user.setHasLoggedIn(Boolean.FALSE);
       putUserIntoContext(user);
       if (cachingEnable) {
         JetspeedSecurityCache.load(user.getUserName());

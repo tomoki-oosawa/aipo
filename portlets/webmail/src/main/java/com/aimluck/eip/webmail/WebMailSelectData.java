@@ -424,8 +424,9 @@ public class WebMailSelectData extends
       rd.setHeaders(msg.getHeaderArray());
       rd.setSubject(msg.getSubject());
       rd.setFrom(ALMailUtils.getAddressString(msg.getFrom()));
-      rd.setTo(ALMailUtils.getAddressString(msg
-        .getRecipients(Message.RecipientType.TO)));
+      rd.setTo(ALMailUtils.getAddressString(msg.getRecipients(
+        Message.RecipientType.TO,
+        false)));
       rd.setDate(date);
 
       rd.setBody(msg.getBodyText());

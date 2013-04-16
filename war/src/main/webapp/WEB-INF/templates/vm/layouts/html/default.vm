@@ -44,6 +44,9 @@
 #if($!utils.isAndroidBrowser($data))
 	<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android.css?$!{utils.CacheBust}" />
 #end
+#if($!utils.isAndroid2Browser($data))
+	<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-2.x.css?$!{utils.CacheBust}" />
+#end
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
 </head>
 <body onload="aipo.container.renderGadgets()">

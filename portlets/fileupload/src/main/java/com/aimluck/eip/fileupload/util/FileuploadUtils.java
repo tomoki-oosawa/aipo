@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
@@ -295,6 +296,7 @@ public class FileuploadUtils {
     try {
 
       String file_name = fileBean.getFileName();
+      String ext = "";
 
       if (acceptExts != null && acceptExts.length > 0) {
         // 拡張子をチェックする．
@@ -308,6 +310,8 @@ public class FileuploadUtils {
           }
           if (file_name.toLowerCase().endsWith(tmpExt)) {
             isAccept = true;
+            ext = tmpExt.replace(".", "");
+            ;
             break;
           }
         }
@@ -322,7 +326,16 @@ public class FileuploadUtils {
           + ALStorageService.separator()
           + folderName, String.valueOf(fileBean.getFileId()));
 
-      BufferedImage orgImage = ImageIO.read(is);
+      Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix(ext);
+      ImageReader reader = readers.next();
+      reader.setInput(ImageIO.createImageInputStream(is));
+
+      BufferedImage orgImage = reader.read(0);
+      reader.reset();
+      reader.dispose();
+
+      // BufferedImage orgImage = ImageIO.read(is);
+
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
@@ -498,6 +511,16 @@ public class FileuploadUtils {
     int shrinkedWidth = (int) (iwidth * ratio);
     int shrinkedHeight = (int) (iheight * ratio);
 
+    // 縮小後の画像よりも大きくトリミングしないようにする
+    int _width = width;
+    int _height = height;
+    if (shrinkedWidth < width) {
+      _width = shrinkedWidth;
+    }
+    if (shrinkedHeight < height) {
+      _height = shrinkedHeight;
+    }
+
     // イメージデータを縮小する
     Image targetImage =
       imgfile.getScaledInstance(
@@ -515,11 +538,11 @@ public class FileuploadUtils {
     int _iheight = tmpImage.getHeight();
     BufferedImage _tmpImage;
     if (_iwidth > _iheight) {
-      int diff = _iwidth - width;
-      _tmpImage = tmpImage.getSubimage(diff / 2, 0, width, height);
+      int diff = _iwidth - _width;
+      _tmpImage = tmpImage.getSubimage(diff / 2, 0, _width, _height);
     } else {
-      int diff = _iheight - height;
-      _tmpImage = tmpImage.getSubimage(0, diff / 2, width, height);
+      int diff = _iheight - _height;
+      _tmpImage = tmpImage.getSubimage(0, diff / 2, _width, _height);
     }
     return _tmpImage;
   }

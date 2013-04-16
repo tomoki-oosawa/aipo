@@ -88,6 +88,7 @@ dojo.declare(
         reloadIds: new Array(),
         _portlet_id: null,
         _callback:null,
+        eventList:[],
         _setup: function(){
             // summary:
             //      stuff we need to do before showing the Dialog for the first
@@ -182,6 +183,45 @@ dojo.declare(
             	if(!!document.documentElement.scrollTop) document.documentElement.scrollTop=0;
             	else if(!!document.body.scrollTop)document.body.scrollTop=0;
             }
+
+            //android時 下位レイヤーを無効にする。
+        	if(aipo.userAgent.isAndroid()){
+        		var _this=this;
+
+        		var f=function(e){
+        			e.preventDefault();
+                	//e.stopImmediatePropagation();
+                	return false;
+                };
+
+        		 //モーダルダイアログ
+                var dialogNodes=dojo.query("input,select,button,a",this.domNode);
+
+                //ダイアログ表示時に機能しなくなるので、
+                //ヘッダとフッタ以下もpreventDefaultしない。
+                var navigationElems=dojo.byId("appsNavigation");
+                var navigationNodes=dojo.query("input,select,button,a",navigationElems);
+                var auiWidgetsElems=dojo.byId("auiWidgetsArea");
+                var auiWidgetsNodes=dojo.query("input,select,button,a",auiWidgetsElems);
+
+                //preventDefaultしないノード達
+                var excludeNodes=dialogNodes;
+                excludeNodes=excludeNodes.concat(navigationNodes);
+                excludeNodes=excludeNodes.concat(auiWidgetsNodes);
+
+        		dojo.query("input,select,button,a").forEach(function(node){
+        			if(!aipo.arrayContains(excludeNodes,node))
+        				_this.eventList.push(dojo.connect(node,'click',f));
+        		});
+        		dojo.query("input,select,button").forEach(function(node,index){
+            		if(!aipo.arrayContains(excludeNodes,node) && !node.disabled){
+            			dojo.addClass(node,"disabled-by-dialog");
+            			node.disabled=true;
+            		}
+            	});
+        	}
+
+
 
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
@@ -286,6 +326,17 @@ dojo.declare(
         	dojo.query(".mb_dialoghide").removeClass("mb_dialoghide");
         	dojo.query("#modalDialog").removeClass("mb_dialog");
         	if(aipo && aipo.timeline && aipo.timeline.activeFileAttachments)aipo.timeline.activeFileAttachments(this._portlet_id);
+
+        	if(aipo.userAgent.isAndroid()){
+	        	for(var i=0;i<this.eventList.length;i++){
+	        		dojo.disconnect(this.eventList[i]);
+	        	}
+	        	this.eventList=[];
+	        	dojo.query("input.disabled-by-dialog,select.disabled-by-dialog,button.disabled-by-dialog").forEach(function(node,index){
+	        		dojo.removeClass(node,"disabled-by-dialog");
+	        		node.disabled=false;
+	        	});
+        	}
         }
     }
 );

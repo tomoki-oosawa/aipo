@@ -515,8 +515,32 @@ public class WorkflowUtils {
       List<WorkflowCategoryResultData> categoryList =
         new ArrayList<WorkflowCategoryResultData>();
 
+      SelectQuery<EipTWorkflowCategory> query1 =
+        Database.query(EipTWorkflowCategory.class);
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          1);
+      query1.setQualifier(exp1);
+      List<EipTWorkflowCategory> aList1 = query1.fetchList();
+
+      for (EipTWorkflowCategory record : aList1) {
+        WorkflowCategoryResultData rd = new WorkflowCategoryResultData();
+        rd.initField();
+        rd.setCategoryId(record.getCategoryId().longValue());
+        rd.setCategoryName(record.getCategoryName());
+        rd.setOrderTemplate(record.getTemplate());
+        categoryList.add(rd);
+      }
+
       SelectQuery<EipTWorkflowCategory> query =
         Database.query(EipTWorkflowCategory.class);
+      Expression exp2 =
+        ExpressionFactory.noMatchDbExp(
+          EipTWorkflowCategory.CATEGORY_ID_PK_COLUMN,
+          1);
+      query.setQualifier(exp2);
+      query.orderAscending(EipTWorkflowCategory.CATEGORY_NAME_PROPERTY);
       List<EipTWorkflowCategory> aList = query.fetchList();
 
       for (EipTWorkflowCategory record : aList) {

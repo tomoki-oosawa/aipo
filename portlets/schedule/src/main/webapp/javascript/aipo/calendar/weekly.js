@@ -451,6 +451,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                        if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
                            str_tmp = i %  aipo.calendar.maximum_to;
                        }
+                       /*
                        if(item.memberList){
                            var ucount = 0;
                            var fcount = 0;
@@ -462,6 +463,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                                }
                            }
                        }
+                       */
                     }
                     var str_tmpflgmb;
                     if(item.userCount > 1){
@@ -593,24 +595,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                            if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
                                str_tmp = i %  aipo.calendar.maximum_to;
                            }
-                           if(item.memberList){
-                               var ucount = 0;
-                               var fcount = 0;
-                               for (j = 0 ; j < item.memberList.length ; j ++){
-                                   if(item.memberList[j].charAt(0) == 'f'){
-                                      fcount++;
-                                   }else{
-                                      ucount++;
-                                   }
-                               }
-                           }
                         }
                         var str_tmpflgmb;
-                        if(ucount > 1){
-                         str_tmpflgmb   =  "[共有]";
-                        }
-                        if(fcount > 0){
-                         str_tmpflgmb   += "[設備]";
+                        if(item.userCount > 1){
+                            str_tmpflgmb   =  "[共有]";
                         }
                     }
 
