@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * AddressBookUserGroupのBeanです。 <br />
  * 
  */
-public class AddressBookUserGroupLiteBean implements ALData, Cloneable {
+public class AddressBookUserGroupLiteBean implements ALData {
 
   /** ID */
   private ALNumberField group_id;
@@ -38,6 +38,7 @@ public class AddressBookUserGroupLiteBean implements ALData, Cloneable {
   /**
    *
    */
+  @Override
   public void initField() {
     group_id = new ALNumberField();
     name = new ALStringField();

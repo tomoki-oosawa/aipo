@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * 共有カテゴリのBeanです。 <br />
  * 
  */
-public class CommonCategoryLiteBean implements ALData, Cloneable {
+public class CommonCategoryLiteBean implements ALData {
 
   /** カテゴリ ID */
   private ALNumberField category_id;
@@ -38,6 +38,7 @@ public class CommonCategoryLiteBean implements ALData, Cloneable {
   /**
    *
    */
+  @Override
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();

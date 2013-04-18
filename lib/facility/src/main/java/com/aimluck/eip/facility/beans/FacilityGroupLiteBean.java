@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * 設備グループのBeanです。 <br />
  * 
  */
-public class FacilityGroupLiteBean implements ALData, Cloneable {
+public class FacilityGroupLiteBean implements ALData {
 
   /** FacilityGroup ID */
   private ALNumberField facility_group_id;
