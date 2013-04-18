@@ -351,10 +351,12 @@ public class CabinetSelectData extends
       query.setQualifier(exp);
     } else {
       // アクセス制御
+      List<Integer> ids = CabinetUtils.getAuthorizedVisibleFolderIds(rundata);
+      if (ids.size() == 0) {
+        ids.add(-1);
+      }
       Expression exp =
-        ExpressionFactory.inExp(
-          EipTCabinetFile.FOLDER_ID_PROPERTY,
-          CabinetUtils.getAuthorizedVisibleFolderIds(rundata));
+        ExpressionFactory.inExp(EipTCabinetFile.FOLDER_ID_PROPERTY, ids);
       query.andQualifier(exp);
     }
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {

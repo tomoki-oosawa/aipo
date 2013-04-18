@@ -48,6 +48,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -82,6 +83,9 @@ public class UserSelectData extends
 
   private boolean adminFilter;
 
+  /** 部署(Myグループ)一覧 */
+  private List<ALEipGroup> postList;
+
   /** 一覧データ */
   private List<Object> list;
 
@@ -94,6 +98,8 @@ public class UserSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     searchWord = new ALStringField();
     ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "userposition");
+
+    postList = ALEipUtils.getMyGroups(rundata);
 
     super.init(action, rundata, context);
   }
@@ -178,19 +184,12 @@ public class UserSelectData extends
     String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     current_filter = filter;
 
-    Map<Integer, ALEipPost> gMap = ALEipManager.getInstance().getPostMap();
-    if (!(filter == null || "".equals(filter) || !gMap.containsKey(Integer
-      .valueOf(filter)))) {
-      String groupName =
-        (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(filter)))
-          .getGroupName()
-          .getValue();
-
+    if (!(filter == null || "".equals(filter))) {
       query.where(Operations.eq(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
         + "."
         + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
         + "."
-        + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
+        + TurbineGroup.GROUP_NAME_PROPERTY, filter));
     }
 
     searchWord.setValue(UserListUtils.getKeyword(rundata, context));
@@ -543,6 +542,15 @@ public class UserSelectData extends
    */
   public ALStringField getSearchWord() {
     return searchWord;
+  }
+
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
   }
 
   /**
