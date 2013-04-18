@@ -120,7 +120,7 @@ public class CellularUtils {
     if (accessUrl != null && accessUrl.length() > 0) {
       url = new StringBuilder(accessUrl).append("?key=").append(key).toString();
     } else {
-      url = "";
+      url = "社外から『Aipo』 にアクセスするためのアドレスが設定されていません。";
     }
     return url;
   }

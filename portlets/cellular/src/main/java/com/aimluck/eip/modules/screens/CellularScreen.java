@@ -49,6 +49,7 @@ public class CellularScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    String type = rundata.getParameters().getString("type", "");
     try {
 
       // 簡易アクセス情報を送信する
@@ -69,7 +70,14 @@ public class CellularScreen extends ALVelocityScreen {
         CellularFormData formData = new CellularFormData();
         formData.initField();
         formData.doViewForm(this, rundata, context);
-        setTemplate(rundata, context, "portlets/html/ja/ajax-cellular.vm");
+        if (type.equals("popup")) {
+          setTemplate(
+            rundata,
+            context,
+            "portlets/html/ja/ajax-cellular-popup.vm");
+        } else {
+          setTemplate(rundata, context, "portlets/html/ja/ajax-cellular.vm");
+        }
       }
 
     } catch (Exception ex) {

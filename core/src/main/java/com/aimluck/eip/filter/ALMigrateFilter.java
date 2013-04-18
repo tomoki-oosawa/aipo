@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.filter;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -27,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,6 +38,24 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+
+import org.apache.cayenne.access.DataContext;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.query.SelectQuery;
+import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.Layout;
+import org.apache.jetspeed.om.profile.Parameter;
+import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.psml.PsmlEntry;
+import org.apache.jetspeed.om.profile.psml.PsmlLayout;
+import org.apache.jetspeed.om.profile.psml.PsmlParameter;
+import org.apache.jetspeed.services.idgenerator.JetspeedIdGenerator;
+import org.apache.jetspeed.services.psmlmanager.db.DBUtils;
+import org.exolab.castor.mapping.Mapping;
+import org.xml.sax.InputSource;
+
+import com.aimluck.eip.cayenne.om.account.JetspeedUserProfile;
 
 /**
  *
@@ -120,10 +141,80 @@ public class ALMigrateFilter implements javax.servlet.Filter {
 
           stmt
             .addBatch("ALTER TABLE turbine_user  ADD PHOTO_MODIFIED_SMARTPHONE TIMESTAMP;");
+
           hasBatch = true;
         }
         if (hasBatch) {
           stmt.executeBatch();
+        }
+
+        /*
+         * 7020to7030
+         */
+
+        SelectQuery query = new SelectQuery(JetspeedUserProfile.class);
+        Expression exp =
+          ExpressionFactory.matchExp(
+            JetspeedUserProfile.MEDIA_TYPE_PROPERTY,
+            "html");
+        query.setQualifier(exp);
+
+        DataContext dataContext = DataContext.getThreadDataContext();
+
+        @SuppressWarnings("unchecked")
+        List<JetspeedUserProfile> list = dataContext.performQuery(query);
+
+        String mapFile = "conf/psml-mapping.xml";
+        File map = new File(mapFile);
+        Mapping mapping = new Mapping();
+        InputSource is = new InputSource(new FileReader(map));
+        is.setSystemId(mapFile);
+        mapping.loadMapping(is);
+
+        if (list != null) {
+          for (JetspeedUserProfile prof : list) {
+            Portlets portlets =
+              DBUtils.bytesToPortlets(prof.getProfile(), mapping);
+            Iterator<Portlets> iterator = portlets.getPortletsIterator();
+            while (iterator.hasNext()) {
+              Portlets childPortlets = iterator.next();
+              long afterPos = 0;
+              for (Entry entry : childPortlets.getEntriesArray()) {
+                if ("Cellular".equals(entry.getParent())) {
+                  Layout layout = entry.getLayout();
+                  afterPos = layout.getPosition();
+                  break;
+                }
+              }
+
+              for (Entry entry : childPortlets.getEntriesArray()) {
+                Layout layout = entry.getLayout();
+                if ("Cellular".equals(entry.getParent())) {
+                  PsmlEntry entryPsml = new PsmlEntry();
+                  entryPsml.setId(JetspeedIdGenerator.getNextPeid());
+                  entryPsml.setParent("Cellular");
+                  Layout newLayout = new PsmlLayout();
+                  Parameter columnParam = new PsmlParameter();
+                  columnParam.setName("column");
+                  columnParam.setValue("0");
+                  Parameter rowParam = new PsmlParameter();
+                  rowParam.setName("row");
+                  rowParam.setValue("0");
+                  newLayout.addParameter(columnParam);
+                  newLayout.addParameter(rowParam);
+                  newLayout.setPosition(layout.getPosition() + 1);
+                  entryPsml.setLayout(newLayout);
+                  childPortlets.addEntry(entryPsml);
+                } else if (layout.getPosition() > afterPos) {
+                  layout.setPosition(layout.getPosition() + 1);
+                }
+              }
+              byte[] newProfBytes = DBUtils.portletsToBytes(portlets, mapping);
+              prof.setProfile(newProfBytes);
+              dataContext.commitChanges();
+
+            }
+          }
         }
       }
 

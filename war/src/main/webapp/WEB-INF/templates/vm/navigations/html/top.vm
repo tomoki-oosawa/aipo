@@ -54,6 +54,9 @@
           <li>
             <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'MyGroup').addQueryData('template','MyGroupScreen').addQueryData('type', 'popup'))');">Myグループ</a>
           </li>
+          <li>
+           <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Cellular').addQueryData('template','CellularScreen').addQueryData('type', 'popup'))');">携帯電話設定</a>
+          </li>
           #end
         	<li class="last">
             <a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">ログアウト</a>
