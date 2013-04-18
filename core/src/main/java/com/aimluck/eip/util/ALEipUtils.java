@@ -1162,29 +1162,27 @@ public class ALEipUtils {
         if (template.endsWith("JSONScreen")) {
           VelocityContext context = new VelocityContext();
           setupContext(rundata, context);
-          try {
-            ServletOutputStream out = null;
-            HttpServletResponse response = rundata.getResponse();
-            out = response.getOutputStream();
 
-            List<String> list = new ArrayList<String>();
-            list.add("PermissionError");
-            list.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
-            JSONArray json = JSONArray.fromObject(list);
+          ServletOutputStream out = null;
+          HttpServletResponse response = rundata.getResponse();
+          out = response.getOutputStream();
 
-            StringBuffer result =
-              new StringBuffer().append("/* ").append(json.toString()).append(
-                " */");
+          List<String> list = new ArrayList<String>();
+          list.add("PermissionError");
+          list.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
+          JSONArray json = JSONArray.fromObject(list);
 
-            byte[] byteResult =
-              result.toString().getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
+          StringBuffer result =
+            new StringBuffer().append("/* ").append(json.toString()).append(
+              " */");
 
-            out.write(byteResult);
-            out.flush();
-            out.close();
-          } catch (Exception e) {
-            return false;
-          }
+          byte[] byteResult =
+            result.toString().getBytes(ALEipConstants.DEF_CONTENT_ENCODING);
+
+          out.write(byteResult);
+          out.flush();
+          out.close();
+
           return true;
         } else if (template.endsWith("FormScreen")
           || template.endsWith("DetailScreen")) {
