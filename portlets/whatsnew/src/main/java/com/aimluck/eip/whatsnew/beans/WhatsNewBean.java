@@ -56,9 +56,10 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   private ALStringField js_function_name;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     entity_id = new ALNumberField();
     name = new ALStringField();
@@ -186,10 +187,55 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
     js_function_name.setValue(string);
   }
 
+  @Override
   public int compareTo(WhatsNewBean obj) {
     // 更新日時で比較します
     return obj.getUpdateDate().getValue().compareTo(
       this.getUpdateDate().getValue());
+  }
+
+  /**
+   * 自動生成
+   * 
+   * @return
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result =
+      prime
+        * result
+        + ((update_date == null) ? 0 : update_date.getValue().hashCode());
+    return result;
+  }
+
+  /**
+   * 自動生成。更新日時で比較します。
+   * 
+   * @param obj
+   * @return
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    WhatsNewBean other = (WhatsNewBean) obj;
+    if (update_date == null) {
+      if (other.update_date != null) {
+        return false;
+      }
+    } else if (!update_date.getValue().equals(other.update_date.getValue())) {
+      return false;
+    }
+    return true;
   }
 
 }
