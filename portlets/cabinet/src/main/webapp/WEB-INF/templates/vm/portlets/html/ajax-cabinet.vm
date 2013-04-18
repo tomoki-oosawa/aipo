@@ -70,7 +70,7 @@
 </div>
 
 </div>
-#if ($result.List.size() != 0 && $result.isAccessible())
+#if ($result.List && $result.List.size() != 0 && $result.isAccessible())
 #AUIajaxpageview('CabinetScreen' $result)
 #end
 </div>
@@ -78,7 +78,7 @@
 #if (!$result.isAccessible())
 <div class="message">$l10n.CABINET_NOT_PERMISSION_VIEW</div>
 #else
-#if ($result.List.size() == 0)
+#if (!$result.List || $result.List.size() == 0)
 <div class="message">$l10n.CABINET_NOTHING_FILE_IN_FOLDER</div>
 #else
 #if($result.TableColumNum == 4)

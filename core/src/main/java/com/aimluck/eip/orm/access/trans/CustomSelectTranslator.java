@@ -94,7 +94,7 @@ public class CustomSelectTranslator extends SelectTranslator {
   }
 
   public void setCustomColumns(ColumnDescriptor[] columns) {
-    this.columns = columns;
+    this.columns = columns.clone();
   }
 
   public void setCustomColumnNames(String[] columnNames) {
