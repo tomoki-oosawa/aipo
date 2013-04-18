@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.orm;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -472,8 +473,6 @@ public class Database {
         logger.error(e.getMessage(), e);
       } catch (CayenneException e) {
         logger.error(e.getMessage(), e);
-      } catch (Throwable t) {
-        logger.warn(t.getMessage(), t);
       } finally {
         Transaction.bindThreadTransaction(null);
       }
@@ -488,17 +487,27 @@ public class Database {
 
     DataContext dataContext = DataContext.getThreadDataContext();
     String url = null;
+    Connection conn = null;
     try {
-      url =
+      conn =
         dataContext
           .getParentDataDomain()
           .getNode(Database.getDomainName() + "domainNode")
           .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL();
+          .getConnection();
+      if (conn != null) {
+        url = conn.getMetaData().getURL();
+      }
     } catch (SQLException e) {
       logger.warn(e.getMessage(), e);
+    } finally {
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          logger.warn(e.getMessage(), e);
+        }
+      }
     }
 
     return url != null && url.startsWith("jdbc:postgresql");
