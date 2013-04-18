@@ -286,9 +286,46 @@ public class ToDoSelectData extends
       String keyword = "%" + target_keyword.getValue() + "%";
       Expression exp =
         ExpressionFactory.likeExp(EipTTodo.TODO_NAME_PROPERTY, keyword);
-      query.andQualifier(exp.orExp(ExpressionFactory.likeExp(
-        EipTTodo.NOTE_PROPERTY,
-        keyword)));
+      Expression exp2 =
+        ExpressionFactory.likeExp(EipTTodo.NOTE_PROPERTY, keyword);
+
+      /* フルネーム対応 */
+      String first_name = keyword;
+      String last_name = keyword;
+      char[] c = { '\u3000' };
+      String wspace = new String(c);
+      String keyword2 = target_keyword.getValue().replaceAll(wspace, " ");
+      if (keyword2.contains(" ")) {
+        String[] spstr = keyword2.split(" ");
+        if (spstr.length == 2) {
+          first_name = "%" + spstr[1] + "%";
+          last_name = "%" + spstr[0] + "%";
+        }
+      }
+
+      Expression exp3 =
+        ExpressionFactory.likeExp(EipTTodo.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.FIRST_NAME_PROPERTY, first_name);
+      Expression exp4 =
+        ExpressionFactory.likeExp(EipTTodo.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.FIRST_NAME_KANA_PROPERTY, first_name);
+      Expression exp5 =
+        ExpressionFactory.likeExp(EipTTodo.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.LAST_NAME_PROPERTY, last_name);
+      Expression exp6 =
+        ExpressionFactory.likeExp(EipTTodo.TURBINE_USER_PROPERTY
+          + "."
+          + TurbineUser.LAST_NAME_KANA_PROPERTY, last_name);
+
+      query.andQualifier(exp
+        .orExp(exp2)
+        .orExp(exp3)
+        .orExp(exp4)
+        .orExp(exp5)
+        .orExp(exp6));
     }
 
     if ("list".equals(currentTab)) {
