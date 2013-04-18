@@ -839,73 +839,59 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     PSMLDocument psmldoc = null;
     String page = null;
 
-    try {
-      DataContext dataContext = DataContext.getThreadDataContext();
-      if (user != null) {
-        tableName = "JETSPEED_USER_PROFILE";
-        records = selectJetspeedUserProfilePeer(dataContext, locator, false);
-        Iterator<?> iterator = records.iterator();
-        while (iterator.hasNext()) {
-          JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
-          page = uprofile.getPage();
-          portlets =
-            DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
-        }
-      } else if (role != null) {
-        tableName = "JETSPEED_ROLE_PROFILE";
-        records = selectJetspeedRoleProfilePeer(dataContext, locator, false);
-        Iterator<?> iterator = records.iterator();
-        while (iterator.hasNext()) {
-          JetspeedRoleProfile rprofile = (JetspeedRoleProfile) iterator.next();
-          page = rprofile.getPage();
-          portlets =
-            DBUtils.bytesToPortlets(rprofile.getProfile(), this.mapping);
-        }
-      } else if (group != null) {
-        tableName = "JETSPEED_GROUP_PROFILE";
-        records = selectJetspeedGroupProfilePeer(dataContext, locator, false);
-        Iterator<?> iterator = records.iterator();
-        while (iterator.hasNext()) {
-          JetspeedGroupProfile gprofile =
-            (JetspeedGroupProfile) iterator.next();
-          page = gprofile.getPage();
-          portlets =
-            DBUtils.bytesToPortlets(gprofile.getProfile(), this.mapping);
-        }
+    DataContext dataContext = DataContext.getThreadDataContext();
+    if (user != null) {
+      tableName = "JETSPEED_USER_PROFILE";
+      records = selectJetspeedUserProfilePeer(dataContext, locator, false);
+      Iterator<?> iterator = records.iterator();
+      while (iterator.hasNext()) {
+        JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
+        page = uprofile.getPage();
+        portlets = DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
       }
+    } else if (role != null) {
+      tableName = "JETSPEED_ROLE_PROFILE";
+      records = selectJetspeedRoleProfilePeer(dataContext, locator, false);
+      Iterator<?> iterator = records.iterator();
+      while (iterator.hasNext()) {
+        JetspeedRoleProfile rprofile = (JetspeedRoleProfile) iterator.next();
+        page = rprofile.getPage();
+        portlets = DBUtils.bytesToPortlets(rprofile.getProfile(), this.mapping);
+      }
+    } else if (group != null) {
+      tableName = "JETSPEED_GROUP_PROFILE";
+      records = selectJetspeedGroupProfilePeer(dataContext, locator, false);
+      Iterator<?> iterator = records.iterator();
+      while (iterator.hasNext()) {
+        JetspeedGroupProfile gprofile = (JetspeedGroupProfile) iterator.next();
+        page = gprofile.getPage();
+        portlets = DBUtils.bytesToPortlets(gprofile.getProfile(), this.mapping);
+      }
+    }
 
-      if (page != null && portlets != null) {
-        psmldoc = getPSMLDocument(page, portlets);
-        if (cachingOn) {
-          synchronized (psmlCache) {
-            if (logger.isDebugEnabled()) {
-              logger
-                .debug("CayenneDatabasePsmlManagerService.refresh: caching document: profile: "
-                  + locatorToString(locator));
-            }
-            psmlCache.put(locatorToString(locator), psmldoc);
-          }
-        }
-        return psmldoc;
-      } else {
-        if (cachingOn) {
-          // cache the fact that there is NO document matching this profile
-          psmlCache.put(locatorToString(locator), null);
+    if (page != null && portlets != null) {
+      psmldoc = getPSMLDocument(page, portlets);
+      if (cachingOn) {
+        synchronized (psmlCache) {
           if (logger.isDebugEnabled()) {
             logger
-              .debug("CayenneDatabasePsmlManagerService.refresh: caching 'document not found': profile: "
+              .debug("CayenneDatabasePsmlManagerService.refresh: caching document: profile: "
                 + locatorToString(locator));
           }
+          psmlCache.put(locatorToString(locator), psmldoc);
         }
       }
-    } catch (Exception e) {
-      logger.warn("CayenneDatabasePsmlManagerService.refresh: profile: "
-        + locatorToString(locator)
-        + " tableName: "
-        + tableName, e);
-      throw new RuntimeException("Could not refresh profile from DB");
-    } finally {
-      // make sure to release the database connection
+      return psmldoc;
+    } else {
+      if (cachingOn) {
+        // cache the fact that there is NO document matching this profile
+        psmlCache.put(locatorToString(locator), null);
+        if (logger.isDebugEnabled()) {
+          logger
+            .debug("CayenneDatabasePsmlManagerService.refresh: caching 'document not found': profile: "
+              + locatorToString(locator));
+        }
+      }
     }
 
     if (logger.isDebugEnabled()) {
