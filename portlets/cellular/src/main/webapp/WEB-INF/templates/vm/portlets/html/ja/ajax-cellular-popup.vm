@@ -1,0 +1,51 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set($tabs = [["簡易アクセス情報", "",""]])
+#set ($indicator_id = "indicator-dlg-")
+#set ($subtitle = "携帯電話設定")
+## ---------------------------------------------------------------------------
+#ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
+<div id="messageDiv"></div>
+#ALerrmsg($errmsgs)
+#ALajaxIndicator("${indicator_id}" "$!portlet.ID" "")
+#if($finishedSendmail)
+<div style="padding:0px 0px 5px 0px;">
+<ul>
+<li style="color:#f00;">設定された携帯電話のメールアドレスにメールしました。</li>
+</ul>
+</div>
+#end
+<div style="padding:0px 0px 5px 0px">携帯電話から 『${alias}』 を利用する際には、以下のアドレスでアクセスしてください。</div>
+<form name="cellular$!portlet.ID" id="cellular$!portlet.ID" action="#" method="post" onsubmit="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CellularScreen").addQueryData("mode","sendmail").addQueryData("secid","$secid"))','$!portlet.ID');aipo.cellular.displayIndicator('${indicator_id}', '$!portlet.ID');return false;">
+#ALtableheaderWide()
+#ALtdcaptionheader()
+${alias}サイトのアドレス
+#ALtdcaptionfooter()
+#ALtditem("$!{result.CellularUrl}<img src='images/blank.gif' height='1' width='150' alt='' /> ")
+#ALtdcaption('簡易アクセスの設定')
+#ALtditemheader()
+#if($!{result.enableEasyLogin()}) 有効 #else 無効#end
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheaderRight()
+${alias}サイトのアドレスを携帯電話に#ALsubmit('eventSubmit_doCellular_sendmail' 'メールする')
+#ALbuttonfooterRight()
+</form>

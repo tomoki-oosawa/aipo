@@ -23,9 +23,15 @@
 #set($postLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen").addQueryData("filter","").addQueryData("filtertype","post")))
 <a href="javascript:void(0);" onclick="aipo.viewPage('$postLink', '$!portlet.ID');" >$l10n.USERLIST_ALL_POST</a>
 </li>
+#foreach($record in $result.postList)
+<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) class="active" #end>
+#set($postLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen").addQueryData("filter",$!record.Name).addQueryData("filtertype","post")))
+<a href="javascript:void(0);" onclick="aipo.viewPage('$postLink', '$!portlet.ID');" >$!{record.AliasName}</a>
+</li>
+#end
 #foreach( $record in $result.PostMap )
-<li#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) class="active" #end>
-#set($postLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post")))
+<li#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GroupName.toString()) class="active" #end>
+#set($postLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen").addQueryData("filter",$!record.GroupName).addQueryData("filtertype","post")))
 <a href="javascript:void(0);" onclick="aipo.viewPage('$postLink', '$!portlet.ID');" >$!record.PostName</a>
 </li>
 #end
