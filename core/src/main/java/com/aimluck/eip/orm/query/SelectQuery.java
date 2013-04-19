@@ -39,8 +39,6 @@ public class SelectQuery<M> extends AbstractQuery<M> {
 
   protected int page = 1;
 
-  protected int totalCount = 0;
-
   public SelectQuery(Class<M> rootClass) {
     super(rootClass);
     delegate = new CustomSelectQuery(rootClass);
