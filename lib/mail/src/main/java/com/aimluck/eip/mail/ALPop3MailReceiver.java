@@ -164,7 +164,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       // POP3 サーバ上のメールフォルダを開く
       pop3Folder = (POP3Folder) pop3Store.getFolder("INBOX");
       if (pop3Folder == null) {
-        close(pop3Store, pop3Folder, receiveFolder);
+        close(pop3Store, null, receiveFolder);
         return RECEIVE_MSG_FAIL;
       }
       pop3Folder.open(Folder.READ_WRITE);
@@ -172,7 +172,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
       // ローカルストアに接続
       receiveFolder = getALFolder();
       if (receiveFolder == null) {
-        close(pop3Store, pop3Folder, receiveFolder);
+        close(pop3Store, pop3Folder, null);
         return RECEIVE_MSG_FAIL;
       }
 
