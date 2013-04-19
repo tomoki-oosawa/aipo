@@ -60,8 +60,6 @@ public class ScheduleOnedayContainer implements ALData {
   /** <code>rowIndex</code> rowIndex */
   private int rowIndex;
 
-  private ScheduleOnedayResultData dummyList;
-
   /*
    *
    */
