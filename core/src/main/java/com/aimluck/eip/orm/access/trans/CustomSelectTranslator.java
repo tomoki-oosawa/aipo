@@ -26,7 +26,7 @@ import org.apache.cayenne.access.jdbc.ColumnDescriptor;
 import org.apache.cayenne.access.trans.SelectTranslator;
 
 /**
- *
+ * 
  */
 public class CustomSelectTranslator extends SelectTranslator {
 
@@ -72,7 +72,7 @@ public class CustomSelectTranslator extends SelectTranslator {
       if (columns == null || columns.length == 0) {
         return super.getResultColumns();
       } else {
-        return columns.clone();
+        return columns;
       }
     } else {
       ColumnDescriptor[] resultColumns = super.getResultColumns();
@@ -94,7 +94,7 @@ public class CustomSelectTranslator extends SelectTranslator {
   }
 
   public void setCustomColumns(ColumnDescriptor[] columns) {
-    this.columns = columns.clone();
+    this.columns = columns;
   }
 
   public void setCustomColumnNames(String[] columnNames) {
