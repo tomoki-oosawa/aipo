@@ -328,7 +328,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
     return ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_SELF;
   }
 
-  private class WorkflowRequestMapHandler {
+  private static class WorkflowRequestMapHandler {
 
     EipTWorkflowRequestMap currentMap;
 

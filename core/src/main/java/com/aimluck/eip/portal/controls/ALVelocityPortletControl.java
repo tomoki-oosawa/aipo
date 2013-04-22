@@ -480,7 +480,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * This utility class is used to give information about the actions available
    * in a control theme template
    */
-  public class PortletAction {
+  public static class PortletAction {
     String name = null;
 
     String link = null;
@@ -846,7 +846,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
    * のメソッドをコピーした．
    */
-  public class PortletTab {
+  public static class PortletTab {
     private final ALStringField title = new ALStringField();
 
     private final ALStringField name = new ALStringField();
@@ -946,7 +946,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * 修正 ：ポートレットの最大化画面時にタブを表示するために追加した。
    */
-  public class PortletTabComparator implements Comparator<PortletTab> {
+  public static class PortletTabComparator implements Comparator<PortletTab> {
 
     /**
      * 
