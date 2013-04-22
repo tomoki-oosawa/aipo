@@ -39,7 +39,7 @@ public class MemoIdListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "（メモの選択）";
+  private static final String DEF_INITIAL_VALUE = "（メモの選択）";
 
   /**
    * Initialize options

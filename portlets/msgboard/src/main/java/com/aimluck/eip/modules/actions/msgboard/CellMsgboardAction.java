@@ -42,14 +42,14 @@ import com.aimluck.eip.util.ALEipUtils;
 public class CellMsgboardAction extends MsgboardAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardAction.class.getName());
 
   /** 返信用キー */
-  private final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
+  private static final String RESULT_ON_TOPIC_DETAIL = "resultOnTopicDetail";
 
   /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL =
+  private static final String ERROR_MESSAGE_LIST_ON_TOPIC_DETAIL =
     "errmsgsOnTopicDetail";
 
   /** 返信用 result */

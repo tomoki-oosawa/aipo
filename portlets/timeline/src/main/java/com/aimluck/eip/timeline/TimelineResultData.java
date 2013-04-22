@@ -187,7 +187,7 @@ public class TimelineResultData implements ALData {
     return ALEipUtils.getMessageList(note.getValue());
   }
 
-  private final int PRE_NOTE_LENGTH = 500;
+  private static final int PRE_NOTE_LENGTH = 500;
 
   /**
    * 続きを見るを表示するかどうかの判定
@@ -567,7 +567,8 @@ public class TimelineResultData implements ALData {
   }
 
   /**
-   * @param portletId セットする portletId
+   * @param portletId
+   *          セットする portletId
    */
   public void setPortletId(String portletId) {
     this.portletId = portletId;

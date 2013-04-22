@@ -35,10 +35,11 @@ public class CellAppScheduleBean implements ALData, Cloneable {
 
   private String end_date;
 
-  private final String format = "yyyyMMddHHmm";
+  private static final String format = "yyyyMMddHHmm";
 
   private ALDateTimeField timeField;
 
+  @Override
   public void initField() {
     title = "";
     text = "";

@@ -72,12 +72,13 @@ public class ScheduleToDoResultData implements ALData, Cloneable {
   private int rowspan;
 
   /** <code>format</code> フォーマット */
-  private final String format = "H:mm";
+  private static final String format = "H:mm";
 
   /**
    *
    *
    */
+  @Override
   public void initField() {
     todo_id = new ALNumberField();
     todo_name = new ALStringField();

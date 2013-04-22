@@ -33,13 +33,13 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 掲示板の設定値を処理するクラスです。 
+ * 掲示板の設定値を処理するクラスです。
  */
 public class MsgboardCategoryListBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  private final String DEF_INITIAL_VALUE = "";
+  private static final String DEF_INITIAL_VALUE = "";
 
   /**
    * Initialize options
