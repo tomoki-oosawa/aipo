@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.schedule;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -327,8 +326,6 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     if (st != null) {
       schedule_type.setValue(st);
     }
-
-    Field[] fields = form_data.getClass().getDeclaredFields();
 
     if (msgList.size() >= 1) {
       return false;
