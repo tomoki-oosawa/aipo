@@ -329,14 +329,6 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     }
 
     Field[] fields = form_data.getClass().getDeclaredFields();
-    @SuppressWarnings("unused")
-    boolean res =
-      ScheduleUtils.setFormDataDelegate(
-        rundata,
-        context,
-        form_data,
-        fields,
-        msgList);
 
     if (msgList.size() >= 1) {
       return false;
