@@ -26,7 +26,7 @@ import com.aimluck.eip.common.ALData;
 /**
  *
  */
-public class UserAllLiteBean implements ALData, Cloneable {
+public class UserAllLiteBean implements ALData {
 
   private ALStringField key;
 

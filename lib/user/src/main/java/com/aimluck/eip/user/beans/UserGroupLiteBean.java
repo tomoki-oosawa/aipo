@@ -26,7 +26,7 @@ import com.aimluck.eip.common.ALData;
  * ユーザーのBeanです。 <br />
  * 
  */
-public class UserGroupLiteBean implements ALData, Cloneable {
+public class UserGroupLiteBean implements ALData {
 
   /** ID */
   private ALStringField group_id;

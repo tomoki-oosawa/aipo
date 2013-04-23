@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * ユーザーのBeanです。 <br />
  * 
  */
-public class UserFacilityLiteBean implements ALData, Cloneable {
+public class UserFacilityLiteBean implements ALData {
 
   /** ID */
   private ALNumberField userfacility_id;
@@ -42,9 +42,10 @@ public class UserFacilityLiteBean implements ALData, Cloneable {
   private ALStringField type;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     userfacility_id = new ALNumberField();
     name = new ALStringField();

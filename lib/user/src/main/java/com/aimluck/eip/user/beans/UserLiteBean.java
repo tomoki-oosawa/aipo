@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * ユーザーのBeanです。 <br />
  * 
  */
-public class UserLiteBean implements ALData, Cloneable {
+public class UserLiteBean implements ALData {
 
   /** ID */
   private ALNumberField user_id;
@@ -39,9 +39,10 @@ public class UserLiteBean implements ALData, Cloneable {
   private ALStringField alias_name;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     user_id = new ALNumberField();
     name = new ALStringField();

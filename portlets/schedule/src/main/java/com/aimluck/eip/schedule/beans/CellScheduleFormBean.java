@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  * 携帯版スケジュールのフォームデータを管理するクラスです。
  * 
  */
-public class CellScheduleFormBean implements ALData, Cloneable {
+public class CellScheduleFormBean implements ALData {
 
   /** <code>start_date</code> 開始日時 */
   private ALCellDateTimeField start_date;

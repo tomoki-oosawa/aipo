@@ -26,7 +26,7 @@ import com.aimluck.eip.common.ALData;
 /**
  *
  */
-public class ScheduleAdminAclUserGroupResultData implements ALData, Cloneable {
+public class ScheduleAdminAclUserGroupResultData implements ALData {
 
   private ALNumberField id;
 

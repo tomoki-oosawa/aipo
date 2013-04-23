@@ -27,7 +27,7 @@ import com.aimluck.eip.common.ALData;
  * アップロードファイルのBeanです。 <br />
  * 
  */
-public class FileuploadLiteBean implements ALData, Cloneable {
+public class FileuploadLiteBean implements ALData {
 
   /** フォルダ名 */
   private ALStringField folder_name;
