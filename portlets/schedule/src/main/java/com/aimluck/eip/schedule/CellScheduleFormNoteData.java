@@ -1165,6 +1165,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         }
       }
 
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1419,6 +1422,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
 
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
