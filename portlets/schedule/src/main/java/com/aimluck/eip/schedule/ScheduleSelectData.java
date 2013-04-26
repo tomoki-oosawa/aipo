@@ -518,6 +518,8 @@ public class ScheduleSelectData extends
       // view_date.setValue(cal.getTime());
       // メールフラグ
       rd.setMailFlag(record.getMailFlag());
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("schedule", e);
 
