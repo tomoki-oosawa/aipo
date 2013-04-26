@@ -155,6 +155,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
               return;
             }
 
+          } catch (RuntimeException ex) {
+            // RuntimeException
+            throw ex;
           } catch (Exception ex) {
             requireAuth(hres);
             return;

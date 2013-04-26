@@ -234,6 +234,9 @@ public class ALEipHolidaysManager {
             String name1 = (obj1).getName().getValue();
             ret = name0.compareTo(name1);
           }
+        } catch (RuntimeException ex) {
+          // RuntimeException
+          throw ex;
         } catch (Exception ex) {
           return -1;
         }
