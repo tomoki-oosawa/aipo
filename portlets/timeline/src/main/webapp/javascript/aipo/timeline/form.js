@@ -249,12 +249,26 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 		}
   }
 
+
+  function times(value, length){
+	  var returnValue = "";
+	  var i=0;
+	  while(i<length){
+		  returnValue = returnValue + value;
+		  i++;
+	  }
+	  return returnValue;
+  }
+
+
   var val = dojo.byId(objId).value;
   var shadowVal = val.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(
       /&/g, '&amp;').replace(/\n$/, '<br/>&nbsp;')
       .replace(/\n/g, '<br/>').replace(/ {2,}/g, function(space) {
         return times('&nbsp;', space.length) + ' ';
       });
+
+
 
   var shadow = document.createElement("div");
   shadow.id = "shadow"
