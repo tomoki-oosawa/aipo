@@ -158,6 +158,8 @@ public class CabinetSelectData extends
             isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
             isEditable = CabinetUtils.isEditableFolder(fid, rundata);
           }
+        } catch (RuntimeException e) {
+          throw e;
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
@@ -198,6 +200,8 @@ public class CabinetSelectData extends
             isAccessible = CabinetUtils.isAccessibleFolder(fid, rundata);
             isEditable = CabinetUtils.isEditableFolder(fid, rundata);
           }
+        } catch (RuntimeException e) {
+          throw e;
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }

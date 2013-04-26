@@ -331,6 +331,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
           }
         }
       }
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       return true;
     }
@@ -534,6 +536,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
       ALStorageService.deleteTmpFolder(uid, folderName);
 
       res = true;
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("cabinet", ex);
@@ -664,6 +668,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
         }
       }
 
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       logger.error("cabinet", ex);
       return false;
