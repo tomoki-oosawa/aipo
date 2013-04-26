@@ -1206,7 +1206,9 @@ public class TimelineUtils {
         parent.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         parent.getNote());
-
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[TimelineSelectData]", e);
