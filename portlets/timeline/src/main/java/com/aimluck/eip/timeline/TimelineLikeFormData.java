@@ -265,7 +265,9 @@ public class TimelineLikeFormData extends ALAbstractFormData {
             targetLoginName);
         }
       }
-
+    } catch (RuntimeException ex) {
+      // RuntimeException
+      throw ex;
     } catch (Exception ex) {
       logger.error("timeline", ex);
       return false;
