@@ -1870,6 +1870,8 @@ public class ScheduleUtils {
       }
 
       res = true;
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception ex) {
       logger.error("schedule", ex);
       return false;
