@@ -310,6 +310,9 @@ public class BlogCommonThemaSelectData extends
       loadAggregateUsers();
 
       return rd;
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       return null;
     }
