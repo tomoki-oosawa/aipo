@@ -157,6 +157,8 @@ public class PsmlUtils {
       Transformer transformer = tfactory.newTransformer();
       transformer.transform(new DOMSource(dom), new StreamResult(sw));
       return sw.toString();
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception ex) {
       throw ex;
     }

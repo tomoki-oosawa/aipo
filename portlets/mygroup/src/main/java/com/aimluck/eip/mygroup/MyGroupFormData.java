@@ -173,6 +173,8 @@ public class MyGroupFormData extends ALAbstractFormData {
             facilityList.add(rd);
           }
         }
+      } catch (RuntimeException ex) {
+        throw ex;
       } catch (Exception ex) {
         logger.error("mygroup", ex);
       }
@@ -357,6 +359,8 @@ public class MyGroupFormData extends ALAbstractFormData {
         group.getGroupAliasName());
 
       ALEipUtils.reloadMygroup(rundata);
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("mygroup", ex);
@@ -471,6 +475,8 @@ public class MyGroupFormData extends ALAbstractFormData {
         record.getGroupAliasName());
 
       ALEipUtils.reloadMygroup(rundata);
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("mygroup", ex);
@@ -528,6 +534,8 @@ public class MyGroupFormData extends ALAbstractFormData {
 
       // マイグループの再読み込み（セッションのリフレッシュ）
       ALEipUtils.reloadMygroup(rundata);
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("mygroup", ex);
