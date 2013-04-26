@@ -20,6 +20,7 @@
 package com.aimluck.eip.portal.controls;
 
 // Turbine stuff
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -312,7 +313,8 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    * Used to correctly order tabs based on the position value that is found each
    * PortletTab's parent Portlet's PortletConfig object.
    */
-  public static class PortletTabComparator implements Comparator<PortletTab> {
+  public static class PortletTabComparator implements Comparator<PortletTab>,
+      Serializable {
 
     /**
      * 

@@ -20,6 +20,7 @@
 package com.aimluck.eip.portal.controls;
 
 // Turbine stuff
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -946,7 +947,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * 修正 ：ポートレットの最大化画面時にタブを表示するために追加した。
    */
-  public static class PortletTabComparator implements Comparator<PortletTab> {
+  public static class PortletTabComparator implements Comparator<PortletTab>,
+      Serializable {
 
     /**
      * 
