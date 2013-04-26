@@ -2189,7 +2189,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.getScheduleId(),
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
-
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
