@@ -1758,7 +1758,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           false,
           userid);
       }
-
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
