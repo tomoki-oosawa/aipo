@@ -27,7 +27,7 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <tr>
 <th>$l10n.SCHEDULE_WIDTH</th>
 <td>
-<select id=print_width>
+<select id=print_width onChange="change_print_form()">
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
@@ -46,7 +46,7 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 </tr>
 <tr>
 <th>$l10n.SCHEDULE_WORD_SIZE</th>
-<td><select id=print_word_size>
+<td><select id=print_word_size onChange="change_print_form()">
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
 <option selected="selected" value="10pt">10pt</option>
@@ -64,14 +64,13 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <tr>
 <th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
-<label><input id=print_icon type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
-<label><input id=print_term type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_SPAN_SCHEDULE</label><br />
-<label><input id=print_todo type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
-<label><input id=print_holiday type="checkbox" checked="checked" /> $l10n.SCHEDULE_DISPLAY_HOLIDAY</label><br />
-##<label><input type="checkbox" checked="checked" /> 記念日を表示する。</label></td>
+<label><input id=print_icon type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
+<label><input id=print_term type="checkbox" checked="checked" onclick="change_print_form()"/> $l10n.SCHEDULE_DISPLAY_SPAN_SCHEDULE</label><br />
+<label><input id=print_todo type="checkbox" checked="checked"onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
+<label><input id=print_holiday type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_HOLIDAY</label><br />
+##<label><input type="checkbox" checked="checked"onclick="change_print_form()" /> 記念日を表示する。</label></td>
 </tr>
 <tr>
-<th><input type="button" value="$l10n.SCHEDULE_CHANGE" onclick="change_print_form()"/></th>
 <td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
 </tr>
 </table>
