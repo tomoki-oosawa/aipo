@@ -240,6 +240,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         field = this.getClass().getDeclaredField("comeback_time" + i);
         field.set(this, new ALDateTimeField());
       }
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       return;
     }
@@ -563,6 +566,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       remarks.validate(msgList);
+    } catch (RuntimeException ex) {
+      // RuntimeException
+      throw ex;
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
       return false;
@@ -902,6 +908,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD,
         null);
 
+    } catch (RuntimeException ex) {
+      // RuntimeException
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("exttimecard", ex);
@@ -1028,6 +1037,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD,
         null);
 
+    } catch (RuntimeException ex) {
+      // RuntimeException
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("exttimecard", ex);

@@ -167,6 +167,9 @@ public class ExtTimecardListResultData implements ALData {
         return 0;
       }
       return now.compareTo(today);
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       return 0;
     }
@@ -811,6 +814,9 @@ public class ExtTimecardListResultData implements ALData {
       }
       SimpleDateFormat sdf = new SimpleDateFormat(str);
       return sdf.format(date.getValue().getDate());
+    } catch (RuntimeException e) {
+      // RuntimeException
+      throw e;
     } catch (Exception e) {
       return "";
     }
