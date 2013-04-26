@@ -415,6 +415,8 @@ public class AccountPostFormData extends ALAbstractFormData {
         memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
       }
 
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       logger.error("AccountPostFormData.loadFormData", ex);
       return false;
@@ -519,6 +521,8 @@ public class AccountPostFormData extends ALAbstractFormData {
         }
       }
       post_id = record.getPostId().intValue();
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccountPostFormData.insertFormData", ex);
@@ -628,6 +632,8 @@ public class AccountPostFormData extends ALAbstractFormData {
 
       Database.commit();
 
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccountPostFormData.updateFormData", ex);

@@ -1097,6 +1097,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       ALStorageService.deleteTmpFolder(
         ALEipUtils.getUserId(rundata),
         folderName);
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception e) {
       logger.error("AccountUserFormData.updateFormData", e);
       res = false;

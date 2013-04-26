@@ -147,6 +147,8 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       }
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("AccountUserFormJSONScreen.getJSONString", e);
     }
