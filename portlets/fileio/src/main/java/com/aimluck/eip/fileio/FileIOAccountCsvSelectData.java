@@ -314,6 +314,8 @@ public class FileIOAccountCsvSelectData
           break;
         }
 
+      } catch (RuntimeException ex) {
+        throw ex;
       } catch (Exception e) {
         logger.error(e);
       }
