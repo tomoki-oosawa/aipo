@@ -464,6 +464,8 @@ public class ScheduleTooltipSelectData extends
       // cal.set(Calendar.HOUR, 0);
       // cal.set(Calendar.MINUTE, 0);
       // view_date.setValue(cal.getTime());
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("schedule", e);
 

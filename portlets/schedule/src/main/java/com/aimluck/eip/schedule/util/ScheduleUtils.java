@@ -1870,6 +1870,8 @@ public class ScheduleUtils {
       }
 
       res = true;
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception ex) {
       logger.error("schedule", ex);
       return false;
@@ -3073,6 +3075,8 @@ public class ScheduleUtils {
         week_array[5] = week_5;
         week_array[6] = week_6;
 
+      } catch (RuntimeException e) {
+        throw e;
       } catch (Exception e) {
         return false;
       }
