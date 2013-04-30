@@ -497,6 +497,8 @@ public class TimelineUtils {
 
       EipTTimeline entry = entrys.get(0);
       return entry;
+    } catch (ALPageNotFoundException ex) {
+      throw new ALDBErrorException();
     } catch (Exception ex) {
       logger.error("[EntryUtils]", ex);
       throw new ALDBErrorException();
