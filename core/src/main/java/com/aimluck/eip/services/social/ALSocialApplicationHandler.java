@@ -225,8 +225,8 @@ public abstract class ALSocialApplicationHandler {
     try {
 
       HttpClient httpClient = new HttpClient();
-      httpClient.getParams().setParameter("http.connection.timeout", 5000);
-      httpClient.getParams().setParameter("http.socket.timeout", 3000);
+      httpClient.getParams().setParameter("http.connection.timeout", 10000);
+      httpClient.getParams().setParameter("http.socket.timeout", 6000);
       PostMethod postMethod = new PostMethod(getMetaDataUrl());
       postMethod.addRequestHeader("Content-Type", "application/javascript");
       postMethod.addParameter("st", "default:st");
