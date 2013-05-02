@@ -253,13 +253,13 @@ if(document.all!=undefined){
 #set($duplirowcount = 0)
 #set($duplirowmax = 1)
 #end
-#ALtdheadheaderAtt("class='calerndarTodo' rowspan='$duplirowmax'")
+#ALtdheadheaderAtt("rowspan='$duplirowmax'")
 $record3.AliasName
 
 #ALtdheadfooter()
 #set($userTodoCount = $result.getToDoResultDataList($record3.UserId.Value).size())
 #if($userTodoCount > 0)
-#ALtdcellheaderAtt("rowspan='$duplirowmax'")
+#ALtdcellheaderAtt("class='calerndarTodo' rowspan='$duplirowmax'")
 #foreach($record in ${result.getToDoResultDataList($record3.UserId.Value)})
 
 <div class="calendarScheduleDiv">
@@ -277,7 +277,7 @@ ${record.TodoName}
 #end
 #if($userTodoCount == 0 && $todocolcount > 0)
 #set($todorestcount = $todocolcount - $userTodoCount)
-#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "class='calerndarTodo' colspan='1' rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここから） ###
 #set($userTermCount = $result.getTermResultDataList($record3.UserId.Value).size())
@@ -315,7 +315,7 @@ $record.WbrName
 #end
 #if($userTermCount == 0 && $termcolcount > 0)
 #set($termrestcount = $termcolcount - $userTermCount)
-#ALtdcellAtt("" "colspan='1'rowspan='$duplirowmax'")
+#ALtdcellAtt("" "class='termWeek' colspan='1'rowspan='$duplirowmax'")
 #end
 ### 期間スケジュール（ここまで） ###
 
