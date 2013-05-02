@@ -114,6 +114,10 @@ td.container {
 	width:auto;
 }
 
+#sharedStateIframe {
+	display:none;
+}
+
 
 /***************************************************
 	set PortletOuter
