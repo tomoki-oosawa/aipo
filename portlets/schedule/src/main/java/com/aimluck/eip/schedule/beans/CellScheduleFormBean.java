@@ -19,15 +19,21 @@
 
 package com.aimluck.eip.schedule.beans;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALCellDateField;
 import com.aimluck.commons.field.ALCellDateTimeField;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALCellStringField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -358,6 +364,314 @@ public class CellScheduleFormBean implements ALData {
 
     // 期限終了日
     limit_end_date.setValue(record.getEndDate());
+  }
+
+  public void setFormDate(RunData rundata, Context context, List<String> msgList) {
+    String FORMAT_DATE = "yyyyMMdd";
+    String FORMAT_TIME = "HHmm";
+    int FORMAT_DATE_LEN = FORMAT_DATE.length();
+    int FORMAT_TIME_LEN = FORMAT_TIME.length();
+
+    // フィールドが ALCellDateTimeField の場合
+    String startDateString =
+      new StringBuffer().append("start_date").append("_date").toString();
+    String endTimeString =
+      new StringBuffer().append("end_date").append("_time").toString();
+    String startTimeString =
+      new StringBuffer().append("start_date").append("_time").toString();
+
+    String startDateStr = null;
+    String endTimeStr = null;
+    String startTimeStr = null;
+    Calendar cal = Calendar.getInstance();
+    Calendar cal3 = Calendar.getInstance();
+
+    startDateStr = rundata.getParameters().getString(startDateString);
+
+    endTimeStr = rundata.getParameters().getString(endTimeString);
+
+    startTimeStr = rundata.getParameters().getString(startTimeString);
+
+    if (startDateStr.length() != FORMAT_DATE_LEN) {
+      // 文字列の長さが正しくない場合
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+    }
+
+    if (endTimeStr.length() != FORMAT_TIME_LEN
+      || startTimeStr.length() != FORMAT_TIME_LEN) {
+      // 文字列の長さが正しくない場合
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+      return;
+    }
+
+    List<String> tmpList = new ArrayList<String>();
+    ALCellStringField sf = new ALCellStringField(startDateStr);
+    sf.setTrim(true);
+    sf.setCharacterType(ALStringField.TYPE_NUMBER);
+    sf.setValue(startDateStr);
+    sf.validate(tmpList);
+    if (tmpList.size() != 0) {
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+
+    }
+
+    sf = new ALCellStringField(endTimeStr);
+    sf.setTrim(true);
+    sf.setCharacterType(ALStringField.TYPE_NUMBER);
+    sf.setValue(endTimeStr);
+    sf.validate(tmpList);
+    if (tmpList.size() != 0) {
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+      return;
+
+    }
+
+    Date date = null;
+    // 日付を表示形式に変換
+    SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE);
+    sdf.setLenient(false);
+    sdf.setTimeZone(TimeZone.getDefault());
+    if (!startDateStr.equals("")) {
+      try {
+        date = sdf.parse(startDateStr);
+      } catch (Exception e) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+    }
+    Date time = null;
+    Date time2 = null;
+    SimpleDateFormat sdf2 = new SimpleDateFormat(FORMAT_TIME);
+    sdf2.setLenient(false);
+    sdf2.setTimeZone(TimeZone.getDefault());
+    if (!endTimeStr.equals("") && !startTimeStr.equals("")) {
+      try {
+        time = sdf2.parse(endTimeStr);
+        time2 = sdf2.parse(startTimeStr);
+      } catch (Exception e) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+        return;
+
+      }
+    }
+
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(time);
+    Calendar cal4 = Calendar.getInstance();
+    cal4.setTime(time2);
+
+    cal.setLenient(false);
+    cal.setTime(date);
+    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
+
+    cal3.setLenient(false);
+    cal3.setTime(date);
+    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+    cal3.set(Calendar.SECOND, 0);
+    cal3.set(Calendar.MILLISECOND, 0);
+
+    end_date.setValue(cal.getTime());
+    start_date.setValue(cal3.getTime());
+
+    // 繰り返しの設定
+    String repeatType = null;
+    String week0 = null;
+    String week1 = null;
+    String week2 = null;
+    String week3 = null;
+    String week4 = null;
+    String week5 = null;
+    String week6 = null;
+
+    String repeatTypeString =
+      new StringBuffer().append("repeat_type").toString();
+    String week0String = new StringBuffer().append("week_0").toString();
+    String week1String = new StringBuffer().append("week_1").toString();
+    String week2String = new StringBuffer().append("week_2").toString();
+    String week3String = new StringBuffer().append("week_3").toString();
+    String week4String = new StringBuffer().append("week_4").toString();
+    String week5String = new StringBuffer().append("week_5").toString();
+    String week6String = new StringBuffer().append("week_6").toString();
+
+    repeatType = rundata.getParameters().getString(repeatTypeString);
+    week0 = rundata.getParameters().getString(week0String);
+    week1 = rundata.getParameters().getString(week1String);
+    week2 = rundata.getParameters().getString(week2String);
+    week3 = rundata.getParameters().getString(week3String);
+    week4 = rundata.getParameters().getString(week4String);
+    week5 = rundata.getParameters().getString(week5String);
+    week6 = rundata.getParameters().getString(week6String);
+
+    if (repeatType != null && repeatType.equals("D")) {
+      repeat_type.setValue("D");
+      // count = 1;
+    } else if (repeatType != null && repeatType.equals("W")) {
+      repeat_type.setValue("W");
+      week_0.setValue("TRUE".equals(week0) ? "TRUE" : null);
+      week_1.setValue("TRUE".equals(week1) ? "TRUE" : null);
+      week_2.setValue("TRUE".equals(week2) ? "TRUE" : null);
+      week_3.setValue("TRUE".equals(week3) ? "TRUE" : null);
+      week_4.setValue("TRUE".equals(week4) ? "TRUE" : null);
+      week_5.setValue("TRUE".equals(week5) ? "TRUE" : null);
+      week_6.setValue("TRUE".equals(week6) ? "TRUE" : null);
+      // count = 8;
+    } else if (repeatType != null && repeatType.equals("M")) {
+      repeat_type.setValue("M");
+      // month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      // count = 3;
+    }
+    // } else {
+    // is_repeat = false;
+    // }
+
+  }
+
+  /**
+   * 期間スケジュール
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   */
+  public void setFormTermDate(RunData rundata, Context context,
+      List<String> msgList) {
+    String FORMAT_DATE = "yyyyMMdd";
+    String FORMAT_TIME = "HHmm";
+    int FORMAT_DATE_LEN = FORMAT_DATE.length();
+    int FORMAT_TIME_LEN = FORMAT_TIME.length();
+
+    // フィールドが ALCellDateTimeField の場合
+    String startDateString =
+      new StringBuffer().append("start_date").append("_date").toString();
+    String endDateString =
+      new StringBuffer().append("end_date").append("_date").toString();
+    String endTimeString =
+      new StringBuffer().append("end_date").append("_time").toString();
+    String startTimeString =
+      new StringBuffer().append("start_date").append("_time").toString();
+
+    String startDateStr = null;
+    String endDateStr = null;
+    String endTimeStr = null;
+    String startTimeStr = null;
+    Calendar cal = Calendar.getInstance();
+    Calendar cal3 = Calendar.getInstance();
+
+    startDateStr = rundata.getParameters().getString(startDateString);
+
+    endDateStr = rundata.getParameters().getString(endDateString);
+
+    endTimeStr = rundata.getParameters().getString(endTimeString);
+
+    startTimeStr = rundata.getParameters().getString(startTimeString);
+
+    if (startDateStr.length() != FORMAT_DATE_LEN
+      || endDateStr.length() != FORMAT_DATE_LEN) {
+      // 文字列の長さが正しくない場合
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+    }
+
+    /*
+     * if (endTimeStr.length() != FORMAT_TIME_LEN || startTimeStr.length() !=
+     * FORMAT_TIME_LEN) { // 文字列の長さが正しくない場合
+     * msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+     * return; }
+     */
+
+    List<String> tmpList = new ArrayList<String>();
+    ALCellStringField sf = new ALCellStringField(startDateStr);
+    sf.setTrim(true);
+    sf.setCharacterType(ALStringField.TYPE_NUMBER);
+    sf.setValue(startDateStr);
+    sf.validate(tmpList);
+    if (tmpList.size() != 0) {
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+
+    }
+
+    sf = new ALCellStringField(endTimeStr);
+    sf.setTrim(true);
+    sf.setCharacterType(ALStringField.TYPE_NUMBER);
+    sf.setValue(endTimeStr);
+    sf.validate(tmpList);
+    if (tmpList.size() != 0) {
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+      return;
+
+    }
+
+    Date date = null;
+    // 日付を表示形式に変換
+    SimpleDateFormat sdf1 = new SimpleDateFormat(FORMAT_DATE);
+    sdf1.setLenient(false);
+    sdf1.setTimeZone(TimeZone.getDefault());
+    if (!startDateStr.equals("")) {
+      try {
+        date = sdf1.parse(startDateStr);
+      } catch (Exception e) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+    }
+    Date date2 = null;
+    // 日付を表示形式に変換
+    SimpleDateFormat sdf2 = new SimpleDateFormat(FORMAT_DATE);
+    sdf2.setLenient(false);
+    sdf2.setTimeZone(TimeZone.getDefault());
+    if (!endDateStr.equals("")) {
+      try {
+        date2 = sdf2.parse(endDateStr);
+      } catch (Exception e) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+    }
+    Date time = null;
+    Date time2 = null;
+    SimpleDateFormat sdf3 = new SimpleDateFormat(FORMAT_TIME);
+    sdf3.setLenient(false);
+    sdf3.setTimeZone(TimeZone.getDefault());
+    if (!endTimeStr.equals("") && !startTimeStr.equals("")) {
+      try {
+        time = sdf3.parse(endTimeStr);
+        time2 = sdf3.parse(startTimeStr);
+      } catch (Exception e) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+        return;
+
+      }
+    }
+
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(time);
+    Calendar cal4 = Calendar.getInstance();
+    cal4.setTime(time2);
+
+    cal.setLenient(false);
+    cal.setTime(date2);
+    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
+
+    cal3.setLenient(false);
+    cal3.setTime(date);
+    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+    cal3.set(Calendar.SECOND, 0);
+    cal3.set(Calendar.MILLISECOND, 0);
+
+    end_date.setValue(cal.getTime());
+    start_date.setValue(cal3.getTime());
+
   }
 
   public boolean validateDelegate(List<String> msgList, ALEipUser loginUser,

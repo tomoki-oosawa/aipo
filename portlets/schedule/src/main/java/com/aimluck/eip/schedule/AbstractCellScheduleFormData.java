@@ -338,21 +338,33 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     }
 
     if (!isSpan()) {
-      Calendar startDate = Calendar.getInstance();
-      startDate.setTime(form_data.getStartDate().getValue());
+      if (rundata.getParameters().containsKey("end_date_time")
+        && rundata.getParameters().containsKey("start_date_time")
+        && rundata.getParameters().containsKey("end_date_date")) {
+        form_data.setFormDate(rundata, context, msgList);
 
-      Calendar endDate = Calendar.getInstance();
-      endDate.setTime(form_data.getEndDate().getValue());
-      endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
-      endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
-      endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
-      form_data.getEndDate().setValue(endDate.getTime());
+      } else {
+
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(form_data.getStartDate().getValue());
+
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(form_data.getEndDate().getValue());
+        endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
+        endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
+        endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
+        form_data.getEndDate().setValue(endDate.getTime());
+      }
 
       if (!is_first) {
         form_data.getFacilityMemberList().clear();
         form_data.getFacilityMemberList().addAll(
           CellScheduleUtils.getShareFacilityMemberList(rundata));
       }
+    } else if (rundata.getParameters().containsKey("end_date_time")
+      && rundata.getParameters().containsKey("start_date_time")
+      && rundata.getParameters().containsKey("end_date_date")) {
+      form_data.setFormTermDate(rundata, context, msgList);
     }
     return true;
   }
