@@ -416,7 +416,8 @@ public class CellScheduleFormBean implements ALData {
       return;
     }
 
-    if (limitFlag.equals("ON")
+    if (limitFlag != null
+      && limitFlag.equals("ON")
       && (limitStartDateStr.length() != FORMAT_DATE_LEN || limitEndDateStr
         .length() != FORMAT_DATE_LEN)) {
       // 文字列の長さが正しくない場合
@@ -454,7 +455,7 @@ public class CellScheduleFormBean implements ALData {
 
     }
 
-    if (limitFlag.equals("ON")) {
+    if (limitFlag != null && limitFlag.equals("ON")) {
       sf = new ALCellStringField(limitStartDateStr);
       sf.setTrim(true);
       sf.setCharacterType(ALStringField.TYPE_NUMBER);
@@ -527,7 +528,7 @@ public class CellScheduleFormBean implements ALData {
     end_date.setValue(cal.getTime());
     start_date.setValue(cal3.getTime());
 
-    if (limitFlag.equals("ON")) {
+    if (limitFlag != null && limitFlag.equals("ON")) {
       Date limitStartDate = null;
       Date limitEndDate = null;
       sdf = new SimpleDateFormat(FORMAT_DATE);
@@ -615,7 +616,7 @@ public class CellScheduleFormBean implements ALData {
     String FORMAT_DATE = "yyyyMMdd";
     String FORMAT_TIME = "HHmm";
     int FORMAT_DATE_LEN = FORMAT_DATE.length();
-    int FORMAT_TIME_LEN = FORMAT_TIME.length();
+    // int FORMAT_TIME_LEN = FORMAT_TIME.length();
 
     // フィールドが ALCellDateTimeField の場合
     String startDateString =
