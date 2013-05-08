@@ -48,4 +48,7 @@
     <Match class="com.aimluck.eip.exttimecard.ExtTimecardFormData">
         <Bug pattern="HE_EQUALS_USE_HASHCODE" />
     </Match>
+    <Match class="com.aimluck.eip.schedule.CellScheduleFormFacilityData">
+    	<Bug pattern="DLS_DEAD_LOCAL_STORE" />
+    </Match>
 </FindBugsFilter>
