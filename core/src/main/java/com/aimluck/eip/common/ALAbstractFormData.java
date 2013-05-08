@@ -456,9 +456,13 @@ public abstract class ALAbstractFormData implements ALData {
           }
         }
       }
-    } catch (IllegalAccessException ex) {
-      logger.error("ALAbstractFormData.setFormData", ex);
+    } catch (IllegalAccessException e) {
+      logger.error("ALAbstractFormData.setFormData", e);
       return false;
+    } catch (Exception e) {
+      logger.error("ALAbstractFormData.setFormData", e);
+      return false;
+
     }
     return true;
   }
