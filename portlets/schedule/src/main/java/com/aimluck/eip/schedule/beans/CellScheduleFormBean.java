@@ -379,10 +379,18 @@ public class CellScheduleFormBean implements ALData {
       new StringBuffer().append("end_date").append("_time").toString();
     String startTimeString =
       new StringBuffer().append("start_date").append("_time").toString();
+    String limitFlagString = new StringBuffer().append("limit_flag").toString();
+    String limitStartDateString =
+      new StringBuffer().append("limit_start_date").toString();
+    String limitEndDateString =
+      new StringBuffer().append("limit_end_date").toString();
 
     String startDateStr = null;
     String endTimeStr = null;
     String startTimeStr = null;
+    String limitFlag = null;
+    String limitStartDateStr = null;
+    String limitEndDateStr = null;
     Calendar cal = Calendar.getInstance();
     Calendar cal3 = Calendar.getInstance();
 
@@ -392,7 +400,25 @@ public class CellScheduleFormBean implements ALData {
 
     startTimeStr = rundata.getParameters().getString(startTimeString);
 
+    limitFlag = rundata.getParameters().getString(limitFlagString);
+
+    limitStartDateStr = rundata.getParameters().getString(limitStartDateString);
+
+    limitEndDateStr = rundata.getParameters().getString(limitEndDateString);
+
+    if (limitFlag != null) {
+      limit_flag.setValue(limitFlag);
+    }
+
     if (startDateStr.length() != FORMAT_DATE_LEN) {
+      // 文字列の長さが正しくない場合
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+    }
+
+    if (limitFlag.equals("ON")
+      && (limitStartDateStr.length() != FORMAT_DATE_LEN || limitEndDateStr
+        .length() != FORMAT_DATE_LEN)) {
       // 文字列の長さが正しくない場合
       msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
       return;
@@ -426,6 +452,28 @@ public class CellScheduleFormBean implements ALData {
       msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
       return;
 
+    }
+
+    if (limitFlag.equals("ON")) {
+      sf = new ALCellStringField(limitStartDateStr);
+      sf.setTrim(true);
+      sf.setCharacterType(ALStringField.TYPE_NUMBER);
+      sf.setValue(limitStartDateStr);
+      sf.validate(tmpList);
+      if (tmpList.size() != 0) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+
+      sf = new ALCellStringField(limitStartDateStr);
+      sf.setTrim(true);
+      sf.setCharacterType(ALStringField.TYPE_NUMBER);
+      sf.setValue(limitEndDateStr);
+      sf.validate(tmpList);
+      if (tmpList.size() != 0) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
     }
 
     Date date = null;
@@ -479,6 +527,26 @@ public class CellScheduleFormBean implements ALData {
     end_date.setValue(cal.getTime());
     start_date.setValue(cal3.getTime());
 
+    if (limitFlag.equals("ON")) {
+      Date limitStartDate = null;
+      Date limitEndDate = null;
+      sdf = new SimpleDateFormat(FORMAT_DATE);
+      sdf.setLenient(false);
+      sdf.setTimeZone(TimeZone.getDefault());
+      if (!limitStartDateStr.equals("") && !limitEndDateStr.equals("")) {
+        try {
+          limitStartDate = sdf.parse(limitStartDateStr);
+          limitEndDate = sdf.parse(limitEndDateStr);
+        } catch (Exception e) {
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+          return;
+        }
+      }
+
+      limit_start_date.setValue(limitStartDate);
+      limit_end_date.setValue(limitEndDate);
+    }
+
     // 繰り返しの設定
     String repeatType = null;
     String week0 = null;
@@ -488,6 +556,7 @@ public class CellScheduleFormBean implements ALData {
     String week4 = null;
     String week5 = null;
     String week6 = null;
+    String monthDay = null;
 
     String repeatTypeString =
       new StringBuffer().append("repeat_type").toString();
@@ -498,6 +567,7 @@ public class CellScheduleFormBean implements ALData {
     String week4String = new StringBuffer().append("week_4").toString();
     String week5String = new StringBuffer().append("week_5").toString();
     String week6String = new StringBuffer().append("week_6").toString();
+    String monthDayString = new StringBuffer().append("month_day").toString();
 
     repeatType = rundata.getParameters().getString(repeatTypeString);
     week0 = rundata.getParameters().getString(week0String);
@@ -507,6 +577,7 @@ public class CellScheduleFormBean implements ALData {
     week4 = rundata.getParameters().getString(week4String);
     week5 = rundata.getParameters().getString(week5String);
     week6 = rundata.getParameters().getString(week6String);
+    monthDay = rundata.getParameters().getString(monthDayString);
 
     if (repeatType != null && repeatType.equals("D")) {
       repeat_type.setValue("D");
@@ -523,7 +594,7 @@ public class CellScheduleFormBean implements ALData {
       // count = 8;
     } else if (repeatType != null && repeatType.equals("M")) {
       repeat_type.setValue("M");
-      // month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      month_day.setValue(Integer.parseInt(monthDay));
       // count = 3;
     }
     // } else {
