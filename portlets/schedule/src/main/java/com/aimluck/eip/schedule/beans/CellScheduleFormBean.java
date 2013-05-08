@@ -506,27 +506,29 @@ public class CellScheduleFormBean implements ALData {
       }
     }
 
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(time);
-    Calendar cal4 = Calendar.getInstance();
-    cal4.setTime(time2);
+    if (time != null && time2 != null && date != null) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.setTime(time);
+      Calendar cal4 = Calendar.getInstance();
+      cal4.setTime(time2);
 
-    cal.setLenient(false);
-    cal.setTime(date);
-    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
-    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
+      cal.setLenient(false);
+      cal.setTime(date);
+      cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+      cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+      cal.set(Calendar.SECOND, 0);
+      cal.set(Calendar.MILLISECOND, 0);
 
-    cal3.setLenient(false);
-    cal3.setTime(date);
-    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
-    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
-    cal3.set(Calendar.SECOND, 0);
-    cal3.set(Calendar.MILLISECOND, 0);
+      cal3.setLenient(false);
+      cal3.setTime(date);
+      cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+      cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+      cal3.set(Calendar.SECOND, 0);
+      cal3.set(Calendar.MILLISECOND, 0);
 
-    end_date.setValue(cal.getTime());
-    start_date.setValue(cal3.getTime());
+      end_date.setValue(cal.getTime());
+      start_date.setValue(cal3.getTime());
+    }
 
     if (limitFlag != null && limitFlag.equals("ON")) {
       Date limitStartDate = null;
@@ -542,10 +544,10 @@ public class CellScheduleFormBean implements ALData {
           msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
           return;
         }
+        limit_start_date.setValue(limitStartDate);
+        limit_end_date.setValue(limitEndDate);
       }
 
-      limit_start_date.setValue(limitStartDate);
-      limit_end_date.setValue(limitEndDate);
     }
 
     // 繰り返しの設定
@@ -722,28 +724,29 @@ public class CellScheduleFormBean implements ALData {
       }
     }
 
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(time);
-    Calendar cal4 = Calendar.getInstance();
-    cal4.setTime(time2);
+    if (time != null && time2 != null && date != null) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.setTime(time);
+      Calendar cal4 = Calendar.getInstance();
+      cal4.setTime(time2);
 
-    cal.setLenient(false);
-    cal.setTime(date2);
-    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
-    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
+      cal.setLenient(false);
+      cal.setTime(date2);
+      cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+      cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+      cal.set(Calendar.SECOND, 0);
+      cal.set(Calendar.MILLISECOND, 0);
 
-    cal3.setLenient(false);
-    cal3.setTime(date);
-    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
-    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
-    cal3.set(Calendar.SECOND, 0);
-    cal3.set(Calendar.MILLISECOND, 0);
+      cal3.setLenient(false);
+      cal3.setTime(date);
+      cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+      cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+      cal3.set(Calendar.SECOND, 0);
+      cal3.set(Calendar.MILLISECOND, 0);
 
-    end_date.setValue(cal.getTime());
-    start_date.setValue(cal3.getTime());
-
+      end_date.setValue(cal.getTime());
+      start_date.setValue(cal3.getTime());
+    }
   }
 
   public boolean validateDelegate(List<String> msgList, ALEipUser loginUser,
