@@ -212,6 +212,8 @@ public class NoteClientSelectData extends
       rd.setSrcUserFullName(user.getAliasName().getValue());
 
       return rd;
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception ex) {
       logger.error("note", ex);
       return null;
