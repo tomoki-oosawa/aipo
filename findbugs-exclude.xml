@@ -45,4 +45,7 @@
     <Match>
         <Bug pattern="ODR_OPEN_DATABASE_RESOURCE" />
     </Match>
+    <Match class="com.aimluck.eip.exttimecard.ExtTimecardFormData">
+        <Bug pattern="HE_EQUALS_USE_HASHCODE" />
+    </Match>
 </FindBugsFilter>
