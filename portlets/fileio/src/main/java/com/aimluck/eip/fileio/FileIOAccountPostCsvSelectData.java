@@ -238,6 +238,8 @@ public class FileIOAccountPostCsvSelectData extends
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
         }
+      } catch (RuntimeException e) {
+        throw e;
       } catch (Exception e) {
         logger.error("readError");
       }
