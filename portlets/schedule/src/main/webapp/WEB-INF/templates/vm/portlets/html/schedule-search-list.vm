@@ -162,7 +162,7 @@
 #if($record.isTmpreserve())
 <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
 #end</div></td>
-<td class="mb_hide"><div>$!{record.CreateUser.AliasName}</td>
+<td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>
 #end
 #AUItablefooter()
