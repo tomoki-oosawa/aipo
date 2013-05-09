@@ -42,7 +42,7 @@
 #AUIajaxpageview('ActivityAllListScreen' $result)
 </div>
 #AUIsearchresult($!result.targetKeyword.toString())
-#AUIrowTableWide()
+<table class="auiRowTable wide">
 <colgroup style="">
 </colgroup><colgroup style="width:8em;">
 </colgroup><colgroup style="width:6em">
