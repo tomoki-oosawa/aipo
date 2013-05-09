@@ -379,10 +379,18 @@ public class CellScheduleFormBean implements ALData {
       new StringBuffer().append("end_date").append("_time").toString();
     String startTimeString =
       new StringBuffer().append("start_date").append("_time").toString();
+    String limitFlagString = new StringBuffer().append("limit_flag").toString();
+    String limitStartDateString =
+      new StringBuffer().append("limit_start_date").toString();
+    String limitEndDateString =
+      new StringBuffer().append("limit_end_date").toString();
 
     String startDateStr = null;
     String endTimeStr = null;
     String startTimeStr = null;
+    String limitFlag = null;
+    String limitStartDateStr = null;
+    String limitEndDateStr = null;
     Calendar cal = Calendar.getInstance();
     Calendar cal3 = Calendar.getInstance();
 
@@ -392,7 +400,26 @@ public class CellScheduleFormBean implements ALData {
 
     startTimeStr = rundata.getParameters().getString(startTimeString);
 
+    limitFlag = rundata.getParameters().getString(limitFlagString);
+
+    limitStartDateStr = rundata.getParameters().getString(limitStartDateString);
+
+    limitEndDateStr = rundata.getParameters().getString(limitEndDateString);
+
+    if (limitFlag != null) {
+      limit_flag.setValue(limitFlag);
+    }
+
     if (startDateStr.length() != FORMAT_DATE_LEN) {
+      // 文字列の長さが正しくない場合
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+      return;
+    }
+
+    if (limitFlag != null
+      && limitFlag.equals("ON")
+      && (limitStartDateStr.length() != FORMAT_DATE_LEN || limitEndDateStr
+        .length() != FORMAT_DATE_LEN)) {
       // 文字列の長さが正しくない場合
       msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
       return;
@@ -428,6 +455,28 @@ public class CellScheduleFormBean implements ALData {
 
     }
 
+    if (limitFlag != null && limitFlag.equals("ON")) {
+      sf = new ALCellStringField(limitStartDateStr);
+      sf.setTrim(true);
+      sf.setCharacterType(ALStringField.TYPE_NUMBER);
+      sf.setValue(limitStartDateStr);
+      sf.validate(tmpList);
+      if (tmpList.size() != 0) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+
+      sf = new ALCellStringField(limitStartDateStr);
+      sf.setTrim(true);
+      sf.setCharacterType(ALStringField.TYPE_NUMBER);
+      sf.setValue(limitEndDateStr);
+      sf.validate(tmpList);
+      if (tmpList.size() != 0) {
+        msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+        return;
+      }
+    }
+
     Date date = null;
     // 日付を表示形式に変換
     SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_DATE);
@@ -457,27 +506,49 @@ public class CellScheduleFormBean implements ALData {
       }
     }
 
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(time);
-    Calendar cal4 = Calendar.getInstance();
-    cal4.setTime(time2);
+    if (time != null && time2 != null && date != null) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.setTime(time);
+      Calendar cal4 = Calendar.getInstance();
+      cal4.setTime(time2);
 
-    cal.setLenient(false);
-    cal.setTime(date);
-    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
-    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
+      cal.setLenient(false);
+      cal.setTime(date);
+      cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+      cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+      cal.set(Calendar.SECOND, 0);
+      cal.set(Calendar.MILLISECOND, 0);
 
-    cal3.setLenient(false);
-    cal3.setTime(date);
-    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
-    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
-    cal3.set(Calendar.SECOND, 0);
-    cal3.set(Calendar.MILLISECOND, 0);
+      cal3.setLenient(false);
+      cal3.setTime(date);
+      cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+      cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+      cal3.set(Calendar.SECOND, 0);
+      cal3.set(Calendar.MILLISECOND, 0);
 
-    end_date.setValue(cal.getTime());
-    start_date.setValue(cal3.getTime());
+      end_date.setValue(cal.getTime());
+      start_date.setValue(cal3.getTime());
+    }
+
+    if (limitFlag != null && limitFlag.equals("ON")) {
+      Date limitStartDate = null;
+      Date limitEndDate = null;
+      sdf = new SimpleDateFormat(FORMAT_DATE);
+      sdf.setLenient(false);
+      sdf.setTimeZone(TimeZone.getDefault());
+      if (!limitStartDateStr.equals("") && !limitEndDateStr.equals("")) {
+        try {
+          limitStartDate = sdf.parse(limitStartDateStr);
+          limitEndDate = sdf.parse(limitEndDateStr);
+        } catch (Exception e) {
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+          return;
+        }
+        limit_start_date.setValue(limitStartDate);
+        limit_end_date.setValue(limitEndDate);
+      }
+
+    }
 
     // 繰り返しの設定
     String repeatType = null;
@@ -488,6 +559,7 @@ public class CellScheduleFormBean implements ALData {
     String week4 = null;
     String week5 = null;
     String week6 = null;
+    String monthDay = null;
 
     String repeatTypeString =
       new StringBuffer().append("repeat_type").toString();
@@ -498,6 +570,7 @@ public class CellScheduleFormBean implements ALData {
     String week4String = new StringBuffer().append("week_4").toString();
     String week5String = new StringBuffer().append("week_5").toString();
     String week6String = new StringBuffer().append("week_6").toString();
+    String monthDayString = new StringBuffer().append("month_day").toString();
 
     repeatType = rundata.getParameters().getString(repeatTypeString);
     week0 = rundata.getParameters().getString(week0String);
@@ -507,6 +580,7 @@ public class CellScheduleFormBean implements ALData {
     week4 = rundata.getParameters().getString(week4String);
     week5 = rundata.getParameters().getString(week5String);
     week6 = rundata.getParameters().getString(week6String);
+    monthDay = rundata.getParameters().getString(monthDayString);
 
     if (repeatType != null && repeatType.equals("D")) {
       repeat_type.setValue("D");
@@ -523,7 +597,7 @@ public class CellScheduleFormBean implements ALData {
       // count = 8;
     } else if (repeatType != null && repeatType.equals("M")) {
       repeat_type.setValue("M");
-      // month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      month_day.setValue(Integer.parseInt(monthDay));
       // count = 3;
     }
     // } else {
@@ -544,7 +618,7 @@ public class CellScheduleFormBean implements ALData {
     String FORMAT_DATE = "yyyyMMdd";
     String FORMAT_TIME = "HHmm";
     int FORMAT_DATE_LEN = FORMAT_DATE.length();
-    int FORMAT_TIME_LEN = FORMAT_TIME.length();
+    // int FORMAT_TIME_LEN = FORMAT_TIME.length();
 
     // フィールドが ALCellDateTimeField の場合
     String startDateString =
@@ -650,28 +724,29 @@ public class CellScheduleFormBean implements ALData {
       }
     }
 
-    Calendar cal2 = Calendar.getInstance();
-    cal2.setTime(time);
-    Calendar cal4 = Calendar.getInstance();
-    cal4.setTime(time2);
+    if (time != null && time2 != null && date != null) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.setTime(time);
+      Calendar cal4 = Calendar.getInstance();
+      cal4.setTime(time2);
 
-    cal.setLenient(false);
-    cal.setTime(date2);
-    cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
-    cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
+      cal.setLenient(false);
+      cal.setTime(date2);
+      cal.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
+      cal.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));
+      cal.set(Calendar.SECOND, 0);
+      cal.set(Calendar.MILLISECOND, 0);
 
-    cal3.setLenient(false);
-    cal3.setTime(date);
-    cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
-    cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
-    cal3.set(Calendar.SECOND, 0);
-    cal3.set(Calendar.MILLISECOND, 0);
+      cal3.setLenient(false);
+      cal3.setTime(date);
+      cal3.set(Calendar.HOUR_OF_DAY, cal4.get(Calendar.HOUR_OF_DAY));
+      cal3.set(Calendar.MINUTE, cal4.get(Calendar.MINUTE));
+      cal3.set(Calendar.SECOND, 0);
+      cal3.set(Calendar.MILLISECOND, 0);
 
-    end_date.setValue(cal.getTime());
-    start_date.setValue(cal3.getTime());
-
+      end_date.setValue(cal.getTime());
+      start_date.setValue(cal3.getTime());
+    }
   }
 
   public boolean validateDelegate(List<String> msgList, ALEipUser loginUser,
