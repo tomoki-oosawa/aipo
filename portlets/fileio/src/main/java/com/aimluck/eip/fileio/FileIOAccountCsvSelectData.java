@@ -483,7 +483,10 @@ public class FileIOAccountCsvSelectData
         data.setIsError(iserror);
 
         list.add(data);
+      } catch (RuntimeException e) {
+        throw e;
       } catch (Exception e) {
+
         logger.error("readError");
       }
       if (reader.eof == -1) {
