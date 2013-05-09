@@ -33,7 +33,7 @@ import com.aimluck.eip.gadgets.GagetsAdminMultiDisable;
 import com.aimluck.eip.gadgets.GagetsAdminMultiEnable;
 
 /**
- * 
+ *
  */
 public class GadgetsAdminFormJSONScreen extends ALJSONScreen {
 
@@ -132,6 +132,8 @@ public class GadgetsAdminFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       }
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("[GadgetsAdminFormJSONScreen]", e);
     }
