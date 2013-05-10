@@ -33,8 +33,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 #if("${client}" == "IPHONE")
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no">
-	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no"/>
+	<meta name="format-detection" content="telephone=no"/>
 #end
 <link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link type="image/x-icon" rel="icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
