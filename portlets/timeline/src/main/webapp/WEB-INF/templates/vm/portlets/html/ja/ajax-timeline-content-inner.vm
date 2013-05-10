@@ -320,8 +320,9 @@
 	</div>
 </div>
 #end
-#if($record.CoActivityList.size()>=2&&$existcomment<$record.CoActivityList.size())
-<p class="more"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">$l10n.TIMELINE_SHOE_OTHER_MESSAG</a></p>
+
+#if($record.CoActivityList.size() && $record.CoActivityList.size() >= 2 && $existcomment < $record.CoActivityList.size())
+<p class="more aaaaa"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">$l10n.TIMELINE_SHOE_OTHER_MESSAG</a></p>
 #end
 </div>
 <div id="popc_timeline" class="auiPopup imgPopup hide" style="max-width:800px;">
