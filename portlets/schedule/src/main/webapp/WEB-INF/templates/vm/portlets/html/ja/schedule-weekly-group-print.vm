@@ -127,6 +127,20 @@ if(document.all!=undefined){
         }
       }
     }
+## ToDoの表示切替2
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo2'){
+          document.all[i].style.display = '';
+        }
+      }
+    }else{
+      for(i = 0; i < document.all.length; i++){
+        if(document.all[i].className=='calerndarTodo2'){
+          document.all[i].style.display = 'none';
+        }
+      }
+    }
 ## 祝日の表示切替
     if(document.getElementById('print_holiday').checked){
       for(i = 0; i < document.all.length; i++){
@@ -173,6 +187,16 @@ if(document.all!=undefined){
         document.getElementById('printBody').getElementsByClassName('calerndarTodo')[i].style.display = 'none';
       }
     }
+## ToDoの表示切替2
+    if(document.getElementById('print_todo').checked){
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo2').length; i++){
+        document.getElementById('printBody').getElementsByClassName('calerndarTodo2')[i].style.display = '';
+      }
+    }else{
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo2').length; i++){
+        document.getElementById('printBody').getElementsByClassName('calerndarTodo2')[i].style.display = 'none';
+      }
+    }
 ## 祝日の表示切替
     if(document.getElementById('print_holiday').checked){
       for(i = 0; i < document.getElementById('printBody').getElementsByClassName('holiday small').length; i++){
@@ -187,9 +211,6 @@ if(document.all!=undefined){
   }
   //]]>
 </script>
-
-
-
 
 
 
@@ -427,7 +448,7 @@ ToDo：$!{record.ToDoResultData.TodoName}
 #end
 #end
 #if($nottodocount > 0)
-#ALtdcellAtt("" "colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;'")
+#ALtdcellAtt("" "class ='calerndarTodo2' colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;'")
 #end
 </tr>
 #end
