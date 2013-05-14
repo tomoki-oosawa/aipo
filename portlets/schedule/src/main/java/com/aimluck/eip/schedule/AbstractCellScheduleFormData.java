@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.schedule;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -327,6 +328,14 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
       schedule_type.setValue(st);
     }
 
+    Field[] fields = form_data.getClass().getDeclaredFields();
+    ScheduleUtils.setFormDataDelegate(
+      rundata,
+      context,
+      form_data,
+      fields,
+      msgList);
+
     if (msgList.size() >= 1) {
       return false;
     }
@@ -338,33 +347,21 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     }
 
     if (!isSpan()) {
-      if (rundata.getParameters().containsKey("end_date_time")
-        && rundata.getParameters().containsKey("start_date_time")
-        && rundata.getParameters().containsKey("end_date_date")) {
-        form_data.setFormDate(rundata, context, msgList);
+      Calendar startDate = Calendar.getInstance();
+      startDate.setTime(form_data.getStartDate().getValue());
 
-      } else {
-
-        Calendar startDate = Calendar.getInstance();
-        startDate.setTime(form_data.getStartDate().getValue());
-
-        Calendar endDate = Calendar.getInstance();
-        endDate.setTime(form_data.getEndDate().getValue());
-        endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
-        endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
-        endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
-        form_data.getEndDate().setValue(endDate.getTime());
-      }
+      Calendar endDate = Calendar.getInstance();
+      endDate.setTime(form_data.getEndDate().getValue());
+      endDate.set(Calendar.YEAR, startDate.get(Calendar.YEAR));
+      endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
+      endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
+      form_data.getEndDate().setValue(endDate.getTime());
 
       if (!is_first) {
         form_data.getFacilityMemberList().clear();
         form_data.getFacilityMemberList().addAll(
           CellScheduleUtils.getShareFacilityMemberList(rundata));
       }
-    } else if (rundata.getParameters().containsKey("end_date_time")
-      && rundata.getParameters().containsKey("start_date_time")
-      && rundata.getParameters().containsKey("end_date_date")) {
-      form_data.setFormTermDate(rundata, context, msgList);
     }
     return true;
   }
