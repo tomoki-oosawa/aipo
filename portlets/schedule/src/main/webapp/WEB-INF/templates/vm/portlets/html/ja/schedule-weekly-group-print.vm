@@ -127,20 +127,6 @@ if(document.all!=undefined){
         }
       }
     }
-## ToDoの表示切替2
-    if(document.getElementById('print_todo').checked){
-      for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='calerndarTodo2'){
-          document.all[i].style.display = '';
-        }
-      }
-    }else{
-      for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='calerndarTodo2'){
-          document.all[i].style.display = 'none';
-        }
-      }
-    }
 ## 祝日の表示切替
     if(document.getElementById('print_holiday').checked){
       for(i = 0; i < document.all.length; i++){
@@ -187,16 +173,6 @@ if(document.all!=undefined){
         document.getElementById('printBody').getElementsByClassName('calerndarTodo')[i].style.display = 'none';
       }
     }
-## ToDoの表示切替2
-    if(document.getElementById('print_todo').checked){
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo2').length; i++){
-        document.getElementById('printBody').getElementsByClassName('calerndarTodo2')[i].style.display = '';
-      }
-    }else{
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('calerndarTodo2').length; i++){
-        document.getElementById('printBody').getElementsByClassName('calerndarTodo2')[i].style.display = 'none';
-      }
-    }
 ## 祝日の表示切替
     if(document.getElementById('print_holiday').checked){
       for(i = 0; i < document.getElementById('printBody').getElementsByClassName('holiday small').length; i++){
@@ -214,14 +190,17 @@ if(document.all!=undefined){
 
 
 
+
+
+
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.getTargetGroupName().groupAliasName})
-<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.getViewEndFormat}$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
 #else
-<h1>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.getViewEndFormat}$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
 #end
 
 #ALtableheaderCalendar("100%")
@@ -323,7 +302,7 @@ $!{record4.TermResultData.WbrName}
 #end
 #end
 #if($nottermcount > 0)
-#ALtdcellAtt("" "colspan='$nottermcount'")
+#ALtdcellAtt("" "class='termWeek' colspan='$nottermcount'")
 #end
 </tr>
 #set($show_tr = $show_tr + 1 )
@@ -448,7 +427,7 @@ ToDo：$!{record.ToDoResultData.TodoName}
 #end
 #end
 #if($nottodocount > 0)
-#ALtdcellAtt("" "class ='calerndarTodo2' colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;'")
+#ALtdcellAtt("" "class ='calerndarTodo' colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;'")
 #end
 </tr>
 #end
