@@ -498,6 +498,7 @@ public class TimelineUtils {
       EipTTimeline entry = entrys.get(0);
       return entry;
     } catch (ALPageNotFoundException ex) {
+      // 指定した トピック ID のレコードが見つからない場合
       throw new ALDBErrorException();
     } catch (Exception ex) {
       logger.error("[EntryUtils]", ex);
