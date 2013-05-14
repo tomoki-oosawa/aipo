@@ -267,7 +267,8 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       }
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      logger.error("timeline", ex);
+      return false;
     } catch (ALDBErrorException ex) {
       return false;
     } catch (Exception ex) {
