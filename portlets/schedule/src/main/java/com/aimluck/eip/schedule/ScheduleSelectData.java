@@ -519,7 +519,9 @@ public class ScheduleSelectData extends
       // メールフラグ
       rd.setMailFlag(record.getMailFlag());
     } catch (RuntimeException e) {
-      throw e;
+      logger.error("schedule", e);
+
+      return null;
     } catch (Exception e) {
       logger.error("schedule", e);
 
