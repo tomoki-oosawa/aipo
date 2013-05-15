@@ -213,7 +213,8 @@ public class NoteClientSelectData extends
 
       return rd;
     } catch (RuntimeException e) {
-      throw e;
+      logger.error("note", e);
+      return null;
     } catch (Exception ex) {
       logger.error("note", ex);
       return null;
