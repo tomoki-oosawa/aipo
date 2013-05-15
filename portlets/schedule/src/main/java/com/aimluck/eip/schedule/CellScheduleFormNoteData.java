@@ -670,7 +670,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         }
       }
     } catch (RuntimeException e) {
-      throw e;
+      Database.rollback();
+      logger.error("[CellScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[CellScheduleFormData]", e);
@@ -1166,7 +1168,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -1423,7 +1427,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);

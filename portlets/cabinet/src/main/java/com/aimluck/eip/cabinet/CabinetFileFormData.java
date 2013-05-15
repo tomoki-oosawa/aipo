@@ -537,7 +537,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       res = true;
     } catch (RuntimeException ex) {
-      throw ex;
+      Database.rollback();
+      logger.error("cabinet", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("cabinet", ex);
@@ -669,7 +671,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
     } catch (RuntimeException ex) {
-      throw ex;
+      logger.error("cabinet", ex);
+      return false;
     } catch (Exception ex) {
       logger.error("cabinet", ex);
       return false;

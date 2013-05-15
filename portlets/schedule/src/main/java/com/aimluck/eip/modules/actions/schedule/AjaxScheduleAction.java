@@ -189,7 +189,8 @@ public class AjaxScheduleAction extends ALBaseAction {
 
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      logger.error("[AjaxScheduleAction] Exception.", ex);
+      ALEipUtils.redirectDBError(rundata);
     } catch (Exception ex) {
       logger.error("[AjaxScheduleAction] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

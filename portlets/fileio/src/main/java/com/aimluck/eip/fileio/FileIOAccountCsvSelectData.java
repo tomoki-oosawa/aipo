@@ -484,7 +484,7 @@ public class FileIOAccountCsvSelectData
 
         list.add(data);
       } catch (RuntimeException e) {
-        throw e;
+        logger.error("readError");
       } catch (Exception e) {
 
         logger.error("readError");

@@ -242,8 +242,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      logger.error("[ExtTimecardFormData]", e);
+      return;
     } catch (Exception e) {
+      logger.error("[ExtTimecardFormData]", e);
       return;
     }
   }
@@ -568,7 +570,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       remarks.validate(msgList);
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      logger.error("exttimecard", ex);
+      return false;
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
       return false;
@@ -910,7 +913,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      Database.rollback();
+      logger.error("exttimecard", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("exttimecard", ex);
@@ -1039,7 +1044,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      Database.rollback();
+      logger.error("exttimecard", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("exttimecard", ex);

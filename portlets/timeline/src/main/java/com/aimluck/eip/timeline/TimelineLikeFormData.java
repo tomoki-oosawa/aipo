@@ -270,6 +270,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       logger.error("timeline", ex);
       return false;
     } catch (ALDBErrorException ex) {
+      logger.error("timeline", ex);
       return false;
     } catch (Exception ex) {
       logger.error("timeline", ex);

@@ -1760,7 +1760,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
@@ -2193,7 +2195,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.getName());
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);

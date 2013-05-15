@@ -236,8 +236,10 @@ public class ALEipHolidaysManager {
           }
         } catch (RuntimeException ex) {
           // RuntimeException
-          throw ex;
+          logger.error("ALEipHolidaysManager.getHolidaysComparator", ex);
+          return -1;
         } catch (Exception ex) {
+          logger.error("ALEipHolidaysManager.getHolidaysComparator", ex);
           return -1;
         }
         return ret;

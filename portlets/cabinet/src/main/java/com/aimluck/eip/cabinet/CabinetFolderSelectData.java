@@ -341,8 +341,9 @@ public class CabinetFolderSelectData extends
       isEditable = CabinetUtils.isEditableFolder(record.getFolderId(), rundata);
 
       return rd;
-    } catch (RuntimeException e) {
-      throw e;
+    } catch (RuntimeException ex) {
+      logger.error("cabinet", ex);
+      return null;
     } catch (Exception ex) {
       logger.error("cabinet", ex);
       return null;

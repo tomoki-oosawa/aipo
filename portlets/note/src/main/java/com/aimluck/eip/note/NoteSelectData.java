@@ -501,7 +501,9 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       }
       return rd;
     } catch (RuntimeException ex) {
-      throw ex;
+      Database.rollback();
+      logger.error("note", ex);
+      return null;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("note", ex);
