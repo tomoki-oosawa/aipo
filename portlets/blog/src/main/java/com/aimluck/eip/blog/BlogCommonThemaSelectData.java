@@ -312,8 +312,10 @@ public class BlogCommonThemaSelectData extends
       return rd;
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      logger.error("BlogCommonThemaSelectData.getResultDataDetail", e);
+      return null;
     } catch (Exception e) {
+      logger.error("BlogCommonThemaSelectData.getResultDataDetail", e);
       return null;
     }
   }
