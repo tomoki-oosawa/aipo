@@ -476,7 +476,9 @@ public class MyGroupFormData extends ALAbstractFormData {
 
       ALEipUtils.reloadMygroup(rundata);
     } catch (RuntimeException ex) {
-      throw ex;
+      Database.rollback();
+      logger.error("mygroup", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("mygroup", ex);
