@@ -317,7 +317,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
     } catch (RuntimeException ex) {
       // RuntimeException
-      throw ex;
+      logger.error("timeline", ex);
+      return false;
     } catch (Exception ex) {
       logger.error("timeline", ex);
       return false;
