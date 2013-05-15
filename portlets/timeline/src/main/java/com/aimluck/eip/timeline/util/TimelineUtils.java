@@ -1211,7 +1211,9 @@ public class TimelineUtils {
         parent.getNote());
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[TimelineSelectData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[TimelineSelectData]", e);
