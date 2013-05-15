@@ -20,7 +20,6 @@
 package com.aimluck.eip.gadgets.util;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -229,15 +228,11 @@ public class PsmlUtils {
       Transformer transformer = tfactory.newTransformer();
       transformer.transform(new DOMSource(dom), new StreamResult(sw));
       return sw.toString();
-    } catch (IOException ex) {
+    } catch (RuntimeException ex) {
+      logger.error("[PsmlUtils]", ex);
       throw ex;
-    } catch (org.xml.sax.SAXException ex) {
-      throw ex;
-    } catch (org.w3c.dom.DOMException ex) {
-      throw ex;
-    } catch (javax.xml.transform.TransformerConfigurationException ex) {
-      throw ex;
-    } catch (javax.xml.transform.TransformerException ex) {
+    } catch (Exception ex) {
+      logger.error("[PsmlUtils]", ex);
       throw ex;
     }
   }
@@ -360,11 +355,9 @@ public class PsmlUtils {
       InputSource is = new InputSource(new FileReader(map));
       is.setSystemId(map.getCanonicalPath());
       mapping.loadMapping(is);
-    } catch (FileNotFoundException e) {
+    } catch (RuntimeException e) {
       logger.error("PSMLManager: Error in psml mapping creation", e);
-    } catch (IOException e) {
-      logger.error("PSMLManager: Error in psml mapping creation", e);
-    } catch (MappingException e) {
+    } catch (Exception e) {
       logger.error("PSMLManager: Error in psml mapping creation", e);
     }
 
