@@ -22,11 +22,11 @@
 <div class="message">$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU</div>
 #else
 #ALformheader('Workflow' $jslink $portlet)
-<table class="activityTable">
-<tbody>
 #AUISummaryDiv()
 #AUIajaxpageview('WorkflowScreen' $result)
 #AUISummaryDivfooter()
+<table class="activityTable">
+<tbody>
 #foreach ($record in $result.List)
 <tr>
 <td>

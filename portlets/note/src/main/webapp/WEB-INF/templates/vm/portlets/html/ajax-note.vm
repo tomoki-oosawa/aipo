@@ -24,11 +24,11 @@
 <div class="message">伝言メモはありません。</div>
 #else
 #ALformheader('noteForm' $jslink $portlet)
-<table class="activityTable">
-<tbody>
 #AUISummaryDiv()
 #AUIajaxpageview('NoteScreen' $result)
 #AUISummaryDivfooter()
+<table class="activityTable">
+<tbody>
 #foreach ($record in $result.List)
 <tr>
 <td>
