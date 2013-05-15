@@ -242,8 +242,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      logger.error("[ExtTimecardFormData]", e);
+      return;
     } catch (Exception e) {
+      logger.error("[ExtTimecardFormData]", e);
       return;
     }
   }
