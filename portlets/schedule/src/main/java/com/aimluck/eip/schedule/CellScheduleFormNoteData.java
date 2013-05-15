@@ -1166,7 +1166,9 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
     } catch (RuntimeException e) {
       // RuntimeException
-      throw e;
+      Database.rollback();
+      logger.error("[ScheduleFormData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
