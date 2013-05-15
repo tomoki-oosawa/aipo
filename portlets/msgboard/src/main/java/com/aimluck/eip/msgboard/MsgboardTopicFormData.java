@@ -382,7 +382,9 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         parent.getTopicName());
 
     } catch (RuntimeException e) {
-      throw e;
+      Database.rollback();
+      logger.error("[MsgboardCategorySelectData]", e);
+      throw new ALDBErrorException();
     } catch (Exception e) {
       Database.rollback();
       logger.error("[MsgboardCategorySelectData]", e);
