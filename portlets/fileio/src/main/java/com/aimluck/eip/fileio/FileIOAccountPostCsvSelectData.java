@@ -239,7 +239,7 @@ public class FileIOAccountPostCsvSelectData extends
           break;
         }
       } catch (RuntimeException e) {
-        throw e;
+        logger.error("readError");
       } catch (Exception e) {
         logger.error("readError");
       }
