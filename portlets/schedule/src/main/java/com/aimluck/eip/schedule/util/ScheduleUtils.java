@@ -3077,8 +3077,10 @@ public class ScheduleUtils {
         week_array[6] = week_6;
 
       } catch (RuntimeException e) {
-        throw e;
+        logger.error("schedule", e);
+        return false;
       } catch (Exception e) {
+        logger.error("schedule", e);
         return false;
       }
 
