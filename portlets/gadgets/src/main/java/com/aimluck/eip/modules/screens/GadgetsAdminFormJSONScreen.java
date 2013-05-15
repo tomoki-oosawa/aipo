@@ -133,7 +133,7 @@ public class GadgetsAdminFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (RuntimeException e) {
-      throw e;
+      logger.error("[GadgetsAdminFormJSONScreen]", e);
     } catch (Exception e) {
       logger.error("[GadgetsAdminFormJSONScreen]", e);
     }
