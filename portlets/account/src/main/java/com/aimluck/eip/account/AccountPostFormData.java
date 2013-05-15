@@ -522,7 +522,9 @@ public class AccountPostFormData extends ALAbstractFormData {
       }
       post_id = record.getPostId().intValue();
     } catch (RuntimeException ex) {
-      throw ex;
+      Database.rollback();
+      logger.error("AccountPostFormData.insertFormData", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccountPostFormData.insertFormData", ex);

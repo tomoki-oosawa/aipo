@@ -155,7 +155,8 @@ public class AccountChangeTurnFormData extends ALAbstractFormData {
         }
       }
     } catch (RuntimeException ex) {
-      throw ex;
+      logger.error("AccountChangeTurnFormData.setFormData", ex);
+      return false;
     } catch (Exception ex) {
       logger.error("AccountChangeTurnFormData.setFormData", ex);
       return false;

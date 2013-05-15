@@ -148,7 +148,7 @@ public class AccountUserFormJSONScreen extends ALJSONScreen {
         }
       }
     } catch (RuntimeException e) {
-      throw e;
+      logger.error("AccountUserFormJSONScreen.getJSONString", e);
     } catch (Exception e) {
       logger.error("AccountUserFormJSONScreen.getJSONString", e);
     }
