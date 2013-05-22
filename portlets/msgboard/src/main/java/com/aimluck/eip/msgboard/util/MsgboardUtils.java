@@ -1472,15 +1472,15 @@ public class MsgboardUtils {
   }
 
   /**
-   * 
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
    * 
-   * 
+   * @deprecated {@link ALEipUtils#passPSML(RunData,Context,String)}
    * @param rundata
    * @param context
    * @param config
    * @return
    */
+  @Deprecated
   public static String passPSML(RunData rundata, Context context, String key,
       String value) {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);

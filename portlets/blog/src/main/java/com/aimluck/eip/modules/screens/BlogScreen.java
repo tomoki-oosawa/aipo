@@ -21,11 +21,13 @@ package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.blog.BlogEntryLatestSelectData;
 import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -47,6 +49,12 @@ public class BlogScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
+      ParameterParser parser = rundata.getParameters();
+      ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
+        .getString(ALEipConstants.LIST_FILTER));
+      ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+        .getString(ALEipConstants.LIST_FILTER_TYPE));
+
       BlogEntryLatestSelectData listData = new BlogEntryLatestSelectData();
       listData.initField();
       listData.loadThemaList(rundata, context);

@@ -88,6 +88,8 @@ public class BlogAction extends ALBaseAction {
       .getInitParameter("p1a-rows")));
     listData.setStrLength(100);
 
+    listData.setFiltersPSML(portlet, context, rundata);
+
     // 最低限表示するのに必要な権限のチェック
     if (!BlogUtils.hasMinimumAuthority(rundata)) {
       setTemplate(rundata, "blog");
