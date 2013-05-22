@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.schedule;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -115,6 +116,11 @@ public class ScheduleListContainer implements ALData {
           addRd.setOwner(rd.isOwner());
           addRd.setMember(rd.isMember());
           addRd.setType(rd.getType());
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+          if (!sdf.format(rd.getStartDate().getValue()).equals(
+            sdf.format(rd.getEndDate().getValue()))) {
+            addRd.setTerm(true);
+          }
           // 繰り返しはON
           addRd.setRepeat(!isSpan);
           addRd.setPattern(rd.getPattern());
@@ -220,10 +226,26 @@ public class ScheduleListContainer implements ALData {
           if ((cal.getTime()).compareTo(cal2.getTime()) != 0) {
             return (cal.getTime()).compareTo(cal2.getTime());
           } else {
-            cal.setTime(a.getEndDate().getValue());
-            cal2.setTime(b.getEndDate().getValue());
+            if (!a.getPattern().equals("S") && !b.getPattern().equals("S")) {
+              cal.setTime(a.getEndDate().getValue());
+              cal2.setTime(b.getEndDate().getValue());
 
-            return (cal.getTime()).compareTo(cal2.getTime());
+              return (cal.getTime()).compareTo(cal2.getTime());
+            } else if (a.getPattern().equals("S") && b.getPattern().equals("S")) {
+              if (a.IsTerm()) {
+                return -1;
+              } else if (b.IsTerm()) {
+                return 1;
+              } else {
+                return 0;
+              }
+            } else {
+              if (a.getPattern().equals("S")) {
+                return -1;
+              } else {
+                return 1;
+              }
+            }
           }
         }
       });
@@ -235,7 +257,16 @@ public class ScheduleListContainer implements ALData {
         results.add(rd);
       }
     }
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    String date = "";
+    for (ScheduleResultData rd : scheduleList) {
+      if (!date.equals(sdf.format(rd.getStartDate().getValue()))) {
+        date = sdf.format(rd.getStartDate().getValue());
+        rd.setDayStart(true);
+      } else {
+        rd.setDayStart(false);
+      }
+    }
     return results;
   }
-
 }

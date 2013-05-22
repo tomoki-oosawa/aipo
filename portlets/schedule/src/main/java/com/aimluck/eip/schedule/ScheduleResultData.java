@@ -101,6 +101,12 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>is_editable</code> 共有メンバーによる編集／削除フラグ */
   private boolean is_editable;
 
+  /** <code>is_daystart</code> その日の最初のスケージュルかどうか */
+  private boolean is_daystart;
+
+  /** <code>is_term</code> 期間スケジュールかどうか */
+  private boolean is_term;
+
   /** <code>rowspan</code> rowspan */
   private int rowspan;
 
@@ -131,6 +137,8 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_confirm = false;
     is_repeat = false;
     is_dummy = false;
+    is_daystart = false;
+    is_term = false;
   }
 
   /**
@@ -637,6 +645,22 @@ public class ScheduleResultData implements ALData, Cloneable {
       .getYear(), start_date.getMonth(), start_date.getDay(), start_date
       .getDayOfWeek(), end_date.getYear(), end_date.getMonth(), end_date
       .getDay(), end_date.getDayOfWeek());
+  }
+
+  public void setDayStart(boolean b) {
+    is_daystart = b;
+  }
+
+  public boolean IsDayStart() {
+    return is_daystart;
+  }
+
+  public void setTerm(boolean b) {
+    is_term = b;
+  }
+
+  public boolean IsTerm() {
+    return is_term;
   }
 
 }

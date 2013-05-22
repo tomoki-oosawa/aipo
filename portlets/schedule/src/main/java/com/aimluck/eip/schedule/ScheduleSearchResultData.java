@@ -61,6 +61,29 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     return b.toString();
   }
 
+  public String getDateFullOnlyDate() {
+    SimpleDateFormat sdf =
+      new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
+    StringBuilder b = new StringBuilder();
+    b.append(sdf.format(getStartDate().getValue()));
+    return b.toString();
+  }
+
+  public String getPatternTime() {
+    StringBuilder b = new StringBuilder();
+    if ("S".equals(getPattern())) {
+      if (IsTerm()) {
+        b.append(ALLocalizationUtils.getl10n("SCHEDULE_TERM"));
+      } else {
+        b.append(ALLocalizationUtils.getl10n("SCHEDULE_ALL_DAY"));
+      }
+    } else {
+      b.append(getDate2());
+    }
+    return b.toString();
+  }
+
   public ALDateTimeField getDateDay() {
     DateDay = new ALDateTimeField("yyyy-MM-dd");
     DateDay.setValue(getViewDate());
