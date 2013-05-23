@@ -651,7 +651,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_daystart = b;
   }
 
-  public boolean IsDayStart() {
+  public boolean isDayStart() {
     return is_daystart;
   }
 
@@ -659,7 +659,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_term = b;
   }
 
-  public boolean IsTerm() {
+  public boolean isTerm() {
     return is_term;
   }
 

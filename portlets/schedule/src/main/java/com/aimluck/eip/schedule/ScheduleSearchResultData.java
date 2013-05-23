@@ -73,7 +73,7 @@ public class ScheduleSearchResultData extends ScheduleResultData {
   public String getPatternTime() {
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
-      if (IsTerm()) {
+      if (isTerm()) {
         b.append(ALLocalizationUtils.getl10n("SCHEDULE_TERM"));
       } else {
         b.append(ALLocalizationUtils.getl10n("SCHEDULE_ALL_DAY"));

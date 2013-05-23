@@ -232,9 +232,9 @@ public class ScheduleListContainer implements ALData {
 
               return (cal.getTime()).compareTo(cal2.getTime());
             } else if (a.getPattern().equals("S") && b.getPattern().equals("S")) {
-              if (a.IsTerm()) {
+              if (a.isTerm()) {
                 return -1;
-              } else if (b.IsTerm()) {
+              } else if (b.isTerm()) {
                 return 1;
               } else {
                 return 0;
