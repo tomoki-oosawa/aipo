@@ -60,7 +60,7 @@
     siteTitle: '$!{alias}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.xd.js")
+#ALjavascriptCache("javascript/dojo/dojo.xd.js")
 #ALjavascript("javascript/aipo.xd.js")
 #else
 <script type="text/javascript">
@@ -69,7 +69,7 @@
     siteTitle: '$!{alias}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.js")
+#ALjavascriptCache("javascript/dojo/dojo.js")
 #ALjavascript("javascript/aipo.js")
 #end
 <!-- WRAPPER -->

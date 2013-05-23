@@ -26,6 +26,9 @@
 ## ---------------------------------------------------------------------------
 
 #* G L O B A L *#
+#macro(ALjavascriptCache $file)
+<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file"></script>
+#end
 #macro(ALjavascript $file)
 <script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
 #end

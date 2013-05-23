@@ -46,7 +46,7 @@
     cacheBust: '$!{utils.CacheBust}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.xd.js")
+#ALjavascripCache("javascript/dojo/dojo.xd.js")
 #ALjavascript("javascript/aipo.xd.js")
 #else
 <script type="text/javascript">
@@ -54,7 +54,7 @@
     cacheBust: '$!{utils.CacheBust}'
   };
 </script>
-#ALjavascript("javascript/dojo/dojo.js")
+#ALjavascriptCache("javascript/dojo/dojo.js")
 #ALjavascript("javascript/aipo.js")
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
