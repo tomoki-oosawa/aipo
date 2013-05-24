@@ -76,12 +76,14 @@
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 
 <div class="auiSummaryMeta">
+#if(${client}!="IPHONE")
 <div class="floatRight">
 <a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" class="auiButton pl5 pr5">
 <span>
 <img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="$l10n.SCHEDULE_PRINT" /></span>
 </a>
 </div>
+#end
 <div class="auiForm">
     <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">$l10n.SCHEDULE_ALL_GROUP</option>

@@ -22,7 +22,21 @@
 #set ($tabs = [[$l10n.SCHEDULE_SCHEDULE_DETAIL, "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
+#if (${client}!= "IPHONE")
 #ALdialogheaderPrint($l10n.SCHEDULE_SCHEDULE_DETAIL "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})")
+#else
+<div class="auiPopup clearfix">
+<table class="roundBlockWrapperTop">
+<tbody>
+<tr>
+<td class="roundBlockTitle" style="width:89%">$l10n.SCHEDULE_SCHEDULE_DETAIL</td>
+<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="roundBlockContent">
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
