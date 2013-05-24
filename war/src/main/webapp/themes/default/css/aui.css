@@ -1,187 +1,216 @@
 @charset "utf-8";
 * {
-	font-family:'メイリオ', Meiryo, Verdana, sans-serif;
+  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
 }
+
 html, body {
-	margin:0;
-	padding:0;
-	font-size:100%;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
 }
+
 body {
-	width:100%;
-	padding:0;
-	margin:0;
-	font-size:.75em;
-	line-height:1.4;
-	background:#fff;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-size: .75em;
+  line-height: 1.4;
+  background: #fff;
 }
+
 body#login {
-	background:#eee url(../images/body.png) left top repeat-x;
+  background: #eeeeee url(../images/body.png) left top repeat-x;
 }
 
 * html body {
-	font-size:.8em;
+  font-size: .8em;
 }
-*+html body {
-	font-size:.75em;
+
+* + html body {
+  font-size: .75em;
 }
 
 p {
-	margin:5px 0;
+  margin: 5px 0;
 }
+
+/* NO USE
 span[type="button"] {
 	outline:none;
 }
-
+*/
 /***************************************************
 	auiHeader
 --------------------------------------------------*/
 #header {
-	padding-top:5px;
-	height:35px;
-	/*background:url(../images/head_bg.png) repeat-x left bottom; **reserved**/
-	overflow:hidden;
+  padding-top: 5px;
+  height: 35px;
+  /*background:url(../images/head_bg.png) repeat-x left bottom; **reserved**/
+  overflow: hidden;
 }
+
 #header .inner {
-	height:30px;
-	padding:0 20px;
+  height: 30px;
+  padding: 0 20px;
 }
-.hdSign {float:left;}
-.hdNavi {float:right;padding-top:3px;}
+
+.hdSign {
+  float: left;
+}
+
+.hdNavi {
+  float: right;
+  padding-top: 3px;
+}
+
 .hdMessege,
 .hdActivity,
 .hdSearch,
 .hdUserName,
 .hdLogout {
-	float:left;
-	line-height:23px;
-	padding-right:8px;
-	padding-left:8px;
-	font-size:11px;
-	vertical-align:middle;
-	white-space:nowrap;
-}
-.hdNavi div.active {
-	background:#ddd;
-}
-.hdLogo {
-}
-.hdLogo a:hover img {
-	opacity:0.75;
-	filter: alpha(opacity=75);
-}
-.hdSearch {
+  float: left;
+  line-height: 23px;
+  padding-right: 8px;
+  padding-left: 8px;
+  font-size: 11px;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-.hdMessege{
+.hdNavi div.active {
+  background: #ddd;
 }
-.hdMessege a{
-	text-decoration:none;
+
+.hdLogo a:hover img {
+  opacity: 0.75;
+  filter: alpha(opacity=75);
 }
+
+.hdMessege a {
+  text-decoration: none;
+}
+
 form.searchbox {
-	padding:0;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	border:solid 1px #ccc;
-	overflow:hidden;
+  padding: 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  border: solid 1px #ccc;
+  overflow: hidden;
 }
+
 form.searchbox:hover {
-	border-color:#999;
+  border-color: #999;
 }
+
 form.searchbox input {
-	border:none !important;
-	height:21px !important;
-	-webkit-border-radius:0 !important;
-	-moz-border-radius:0 !important;
-	-ms-border-radius:0 !important;
-	border-radius:0 !important;
+  border: none !important;
+  height: 21px !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  border-radius: 0 !important;
 }
+
 form.searchbox input.submit,
 form.searchbox input.submit:hover,
 form.searchbox input.submit:active {
-	width:24px;
-	border-left:solid 1px #ddd !important;
-	background:url(../images/icon/search.png) no-repeat center center;
-	box-shadow:none;
-	-webkit-box-shadow:none;
-}
-form.searchbox input.submit:hover,
-form.searchbox input.submit:active {
-	background:#eee url(../images/icon/search.png) no-repeat center center;
+  width: 24px;
+  border-left: solid 1px #ddd !important;
+  background: url(../images/icon/search.png) no-repeat center center;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
 
-.hdActivity{
-	cursor:pointer;
-	padding:0 2px !important;
+form.searchbox input.submit:hover,
+form.searchbox input.submit:active {
+  background: #eeeeee url(../images/icon/search.png) no-repeat center center;
 }
-.hdActivity .mb_hide{
-	line-height:23px;
+
+.hdActivity {
+  cursor: pointer;
+  padding: 0 2px !important;
 }
-.hdActivity:hover .mb_hide{
-	color:#FF9900;
+
+.hdActivity .mb_hide {
+  line-height: 23px;
 }
+
+.hdActivity:hover .mb_hide {
+  color: #FF9900;
+}
+
 .hdNavi .hdLogout {
-	padding-right:0;
-	height:24px;
+  padding-right: 0;
+  height: 24px;
 }
+
 .hdLogout input {
-	height:23px !important;
-	line-height:23px !important;
+  height: 23px !important;
+  line-height: 23px !important;
 }
-*:first-child+html .hdLogout input {/* IE7 Hack */
-	line-height:20px !important;
+
+*:first-child + html .hdLogout input {
+  /* IE7 Hack */
+  line-height: 20px !important;
 }
+
 .hdLogout input:hover {
-	box-shadow:none !important;
-	-webkit-box-shadow:none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
 }
+
 .hdUserName a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 .hdUserName .avatar {
-	float:left;
-	width:23px;
-	height:23px;
-	margin:0 4px 0 0;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  float: left;
+  width: 23px;
+  height: 23px;
+  margin: 0 4px 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
+
 img.avatar,
 .avatar img {
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
 
 /***************************************************
 	activityField
 --------------------------------------------------*/
 .activityField {
-	position:relative;
-	width:17px;
-	height:18px;
-	padding:5px 6px 0;
-	cursor:pointer;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  position: relative;
+  width: 17px;
+  height: 18px;
+  padding: 5px 6px 0;
+  cursor: pointer;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
+
 .hdActivity div.active {
-	background:#e0e0e0;
+  background: #e0e0e0;
 }
+
 #activitychecker {
-	text-align:center;
-	right:2px;
-	top:2px;
-	background:url(../images/icon/activitychecker.png) top left no-repeat;
-	height:12px;
+  text-align: center;
+  right: 2px;
+  top: 2px;
+  background: url(../images/icon/activitychecker.png) top left no-repeat;
+  height: 12px;
 }
+
 /*
 #activitycheckerContainer {
 	display:block;
@@ -189,515 +218,599 @@ img.avatar,
 }
 */
 .activitychecker-right {
-	float:left;
-	display:block;
-	height:12px;
-	background:url(../images/icon/activitychecker.png) bottom right no-repeat;
-	padding:0 4px;
+  float: left;
+  display: block;
+  height: 12px;
+  background: url(../images/icon/activitychecker.png) bottom right no-repeat;
+  padding: 0 4px;
 }
+
 .activitychecker-left {
-	float:left;
-	display:block;
-	height:12px;
-	padding:0;
-	background:#f03d25;
-	color:#FFF;
-	font-size:8px;
-	line-height:12px;
+  float: left;
+  display: block;
+  height: 12px;
+  padding: 0;
+  background: #f03d25;
+  color: #FFF;
+  font-size: 8px;
+  line-height: 12px;
 }
+
 /***************************************************
 	Popup
 --------------------------------------------------*/
 .dijitPopup {
-	display:block;
-	z-index:9999 !important;
-	/*background:#FFF;*/
+  display: block;
+  z-index: 9999 !important;
+  /*background:#FFF;*/
 }
+
 .auiPopup,
 .activityPopup {
-	/*position:absolute;*/
-	background:#FFF;
-	padding:9px;
-	border:1px solid #999;
-	-webkit-border-radius:4px;
-	-moz-border-radius:4px;
-	-ms-border-radius:4px;
-	border-radius:4px;
-	box-shadow:0 2px 4px rgba(0,0,0,0.4);
-	-webkit-box-shadow:0 2px 4px rgba(0,0,0,0.4);
-	z-index:9998 !important;
+  /*position:absolute;*/
+  background: #FFF;
+  padding: 9px;
+  border: 1px solid #999;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  z-index: 9998 !important;
 }
+
 .activityPopup {
-	width:400px;
-	right:0;
-	top:0;
+  width: 400px;
+  right: 0;
+  top: 0;
 }
 
 .auiPopupMeta {
-	width:100%;
-	margin-top:10px;
-}
-.auiPopupTitle {
-	position:absolute;
-	max-width:90%;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
-}
-.auiPopupClose {
-	float:right;
-}
-.auiPopupClose a {
-	display:block;
-	background:#ffffff;
+  width: 100%;
+  margin-top: 10px;
 }
 
+.auiPopupTitle {
+  position: absolute;
+  max-width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.auiPopupClose {
+  float: right;
+}
+
+.auiPopupClose a {
+  display: block;
+  background: #ffffff;
+}
 
 .auiPopup h2,
 #activityListPane h2 {
-	padding:0 0 5px;
-	border-bottom:solid 1px #ccc;
+  padding: 0 0 5px;
+  border-bottom: solid 1px #ccc;
 }
+
 .auiPopup .roundBlockWrapperTop,
 .auiPopup .roundBlockTitle,
 .auiPopup .roundBlockIcon {
-	height:auto !important;
-}
-.auiPopup table.roundBlockWrapperTop td.roundBlockTitle {
-	padding:10px 0 10px 20px;
-	background-position:0px 10px;
-}
-.auiPopup table.roundBlockWrapperTop td.roundBlockIcon {
-	padding:10px 0;
-	background:none;
+  height: auto !important;
 }
 
-table.activityTable {
-	border:none;
-	padding:0;
-	border-collapse:collapse;
-	width:100%;
-	margin-bottom:10px;
+.auiPopup .roundBlockWrapperTop td.roundBlockTitle {
+  padding: 10px 0 10px 20px;
+  background-position: 0px 10px;
 }
-table.activityTable tr:hover {
-	background:#F5F5F5;
+
+.auiPopup .roundBlockWrapperTop td.roundBlockIcon {
+  padding: 10px 0;
+  background: none;
 }
-table.activityTable td {
-	padding:3px;
-	margin:0;
-	border-bottom:#EEE solid 1px;
-	vertical-align:top;
+
+.activityTable {
+  border: none;
+  padding: 0;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
 }
-table.activityTable td.icon {
-	width:22px;
-	padding:0;
-	text-align:right;
-	vertical-align:middle;
+
+.activityTable tr:hover {
+  background: #F5F5F5;
 }
-table.activityTable td.name {
-	width:100px;
-	font-size:85%;
-	vertical-align:middle;
+
+.activityTable td {
+  padding: 3px;
+  margin: 0;
+  border-bottom: #EEE solid 1px;
+  vertical-align: top;
 }
-table.activityTable td.name {
-	width:70px;
+
+.activityTable td.icon {
+  width: 22px;
+  padding: 0;
+  text-align: right;
+  vertical-align: middle;
 }
-table.activityTable td span.date {
-	font-size:85%;
-	padding:0 0 3px;
-	display:block;
+
+.activityTable td.name {
+  width: 100px;
+  font-size: 85%;
+  vertical-align: middle;
 }
-table.activityTable tr.unread {
-	background:#FFEFE5;
+
+.activityTable td.name {
+  width: 70px;
 }
-table.activityTable tr.unread td {
-	font-weight:bold;
+
+.activityTable td span.date {
+  font-size: 85%;
+  padding: 0 0 3px;
+  display: block;
 }
+
+.activityTable .unread {
+  background: #FFEFE5;
+}
+
+.activityTable .unread td {
+  font-weight: bold;
+}
+
 .activityList {
-	width:100%;
-	margin-bottom:10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
+
 .activityList li {
-	padding:3px;
-	margin:0;
-	border-bottom:#EEE solid 1px;
-	vertical-align:top;
-	background:none;
+  padding: 3px;
+  margin: 0;
+  border-bottom: #EEE solid 1px;
+  vertical-align: top;
+  background: none;
 }
+
 .activityList li:hover {
-	background:#F5F5F5;
+  background: #F5F5F5;
 }
+
 .activityList .meta {
-	padding:2px 0;
-	font-size:85%;
+  padding: 2px 0;
+  font-size: 85%;
 }
+
 .activityList li.unread {
-	background:#FFEFE5;
+  background: #FFEFE5;
 }
+
 .activityList li.unread a {
-	font-weight:bold;
+  font-weight: bold;
 }
+
 .rightBtn {
-	text-align:right;
-	margin:0;
-	font-size:10px;
+  text-align: right;
+  margin: 0;
+  font-size: 10px;
 }
+
 /* imgPopup */
 .imgPopup {
-	position:absolute;
-	/*overflow:hidden;*/
+  position: absolute;
+  /*overflow:hidden;*/
 }
+
 .imgPopup .imgBody {
-	text-align:center;
+  text-align: center;
 }
+
 .imgPopup img {
-	max-width:800px;
-	max-height:800px;
+  max-width: 800px;
+  max-height: 800px;
 }
 
 /* imgPopupTutorial */
 .imgPopupTutorial {
-	position:absolute;
-	overflow:hidden;
+  position: absolute;
+  overflow: hidden;
 }
+
 .imgPopupTutorial .imgBody {
-	text-align:center;
+  text-align: center;
 }
+
 .imgPopupTutorial img {
-	max-width:1000px;
-	max-height:1000px;
+  max-width: 1000px;
+  max-height: 1000px;
 }
 
 /***************************************************
 	auiColumns
 --------------------------------------------------*/
 .auiColumnWrapper {
-	padding:10px;
+  padding: 10px;
 }
+
 .auiColumn {
-	float:left;
+  float: left;
 }
+
 /***************************************************
 	auiPortlet
 --------------------------------------------------*/
-
 .auiPortlet {
-	background:url(../images/common/portlet_x.gif?20121011) repeat-x bottom center;
+  background: url(../images/common/portlet_x.gif?20121011) repeat-x bottom center;
 }
+
 .auiPortletHead {
-	background:url(../images/common/portlet_x.gif?20121011) repeat-x left -189px;
-	height:45px;
+  background: url(../images/common/portlet_x.gif?20121011) repeat-x left -189px;
+  height: 45px;
 }
+
 .auiPortletHead .inner {
-	background:url(../images/common/portlet_x.gif?20121011) no-repeat left 0;
-	height:45px;
-	position:relative;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat left 0;
+  height: 45px;
+  position: relative;
 }
+
 .auiPortletTitle {
-	float:left;
-	padding:13px 0 0 30px;
-	white-space:nowrap;
-	background:url(../images/common/portlet_x.gif?20121011) no-repeat left -144px;
+  float: left;
+  padding: 13px 0 0 30px;
+  white-space: nowrap;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat left -144px;
 }
-.auiPortletTitle a {
-}
+
 .auiPortletTool {
-	background:url(../images/common/portlet_x.gif?20121011) no-repeat right -50px;
-	top:0;
-	right:0;
-	float:right;
-	min-width:25px;
-	height:32px;
-	padding:13px 10px 0 0;
-	position:absolute;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat right -50px;
+  top: 0;
+  right: 0;
+  float: right;
+  min-width: 25px;
+  height: 32px;
+  padding: 13px 10px 0 0;
+  position: absolute;
 }
+
 .auiPortletTool > div {
-	float:left;
-	padding:0 5px;
-	border-left:solid 1px #dbdbdb;
-	background:#fff;
-	box-shadow:-5px 0 3px #fff;
-	-webkit-box-shadow:-5px 0 3px #fff;
-	white-space:nowrap;
+  float: left;
+  padding: 0 5px;
+  border-left: solid 1px #dbdbdb;
+  background: #fff;
+  box-shadow: -5px 0 3px white;
+  -webkit-box-shadow: -5px 0 3px white;
+  white-space: nowrap;
 }
+
 .auiPortletSetting .menubar {
-	right:15px;
+  right: 15px;
 }
-*:first-child+html .auiPortletSetting .menubar {
-	top:30px;
-	z-index:9999;
-	zoom:1;
+
+*:first-child + html .auiPortletSetting .menubar {
+  top: 30px;
+  z-index: 9999;
+  zoom: 1;
 }
+
 .auiPortletBody {
-	background:#fff url(../images/common/portlet_l.gif) repeat-y left 0;
+  background: white url(../images/common/portlet_l.gif) repeat-y left 0;
 }
+
 .auiPortletBody .inner {
-	background:url(../images/common/portlet_r.gif) repeat-y right 0;
-	padding:4px 22px 0 22px;
+  background: url(../images/common/portlet_r.gif) repeat-y right 0;
+  padding: 4px 22px 0 22px;
 }
-.auiPortletBody .inner:after{
-	content:".";display:block;height:0;clear:both;visibility:hidden;
+
+.auiPortletBody .inner:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
+
 .auiPortletFoot {
-	background:url(../images/common/portlet_x.gif?20121011) no-repeat left -102px;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat left -102px;
 }
+
 .auiPortletFoot .inner {
-	background:url(../images/common/portlet_x.gif?20121011) no-repeat right -124px;
-	height:20px;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat right -124px;
+  height: 20px;
 }
 
 /***************************************************
 	auiListWrapper
 --------------------------------------------------*/
 .auiListWrapper {
-	height:305px;
-	overflow-y:auto;
+  height: 305px;
+  overflow-y: auto;
 }
+
 /***************************************************
 	userList
 --------------------------------------------------*/
-.userList {
-}
 .userList li {
-	background:none;
-	padding:5px 0;
-	border-bottom:solid 1px #eee;
+  background: none;
+  padding: 5px 0;
+  border-bottom: solid 1px #eee;
 }
+
 .userList .avatar {
-	height:50px;
-	padding-right:10px;
+  height: 50px;
+  padding-right: 10px;
 }
+
 .userList .content {
-	display:table-cell;
-	overflow:hidden;
-	vertical-align:middle;
+  display: table-cell;
+  overflow: hidden;
+  vertical-align: middle;
 }
+
 .userList .content div {
-	display:table-cell;
-	*display:inline;
-	vertical-align:middle;
-	zoom:1;
+  display: table-cell;
+  *display: inline;
+  vertical-align: middle;
+  zoom: 1;
 }
 
 /***************************************************
 	footer
 --------------------------------------------------*/
 #footer {
-	position:fixed;
-	bottom:0;
-	width:100%;
-	margin:0;
-	font-size:0.9em;
-	text-align:center;
-	text-shadow:0 1px 0 rgba(0,0,0,0.5);
-	border-top:solid 1px #999;
-	box-shadow:inset 0 1px 5px rgba(0,0,0,0.2);
-	-webkit-box-shadow:inset 0 1px 5px rgba(0,0,0,0.2);
-	background:#666;
-	color:#fff;
-	overflow:hidden;
-	z-index:995;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  font-size: 0.9em;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  border-top: solid 1px #999;
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
+  background: #666;
+  color: #fff;
+  overflow: hidden;
+  z-index: 995;
 }
+
 #login #footer {
-	position:static;
-	border-top:none;
-	box-shadow:none;
-	-webkit-box-shadow:none;
+  position: static;
+  border-top: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
 }
-#footer div {
-}
+
 #footer a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 #footText,
 #footText a {
-	color:#fff;
+  color: #fff;
 }
+
 #footText a:hover {
-	text-decoration:underline;
+  text-decoration: underline;
 }
+
 #footText div {
-	display:inline;
-	height:30px;
-	line-height:30px;
-	padding:0 1em;
-	border-left:solid 1px #ccc;
+  display: inline;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 1em;
+  border-left: solid 1px #ccc;
 }
+
 #footer div.copyright {
-	text-align:center;
-	border-left:none;
+  text-align: center;
+  border-left: none;
 }
+
 /***************************************************
 	startGuide
 --------------------------------------------------*/
 #startGuide {
-	width:100%;
-	height:130px;
-	overflow:hidden;
-	-webkit-animation-name: fadeIn;
-	-webkit-animation-duration: 1s;
+  width: 100%;
+  height: 130px;
+  overflow: hidden;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
 }
+
 #startGuide a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 #startGuide .close {
-	position:absolute;
-	right:0;
-	padding:20px;
+  position: absolute;
+  right: 0;
+  padding: 20px;
 }
+
 #startGuide .close a {
-	color:#fff;
+  color: #fff;
 }
+
 .guideContents {
-	float:left;
-	width:189px;
-	padding:20px;
-	text-align:center;
-	border-right:solid 1px #505050;
+  float: left;
+  width: 189px;
+  padding: 20px;
+  text-align: center;
+  border-right: solid 1px #505050;
 }
+
 .guideContents p {
-	margin:20px 0;
+  margin: 20px 0;
 }
+
 /***************************************************
 	auiTabs
 --------------------------------------------------*/
 #auiTabs {
-	white-space:nowrap;
-	height:25px;
-	padding:0;
-	margin:0;
-	background:#fff url(../images/tab.png) left bottom repeat-x;
-	overflow:hidden;
+  white-space: nowrap;
+  height: 25px;
+  padding: 0;
+  margin: 0;
+  background: white url(../images/tab.png) left bottom repeat-x;
+  overflow: hidden;
 }
+
 #auiTabs ul {
-	position:relative;
-	padding:0 20px;
-	margin:0;
-	white-space:nowrap;
+  position: relative;
+  padding: 0 20px;
+  margin: 0;
+  white-space: nowrap;
 }
+
 #auiTabs li {
-	display:block;
-	float:left;
-	height:25px;
-	padding:0;
-	font-size:11px;
-	background:none;
+  display: block;
+  float: left;
+  height: 25px;
+  padding: 0;
+  font-size: 11px;
+  background: none;
 }
+
 #auiTabs .tab {
-	height:100%;
+  height: 100%;
 }
+
 /* basic */
 #auiTabs .title {
-	float:left;
-	height:25px;
-	line-height:25px;
-	padding-left:20px;
-	background:url(../images/tab.png) left -180px no-repeat;
+  float: left;
+  height: 25px;
+  line-height: 25px;
+  padding-left: 20px;
+  background: url(../images/tab.png) left -180px no-repeat;
 }
+
 #auiTabs .setting {
-	float:left;
-	height:25px;
-	background:url(../images/tab.png) left -270px no-repeat;
+  float: left;
+  height: 25px;
+  background: url(../images/tab.png) left -270px no-repeat;
 }
+
 #auiTabs .setting a {
-	margin-top:4px;
+  margin-top: 4px;
 }
+
 /* first */
 #auiTabs .first .title {
-	background:url(../images/tab.png) left -120px no-repeat;
+  background: url(../images/tab.png) left -120px no-repeat;
 }
+
 /* last */
 #auiTabs .last .setting {
-	padding-right:20px;
-	background:url(../images/tab.png?20120928) right -150px no-repeat;
+  padding-right: 20px;
+  background: url(../images/tab.png?20120928) right -150px no-repeat;
 }
+
 /* active */
 #auiTabs .active .title {
-	background:url(../images/tab.png) left -60px no-repeat;
+  background: url(../images/tab.png) left -60px no-repeat;
 }
+
 #auiTabs .active .setting {
-	background:url(../images/tab.png) left -240px no-repeat;
+  background: url(../images/tab.png) left -240px no-repeat;
 }
+
 #auiTabs .activeNext {
-	padding-left:20px;
-	background:url(../images/tab.png) left -90px no-repeat;
+  padding-left: 20px;
+  background: url(../images/tab.png) left -90px no-repeat;
 }
+
 #auiTabs .activeNext .title {
-	padding-left:0;
-	background:url(../images/tab.png) left -270px no-repeat;
+  padding-left: 0;
+  background: url(../images/tab.png) left -270px no-repeat;
 }
+
 #auiTabs .first .active .title {
-	background:url(../images/tab.png) left -0px no-repeat;
+  background: url(../images/tab.png) left 0px no-repeat;
 }
+
 #auiTabs .last .active {
-	padding-right:20px;
-	background:url(../images/tab.png) right -30px no-repeat;
+  padding-right: 20px;
+  background: url(../images/tab.png) right -30px no-repeat;
 }
+
 #auiTabs .last .active .setting {
-	padding-right:0;
+  padding-right: 0;
 }
+
 #auiTabs .last .activeNext {
-	background:url(../images/tab.png) left -90px no-repeat;
+  background: url(../images/tab.png) left -90px no-repeat;
 }
 
 #auiTabs .store {
-	padding-right:20px;
-	background:url(../images/tab.png) right -150px no-repeat;
+  padding-right: 20px;
+  background: url(../images/tab.png) right -150px no-repeat;
 }
 
 #auiTabs li.selectedMenu {
-	height:25px;
-	background:url(../images/tab.png) right -25px no-repeat;
-	text-decoration:none;
+  height: 25px;
+  background: url(../images/tab.png) right -25px no-repeat;
+  text-decoration: none;
 }
+
 #auiTabs li.selectedMenu .title {
-	background:url(../images/tab.png) left 0px no-repeat;
+  background: url(../images/tab.png) left 0px no-repeat;
 }
+
 #auiTabs li.selectedMenu .title a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 #auiTabs li a {
-	margin:0 5px;
-	white-space:nowrap;
-	text-decoration:none;
-	text-shadow:0 1px 0 rgba(255,255,255,0.75);
+  margin: 0 5px;
+  white-space: nowrap;
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
 }
+
 #auiTabs li.selectedMenu a {
-	white-space:nowrap;
-	text-decoration:none;
+  white-space: nowrap;
+  text-decoration: none;
 }
+
 #auiTabs li.selectedMenu .menuIcon {
-	float:left;
-	height:25px;
-	background:url(../images/tab.png) right -0px no-repeat;
+  float: left;
+  height: 25px;
+  background: url(../images/tab.png) right 0px no-repeat;
 }
+
 .tooltip_gray {
-	display:none;
+  display: none;
 }
+
 #auiTabs .singleTab {
-	height:25px;
-	line-height:25px;
-	background:url(../images/tab.png) left -100px no-repeat;
+  height: 25px;
+  line-height: 25px;
+  background: url(../images/tab.png) left -100px no-repeat;
 }
+
 #auiTabs .singleTab a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 #auiTabs .addTab a {
-	display:block;
-	margin:0 0 0 -5px;
-	width:25px;
-	height:25px;
-	line-height:25px;
-	font-size:11px;
-	font-weight:bold;
-	text-align:center;
-	background:url(../images/addtab.png) 0 0 no-repeat;
+  display: block;
+  margin: 0 0 0 -5px;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  font-size: 11px;
+  font-weight: bold;
+  text-align: center;
+  background: url(../images/addtab.png) 0 0 no-repeat;
 }
+
 #auiTabs .addTab a:hover {
-	background:url(../images/addtab.png) 0 -25px no-repeat;
+  background: url(../images/addtab.png) 0 -25px no-repeat;
 }
+
 #auiTabs .addTab span {
-	display:none;
+  display: none;
 }
 
 /***************************************************
@@ -786,344 +899,407 @@ table.activityTable tr.unread td {
 	font-size:10px;
 	text-align:center;
 }*/
-
 /***************************************************
 	auiLogin
 --------------------------------------------------*/
 #auiLoginBox {
-	width:480px;
-	margin:85px auto 0 auto;
-	padding-bottom:60px;
-	background:url(../images/login_foot.png) left bottom no-repeat;
+  width: 480px;
+  margin: 85px auto 0 auto;
+  padding-bottom: 60px;
+  background: url(../images/login_foot.png) left bottom no-repeat;
 }
+
 #auiLoginInner {
-	padding:15px 50px;
-	background:url(../images/lobin_body.png) no-repeat;
+  padding: 15px 50px;
+  background: url(../images/lobin_body.png) no-repeat;
 }
+
 #auiLoginBox .logo {
-	text-align:center;
-	margin-bottom:50px;
+  text-align: center;
+  margin-bottom: 50px;
 }
+
 #auiLoginBox .field {
-	position:relative;
-	margin-bottom:10px;
+  position: relative;
+  margin-bottom: 10px;
 }
+
 #auiLoginBox .guide {
-	position:absolute;
-	height:2em;
-	line-height:2em;
-	margin:0.5em 0;
-	top:0;
-	left:5px;
-	color:#999;
+  position: absolute;
+  height: 2em;
+  line-height: 2em;
+  margin: 0.5em 0;
+  top: 0;
+  left: 5px;
+  color: #999;
 }
-*:first-child+html #auiLoginBox .guide {
-	margin:0.75em 0 0 0;
+
+*:first-child + html #auiLoginBox .guide {
+  margin: 0.75em 0 0 0;
 }
+
 #auiLoginBox input.text {
-	width:100%;
-	height:3em;
-	*height:1.5em;/*IE6-7Hack*/
-	line-height:1.5em;
-	padding:0.75em 5px;
-	ime-mode:disable;
+  width: 100%;
+  height: 3em;
+  *height: 1.5em;
+  /*IE6-7Hack*/
+  line-height: 1.5em;
+  padding: 0.75em 5px;
+  ime-mode: disable;
 }
+
 #auiLoginBox select {
-	height:3em;
-	margin:0;
+  height: 3em;
+  margin: 0;
 }
+
 #auiLoginBox select.select1 {
-	float:left;
-	width:40%;
+  float: left;
+  width: 40%;
 }
+
 #auiLoginBox select.select2 {
-	float:right;
-	width:58%;
+  float: right;
+  width: 58%;
 }
+
 #auiLoginBox input.button {
-	width:152px;
-	height:43px;
-	color:#fff;
-	font-size:1.2em;
-	text-shadow:0 1px 0 rgba(0,0,0,0.2);
-	border:none;
-	background:url(../images/login_btn_back.png) 0px 0px no-repeat;
+  width: 152px;
+  height: 43px;
+  color: #fff;
+  font-size: 1.2em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  border: none;
+  background: url(../images/login_btn_back.png) 0px 0px no-repeat;
 }
+
 #auiLoginBox input.button:hover {
-	box-shadow:none;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;
-	background:url(../images/login_btn_back.png) 0px -50px no-repeat;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  background: url(../images/login_btn_back.png) 0px -50px no-repeat;
 }
+
 #auiLoginBox input.button:active {
-	background:url(../images/login_btn_back.png) 0px -100px no-repeat;
+  background: url(../images/login_btn_back.png) 0px -100px no-repeat;
 }
+
 .loginAlert,
 .alert {
-	margin:10px 0;
-	padding:10px;
-	background:#ffcccc;
-	-webkit-border-radius:2px;
-	-moz-border-radius:2px;
-	-ms-border-radius:2px;
-    border-radius:2px;
-	-webkit-animation-name: fadeIn;
-	-webkit-animation-duration: 1s;
+  margin: 10px 0;
+  padding: 10px;
+  background: #ffcccc;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
 }
+
 /***************************************************
 	dialogTable
 --------------------------------------------------*/
 .dialogTable {
-	margin:15px 0;
-	border-top:solid 1px #eee;
-	border-collapse:collapse;
+  margin: 15px 0;
+  border-top: solid 1px #eee;
+  border-collapse: collapse;
 }
+
 .dialogTable th,
 .dialogTable td {
-	padding:10px;
-	border-bottom:solid 1px #eee;
+  padding: 10px;
+  border-bottom: solid 1px #eee;
 }
 
 .dialogTable .caption {
-	font-weight:bold;
+  font-weight: bold;
 }
+
 /***************************************************
 	AUI Generic Class - Undermost
 --------------------------------------------------*/
 /* auiSelectButton ********************/
 .auiSelectButton {
-	padding-right:1px;
-	background:#FFF;
+  padding-right: 1px;
+  background: #FFF;
 }
-*:first-child+html .auiSelectButton {
-    float:none;
+
+*:first-child + html .auiSelectButton {
+  float: none;
 }
+
 .auiSelectButton ul {
-	margin:0;
-	padding:0;
+  margin: 0;
+  padding: 0;
 }
+
 .auiSelectButton li,
 .auiSelectButton div {
-	height:24px;
-	overflow:hidden;
-	float:left;
-	display:block;
-	margin:0 -1px 0 0;
-	padding:0;
-	text-align:center;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
+  height: 24px;
+  overflow: hidden;
+  float: left;
+  display: block;
+  margin: 0 -1px 0 0;
+  padding: 0;
+  text-align: center;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
 }
+
 .auiSelectButton li:hover {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
 }
+
 .auiSelectButton li:active {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
 }
+
 .auiSelectButton a {
-	display:block;
-	text-decoration:none;
-	cursor:pointer;
-	color:#000;
-	border-left:solid 1px #dcdcdc;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  color: #000;
+  border-left: solid 1px #dcdcdc;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -192px repeat-x;
 }
+
 .auiSelectButton a:hover {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
 }
+
 .auiSelectButton a:active {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
 }
-.auiSelectButton a span{
-	display:block;
-	line-height:18px;
-	padding:3px 5px;
-	color:#000;
+
+.auiSelectButton a span {
+  display: block;
+  line-height: 18px;
+  padding: 3px 5px;
+  color: #000;
 }
+
 /* first */
 .auiSelectButton li.first {
-	border:none;
+  border: none;
 }
+
 .auiSelectButton a.first {
-	border:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
+  border: none;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
 }
+
 .auiSelectButton a.first:hover {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
 }
+
 .auiSelectButton a.first:active {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
 }
+
 .auiSelectButton a.first:hover span {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
 }
+
 .auiSelectButton a.first:active span {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
 }
+
 /* last */
 .auiSelectButton a.last {
-	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
 }
+
 .auiSelectButton a.last:hover {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -216px repeat-x;
 }
+
 .auiSelectButton a.last:active {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -240px repeat-x;
 }
+
 .auiSelectButton a.last:hover span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
 }
+
 .auiSelectButton a.last:active span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
 }
+
 /* btn*/
 .auiSelectButton a.btn {
-	border:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
+  border: none;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px 0px no-repeat;
 }
+
 .auiSelectButton a.btn:hover {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -24px no-repeat;
 }
+
 .auiSelectButton a.btn:active {
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -48px no-repeat;
 }
+
 .auiSelectButton a.btn span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -96px no-repeat;
 }
+
 .auiSelectButton a.btn:hover span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -120px no-repeat;
 }
+
 .auiSelectButton a.btn:active span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
+  background: url(../images/common/bg_auiselectbutton.gif) right -144px no-repeat;
 }
+
 /* active */
 .auiSelectButton li.active,
 .auiSelectButton li.active a,
-.auiSelectButton li.active span{
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x;
-}
-.auiSelectButton li.active a {
-	cursor:default;
-/*	border-right:solid 2px #f37e00;
-	border-left:solid 1px #f37e00;*/
-}
 .auiSelectButton li.active span {
-	color:#fff;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -264px repeat-x;
 }
+
+.auiSelectButton li.active a {
+  cursor: default;
+  /*	border-right:solid 2px #f37e00;
+  	border-left:solid 1px #f37e00;*/
+}
+
+.auiSelectButton li.active span {
+  color: #fff;
+}
+
 .auiSelectButton li.active a.first,
 .auiSelectButton li.active a.first:hover,
 .auiSelectButton li.active a.first:active,
 .auiSelectButton li.active a.first span,
 .auiSelectButton li.active a.first:hover span,
 .auiSelectButton li.active a.first:active span {
-	border-left:none;
-	background:url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
+  border-left: none;
+  background: url(../images/common/bg_auiselectbutton.gif) 0px -72px no-repeat !important;
 }
+
 .auiSelectButton li.active a.last {
-	border-right:none;
-/*	padding-left:2px;*/
+  border-right: none;
+  /*	padding-left:2px;*/
 }
+
 .auiSelectButton li.active a.last,
 .auiSelectButton li.active a.last:hover,
 .auiSelectButton li.active a.last:active,
 .auiSelectButton li.active a.last span,
 .auiSelectButton li.active a.last:hover span,
 .auiSelectButton li.active a.last:active span {
-	background:url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
+  background: url(../images/common/bg_auiselectbutton.gif) right -168px no-repeat !important;
 }
+
 .auiSelectButton .arrow {
-	width:25px;
+  width: 25px;
 }
 
 /***************************************************
 	auiWidgetsArea
 --------------------------------------------------*/
 #auiWidgetsArea {
-	float:left;
-	width:180px;
+  float: left;
+  width: 180px;
 }
+
 #auiWidgetsArea2 {
-	float:right;
-	width:180px;
+  float: right;
+  width: 180px;
 }
 
 .auiWidget {
-	clear:both;
-	padding:0.8em 0;
-	border-bottom:solid 1px #eee;
+  clear: both;
+  padding: 0.8em 0;
+  border-bottom: solid 1px #eee;
 }
+
 .auiWidget h2 {
-	line-height:2em;
+  line-height: 2em;
 }
+
 .auiWidget p {
-	margin:0.8em 0;
+  margin: 0.8em 0;
 }
+
 .auiWidget li {
-	padding:0;
-	background:none;
+  padding: 0;
+  background: none;
 }
+
 .auiWidget li span {
-	display:block;
-	line-height:1.8em;
-	padding:0.3em 0 0.3em 18px;
-	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 18px;
+  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiWidget li a {
-	display:block;
-	line-height:1.8em;
-	padding:0.3em 0 0.3em 10px;
-	text-decoration:none;
-	background:none;
-	white-space:nowrap;
-	overflow:hidden;
-	width:auto;
-	text-overflow: ellipsis;
-	white-space:nowrap;
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 10px;
+  text-decoration: none;
+  background: none;
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .auiWidget li a:hover {
-	color:#000;
-	background:#f6f6f6;
+  color: #000;
+  background: #f6f6f6;
 }
-.auiWidget li.active>a {
-	font-weight:bold;
-	background:#f0f0f0;
+
+.auiWidget li.active > a {
+  font-weight: bold;
+  background: #f0f0f0;
 }
+
 .auiWidget li ul {
-	margin:0;
+  margin: 0;
 }
+
 .auiWidget li li a,
 .auiWidget li li a:hover,
 .auiWidget li li.active a {
-	padding:0.3em 0 0.3em 36px;
-	background-position:23px 1em;
+  padding: 0.3em 0 0.3em 36px;
+  background-position: 23px 1em;
 }
-
 
 /***************************************************
 	auiContentsArea
 --------------------------------------------------*/
 #auiContentsArea {
-	float:right;
-	width:100%;
-	margin-left:-200px;
+  float: right;
+  width: 100%;
+  margin-left: -200px;
 }
+
 #auiContentsAreaInner {
-	margin-left:200px;
+  margin-left: 200px;
 }
+
 #auiContentsArea h2, h2.caption {
-	margin:0;
-	font-size:1.2em;
+  margin: 0;
+  font-size: 1.2em;
 }
+
 #auiThreeClumns {
-	float:left;
-	width:100%;
-	margin-right:-200px;
+  float: left;
+  width: 100%;
+  margin-right: -200px;
 }
+
 #auiThreeClumnsInner {
-	margin-right:200px;
+  margin-right: 200px;
 }
+
 #auiThreeColumnWidgets {
-	float:right;
-	width:180px;
+  float: right;
+  width: 180px;
 }
 
 /***************************************************
@@ -1131,10 +1307,9 @@ table.activityTable tr.unread td {
 --------------------------------------------------*/
 #auiWideArea,
 #auiWideAreaInner {
-	width:100%;
-	height:100%;
+  width: 100%;
+  height: 100%;
 }
-
 
 /***************************************************
 	auiButton
@@ -1149,17 +1324,17 @@ input[type=submit],
 input[type=button],
 input[type=reset],
 button {
-	display:inline-block;
-	/*white-space:nowrap;*/
-	overflow:hidden;
-	text-decoration:none;
-	text-align:center;
-	vertical-align:middle;
-	cursor:pointer;
-	-webkit-border-radius:2px;
-	-moz-border-radius:2px;
-	-ms-border-radius:2px;
-	border-radius:2px;
+  display: inline-block;
+  /*white-space:nowrap;*/
+  overflow: hidden;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
 }
 
 .auiButton,
@@ -1169,63 +1344,76 @@ input[type=submit],
 input[type=button],
 input[type=reset],
 button {
-	color:#000;
-	text-shadow:0 1px 0 #f8f8f8;
-	border:solid 1px #c0c0c0;
-	background:#f0f0f0;
-	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;/*IE*/
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
-	background: -moz-linear-gradient(top, #fff, #f0f0f0);
+  color: #000;
+  text-shadow: 0 1px 0 #f8f8f8;
+  border: solid 1px #c0c0c0;
+  background: #f0f0f0;
+  background: #f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
+  /*IE*/
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
+  background: -moz-linear-gradient(top, white, #f0f0f0);
 }
+
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
-/*.auiButtonDisabled,*/
 .auiButtonSearch {
-	height:26px;
-	line-height:26px;
-	padding:0 0.7em;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 0.7em;
 }
-*:first-child+html input.auiButton,
-*:first-child+html input.auiButtonAction,
-*:first-child+html input.auiButtonBold,
-*:first-child+html input.auiButtonSearch {
-	padding:0 3px;
+
+*:first-child + html input.auiButton,
+*:first-child + html input.auiButtonAction,
+*:first-child + html input.auiButtonBold,
+*:first-child + html input.auiButtonSearch {
+  padding: 0 3px;
 }
 
 input[type=submit],
 input[type=button],
 input[type=reset],
 button {
-	height:28px;
-	line-height:1em;
-	padding:0 0.7em;
+  height: 28px;
+  line-height: 1em;
+  padding: 0 0.7em;
 }
+
 button.auiButton,
 button {
-	padding:0 0.55em;
-	>padding:0 0.15em;/*IE*/
+  padding: 0 0.55em;
 }
+
+*:first-child + html button.auiButton,
+*:first-child + html button {
+  /*IE7*/
+  padding: 0 0.15em;
+}
+
 .auiButtonSmall {
-	padding:0 5px;
-	height:16px !important;
-	line-height:16px !important;
-	font-size:10px;
+  padding: 0 5px;
+  height: 16px !important;
+  line-height: 16px !important;
+  font-size: 10px;
 }
+
 input[type=submit].auiButtonSmall,
 input[type=button].auiButtonSmall,
 input[type=reset].auiButtonSmall,
 button.auiButtonSmall {
-	line-height:1em !important;
+  line-height: 1em !important;
 }
-*:first-child+html input[type=submit],
-*:first-child+html input[type=button],
-*:first-child+html input[type=reset],
-*:first-child+html button,
-*:first-child+html .auiButtonSmall {/* IE7 Hack */
-	/*line-height:1.4em !important;
-	overflow:visible;*/
+
+*:first-child + html input[type=submit],
+*:first-child + html input[type=button],
+*:first-child + html input[type=reset],
+*:first-child + html button,
+*:first-child + html .auiButtonSmall {
+  /* IE7 Hack */
+  /*line-height:1.4em !important;
+  overflow:visible;*/
 }
+
 .auiButton:hover,
 .auiButtonBold:hover,
 .auiButtonSmall:hover,
@@ -1233,15 +1421,18 @@ input[type=submit]:hover,
 input[type=button]:hover,
 input[type=reset],
 button:hover {
-	color:#000;
-	border:solid 1px #999;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#e0e0e0;
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#e1e1e1));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #e1e1e1);/*Fx*/
+  color: #000;
+  border: solid 1px #999;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: #e0e0e0;
+  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#e1e1e1));
+  /*Ch*/
+  background: -moz-linear-gradient(top, #eeeeee, #e1e1e1);
+  /*Fx*/
 }
+
 .auiButton:active,
 .auiButtonBold:active,
 .auiButtonSmall:active,
@@ -1249,495 +1440,672 @@ input[type=submit]:active,
 input[type=button]:active,
 input[type=reset],
 button:active {
-	border:solid 1px #999;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0);
-	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#ccc;
-	background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eee));/*Ch*/
-	background: -moz-linear-gradient(top, #e1e1e1, #eee);/*Fx*/
+  border: solid 1px #999;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  background: #ccc;
+  background: -webkit-gradient(linear, left top, left bottom, from(#e1e1e1), to(#eeeeee));
+  /*Ch*/
+  background: -moz-linear-gradient(top, #e1e1e1, #eeeeee);
+  /*Fx*/
 }
+
 .auiButton span {
-	display:table-cell;
-	>display:block;
-	height:26px;
-	line-height:26px;
-	text-align:center;
-	vertical-align:middle;
+  display: table-cell;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  vertical-align: middle;
 }
-*:first-child+html .auiButton span,
-*:first-child+html .auiButtonSmall span {
-	padding-top:4px;
-	height:22px;
+
+*:first-child + html .auiButton span,
+*:first-child + html .auiButtonSmall span {
+  display: block;
+  padding-top: 4px;
+  height: 22px;
 }
+
 .auiButtonSmall span {
-	display:table-cell;
-	>display:block;
-	text-align:center;
-	vertical-align:middle;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
 }
+
 .auiButton img,
 .auiButtonSmall img {
-	>padding:2px 0;
-	display:inline;
-	vertical-align:middle;
+  display: inline;
+  vertical-align: middle;
+}
+
+*:first-child + html .auiButton img,
+*:first-child + html .auiButtonSmall img {
+  padding: 2px 0;
 }
 
 .auiButtonAction {
-	color:#fff !important;
-	font-weight:bold;
-	text-shadow:0 1px 0 #f09000 !important;
-	border:solid 1px #f09000 !important;
-	background:#ff9900;
-	background:#ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x !important;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900)) !important;/*Ch*/
-	background: -moz-linear-gradient(top, #ffbb22, #ff9900);/*Fx*/
-}
-.auiButtonBold {
-	color:#000;
-	text-shadow:0 1px 0 #f8f8f8;
-	border:solid 1px #c0c0c0;
-	background:#f0f0f0;
-	background:#f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f0f0f0));
-	background: -moz-linear-gradient(top, #fff, #f0f0f0);
-}
-.auiButtonAction:hover {
-	color:#fff;
-	border:solid 1px #e0800 !important0;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#ffbb22 !important;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900)) !important;/*Ch*/
-	background: -moz-linear-gradient(top, #ffcc33, #ff9900);/*Fx*/
-}
-.auiButtonAction:active {
-	border:solid 1px #e08000 !important;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0);
-	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#ff9000 !important;
-	background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22)) !important;/*Ch*/
-	background: -moz-linear-gradient(top, #ff9900, #ffbb22);/*Fx*/
+  color: #fff !important;
+  font-weight: bold;
+  text-shadow: 0 1px 0 #f09000 !important;
+  border: solid 1px #f09000 !important;
+  background: #ff9900;
+  background: #ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900)) !important;
+  /*Ch*/
+  background: -moz-linear-gradient(top, #ffbb22, #ff9900);
+  /*Fx*/
 }
 
-.auiButtonDisabled{
-	text-shadow:0 1px 0 #f8f8f8;
-	border:solid 1px #c0c0c0;
-	color:#999;
-	background:#eee;
-	cursor:default;
-	height:26px;
-	line-height:2.3em;
-	padding:0 0.7em;
+.auiButtonBold {
+  color: #000;
+  text-shadow: 0 1px 0 #f8f8f8;
+  border: solid 1px #c0c0c0;
+  background: #f0f0f0;
+  background: #f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
+  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
+  background: -moz-linear-gradient(top, white, #f0f0f0);
 }
-.auiButtonDisabled:hover {color:#999}
-*:first-child+html .auiButtonDisabled {/* IE7 Hack */
-	line-height:2.2em;
+
+.auiButtonAction:hover {
+  color: #fff;
+  border: solid 1px #e0800 !important0;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: #ffbb22 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900)) !important;
+  /*Ch*/
+  background: -moz-linear-gradient(top, #ffcc33, #ff9900);
+  /*Fx*/
 }
+
+.auiButtonAction:active {
+  border: solid 1px #e08000 !important;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  background: #ff9000 !important;
+  background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22)) !important;
+  /*Ch*/
+  background: -moz-linear-gradient(top, #ff9900, #ffbb22);
+  /*Fx*/
+}
+
+.auiButtonDisabled {
+  text-shadow: 0 1px 0 #f8f8f8;
+  border: solid 1px #c0c0c0;
+  color: #999;
+  background: #eee;
+  cursor: default;
+  height: 26px;
+  line-height: 2.3em;
+  padding: 0 0.7em;
+}
+
+.auiButtonDisabled:hover {
+  color: #999;
+}
+
+*:first-child + html .auiButtonDisabled {
+  /* IE7 Hack */
+  line-height: 2.2em;
+}
+
 input[disabled],
 textarea[disabled],
 button[disabled] {
-	color:#999;
-	background:#eee;
+  color: #999;
+  background: #eee;
 }
+
 input[disabled]:hover,
 textarea[disabled]:hover,
 button[disabled]:hover {
-	color:#999;
-	background:#eee;
-	border-color:#c9c9c9;
-	cursor:default;
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;
-	box-shadow:none;
-}
-.auiButtonGroup {
-	-webkit-border-radius:10px;
-	-moz-border-radius:10px;
-	-ms-border-radius:10px;
-	border-radius:10px;
-}
-.auiButtonGroup .auiButton {
-	margin:0 -1px;
-	-webkit-border-radius:0;
-	-moz-border-radius:0;
-	-ms-border-radius:0;
-	border-radius:0;
-}
-.auiButtonGroup .auiButton:hover {
-	border:solid 1px #c0c0c0;
-}
-.auiButtonGroup .left {
-	-webkit-border-radius:2px 0 0 2px;
-	-moz-border-radius:2px 0 0 2px;
-	-ms-border-radius:2px 0 0 2px;
-	border-radius:2px 0 0 2px;
-}
-.auiButtonGroup .right {
-	-webkit-border-radius:0 2px 2px 0;
-	-moz-border-radius:0 2px 2px 0;
-	-ms-border-radius:0 2px 2px 0;
-	border-radius:0 2px 2px 0;
+  color: #999;
+  background: #eee;
+  border-color: #c9c9c9;
+  cursor: default;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
+.auiButtonGroup {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.auiButtonGroup .auiButton {
+  margin: 0 -1px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0;
+}
+
+.auiButtonGroup .auiButton:hover {
+  border: solid 1px #c0c0c0;
+}
+
+.auiButtonGroup .left {
+  -webkit-border-radius: 2px 0 0 2px;
+  -moz-border-radius: 2px 0 0 2px;
+  -ms-border-radius: 2px 0 0 2px;
+  border-radius: 2px 0 0 2px;
+}
+
+.auiButtonGroup .right {
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  -ms-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+}
 
 /***************************************************
 	auiSearch
 --------------------------------------------------*/
 .auiSearch {
-	position:relative;
+  position: relative;
 }
+
 .auiSearch input.long {
-	min-width:480px;
+  min-width: 480px;
 }
+
 .auiSearch input.date {
-	width:7em;
+  width: 7em;
 }
+
 .auiButtonSearch {
-	color:#000;
-	font-weight:bold;
-	text-shadow:0 1px 0 #f8f8f8;
-	border:solid 1px #d0d0d0;
-	background:#ddd;
-	background:#ddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ddd));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #ddd);/*Fx*/
+  color: #000;
+  font-weight: bold;
+  text-shadow: 0 1px 0 #f8f8f8;
+  border: solid 1px #d0d0d0;
+  background: #ddd;
+  background: #dddddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x;
+  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd));
+  /*Ch*/
+  background: -moz-linear-gradient(top, #eeeeee, #dddddd);
+  /*Fx*/
 }
-*:first-child+html .auiButtonSearch {
-	height:26px;
-	line-height:26px;
+
+*:first-child + html .auiButtonSearch {
+  height: 26px;
+  line-height: 26px;
 }
+
 .auiButtonSearch:hover {
-	color:#000;
-	border:solid 1px #999;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	box-shadow:0 1px 1px rgba(0,0,0,0.2);
-	background:#d0d0d0;
-	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#d0d0d0));/*Ch*/
-	background: -moz-linear-gradient(top, #eee, #d0d0d0);/*Fx*/
+  color: #000;
+  border: solid 1px #999;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: #d0d0d0;
+  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#d0d0d0));
+  /*Ch*/
+  background: -moz-linear-gradient(top, #eeeeee, #d0d0d0);
+  /*Fx*/
 }
+
 .auiButtonSearch:active {
-	border:solid 1px #999;
-	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0);
-	-moz-box-shadow:0 1px 1px rgba(0,0,0,0);
-	box-shadow:0 1px 1px rgba(0,0,0,0);
-	background:#c0c0c0;
-	background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eee));/*Ch*/
-	background: -moz-linear-gradient(top, #d0d0d0, #eee);/*Fx*/
+  border: solid 1px #999;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
+  background: #c0c0c0;
+  background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eeeeee));
+  /*Ch*/
+  background: -moz-linear-gradient(top, #d0d0d0, #eeeeee);
+  /*Fx*/
 }
+
 .auiSearchOption {
-	position:absolute;
-	top:28px;
-	left:0px;
-	width:360px;
-	padding:10px;
-	border:solid 1px #ccc;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	background:#fff;
-	overflow:hidden;
-	-webkit-box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
+  position: absolute;
+  top: 28px;
+  left: 0px;
+  width: 360px;
+  padding: 10px;
+  border: solid 1px #ccc;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  overflow: hidden;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
 .auiSearchOption .close {
-	float:right;
+  float: right;
 }
+
 .auiSearchOption .element {
-	margin-bottom:10px;
-	padding-bottom:5px;
-	border-bottom:solid 1px #eee;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: solid 1px #eee;
 }
+
 .auiSearchOption label {
-	line-height:2em;
-	cursor:default;
+  line-height: 2em;
+  cursor: default;
 }
+
 .auiSearchResult {
-	clear:both;
-	font-weight:bold;
+  clear: both;
+  font-weight: bold;
 }
+
 .auiSearchMore {
-	line-height:2em;
-	margin-bottom:2em;
+  line-height: 2em;
+  margin-bottom: 2em;
 }
 
 /***************************************************
 	auiSummaryMeta
 --------------------------------------------------*/
 .auiSummaryMeta {
-	width:100%;
-	line-height:2em;
-	margin:0.8em 0;
-	vertical-align:middle;
+  width: 100%;
+  line-height: 2em;
+  margin: 0.8em 0;
+  vertical-align: middle;
 }
+
 .auiSummaryMeta .count {
-	float:left;
-	height:24px;
-	line-height:24px;
-	padding-right:1em;
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  padding-right: 1em;
 }
+
 .auiSummaryTitle {
-	line-height:2em;
-	font-weight:bold;
+  line-height: 2em;
+  font-weight: bold;
 }
 
 /***************************************************
 	auiGridTable
 --------------------------------------------------*/
-table.auiGridTable {
-	border-collapse:collapse;
-}
-table.auiGridTable th {
-	padding:8px 5px;
-	white-space:nowrap;
-	border:1px solid #ccc;
-	background:#f0f0f0;
-}
-table.auiGridTable td {
-	padding:8px 5px;
-	border:1px solid #ccc;
-}
-table.auiGridTable tr.even {
-	background:#f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+.auiGridTable {
+  border-collapse: collapse;
 }
 
-table.auiGridTable tr.sunday td,
-table.auiGridTable tr.sunday th,
-table.auiGridTable tr.holiday td,
-table.auiGridTable tr.holiday th {
-	background:#ffefe5;
-}
-table.auiGridTable tr.saturday td,
-table.auiGridTable tr.saturday th {
-	background:#ebf0f6;
-}
-table.auiGridTable tr.today td,
-table.auiGridTable tr.today th {
-	background:#e0ffe0;
+.auiGridTable th {
+  padding: 8px 5px;
+  white-space: nowrap;
+  border: 1px solid #ccc;
+  background: #f0f0f0;
 }
 
-table.auiGridTable tr:hover td,
-table.auiGridTable tr:hover th {
-	background:#ffffe0;
+.auiGridTable td {
+  padding: 8px 5px;
+  border: 1px solid #ccc;
+}
+
+.auiGridTable .even {
+  background: #f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+}
+
+.auiGridTable .sunday td,
+.auiGridTable .sunday th,
+.auiGridTable .holiday td,
+.auiGridTable .holiday th {
+  background: #ffefe5;
+}
+
+.auiGridTable .saturday td,
+.auiGridTable .saturday th {
+  background: #ebf0f6;
+}
+
+.auiGridTable .today td,
+.auiGridTable .today th {
+  background: #e0ffe0;
+}
+
+.auiGridTable tr:hover td,
+.auiGridTable tr:hover th {
+  background: #ffffe0;
 }
 
 /***************************************************
 	auiRowTable
 --------------------------------------------------*/
-table.auiRowTable {
-	border-spacing:0;
-	border-collapse:collapse;
-}
-table.auiRowTable th {
-	padding:8px 5px;
-	white-space:nowrap;
-	background:#f0f0f0;
-	text-align:left;
-}
-table.auiRowTable td {
-	padding:8px 5px;
-	border-bottom:solid 1px #eee;
-}
-table.auiRowTable div {
-	width:100%;
-	height:1.6em;
-	line-height:1.6em;
-	min-height:18px;
-	overflow:hidden;
-}
-table.auiRowTable tr.even {
-}
-table.auiRowTable tr.sunday td,
-table.auiRowTable tr.sunday th,
-table.auiRowTable tr.holiday td,
-table.auiRowTable tr.holiday th {
-	background:#ffefe5;
-}
-table.auiRowTable tr.saturday td,
-table.auiRowTable tr.saturday th {
-	background:#ebf0f6;
-}
-table.auiRowTable tr.today td,
-table.auiRowTable tr.today th {
-	background:#e0ffe0;
-}
-table.auiRowTable tr:hover td,
-table.auiRowTable tr:hover th {
-	background:#f5f5f5;
+.auiRowTable {
+  border-spacing: 0;
+  border-collapse: collapse;
+  border-bottom: solid 1px #eee;
 }
 
+.auiRowTable th {
+  padding: 8px 5px;
+  white-space: nowrap;
+  background: #f0f0f0;
+  text-align: left;
+}
+
+.auiRowTable td {
+  padding: 8px 5px;
+}
+
+.auiRowTable .dayStart {
+  border-top: solid 1px #eee;
+}
+
+.auiRowTable .day,
+.auiRowTable .time {
+  white-space: nowrap;
+}
+
+.auiRowTable .day {
+  width: 80px;
+}
+
+*:first-child + html .auiRowTable .day {
+  /*IE7*/
+  width: 120px;
+}
+
+.auiRowTable .time {
+  width: 40px;
+}
+
+*:first-child + html .auiRowTable .time {
+  /*IE7*/
+  width: 80px;
+}
+
+.auiRowTable div {
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  min-height: 18px;
+  overflow: hidden;
+}
+
+/*.auiRowTable .sunday .day,
+.auiRowTable .holiday .day {
+	color:#ff3333;
+}
+.auiRowTable .sunday td,
+.auiRowTable .sunday th,
+.auiRowTable .holiday td,
+.auiRowTable .holiday th {
+	background:#ffefe5;
+}*/
+/*.auiRowTable .saturday .day {
+	color:#3333ff;
+}
+.auiRowTable .saturday td,
+.auiRowTable .saturday th {
+	background:#ebf0f6;
+}*/
+.auiRowTable .today .day {
+  /*color:#060;*/
+  background: #f1f1f1;
+}
+
+/*.auiRowTable .today td,
+.auiRowTable .today th {
+	background:#e0ffe0;
+}*/
+.auiRowTable tr:hover td,
+.auiRowTable tr:hover th {
+  background: #f5f5f5;
+}
 
 /***************************************************
 	auiMultiTable
 --------------------------------------------------*/
 .auiMultiTable {
-	border-collapse:collapse;
+  border-collapse: collapse;
 }
+
 .auiMultiTable td {
-	padding: 8px 5px;
+  padding: 8px 5px;
 }
+
 .auiMultiTable th {
-	background: none repeat scroll 0 0 #F0F0F0;
-	padding: 8px 5px;
-	text-align: left;
-	white-space: nowrap;
+  background: none repeat scroll 0 0 #F0F0F0;
+  padding: 8px 5px;
+  text-align: left;
+  white-space: nowrap;
 }
+
 .auiMultiTable td {
-	border-bottom:1px solid #EEEEEE;
+  border-bottom: 1px solid #EEEEEE;
 }
+
 .wDays {
-	width:35px;
+  width: 35px;
 }
+
 .wType {
-	width:60px;
+  width: 60px;
 }
+
 .wTime {
-	width:85px;
+  width: 85px;
 }
 
 /***************************************************
 	auiDirectoryList
 --------------------------------------------------*/
 .auiDirectoryList {
-	margin-bottom:0.8em;
+  margin-bottom: 0.8em;
 }
+
 .auiDirectoryList div {
-	height:2.2em;
+  height: 2.2em;
 }
+
 .auiDirectoryList a {
-	display:block;
-	width:100%;
-	line-height:2.2em;
-	height:2.2em;
-	text-decoration:none;
-	overflow:hidden;
+  display: block;
+  width: 100%;
+  line-height: 2.2em;
+  height: 2.2em;
+  text-decoration: none;
+  overflow: hidden;
 }
+
 .auiDirectoryList a span {
-	cursor:pointer;
+  cursor: pointer;
 }
+
 .auiDirectoryList a:hover {
-	background:#f6f6f6;
+  background: #f6f6f6;
 }
+
 .auiDirectoryList .active a {
-	font-weight:bold;
-	background:#f0f0f0;
+  font-weight: bold;
+  background: #f0f0f0;
 }
+
 .auiDirectoryList a:hover span {
-	color:#000;
+  color: #000;
 }
+
 .auiDirectoryList .directory {
-	display:block;
-	line-height:2.2em;
-	height:2.2em;
-	padding-left:25px;
-	background:url(../images/icon/folder_close.gif) 4px 0.3em no-repeat;
+  display: block;
+  line-height: 2.2em;
+  height: 2.2em;
+  padding-left: 25px;
+  background: url(../images/icon/folder_close.gif) 4px 0.3em no-repeat;
 }
+
 .auiDirectoryList .open .directory {
-	background:url(../images/icon/folder_open.gif) 4px 0.3em no-repeat;
+  background: url(../images/icon/folder_open.gif) 4px 0.3em no-repeat;
 }
-.auiDirectoryList .d1 span {}
-.auiDirectoryList .d2 span {margin-left:10px;}
-.auiDirectoryList .d3 span {margin-left:20px;}
-.auiDirectoryList .d4 span {margin-left:30px;}
-.auiDirectoryList .d5 span {margin-left:40px;}
-.auiDirectoryList .d6 span {margin-left:50px;}
-.auiDirectoryList .d7 span {margin-left:60px;}
-.auiDirectoryList .d8 span {margin-left:70px;}
-.auiDirectoryList .d9 span {margin-left:80px;}
-.auiDirectoryList .d10 span {margin-left:90px;}
-.auiDirectoryList .d11 span {margin-left:100px;}
-.auiDirectoryList .d12 span {margin-left:110px;}
-.auiDirectoryList .d13 span {margin-left:120px;}
-.auiDirectoryList .d14 span {margin-left:130px;}
-.auiDirectoryList .d15 span {margin-left:140px;}
-.auiDirectoryList .d16 span {margin-left:150px;}
-.auiDirectoryList .d17 span {margin-left:160px;}
-.auiDirectoryList .d18 span {margin-left:170px;}
-.auiDirectoryList .d19 span {margin-left:180px;}
-.auiDirectoryList .d20 span {margin-left:190px;}
+
+.auiDirectoryList .d2 span {
+  margin-left: 10px;
+}
+
+.auiDirectoryList .d3 span {
+  margin-left: 20px;
+}
+
+.auiDirectoryList .d4 span {
+  margin-left: 30px;
+}
+
+.auiDirectoryList .d5 span {
+  margin-left: 40px;
+}
+
+.auiDirectoryList .d6 span {
+  margin-left: 50px;
+}
+
+.auiDirectoryList .d7 span {
+  margin-left: 60px;
+}
+
+.auiDirectoryList .d8 span {
+  margin-left: 70px;
+}
+
+.auiDirectoryList .d9 span {
+  margin-left: 80px;
+}
+
+.auiDirectoryList .d10 span {
+  margin-left: 90px;
+}
+
+.auiDirectoryList .d11 span {
+  margin-left: 100px;
+}
+
+.auiDirectoryList .d12 span {
+  margin-left: 110px;
+}
+
+.auiDirectoryList .d13 span {
+  margin-left: 120px;
+}
+
+.auiDirectoryList .d14 span {
+  margin-left: 130px;
+}
+
+.auiDirectoryList .d15 span {
+  margin-left: 140px;
+}
+
+.auiDirectoryList .d16 span {
+  margin-left: 150px;
+}
+
+.auiDirectoryList .d17 span {
+  margin-left: 160px;
+}
+
+.auiDirectoryList .d18 span {
+  margin-left: 170px;
+}
+
+.auiDirectoryList .d19 span {
+  margin-left: 180px;
+}
+
+.auiDirectoryList .d20 span {
+  margin-left: 190px;
+}
 
 /***************************************************
 	auiSakuin
 --------------------------------------------------*/
-.auiSakuin {
-}
 .auiSakuin li {
-	float:left;
-	background:none;
+  float: left;
+  background: none;
 }
+
 .auiWidget .auiSakuin li {
-	width:20%;
+  width: 20%;
 }
 
 .auiSakuin li.first,
 .auiSakuin li.last {
-	float:none;
-	clear:both;
+  float: none;
+  clear: both;
 }
+
 .auiSakuin li a {
-	padding:0.5em 0;
-	text-align:center;
-	background:none;
+  padding: 0.5em 0;
+  text-align: center;
+  background: none;
 }
+
 .auiSakuin li a:hover {
-	background:#f6f6f6 none;
+  background: #f6f6f6 none;
 }
+
 .auiSakuin li.active a {
-	background:#f0f0f0 none;
+  background: #f0f0f0 none;
 }
 
 /***************************************************
 	auiCalendar
 --------------------------------------------------*/
-table.auiCalendar {
-	width:100%;
-	border-collapse:collapse;
+.auiCalendar {
+  width: 100%;
+  border-collapse: collapse;
 }
-table.auiCalendar th {
-	font-weight:normal;
+
+.auiCalendar th {
+  font-weight: normal;
 }
-table.auiCalendar th div {
-	line-height:24px;
+
+.auiCalendar th div {
+  line-height: 24px;
 }
-table.auiCalendar td {
-	text-align:center;
-	font-size:11px;
-	width:26px;
+
+.auiCalendar td {
+  text-align: center;
+  font-size: 11px;
+  width: 26px;
 }
-table.auiCalendar .auiButton {
-	padding:0 0.7em;
+
+.auiCalendar .auiButton {
+  padding: 0 0.7em;
 }
-table.auiCalendar .sunday {
-	background:#fff0f0;
-	width:25px;
+
+.auiCalendar .sunday {
+  background: #fff0f0;
+  width: 25px;
 }
-table.auiCalendar .saturday {
-	background:#f0ffff;
-	width:25px;
+
+.auiCalendar .saturday {
+  background: #f0ffff;
+  width: 25px;
 }
-table.auiCalendar td a {
-	padding:1px;
-	display:block;
-	color:#000;
-	text-decoration:none;
+
+.auiCalendar td a {
+  padding: 1px;
+  display: block;
+  color: #000;
+  text-decoration: none;
 }
-table.auiCalendar td a:hover {
-	background:#ffffe0;
+
+.auiCalendar td a:hover {
+  background: #ffffe0;
 }
-table.auiCalendar .out a {
-	color:#999;
+
+.auiCalendar .out a {
+  color: #999;
 }
-table.auiCalendar .today a {
-	background:#e0ffe0;
+
+.auiCalendar .today a {
+  /*background:#e0ffe0;*/
 }
-table.auiCalendar .selected a {
-	padding:0;
-	border:solid 1px #000;
+
+.auiCalendar .selected a {
+  padding: 0;
+  border: solid 1px #999;
 }
 
 /***************************************************
@@ -1745,74 +2113,82 @@ table.auiCalendar .selected a {
 --------------------------------------------------*/
 /* auiAvatarBlock ********************/
 .auiAvatarBlock {
-	text-align:center;
+  text-align: center;
 }
-.auiAvatarBlock .avatar {
-}
+
 .auiAvatarBlock .name {
-	font-weight:bold;
+  font-weight: bold;
 }
+
 /* auiAvatarList ********************/
-.auiAvatarList {
-}
 .auiAvatarList li a {
-	padding:0.3em;
-	background:none;
+  padding: 0.3em;
+  background: none;
 }
+
 .auiAvatarList li.active a {
-	background:#f0f0f0 none;
+  background: #f0f0f0 none;
 }
 
 .auiAvatarList li a img {
-	vertical-align:middle;
-	margin-right:5px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  vertical-align: middle;
+  margin-right: 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
 
 /***************************************************
 	auiBlogEntry
 --------------------------------------------------*/
 #auiBlogEntries {
-	padding-top:1em;
-	border-top:solid 1px #eee;
+  padding-top: 1em;
+  border-top: solid 1px #eee;
 }
+
 #auiBlogEntries .avatar {
-	float:left;
+  float: left;
 }
+
 #auiBlogEntries .entry {
-	margin:0 0 1em 0;
-	border-bottom:solid 1px #eee;
+  margin: 0 0 1em 0;
+  border-bottom: solid 1px #eee;
 }
+
 .entryBody {
-	margin-left:40px;
+  margin-left: 40px;
 }
+
 #auiContentsArea .entryBody {
-	margin-left:60px;
+  margin-left: 60px;
 }
+
 .entryHeader {
-	padding:0 0 1em 0;
+  padding: 0 0 1em 0;
 }
+
 .entryFooter {
-	padding:1em 0;
+  padding: 1em 0;
 }
+
 .dojoDndItem .entryHeader {
-	padding:0 0 0.5em 0;
+  padding: 0 0 0.5em 0;
 }
+
 .dojoDndItem .entryFooter {
-	padding:0.5em 0;
+  padding: 0.5em 0;
 }
+
 .dojoDndItem .entryFooter {
-	font-size:8pt;
+  font-size: 8pt;
 }
 
 /***************************************************
 	auiMail
 --------------------------------------------------*/
 .auiMailSummaryExcerpt {
-	color:#999;
+  color: #999;
 }
 
 /***************************************************
@@ -1820,58 +2196,65 @@ table.auiCalendar .selected a {
 --------------------------------------------------*/
 .auiForm,
 form {
-	margin:0;
-	padding:0;
+  margin: 0;
+  padding: 0;
 }
+
 input,
 textarea,
 select {
-	margin:0;
-	vertical-align:middle;
+  margin: 0;
+  vertical-align: middle;
 }
+
 textarea,
 select {
-	margin:1px 0;
-	border:solid 1px #ccc;
-	-webkit-border-radius:2px;
-	-moz-border-radius:2px;
-	-ms-border-radius:2px;
-	border-radius:2px;
+  margin: 1px 0;
+  border: solid 1px #ccc;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
 }
+
 input[type=text],
 input[type=password] {
-	height:28px;
-	/*padding:0 2px;*/
-	padding:4px 2px;
-	vertical-align:middle;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	border:1px solid #c9c9c9;
-	box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-webkit-box-sizing: border-box;
-	background-color:#fff;
+  height: 28px;
+  /*padding:0 2px;*/
+  padding: 4px 2px;
+  vertical-align: middle;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #c9c9c9;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  background-color: #fff;
 }
-*:first-child+html input[type=text],
-*:first-child+html input[type=password] {/*IE7Hack*/
-	height:26px;
-	line-height:26px;
-	max-width:99.2%;
-	padding:0 2px;
+
+*:first-child + html input[type=text],
+*:first-child + html input[type=password] {
+  /*IE7Hack*/
+  height: 26px;
+  line-height: 26px;
+  max-width: 99.2%;
+  padding: 0 2px;
 }
+
 select {
-	padding:0.25em;
+  padding: 0.25em;
 }
 
 form textarea {
-	border-radius:3px;
-	-ms-border-radius:3px;
-	box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	background-color:#fff;
+  border-radius: 3px;
+  -ms-border-radius: 3px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  background-color: #fff;
 }
+
 input[type=text]:hover,
 input[type=text]:focus,
 input[type=password]:hover,
@@ -1880,40 +2263,45 @@ select:hover,
 select:focus,
 textarea:hover,
 textarea:focus {
-	border:solid 1px #999;
+  border: solid 1px #999;
 }
+
 input[type=text]:focus,
 input[type=password]:focus,
 textarea:focus {
-	-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
-	-moz-box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
-	box-shadow:inset 0 1px 2px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
+
 input[type=checkbox],
 input[type=radio] {
-	height:auto;
+  height: auto;
 }
+
 .inlineCheckbox,
 .inlineRadio {
-	line-height:1em;
-	margin-bottom:1px
+  line-height: 1em;
+  margin-bottom: 1px;
 }
+
 .inlineLabel {
-	line-height:1em;
-	vertical-align:baseline;
+  line-height: 1em;
+  vertical-align: baseline;
 }
 
 /* fileupload **************************/
-ul.attachments{
-	margin:5px 0;
+ul.attachments {
+  margin: 5px 0;
 }
 
 .tlInputControls ul.attachments {
-	float:left;
-	margin:0;
+  float: left;
+  margin: 0;
 }
+
 .tlInputControls ul.attachments > li {
-	margin-left:5px;
+  margin-left: 5px;
 }
 
 /*
@@ -1923,540 +2311,718 @@ ul.attachments >li{
 	padding:0;
 }
 */
-ul.attachments span.deletebutton{
-	margin-left:10px;
-	cursor:pointer;
-	text-decoration: underline;
-	color: #1B1B1B;
+ul.attachments span.deletebutton {
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+  color: #1b1b1b;
 }
-ul.attachments span.deletebutton:hover{
-	text-decoration:none;
-	color: #F90;
+
+ul.attachments span.deletebutton:hover {
+  text-decoration: none;
+  color: #ff9900;
 }
 
 /***************************************************
 	auiSubmenu
 --------------------------------------------------*/
 .auiSubmenu {
-	padding-right:5px;
+  padding-right: 5px;
 }
+
 .auiSubmenu li {
-	padding:0;
-	background:none;
+  padding: 0;
+  background: none;
 }
+
 .auiSubmenu li span {
-	display:block;
-	line-height:1.8em;
-	padding:0.3em 0 0.3em 18px;
-	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 18px;
+  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiSubmenu li a {
-	display:block;
-	line-height:1.8em;
-	padding:0.3em 0 0.3em 18px;
-	text-decoration:none;
-	background:url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 18px;
+  text-decoration: none;
+  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiSubmenu li a:hover {
-	color:#000;
-	background:#f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+  color: #000;
+  background: #f6f6f6 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiSubmenu li.active a {
-	font-weight:bold;
-	background:#f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
+  font-weight: bold;
+  background: #f0f0f0 url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiSubmenu li ul {
-	margin:0;
+  margin: 0;
 }
+
 .auiSubmenu li li a,
 .auiSubmenu li li a:hover,
 .auiSubmenu li li.active a {
-	padding:0.3em 0 0.3em 36px;
-	background-position:23px 1em;
+  padding: 0.3em 0 0.3em 36px;
+  background-position: 23px 1em;
 }
 
 /***************************************************
 	timeline
 --------------------------------------------------*/
 #timelineOuter {
-	position:relative;
-	margin:5px 0;
+  position: relative;
+  margin: 5px 0;
 }
+
 #timelineOuter .message {
-	margin:0;
-	padding:10px 0 0;
-	clear:both;
-	border-top: 1px solid #dcdcdc;
+  margin: 0;
+  padding: 10px 0 0;
+  clear: both;
+  border-top: 1px solid #dcdcdc;
 }
+
 #timelineOuter .message:first-child,
 .message.first {
-	border-top: none !important;
-	padding-top:0 !important;
-	margin-top:0 !important;
+  border-top: none !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
+
 #timelineOuter .on {
-	border-top: 1px solid #999999;
+  border-top: 1px solid #999999;
 }
 
 #timelineOuter #inputField,
 #timelineOuter .outer {
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	border: 1px #cdcdcd solid;
-	background:#fff;
-	overflow:hidden;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px #cdcdcd solid;
+  background: #fff;
+  overflow: hidden;
 }
+
 #timelineOuter #inputField {
-	margin-bottom: 15px;
+  margin-bottom: 15px;
 }
+
 #timelineOuter #inputField {
-	background:transparent;
+  background: transparent;
 }
+
 #timelineOuter .outer {
-	padding: 3px;
-	margin:0 0 5px 0;
+  padding: 3px;
+  margin: 0 0 5px 0;
 }
+
 #timelineOuter textarea {
-	border:none;
-	-webkit-border-radius:0;
-	-moz-border-radius:0;
-	-ms-border-radius:0;
-	border-radius:0;
+  border: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0;
 }
+
 #timelineOuter textarea:focus {
-	-webkit-box-shadow:none;
-	-moz-box-shadow:none;
-	box-shadow:none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
+
 #timelineOuter textarea.elastic {
-	width: 99%;
-	overflow: hidden;
-	resize: none;
-	outline: 0;
-	line-height: normal;
-	height: 21px;
-	-webkit-appearance: caret;
+  width: 99%;
+  overflow: hidden;
+  resize: none;
+  outline: 0;
+  line-height: normal;
+  height: 21px;
+  -webkit-appearance: caret;
 }
+
 .tlInputMention {
-	padding:4px;
+  padding: 4px;
 }
+
 .tlInputAttachment {
-	border-top:dotted 1px #e0e0e0;
-	margin-top:5px;
-	padding:10px 6px;
+  border-top: dotted 1px #e0e0e0;
+  margin-top: 5px;
+  padding: 10px 6px;
 }
+
 .tlInputAttachmentTitle {
-	font-weight:bold;
+  font-weight: bold;
 }
+
 .tlInputControls {
-	border-top:solid 1px #e6e6e6;
-	padding:4px;
-	background:#f0f0f0;
+  border-top: solid 1px #e6e6e6;
+  padding: 4px;
+  background: #f0f0f0;
 }
+
 .tlInputControls .floatRight li {
-	float:left;
-	background:none;
-	padding:0 0 0 5px;
+  float: left;
+  background: none;
+  padding: 0 0 0 5px;
 }
+
 .tlInputControls .floatRight li:first-child {
-	padding:0;
+  padding: 0;
 }
 
 .tlDisplayChanger {
-	position:relative;
-	height:10px;
-	line-height:10px;
-	text-align:right;
-	border-top:1px solid #DCDCDC;
-	z-index:1;
+  position: relative;
+  height: 10px;
+  line-height: 10px;
+  text-align: right;
+  border-top: 1px solid #DCDCDC;
+  z-index: 1;
 }
+
 .tlDisplayChanger .btn {
-	background:#fff;
-	padding:0 3px;
-	position:absolute;
-	top:-9px;
-	>top:-10px;
-	right:15px;
+  background: #fff;
+  padding: 0 3px;
+  position: absolute;
+  top: -9px;
+  right: 15px;
 }
+
+*:first-child + html .tlDisplayChanger .btn {
+  /*IE7*/
+  top: -10px;
+}
+
 .tlDisplayChanger .indicator {
-	vertical-align:middle;
-	float:left;
-	margin:1px 0;
+  vertical-align: middle;
+  float: left;
+  margin: 1px 0;
 }
+
 .tlDisplayChanger .btn a {
-	font-size:11px;
+  font-size: 11px;
 }
+
 .tlDisplayChanger .btn span {
-	height:20px;
-	line-height:20px;
+  height: 20px;
+  line-height: 20px;
 }
+
 .tlDisplayGroup {
-/*	display:inline-block;
-	max-width:12em;
-	text-overflow:ellipsis;
-	white-space:nowrap;
-	overflow:hidden;*/
-	cursor:pointer;/*IE7*/
+  /*	display:inline-block;
+  	max-width:12em;
+  	text-overflow:ellipsis;
+  	white-space:nowrap;
+  	overflow:hidden;*/
+  cursor: pointer;
+  /*IE7*/
 }
+
 .tlDisplayChanger .menubar {
-	top:10px;
-	right:0;
-	width:12em;
+  top: 10px;
+  right: 0;
+  width: 12em;
 }
-.timeline {
-}
+
 .timeline .avatar {
-	float:left;
-	margin:0 10px 0 0;
+  float: left;
+  margin: 0 10px 0 0;
 }
+
 .timeline .messageContents {
-	padding-left:60px;
-	margin-bottom:10px;
+  padding-left: 60px;
+  margin-bottom: 10px;
 }
+
 .timeline .comments {
-	margin:0 0 10px 60px;
-	background:#f0f0f0;
-	overflow:hidden;
+  margin: 0 0 10px 60px;
+  background: #f0f0f0;
+  overflow: hidden;
 }
+
 .timeline .message .comments {
-	margin-top:10px;
-	margin-bottom:10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
+
 /*.timeline .message .comments:last-child {
 	margin-bottom:0;
 }*/
 .timeline .comments .messageContents {
-	padding-left:42px;
-	margin:0;
+  padding-left: 42px;
+  margin: 0;
 }
+
 .timeline .comments .avatar {
-	margin:0 10px 0 0;
+  margin: 0 10px 0 0;
 }
+
 .messageContents .name {
-	/*color: #369;*/
-	font-weight: bold;
-	padding-right: 5px;
+  /*color: #369;*/
+  font-weight: bold;
+  padding-right: 5px;
 }
+
 .messageContents .body {
-	padding:3px 0;
+  padding: 3px 0;
 }
 
 .messageContents .time {
-	font-size: 80%;
-	*font-size: 75%;
-	color: #434343;
+  font-size: 80%;
+  *font-size: 75%;
+  color: #434343;
 }
+
 .tlActivity,
 .tlActivity a {
-	color:#666666;
-	font-size:11px;
-}
-.tlActivity .messageContents {
-	display:table-cell;
-	padding-left:0px !important;
-	line-height:20px;
-}
-.tlActivity .messageContents div {
-	display:inline;
-	padding:0;
+  color: #666666;
+  font-size: 11px;
 }
 
+.tlActivity .messageContents {
+  display: table-cell;
+  padding-left: 0px !important;
+  line-height: 20px;
+}
+
+.tlActivity .messageContents div {
+  display: inline;
+  padding: 0;
+}
 
 .timeline .commentCaption {
-	padding:3px 5px;
-	font-size:smaller;
-	border-top:solid 1px #fff;
-	border-bottom:solid 1px #e6e6e6;
+  padding: 3px 5px;
+  font-size: smaller;
+  border-top: solid 1px #fff;
+  border-bottom: solid 1px #e6e6e6;
 }
+
 .timeline .comments .message {
-	margin:0;
-	padding:5px !important;
-	border: none;
-	border-bottom:solid 1px #e6e6e6;
-	border-top:solid 1px #fff !important;
+  margin: 0;
+  padding: 5px !important;
+  border: none;
+  border-bottom: solid 1px #e6e6e6;
+  border-top: solid 1px #fff !important;
 }
+
 .timeline .timeline {
-	width: 100%;
-	word-break: break-all;
-	word-wrap: break-word;
+  width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
 }
+
 /* tlImageBox */
 .tlImageBlock {
-	margin:10px 0;
+  margin: 10px 0;
 }
+
 .tlImageBlock a {
-	display:inline-block;
-	margin:0 5px 5px 0;
+  display: inline-block;
+  margin: 0 5px 5px 0;
 }
+
 .tlImageBlock img,
 .thumbBlock img {
-	max-width:200px;
-	max-height:200px;
-	height:auto;
-	padding:4px;
-	border:solid 1px #cccccc;
+  max-width: 200px;
+  max-height: 200px;
+  height: auto;
+  padding: 4px;
+  border: solid 1px #cccccc;
 }
+
 .tlImageBlock a:hover img,
 .thumbBlock a:hover img {
-	border:solid 1px #ff9900;
+  border: solid 1px #ff9900;
 }
 
 /* clipBloard */
 .tlClipBoard {
-	margin:10px 0;
+  margin: 10px 0;
 }
+
 .tlClipImage {
-	float:left;
-	max-width:90px;
-	max-height:90px;
-	margin-right:10px;
-	text-align:center;
+  float: left;
+  max-width: 90px;
+  max-height: 90px;
+  margin-right: 10px;
+  text-align: center;
 }
+
 .tlClipImage img {
-	max-width:90px;
-	max-height:90px;
+  max-width: 90px;
+  max-height: 90px;
 }
-.tlClipContents {display:table-cell}
-.tlClipTitle {font-size:12px;}
-.tlClipUrl {font-size:10px;}
-.tlClipBody {padding-top:5px;color:#666666;}
+
+.tlClipContents {
+  display: table-cell;
+}
+
+.tlClipTitle {
+  font-size: 12px;
+}
+
+.tlClipUrl {
+  font-size: 10px;
+}
+
+.tlClipBody {
+  padding-top: 5px;
+  color: #666666;
+}
 
 .name .avatar {
-	float:left;
-	width:23px;
-	height:23px;
-	margin:0 4px 0 0;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  float: left;
+  width: 23px;
+  height: 23px;
+  margin: 0 4px 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
+
 #timelineOuter .newMessage {
-	background: #f0f0f0;
-	text-align: center;
-	border: 1px #cdcdcd solid;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	margin-bottom:15px;
+  background: #f0f0f0;
+  text-align: center;
+  border: 1px #cdcdcd solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  margin-bottom: 15px;
 }
+
 .timeline .readMore {
-	margin-top: 10px;
-	background: #f0f0f0;
-	text-align: center;
-	border: 1px #cdcdcd solid;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  margin-top: 10px;
+  background: #f0f0f0;
+  text-align: center;
+  border: 1px #cdcdcd solid;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
+
 #timelineOuter .newMessage a,
 .timeline .readMore a {
-	display:block;
-	padding: 3px;
+  display: block;
+  padding: 3px;
 }
+
 .timeline .message > .more {
-	line-height:1.6;
-	margin:0 0 10px 60px;
+  line-height: 1.6;
+  margin: 0 0 10px 60px;
 }
 
 .timeline .commentInputDummy {
-	padding:5px;
-	border-top:solid 1px #fff;
-	border-bottom:solid 1px #e6e6e6;
+  padding: 5px;
+  border-top: solid 1px #fff;
+  border-bottom: solid 1px #e6e6e6;
 }
+
 .timeline .commentInputDummy span {
-	display:block;
-	padding:5px;
-	border: 1px #cdcdcd solid;
-	color: #aaaaaa;
-	cursor: text;
-	background:#fff;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
+  display: block;
+  padding: 5px;
+  border: 1px #cdcdcd solid;
+  color: #aaaaaa;
+  cursor: text;
+  background: #fff;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
 }
+
 .timeline .commentField {
-	padding:5px;
-	border-top:solid 1px #fff;
-	border-bottom:solid 1px #e6e6e6;
+  padding: 5px;
+  border-top: solid 1px #fff;
+  border-bottom: solid 1px #e6e6e6;
 }
+
 .timeline .commentField form {
-	padding-left:42px;
+  padding-left: 42px;
 }
-.timeline .text_exposed_show.ellipsis{
-	display:none;
+
+.timeline .text_exposed_show.ellipsis {
+  display: none;
 }
-.timeline .message .more.opened{
-	display:none;
+
+.timeline .message .more.opened {
+  display: none;
 }
+
 .iconLike,
 .iconComment {
-    display:inline-block;
-    width:14px;
-    height:14px;
-    vertical-align:middle;
-    background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
-*html .iconLike,
-*html .iconComment {background:url(../images/icon/auiIconSprites20120820.png) no-repeat;}
-.iconLike {background-position:-2px -594px;}
-.iconComment {background-position:-2px -609px;}
+
+* html .iconLike,
+* html .iconComment {
+  background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
+}
+
+.iconLike {
+  background-position: -2px -594px;
+}
+
+.iconComment {
+  background-position: -2px -609px;
+}
 
 /* table Class */
-tr.disabled th, tr.disabled td {
-	background:#f6f6f6;
-	color:#666666;
+.disabled th, .disabled td {
+  background: #f6f6f6;
+  color: #666666;
 }
-tr.disabled a {
-	color:#666666;
+
+.disabled a {
+  color: #666666;
 }
 
 /***************************************************
 	dijitCalendar Plus
 --------------------------------------------------*/
 .dijitCalendarTimeContainer {
-	text-align:center;
-	padding:5px 0;
-	border-bottom:solid 1px #cdcdcd;
-	-webkit-box-shadow:0 1px 0 #f9f9f9;
-	-moz-box-shadow:0 1px 0 #f9f9f9;
-	box-shadow:0 1px 0 #f9f9f9;
+  text-align: center;
+  padding: 5px 0;
+  border-bottom: solid 1px #cdcdcd;
+  -webkit-box-shadow: 0 1px 0 #f9f9f9;
+  -moz-box-shadow: 0 1px 0 #f9f9f9;
+  box-shadow: 0 1px 0 #f9f9f9;
 }
 
 /***************************************************
 	auiFilter
 --------------------------------------------------*/
 .auiFilter {
-	position:relative;
+  position: relative;
 }
+
 .auiFilter form {
-	width:100%;
+  width: 100%;
 }
+
 .auiFilter .auiButton {
-	float:left;
-	width:16px;
+  float: left;
+  width: 16px;
 }
+
 .filters {
-	/*white-space:nowrap;*/
-	color:#999;
-	line-height:28px;
+  /*white-space:nowrap;*/
+  color: #999;
+  line-height: 28px;
 }
+
 .filterTip {
-	display:inline-block;
-	background:#e0e0e0;
-	color:#000;
-	margin:2px !important;
-	padding:0 4px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	height:22px !important;
-	line-height:22px !important;
-	white-space:nowrap;
-	font-size:0.9em;
+  display: inline-block;
+  background: #e0e0e0;
+  color: #000;
+  margin: 2px !important;
+  padding: 0 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  height: 22px !important;
+  line-height: 22px !important;
+  white-space: nowrap;
+  font-size: 0.9em;
 }
-*:first-child+html .filterTip {/* IE7 Hack */
-	white-space:normal;
-	overflow:hidden;
+
+*:first-child + html .filterTip {
+  /* IE7 Hack */
+  white-space: normal;
+  overflow: hidden;
 }
-*:first-child+html .filterTip > span {/* IE7 Hack */
-	white-space:normal;
+
+*:first-child + html .filterTip > span {
+  /* IE7 Hack */
+  white-space: normal;
 }
+
 .filterInputField .filterTip {
-	padding-right:22px;
+  padding-right: 22px;
 }
+
 .filterTip > span {
-	display:inline-block;
-	max-width:16em;
-	overflow:hidden;
-	white-space:nowrap;
-	text-overflow:ellipsis;
+  display: inline-block;
+  max-width: 16em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+
 .filters a {
-	text-decoration:none;
+  text-decoration: none;
 }
+
 .filters a:hover span {
-	color:#000;
+  color: #000;
 }
+
 .filterTip > a {
-	position:absolute;
-	margin:4px -3px 0 3px;
+  position: absolute;
+  margin: 4px -3px 0 3px;
 }
-*:first-child+html .filterTip > a {
-	margin-top:3px;
+
+*:first-child + html .filterTip > a {
+  margin-top: 3px;
 }
+
 /*.auiFilter .menubar.multi {
 	left:0;
 }*/
-
 .filterInputField {
-	float:left;
-	position:relative;
+  float: left;
+  position: relative;
 }
-.filterInputField input.text {
-	width:auto;
-	min-width:auto;
-}
-*:first-child+html .filterInputField {
-	overflow:hidden;
-}
-.filterInputField .menubar.multi {
-	left:auto;
-	right:0;
-}
-.filterInputField .filters {
-	position:absolute;
-	height:28px;
-	padding:1px 1px 0 1px;
-	overflow:hidden;
-	white-space:normal;
-}
-*:first-child+html .filterInputField .filters {
-	padding-top:2px;
-}
-.filterDropDrawer {
-	position:absolute;
-	display:block;
-	right:0;
-	width:20px;
-	height:26px;
-	margin:1px;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	vertical-align:middle;
-}
-*:first-child+html .filterDropDrawer {
-	right:-1px;
-	margin-top:2px;
-	background:#fff;
-	border-right:solid 1px #c9c9c9;
-}
-*:first-child+html .filterInputField:hover .filterDropDrawer {
-	border-right:solid 1px #999999;
-}
-.filterDropDrawer i {
-	margin-top:6px;
-}
-.filterInputField input[type=text] {
-	max-width:500px;
-	padding-right:20px;
-}
-*:first-child+html .filterInputField input[type=text] {
 
+.filterInputField input.text {
+  width: auto;
+  min-width: auto;
 }
+
+*:first-child + html .filterInputField {
+  overflow: hidden;
+}
+
 .filterInputField .menubar.multi {
-	top:30px;
+  left: auto;
+  right: 0;
 }
+
+.filterInputField .filters {
+  position: absolute;
+  height: 28px;
+  padding: 1px 1px 0 1px;
+  overflow: hidden;
+  white-space: normal;
+}
+
+*:first-child + html .filterInputField .filters {
+  padding-top: 2px;
+}
+
+.filterDropDrawer {
+  position: absolute;
+  display: block;
+  right: 0;
+  width: 20px;
+  height: 26px;
+  margin: 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+*:first-child + html .filterDropDrawer {
+  right: -1px;
+  margin-top: 2px;
+  background: #fff;
+  border-right: solid 1px #c9c9c9;
+}
+
+*:first-child + html .filterInputField:hover .filterDropDrawer {
+  border-right: solid 1px #999999;
+}
+
+.filterDropDrawer i {
+  margin-top: 6px;
+}
+
+.filterInputField input[type=text] {
+  max-width: 500px;
+  padding-right: 20px;
+}
+
+.filterInputField .menubar.multi {
+  top: 30px;
+}
+
 .auiFilter .auiSearch .auiButtonSearch {
-	margin-left:5px;
+  margin-left: 5px;
+}
+
+/***************************************************
+	auiScheduleList
+--------------------------------------------------*/
+.auiScheduleList {
+  width: 100%;
+}
+
+.auiScheduleList,
+.auiScheduleList ul {
+  width: 100%;
+}
+
+.auiScheduleList li {
+  clear: both;
+  width: 100%;
+  background: none;
+  padding: 0;
+  border-top: solid 1px #eee;
+  overflow: hidden;
+}
+
+.auiScheduleList li:first-child {
+  border-top: none;
+}
+
+.auiScheduleList li ul {
+  margin: 0;
+}
+
+.auiScheduleList .day {
+  background: #eee;
+  padding: 8px 5px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.auiScheduleList .today .day {
+  background: #999;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.auiScheduleList a {
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  line-height: 36px;
+  height: 36px;
+}
+
+.auiScheduleList span {
+  line-height: 36px;
+  height: 36px;
+}
+
+.auiSlHour {
+  position: absolute;
+  width: 3em;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.auiSlTitle {
+  margin-left: 4em;
+}
+
+.auiSlBody {
+  color: #999;
 }
 
 /***************************************************
@@ -2476,252 +3042,636 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
 そのためバリを表示させないためhoverアクションを封じる。
 */
 .auiIcon {
-	display:block;
-	display:inline-block;
-	width:16px;
-	height:16px;
-	overflow:hidden;
-	-webkit-border-radius:2px;
-	-moz-border-radius:2px;
-	-ms-border-radius:2px;
-	border-radius:2px;
-	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
+  display: block;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+  vertical-align: middle;
+  background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
-*html .auiIcon {background:url(../images/icon/auiIconSprites20120820.gif) no-repeat;}
-.auiIcon span {display:none;}
 
-a.auiIcon:hover {background-color:#999;}
-*html a.auiIcon:hover {background-color:transparent;}/*IE6*/
+* html .auiIcon {
+  background: url(../images/icon/auiIconSprites20120820.gif) no-repeat;
+}
 
-.auiIconClear {background-position:16px 0}
+.auiIcon span {
+  display: none;
+}
 
-.auiIconSetting {background-position:0px 0px;}
-.auiIconSetting_w {background-position:0px -16px;}
-a.auiIconSetting:hover {background-position:0px -16px;}
-*html .auiIconSetting {background-position:0px 0px;}/*IE6*/
-*html a.auiIconSetting:hover {background-position:0px 0px;}/*IE6*/
+a.auiIcon:hover {
+  background-color: #999;
+}
 
-.auiIconFile {background-position:0px -32px;}
-.auiIconFile_w {background-position:0px -48px;}
-a.auiIconFile:hover {background-position:0px -48px;}
-*html .auiIconFile {background-position:0px -32px;}/*IE6*/
-*html a.auiIconFile:hover {background-position:0px -32px;}/*IE6*/
+* html a.auiIcon:hover {
+  background-color: transparent;
+}
 
-.auiIconUser {background-position:0px -64px;}
-.auiIconUser_w {background-position:0px -80px;}
-a.auiIconUser:hover {background-position:0px -80px;}
-*html .auiIconUser {background-position:0px -64px;}/*IE6*/
-*html a.auiIconUser:hover {background-position:0px -64px;}/*IE6*/
+/*IE6*/
+.auiIconClear {
+  background-position: 16px 0;
+}
 
-.auiIconCreate {background-position:0px -96px;}
-.auiIconCreate_w {background-position:0px -112px;}
-a.auiIconCreate:hover {background-position:0px -112px;}
-*html .auiIconCreate {background-position:0px -96px;}/*IE6*/
-*html a.auiIconCreate:hover {background-position:0px -96px;}/*IE6*/
+.auiIconSetting {
+  background-position: 0px 0px;
+}
 
-.auiIconClock {background-position:0px -128px;}
-.auiIconClock_w {background-position:0px -144px;}
-a.auiIconClock:hover {background-position:0px -144px;}
-*html .auiIconClock {background-position:0px -128px;}/*IE6*/
-*html a.auiIconClock:hover {background-position:0px -128px;}/*IE6*/
+.auiIconSetting_w {
+  background-position: 0px -16px;
+}
 
-.auiIconCalendar {background-position:0px -160px;}
-.auiIconCalendar_w {background-position:0px -176px;}
-a.auiIconCalendar:hover {background-position:0px -176px;}
-*html .auiIconCalendar {background-position:0px -160px;}/*IE6*/
-*html a.auiIconCalendar:hover {background-position:0px -160px;}/*IE6*/
+a.auiIconSetting:hover {
+  background-position: 0px -16px;
+}
 
-.auiIconLock {background-position:0px -192px;}
-.auiIconLock_w {background-position:0px -208px;}
-a.auiIconLock:hover {background-position:0px -208px;}
-*html .auiIconLock {background-position:0px -192px;}/*IE6*/
-*html a.auiIconLock:hover {background-position:0px -192px;}/*IE6*/
+* html .auiIconSetting {
+  background-position: 0px 0px;
+}
 
-.auiIconReload {background-position:0px -224px;}
-.auiIconReload_w {background-position:0px -240px;}
-a.auiIconReload:hover {background-position:0px -240px;}
-*html .auiIconReload {background-position:0px -224px;}/*IE6*/
-*html a.auiIconReload:hover {background-position:0px -224px;}/*IE6*/
+/*IE6*/
+* html a.auiIconSetting:hover {
+  background-position: 0px 0px;
+}
 
-.auiIconPrint {background-position:0px -256px;}
-a.auiIconPrint:hover {background-position:0px -256px;}
-*html .auiIconPrint {background-position:0px -256px;}/*IE6*/
-*html a.auiIconPrint:hover {background-position:0px -256px;}/*IE6*/
+/*IE6*/
+.auiIconFile {
+  background-position: 0px -32px;
+}
 
-.auiIconDelete {background-position:0px -272px;}
-.auiIconDelete_w {background-position:0px -288px;}
-a.auiIconDelete:hover {background-position:0px -288px;}
-*html .auiIconDelete {background-position:0px -272px;}/*IE6*/
-*html a.auiIconDelete:hover {background-position:0px -272px;}/*IE6*/
+.auiIconFile_w {
+  background-position: 0px -48px;
+}
 
-.auiIconPlus {background-position:0px -304px;}
-.auiIconPlus_w {background-position:0px -320px;}
-a.auiIconPlus:hover {background-position:0px -320px;}
-*html .auiIconPlus {background-position:0px -304px;}/*IE6*/
-*html a.auiIconPlus:hover {background-position:0px -304px;}/*IE6*/
+a.auiIconFile:hover {
+  background-position: 0px -48px;
+}
 
-.auiIconMinus {background-position:0px -336px;}
-.auiIconMinus_w {background-position:0px -352px;}
-a.auiIconMinus:hover {background-position:0px -352px;}
-*html .auiIconMinus {background-position:0px -336px;}/*IE6*/
-*html a.auiIconMinus:hover {background-position:0px -336px;}/*IE6*/
+* html .auiIconFile {
+  background-position: 0px -32px;
+}
 
-.auiIconArwLeft {background-position:0px -368px !important;}
-.auiIconArwLeft_w {background-position:0px -384px !important;}
-a.auiIconArwLeft:hover {background-position:0px -384px !important;}
-*html .auiIconArwLeft {background-position:0px -368px !important;}/*IE6*/
-*html a.auiIconArwLeft:hover {background-position:0px -368px !important;}/*IE6*/
+/*IE6*/
+* html a.auiIconFile:hover {
+  background-position: 0px -32px;
+}
 
-.auiIconArwRight {background-position:0px -400px !important;}
-.auiIconArwRight_w {background-position:0px -416px !important;}
-a.auiIconArwRight:hover {background-position:0px -416px !important;}
-*html .auiIconArwRight {background-position:0px -400px !important;}/*IE6*/
-*html a.auiIconArwRight:hover {background-position:0px -400px !important;}/*IE6*/
+/*IE6*/
+.auiIconUser {
+  background-position: 0px -64px;
+}
 
-.auiIconArwBottom {background-position:0px -432px !important;}
-.auiIconArwBottom_w {background-position:0px -448px !important;}
-a.auiIconArwBottom:hover {background-position:0px -448px !important;}
-*html .auiIconArwBottom {background-position:0px -432px !important;}/*IE6*/
-*html a.auiIconArwBottom:hover {background-position:0px -432px !important;}/*IE6*/
+.auiIconUser_w {
+  background-position: 0px -80px;
+}
 
-.auiIconArwTop {background-position:0px -464px !important;}
-.auiIconArwTop_w {background-position:0px -480px !important;}
-a.auiIconArwTop:hover {background-position:0px -480px !important;}
-*html .auiIconArwTop {background-position:0px -464px !important;}/*IE6*/
-*html a.auiIconArwTop:hover {background-position:0px -464px !important;}/*IE6*/
+a.auiIconUser:hover {
+  background-position: 0px -80px;
+}
 
-.auiIconImage {background-position:0px -496px;}
-.auiIconImage_w {background-position:0px -512px;}
-a.auiIconImage:hover {background-position:0px -512px;}
-*html .auiIconImage {background-position:0px -496px;}/*IE6*/
-*html a.auiIconImage:hover {background-position:0px -496px;}/*IE6*/
+* html .auiIconUser {
+  background-position: 0px -64px;
+}
 
-.auiIconUsers {background-position:0px -528px;}
-.auiIconUsers_w {background-position:0px -544px;}
-a.auiIconUsers:hover {background-position:0px -544px;}
-*html .auiIconUsers {background-position:0px -528px;}/*IE6*/
-*html a.auiIconUsers:hover {background-position:0px -528px;}/*IE6*/
+/*IE6*/
+* html a.auiIconUser:hover {
+  background-position: 0px -64px;
+}
 
-.auiIconSearch {background-position:0px -560px;}
-.auiIconSearch_w {background-position:0px -576px;}
-a.auiIconSearch:hover {background-position:0px -576px;}
-*html .auiIconSearch {background-position:0px -560px;}/*IE6*/
-*html a.auiIconSearch:hover {background-position:0px -560px;}/*IE6*/
+/*IE6*/
+.auiIconCreate {
+  background-position: 0px -96px;
+}
 
-.auiIconTmpreserve {background-position:0px -688px;}
-a.auiIconTmpreserve:hover {background-position:0px -688px;}
-*html .auiIconTmpreserve {background-position:0px -688px;}/*IE6*/
-*html a.auiIconTmpreserve:hover {background-position:0px -688px;}/*IE6*/
+.auiIconCreate_w {
+  background-position: 0px -112px;
+}
 
-.auiIconOverlap {background-position:0px -704px;}
-a.auiIconOverlap:hover {background-position:0px -704px;}
-*html .auiIconOverlap {background-position:0px -704px;}/*IE6*/
-*html a.auiIconOverlap:hover {background-position:0px -704px;}/*IE6*/
+a.auiIconCreate:hover {
+  background-position: 0px -112px;
+}
 
-.auiIconRepeat {background-position:0px -720px;}
-a.auiIconRepeat:hover {background-position:0px -720px;}
-*html .auiIconRepeat {background-position:0px -720px;}/*IE6*/
-*html a.auiIconRepeat:hover {background-position:0px -720px;}/*IE6*/
+* html .auiIconCreate {
+  background-position: 0px -96px;
+}
 
-.auiIconSecret {background-position:0px -736px;}
-a.auiIconSecret:hover {background-position:0px -736px;}
-*html .auiIconSecret {background-position:0px -736px;}/*IE6*/
-*html a.auiIconSecret:hover {background-position:0px -736px;}/*IE6*/
+/*IE6*/
+* html a.auiIconCreate:hover {
+  background-position: 0px -96px;
+}
 
+/*IE6*/
+.auiIconClock {
+  background-position: 0px -128px;
+}
+
+.auiIconClock_w {
+  background-position: 0px -144px;
+}
+
+a.auiIconClock:hover {
+  background-position: 0px -144px;
+}
+
+* html .auiIconClock {
+  background-position: 0px -128px;
+}
+
+/*IE6*/
+* html a.auiIconClock:hover {
+  background-position: 0px -128px;
+}
+
+/*IE6*/
+.auiIconCalendar {
+  background-position: 0px -160px;
+}
+
+.auiIconCalendar_w {
+  background-position: 0px -176px;
+}
+
+a.auiIconCalendar:hover {
+  background-position: 0px -176px;
+}
+
+* html .auiIconCalendar {
+  background-position: 0px -160px;
+}
+
+/*IE6*/
+* html a.auiIconCalendar:hover {
+  background-position: 0px -160px;
+}
+
+/*IE6*/
+.auiIconLock {
+  background-position: 0px -192px;
+}
+
+.auiIconLock_w {
+  background-position: 0px -208px;
+}
+
+a.auiIconLock:hover {
+  background-position: 0px -208px;
+}
+
+* html .auiIconLock {
+  background-position: 0px -192px;
+}
+
+/*IE6*/
+* html a.auiIconLock:hover {
+  background-position: 0px -192px;
+}
+
+/*IE6*/
+.auiIconReload {
+  background-position: 0px -224px;
+}
+
+.auiIconReload_w {
+  background-position: 0px -240px;
+}
+
+a.auiIconReload:hover {
+  background-position: 0px -240px;
+}
+
+* html .auiIconReload {
+  background-position: 0px -224px;
+}
+
+/*IE6*/
+* html a.auiIconReload:hover {
+  background-position: 0px -224px;
+}
+
+/*IE6*/
+.auiIconPrint {
+  background-position: 0px -256px;
+}
+
+a.auiIconPrint:hover {
+  background-position: 0px -256px;
+}
+
+* html .auiIconPrint {
+  background-position: 0px -256px;
+}
+
+/*IE6*/
+* html a.auiIconPrint:hover {
+  background-position: 0px -256px;
+}
+
+/*IE6*/
+.auiIconDelete {
+  background-position: 0px -272px;
+}
+
+.auiIconDelete_w {
+  background-position: 0px -288px;
+}
+
+a.auiIconDelete:hover {
+  background-position: 0px -288px;
+}
+
+* html .auiIconDelete {
+  background-position: 0px -272px;
+}
+
+/*IE6*/
+* html a.auiIconDelete:hover {
+  background-position: 0px -272px;
+}
+
+/*IE6*/
+.auiIconPlus {
+  background-position: 0px -304px;
+}
+
+.auiIconPlus_w {
+  background-position: 0px -320px;
+}
+
+a.auiIconPlus:hover {
+  background-position: 0px -320px;
+}
+
+* html .auiIconPlus {
+  background-position: 0px -304px;
+}
+
+/*IE6*/
+* html a.auiIconPlus:hover {
+  background-position: 0px -304px;
+}
+
+/*IE6*/
+.auiIconMinus {
+  background-position: 0px -336px;
+}
+
+.auiIconMinus_w {
+  background-position: 0px -352px;
+}
+
+a.auiIconMinus:hover {
+  background-position: 0px -352px;
+}
+
+* html .auiIconMinus {
+  background-position: 0px -336px;
+}
+
+/*IE6*/
+* html a.auiIconMinus:hover {
+  background-position: 0px -336px;
+}
+
+/*IE6*/
+.auiIconArwLeft {
+  background-position: 0px -368px !important;
+}
+
+.auiIconArwLeft_w {
+  background-position: 0px -384px !important;
+}
+
+a.auiIconArwLeft:hover {
+  background-position: 0px -384px !important;
+}
+
+* html .auiIconArwLeft {
+  background-position: 0px -368px !important;
+}
+
+/*IE6*/
+* html a.auiIconArwLeft:hover {
+  background-position: 0px -368px !important;
+}
+
+/*IE6*/
+.auiIconArwRight {
+  background-position: 0px -400px !important;
+}
+
+.auiIconArwRight_w {
+  background-position: 0px -416px !important;
+}
+
+a.auiIconArwRight:hover {
+  background-position: 0px -416px !important;
+}
+
+* html .auiIconArwRight {
+  background-position: 0px -400px !important;
+}
+
+/*IE6*/
+* html a.auiIconArwRight:hover {
+  background-position: 0px -400px !important;
+}
+
+/*IE6*/
+.auiIconArwBottom {
+  background-position: 0px -432px !important;
+}
+
+.auiIconArwBottom_w {
+  background-position: 0px -448px !important;
+}
+
+a.auiIconArwBottom:hover {
+  background-position: 0px -448px !important;
+}
+
+* html .auiIconArwBottom {
+  background-position: 0px -432px !important;
+}
+
+/*IE6*/
+* html a.auiIconArwBottom:hover {
+  background-position: 0px -432px !important;
+}
+
+/*IE6*/
+.auiIconArwTop {
+  background-position: 0px -464px !important;
+}
+
+.auiIconArwTop_w {
+  background-position: 0px -480px !important;
+}
+
+a.auiIconArwTop:hover {
+  background-position: 0px -480px !important;
+}
+
+* html .auiIconArwTop {
+  background-position: 0px -464px !important;
+}
+
+/*IE6*/
+* html a.auiIconArwTop:hover {
+  background-position: 0px -464px !important;
+}
+
+/*IE6*/
+.auiIconImage {
+  background-position: 0px -496px;
+}
+
+.auiIconImage_w {
+  background-position: 0px -512px;
+}
+
+a.auiIconImage:hover {
+  background-position: 0px -512px;
+}
+
+* html .auiIconImage {
+  background-position: 0px -496px;
+}
+
+/*IE6*/
+* html a.auiIconImage:hover {
+  background-position: 0px -496px;
+}
+
+/*IE6*/
+.auiIconUsers {
+  background-position: 0px -528px;
+}
+
+.auiIconUsers_w {
+  background-position: 0px -544px;
+}
+
+a.auiIconUsers:hover {
+  background-position: 0px -544px;
+}
+
+* html .auiIconUsers {
+  background-position: 0px -528px;
+}
+
+/*IE6*/
+* html a.auiIconUsers:hover {
+  background-position: 0px -528px;
+}
+
+/*IE6*/
+.auiIconSearch {
+  background-position: 0px -560px;
+}
+
+.auiIconSearch_w {
+  background-position: 0px -576px;
+}
+
+a.auiIconSearch:hover {
+  background-position: 0px -576px;
+}
+
+* html .auiIconSearch {
+  background-position: 0px -560px;
+}
+
+/*IE6*/
+* html a.auiIconSearch:hover {
+  background-position: 0px -560px;
+}
+
+/*IE6*/
+.auiIconTmpreserve {
+  background-position: 0px -688px;
+}
+
+a.auiIconTmpreserve:hover {
+  background-position: 0px -688px;
+}
+
+* html .auiIconTmpreserve {
+  background-position: 0px -688px;
+}
+
+/*IE6*/
+* html a.auiIconTmpreserve:hover {
+  background-position: 0px -688px;
+}
+
+/*IE6*/
+.auiIconOverlap {
+  background-position: 0px -704px;
+}
+
+a.auiIconOverlap:hover {
+  background-position: 0px -704px;
+}
+
+* html .auiIconOverlap {
+  background-position: 0px -704px;
+}
+
+/*IE6*/
+* html a.auiIconOverlap:hover {
+  background-position: 0px -704px;
+}
+
+/*IE6*/
+.auiIconRepeat {
+  background-position: 0px -720px;
+}
+
+a.auiIconRepeat:hover {
+  background-position: 0px -720px;
+}
+
+* html .auiIconRepeat {
+  background-position: 0px -720px;
+}
+
+/*IE6*/
+* html a.auiIconRepeat:hover {
+  background-position: 0px -720px;
+}
+
+/*IE6*/
+.auiIconSecret {
+  background-position: 0px -736px;
+}
+
+a.auiIconSecret:hover {
+  background-position: 0px -736px;
+}
+
+* html .auiIconSecret {
+  background-position: 0px -736px;
+}
+
+/*IE6*/
+* html a.auiIconSecret:hover {
+  background-position: 0px -736px;
+}
+
+/*IE6*/
 /***************************************************
 	auiIcon
 --------------------------------------------------*/
 .auiIconArrow {
-	display:inline-block;
-	width:15px;
-	height:18px;
-	vertical-align:middle;
-	background:url(../images/icon/auiIconSprites20120820.png) no-repeat;
+  display: inline-block;
+  width: 15px;
+  height: 18px;
+  vertical-align: middle;
+  background: url(../images/icon/auiIconSprites20120820.png) no-repeat;
 }
-*html .auiIconArrow {background:url(../images/icon/auiIconSprites20120820.gif) no-repeat;}
-.auiIconArrowLeft {background-position:0 -367px;}
-.auiIconArrowLeftW {background-position:0 -623px;}
-.auiIconArrowRight {background-position:0 -399px;}
-.auiIconArrowRightW {background-position:0 -655px;}
 
+* html .auiIconArrow {
+  background: url(../images/icon/auiIconSprites20120820.gif) no-repeat;
+}
+
+.auiIconArrowLeft {
+  background-position: 0 -367px;
+}
+
+.auiIconArrowLeftW {
+  background-position: 0 -623px;
+}
+
+.auiIconArrowRight {
+  background-position: 0 -399px;
+}
+
+.auiIconArrowRightW {
+  background-position: 0 -655px;
+}
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
-	position:absolute;
-	background:#fff;
-	border:solid 1px #c9c9c9;
-	-webkit-border-radius:3px;
-	-moz-border-radius:3px;
-	-ms-border-radius:3px;
-	border-radius:3px;
-	z-index:999;
+  position: absolute;
+  background: #fff;
+  border: solid 1px #c9c9c9;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  z-index: 999;
 }
+
 .auiAbsLayer:hover {
-	border:solid 1px #999;
+  border: solid 1px #999;
 }
+
 .relative {
-	position:relative;
+  position: relative;
 }
 
 /* auiNoData ********************/
 .auiNoData {
-	text-align:center;
+  text-align: center;
 }
 
 /***************************************************
 	CSS3 transition
 --------------------------------------------------*/
 @-webkit-keyframes fadeIn {
-	0% {
-		filter: alpha(opacity=0);
-		-moz-opacity:0;
-		opacity:0;
-	}
-	100% {
-		filter: alpha(opacity=100);
-		-moz-opacity:1;
-		opacity:1;
-	}
+  0% {
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+  }
+
+  100% {
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    opacity: 1;
+  }
 }
 
 .counter {
-	position:inherit !important;
-	float:left;
-	font-size:9px;
-	height:12px;
-	min-width:10px;
-	line-height:12px !important;
-	padding:0 1px;
-	text-align: center;
-	margin-top:4px;
-	margin-right:2px;
-	-webkit-border-radius:4px;
-	-moz-border-radius:4px;
-	-ms-border-radius:4px;
-	border-radius:4px;
-	color:#FFFFFF;
-	-webkit-box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.1);
-	-moz-box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.1);
-	box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.1);
-	background:#e63439 !important;
-	border-top:1px solid #ab1619;
-	border-left:1px solid #c81a1e;
-	border-right:1px solid #c81a1e;
-	border-bottom:1px solid #c81a1e;
-	text-shadow:0 1px 0 #a80203;
+  position: inherit !important;
+  float: left;
+  font-size: 9px;
+  height: 12px;
+  min-width: 10px;
+  line-height: 12px !important;
+  padding: 0 1px;
+  text-align: center;
+  margin-top: 4px;
+  margin-right: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  color: #FFFFFF;
+  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  background: #e63439 !important;
+  border-top: 1px solid #ab1619;
+  border-left: 1px solid #c81a1e;
+  border-right: 1px solid #c81a1e;
+  border-bottom: 1px solid #c81a1e;
+  text-shadow: 0 1px 0 #a80203;
 }
 
-.counter.zero{
-	-webkit-box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.05);
-	-moz-box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.05);
-	box-shadow:inset 0 1px 1px 0px rgba(0,0,0,0.05);
-	background:#b5b5b5 !important;
-	background:-moz-linear-gradient(top, #b5b5b5, #b5b5b5);
-	background:-webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
-	border-top:1px solid #8f8e8e;
-	border-left:1px solid #acacad;
-	border-right:1px solid #acacad;
-	border-bottom:1px solid #a9acad;
-	text-shadow:0 1px 0 #a3a4a6;
+.counter.zero {
+  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  background: #b5b5b5 !important;
+  background: -moz-linear-gradient(top, #b5b5b5, #b5b5b5);
+  background: -webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
+  border-top: 1px solid #8f8e8e;
+  border-left: 1px solid #acacad;
+  border-right: 1px solid #acacad;
+  border-bottom: 1px solid #a9acad;
+  text-shadow: 0 1px 0 #a3a4a6;
 }
