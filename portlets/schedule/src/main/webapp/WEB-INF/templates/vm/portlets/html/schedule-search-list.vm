@@ -176,11 +176,15 @@
 #if($filtertemp && $filtertypetemp)#set($filter="$filtertemp")#set($filtertype="$filtertypetemp")#else#set($filtertype="group")#end
 #set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group').addQueryData('view_date',$record.DateDay).addQueryData('filter',$filter).addQueryData('filtertype',$filtertype)"])
 #if($record.isDayStart())
-<td  #if(${client}!="IPHONE")nowrap="nowrap" #end class="day"><a  href="javascript:void(0);"onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">${record.getDateFullOnlyDate()}</a></td>
+#if(${client}!="IPHONE")
+<td nowrap="nowrap" class="day"><a href="javascript:void(0);"onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">${record.getDateFullOnlyDate()}</a></td>
+#else
+<td class="day">${record.getDateFullOnlyDate()}</td>
+#end
 #else
 <td class="day"></td>
 #end
-<td  #if(${client}!="IPHONE")nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
+<td #if(${client}!="IPHONE") nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 &nbsp;#if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
