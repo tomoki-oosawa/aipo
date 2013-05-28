@@ -503,7 +503,7 @@
     </div>
 #end
   </div>
-  <div class="alignright small" style="margin-top:5px;">$from2 ～ $to2 $count3</div>
+  <div class="alignright small" style="margin-top:5px;">$from2 - $to2 $count3</div>
 </div>
 #end
 
@@ -614,7 +614,7 @@
     </div>
 #end
   </div>
-  <div class="alignright small" style="margin-top:5px;">$from2 ～ $to2 $count3</div>
+  <div class="alignright small" style="margin-top:5px;">$from2 - $to2 $count3</div>
 </div>
 #end
 
@@ -1632,7 +1632,7 @@ $item.get(0)
 #set($nextCount = $rowsNum)
 #end
 <div class="floatRight">
-  <div class="count">$from ～ $to / $count</div>
+  <div class="count">$from - $to / $count</div>
 #if ($pages > 1)
     <div class="auiSelectButton floatLeft">
       <ul class="floatLeft">
