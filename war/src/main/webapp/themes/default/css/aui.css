@@ -1710,7 +1710,7 @@ button[disabled]:hover {
 .auiSummaryMeta {
   width: 100%;
   line-height: 2em;
-  margin: 0.8em 0;
+  margin: 10px 0;
   vertical-align: middle;
 }
 
@@ -1777,6 +1777,9 @@ button[disabled]:hover {
 .auiRowTable {
   border-spacing: 0;
   border-collapse: collapse;
+}
+
+.auiRowTable.scheduleList {
   border-bottom: solid 1px #eee;
 }
 
@@ -1789,9 +1792,14 @@ button[disabled]:hover {
 
 .auiRowTable td {
   padding: 8px 5px;
+  border-bottom: solid 1px #eee;
 }
 
-.auiRowTable .dayStart {
+.auiRowTable.scheduleList td {
+  border-bottom: none;
+}
+
+.auiRowTable .dayStart td {
   border-top: solid 1px #eee;
 }
 
@@ -1820,10 +1828,25 @@ button[disabled]:hover {
 
 .auiRowTable div {
   width: 100%;
-  height: 20px;
-  line-height: 20px;
-  min-height: 18px;
+  /*height:20px;
+  line-height:20px;
+  min-height:18px;*/
+  margin: -8px 0;
+  height: 35px;
+  line-height: 35px;
   overflow: hidden;
+  /*    white-space:nowrap;
+      text-overflow:ellipsis;*/
+}
+
+.auiRowTable a {
+  display: block;
+  margin: -8px 0;
+  line-height: 35px;
+}
+
+.auiRowTable div a {
+  margin: 0;
 }
 
 /*.auiRowTable .sunday .day,
@@ -2198,6 +2221,7 @@ button[disabled]:hover {
 form {
   margin: 0;
   padding: 0;
+  max-width: 100%;
 }
 
 input,
