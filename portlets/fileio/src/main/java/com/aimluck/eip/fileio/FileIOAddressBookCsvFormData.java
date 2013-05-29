@@ -184,8 +184,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     lastname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_FIRST_NAME"));
     lastname.setTrim(true);
     firstname = new ALStringField();
-    firstname.setFieldName(ALLocalizationUtils
-      .getl10n("FILEIO_FILEIO_LAST_NAME"));
+    firstname.setFieldName(ALLocalizationUtils.getl10n("FILEIO_LAST_NAME"));
     firstname.setTrim(true);
     last_name_kana = new ALStringField();
     last_name_kana.setFieldName(ALLocalizationUtils
