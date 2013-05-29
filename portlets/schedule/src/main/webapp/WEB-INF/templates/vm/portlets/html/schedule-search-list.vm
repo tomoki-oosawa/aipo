@@ -124,7 +124,7 @@
 <div class="message">$l10n.SCHEDULE_THERE_IS_NO_SCHEDULE</div>
 #else
 <div id="content-$!portlet.ID" style="visibility:visible">
-#AUIrowTableWide()
+#AUIrowTableWideScheduleList()
 <tr>
 <th>$l10n.SCHEDULE_DAY</th>
 <th>$l10n.SCHEDULE_TIME</th>

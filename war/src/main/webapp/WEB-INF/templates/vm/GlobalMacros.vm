@@ -1570,6 +1570,11 @@ $link.get(0)
   <tbody>
 #end
 
+#macro(AUIrowTableWideScheduleList)
+<table class="auiRowTable wide scheduleList">
+  <tbody>
+#end
+
 #macro(AUImultiTableWide)
 <table class="auiMultiTable wide">
   <tbody>
