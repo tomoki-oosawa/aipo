@@ -827,6 +827,11 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
+	<div class="auiPortletHead"><div class="inner">
+		<div class="auiPortletTitle">$!portlet.Title</div>
+		<div class="auiPortletTool">
+		</div>
+	</div></div>
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody"><div class="inner">
 				<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
