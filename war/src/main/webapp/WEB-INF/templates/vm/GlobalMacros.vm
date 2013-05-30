@@ -827,21 +827,6 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
-	<!-- Smartphone Header -->
-	<div id="mobileHeader" class="clearfix"><div class="inner">
-       	<h1>$!portlet.Title</h1>
-       	<div class="mhLeft"><a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()"><i class="auiMbIcon auiMbIconList"></i></a></div>
-       	<div class="mhRight">
-       		#if ($data.User.getUserName()!="admin")
-			    <a href="javascript:void(0)" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline"><div id="activitychecker" class="zero counter"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div></a>
-			#end
-       	</div>
-	</div></div>
-	<div class="auiPortletHead"><div class="inner">
-		<div class="auiPortletTitle">$!portlet.Title</div>
-		<div class="auiPortletTool">
-		</div>
-	</div></div>
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody"><div class="inner">
 				<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
