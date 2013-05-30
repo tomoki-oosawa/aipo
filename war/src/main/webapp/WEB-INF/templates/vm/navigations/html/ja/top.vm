@@ -25,7 +25,7 @@
     <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
   </div>
   <div class="hdNavi">
-#if ($data.User.getUserName()!="admin")
+#if ($data.User.getUserName()!="admin" && ${client} != "IPHONE")
     <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline" ><div id="activitychecker" class="zero counter"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div></div>
 #end
 		<!-- /hdActivity -->
