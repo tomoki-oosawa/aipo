@@ -178,50 +178,63 @@ select {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
-	background-image:none;
+  background-image: none;
 }
+
 .auiPortletHead {
-	background:#666666
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.4)),
-		to(rgba(255,255,255,0))
-	);
-	border-top:solid 1px #c0c0c0;
-	border-bottom:solid 1px #999999;
-	-webkit-box-shadow:0 2px 3px rgba(0,0,0,0.2);
-	-moz-box-shadow:0 2px 3px rgba(0,0,0,0.2);
-	box-shadow:0 2px 3px rgba(0,0,0,0.2);
-	margin-bottom:5px;
+  /*background:#666666
+  	-webkit-gradient(
+  	linear, left top, left bottom,
+  	from(rgba(255,255,255,0.4)),
+  	to(rgba(255,255,255,0))
+  );
+  border-top:solid 1px #c0c0c0;
+  border-bottom:solid 1px #999999;
+  -webkit-box-shadow:0 2px 3px rgba(0,0,0,0.2);
+  -moz-box-shadow:0 2px 3px rgba(0,0,0,0.2);
+  box-shadow:0 2px 3px rgba(0,0,0,0.2);*/
+  margin-bottom: 5px;
+  height: 44px;
+  width: 100%;
+  background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.1)));
+  border-top: solid 1px #dcdcdc;
+  border-bottom: solid 1px #d0d0d0;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 .auiPortletHead .inner {
-	margin:0 50px;
+  margin: 0 50px;
+  height: 44px;
 }
+
 .auiPortletTitle {
-	width:100%;
-	line-height:46px;
-	padding:0;
-	text-align:center;
-	color:#ffffff;
-	font-size:16px;
-	font-weight:bold;
-	text-shadow:0 1px 0 rgba(0,0,0,0.8);
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
+  width: 100%;
+  line-height: 44px;
+  padding: 0;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  color: #333;
+  text-shadow: 0 1px 0 white;
 }
+
 .auiPortletTitle a {
-	color:#ffffff;
-	text-decoration:none;
-	padding:0;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0;
 }
+
 .auiPortletTool {
-	display:none;
+  display: none;
 }
-.auiPortletBody {
-}
+
 .auiPortletBody .inner {
-	padding:0 5px;
+  padding: 0 5px;
 }
 
 /***************************************************
@@ -443,6 +456,10 @@ select {
 .auiMbBtnActivity:hover,
 .auiMbBtnActivity.active {
   background-color: #c60;
+}
+
+#auiPortletHead {
+	display:none;
 }
 
 /***************************************************
