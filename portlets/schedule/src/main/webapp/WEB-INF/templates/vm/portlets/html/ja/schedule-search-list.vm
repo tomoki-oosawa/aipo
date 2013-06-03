@@ -124,7 +124,7 @@
 <div class="message">$l10n.SCHEDULE_THERE_IS_NO_SCHEDULE</div>
 #else
 <div id="content-$!portlet.ID" style="visibility:visible">
-#AUIrowTableWide()
+#AUIrowTableWideScheduleList()
 <tr>
 <th>$l10n.SCHEDULE_DAY</th>
 <th>$l10n.SCHEDULE_TIME</th>
@@ -180,7 +180,7 @@
 #else
 <td class="day"></td>
 #end
-<td  #if(${client}!="IPHONE")nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
+<td #if(${client}!="IPHONE") nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
 <td><div>#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 &nbsp;#if(! ${record.isPublic()})
 <img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />

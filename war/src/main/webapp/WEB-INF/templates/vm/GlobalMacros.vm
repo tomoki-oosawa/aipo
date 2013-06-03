@@ -827,6 +827,25 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
+	<!-- Smartphone Header -->
+	<div id="mobileHeader" class="clearfix" #if(${client} != "IPHONE") style="display:none"#end><div class="inner">
+		<h1>$!portlet.Title</h1>
+        <div class="mhLeft">
+			<a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()">
+				<i class="auiMbIcon auiMbIconList"></i>
+			</a>
+		</div>
+		<div class="mhRight">
+			#if ($data.User.getUserName() != "admin")
+				<a href="javascript:void(0)" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE">
+					<div id="activitycheckerContainer" class="dijitInline">
+						<div id="activitychecker" class="zero counter"></div>
+						<span class="mb_hide">$l10n.WIDGET_NOTICE</span>
+					</div>
+				</a>
+			#end
+		</div>
+	</div></div>
 	<div class="auiPortletHead"><div class="inner">
 		<div class="auiPortletTitle">$!portlet.Title</div>
 		<div class="auiPortletTool">
@@ -1570,6 +1589,11 @@ $link.get(0)
   <tbody>
 #end
 
+#macro(AUIrowTableWideScheduleList)
+<table class="auiRowTable wide scheduleList">
+  <tbody>
+#end
+
 #macro(AUImultiTableWide)
 <table class="auiMultiTable wide">
   <tbody>
@@ -1583,6 +1607,10 @@ $link.get(0)
 
 #macro(AUIbuttonAction $text $url)
 <a title="$text" href="$url" class="auiButtonAction">$text</a>
+#end
+
+#macro(AUIbuttonActionW80 $text $url)
+<a title="$text" href="$url" class="auiButtonAction w80">$text</a>
 #end
 
 #macro(AUIbutton $text $url)

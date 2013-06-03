@@ -40,13 +40,9 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader("$l10n.FACILITIES_FACILITYGROUP")
 #if($result.List.size() == 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITYGROUP" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
+	<div class="auiSummaryMeta center">
+#AUIbuttonActionW80("$l10n.FACILITIES_ADD_FACILITYGROUP" "javascript:aipo.common.showDialog('$addFacilityGroup','$!portlet.ID',aipo.facility.onLoadFacilityGroupDialog);")
+</div>
 
 #else
 #AUISummaryDiv()

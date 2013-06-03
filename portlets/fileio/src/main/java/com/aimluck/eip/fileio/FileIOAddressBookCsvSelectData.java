@@ -270,7 +270,7 @@ public class FileIOAddressBookCsvSelectData extends
         }
 
         if ((!formData.getFirstName().toString().equals(
-          ALLocalizationUtils.getl10n("FILEIO_FILEIO_LAST_NAME")))
+          ALLocalizationUtils.getl10n("FILEIO_LAST_NAME")))
           && (!formData.getCompanyName().toString().equals(
             ALLocalizationUtils.getl10n("FILEIO_COMPANY_NAME")))) {
           if (ErrCount == 0) {
@@ -413,7 +413,7 @@ public class FileIOAddressBookCsvSelectData extends
           data.setIsError(iserror);
         }
         if ((!formData.getFirstName().toString().equals(
-          ALLocalizationUtils.getl10n("FILEIO_FILEIO_LAST_NAME")))
+          ALLocalizationUtils.getl10n("FILEIO_LAST_NAME")))
           && (!formData.getCompanyName().toString().equals(
             ALLocalizationUtils.getl10n("FILEIO_COMPANY_NAME")))) {
           list.add(data);

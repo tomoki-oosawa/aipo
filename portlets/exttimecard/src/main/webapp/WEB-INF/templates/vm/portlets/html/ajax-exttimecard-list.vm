@@ -318,7 +318,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='mb_hide' align='center'")
 
-  <td class='$class mb_hide '>
+  <td class='mb_hide'>
   #if($!{rd.ReasonFlg})
 $l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})

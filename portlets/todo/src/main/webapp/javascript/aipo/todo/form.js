@@ -86,11 +86,11 @@ aipo.todo.filteredSearch=function(portlet_id){
 		}
 	);
 	var q=dojo.byId("q"+portlet_id);
-	var search =q?encodeURIComponent(q.value):"";
-	baseuri+="&filter="+params.join(",");
-	baseuri+="&filtertype="+types.join(",");
-	baseuri+="&keyword="+search;
-	aipo.viewPage(baseuri,portlet_id);
+	var qs=[["filter",params.join(",")],
+	        ["filtertype",types.join(",")],
+		["keyword",q?q.value:""]
+	];
+	aipo.viewPage(baseuri,portlet_id,qs);
 };
 
 /**

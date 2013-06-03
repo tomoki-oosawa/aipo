@@ -25,13 +25,9 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #if($result.List.size() == 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction($l10n.ACCOUNT_POST_ADD "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
-</p>
-</td></tr>
-#AUItablefooter()
+	<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.ACCOUNT_POST_ADD "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
+</div>
 #else
 #AUIwideAreaHeader()
 #AUISummaryDiv()
