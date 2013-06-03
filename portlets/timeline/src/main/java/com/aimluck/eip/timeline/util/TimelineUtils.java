@@ -1166,15 +1166,18 @@ public class TimelineUtils {
 
       List<EipTTimeline> topics = query.fetchList();
 
-      List<String> fpaths = new ArrayList<String>();
       if (topics.size() > 0) {
         int tsize = topics.size();
         for (int i = 0; i < tsize; i++) {
-          List<?> files = topics.get(i).getEipTTimelineFile();
+          EipTTimeline item = topics.get(i);
+          List<?> files = item.getEipTTimelineFile();
           if (files != null && files.size() > 0) {
             int fsize = files.size();
             for (int j = 0; j < fsize; j++) {
-              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+              ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(
+                orgId,
+                item.getTurbineUser().getUserId())
+                + ((EipTTimelineFile) files.get(j)).getFilePath());
             }
           }
           TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
@@ -1182,20 +1185,11 @@ public class TimelineUtils {
         }
       }
 
-      if (topicTypeList.get(0).equals("A")) {
-        deleteParent(list, topicParentIdList, orgId, uid);
-      }
-
       Database.deleteAll(topics);
       Database.commit();
 
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
+      if (topicTypeList.get(0).equals("A")) {
+        deleteParent(list, topicParentIdList, orgId, uid);
       }
 
       ALTimelineFactoryService tlservice =
@@ -1245,17 +1239,20 @@ public class TimelineUtils {
 
       List<EipTTimeline> tParent = ddQuery.fetchList();// tParent=削除対象
 
-      List<String> fpaths = new ArrayList<String>();
       if (tParent.size() > 0) {
         int tsize = tParent.size();
         for (int i = 0; i < tsize; i++) {
-          List<?> files = tParent.get(i).getEipTTimelineFile();
-          TimelineUtils.deleteFiles(tParent.get(i).getTimelineId());
-          TimelineUtils.deleteLikes(tParent.get(i).getTimelineId());
+          EipTTimeline item = tParent.get(i);
+          List<?> files = item.getEipTTimelineFile();
+          TimelineUtils.deleteFiles(item.getTimelineId());
+          TimelineUtils.deleteLikes(item.getTimelineId());
           if (files != null && files.size() > 0) {
             int fsize = files.size();
             for (int j = 0; j < fsize; j++) {
-              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+              ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(
+                orgId,
+                item.getTurbineUser().getUserId())
+                + ((EipTTimelineFile) files.get(j)).getFilePath());
             }
           }
         }
@@ -1263,15 +1260,6 @@ public class TimelineUtils {
 
       Database.deleteAll(tParent);
       Database.commit();
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
     }
   }
 }
