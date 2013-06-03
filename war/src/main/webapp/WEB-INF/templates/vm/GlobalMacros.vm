@@ -1609,6 +1609,10 @@ $link.get(0)
 <a title="$text" href="$url" class="auiButtonAction">$text</a>
 #end
 
+#macro(AUIbuttonActionW80 $text $url)
+<a title="$text" href="$url" class="auiButtonAction w80">$text</a>
+#end
+
 #macro(AUIbutton $text $url)
 <a title="$text" href="$url" class="auiButton">$text</a>
 #end
