@@ -47,15 +47,25 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     },
     onCheckActivity: function(count) {
     	var checker = dojo.byId("activitychecker");
+    	var activity = dojo.byId("auiMbBtnActivity");
         if (count > 99) {
         	checker.innerHTML = '99+';
         	dojo.removeClass("activitychecker", "zero");
+        	if(activity) {
+        		dojo.removeClass("auiMbBtnActivity", "zero");
+        	}
         } else if (count == 0) {
         	checker.innerHTML = count;
         	dojo.addClass("activitychecker", "zero");
+        	if(activity) {
+        		dojo.addClass("auiMbBtnActivity", "zero");
+        	}
         } else {
         	checker.innerHTML = count;
         	dojo.removeClass("activitychecker", "zero");
+        	if(activity) {
+        		dojo.removeClass("auiMbBtnActivity", "zero");
+        	}
         }
     },
     onCheckBlank: function(/*evt*/ e){

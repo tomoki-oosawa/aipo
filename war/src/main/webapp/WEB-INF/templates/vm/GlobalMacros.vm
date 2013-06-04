@@ -830,14 +830,14 @@ $item.get(0)
 	<!-- Smartphone Header -->
 	<div id="mobileHeader" class="clearfix" #if(${client} != "IPHONE") style="display:none"#end><div class="inner">
 		<h1>$!portlet.Title</h1>
-        <div class="mhLeft">
+        <div id="auiMbBtnNavi" class="mhLeft">
 			<a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()">
-				<i class="auiMbIcon auiMbIconList"></i>
+				<img src="themes/$!result.Theme/images/mobile/an_list.png" width="24" height="24" />
 			</a>
 		</div>
 		<div class="mhRight">
 			#if ($data.User.getUserName() != "admin")
-				<a href="javascript:void(0)" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE">
+				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE">
 					<div id="activitycheckerContainer" class="dijitInline">
 						<div id="activitychecker" class="zero counter"></div>
 						<span class="mb_hide">$l10n.WIDGET_NOTICE</span>
