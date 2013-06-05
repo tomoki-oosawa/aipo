@@ -330,10 +330,9 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
   </td>
 #end
-</tr>
 
 #end
-
+</tr>
 
 #end
 #AUItablefooter()
