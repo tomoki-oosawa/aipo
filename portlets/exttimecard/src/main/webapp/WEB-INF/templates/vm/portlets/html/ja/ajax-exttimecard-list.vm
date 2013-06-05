@@ -113,7 +113,11 @@
 #end
 
 <tr class="$class">
-#ALtdcellheaderAtt("class='day'")
+#if (${client} != "IPHONE")
+  #ALtdcellheaderAtt("nowrap='nowrap'")
+#else
+  #ALtdcellheaderAtt("")
+#end
 
 #set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
 #set($formLink_ins = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date).addQueryData('userid', "$!result.TargetUserId"))
