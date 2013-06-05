@@ -52,13 +52,9 @@
 #if($result.Index || ($result.SearchWord && $result.SearchWord.toString() != ""))
 <div class="message">$l10n.ADDRESSBOOK_NO_COMPANY_YOUR_SELECT</div>
 #else
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction($l10n.ADDRESSBOOK_COMPANY_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.ADDRESSBOOK_COMPANY_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
+</div>
 #end
 #else
 #AUISummaryDiv()
