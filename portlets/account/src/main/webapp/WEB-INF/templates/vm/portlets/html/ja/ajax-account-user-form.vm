@@ -128,7 +128,8 @@
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input id="al_submit_$!{portlet.ID}" name="$event_submit" class="auiButtonAction" type="submit" value="$action_str" onclick="aimluck.io.setHiddenValue(this);" />#ALajaxbuttonClose()
+<input id="al_submit_$!{portlet.ID}" name="$event_submit" class="auiButtonAction" type="submit" value="$action_str" onclick="aimluck.io.setHiddenValue(this);" />
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
