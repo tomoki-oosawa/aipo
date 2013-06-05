@@ -89,7 +89,7 @@
 #AUIrowTableWide()
 <tr>
 
-#if($result.isEditable()) #ALtdheadThin("#ALswitchCheckbox()")
+#if($result.isEditable()) #ALtdhead("#ALswitchCheckbox()")
 ##<th class="thin">編集</th>
 #end
 
