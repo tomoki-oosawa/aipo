@@ -40,7 +40,7 @@
 <option value="$num" #if ($!result.StartDate.Day == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_DAY</option>
 #end
 </select>
-～
+&nbsp;-&nbsp;
 <select id="end_date_year" name="end_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [2006..$!result.ViewDateMaxYear] )
 <option value="$num" #if ($!result.EndDate.Year == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_YEAR</option>
