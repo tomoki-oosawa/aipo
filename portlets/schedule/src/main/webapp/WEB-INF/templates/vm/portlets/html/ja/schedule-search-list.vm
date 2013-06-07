@@ -125,12 +125,6 @@
 #else
 <div id="content-$!portlet.ID" style="visibility:visible">
 #AUIrowTableWideScheduleList()
-<tr>
-<th>$l10n.SCHEDULE_DAY</th>
-<th>$l10n.SCHEDULE_TIME</th>
-<th>$l10n.FILEIO_SCHEDULE</th>
-<th class="mb_hide">$l10n.SCHEDULE_CREATE_USER</th>
-</tr>
 #foreach ($record in $result.ScheduleList)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
 #if(!$record.isStartDayEqualsEndDay())
