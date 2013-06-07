@@ -260,7 +260,8 @@ public class ScheduleListContainer implements ALData {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     String date = "";
     for (ScheduleResultData rd : scheduleList) {
-      if (!date.equals(sdf.format(rd.getStartDate().getValue()))) {
+      if (!rd.isDummy()
+        && !date.equals(sdf.format(rd.getStartDate().getValue()))) {
         date = sdf.format(rd.getStartDate().getValue());
         rd.setDayStart(true);
       } else {

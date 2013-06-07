@@ -70,6 +70,15 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     return b.toString();
   }
 
+  public String getDateShort() {
+    SimpleDateFormat sdf =
+      new SimpleDateFormat(ALLocalizationUtils
+        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_SHORT"));
+    StringBuilder b = new StringBuilder();
+    b.append(sdf.format(getStartDate().getValue()));
+    return b.toString();
+  }
+
   public String getPatternTime() {
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {

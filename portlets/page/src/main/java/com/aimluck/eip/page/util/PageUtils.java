@@ -38,6 +38,8 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.modules.actions.controls.Restore;
+
 /**
  * ページ設定のユーティリティクラスです
  */
@@ -89,6 +91,8 @@ public class PageUtils {
       if (portlets == null) {
         return false;
       }
+
+      new Restore().doPerform(rundata);
 
       Portlets p = null;
 

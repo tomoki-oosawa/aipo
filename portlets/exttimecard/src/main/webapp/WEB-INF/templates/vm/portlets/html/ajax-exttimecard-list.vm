@@ -113,11 +113,8 @@
 #end
 
 <tr class="$class">
-#if (${client} != "IPHONE")
-  #ALtdcellheaderAtt("nowrap='nowrap'")
-#else
-  #ALtdcellheaderAtt("")
-#end
+#ALtdcellheaderAtt("class='day'")
+
 #set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
 #set($formLink_ins = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date).addQueryData('userid', "$!result.TargetUserId"))
 #if($!result.TargetUserId == $!result.UserId)
@@ -161,7 +158,7 @@ $l10n.EXTTIMECARD_PUNCH_IN
     #ALtdcellAtt(" " " class='mb_hide'")
   #end
 
-  <td class='$class mb_hide'>
+  <td class='mb_hide'>
   #if($!{rd.ReasonFlg})
 $l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
@@ -187,7 +184,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
       $l10n.EXTTIMECARD_OTHER
   #end
   </td>
-  <td class='$class mb_hide'>
+  <td class='mb_hide'>
   #if($!{rd.ReasonFlg})
 $l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
@@ -330,10 +327,9 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
   </td>
 #end
-</tr>
 
 #end
-
+</tr>
 
 #end
 #AUItablefooter()
