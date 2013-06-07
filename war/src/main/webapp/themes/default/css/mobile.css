@@ -706,6 +706,16 @@ select {
 }
 
 /***************************************************
+	indicator
+--------------------------------------------------*/
+.indicatorWrap {
+  clear: both;
+  float: none;
+  width: 18px;
+  margin: 5px auto 0 !important;
+}
+
+/***************************************************
 	auiThreeClumns
 --------------------------------------------------*/
 #auiThreeClumns {
@@ -721,6 +731,10 @@ select {
 	Apps Style
 --------------------------------------------------*/
 /* timeline*/
+#timelineOuter {
+  font-size: 14px;
+}
+
 .timeline .avatar img,
 .timeline .avatar {
 	max-width:32px;
