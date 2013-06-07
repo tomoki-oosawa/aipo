@@ -468,10 +468,10 @@ public class ToDoSelectData extends
         getStrLength()));
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil
-          .format(record.getStartDate(), "yyyy年M月d日（E）"));
+          .format(record.getStartDate(), "yyyy年M月d日(E)"));
       }
       if (!ToDoUtils.isEmptyDate(record.getEndDate())) {
-        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日（E）"));
+        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日(E)"));
       }
       rd.setState(record.getState().intValue());
       rd.setStateImage(ToDoUtils.getStateImage(record.getState().intValue()));
@@ -558,10 +558,10 @@ public class ToDoSelectData extends
         .getValue());
       if (!ToDoUtils.isEmptyDate(record.getStartDate())) {
         rd.setStartDate(ALDateUtil
-          .format(record.getStartDate(), "yyyy年M月d日（E）"));
+          .format(record.getStartDate(), "yyyy年M月d日(E)"));
       }
       if (!ToDoUtils.isEmptyDate(record.getEndDate())) {
-        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日（E）"));
+        rd.setEndDate(ALDateUtil.format(record.getEndDate(), "yyyy年M月d日(E)"));
       }
       rd.setStateString(ToDoUtils.getStateString(record.getState().intValue()));
       rd.setPriorityString(ToDoUtils.getPriorityString(record
@@ -576,7 +576,7 @@ public class ToDoSelectData extends
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
       rd.setCreateDate(ALDateUtil
-        .format(record.getCreateDate(), "yyyy年M月d日（E）"));
+        .format(record.getCreateDate(), "yyyy年M月d日(E)"));
       rd.setUpdateDate(record.getUpdateDate());
 
       // 自身のToDoかを設定する

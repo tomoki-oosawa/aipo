@@ -717,11 +717,11 @@ public class ToDoUtils {
 
     if (!isEmptyDate(todo.getStartDate())) {
       body.append("[開始日] ").append(CR).append(
-        ALDateUtil.format(todo.getStartDate(), "yyyy年M月d日（E）")).append(CR);
+        ALDateUtil.format(todo.getStartDate(), "yyyy年M月d日(E)")).append(CR);
     }
     if (!isEmptyDate(todo.getEndDate())) {
       body.append("[締切日] ").append(CR).append(
-        ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日（E）")).append(CR);
+        ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日(E)")).append(CR);
     }
 
     body.append("[進捗]").append(CR).append(todo.getState().toString()).append(
@@ -787,10 +787,10 @@ public class ToDoUtils {
     context.put("hasStartDate", !isEmptyDate(todo.getStartDate()));
     context.put("startDate", ALDateUtil.format(
       todo.getStartDate(),
-      "yyyy年M月d日（E）"));
+      "yyyy年M月d日(E)"));
     context.put("hasEndDate", !isEmptyDate(todo.getEndDate()));
     context
-      .put("endDate", ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日（E）"));
+      .put("endDate", ALDateUtil.format(todo.getEndDate(), "yyyy年M月d日(E)"));
     context.put("state", todo.getState().toString());
     context.put("priority", todo.getPriority());
     context.put("hasNote", todo.getNote().toString().length() > 0);

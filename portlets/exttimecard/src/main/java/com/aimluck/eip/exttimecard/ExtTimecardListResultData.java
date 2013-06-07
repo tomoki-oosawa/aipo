@@ -795,7 +795,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("M月d日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("M月d日(EE)");
       return sdf.format(date.getValue().getDate());
     } catch (Exception e) {
       return "";
@@ -810,7 +810,7 @@ public class ExtTimecardListResultData implements ALData {
   public String getDateStr(String str) {
     try {
       if (str == null || "".equals(str)) {
-        str = "yyyy年MM月dd日（EE）";
+        str = "yyyy年MM月dd日(EE)";
       }
       SimpleDateFormat sdf = new SimpleDateFormat(str);
       return sdf.format(date.getValue().getDate());
