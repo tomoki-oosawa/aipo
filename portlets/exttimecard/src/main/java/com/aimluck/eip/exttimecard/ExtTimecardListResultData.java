@@ -302,14 +302,8 @@ public class ExtTimecardListResultData implements ALData {
           break;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("outgoing", isnullout ? "" : out.get(i).getHour()
-          + "時"
-          + out.get(i).getMinute()
-          + "分");
-        map.put("comeback", isnullcome ? "" : come.get(i).getHour()
-          + "時"
-          + come.get(i).getMinute()
-          + "分");
+        map.put("outgoing", isnullout ? "" : out.get(i).getTime());
+        map.put("comeback", isnullcome ? "" : come.get(i).getTime());
         result_list.add(map);
       }
       if (result_list.size() == 0) {

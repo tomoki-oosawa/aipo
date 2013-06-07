@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.aimluck.commons.field.ALNumberField;
+
 /**
  * 入力フィールドで取り扱う文字列に対するユーティリティクラスです。 <br />
  * 
@@ -343,6 +345,13 @@ public class ALStringUtil {
     } else {
       return true;
     }
+  }
+
+  public static String toTwoDigitString(ALNumberField num) {
+    if (num != null) {
+      return String.format("%02d", num.getValue());
+    }
+    return "";
   }
 
 }

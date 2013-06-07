@@ -32,7 +32,6 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカードのResultDataです。 <BR>
@@ -310,10 +309,7 @@ public class ExtTimecardResultData implements ALData {
   }
 
   public String getClockInTimeHourMinuteText() {
-    return ALLocalizationUtils.getl10nFormat(
-      "EXTTIMECARD_HOUR_MINUTE_FORMAT",
-      clock_in_time.getHour().toString(),
-      clock_in_time.getMinute().toString());
+    return clock_in_time.getTime().toString();
   }
 
   public ALDateTimeField getPunchDate() {
@@ -334,10 +330,7 @@ public class ExtTimecardResultData implements ALData {
   }
 
   public String getClockOutTimeHourMinuteText() {
-    return ALLocalizationUtils.getl10nFormat(
-      "EXTTIMECARD_HOUR_MINUTE_FORMAT",
-      clock_out_time.getHour().toString(),
-      clock_out_time.getMinute().toString());
+    return clock_out_time.getTime().toString();
   }
 
   public ALStringField getType() {
