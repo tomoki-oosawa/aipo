@@ -88,7 +88,7 @@ public class ScheduleSearchResultData extends ScheduleResultData {
         b.append(ALLocalizationUtils.getl10n("SCHEDULE_ALL_DAY"));
       }
     } else {
-      b.append(getDate2());
+      b.append(getDate());
     }
     return b.toString();
   }
@@ -132,12 +132,12 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
       if (!isStartDayEqualsEndDay()) {
-        b.append("～");
+        b.append("-");
         b.append(sdf.format(getEndDate().getValue()));
       }
     } else {
       b.append(sdf.format(getStartDate().getValue())).append(" ").append(
-        getDate2());
+        getDate());
     }
     return b.toString();
   }

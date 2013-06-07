@@ -39,6 +39,47 @@
 #end
 </div>
 <div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
+<div class="ali#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($action_str = $l10n.REPORT_REPLY)
+#set ($subtitle = $l10n.REPORT_DETAIL)
+#set ($event_submit = "eventSubmit_doReport_update")
+#set ($modesrv = "update")
+## ---------------------------------------------------------------------------
+#ALdialogheader($l10n.REPORT_DETAIL)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader($l10n.REPORT_INSERTION)##delete時メッセージ
+#ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
+<tr>
+<td colspan="2">
+<div class="clearfix">
+<div class="avatar floatLeft mr10">
+#if(${result.ParentReport.hasPhoto()})
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" />
+#else
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" />
+#end
+</div>
+<div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if($result.ParentReport.isSelfReport())
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
@@ -55,7 +96,129 @@ $!record.AliasName<br />
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
-#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}～$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
+#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}-$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_NOTE)
+#ALtditem($!{result.ParentReport.Note})
+#if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
+#ALtditemheader()
+#foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
+<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
+#end
+#ALtditemfooter()
+#end
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_POSITIONS)
+#ALtditemheader()
+#foreach($record in $!result.ParentReport.MapList)
+#if($result.ParentReport.getStatus($record.UserId.Value) == "R")
+<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_READ" title="$l10n.REPORT_READ"/>
+#else
+<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_UNREAD" title="$l10n.REPORT_UNREAD"/>
+#end
+$!record.AliasName
+<br />
+#end
+#ALtditemfooter()
+#ALtablefooter()
+#if($!result.CoReportList && $!result.CoReportList.size() > 0)
+##pageview($link $result)
+#ALtableheaderWideWithCaption($l10n.REPORT_INSERTION)
+#set($firstCoReport = true)
+#foreach ($record in $result.CoReportList)
+#set($firstCoReport = false)
+<tr>
+#ALtditemheader()
+<div class="clearfix mb10">
+<div class="avatar floatLeft mr10">
+#if(${record.hasPhoto()})
+<img width="32" height="32" alt="$!{record.ClientName}" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId))" />
+#else
+<img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" />
+#end
+</div>
+<div class="alignleft"><strong>$!{record.ClientName}</strong><br />$!{record.UpdateDate.toString('yyyy年MM月dd日HH時mm分')}</div>
+<div class="alignright">
+#if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#end
+</div>
+</div>
+<div>
+${record.Note}
+#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+<div style="padding-top:15px;">
+#foreach( $attachmentFile in $!record.AttachmentFileList )
+<div style="padding-top:5px;">
+<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+</div>
+#end
+</div>
+#end
+</div>
+#ALtditemfooter()
+</tr>
+#end
+#ALtablefooter()
+##pageview($link $result)
+#end
+#ALformfooter()
+#if($!resultOnReportDetail)
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
+<input type="hidden" name="mode" value="report_reply" />
+<input type="hidden" name="entityid" value="$!result.ParentReport.ReportId" />
+<input type="hidden" name="report_name" value=" " />
+#if($!mode && $mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($!resultOnReportDetail.getFieldName('note'))")
+#ALtditemheader()
+<textarea class="text wide" name="note" rows="5" cols="40">$!resultOnReportDetail.Note</textarea>
+#ALtditemfooter()
+<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+<td class="caption">$l10n.REPORT_SETFIELDNAME_ATTACHMENT</td>
+<td>
+  <div class="clearfix">
+  <div>
+  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  </div>
+  <ul id="attachments_$!portlet.ID" class="attachments">
+    #foreach($record in $!result.AttachmentFileNameList )
+     <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.REPORT_DELETE</span></li>
+    #end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
+#ALtablefooter()
+#end
+#ALbuttonheader()
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()gnright">
+#if($result.ParentReport.isSelfReport())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#end
+</div>
+</div>
+</td>
+</tr>
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_MENVERS)
+#ALtditemheader()
+#foreach($record in $!result.ParentReport.MemberList)
+$!record.AliasName<br />
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
+#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}-$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_NOTE)
 #ALtditem($!{result.ParentReport.Note})
 #if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
