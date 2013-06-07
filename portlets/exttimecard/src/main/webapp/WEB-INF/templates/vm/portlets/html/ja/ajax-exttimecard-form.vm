@@ -98,7 +98,7 @@
 <option value="$num" #if ($!result.ClockInTime.Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
-～
+&nbsp;-&nbsp;
 <select name="clock_out_time_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
@@ -145,7 +145,7 @@
 <option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 </select>
-～
+-
 <select name=comeback_time$!{outcome}_hour id="comeback_time$!{outcome}_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )

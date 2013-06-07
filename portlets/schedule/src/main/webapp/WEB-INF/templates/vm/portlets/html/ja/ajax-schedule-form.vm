@@ -203,7 +203,7 @@
             <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50$l10n.SCHEDULE_MINUTE</option>
             <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55$l10n.SCHEDULE_MINUTE</option>
             </select>
-        </span>～
+        </span>&nbsp;-&nbsp;
         <span id="endTimeSpan">
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameDate) selected="selected" #end>--$l10n.SCHEDULE_HOUR</option>
