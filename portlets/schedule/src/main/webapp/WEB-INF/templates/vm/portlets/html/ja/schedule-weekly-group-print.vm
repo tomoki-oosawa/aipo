@@ -198,9 +198,9 @@ if(document.all!=undefined){
 #else
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.getTargetGroupName().groupAliasName})
-<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.getTargetGroupName().groupAliasName} $!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}&nbsp;-&nbsp;$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
 #else
-<h1>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}～$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
+<h1>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}&nbsp;-&nbsp;$!{result.ViewEnd.Day}日$!{result.ViewEnd.DayOfWeek}</h1>
 #end
 
 #ALtableheaderCalendar("100%")

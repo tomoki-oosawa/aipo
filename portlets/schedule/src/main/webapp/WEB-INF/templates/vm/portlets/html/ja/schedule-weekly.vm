@@ -26,7 +26,7 @@
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_DATE">
 <img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="$l10n.SCHEDULE_PREV_DATE" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
-$!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEndFormat} $!{result.ViewEnd.DayOfWeek}
+$!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} - $!{result.ViewEndFormat} $!{result.ViewEnd.DayOfWeek}
 </span></td><td>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_DATE">
 <img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="$l10n.SCHEDULE_NEXT_DATE" /></a>&nbsp;

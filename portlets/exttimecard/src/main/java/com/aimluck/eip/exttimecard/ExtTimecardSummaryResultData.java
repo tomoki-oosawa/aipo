@@ -367,7 +367,7 @@ public class ExtTimecardSummaryResultData implements ALData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日(EE)");
       return sdf.format(date.getValue().getDate());
     } catch (Exception e) {
       return "";

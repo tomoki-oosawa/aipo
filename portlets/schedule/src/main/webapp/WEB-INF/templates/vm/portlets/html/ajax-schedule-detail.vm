@@ -65,21 +65,21 @@ $!{result.Detail.User.AliasNameHtml}
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} ～
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} -
 $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
-$!{result.Detail.Date2}
+$!{result.Detail.Date}
 #if(! ${result.Detail.isPublic()})
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end
 <img src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
 #else
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
-$!{result.Detail.Date2}
+$!{result.Detail.Date}
 #if(! ${result.Detail.isPublic()})
 <img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
 #end

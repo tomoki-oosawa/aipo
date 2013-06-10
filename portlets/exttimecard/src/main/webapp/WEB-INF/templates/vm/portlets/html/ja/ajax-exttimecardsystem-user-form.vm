@@ -41,7 +41,7 @@
 <option value="$num" #if ($!result.StartTimeMinute.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
 #end
 #end
-</select>～<select name="end_time_hour" size="1" >
+</select>&nbsp;-&nbsp;<select name="end_time_hour" size="1" >
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.EndTimeHour.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
 #end

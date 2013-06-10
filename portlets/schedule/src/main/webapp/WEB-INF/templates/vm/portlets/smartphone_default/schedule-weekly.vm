@@ -27,7 +27,7 @@
 #ALcell_linklist_iphone($career $linklist)
 #ALcell_contents_header($career)
 
-<h3>$!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} ～ $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}</h3>
+<h3>$!{result.ViewStart.Year} 年 $!{result.ViewStart.Month} 月 $!{result.ViewStart.Day} 日 $!{result.ViewStart.DayOfWeek} - $!{result.ViewEnd.Month} 月 $!{result.ViewEnd.Day} 日 $!{result.ViewEnd.DayOfWeek}</h3>
 #ALcell_navilist($career $daylist)
 日  9..0..3..6.#ALcell_br($career)
 #foreach($record in $result.Container.DayList)

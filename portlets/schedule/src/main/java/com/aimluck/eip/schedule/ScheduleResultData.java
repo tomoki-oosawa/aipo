@@ -603,13 +603,13 @@ public class ScheduleResultData implements ALData, Cloneable {
       || is_repeat) {
       return new StringBuffer()
         .append(start_date.toString())
-        .append('～')
+        .append('-')
         .append(end_date.toString())
         .toString();
     } else {
       return new StringBuffer()
         .append(start_date.toString())
-        .append('～')
+        .append('-')
         .append("24:00")
         .toString();
     }

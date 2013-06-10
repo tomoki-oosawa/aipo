@@ -70,6 +70,7 @@ public class TimecardSummaryResultData implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
     date = new ALDateField();
     date.setValue(new Date());
@@ -284,7 +285,7 @@ public class TimecardSummaryResultData implements ALData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日(EE)");
       return sdf.format(date.getValue().getDate());
     } catch (Exception e) {
       return "";

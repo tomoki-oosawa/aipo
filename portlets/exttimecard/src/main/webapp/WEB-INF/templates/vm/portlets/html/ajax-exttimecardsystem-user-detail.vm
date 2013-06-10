@@ -26,7 +26,7 @@
 #ALtableheaderWide()
 #ALtdcaption($l10n.EXTTIMECARD_WORKTIME)
 #ALtditemheader()
-$!{result.Detail.StartTime} ～ $!{result.Detail.EndTime}
+$!{result.Detail.StartTime}&nbsp;-&nbsp;$!{result.Detail.EndTime}
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()

@@ -55,7 +55,7 @@ $!record.AliasName<br />
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
-#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}～$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
+#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}-$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_NOTE)
 #ALtditem($!{result.ParentReport.Note})
 #if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)

@@ -99,7 +99,7 @@
 <option value="${num2}" #if ($!result.StartDate.Minute == "${num2}") selected #end>${num2}分</option>
 #end
 </select>
-～
+&nbsp;-&nbsp;
 <select name="endDate_hour" size="1">
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.EndDate.Hour == "$num") selected #end>$num時</option>

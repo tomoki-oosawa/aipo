@@ -538,7 +538,7 @@ public class BlogEntryLatestSelectData extends
    */
   public static Date toDate(String str) {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日(EE)");
       // parseメソッドでDate型に変換します。
       Date date = sdf.parse(str);
       return date;

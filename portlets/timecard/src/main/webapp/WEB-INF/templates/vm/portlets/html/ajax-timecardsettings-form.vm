@@ -41,7 +41,7 @@
 <option value="$num" #if ($!result.StartTimeMinute.toString() == "$num") selected="selected" #end>$num分</option>
 #end
 #end
-</select>～<select name="end_time_hour" size="1" >
+</select>&nbsp;-&nbsp;<select name="end_time_hour" size="1" >
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.EndTimeHour.toString() == "$num") selected="selected" #end>$num時</option>
 #end

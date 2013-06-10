@@ -110,9 +110,10 @@ public class ManHourResultData implements ALData {
   private int rowspan;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     user = new ALStringField();
     // カテゴリ
@@ -537,13 +538,13 @@ public class ManHourResultData implements ALData {
       || is_repeat) {
       return new StringBuffer()
         .append(start_date.toString())
-        .append('～')
+        .append('-')
         .append(end_date.toString())
         .toString();
     } else {
       return new StringBuffer()
         .append(start_date.toString())
-        .append('～')
+        .append('-')
         .append("24:00")
         .toString();
     }

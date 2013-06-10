@@ -26,7 +26,7 @@
 #ALtableheaderWide()
 #ALtdcaption("勤務時間")
 #ALtditemheader()
-$!{result.Detail.StartTime} ～ $!{result.Detail.EndTime}
+$!{result.Detail.StartTime}&nbsp;-&nbsp;$!{result.Detail.EndTime}
 #ALtditemfooter()
 #ALtdcaption("休憩時間")
 #ALtditemheader()
