@@ -995,24 +995,91 @@ table tr.caption {
 	auiFilter
 --------------------------------------------------*/
 .filterInputField {
-	max-width:260px;
+  max-width: 100%;
+  float: none;
 }
+
 .filterInputField input[type=text] {
-	max-width:260px;
+  max-width: 100%;
 }
+
 .menubar.multi {
-	max-width:96%;
+  max-width: 96%;
 }
+
 .menubar.multi > div {
-	width:96%;
-	margin:2%;
-	float:none;
+  width: 96%;
+  margin: 2%;
+  float: none;
 }
+
 .menubar.multi .caption {
-	border-top:solid 1px #ccc;
+  border-top: solid 1px #ccc;
 }
+
 .menubar.multi > div:first-child .caption {
-	border-top:none;
+  border-top: none;
+}
+
+.filters {
+  line-height: 38px;
+}
+
+.filterTip {
+  padding: 0 4px;
+  height: 26px !important;
+  line-height: 26px !important;
+}
+
+.filterTip > a {
+  margin: 0;
+  padding: 6px 3px;
+}
+
+.filterInputField .filters {
+  height: 32px;
+}
+
+.filterDropDrawer {
+  width: 20px;
+  height: 36px;
+  margin: 1px;
+}
+
+.filterDropDrawer i {
+  margin-top: 8px;
+}
+
+/***************************************************
+	schedule block
+--------------------------------------------------*/
+[id^=groupselect] {
+  width: 100%;
+}
+
+.weeklyScrollPane > table {
+  width: 100%;
+  overflow: hidden;
+}
+
+div.weeklyHeadRights div.weeklyHeadRightR {
+  position: static;
+  border-width: 0 0 0 1px;
+  box-sizing: border-box;
+}
+
+div.weeklyTermRights div.weeklyTermRight {
+  position: static;
+  box-sizing: border-box;
+}
+
+div.weeklyTermRights div.weeklyTermRightR {
+  border-width: 1px 0 0 1px !important;
+}
+
+[id^=weeklySpan],
+[class^=weeklyTermTailTd] {
+  display: none !important;
 }
 
 /***************************************************
