@@ -208,7 +208,7 @@ public class EventlogSelectData extends
   @Override
   protected Object getResultData(EipTEventlog record) {
     try {
-      DateFormat df = new SimpleDateFormat("yyyy年M月d日（EE）HH時mm分ss秒");
+      DateFormat df = new SimpleDateFormat("yyyy年M月d日(EE)HH時mm分ss秒");
 
       EventlogResultData rd = new EventlogResultData();
       rd.initField();
@@ -260,7 +260,7 @@ public class EventlogSelectData extends
   @Override
   protected Object getResultDataDetail(EipTEventlog record) {
     try {
-      DateFormat df = new SimpleDateFormat("yyyy年MM月dd日（EE）HH時mm分ss秒");
+      DateFormat df = new SimpleDateFormat("yyyy年MM月dd日(EE)HH時mm分ss秒");
 
       EventlogResultData rd = new EventlogResultData();
       rd.initField();

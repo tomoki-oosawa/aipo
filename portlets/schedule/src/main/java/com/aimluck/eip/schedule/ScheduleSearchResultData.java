@@ -132,7 +132,9 @@ public class ScheduleSearchResultData extends ScheduleResultData {
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
       if (!isStartDayEqualsEndDay()) {
+        b.append("&nbsp;");
         b.append("-");
+        b.append("&nbsp;");
         b.append(sdf.format(getEndDate().getValue()));
       }
     } else {

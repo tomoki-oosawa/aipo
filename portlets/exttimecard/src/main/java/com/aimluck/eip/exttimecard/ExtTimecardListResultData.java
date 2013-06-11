@@ -302,14 +302,8 @@ public class ExtTimecardListResultData implements ALData {
           break;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("outgoing", isnullout ? "" : out.get(i).getHour()
-          + "時"
-          + out.get(i).getMinute()
-          + "分");
-        map.put("comeback", isnullcome ? "" : come.get(i).getHour()
-          + "時"
-          + come.get(i).getMinute()
-          + "分");
+        map.put("outgoing", isnullout ? "" : out.get(i).getTime());
+        map.put("comeback", isnullcome ? "" : come.get(i).getTime());
         result_list.add(map);
       }
       if (result_list.size() == 0) {
@@ -795,7 +789,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public String getDateStr() {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("M月d日（EE）");
+      SimpleDateFormat sdf = new SimpleDateFormat("M月d日(EE)");
       return sdf.format(date.getValue().getDate());
     } catch (Exception e) {
       return "";
@@ -810,7 +804,7 @@ public class ExtTimecardListResultData implements ALData {
   public String getDateStr(String str) {
     try {
       if (str == null || "".equals(str)) {
-        str = "yyyy年MM月dd日（EE）";
+        str = "yyyy年MM月dd日(EE)";
       }
       SimpleDateFormat sdf = new SimpleDateFormat(str);
       return sdf.format(date.getValue().getDate());

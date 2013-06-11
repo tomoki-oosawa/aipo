@@ -57,7 +57,7 @@
 	XHRTIMEOUT_ERROR:"\u30a8\u30e9\u30fc",
 	XHRTIMEOUT_TIMEOUT:"\u30bf\u30a4\u30e0\u30a2\u30a6\u30c8",
 	// 年月日表示 tyear+"年"+tmonth+"月"+tdate+"日（"+tday+"）"
-	DATE_FORMAT:"${tyear}\u5e74${tmonth}\u6708${tdate}\u65e5\uff08${tday}\uff09",
+	DATE_FORMAT:"${tyear}\u5e74${tmonth}\u6708${tdate}\u65e5\u0028${tday}\u0029",
 	DISABLED_DATE:"---- \u5e74 -- \u6708 -- \u65e5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 	// 読み込み中...
 	LOADING_STR:"\u8aad\u307f\u8fbc\u307f\u4e2d...",

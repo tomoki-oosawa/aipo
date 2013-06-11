@@ -329,7 +329,7 @@ public class BlogEntrySelectData extends
   @Override
   protected Object getResultDataDetail(EipTBlogEntry record) {
     try {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日（EE） HH時mm分");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日(EE) HH時mm分");
       BlogEntryResultData rd = new BlogEntryResultData();
       rd.initField();
       rd.setEntryId(record.getEntryId().longValue());

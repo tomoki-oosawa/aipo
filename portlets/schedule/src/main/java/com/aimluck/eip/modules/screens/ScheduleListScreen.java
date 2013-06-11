@@ -123,7 +123,6 @@ public class ScheduleListScreen extends ScheduleScreen {
         }
 
         context.put("member_list", memberList);
-
       } else if ("oneday".equals(currentTab)) {
         // tab = "oneday";
         listData = new ScheduleOnedaySelectData();

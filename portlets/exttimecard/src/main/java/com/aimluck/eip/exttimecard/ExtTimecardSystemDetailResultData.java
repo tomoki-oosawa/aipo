@@ -21,6 +21,7 @@ package com.aimluck.eip.exttimecard;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -106,9 +107,9 @@ public class ExtTimecardSystemDetailResultData extends
     return ALLocalizationUtils.getl10nFormat(
       "EXTTIMECARD_HOUR_MINUTE_FORMAT_SPAN",
       start_hour.toString(),
-      start_minute.toString(),
+      ALStringUtil.toTwoDigitString(start_minute),
       end_hour.toString(),
-      end_minute.toString());
+      ALStringUtil.toTwoDigitString(end_minute));
   }
 
   public String getWorkTimeIn() {

@@ -53,7 +53,7 @@
 						#end
 					</div>
 					<div>
-						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{result.ParentTopic.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
+						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.time}
 					</div>
 				</td>
 			</tr>
@@ -107,7 +107,7 @@
 						#end
 					</div>
 				<div class="alignleft">
-					<b>$!{record.OwnerName}</b><br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.Hour}$l10n.MSGBOARD_HOUR$!{record.CreateDate.Minute}$l10n.MSGBOARD_MINUTE
+					<b>$!{record.OwnerName}</b><br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.time}
 				</div>
 			</div>
 			<div><br>
