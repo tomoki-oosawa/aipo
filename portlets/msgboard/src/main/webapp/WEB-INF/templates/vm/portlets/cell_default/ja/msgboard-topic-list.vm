@@ -34,7 +34,7 @@
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.TopicId)">${record.TopicName} #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>&nbsp;
 ${record.OwnerName}&nbsp;
-($!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.Hour}時$!{record.UpdateDate.Minute}分)
+($!{record.UpdateDate.Year}年$!{record.UpdateDate.Month}月$!{record.UpdateDate.Day}日$!{record.UpdateDate.time})
 #ALcell_li_footer($career)
 #end
 </ul>
