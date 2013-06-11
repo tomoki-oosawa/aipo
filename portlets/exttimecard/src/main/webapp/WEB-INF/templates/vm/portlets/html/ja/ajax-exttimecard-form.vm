@@ -138,14 +138,14 @@
 <option value="$num" #if ($!result.getOutgoingTime($outcome).Hour == "$num2") selected="selected" #end>$num2</option>
 #end
 #end
-</select>
+</select> :
 <select name=outgoing_time$!{outcome}_minute id="outgoing_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
 <option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>$num</option>
 #end
 </select>
--
+&nbsp;-&nbsp;
 <select name=comeback_time$!{outcome}_hour id="comeback_time$!{outcome}_hour" size="1" >
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
@@ -158,7 +158,7 @@
 <option value="$num" #if ($!result.getComebackTime($outcome).Hour == "$num2") selected="selected" #end>$num2</option>
 #end
 #end
-</select>
+</select> :
 <select name=comeback_time$!{outcome}_minute id="comeback_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
