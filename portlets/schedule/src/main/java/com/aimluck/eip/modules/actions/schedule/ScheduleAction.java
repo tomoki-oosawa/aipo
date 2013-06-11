@@ -609,6 +609,7 @@ public class ScheduleAction extends ALBaseAction {
       String useragent = rundata.getUserAgent();
       if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
         currentTab = "list";
+        ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       }
 
       useragent = useragent.trim();
