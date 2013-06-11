@@ -575,13 +575,17 @@ public class ScheduleResultData implements ALData, Cloneable {
       || is_repeat) {
       return new StringBuffer()
         .append(start_date.toString())
+        .append("&nbsp;")
         .append('-')
+        .append("&nbsp;")
         .append(end_date.toString())
         .toString();
     } else {
       return new StringBuffer()
         .append(start_date.toString())
+        .append("&nbsp;")
         .append('-')
+        .append("&nbsp;")
         .append("24:00")
         .toString();
     }
