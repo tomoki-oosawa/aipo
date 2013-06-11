@@ -33,7 +33,7 @@
 #ALcell_dt($career '投稿者')
 #ALcell_dd($career "$!{result.ParentTopic.OwnerName}")
 #ALcell_dt($career '投稿日')
-#ALcell_dd($career "$!{result.ParentTopic.CreateDate.Year}/$!{result.ParentTopic.CreateDate.Month}/$!{result.ParentTopic.CreateDate.Day}&nbsp;$!{result.ParentTopic.CreateDate.Hour}:$!{result.ParentTopic.CreateDate.Minute}")
+#ALcell_dd($career "$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.time}")
 #ALcell_dt($career "内容")
 #ALcell_dd($career $!{result.ParentTopic.Note})
 #if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size()>0)
@@ -67,7 +67,7 @@
 #ALcell_dt($career "投稿者")
 <dd>$!{record.OwnerName}</dd>
 #ALcell_dt($career "投稿日")
-<dd>$!{record.UpdateDate}</dd>
+<dd>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.time}</dd>
 #ALcell_dt($career "書き込み")
 #ALcell_dd($career $!{record.Note})
 #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
