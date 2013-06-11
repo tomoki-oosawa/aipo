@@ -24,9 +24,13 @@
 #ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
 <div id="messageDiv"></div>
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta center">
-	#AUIbuttonActionW80("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
-</div>
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p class="mh10">
+	#AUIbuttonAction("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
+</p>
+</td></tr>
+#AUItablefooter()
 #else
 #AUISummaryDiv()
 	#AUIbuttonAction("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
