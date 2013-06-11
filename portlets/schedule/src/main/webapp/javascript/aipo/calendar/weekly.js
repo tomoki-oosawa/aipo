@@ -52,6 +52,9 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
     var childrenBody = dojo.byId("weeklyRights-" + pid).children;
 	dojo.byId("view_type_" + pid).value = period;
 	var dateCell = dojo.byId("indicateDate_" + pid);
+	if(dateCell == null){
+		return;
+	}
 	for(var i = 0; i < 7; i++){
 		var child = children[i];
 		var childBody = childrenBody[i];
@@ -59,7 +62,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 		var add = dojo.byId("scheduleDivAdd0" + i + "_" + pid)
 		switch(period){
 		case '1':
-			if(dateCell)dateCell.innerHTML = "<span>1日</span>";
+			dateCell.innerHTML = "<span>1日</span>";
 			childBody.className = "weeklyRight";
 			if(i == 0) {
 				child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
@@ -82,7 +85,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '4':
-			if(dateCell)dateCell.innerHTML = "<span>4日</span>";
+			dateCell.innerHTML = "<span>4日</span>";
 			if(i == 0){
 				removeClass(childTerm, "weeklyTermRightR");
 			}
@@ -120,7 +123,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '7':
-			if(dateCell)dateCell.innerHTML = "<span>7日</span>";
+			dateCell.innerHTML = "<span>7日</span>";
 			child.style.left = i * (100.0 / 7.0) + "%";
 			child.style.display = "";
 			child.style.width = "14.2857%";

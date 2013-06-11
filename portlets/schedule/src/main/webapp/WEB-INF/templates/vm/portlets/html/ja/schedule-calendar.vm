@@ -23,11 +23,12 @@
 <input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}"></input>
 <input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}"></input>
 
-<div class="relativeBlock #if(${client} == "IPHONE") auiSummaryMeta clearfix #end">
-#if (${client} != "IPHONE")	
+<div class="relativeBlock">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
+
+#if (${client} != "IPHONE")
 <ul>
 #set($tab = ["$l10n.SCHEDULE_BLOCK", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
@@ -41,9 +42,10 @@
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 #end
-</div>
-</div>
 #end
+</div>
+</div>
+
 <div class="clearfix">
 <div class="auiSelectButton">
 <ul>
@@ -66,21 +68,14 @@
 <li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_WEEK">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);' title='$l10n.SCHEDULE_NEXT_WEEK'><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
-#if($!top_form && $!top_form=='simple' && ${client} != "IPHONE")
+#if($!top_form && $!top_form=='simple')
 <li style="width: 3em;" title="$!{dayList}$l10n.SCHEDULE_DAY">
 <a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn" onclick="setTimeout(function(){aipo.customize.showMenuSchedule('$!{portlet.ID}');}, 0);"><span>$!{dayList}$l10n.SCHEDULE_DAY</span></a>
 </li>
 #end
 </ul>
 </div>
-
-#if(${client} == "IPHONE")
-<div style="line-height:24px; text-align:right;">
-<span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
-</div>
-#end
-
-#if($!top_form && $!top_form=='simple' && ${client} != "IPHONE")
+#if($!top_form && $!top_form=='simple')
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
 <li>
@@ -96,10 +91,8 @@
 </div>
 #end
 #if($!top_form && $!top_form=='simple')</div>#end
-
-#if(${client} != "IPHONE")<div style="height:30px; line-height:24px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
-</div>#end
-
+<div style="height:30px; line-height:24px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
+</div>
 #if(!$!top_form || $!top_form!='simple')</div>#end
 </div>
 
@@ -738,7 +731,7 @@
     </table>
 ##</div>
 #if($!ajax_onloadimage)
-  <img src="images/common/dot.gif" width="1" height="1" onload="#if(${client} == 'IPHONE') aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID'); #end initCalendar['$!{portlet.ID}'](true);" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="initCalendar['$!{portlet.ID}'](true);" />
 #else
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
