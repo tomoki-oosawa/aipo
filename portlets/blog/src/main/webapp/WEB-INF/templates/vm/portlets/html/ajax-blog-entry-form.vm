@@ -51,12 +51,13 @@
 <div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.BLOG_DAY_DAY" hiddenId="create_date" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="create_date_input" dateId="create_date" displayCheck="none"></div>
 <select name="create_date_hour" size="1">
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.CreateDate.Hour == "$num") selected #end>$num$l10n.BLOG_HOUR</option>
+<option value="$num" #if ($!result.CreateDate.Hour == "$num") selected #end>$num</option>
 #end
 </select>
+:
 <select name="create_date_minute" size="1">
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>$num分</option>
+<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>$num</option>
 #end
 </select>
 #ALtditemfooter()

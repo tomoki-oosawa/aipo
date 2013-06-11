@@ -46,7 +46,7 @@ $!{result.Detail.TitleHtml}
 </div>
 <div class="alignleft"><strong>${result.Detail.OwnerName}</strong>
 <br />
-$!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.Hour}$l10n.BLOG_HOUR$!{result.Detail.CreateDateAlternative.Minute}分
+$!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.time}
 </div>
 <div class="alignright">
 #if($!result.Editable)
@@ -105,7 +105,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   </div>
   <div class="alignleft"><strong>$!{record.OwnerName}</strong>
   <br />
-  $!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.Hour}時$!{record.UpdateDateAlternative.Minute}分
+  $!{record.UpdateDateAlternative.Year}年$!{record.UpdateDateAlternative.Month}月$!{record.UpdateDateAlternative.Day}日$!{record.UpdateDateAlternative.time}
   </div>
   <div class="alignright">
   #if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
