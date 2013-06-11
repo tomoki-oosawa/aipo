@@ -36,13 +36,9 @@
 
 #else
 #if($result.List.size() <= 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
-</p>
-</td></tr>
-#ALtablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+</div>
 #else
 #ALajaxlistformheader($l10n.WEBMAIL_FILTER)
 #AUISummaryDiv()
