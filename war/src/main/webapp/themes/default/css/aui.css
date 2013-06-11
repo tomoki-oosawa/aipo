@@ -1076,7 +1076,7 @@ img.avatar,
   display: block !important;
   line-height: 18px !important;
   padding: 3px 5px !important;
-  color: #000 !important;
+  color: #000;
   background-image: none !important;
 }
 
