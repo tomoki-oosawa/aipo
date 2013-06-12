@@ -57,7 +57,7 @@
 :
 <select name="create_date_minute" size="1">
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>$num</option>
+<option value="$num" #if ($!result.CreateDate.Minute == "$num") selected #end>#if($num<10)0#end$num</option>
 #end
 </select>
 #ALtditemfooter()
