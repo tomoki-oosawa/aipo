@@ -30,8 +30,8 @@
 #ALcell_dt($career "$l10n.BLOG_POSTING_NAME")
 <dd>$!result.Detail.OwnerName</dd>
 #ALcell_dt($career $l10n.BLOG_POSTING_DAY)
-<dd>$!{result.Detail.CreateDateAlternative.Year}/$!{result.Detail.CreateDateAlternative.Month}/$!{result.Detail.CreateDateAlternative.Day}&nbsp;$!{result.Detail.CreateDateAlternative.Hour}:$!{result.Detail.CreateDateAlternative.Minute}</dd>
-<br />
+<dd>$!{record.UpdateDateAlternative.Year}/$!{record.UpdateDateAlternative.Month}/$!{record.UpdateDateAlternative.Day}&nbsp;$!{record.UpdateDateAlternative.Time}</dd>
+<br />aaa
 #ALcell_dt($career "$l10n.BLOG_ENTRY_NOTE")
 #ALcell_dd($career $!{result.Detail.Note})
 #ALcell_dl_footer($career)
@@ -63,7 +63,7 @@ $l10n.BLOG_COMMENT_CELL_NOTHING
 #ALcell_dt($career "$l10n.BLOG_POSTING_NAME")
 <dd>$!{record.OwnerName}</dd>
 #ALcell_dt($career "$l10n.BLOG_POSTING_DAY")
-<dd>$!{record.UpdateDateAlternative.Year}/$!{record.UpdateDateAlternative.Month}/$!{record.UpdateDateAlternative.Day}&nbsp;$!{record.UpdateDateAlternative.Hour}:$!{record.UpdateDateAlternative.Minute}</dd>
+<dd>$!{record.UpdateDateAlternative.Year}/$!{record.UpdateDateAlternative.Month}/$!{record.UpdateDateAlternative.Day}&nbsp;$!{record.UpdateDateAlternative.Time}</dd>
 #ALcell_dt($career "$l10n.BLOG_COMMENT_CELL")
 #ALcell_dd($career $!{record.Comment})
 #if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
