@@ -31,7 +31,7 @@
 <dd>$!result.Detail.OwnerName</dd>
 #ALcell_dt($career $l10n.BLOG_POSTING_DAY)
 <dd>$!{record.UpdateDateAlternative.Year}/$!{record.UpdateDateAlternative.Month}/$!{record.UpdateDateAlternative.Day}&nbsp;$!{record.UpdateDateAlternative.Time}</dd>
-<br />aaa
+<br />
 #ALcell_dt($career "$l10n.BLOG_ENTRY_NOTE")
 #ALcell_dd($career $!{result.Detail.Note})
 #ALcell_dl_footer($career)
