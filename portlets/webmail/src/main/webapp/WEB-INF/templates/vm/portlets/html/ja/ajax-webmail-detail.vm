@@ -60,7 +60,7 @@ $!MailSubject
 </div>
 <div id="WebMailHeaderFieldTiny">
 #if($!{result.Detail.Date.toString()} != "")
-$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY $!{result.Detail.Date.Hour}$l10n.WEBMAIL_HOUR$!{result.Detail.Date.Minute}$l10n.WEBMAIL_MINUTE<br />
+$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY$!{result.Detail.Date.time}<br />
 #end
 $l10n.WEBMAIL_TO$l10n.WEBMAIL_COLON$!result.Detail.To<br />
 #if($!{result.Detail.From.toString()} != "")
