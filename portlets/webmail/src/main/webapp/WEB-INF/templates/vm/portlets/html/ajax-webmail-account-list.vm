@@ -55,7 +55,7 @@
 #ALtdcellAtt("$!record.MailAddress" ' nowrap')
 #ALtdcellAtt("$countUnRead" 'align="right" nowrap')
 #if($!record.FinalAccessDate.toString() != "")
-#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY $!{record.FinalAccessDate.Hour}$l10n.WEBMAIL_HOUR$!{record.FinalAccessDate.Minute}$l10n.WEBMAIL_MINUTE" 'align="left" valign="center" nowrap')
+#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY$!{record.FinalAccessDate.time}" 'align="left" valign="center" nowrap')
 #else
 #ALtdcellAtt($l10n.WEBMAIL_NOTHING 'align="center"')
 #end
