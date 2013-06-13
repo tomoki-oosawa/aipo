@@ -53,7 +53,7 @@
 						#end
 					</div>
 					<div>
-						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.time}
+						<b>$!{result.ParentTopic.OwnerName}</b><br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.DayOfWeek}  $!{result.ParentTopic.CreateDate.time}
 					</div>
 				</td>
 			</tr>
@@ -107,7 +107,7 @@
 						#end
 					</div>
 				<div class="alignleft">
-					<b>$!{record.OwnerName}</b><br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.time}
+					<b>$!{record.OwnerName}</b><br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.DayOfWeek} $!{record.CreateDate.time}
 				</div>
 			</div>
 			<div><br>

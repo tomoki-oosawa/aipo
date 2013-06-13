@@ -135,39 +135,11 @@
       <input id="repeat_typeM" type="radio" value="M" #if ($!{result.RepeatType.toString()} == "M") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeM">$l10n.SCHEDULE_EVERY_MONTH</label>
       <select onchange="aipo.schedule.enableMonth(this.form)" name="month_day">
-        <option value="1" #if ($!{result.MonthDay.toString()} == "1") selected #end>1$l10n.SCHEDULE_DAY</option>
-        <option value="2" #if ($!{result.MonthDay.toString()} == "2") selected #end>2$l10n.SCHEDULE_DAY</option>
-        <option value="3" #if ($!{result.MonthDay.toString()} == "3") selected #end>3$l10n.SCHEDULE_DAY</option>
-        <option value="4" #if ($!{result.MonthDay.toString()} == "4") selected #end>4$l10n.SCHEDULE_DAY</option>
-        <option value="5" #if ($!{result.MonthDay.toString()} == "5") selected #end>5$l10n.SCHEDULE_DAY</option>
-        <option value="6" #if ($!{result.MonthDay.toString()} == "6") selected #end>6$l10n.SCHEDULE_DAY</option>
-        <option value="7" #if ($!{result.MonthDay.toString()} == "7") selected #end>7$l10n.SCHEDULE_DAY</option>
-        <option value="8" #if ($!{result.MonthDay.toString()} == "8") selected #end>8$l10n.SCHEDULE_DAY</option>
-        <option value="9" #if ($!{result.MonthDay.toString()} == "9") selected #end>9$l10n.SCHEDULE_DAY</option>
-        <option value="10" #if ($!{result.MonthDay.toString()} == "10") selected #end>10$l10n.SCHEDULE_DAY</option>
-        <option value="11" #if ($!{result.MonthDay.toString()} == "11") selected #end>11$l10n.SCHEDULE_DAY</option>
-        <option value="12" #if ($!{result.MonthDay.toString()} == "12") selected #end>12$l10n.SCHEDULE_DAY</option>
-        <option value="13" #if ($!{result.MonthDay.toString()} == "13") selected #end>13$l10n.SCHEDULE_DAY</option>
-        <option value="14" #if ($!{result.MonthDay.toString()} == "14") selected #end>14$l10n.SCHEDULE_DAY</option>
-        <option value="15" #if ($!{result.MonthDay.toString()} == "15") selected #end>15$l10n.SCHEDULE_DAY</option>
-        <option value="16" #if ($!{result.MonthDay.toString()} == "16") selected #end>16$l10n.SCHEDULE_DAY</option>
-        <option value="17" #if ($!{result.MonthDay.toString()} == "17") selected #end>17$l10n.SCHEDULE_DAY</option>
-        <option value="18" #if ($!{result.MonthDay.toString()} == "18") selected #end>18$l10n.SCHEDULE_DAY</option>
-        <option value="19" #if ($!{result.MonthDay.toString()} == "19") selected #end>19$l10n.SCHEDULE_DAY</option>
-        <option value="20" #if ($!{result.MonthDay.toString()} == "20") selected #end>20$l10n.SCHEDULE_DAY</option>
-        <option value="21" #if ($!{result.MonthDay.toString()} == "21") selected #end>21$l10n.SCHEDULE_DAY</option>
-        <option value="22" #if ($!{result.MonthDay.toString()} == "22") selected #end>22$l10n.SCHEDULE_DAY</option>
-        <option value="23" #if ($!{result.MonthDay.toString()} == "23") selected #end>23$l10n.SCHEDULE_DAY</option>
-        <option value="24" #if ($!{result.MonthDay.toString()} == "24") selected #end>24$l10n.SCHEDULE_DAY</option>
-        <option value="25" #if ($!{result.MonthDay.toString()} == "25") selected #end>25$l10n.SCHEDULE_DAY</option>
-        <option value="26" #if ($!{result.MonthDay.toString()} == "26") selected #end>26$l10n.SCHEDULE_DAY</option>
-        <option value="27" #if ($!{result.MonthDay.toString()} == "27") selected #end>27$l10n.SCHEDULE_DAY</option>
-        <option value="28" #if ($!{result.MonthDay.toString()} == "28") selected #end>28$l10n.SCHEDULE_DAY</option>
-        <option value="29" #if ($!{result.MonthDay.toString()} == "29") selected #end>29$l10n.SCHEDULE_DAY</option>
-        <option value="30" #if ($!{result.MonthDay.toString()} == "30") selected #end>30$l10n.SCHEDULE_DAY</option>
-        <option value="31" #if ($!{result.MonthDay.toString()} == "31") selected #end>31$l10n.SCHEDULE_DAY</option>
+      #foreach ( $num in [1..31] )
+      	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
+      #end
       </select>
-    </div>
+   </div>
     <div class="p">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
       <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag"/>
@@ -186,44 +158,46 @@
         <span id="startTimeSpan">
         <select name="start_date_hour" size="1">
             #foreach ( $num in [0..23] )
-            <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num$l10n.SCHEDULE_HOUR</option>
+            <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num</option>
             #end
             </select>
+            :
             <select name="start_date_minute" size="1">
-            <option value="0" #if ($!result.StartDate.Minute == "0") selected="selected" #end>00$l10n.SCHEDULE_MINUTE</option>
-            <option value="5" #if ($!result.StartDate.Minute == "5") selected="selected" #end>05$l10n.SCHEDULE_MINUTE</option>
-            <option value="10" #if ($!result.StartDate.Minute == "10") selected="selected" #end>10$l10n.SCHEDULE_MINUTE</option>
-            <option value="15" #if ($!result.StartDate.Minute == "15") selected="selected" #end>15$l10n.SCHEDULE_MINUTE</option>
-            <option value="20" #if ($!result.StartDate.Minute == "20") selected="selected" #end>20$l10n.SCHEDULE_MINUTE</option>
-            <option value="25" #if ($!result.StartDate.Minute == "25") selected="selected" #end>25$l10n.SCHEDULE_MINUTE</option>
-            <option value="30" #if ($!result.StartDate.Minute == "30") selected="selected" #end>30$l10n.SCHEDULE_MINUTE</option>
-            <option value="35" #if ($!result.StartDate.Minute == "35") selected="selected" #end>35$l10n.SCHEDULE_MINUTE</option>
-            <option value="40" #if ($!result.StartDate.Minute == "40") selected="selected" #end>40$l10n.SCHEDULE_MINUTE</option>
-            <option value="45" #if ($!result.StartDate.Minute == "45") selected="selected" #end>45$l10n.SCHEDULE_MINUTE</option>
-            <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50$l10n.SCHEDULE_MINUTE</option>
-            <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55$l10n.SCHEDULE_MINUTE</option>
+            <option value="0" #if ($!result.StartDate.Minute == "0") selected="selected" #end>00</option>
+            <option value="5" #if ($!result.StartDate.Minute == "5") selected="selected" #end>05</option>
+            <option value="10" #if ($!result.StartDate.Minute == "10") selected="selected" #end>10</option>
+            <option value="15" #if ($!result.StartDate.Minute == "15") selected="selected" #end>15</option>
+            <option value="20" #if ($!result.StartDate.Minute == "20") selected="selected" #end>20</option>
+            <option value="25" #if ($!result.StartDate.Minute == "25") selected="selected" #end>25</option>
+            <option value="30" #if ($!result.StartDate.Minute == "30") selected="selected" #end>30</option>
+            <option value="35" #if ($!result.StartDate.Minute == "35") selected="selected" #end>35</option>
+            <option value="40" #if ($!result.StartDate.Minute == "40") selected="selected" #end>40</option>
+            <option value="45" #if ($!result.StartDate.Minute == "45") selected="selected" #end>45</option>
+            <option value="50" #if ($!result.StartDate.Minute == "50") selected="selected" #end>50</option>
+            <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55</option>
             </select>
         </span>&nbsp;-&nbsp;
         <span id="endTimeSpan">
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="" #if ($!result.isSameDate) selected="selected" #end>--$l10n.SCHEDULE_HOUR</option>
+            <option value="" #if ($!result.isSameDate) selected="selected" #end>--</option>
             #foreach ( $num in [0..23] )
-            <option value="$num" #if (!$!result.isSameDate && $!result.EndDate.Hour == "$num") selected="selected" #end >$num$l10n.SCHEDULE_HOUR</option>
+            <option value="$num" #if (!$!result.isSameDate && $!result.EndDate.Hour == "$num") selected="selected" #end >$num</option>
             #end
             </select>
+            :
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
-            <option value="0" #if ($!result.isSameDate || (!$!result.isSameDate && $!result.EndDate.Minute == "0")) selected="selected" #end>00$l10n.SCHEDULE_MINUTE</option>
-            <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05$l10n.SCHEDULE_MINUTE</option>
-            <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10$l10n.SCHEDULE_MINUTE</option>
-            <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15$l10n.SCHEDULE_MINUTE</option>
-            <option value="20" #if (!$!result.isSameDate && $!result.EndDate.Minute == "20") selected="selected" #end>20$l10n.SCHEDULE_MINUTE</option>
-            <option value="25" #if (!$!result.isSameDate && $!result.EndDate.Minute == "25") selected="selected" #end>25$l10n.SCHEDULE_MINUTE</option>
-            <option value="30" #if (!$!result.isSameDate && $!result.EndDate.Minute == "30") selected="selected" #end>30$l10n.SCHEDULE_MINUTE</option>
-            <option value="35" #if (!$!result.isSameDate && $!result.EndDate.Minute == "35") selected="selected" #end>35$l10n.SCHEDULE_MINUTE</option>
-            <option value="40" #if (!$!result.isSameDate && $!result.EndDate.Minute == "40") selected="selected" #end>40$l10n.SCHEDULE_MINUTE</option>
-            <option value="45" #if (!$!result.isSameDate && $!result.EndDate.Minute == "45") selected="selected" #end>45$l10n.SCHEDULE_MINUTE</option>
-            <option value="50" #if (!$!result.isSameDate && $!result.EndDate.Minute == "50") selected="selected" #end>50$l10n.SCHEDULE_MINUTE</option>
-            <option value="55" #if (!$!result.isSameDate && $!result.EndDate.Minute == "55") selected="selected" #end>55$l10n.SCHEDULE_MINUTE</option>
+            <option value="0" #if ($!result.isSameDate || (!$!result.isSameDate && $!result.EndDate.Minute == "0")) selected="selected" #end>00</option>
+            <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05</option>
+            <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10</option>
+            <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15</option>
+            <option value="20" #if (!$!result.isSameDate && $!result.EndDate.Minute == "20") selected="selected" #end>20</option>
+            <option value="25" #if (!$!result.isSameDate && $!result.EndDate.Minute == "25") selected="selected" #end>25</option>
+            <option value="30" #if (!$!result.isSameDate && $!result.EndDate.Minute == "30") selected="selected" #end>30</option>
+            <option value="35" #if (!$!result.isSameDate && $!result.EndDate.Minute == "35") selected="selected" #end>35</option>
+            <option value="40" #if (!$!result.isSameDate && $!result.EndDate.Minute == "40") selected="selected" #end>40</option>
+            <option value="45" #if (!$!result.isSameDate && $!result.EndDate.Minute == "45") selected="selected" #end>45</option>
+            <option value="50" #if (!$!result.isSameDate && $!result.EndDate.Minute == "50") selected="selected" #end>50</option>
+            <option value="55" #if (!$!result.isSameDate && $!result.EndDate.Minute == "55") selected="selected" #end>55</option>
             </select>
         </span></div>
   </div>
