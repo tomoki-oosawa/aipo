@@ -681,7 +681,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 }
             }
             // スマートフォン対応用
-            if(aipo.onloadSmartPhone==null){
+            if(aipo.onloadSmartPhone!=null){
             	aipo.onloadSmartPhone();
             }
         },
