@@ -44,7 +44,7 @@ $portlet.getContent($data)
 	                                        <a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
 	                                        #else
 
-	                                        #set($clink = $!utils.escapeXML("$!{tab.Link}&template=CustomizeFormScreen") )
+	                                        #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
 											#if ($tab.isSelected() == true)
 												#set($activeurlselected=$clink)
 											#end
