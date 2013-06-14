@@ -130,7 +130,7 @@ $l10n.WEBMAIL_NOT_REFLECT_MSG
 <tbody>
 <tr>
 <td colspan="2">
-$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY $!{result.Detail.Date.Hour}$l10n.WEBMAIL_HOUR$!{result.Detail.Date.Minute}$l10n.WEBMAIL_MINUTE<br>
+$l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY$!{result.Detail.Date.time}<br>
 $l10n.WEBMAIL_TO$l10n.WEBMAIL_COLON$!result.Detail.To<br>
 $l10n.WEBMAIL_SENDER$l10n.WEBMAIL_COLON$!result.Detail.From<br>
 </td>
