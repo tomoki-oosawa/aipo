@@ -313,6 +313,22 @@ aipo.timeline.onReceiveMessage = function(msg) {
   }
 }
 
+aipo.timeline.onReceiveMessageToList = function(msg) {
+	  var pid = dojo.byId("getTimelinePortletId").innerHTML;
+	  if (!msg) {
+	    var arrDialog = dijit.byId("modalDialog_" + pid);
+	    if (arrDialog) {
+	      arrDialog.hide();
+	    }
+	    aipo.portletReload('timeline');
+	  }else{
+	    dojo.byId('getTimelineOnClick').innerHTML=''
+	  }
+	  if (dojo.byId("messageDivList_" + pid)) {
+	    dojo.byId("messageDivList_" + pid).innerHTML = msg;
+	  }
+	}
+
 aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isComment) {
 	  var pid = dojo.byId("getTimelinePortletId").innerHTML;
 	    var arrDialog = dijit.byId("modalDialog_" + pid);
