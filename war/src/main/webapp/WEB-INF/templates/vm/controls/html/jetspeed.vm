@@ -42,7 +42,6 @@
 // ウィジェットメニュー用
 aipo.onloadSmartPhone = function(){
 	var widgets_area = dojo.byId('auiWidgetsArea');
-	if(dojo.byId("snDrawer"))return;
 	if(widgets_area != null){
 		// classの追加
 		var is_menu = false;
@@ -65,7 +64,7 @@ aipo.onloadSmartPhone = function(){
 		if(is_menu){
 			var elem = document.createElement('div');
 			elem.className = 'snDrawer';
-			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';
+			elem.innerHTML = '<a href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';
 			widgets_area.appendChild(elem);
 		}
 	}
