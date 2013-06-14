@@ -828,7 +828,7 @@ $item.get(0)
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
 	<div class="auiPortletHead"><div class="inner">
-		<div class="auiPortletTitle">$!portlet.Title</div>
+		<div class="auiPortletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
 		<div class="auiPortletTool">
 		</div>
 	</div></div>

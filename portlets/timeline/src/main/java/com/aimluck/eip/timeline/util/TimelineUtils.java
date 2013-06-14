@@ -53,6 +53,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -754,7 +755,8 @@ public class TimelineUtils {
     return query;
   }
 
-  public static void deleteFiles(int timelineId) {
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
     SelectQuery<EipTTimelineFile> query =
       Database.query(EipTTimelineFile.class);
     query.andQualifier(ExpressionFactory.matchDbExp(
@@ -762,6 +764,22 @@ public class TimelineUtils {
       timelineId));
     List<EipTTimelineFile> files = query.fetchList();
     Database.deleteAll(files);
+
+    if (fpaths.size() > 0) {
+      // ローカルファイルに保存されているファイルを削除する．
+      try {
+        int fsize = fpaths.size();
+        for (int i = 0; i < fsize; i++) {
+          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
+            + fpaths.get(i));
+        }
+      } catch (Exception e) {
+        Database.rollback();
+        ALFileNotRemovedException fe = new ALFileNotRemovedException();
+        fe.initCause(e);
+        throw fe;
+      }
+    }
     Database.commit();
   }
 
@@ -1098,7 +1116,7 @@ public class TimelineUtils {
   }
 
   public static void deleteTimelineActivity(RunData rundata, Context context,
-      String appId, String ExternalId) {
+      String appId, String ExternalId) throws ALFileNotRemovedException {
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTTimeline.APP_ID_PROPERTY, appId);
@@ -1120,7 +1138,7 @@ public class TimelineUtils {
 
   public static boolean deleteTimelineFromParent(RunData rundata,
       Context context, String appId, EipTTimeline parent)
-      throws ALDBErrorException {
+      throws ALDBErrorException, ALFileNotRemovedException {
     try {
       int uid = ALEipUtils.getUserId(rundata);
       String orgId = Database.getDomainName();
@@ -1170,14 +1188,17 @@ public class TimelineUtils {
       if (topics.size() > 0) {
         int tsize = topics.size();
         for (int i = 0; i < tsize; i++) {
-          List<?> files = topics.get(i).getEipTTimelineFile();
+          EipTTimeline item = topics.get(i);
+          List<?> files = item.getEipTTimelineFile();
           if (files != null && files.size() > 0) {
             int fsize = files.size();
             for (int j = 0; j < fsize; j++) {
               fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
             }
           }
-          TimelineUtils.deleteFiles(topics.get(i).getTimelineId());
+          TimelineUtils.deleteFiles(topics.get(i).getTimelineId(), orgId, item
+            .getTurbineUser()
+            .getUserId(), fpaths);
           TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
         }
       }
@@ -1188,15 +1209,6 @@ public class TimelineUtils {
 
       Database.deleteAll(topics);
       Database.commit();
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
 
       ALTimelineFactoryService tlservice =
         (ALTimelineFactoryService) ((TurbineServices) TurbineServices
@@ -1209,6 +1221,11 @@ public class TimelineUtils {
         parent.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         parent.getNote());
+    } catch (ALFileNotRemovedException e) {
+      // ALFileNotRemovedException
+      Database.rollback();
+      logger.error("[TimelineSelectData]", e);
+      throw new ALFileNotRemovedException();
     } catch (RuntimeException e) {
       // RuntimeException
       Database.rollback();
@@ -1223,7 +1240,7 @@ public class TimelineUtils {
   }
 
   public static void deleteParent(List<EipTTimeline> list,
-      List<Integer> topicParentIdList, String orgId, int uid) {
+      List<Integer> topicParentIdList, String orgId, int uid) throws Exception {
     int topicparent = 0;
     topicparent = topicParentIdList.get(0);
 
@@ -1249,8 +1266,11 @@ public class TimelineUtils {
       if (tParent.size() > 0) {
         int tsize = tParent.size();
         for (int i = 0; i < tsize; i++) {
-          List<?> files = tParent.get(i).getEipTTimelineFile();
-          TimelineUtils.deleteFiles(tParent.get(i).getTimelineId());
+          EipTTimeline item = tParent.get(i);
+          List<?> files = item.getEipTTimelineFile();
+          TimelineUtils.deleteFiles(item.getTimelineId(), orgId, item
+            .getTurbineUser()
+            .getUserId(), fpaths);
           TimelineUtils.deleteLikes(tParent.get(i).getTimelineId());
           if (files != null && files.size() > 0) {
             int fsize = files.size();
@@ -1263,15 +1283,6 @@ public class TimelineUtils {
 
       Database.deleteAll(tParent);
       Database.commit();
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
     }
   }
 }

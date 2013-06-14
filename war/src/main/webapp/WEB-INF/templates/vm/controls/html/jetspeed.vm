@@ -193,6 +193,11 @@ function appsNaviSwitch() {
 #ALtabElementMaximize("AddressBook" "auiMbIconAddress")
 #ALtabElementMaximize("UserList" "auiMbIconUsers")
 #ALtabElementMaximize("Memo" "auiMbIconMemo")
+#foreach($tab in $menus)
+	#if($tab.Name.toString() == "GadgetsTemplate")
+	<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon"></i><span>$tab.Title</span></a></li>
+	#end
+#end
                 </ul>
         </div>
         <div class="anSetting">
