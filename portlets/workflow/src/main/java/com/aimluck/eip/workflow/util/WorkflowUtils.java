@@ -47,6 +47,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequest;
@@ -57,6 +58,7 @@ import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -412,6 +414,16 @@ public class WorkflowUtils {
       logger.error("[WorkflowUtils]", ex);
       throw new ALDBErrorException();
     }
+  }
+
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
+      EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTWorkflowFile.class);
   }
 
   public static List<EipTWorkflowRequestMap> getEipTWorkflowRequestMap(
