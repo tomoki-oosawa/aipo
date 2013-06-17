@@ -47,6 +47,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
@@ -57,6 +58,7 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -732,6 +734,16 @@ public class MsgboardUtils {
       return null;
     }
     return categoryList;
+  }
+
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
+      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTMsgboardFile.class);
   }
 
   /**

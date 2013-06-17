@@ -25,6 +25,8 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
 	#if(! $!{result.ParentTopic.isPublic()})
@@ -138,8 +140,6 @@
 #ALformfooter()
 
 #if($!resultOnTopicDetail)
-	<div id="messageDiv"></div>
-	<div id="messageDiv_$!portlet.ID"></div>
 	#ALajaxscreenformheader("msgboardForm" $jslink $portlet "MsgboardTopicFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.msgboard.onReceiveMessage)")
 		<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
 		<input type="hidden" name="mode" value="topic_reply" />

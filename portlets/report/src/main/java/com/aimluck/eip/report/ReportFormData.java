@@ -468,7 +468,7 @@ public class ReportFormData extends ALAbstractFormData {
 
     } catch (ALFileNotRemovedException fe) {
       Database.rollback();
-      logger.error("BlogEntryFormData.deleteFormData", fe);
+      logger.error("report", fe);
       msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
       return false;
     } catch (Exception ex) {
