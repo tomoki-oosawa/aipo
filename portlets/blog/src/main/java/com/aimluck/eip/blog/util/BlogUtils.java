@@ -47,6 +47,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.blog.BlogThemaResultData;
 import com.aimluck.eip.blog.BlogUserResultData;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
@@ -59,6 +60,7 @@ import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -647,6 +649,16 @@ public class BlogUtils {
     return null;
   }
 
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
+      EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTBlogFile.class);
+  }
+
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
    * 
@@ -966,11 +978,11 @@ public class BlogUtils {
       RecentActivity.delete();
     }
   }
-  
+
   public static void createNewCommentActivity(EipTBlogEntry blog,
-	      String loginName, EipTBlogComment blogcomment) {
-	    createNewCommentActivity(blog, loginName, null, blogcomment);
-    }
+      String loginName, EipTBlogComment blogcomment) {
+    createNewCommentActivity(blog, loginName, null, blogcomment);
+  }
 
   public static void createNewCommentActivity(EipTBlogEntry blog,
       String loginName, List<String> recipients, EipTBlogComment blogcomment) {

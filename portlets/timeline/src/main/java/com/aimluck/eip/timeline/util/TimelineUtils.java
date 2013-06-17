@@ -45,6 +45,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -757,30 +758,12 @@ public class TimelineUtils {
 
   public static void deleteFiles(int timelineId, String orgId, int uid,
       List<String> fpaths) throws ALFileNotRemovedException {
-    SelectQuery<EipTTimelineFile> query =
-      Database.query(EipTTimelineFile.class);
-    query.andQualifier(ExpressionFactory.matchDbExp(
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
       EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
-      timelineId));
-    List<EipTTimelineFile> files = query.fetchList();
-    Database.deleteAll(files);
-
-    if (fpaths.size() > 0) {
-      // ローカルファイルに保存されているファイルを削除する．
-      try {
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(TimelineUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      } catch (Exception e) {
-        Database.rollback();
-        ALFileNotRemovedException fe = new ALFileNotRemovedException();
-        fe.initCause(e);
-        throw fe;
-      }
-    }
-    Database.commit();
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTTimelineFile.class);
   }
 
   public static void deleteLikes(int timelineId) {
@@ -1196,7 +1179,7 @@ public class TimelineUtils {
               fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
             }
           }
-          TimelineUtils.deleteFiles(topics.get(i).getTimelineId(), orgId, item
+          deleteFiles(item.getTimelineId(), orgId, item
             .getTurbineUser()
             .getUserId(), fpaths);
           TimelineUtils.deleteLikes(topics.get(i).getTimelineId());
@@ -1268,7 +1251,7 @@ public class TimelineUtils {
         for (int i = 0; i < tsize; i++) {
           EipTTimeline item = tParent.get(i);
           List<?> files = item.getEipTTimelineFile();
-          TimelineUtils.deleteFiles(item.getTimelineId(), orgId, item
+          deleteFiles(item.getTimelineId(), orgId, item
             .getTurbineUser()
             .getUserId(), fpaths);
           TimelineUtils.deleteLikes(tParent.get(i).getTimelineId());
