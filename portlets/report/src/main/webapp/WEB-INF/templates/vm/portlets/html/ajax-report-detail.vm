@@ -26,6 +26,8 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($l10n.REPORT_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxdetailformheader($l10n.REPORT_INSERTION)##delete時メッセージ
 #ALtableheaderWideWithCaption($!result.ParentReport.ReportName)
 <tr>
@@ -122,8 +124,6 @@ ${record.Note}
 #end
 #ALformfooter()
 #if($!resultOnReportDetail)
-<div id="messageDiv"></div>
-<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
 <input type="hidden" name="mode" value="report_reply" />
 <input type="hidden" name="entityid" value="$!result.ParentReport.ReportId" />

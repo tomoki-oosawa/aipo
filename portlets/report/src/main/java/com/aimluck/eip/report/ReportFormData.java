@@ -47,6 +47,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -425,15 +426,11 @@ public class ReportFormData extends ALAbstractFormData {
         for (int j = 0; j < fsize; j++) {
           fpaths.add((files.get(j)).getFilePath());
         }
-      }
-
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(ReportUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
+        ReportUtils.deleteFiles(
+          report.getReportId(),
+          orgId,
+          report.getUserId(),
+          fpaths);
       }
 
       // リクエストを削除
@@ -469,6 +466,11 @@ public class ReportFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_REPORT,
         reqname);
 
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("BlogEntryFormData.deleteFormData", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("report", ex);
