@@ -1,12 +1,15 @@
 @charset "utf-8";
-
 /***************************************************
 	style denial
 --------------------------------------------------*/
-body {position:absolute}
-.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
-	display:none;
+body {
+  position: absolute;
 }
+
+.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
+  display: none;
+}
+
 #header {padding:0;height:auto}
 #header .inner {height:auto}
 .hdNavi {
@@ -128,6 +131,71 @@ td.container {
 --------------------------------------------------*/
 select {
     max-width:310px;
+}
+
+/***************************************************
+	auiButton
+--------------------------------------------------*/
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch,
+.auiButtonSmall,
+.auiButtonDisabled,
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch {
+  min-width: 32;
+  height: 32px;
+  line-height: 30px;
+  padding: 0 5px;
+}
+
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 5px;
+}
+
+.auiButton span {
+  display: table-cell;
+  min-width: 30px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+*:first-child + html .auiButton span {
+  display: block;
+}
+
+.auiButtonDisabled {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+}
+
+/***************************************************
+	auiForm
+--------------------------------------------------*/
+input[type=text],
+input[type=password] {
+  height: 32px;
 }
 
 /***************************************************
@@ -558,23 +626,63 @@ select {
 	auiSearch
 --------------------------------------------------*/
 .auiSearch {
+  padding-right: 65px;
 }
+
+.auiSearch:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 .auiSearch input.long {
-	min-width:0 !important;
+  min-width: 0 !important;
 }
+
 .auiSearch input.text {
+  width: 100%;
 }
+
 .auiButtonSearch {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
 }
 
 /***************************************************
 	indicator
 --------------------------------------------------*/
 .indicatorWrap {
-  clear: both;
-  float: none;
-  width: 18px;
-  margin: 5px auto 0 !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 32px;
+  width: 100%;
+  margin: 0 !important;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.indicator {
+  background: url(../images/common/loading_smp_white.gif) no-repeat left;
+  background-size: 100% 100%;
+}
+
+.indicatorWrap .indicator {
+  width: 16px;
+  height: 16px;
+  margin: 6px auto 0;
+  padding: 0;
+  background-color: #ffffff;
+  border: solid 2px #ffffff;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 0 5px white;
+  -moz-box-shadow: 0 0 5px white;
+  box-shadow: 0 0 5px white;
 }
 
 /***************************************************
