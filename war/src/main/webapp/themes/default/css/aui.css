@@ -450,9 +450,13 @@ img.avatar,
 }
 
 .auiPortletHead .inner {
-  background: url(../images/common/portlet_x.gif?20121011) no-repeat left 0 !important;
-  height: 45px !important;
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat left 0;
+  height: 45px;
   position: relative;
+}
+
+.auiPortletBody .auiPortletHead .inner {
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat left 0 !important;
   padding: 0 !important;
 }
 
@@ -516,8 +520,12 @@ img.avatar,
 }
 
 .auiPortletFoot .inner {
+  background: url(../images/common/portlet_x.gif?20121011) no-repeat right -124px;
+  height: 20px;
+}
+
+.auiPortletBody .auiPortletFoot .inner {
   background: url(../images/common/portlet_x.gif?20121011) no-repeat right -124px !important;
-  height: 20px !important;
   padding: 0 !important;
 }
 
