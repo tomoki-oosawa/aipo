@@ -26,13 +26,9 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.TODO_MANAGEMENT</h2>
 #if($result.List.size() <= 0)
-  #AUIrowTableWide()
-  <tr>
-  <td colspan="4" class="auiNoData">
-  <p class="mh10">#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")</p>
-  </td>
-  </tr>
-  #AUItablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+</div>
 #else
 
 <div class="auiSummaryMeta clearfix"><p>
