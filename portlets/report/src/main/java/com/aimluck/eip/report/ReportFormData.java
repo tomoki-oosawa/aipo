@@ -37,6 +37,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
@@ -1012,5 +1013,9 @@ public class ReportFormData extends ALAbstractFormData {
   @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
+  }
+
+  public static String toTwoDigitString(int num) {
+    return ALStringUtil.toTwoDigitString(new ALNumberField(num));
   }
 }

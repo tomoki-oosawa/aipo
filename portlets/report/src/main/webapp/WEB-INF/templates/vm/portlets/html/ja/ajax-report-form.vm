@@ -94,9 +94,9 @@
 #end
 </select>&nbsp;:
 <select name="startDate_minute" size="1">
-#foreach ( $num in [0..12] )
+#foreach ( $num in [0..11] )
 #set($num2 = $num * 5)
-<option value="${num2}" #if ($!result.StartDate.Minute == "${num2}") selected #end>#if($num2 < 10)0${num2}#else${num2}#end</option>
+<option value="${num2}" #if ($!result.StartDate.Minute == "${num2}") selected #end>$!result.toTwoDigitString($!num2)</option>
 #end
 </select>
 &nbsp;-&nbsp;
@@ -106,9 +106,9 @@
 #end
 </select>&nbsp;:
 <select name="endDate_minute" size="1">
-#foreach ( $num in [0..12] )
+#foreach ( $num in [0..11] )
 #set($num2 = $num * 5)
-<option value="${num2}" #if ($!result.EndDate.Minute == "${num2}") selected #end>#if($num2 < 10)0${num2}#else${num2}#end</option>
+<option value="${num2}" #if ($!result.EndDate.Minute == "${num2}") selected #end>$!result.toTwoDigitString($!num2)</option>
 #end
 </select>
 #ALtditemfooter()
