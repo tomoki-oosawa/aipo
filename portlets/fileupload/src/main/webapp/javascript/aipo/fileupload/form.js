@@ -75,6 +75,7 @@ aipo.fileupload.showImageDialog = function(url, portlet_id, callback) {
 
     if(! aipo.fileupload.ImageDialog){
     	aipo.fileupload.ImageDialog = new aipo.fileupload.widget.FileuploadViewDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
+    	dojo.query("#imageDialog").addClass("preLoadImage");
     }else{
     	aipo.fileupload.ImageDialog.setCallback(portlet_id, callback);
     }

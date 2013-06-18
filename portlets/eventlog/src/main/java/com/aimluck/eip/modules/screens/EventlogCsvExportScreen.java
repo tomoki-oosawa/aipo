@@ -70,7 +70,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
    */
   protected EventlogResultData getResultData(EipTEventlog record) {
     try {
-      DateFormat df = new SimpleDateFormat("yyyy年MM月dd日(EE)HH時mm分ss秒");
+      DateFormat df = new SimpleDateFormat("yyyy年MM月dd日(EE)HH:mm:ss");
 
       EventlogResultData rd = new EventlogResultData();
       rd.initField();

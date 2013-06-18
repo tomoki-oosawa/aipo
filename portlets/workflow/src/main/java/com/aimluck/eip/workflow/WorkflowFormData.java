@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -532,6 +533,8 @@ public class WorkflowFormData extends ALAbstractFormData {
         int fsize = files.size();
         for (int j = 0; j < fsize; j++) {
           fpaths.add((files.get(j)).getFilePath());
+          WorkflowUtils.deleteFiles(request.getRequestId(), orgId, request
+            .getUserId(), fpaths);
         }
       }
 
@@ -560,6 +563,11 @@ public class WorkflowFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
         catname + " " + reqname);
 
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("workflow", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("workflow", ex);

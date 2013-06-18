@@ -40,6 +40,7 @@
 
 #if($result.List.size() == 0)
 <div class="message">$l10n.BLOG_NOTHING_ENTRY。</div>
+<div id="messageDivList_$!portlet.ID"></div>
 #else
 <div id="auiBlogEntries">
 #foreach ($record in $result.List)
@@ -65,6 +66,7 @@
 </div>
 #end
 </div>
+<div id="messageDivList_$!portlet.ID"></div>
 #end
 <div class="auiSummaryMeta clearfix">
 #if ($result.List.size() != 0)

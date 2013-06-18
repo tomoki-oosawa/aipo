@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -57,6 +58,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログエントリーのフォームデータを管理するクラスです。 <BR>
@@ -313,8 +315,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
       // entityIdの取得
       int entityId = entry.getEntryId();
+
       // タイトルの取得
       String todoName = entry.getTitle();
+
+      int userId = ALEipUtils.getTurbineUser(entry.getOwnerId()).getUserId();
 
       List<String> fpaths = new ArrayList<String>();
       List<?> files = entry.getEipTBlogFiles();
@@ -323,6 +328,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         for (int i = 0; i < size; i++) {
           fpaths.add(((EipTBlogFile) files.get(i)).getFilePath());
         }
+        BlogUtils.deleteFiles(entityId, orgId, userId, fpaths);
       }
 
       // エントリーを削除
@@ -339,15 +345,11 @@ public class BlogEntryFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_BLOG_ENTRY,
         todoName);
 
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(BlogUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-
-        }
-      }
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("BlogEntryFormData.deleteFormData", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("BlogEntryFormData.deleteFormData", ex);

@@ -41,6 +41,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -190,6 +191,11 @@ public class TimelineFormData extends ALAbstractFormData {
         return true;
       }
 
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("[TimelineSelectData]", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[TimelineSelectData]", e);

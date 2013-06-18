@@ -22,6 +22,7 @@ package com.aimluck.eip.timeline;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * タイムライントピックのResultData <BR>
@@ -124,6 +125,10 @@ public class TimelineUrlResultData implements ALData {
     return title;
   }
 
+  public String getAutoCRTitle() {
+    return ALCommonUtils.replaceToAutoCR(title.toString());
+  }
+
   /**
    * @param title
    *          セットする title
@@ -161,11 +166,19 @@ public class TimelineUrlResultData implements ALData {
     }
   }
 
+  public String getAutoCRBasePath() {
+    return ALCommonUtils.replaceToAutoCR(getBasePath());
+  }
+
   /**
    * @return body
    */
   public ALStringField getBody() {
     return body;
+  }
+
+  public String getAutoCRBody() {
+    return ALCommonUtils.replaceToAutoCR(body.toString());
   }
 
   /**

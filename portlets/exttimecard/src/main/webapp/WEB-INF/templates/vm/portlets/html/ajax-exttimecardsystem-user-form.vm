@@ -32,24 +32,26 @@
 #ALtditemheader()
 <select name="start_time_hour" size="1" >
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.StartTimeHour.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
+<option value="$num" #if ($!result.StartTimeHour.toString() == "$num") selected="selected" #end>$num</option>
 #end
 </select>
+:
 <select name="start_time_minute" size="1">
 #foreach ( $num in [0..59] )
 #if($num % 5 == 0)
-<option value="$num" #if ($!result.StartTimeMinute.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
+<option value="$num" #if ($!result.StartTimeMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 #end
 </select>&nbsp;-&nbsp;<select name="end_time_hour" size="1" >
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.EndTimeHour.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_HOUR</option>
+<option value="$num" #if ($!result.EndTimeHour.toString() == "$num") selected="selected" #end>$num</option>
 #end
 </select>
+:
 <select name="end_time_minute" size="1">
 #foreach ( $num in [0..59] )
 #if($num % 5 == 0)
-<option value="$num" #if ($!result.EndTimeMinute.toString() == "$num") selected="selected" #end>$num$l10n.EXTTIMECARD_MINUTE</option>
+<option value="$num" #if ($!result.EndTimeMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 #end
 </select>

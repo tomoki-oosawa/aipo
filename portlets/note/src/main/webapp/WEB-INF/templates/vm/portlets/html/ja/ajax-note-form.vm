@@ -42,12 +42,13 @@
 <div dojoType="aipo.widget.DropdownDatepicker" id="acceptdatepicker" widgetId="acceptdatepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.NOTE_CLERK_DAY" hiddenId="accept_date" initValue="$!{result.AcceptDate.Year}/$!{result.AcceptDate.Month}/$!{result.AcceptDate.Day}" inputId="input_acceptdate" dateId="accept_date" displayCheck="none"></div>
 <select name="accept_date_hour" size="1">
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.AcceptDate.Hour == "$num") selected #end>$num時</option>
+<option value="$num" #if ($!result.AcceptDate.Hour == "$num") selected #end>$num</option>
 #end
 </select>
+:
 <select name="accept_date_minute" size="1">
-#foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.AcceptDate.Minute == "$num") selected #end>$num分</option>
+#foreach ( $num in [00..59] )
+<option value="$num" #if ($!result.AcceptDate.Minute == "$num") selected #end>#if($num<10)0#end$num</option>
 #end
 </select>
 #ALtditemfooter()

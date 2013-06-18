@@ -27,8 +27,8 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="note_val_destuser1" style="display:none">選択してください</span>
-<span id="note_val_destuser2" style="display:none">すべてのユーザー</span>
+<span id="note_val_destuser1" style="display:none">$l10n.NOTE_SELECT</span>
+<span id="note_val_destuser2" style="display:none">$l10n.NOTE_ALL_USER</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -39,15 +39,16 @@
 #ALtableheaderWide()
 #ALtdcaption("$!result.getFieldName('accept_date')")
 #ALtditemheader()
-<div dojoType="aipo.widget.DropdownDatepicker" id="acceptdatepicker" widgetId="acceptdatepicker" iconURL="images/icon/icon_date.gif" iconAlt="受付日" hiddenId="accept_date" initValue="$!{result.AcceptDate.Year}/$!{result.AcceptDate.Month}/$!{result.AcceptDate.Day}" inputId="input_acceptdate" dateId="accept_date" displayCheck="none"></div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="acceptdatepicker" widgetId="acceptdatepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.NOTE_CLERK_DAY" hiddenId="accept_date" initValue="$!{result.AcceptDate.Year}/$!{result.AcceptDate.Month}/$!{result.AcceptDate.Day}" inputId="input_acceptdate" dateId="accept_date" displayCheck="none"></div>
 <select name="accept_date_hour" size="1">
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.AcceptDate.Hour == "$num") selected #end>$num時</option>
+<option value="$num" #if ($!result.AcceptDate.Hour == "$num") selected #end>$num</option>
 #end
 </select>
+:
 <select name="accept_date_minute" size="1">
-#foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.AcceptDate.Minute == "$num") selected #end>$num分</option>
+#foreach ( $num in [00..59] )
+<option value="$num" #if ($!result.AcceptDate.Minute == "$num") selected #end>#if($num<10)0#end$num</option>
 #end
 </select>
 #ALtditemfooter()
@@ -55,7 +56,7 @@
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
 <select name="target_group_name" id="target_group_name" style="width:49%;float:left;" onchange="aipo.note.changeGroup('$screenlink', this.options[this.selectedIndex].value, '')">
-<option value="LoginUser">すべてのグループ</option>
+<option value="LoginUser">$l10n.NOTE_ALL_GROUP</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!{record.Name.toString()}" #if($!result.TargetGroupName == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
 #end
@@ -77,26 +78,26 @@
 -
 #ALtextfield('telephone2' $!result.Telephone2 '50px' 4 'disabled')
 -
-#ALtextfield('telephone3' $!result.Telephone3 '50px' 4 'disabled')#ALcaution('（半角数字）')
+#ALtextfield('telephone3' $!result.Telephone3 '50px' 4 'disabled')#ALcaution($l10n.NOTE_HALF_SIZE_Number)
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('email_address')")
 #ALtditem("#ALtextfield('email_address' $!result.EmailAddress '90%' 50 'disabled')")
 #ALtdcaption($!result.getFieldName('add_dest_type_pc'))
 #ALtditemheader()
-<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;メールアドレス</label>
-<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">&nbsp;携帯メールアドレス</label>
+<input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;$l10n.NOTE_EMAIL</label>
+<input name="add_dest_type_cellphone" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_cellphone_id" #if($!result.AddDestTypeCellphone.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_cellphone_id">&nbsp;$l10n.NOTE_CELLILAR_PHONE_MAIL</label>
 
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('subject_type'))")
 #ALtditemheader()
 <input name="subject_type" id="subject_type3$!portlet.ID" type="radio" value="3" #if ($!result.SubjectType.toString() == "3") checked="checked" #end/>
-<label for="subject_type3$!portlet.ID">連絡があったことをお伝えください。</label><br/>
+<label for="subject_type3$!portlet.ID">$l10n.NOTE_TELL_ME</label><br/>
 <input name="subject_type" id="subject_type4$!portlet.ID" type="radio" value="4" #if ($!result.SubjectType.toString() == "4") checked="checked" #end/>
-<label for="subject_type4$!portlet.ID">伝言をお願いします。</label><br/>
+<label for="subject_type4$!portlet.ID">$l10n.NOTE_TAKE_A_MESSAGE</label><br/>
 <input name="subject_type" id="subject_type1$!portlet.ID" type="radio" value="1" #if ($!result.SubjectType.toString() == "1") checked="checked" #end/>
-<label for="subject_type1$!portlet.ID">再度電話します。</label><br/>
+<label for="subject_type1$!portlet.ID">$l10n.NOTE_CALL_AGAIN</label><br/>
 <input name="subject_type" id="subject_type2$!portlet.ID" type="radio" value="2" #if ($!result.SubjectType.toString() == "2") checked="checked" #end/>
-<label for="subject_type2$!portlet.ID">折返しお電話ください。</label><br/>
+<label for="subject_type2$!portlet.ID">$l10n.NOTE_CALL_BACK</label><br/>
 <input name="subject_type" id="subject_type0$!portlet.ID" type="radio" value="0" #if ($!result.SubjectType.toString() == "0") checked="checked" #end/>
 <label onclick='aipo.note.oncheck0("subject_type0$!portlet.ID")' >
 #ALtextfield('custom_subject' $!result.CustomSubject.toString() '50%' 50 'active')

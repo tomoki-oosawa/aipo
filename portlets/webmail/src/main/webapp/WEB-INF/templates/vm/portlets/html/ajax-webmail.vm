@@ -88,11 +88,7 @@
 #end
 
 #else
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
-</p>
-</td></tr>
-#AUItablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
+</div>
 #end

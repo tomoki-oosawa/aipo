@@ -50,6 +50,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReport;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
@@ -61,6 +62,7 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -222,49 +224,52 @@ public class ReportUtils {
     }
   }
 
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
+      EipTReportFile.EIP_TREPORT_PROPERTY,
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTReportFile.class);
+  }
+
   public static boolean insertFileDataDelegate(RunData rundata,
       Context context, EipTReport report,
       List<FileuploadLiteBean> fileuploadList, String folderName,
       List<String> msgList) {
-    if (fileuploadList == null || fileuploadList.size() <= 0) {
-      fileuploadList = new ArrayList<FileuploadLiteBean>();
-    }
-
-    int uid = ALEipUtils.getUserId(rundata);
-    String orgId = Database.getDomainName();
-
-    List<Integer> hadfileids = new ArrayList<Integer>();
-    for (FileuploadLiteBean file : fileuploadList) {
-      if (!file.isNewFile()) {
-        hadfileids.add(file.getFileId());
-      }
-    }
-
-    SelectQuery<EipTReportFile> dbquery = Database.query(EipTReportFile.class);
-    dbquery.andQualifier(ExpressionFactory.matchDbExp(
-      EipTReportFile.EIP_TREPORT_PROPERTY,
-      report.getReportId()));
-    List<EipTReportFile> existsFiles = dbquery.fetchList();
-    List<EipTReportFile> delFiles = new ArrayList<EipTReportFile>();
-    for (EipTReportFile file : existsFiles) {
-      if (!hadfileids.contains(file.getFileId())) {
-        delFiles.add(file);
-      }
-    }
-
-    // ローカルファイルに保存されているファイルを削除する．
-    if (delFiles.size() > 0) {
-      int delsize = delFiles.size();
-      for (int i = 0; i < delsize; i++) {
-        ALStorageService.deleteFile(ReportUtils.getSaveDirPath(orgId, uid)
-          + (delFiles.get(i)).getFilePath());
-      }
-      // データベースから添付ファイルのデータ削除
-      Database.deleteAll(delFiles);
-    }
-
-    // ファイル追加処理
     try {
+      if (fileuploadList == null || fileuploadList.size() <= 0) {
+        fileuploadList = new ArrayList<FileuploadLiteBean>();
+      }
+
+      int uid = ALEipUtils.getUserId(rundata);
+      String orgId = Database.getDomainName();
+
+      List<Integer> hadfileids = new ArrayList<Integer>();
+      for (FileuploadLiteBean file : fileuploadList) {
+        if (!file.isNewFile()) {
+          hadfileids.add(file.getFileId());
+        }
+      }
+
+      SelectQuery<EipTReportFile> dbquery =
+        Database.query(EipTReportFile.class);
+      dbquery.andQualifier(ExpressionFactory.matchDbExp(
+        EipTReportFile.EIP_TREPORT_PROPERTY,
+        report.getReportId()));
+      List<EipTReportFile> existsFiles = dbquery.fetchList();
+      List<EipTReportFile> delFiles = new ArrayList<EipTReportFile>();
+      List<String> fpaths = new ArrayList<String>();
+      for (EipTReportFile file : existsFiles) {
+        if (!hadfileids.contains(file.getFileId())) {
+          delFiles.add(file);
+          fpaths.add(file.getFilePath());
+        }
+      }
+      deleteFiles(report.getReportId(), orgId, report.getUserId(), fpaths);
+
+      // ファイル追加処理
       for (FileuploadLiteBean filebean : fileuploadList) {
         if (!filebean.isNewFile()) {
           continue;
@@ -313,6 +318,11 @@ public class ReportUtils {
 
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("BlogEntryFormData.deleteFormData", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("report", e);

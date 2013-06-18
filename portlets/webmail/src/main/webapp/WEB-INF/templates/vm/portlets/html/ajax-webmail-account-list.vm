@@ -25,13 +25,9 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.WEBMAIL_MANAGEMENT_ACCOUNT</h2>
 #if($result.List.size() <= 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-<a href="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountFormScreen").addQueryData("entityid","new"))');" class="auiButtonAction">$l10n.WEBMAIL_DO_ADD_ACCOUNT</a>
-</p>
-</td></tr>
-#AUItablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+</div>
 #else
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
@@ -59,7 +55,7 @@
 #ALtdcellAtt("$!record.MailAddress" ' nowrap')
 #ALtdcellAtt("$countUnRead" 'align="right" nowrap')
 #if($!record.FinalAccessDate.toString() != "")
-#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY $!{record.FinalAccessDate.Hour}$l10n.WEBMAIL_HOUR$!{record.FinalAccessDate.Minute}$l10n.WEBMAIL_MINUTE" 'align="left" valign="center" nowrap')
+#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY$!{record.FinalAccessDate.time}" 'align="left" valign="center" nowrap')
 #else
 #ALtdcellAtt($l10n.WEBMAIL_NOTHING 'align="center"')
 #end

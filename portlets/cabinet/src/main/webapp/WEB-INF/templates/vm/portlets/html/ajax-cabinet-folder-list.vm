@@ -49,7 +49,7 @@
 #if(${record.FolderId} <= 1)
 $!{record.FolderName}
 #else
-$space<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderDetailScreen").addQueryData("mode","folder_detail").addQueryData("folder_id","${record.FolderId}"))');">$!{record.FolderName}</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFolderDetailScreen").addQueryData("mode","folder_detail").addQueryData("folder_id","${record.FolderId}"))');">$space$!{record.FolderName}</a>
 #end
 #ALtdcellfooter()
 #if(${record.FolderId} > 1)

@@ -41,7 +41,7 @@
 				<p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
 				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
-					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})" /></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
 #end#end
 </div>#end
 				#foreach ($attachmentUrl in $record.UrlList)
@@ -53,9 +53,9 @@
 							#end
 						</div>
 						<div class="tlClipContents">
-							<div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$attachmentUrl.Title</a></div>
-							<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}">$attachmentUrl.BasePath</div>
-							<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$attachmentUrl.Body</div>
+							<div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$!attachmentUrl.AutoCRTitle</a></div>
+							<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}">$!attachmentUrl.AutoCRBasePath</div>
+							<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!attachmentUrl.AutoCRBody</div>
 						</div>
 					</div>
 					#else
@@ -320,7 +320,8 @@
 	</div>
 </div>
 #end
-#if($record.CoActivityList.size()>=2&&$existcomment<$record.CoActivityList.size())
+
+#if($record.CoActivityList.size() && $record.CoActivityList.size() >= 2 && $existcomment < $record.CoActivityList.size())
 <p class="more"><a onclick="aipo.timeline.ellipse_message(this)" href="javascript:void(0)" class="ellipsis_message">$l10n.TIMELINE_SHOE_OTHER_MESSAG</a></p>
 #end
 </div>

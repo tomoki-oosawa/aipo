@@ -113,7 +113,7 @@
 					#end
 				</ul>
 			</div>
-		</div>
+		</div><div id="messageDivList_$!portlet.ID"></div>
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
 			<div id="" class="message">
@@ -158,7 +158,7 @@
 			#end
 			</ul>
 		</div>
-	</div>
+	</div><div id="messageDivList_$!portlet.ID"></div>
   #if($result.ContentHeightMax == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
   #else

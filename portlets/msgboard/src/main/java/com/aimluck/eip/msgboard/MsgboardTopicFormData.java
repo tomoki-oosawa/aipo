@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -57,6 +58,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのフォームデータを管理するクラスです。 <BR>
@@ -355,6 +357,9 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
             for (int j = 0; j < fsize; j++) {
               fpaths.add(((EipTMsgboardFile) files.get(j)).getFilePath());
             }
+            MsgboardUtils.deleteFiles(topics.get(i).getTopicId(), orgId, topics
+              .get(i)
+              .getOwnerId(), fpaths);
           }
         }
       }
@@ -366,21 +371,17 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         .getTopicId()
         .toString());
 
-      if (fpaths.size() > 0) {
-        // ローカルファイルに保存されているファイルを削除する．
-        int fsize = fpaths.size();
-        for (int i = 0; i < fsize; i++) {
-          ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
-            + fpaths.get(i));
-        }
-      }
-
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTopicId(),
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         parent.getTopicName());
 
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("[MsgboardCategorySelectData]", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
     } catch (RuntimeException e) {
       Database.rollback();
       logger.error("[MsgboardCategorySelectData]", e);
