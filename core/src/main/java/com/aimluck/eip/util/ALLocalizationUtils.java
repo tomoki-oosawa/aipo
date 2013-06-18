@@ -1,6 +1,7 @@
 package com.aimluck.eip.util;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -21,6 +22,7 @@ public class ALLocalizationUtils {
       tool = new LocalizationTool();
       tool.init(rundata);
       ALEipManager.getInstance().setLocalizationTool(tool);
+      Locale.setDefault(tool.getLocale());
     }
     return tool;
   }

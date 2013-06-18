@@ -1,12 +1,15 @@
 @charset "utf-8";
-
 /***************************************************
 	style denial
 --------------------------------------------------*/
-body {position:absolute}
-.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
-	display:none;
+body {
+  position: absolute;
 }
+
+.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
+  display: none;
+}
+
 #header {padding:0;height:auto}
 #header .inner {height:auto}
 .hdNavi {
@@ -128,6 +131,71 @@ td.container {
 --------------------------------------------------*/
 select {
     max-width:310px;
+}
+
+/***************************************************
+	auiButton
+--------------------------------------------------*/
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch,
+.auiButtonSmall,
+.auiButtonDisabled,
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch {
+  min-width: 32;
+  height: 32px;
+  line-height: 30px;
+  padding: 0 5px;
+}
+
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 5px;
+}
+
+.auiButton span {
+  display: table-cell;
+  min-width: 30px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+*:first-child + html .auiButton span {
+  display: block;
+}
+
+.auiButtonDisabled {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 10px;
+}
+
+/***************************************************
+	auiForm
+--------------------------------------------------*/
+input[type=text],
+input[type=password] {
+  height: 32px;
 }
 
 /***************************************************
@@ -558,23 +626,43 @@ select {
 	auiSearch
 --------------------------------------------------*/
 .auiSearch {
+  padding-right: 65px;
 }
+
+.auiSearch:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 .auiSearch input.long {
-	min-width:0 !important;
+  min-width: 0 !important;
 }
+
 .auiSearch input.text {
+  width: 100%;
 }
+
 .auiButtonSearch {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
 }
 
 /***************************************************
 	indicator
 --------------------------------------------------*/
 .indicatorWrap {
-  clear: both;
+  margin: 0 !important;
   float: none;
-  width: 18px;
-  margin: 5px auto 0 !important;
+}
+
+.indicator {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 5px auto;
 }
 
 /***************************************************
