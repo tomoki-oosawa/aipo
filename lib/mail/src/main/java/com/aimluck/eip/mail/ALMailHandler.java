@@ -229,12 +229,17 @@ public abstract class ALMailHandler {
         List<Integer> list = new ArrayList<Integer>();
         list.add(_foler_id);
         SelectQuery<EipTMail> countquery = getUnReadMailQuery(rcontext, list);
-        count =
-          countquery.orderAscending(EipTMail.FOLDER_ID_PROPERTY).getCount();
+        if (countquery == null) {
+          count = 0;
+        } else {
+          count =
+            countquery.orderAscending(EipTMail.FOLDER_ID_PROPERTY).getCount();
+        }
         mailSumMap.put(_foler_id, count);
       }
 
     } catch (Exception e) {
+      logger.error("ALMailHandler.getUnReadMailSumMap", e);
     }
     return mailSumMap;
   }
