@@ -32,13 +32,9 @@
 #ALformheader("$l10n.BLOG_THEME" $jslink $portlet)
 #end
 #if($result.List.size() == 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
+<div class="auiSummaryMeta center">
+#AUIbuttonActionW80("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
+</div>
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
