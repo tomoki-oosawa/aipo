@@ -654,35 +654,15 @@ input[type=password] {
 	indicator
 --------------------------------------------------*/
 .indicatorWrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 32px;
-  width: 100%;
   margin: 0 !important;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.7);
+  float: none;
 }
 
 .indicator {
-  background: url(../images/common/loading_smp_white.gif) no-repeat left;
-  background-size: 100% 100%;
-}
-
-.indicatorWrap .indicator {
   width: 16px;
   height: 16px;
-  margin: 6px auto 0;
   padding: 0;
-  background-color: #ffffff;
-  border: solid 2px #ffffff;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 0 5px white;
-  -moz-box-shadow: 0 0 5px white;
-  box-shadow: 0 0 5px white;
+  margin: 5px auto;
 }
 
 /***************************************************
