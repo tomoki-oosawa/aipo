@@ -658,13 +658,6 @@ input[type=password] {
   float: none;
 }
 
-.indicator {
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  margin: 5px auto;
-}
-
 /***************************************************
 	auiThreeClumns
 --------------------------------------------------*/
