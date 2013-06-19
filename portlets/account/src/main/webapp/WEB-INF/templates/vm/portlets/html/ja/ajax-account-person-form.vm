@@ -62,7 +62,7 @@ $!result.LoginName
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 #ALtditemheader()
 <div>
-<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform').addQueryData('msize','1')" frameborder="0" scrolling="no" ></iframe>
+#IFFileUpload()
 </div>
 <ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )

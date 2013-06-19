@@ -89,7 +89,7 @@
   #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
   <div class="clearfix">
   <div>
-  	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  	#IFFileUpload()
   </div>
   <ul  id="attachments_$!portlet.ID" style="list-style-type:none;" class="attachments">
    #foreach($record in $!result.AttachmentFileNameList )

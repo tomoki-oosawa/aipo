@@ -1482,3 +1482,8 @@ $item.get(0)
 </div>
 </div>
 #end
+
+#macro(IFFileUpload)
+<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" >
+</iframe>
+#end

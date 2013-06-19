@@ -66,8 +66,7 @@
 	</div>
   </div>
   <div class="floatLeft mr10 #if(!$result.isFileUploadable())mb_hide#end">
-    <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" style="height:30px; width:150px;" scrolling="no" >
-    </iframe>
+    #IFFileUpload()
   </div>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 </div>
