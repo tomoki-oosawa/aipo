@@ -203,7 +203,7 @@ img.avatar,
   background: #e0e0e0;
 }
 
-#activitychecker {
+.activitycheckerstyle {
   text-align: center;
   right: 2px;
   top: 2px;

@@ -91,10 +91,10 @@ body {
 	width:90%;
 	margin:0 auto;
 }
-#activitycheckerContainer {
+.activitycheckerContainerstyle {
 	margin-top:0;
 }
-#activitychecker {
+.activitycheckerstyle {
     right:auto;
     top:5px;
     font-size:11px;
