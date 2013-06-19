@@ -56,25 +56,18 @@
                       <input type="hidden" name="col" value="$col"/>
                       <input type="hidden" name="row" value="$row"/>
 					  <input type="hidden" name="secid" value="$secid" />
-                      <div class="roundTopBlock clearfix">
-                        <div class="roundRightBlock">
-                          <div class="roundBottomBlock">
-                            <div class="roundLeftBlock">
-                              <div class="roundTopLeftBlock">
-                                <div class="roundTopRightBlock">
-                                  <div class="roundBottomRightBlock" >
-                                    <div class="roundBottomLeftBlock">
-                                      <table class="roundBlockWrapperTop">
-                                        <tbody>
-                                          <tr>
-                                            <td class="roundBlockTitle">$!utils.escapeXML($titles.get($portlet.id))</td>
-                                            <td class="roundBlockMenu"></td>
-                                            <td class="endcap"></td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                      <div class="roundBlockWrapperBottom clearfix">
-                                        <div class="roundBlockContent">
+                      <div class="auiPortlet">
+                        <div class="auiPortletHead">
+                            <div class="inner ">
+                                <div class="auiPortletTitle">$!utils.escapeXML($titles.get($portlet.id))</div>
+									<div class="auiPortletTool">
+										<div class="auiPortletSetting">
+										</div>
+									</div>
+							</div>
+						</div>	
+						<div class="auiPortletBody">
+							<div class="inner">			
                                             <table width="100%" cellspacing="0" cellpadding="0">
                                               <tbody>
                                                 <tr>
@@ -113,16 +106,13 @@
                                                 </tr>
                                               </tbody>
                                             </table>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+							</div>
+						</div>
+						<!-- /auiPortletBody -->
+						<div class="auiPortletFoot">
+							<div class="inner"></div>
+						</div>
+					  </div>
                       <!-- /PORTLET OUTER -->
                     </form>
                   </td>

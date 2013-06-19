@@ -46,7 +46,7 @@
 #end
 #if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0 && $!{result.UnreadReceivedNotesAllSum} && $!{result.UnreadReceivedNotesAllSum} > 0) <a href='$!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc')'>#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0) $!{result.NewNoteAllSumText} #end</a> #end 
 #if($result.List.size() > 0)
-#ALajaxpageview('NoteGroupScreen' $result)
+#AUIajaxpageview('NoteGroupScreen' $result)
 #ALtableheaderWide()
 <tr>
 #ALtdhead("#ALajaxsort('src_user' $l10n.NOTE_NAME $result 'NoteGroupScreen')")

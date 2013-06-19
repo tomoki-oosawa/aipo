@@ -270,33 +270,7 @@ function appsNaviSwitch() {
 <!-- MAIN OUTER -->
 <div id="roundWrapper">
   <div class="roundMainWrapper">
-    ##<table class="tableWrapper">
-      ##<tbody>
-        ##<tr>
-          ##<td class="wide top">
-            ##<div class="roundTopMain clearfix">
-              ##<div class="roundRightMain">
-                ##<div class="roundBottomMain">
-                  ##<div class="roundLeftMain">
-                    ##<div class="roundTopLeftMain">
-                      ##<div class="roundTopRightMain">
-                        ##<div class="roundBottomRightMain">
-                          ##<div class="roundBottomLeftMain">
-                            ##<div class="roundMainWrapper">
 $portlet.getContent($data)
-                        	##</div>
-                          ##</div>
-                        ##</div>
-                      ##</div>
-                    ##</div>
-                  ##</div>
-                ##</div>
-              ##</div>
-            ##</div>
-          ##</td>
-        ##</tr>
-      ##</tbody>
-    ##</table>
   </div>
 </div>
 <!-- /MAIN OUTER  -->

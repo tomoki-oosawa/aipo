@@ -466,236 +466,6 @@
 <span class="caution">$text</span>
 #end
 
-#* P A G E V I E W *#
-#macro(ALpageview $link $result)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ($currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#set($from2 = $result.Count2)
-#set($count3 = $result.Count3)
-#set($to2 = $result.Count4)
-#end
-<div class="clearfix">
-  <div class="alignleft small">
-#if ($pages > 1)
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">$l10n.TIMELINE_PREV</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">$l10n.TIMELINE_NEXT</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
-#end
-#foreach($page in [1..$pages])
-        <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
-#end
-      </ul>
-    </div>
-#end
-  </div>
-  <div class="alignright small" style="margin-top:5px;">$from2 - $to2 $count3</div>
-</div>
-#end
-
-#macro(ALpageviewFooter $link $result)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-<div class="clearfix">
-  <div class="alignleft small">
-#if ($pages > 1)
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="$!utils.escapeXML("$!{link}&start=$pre")" class="small">$l10n.TIMELINE_PREV</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="$!utils.escapeXML("$!{link}&start=$next")" class="small">$l10n.TIMELINE_NEXT</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
-#end
-#foreach($page in [1..$pages])
-        <li#if ($currentPage == $page) class="selected"#end><a href="$!utils.escapeXML("$!{link}&start=$page")" class="small">$page</a></li>
-#end
-      </ul>
-    </div>
-#end
-  </div>
-</div>
-#end
-
-#macro(ALajaxpageview $screen $result)
-#set($pageRange = 5)
-#set($pageTrimRange = 2)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ( $currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#set($from2 = $result.Count2)
-#set($count3 = $result.Count3)
-#set($to2 = $result.Count4)
-#end
-
-#set($nextLeftPage = 1 )
-#set($nextRightPage = $pages)
-#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
-#set($showLeftRest = false)
-#set($showRightRest = false)
-#else
-## show left and right
-#set($showLeftRest = true)
-#set($showRightRest = true)
-#if($currentPage > ${pageRange})
-#set($nextLeftPage = $currentPage - $pageTrimRange )
-#if((${currentPage} + ${pageRange}) > ${pages})
-#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
-#set($nextRightPage = ${pages})
-#else
-#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
-#end
-#else
-#if(($currentPage + ${pageTrimRange}) < ${pageRange})
-#set($nextRightPage = $pageRange )
-#else
-#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
-#end
-#end
-#end
-<div class="clearfix">
-  <div class="alignleft small">
-#if ($pages > 1)
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">$l10n.TIMELINE_PREV</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">$l10n.TIMELINE_NEXT</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-		<li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-		<li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#end
-      </ul>
-    </div>
-#end
-  </div>
-  <div class="alignright small" style="margin-top:5px;">$from2 - $to2 $count3</div>
-</div>
-#end
-
-#macro(ALajaxpageviewFooter $screen $result)
-#set($pageRange = 5)
-#set($pageTrimRange = 2)
-#set($pages = $result.PagesNum)
-#set($currentPage = $result.CurrentPage)
-#set($rowsNum = $result.RowsNum)
-#set($count = $result.Count)
-#set($from = ($currentPage - 1 ) * $rowsNum + 1)
-#if ( $currentPage * $rowsNum > $result.Count)
-#set($to = $result.Count )
-#else
-#set($to = $currentPage * $rowsNum )
-#end
-
-#set($nextLeftPage = 1 )
-#set($nextRightPage = $pages)
-#if($pages < ${pageRange} + ${pageTrimRange} + ${pageTrimRange} + 1)
-#set($showLeftRest = false)
-#set($showRightRest = false)
-#else
-## show left and right
-#set($showLeftRest = true)
-#set($showRightRest = true)
-#if($currentPage > ${pageRange})
-#set($nextLeftPage = $currentPage - $pageTrimRange )
-#if((${currentPage} + ${pageRange}) > ${pages})
-#if(${currentPage} - ${pageTrimRange} > ${pages} - ${pageRange}) #set($nextLeftPage = ${pages} - ${pageRange} + 1) #else #set($nextLeftPage = ${currentPage} - ${pageTrimRange}) #end
-#set($nextRightPage = ${pages})
-#else
-#set($nextRightPage = $currentPage + ($pageTrimRange / 2) + 1)
-#end
-#else
-#if(($currentPage + ${pageTrimRange}) < ${pageRange})
-#set($nextRightPage = $pageRange )
-#else
-#if(${currentPage} + ${pageRange} > ${pages}) #set($nextRightPage = ${pages}) #else #set($nextRightPage = $currentPage + ${pageTrimRange}) #end
-#end
-#end
-#end
-#if ($pages > 1)
-<div class="clearfix">
-  <div class="alignleft small">
-
-    <div class="pagination">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li class="prev"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="small">$l10n.TIMELINE_PREV</a></li>
-#else
-	    <li class="prev disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_PREV</a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li class="next"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="small">$l10n.TIMELINE_NEXT</a></li>
-#else
-        <li class="next disabled"><a href="javascript:void(0);" class="small">$l10n.TIMELINE_NEXT</a></li>
-#end
-#if($showLeftRest && $currentPage > ${pageRange})
-#foreach($page in [1..${pageTrimRange}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-        <li class="abbr">....</li>
-#end
-#foreach($page in [${nextLeftPage}..$nextRightPage])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#if($showRightRest &&  (${currentPage} + ${pageRange} - 1) < ${pages})
-#set($restRightPages = $pages - $pageTrimRange + 1)
-        <li class="abbr">....</li>
-#foreach($page in [${restRightPages}..${pages}])
-        <li#if ($currentPage == $page) class="selected"#end><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $page))', '$!portlet.ID');" class="small">$page</a></li>
-#end
-#end
-      </ul>
-    </div>
-  </div>
-</div>
-#end
-#end
-
 #* S O R T *#
 #macro(ALsort $key $name $result $link)
 #if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
@@ -750,27 +520,11 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-  ##<div class="roundTopMain">
-    ##<div class="roundRightMain">
-      ##<div class="roundBottomMain">
-        ##<div class="roundLeftMain">
-          ##<div class="roundTopLeftMain">
-            ##<div class="roundTopRightMain">
-              ##<div class="roundBottomRightMain">
-                ##<div class="roundBottomLeftMain">
-                  <div class="roundMainWrapper">
+	<div class="roundMainWrapper">
 #end
 
 #macro(ALtabfooter)
-                  </div>
-                ##</div>
-              ##</div>
-            ##</div>
-          ##</div>
-        ##</div>
-      ##</div>
-    ##</div>
-  ##</div>
+	</div>
 </div>
 #end
 
@@ -786,27 +540,11 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-  ##<div class="roundTopMain">
-    ##<div class="roundRightMain">
-      ##<div class="roundBottomMain">
-        ##<div class="roundLeftMain">
-          ##<div class="roundTopLeftMain">
-            ##<div class="roundTopRightMain">
-              ##<div class="roundBottomRightMain">
-                ##<div class="roundBottomLeftMain">
-                  <div class="roundMainWrapper">
+	<div class="roundMainWrapper">
 #end
 
 #macro(ALajaxtabfooter)
-                  </div>
-                ##</div>
-              ##</div>
-            ##</div>
-          ##</div>
-        ##</div>
-      ##</div>
-    ##</div>
-  ##</div>
+	</div>
 </div>
 #end
 
@@ -902,31 +640,15 @@ $item.get(0)
     <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('fileuploadDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
   </div>
   <div class="clearfix">
-    ##<div class="roundTopMain">
-      ##<div class="roundRightMain">
-        ##<div class="roundBottomMain">
-          ##<div class="roundLeftMain">
-            ##<div class="roundTopLeftMain">
-              ##<div class="roundTopRightMain">
-                ##<div class="roundBottomRightMain">
-                  ##<div class="roundBottomLeftMain">
-                    <div class="roundMainWrapper">
-                      <div class="spaceBoth">
-                        <div class="clearfix">
+	<div class="roundMainWrapper">
+		<div class="spaceBoth">
+			<div class="clearfix">
 #end
 
 #macro(ALfileuploadDialogfooter)
-                        </div>
-                      </div>
-                    </div>
-                  ##</div>
-                ##</div>
-              ##</div>
-            ##</div>
-          ##</div>
-        ##</div>
-      ##</div>
-    ##</div>
+			</div>
+		</div>
+	</div>
   </div>
 </div>
 #end
@@ -943,31 +665,15 @@ $item.get(0)
     <div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('addressbookDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
   </div>
   <div class="clearfix">
-    ##<div class="roundTopMain">
-      ##<div class="roundRightMain">
-        ##<div class="roundBottomMain">
-          ##<div class="roundLeftMain">
-            ##<div class="roundTopLeftMain">
-              ##<div class="roundTopRightMain">
-                ##<div class="roundBottomRightMain">
-                  ##<div class="roundBottomLeftMain">
-                    <div class="roundMainWrapper">
-                      <div class="spaceBoth">
-                        <div class="clearfix">
+	<div class="roundMainWrapper">
+		<div class="spaceBoth">
+			<div class="clearfix">
 #end
 
 #macro(ALaddressbookDialogfooter)
-                        </div>
-                      </div>
-                    </div>
-                  ##</div>
-                ##</div>
-              ##</div>
-            ##</div>
-          ##</div>
-        ##</div>
-      ##</div>
-    ##</div>
+			</div>
+		</div>
+	</div>
   </div>
 </div>
 #end

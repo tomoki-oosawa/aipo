@@ -82,49 +82,25 @@ $portlet.getContent($data)
 							#end
 							<!-- /MAIN TAB -->
                             <!-- MAIN OUTER -->
-		                            ##<table class="tableWrapper">
-		                              ##<tbody>
-		                                ##<tr>
-		                                  ##<td class="wide top">
-		                                    ##<div class="roundTopMain clearfix">
-		                                      ##<div class="roundRightMain">
-		                                        ##<div class="roundBottomMain">
-		                                          ##<div class="roundLeftMain">
-		                                            ##<div class="roundTopLeftMain">
-		                                              ##<div class="roundTopRightMain">
-		                                                ##<div class="roundBottomRightMain">
-		                                                  ##<div class="roundBottomLeftMain">
-		                                                    #if (${client} != "IPAD" || ${clientVer} != "4")
-		                                                    <div class="roundMainWrapper">
-															#else
-		                                                    <div class="roundMainWrapper" style="min-height:1000px">
-															#end
-															#if(!$run)
-																$portlet.getContent($data)
-															#elseif($runs.size()==0)
-															#AUIrowTableWide()
-															<tr><td colspan="4" class="auiNoData">
-															<p class="mh10">
-															<a title="$l10n.WAR_ADD_APPLICATION" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-															</p>
-															</td></tr>
-															#AUItablefooter()
-															#else
-																$portlet.getContent($data)
-															#end
-		                                                    </div>
-		                                                  ##</div>
-		                                                ##</div>
-		                                              ##</div>
-		                                            ##</div>
-		                                          ##</div>
-		                                        ##</div>
-		                                      ##</div>
-		                                    ##</div>
-		                                  ##</td>
-		                                ##</tr>
-		                              ##</tbody>
-		                            ##</table>
+							#if (${client} != "IPAD" || ${clientVer} != "4")
+							<div class="roundMainWrapper">
+							#else
+							<div class="roundMainWrapper" style="min-height:1000px">
+							#end
+							#if(!$run)
+								$portlet.getContent($data)
+							#elseif($runs.size()==0)
+							#AUIrowTableWide()
+							<tr><td colspan="4" class="auiNoData">
+							<p class="mh10">
+							<a title="$l10n.WAR_ADD_APPLICATION" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
+							</p>
+							</td></tr>
+							#AUItablefooter()
+							#else
+								$portlet.getContent($data)
+							#end
+							</div>
                             <!-- MAIN OUTER -->
 #end
 #end

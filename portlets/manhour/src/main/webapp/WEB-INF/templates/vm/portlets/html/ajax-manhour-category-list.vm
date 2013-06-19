@@ -20,13 +20,23 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+<div class="auiSummaryMeta clearfix">
+    <div class="auiSelectButton">
+    	<ul>
+    		<li><a class="first" href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doManhour_list','1')"><span>工数集計一覧</span></a></li>
+    		<li class="active"><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doManhour_category_list','1')" \><span>共有カテゴリ一覧</span></a></li>
+    		<li><a class="last" href="javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ManHourCategoryFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.manhour.onLoadManhourDialog);"><span>共有カテゴリを追加する</span></a></li>
+    	</ul>
+    </div>
+</div>
+
 #if($result.List.size() <= 0)
 <div class="message">『共有カテゴリ追加』 ボタンを押して、追加してください。 </div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALformheader('共有カテゴリ' $jslink $portlet)
-#ALajaxpageview('ManHourCategoryListScreen' $result)
+#AUIajaxpageview('ManHourCategoryListScreen' $result)
 #ALtableheaderWide()
 <tr>
 #ALtdheadThin("#ALswitchCheckbox()")
@@ -58,6 +68,6 @@ $!record.Name
 #ALbuttonheaderRight()
 選択したカテゴリを #ALajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.manhour.onReceiveMessage")
 #ALbuttonfooterRight()
-#ALajaxpageviewFooter('ManHourCategoryListScreen' $result)
+#AUIajaxpageview('ManHourCategoryListScreen' $result)
 #ALformfooter()
 #end
