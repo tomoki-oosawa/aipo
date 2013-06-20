@@ -157,7 +157,7 @@ button {
 .auiButtonSearch {
   min-width: 32;
   height: 32px;
-  line-height: 32px;
+  line-height: 30px;
   padding: 0 5px;
 }
 
@@ -769,7 +769,7 @@ table.listTable td.caption, table.subTable td.caption {
 }
 .auiPopup iframe {
 	max-width:100% !important;
-	height:auto !important;
+	height:auto;
 }
 /***************************************************
 	login
