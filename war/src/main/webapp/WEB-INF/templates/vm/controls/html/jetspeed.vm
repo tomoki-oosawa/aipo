@@ -65,7 +65,7 @@ aipo.onloadSmartPhone = function(){
 		if(is_menu){
 			var elem = document.createElement('div');
 			elem.className = 'snDrawer';
-			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';			
+			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';
 			widgets_area.appendChild(elem);
 		}
 	}
@@ -171,7 +171,6 @@ function appsNaviSwitch() {
 </script>
 <div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
 <div id="appsNavigation"><div id="anInner">
-		<div class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="auiMbIcon auiMbIconList"></i></a></div>
         <div class="anUser">
                 <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="$l10n.USERLIST_PHOTO" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="$l10n.USERLIST_PHOTO" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
