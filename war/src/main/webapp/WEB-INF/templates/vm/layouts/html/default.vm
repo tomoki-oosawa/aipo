@@ -52,12 +52,29 @@
 <body onload="aipo.container.renderGadgets()">
 <div id="modalDialog" class="modalDialog" style="display:none"></div>
 <div id="imageDialog" class="modalDialog imageDialog" style="display:none"></div>
+#if($!utils.isAndroid2Browser($data))
+<script type="text/javascript">
+function androidLocale(){
+  var result = null;
+  try {
+    result = navigator.userAgent.match(/Android \d+(?:\.\d+){1,2}; [a-z]{2}-[a-z]{2}/).toString().match(/[a-z]{2}-[a-z]{2}/).toString().match(/^[a-z]{2}/).toString();
+  } catch (e) {
+    result = null;
+  }
+  if (!result) { 
+    result = 'ja';
+  }
+  return result;
+}
+</script>
+#end
 #if("$isXDomain" == "true")
 <script type="text/javascript">
   djConfig = {
     xDomainBasePath: '$!{external_resources_url}/javascript',
     cacheBust: '$!{utils.CacheBust}',
     siteTitle: '$!{alias}'
+	#if($!utils.isAndroid2Browser($data)) ,locale: androidLocale() #end
   };
 </script>
 #ALjavascriptCache("javascript/dojo/dojo.xd.js")
@@ -67,6 +84,7 @@
   djConfig = {
     cacheBust: '$!{utils.CacheBust}',
     siteTitle: '$!{alias}'
+	#if($!utils.isAndroid2Browser($data)) ,locale: androidLocale() #end
   };
 </script>
 #ALjavascriptCache("javascript/dojo/dojo.js")
@@ -238,7 +256,6 @@ dojo.addOnLoad(function() {
     underlay.show();
 });
 #end
-
 //]]>
 </script>
 
