@@ -498,6 +498,10 @@ input[type=password] {
 	background-color: #c60;
 }
 
+#auiMbBtnActivity > .dijitDropDownButton{
+	height:43px;
+}
+
 #auiPortletHead {
 	display:none;
 }
