@@ -124,7 +124,7 @@ public class CellWorkflowAction extends WorkflowAction {
 
   public void doWorkflow_menu(RunData rundata, Context context) {
     putData(rundata, context);
-    setTemplate(rundata, "workflow-menu.vm");
+    setTemplate(rundata, "workflow-menu");
   }
 
   /**
@@ -194,6 +194,8 @@ public class CellWorkflowAction extends WorkflowAction {
         "1").toString());
       rundata.getResponse().sendRedirect(rundata.getRedirectURI());
       jsLink = null;
+    } else {
+      doWorkflow_list(rundata, context);
     }
 
   }

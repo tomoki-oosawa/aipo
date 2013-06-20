@@ -571,6 +571,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     } catch (Exception ex) {
       Database.rollback();
       logger.error("workflow", ex);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_DELETE_FAILURE"));
       return false;
     }
     return true;
@@ -719,6 +720,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     } catch (Exception ex) {
       Database.rollback();
       logger.error("workflow", ex);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_INSERT_FAILURE"));
       return false;
     }
     return true;
@@ -883,6 +885,7 @@ public class WorkflowFormData extends ALAbstractFormData {
     } catch (Exception ex) {
       Database.rollback();
       logger.error("workflow", ex);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
       return false;
     }
     return true;
