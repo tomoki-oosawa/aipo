@@ -512,6 +512,7 @@ input[type=password] {
 
 #auiMbBtnActivity > .dijitDropDownButton{
 	height:43px;
+	width:100%;
 }
 
 #auiPortletHead {
