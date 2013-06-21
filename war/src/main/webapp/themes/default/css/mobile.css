@@ -514,7 +514,6 @@ input[type=password] {
 }
 
 #auiMbBtnActivity > .dijitDropDownButton{
-	display:block !important;
 	height:43px;
 	width:100%;
 }
@@ -885,6 +884,7 @@ table.listTable td.caption, table.subTable td.caption {
 }
 .dijitPopup {
 	width:100%;
+	padding-top:16px;
 }
 
 #imageDialog {
