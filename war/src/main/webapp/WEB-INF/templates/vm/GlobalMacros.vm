@@ -565,9 +565,11 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
+	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
-	<div id="mobileHeader" class="clearfix" #if(${client} != "IPHONE") style="display:none" #end>
-	<div class="inner">
+	<div id="roundWrapper">
+		<div id="mobileHeader" class="clearfix">
+		<div class="inner">
 		<h1>$!portlet.Title</h1>
 		<div id="auiMbBtnNavi" class="mhLeft">
 			<a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()">
@@ -581,8 +583,10 @@ $item.get(0)
 				</a>
 			#end
 		</div>
-	</div></div>
+		</div></div>
+	</div>
 	<!-- /Smartphone Header -->
+	#end
 	<div class="auiPortletHead"><div class="inner">
 		<div class="auiPortletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
 		<div class="auiPortletTool">
