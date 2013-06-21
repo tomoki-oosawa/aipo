@@ -97,7 +97,7 @@ function appsNaviSwitch() {
 			lists[i].style.display = "block";
 		}
 		if(mobileNavi) {
-			mobileNavi.style.left = '260px';
+			mobileNavi.style.display = "none";
 		}
 		navi.style.left = '0px';
 		navi.style.boxShadow = '0 5px 5px rgba(0,0,0,0.5)';
@@ -140,7 +140,7 @@ function appsNaviSwitch() {
 	}else{
 		//hide
 		if(mobileNavi) {
-			mobileNavi.style.left = '';
+			mobileNavi.style.display = "";
 		}
 		navi.style.left = nLeft;
 		navi.style.boxShadow = 'none';
