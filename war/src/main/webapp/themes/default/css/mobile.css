@@ -499,6 +499,9 @@ input[type=password] {
   background-color: #c60;
 }
 
+.auiMbBtnActivity.zero:hover {
+  background-color: #666;
+}
 
 #activitychecker {
   background: none;
