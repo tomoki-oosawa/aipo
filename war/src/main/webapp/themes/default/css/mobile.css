@@ -17,6 +17,7 @@ body {
 	right:0;
 	padding-top:0;
 }
+/*
 .hdActivity {
 	position:absolute;
 	top:0;
@@ -42,7 +43,6 @@ body {
 	-ms-border-radius:6px 0 0 6px;
 	border-radius:6px 0 0 6px;
 }
-
 .activityField {
 	display:table-cell;
 	width:45px;
@@ -65,7 +65,6 @@ body {
 .activityField:hover {
 	background:#666666;
 }
-
 .hdActivity div{
 	position:relative;
 }
@@ -83,6 +82,7 @@ body {
 		to(rgba(0,0,0,0))
 	);
 }
+*/
 #aipo_widget_ActivityList_0 {
 	width:100% !important;
 }
@@ -91,6 +91,7 @@ body {
 	width:90%;
 	margin:0 auto;
 }
+/*
 .activitycheckerContainerstyle {
 	margin-top:0;
 }
@@ -115,6 +116,7 @@ body {
 .hdActivity > .dijitDropDownButton {
 height: 100%;
 }
+*/
 
 td.container {
 	display:block;
@@ -460,42 +462,53 @@ input[type=password] {
 }
 
 .auiMbBtn:hover {
-	color: #000;
+  color: #000;
 }
 
 .auiMbBtnNavi {
-	display: table-cell;
-	background-color: #666;
-	vertical-align: middle;
+  display: table-cell;
+  background-color: #666;
+  vertical-align: middle;
 }
 
 .auiMbBtnNavi:hover {
-	background-color: #000;
+  background-color: #000;
 }
 
 .auiMbBtnActivity, .auiMbBtnAction {
-	text-align: center;
-	font-weight: bold;
-	color: #fff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 .auiMbBtnActivity:hover, .auiMbBtnActivityZero:hover, .auiMbBtnAction:hover {
-	color: #fff;
+  color: #fff;
 }
 
 .auiMbBtnActivity {
-	background-color: #ff9900;
+  background-color: #ff9900;
 }
 
 .auiMbBtnActivity.zero {
-	background: #c0c0c0;
-	color: #fff;
+  background: #c0c0c0;
+  color: #fff;
 }
 
 .auiMbBtnActivity:hover,
 .auiMbBtnActivity.active {
-	background-color: #c60;
+  background-color: #c60;
+}
+
+
+#activitychecker {
+  background: none;
+  height: auto !important;
+}
+
+.mhRight div {
+  display: inline !important;
+  line-height: 35px;
 }
 
 #auiMbBtnActivity > .dijitDropDownButton{
