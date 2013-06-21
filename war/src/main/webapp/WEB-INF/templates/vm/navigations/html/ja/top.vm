@@ -103,6 +103,8 @@ dojo.addOnLoad(function () {
             iconURL: "themes/$!theme/images/common/icon_message.gif",
             iconWidth: "19",
             iconHeight: "15",
+            extendClass: "counter activitycheckerstyle",
+
 #end
             iconAlt: "あなた宛のお知らせ"
        };
