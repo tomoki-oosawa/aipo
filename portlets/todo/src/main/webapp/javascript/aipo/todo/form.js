@@ -51,15 +51,45 @@ aipo.todo.toggleMenu=function (node,filters,event){
 
 /**
  * 検索バーの幅を調節する。
+ * 
  * @param portlet_id
  */
-aipo.todo.initFilterSearch=function(portlet_id){
-	var q=dojo.byId("q"+portlet_id);
-	var filters=dojo.byId('filters_'+portlet_id);
-	if(filters && q){
-		q.style.paddingLeft=filters.offsetWidth+"px";
+aipo.todo.initFilterSearch = function(portlet_id) {
+	var q = dojo.byId("q" + portlet_id)
+	var filters = dojo.byId('filters_' + portlet_id)
+	if (filters && q) {
+		var filterOffset = filters.offsetWidth
+		if (aipo.userAgent.isAndroid4()) {
+			var searchForm = dojo.byId("searchForm_" + portlet_id)
+			searchForm.style.left = filterOffset + "px"
+			filters.style.left = -1 * filterOffset + "px"
+			q.style.width = parseInt(q.style.width) - filterOffset + "px"
+			q.style.paddingLeft = "0px"
+		} else {
+			q.style.paddingLeft = filterOffset + "px"
+		}
 	}
-};
+}
+
+/**
+ * 検索バーの幅を調節する。
+ * 
+ * @param portlet_id
+ */
+aipo.todo.finFilterSearch = function(portlet_id) {
+	if (aipo.userAgent.isAndroid4()) {
+		var q = dojo.byId("q" + portlet_id)
+		var filters = dojo.byId('filters_' + portlet_id)
+		if (filters && q) {
+			var filterOffset = filters.offsetWidth
+			var searchForm = dojo.byId("searchForm_" + portlet_id)
+			searchForm.style.left = "0px"
+			filters.style.left = "0px"
+			q.style.width = parseInt(q.style.width) + filterOffset + "px"
+			q.style.paddingLeft = filterOffset + "px"
+		}
+	}
+}
 
 /**
  * urlを整形して送信。
