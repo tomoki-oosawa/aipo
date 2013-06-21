@@ -511,6 +511,7 @@ input[type=password] {
 }
 
 #auiMbBtnActivity > .dijitDropDownButton{
+	display:block !important;
 	height:43px;
 	width:100%;
 }
