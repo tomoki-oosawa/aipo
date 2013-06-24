@@ -34,4 +34,17 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
+    <portlet-entry name="Export" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="admin-view"/>
+        <meta-info>
+            <title>エクスポート</title>
+            <description>エクスポート</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="fileio" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="fileio.ExportAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
 </registry>

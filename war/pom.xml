@@ -129,6 +129,7 @@
               <insertNewLine>true</insertNewLine>
               <output>target/aipo/javascript/aipo/common.js</output>
               <includes>
+                <include>../../../../target/aipo/javascript/aipo/fileio/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/schedule/form.js</include>
