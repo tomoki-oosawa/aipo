@@ -46,6 +46,11 @@
   </build>
 
   <dependencies>
+	<dependency>
+      <groupId>jp.sf.orangesignal</groupId>
+      <artifactId>orangesignal-csv</artifactId>
+      <version>1.3.0</version>
+	</dependency>
     <dependency>
       <groupId>com.aimluck.eip</groupId>
       <artifactId>aipo-oms</artifactId>

@@ -26,10 +26,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import jp.sf.orangesignal.csv.Csv;
+import jp.sf.orangesignal.csv.CsvConfig;
+import jp.sf.orangesignal.csv.handlers.ResultSetHandler;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -41,14 +51,14 @@ import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 全ファｲﾙデータのZIP用ユーティリティクラスです。
+ * エクスポート用ユーティリティクラスです。
  * 
  */
-public class FileIOZipUtils {
+public class FileIOExportUtils {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOZipUtils.class.getName());
+    .getLogger(FileIOExportUtils.class.getName());
 
   private static final String ZIP_FILE_FOLDER = JetspeedResources.getString(
     "aipo.filedir",
@@ -69,14 +79,78 @@ public class FileIOZipUtils {
   public static final String ZIP_FILE_TEMP_FOLDER = "data";
 
   /**
-   * 保存された全データをZip化して保存します。 <BR>
+   * 保存された全データをCsv化して保存します。 <BR>
    * 
    * @param rundata
    * @param context
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    */
-  public static boolean zipAllData(RunData rundata, Context context,
+  public static boolean exportAllData(RunData rundata, Context context,
+      List<String> msgList) {
+    InputStream resourceAsStream =
+      rundata.getServletContext().getResourceAsStream(
+        "WEB-INF/datasource/dbcp-org001.properties");
+    Connection conn = null;
+
+    File tmpDir =
+      new File(JetspeedResources.getString("aipo.tmp.directory", "")
+        + ALStorageService.separator()
+        + "csv");
+
+    if (!tmpDir.isDirectory()) {
+      tmpDir.mkdirs();
+    }
+
+    try {
+      Properties dbcpProp = new Properties();
+      dbcpProp.load(resourceAsStream);
+      String driverClassName =
+        dbcpProp.get("cayenne.dbcp.driverClassName").toString();
+      String url = dbcpProp.get("cayenne.dbcp.url").toString();
+      String username = dbcpProp.get("cayenne.dbcp.username").toString();
+      String password = dbcpProp.get("cayenne.dbcp.password").toString();
+      Class.forName(driverClassName);
+      conn = DriverManager.getConnection(url, username, password);
+
+      DatabaseMetaData meta = conn.getMetaData();
+      ResultSet tables =
+        meta.getTables(null, null, null, new String[] { "TABLE" });
+      CsvConfig csvConfig = new CsvConfig();
+      csvConfig.setQuote('"');
+      csvConfig.setQuoteDisabled(false);
+      csvConfig.setEscape('"');
+      csvConfig.setEscapeDisabled(false);
+      ResultSetHandler resultSetHandler = new ResultSetHandler();
+      while (tables.next()) {
+        String tableName = tables.getString("table_name");
+        PreparedStatement statement =
+          conn.prepareStatement("SELECT * FROM " + tableName + ";");
+        ResultSet resultSet = statement.executeQuery();
+        Csv.save(
+          resultSet,
+          new File(tmpDir, tableName + ".csv"),
+          csvConfig,
+          resultSetHandler);
+        resultSet.close();
+        statement.close();
+      }
+      return true;
+    } catch (Exception e) {
+      logger.error("[ERROR]" + e);
+      return false;
+    }
+  }
+
+  /**
+   * 保存された全ファイルをZip化して保存します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  public static boolean zipAllFile(RunData rundata, Context context,
       List<String> msgList) {
     try {
       int uid = ALEipUtils.getUserId(rundata);

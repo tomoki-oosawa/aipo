@@ -29,17 +29,17 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.fileio.util.FileIOZipUtils;
+import com.aimluck.eip.fileio.util.FileIOExportUtils;
 
 /**
  * 全ファｲﾙデータのZIPをJSONデータとして出力するクラスです。
  * 
  */
-public class FileIOZipJSONScreen extends ALJSONScreen {
+public class FileIOExportJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOZipJSONScreen.class.getName());
+    .getLogger(FileIOExportJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -47,7 +47,8 @@ public class FileIOZipJSONScreen extends ALJSONScreen {
     String result = new JSONArray().toString();
     try {
       List<String> msgList = new ArrayList<String>();
-      if (FileIOZipUtils.zipAllData(rundata, context, msgList)) {
+      if (FileIOExportUtils.zipAllFile(rundata, context, msgList)
+        && FileIOExportUtils.exportAllData(rundata, context, msgList)) {
       } else {
         JSONArray json = JSONArray.fromObject(msgList);
         result = json.toString();

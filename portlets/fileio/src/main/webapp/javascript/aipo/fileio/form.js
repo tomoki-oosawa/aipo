@@ -22,7 +22,6 @@ dojo.require("aipo.widget.MemberNormalSelectList")
 dojo.provide("aipo.fileio")
 
 aipo.fileio.onReceiveMessage = function(msg) {
-	aimluck.io.disableForm(button.form, false);
 	if (msg && dojo.byId('messageDiv')) {
 		dojo.byId('messageDiv').innerHTML = msg
 	}

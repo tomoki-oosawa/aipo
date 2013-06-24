@@ -29,7 +29,7 @@
 <table class="listTable wide">
 <tbody>
 <tr>
-<td colspan="2" class="center"><input type="button" onClick="aipo.fileio.ajaxSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData("template","FileIOZipJSONScreen")', '$indicator_id', '$portlet_id', 'aipo.fileio.onReceiveMessage')" value="$l10n.FILEIO_EXPORT" class="button" name="send" /></td>
+<td colspan="2" class="center"><input type="button" onClick="aipo.fileio.ajaxSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData("template","FileIOExportJSONScreen")', '$indicator_id', '$portlet_id', 'aipo.fileio.onReceiveMessage')" value="$l10n.FILEIO_EXPORT" class="button" name="send" /></td>
 </tr>
 </tbody>
 </table>
