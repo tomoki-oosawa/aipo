@@ -79,70 +79,6 @@ public class FileIOExportUtils {
   public static final String ZIP_FILE_TEMP_FOLDER = "data";
 
   /**
-   * 保存された全データをCsv化して保存します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @param msgList
-   * @return TRUE 成功 FALSE 失敗
-   */
-  public static boolean exportAllData(RunData rundata, Context context,
-      List<String> msgList) {
-    InputStream resourceAsStream =
-      rundata.getServletContext().getResourceAsStream(
-        "WEB-INF/datasource/dbcp-org001.properties");
-    Connection conn = null;
-
-    File tmpDir =
-      new File(JetspeedResources.getString("aipo.tmp.directory", "")
-        + ALStorageService.separator()
-        + "csv");
-
-    if (!tmpDir.isDirectory()) {
-      tmpDir.mkdirs();
-    }
-
-    try {
-      Properties dbcpProp = new Properties();
-      dbcpProp.load(resourceAsStream);
-      String driverClassName =
-        dbcpProp.get("cayenne.dbcp.driverClassName").toString();
-      String url = dbcpProp.get("cayenne.dbcp.url").toString();
-      String username = dbcpProp.get("cayenne.dbcp.username").toString();
-      String password = dbcpProp.get("cayenne.dbcp.password").toString();
-      Class.forName(driverClassName);
-      conn = DriverManager.getConnection(url, username, password);
-
-      DatabaseMetaData meta = conn.getMetaData();
-      ResultSet tables =
-        meta.getTables(null, null, null, new String[] { "TABLE" });
-      CsvConfig csvConfig = new CsvConfig();
-      csvConfig.setQuote('"');
-      csvConfig.setQuoteDisabled(false);
-      csvConfig.setEscape('"');
-      csvConfig.setEscapeDisabled(false);
-      ResultSetHandler resultSetHandler = new ResultSetHandler();
-      while (tables.next()) {
-        String tableName = tables.getString("table_name");
-        PreparedStatement statement =
-          conn.prepareStatement("SELECT * FROM " + tableName + ";");
-        ResultSet resultSet = statement.executeQuery();
-        Csv.save(
-          resultSet,
-          new File(tmpDir, tableName + ".csv"),
-          csvConfig,
-          resultSetHandler);
-        resultSet.close();
-        statement.close();
-      }
-      return true;
-    } catch (Exception e) {
-      logger.error("[ERROR]" + e);
-      return false;
-    }
-  }
-
-  /**
    * 保存された全ファイルをZip化して保存します。 <BR>
    * 
    * @param rundata
@@ -157,6 +93,7 @@ public class FileIOExportUtils {
       String folderName = getZipFileFolderName(String.valueOf(uid));
 
       List<File> files = getAllFileList(new File(ZIP_FILE_FOLDER));
+      files.addAll(makeCsvData(rundata, context, msgList));
 
       File zipFile =
         new File(folderName
@@ -206,6 +143,69 @@ public class FileIOExportUtils {
     } catch (Exception e) {
       logger.error("zip", e);
       return false;
+    }
+  }
+
+  /**
+   * 保存された全データをCsv化して保存します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  private static List<File> makeCsvData(RunData rundata, Context context,
+      List<String> msgList) {
+    List<File> res = new ArrayList<File>();
+    InputStream resourceAsStream =
+      rundata.getServletContext().getResourceAsStream(
+        "WEB-INF/datasource/dbcp-org001.properties");
+    Connection conn = null;
+
+    File tmpDir =
+      new File(JetspeedResources.getString("aipo.tmp.directory", "")
+        + ALStorageService.separator()
+        + "csv");
+
+    if (!tmpDir.isDirectory()) {
+      tmpDir.mkdirs();
+    }
+
+    try {
+      Properties dbcpProp = new Properties();
+      dbcpProp.load(resourceAsStream);
+      String driverClassName =
+        dbcpProp.get("cayenne.dbcp.driverClassName").toString();
+      String url = dbcpProp.get("cayenne.dbcp.url").toString();
+      String username = dbcpProp.get("cayenne.dbcp.username").toString();
+      String password = dbcpProp.get("cayenne.dbcp.password").toString();
+      Class.forName(driverClassName);
+      conn = DriverManager.getConnection(url, username, password);
+
+      DatabaseMetaData meta = conn.getMetaData();
+      ResultSet tables =
+        meta.getTables(null, null, null, new String[] { "TABLE" });
+      CsvConfig csvConfig = new CsvConfig();
+      csvConfig.setQuote('"');
+      csvConfig.setQuoteDisabled(false);
+      csvConfig.setEscape('"');
+      csvConfig.setEscapeDisabled(false);
+      ResultSetHandler resultSetHandler = new ResultSetHandler();
+      while (tables.next()) {
+        String tableName = tables.getString("table_name");
+        PreparedStatement statement =
+          conn.prepareStatement("SELECT * FROM " + tableName + ";");
+        ResultSet resultSet = statement.executeQuery();
+        File file = new File(tmpDir, tableName + ".csv");
+        Csv.save(resultSet, file, csvConfig, resultSetHandler);
+        res.add(file);
+        resultSet.close();
+        statement.close();
+      }
+      return res;
+    } catch (Exception e) {
+      logger.error("[ERROR]" + e);
+      return new ArrayList<File>();
     }
   }
 

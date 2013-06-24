@@ -47,8 +47,7 @@ public class FileIOExportJSONScreen extends ALJSONScreen {
     String result = new JSONArray().toString();
     try {
       List<String> msgList = new ArrayList<String>();
-      if (FileIOExportUtils.zipAllFile(rundata, context, msgList)
-        && FileIOExportUtils.exportAllData(rundata, context, msgList)) {
+      if (FileIOExportUtils.zipAllFile(rundata, context, msgList)) {
       } else {
         JSONArray json = JSONArray.fromObject(msgList);
         result = json.toString();
