@@ -503,7 +503,7 @@ input[type=password] {
   background-color: #666;
 }
 
-#activitychecker {
+.activitycheckerstyle {
   background: none;
   height: auto !important;
 }

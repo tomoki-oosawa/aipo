@@ -578,7 +578,7 @@ $item.get(0)
 		</div>
 		<div class="mhRight">
 			#if($data.User.getUserName() != "admin")
-				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE">
+				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity zero" title="$l10n.WIDGET_NOTICE">
 					#ALActivity()
 				</a>
 			#end
@@ -598,7 +598,7 @@ $item.get(0)
 #end
 
 #macro(ALActivity)
-<div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
+<div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero activitycheckerstyle"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
 #end
 
 #macro(ALcontentfooter)
