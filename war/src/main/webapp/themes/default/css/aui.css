@@ -1309,11 +1309,14 @@ button {
   color: #000;
   text-shadow: 0 1px 0 #f8f8f8;
   border: solid 1px #c0c0c0;
-  background: #f0f0f0;
-  background: #f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
-  /*IE*/
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
-  background: -moz-linear-gradient(top, white, #f0f0f0);
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top, white, #f0f0f0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
+  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
+  background-image: -o-linear-gradient(top, white, #f0f0f0);
+  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
 }
 
 .auiButton,
@@ -1325,6 +1328,7 @@ button {
   padding: 0 0.7em;
 }
 
+*:first-child + html input[type=submit],
 *:first-child + html input.auiButton,
 *:first-child + html input.auiButtonAction,
 *:first-child + html input.auiButtonBold,
@@ -1408,8 +1412,9 @@ button:active {
 
 .auiButton span {
   display: table-cell;
-  height: 26px;
-  line-height: 26px;
+  min-width: 20px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
   vertical-align: middle;
 }
@@ -1444,11 +1449,13 @@ button:active {
   text-shadow: 0 1px 0 #f09000 !important;
   border: solid 1px #f09000 !important;
   background: #ff9900;
-  background: #ff9900 url(../images/common/auibuttonaction_back.gif) left top repeat-x !important;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ffbb22), to(#ff9900)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #ffbb22, #ff9900);
-  /*Fx*/
+  background-image: -moz-linear-gradient(top, #ffbb22, #ff9900) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffbb22), to(#ff9900)) !important;
+  background-image: -webkit-linear-gradient(top, #ffbb22, #ff9900) !important;
+  background-image: -o-linear-gradient(top, #ffbb22, #ff9900) !important;
+  background-image: linear-gradient(to bottom, #ffbb22, #ff9900) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFBB22', endColorstr='#FFFF9900', GradientType=0) !important;
 }
 
 .auiButtonBold {
@@ -1464,14 +1471,14 @@ button:active {
 .auiButtonAction:hover {
   color: #fff;
   border: solid 1px #e0800 !important;
-  /*	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-  	-moz-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-  	box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
   background: #ffbb22 !important;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ffcc33), to(#ff9900)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #ffcc33, #ff9900);
-  /*Fx*/
+  background-image: -moz-linear-gradient(top, #ffcc33, #ff9900) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffcc33), to(#ff9900)) !important;
+  background-image: -webkit-linear-gradient(top, #ffcc33, #ff9900) !important;
+  background-image: -o-linear-gradient(top, #ffcc33, #ff9900) !important;
+  background-image: linear-gradient(to bottom, #ffcc33, #ff9900) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFCC33', endColorstr='#FFFF9900', GradientType=0) !important;
 }
 
 .auiButtonAction:active {
@@ -1587,8 +1594,8 @@ button[disabled]:hover {
 }
 
 *:first-child + html .auiButtonSearch {
-  height: 26px;
-  line-height: 26px;
+  height: 30px;
+  line-height: 30px;
 }
 
 .auiButtonSearch:hover {
@@ -2223,8 +2230,8 @@ input[type=password] {
 *:first-child + html input[type=text],
 *:first-child + html input[type=password] {
   /*IE7Hack*/
-  height: 26px;
-  line-height: 26px;
+  height: 30px;
+  line-height: 30px;
   max-width: 99.2%;
   padding: 0 2px;
 }
@@ -2320,6 +2327,7 @@ ul.attachments >li{
   height: 30px;
   line-height: 30px;
 }
+
 .uploadText {
   position: absolute;
   top: 50%;
