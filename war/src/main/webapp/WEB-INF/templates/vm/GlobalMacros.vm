@@ -565,9 +565,11 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet">
+	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
-	<div id="mobileHeader" class="clearfix" #if(${client} != "IPHONE") style="display:none" #end>
-	<div class="inner">
+	<div id="roundWrapper">
+		<div id="mobileHeader" class="clearfix">
+		<div class="inner">
 		<h1>$!portlet.Title</h1>
 		<div id="auiMbBtnNavi" class="mhLeft">
 			<a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()">
@@ -576,16 +578,15 @@ $item.get(0)
 		</div>
 		<div class="mhRight">
 			#if($data.User.getUserName() != "admin")
-				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity" title="$l10n.WIDGET_NOTICE">
-					<div id="activitycheckerContainer" class="dejitInline activitycheckerContainerstyle">
-						<div id="activitychecker" class="zero counter activitycheckerstyle"></div>
-						<span class="mb_hide">$l10n.WIDGET_NOTICE</span>
-					</div>
+				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity zero" title="$l10n.WIDGET_NOTICE">
+					#ALActivity()
 				</a>
 			#end
 		</div>
-	</div></div>
+		</div></div>
+	</div>
 	<!-- /Smartphone Header -->
+	#end
 	<div class="auiPortletHead"><div class="inner">
 		<div class="auiPortletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
 		<div class="auiPortletTool">
@@ -594,6 +595,10 @@ $item.get(0)
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody"><div class="inner">
 				<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
+#end
+
+#macro(ALActivity)
+<div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero activitycheckerstyle"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
 #end
 
 #macro(ALcontentfooter)

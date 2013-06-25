@@ -67,7 +67,7 @@
 #ALcell_dt($career "投稿者")
 <dd>$!{record.OwnerName}</dd>
 #ALcell_dt($career "投稿日")
-<dd>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.DayOfWeek} $!{record.CreateDate.time}</dd>
+<dd>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}</dd>
 #ALcell_dt($career "書き込み")
 #ALcell_dd($career $!{record.Note})
 #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
