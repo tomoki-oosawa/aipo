@@ -40,13 +40,9 @@
 
 #if($result.List.size() <= 0)
   #AUISummaryDivfooter()
-  #AUIrowTableWide()
-  <tr><td colspan="4" class="auiNoData">
-  <p class="mh10">
-  	#AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
-  </p>
-  </td></tr>
-  #AUItablefooter()
+<div class="auiSummaryMeta center">
+  #AUIbuttonActionW80("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+</div>
 #else
   #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
   <div id="listMessageDiv"></div>
@@ -90,7 +86,7 @@
     <div class="floatLeft">
       #AUIajaxbuttonCheckboxDelete("$l10n.WORKFLOW_DO_REMOVE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowRouteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_route.onReceiveMessage")
     </div>
-    #AUIajaxpageview('WorkflowCategoryListScreen' $result)
+    #AUIajaxpageview('WorkflowRouteListScreen' $result)
   #AUISummaryDivfooter()
   #ALformfooter()
   #AUISummaryDivfooter()
