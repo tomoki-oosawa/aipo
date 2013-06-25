@@ -1448,7 +1448,7 @@ button:active {
   font-weight: bold;
   text-shadow: 0 1px 0 #f09000 !important;
   border: solid 1px #f09000 !important;
-  background: #ff9900;
+  background: #ff9900 !important;
   background-image: -moz-linear-gradient(top, #ffbb22, #ff9900) !important;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffbb22), to(#ff9900)) !important;
   background-image: -webkit-linear-gradient(top, #ffbb22, #ff9900) !important;
