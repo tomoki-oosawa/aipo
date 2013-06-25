@@ -982,6 +982,7 @@ img.avatar,
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   border: none;
   background: url(../images/login_btn_back.png) 0px 0px no-repeat;
+  filter: none;
 }
 
 #auiLoginBox input.button:hover {
@@ -1344,6 +1345,13 @@ button {
   height: 30px;
   line-height: 30px;
   padding: 0 0.7em;
+}
+
+*:first-child + html input[type=submit],
+*:first-child + html input[type=button],
+*:first-child + html input[type=reset],
+*:first-child + html button {
+  line-height: 26px;
 }
 
 button.auiButton,
