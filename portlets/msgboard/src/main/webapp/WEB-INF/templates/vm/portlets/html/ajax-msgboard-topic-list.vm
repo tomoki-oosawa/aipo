@@ -31,7 +31,7 @@
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta auiFilter clearfix">
-<form class="auiSearch floatLeft" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
+<form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicListScreen")' />
 <input type="hidden" name="template" value="MsgboardTopicListScreen"/>
