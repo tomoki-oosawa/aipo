@@ -1677,6 +1677,10 @@ button[disabled]:hover {
   vertical-align: middle;
 }
 
+*:first-child + html .auiSummaryMeta {
+  overflow: hidden;
+}
+
 /*.auiSummaryMeta */
 .count {
   float: left;
