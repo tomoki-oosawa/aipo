@@ -24,7 +24,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <div class="auiSummaryMeta auiFilter clearfix">
-<form class="auiSearch floatLeft" style="margin-right:1em;" id="searchForm_$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;">
+<form class="auiSearch" style="margin-right:1em;" id="searchForm_$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;">
 <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen")' />
 <input type="hidden" name="template" value="ToDoListScreen"/>
 <div class="filterInputField">
@@ -55,7 +55,7 @@
 #end#end
 </div>
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
-<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" style="width:480px;" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
+<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
 <a class="auiButtonSearch" onclick="dojo.byId('searchForm_$!portlet.ID').onsubmit();">$l10n.TODO_SEARCH</a>
 </form>
