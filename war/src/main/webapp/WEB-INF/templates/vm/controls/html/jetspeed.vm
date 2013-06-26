@@ -82,8 +82,8 @@ function widgetMenuSwitch() {
         }
 }
 
-var navEventList=[];
 // ナビゲーションメニュー用
+var navEventList=[];
 function appsNaviSwitch() {
 	var navi = document.getElementById('appsNavigation');
 	var lists = navi.getElementsByTagName("ul");
@@ -107,6 +107,7 @@ function appsNaviSwitch() {
 		 		content.style.display="none";
 		 	}
 
+			//クリック無効化
     		var f=function(e){
             	e.preventDefault();
             	//e.stopImmediatePropagation();
@@ -144,16 +145,21 @@ function appsNaviSwitch() {
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "none";
 		}
+
 		 if (aipo.userAgent.isAndroid()){
 		 	var content=dojo.query(".roundBlockContent")[0];
 		 	if(content){
 		 		content.style.display="";
 		 	}
 
+
+			//無効化していたクリックイベントの有効化
 	 		for(var i=0;i<navEventList.length;i++){
         		dojo.disconnect(navEventList[i]);
         	}
-        	this.eventList=[];
+        	navEventList=[];
+
+			//無効化していたフォームオブジェクトの有効化
         	dojo.query("input.disabled-by-navi,select.disabled-by-navi,button.disabled-by-navi").forEach(function(node,index){
         		dojo.removeClass(node,"disabled-by-navi");
         		node.disabled=false;
