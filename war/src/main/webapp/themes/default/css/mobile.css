@@ -1255,7 +1255,7 @@ table tr.caption {
 }
 
 .filters {
-  line-height: 38px;
+  /*line-height: 38px;*/
 }
 
 .filterTip {

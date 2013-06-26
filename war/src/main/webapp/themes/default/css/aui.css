@@ -2846,7 +2846,7 @@ ul.attachments >li{
 .filters {
   /*white-space:nowrap;*/
   color: #999999;
-  line-height: 30px;
+  /*line-height: 30px;*/
   cursor: text;
 }
 
