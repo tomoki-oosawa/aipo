@@ -902,6 +902,7 @@ table.listTable td.caption, table.subTable td.caption {
 .dijitPopup {
 	width:100%;
 	padding-top:8px;
+	position:fixed;
 }
 
 #imageDialog {
