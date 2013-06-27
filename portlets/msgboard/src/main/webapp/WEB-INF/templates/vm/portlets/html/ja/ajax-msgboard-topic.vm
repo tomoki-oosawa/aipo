@@ -51,12 +51,9 @@
 		 	*##end#end#*
 		*##end#*
 	*#</div>
-
-	<div class="floatRight">
 	#if("$result.List.size()" != "0")
-	#AUIajaxpageview('MsgboardTopicScreen' $result)
+		#AUIajaxpageview('MsgboardTopicScreen' $result)
 	#end
-	</div>
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
