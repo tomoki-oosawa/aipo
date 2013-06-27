@@ -1132,6 +1132,7 @@ img.avatar,
   display: inline !important;
   padding: 0 !important;
   background-image: none !important;
+  cursor: pointer;
 }
 
 .auiSelectButton span i,
