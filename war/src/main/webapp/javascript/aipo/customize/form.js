@@ -115,6 +115,7 @@ aipo.customize.showMenuButtonOnly = function(portlet_id) {
 }
 
 aipo.customize.showMenuSchedule = function(portlet_id) {
+	var left,top;
 	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
 	if (menuNode.style('display') == 'none') {
         dojo.query('div.menubar').style('display', 'none');
@@ -140,14 +141,14 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         	    }
         	    return px;
         	}
-        	var left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
-        	var top = getTop(html) - getTop(html.offsetParent.offsetParent);
+        	left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
+        	top = getTop(html) - getTop(html.offsetParent.offsetParent);
         } else {
-        	var left = html.offsetLeft - html.clientLeft;
-        	var top = html.offsetTop - html.clientTop;
+        	left = html.offsetLeft - html.clientLeft;
+        	top = html.offsetTop - html.clientTop;
         }
         menuNode.style('left', left + "px");
-        menuNode.style('top', top + 24 + "px");
+        menuNode.style('top', top + html.offsetHeight + "px");
     } else {
         aipo.customize.hideMenu(portlet_id);
     }

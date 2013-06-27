@@ -64,7 +64,7 @@ $l10n.SCHEDULE_HIDE_ALL
 #end
 #ALcell_dd_footer($career)
 #ALcell_dt($career $l10n.SCHEDULE_MEMBERS)
-#if($result.MemberList&&!($result.MemberList.size() > 1))
+#if($result.MemberList && $result.MemberList.size() > 1)
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
 #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))

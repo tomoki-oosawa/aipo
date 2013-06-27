@@ -196,6 +196,8 @@ aipo.workflow.onReceiveMessage = function(msg){
 	var select=dojo.byId("attachments_select");
 	if(typeof select!="undefined"&& select!=null)
 		select.parentNode.removeChild(select);
+	
+	window.scrollTo(0, 0)
 
 	if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
