@@ -1132,6 +1132,7 @@ img.avatar,
   display: inline !important;
   padding: 0 !important;
   background-image: none !important;
+  cursor: pointer;
 }
 
 .auiSelectButton span i,
@@ -1155,6 +1156,14 @@ img.avatar,
 
 .auiSelectButton .active a:hover span {
   color: white !important;
+}
+
+.auiSelectButton.floatLeft {
+  margin-right: 10px;
+}
+
+.auiSelectButton.floatRight {
+  margin-left: 10px;
 }
 
 /***************************************************
@@ -1291,6 +1300,8 @@ button {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
   box-sizing: content-box;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1341,6 +1352,8 @@ input[type=submit],
 input[type=button],
 input[type=reset],
 button {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
   box-sizing: content-box;
   height: 30px;
   line-height: 30px;
@@ -1351,6 +1364,7 @@ button {
 *:first-child + html input[type=button],
 *:first-child + html input[type=reset],
 *:first-child + html button {
+  height: 32px;
   line-height: 26px;
 }
 
@@ -1505,10 +1519,10 @@ button:active {
   text-shadow: 0 1px 0 #f8f8f8;
   border: solid 1px #c0c0c0;
   color: #999999;
-  background: #eee;
+  background: #eee !important;
   cursor: default;
-  height: 26px;
-  line-height: 2.3em;
+  height: 30px;
+  line-height: 30px;
   padding: 0 0.7em;
 }
 
@@ -1518,7 +1532,7 @@ button:active {
 
 *:first-child + html .auiButtonDisabled {
   /* IE7 Hack */
-  line-height: 2.2em;
+  line-height: 30px;
 }
 
 input[disabled],
@@ -1535,9 +1549,6 @@ button[disabled]:hover {
   background: #eee;
   border-color: #c9c9c9;
   cursor: default;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
 }
 
 .auiButtonGroup {
@@ -1692,14 +1703,21 @@ button[disabled]:hover {
 /*.auiSummaryMeta */
 .count {
   float: left;
-  height: 30px;
-  line-height: 30px;
-  padding-right: 1em;
+  height: 32px;
+  line-height: 32px;
 }
 
 .auiSummaryTitle {
   line-height: 2em;
   font-weight: bold;
+}
+
+.auiSummaryMetaText.floatLeft {
+  margin-left: 10px;
+}
+
+.auiSummaryMetaText.floatRight {
+  margin-right: 10px;
 }
 
 /***************************************************
@@ -2233,9 +2251,9 @@ input[type=password] {
   -ms-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #c9c9c9;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: #fff;
 }
 
@@ -2256,8 +2274,9 @@ select {
 form textarea {
   border-radius: 3px;
   -ms-border-radius: 3px;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  box-sizing: border-box;
   background-color: #fff;
 }
 
@@ -2835,6 +2854,8 @@ ul.attachments >li{
 
 .auiFilter form {
   width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -2846,7 +2867,7 @@ ul.attachments >li{
 .filters {
   /*white-space:nowrap;*/
   color: #999999;
-  /*line-height: 30px;*/
+  line-height: 30px;
   cursor: text;
 }
 
@@ -2864,6 +2885,7 @@ ul.attachments >li{
   line-height: 26px !important;
   white-space: nowrap;
   font-size: 0.9em;
+  cursor: pointer;
 }
 
 *:first-child + html .filterTip {
