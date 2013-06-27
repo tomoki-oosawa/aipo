@@ -18,22 +18,26 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<div class="auiSummaryMeta clearfix">
-<div class="floatLeft">
-<div class="auiForm filters" id="filters_$!{portlet.ID}">
-	#if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>
-	#else
-	<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>
-	#end
-	#if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")
-	<a href="javascript:void(0);" id="filter_folder_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedFolderInfo.FolderName</span></a>
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen")' />
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
+		*##if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")#*
+			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>#*
+		*##else#*
+			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>#*
+		*##end#*
+		*##if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")#*
+			*#<a href="javascript:void(0);" id="filter_folder_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedFolderInfo.FolderName</span></a>#*
+		*##end#*
+	*#</div>
+	#if ($result.List && $result.List.size() != 0 && $result.isAccessible())
+		#AUIajaxpageview('CabinetScreen' $result)
 	#end
 </div>
 <div class="menubar multi" id="menubar_filter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
     	<p class="caption">$l10n.CABINET_GROUP</p>
-		<ul class="filtertype_group_$!portlet.ID" data-type="post" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID" data-type="group" data-defaultparam="0">
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen").addQueryData("post_name","0")))
 			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
 
@@ -69,11 +73,6 @@
 	</div>
 </div>
 
-</div>
-#if ($result.List && $result.List.size() != 0 && $result.isAccessible())
-#AUIajaxpageview('CabinetScreen' $result)
-#end
-</div>
 
 #if (!$result.isAccessible())
 <div class="message">$l10n.CABINET_NOT_PERMISSION_VIEW</div>
