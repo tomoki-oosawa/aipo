@@ -121,7 +121,7 @@ public class FileIOExportUtils {
         put("jetspeed_group_profile", Arrays.asList("psml_id", "profile"));
         put("jetspeed_role_profile", Arrays.asList("psml_id", "profile"));
         put("jetspeed_user_profile", Arrays.asList("psml_id", "profile"));
-        put("turbine_user.csv", Arrays.asList(
+        put("turbine_user", Arrays.asList(
           "user_id",
           "photo",
           "photo_smartphone"));
