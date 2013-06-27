@@ -47,6 +47,8 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.fileio.beans.ExportZipBean;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -60,23 +62,39 @@ public class FileIOExportUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(FileIOExportUtils.class.getName());
 
-  private static final String ZIP_FILE_FOLDER = JetspeedResources.getString(
+  private static final String HOME_FOLDER = JetspeedResources.getString(
+    "aipo.home",
+    "");
+
+  private static final String FILE_FOLDER = JetspeedResources.getString(
     "aipo.filedir",
     "");
 
-  public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
-    JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
+  public static final String TEMP_FOLDER_BASE = JetspeedResources.getString(
+    "aipo.tmp.fileupload.attachment.directory",
+    "");
 
   /** ZIPファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+  protected static final String ZIP_CATEGORY_KEY = JetspeedResources.getString(
     "aipo.zipfile.categorykey",
+    "");
+
+  /** CSVを保管するディレクトリのカテゴリキーの指定 */
+  protected static final String CSV_CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.csv.categorykey",
     "");
 
   /** ZIPファイルを一時保管するファイル名の指定 */
   public static final String ZIP_FILE_TEMP_FILENAME = "file.zip";
 
+  /** ZIP作成中フラグファイルを一時保管するファイル名の指定 */
+  public static final String ZIP_FILE_CREATING_FILENAME = "creating";
+
   /** ZIPファイルを一時保管するディレクトリの指定 */
   public static final String ZIP_FILE_TEMP_FOLDER = "data";
+
+  /** CSVファイルを一時保管するディレクトリの指定 */
+  public static final String CSV_FILE_TEMP_FOLDER = "csv";
 
   /**
    * 保存された全ファイルをZip化して保存します。 <BR>
@@ -88,32 +106,20 @@ public class FileIOExportUtils {
    */
   public static boolean zipAllFile(RunData rundata, Context context,
       List<String> msgList) {
+    int uid = ALEipUtils.getUserId(rundata);
+    String folderName = getTempFolderName(uid, ZIP_FILE_TEMP_FOLDER);
+
+    List<File> files = getAllFileList(new File(FILE_FOLDER));
+    makeCsvData(rundata, context, msgList);
+    files.addAll(getAllFileList(new File(getFolderName(CSV_CATEGORY_KEY))));
+
+    File creating =
+      new File(getFolderName(ZIP_CATEGORY_KEY), ZIP_FILE_CREATING_FILENAME);
+    createNewFile(creating);
+    File zipFile = new File(folderName, ZIP_FILE_TEMP_FILENAME);
+    createNewFile(zipFile);
+
     try {
-      int uid = ALEipUtils.getUserId(rundata);
-      String folderName = getZipFileFolderName(String.valueOf(uid));
-
-      List<File> files = getAllFileList(new File(ZIP_FILE_FOLDER));
-      files.addAll(makeCsvData(rundata, context, msgList));
-
-      File zipFile =
-        new File(folderName
-          + ALStorageService.separator()
-          + ZIP_FILE_TEMP_FILENAME);
-      if (!zipFile.exists()) {
-        try {
-          String parent = zipFile.getParent();
-          if (parent != null) {
-            File dir = new File(parent);
-            if (!dir.exists()) {
-              dir.mkdirs();
-            }
-          }
-          zipFile.createNewFile();
-        } catch (Exception e) {
-          logger.error("Can't create file...:" + zipFile);
-        }
-      }
-
       ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
       try {
         encode(zos, files);
@@ -126,12 +132,9 @@ public class FileIOExportUtils {
         uid,
         ZIP_FILE_TEMP_FOLDER,
         ZIP_FILE_TEMP_FILENAME,
-        ZIP_FILE_FOLDER,
-        CATEGORY_KEY + ALStorageService.separator() + uid,
+        HOME_FOLDER,
+        ZIP_CATEGORY_KEY,
         "0_" + String.valueOf(System.nanoTime()));
-
-      // 一時ファイル保存先のフォルダを削除
-      new File(folderName).delete();
 
       return true;
     } catch (FileNotFoundException fe) {
@@ -143,6 +146,10 @@ public class FileIOExportUtils {
     } catch (Exception e) {
       logger.error("zip", e);
       return false;
+    } finally {
+      // 一時ファイル保存先のフォルダを削除
+      new File(folderName).delete();
+      creating.delete();
     }
   }
 
@@ -154,18 +161,15 @@ public class FileIOExportUtils {
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    */
-  private static List<File> makeCsvData(RunData rundata, Context context,
+  private static boolean makeCsvData(RunData rundata, Context context,
       List<String> msgList) {
-    List<File> res = new ArrayList<File>();
     InputStream resourceAsStream =
       rundata.getServletContext().getResourceAsStream(
         "WEB-INF/datasource/dbcp-org001.properties");
     Connection conn = null;
 
-    File tmpDir =
-      new File(JetspeedResources.getString("aipo.tmp.directory", "")
-        + ALStorageService.separator()
-        + "csv");
+    int uid = ALEipUtils.getUserId(rundata);
+    File tmpDir = new File(getTempFolderName(uid, CSV_FILE_TEMP_FOLDER));
 
     if (!tmpDir.isDirectory()) {
       tmpDir.mkdirs();
@@ -196,17 +200,42 @@ public class FileIOExportUtils {
         PreparedStatement statement =
           conn.prepareStatement("SELECT * FROM " + tableName + ";");
         ResultSet resultSet = statement.executeQuery();
-        File file = new File(tmpDir, tableName + ".csv");
-        Csv.save(resultSet, file, csvConfig, resultSetHandler);
-        res.add(file);
+        String fileName = tableName + ".csv";
+        Csv.save(
+          resultSet,
+          new File(tmpDir, fileName),
+          csvConfig,
+          resultSetHandler);
         resultSet.close();
         statement.close();
+
+        // ファイルの移動
+        ALStorageService.copyTmpFile(
+          uid,
+          CSV_FILE_TEMP_FOLDER,
+          fileName,
+          HOME_FOLDER,
+          CSV_CATEGORY_KEY,
+          fileName);
       }
-      return res;
+      return true;
     } catch (Exception e) {
       logger.error("[ERROR]" + e);
-      return new ArrayList<File>();
+      return false;
+    } finally {
+      tmpDir.delete();
     }
+  }
+
+  public static List<ExportZipBean> getExportZipList() {
+    List<ExportZipBean> res = new ArrayList<ExportZipBean>();
+    List<File> zips = getAllFileList(new File(getFolderName(ZIP_CATEGORY_KEY)));
+    for (File zip : zips) {
+      ExportZipBean bean = new ExportZipBean();
+      bean.setName(zip.getName());
+      res.add(bean);
+    }
+    return res;
   }
 
   private static void encode(ZipOutputStream zos, List<File> files)
@@ -244,16 +273,50 @@ public class FileIOExportUtils {
     return res;
   }
 
+  private static boolean createNewFile(File file) {
+    if (!file.exists()) {
+      try {
+        String parent = file.getParent();
+        if (parent != null) {
+          File dir = new File(parent);
+          if (!dir.exists()) {
+            dir.mkdirs();
+          }
+        }
+        file.createNewFile();
+      } catch (Exception e) {
+        logger.error("Can't create file...:" + file);
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * 一時ファイルの保存先フォルダを取得
+   * 
+   * @param uid
+   * @param folder
+   * @return
+   */
+  private static String getTempFolderName(int uid, String folder) {
+    return ALStorageService.getDocumentPath(TEMP_FOLDER_BASE, uid
+      + ALStorageService.separator()
+      + folder);
+  }
+
+  /**
+   * ファイルの保存先フォルダを取得
    * 
    * @param index
    * @return
    */
-  private static String getZipFileFolderName(String index) {
-    return ALStorageService.getDocumentPath(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      index + ALStorageService.separator() + ZIP_FILE_TEMP_FOLDER);
+  private static String getFolderName(String category) {
+    return HOME_FOLDER
+      + ALStorageService.separator()
+      + Database.getDomainName()
+      + ALStorageService.separator()
+      + category;
   }
 
 }

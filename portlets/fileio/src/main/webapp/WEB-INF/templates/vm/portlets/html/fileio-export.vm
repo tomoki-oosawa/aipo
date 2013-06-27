@@ -24,15 +24,20 @@
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 <form enctype="multipart/form-data" method="post" action="" name="io_select" class="auiForm">
-<input type="hidden" value="$secid" name="secid" />
-
-<table class="listTable wide">
-<tbody>
-<tr>
-<td colspan="2" class="center"><input type="button" onClick="aipo.fileio.ajaxSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData("template","FileIOExportJSONScreen")', '$indicator_id', '$portlet_id', 'aipo.fileio.onReceiveMessage')" value="$l10n.FILEIO_EXPORT" class="button" name="send" /></td>
-</tr>
-</tbody>
-</table>
+    <input type="hidden" value="$secid" name="secid" />
+    
+    <table class="listTable wide">
+        <tbody>
+            #foreach ($record in $result)
+    			<tr>
+                	#ALtdcell("$!{record.Name}")
+                </tr>
+            #end
+            <tr>
+            	<td colspan="2" class="center"><input type="button" onClick="aipo.fileio.ajaxSubmit(this, '$!jslink.getPortletById($!portlet.ID).addQueryData("template","FileIOExportJSONScreen")', '$indicator_id', '$portlet_id', 'aipo.fileio.onReceiveMessage')" value="$l10n.FILEIO_EXPORT" class="button" name="send" /></td>
+            </tr>
+        </tbody>
+    </table>
 </form>
 
 

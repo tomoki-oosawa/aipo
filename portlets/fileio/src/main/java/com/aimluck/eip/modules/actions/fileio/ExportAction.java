@@ -25,6 +25,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.fileio.util.FileIOExportUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
 /**
@@ -49,6 +50,7 @@ public class ExportAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
+    setResultData(FileIOExportUtils.getExportZipList());
     setTemplate(rundata, "fileio-export");
   }
 
