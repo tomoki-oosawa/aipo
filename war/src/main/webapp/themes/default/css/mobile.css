@@ -922,7 +922,6 @@ table.listTable td.caption, table.subTable td.caption {
 }
 .auiPopup iframe {
 	max-width:100% !important;
-	height:auto;
 }
 /***************************************************
 	login
