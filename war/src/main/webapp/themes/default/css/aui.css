@@ -299,6 +299,7 @@ img.avatar,
 .auiPopup .roundBlockTitle,
 .auiPopup .roundBlockIcon {
   height: auto !important;
+  width: 100%;
 }
 
 .auiPopup .roundBlockWrapperTop td.roundBlockTitle {
@@ -309,6 +310,20 @@ img.avatar,
 .auiPopup .roundBlockWrapperTop td.roundBlockIcon {
   padding: 10px 0;
   background: none;
+  white-space: nowrap;
+}
+
+.auiPopupButtons .auiButton,
+.auiPopupButtons .auiButtonAction,
+.auiPopupButtons .auiButtonBold,
+.auiPopupButtons .auiButtonSearch,
+.auiPopupButtons .auiButtonSmall,
+.auiPopupButtons .auiButtonDisabled,
+.auiPopupButtons input[type=submit],
+.auiPopupButtons input[type=button],
+.auiPopupButtons input[type=reset],
+.auiPopupButtons button {
+  margin: 2px 0;
 }
 
 .activityTable {
