@@ -91,7 +91,7 @@
 </div>
 #end
 #if($!top_form && $!top_form=='simple')</div>#end
-<div style="height:30px; line-height:24px; overflow:hidden;"><span id="viewWeekly-$!portlet.ID" style="font-weight:bold">&nbsp;</span>
+<div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong>
 </div>
 #if(!$!top_form || $!top_form!='simple')</div>#end
 </div>
