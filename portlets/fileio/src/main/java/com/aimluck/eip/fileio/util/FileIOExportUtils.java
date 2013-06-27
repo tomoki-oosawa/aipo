@@ -31,8 +31,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -70,31 +74,59 @@ public class FileIOExportUtils {
     "aipo.filedir",
     "");
 
-  public static final String TEMP_FOLDER_BASE = JetspeedResources.getString(
+  private static final String TEMP_FOLDER_BASE = JetspeedResources.getString(
     "aipo.tmp.fileupload.attachment.directory",
     "");
 
   /** ZIPファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String ZIP_CATEGORY_KEY = JetspeedResources.getString(
+  private static final String ZIP_CATEGORY_KEY = JetspeedResources.getString(
     "aipo.zipfile.categorykey",
     "");
 
   /** CSVを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CSV_CATEGORY_KEY = JetspeedResources.getString(
+  private static final String CSV_CATEGORY_KEY = JetspeedResources.getString(
     "aipo.csv.categorykey",
     "");
 
+  /** サムネイルを保管するディレクトリのカテゴリキーの指定 */
+  private static final String THUMBNAIL_CATEGORY_KEY = JetspeedResources
+    .getString("aipo.thumbnail.categorykey", "");
+
   /** ZIPファイルを一時保管するファイル名の指定 */
-  public static final String ZIP_FILE_TEMP_FILENAME = "file.zip";
+  private static final String ZIP_FILE_TEMP_FILENAME = "file.zip";
 
   /** ZIP作成中フラグファイルを一時保管するファイル名の指定 */
-  public static final String ZIP_FILE_CREATING_FILENAME = "creating";
+  private static final String ZIP_FILE_CREATING_FILENAME = "creating";
 
   /** ZIPファイルを一時保管するディレクトリの指定 */
-  public static final String ZIP_FILE_TEMP_FOLDER = "data";
+  private static final String ZIP_FILE_TEMP_FOLDER = "data";
 
   /** CSVファイルを一時保管するディレクトリの指定 */
-  public static final String CSV_FILE_TEMP_FOLDER = "csv";
+  private static final String CSV_FILE_TEMP_FOLDER = "csv";
+
+  /**
+   * テーブル名とカラム名のMAP (name, [key, thumbnail_column1, thumbnail_column2 ...])
+   * */
+  private static final Map<String, List<String>> TABLE_THUMBNAIL_COLUMN_MAP =
+    new HashMap<String, List<String>>() {
+      private static final long serialVersionUID = -6186944992193875524L;
+      {
+        put("eip_m_mail_account", Arrays.asList(
+          "account_id",
+          "pop3password",
+          "auth_send_user_passwd"));
+        put("eip_t_blog_file", Arrays.asList("file_id", "file_thumbnail"));
+        put("eip_t_msgboard_file", Arrays.asList("file_id", "file_thumbnail"));
+        put("eip_t_timeline_url", Arrays.asList("url_id", "thumbnail"));
+        put("jetspeed_group_profile", Arrays.asList("psml_id", "profile"));
+        put("jetspeed_role_profile", Arrays.asList("psml_id", "profile"));
+        put("jetspeed_user_profile", Arrays.asList("psml_id", "profile"));
+        put("turbine_user.csv", Arrays.asList(
+          "user_id",
+          "photo",
+          "photo_smartphone"));
+      }
+    };
 
   /**
    * 保存された全ファイルをZip化して保存します。 <BR>
@@ -112,6 +144,8 @@ public class FileIOExportUtils {
     List<File> files = getAllFileList(new File(FILE_FOLDER));
     makeCsvData(rundata, context, msgList);
     files.addAll(getAllFileList(new File(getFolderName(CSV_CATEGORY_KEY))));
+    files
+      .addAll(getAllFileList(new File(getFolderName(THUMBNAIL_CATEGORY_KEY))));
 
     File creating =
       new File(getFolderName(ZIP_CATEGORY_KEY), ZIP_FILE_CREATING_FILENAME);
@@ -200,6 +234,8 @@ public class FileIOExportUtils {
         PreparedStatement statement =
           conn.prepareStatement("SELECT * FROM " + tableName + ";");
         ResultSet resultSet = statement.executeQuery();
+        saveThumbnail(tableName, resultSet);
+        resultSet = statement.executeQuery();
         String fileName = tableName + ".csv";
         Csv.save(
           resultSet,
@@ -236,6 +272,44 @@ public class FileIOExportUtils {
       res.add(bean);
     }
     return res;
+  }
+
+  private static void saveThumbnail(String tableName, ResultSet resultSet) {
+    if (TABLE_THUMBNAIL_COLUMN_MAP.get(tableName) != null) {
+      List<String> columns = TABLE_THUMBNAIL_COLUMN_MAP.get(tableName);
+      String key = columns.get(0);
+      List<String> thumbnails = columns.subList(1, columns.size());
+
+      try {
+        while (resultSet.next()) {
+          for (String thumbnail : thumbnails) {
+            File file =
+              new File(getFolderName(THUMBNAIL_CATEGORY_KEY
+                + ALStorageService.separator()
+                + tableName
+                + ALStorageService.separator()
+                + thumbnail), String.valueOf(resultSet.getInt(key)));
+            createNewFile(file);
+            FileOutputStream fos = new FileOutputStream(file);
+            try {
+              fos.write(resultSet.getBytes(thumbnail));
+            } catch (IOException e) {
+              logger.error("[ERROR]" + e);
+            } finally {
+              try {
+                fos.close();
+              } catch (IOException e) {
+                logger.error("[ERROR]" + e);
+              }
+            }
+          }
+        }
+      } catch (FileNotFoundException e) {
+        logger.error("[ERROR]" + e);
+      } catch (SQLException e) {
+        logger.error("[ERROR]" + e);
+      }
+    }
   }
 
   private static void encode(ZipOutputStream zos, List<File> files)
