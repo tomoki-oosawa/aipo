@@ -64,7 +64,7 @@
 </li>
 </ul>
 </div>
-<div style="height:24px; line-height:24px; overflow:hidden;"><strong>$!{result.ViewMonthText}</strong></div>
+<div class="count"><strong>$!{result.ViewMonthText}</strong></div>
 </div>
 
 </div>
