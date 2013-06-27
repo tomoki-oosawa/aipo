@@ -34,7 +34,7 @@
 <li><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_NEXT_MONTH" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 </ul>
 </div>
-<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
+<div class="count"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))

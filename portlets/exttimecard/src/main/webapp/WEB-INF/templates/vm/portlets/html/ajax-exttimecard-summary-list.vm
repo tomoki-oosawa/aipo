@@ -58,7 +58,7 @@
 </li>
 </ul>
 </div>
-<div class="floatLeft" style="line-height:24px;margin-left:10px;"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
+<div class="count"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardSummaryXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('target_group_name', "$!result.TargetGroupName").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
