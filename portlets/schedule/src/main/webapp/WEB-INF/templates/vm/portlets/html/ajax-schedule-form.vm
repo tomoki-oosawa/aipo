@@ -341,6 +341,6 @@
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
 <input type="hidden" id="commonUrl$!portlet.ID" name="commonUrl$!portlet.ID" value="$!jslink.getPortletById($!portlet.ID).addPathInfo('template','CommonCategoryLiteJSONScreen')" />
-<input type="hidden" id="commonCategoryid$!portlet.ID" name="commonCategoryid$!portlet.ID" value="$result.CommonCategoryId.Value" />
+<input type="hidden" id="commonCategoryid$!portlet.ID" name="commonCategoryid$!portlet.ID" value="$!{result.CommonCategoryId.Value}" />
 #ALformfooter()
 #ALdialogfooter()
