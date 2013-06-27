@@ -1157,6 +1157,14 @@ img.avatar,
   color: white !important;
 }
 
+.auiSelectButton.floatLeft {
+  margin-right: 10px;
+}
+
+.auiSelectButton.floatRight {
+  margin-left: 10px;
+}
+
 /***************************************************
 	auiWidgetsArea
 --------------------------------------------------*/
@@ -1692,14 +1700,21 @@ button[disabled]:hover {
 /*.auiSummaryMeta */
 .count {
   float: left;
-  height: 30px;
-  line-height: 30px;
-  padding-right: 1em;
+  height: 32px;
+  line-height: 32px;
 }
 
 .auiSummaryTitle {
   line-height: 2em;
   font-weight: bold;
+}
+
+.auiSummaryMetaText.floatLeft {
+  margin-left: 10px;
+}
+
+.auiSummaryMetaText.floatRight {
+  margin-right: 10px;
 }
 
 /***************************************************

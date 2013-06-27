@@ -84,11 +84,10 @@
   </tbody>
 </table>
 
-#if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
-##pageview($link $result)
-
 <table class="listTable wide mb0">
 <caption>$l10n.MSGBOARD_COMMENT</caption>
+#if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
+##pageview($link $result)
 <tbody>
 #set($firstCoTopic = true)
 #foreach ($record in $result.CoTopicList)
@@ -134,9 +133,9 @@
   	</tr>
 #end
 </tbody>
-</table>
 ##pageview($link $result)
 #end
+</table>
 #ALformfooter()
 
 #if($!resultOnTopicDetail)
