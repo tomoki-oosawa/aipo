@@ -129,6 +129,8 @@ public class MsgboardTopicSelectData extends
   /** グループ名 */
   private String postName = "";
 
+  private boolean isFileUploadable;
+
   /**
    * 
    * @param action
@@ -202,6 +204,7 @@ public class MsgboardTopicSelectData extends
     }
 
     target_keyword = new ALStringField();
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -884,5 +887,9 @@ public class MsgboardTopicSelectData extends
 
   public String getPostName() {
     return postName;
+  }
+
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 }
