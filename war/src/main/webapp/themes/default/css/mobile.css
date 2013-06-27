@@ -902,6 +902,7 @@ table.listTable td.caption, table.subTable td.caption {
 .dijitPopup {
 	width:100%;
 	padding-top:8px;
+	position:fixed;
 }
 
 #imageDialog {
@@ -921,7 +922,6 @@ table.listTable td.caption, table.subTable td.caption {
 }
 .auiPopup iframe {
 	max-width:100% !important;
-	height:auto;
 }
 /***************************************************
 	login
@@ -1255,7 +1255,7 @@ table tr.caption {
 }
 
 .filters {
-  line-height: 38px;
+  /*line-height: 38px;*/
 }
 
 .filterTip {
