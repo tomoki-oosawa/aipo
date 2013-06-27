@@ -1702,7 +1702,6 @@ button[disabled]:hover {
   float: left;
   height: 32px;
   line-height: 32px;
-  padding-right: 1em;
 }
 
 .auiSummaryTitle {
