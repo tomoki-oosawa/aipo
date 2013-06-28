@@ -509,12 +509,13 @@ input[type=password] {
   color: #fff;
 }
 
-.auiMbBtnActivity:hover,
+/*.auiMbBtnActivity:hover,*/
 .auiMbBtnActivity.active {
   background-color: #c60;
 }
 
-.auiMbBtnActivity.zero:hover {
+/*.auiMbBtnActivity.zero:hover*/
+.auiMbBtnActivity.zero.active {
   background-color: #666;
 }
 
