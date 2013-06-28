@@ -867,7 +867,7 @@ input[type=password] {
 	display: none !important;
 }
 
-table.listTable td.caption, table.subTable td.caption {
+.listTable .caption, .subTable .caption {
 	width:auto !important;
 }
 .modalDialog .listTable th, .modalDialog .listTable td{
