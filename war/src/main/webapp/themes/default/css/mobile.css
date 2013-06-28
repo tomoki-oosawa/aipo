@@ -828,23 +828,22 @@ input[type=password] {
 /* timeline*/
 .timeline .avatar img,
 .timeline .avatar {
-	max-width:32px;
-	max-height:32px;
+  max-width:32px;
+  max-height:32px;
 }
 .timeline .messageContents,
 .timeline .comments .messageContents {
-/*	display:table-cell;*/
-	padding-left:42px;
+  margin-left:42px;
   font-size: 14px;
 }
 .timeline .comments {
-	margin-left:42px;
+  margin-left:42px;
 }
 .timeline .commentField form {/*
 	padding-left:22px;
 */}
 .timeline .message > .more {
-	margin-left:42px;
+  margin-left:42px;
 }
 
 

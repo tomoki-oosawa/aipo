@@ -2595,7 +2595,7 @@ ul.attachments >li{
 }
 
 .timeline .messageContents {
-  padding-left: 60px;
+  margin-left: 60px;
   margin-bottom: 10px;
 }
 
@@ -2610,11 +2610,8 @@ ul.attachments >li{
   margin-bottom: 10px;
 }
 
-/*.timeline .message .comments:last-child {
-	margin-bottom:0;
-}*/
 .timeline .comments .messageContents {
-  padding-left: 42px;
+  margin-left: 42px;
   margin: 0;
 }
 
@@ -2623,7 +2620,6 @@ ul.attachments >li{
 }
 
 .messageContents .name {
-  /*color: #369;*/
   font-weight: bold;
   padding-right: 5px;
 }
@@ -2805,7 +2801,7 @@ ul.attachments >li{
 }
 
 .timeline .commentField form {
-  padding-left: 42px;
+  margin-left: 42px;
 }
 
 .timeline .text_exposed_show.ellipsis {
