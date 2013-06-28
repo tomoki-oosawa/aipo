@@ -2368,11 +2368,11 @@ ul.attachments >li{
   width: 130px;
 }
 
-.tlInputControls .auiButtonAction,
+/*.tlInputControls .auiButtonAction,
 #uploadContainer .auiButtonBold {
   height: 30px;
   line-height: 30px;
-}
+}*/
 
 .uploadText {
   position: absolute;
@@ -2822,12 +2822,14 @@ ul.attachments >li{
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background: url(../images/icon/auiIconSprites20130528.png) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-repeat: no-repeat;
 }
 
 * html .iconLike,
 * html .iconComment {
-  background: url(../images/icon/auiIconSprites20130528.gif) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-repeat: no-repeat;
 }
 
 .iconLike {
@@ -3106,11 +3108,13 @@ ul.attachments >li{
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background: url(../images/icon/auiIconSprites20130528.png) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-repeat: no-repeat;
 }
 
 * html .auiIcon {
-  background: url(../images/icon/auiIconSprites20130528.gif) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-repeat: no-repeat;
 }
 
 .auiIcon span {
@@ -3624,15 +3628,21 @@ a.auiIconSecret:hover {
   width: 15px;
   height: 18px;
   vertical-align: middle;
-  background: url(../images/icon/auiIconSprites20130528.png) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-repeat: no-repeat;
 }
 
 * html .auiIconArrow {
-  background: url(../images/icon/auiIconSprites20130528.gif) no-repeat;
+  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-repeat: no-repeat;
 }
 
 .auiIconArrowLeft {
   background-position: 0 -367px;
+}
+
+.auiIconArrowLeft_w {
+  background-position: 0 -383px;
 }
 
 .auiIconArrowLeftW {
@@ -3641,6 +3651,10 @@ a.auiIconSecret:hover {
 
 .auiIconArrowRight {
   background-position: 0 -399px;
+}
+
+.auiIconArrowRight_w {
+  background-position: 0 -417px;
 }
 
 .auiIconArrowRightW {
