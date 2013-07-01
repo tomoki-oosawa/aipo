@@ -505,83 +505,102 @@ td.item {
 	border:1px solid #C9C9C9;
 	padding:5px;
 }
-table.listTable {
-	margin-bottom:10px;
-	margin-top:5px;
-	border-top:solid 1px #ddd;
-	border-spacing:0;
-	border-collapse:collapse;
-	padding:0;
+
+.listTable {
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border-top: solid 1px #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+  padding: 0;
 }
-table.listTable caption {
-	background:#f0f0f0;
-	padding:5px;
-	font-weight:bold;
-	text-align:left;
+
+.listTable caption {
+  background: #f0f0f0;
+  padding: 5px;
+  font-weight: bold;
+  text-align: left;
 }
-table.listTableBorder {
-	margin-bottom:10px;
-	margin-top:5px;
-	border:solid 1px #ddd;
-	border-spacing:0;
-	border-collapse:collapse;
-	padding:0;
+
+.listTableBorder {
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border: solid 1px #ddd;
+  border-spacing: 0;
+  border-collapse: collapse;
+  padding: 0;
 }
-table.listTableBorder th {
-	padding:5px 3px;
-	white-space:nowrap;
-	text-align:center;
-	font-weight:bold;
-	border:solid 1px #ddd;
+
+.listTableBorder th {
+  padding: 5px 3px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  border: solid 1px #ddd;
 }
-table.listTableNoBorder {
-	margin-top:5px;
-	border-top:none;
-	border-spacing:0;
-	border-collapse:collapse;
-	padding:0;
-	border-bottom:none
+
+.listTableNoBorder {
+  margin-top: 5px;
+  border-top: none;
+  border-spacing: 0;
+  border-collapse: collapse;
+  padding: 0;
+  border-bottom: none;
 }
-table.subTable {
-	margin-top:2px;
-	border-spacing:0;
-	border-collapse:collapse;
+
+.subTable {
+  margin-top: 2px;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
-table.listTable td, table.subTable td {
-	padding:5px 3px;
-	border-bottom:solid 1px #ddd;
+
+.listTable td, .subTable td {
+  padding: 5px 3px;
+  border-bottom: solid 1px #ddd;
 }
-table.listTable th, table.listTable thead td, table.subTable th, table.subTable thead td {
-	padding:5px 3px;
-	white-space:nowrap;
-	text-align:center;
-	font-weight:bold;
-	border-bottom:solid 1px #ddd;
+
+.listTable th, .listTable thead td, .subTable th, .subTable thead td {
+  padding: 5px 3px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: solid 1px #ddd;
 }
-table.listTable th a, table.listTable thead td a, table.subTable th a, table.subTable thead td a {
-	padding-right:10px;
-	padding-left:10px;
-	display:block;
+
+.listTable th a, .listTable thead td a, .subTable th a, .subTable thead td a {
+  padding-right: 10px;
+  padding-left: 10px;
+  display: block;
 }
-table.listTable th a.headDown, table.listTable thead td.headDown a, table.subTable th a.headDown, table.subTable thead td.headDown a {
-	padding:3px 20px 1px 0;
-	background:transparent url(../images/common/btn_up.gif) no-repeat right 7px;
+
+.listTable th a.headDown, .listTable thead td.headDown a, .subTable th a.headDown, .subTable thead td.headDown a {
+  padding: 3px 20px 1px 0;
+  background: transparent url(../images/common/btn_up.gif) no-repeat right 7px;
 }
-table.listTable th a.headUp, table.listTable thead td.headUp a, table.subTable th a.headUp, table.subTable thead td.headUp a {
-	padding:3px 20px 1px 0;
-	background:transparent url(../images/common/btn_down.gif) no-repeat right 8px;
+
+.listTable th a.headUp, .listTable thead td.headUp a, .subTable th a.headUp, .subTable thead td.headUp a {
+  padding: 3px 20px 1px 0;
+  background: transparent url(../images/common/btn_down.gif) no-repeat right 8px;
 }
-table.listTable td.caption, table.subTable td.caption {
-	min-width:135px;
-	min-width:-moz-intrinsic;
-	width:135px;
-	white-space:nowrap;
-	font-weight:bold;
+
+.listTable .caption, .subTable .caption {
+  white-space: nowrap;
+  font-weight: bold;
 }
-table.listTable .selected, table.subTable .selected {
-	background-color:#FFFFE5;
-	background:#FFFFE5 url(../images/common/bg_slash.gif) repeat left top;
+
+.listTable .caption {
+  width: 135px;
 }
+
+.subTable .caption {
+  width: 90px;
+}
+
+.listTable .selected, .subTable .selected {
+  background-color: #FFFFE5;
+  background: #ffffe5 url(../images/common/bg_slash.gif) repeat left top;
+}
+
 table.none {
 	margin:0;
 	border-collapse:collapse;

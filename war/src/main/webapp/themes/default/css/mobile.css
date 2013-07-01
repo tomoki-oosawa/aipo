@@ -153,7 +153,7 @@ input[type=reset],
 button {
   min-width: 30px;
   height: 32px;
-  line-height: 32px;
+  line-height: 30px;
   padding: 0 5px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -207,7 +207,7 @@ input[type=password] {
 	set PortletOuter
 --------------------------------------------------*/
 #roundWrapper .roundMainWrapper {
-	padding:0;
+  padding: 46px 0 0;
 }
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
   background-image: none;
@@ -261,14 +261,15 @@ input[type=password] {
 	background-image:none;
 }
 .auiPortletHead {
-	margin-bottom: 5px;
-	height: 44px;
-	width: 100%;
-	background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.1)));
-	border-top: solid 1px #dcdcdc;
-	border-bottom: solid 1px #d0d0d0;
-	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+  height: 44px;
+  width: 100%;
+  background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
+  border-top: solid 1px #dcdcdc;
+  border-bottom: solid 1px #d0d0d0;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .auiPortletHead .inner {
 	margin:0 50px;
@@ -508,12 +509,13 @@ input[type=password] {
   color: #fff;
 }
 
-.auiMbBtnActivity:hover,
+/*.auiMbBtnActivity:hover,*/
 .auiMbBtnActivity.active {
   background-color: #c60;
 }
 
-.auiMbBtnActivity.zero:hover {
+/*.auiMbBtnActivity.zero:hover*/
+.auiMbBtnActivity.zero.active {
   background-color: #666;
 }
 
@@ -825,28 +827,24 @@ input[type=password] {
 	Apps Style
 --------------------------------------------------*/
 /* timeline*/
-#timelineOuter {
-  font-size: 14px;
-}
-
 .timeline .avatar img,
 .timeline .avatar {
-	max-width:32px;
-	max-height:32px;
+  max-width:32px;
+  max-height:32px;
 }
 .timeline .messageContents,
 .timeline .comments .messageContents {
-/*	display:table-cell;*/
-	padding-left:42px;
+  margin-left:42px;
+  font-size: 14px;
 }
 .timeline .comments {
-	margin-left:42px;
+  margin-left:42px;
 }
 .timeline .commentField form {/*
 	padding-left:22px;
 */}
 .timeline .message > .more {
-	margin-left:42px;
+  margin-left:42px;
 }
 
 
@@ -870,7 +868,7 @@ input[type=password] {
 	display: none !important;
 }
 
-table.listTable td.caption, table.subTable td.caption {
+.listTable .caption, .subTable .caption {
 	width:auto !important;
 }
 .modalDialog .listTable th, .modalDialog .listTable td{

@@ -90,10 +90,14 @@ function appsNaviSwitch() {
 	var bk = document.getElementById('appsNavigationBack');
 	var wrapper = document.getElementById('wrapper');
 	var nLeft = '-260px';
+	var mobileNavi = document.getElementById('auiMbBtnNavi');
 	if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
 		//show
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "block";
+		}
+		if (mobileNavi) {
+			mobileNavi.className = "mhRight";
 		}
 		navi.style.left = '0px';
 		navi.style.boxShadow = '0 5px 5px rgba(0,0,0,0.5)';
@@ -136,6 +140,9 @@ function appsNaviSwitch() {
 
 	}else{
 		//hide
+		if(mobileNavi) {
+			mobileNavi.className = "mhLeft";
+		}
 		navi.style.left = nLeft;
 		navi.style.boxShadow = 'none';
 		navi.style.borderRight = 'none';

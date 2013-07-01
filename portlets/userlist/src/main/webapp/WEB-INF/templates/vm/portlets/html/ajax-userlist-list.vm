@@ -25,12 +25,12 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;">
 <input type="hidden" name="template" value="UserListListScreen"/>
 <input type="hidden" name="mode" value="ajaxsearch"/>
-<input class="text long" type="text" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
-<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.USERLIST_SEARCH</a>
+<input class="text floatLeft long" type="text" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
+<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch  floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.USERLIST_SEARCH</a>
+</form>
 <div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">
 <div class="indicator" id="search-indicator-list-$!{portlet.ID}" style="display:none;">&nbsp;</div>
 </div>
-</form>
 #AUISummaryDivfooter()
 
 #if($result.List.size() == 0)
