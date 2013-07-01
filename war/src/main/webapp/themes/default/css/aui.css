@@ -2384,6 +2384,11 @@ ul.attachments >li{
   margin-left: -4.5em;
 }
 
+.singleFile li {
+  background: none;
+  padding: 0;
+}
+
 /***************************************************
 	auiSubmenu
 --------------------------------------------------*/
