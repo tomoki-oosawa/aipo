@@ -451,19 +451,15 @@ public class ExtTimecardListResultData implements ALData {
       float worktimein = (timecard_system.getWorktimeIn() / 60f);
       float resttimein = (timecard_system.getResttimeIn() / 60f);
       if (worktimein + resttimein > 0.0) {
-        float tmp_time = 0f;
-        while (time > 0.0) {
-          if (time > worktimein) {
-            tmp_time += worktimein;
-            time -= worktimein + resttimein;
-          } else {
-            tmp_time += time;
-            break;
+        float leftTime = time;
+        while (leftTime > 0.0) {
+          leftTime -= worktimein;
+          if (leftTime >= 0.0f) {
+            time -= resttimein;
+            leftTime -= resttimein;
           }
         }
-        time = tmp_time;
       }
-
       return time;
     }
   }
@@ -516,6 +512,7 @@ public class ExtTimecardListResultData implements ALData {
         if (end_time < rd.getClockOutTime().getValue().getTime()) {
           time += rd.getClockOutTime().getValue().getTime() - end_time;
         }
+
         time /= (1000.0 * 60.0 * 60.0);
       }
       return time;
@@ -620,17 +617,14 @@ public class ExtTimecardListResultData implements ALData {
       float worktimeout = (timecard_system.getWorktimeOut() / 60f);
       float resttimeout = (timecard_system.getResttimeOut() / 60f);
       if (worktimeout + resttimeout > 0.0) {
-        float tmp_time = 0f;
-        while (time > 0.0) {
-          if (time > worktimeout) {
-            tmp_time += worktimeout;
-            time -= worktimeout + resttimeout;
-          } else {
-            tmp_time += time;
-            break;
+        float leftTime = time;
+        while (leftTime > 0.0) {
+          leftTime -= worktimeout;
+          if (leftTime >= 0.0f) {
+            time -= resttimeout;
+            leftTime -= resttimeout;
           }
         }
-        time = tmp_time;
       }
 
       calculated_overtime_hour = time;
@@ -649,7 +643,7 @@ public class ExtTimecardListResultData implements ALData {
 
   public float getOvertimeHourWithoutRestHour(boolean round) {
     float time = NO_DATA;
-    if (calculated_overtime_hour != NO_DATA) {
+    if (calculated_overtime_hour > NO_DATA) {
       time = calculated_overtime_hour;
     } else {
       time = getOvertimeHour();
