@@ -571,7 +571,7 @@ $item.get(0)
 		<div id="mobileHeader" class="clearfix">
 		<div class="inner">
 		<h1>$!portlet.Title</h1>
-		<div id="auiMbBtnNavi" class="mhLeft">
+		<div id="auiMbBtnNavi" class="mhLeft" style="z-index:2">
 			<a href="javascript:void(0)" class="auiMbBtn auiMbBtnNavi" onClick="appsNaviSwitch()">
 				<img src="themes/$!result.Theme/images/mobile/an_list.png" width="24" height="24" />
 			</a>
