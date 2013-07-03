@@ -647,9 +647,6 @@ aipo.timeline.displayIndicator = function(url, portletId, indicator_id, post){
 aipo.timeline.displayIndicatorNotViewPage = function(portletId, indicator_id){
     var obj_indicator = dojo.byId(indicator_id + portletId);
     if(obj_indicator){
-    	if (dojo.isIE || window.navigator.userAgent.indexOf('Firefox') != -1) {
-    		dojo.style(obj_indicator, "padding" , "14px");
-    	}
     	dojo.style(obj_indicator, "display" , "");
     }
 

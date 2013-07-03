@@ -172,15 +172,13 @@
 	  <div id="content_$!{portlet.ID}_${i}"></div>
     #end
   #end
-  <div class="floatRight">
-	<div class="tlInputMention">
-		#ALajaxIndicatorglay("$indicator_id2" "$!portlet.ID" "&nbsp;")
-	</div>
-  </div>
   <div id="more_$!{portlet.ID}">
   #if($result.ContentHeightMax == 0)
 	#if($pages > $currentPage)
-		<div class="readMore"><a href="javascript:void(0);" onClick="aipo.timeline.displayIndicatorNotViewPage('$!{portlet.ID}', '$indicator_id2'); dojo.byId('readHiddenClick_$!{portlet.ID}').onclick();" style="display:block;">$l10n.TIMELINE_READ_MORE</a></div>
+		<div class="readMore clearfix">
+			#ALajaxIndicatorglayFloatRight("$indicator_id2" "$!portlet.ID" "&nbsp;")
+			<a href="javascript:void(0);" onClick="aipo.timeline.displayIndicatorNotViewPage('$!{portlet.ID}', '$indicator_id2'); dojo.byId('readHiddenClick_$!{portlet.ID}').onclick();" style="display:block;">$l10n.TIMELINE_READ_MORE</a>
+		</div>
 	#end
   #end
   <div id="more_end_$!{portlet.ID}"></div>
