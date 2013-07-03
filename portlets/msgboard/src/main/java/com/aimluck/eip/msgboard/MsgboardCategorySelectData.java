@@ -60,9 +60,8 @@ public class MsgboardCategorySelectData extends
     implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardCategorySelectData.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardCategorySelectData.class.getName());
 
   /** カテゴリ一覧 */
   private List<MsgboardCategoryResultData> categoryList;
@@ -322,7 +321,10 @@ public class MsgboardCategorySelectData extends
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
-      query.setQualifier(exp);
+      Expression nonDisabledexp =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      query.setQualifier(exp.andExp(nonDisabledexp));
+
       members = ALEipUtils.getUsersFromSelectQuery(query);
 
       rd.setCategoryId(record.getCategoryId().intValue());

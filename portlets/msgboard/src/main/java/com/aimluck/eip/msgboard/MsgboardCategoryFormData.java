@@ -242,7 +242,9 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
-      query.setQualifier(exp);
+      Expression nonDisabledexp =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      query.setQualifier(exp.andExp(nonDisabledexp));
       memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       if (public_flag) {
