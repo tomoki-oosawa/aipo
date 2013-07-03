@@ -1173,14 +1173,6 @@ img.avatar,
   color: white !important;
 }
 
-.auiSelectButton.floatLeft {
-  margin-right: 10px;
-}
-
-.auiSelectButton.floatRight {
-  margin-left: 10px;
-}
-
 /***************************************************
 	auiWidgetsArea
 --------------------------------------------------*/
@@ -1720,6 +1712,8 @@ button[disabled]:hover {
   float: left;
   height: 32px;
   line-height: 32px;
+  margin: 0 10px;
+}
 }
 
 .auiSummaryTitle {
