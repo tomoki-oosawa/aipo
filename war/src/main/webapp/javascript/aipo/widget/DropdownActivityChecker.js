@@ -44,8 +44,13 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     },
 	_openDropDown: function(){
         this.inherited(arguments);
+		if(dojo.byId("auiMbBtnActivity"))dojo.addClass("auiMbBtnActivity","active");
         this.dropDown.reload();
     },
+	_closeDropDown:function(){
+        this.inherited(arguments);
+        if(dojo.byId("auiMbBtnActivity"))dojo.removeClass("auiMbBtnActivity","active");
+	},
     onCheckActivity: function(count) {
     	var checker = dojo.byId("activitychecker");
     	var activity = dojo.byId("auiMbBtnActivity");
