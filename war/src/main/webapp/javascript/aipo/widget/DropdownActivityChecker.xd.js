@@ -46,10 +46,15 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
         this.inherited(arguments);
         this.dropDown = new aipo.widget.ActivityList({},'activityLiteList');
     },
-	_openDropDown: function(){
+    _openDropDown: function(){
         this.inherited(arguments);
+		if(dojo.byId("auiMbBtnActivity"))dojo.addClass("auiMbBtnActivity","active");
         this.dropDown.reload();
     },
+	_closeDropDown:function(){
+        this.inherited(arguments);
+        if(dojo.byId("auiMbBtnActivity"))dojo.removeClass("auiMbBtnActivity","active");
+	},
     onCheckActivity: function(count) {
     	var checker = dojo.byId("activitychecker");
     	var activity = dojo.byId("auiMbBtnActivity");

@@ -196,7 +196,7 @@ aipo.workflow.onReceiveMessage = function(msg){
 	var select=dojo.byId("attachments_select");
 	if(typeof select!="undefined"&& select!=null)
 		select.parentNode.removeChild(select);
-	
+
 	window.scrollTo(0, 0)
 
 	if(!msg) {
@@ -209,11 +209,17 @@ aipo.workflow.onReceiveMessage = function(msg){
         aipo.portletReload('whatsnew');
         aipo.portletReload('timeline');
     }
+
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
-}
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog && msg != '') {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 
+}
 
 aipo.workflow.onAccept = function(portletId){
 	dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});

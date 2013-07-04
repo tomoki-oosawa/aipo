@@ -1080,6 +1080,11 @@ $link.get(0)
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(ALcell_formheader_sjis $career $jslink $portlet)
+<form action="$!jslink.getPortletById($!portlet.ID)" method="post" Accept-charset="Shift_JIS">
+<input type="hidden" name="secid" value="$secid" />
+#end
+
 #macro(ALcell_formfooter)
 </form>
 #end

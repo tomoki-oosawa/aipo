@@ -1173,14 +1173,6 @@ img.avatar,
   color: white !important;
 }
 
-.auiSelectButton.floatLeft {
-  margin-right: 10px;
-}
-
-.auiSelectButton.floatRight {
-  margin-left: 10px;
-}
-
 /***************************************************
 	auiWidgetsArea
 --------------------------------------------------*/
@@ -1720,6 +1712,8 @@ button[disabled]:hover {
   float: left;
   height: 32px;
   line-height: 32px;
+  margin: 0 10px;
+}
 }
 
 .auiSummaryTitle {
@@ -2193,6 +2187,10 @@ button[disabled]:hover {
   border-bottom: solid 1px #eee;
 }
 
+.entry:first-child .entryHeader p {
+  margin-top: 0;
+}
+
 .entryBody {
   margin-left: 40px;
 }
@@ -2202,7 +2200,7 @@ button[disabled]:hover {
 }
 
 .entryHeader {
-  padding: 0 0 1em 0;
+  padding: 0 0 10px 0;
 }
 
 .entryFooter {
@@ -2210,11 +2208,11 @@ button[disabled]:hover {
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 0.5em 0;
+  padding: 0 0 5px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 0.5em 0;
+  padding: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
