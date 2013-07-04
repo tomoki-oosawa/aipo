@@ -33,9 +33,18 @@ aipo.exttimecard.onReceiveMessage = function(msg) {
 		}
 		aipo.portletReload('exttimecard');
 	}
+
+	window.scrollTo(0, 0)
+
 	if (dojo.byId('messageDiv')) {
 		dojo.byId('messageDiv').innerHTML = msg;
 	}
+
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog && msg != '') {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 }
 
 aipo.exttimecard.onListReceiveMessage = function(msg) {
