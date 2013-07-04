@@ -475,7 +475,7 @@ input[type=password] {
 }
 
 #mobileHeader .auiMbBtn {
-	font-size: 11px;
+	font-size: 14px;
 }
 
 .auiMbBtn {
@@ -518,7 +518,6 @@ input[type=password] {
 
 .auiMbBtnActivity, .auiMbBtnAction {
   text-align: center;
-  font-weight: bold;
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
@@ -572,94 +571,100 @@ input[type=password] {
 	appsNavigation
 --------------------------------------------------*/
 #appsNavigation {
-	position:absolute;
-	top:0;
-	left:-260px;
-	width:260px;
-	height:100%;
-	font-size:13px;
-	background:#505050;
-	color:#ffffff;
-	z-index:10000;
+  position: absolute;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  font-size: 13px;
+  background: #505050;
+  color: #ffffff;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-right: solid 1px #909090;
+  z-index: 10000;
 }
+
 #appsNavigationBack {
-	display:none;
-	position:absolute;
-	width:100%;
-	height:100%;
-	top:0;
-	right:0;
-	z-index:9999;
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: 9999;
 }
+
 #appsNavigation ul {
-	display:none;
+  display: none;
 }
+
 #appsNavigationBack a {
-	display:block;
-	height:100%;
+  display: block;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .anDrawer {
-	position:absolute;
-	right:-45px;
-	overflow:hidden;
-	-webkit-border-radius:0 6px 6px 0;
-	-moz-border-radius:0 6px 6px 0;
-	-ms-border-radius:0 6px 6px 0;
-	border-radius:0 6px 6px 0;
-	border-right:solid 1px #777777;
-	background:#333333
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.2)),
-		color-stop(0.5, rgba(255,255,255,0)),
-		to(rgba(0,0,0,0.1))
-	);
+  position: absolute;
+  right: -40px;
+  top: 7px;
+  overflow: hidden;
 }
+
 .anDrawer a {
-	display:table-cell;
-	width:45px;
-	height:45px;
-	vertical-align:middle;
-	text-align:center;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  background: #505050;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
 .anDrawer img {
-	width:24px;
-	height:24px;
+  width: 24px;
+  height: 24px;
 }
+
 #appsNavigation h2 {
-	line-height:2em;
-	padding:0 5px;
-	white-space:nowrap;
-	text-shadow:0 1px 0 rgba(0,0,0,1);
-	background:#505050;
+  line-height: 2em;
+  padding: 0 5px;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 black;
+  background: #505050;
 }
+
 #appsNavigation li {
-	clear:both;
-	padding:0;
-	background:none;
-	overflow:hidden;
-	background:#333333;
+  clear: both;
+  padding: 0;
+  background: none;
+  overflow: hidden;
+  background: #333333;
 }
+
 #appsNavigation a {
-	text-decoration:none;
-	color:#ffffff;
+  text-decoration: none;
+  color: #ffffff;
 }
+
 #appsNavigation li a {
-	display:block;
-	height:40px;
-	line-height:40px;
-	font-size:16px;
-	font-weight:bold;
-	text-shadow:0 1px 0 rgba(0,0,0,1);
-	border-top:solid 1px rgba(255,255,255,0.3);
-	border-bottom:solid 1px rgba(0,0,0,0.8);
-/*	background: -webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.2)),
-		to(rgba(255,255,255,0))
-	);*/
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 black;
+  border-top: solid 1px rgba(255, 255, 255, 0.3);
+  border-bottom: solid 1px rgba(0, 0, 0, 0.8);
 }
+
 .anUser {
 	font-size:16px;
 	font-weight:bold;
@@ -673,36 +678,41 @@ input[type=password] {
 	);
 	border-bottom:solid 1px rgba(0,0,0,0.7);
 }
+
 .anUser > div {
-	display:table-cell;
-	vertical-align:middle;
-	height:45px;
-	line-height:45px;
+  display: table-cell;
+  vertical-align: middle;
+  height: 45px;
+  line-height: 45px;
 }
+
 .anUser .avatar {
-	width:40px;
-	text-align:center;
+  width: 40px;
+  text-align: center;
 }
+
 #appsNavigation .icon {
-	display:block;
-	float:left;
-	padding:10px;
-	vertical-align:middle;
-	text-align:center;
+  display: block;
+  float: left;
+  padding: 10px;
+  vertical-align: middle;
+  text-align: center;
 }
+
 #appsNavigation .icon img {
-	width:20px;
-	height:20px;
+  width: 20px;
+  max-height: 20px;
 }
+
 .anFooter {
-	display:table-cell;
-	width:260px;
-	height:43px;
-	padding:0 5px;
-	vertical-align:middle;
-	background:#505050;
-	overflow:hidden;
-	text-shadow:0 1px 0 rgba(0,0,0,1);
+  display: table-cell;
+  width: 260px;
+  height: 43px;
+  padding: 0 5px;
+  vertical-align: middle;
+  background: #505050;
+  overflow: hidden;
+  text-shadow:0 1px 0 rgba(0,0,0,1);
 }
 
 /***************************************************
