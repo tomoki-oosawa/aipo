@@ -37,10 +37,10 @@
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdhead("#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')")
-#ALtdheadAtt($l10n.WEBMAIL_MAILADDRESS 'width="10%"')
+#ALtdhead("<div>#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')</div>")
+#ALtdheadAtt("<div><wbr>$l10n.WEBMAIL_MAILADDRESS</div>" 'width="10%"')
 #ALtdheadAtt($l10n.WEBMAIL_UNREAD_COUNT 'width="1%"')
-#ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center"')
+#ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center mb_hide""')
 </tr>
 #foreach ($record in $result.List)
 #if($!record.countUnRead>= 0)
@@ -55,9 +55,9 @@
 #ALtdcellAtt("$!record.MailAddress" ' nowrap')
 #ALtdcellAtt("$countUnRead" 'align="right" nowrap')
 #if($!record.FinalAccessDate.toString() != "")
-#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY$!{record.FinalAccessDate.time}" 'align="left" valign="center" nowrap')
+#ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY$!{record.FinalAccessDate.time}" 'align="left" valign="center" nowrap class="mb_hide"')
 #else
-#ALtdcellAtt($l10n.WEBMAIL_NOTHING 'align="center"')
+#ALtdcellAtt($l10n.WEBMAIL_NOTHING 'align="center"class="mb_hide"')
 #end
 </tr>
 #end
