@@ -69,6 +69,13 @@ aipo.onloadSmartPhone = function(){
 			widgets_area.appendChild(elem);
 		}
 	}
+	dojo.query("input, textarea").forEach( function (item) {
+		dojo.connect(item, "onfocus", aimluck.io.onTextFieldFocus)
+		dojo.connect(item, "onblur", aimluck.io.onTextFieldBlur)
+	})
+	dojo.query("form").forEach( function (item) {
+		dojo.connect(item, "onsubmit", aimluck.io.onTextFieldBlur)
+	})
 }
 dojo.addOnLoad(function(){
 	aipo.onloadSmartPhone();

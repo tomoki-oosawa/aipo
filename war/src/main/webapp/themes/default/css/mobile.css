@@ -579,9 +579,6 @@ input[type=password] {
   font-size: 13px;
   background: #505050;
   color: #ffffff;
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  border-right: solid 1px #909090;
   z-index: 10000;
 }
 

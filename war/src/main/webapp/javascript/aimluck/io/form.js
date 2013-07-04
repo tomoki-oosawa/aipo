@@ -690,3 +690,19 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
     });
 }
 
+
+aimluck.io.onTextFieldFocus = function() {
+	var mobileHeader = document.getElementById('mobileHeader');
+	if(mobileHeader) {
+		mobileHeader.style.position = "absolute";
+		mobileHeader.style.top = "0px";
+	}
+}
+
+aimluck.io.onTextFieldBlur = function() {
+	var mobileHeader = document.getElementById('mobileHeader');
+	if(mobileHeader) {
+		mobileHeader.style.position = "fixed";
+		mobileHeader.style.top = "0px";
+	}
+}
