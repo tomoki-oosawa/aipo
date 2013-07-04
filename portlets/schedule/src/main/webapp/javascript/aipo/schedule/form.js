@@ -343,6 +343,11 @@ aipo.schedule.formSwitchSpan = function(button) {
         button.value = aimluck.io.escapeText("schedule_val_span2");
         aipo.schedule.formSpanOn(button.form);
     }
+
+            	var wrapper = document.getElementById('wrapper');
+            	if(wrapper) {
+            		wrapper.style.minHeight = '';
+            	}
 }
 
 aipo.schedule.formSpanOn = function(form) {
@@ -654,6 +659,11 @@ aipo.schedule.expandMember = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
+
+	var wrapper = document.getElementById('wrapper');
+	if(wrapper) {
+		wrapper.style.minHeight = '';
+	}
 }
 
 aipo.schedule.shrinkFacility = function(){
@@ -711,6 +721,10 @@ aipo.schedule.expandFacility = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
+  	var wrapper = document.getElementById('wrapper');
+	if(wrapper) {
+		wrapper.style.minHeight = '';
+	}
 }
 
 aipo.schedule.onSpanStartChange = function(){
