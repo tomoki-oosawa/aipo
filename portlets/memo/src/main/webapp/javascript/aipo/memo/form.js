@@ -22,7 +22,7 @@ dojo.provide("aipo.memo");
 aipo.memo.onLoadMemoDialog = function(portlet_id){
 
     dojo.byId("memo_name").focus();
-    
+
 }
 
 aipo.memo.formSwitchCategoryInput = function(button) {
@@ -45,7 +45,7 @@ aipo.memo.formCategoryInputOn = function(form) {
 aipo.memo.formCategoryInputOff = function(form) {
     dojo.byId('memoCategoryInputField').style.display = "none";
     dojo.byId('memoCategorySelectField').style.display = "";
-    
+
     form.is_new_category.value = 'FALSE';
 }
 
@@ -57,8 +57,16 @@ aipo.memo.onReceiveMessage = function(msg){
         }
         aipo.portletReload('memo');
     }
+
+	window.scrollTo(0, 0)
+
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
+    }
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog && msg != '') {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
 
@@ -71,9 +79,17 @@ aipo.memo.onReceiveMessageUpdate = function(msg){
         aipo.portletReload('memo');
     }
 
+	window.scrollTo(0, 0)
+
     var node = dojo.query('.messageDiv_memo.enabled');
     if (node.length >= 1) {
         node[0].innerHTML = msg;
+    }
+
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog && msg != '') {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
 
