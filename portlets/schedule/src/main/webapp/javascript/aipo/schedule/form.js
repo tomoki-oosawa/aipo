@@ -562,6 +562,8 @@ aipo.schedule.onReceiveMessage = function(msg){
         aipo.portletReload('timeline');
     }
 
+	window.scrollTo(0, 0)
+
     if(msg != null && msg.match(/duplicate_facility/)){
 
         if(confirm(aimluck.io.escapeText("schedule_val_confirm1"))) {
@@ -587,6 +589,12 @@ aipo.schedule.onReceiveMessage = function(msg){
 		  }
     }else if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
+    }
+
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog && msg != '') {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
 
@@ -757,7 +765,7 @@ aipo.schedule.showScheduleAddDialog=function(td,event,url,portlet_id,callback){
     var pos={x:event.clientX,y:event.clientY};
 
 	var isCollapsed=false;
-	
+
 	dojo.query("a",td).forEach(function(item){
 		if(!isCollapsed){
 			var rect=item.getBoundingClientRect();

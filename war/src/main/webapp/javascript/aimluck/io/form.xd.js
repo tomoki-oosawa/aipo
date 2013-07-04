@@ -1,7 +1,3 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aimluck.io"]],
-defineResource: function(dojo){if(!dojo._hasResource["aimluck.io"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aimluck.io"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
@@ -475,6 +471,7 @@ aimluck.io.createOptions = function(selectId, params) {
 }
 
 aimluck.io.addFileToList =function(ul,fileid,filename){
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	if(ul.parentNode.style.display == "none") {
 		ul.parentNode.style.display = "";
 	}
@@ -482,7 +479,7 @@ aimluck.io.addFileToList =function(ul,fileid,filename){
 	    var li = document.createElement("li");
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
 
 	   return ul.appendChild(li);
   } else {
@@ -490,17 +487,18 @@ aimluck.io.addFileToList =function(ul,fileid,filename){
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
 
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
 	    return ul.appendChild(li);
   }
 }
 
 aimluck.io.replaceFileToList =function(ul,fileid,filename){
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	if (document.all) {
 	    var li = document.createElement("li");
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
 	    ul.innerHTML="";
 	   return ul.appendChild(li);
   } else {
@@ -508,7 +506,7 @@ aimluck.io.replaceFileToList =function(ul,fileid,filename){
 	    li.setAttribute('data-fileid',fileid);
 	    li.setAttribute('data-filename',filename);
 
-	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">削除</span>";
+	    li.innerHTML="<span>"+filename+"</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"+nlsStrings.DELETE_STR+"</span>";
 	    ul.innerHTML="";
 	    return ul.appendChild(li);
   }
@@ -683,7 +681,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
                 }
             }
             // スマートフォン対応用
-            if(aipo.onloadSmartPhone==null){
+            if(aipo.onloadSmartPhone != null){
             	aipo.onloadSmartPhone();
             }
         },
@@ -693,6 +691,18 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id){
 }
 
 
+aimluck.io.onTextFieldFocus = function() {
+	var mobileHeader = document.getElementById('mobileHeader');
+	if(mobileHeader) {
+		mobileHeader.style.position = "absolute";
+		mobileHeader.style.top = "0px";
+	}
 }
 
-}});
+aimluck.io.onTextFieldBlur = function() {
+	var mobileHeader = document.getElementById('mobileHeader');
+	if(mobileHeader) {
+		mobileHeader.style.position = "fixed";
+		mobileHeader.style.top = "0px";
+	}
+}
