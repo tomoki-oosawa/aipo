@@ -310,6 +310,26 @@ input[type=password] {
 }
 
 /***************************************************
+	auiBlogEntry
+--------------------------------------------------*/
+#auiBlogEntries {
+  padding-top: 10px;
+}
+
+#auiBlogEntries .avatar img {
+  max-width: 32px;
+  max-height: 32px;
+}
+
+#auiBlogEntries .entry {
+  margin-bottom: 10px;
+}
+
+#auiContentsArea .entryBody {
+  margin-left: 42px;
+}
+
+/***************************************************
 	auiSmpHead
 --------------------------------------------------*/
 /*
