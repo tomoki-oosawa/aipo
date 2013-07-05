@@ -371,6 +371,8 @@ public class ExtTimecardSummaryListSelectData extends
     to.set(Calendar.HOUR_OF_DAY, 0);
     to.set(Calendar.MINUTE, 0);
     today.setValue(to.getTime());
+    boolean isBeforeThanStartDay =
+      (Integer.parseInt(today.getDay().toString()) < startDay);
 
     // 現在の月
     String tmpViewMonth = ALEipUtils.getTemp(rundata, context, "view_month");
@@ -379,7 +381,7 @@ public class ExtTimecardSummaryListSelectData extends
       cal.set(Calendar.DATE, 1);
       cal.set(Calendar.HOUR_OF_DAY, 0);
       cal.set(Calendar.MINUTE, 0);
-      if (Integer.parseInt(today.getDay().toString()) < startDay) {
+      if (isBeforeThanStartDay) {
         cal.add(Calendar.MONTH, -1);
       }
       viewMonth.setValue(cal.getTime());
@@ -391,16 +393,17 @@ public class ExtTimecardSummaryListSelectData extends
       }
     }
 
-    if (Integer.parseInt(today.getMonth()) == Integer.parseInt(viewMonth
-      .getMonth()
-      .toString())) {
+    if (!isBeforeThanStartDay
+      && Integer.parseInt(today.getMonth()) == Integer.parseInt(viewMonth
+        .getMonth()
+        .toString())) {
       currentMonth.setValue(to.getTime());
     } else {
       Calendar tmp_cal = Calendar.getInstance();
       tmp_cal.set(Calendar.DATE, 1);
       tmp_cal.set(Calendar.HOUR_OF_DAY, 0);
       tmp_cal.set(Calendar.MINUTE, 0);
-      if (Integer.parseInt(today.getDay().toString()) < startDay) {
+      if (isBeforeThanStartDay) {
         tmp_cal.add(Calendar.MONTH, -1);
       }
       currentMonth.setValue(tmp_cal.getTime());
