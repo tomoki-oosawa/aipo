@@ -252,7 +252,7 @@ aipo.webmail.switchAuthSend = function(check) {
   }
 }
 
-aipo.webmail.showAddressbookDialog = function(url, portlet_id, callback) {
+aipo.webmail.showAddressbookDialog = function(url, portlet_id, ind, callback) {
     var arrDialog = dijit.byId("addressbookDialog");
 
     if(! arrDialog){
@@ -264,6 +264,9 @@ aipo.webmail.showAddressbookDialog = function(url, portlet_id, callback) {
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
+      var popup = dojo.byId(ind + portlet_id);
+      popup.parentNode.parentNode.style.display="none";
+      popup.parentNode.parentNode.id="tmp_pop_id";
     }
 }
 
@@ -296,13 +299,22 @@ aipo.webmail.getDataSub = function(select, recipients){
     }
 }
 
-
 aipo.webmail.insertData = function(){
     dojo.byId('to').value = aipo.webmail.getStringLine(dojo.byId('detail_to_recipients').options);
     dojo.byId('cc').value = aipo.webmail.getStringLine(dojo.byId('detail_cc_recipients').options);
     dojo.byId('bcc').value = aipo.webmail.getStringLine(dojo.byId('detail_bcc_recipients').options);
 
     dijit.byId('addressbookDialog').hide();
+    var popup = dojo.byId('tmp_pop_id');
+    popup.style.display="";
+    popup.id="";
+}
+
+aipo.webmail.close = function(){
+	dijit.byId('addressbookDialog').hide();
+    var popup = dojo.byId('tmp_pop_id');
+    popup.style.display="";
+    popup.id="";
 }
 
 aipo.webmail.switchTypeCompany = function(check){
