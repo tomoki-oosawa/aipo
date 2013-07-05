@@ -215,7 +215,7 @@ function appsNaviSwitch() {
                 </ul>
         </div>
         <div class="anFooter">
-                <div class="copyright">&copy; 2012 Aimluck</div>
+                <div class="copyright">&copy; Aimluck</div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->
