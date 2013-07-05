@@ -236,7 +236,6 @@ dojo.declare(
             	});
         	}
 
-
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
                 focusNode.focus();
@@ -245,6 +244,14 @@ dojo.declare(
                     this._callback.call(this._callback, this._portlet_id);
                 }
             }
+
+        	dojo.query("#modalDialog input, #modalDialog textarea").forEach( function (item) {
+        		dojo.connect(item, "onfocus", aimluck.io.onTextFieldFocus)
+        		dojo.connect(item, "onblur", aimluck.io.onTextFieldBlur)
+        	})
+        	dojo.query("#modalDialog form").forEach( function (item) {
+        		dojo.connect(item, "onsubmit", aimluck.io.onTextFieldBlur)
+        	})
         },
         setCallback: function(portlet_id, callback) {
             this._portlet_id = portlet_id;

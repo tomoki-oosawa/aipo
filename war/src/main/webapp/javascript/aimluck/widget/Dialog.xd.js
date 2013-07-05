@@ -1,9 +1,4 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aimluck.widget.Dialog"],
-["provide", "aimluck.widget.DialogUnderlay"],
-["provide", "aimluck.widget.Timeout"],
-["require", "dijit.Dialog"]],
-defineResource: function(dojo){if(!dojo._hasResource["aimluck.widget.Dialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+if(!dojo._hasResource["aimluck.widget.Dialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aimluck.widget.Dialog"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -25,6 +20,7 @@ dojo._hasResource["aimluck.widget.Dialog"] = true;
  */
 
 dojo.provide("aimluck.widget.Dialog");
+dojo.provide("aimluck.widget.DialogSub");
 dojo.provide("aimluck.widget.DialogUnderlay");
 dojo.provide("aimluck.widget.Timeout");
 
@@ -71,11 +67,19 @@ dojo.declare( "aimluck.widget.Timeout",  [dijit._Widget, dijit._Templated] , {
 });
 
 dojo.declare(
+    "aimluck.widget.DialogSub",
+    [aimluck.widget.Dialog,dijit.Dialog],
+    {
+    	templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
+    }
+);
+
+
+dojo.declare(
     "aimluck.widget.Dialog",
     [dijit.Dialog],
     {
-        widgetId: null,
-        //読み込み中...
+    	//読み込み中...
         loadingMessage:"<div class='indicatorDialog'><div class='indicator'>"+nlsStrings.LOADING_STR+"</div></div>",
         templateString:null,
         templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",//<div dojoAttachPoint=\"titleBar\" class=\"modalDialogTitleBar\" tabindex=\"0\" waiRole=\"dialog\">&nbsp;</div>
@@ -119,6 +123,7 @@ dojo.declare(
 	                    }
                 });
             }
+
 
             this._underlay = new aimluck.widget.DialogUnderlay();
 
@@ -184,6 +189,16 @@ dojo.declare(
             	else if(!!document.body.scrollTop)document.body.scrollTop=0;
             }
 
+            //android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
+            if(aipo.userAgent.isAndroid2()){
+               var wrapper=dojo.byId("wrapper");
+               // wrapper非表示はhiddenではなくdisplay:none;で
+               // dojo.style(wrapper, "visibility", "hidden");
+                dojo.style(wrapper, "display", "none");
+                var myModal=dojo.byId("modalDialog");
+                dojo.style(myModal, "top", "0px");
+                dojo.style(myModal, "margin", "0");
+            }
             //android時 下位レイヤーを無効にする。
         	if(aipo.userAgent.isAndroid()){
         		var _this=this;
@@ -194,7 +209,7 @@ dojo.declare(
                 	return false;
                 };
 
-        		 //モーダルダイアログ
+                //モーダルダイアログ
                 var dialogNodes=dojo.query("input,select,button,a",this.domNode);
 
                 //ダイアログ表示時に機能しなくなるので、
@@ -221,8 +236,6 @@ dojo.declare(
             	});
         	}
 
-
-
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
                 focusNode.focus();
@@ -231,6 +244,14 @@ dojo.declare(
                     this._callback.call(this._callback, this._portlet_id);
                 }
             }
+
+        	dojo.query("#modalDialog input, #modalDialog textarea").forEach( function (item) {
+        		dojo.connect(item, "onfocus", aimluck.io.onTextFieldFocus)
+        		dojo.connect(item, "onblur", aimluck.io.onTextFieldBlur)
+        	})
+        	dojo.query("#modalDialog form").forEach( function (item) {
+        		dojo.connect(item, "onsubmit", aimluck.io.onTextFieldBlur)
+        	})
         },
         setCallback: function(portlet_id, callback) {
             this._portlet_id = portlet_id;
@@ -341,10 +362,16 @@ dojo.declare(
 	        		node.disabled=false;
 	        	});
         	}
+            //android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
+            if(aipo.userAgent.isAndroid2()){
+               var wrapper=dojo.byId("wrapper");
+               // wrapper再表示
+               // wrapperの非表示はdisplay:none;で行う
+               // dojo.style(wrapper, "visibility", "visible");
+               dojo.style(wrapper, "display", "");
+            }
         }
     }
 );
 
 }
-
-}});
