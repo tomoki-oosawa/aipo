@@ -262,6 +262,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
     	    		item.style.display=(item.style.display!="none")?"none":defaultstyle;
     	    	}
     	    	f();
+    	    	aipo.schedule.setWrapperHeight();
     	     });
     	}
     };
@@ -343,11 +344,6 @@ aipo.schedule.formSwitchSpan = function(button) {
         button.value = aimluck.io.escapeText("schedule_val_span2");
         aipo.schedule.formSpanOn(button.form);
     }
-
-            	var wrapper = document.getElementById('wrapper');
-            	if(wrapper) {
-            		wrapper.style.minHeight = '';
-            	}
 }
 
 aipo.schedule.formSpanOn = function(form) {
@@ -363,6 +359,8 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('facilityFieldButton').style.display = "none";
 
     form.is_span.value = 'TRUE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formSpanOff = function(form) {
@@ -381,6 +379,8 @@ aipo.schedule.formSpanOff = function(form) {
 
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 
@@ -397,6 +397,8 @@ aipo.schedule.formRepeatOff = function(form) {
 
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formEditRepeatOne = function(form) {
@@ -412,6 +414,8 @@ aipo.schedule.formEditRepeatOne = function(form) {
 
     form.is_repeat.value = 'FALSE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formEditRepeatAll = function(form) {
@@ -428,6 +432,8 @@ aipo.schedule.formEditRepeatAll = function(form) {
 
     form.is_repeat.value = 'TRUE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formRepeatOn = function(form) {
@@ -443,6 +449,8 @@ aipo.schedule.formRepeatOn = function(form) {
 
     form.is_repeat.value = 'TRUE';
     form.is_span.value = 'FALSE';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formAllDayOn = function(checkbox) {
@@ -460,6 +468,8 @@ aipo.schedule.formAllDayOn = function(checkbox) {
     checkbox.form.is_repeat.value = 'FALSE';
     checkbox.form.is_span.value = 'TRUE';
     checkbox.form.all_day_flag.value = 'ON';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formAllDayOff = function(checkbox) {
@@ -478,6 +488,8 @@ aipo.schedule.formAllDayOff = function(checkbox) {
     checkbox.form.is_repeat.value = 'FALSE';
     checkbox.form.is_span.value = 'FALSE';
     checkbox.form.all_day_flag.value = 'OFF';
+
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.formPublicOn = function(form) {
@@ -494,6 +506,7 @@ aipo.schedule.formPublicOff = function(form) {
     }
     dojo.byId('facilityField').style.display = "none";
     dojo.byId('facilityFieldButton').style.display = "none";
+    aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.enablePerWeek = function(form){
@@ -596,11 +609,9 @@ aipo.schedule.onReceiveMessage = function(msg){
         dojo.byId('messageDiv').innerHTML = msg;
     }
 
-    var modalDialog = document.getElementById('modalDialog');
-    if(modalDialog && msg != '') {
-    	var wrapper = document.getElementById('wrapper');
-    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-    }
+	if(msg != '') {
+		aipo.schedule.setWrapperHeight();
+	}
 }
 
 aipo.schedule.shrinkMember = function(){
@@ -630,6 +641,7 @@ aipo.schedule.shrinkMember = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
+   aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.expandMember = function(){
@@ -659,11 +671,7 @@ aipo.schedule.expandMember = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
-
-	var wrapper = document.getElementById('wrapper');
-	if(wrapper) {
-		wrapper.style.minHeight = '';
-	}
+   aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.shrinkFacility = function(){
@@ -692,6 +700,7 @@ aipo.schedule.shrinkFacility = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
+   aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.expandFacility = function(){
@@ -721,10 +730,7 @@ aipo.schedule.expandFacility = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
-  	var wrapper = document.getElementById('wrapper');
-	if(wrapper) {
-		wrapper.style.minHeight = '';
-	}
+   aipo.schedule.setWrapperHeight();
 }
 
 aipo.schedule.onSpanStartChange = function(){
@@ -792,4 +798,12 @@ aipo.schedule.showScheduleAddDialog=function(td,event,url,portlet_id,callback){
 		aipo.common.showDialog(url,portlet_id,callback);
 		return false;
 	}
+}
+
+aipo.schedule.setWrapperHeight = function() {
+	var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 }
