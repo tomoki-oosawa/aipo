@@ -214,9 +214,18 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
     },
     onMemberAddClick: function(/*Event*/ evt){
       this.addMember(dojo.byId(this.memberFromId), dojo.byId(this.memberToId));
+      this.setWrapperHeight();
     },
     onMemberRemoveClick: function(/*Event*/ evt){
        this.removeMemberSync();
+    },
+    setWrapperHeight: function() {
+        window.scrollTo(0, 0)
+        var modalDialog = document.getElementById('modalDialog');
+        if(modalDialog && msg != '') {
+      	  var wrapper = document.getElementById('wrapper');
+      	  wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+        }
     }
 });
 
