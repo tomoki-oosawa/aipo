@@ -400,7 +400,9 @@ public class ExtTimecardSummaryListSelectData extends
       tmp_cal.set(Calendar.DATE, 1);
       tmp_cal.set(Calendar.HOUR_OF_DAY, 0);
       tmp_cal.set(Calendar.MINUTE, 0);
-      tmp_cal.add(Calendar.MONTH, -1);
+      if (Integer.parseInt(today.getDay().toString()) < startDay) {
+        tmp_cal.add(Calendar.MONTH, -1);
+      }
       currentMonth.setValue(tmp_cal.getTime());
     }
 
