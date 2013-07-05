@@ -24,7 +24,7 @@
 #if($result.List.size() == 0)
 <div class="message">$l10n.ACTIVITY_NO_INFO_TO_YOU</div>
 <p class="rightBtn">
-#if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end
+#if($!notifySupport)<a href="javascript:void(0);" onclick="activitySwitch();dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end
 </p>
 #else
 
@@ -105,7 +105,7 @@
 
 
 <p class="rightBtn">
-#if($!notifySupport)<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end<input type="button" name="allread" value="$l10n.ACTIVITY_ALL_ALREADY_READ" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
+#if($!notifySupport)<a href="javascript:void(0);" onclick=";dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end<input type="button" name="allread" value="$l10n.ACTIVITY_ALL_ALREADY_READ" onclick="activitySwitch();dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
 </p>
 
 #end

@@ -101,8 +101,16 @@ dojo.declare(
 				delete self._xhrDfd;
 				return err;
 			});
-		}
-    }
+		},
+		onLoad:function(){
+			var href =this.href;
+			if(href){
+			  if(href.indexOf("ActivityList") >0){
+			  activitySwitch();
+			  }
+			 }
+	   	}
+       }
 );
 
 }

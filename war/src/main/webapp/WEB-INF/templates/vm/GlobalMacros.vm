@@ -569,6 +569,21 @@ $item.get(0)
 ##                                                               </div>
 ## #end
 <!-- PORTLET OUTER -->
+<script language="javascript">
+function activitySwitch() {
+	var wrapper = document.getElementById('wrapper');
+    	var header = document.getElementById('mobileHeader')
+    	var popup = document.getElementsByClassName('dijitPopup');
+    	if(popup[0] == null) {
+    		wrapper.style.minHeight = '';
+    	} else {
+    		var height = popup[0].clientHeight + header.clientHeight;
+    		wrapper.style.minHeight =height +  'px';
+        }
+
+
+}
+</script>
 <div class="dojoDndItem auiPortlet">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
@@ -583,7 +598,7 @@ $item.get(0)
 		</div>
 		<div class="mhRight">
 			#if($data.User.getUserName() != "admin")
-				<a href="javascript:void(0)" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity zero" title="$l10n.WIDGET_NOTICE">
+				<a href="javascript:void(0)" onClick="activitySwitch()" id="auiMbBtnActivity" class="auiMbBtn auiMbBtnActivity zero" title="$l10n.WIDGET_NOTICE">
 					#ALActivity()
 				</a>
 			#end
