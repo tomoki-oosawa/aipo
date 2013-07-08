@@ -1382,6 +1382,11 @@ div.scheduleDiv {
 	background-color:#FFFFE5;
 	cursor:pointer;
 }
+
+.scheduleDiv .auiIcon {
+  margin: -1px 0 0 2px;
+}
+
 div.scheduleDivFirstLine {
 	line-height:1px;
 	height:13px;

@@ -862,27 +862,35 @@ input[type=password] {
 	Apps Style
 --------------------------------------------------*/
 /* timeline*/
-.timeline .avatar img,
-.timeline .avatar {
-  max-width:32px;
-  max-height:32px;
-}
-.timeline .messageContents,
-.timeline .comments .messageContents {
-  margin-left:42px;
+.timeline {
   font-size: 14px;
 }
+
+.timeline .avatar img,
+.timeline .avatar {
+  max-width: 32px;
+  max-height: 32px;
+}
+
+.timeline .messageContents,
+.timeline .comments .messageContents {
+  margin-left: 42px;
+}
+
 .timeline .comments {
-  margin-left:42px;
+  margin-left: 42px;
 }
-.timeline .commentField form {/*
-	padding-left:22px;
-*/}
+
 .timeline .message > .more {
-  margin-left:42px;
+  margin-left: 42px;
 }
 
-
+.iconLike,
+.iconComment {
+  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-repeat: no-repeat;
+  background-size: 16px auto;
+}
 
 /***************************************************
 	modalDialog
@@ -1355,17 +1363,36 @@ table tr.caption {
 .mw5 {width:5%;}
 
 /***************************************************
+	auiIcon
+--------------------------------------------------*/
+.auiIcon {
+  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-repeat: no-repeat;
+  background-size: 16px auto;
+}
+
+/***************************************************
+	auiIcon
+--------------------------------------------------*/
+.auiIconArrow {
+  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-repeat: no-repeat;
+  background-size: 16px auto;
+}
+
+/***************************************************
     auiMbIcon
 --------------------------------------------------*/
 .auiMbIcon {
-	display:inline-block;
-	width:20px;
-	height:20px;
-	overflow:hidden;
-	vertical-align:middle;
-	background:url(../images/icon/auiMbIconSprites20120713.png) no-repeat;
-	background-size:20px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  vertical-align: middle;
+  background: url(../images/icon/auiMbIconSprites20120713.png) no-repeat;
+  background-size: 20px;
 }
+
 #appsNavigation li .auiMbIcon {
     margin:8px 10px 12px 10px;
 }
