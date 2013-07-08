@@ -48,6 +48,8 @@
 	<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-2.x.css?$!{utils.CacheBust}" />
 #end
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css">
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome-ie7.min.css"><![endif]-->
 </head>
 <body onload="aipo.container.renderGadgets()">
 <div id="modalDialog" class="modalDialog" style="display:none"></div>
@@ -61,7 +63,7 @@ function androidLocale(){
   } catch (e) {
     result = null;
   }
-  if (!result) { 
+  if (!result) {
     result = 'ja';
   }
   return result;

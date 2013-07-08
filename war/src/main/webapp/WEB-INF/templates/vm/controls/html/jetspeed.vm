@@ -96,12 +96,14 @@ function appsNaviSwitch() {
 	var lists = navi.getElementsByTagName("ul");
 	var bk = document.getElementById('appsNavigationBack');
 	var wrapper = document.getElementById('wrapper');
+    var drawer = document.getElementById('anDrawer');
 	var nLeft = '-260px';
 	if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
 		//show
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "block";
 		}
+        drawer.style.display = 'block';
 		navi.style.left = '0px';
 		navi.style.boxShadow = '0 5px 5px rgba(0,0,0,0.5)';
 		navi.style.borderRight = 'solid 1px #909090';
@@ -143,6 +145,7 @@ function appsNaviSwitch() {
 
 	}else{
 		//hide
+        drawer.style.display = 'none';
 		navi.style.left = nLeft;
 		navi.style.boxShadow = 'none';
 		navi.style.borderRight = 'none';
@@ -177,6 +180,7 @@ function appsNaviSwitch() {
 </script>
 <div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
 <div id="appsNavigation"><div id="anInner">
+    <div id="anDrawer" class="anDrawer"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="auiIcon auiIconDelete_w"></i></a></div>
         <div class="anUser">
                 <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="$l10n.USERLIST_PHOTO" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="$l10n.USERLIST_PHOTO" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
@@ -302,7 +306,7 @@ $portlet.getContent($data)
 			<div class="auiPortletSetting">
 				#foreach ( $action in $actions )
 					#if (${client} == "IPAD")
-					<a href="$!utils.escapeXML(${action.Link})" title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
+					<a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")' title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
 					#else
 					<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('$!{portlet.ID}');" title="${action.Alt}" ></a>
 					#end
@@ -311,7 +315,7 @@ $portlet.getContent($data)
 			    <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
 					<ul>
 					#foreach ( $action in $actions)
-						<li><a href="$!utils.escapeXML(${action.Link})">$l10n.WAR_SET_UP</a></li>
+						<li><a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")'>$l10n.WAR_SET_UP</a></li>
 					#end
 					#if($accessControl == "true")
 						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">$l10n.CUSTOMIZER_DELETE</a></li>

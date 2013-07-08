@@ -251,14 +251,13 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         Collection<PortletTab> tabs =
           getTabs(PortalToolkit.getSet(portlets), rundata, context);
 
-        // remove "個人設定"
-        // for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
-        // PortletTab tab = i.next();
-        // if (tab.getTitle().toString().equals("個人設定")) {
-        // i.remove();
-        // }
-        // }
-
+        // // remove "個人設定"
+        for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+          PortletTab tab = i.next();
+          if (tab.getTitle().toString().equals("個人設定")) {
+            i.remove();
+          }
+        }
         context.put("tabs", tabs);
         context.put("menus", getMenus(portlets, rundata, context));
 
