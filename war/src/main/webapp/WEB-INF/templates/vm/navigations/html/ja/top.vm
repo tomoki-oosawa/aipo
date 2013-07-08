@@ -49,13 +49,13 @@
         <ul>
     			#if ($data.User.getUserName()!="admin")
           <li>
-    				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','AccountPersonScreen').addQueryData('type', 'popup'))');">ユーザー情報</a>
-    			</li>
+    	    <a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">ユーザー情報</a>
+    	  </li>
           <li>
-            <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'MyGroup').addQueryData('template','MyGroupScreen').addQueryData('type', 'popup'))');">Myグループ</a>
+            <a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'MyGroup').addQueryData('action','controls.Restore'))">Myグループ</a>
           </li>
           <li>
-           <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Cellular').addQueryData('template','CellularScreen').addQueryData('type', 'popup'))');">携帯電話設定</a>
+            <a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'Cellular').addQueryData('action','controls.Restore'))">携帯電話設定</a>
           </li>
           #end
         	<li class="last">
