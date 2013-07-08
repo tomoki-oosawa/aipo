@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -85,12 +86,12 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       Collection<PortletTab> tabs = getTabs(set, rundata, context);
 
       // remove "個人設定"
-      // for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
-      // PortletTab tab = i.next();
-      // if (tab.getTitle().toString().equals("個人設定")) {
-      // i.remove();
-      // }
-      // }
+      for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+        PortletTab tab = i.next();
+        if (tab.getTitle().toString().equals("個人設定")) {
+          i.remove();
+        }
+      }
 
       context.put("tabs", tabs);
       String mypageId = "";
