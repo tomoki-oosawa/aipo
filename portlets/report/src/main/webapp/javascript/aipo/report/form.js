@@ -156,6 +156,11 @@ aipo.report.shrinkMember = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
+   var modalDialog = document.getElementById('modalDialog');
+   if(modalDialog && msg != '') {
+   	var wrapper = document.getElementById('wrapper');
+   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+   }
 }
 
 
@@ -186,6 +191,11 @@ aipo.report.shrinkMap = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
+   var modalDialog = document.getElementById('modalDialog');
+   if(modalDialog && msg != '') {
+   	var wrapper = document.getElementById('wrapper');
+   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+   }
 }
 
 aipo.report.expandMember = function(){
@@ -210,10 +220,15 @@ aipo.report.expandMember = function(){
        HTML += "</td></tr></tbody></table>";
        node.innerHTML = HTML;
    }
-
    var _node = dojo.byId("memberField");
    if(_node){
        dojo.style(_node, "display" , "block");
+   }
+   
+   var modalDialog = document.getElementById('modalDialog');
+   if(modalDialog && msg != '') {
+   	var wrapper = document.getElementById('wrapper');
+   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
    }
 }
 
@@ -242,6 +257,11 @@ aipo.report.expandMap = function(){
    var _node = dojo.byId("mapField");
    if(_node){
        dojo.style(_node, "display" , "block");
+   }
+   var modalDialog = document.getElementById('modalDialog');
+   if(modalDialog && msg != '') {
+   	var wrapper = document.getElementById('wrapper');
+   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
    }
 }
 
