@@ -306,7 +306,7 @@ $portlet.getContent($data)
 			<div class="auiPortletSetting">
 				#foreach ( $action in $actions )
 					#if (${client} == "IPAD")
-					<a href="$!utils.escapeXML(${action.Link})" title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
+					<a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")' title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
 					#else
 					<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenu('$!{portlet.ID}');" title="${action.Alt}" ></a>
 					#end
@@ -315,7 +315,7 @@ $portlet.getContent($data)
 			    <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="position:absolute;left:-5;top:5;display:none;">
 					<ul>
 					#foreach ( $action in $actions)
-						<li><a href="$!utils.escapeXML(${action.Link})">$l10n.WAR_SET_UP</a></li>
+						<li><a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")'>$l10n.WAR_SET_UP</a></li>
 					#end
 					#if($accessControl == "true")
 						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">$l10n.CUSTOMIZER_DELETE</a></li>

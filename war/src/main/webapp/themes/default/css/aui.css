@@ -16,6 +16,7 @@ body {
   font-size: .75em;
   line-height: 1.4;
   background: #fff;
+  overflow-x: hidden;
 }
 
 body#login {
@@ -46,7 +47,7 @@ span[type="button"] {
   padding-top: 5px;
   height: 35px;
   /*background:url(../images/head_bg.png) repeat-x left bottom; **reserved**/
-  overflow: hidden;
+  /*overflow:hidden;*/
 }
 
 #header .inner {
@@ -67,7 +68,8 @@ span[type="button"] {
 .hdActivity,
 .hdSearch,
 .hdUserName,
-.hdLogout {
+.hdLogout,
+.hdSetting {
   float: left;
   line-height: 23px;
   padding-right: 8px;
@@ -185,6 +187,25 @@ img.avatar,
   border-radius: 3px;
 }
 
+.hdSetting {
+  position: relative;
+  padding: 4px 0 0 8px;
+}
+
+.hdSetting .menubar {
+  right: 0;
+}
+
+*:first-child + html .hdSetting .menubar {
+  /* IE7 */
+  top: 20px;
+}
+
+*:first-child + html .hdSetting .menubar ul li a {
+  min-width: 5em;
+  overflow: visible;
+}
+
 /***************************************************
 	activityField
 --------------------------------------------------*/
@@ -204,13 +225,12 @@ img.avatar,
   background: #e0e0e0;
 }
 
-#activitychecker,
-.activitycheckerstyle {
+#activitychecker {
   text-align: center;
   right: 2px;
   top: 2px;
   background: url(../images/icon/activitychecker.png) top left no-repeat;
-  height: 13px;
+  height: 12px;
 }
 
 /*
@@ -236,47 +256,6 @@ img.avatar,
   color: #FFF;
   font-size: 8px;
   line-height: 12px;
-}
-
-.counter {
-  position: inherit !important;
-  float: left;
-  font-size: 9px;
-  height: 13px;
-  min-width: 12px;
-  line-height: 13px !important;
-  padding: 0 1px;
-  text-align: center;
-  margin-top: 4px;
-  margin-right: 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  border-radius: 4px;
-  color: #FFFFFF;
-  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
-  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
-  background: #e63439 !important;
-  border-top: 1px solid #ab1619;
-  border-left: 1px solid #c81a1e;
-  border-right: 1px solid #c81a1e;
-  border-bottom: 1px solid #c81a1e;
-  text-shadow: 0 1px 0 #a80203;
-}
-
-.counter.zero {
-  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
-  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
-  background: #b5b5b5 !important;
-  background: -moz-linear-gradient(top, #b5b5b5, #b5b5b5);
-  background: -webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
-  border-top: 1px solid #8f8e8e;
-  border-left: 1px solid #acacad;
-  border-right: 1px solid #acacad;
-  border-bottom: 1px solid #a9acad;
-  text-shadow: 0 1px 0 #a3a4a6;
 }
 
 /***************************************************
@@ -1360,6 +1339,7 @@ button {
   white-space: nowrap;
 }
 
+/* color */
 .auiButton,
 .auiButtonBold,
 .auiButtonSmall,
@@ -1370,6 +1350,7 @@ button {
   color: #000;
   text-shadow: 0 1px 0 #f8f8f8;
   border: solid 1px #c0c0c0;
+  background: #f0f0f0;
   background-color: #f9f9f9;
   background-image: -moz-linear-gradient(top, white, #f0f0f0);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
@@ -2208,6 +2189,7 @@ button[disabled]:hover {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
 }
 
@@ -2409,10 +2391,9 @@ ul.attachments >li{
 
 /*.tlInputControls .auiButtonAction,
 #uploadContainer .auiButtonBold {
-  height: 30px;
-  line-height: 30px;
+	height:$inputHeight;
+    line-height:$inputHeight;
 }*/
-
 .uploadText {
   position: absolute;
   top: 50%;
@@ -2654,8 +2635,12 @@ ul.attachments >li{
   margin-bottom: 10px;
 }
 
+/*.timeline .message .comments:last-child {
+	margin-bottom:0;
+}*/
 .timeline .comments .messageContents {
   margin-left: 42px;
+  margin: 0;
 }
 
 .timeline .comments .avatar {
@@ -2663,6 +2648,7 @@ ul.attachments >li{
 }
 
 .messageContents .name {
+  /*color: #369;*/
   font-weight: bold;
   padding-right: 5px;
 }
@@ -2931,21 +2917,17 @@ ul.attachments >li{
   display: inline-block;
   background: #e0e0e0;
   color: #000;
-  margin: 3px 2px !important;
+  margin: 2px !important;
   padding: 0 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   border-radius: 3px;
   height: 26px !important;
-  line-height: 27px !important;
+  line-height: 26px !important;
   white-space: nowrap;
   font-size: 0.9em;
   cursor: pointer;
-}
-
-.auiSearch .filterTip {
-  margin: 2px !important;
 }
 
 *:first-child + html .filterTip {
@@ -2981,11 +2963,11 @@ ul.attachments >li{
 
 .filterTip > a {
   position: absolute;
-  margin: 6px -3px 0 3px;
+  margin: 5px -3px 0 3px;
 }
 
 *:first-child + html .filterTip > a {
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
 /*.auiFilter .menubar.multi {
@@ -3137,8 +3119,210 @@ ul.attachments >li{
 }
 
 /***************************************************
+	auiWideList
+--------------------------------------------------*/
+.auiWideList {
+  margin: 6px 0;
+  margin-right: -5px;
+  margin-left: -5px;
+  border-top: solid 1px #eee;
+}
+.auiWideList .row {
+  position: relative;
+  padding: 7px 5px 6px 5px;
+  border-bottom: solid 1px #eee;
+  overflow: hidden;
+}
+.auiWideList .row:hover {
+  background: #f6f6f6;
+}
+.auiWideList .read {
+  background: #f6f6f6;
+}
+.auiWideList .checked {
+  background: #d9e7fd;
+}
+.auiWideList div {
+  cursor: pointer;
+}
+
+.auiWLCaption {
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  color: black;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.auiWLCols,
+.auiWLRows {
+  color: #333333;
+}
+
+.read .auiWLCols,
+.read .auiWLRows {
+  color: #999999;
+}
+
+.auiWLRows div {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.auiWLCols div {
+  display: inline;
+  margin-right: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.auiWLDate {
+  float: right;
+  height: 24px;
+  line-height: 24px;
+  margin-left: 5px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.auiWLCover {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.auiWLCover a {
+  display: block;
+  height: 100%;
+  background: #ffffff\9;
+  /*IE8*/
+  -ms-filter: "alpha(opacity=0)";
+  /*IE8*/
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+*:first-child + html .auiWLCover a {
+  /*IE7*/
+  background: #ffffff;
+  filter: alpha(opacity=0);
+}
+
+.auiWideList.useCheck .row {
+  padding: 7px 5px 6px 30px;
+}
+.auiWideList.useCheck .auiWLCover {
+  margin-left: 30px;
+}
+
+.auiWLCheck {
+  float: left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.auiWLCheck label {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 100%;
+  text-align: center;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.auiWLCheck input[type=checkbox] {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  left: 5px\9;
+  margin-top: -7px;
+}
+
+.auiWLCheck input {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.auiMailList .auiWLCaption {
+  font-weight: bold;
+}
+
+.auiMailList .read .auiWLCaption {
+  font-weight: normal;
+}
+
+/***************************************************
+	auiInfo
+--------------------------------------------------*/
+.auiInfo {
+  background: #f0f0f0;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px;
+  min-width: 480px;
+  margin: 0 5px 5px;
+}
+
+.auiInfo .inner {
+  position: relative;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.auiInfoClose {
+  float: right;
+  width: 15px;
+}
+
+.auiInfoClose a {
+  display: block;
+  padding: 2px;
+  text-decoration: none !important;
+}
+
+.auiInfoTitle {
+  float: left;
+  width: 160px;
+}
+
+.auiInfoTitle i {
+  color: #999999;
+}
+
+.auiInfoBody {
+  border-left: solid 1px #d2d2d2;
+  padding-left: 10px;
+  margin-left: 170px;
+  margin-right: 25px;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
+/*
+auiIconは「class="auiIcon auiIconSetting"」と
+ベースクラスとサブクラスを同時に付与させること。
+
+基本形（リンク版）：<a href="#" class="auiIcon auiIconSetting"><span>設定</span></a>
+基本形（span版）：<span class="auiIcon auiIconSetting"><span>設定</span></span>
+
+auiIconでアイコンの形状全てを一元管理し
+サブクラスはあくまで背景位置の変更のみを行う。
+
+IE6は透過PNGが利用できないため透過GIFへ置き換えている。
+そのためバリを表示させないためhoverアクションを封じる。
+*/
 .auiIcon {
   display: block;
   display: inline-block;
@@ -3663,6 +3847,28 @@ a.auiIconSecret:hover {
 }
 
 /*IE6*/
+.auiIconTrash {
+  background-position: 0px -752px;
+}
+
+.auiIconTrash_w {
+  background-position: 0px -768px;
+}
+
+a.auiIconTrash:hover {
+  background-position: 0px -768px;
+}
+
+* html .auiIconTrash {
+  background-position: 0px -752px;
+}
+
+/*IE6*/
+* html a.auiIconTrash:hover {
+  background-position: 0px -752px;
+}
+
+/*IE6*/
 /***************************************************
 	auiIcon
 --------------------------------------------------*/
@@ -3752,4 +3958,45 @@ a.auiIconSecret:hover {
     -moz-opacity: 1;
     opacity: 1;
   }
+}
+
+.counter {
+  position: inherit !important;
+  float: left;
+  font-size: 9px;
+  height: 12px;
+  min-width: 10px;
+  line-height: 12px !important;
+  padding: 0 1px;
+  text-align: center;
+  margin-top: 4px;
+  margin-right: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  color: #FFFFFF;
+  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.1);
+  background: #e63439 !important;
+  border-top: 1px solid #ab1619;
+  border-left: 1px solid #c81a1e;
+  border-right: 1px solid #c81a1e;
+  border-bottom: 1px solid #c81a1e;
+  text-shadow: 0 1px 0 #a80203;
+}
+
+.counter.zero {
+  -webkit-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px 0px rgba(0, 0, 0, 0.05);
+  background: #b5b5b5 !important;
+  background: -moz-linear-gradient(top, #b5b5b5, #b5b5b5);
+  background: -webkit-gradient(linear, left top, left bottom, from(#b5b5b5), to(#b5b5b5));
+  border-top: 1px solid #8f8e8e;
+  border-left: 1px solid #acacad;
+  border-right: 1px solid #acacad;
+  border-bottom: 1px solid #a9acad;
+  text-shadow: 0 1px 0 #a3a4a6;
 }

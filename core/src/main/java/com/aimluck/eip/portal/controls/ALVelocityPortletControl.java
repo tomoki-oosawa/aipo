@@ -251,14 +251,13 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         Collection<PortletTab> tabs =
           getTabs(PortalToolkit.getSet(portlets), rundata, context);
 
-        // remove "個人設定"
+        // // remove "個人設定"
         for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
           PortletTab tab = i.next();
           if (tab.getTitle().toString().equals("個人設定")) {
             i.remove();
           }
         }
-
         context.put("tabs", tabs);
         context.put("menus", getMenus(portlets, rundata, context));
 
@@ -409,17 +408,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       // action.setLink( jsLink.setPortletById(portlet.getID())
       // .addQueryData("action", getAction( action.getName()))
       // .toString());
-      if ("customize".equals(action.getName())
-        && !"1".equals(portlet.getName())) {
-        action.setLink(jsLink
-          .setAction(getAction("maximize"), portlet)
-          .addQueryData("template", "PortletCustomizeFormScreen")
-          .toString());
-      } else {
-        action.setLink(jsLink
-          .setAction(getAction(action.getName()), portlet)
-          .toString());
-      }
+      action.setLink(jsLink
+        .setAction(getAction(action.getName()), portlet)
+        .toString());
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
     }
