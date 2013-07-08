@@ -51,7 +51,7 @@
 		<div class="menubar" id="menubar_hdSetting" style="position: absolute; display:none;">
 		<ul>
 			#if ($data.User.getUserName()!="admin")
-			<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">設定画面</a></li>
+			<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">個人設定</a></li>
 			#end
 			<li class="last"><a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">ログアウト</a></li>
 		</ul>
