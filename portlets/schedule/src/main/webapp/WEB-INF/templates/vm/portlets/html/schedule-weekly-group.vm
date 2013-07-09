@@ -70,14 +70,12 @@
 </div>
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
-
 #if(${client}!="IPHONE")
 <div class="floatRight">
 <a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" class="auiButton pl5 pr5"><span><img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="$l10n.SCHEDULE_PRINT" /></span>
 </a>
 </div>
 #end
-
 #if(($!{hasAcl}) && $!{hasAcl} == "T")
 	<div class="auiForm">
         <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
@@ -190,17 +188,17 @@ $l10n.SCHEDULE_ADD_NOTE
 #if(${record4.TermResultData.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv small">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.WbrName}
-#if(!${record4.TermResultData.isPublic()})&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
-#if(${record4.TermResultData.isTmpreserve()})<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />#end
+#if(!${record4.TermResultData.isPublic()})&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
+#if(${record4.TermResultData.isTmpreserve()})<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end
 </a>
 #else
 <div class="calerndarTermScheduleDiv small">
 $!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if(${record4.TermResultData.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #end
 </div>
@@ -281,16 +279,16 @@ $!{record4.TermResultData.WbrName}
 </div>
 #end
 #if(! ${record2.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if($record2.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record2.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record2.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 </div>
 #end
@@ -391,7 +389,7 @@ $!{record.ToDoResultData.TodoName}
 #ALtdheadAtt("$record3.FacilityName" "$rowspanstr")
 #foreach($record in ${result.getFacilityContainer($record3.FacilityId.Value).DayList})
 #if($record.ScheduleList.size() > 0 ||$!{result.hasAuthorityFacilityInsert()})
-	#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId.Value})")
+	#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('facility_to', $!{record3.FacilityId})")
 	#set($onclick="onclick='aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)'")
 #end
 
@@ -426,7 +424,7 @@ $!{record.ToDoResultData.TodoName}
 #if(! ${record2.isDummy()})
 #if($record2.isShowDetail())
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
-#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid',$!{record3.FacilityId})")
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid', $record3.FacilityId.Value)")
 <div class="calendarScheduleDiv">
 
 <div class="small">${record2.Date}</div>
@@ -439,16 +437,16 @@ $!{record.ToDoResultData.TodoName}
 </div>
 #end
 #if(! ${record2.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if($record2.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record2.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record2.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #end
 #end
