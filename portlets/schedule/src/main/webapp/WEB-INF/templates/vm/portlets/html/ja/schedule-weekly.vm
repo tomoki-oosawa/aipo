@@ -95,7 +95,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <img src="images/common/dot.gif" border="0" width="1" height="16" align="absmiddle" alt="" />
 #end
 #if(${record.TermResultData.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 </a>
 </div>

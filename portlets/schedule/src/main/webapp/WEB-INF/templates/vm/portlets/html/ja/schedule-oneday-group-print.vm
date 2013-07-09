@@ -267,7 +267,7 @@ $record3.AliasName
 
 ${record.TodoName}
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 </a>
 </div>
@@ -289,24 +289,24 @@ ${record.TodoName}
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 </div>
 #else
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 </div>
 #end
@@ -339,16 +339,16 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if($record.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #ALtdcellfooter()
 #else
@@ -413,14 +413,14 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #ALtdcellfooter()
 #else
@@ -498,16 +498,16 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if($record.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #ALtdcellfooter()
 #else
@@ -562,14 +562,14 @@ $record.WbrName
 #end
 
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #else
 #if ($!{result.hasAuthoritySelfInsert()})

@@ -123,16 +123,16 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" />
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #end
 #if($record.isDuplicate())
-<img class="icon_schedule" src="images/schedule/schedule_duplicate.gif" alt="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" />
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record.isRepeat()})
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle" />
 #end
 #if($record.isTmpreserve())
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE" />
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end</div></td>
 <td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>

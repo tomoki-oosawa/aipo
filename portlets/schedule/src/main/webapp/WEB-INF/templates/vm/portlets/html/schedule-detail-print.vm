@@ -129,24 +129,24 @@ if(document.all!=undefined){
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}&nbsp;-&nbsp;
 $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
 #end
-<img class="icon_schedule" src="images/schedule/schedule_repeat.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_REPEAT" title="$l10n.SCHEDULE_REPEAT"/>
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle" />
 #else
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #if(! ${result.Detail.isPublic()})
-<img class="icon_schedule" src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"/>
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #end
 #if($!{result.Detail.isTmpreserve()})
-<img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
@@ -180,7 +180,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <img class="icon_schedule" src="images/schedule/schedule_tmpreserve.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_TEMP_SCHEDULE" title="$l10n.SCHEDULE_TEMP_SCHEDULE"/>
+        <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <img class="icon_schedule" src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>
