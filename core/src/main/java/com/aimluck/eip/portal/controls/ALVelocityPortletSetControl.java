@@ -89,7 +89,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
         PortletTab tab = i.next();
         if (tab.getTitle().toString().equals("個人設定")) {
-          // i.remove();
+          i.remove();
         }
       }
 
