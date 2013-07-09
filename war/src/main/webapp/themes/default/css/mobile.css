@@ -702,6 +702,12 @@ input[type=password] {
   max-height: 20px;
 }
 
+#appsNavigation .icon i {
+  font-size: 18px;
+  line-height: 20px;
+  color: #fff !important;
+}
+
 .anFooter {
   display: table-cell;
   width: 260px;
