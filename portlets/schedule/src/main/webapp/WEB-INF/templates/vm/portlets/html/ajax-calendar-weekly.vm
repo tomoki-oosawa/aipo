@@ -29,7 +29,7 @@
 
 //]]>
 </script>
-<input type="hidden" id="isMac" value="${isMac}"></input>
+<input type="hidden" id="isMac" value="${isMac}" />
 <div class="none" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
 <!-- WRAPPER -->
     <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
