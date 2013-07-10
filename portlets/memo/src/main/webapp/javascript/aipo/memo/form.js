@@ -58,8 +58,6 @@ aipo.memo.onReceiveMessage = function(msg){
         aipo.portletReload('memo');
     }
 
-	window.scrollTo(0, 0)
-
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
     }
@@ -78,8 +76,6 @@ aipo.memo.onReceiveMessageUpdate = function(msg){
         }
         aipo.portletReload('memo');
     }
-
-	window.scrollTo(0, 0)
 
     var node = dojo.query('.messageDiv_memo.enabled');
     if (node.length >= 1) {

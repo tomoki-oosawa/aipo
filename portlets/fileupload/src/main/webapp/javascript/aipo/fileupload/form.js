@@ -31,6 +31,12 @@ aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename, pid) {
     else
     	aimluck.io.addOption(ul,fileid,filename, false);//MultipeによるSelectとの互換性維持
     dojo.byId('folderName_' + pid).value =  foldername;
+
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 }
 
 aipo.fileupload.replaceFileInfo = function(foldername, fileid, filename, pid) {

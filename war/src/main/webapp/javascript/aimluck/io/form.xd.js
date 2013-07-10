@@ -513,7 +513,12 @@ aimluck.io.replaceFileToList =function(ul,fileid,filename){
 }
 
 aimluck.io.removeFileFromList = function(ul,li){
-	return ul.removeChild(li);
+	ul.removeChild(li);
+	var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 }
 
 aimluck.io.createSelectFromFileList = function(form, pid){

@@ -34,8 +34,6 @@ aipo.exttimecard.onReceiveMessage = function(msg) {
 		aipo.portletReload('exttimecard');
 	}
 
-	window.scrollTo(0, 0)
-
 	if (dojo.byId('messageDiv')) {
 		dojo.byId('messageDiv').innerHTML = msg;
 	}

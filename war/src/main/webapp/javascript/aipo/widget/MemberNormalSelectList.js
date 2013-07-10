@@ -218,11 +218,11 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
     },
     onMemberRemoveClick: function(/*Event*/ evt){
        this.removeMemberSync();
+       this.setWrapperHeight();
     },
     setWrapperHeight: function() {
-        window.scrollTo(0, 0)
         var modalDialog = document.getElementById('modalDialog');
-        if(modalDialog && msg != '') {
+        if(modalDialog) {
       	  var wrapper = document.getElementById('wrapper');
       	  wrapper.style.minHeight = modalDialog.clientHeight + 'px';
         }

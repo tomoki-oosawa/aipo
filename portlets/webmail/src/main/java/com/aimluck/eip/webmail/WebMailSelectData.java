@@ -212,6 +212,9 @@ public class WebMailSelectData extends
 
     // アカウントを取得
     EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
+    if (account == null) {
+      ALEipUtils.redirectPageNotFound(rundata);
+    }
 
     // 現在選択中のフォルダを取得
     EipTMailFolder mailFolder =
