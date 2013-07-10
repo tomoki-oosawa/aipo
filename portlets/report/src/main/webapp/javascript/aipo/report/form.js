@@ -119,10 +119,8 @@ aipo.report.onReceiveMessage = function(msg){
         dojo.byId('messageDiv').innerHTML = msg;
     }
 
-    var modalDialog = document.getElementById('modalDialog');
-    if(modalDialog && msg != '') {
-    	var wrapper = document.getElementById('wrapper');
-    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    if(msg != '') {
+    	aipo.report.setWrapperHeight();
     }
 }
 
@@ -154,6 +152,7 @@ aipo.report.shrinkMember = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
+   aipo.report.setWrapperHeight();
 }
 
 
@@ -184,11 +183,7 @@ aipo.report.shrinkMap = function(){
    if(_node){
        dojo.style(_node, "display" , "none")
    }
-   var modalDialog = document.getElementById('modalDialog');
-   if(modalDialog && msg != '') {
-   	var wrapper = document.getElementById('wrapper');
-   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-   }
+   aipo.report.setWrapperHeight();
 }
 
 aipo.report.expandMember = function(){
@@ -218,11 +213,7 @@ aipo.report.expandMember = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
-   var modalDialog = document.getElementById('modalDialog');
-   if(modalDialog && msg != '') {
-   	var wrapper = document.getElementById('wrapper');
-   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-   }
+   aipo.report.setWrapperHeight();
 }
 
 aipo.report.expandMap = function(){
@@ -251,11 +242,7 @@ aipo.report.expandMap = function(){
    if(_node){
        dojo.style(_node, "display" , "block");
    }
-   var modalDialog = document.getElementById('modalDialog');
-   if(modalDialog && msg != '') {
-   	var wrapper = document.getElementById('wrapper');
-   	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-   }
+   aipo.report.setWrapperHeight();
 }
 
 aipo.report.formatNum = function(num) {
@@ -267,4 +254,13 @@ aipo.report.formatNum = function(num) {
 aipo.report.delaySelectAllOptions = function(form, func)
 {
     return function(form){aimluck.io.selectAllOptions(form.attachments)};
+}
+
+
+aipo.report.setWrapperHeight = function() {
+	var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
 }
