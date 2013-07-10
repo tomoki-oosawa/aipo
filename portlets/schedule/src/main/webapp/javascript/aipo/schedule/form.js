@@ -580,8 +580,6 @@ aipo.schedule.onReceiveMessage = function(msg){
         aipo.portletReload('timeline');
     }
 
-	window.scrollTo(0, 0)
-
     if(msg != null && msg.match(/duplicate_facility/)){
 
         if(confirm(aimluck.io.escapeText("schedule_val_confirm1"))) {
