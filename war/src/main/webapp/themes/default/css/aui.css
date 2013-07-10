@@ -230,7 +230,7 @@ img.avatar,
   right: 2px;
   top: 2px;
   background: url(../images/icon/activitychecker.png) top left no-repeat;
-  height: 12px;
+  height: 13px;
 }
 
 /*
@@ -1090,12 +1090,17 @@ img.avatar,
   min-width: 26px;
   color: #000;
   text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #c0c0c0;
-  background: #f0f0f0;
-  background: #f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
-  /*IE*/
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
-  background: -moz-linear-gradient(top, white, #f0f0f0);
+  border: solid 1px;
+  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
+  background-color: #f0f0f0;
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top, white, #f0f0f0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
+  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
+  background-image: -o-linear-gradient(top, white, #f0f0f0);
+  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
   border-left-color: #dcdcdc;
   border-right-color: #dcdcdc;
 }
@@ -1179,19 +1184,14 @@ img.avatar,
 .auiSelectButton .active a {
   color: white !important;
   text-shadow: none;
-  background-color: #ffa60d;
-  background-image: -moz-linear-gradient(top, #ff9900, #ffbb22);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9900), to(#ffbb22));
-  background-image: -webkit-linear-gradient(top, #ff9900, #ffbb22);
-  background-image: -o-linear-gradient(top, #ff9900, #ffbb22);
-  background-image: linear-gradient(to bottom, #ff9900, #ffbb22);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFF9900', endColorstr='#FFFFBB22', GradientType=0);
+  background: #ff9900 !important;
   border-color: #f09000;
+  cursor: default;
 }
 
 .auiSelectButton .active a:hover span {
   color: white !important;
+  cursor: default;
 }
 
 /***************************************************
@@ -1349,8 +1349,9 @@ input[type=reset],
 button {
   color: #000;
   text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #c0c0c0;
-  background: #f0f0f0;
+  border: solid 1px;
+  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
+  background-color: #f0f0f0;
   background-color: #f9f9f9;
   background-image: -moz-linear-gradient(top, white, #f0f0f0);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
@@ -1432,7 +1433,6 @@ input[type=reset],
 button:hover {
   color: #000;
   border: solid 1px #999999;
-  /*@include box-shadow(0 1px 1px rgba(0,0,0,0.2));*/
   background-color: #e8e8e8;
   background-image: -moz-linear-gradient(top, #eeeeee, #e1e1e1);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#e1e1e1));
@@ -1451,7 +1451,6 @@ input[type=button]:active,
 input[type=reset],
 button:active {
   border: solid 1px #999999;
-  /*@include box-shadow(0 1px 1px rgba(0,0,0,0));*/
   background-color: #e3e3e3;
   background-image: -moz-linear-gradient(top, #dddddd, #eeeeee);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#eeeeee));
@@ -1497,27 +1496,33 @@ button:active {
 
 .auiButtonAction {
   color: #fff !important;
-  font-weight: bold;
-  text-shadow: 0 1px 0 #f09000 !important;
-  border: solid 1px #f09000 !important;
-  background: #ff9900 !important;
-  background-image: -moz-linear-gradient(top, #ffbb22, #ff9900) !important;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffbb22), to(#ff9900)) !important;
-  background-image: -webkit-linear-gradient(top, #ffbb22, #ff9900) !important;
-  background-image: -o-linear-gradient(top, #ffbb22, #ff9900) !important;
-  background-image: linear-gradient(to bottom, #ffbb22, #ff9900) !important;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFBB22', endColorstr='#FFFF9900', GradientType=0) !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
+  background-color: #f37318 !important;
+  background-image: -moz-linear-gradient(top, #ffb133, #f37318) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb133), to(#f37318)) !important;
+  background-image: -webkit-linear-gradient(top, #ffb133, #f37318) !important;
+  background-image: -o-linear-gradient(top, #ffb133, #f37318) !important;
+  background-image: linear-gradient(to bottom, #ffb133, #f37318) !important;
+  background-repeat: repeat-x !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffb133', endColorstr='#fff37318', GradientType=0) !important;
+  border: solid 1px;
+  border-color: #f39600 #e15e04 #e15e04 !important;
 }
 
 .auiButtonBold {
   color: #000;
   text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #c0c0c0;
-  background: #f0f0f0;
-  background: #f0f0f0 url(../images/common/auibutton_back.gif) left top repeat-x;
-  background: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
-  background: -moz-linear-gradient(top, white, #f0f0f0);
+  border: solid 1px;
+  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
+  background-color: #f0f0f0;
+  background-color: #f9f9f9;
+  background-image: -moz-linear-gradient(top, white, #f0f0f0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
+  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
+  background-image: -o-linear-gradient(top, white, #f0f0f0);
+  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
 }
 
 .auiButtonAction:hover {
@@ -1537,41 +1542,34 @@ button:active {
   border: solid 1px #e08000 !important;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  background: #ff9000 !important;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ff9900), to(#ffbb22)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #ff9900, #ffbb22);
-  /*Fx*/
+  background-color: #ff9000 !important;
+  background-image: -moz-linear-gradient(top, #ff9900, #ffbb22) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9900), to(#ffbb22)) !important;
+  background-image: -webkit-linear-gradient(top, #ff9900, #ffbb22) !important;
+  background-image: -o-linear-gradient(top, #ff9900, #ffbb22) !important;
+  background-image: linear-gradient(to bottom, #ff9900, #ffbb22) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFff9900', endColorstr='#FFffbb22', GradientType=0) !important;
 }
 
 .auiButtonDisabled {
   text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #c0c0c0;
+  border: solid 1px #c9c9c9;
   color: #999999;
-  background: #eee !important;
+  background: #eeeeee !important;
   cursor: default;
   height: 30px;
   line-height: 30px;
   padding: 0 0.7em;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
 }
 
 .auiButtonDisabled:hover {
-  color: #999;
-}
-
-*:first-child + html .auiButtonDisabled {
-  /* IE7 Hack */
-  line-height: 30px;
+  color: #999999;
 }
 
 input[disabled],
 textarea[disabled],
-button[disabled] {
-  color: #999999;
-  background: #eee;
-}
-
+button[disabled],
 input[disabled]:hover,
 textarea[disabled]:hover,
 button[disabled]:hover {
@@ -1579,6 +1577,11 @@ button[disabled]:hover {
   background: #eee;
   border-color: #c9c9c9;
   cursor: default;
+}
+
+*:first-child + html .auiButtonDisabled {
+  /* IE7 Hack */
+  line-height: 30px;
 }
 
 .auiButtonGroup {
@@ -1631,15 +1634,17 @@ button[disabled]:hover {
 
 .auiButtonSearch {
   color: #000;
-  font-weight: bold;
   text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #d0d0d0;
-  background: #ddd;
-  background: #dddddd url(../images/common/auibuttonsearch_back.gif) left top repeat-x !important;
-  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#dddddd)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #eeeeee, #dddddd) !important;
-  /*Fx*/
+  border: solid 1px;
+  border-color: #e0e0e0 #cdcdcd #bdbdbd;
+  background-color: #dddddd !important;
+  background-image: -moz-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#dddddd));
+  background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: -o-linear-gradient(top, #eeeeee, #dddddd);
+  background-image: linear-gradient(to bottom, #eeeeee, #dddddd);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFeeeeee', endColorstr='#FFdddddd', GradientType=0) !important;
 }
 
 *:first-child + html .auiButtonSearch {
@@ -2654,7 +2659,7 @@ ul.attachments >li{
 }
 
 .messageContents .body {
-  padding: 3px 0;
+  padding: 5px 0;
 }
 
 .messageContents .time {
@@ -2917,17 +2922,21 @@ ul.attachments >li{
   display: inline-block;
   background: #e0e0e0;
   color: #000;
-  margin: 2px !important;
+  margin: 3px 2px !important;
   padding: 0 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   border-radius: 3px;
-  height: 26px !important;
-  line-height: 26px !important;
+  height: 32px !important;
+  line-height: 33px !important;
   white-space: nowrap;
   font-size: 0.9em;
   cursor: pointer;
+}
+
+.auiSearch .filterTip {
+  margin: 2px !important;
 }
 
 *:first-child + html .filterTip {
@@ -2942,6 +2951,8 @@ ul.attachments >li{
 }
 
 .filterInputField .filterTip {
+  height: 26px !important;
+  line-height: 26px !important;
   padding-right: 22px;
 }
 
@@ -2963,16 +2974,22 @@ ul.attachments >li{
 
 .filterTip > a {
   position: absolute;
-  margin: 5px -3px 0 3px;
+  margin: 6px -3px 0 3px;
 }
 
 *:first-child + html .filterTip > a {
-  margin-top: 3px;
+  margin-top: 5px;
 }
 
-/*.auiFilter .menubar.multi {
-	left:0;
-}*/
+.filterInputField .filterTip > a {
+  position: absolute;
+  margin: 5px -3px 0 3px;
+}
+
+.filterInputField *:first-child + html .filterTip > a {
+  margin-top: 4px;
+}
+
 .filterInputField {
   float: left;
   position: relative;
@@ -3140,7 +3157,7 @@ ul.attachments >li{
   background: #f6f6f6;
 }
 .auiWideList .checked {
-  background: #d9e7fd;
+  background: #d9e7fd !important;
 }
 .auiWideList div {
   cursor: pointer;

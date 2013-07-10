@@ -598,15 +598,19 @@ input[type=password] {
 
 #appsNavigationBack a {
   display: block;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: rgba(0, 0, 0, 0.2);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .anDrawer {
   display: none;
-  position: absolute;
-  right: -40px;
+  position: fixed;
+  left: 270px;
   top: 7px;
   overflow: hidden;
 }
@@ -1312,8 +1316,8 @@ table tr.caption {
 }
 
 .filterTip > a {
-  margin: 0;
-  padding: 6px 3px;
+  margin: 0 !important;
+  padding: 5px 3px;
 }
 
 .filterInputField .filters {
