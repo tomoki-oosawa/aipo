@@ -45,6 +45,10 @@
 #if($result.ParentReport.isSelfReport())
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#else
+#if($!result.isAdmin())
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#end
 #end
 </div>
 </div>
@@ -101,6 +105,10 @@ $!record.AliasName
 <div class="alignright">
 #if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#else
+#if($!result.isAdmin())
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
+#end
 #end
 </div>
 </div>
@@ -143,7 +151,7 @@ ${record.Note}
 <td>
   <div class="clearfix">
   <div>
-  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+    #IFFileUpload()
   </div>
   <ul id="attachments_$!portlet.ID" class="attachments">
     #foreach($record in $!result.AttachmentFileNameList )

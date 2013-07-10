@@ -108,6 +108,8 @@ public class ReportSelectData extends
 
   private boolean isFileUploadable;
 
+  private boolean isAdmin;
+
   /**
    * 
    * @param action
@@ -191,6 +193,7 @@ public class ReportSelectData extends
     super.init(action, rundata, context);
 
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
+    isAdmin = ALEipUtils.isAdmin(ALEipUtils.getUserId(rundata));
   }
 
   /**
@@ -678,5 +681,9 @@ public class ReportSelectData extends
 
   public boolean isFileUploadable() {
     return isFileUploadable;
+  }
+
+  public boolean isAdmin() {
+    return isAdmin;
   }
 }
