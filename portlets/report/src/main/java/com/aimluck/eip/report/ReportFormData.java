@@ -144,10 +144,14 @@ public class ReportFormData extends ALAbstractFormData {
     uid = ALEipUtils.getUserId(rundata);
     orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
-    // アクセス権
 
+    // アクセス権
     int view_uid = ReportUtils.getViewId(rundata, context, uid);
     if (view_uid == uid) {
+      aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
+    } else if ("delete".equals(action.getMode())
+      && ALEipUtils.isAdmin(ALEipUtils.getUserId(rundata))) {
+      // 管理者権限があれば削除可
       aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_REPORT_SELF;
     } else {
       aclPortletFeature =
