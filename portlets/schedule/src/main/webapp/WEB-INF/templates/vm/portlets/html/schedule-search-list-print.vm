@@ -83,13 +83,13 @@ if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='icon_schedule'){
+        if(document.all[i].className=='auiIcon'){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='icon_schedule'){
+        if(document.all[i].className=='auiIcon'){
           document.all[i].style.display = 'none';
         }
       }
@@ -97,12 +97,12 @@ if(document.all!=undefined){
 }else{
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
-        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = '';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
+        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = '';
       }
     }else{
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('icon_schedule').length; i++){
-        document.getElementById('printBody').getElementsByClassName('icon_schedule')[i].style.display = 'none';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
+        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = 'none';
       }
     }
 }
