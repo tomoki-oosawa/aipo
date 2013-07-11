@@ -213,7 +213,8 @@ public class WebMailSelectData extends
     // アカウントを取得
     EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
     if (account == null) {
-      ALEipUtils.redirectPageNotFound(rundata);
+      action.addErrorMessage("アカウントが見つかりません。");
+      return;
     }
 
     // 現在選択中のフォルダを取得

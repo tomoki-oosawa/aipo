@@ -36,14 +36,14 @@
 ##ALsubmenubar($submenulist "")
 
 #AUIcontentsAreaHeader()
+#if(($errmsgs) && ($errmsgs.toString() != ""))
+#ALerrmsg($errmsgs)
+#else
 
 #if($!result.AccountId == 0)
 <div class="auiSummaryMeta center">
 #AUIbuttonActionW80($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
 </div>
-#else
-#if(($errmsgs) && ($errmsgs.toString() != ""))
-#ALerrmsg($errmsgs)
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader($l10n.WEBMAIL_WEBMAIL)
@@ -147,7 +147,7 @@ $MailSubject
 #end
 </div>
 
-#end
+
 #if($result.CurrentPage > 1)
 <input type="hidden" id="page_start" name="page_start" value="$result.CurrentPage" />
 #end
@@ -157,6 +157,7 @@ $MailSubject
 <input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
 #end
 #ALformfooter()
+#end
 #end
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/webmail-widgets.vm")
