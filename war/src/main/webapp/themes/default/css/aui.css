@@ -2115,10 +2115,11 @@ button[disabled]:hover {
 
 .auiCalendar th {
   font-weight: normal;
+  padding-bottom: 5px;
 }
 
 .auiCalendar th div {
-  line-height: 24px;
+  line-height: 32px;
 }
 
 .auiCalendar td {
@@ -2272,7 +2273,6 @@ select {
 
 textarea,
 select {
-  margin: 1px 0;
   border: solid 1px #ccc;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
