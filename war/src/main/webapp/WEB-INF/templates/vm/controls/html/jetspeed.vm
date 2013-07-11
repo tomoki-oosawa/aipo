@@ -22,10 +22,10 @@
 #foreach($tab in $menus)
 	#if($break==false)
 		#if($tab.Name.toString()==$name)
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon $!{imageclass}"></i><span>$tab.Title</span></a></li>
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
 		#set($break=true)
 		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon $!{imageclass}"></i><span>$tab.Title</span></a></li>
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
 		#set($break=true)
 		#end
 	#end
@@ -188,21 +188,21 @@ function appsNaviSwitch() {
         <div class="anApps">
                 <h2>$l10n.GADGETS_APP</h2>
                 <ul>
-#ALtabElementMaximize("Timeline" "auiMbIconTimeline")
-#ALtabElementMaximize("Schedule" "auiMbIconSchedule")
-#ALtabElementMaximize("ExtTimecard" "auiMbIconTimecard")
-#ALtabElementMaximize("Activity" "auiMbIconInfo")
-#ALtabElementMaximize("Blog" "auiMbIconBlog")
-#ALtabElementMaximize("Msgboard" "auiMbIconBbs")
-#ALtabElementMaximize("ToDo" "auiMbIconTodo")
-#ALtabElementMaximize("Cabinet" "auiMbIconFolder")
-#ALtabElementMaximize("Workflow" "auiMbIconWorkflow")
-#ALtabElementMaximize("Note" "auiMbIconNote")
-#ALtabElementMaximize("Report" "auiMbIconReport")
-#ALtabElementMaximize("WebMail" "auiMbIconMail")
-#ALtabElementMaximize("AddressBook" "auiMbIconAddress")
-#ALtabElementMaximize("UserList" "auiMbIconUsers")
-#ALtabElementMaximize("Memo" "auiMbIconMemo")
+#ALtabElementMaximize("Timeline" "icon-comments")
+#ALtabElementMaximize("Schedule" "icon-calendar")
+#ALtabElementMaximize("ExtTimecard" "icon-time")
+#ALtabElementMaximize("Activity" "icon-volume-up")
+#ALtabElementMaximize("Blog" "icon-book")
+#ALtabElementMaximize("Msgboard" "icon-picture")
+#ALtabElementMaximize("ToDo" "icon-list-ul")
+#ALtabElementMaximize("Cabinet" "icon-folder-open")
+#ALtabElementMaximize("Workflow" "icon-inbox")
+#ALtabElementMaximize("Note" "icon-phone")
+#ALtabElementMaximize("Report" "icon-file-text")
+#ALtabElementMaximize("WebMail" "icon-envelope")
+#ALtabElementMaximize("AddressBook" "icon-compass")
+#ALtabElementMaximize("UserList" "icon-group")
+#ALtabElementMaximize("Memo" "icon-pencil")
 #foreach($tab in $menus)
 	#if($tab.Name.toString() == "GadgetsTemplate")
 	<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><i class="auiMbIcon"></i><span>$tab.Title</span></a></li>
@@ -213,10 +213,10 @@ function appsNaviSwitch() {
         <div class="anSetting">
                 <h2>$l10n.WAR_SET_UP</h2>
                 <ul>
-                        <!--<li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_setting.png" /></span>個人設定</a></li>
-                        <li><a href="javascript:void(0)"><span class="icon"><img src="themes/default/images/mobile/an_pc.png" /></span>PC版表示へ変更</a></li>-->
-                        <li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><img src="themes/default/images/mobile/an_logout.png" /></span>$l10n.TOP_LOGOUT</a></li>
-                </ul>
+                		<!-- <li><a href="javascript:void(0)"><span class="icon"><i class="icon-cog"></i></span>個人設定</a></li>
+    					<li><a href="javascript:void(0)"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li> -->
+    					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><i class="icon-power-off"></i></span>$l10n.TOP_LOGOUT</a></li>
+				</ul>
         </div>
         <div class="anFooter">
                 <div class="copyright">&copy; Aimluck</div>
