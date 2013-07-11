@@ -33,7 +33,7 @@
 </div>
 
 
-#if($result.MailAccountList.size() != 0)
+#if($result.MailAccountList && ($result.MailAccountList.size() != 0))
 <div class="auiWidget clearfix">
 <ul>
 #set ($i = 0)
@@ -49,7 +49,7 @@
 </li>
 #set ($i = $i+1)
 #end
-#if($!result.FolderList.size() < 2)
+#if($!result.FolderList && ($!result.FolderList.size() < 2))
 <li#if($result.currentTab == "sent") class="active"#end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($sentLink)', '$!portlet.ID');" >$l10n.WEBMAIL_OUTBOX</a>
 </li>
