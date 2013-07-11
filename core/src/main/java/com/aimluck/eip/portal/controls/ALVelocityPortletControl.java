@@ -37,6 +37,7 @@ import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.portal.BasePortletSet;
 import org.apache.jetspeed.portal.PanedPortletController;
 import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.portal.PortletInstance;
@@ -252,12 +253,13 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           getTabs(PortalToolkit.getSet(portlets), rundata, context);
 
         // remove "個人設定"
-        for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
-          PortletTab tab = i.next();
-          if (tab.getTitle().toString().equals("個人設定")) {
-            i.remove();
-          }
-        }
+        // for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+        // PortletTab tab = i.next();
+        // if (tab.getTitle().toString().equals("個人設定")) {
+        // i.remove();
+        // }
+        // }
+
         context.put("tabs", tabs);
         context.put("menus", getMenus(portlets, rundata, context));
 
@@ -408,9 +410,17 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       // action.setLink( jsLink.setPortletById(portlet.getID())
       // .addQueryData("action", getAction( action.getName()))
       // .toString());
-      action.setLink(jsLink
-        .setAction(getAction(action.getName()), portlet)
-        .toString());
+      if ("customize".equals(action.getName())
+        && portlet.getClass() != BasePortletSet.class) {
+        action.setLink(jsLink
+          .setAction(getAction("maximize"), portlet)
+          .addQueryData("template", "PortletCustomizeFormScreen")
+          .toString());
+      } else {
+        action.setLink(jsLink
+          .setAction(getAction(action.getName()), portlet)
+          .toString());
+      }
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
     }
