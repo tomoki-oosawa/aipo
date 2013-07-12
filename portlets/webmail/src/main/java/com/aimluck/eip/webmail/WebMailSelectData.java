@@ -55,6 +55,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 import com.sk_jp.mail.MailUtility;
@@ -213,7 +214,8 @@ public class WebMailSelectData extends
     // アカウントを取得
     EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
     if (account == null) {
-      action.addErrorMessage("アカウントが見つかりません。");
+      action.addErrorMessage(ALLocalizationUtils
+        .getl10nFormat("WEBMAIL_NO_ACCOUNT_HALFWIDTH"));
       return;
     }
 

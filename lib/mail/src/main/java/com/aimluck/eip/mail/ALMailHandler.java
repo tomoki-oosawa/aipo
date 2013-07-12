@@ -149,26 +149,35 @@ public abstract class ALMailHandler {
       ALMailReceiverContext rcontext, List<Integer> foler_ids) {
     try {
       SelectQuery<EipTMail> query = Database.query(EipTMail.class);
+      if (rcontext != null) {
+        if (Integer.valueOf(rcontext.getAccountId()) != null
+          || Integer.valueOf(rcontext.getUserId()) != null) {
+          Expression exp1 =
+            ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+              .valueOf(rcontext.getUserId()));
+          Expression exp2 =
+            ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, Integer
+              .valueOf(rcontext.getAccountId()));
+          Expression exp3 =
+            ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
+          Expression exp4 =
+            ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY, "F");
 
-      Expression exp1 =
-        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
-          .valueOf(rcontext.getUserId()));
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTMail.ACCOUNT_ID_PROPERTY, Integer
-          .valueOf(rcontext.getAccountId()));
-      Expression exp3 = ExpressionFactory.matchExp(EipTMail.TYPE_PROPERTY, "R");
-      Expression exp4 =
-        ExpressionFactory.matchExp(EipTMail.READ_FLG_PROPERTY, "F");
+          query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
 
-      query.setQualifier(exp1.andExp(exp2).andExp(exp3).andExp(exp4));
+          if (foler_ids != null && foler_ids.size() > 0) {
+            Expression exp5 =
+              ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY, foler_ids);
+            query.andQualifier(exp5);
+          }
 
-      if (foler_ids != null && foler_ids.size() > 0) {
-        Expression exp5 =
-          ExpressionFactory.inExp(EipTMail.FOLDER_ID_PROPERTY, foler_ids);
-        query.andQualifier(exp5);
+          return query;
+        } else {
+          return null;
+        }
+      } else {
+        return null;
       }
-
-      return query;
     } catch (Exception e) {
       logger.error("ALMailHandler.getUnReadMailQuery", e);
       return null;
@@ -186,10 +195,13 @@ public abstract class ALMailHandler {
   public int getUnReadMailSum(ALMailReceiverContext rcontext) {
     try {
       SelectQuery<EipTMail> query = getUnReadMailQuery(rcontext, null);
+      if (query != null) {
+        query.select(EipTMail.MAIL_ID_PK_COLUMN);
 
-      query.select(EipTMail.MAIL_ID_PK_COLUMN);
-
-      return query.getCount();
+        return query.getCount();
+      } else {
+        return 0;
+      }
     } catch (Exception e) {
       return 0;
     }
