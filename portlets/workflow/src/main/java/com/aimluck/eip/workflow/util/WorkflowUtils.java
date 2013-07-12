@@ -47,6 +47,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowFile;
@@ -985,6 +986,9 @@ public class WorkflowUtils {
   public static String translateDate(Date date, String dateFormat) {
     if (date == null) {
       return "Unknown";
+    }
+    if (dateFormat == null) {
+      dateFormat = ALDateTimeField.DEFAULT_DATE_TIME_FORMAT;
     }
 
     // 日付を表示形式に変換
