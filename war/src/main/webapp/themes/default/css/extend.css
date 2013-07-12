@@ -494,7 +494,7 @@
 }
 *:first-child+html .dijitCalendarMonthLabelSpacer {
     height: 5px;
-　　margin-top:-4px;
+    margin-top:-4px;
 }
 
 /****
@@ -502,7 +502,7 @@
  ****/
 .dijitTooltip {
     position: absolute;
-    z-index: 2000;
+    z-index: 900;
     display: block;
     /* make visible but off screen */
     left: 50%;
