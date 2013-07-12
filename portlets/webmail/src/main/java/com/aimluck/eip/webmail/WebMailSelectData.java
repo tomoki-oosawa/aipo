@@ -215,7 +215,7 @@ public class WebMailSelectData extends
     EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
     if (account == null) {
       action.addErrorMessage(ALLocalizationUtils
-        .getl10nFormat("WEBMAIL_NO_ACCOUNT_HALFWIDTH"));
+        .getl10nFormat("WEBMAIL_NO_ACCOUNT"));
       return;
     }
 
