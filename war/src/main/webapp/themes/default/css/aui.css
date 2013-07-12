@@ -1064,136 +1064,6 @@ img.avatar,
 }
 
 /***************************************************
-	AUI Generic Class - Undermost
---------------------------------------------------*/
-.auiSelectButton {
-  background: #fff;
-}
-
-.auiSelectButton li,
-.auiSelectButton div {
-  float: left;
-  background: none;
-  padding: 0;
-  line-height: 1;
-}
-
-.auiSelectButton a {
-  display: block;
-  margin: 0 -1px;
-  padding: 0 !important;
-  text-decoration: none;
-  text-align: center;
-  height: 30px;
-  line-height: 30px;
-  min-width: 26px;
-  color: #000;
-  text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px;
-  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
-  background-color: #f0f0f0;
-  background-color: #f9f9f9;
-  background-image: -moz-linear-gradient(top, white, #f0f0f0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
-  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
-  background-image: -o-linear-gradient(top, white, #f0f0f0);
-  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
-  border-left-color: #dcdcdc;
-  border-right-color: #dcdcdc;
-}
-
-.auiWidget .auiSelectButton a {
-  background-color: #f9f9f9;
-  background-image: -moz-linear-gradient(top, white, #f0f0f0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
-  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
-  background-image: -o-linear-gradient(top, white, #f0f0f0);
-  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
-}
-
-.auiSelectButton a:hover,
-.auiWidget .auiSelectButton a:hover {
-  color: black !important;
-  background-color: #e8e8e8;
-  background-image: -moz-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#e1e1e1));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: -o-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: linear-gradient(to bottom, #eeeeee, #e1e1e1);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFE1E1E1', GradientType=0);
-}
-
-.auiSelectButton a:active,
-.auiWidget .auiSelectButton a:active {
-  background-color: #e3e3e3;
-  background-image: -moz-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#eeeeee));
-  background-image: -webkit-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: -o-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: linear-gradient(to bottom, #dddddd, #eeeeee);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFDDDDDD', endColorstr='#FFEEEEEE', GradientType=0);
-}
-
-.auiSelectButton a.first,
-.auiSelectButton a.btn {
-  margin-left: 0;
-  border-left-color: #c0c0c0;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.auiSelectButton a.last,
-.auiSelectButton a.btn {
-  margin-right: 0;
-  border-right-color: #c0c0c0;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
-
-.auiSelectButton a:hover span {
-  color: black;
-}
-
-.auiSelectButton a span {
-  display: inline !important;
-  padding: 0 !important;
-  background-image: none !important;
-  cursor: pointer;
-}
-
-.auiSelectButton span i,
-.auiSelectButton span img {
-  margin: 6px 0;
-}
-
-.auiSelectButton .active a {
-  color: white !important;
-  text-shadow: none;
-  background: #ff9900 !important;
-  border-color: #f09000;
-  cursor: default;
-}
-
-.auiSelectButton .active a:hover span {
-  color: white !important;
-  cursor: default;
-}
-
-/***************************************************
 	auiWidgetsArea
 --------------------------------------------------*/
 #auiWidgetsArea {
@@ -1311,63 +1181,234 @@ img.avatar,
 /***************************************************
 	auiButton
 --------------------------------------------------*/
+input[type=submit],
+input[type=button],
+input[type=reset],
+button,
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
 .auiButtonSearch,
 .auiButtonSmall,
 .auiButtonDisabled,
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
+.auiSelectButton a {
   display: inline-block;
-  overflow: hidden;
-  text-decoration: none;
+  *display: inline;
+  padding: 4px 12px;
+  margin-bottom: 0;
+  *margin-left: .3em;
+  line-height: 20px;
+  color: #333333;
   text-align: center;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
   cursor: pointer;
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(top, white, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+  background-image: -o-linear-gradient(top, white, #e6e6e6);
+  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+  border: 1px solid #cccccc;
+  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-bottom-color: #b3b3b3;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  *zoom: 1;
+  white-space: nowrap;
+  text-decoration: none;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  white-space: nowrap;
 }
 
-/* color */
-.auiButton,
-.auiButtonBold,
-.auiButtonSmall,
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  color: #000;
-  text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px;
-  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
-  background-color: #f0f0f0;
-  background-color: #f9f9f9;
-  background-image: -moz-linear-gradient(top, white, #f0f0f0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
-  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
-  background-image: -o-linear-gradient(top, white, #f0f0f0);
-  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
+@-moz-document url-prefix() {
+  /*Fx*/
+  input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button {
+    padding: 0 6px !important;
+  }
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus,
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:hover,
+input[type=reset]:focus,
+input[type=reset]:active,
+input[type=reset].active,
+button:hover,
+button:focus,
+button:active,
+button.active,
+.auiButton:hover,
+.auiButton:focus,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiSelectButton a:active {
+  color: #333333;
+  background-color: #e6e6e6;
+}
+
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:active,
+input[type=reset].active,
+button:active,
+button.active,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiSelectButton a:active {
+  background-color: #cccccc \9;
+}
+
+input[type=submit]:first-child,
+input[type=button]:first-child,
+input[type=reset]:first-child,
+button:first-child,
+.auiButton:first-child,
+.auiButtonAction:first-child,
+.auiButtonBold:first-child,
+.auiButtonSearch:first-child,
+.auiButtonSmall:first-child,
+.auiButtonDisabled:first-child,
+.auiSelectButton a:first-child {
+  *margin-left: 0;
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=reset]:hover,
+input[type=reset]:focus,
+button:hover,
+button:focus,
+.auiButton:hover,
+.auiButton:focus,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus {
+  color: #333333;
+  text-decoration: none;
+  background-position: 0 -15px;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+input[type=submit]:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+button:focus,
+.auiButton:focus,
+.auiButtonAction:focus,
+.auiButtonBold:focus,
+.auiButtonSearch:focus,
+.auiButtonSmall:focus,
+.auiButtonDisabled:focus,
+.auiSelectButton a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:active,
+input[type=reset].active,
+button:active,
+button.active,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiSelectButton a:active {
+  background-image: none;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  outline: 0;
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .auiButton,
 .auiButtonAction,
 .auiButtonBold,
-.auiButtonSearch {
+.auiButtonDisabled,
+.auiButtonSearch,
+.auiSelectButton a,
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
   height: 30px;
   line-height: 30px;
-  padding: 0 0.7em;
+  padding: 0 8px;
 }
 
 *:first-child + html input[type=submit],
@@ -1375,7 +1416,7 @@ button {
 *:first-child + html input.auiButtonAction,
 *:first-child + html input.auiButtonBold,
 *:first-child + html input.auiButtonSearch {
-  padding: 0 3px;
+  padding: 0 2px;
 }
 
 input[type=submit],
@@ -1385,9 +1426,6 @@ button {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 0.7em;
 }
 
 *:first-child + html input[type=submit],
@@ -1405,7 +1443,6 @@ button {
 
 *:first-child + html button.auiButton,
 *:first-child + html button {
-  /*IE7*/
   padding: 0 0.15em;
 }
 
@@ -1423,43 +1460,98 @@ button.auiButtonSmall {
   line-height: 1em !important;
 }
 
-.auiButton:hover,
-.auiButtonBold:hover,
-.auiButtonSmall:hover,
-input[type=submit]:hover,
-input[type=button]:hover,
-input[type=reset],
-button:hover {
-  color: #000;
-  border: solid 1px #999999;
-  background-color: #e8e8e8;
-  background-image: -moz-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#e1e1e1));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: -o-linear-gradient(top, #eeeeee, #e1e1e1);
-  background-image: linear-gradient(to bottom, #eeeeee, #e1e1e1);
+/* auiButtonAction */
+.auiButtonAction,
+input.auiButtonAction {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background-color: #ffb133;
+  background-color: #fa9828;
+  background-image: -moz-linear-gradient(top, #ffb133, #f37318);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb133), to(#f37318));
+  background-image: -webkit-linear-gradient(top, #ffb133, #f37318);
+  background-image: -o-linear-gradient(top, #ffb133, #f37318);
+  background-image: linear-gradient(to bottom, #ffb133, #f37318);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFE1E1E1', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFB133', endColorstr='#FFF37318', GradientType=0);
+  background-repeat: repeat-x;
+  border-color: #f39600 #e15e04 #e15e04;
+  *background-color: #f37318;
+  *border: 1px solid #e15e04;
 }
 
-.auiButton:active,
-.auiButtonBold:active,
-.auiButtonSmall:active,
-input[type=submit]:active,
-input[type=button]:active,
-input[type=reset],
-button:active {
-  border: solid 1px #999999;
-  background-color: #e3e3e3;
-  background-image: -moz-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dddddd), to(#eeeeee));
-  background-image: -webkit-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: -o-linear-gradient(top, #dddddd, #eeeeee);
-  background-image: linear-gradient(to bottom, #dddddd, #eeeeee);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFDDDDDD', endColorstr='#FFEEEEEE', GradientType=0);
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+input.auiButtonAction:hover,
+input.auiButtonAction:focus,
+input.auiButtonAction:active,
+input.auiButtonAction.active {
+  color: #ffffff;
+  background-color: #f37318;
+  *background-color: #f37318;
 }
 
+.auiButtonAction:active,
+.auiButtonAction.active {
+  background-color: #c67605 \9;
+}
+
+/* auiButtonDisabled */
+.auiButtonDisabled,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:active,
+input[disabled],
+input[disabled]:hover,
+input[disabled]:active,
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+  color: #999999;
+  background-image: none !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+  background-color: #eeeeee;
+  border: solid 1px #d2d2d2;
+  cursor: default;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  text-shadow: 0 1px 0 white;
+}
+
+/* auiButtonSearch */
+.auiButtonSearch,
+input.auiButtonSearch {
+  background-color: #d0d0d0;
+  background-color: #e2e2e2;
+  background-image: -moz-linear-gradient(top, #eeeeee, #d0d0d0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#d0d0d0));
+  background-image: -webkit-linear-gradient(top, #eeeeee, #d0d0d0);
+  background-image: -o-linear-gradient(top, #eeeeee, #d0d0d0);
+  background-image: linear-gradient(to bottom, #eeeeee, #d0d0d0);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFD0D0D0', GradientType=0);
+  background-repeat: repeat-x;
+}
+
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+input.auiButtonSearch:hover,
+input.auiButtonSearch:focus,
+input.auiButtonSearch:active,
+input.auiButtonSearch.active {
+  background-color: #d0d0d0;
+}
+
+.auiButtonSearch:active,
+.auiButtonSearch.active {
+  background-color: #c0c0c0 \9;
+}
+
+/* other */
 .auiButton span {
   display: table-cell;
   min-width: 20px;
@@ -1474,6 +1566,18 @@ button:active {
   display: block;
   padding-top: 4px;
   height: 22px;
+}
+
+.auiButton i {
+  color: #333333;
+}
+
+*:first-child + html .auiButton i {
+  margin-top: 4px !important;
+}
+
+*:first-child + html button.auiButton i {
+  margin-top: 1px !important;
 }
 
 .auiButtonSmall span {
@@ -1491,96 +1595,6 @@ button:active {
 *:first-child + html .auiButton img,
 *:first-child + html .auiButtonSmall img {
   padding: 2px 0;
-}
-
-.auiButtonAction {
-  color: #fff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15) !important;
-  background-color: #f37318 !important;
-  background-image: -moz-linear-gradient(top, #ffb133, #f37318) !important;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb133), to(#f37318)) !important;
-  background-image: -webkit-linear-gradient(top, #ffb133, #f37318) !important;
-  background-image: -o-linear-gradient(top, #ffb133, #f37318) !important;
-  background-image: linear-gradient(to bottom, #ffb133, #f37318) !important;
-  background-repeat: repeat-x !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffb133', endColorstr='#fff37318', GradientType=0) !important;
-  border: solid 1px;
-  border-color: #f39600 #e15e04 #e15e04 !important;
-}
-
-.auiButtonBold {
-  color: #000;
-  text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px;
-  border-color: #e4e4e4 #d1d1d1 #c0c0c0;
-  background-color: #f0f0f0;
-  background-color: #f9f9f9;
-  background-image: -moz-linear-gradient(top, white, #f0f0f0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#f0f0f0));
-  background-image: -webkit-linear-gradient(top, white, #f0f0f0);
-  background-image: -o-linear-gradient(top, white, #f0f0f0);
-  background-image: linear-gradient(to bottom, #ffffff, #f0f0f0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0', GradientType=0);
-}
-
-.auiButtonAction:hover {
-  color: #fff;
-  border: solid 1px #e0800 !important;
-  background: #ffbb22 !important;
-  background-image: -moz-linear-gradient(top, #ffcc33, #ff9900) !important;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffcc33), to(#ff9900)) !important;
-  background-image: -webkit-linear-gradient(top, #ffcc33, #ff9900) !important;
-  background-image: -o-linear-gradient(top, #ffcc33, #ff9900) !important;
-  background-image: linear-gradient(to bottom, #ffcc33, #ff9900) !important;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFCC33', endColorstr='#FFFF9900', GradientType=0) !important;
-}
-
-.auiButtonAction:active {
-  border: solid 1px #e08000 !important;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  background-color: #ff9000 !important;
-  background-image: -moz-linear-gradient(top, #ff9900, #ffbb22) !important;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ff9900), to(#ffbb22)) !important;
-  background-image: -webkit-linear-gradient(top, #ff9900, #ffbb22) !important;
-  background-image: -o-linear-gradient(top, #ff9900, #ffbb22) !important;
-  background-image: linear-gradient(to bottom, #ff9900, #ffbb22) !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFff9900', endColorstr='#FFffbb22', GradientType=0) !important;
-}
-
-.auiButtonDisabled {
-  text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px #c9c9c9;
-  color: #999999;
-  background: #eeeeee !important;
-  cursor: default;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 0.7em;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
-}
-
-.auiButtonDisabled:hover {
-  color: #999999;
-}
-
-input[disabled],
-textarea[disabled],
-button[disabled],
-input[disabled]:hover,
-textarea[disabled]:hover,
-button[disabled]:hover {
-  color: #999999;
-  background: #eee;
-  border-color: #c9c9c9;
-  cursor: default;
-}
-
-*:first-child + html .auiButtonDisabled {
-  /* IE7 Hack */
-  line-height: 30px;
 }
 
 .auiButtonGroup {
@@ -1617,6 +1631,84 @@ button[disabled]:hover {
 }
 
 /***************************************************
+	auiSelectButton
+--------------------------------------------------*/
+.auiSelectButton {
+  background: #fff;
+}
+
+.auiSelectButton li,
+.auiSelectButton div {
+  float: left;
+  background: none;
+  padding: 0;
+  line-height: 1;
+}
+
+.auiSelectButton a {
+  display: block;
+  margin: 0 -1px;
+  padding: 0 !important;
+  line-height: 30px;
+  min-width: 26px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border-color: #e6e6e6 #dcdcdc #bfbfbf;
+}
+
+.auiSelectButton a.first,
+.auiSelectButton a.btn {
+  margin-left: 0;
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.auiSelectButton a.last,
+.auiSelectButton a.btn {
+  margin-right: 0;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.auiSelectButton a:hover span {
+  color: #333333;
+}
+
+.auiSelectButton span i,
+.auiSelectButton span img {
+  margin: 6px 0;
+}
+
+.auiSelectButton .active a {
+  background: #d2d2d2;
+  border-color: #d2d2d2 #d2d2d2 #bfbfbf;
+  cursor: default;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+}
+
+.auiSelectButton .active a:focus,
+.auiSelectButton .active a:active {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.auiSelectButton .active a:hover span {
+  cursor: default;
+}
+
+/***************************************************
 	auiSearch
 --------------------------------------------------*/
 .auiSearch {
@@ -1629,51 +1721,6 @@ button[disabled]:hover {
 
 .auiSearch input.date {
   width: 7em;
-}
-
-.auiButtonSearch {
-  color: #000;
-  text-shadow: 0 1px 0 #f8f8f8;
-  border: solid 1px;
-  border-color: #e0e0e0 #cdcdcd #bdbdbd;
-  background-color: #dddddd !important;
-  background-image: -moz-linear-gradient(top, #eeeeee, #dddddd);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#dddddd));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #dddddd);
-  background-image: -o-linear-gradient(top, #eeeeee, #dddddd);
-  background-image: linear-gradient(to bottom, #eeeeee, #dddddd);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFeeeeee', endColorstr='#FFdddddd', GradientType=0) !important;
-}
-
-*:first-child + html .auiButtonSearch {
-  height: 30px;
-  line-height: 30px;
-}
-
-.auiButtonSearch:hover {
-  color: #000;
-  border: solid 1px #999999;
-  /*-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-  -moz-box-shadow:0 1px 1px rgba(0,0,0,0.2);
-  box-shadow:0 1px 1px rgba(0,0,0,0.2);*/
-  background: #d0d0d0;
-  background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#d0d0d0)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #eeeeee, #d0d0d0) !important;
-  /*Fx*/
-}
-
-.auiButtonSearch:active {
-  border: solid 1px #999999;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0);
-  background: #c0c0c0;
-  background: -webkit-gradient(linear, left top, left bottom, from(#d0d0d0), to(#eeeeee)) !important;
-  /*Ch*/
-  background: -moz-linear-gradient(top, #d0d0d0, #eeeeee) !important;
-  /*Fx*/
 }
 
 .auiSearchOption {
@@ -1734,12 +1781,11 @@ button[disabled]:hover {
   overflow: hidden;
 }
 
-/*.auiSummaryMeta */
 .count {
   float: left;
   height: 32px;
   line-height: 32px;
-  margin: 0 10px;
+  margin: 0 5px;
 }
 
 .auiSummaryTitle {
@@ -2919,9 +2965,11 @@ ul.attachments >li{
 
 .filterTip {
   display: inline-block;
+  display:block;
+  float:left;
   background: #e0e0e0;
   color: #000;
-  margin: 3px 2px !important;
+  margin: 0 2px 4px !important;
   padding: 0 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
