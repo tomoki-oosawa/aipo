@@ -240,7 +240,7 @@ dojo.declare("aipo.widget.MemberFacilitySelectList", [dijit._Widget, dijit._Temp
             }
             var j = i %  aipo.calendar.maximum_to;
             var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            html += "<span class=\"small color" + j +"\">" + text + "</span>";
+            html += "<span class=\"dispUser color" + j +"\">" + text + "</span>";
         }
         var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
         if(pickedList){
