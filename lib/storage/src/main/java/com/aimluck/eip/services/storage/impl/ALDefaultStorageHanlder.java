@@ -607,4 +607,33 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     return flag;
   }
 
+  /**
+   * @param rootPath
+   * @param dir
+   * @param fineName
+   * @return
+   * @throws FileNotFoundException
+   */
+  @Override
+  public String getFilePath(String rootPath, String dir, String fileName)
+      throws FileNotFoundException {
+    return getFilePath(rootPath
+      + separator()
+      + Database.getDomainName()
+      + separator()
+      + dir
+      + separator()
+      + fileName);
+  }
+
+  /**
+   * @param filePath
+   * @return
+   * @throws FileNotFoundException
+   */
+  @Override
+  public String getFilePath(String filePath) throws FileNotFoundException {
+    return filePath;
+  }
+
 }
