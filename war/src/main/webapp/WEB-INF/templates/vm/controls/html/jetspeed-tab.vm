@@ -87,6 +87,7 @@ $portlet.getContent($data)
 							#else
 							<div class="roundMainWrapper" style="min-height:1000px">
 							#end
+							#AuiInformation($information_title $information_text $information_cookie_name $information_display)
 							#if(!$run)
 								$portlet.getContent($data)
 							#elseif($runs.size()==0)

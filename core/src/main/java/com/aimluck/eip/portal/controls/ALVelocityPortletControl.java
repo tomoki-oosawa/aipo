@@ -67,6 +67,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipInformation;
 import com.aimluck.eip.common.ALFunction;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -238,6 +239,36 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       showTab = "true";
     }
     context.put("showTab", showTab);
+
+    // お知らせ用
+    ALEipInformation information = ALEipInformation.getInstance();
+    String informationCookie = "";
+    String informationText = "";
+    if (information != null) {
+      informationCookie = information.getInformationCookie();
+      informationText = information.getInformationText();
+      if (informationCookie != null && !"".equals(informationCookie)) {
+        String auiInfoDispCookieValue = null;
+        if (rundata.getRequest().getCookies() != null) {
+          auiInfoDispCookieValue =
+            rundata.getCookies().getString(informationCookie, "");
+        }
+        if (auiInfoDispCookieValue != null
+          && !"".equals(auiInfoDispCookieValue)) {
+          context.put("information_display", Boolean
+            .valueOf(auiInfoDispCookieValue));
+        } else {
+          context.put("information_display", true);
+        }
+      } else {
+        context.put("information_display", false);
+      }
+    } else {
+      context.put("information_display", false);
+    }
+    context.put("information_cookie_name", informationCookie);
+    context.put("information_text", informationText);
+    context.put("information_title", ALEipInformation.INFORMATION_TITLE);
 
     // 修正 ：ポートレットの最大化画面にタブを常に表示するように修正した．
     try {

@@ -280,6 +280,7 @@ function appsNaviSwitch() {
 <!-- MAIN OUTER -->
 <div id="roundWrapper">
   <div class="roundMainWrapper">
+#AuiInformation($information_title $information_text $information_cookie_name $information_display)
 $portlet.getContent($data)
   </div>
 </div>

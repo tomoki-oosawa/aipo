@@ -44,6 +44,7 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipInformation;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
@@ -213,6 +214,19 @@ public class ALJLoginUser extends ActionEvent {
 
       user = JetspeedSecurity.login(username, password);
       JetspeedSecurity.saveUser(user);
+
+      // 運営からのお知らせ用のクッキ－削除
+      if (rundata.getRequest().getCookies() != null) {
+        for (Cookie cookie : rundata.getRequest().getCookies()) {
+          String cookieName = cookie.getName();
+          if (cookieName.startsWith(ALEipInformation.INFORMATION_COOKIE_PREFIX)) {
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            cookie.setValue("true");
+            data.getResponse().addCookie(cookie);
+          }
+        }
+      }
 
       int loginUserId = Integer.parseInt(user.getUserId());
       ALEventlogFactoryService.getInstance().getEventlogHandler().logLogin(

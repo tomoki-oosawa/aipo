@@ -1525,3 +1525,13 @@ $item.get(0)
 <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" >
 </iframe>
 #end
+
+#macro(AuiInformation $title $text $cookie $flag)
+#if (${flag})
+<div class="auiInfo" id="$!{cookie}"><div class="inner clearfix">
+<div class="auiInfoClose"><a href="javascript:void(0)" title="次回ログイン時まで閉じる" onclick="document.getElementById('$!{cookie}').style.display='none';aipo.setCookie('$!{cookie}',false,'/')"><i class="icon-remove"></i></a></div>
+<div class="auiInfoTitle"><i class="icon-info-sign"></i> ${title}からのお知らせ</div>
+<div class="auiInfoBody">$!{text}</div>
+</div></div>
+#end
+#end
