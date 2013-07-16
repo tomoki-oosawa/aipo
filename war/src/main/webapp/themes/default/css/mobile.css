@@ -1429,3 +1429,7 @@ table tr.caption {
 	background-size:24px;
 	background-position:-3px -482px;
 }
+
+.hdSetting {
+  display:none;
+}
