@@ -88,13 +88,13 @@ if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='auiIcon'){
+        if(document.all[i].className.indexOf('auiIcon')>=0){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className=='auiIcon'){
+        if(document.all[i].className.indexOf('auiIcon')>=0){
           document.all[i].style.display = 'none';
         }
       }
