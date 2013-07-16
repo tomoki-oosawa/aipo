@@ -130,9 +130,7 @@ ${title}
 <label for="$!{portlet.ID}del_at_pop3_for_days_flg_enable_id">$l10n.WEBMAIL_AUTODELETE_DATE_MSG</label>
 </span>
 <br />
-<div style="font-size:.7em;">
-$l10n.WEBMAIL_DELETE_MAIL_MSG
-</div>
+<div><small>$l10n.WEBMAIL_DELETE_MAIL_MSG</small></div>
 </td>
 #ALtdcaptionAttWebmail($!result.getFieldName("non_received_flg") )
 #ALtditemheader()
