@@ -164,8 +164,21 @@ form.searchbox input.submit:active {
   -webkit-box-shadow: none !important;
 }
 
+.hdUserName {
+  position: relative;
+  padding-right: 0;
+}
+
 .hdUserName a {
   text-decoration: none;
+}
+
+.hdUserName .auiIcon {
+  margin-bottom: 2px;
+}
+
+*:first-child + html .hdUserName .auiIcon {
+  margin-bottom: 1px;
 }
 
 .hdUserName .avatar {
@@ -192,16 +205,16 @@ img.avatar,
   padding: 4px 0 0 8px;
 }
 
-.hdSetting .menubar {
+.hdUserName .menubar {
   right: 0;
 }
 
-*:first-child + html .hdSetting .menubar {
+*:first-child + html .hdUserName .menubar {
   /* IE7 */
-  top: 20px;
+  top: 23px;
 }
 
-*:first-child + html .hdSetting .menubar ul li a {
+*:first-child + html .hdUserName .menubar ul li a {
   min-width: 5em;
   overflow: visible;
 }
