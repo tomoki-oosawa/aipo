@@ -31,7 +31,7 @@
 		<!-- /hdActivity -->
 
     <div class="hdUserName">
-		<a href="javascript:void(0);" id="menubar_button_hdSetting" class="arrow_bottom" onclick="aipo.customize.showMenuButtonOnly('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
+		<a href="javascript:void(0);" id="menubar_button_hdSetting" class="arrow_bottom" onclick="aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
 		#if ($data.User.getUserName()!="admin")
 			#if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />
@@ -43,12 +43,9 @@
 			#end
 		#end
 		$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-		<i class="auiIconArrowHead"></i>
+		<i　id="menubar_button_hdSetting" class="auiIcon auiIconSetting"></i>
 		</a>
-	</div>
-	<div class="hdSetting">
-		<a href="javascript:void(0);" class="customizeMenuIcon auiIcon auiIconSetting" onclick="if(document.getElementById('menubar_hdSetting').style.display!='block') {document.getElementById('menubar_hdSetting').style.display='block'}else{document.getElementById('menubar_hdSetting').style.display='none'}" title="$l10n.TOP_CUSTOMIZE"></a>
-		<div class="menubar" id="menubar_hdSetting" style="position: absolute; display:none;">
+		<div class="menubar body-child" id="menubar_hdSetting" style="position: absolute; display:none;">
 		<ul>
 			#if ($data.User.getUserName()!="admin")
 			<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
