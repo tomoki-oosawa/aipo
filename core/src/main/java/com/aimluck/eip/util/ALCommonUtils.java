@@ -442,4 +442,14 @@ public class ALCommonUtils {
   public static boolean isAndroid2Browser(RunData rundata) {
     return ALEipUtils.isAndroid2Browser(rundata);
   }
+
+  // :HACK
+  // can't be called...
+  // public static String getl10nFormat(String key, Object... values) {
+  // return ALLocalizationUtils.getl10nFormat(key, values);
+  // }
+
+  public static String getl10nFormat1(String key, Object values) {
+    return ALLocalizationUtils.getl10nFormat(key, values);
+  }
 }

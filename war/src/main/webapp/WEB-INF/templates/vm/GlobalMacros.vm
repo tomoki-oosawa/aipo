@@ -1530,7 +1530,7 @@ $item.get(0)
 #if (${flag})
 <div class="auiInfo" id="$!{cookie}"><div class="inner clearfix">
 <div class="auiInfoClose"><a href="javascript:void(0)" title="$l10n.WAR_CLOSE_NEXT_LOGIN" onclick="document.getElementById('$!{cookie}').style.display='none';aipo.setCookie('$!{cookie}',false,'/')"><i class="icon-remove"></i></a></div>
-<div class="auiInfoTitle"><i class="icon-info-sign"></i> $l10n.WAR_INFO</div>
+<div class="auiInfoTitle"><i class="icon-info-sign"></i>$utils.getl10nFormat1("WAR_INFO",${title})</div>
 <div class="auiInfoBody">$!{text}</div>
 </div></div>
 #end
