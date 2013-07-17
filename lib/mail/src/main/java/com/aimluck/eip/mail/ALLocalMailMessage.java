@@ -487,7 +487,8 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       throws MessagingException {
 
     // RFC に則っているかを検証する．
-    String recipients = this.getHeader(recipienttype.toString(), null);
+    String recipients =
+      MailUtility.decodeText(this.getHeader(recipienttype.toString(), null));
     if (recipients == null) {
       return super.getRecipients(recipienttype);
     }
@@ -498,16 +499,26 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     while (st.hasMoreTokens()) {
       token = st.nextToken();
       if ((token.indexOf('<') >= 0 && token.indexOf('>') == -1)
-        || (token.indexOf('<') == -1 && token.indexOf('>') >= 0)) {
+        || (token.indexOf('<') == -1 && token.indexOf('>') >= 0)
         // 「<user@domain」や「user@domain>」のように
+        // 片方のカッコのみ見つかった場合の処理
+        || (token.indexOf('(') >= 0 && token.indexOf('>') == -1)
+        || (token.indexOf('(') == -1 && token.indexOf(')') >= 0)) {
+        // 「foo) <user@domain>」や「(foo <user@domain>」のように
         // 片方のカッコのみ見つかった場合の処理
         found = true;
       } else {
         if ((token.indexOf('<') >= 0 && token.indexOf('<') != token
           .lastIndexOf('<'))
           || (token.indexOf('>') >= 0 && token.indexOf('>') != token
-            .lastIndexOf('>'))) {
+            .lastIndexOf('>'))
           // 「<<user@domain>」や「<user@domain>>」のように
+          // カッコの対が揃っていない場合の処理
+          || (token.indexOf('(') >= 0 && token.indexOf(')') != token
+            .lastIndexOf('('))
+          || (token.indexOf(')') >= 0 && token.indexOf(')') != token
+            .lastIndexOf(')'))) {
+          // 「((foo) <user@domain>」や「(foo)) <user@domain>」のように
           // カッコの対が揃っていない場合の処理
           found = true;
         }
@@ -548,7 +559,8 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     if (strict) {
       return getRecipients(recipienttype);
     } else {
-      String recipients = this.getHeader(recipienttype.toString(), null);
+      String recipients =
+        MailUtility.decodeText(this.getHeader(recipienttype.toString(), null));
       if (recipients == null) {
         return super.getRecipients(recipienttype);
       }
