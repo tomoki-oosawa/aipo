@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.apache.jetspeed.om.profile.Profile;
@@ -34,6 +35,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.jetspeed.om.registry.base.BaseParameter;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.portal.PortletConfig;
 import org.apache.jetspeed.portal.PortletControl;
 import org.apache.jetspeed.portal.PortletInstance;
 import org.apache.jetspeed.portal.PortletSet;
@@ -54,6 +56,10 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.gadgets.ALUserPref;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -244,6 +250,72 @@ public class PortletCustomizeFormScreen extends ALVelocityScreen {
           return (p1.getName()).compareTo(p2.getName());
         }
       });
+
+      // retrieve the app parameters from xml
+      PortletConfig pc = found.getPortletConfig();
+      if ("GadgetsTemplate".equals(pc.getName())) {
+        String appId = pc.getInitParameter("aid");
+        ALApplication app =
+          ALApplicationService.get(new ALApplicationGetRequest().withAppId(
+            appId).withIsFetchXml(true));
+        List<List<Map.Entry<String, String>>> enumsList =
+          new ArrayList<List<Map.Entry<String, String>>>();
+        List<ALUserPref> userPrefs = app.getUserPrefs();
+        Collections.sort(userPrefs, new Comparator<ALUserPref>() {
+          @Override
+          public int compare(ALUserPref a, ALUserPref b) {
+            ALUserPref p1 = a;
+            ALUserPref p2 = b;
+            return (p1.getName()).compareTo(p2.getName());
+
+          }
+        });
+        for (ALUserPref userPref : userPrefs) {
+          String name = "pref-" + userPref.getName();
+          Parameter clone = new BaseParameter();
+          clone.setName(name);
+          clone.setTitle(userPref.getDisplayName());
+          clone.setDescription(null);
+          boolean hidden = false;
+          boolean list = false;
+          switch (userPref.getType()) {
+            case ENUM:
+              List<Map.Entry<String, String>> enums = userPref.getEnums();
+              enumsList.add(enums);
+              clone.setType("enum");
+              break;
+            case LIST:
+              clone.setType("list");
+              list = true;
+              break;
+            case BOOL:
+              clone.setType("boolean");
+              break;
+            case HIDDEN:
+              clone.setType("hidden");
+              hidden = true;
+              break;
+            default:
+              clone.setType(null);
+          }
+          String value;
+          if (instance.getAttribute(name, null) != null) {
+            value = instance.getAttribute(name);
+          } else if (found.getPortletConfig().getInitParameter(name) != null) {
+            value = found.getPortletConfig().getInitParameter(name);
+          } else {
+            value = userPref.getDefault();
+            if (list) {
+              value = value.replace("|", ",");
+            }
+          }
+          clone.setValue(ALStringUtil.sanitizing(value));
+          if (!hidden) {
+            params.add(clone);
+          }
+        }
+        context.put("enums", enumsList);
+      }
 
       // get the customization state for this page
       SessionState customizationState =
