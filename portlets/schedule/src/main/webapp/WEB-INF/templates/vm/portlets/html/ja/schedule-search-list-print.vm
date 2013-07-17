@@ -129,7 +129,7 @@ if(document.all!=undefined){
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle" />
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #if($record.isTmpreserve())
 <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
