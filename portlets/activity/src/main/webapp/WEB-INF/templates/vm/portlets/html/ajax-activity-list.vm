@@ -91,7 +91,7 @@
 
 <ul class="activityList">
 #foreach ($record in $result.List)
-<li #if(!$record.isRead()) class="unread" #end">
+<li #if(!$record.isRead()) class="unread" #end >
 <div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
