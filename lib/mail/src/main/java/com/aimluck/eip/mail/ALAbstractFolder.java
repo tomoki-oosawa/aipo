@@ -401,7 +401,11 @@ public abstract class ALAbstractFolder implements ALFolder {
       Expression exp4 =
         ExpressionFactory.matchExp(EipTMail.FOLDER_ID_PROPERTY, Integer
           .valueOf(folder_id));
-      query.andQualifier(exp4);
+
+      if (ALEipUtils.getTemp(rundata, context, "WebMail_Normal") != null
+        && ALEipUtils.getTemp(rundata, context, "WebMail_Normal") == "false") {
+        query.andQualifier(exp4);
+      }
     }
 
     return query;

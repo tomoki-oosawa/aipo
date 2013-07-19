@@ -56,6 +56,7 @@ public class WebMailAction extends ALBaseAction {
 
     // セッション情報をクリアする
     clearWebMailSession(rundata, context);
+    ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "true");
 
     ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
       .getPortlet(rundata, context)
@@ -85,6 +86,7 @@ public class WebMailAction extends ALBaseAction {
       Context context, RunData rundata) {
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+    ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "false");
 
     try {
       if (ALEipConstants.MODE_LIST.equals(mode)) {
