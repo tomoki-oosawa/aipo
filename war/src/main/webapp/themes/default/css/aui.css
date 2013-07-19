@@ -1062,6 +1062,7 @@ img.avatar,
 #auiLoginBox input.button {
   width: 152px;
   height: 43px;
+  padding: 0;
   color: #fff;
   font-size: 1.2em;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
@@ -1074,11 +1075,13 @@ img.avatar,
   box-shadow: none;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  background: url(../images/login_btn_back.png) 0px -50px no-repeat;
+  background: url(../images/login_btn_back.png) 0px -50px no-repeat !important;
 }
 
-#auiLoginBox input.button:active {
-  background: url(../images/login_btn_back.png) 0px -100px no-repeat;
+#auiLoginBox input.button:active,
+#auiLoginBox input.button:focus,
+#auiLoginBox input.button[disabled] {
+  background: url(../images/login_btn_back.png) 0px -100px no-repeat !important;
 }
 
 .loginAlert,
