@@ -624,6 +624,28 @@ public class ALMailUtils {
         String addressStr = st.nextToken().trim();
         address =
           new InternetAddress(addressStr, ALMailUtils.encodeWordJIS(name));
+      } else if (count > 2) {
+        String name = "";
+        String addressStr = "";
+        while (st.hasMoreTokens()) {
+          String tmp = st.nextToken().trim();
+          if (ALStringUtil.isMailAddress(tmp)) {
+            addressStr = tmp;
+          }
+        }
+
+        if (!"".equals(addressStr)) {
+          String tmpName = addr.replace("<" + addressStr + ">", "").trim();
+          if (!("\"".equals(tmpName.substring(0, 1)) && "\"".equals(tmpName
+            .substring(tmpName.length() - 1, tmpName.length())))) {
+            name = "\"" + tmpName + "\"";
+          } else {
+            name = tmpName;
+          }
+        }
+
+        address =
+          new InternetAddress(addressStr, ALMailUtils.encodeWordJIS(name));
       }
     } catch (Exception e) {
       logger.error("ALMailUtils.getInternetAddress", e);

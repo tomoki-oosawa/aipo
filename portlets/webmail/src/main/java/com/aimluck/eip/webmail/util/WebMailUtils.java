@@ -183,12 +183,13 @@ public class WebMailUtils {
       if (str.charAt(str.length() - 1) == '>') {
         // 氏名付きアドレス指定 sei mei <seimei@xxx.com>
         int idx = str.indexOf("<");
+        int last_idx = str.lastIndexOf("<");
         // "<"がなければエラー
         if (idx == -1) {
           return false;
         }
-        String address = str.substring(idx + 1, str.length() - 1);
-        if (!ALStringUtil.isCellPhoneMailAddress(address)) {
+        String address = str.substring(last_idx + 1, str.length() - 1);
+        if (!ALStringUtil.isMailAddress(address)) {
           return false;
         }
       } else {
