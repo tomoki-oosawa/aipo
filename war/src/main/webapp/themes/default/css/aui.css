@@ -3428,7 +3428,6 @@ ul.attachments >li{
 	auiBlankBox
 --------------------------------------------------*/
 .auiBlankBox {
-  background: #f0f0f0;
   padding: 50px 10px;
   text-align: center;
 }
