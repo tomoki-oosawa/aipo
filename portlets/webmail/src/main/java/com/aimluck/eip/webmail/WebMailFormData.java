@@ -447,22 +447,12 @@ public class WebMailFormData extends ALAbstractFormData {
         Address[] to = msg.getRecipients(Message.RecipientType.TO);
         int from_length = from.length;
         int to_length = to.length;
-        Address[] tos = new Address[from_length + to_length - 1];
+        Address[] tos = new Address[from_length + to_length];
         for (int i = 0; i < from_length; i++) {
           tos[i] = from[i];
         }
-
-        // 自分のアカウントを取得して、アドレスを取得
-        EipMMailAccount myaccount =
-          ALMailUtils.getMailAccount(userId, accountId);
-        String myaddress = myaccount.getMailAddress();
-
-        int j = from_length;
         for (int i = 0; i < to_length; i++) {
-          if (!(to[i].toString().equals(myaddress))) {
-            tos[j] = to[i];
-            j++;
-          }
+          tos[i + from_length] = to[i];
         }
         this.setTo(ALMailUtils.getAddressString(tos));
 
