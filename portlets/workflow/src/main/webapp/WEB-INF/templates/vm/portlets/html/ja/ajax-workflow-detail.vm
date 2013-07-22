@@ -20,7 +20,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderPrint("$l10n.WORKFLOW_WORKFLOW_DETAILS" "$!portlet.ID" "WorkflowScreenPrint" "$!{result.getViewDate().toString()})")
+#if (${client}!= "IPHONE")
+	#ALdialogheaderPrint("$l10n.WORKFLOW_WORKFLOW_DETAILS" "$!portlet.ID" "WorkflowScreenPrint" "$!{result.getViewDate().toString()})")
+#else
+	#ALdialogheaderDetail("$l10n.WORKFLOW_WORKFLOW_DETAILS")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <form name="workflowForm$!portlet.ID" id="workflowForm$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})" method="post" onsubmit="return false;">

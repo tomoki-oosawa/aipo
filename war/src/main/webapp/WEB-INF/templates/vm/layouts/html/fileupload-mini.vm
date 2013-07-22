@@ -36,8 +36,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
 #end
-#if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
-#else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" media="screen,tv,print"/>
+#if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" />
+#else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" />
 #end
 </head>
 <body class="portlet_background" style="background-color:transparent" onLoad="get_data('$!portlet.ID')">

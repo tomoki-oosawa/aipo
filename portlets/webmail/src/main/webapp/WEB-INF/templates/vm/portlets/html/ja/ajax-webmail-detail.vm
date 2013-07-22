@@ -25,17 +25,11 @@
 #set ($event_cancel = "eventSubmit_doWebmail_show_sent_mails")
 #end
 ## ---------------------------------------------------------------------------
-<div class="auiPopup clearfix">
-    <table class="roundBlockWrapperTop">
-              <tbody>
-                <tr>
-                  <td class="roundBlockTitle" style="width:89%">$l10n.WEBMAIL_MAIL_DETAIL</td>
-                  <td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreenPrint').addQueryData('entityid',$entityid)');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="aipo.webmail.hideDialog()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.WEBMAIL_CLOSE1" width="19" height="20" border="0" align="top" title="$l10n.WEBMAIL_CLOSE1"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-    <div class="roundBlockContent">
+#if(${client}!="IPHONE")
+	#ALdialogheaderPrint($l10n.WEBMAIL_MAIL_DETAIL "$!portlet.ID" "WebMailDetailScreenPrint" "$!{result.getViewDate().toString()})")
+#else
+	#ALdialogheaderDetail("$l10n.WEBMAIL_MAIL_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader($l10n.WEBMAIL_MAIL)
 
