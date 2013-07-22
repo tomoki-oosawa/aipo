@@ -25,9 +25,9 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -302,6 +302,7 @@ public class FileuploadUtils {
 
     byte[] result = null;
     InputStream is = null;
+    InputStream is2 = null;
 
     try {
 
@@ -336,6 +337,11 @@ public class FileuploadUtils {
           + ALStorageService.separator()
           + folderName, String.valueOf(fileBean.getFileId()));
 
+      is2 =
+        ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+          + ALStorageService.separator()
+          + folderName, String.valueOf(fileBean.getFileId()));
+
       Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix(ext);
       ImageReader reader = readers.next();
       reader.setInput(ImageIO.createImageInputStream(is));
@@ -357,16 +363,10 @@ public class FileuploadUtils {
       // + folderName
       // + "/"
       // + String.valueOf(fileBean.getFileId()));
-      File fis =
-        new File(ALStorageService.getFilePath(
-          FOLDER_TMP_FOR_ATTACHMENT_FILES,
-          uid + ALStorageService.separator() + folderName,
-          String.valueOf(fileBean.getFileId())));
       orgImage =
         transformImage(
           orgImage,
-          getExifTransformation(readImageInformation(fis)));
-      Boolean test = fis.exists();
+          getExifTransformation(readImageInformation(is2)));
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
@@ -385,6 +385,14 @@ public class FileuploadUtils {
       try {
         if (is != null) {
           is.close();
+        }
+      } catch (Exception e) {
+        logger.error("fileupload", e);
+        result = null;
+      }
+      try {
+        if (is2 != null) {
+          is2.close();
         }
       } catch (Exception e) {
         logger.error("fileupload", e);
@@ -636,9 +644,10 @@ public class FileuploadUtils {
     }
   }
 
-  public static ImageInformation readImageInformation(File in) {
+  public static ImageInformation readImageInformation(InputStream in) {
     try {
-      Metadata metadata = ImageMetadataReader.readMetadata(in);
+      Metadata metadata =
+        ImageMetadataReader.readMetadata(new BufferedInputStream(in), true);
       Directory directory = metadata.getDirectory(ExifIFD0Directory.class);
       JpegDirectory jpegDirectory = metadata.getDirectory(JpegDirectory.class);
 
