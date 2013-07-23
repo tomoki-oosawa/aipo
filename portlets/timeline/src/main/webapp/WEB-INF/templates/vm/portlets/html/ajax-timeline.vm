@@ -80,6 +80,7 @@
 #if($result.List.size() == 0)
 		<div class="tlDisplayChanger">
 			<div class="btn">
+				#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
 					<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
 						#if("$!{result.TargetGroupName}" == "all")
@@ -116,7 +117,6 @@
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
 			<div id="" class="message">
-			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 			<p class="mt10">$l10n.TIMELINE_NO_MESSAGE</p>
 			</div>
 		</div>
@@ -124,6 +124,7 @@
 #else
   	<div class="tlDisplayChanger">
 		<div class="btn">
+			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
 				<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
 				#if("$!{result.TargetGroupName}" == "all")
