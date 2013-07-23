@@ -5,10 +5,10 @@ import java.util.Locale;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.localization.LocalizationTool;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.services.customlocalization.ALLocalizationTool;
 
 public class ALLocalizationUtils {
 
@@ -16,10 +16,10 @@ public class ALLocalizationUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALLocalizationUtils.class.getName());
 
-  public static LocalizationTool createLocalization(RunData rundata) {
-    LocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
+  public static ALLocalizationTool createLocalization(RunData rundata) {
+    ALLocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
     if (tool == null) {
-      tool = new LocalizationTool();
+      tool = new ALLocalizationTool();
       tool.init(rundata);
       ALEipManager.getInstance().setLocalizationTool(tool);
       Locale.setDefault(tool.getLocale());
@@ -28,9 +28,9 @@ public class ALLocalizationUtils {
   }
 
   public static String getl10n(String key) {
-    LocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
+    ALLocalizationTool tool = ALEipManager.getInstance().getLocalizationTool();
     if (tool == null) {
-      tool = new LocalizationTool();
+      tool = new ALLocalizationTool();
       RunData rundata = ALSessionUtils.getRundata();
       if (rundata != null) {
         tool.init(rundata);
