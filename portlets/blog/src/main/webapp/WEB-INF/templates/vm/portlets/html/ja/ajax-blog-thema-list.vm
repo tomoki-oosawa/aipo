@@ -32,9 +32,7 @@
 #ALformheader("$l10n.BLOG_THEME" $jslink $portlet)
 #end
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta center">
-#AUIbuttonActionW80("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
-</div>
+#AUIbuttonActionInBlankBox("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
 #else
 #AUISummaryDiv()
 <div class="floatLeft">

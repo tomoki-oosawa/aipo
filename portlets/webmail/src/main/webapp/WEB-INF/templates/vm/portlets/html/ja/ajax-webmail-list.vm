@@ -41,9 +41,7 @@
 #else
 
 #if($!result.AccountId == 0)
-<div class="auiSummaryMeta center">
-#AUIbuttonActionW80($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
-</div>
+#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader($l10n.WEBMAIL_WEBMAIL)

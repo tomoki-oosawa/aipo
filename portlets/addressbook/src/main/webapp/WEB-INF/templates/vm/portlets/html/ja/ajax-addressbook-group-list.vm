@@ -37,9 +37,7 @@
 #ALajaxlistformheader($l10n.ADDRESSBOOK_GROUP)
 #end
 #if($result.List.size() ==0)
-<div class="auiSummaryMeta center">
-#AUIbuttonActionW80($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
-</div>
+#AUIbuttonActionInBlankBox($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}$l10n.ADDRESSBOOK_PROCESSING_NOW")
 #AUISummaryDiv()

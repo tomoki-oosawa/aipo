@@ -25,9 +25,7 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #if($result.List.size() == 0)
-	<div class="auiSummaryMeta center">
-#AUIbuttonActionW80($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
-</div>
+#AUIbuttonActionInBlankBox($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 #else
 #AUIwideAreaHeader()
 #AUISummaryDiv()
