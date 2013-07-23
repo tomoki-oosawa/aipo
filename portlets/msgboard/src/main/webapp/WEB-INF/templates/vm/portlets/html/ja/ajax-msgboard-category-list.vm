@@ -43,9 +43,7 @@
 #ALformheader($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)
 #end
 #if($result.List.size() <= 0)
-<div class="auiSummaryMeta center">
-#AUIbuttonActionW80($l10n.MSGBOARD_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
-</div>
+#AUIbuttonActionInBlankBox($l10n.MSGBOARD_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('MsgboardCategoryListScreen' $result)

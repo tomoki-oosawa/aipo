@@ -71,7 +71,6 @@ line-height:140%;
 <a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.WORKFLOW_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.WORKFLOW_CLOSE" /></a>
 </div>
 $l10n.WORKFLOW_PRINT_MSG
-<form>
 <table>
 <tr>
 <th>$l10n.WORKFLOW_DISPLAY_WITH</th>
@@ -110,9 +109,10 @@ $l10n.WORKFLOW_PRINT_MSG
 </select>
 </td>
 </tr>
+<tr>
+<td><input type="button" value="$l10n.WORKFLOW_DO_PRINT" onclick="javascript:print();"/></td>
+</tr>
 </table>
-<input type="button" value="$l10n.WORKFLOW_DO_PRINT" onclick="javascript:print();"/>
-</form>
 </div>
 <script type="text/javascript" language="JavaScript">
   //<![CDATA[

@@ -1353,6 +1353,12 @@ $link.get(0)
 <a title="$text" href="$url" class="auiButtonAction w80">$text</a>
 #end
 
+#macro(AUIbuttonActionInBlankBox $text $url)
+<div class="auiBlankBox">
+<a title="$text" href="$url" class="auiButtonAction">$text</a>
+</div>
+#end
+
 #macro(AUIbutton $text $url)
 <a title="$text" href="$url" class="auiButton">$text</a>
 #end

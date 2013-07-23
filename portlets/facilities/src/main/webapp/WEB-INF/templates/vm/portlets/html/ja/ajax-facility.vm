@@ -53,9 +53,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader("$l10n.FACILITIES_FACILITY")
 #if($result.getAllFacilitySum() == 0)
-	<div class="auiSummaryMeta center">
-#AUIbuttonActionW80("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
-</div>
+#AUIbuttonActionInBlankBox("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
 #elseif($result.List.size() == 0)
 $l10n.FACILITIES_MSG_NO_FACILITIES<br />
 #else

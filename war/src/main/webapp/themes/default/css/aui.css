@@ -3425,6 +3425,14 @@ ul.attachments >li{
 }
 
 /***************************************************
+	auiBlankBox
+--------------------------------------------------*/
+.auiBlankBox {
+  padding: 50px 10px;
+  text-align: center;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
 /*
@@ -3474,6 +3482,10 @@ a.auiIcon:hover {
 }
 
 /*IE6*/
+*:first-child + html .auiIcon + .auiIcon {
+  margin-left: 2px;
+}
+
 .auiIconClear {
   background-position: 16px 0;
 }
