@@ -3482,6 +3482,10 @@ a.auiIcon:hover {
 }
 
 /*IE6*/
+*:first-child + html .auiIcon + .auiIcon {
+  margin-left: 2px;
+}
+
 .auiIconClear {
   background-position: 16px 0;
 }
