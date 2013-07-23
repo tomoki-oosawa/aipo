@@ -1006,20 +1006,24 @@ public class ExtTimecardListResultData implements ALData {
   public void setBeforeAfter() {
     try {
 
-      int change_time = timecard_system.getChangeHour().intValue();
-      Date today = new Date();
-      long time =
-        today.getTime()
-          - Long.valueOf(Integer.toString(change_time * 60 * 60 * 1000));
-      today.setTime(time);
+      if (timecard_system != null) {
+        int change_time = timecard_system.getChangeHour().intValue();
+        Date today = new Date();
+        long time =
+          today.getTime()
+            - Long.valueOf(Integer.toString(change_time * 60 * 60 * 1000));
+        today.setTime(time);
 
-      Date now = date.getValue().getDate();
+        Date now = date.getValue().getDate();
 
-      if (ExtTimecardUtils.sameDay(now, today)) {
+        if (ExtTimecardUtils.sameDay(now, today)) {
+          beforeafter = 0;
+          return;
+        }
+        beforeafter = now.compareTo(today);
+      } else {
         beforeafter = 0;
-        return;
       }
-      beforeafter = now.compareTo(today);
     } catch (Exception e) {
       beforeafter = 0;
       logger.error("error", e);
