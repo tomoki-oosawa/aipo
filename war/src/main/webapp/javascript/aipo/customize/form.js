@@ -143,8 +143,6 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         	}
         	left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
         	top = getTop(html) - getTop(html.offsetParent.offsetParent);
-        	dojo.query(".relativeBlock").style("z-index","9999");
-        	dojo.query("#tableWrapper_"+portlet_id).style("z-index","1");
         } else {
         	left = html.offsetLeft - html.clientLeft;
         	top = html.offsetTop - html.clientTop;
