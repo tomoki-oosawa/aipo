@@ -16,6 +16,8 @@
 package com.aimluck.eip.services.customlocalization;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
@@ -77,6 +79,15 @@ public class ALLocalizationService extends TurbineLocalizationService implements
   @Override
   protected void initBundleNames(String ignored[]) {
     super.initBundleNames(ignored);
+  }
+
+  @Override
+  public ResourceBundle getBundle(String bundleName, Locale locale) {
+    try {
+      return super.getBundle(bundleName, locale);
+    } catch (MissingResourceException e) {
+      return super.getBundle(bundleName, Locale.JAPANESE);
+    }
   }
 
 }

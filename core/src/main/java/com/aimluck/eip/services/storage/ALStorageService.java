@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.util.Calendar;
 
 /**
- * 
+ *
  */
 public class ALStorageService {
 
@@ -114,6 +114,16 @@ public class ALStorageService {
   public static InputStream getFile(String filePath)
       throws FileNotFoundException {
     return getService().getFile(filePath);
+  }
+
+  public static String getFilePath(String rootPath, String dir, String fineName)
+      throws FileNotFoundException {
+    return getService().getFilePath(rootPath, dir, fineName);
+  }
+
+  public static String getFilePath(String filePath)
+      throws FileNotFoundException {
+    return getService().getFilePath(filePath);
   }
 
   public static String getDocumentPath(String rootPath, String categoryKey) {

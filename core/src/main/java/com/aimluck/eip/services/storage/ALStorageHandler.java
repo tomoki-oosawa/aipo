@@ -92,6 +92,12 @@ public abstract class ALStorageHandler {
   public abstract InputStream getFile(String filePath)
       throws FileNotFoundException;
 
+  public abstract String getFilePath(String rootPath, String dir,
+      String fineName) throws FileNotFoundException;
+
+  public abstract String getFilePath(String filePath)
+      throws FileNotFoundException;
+
   public abstract String getDocumentPath(String rootPath, String categoryKey);
 
   public abstract String separator();

@@ -34,7 +34,6 @@ import org.apache.jetspeed.om.profile.ProfileLocator;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.localization.LocalizationTool;
 
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
@@ -48,6 +47,7 @@ import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.customlocalization.ALLocalizationTool;
 
 /**
  * ユーザー情報、会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
@@ -500,12 +500,12 @@ public class ALEipManager {
     }
   }
 
-  public LocalizationTool getLocalizationTool() {
+  public ALLocalizationTool getLocalizationTool() {
     HttpServletRequest request = HttpServletRequestLocator.get();
     if (request != null) {
       Object obj = request.getAttribute(LOCALIZATION_PREFIX);
       if (obj != null) {
-        return (LocalizationTool) obj;
+        return (ALLocalizationTool) obj;
       } else {
         return null;
       }
@@ -514,7 +514,7 @@ public class ALEipManager {
     }
   }
 
-  public void setLocalizationTool(LocalizationTool tool) {
+  public void setLocalizationTool(ALLocalizationTool tool) {
     HttpServletRequest request = HttpServletRequestLocator.get();
     if (request != null) {
       request.setAttribute(LOCALIZATION_PREFIX, tool);
