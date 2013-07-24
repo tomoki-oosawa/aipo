@@ -20,6 +20,7 @@
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,7 @@ import java.util.StringTokenizer;
 
 import javax.mail.Address;
 import javax.mail.Message;
+import javax.mail.internet.InternetAddress;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -445,26 +447,26 @@ public class WebMailFormData extends ALAbstractFormData {
         // TO
         Address[] from = msg.getFrom();
         Address[] to = msg.getRecipients(Message.RecipientType.TO);
-        int from_length = from.length;
-        int to_length = to.length;
-        Address[] tos = new Address[from_length + to_length - 1];
-        for (int i = 0; i < from_length; i++) {
-          tos[i] = from[i];
-        }
 
-        // 自分のアカウントを取得して、アドレスを取得
         EipMMailAccount myaccount =
           ALMailUtils.getMailAccount(userId, accountId);
         String myaddress = myaccount.getMailAddress();
 
-        int j = from_length;
-        for (int i = 0; i < to_length; i++) {
-          if (!(to[i].toString().equals(myaddress))) {
-            tos[j] = to[i];
-            j++;
+        List<Address> allList = new ArrayList<Address>();
+        allList.addAll(Arrays.asList(from));
+        allList.addAll(Arrays.asList(to));
+        List<Address> replayList = new ArrayList<Address>();
+        for (Address address : allList) {
+          if (address instanceof InternetAddress) {
+            InternetAddress internetAddress = (InternetAddress) address;
+            String email = internetAddress.getAddress();
+            if (email != null && !email.equalsIgnoreCase(myaddress)) {
+              replayList.add(address);
+            }
           }
         }
-        this.setTo(ALMailUtils.getAddressString(tos));
+        this.setTo(ALMailUtils.getAddressString(replayList
+          .toArray(new Address[replayList.size()])));
 
         // CC
         Address[] ccs = msg.getRecipients(Message.RecipientType.CC);
