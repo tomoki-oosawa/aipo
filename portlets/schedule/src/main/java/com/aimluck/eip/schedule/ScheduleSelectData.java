@@ -121,6 +121,8 @@ public class ScheduleSelectData extends
 
   private boolean ignoreViewdate = false;
 
+  private ScheduleDetailOnedaySelectData ondaySelectData = null;
+
   /**
    * 
    * @param action
@@ -236,6 +238,10 @@ public class ScheduleSelectData extends
     } else {
       ignoreViewdate = false;
     }
+
+    ondaySelectData = new ScheduleDetailOnedaySelectData();
+    ondaySelectData.initField();
+    ondaySelectData.doSelectList(action, rundata, context);
   }
 
   /**
@@ -518,6 +524,20 @@ public class ScheduleSelectData extends
       // view_date.setValue(cal.getTime());
       // メールフラグ
       rd.setMailFlag(record.getMailFlag());
+
+      ScheduleOnedayContainer con =
+        ondaySelectData.getScheduleOnedayContainer();
+      List<ScheduleOnedayResultData> selectList = con.getDuplicateSchedule();
+      selectList.addAll(con.getSchedule());
+      for (ScheduleOnedayResultData onedayrd : selectList) {
+        if (rd.getScheduleId().getValue() == onedayrd
+          .getScheduleId()
+          .getValue()) {
+          rd.setDuplicate(onedayrd.isDuplicate());
+          break;
+        }
+      }
+
     } catch (RuntimeException e) {
       logger.error("schedule", e);
 

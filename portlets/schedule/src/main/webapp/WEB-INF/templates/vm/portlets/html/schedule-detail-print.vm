@@ -147,6 +147,9 @@ if(document.all!=undefined){
 #if($!{result.Detail.isTmpreserve()})
 	<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
 #end
+#if($!{result.Detail.isDuplicate()})
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
+#end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditem($!{result.Detail.Name})
