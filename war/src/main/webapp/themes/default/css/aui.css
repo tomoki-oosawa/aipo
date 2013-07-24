@@ -1761,6 +1761,10 @@ input.auiButtonSearch.active {
   cursor: default;
 }
 
+.auiSelectButton .auiIconArrowLeft {
+  margin-left: -4px !important;
+}
+
 /***************************************************
 	auiSearch
 --------------------------------------------------*/
