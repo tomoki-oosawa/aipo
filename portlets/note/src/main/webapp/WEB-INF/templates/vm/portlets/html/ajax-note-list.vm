@@ -28,7 +28,7 @@
 #set ($action_received_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','received_notes')")
 #set ($action_sent_notes = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doNote_list','1').addQueryData('tab','sent_notes')")
 #end
-##set ($tabs = [["受信メモ", "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], ["送信メモ", "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
+##set ($tabs = [[$l10n.NOTE_RECEIVED_NOTES, "received_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes')"], [$l10n.NOTE_SENT_NOTES, "sent_notes", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes')"]])
 #if ($!result.currentTab == 'received_notes')
 #set($colcount = 8)
 #set ($isReceive = true)
@@ -45,13 +45,13 @@
 <form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
 <input type="hidden" name="template" value="NoteListScreen"/>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
+<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.NOTE_SEARCH</a>
 </form>
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
 ##ALajaxlistformheaderonsubmitOption('NoteListScreen' "aipo.note.onSubmitFilter('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID))','$!portlet.ID');" 'auiSearch floatLeft' 'margin-right:1em;')
 ##<input class="text floatLeft" type="text" name="q" id="q" style="margin-right:5px;margin-top:2px;">
-##ALsubmitOption("submit" "検索" "auiButtonSearch floatLeft")
+##ALsubmitOption("submit" $l10n.NOTE_SEARCH "auiButtonSearch floatLeft")
 ##ALformfooter()
 ##</div>
 
@@ -60,20 +60,20 @@
 #ALnoteResultList($msg_type)
 #end
 
-#ALajaxlistformheader('伝言メモ')
+#ALajaxlistformheader($l10n.NOTE_NOTE)
 #if($result.List.size()<=0)
 <div class="message">
-#if($!result.targetKeyword.toString()!="")指定された条件に該当する伝言メモはありません。 #elseif($isReceive) 受信した伝言メモはありません。#else 送信した伝言メモはありません。 #end
+#if($!result.targetKeyword.toString()!="")$l10n.NOTE_ALERT_NO_NOTE_IN_YOUR_SELECT #elseif($isReceive) $l10n.NOTE_ALERT_NO_RECIEVED_NOTE#else $l10n.NOTE_ALERT_NO_SENT_NOTE #end
 </div>
 #else
 
 #AUISummaryDiv()
 <div class="floatLeft">
 #if($isReceive)
-#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.NOTE_READ_MESSAGE_TEXT "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('NoteListScreen' $result)
@@ -86,13 +86,13 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'class="thin"')
-#ALtdheadAtt("#ALajaxsort('client_name' '依頼者（依頼者所属）' $result 'NoteListScreen')" 'style="width:8em"')
-#ALtdheadAtt("#ALajaxsort('subject_type' '用件' $result 'NoteListScreen')" 'style="width:30%"')
+#ALtdheadAtt("#ALajaxsort('client_name' $l10n.NOTE_CLIENT_POSITION $result 'NoteListScreen')" 'style="width:8em"')
+#ALtdheadAtt("#ALajaxsort('subject_type' $l10n.NOTE_AFFAIR $result 'NoteListScreen')" 'style="width:30%"')
 #if(!$isReceive)
-#ALtdheadAtt("受信者" 'class="mb_hide" style="width:20%"')
-#ALtdheadAtt("状況" 'class="mb_hide" style="width:5%"')
+#ALtdheadAtt($l10n.NOTE_RECEIVE_PERSON 'class="mb_hide" style="width:20%"')
+#ALtdheadAtt($l10n.NOTE_SITUATION 'class="mb_hide" style="width:5%"')
 #end
-#ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' '受付日時' $result 'NoteListScreen') #else #ALajaxsort('create_date' '作成日時' $result 'NoteListScreen') #end" 'style="width:10em"')
+#ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' $l10n.NOTE_CLERK_TIME $result 'NoteListScreen') #else #ALajaxsort('create_date' $l10n.NOTE_CREATE_TIME $result 'NoteListScreen') #end" 'style="width:10em"')
 </tr>
 #set($setEven = true)
 #foreach ($record in $result.List)
@@ -124,10 +124,10 @@ style="font-weight:bold"
 #AUISummaryDiv()
 <div class="floatLeft">
 #if($isReceive)
-#AUIajaxbuttonCheckboxAction('既読にする' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.NOTE_READ_MESSAGE_TEXT "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('NoteListScreen' $result)
@@ -140,15 +140,15 @@ style="font-weight:bold"
 
 <div id="auiWidgetsArea" #if(${clientVer} == "4") style="position:static" #elseif(${client} == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-  <a title="伝言メモを作成する" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new"))','$!portlet.ID',aipo.note.onLoadNoteDialog);">伝言メモを作成する</a>
+  <a title="$l10n.NOTE_ADD_NOTE" href="javascript:void(0);" class="auiButtonAction" onclick="javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteFormScreen").addQueryData("entityid","new"))','$!portlet.ID',aipo.note.onLoadNoteDialog);">$l10n.NOTE_ADD_NOTE</a>
 </div>
 
 <div class="auiWidget clearfix">
 <ul>
 <li #if($isReceive)class="active"#end>
-<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes').addQueryData("reset_params","true"))','$!portlet.ID');">受信メモ</a></li>
+<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','received_notes').addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.NOTE_RECEIVED_NOTES</a></li>
 <li #if(!$isReceive)class="active"#end>
-<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes').addQueryData("reset_params","true"))','$!portlet.ID');">送信メモ</a></li>
+<a href="javascript:void(0);" onClick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteListScreen').addQueryData('tab','sent_notes').addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.NOTE_SENT_NOTES</a></li>
 </ul>
 </div>
 </div>

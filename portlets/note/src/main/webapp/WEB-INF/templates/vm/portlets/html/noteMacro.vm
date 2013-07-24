@@ -20,30 +20,38 @@
 ## ---------------------------------------------------------------------------
 #macro(ALnoteResultList $msg_type)
 #if($msg_type == "0")
-<div class="message">伝言メモを送信しました。</div>
+<div class="message">$l10n.NOTE_SENT_NOTE</div>
 #elseif($msg_type == "1")
-<div class="message">伝言メモを送信しました。<br/>
-<span class="errmsg">宛先ユーザーのパソコン用メールアドレスが未設定のため、宛先ユーザーのパソコンに通知できませんでした。</span></div>
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_EMAIL</span></div>
 #elseif($msg_type == "2")
-<div class="message">伝言メモを送信しました。<br/>
-<span class="errmsg">宛先ユーザーの携帯用メールアドレスが未設定のため、宛先ユーザーの携帯電話に通知できませんでした。</span></div>
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_CELLULAR_MAIL</span></div>
 #elseif($msg_type == "3")
-<div class="message">伝言メモを送信しました。<br/>
-<span class="errmsg">宛先ユーザーのパソコン用と携帯用のメールアドレスが未設定のため、<br/>宛先ユーザーのパソコンと携帯電話に通知できませんでした。</span></div>
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_EMAIL_AND_CELLULAR_MAIL</span></div>
 #elseif($msg_type == "4")
-<div class="message">伝言メモを送信しました。<br/>
-<span class="errmsg">宛先ユーザーが存在しないため、伝言メモを送信できませんでした。</span></div>
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_USER</span></div>
 #elseif($msg_type == "5")
-<div class="message">伝言メモを送信しました。<br/>
-<span class="errmsg">管理者のメールアカウントが未設定のため、メールでの通知はできませんでした。</span>
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_ADMIN</span>
 </div>
 #end
 #end
 
 #macro(ALsetSubject $record)
 #if ($!record.SubjectType.toString() == "0") #set ($subject = $!record.CustomSubject.toString()) #end
-#if ($!record.SubjectType.toString() == "1") #set ($subject = "再度電話します。") #end
-#if ($!record.SubjectType.toString()  == "2") #set ($subject = "折返しお電話ください。") #end
-#if ($!record.SubjectType.toString()  == "3") #set ($subject = "連絡があったことをお伝えください。") #end
-#if ($!record.SubjectType.toString()  == "4") #set ($subject = "伝言をお願いします。") #end
+#if ($!record.SubjectType.toString() == "1") #set ($subject = $l10n.NOTE_CALL_AGAIN) #end
+#if ($!record.SubjectType.toString()  == "2") #set ($subject = $l10n.NOTE_CALL_BACK) #end
+#if ($!record.SubjectType.toString()  == "3") #set ($subject = $l10n.NOTE_TELL_ME) #end
+#if ($!record.SubjectType.toString()  == "4") #set ($subject = $l10n.NOTE_TAKE_A_MESSAGE) #end
+#end
+
+#macro(ALsetEven $setEven)
+#if($setEven)
+#set($setEven = false)
+#else
+#set($setEven = true)
+#end
 #end

@@ -83,7 +83,9 @@
 #ALtdcaption("#ALrequired($l10n.WORKFLOW_APPLICATION_ROUTE)")
 #ALtditemheader()
 <input id="is_saved_route" name="is_saved_route" type="hidden" value="$!result.isSavedRoute" />
+<div class="mb5">
 <input id="is_saved_route_button" name="post_type" type="button" class="button" value=" #if(!$!{result.isSavedRoute})$l10n.WORKFLOW_SELECT_ROUTE_FROM_LIST#else$l10n.WORKFLOW_SELECT_MEMBER_FROM_LIST#end " onclick="aipo.workflow.formSwitchRouteSelect(this)" />
+</div>
 <div id="workflowRouteInputField" #if($!{result.isSavedRoute})style="display:none"#end>
 <div id="membernormallist">
 <div class="spaceTop spaceLeft small">$l10n.WORKFLOW_SELECT_MEMBER_MSG</div>
