@@ -24,7 +24,12 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #AUISummaryDiv()
-<div class="floatRight">
+#if($result.getAllFacilitySum() != 0)
+<div class="floatLeft">
+#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+</div>
+#end
+<div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
 #set($tab = ["$l10n.FACILITIES_FACILITY", "facility","$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityListScreen')"])
@@ -34,9 +39,6 @@
 </ul>
 </div>
 </div>
-#if($result.getAllFacilitySum() != 0)
-#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
-#end
 #AUISummaryDivfooter()
 #if($result.getAllFacilitySum() != 0)
 #AUISummaryDiv()
