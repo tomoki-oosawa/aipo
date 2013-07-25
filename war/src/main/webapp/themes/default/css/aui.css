@@ -45,8 +45,7 @@ span[type="button"] {
 #header {
   padding-top: 5px;
   height: 35px;
-  /*background:url(../images/head_bg.png) repeat-x left bottom; **reserved**/
-  /*overflow:hidden;*/
+  min-width:800px;
 }
 
 #header .inner {
@@ -754,6 +753,7 @@ img.avatar,
 
 #auiTabs ul {
   position: relative;
+  min-width:800px;
   padding: 0 20px;
   margin: 0;
   white-space: nowrap;
