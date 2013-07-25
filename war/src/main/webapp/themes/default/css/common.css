@@ -2292,6 +2292,42 @@ margin:0 3px 0 0;
 .w10 {width:10%;}
 .w5 {width:5%;}
 
+.mw200 {
+  min-width: 200px !important;
+}
+
+.mw250 {
+  min-width: 250px !important;
+}
+
+.mw300 {
+  min-width: 300px !important;
+}
+
+.mw350 {
+  min-width: 350px !important;
+}
+
+.mw400 {
+  min-width: 400px !important;
+}
+
+.mw450 {
+  min-width: 450px !important;
+}
+
+.mw500 {
+  min-width: 500px !important;
+}
+
+.mw550 {
+  min-width: 550px !important;
+}
+
+.mw600 {
+  min-width: 600px !important;
+}
+
 /***************************************************
 	cell data width
 --------------------------------------------------*/
