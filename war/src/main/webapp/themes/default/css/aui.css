@@ -659,6 +659,7 @@ img.avatar,
   position: fixed;
   bottom: 0;
   width: 100%;
+  min-width:800px;
   margin: 0;
   font-size: 0.9em;
   text-align: center;
