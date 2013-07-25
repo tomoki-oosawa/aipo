@@ -26,6 +26,7 @@ import java.util.List;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
@@ -229,7 +230,11 @@ public class TimelineResultData implements ALData {
 
       return subnote;
     } else {
-      return getNote();
+      if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(timeline_type)) {
+        return note.getValue();
+      } else {
+        return getNote();
+      }
     }
   }
 

@@ -70,7 +70,9 @@
 #end
 #ALselectfooter()
 </div>
+<div class="mt5">
 <input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.MSGBOARD_TYPE_NEW_WORD#else$l10n.MSGBOARD_SELECT_DATE_FROM_LIST#end " onclick="aipo.msgboard.formSwitchCategoryInput(this)" />
+</div>
 #ALtditemfooter()
 #end
 

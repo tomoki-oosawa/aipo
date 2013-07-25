@@ -26,7 +26,10 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #AUISummaryDiv()
-<div class="floatRight">
+<div class="floatLeft">
+#AUIbuttonAction("$l10n.WORKFLOW_DO_ADD_CLASSIFICATION" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
+</div>
+<div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
 #set($tab = ["$l10n.WORKFLOW_CLASSIFICATION", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
@@ -36,7 +39,7 @@
 </ul>
 </div>
 </div>
-#AUIbuttonAction("$l10n.WORKFLOW_DO_ADD_CLASSIFICATION" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
+
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader("$l10n.WORKFLOW_CLASSIFICATION")

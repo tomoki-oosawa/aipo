@@ -621,13 +621,17 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
+#ALdialogheaderPrintSchedule($title $portlet_id $screen $view_date "")
+#end
+
+#macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
 	<div class="auiPopup clearfix">
 		<table class="roundBlockWrapperTop">
 			<tbody>
 				<tr>
 #if($portlet_id!="")
 	<td class="roundBlockTitle" style="width:89%">$title</td>
-	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
+	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
 	</td>
 #else
 	<td class="roundBlockTitle wide">$title</td>

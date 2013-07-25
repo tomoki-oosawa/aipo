@@ -49,6 +49,7 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('create_date'))")
 #ALtditemheader()
 <div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.BLOG_DAY_DAY" hiddenId="create_date" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="create_date_input" dateId="create_date" displayCheck="none"></div>
+&nbsp;
 <select name="create_date_hour" size="1">
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.CreateDate.Hour == "$num") selected #end>$num</option>
@@ -75,7 +76,9 @@
 #end
 #ALselectfooter()
 </div>
+<div class="mt5">
 <input name="post_type" type="button" class="button" value=" #if(!$!{result.isNewThema})$l10n.BLOG_TYPE_NEW_WORD#else$l10n.BLOG_SELECT_DATE_FROM_LIST#end " onclick="aipo.blog.formSwitchThemaInput(this)" />
+</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('title'))")
 #ALtditem("#ALtextfield('title' $!result.Title '90%' 50 'active')")

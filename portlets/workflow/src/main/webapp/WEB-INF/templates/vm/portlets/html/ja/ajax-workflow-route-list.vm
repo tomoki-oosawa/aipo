@@ -27,7 +27,12 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #AUISummaryDiv()
-<div class="floatRight">
+#if($result.List.size() > 0)
+<div class="floatLeft">
+#AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+</div>
+#end
+<div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
 #set($tab = ["$l10n.WORKFLOW_CLASSIFICATION", "category","$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_category_list','1')"])
@@ -37,12 +42,13 @@
 </ul>
 </div>
 </div>
+#AUISummaryDivfooter()
 
 #if($result.List.size() <= 0)
-  #AUISummaryDivfooter()
-  #AUIbuttonActionInBlankBox("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+<div class="auiSummaryMeta center">
+  #AUIbuttonActionW80("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+</div>
 #else
-  #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
   <div id="listMessageDiv"></div>
   #ALajaxlistformheader("$l10n.WORKFLOW_APPLICATION_ROUTE")
   #AUISummaryDiv()
@@ -87,6 +93,5 @@
     #AUIajaxpageview('WorkflowRouteListScreen' $result)
   #AUISummaryDivfooter()
   #ALformfooter()
-  #AUISummaryDivfooter()
 #end
 #AUIcontentsAreaFooter()

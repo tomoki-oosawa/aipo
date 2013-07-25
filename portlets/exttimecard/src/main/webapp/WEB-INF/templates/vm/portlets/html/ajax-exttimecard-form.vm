@@ -170,7 +170,7 @@
 </span>
 
 #end
-<input class="plus" type="button" name="plus" id="plus" value="+" onClick="aipo.exttimecard.displayOutCome(this)" />
+<span><input class="plus" type="button" name="plus" id="plus" value="+" onClick="aipo.exttimecard.displayOutCome(this)" /></span>
 <input type="hidden" name="rest_num" id="rest_num" value="$result.RestNum" />
 #ALtditemfooter()
 #end

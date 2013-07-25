@@ -23,7 +23,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #if (${client}!= "IPHONE")
-	#ALdialogheaderPrint($l10n.SCHEDULE_SCHEDULE_DETAIL "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})")
+	#ALdialogheaderPrintSchedule($l10n.SCHEDULE_SCHEDULE_DETAIL "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})" "$!{result.Detail.User.UserId.toString()}")
 #else
 	#ALdialogheaderDetail("$l10n.SCHEDULE_SCHEDULE_DETAIL")
 #end
@@ -76,6 +76,9 @@ $!{result.Detail.Date}
 #end
 #if($!{result.Detail.isTmpreserve()})
 <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+#end
+#if($!{result.Detail.isDuplicate()})
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)

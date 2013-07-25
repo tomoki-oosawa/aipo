@@ -59,7 +59,9 @@
 #end
 #ALselectfooter()
 </div>
+<div class="mt5">
 <input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.TODO_TYPE_NEW_WORD#else$l10n.TODO_SELECT_DATE_FROM_LIST#end " onclick="aipo.todo.formSwitchCategoryInput(this)" />
+</div>
 #ALtditemfooter()
 #if($result.hasAclInsertTodoOther())
 #ALtdcaption("#ALrequired($!result.getFieldName('user_id'))")
