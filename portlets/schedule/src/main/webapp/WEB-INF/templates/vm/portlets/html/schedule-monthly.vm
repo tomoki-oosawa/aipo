@@ -24,7 +24,11 @@
 #set ($filter = $result.CurrentFilter)
 #end
 ## ---------------------------------------------------------------------------
+#if($!top_form && $!top_form=='simple')
 <div class="relativeBlock" style="margin-bottom:10px;">
+#else
+<div class="relativeBlock mw550" style="margin-bottom:10px;">
+#end
 <div class="absoluteRight">
 <div class="auiSelectButton">
 #if (${client} != "IPHONE")
