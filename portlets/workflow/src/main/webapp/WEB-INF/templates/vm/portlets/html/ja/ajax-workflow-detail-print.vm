@@ -75,7 +75,7 @@ $l10n.WORKFLOW_PRINT_MSG
 <tr>
 <th>$l10n.WORKFLOW_DISPLAY_WITH</th>
 <td>
-<select id="print_width" onChange="change_print_form()">
+<select id="print_width" onChange="change_print_form()" onkeyup="this.blur();this.focus();>
 <option value="100%" >100%</option>
 <option value="90%">90%</option>
 <option value="80%">80%</option>
@@ -95,7 +95,7 @@ $l10n.WORKFLOW_PRINT_MSG
 </tr>
 <tr>
 <th>$l10n.WORKFLOW_CHAR_SIZE</th>
-<td><select id="print_word_size" onChange="change_print_form()">
+<td><select id="print_word_size" onChange="change_print_form()" onkeyup="this.blur();this.focus();>
 <option value="8pt">8pt</option>
 <option value="9pt">9pt</option>
 <option selected="selected" value="10pt">10pt</option>

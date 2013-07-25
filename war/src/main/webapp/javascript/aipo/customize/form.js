@@ -114,8 +114,10 @@ aipo.customize.showMenuButtonOnly = function(portlet_id) {
     }
 }
 
+var current_portlet_id = null;
 aipo.customize.showMenuSchedule = function(portlet_id) {
 	var left,top;
+	current_portlet_id = null;
 	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
 	if (menuNode.style('display') == 'none') {
         dojo.query('div.menubar').style('display', 'none');
@@ -143,6 +145,9 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         	}
         	left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
         	top = getTop(html) - getTop(html.offsetParent.offsetParent);
+        	dojo.query(".relativeBlock").style("z-index","9999");
+        	dojo.query("#tableWrapper_" + portlet_id).style("z-index","1");
+        	current_portlet_id = portlet_id;
         } else {
         	left = html.offsetLeft - html.clientLeft;
         	top = html.offsetTop - html.clientTop;
@@ -156,9 +161,10 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
 
 aipo.customize.hideMenu = function(portlet_id) {
     var menuNode = dojo.query('div.menubar').style('display', 'none');
-//    if (menuNode.style('display') == 'block') {
-//        menuNode.style('display', 'none');
-//    }
+    if(current_portlet_id != null) {
+    	dojo.query(".relativeBlock").style("z-index","");
+    	dojo.query("#tableWrapper_" + current_portlet_id).style("z-index","");
+    }
 }
 
 aipo.customize.setController = function(portlet_id, sender) {
