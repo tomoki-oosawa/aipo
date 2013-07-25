@@ -125,7 +125,7 @@ var setMouseListener=function(){
 
     var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
         if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
-        	dojo.query('div.menubar').style('display', 'none');
+        	aipo.customize.hideMenu();
         }
     });
     // スマートフォン対応用
