@@ -45,9 +45,7 @@
 #AUISummaryDivfooter()
 
 #if($result.List.size() <= 0)
-<div class="auiSummaryMeta center">
-  #AUIbuttonActionW80("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
-</div>
+ #AUIbuttonActionInBlankBox("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 #else
   <div id="listMessageDiv"></div>
   #ALajaxlistformheader("$l10n.WORKFLOW_APPLICATION_ROUTE")
