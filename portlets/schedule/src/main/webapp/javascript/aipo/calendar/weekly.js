@@ -1332,7 +1332,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
             params += "&mode=update";
         }
         params += "&entityid="+ this.dragSource.schedule.scheduleId;
-        params += "&view_start=" + ptConfig[this.portletId].jsonData.date[0].substring(0, 10);
+        params += "&view_date=" + ptConfig[this.portletId].jsonData.date[0].substring(0, 10);
 
         if(this.dragSource.schedule.repeat) {
             params += "&edit_repeat_flag=1";
@@ -1615,7 +1615,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         }
         params += "&is_span=TRUE";
         params += "&entityid="+ this.dragSource.schedule.scheduleId;
-        params += "&view_start=" + viewStart;
+        params += "&view_date=" + viewStart;
         params += "&start_date=" + startDate;
         params += "&end_date=" + endDate;
 

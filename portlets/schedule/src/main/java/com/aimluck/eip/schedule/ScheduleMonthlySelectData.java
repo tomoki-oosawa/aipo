@@ -210,14 +210,25 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールの表示開始日時
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_month")) {
-        ALEipUtils.setTemp(rundata, context, "view_month", rundata
-          .getParameters()
-          .getString("view_month"));
+        String tmpViewMonth = rundata.getParameters().getString("view_month");
+        ALEipUtils.setTemp(rundata, context, "view_month", tmpViewMonth);
+        String tmpViewDate = ALEipUtils.getTemp(rundata, context, "view_date");
+        if (tmpViewDate != null && tmpViewDate.length() >= 7) {
+          ALEipUtils.setTemp(rundata, context, "view_date", tmpViewMonth
+            + tmpViewDate.substring(7));
+        }
+      } else {
+        String tmpViewDate = ALEipUtils.getTemp(rundata, context, "view_date");
+        if (tmpViewDate != null && tmpViewDate.length() >= 7) {
+          ALEipUtils.setTemp(rundata, context, "view_month", tmpViewDate
+            .substring(0, 7));
+        }
       }
     }
 
     // 現在の月
     String tmpViewMonth = ALEipUtils.getTemp(rundata, context, "view_month");
+
     if (tmpViewMonth == null || tmpViewMonth.equals("")) {
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.DATE, 1);

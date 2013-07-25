@@ -24,11 +24,11 @@
 #ALcell_pagetitle($career $l10n.SCHEDULE_ONEDAY_LIST_SUB)
 
 $!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} - $!{result.ViewEndFormatMonth} $!{result.ViewEnd.DayOfWeek}
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevWeek.toString()})">$l10n.SCHEDULE_PREV_WEEK_CELL</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_PREV_DAY_CELL</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXT_DAY_CELL</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_start',$!{result.NextWeek.toString()})">$l10n.SCHEDULE_NEXT_WEEK_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_date',$!{result.PrevWeek.toString()})">$l10n.SCHEDULE_PREV_WEEK_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_date',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_PREV_DAY_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_date',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_date',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXT_DAY_CELL</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('view_date',$!{result.NextWeek.toString()})">$l10n.SCHEDULE_NEXT_WEEK_CELL</a>
 
 
 #ALcell_hr($career '1')

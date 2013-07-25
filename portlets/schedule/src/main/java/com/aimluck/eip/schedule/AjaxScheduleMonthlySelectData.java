@@ -223,7 +223,7 @@ public class AjaxScheduleMonthlySelectData extends
 
     setMonthlyCalendar(rundata, context);
 
-    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_start");
+    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_date");
     if (tmpViewStart == null || "".equals(tmpViewStart)) {
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.HOUR_OF_DAY, 0);
