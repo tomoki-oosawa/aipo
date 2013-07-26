@@ -52,11 +52,11 @@ aipo.cabinet.onLoadCabinetFolderDialog = function(pid){
 
 aipo.cabinet.onReceiveMessage = function(msg){
     //送信時に作成した場合selectを削除。
-	var select=dojo.byId("attachments_select");
-	if(typeof select!="undefined"&& select!=null)
-		select.parentNode.removeChild(select);
+  var select=dojo.byId("attachments_select");
+  if(typeof select!="undefined"&& select!=null)
+    select.parentNode.removeChild(select);
 
-	if(!msg) {
+  if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
             arrDialog.hide();
@@ -71,8 +71,8 @@ aipo.cabinet.onReceiveMessage = function(msg){
 
     var modalDialog = document.getElementById('modalDialog');
     if(modalDialog && msg != '') {
-    	var wrapper = document.getElementById('wrapper');
-    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+      var wrapper = document.getElementById('wrapper');
+      wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
 
@@ -121,38 +121,49 @@ aipo.cabinet.hideMember = function(button) {
 }
 
 aipo.cabinet.toggleMenu = function(node,filter,alwaysPulldown){
-	var rect=filter.getBoundingClientRect();
-	var html=document.documentElement.getBoundingClientRect();
-	if (node.style.display == "none") {
+  var rect=filter.getBoundingClientRect();
+  var html=document.documentElement.getBoundingClientRect();
+  var footer = document.getElementById('auiWidgetsArea');
+  var header = document.getElementById('mobileHeader');
+
+  if (node.style.display == "none") {
         dojo.query("div.menubar").style("display", "none");
 
         var scroll={
-        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
-        	top:document.documentElement.scrollTop||document.body.scrollTop
+          left:document.documentElement.scrollLeft||document.body.scrollLeft,
+          top:document.documentElement.scrollTop||document.body.scrollTop
         };
         node.style.opacity="0";
         node.style.display="block";
         if(html.right-node.clientWidth>rect.left){
-       		node.style.left=rect.left+scroll.left+"px";
+          node.style.left=rect.left+scroll.left+"px";
         }else{
-        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
+          node.style.left=rect.right-node.clientWidth+scroll.left+"px";
         }
          if(html.bottom-node.clientHeight>rect.bottom||alwaysPulldown){
-       		node.style.top=rect.bottom+scroll.top+"px";
+          node.style.top=rect.bottom+scroll.top+"px";
         }else{
-        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
+          node.style.top=rect.top-node.clientHeight+scroll.top+"px";
         }
         node.style.opacity="";
+
+        var list = node.getBoundingClientRect();
+        var listHeight = list.bottom - list.top;
+        footer.style.top = listHeight + header.clientHeight + footer.clientHeight +'px';
+        footer.style.position = "absolute";
     } else {
-    	dojo.query("div.menubar").style("display", "none");
+      dojo.query("div.menubar").style("display", "none");
+      footer.style.top = '';
+      footer.style.position = "fixed";
+
     }
 }
 
 aipo.cabinet.onChangeFolder = function(url,portlet_id,folder_id){
-	aipo.viewPage(url, portlet_id);
+  aipo.viewPage(url, portlet_id);
 }
 
 aipo.cabinet.onChangeGroup = function(url,portlet_id,group_id){
-	aipo.viewPage(url, portlet_id);
+  aipo.viewPage(url, portlet_id);
 }
 
