@@ -423,6 +423,7 @@ public class WebMailFormData extends ALAbstractFormData {
 
       String tmpSubject = null;
       if (getMailType().getValue() == TYPE_NEW_MAIL) {
+        // unreachable flow
         // TO
         Address[] tos = msg.getRecipients(Message.RecipientType.TO);
         this.setTo(ALMailUtils.getAddressString(tos));
@@ -446,7 +447,7 @@ public class WebMailFormData extends ALAbstractFormData {
       } else if (getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
         // TO
         Address[] from = msg.getFrom();
-        Address[] to = msg.getRecipients(Message.RecipientType.TO);
+        Address[] to = msg.getRecipients(Message.RecipientType.TO, false);
 
         EipMMailAccount myaccount =
           ALMailUtils.getMailAccount(userId, accountId);
@@ -469,7 +470,7 @@ public class WebMailFormData extends ALAbstractFormData {
           .toArray(new Address[replayList.size()])));
 
         // CC
-        Address[] ccs = msg.getRecipients(Message.RecipientType.CC);
+        Address[] ccs = msg.getRecipients(Message.RecipientType.CC, false);
         this.setCc(ALMailUtils.getAddressString(ccs));
 
         // BCC

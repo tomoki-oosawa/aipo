@@ -559,25 +559,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
     if (strict) {
       return getRecipients(recipienttype);
     } else {
-      String recipients =
-        MailUtility.decodeText(this.getHeader(recipienttype.toString(), null));
-      if (recipients == null) {
-        return super.getRecipients(recipienttype);
-      }
-      int index = 0;
-      String token = null;
-      StringTokenizer st = new StringTokenizer(recipients, ",");
-      Address[] addresses = new InternetAddress[st.countTokens()];
-      while (st.hasMoreTokens()) {
-        token = st.nextToken();
-        try {
-          addresses[index] = new InternetAddress(token, false);
-        } catch (AddressException ae) {
-          addresses[index] = new InternetAddress();
-          ((InternetAddress) addresses[index]).setAddress(token);
-        }
-        index++;
-      }
+      Address[] addresses = super.getRecipients(recipienttype);
       return addresses;
     }
   }

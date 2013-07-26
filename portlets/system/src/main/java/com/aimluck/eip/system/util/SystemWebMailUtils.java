@@ -36,17 +36,13 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFilter;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
-import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
-import com.aimluck.eip.mail.ALMailMessage;
 import com.aimluck.eip.mail.ALMailReceiverContext;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.system.SystemWebMailFolderResultData;
-import com.aimluck.eip.system.SystemWebMailFormData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -110,47 +106,6 @@ public class SystemWebMailUtils {
         .valueOf(userId));
 
     return query.setQualifier(exp).fetchList();
-  }
-
-  /**
-   * 選択したメールをローカルファイルシステムから取得する．
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   * @throws Exception
-   */
-  public static final ALMailMessage getSelectedLocalMailMessage(
-      RunData rundata, Context context, int mailType) throws Exception {
-    String orgId = Database.getDomainName();
-    int uid = ALEipUtils.getUserId(rundata);
-    int accountId =
-      Integer.parseInt(ALEipUtils.getTemp(rundata, context, ACCOUNT_ID));
-
-    String mailid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-    if (mailid == null || Integer.valueOf(mailid) == null) {
-      // Mail IDが空の場合
-      logger.debug("[Mail] Empty ID...");
-      return null;
-    }
-
-    String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-    int type_mail =
-      (SystemWebMailUtils.TAB_RECEIVE.equals(currentTab))
-        ? ALFolder.TYPE_RECEIVE
-        : ALFolder.TYPE_SEND;
-    ALMailHandler handler = ALMailFactoryService.getInstance().getMailHandler();
-    ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountId);
-    ALMailMessage msg = folder.getMail(Integer.valueOf(mailid));
-
-    if (SystemWebMailFormData.TYPE_REPLY_MAIL == mailType) {
-      return ALMailUtils.getReplyMessage(msg);
-    } else if (SystemWebMailFormData.TYPE_FORWARD_MAIL == mailType) {
-      return ALMailUtils.getForwardMessage(msg);
-    } else {
-      return msg;
-    }
   }
 
   /**

@@ -288,9 +288,11 @@ public class ALMailUtils {
       sb.append(" ").append(CR).append("----- Original Message ----- ").append(
         CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ").append(
-        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
-        CR);
+      sb
+        .append("To: ")
+        .append(
+          getAddressString(msg.getRecipients(Message.RecipientType.TO, false)))
+        .append(CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
       sb
         .append("Subject: ")
@@ -336,9 +338,11 @@ public class ALMailUtils {
       sb.append(" ").append(CR).append("----- Original Message ----- ").append(
         CR);
       sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
-      sb.append("To: ").append(
-        getAddressString(msg.getRecipients(Message.RecipientType.TO))).append(
-        CR);
+      sb
+        .append("To: ")
+        .append(
+          getAddressString(msg.getRecipients(Message.RecipientType.TO, false)))
+        .append(CR);
       sb.append("Sent: ").append(msg.getSentDate()).append(CR);
       sb
         .append("Subject: ")
@@ -477,8 +481,8 @@ public class ALMailUtils {
       if (addr.getPersonal() != null) {
         String personaladdr =
           getOneString(getTokens(addr.getPersonal(), "\r\n"), "");
-        sb.append(MailUtility.decodeText(personaladdr)).append(" <").append(
-          addr.getAddress()).append(">, ");
+        sb.append(personaladdr).append(" <").append(addr.getAddress()).append(
+          ">, ");
       } else {
         sb.append(addr.getAddress()).append(", ");
       }
@@ -1870,12 +1874,10 @@ public class ALMailUtils {
         filterString.toLowerCase());
     } else if (FILTER_TYPE_TO.equals(filterType)) {
       for (Address address : receivers) {
-        String addressStr = address.toString();
-        String[] mailAddrArray = addressStr.split("<");
-        String mailAddr = mailAddrArray[mailAddrArray.length - 1];
-        boolean result =
-          mailAddr.toLowerCase().contains(filterString.toLowerCase());
-        if (result) {
+        InternetAddress iadress = (InternetAddress) address;
+        // String personal = iadress.getPersonal();
+        String email = iadress.getAddress();
+        if (email.toLowerCase().contains(filterString.toLowerCase())) {
           return true;
         }
       }

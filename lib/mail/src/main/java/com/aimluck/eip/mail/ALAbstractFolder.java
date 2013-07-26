@@ -36,9 +36,12 @@ import java.util.jar.Attributes;
 import javax.mail.Address;
 import javax.mail.Header;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -175,9 +178,9 @@ public abstract class ALAbstractFolder implements ALFolder {
       }
 
       String subject;
-      Address[] presonAddress;
+      Address[] personAddress;
       Address[] receiveAddress;
-      String preson;
+      String person;
       Date sentDate = null;
 
       // 件名
@@ -194,39 +197,36 @@ public abstract class ALAbstractFolder implements ALFolder {
       // 差出人 or 受取人
       if ("R".equals(type0)) {
         try {
-          presonAddress = mimeMessage.getFrom();
+          personAddress = mimeMessage.getFrom();
         } catch (MessagingException ex) {
-          presonAddress = null;
+          personAddress = null;
         }
       } else {
         try {
-          presonAddress = mimeMessage.getAllRecipients();
+          // MimeMessage.getAllrecipientsを使うと()が抜けてデコードされた形になる
+          personAddress = getAllRecipients(mimeMessage);
         } catch (MessagingException ex) {
-          presonAddress = null;
+          personAddress = null;
         }
       }
 
       try {
-        receiveAddress = mimeMessage.getAllRecipients();
+        // MimeMessage.getAllrecipientsを使うと()が抜けてデコードされた形になる
+        receiveAddress = getAllRecipients(mimeMessage);
       } catch (MessagingException ex) {
         receiveAddress = null;
       }
 
-      if (presonAddress != null && presonAddress.length > 0) {
-        String personaladdr =
-          ALMailUtils.getOneString(ALMailUtils.getTokens(presonAddress[0]
-            .toString(), ALMailUtils.CR), "");
-        try {
-          preson = MailUtility.decodeText(personaladdr);
-          if (presonAddress.length > 1) {
-            preson += "，...";
-          }
-        } catch (RuntimeException ex) {
-          logger.error("ALAbstractFolder.insertMailToDB", ex);
-          preson = "--";
+      if (personAddress != null && personAddress.length > 0) {
+        InternetAddress iaddress = (InternetAddress) personAddress[0];
+        String personaladdr = iaddress.toString();
+        personaladdr = MimeUtility.decodeText(personaladdr);
+        if (personAddress.length > 1) {
+          personaladdr += "，...";
         }
+        person = personaladdr;
       } else {
-        preson = "--";
+        person = "--";
       }
 
       // 日付
@@ -270,12 +270,12 @@ public abstract class ALAbstractFolder implements ALFolder {
 
       // フォルダ振り分け処理
       List<EipTMailFilter> filters = ALMailUtils.getEipTMailFilters(account);
-      if (filters != null) {
+      if (filters != null && "R".equals(type0)) {
         for (EipTMailFilter mailFilter : filters) {
           if (ALMailUtils.isMatchFilter(
             mailFilter,
             subject,
-            preson,
+            person,
             receiveAddress)) {
             folder_id = mailFilter.getEipTMailFolder().getFolderId();
             break;
@@ -288,7 +288,7 @@ public abstract class ALAbstractFolder implements ALFolder {
       email.setType(type);
       email.setReadFlg(read_flg);
       email.setSubject(subject);
-      email.setPerson(preson);
+      email.setPerson(person);
       email.setEventDate(sentDate);
       email.setFileVolume(Integer.valueOf(fileVolume));
       email.setHasFiles(hasAttachments);
@@ -708,4 +708,70 @@ public abstract class ALAbstractFolder implements ALFolder {
   public int getStart() {
     return start;
   }
+
+  private Address[] getAllRecipients(MimeMessage message)
+      throws MessagingException {
+    // MimeMessage getAllRecipientsの移植
+
+    Address[] to = null;
+    Address[] cc = null;
+    Address[] bcc = null;
+
+    if (message instanceof ALLocalMailMessage) {
+      ALLocalMailMessage almessage = (ALLocalMailMessage) message;
+      to = almessage.getRecipients(RecipientType.TO, false);
+      cc = almessage.getRecipients(RecipientType.CC, false);
+      bcc = almessage.getRecipients(RecipientType.BCC, false);
+    } else {
+      to = message.getRecipients(RecipientType.TO);
+      cc = message.getRecipients(RecipientType.CC);
+      bcc = message.getRecipients(RecipientType.BCC);
+    }
+
+    if (cc == null && bcc == null) {
+      return to; // a common case
+    }
+
+    int numRecip =
+      (to != null ? to.length : 0)
+        + (cc != null ? cc.length : 0)
+        + (bcc != null ? bcc.length : 0);
+    Address[] addresses = new Address[numRecip];
+    int pos = 0;
+    if (to != null) {
+      System.arraycopy(to, 0, addresses, pos, to.length);
+      pos += to.length;
+    }
+    if (cc != null) {
+      System.arraycopy(cc, 0, addresses, pos, cc.length);
+      pos += cc.length;
+    }
+    if (bcc != null) {
+      System.arraycopy(bcc, 0, addresses, pos, bcc.length);
+      pos += bcc.length;
+    }
+
+    Address[] all = addresses;
+    Address[] ng = null;
+
+    if (message instanceof ALLocalMailMessage) {
+      ALLocalMailMessage almessage = (ALLocalMailMessage) message;
+      ng = almessage.getRecipients(MimeMessage.RecipientType.NEWSGROUPS);
+    } else {
+      ng = message.getRecipients(MimeMessage.RecipientType.NEWSGROUPS);
+    }
+
+    if (ng == null || ng.length == 0) {
+      return all; // the common case
+    }
+    if (all.length == 0) {
+      return ng; // a rare case
+    }
+
+    Address[] _addresses = new Address[all.length + ng.length];
+    System.arraycopy(all, 0, addresses, 0, all.length);
+    System.arraycopy(ng, 0, addresses, all.length, ng.length);
+    return _addresses;
+  }
+
 }
