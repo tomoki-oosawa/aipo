@@ -223,8 +223,9 @@ aipo.customize.submit = function(url, portlet_id, callback) {
     };
 }
 
+var bodyHandle = bodyHandle || {};
 aipo.customize.addAutoHideMenuTrigger = function(){
-	dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
+	dojo.query('a.customizeMenuIcon,a.menubarOpenButton').forEach(function(element) {
         dojo.connect(element, 'onmouseenter', null, function(){
             dojo.addClass(this, 'customizeMenuIconMouseenter');
         });
@@ -233,8 +234,8 @@ aipo.customize.addAutoHideMenuTrigger = function(){
         });
     });
 
-    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
-        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
+	bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
             aipo.customize.hideMenu();
         }
     });
