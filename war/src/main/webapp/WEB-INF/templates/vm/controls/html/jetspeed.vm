@@ -82,10 +82,44 @@ dojo.addOnLoad(function(){
 });
 function widgetMenuSwitch() {
         var subNavi = document.getElementById('subNavigation');
+        var widgets = document.getElementById('auiWidgetsArea');
+        var contents = document.getElementById('auiContentsArea');
+   		var footer = document.getElementById('auiWidgetsArea');
+    	var wrapper = document.getElementById('wrapper');
+   		var header = document.getElementById('mobileHeader');
+	    var body = dojo.body();
+
         if(document.defaultView.getComputedStyle(subNavi,null).display=='none'){
                 subNavi.style.display = 'block';
+			    subNavi.style.position = "absolute";
+
+   				var headerHeight =  header?header.clientHeight:0;
+   				var footerHeight =  footer?footer.clientHeight:0;
+   				var footerRec = footer.getBoundingClientRect();
+   				var displayHeight = footerRec.top;
+   				var naviHeight = subNavi.clientHeight +  headerHeight + footerHeight;
+   				var pageHeight = footerHeight +  document.getElementById('auiContentsArea').clientHeight +  headerHeight;
+
+   				if(displayHeight < naviHeight) {
+			        //ナビが動的でその高さがディスプレイ以上の時
+				    widgets.style.position = "absolute";
+				    if(naviHeight < pageHeight) {
+			        //ナビが動的でその高さがディスプレイ以上の時でページ全体がそれ以上の時
+				    	footer.style.top = pageHeight + 'px';
+				    } else {
+			    		wrapper.style.minHeight = naviHeight+ 'px';
+			    	}
+			    } else {
+			        //ナビが静的な時
+			    	wrapper.style.minHeight = displayHeight+ 'px';
+			    }
+			    body.style.overflowX = "hidden";//効かない
+        		window.scrollTo(0, wrapper.clientHeight);
         }else{
+				footer.style.top = '';
+			    widgets.style.position = "fixed";
                 subNavi.style.display = 'none';
+			    body.style.overflowX = "auto";
         }
 }
 
