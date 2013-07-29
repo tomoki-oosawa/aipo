@@ -27,7 +27,7 @@ dojo.require("aipo.widget.GroupNormalSelectList");
 aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     ptConfig[portlet_id].isTooltipEnable = true;
 
-    obj_content = dojo.byId('content-'+portlet_id);
+    var obj_content = dojo.byId('content-'+portlet_id);
     dojo.style(obj_content, "visibility" , "visible");
     obj_indicator = dojo.byId('indicator-'+portlet_id);
     dojo.style(obj_indicator, "display" , "none");
@@ -41,21 +41,29 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     	return;
     }
 
+    function unique(array) {
+        var storage = {};
+        var uniqueArray = [];
+        var i,value;
+        for (i=0; i<array.length; i++) {
+            value = array[i];
+            if (!(value in storage)) {
+                storage[value] = true;
+                uniqueArray.push(value);
+            }
+        }
+        return uniqueArray;
+    }
+
     var entity_ids = entityids.split(",");
-    var processed_ids = new Array();
     entity_ids.pop();
+    entity_ids = unique(entity_ids);
 
     for (var i in entity_ids) {
         entity_ids[i] = dojo.trim(entity_ids[i]);
-        if (processed_ids[entity_ids[i]]) {
-            continue;
-        }
-        processed_ids[entity_ids[i]] = true;
-
-
 
         var nodeList = new Array();
-        dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i]).forEach(function(node, index, arr){
+        dojo.query('div.schedule-' + portlet_id + '-' + entity_ids[i], obj_content).forEach(function(node, index, arr){
             nodeList.push(node);
         });
 
@@ -70,9 +78,10 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
                 aipo.schedule.showTooltip(node, request_url, className[1], portlet_id, containerNode);
             }
         });
-        dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i]).forEach(function(node, index, arr){
-            node.setAttribute('widget_id', tooltipObject.id);
-        });
+
+        for(var j in nodeList) {
+        	nodeList[j].setAttribute('widget_id', tooltipObject.id);
+        };
     }
 }
 
