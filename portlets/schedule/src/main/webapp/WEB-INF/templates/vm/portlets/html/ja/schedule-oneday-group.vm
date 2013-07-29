@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<div class="relativeBlock" style="margin-bottom:10px;">
+<div class="relativeBlock #if($!top_form == 'detail') mw550 #end" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 
