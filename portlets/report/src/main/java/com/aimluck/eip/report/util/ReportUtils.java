@@ -286,7 +286,8 @@ public class ReportUtils {
             acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
             FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-            msgList);
+            msgList,
+            false).getShrinkImage();
 
         String filename = "0_" + String.valueOf(System.nanoTime());
 

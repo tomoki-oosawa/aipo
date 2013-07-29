@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.timeline;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -45,6 +46,7 @@ import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
@@ -358,7 +360,7 @@ public class TimelineFormData extends ALAbstractFormData {
           newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
-          byte[] fileThumbnail =
+          ShrinkImageSet shrinkImageSet =
             FileuploadUtils.getBytesShrinkFilebean(
               orgId,
               folderName,
@@ -367,7 +369,8 @@ public class TimelineFormData extends ALAbstractFormData {
               acceptExts,
               FileuploadUtils.DEF_THUMBNAIL_WIDTH,
               FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-              msgList);
+              msgList,
+              true);
 
           String filename = j + "_" + String.valueOf(System.nanoTime());
 
@@ -376,14 +379,13 @@ public class TimelineFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setFileName(newfilebean.getFileName());
           file.setFilePath(TimelineUtils.getRelativePath(filename));
-          if (fileThumbnail != null) {
-            file.setFileThumbnail(fileThumbnail);
+          if (shrinkImageSet.getShrinkImage() != null) {
+            file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTTimeline(entry);
           file.setCreateDate(Calendar.getInstance().getTime());
           file.setUpdateDate(Calendar.getInstance().getTime());
 
-          // ファイルの移動
           ALStorageService.copyTmpFile(
             uid,
             folderName,
@@ -391,6 +393,30 @@ public class TimelineFormData extends ALAbstractFormData {
             TimelineUtils.FOLDER_FILEDIR_TIMELIME,
             TimelineUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
             filename);
+
+          if (shrinkImageSet.getFixImage() != null) {
+            // ファイルの作成
+            ALStorageService.createNewFile(
+              new ByteArrayInputStream(shrinkImageSet.getFixImage()),
+              TimelineUtils.FOLDER_FILEDIR_TIMELIME
+                + ALStorageService.separator()
+                + Database.getDomainName()
+                + ALStorageService.separator()
+                + TimelineUtils.CATEGORY_KEY
+                + ALStorageService.separator()
+                + uid
+                + ALStorageService.separator()
+                + filename);
+          } else {
+            // ファイルの移動
+            ALStorageService.copyTmpFile(
+              uid,
+              folderName,
+              String.valueOf(newfilebean.getFileId()),
+              TimelineUtils.FOLDER_FILEDIR_TIMELIME,
+              TimelineUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+              filename);
+          }
         }
 
         // 添付ファイル保存先のフォルダを削除

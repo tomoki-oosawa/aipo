@@ -1628,7 +1628,8 @@ public class WorkflowUtils {
             acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
             FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-            msgList);
+            msgList,
+            false).getShrinkImage();
 
         String filename = i + "_" + String.valueOf(System.nanoTime());
 

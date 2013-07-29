@@ -20,6 +20,7 @@
 package com.aimluck.eip.msgboard.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.msgboard.MsgboardCategoryResultData;
 import com.aimluck.eip.orm.Database;
@@ -924,7 +926,7 @@ public class MsgboardUtils {
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
-        byte[] fileThumbnail =
+        ShrinkImageSet shrinkImageSet =
           FileuploadUtils.getBytesShrinkFilebean(
             orgId,
             folderName,
@@ -933,7 +935,8 @@ public class MsgboardUtils {
             acceptExts,
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
             FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-            msgList);
+            msgList,
+            true);
 
         String filename = "0_" + String.valueOf(System.nanoTime());
 
@@ -948,19 +951,33 @@ public class MsgboardUtils {
         // ファイルパス
         file.setFilePath(MsgboardUtils.getRelativePath(filename));
         // サムネイル画像
-        if (fileThumbnail != null) {
-          file.setFileThumbnail(fileThumbnail);
+        if (shrinkImageSet.getShrinkImage() != null) {
+          file.setFileThumbnail(shrinkImageSet.getShrinkImage());
         }
         // 作成日
         file.setCreateDate(Calendar.getInstance().getTime());
         // 更新日
         file.setUpdateDate(Calendar.getInstance().getTime());
 
-        // ファイルの移動
-        ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
-          .getFileId()), FOLDER_FILEDIR_MSGBOARD, CATEGORY_KEY
-          + ALStorageService.separator()
-          + uid, filename);
+        if (shrinkImageSet.getFixImage() != null) {
+          // ファイルの作成
+          ALStorageService.createNewFile(new ByteArrayInputStream(
+            shrinkImageSet.getFixImage()), FOLDER_FILEDIR_MSGBOARD
+            + ALStorageService.separator()
+            + Database.getDomainName()
+            + ALStorageService.separator()
+            + CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid
+            + ALStorageService.separator()
+            + filename);
+        } else {
+          // ファイルの移動
+          ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+            .getFileId()), FOLDER_FILEDIR_MSGBOARD, CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid, filename);
+        }
       }
 
       // 添付ファイル保存先のフォルダを削除

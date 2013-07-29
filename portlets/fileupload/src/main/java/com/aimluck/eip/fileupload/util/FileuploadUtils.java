@@ -296,13 +296,17 @@ public class FileuploadUtils {
    * @param msgList
    * @return
    */
-  public static byte[] getBytesShrinkFilebean(String org_id, String folderName,
-      int uid, FileuploadLiteBean fileBean, String[] acceptExts, int width,
-      int height, List<String> msgList) {
+  public static ShrinkImageSet getBytesShrinkFilebean(String org_id,
+      String folderName, int uid, FileuploadLiteBean fileBean,
+      String[] acceptExts, int width, int height, List<String> msgList,
+      boolean isFixOrgImage) {
 
     byte[] result = null;
+    byte[] fixResult = null;
     InputStream is = null;
     InputStream is2 = null;
+    BufferedImage orgImage = null;
+    boolean fixed = false;
 
     try {
 
@@ -346,30 +350,20 @@ public class FileuploadUtils {
       ImageReader reader = readers.next();
       reader.setInput(ImageIO.createImageInputStream(is));
 
-      BufferedImage orgImage = reader.read(0);
+      orgImage = reader.read(0);
       reader.reset();
       reader.dispose();
 
-      // BufferedImage orgImage = ImageIO.read(is);
-      // File fis =
-      // new File(ALStorageService.getService().toString()
-      // + "/"
-      // + FOLDER_TMP_FOR_ATTACHMENT_FILES
-      // + "/"
-      // + org_id
-      // + "/"
-      // + uid
-      // + ALStorageService.separator()
-      // + folderName
-      // + "/"
-      // + String.valueOf(fileBean.getFileId()));
-      orgImage =
-        transformImage(
-          orgImage,
-          getExifTransformation(readImageInformation(is2)));
+      ImageInformation readImageInformation = readImageInformation(is2);
+      if (readImageInformation != null) {
+        orgImage =
+          transformImage(orgImage, getExifTransformation(readImageInformation));
+        fixed = isFixOrgImage;
+      }
+
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
-      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
       ImageWriter writer = writers.next();
 
       ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -378,6 +372,19 @@ public class FileuploadUtils {
       writer.write(shrinkImage);
 
       result = out.toByteArray();
+
+      if (fixed) {
+        Iterator<ImageWriter> writers2 = ImageIO.getImageWritersBySuffix(ext);
+        ImageWriter writer2 = writers2.next();
+
+        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        ImageOutputStream ios2 = ImageIO.createImageOutputStream(out2);
+        writer2.setOutput(ios2);
+        writer2.write(orgImage);
+
+        fixResult = out2.toByteArray();
+      }
+
     } catch (Exception e) {
       logger.error("fileupload", e);
       result = null;
@@ -399,7 +406,8 @@ public class FileuploadUtils {
         result = null;
       }
     }
-    return result;
+
+    return new ShrinkImageSet(result, fixed ? fixResult : null);
   }
 
   /**
@@ -523,7 +531,7 @@ public class FileuploadUtils {
       new BufferedImage(
         targetImage.getWidth(null),
         targetImage.getHeight(null),
-        BufferedImage.TYPE_INT_RGB);
+        imgfile.getType());
     Graphics2D g = tmpImage.createGraphics();
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, shrinkedWidth, shrinkedHeight);
@@ -572,6 +580,8 @@ public class FileuploadUtils {
         targetImage.getHeight(null),
         BufferedImage.TYPE_INT_RGB);
     Graphics2D g = tmpImage.createGraphics();
+    g.setBackground(Color.WHITE);
+    g.setColor(Color.WHITE);
     g.drawImage(targetImage, 0, 0, null);
     int _iwidth = tmpImage.getWidth();
     int _iheight = tmpImage.getHeight();
@@ -662,11 +672,11 @@ public class FileuploadUtils {
 
       return new ImageInformation(orientation, width, height);
     } catch (IOException e) {
-
+      logger.debug(e.getMessage(), e);
     } catch (ImageProcessingException e) {
-
+      logger.debug(e.getMessage(), e);
     } catch (Exception e) {
-
+      logger.debug(e.getMessage(), e);
     }
     return null;
   }
@@ -720,21 +730,35 @@ public class FileuploadUtils {
       AffineTransform transform) throws Exception {
 
     AffineTransformOp op =
-      new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
+      new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
 
     BufferedImage destinationImage =
-      op.createCompatibleDestImage(
-        image,
-        (image.getType() == BufferedImage.TYPE_BYTE_GRAY) ? image
-          .getColorModel() : null);
+      new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
     Graphics2D g = destinationImage.createGraphics();
-    g.setBackground(Color.WHITE);
-    g
-      .clearRect(0, 0, destinationImage.getWidth(), destinationImage
-        .getHeight());
+    g.setColor(Color.WHITE);
+
     destinationImage = op.filter(image, destinationImage);
-    ;
+
     return destinationImage;
   }
 
+  public static class ShrinkImageSet {
+
+    private byte[] shrinkImage = null;
+
+    private byte[] fixImage = null;
+
+    public ShrinkImageSet(byte[] shrinkImage, byte[] fixImage) {
+      this.shrinkImage = shrinkImage;
+      this.fixImage = fixImage;
+    }
+
+    public byte[] getShrinkImage() {
+      return this.shrinkImage;
+    }
+
+    public byte[] getFixImage() {
+      return this.fixImage;
+    }
+  }
 }
