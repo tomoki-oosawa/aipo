@@ -23,7 +23,7 @@
 <input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}" />
 <input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}" />
 
-<div class="relativeBlock #if($!top_form == 'detail') mw550 #end">
+<div class="relativeBlock">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
