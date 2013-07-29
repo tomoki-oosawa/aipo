@@ -24,7 +24,7 @@
 #set ($filter = $result.CurrentFilter)
 #end
 ## ---------------------------------------------------------------------------
-<div class="relativeBlock #if($!top_form == 'detail') mw550 #end" style="margin-bottom:10px;">
+<div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 <ul>
@@ -72,8 +72,7 @@
 <div id="content-$!portlet.ID" style="visibility:visible">
 #if(${client}!="IPHONE")
 <div class="floatRight">
-<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))');void(0);" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" class="auiButton pl5 pr5"><span><img src="themes/$!result.Theme/images/icon/icon_print.gif" width="17" height="18" alt="$l10n.SCHEDULE_PRINT" /></span>
-</a>
+#AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>
 #end
 #if(($!{hasAcl}) && $!{hasAcl} == "T")

@@ -1559,121 +1559,151 @@ div.today, td.today {
 div.off, td.off {
 	background:#EFEFEF url(../images/common/bg_slash.gif) repeat left top;
 }
+
+.calendarWrapper {
+  overflow-x: auto;
+}
+
+*:first-child + html .calendarWrapper {
+  padding-bottom: 15px;
+  overflow-y: hidden;
+}
+
 table.calendar {
-	margin-top:5px;
-	margin-bottom:5px;
-	border-collapse:collapse;
-	border-spacing:0;
-	border:1px solid #ddd;
-	border-top:2px solid #ddd;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-top: 2px solid #ddd;
 }
+
 table.calendar td.calendarHeader {
-	background:#ddd;
+  background: #ddd;
 }
+
 table.calendar td {
-	border:1px solid #ddd;
-	padding:2px;
-	vertical-align:top;
+  border: 1px solid #ddd;
+  padding: 2px;
+  vertical-align: top;
 }
+
 table.calendar th {
-	border:1px solid #ddd;
-	padding:0;
-	font-weight:normal;
-	text-align:center;
-	font-size:0.9em;
+  border: 1px solid #ddd;
+  padding: 0;
+  font-weight: normal;
+  text-align: center;
+  font-size: 0.9em;
 }
+
 table.calendar th.groupOneday {
-	width:auto;
+  width: auto;
 }
+
 table.calendar th.groupWeekly {
-	border:1px solid #ddd;
-	padding:0;
-	font-weight:normal;
-	text-align:center;
-	width:12.5%;
+  border: 1px solid #ddd;
+  padding: 0;
+  font-weight: normal;
+  text-align: center;
+  width: 12.5%;
 }
+
 table.calendar th.sunday {
-	background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
+  background: #ffefe5 url(../images/common/bg_slash.gif) repeat left top;
 }
+
 table.calendar th.saturday {
-	background:#EBF0F6 url(../images/common/bg_slash.gif) repeat left top;
+  background: #ebf0f6 url(../images/common/bg_slash.gif) repeat left top;
 }
+
 table.calendar th.holiday {
-	background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;
+  background: #ffefe5 url(../images/common/bg_slash.gif) repeat left top;
 }
+
 table.calendar th.today {
-	background:#ddffdd url(../images/common/bg_slash.gif) repeat left top;
+  background: #ddffdd url(../images/common/bg_slash.gif) repeat left top;
 }
+
 table.calendar div.calendarDay {
-	color:#666;
-	margin:0;
-	padding:0 2px 0 2px;
-	vertical-align:top;
+  color: #666;
+  margin: 0;
+  padding: 0 2px 0 2px;
+  vertical-align: top;
 }
+
 table.calendar td.day {
-	background-color:#FFFFE5;
-	border-bottom:none;
+  background-color: #FFFFE5;
+  border-bottom: none;
 }
+
 table.calendar td.sunday2 {
-	background-color:#FFDFD5;
+  background-color: #FFDFD5;
 }
+
 table.calendar td.saturday2 {
-	background-color:#DBE0F6;
+  background-color: #DBE0F6;
 }
+
 table.calendar td.holiday2 {
-	background-color:#FFDFD5;
+  background-color: #FFDFD5;
 }
+
 table.calendar td.off2 {
-	background-color:#DDD;
+  background-color: #DDD;
 }
+
 table.calendar div.calendarBody {
-	height:60px;
+  height: 60px;
 }
+
 table.calendar div.calendarFooter {
-	height:17px;
+  height: 17px;
 }
 
 table.calendar div {
-	overflow:hidden;
+  overflow: hidden;
 }
-div.calendarScheduleDiv {
+
+*:first-child + html .calendar .auiIcon {
+  margin-left: 2px;
 }
+
 div.calendarScheduleDiv div.time {
-	height:1.5em;
-	line-height:1.5em;
-	overflow:hidden;
-	white-space:nowrap;
+  height: 1.5em;
+  line-height: 1.5em;
+  overflow: hidden;
+  white-space: nowrap;
 }
+
 div.calendarScheduleDiv a:link, div.calendarScheduleDiv a:visited {
-	display:block;
-	text-decoration:none;
-	padding:1px;
+  display: block;
+  text-decoration: none;
+  padding: 1px;
 }
+
 div.calendarScheduleDiv a:hover {
-	background-color:#FFFFE5;
-	border:1px solid #F90;
-	text-decoration:none;
-	padding:0;
-	/*
-	background:#ddd;
-	color:#000;
-	*/
+  background-color: #FFFFE5;
+  border: 1px solid #ff9900;
+  text-decoration: none;
+  padding: 0;
 }
+
 div.calendarScheduleDiv .calendarTime {
-	padding-bottom:5px;
-	vertical-align:text-bottom;
+  padding-bottom: 5px;
+  vertical-align: text-bottom;
 }
 
 div.calendarScheduleDiv .addSchedule {
-	display:inline-block !important;
-	margin:0 0 5px 0;
-	padding:1px 0 !important;
-	text-decoration:underline !important;
+  display: inline-block !important;
+  margin: 0 0 5px 0;
+  padding: 1px 0 !important;
+  text-decoration: underline !important;
 }
+
 div.calendarScheduleDiv .addSchedule:hover {
-	padding:1px 0;
-	border:none;
-	background:none;
+  padding: 1px 0;
+  border: none;
+  background: none;
 }
 
 .addScheduleCell:hover {
