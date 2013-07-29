@@ -115,11 +115,17 @@ function widgetMenuSwitch() {
 			    }
 			    body.style.overflowX = "hidden";//効かない
         		window.scrollTo(0, wrapper.clientHeight);
+				if(aipo.userAgent.isAndroid2()) {
+					widgets.style.zIndex = 1024;
+				}
         }else{
 				footer.style.top = '';
 			    widgets.style.position = "fixed";
                 subNavi.style.display = 'none';
 			    body.style.overflowX = "auto";
+				if(aipo.userAgent.isAndroid2()) {
+					widgets.style.zIndex = 994;
+				}
         }
 }
 
