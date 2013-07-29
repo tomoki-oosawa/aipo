@@ -631,12 +631,20 @@ $item.get(0)
 				<tr>
 #if($portlet_id!="")
 	<td class="roundBlockTitle" style="width:89%">$title</td>
-	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
+	<td class="roundBlockIcon last">
+		<a href="javascript:void(0)" style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" class="auiButtonSmall pl5 pr5">
+			<span><i class="auiIcon auiIconPrint"></i></span>
+		</a>
+		<a href="javascript:void(0)" style="cursor:pointer" id="dialogCloseButton" onclick="dijit.byId('modalDialog').hide();" title="$l10n.COMMON_CLOSE" class="auiButtonSmall pl5 pr5">
+			<span><i class="auiIcon auiIconDelete"></i></span>
+		</a>
 	</td>
 #else
 	<td class="roundBlockTitle wide">$title</td>
 	<td class="roundBlockIcon last">
-		<div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
+		<a href="javascript:void(0)" style="cursor:pointer" id="dialogCloseButton" onclick="dijit.byId('modalDialog').hide();" title="$l10n.COMMON_CLOSE" class="auiButtonSmall pl5 pr5">
+			<span><i class="auiIcon auiIconDelete"></i></span>
+		</a>
 	</td>
 #end
 				</tr>
@@ -1361,6 +1369,12 @@ $link.get(0)
 <div class="auiBlankBox">
 <a title="$text" href="$url" class="auiButtonAction">$text</a>
 </div>
+#end
+
+#macro(AUIprintbutton $jslink)
+<a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($jslink)');void(0);" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" class="auiButton pl5 pr5">
+<span><i class="auiIcon auiIconPrint"></i></span>
+</a>
 #end
 
 #macro(AUIbutton $text $url)

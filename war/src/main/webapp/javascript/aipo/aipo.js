@@ -112,9 +112,10 @@ aipo.reloadPage = function(portletId) {
     }
 };
 
+var bodyHandle = bodyHandle || {};
 var setMouseListener=function(){
 	aipo.customize.positionInitialize();
-    dojo.query('.customizeMenuIcon,.menubarOpenButton').forEach(function(element) {
+    dojo.query('a.customizeMenuIcon,a.menubarOpenButton').forEach(function(element) {
         dojo.connect(element, 'onmouseenter', null, function(){
             dojo.addClass(this, 'customizeMenuIconMouseenter');
         });
@@ -123,9 +124,9 @@ var setMouseListener=function(){
         });
     });
 
-    var handle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
-        if (dojo.query('.customizeMenuIconMouseenter').length == 0) {
-        	aipo.customize.hideMenu();
+    bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+        if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
+        	dojo.query('div.menubar').style('display', 'none');
         }
     });
     // スマートフォン対応用
