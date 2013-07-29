@@ -371,45 +371,63 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
 
             for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
-               tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
-               tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
-               tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
-               tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
-               tmpNode1.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
-               tmpNode2.innerHTML = data.holiday[i];
-               if (data.dayOfWeek[i] == "(土)") {
-                   dojo.addClass(tmpNode1, "saturday");
-                   dojo.addClass(tmpNode2, "saturday");
-                   dojo.addClass(tmpNode3, "saturday");
-                   dojo.addClass(tmpNode4, "saturday");
-               } else {
-                   dojo.removeClass(tmpNode1, "saturday");
-                   dojo.removeClass(tmpNode2, "saturday");
-                   dojo.removeClass(tmpNode3, "saturday");
-                   dojo.removeClass(tmpNode4, "saturday");
-               }
-               if (data.dayOfWeek[i] == "(日)") {
-                   dojo.addClass(tmpNode1, "sunday");
-                   dojo.addClass(tmpNode2, "sunday");
-                   dojo.addClass(tmpNode3, "sunday");
-                   dojo.addClass(tmpNode4, "sunday");
-               } else {
-                   dojo.removeClass(tmpNode1, "sunday");
-                   dojo.removeClass(tmpNode2, "sunday");
-                   dojo.removeClass(tmpNode3, "sunday");
-                   dojo.removeClass(tmpNode4, "sunday");
-               }
-               if (data.holiday[i]) {
-                   dojo.addClass(tmpNode1, "holiday");
-                   dojo.addClass(tmpNode2, "holiday");
-                   dojo.addClass(tmpNode3, "holiday");
-                   dojo.addClass(tmpNode4, "holiday");
-               } else {
-                   dojo.removeClass(tmpNode1, "holiday");
-                   dojo.removeClass(tmpNode2, "holiday");
-                   dojo.removeClass(tmpNode3, "holiday");
-                   dojo.removeClass(tmpNode4, "holiday");
-               }
+                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
+                tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
+                tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
+                tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
+                var tmpNode1_a = dojo.byId('weeklyDay' + i + '_element_a-' + _portletId);
+                tmpNode1_a.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
+                if(location.href.toString().toLowerCase().indexOf((_portletId+"?action=controls.Maximize").toLowerCase())>0){
+                	tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10)).split("ScheduleScreen").join("ScheduleListScreen");
+                }else{
+                    tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10));
+                }
+                tmpNode2.innerHTML = data.holiday[i];
+                var temptoday = data.today + "-00-00";
+                if (data.dayOfWeek[i] == "(土)") {
+                    dojo.addClass(tmpNode1, "saturday");
+                    dojo.addClass(tmpNode2, "saturday");
+                    dojo.addClass(tmpNode3, "saturday");
+                    dojo.addClass(tmpNode4, "saturday");
+                } else {
+                    dojo.removeClass(tmpNode1, "saturday");
+                    dojo.removeClass(tmpNode2, "saturday");
+                    dojo.removeClass(tmpNode3, "saturday");
+                    dojo.removeClass(tmpNode4, "saturday");
+                }
+                if (data.dayOfWeek[i] == "(日)") {
+                    dojo.addClass(tmpNode1, "sunday");
+                    dojo.addClass(tmpNode2, "sunday");
+                    dojo.addClass(tmpNode3, "sunday");
+                    dojo.addClass(tmpNode4, "sunday");
+                } else {
+                    dojo.removeClass(tmpNode1, "sunday");
+                    dojo.removeClass(tmpNode2, "sunday");
+                    dojo.removeClass(tmpNode3, "sunday");
+                    dojo.removeClass(tmpNode4, "sunday");
+                }
+                if (data.holiday[i]) {
+                    dojo.addClass(tmpNode1, "holiday");
+                    dojo.addClass(tmpNode2, "holiday");
+                    dojo.addClass(tmpNode3, "holiday");
+                    dojo.addClass(tmpNode4, "holiday");
+                } else {
+                    dojo.removeClass(tmpNode1, "holiday");
+                    dojo.removeClass(tmpNode2, "holiday");
+                    dojo.removeClass(tmpNode3, "holiday");
+                    dojo.removeClass(tmpNode4, "holiday");
+                }
+                if (temptoday==data.date[i]) {
+                    dojo.addClass(tmpNode1, "today");
+                    dojo.addClass(tmpNode2, "today");
+                    dojo.addClass(tmpNode3, "today");
+                    dojo.addClass(tmpNode4, "today");
+                } else {
+                    dojo.removeClass(tmpNode1, "today");
+                    dojo.removeClass(tmpNode2, "today");
+                    dojo.removeClass(tmpNode3, "today");
+                    dojo.removeClass(tmpNode4, "today");
+                }
             }
 
             dojo.forEach(data.schedule, function(item) {
@@ -439,6 +457,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                        if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
                            str_tmp = i %  aipo.calendar.maximum_to;
                        }
+                       /*
                        if(item.memberList){
                            var ucount = 0;
                            var fcount = 0;
@@ -450,6 +469,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                                }
                            }
                        }
+                       */
                     }
                     var str_tmpflgmb;
                     if(item.userCount > 1){
@@ -521,8 +541,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
              l_count = 0;
             dojo.forEach(data.termSchedule, function(itemList) {
                 var item = null;
+                var temptoday =　data.today + "-00-00";
                 termHtml = "";
-
                 for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
                    tmpNode5 = dojo.byId('termDay' + i + '-' + l_count + '-' + _portletId);
                    if (data.dayOfWeek[i] == "(土)") {
@@ -540,8 +560,12 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                    } else {
                        dojo.removeClass(tmpNode5, "holiday");
                    }
+                   if (temptoday==data.date[i]) {
+                       dojo.addClass(tmpNode5, "today");
+                   } else {
+                       dojo.removeClass(tmpNode5, "today");
+                   }
                 }
-
                 for (k = 0; k < itemList.length ; k++){
                     item = itemList[k];
 
@@ -580,10 +604,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         }
                         var str_tmpflgmb;
                         if(item.userCount > 1){
-                         str_tmpflgmb   =  "[共有]";
-                        }
-                        if(item.facilityCount > 0){
-                         str_tmpflgmb   += "[設備]";
+                            str_tmpflgmb   =  "[共有]";
                         }
                     }
 
@@ -674,7 +695,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         }
                         count++;
                     }
-                l_count++;
+				l_count++;
             });
 
 
@@ -1162,6 +1183,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         tmpDraggable.id = 'schedule-dummy-' + this.portletId;
         tmpDraggable.style.zIndex = 998;
         dojo.style(tmpDraggable, "opacity", 0.0);
+        if(dojo.isIE == 8) {
+        	dojo.style(tmpDraggable, "display", "none");
+        }
         var garage = dojo.byId('scheduleGarage-' + this.portletId);
         garage.appendChild(tmpDraggable);
 
@@ -1172,9 +1196,15 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         if (dojo.isIE) {
             document.onkeydown = function(e) {
                 dojo.style(tmpDraggable, "opacity", 0.3);
+                if(dojo.isIE == 8) {
+                	dojo.style(tmpDraggable, "display", "");
+                }
             };
             document.onkeyup = function(e) {
                 dojo.style(tmpDraggable, "opacity", 0.0);
+                if(dojo.isIE == 8) {
+                	dojo.style(tmpDraggable, "display", "none");
+                }
             };
         } else {
             dojo.connect(null, "onkeydown", this, "onKeyPress");
@@ -1183,6 +1213,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
 
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
         dojo.style(this.node, "opacity", 0.5);
+        if(dojo.isIE == 8) {
+        	dojo.style(this.node, "display", "");
+        }
         this.node.style.zIndex = 999;
         this.startY = this._pageY;
         this.startAbsoluteY = dojo._abs(dojo.byId(this.node), true).y;
@@ -1206,8 +1239,14 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
     onKeyPress: function(e){
         if(e.ctrlKey) {
             dojo.style(this.tmpDraggable, "opacity", 0.3);
+            if(dojo.isIE == 8) {
+            	dojo.style(this.tmpDraggable, "display", "");
+            }
         } else {
             dojo.style(this.tmpDraggable, "opacity", 0.0);
+            if(dojo.isIE == 8) {
+            	dojo.style(this.tmpDraggable, "display", "none");
+            }
         }
     },
     onMouseMove: function(e){
@@ -1298,6 +1337,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
 
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
+            if(dojo.isIE == 8) {
+            	dojo.style(this.node, "display", "");
+            }
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
             return;
         }
@@ -1420,12 +1462,18 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         }
        aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
        dojo.style(this.node, "opacity", 0.5);
+       if(dojo.isIE == 8) {
+       	dojo.style(this.node, "display", "");
+       }
        aipo.calendar.setGridArray(this.portletId, parseInt(ptConfig[this.portletId].scheduleDivDaySum));
 
        var tmpDraggable = dojo.clone(this.node);
        tmpDraggable.id = 'schedule-dummy-' + this.portletId;
        tmpDraggable.style.zIndex = 998;
        dojo.style(tmpDraggable, "opacity", 0.0);
+       if(dojo.isIE == 8) {
+       	dojo.style(tmpDraggable, "display", "none");
+       }
 
        var garage = dojo.byId(this.node.parentNode.id);
        garage.appendChild(tmpDraggable);
@@ -1435,9 +1483,15 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
        if (dojo.isIE) {
            document.onkeydown = function(e) {
                dojo.style(tmpDraggable, "opacity", 0.3);
+               if(dojo.isIE == 8) {
+               	dojo.style(tmpDraggable, "display", "");
+               }
            };
            document.onkeyup = function(e) {
                dojo.style(tmpDraggable, "opacity", 0.0);
+               if(dojo.isIE == 8) {
+               	dojo.style(tmpDraggable, "display", "none");
+               }
            };
        } else {
            dojo.connect(null, "onkeydown", this, "onKeyPress");
@@ -1447,8 +1501,14 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
     onKeyPress: function(e){
         if(e.ctrlKey) {
             dojo.style(this.tmpDraggable, "opacity", 0.3);
+            if(dojo.isIE == 8) {
+            	dojo.style(this.tmpDraggable, "display", "");
+            }
         } else {
             dojo.style(this.tmpDraggable, "opacity", 0.0);
+            if(dojo.isIE == 8) {
+            	dojo.style(this.tmpDraggable, "display", "none");
+            }
         }
     },
     onMouseMove: function(e){
@@ -1549,6 +1609,9 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
 
         if(this.dragSource.schedule.isDrag != true){
             dojo.style(this.node, "opacity", 1.0 );
+            if(dojo.isIE == 8) {
+            	dojo.style(this.node, "display", "");
+            }
             aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
             return;
         }
@@ -1745,6 +1808,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         dojo.marginBox(this.node, this.leftTop);
 
         dojo.style(this.node, "opacity", 0.5);
+        if(dojo.isIE == 8) {
+        	dojo.style(this.node, "display", "");
+        }
     },
     onMouseUp: function(e) {
         if(!this._isDragging){
@@ -1766,6 +1832,9 @@ dojo.declare("aipo.calendar.WeeklyScheduleAddDragMoveObject", [aimluck.dnd.DragM
         this.node.style.top = "0px";
         this.node.style.height = "864px";
         dojo.style(this.node, "opacity", 0.0 );
+        if(dojo.isIE == 8) {
+        	dojo.style(this.node, "display", "none");
+        }
         if(this._isDragging == true){
             aipo.common.showDialog(ptConfig[this.portletId].formUrl + "&entityid=new&mode=form"  + "&form_start=" + startTime + '&form_end=' + endTime , this.portletId , aipo.schedule.onLoadScheduleDialog);
         }
@@ -1812,6 +1881,9 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
         aimluck.dnd.DragMoveObject.prototype.onMouseMove.apply(this, arguments);
         this._isDragging = true;
         dojo.style(this.node, "opacity", 0.5);
+        if(dojo.isIE == 8) {
+        	dojo.style(this.node, "display", "");
+        }
         var mouseX = aipo.calendar.getCurrentMouseX(this.portletId, e);
         var tmpIndex = mouseX.index;
         if(this.positionFrom == -1 && tmpIndex != -1) {
@@ -1887,6 +1959,9 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleAddDragMoveObject", [aimluck.dnd.D
         dojo.style(this.node, "left",  0 + "%");
         dojo.style(this.node, "width", 100 + "%");
         dojo.style(this.node, "opacity", 0.0 );
+        if(dojo.isIE == 8) {
+        	dojo.style(this.node, "display", "none");
+        }
 
         aimluck.dnd.DragMoveObject.prototype.onMouseUp.apply(this, arguments);
     }
