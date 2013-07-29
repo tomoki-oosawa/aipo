@@ -1241,6 +1241,11 @@ table tr.caption {
 .dijitCalendarYearLabel {/* year */
     font-size:16px;
 }
+
+/* .calendar */
+.calendarWrapper {
+	overflow-x:visible;
+}
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
