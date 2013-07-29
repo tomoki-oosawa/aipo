@@ -161,6 +161,9 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
 
 aipo.customize.hideMenu = function(portlet_id) {
     var menuNode = dojo.query('div.menubar').style('display', 'none');
+	var footer = document.getElementById('auiWidgetsArea');
+	footer.style.top = '';
+	footer.style.position = "fixed";
     if(current_portlet_id != null) {
     	dojo.query(".relativeBlock").style("z-index","");
     	dojo.query("#tableWrapper_" + current_portlet_id).style("z-index","");
