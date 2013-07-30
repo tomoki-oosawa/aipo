@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<div class="relativeBlock #if (${client} != "IPHONE") mw550 #end" style="margin-bottom:10px;">
+<div class="relativeBlock" style="margin-bottom:10px;">
 <div class="absoluteRight">
 <div class="auiSelectButton">
 
