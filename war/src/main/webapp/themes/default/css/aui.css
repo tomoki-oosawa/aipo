@@ -1858,7 +1858,7 @@ input.auiButtonSearch.active {
 .count {
   float: left;
   height: 32px;
-  line-height: 32px;
+  line-height: 32px !important;
   margin: 0 5px;
 }
 

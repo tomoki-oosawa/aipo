@@ -631,20 +631,12 @@ $item.get(0)
 				<tr>
 #if($portlet_id!="")
 	<td class="roundBlockTitle" style="width:89%">$title</td>
-	<td class="roundBlockIcon last">
-		<a href="javascript:void(0)" style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" class="auiButtonSmall pl5 pr5">
-			<span><i class="auiIcon auiIconPrint"></i></span>
-		</a>
-		<a href="javascript:void(0)" style="cursor:pointer" id="dialogCloseButton" onclick="dijit.byId('modalDialog').hide();" title="$l10n.COMMON_CLOSE" class="auiButtonSmall pl5 pr5">
-			<span><i class="auiIcon auiIconDelete"></i></span>
-		</a>
+	<td class="roundBlockIcon last"><img style="cursor:pointer" onclick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);" src="themes/$!result.Theme/images/icon/print.gif" width="19" height="20" border="0" align="top" alt="$l10n.WEBMAIL_OPEN_PRINTVIEW" title="$l10n.WEBMAIL_OPEN_PRINTVIEW" /><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/>
 	</td>
 #else
 	<td class="roundBlockTitle wide">$title</td>
 	<td class="roundBlockIcon last">
-		<a href="javascript:void(0)" style="cursor:pointer" id="dialogCloseButton" onclick="dijit.byId('modalDialog').hide();" title="$l10n.COMMON_CLOSE" class="auiButtonSmall pl5 pr5">
-			<span><i class="auiIcon auiIconDelete"></i></span>
-		</a>
+		<div style="float:right"><img style="cursor:pointer" onclick="dijit.byId('modalDialog').hide()" id="dialogCloseButton" src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.COMMON_CLOSE"/></div>
 	</td>
 #end
 				</tr>
