@@ -1691,6 +1691,10 @@ input.auiButtonSearch.active {
   background: #fff;
 }
 
+.auiSelectButton ul {
+  display: inline;
+}
+
 .auiSelectButton li,
 .auiSelectButton div {
   float: left;
@@ -1764,6 +1768,18 @@ input.auiButtonSearch.active {
 
 .auiSelectButton .auiIconArrowLeft {
   margin-left: -4px !important;
+}
+
+/***************************************************
+	auiMultiSelector
+--------------------------------------------------*/
+.auiMultiSelector.auiSummaryMeta {
+  margin: -5px 0;
+}
+
+.auiMultiSelector .floatLeft,
+.auiMultiSelector .floatRight {
+  margin: 5px 0;
 }
 
 /***************************************************
@@ -2621,6 +2637,7 @@ ul.attachments >li{
   -moz-border-radius: 0;
   -ms-border-radius: 0;
   border-radius: 0;
+  font-size:13px;
 }
 
 #timelineOuter textarea:focus {
@@ -2748,7 +2765,6 @@ ul.attachments >li{
 }*/
 .timeline .comments .messageContents {
   margin-left: 42px;
-  margin: 0;
 }
 
 .timeline .comments .avatar {
