@@ -20,27 +20,27 @@
 ## ---------------------------------------------------------------------------
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_WEEK">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_WEEK">
 <img src="themes/$!result.Theme/images/icon/arrow_left_w.gif" border="0" alt="$l10n.SCHEDULE_PREV_WEEK" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_DATE">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_DATE">
 <img src="themes/$!result.Theme/images/icon/arrow_left.gif" border="0" alt="$l10n.SCHEDULE_PREV_DATE" /></a>&nbsp;
 </td><td nowrap="nowrap"><span style="font-weight:bold">
 $!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} - $!{result.ViewEndFormat} $!{result.ViewEnd.DayOfWeek}
 </span></td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_DATE">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_DATE">
 <img src="themes/$!result.Theme/images/icon/arrow_right.gif" border="0" alt="$l10n.SCHEDULE_NEXT_DATE" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_WEEK">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_WEEK">
 <img src="themes/$!result.Theme/images/icon/arrow_right_w.gif" border="0" alt="$l10n.SCHEDULE_NEXT_WEEK" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.Today.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_TODAY">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.Today.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_TODAY">
 <img src="images/schedule/schedule_today.gif" border="0" alt="$l10n.SCHEDULE_TODAY" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_MONTH">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_PREV_MONTH">
 <img src="images/schedule/schedule_prevmonth.gif" border="0" alt="$l10n.SCHEDULE_PREV_MONTH" /></a>&nbsp;
 </td><td>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_date",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_MONTH">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_MONTH">
 <img src="images/schedule/schedule_nextmonth.gif" border="0" alt="$l10n.SCHEDULE_NEXT_MONTH" /></a>&nbsp;
 </td></tr></tbody></table>
 
