@@ -161,12 +161,14 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
 
 aipo.customize.hideMenu = function(portlet_id) {
     var menuNode = dojo.query('div.menubar').style('display', 'none');
-	var footer = document.getElementById('auiWidgetsArea');
 	var subNavi = document.getElementById('subNavigation');
 	if(subNavi){
 		if(document.defaultView.getComputedStyle(subNavi,null).display=='none'){
-	    	footer.style.top = '';
-			footer.style.position = "fixed";
+			var footer = document.getElementById('auiWidgetsArea');
+			if (footer) {
+				footer.style.top = '';
+				footer.style.position = "fixed";	
+			}
 	    }
 	}
     if(current_portlet_id != null) {
