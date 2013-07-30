@@ -174,15 +174,15 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
     if (ALEipUtils.isMatch(rundata, context)) {
       // スケジュールの表示開始日時
       // e.g. 2004-3-14
-      if (rundata.getParameters().containsKey("view_date")) {
-        ALEipUtils.setTemp(rundata, context, "view_date", rundata
+      if (rundata.getParameters().containsKey("view_start")) {
+        ALEipUtils.setTemp(rundata, context, "view_start", rundata
           .getParameters()
-          .getString("view_date"));
+          .getString("view_start"));
       }
     }
 
     // 表示開始日時
-    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_date");
+    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_start");
     if (tmpViewStart == null || tmpViewStart.equals("")) {
       Calendar cal = Calendar.getInstance();
       cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -191,7 +191,7 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
     } else {
       viewStart.setValue(tmpViewStart);
       if (!viewStart.validate(new ArrayList<String>())) {
-        ALEipUtils.removeTemp(rundata, context, "view_date");
+        ALEipUtils.removeTemp(rundata, context, "view_start");
         throw new ALPageNotFoundException();
       }
     }
