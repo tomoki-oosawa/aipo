@@ -23,8 +23,8 @@
 <input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}" />
 <input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}" />
 
-<div class="relativeBlock">
-<div class="absoluteRight">
+<div class="auiSummaryMeta auiMultiSelector clearfix">
+<div class="floatRight mb_hide">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
 
@@ -46,26 +46,26 @@
 </div>
 </div>
 
-<div class="clearfix">
+<div class="floatLeft">
 <div class="auiSelectButton">
 <ul>
 #if($!top_form && $!top_form=='simple'&&${client} == "IPAD")
-<li style="width:3em;margin-right:3px;" title="$l10n.SCHEDULE_TODAY">
+<li style="width:3em;" class="mr5" title="$l10n.SCHEDULE_TODAY">
 #else
-<li style="width:4em;margin-right:3px;" title="$l10n.SCHEDULE_TODAY">
+<li style="width:4em;" class="mr5" title="$l10n.SCHEDULE_TODAY">
 #end
 <a href="javascript:void(0);" class="btn" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["today"]);'><span>$l10n.SCHEDULE_THIS_DAY</span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_PREV_WEEK">
+<li class="mr5" title="$l10n.SCHEDULE_PREV_WEEK">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevWeek"]);' title='$l10n.SCHEDULE_PREV_WEEK'><span><i class="auiIconArrow auiIconArrowLeftW"></i></span></a>
 </li>
 <li title="$l10n.SCHEDULE_PREV_DATE">
 <a href="javascript:void(0);" class="first arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["prevDate"]);' title='$l10n.SCHEDULE_PREV_DATE'><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_DATE">
+<li class="mr5" title="$l10n.SCHEDULE_NEXT_DATE">
 <a href="javascript:void(0);" class="last arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextDate"]);' title='$l10n.SCHEDULE_NEXT_DATE'><span><i class="auiIconArrow auiIconArrowRight"></i></span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_WEEK">
+<li title="$l10n.SCHEDULE_NEXT_WEEK">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);' title='$l10n.SCHEDULE_NEXT_WEEK'><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 #if($!top_form && $!top_form=='simple')
@@ -74,7 +74,6 @@
 </li>
 #end
 </ul>
-</div>
 #if($!top_form && $!top_form=='simple')
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
 <ul>
@@ -92,6 +91,7 @@
 #end
 #if($!top_form && $!top_form=='simple')</div>#end
 <div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong>
+</div>
 </div>
 #if(!$!top_form || $!top_form!='simple')</div>#end
 </div>

@@ -24,8 +24,8 @@
 #set ($filter = $result.CurrentFilter)
 #end
 ## ---------------------------------------------------------------------------
-<div class="relativeBlock" style="margin-bottom:10px;">
-<div class="absoluteRight">
+<div class="auiSummaryMeta auiMultiSelector clearfix" style="margin-bottom:10px;">
+<div class="floatRight mb_hide">
 <div class="auiSelectButton">
 #if (${client} != "IPHONE")
 <ul>
@@ -44,22 +44,22 @@
 </div>
 </div>
 
-<div class="clearfix">
+<div class="floatLeft">
 <div class="auiSelectButton">
 <ul>
-<li style="width:4em;margin-right:3px;" title="$l10n.SCHEDULE_THIS_MONTH">
+<li style="width:4em;" class="mr5" title="$l10n.SCHEDULE_THIS_MONTH">
 <a href="javascript:void(0);" class="btn" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');"><span>$l10n.SCHEDULE_THE_CURRENT_MONTH</span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_PREV_YEAR">
+<li class="mr5" title="$l10n.SCHEDULE_PREV_YEAR">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevYear.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowLeftW"></i></span></a>
 </li>
 <li title="$l10n.SCHEDULE_PREV_MONTH">
 <a href="javascript:void(0);" class="first arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_MONTH">
+<li class="mr5" title="$l10n.SCHEDULE_NEXT_MONTH">
 <a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a>
 </li>
-<li style="margin-right:3px;" title="$l10n.SCHEDULE_NEXT_YEAR">
+<li title="$l10n.SCHEDULE_NEXT_YEAR">
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_month",$!{result.NextYear.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 </ul>
