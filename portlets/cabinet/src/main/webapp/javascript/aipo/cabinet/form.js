@@ -151,19 +151,8 @@ aipo.cabinet.toggleMenu = function(node, filter, alwaysPulldown) {
 			node.style.top = rect.top - node.clientHeight + scroll.top + "px";
 		}
 		node.style.opacity = "";
-
-		var list = node.getBoundingClientRect();
-		var listHeight = list.bottom - list.top;
-		if (list.bottom > footer.getBoundingClientRect().top) {
-			footer.style.top = listHeight + header.clientHeight
-					+ footer.clientHeight + 'px';
-			footer.style.position = "absolute";
-		}
 	} else {
 		dojo.query("div.menubar").style("display", "none");
-		footer.style.top = '';
-		footer.style.position = "fixed";
-
 	}
 }
 
