@@ -108,6 +108,7 @@ function widgetMenuSwitch() {
 				    	footer.style.top = pageHeight + 'px';
 				    } else {
 			    		wrapper.style.minHeight = naviHeight+ 'px';
+						footer.style.top = (subNavi.clientHeight + headerHeight + 50) + 'px';
 			    	}
 			    } else {
 			        //ナビが静的な時
