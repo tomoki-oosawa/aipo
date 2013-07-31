@@ -69,7 +69,7 @@
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);' title='$l10n.SCHEDULE_NEXT_WEEK'><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 #if($!top_form && $!top_form=='simple')
-<li style="width: 3em;" title="$!{dayList}$l10n.SCHEDULE_DAY">
+<li class="ml5" style="width: 3em;" title="$!{dayList}$l10n.SCHEDULE_DAY">
 <a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn menubarOpenButton" onclick="aipo.customize.showMenuSchedule('$!{portlet.ID}');"><span>$!{dayList}$l10n.SCHEDULE_DAY</span></a>
 </li>
 #end
@@ -755,4 +755,4 @@ dojo.addOnLoad(function () {
 </li>
 </ul>
 </div>
-#end	
+#end
