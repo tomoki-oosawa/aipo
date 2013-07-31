@@ -115,48 +115,68 @@ aipo.customize.showMenuButtonOnly = function(portlet_id) {
 }
 
 var current_portlet_id = null;
+aipo.customize.refixMenuScheduleQueue = null;
+aipo.customize.refixMenuScheduleListener = null;
 aipo.customize.showMenuSchedule = function(portlet_id) {
-	var left,top;
 	current_portlet_id = null;
 	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
 	if (menuNode.style('display') == 'none') {
         dojo.query('div.menubar').style('display', 'none');
         menuNode.style('display', 'block');
-        if(dojo.byId("timeline_"+portlet_id) && (dojo.query('div.timeline').length == 1)){
-    		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
-    	}
-        var html = dojo.byId("indicateDate_" + portlet_id);
-        if(dojo.isIE){
-        	var getLeft = function(oj){
-        	    var px = 0;
-        	    while(oj){
-        	        px += oj.offsetLeft;
-        	        oj = oj.offsetParent;
-        	    }
-        	    return px;
-        	}
-        	var getTop = function(oj){
-        	    var px = 0;
-        	    while(oj){
-        	        px += oj.offsetTop;
-        	        oj = oj.offsetParent;
-        	    }
-        	    return px;
-        	}
-        	left = getLeft(html) - getLeft(html.offsetParent.offsetParent);
-        	top = getTop(html) - getTop(html.offsetParent.offsetParent);
-        	dojo.query(".relativeBlock").style("z-index","9999");
-        	dojo.query("#tableWrapper_" + portlet_id).style("z-index","1");
-        	current_portlet_id = portlet_id;
-        } else {
-        	left = html.offsetLeft - html.clientLeft;
-        	top = html.offsetTop - html.clientTop;
+        aipo.customize.refixMenuSchedule(portlet_id);
+        
+        //Window リサイズ対応
+        if (aipo.customize.refixMenuScheduleListener) {
+        	dojo.disconnect(aipo.customize.refixMenuScheduleListener);
+        	aipo.customize.refixMenuScheduleListener = null;
         }
-        menuNode.style('left', left + "px");
-        menuNode.style('top', top + html.offsetHeight + "px");
+        aipo.customize.refixMenuScheduleListener = dojo.connect(window, 'onresize', function(){
+        	clearTimeout( aipo.customize.refixMenuScheduleQueue );
+        	aipo.customize.refixMenuScheduleQueue = setTimeout(function() {
+        		aipo.customize.refixMenuSchedule(portlet_id);
+        	}, 200 )
+        });
     } else {
-        aipo.customize.hideMenu(portlet_id);
+        aipo.customize.hideMenu(portlet_id);        
     }
+}
+
+
+aipo.customize.refixMenuSchedule = function(portlet_id){
+	var left,top;
+	var menuNode = dojo.query('#menubar_' + portlet_id + '_date');
+	if(dojo.byId("timeline_"+portlet_id) && (dojo.query('div.timeline').length == 1)){
+		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
+	}
+    var html = dojo.byId("indicateDate_" + portlet_id);
+    if(dojo.isIE){
+    	var getLeft = function(oj){
+    	    var px = 0;
+    	    while(oj){
+    	        px += oj.offsetLeft;
+    	        oj = oj.offsetParent;
+    	    }
+    	    return px;
+    	}
+    	var getTop = function(oj){
+    	    var px = 0;
+    	    while(oj){
+    	        px += oj.offsetTop;
+    	        oj = oj.offsetParent;
+    	    }
+    	    return px;
+    	}
+    	left = getLeft(html);
+    	top = getTop(html);
+    	dojo.query(".relativeBlock").style("z-index","9999");
+    	dojo.query("#tableWrapper_" + portlet_id).style("z-index","1");
+    	current_portlet_id = portlet_id;
+    } else {
+    	left = html.getBoundingClientRect().left;
+    	top = html.getBoundingClientRect().top;
+    }
+    menuNode.style('left', left + "px");
+    menuNode.style('top', top + html.offsetHeight + "px");
 }
 
 aipo.customize.hideMenu = function(portlet_id) {

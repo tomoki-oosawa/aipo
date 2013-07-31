@@ -74,21 +74,6 @@
 </li>
 #end
 </ul>
-#if($!top_form && $!top_form=='simple')
-<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
-<ul>
-<li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/',365*24*60*60*1000)">1$l10n.SCHEDULE_DAY</a>
-</li>
-<li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/',365*24*60*60*1000)">4$l10n.SCHEDULE_DAY</a>
-</li>
-<li>
-<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/',365*24*60*60*1000)">7$l10n.SCHEDULE_DAY</a>
-</li>
-</ul>
-</div>
-#end
 #if($!top_form && $!top_form=='simple')</div>#end
 <div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong>
 </div>
@@ -755,3 +740,19 @@ dojo.addOnLoad(function () {
 <div id="modalDialog2" class="modalDialog" style="display:none"></div>
 <input type="hidden" id="secid-$!portlet.ID" name="secid-$!portlet.ID" value="$secid" />
 <input style="display:none" type="checkbox" id="showAll-$!portlet.ID" value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end />
+
+#if($!top_form && $!top_form=='simple')
+<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
+<ul>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/',365*24*60*60*1000)">1$l10n.SCHEDULE_DAY</a>
+</li>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('4', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',4,'/',365*24*60*60*1000)">4$l10n.SCHEDULE_DAY</a>
+</li>
+<li>
+<a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('7', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',7,'/',365*24*60*60*1000)">7$l10n.SCHEDULE_DAY</a>
+</li>
+</ul>
+</div>
+#end	
