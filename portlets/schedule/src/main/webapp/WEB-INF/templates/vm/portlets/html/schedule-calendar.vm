@@ -74,11 +74,9 @@
 </li>
 #end
 </ul>
-#if($!top_form && $!top_form=='simple')</div>#end
-<div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong>
+<div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong></div>
 </div>
 </div>
-#if(!$!top_form || $!top_form!='simple')</div>#end
 </div>
 
 <div class="indicator" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
