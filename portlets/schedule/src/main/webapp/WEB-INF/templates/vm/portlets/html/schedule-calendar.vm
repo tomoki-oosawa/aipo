@@ -161,7 +161,7 @@
                             <div id="weeklyHeadRights-$!portlet.ID" class='weeklyHeadRights'>
                               <div id="weeklyHeadRightborder-$!portlet.ID" class="weeklyHeadRightborder0_$!portlet.ID weeklyHeadRight#if($!top_form && $!top_form == 'simple')R#end" style="left: 0%;#if($!top_form && $!top_form=='simple')width: 100%;#end border-right: block;">
                                 <div class="weeklyHeadRightTop" id="weeklyDay0-$!portlet.ID">
-                                <a id="weeklyDay0_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay0_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a>
                                 </div>
@@ -169,14 +169,14 @@
                               </div>
                               <div class='weeklyHeadRightborder1_$!portlet.ID weeklyHeadRight' style="left: 14.2857%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay1-$!portlet.ID">
-                                <a id="weeklyDay1_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay1_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a></div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday1-$!portlet.ID">&nbsp;</div>
                               </div>
                               <div class='weeklyHeadRightborder2_$!portlet.ID weeklyHeadRight' style="left: 28.5714%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay2-$!portlet.ID">
-                                <a id="weeklyDay2_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay2_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a>
                                 </div>
@@ -184,7 +184,7 @@
                               </div>
                               <div class='weeklyHeadRightborder3_$!portlet.ID weeklyHeadRight' style="left: 42.8571%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay3-$!portlet.ID">
-                                <a id="weeklyDay3_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay3_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a>
                                 </div>
@@ -192,21 +192,21 @@
                               </div>
                               <div class='weeklyHeadRightborder4_$!portlet.ID weeklyHeadRight' style="left: 57.1429%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay4-$!portlet.ID">
-                                <a id="weeklyDay4_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay4_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a></div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday4-$!portlet.ID">&nbsp;</div>
                               </div>
                               <div class='weeklyHeadRightborder5_$!portlet.ID weeklyHeadRight' style="left: 71.4286%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay5-$!portlet.ID">
-                                <a id="weeklyDay5_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay5_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a></div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday5-$!portlet.ID">&nbsp;</div>
                               </div>
                               <div class='weeklyHeadRightborder6_$!portlet.ID weeklyHeadRightR' style="left: 85.7143%;#if($!top_form && $!top_form=='simple')width: 0%;display: none;#end">
                                 <div class="weeklyHeadRightTop" id="weeklyDay6-$!portlet.ID">
-                                <a id="weeklyDay6_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_date","2001-01-01"))', '$!portlet.ID');">
+                                <a id="weeklyDay6_element_a-$!portlet.ID" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portlet.ID).addQueryData("template","ScheduleScreen").addQueryData("tab","oneday-group").addQueryData("filter","null").addQueryData("filtertype","group").addQueryData("view_start","2001-01-01"))', '$!portlet.ID');">
                                 &nbsp;
                                 </a></div>
                                 <div class="weeklyHeadRightBottom" id="weeklyHoliday6-$!portlet.ID">&nbsp;</div>
@@ -755,4 +755,4 @@ dojo.addOnLoad(function () {
 </li>
 </ul>
 </div>
-#end	
+#end
