@@ -1245,7 +1245,9 @@ button,
 .auiButtonSearch,
 .auiButtonSmall,
 .auiButtonDisabled,
-.auiSelectButton a {
+.auiButtonIcon,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a {
   display: inline-block;
   *display: inline;
   padding: 4px 12px;
@@ -1332,6 +1334,10 @@ button.active,
 .auiButtonDisabled:focus,
 .auiButtonDisabled:active,
 .auiButtonDisabled.active,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
 .auiSelectButton a:hover,
 .auiSelectButton a:focus,
 .auiSelectButton a:active {
@@ -1359,6 +1365,8 @@ button.active,
 .auiButtonSmall.active,
 .auiButtonDisabled:active,
 .auiButtonDisabled.active,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
 .auiSelectButton a:active {
   background-color: #cccccc \9;
 }
@@ -1373,6 +1381,7 @@ button:first-child,
 .auiButtonSearch:first-child,
 .auiButtonSmall:first-child,
 .auiButtonDisabled:first-child,
+.auiButtonIcon:first-child,
 .auiSelectButton a:first-child {
   *margin-left: 0;
 }
@@ -1397,6 +1406,8 @@ button:focus,
 .auiButtonSmall:focus,
 .auiButtonDisabled:hover,
 .auiButtonDisabled:focus,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
 .auiSelectButton a:hover,
 .auiSelectButton a:focus {
   color: #333333;
@@ -1415,6 +1426,7 @@ button:focus,
 .auiButtonSearch:focus,
 .auiButtonSmall:focus,
 .auiButtonDisabled:focus,
+.auiButtonIcon:focus,
 .auiSelectButton a:focus {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
@@ -1441,6 +1453,8 @@ button.active,
 .auiButtonSmall.active,
 .auiButtonDisabled:active,
 .auiButtonDisabled.active,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
 .auiSelectButton a:active {
   background-image: none;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -1454,6 +1468,7 @@ button.active,
 .auiButtonAction,
 .auiButtonBold,
 .auiButtonDisabled,
+.auiButtonIcon,
 .auiButtonSearch,
 .auiSelectButton a,
 input[type=submit],
@@ -1468,6 +1483,7 @@ button {
 *:first-child + html input[type=submit],
 *:first-child + html input.auiButton,
 *:first-child + html input.auiButtonAction,
+*:first-child + html input.auiButtonIcon,
 *:first-child + html input.auiButtonBold,
 *:first-child + html input.auiButtonSearch {
   padding: 0 2px;
@@ -1703,7 +1719,8 @@ input.auiButtonSearch.active {
   line-height: 1;
 }
 
-.auiSelectButton a {
+.auiSelectButton a,
+.auiWidget .auiSelectButton a {
   display: block;
   margin: 0 -1px;
   padding: 0 !important;
@@ -1770,6 +1787,11 @@ input.auiButtonSearch.active {
   margin-left: -4px !important;
 }
 
+.auiWidget .auiSelectButton span {
+  padding: 0;
+  background-image: none;
+}
+
 /***************************************************
 	auiMultiSelector
 --------------------------------------------------*/
@@ -1784,6 +1806,9 @@ input.auiButtonSearch.active {
 .auiMultiSelector .floatLeft,
 .auiMultiSelector .floatRight {
   margin: 5px 0;
+}
+
+.auiMultiSelector .auiSelectButton ul {
   white-space: nowrap;
 }
 
@@ -1865,6 +1890,7 @@ input.auiButtonSearch.active {
   height: 32px;
   line-height: 32px !important;
   margin: 0 5px;
+  white-space: nowrap;
 }
 
 .auiSummaryTitle {

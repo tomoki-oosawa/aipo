@@ -346,6 +346,16 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
     String filter_type =
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE_TYPE);
+
+    if ("all".equals(filter)) {
+      filter = filter_type = null;
+      ALEipUtils.removeTemp(rundata, context, ScheduleUtils.FILTER_NAMESPACE);
+      ALEipUtils.removeTemp(
+        rundata,
+        context,
+        ScheduleUtils.FILTER_NAMESPACE_TYPE);
+    }
+
     if (filter == null
       || filter_type == null
       || filter.equals("")
@@ -367,10 +377,11 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         Arrays.asList(userid),
         null);
     }
+
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
 
-    // グループにユーザが存在しない場合はダミーユーザを設定し、検索します。
+    // グループにユーザが存在しない場合はダミーユーザを設定し、検索します。(0件ヒット)
     // ダミーユーザーID = -1
     int size = ulist.size();
     if (size == 0) {
