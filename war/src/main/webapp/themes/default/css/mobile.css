@@ -332,10 +332,11 @@ input[type=password] {
 /***************************************************
 	auiSmpHead
 --------------------------------------------------*/
-/*
 #wrapper {
-	padding-top:47px;
+  min-width: 0;
 }
+
+/*
 .hdNavi, .hdActivity, .auiPortletHead {
 	display:none;
 }
