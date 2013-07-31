@@ -280,17 +280,12 @@ table.center {
 	width:16px;
 	height:16px;
 }
+
 #wrapper {
-	padding:0;
+  min-width: 960px;
+  padding: 0;
 }
-/* start guide reserved
-html > body #wrapper { *ExceptIE6*
-	margin-bottom:170px;
-}
-#login #wrapper {
-	margin-bottom:0;
-}
-*/
+
 #roundWrapper {
 }
 .roundMainWrapper {
