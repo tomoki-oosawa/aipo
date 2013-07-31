@@ -1777,9 +1777,14 @@ input.auiButtonSearch.active {
   margin: -5px 0;
 }
 
+*:first-child + html .auiMultiSelector.auiSummaryMeta {
+  margin: 0 0 10px 0;
+}
+
 .auiMultiSelector .floatLeft,
 .auiMultiSelector .floatRight {
   margin: 5px 0;
+  white-space: nowrap;
 }
 
 /***************************************************
