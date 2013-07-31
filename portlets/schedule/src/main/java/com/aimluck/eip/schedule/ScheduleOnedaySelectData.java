@@ -204,14 +204,14 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
     if (ALEipUtils.isMatch(rundata, context)) {
       // 表示する日付
       // e.g. 2004-3-14
-      if (rundata.getParameters().containsKey("view_date")) {
-        ALEipUtils.setTemp(rundata, context, "view_date", rundata
+      if (rundata.getParameters().containsKey("view_start")) {
+        ALEipUtils.setTemp(rundata, context, "view_start", rundata
           .getParameters()
-          .getString("view_date"));
+          .getString("view_start"));
       }
     }
     // viewDate に値を設定する。
-    String tmpViewDate = ALEipUtils.getTemp(rundata, context, "view_date");
+    String tmpViewDate = ALEipUtils.getTemp(rundata, context, "view_start");
     if (tmpViewDate2 != null) {
       tmpViewDate = tmpViewDate2;
     }
@@ -224,7 +224,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
     } else {
       viewDate.setValue(tmpViewDate);
       if (!viewDate.validate(new ArrayList<String>())) {
-        ALEipUtils.removeTemp(rundata, context, "view_date");
+        ALEipUtils.removeTemp(rundata, context, "view_start");
 
         throw new ALPageNotFoundException();
 

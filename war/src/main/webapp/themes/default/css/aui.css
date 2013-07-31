@@ -137,16 +137,18 @@ form.searchbox input.submit:active {
   background: #eeeeee url(../images/icon/search.png) no-repeat center center;
 }
 
-.hdActivity {
+.hdActivity,
+.hdInformation {
   cursor: pointer;
-  padding: 0 2px !important;
 }
 
-.hdActivity .mb_hide {
+.hdActivity span,
+.hdInformation span {
   line-height: 23px;
 }
 
-.hdActivity:hover .mb_hide {
+.hdActivity:hover .mb_hide,
+.hdInformation:hover .mb_hide {
   color: #FF9900;
 }
 
@@ -177,6 +179,7 @@ form.searchbox input.submit:active {
 
 .hdUserName .auiIcon {
   margin-bottom: 2px;
+  vertical-align: middle;
 }
 
 *:first-child + html .hdUserName .auiIcon {
@@ -248,18 +251,18 @@ img.avatar,
   border-radius: 3px;
 }
 
-.hdActivity div.active {
+.hdActivity div.active,
+.hdInformation div.active {
   background: #e0e0e0;
 }
 
+/*
 #activitychecker {
   text-align: center;
   right: 2px;
   top: 2px;
   background: url(../images/icon/activitychecker.png) top left no-repeat;
 }
-
-/*
 #activitycheckerContainer {
 	display:block;
 	margin-top:5px;

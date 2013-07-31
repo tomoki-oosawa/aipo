@@ -195,7 +195,7 @@ aipo.calendar.createMonthlyCalendar = function(json_url){
 	        			elem_a.setAttribute("href","javascript:void(0);");
 
 	        			elem_a.setAttribute("data-date",day_container.today);
-	        			elem_a.setAttribute("data-link",mc_data.oneday_link+"&view_date="+day_container.today);
+	        			elem_a.setAttribute("data-link",mc_data.oneday_link+"&view_start="+day_container.today);
 
 	        			dojo.query(elem_a).onclick(function(){
 	        				aipo.schedule.setIndicator(mc_data.portlet_id);
