@@ -1303,6 +1303,7 @@ table tr.caption {
 .filterInputField {
   max-width: 100%;
   float: none;
+  overflow: hidden;
 }
 
 .filterInputField input[type=text] {
@@ -1352,7 +1353,7 @@ table tr.caption {
 
 .filterDropDrawer {
   width: 20px;
-  height: 36px;
+  height: 30px;
   margin: 1px;
 }
 
