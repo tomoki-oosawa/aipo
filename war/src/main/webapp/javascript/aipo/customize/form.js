@@ -124,7 +124,7 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         dojo.query('div.menubar').style('display', 'none');
         menuNode.style('display', 'block');
         aipo.customize.refixMenuSchedule(portlet_id);
-        
+
         //Window リサイズ対応
         if (aipo.customize.refixMenuScheduleListener) {
         	dojo.disconnect(aipo.customize.refixMenuScheduleListener);
@@ -137,7 +137,7 @@ aipo.customize.showMenuSchedule = function(portlet_id) {
         	}, 200 )
         });
     } else {
-        aipo.customize.hideMenu(portlet_id);        
+        aipo.customize.hideMenu(portlet_id);
     }
 }
 
@@ -183,11 +183,12 @@ aipo.customize.hideMenu = function(portlet_id) {
     var menuNode = dojo.query('div.menubar').style('display', 'none');
 	var subNavi = document.getElementById('subNavigation');
 	if(subNavi){
-		if(document.defaultView.getComputedStyle(subNavi,null).display=='none'){
+		var style = subNavi.currentStyle || document.defaultView.getComputedStyle(subNavi, null);
+		if(style.display=='none'){
 			var footer = document.getElementById('auiWidgetsArea');
 			if (footer) {
 				footer.style.top = '';
-				footer.style.position = "fixed";	
+				footer.style.position = "fixed";
 			}
 	    }
 	}

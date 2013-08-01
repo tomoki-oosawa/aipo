@@ -89,7 +89,8 @@ function widgetMenuSwitch() {
    		var header = document.getElementById('mobileHeader');
 	    var body = dojo.body();
 
-        if(document.defaultView.getComputedStyle(subNavi,null).display=='none'){
+		var subNaviStyle = subNavi.currentStyle || document.defaultView.getComputedStyle(subNavi, null);
+        if(subNaviStyle.display=='none'){
                 subNavi.style.display = 'block';
 			    subNavi.style.position = "absolute";
 
@@ -139,7 +140,9 @@ function appsNaviSwitch() {
 	var wrapper = document.getElementById('wrapper');
     var drawer = document.getElementById('anDrawer');
 	var nLeft = '-260px';
-	if(document.defaultView.getComputedStyle(navi,null).left==nLeft){
+
+	var naviStyle = navi.currentStyle || document.defaultView.getComputedStyle(navi, null);
+	if(naviStyle.left==nLeft){
 		//show
 		for (var i=0; i<lists.length; i++){
 			lists[i].style.display = "block";
