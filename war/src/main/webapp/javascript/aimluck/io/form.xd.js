@@ -530,32 +530,22 @@ aimluck.io.addFileToList = function(ul, fileid, filename) {
   if (document.all) {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
-    if ((navigator.userAgent.indexOf('iPhone') > 0)){
-    	var now = new Date();
-        li.setAttribute('data-filename', now + ".jpg");
-    } else {
-        li.setAttribute('data-filename', filename);
-    }
+    li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
         + filename
         + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>"  + "<input type=\"hidden\" id=\"fileName\" name=\"fileName\"value=\"" + filename +" \" />";
+        + nlsStrings.DELETE_STR + "</span>";
 
     return ul.appendChild(li);
   } else {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
-    if ((navigator.userAgent.indexOf('iPhone') > 0)){
-    	var now = new Date();
-        li.setAttribute('data-filename', now + ".jpg");
-    } else {
-        li.setAttribute('data-filename', filename);
-    }
+    li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
         + filename
         + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>"  + "<input type=\"hidden\" id=\"fileName\" name=\"fileName\"value=\"" + filename +" \" />";
+        + nlsStrings.DELETE_STR + "</span>";
     return ul.appendChild(li);
   }
 }
@@ -565,32 +555,22 @@ aimluck.io.replaceFileToList = function(ul, fileid, filename) {
   if (document.all) {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
-    if ((navigator.userAgent.indexOf('iPhone') > 0)){
-    	var now = new Date();
-        li.setAttribute('data-filename', now + ".jpg");
-    } else {
-        li.setAttribute('data-filename', filename);
-    }
+    li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
         + filename
         + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>"  + "<input type=\"hidden\" id=\"fileName\" name=\"fileName\"value=\"" + filename +" \" />";
+        + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";
     return ul.appendChild(li);
   } else {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
-    if ((navigator.userAgent.indexOf('iPhone') > 0)){
-    	var now = new Date();
-        li.setAttribute('data-filename', now + ".jpg");
-    } else {
-        li.setAttribute('data-filename', filename);
-    }
+    li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
         + filename
         + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>"  + "<input type=\"hidden\" id=\"fileName\" name=\"fileName\"value=\"" + filename +" \" />";
+        + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";
     return ul.appendChild(li);
   }

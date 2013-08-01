@@ -26,13 +26,8 @@ aipo.fileupload.getFolderName = function() {
 aipo.fileupload.onAddFileInfo = function(foldername, fileid, filename, pid) {
     var ul = dojo.byId('attachments_' + pid);
 
-    if(ul.nodeName.toLowerCase()=="ul"){
-        if (navigator.userAgent.indexOf('iPhone') > 00) {
-        	var now = new Date();
-        	filename = now.getTime() + ".jpg";
-        	}
+    if(ul.nodeName.toLowerCase()=="ul")
     	aimluck.io.addFileToList(ul,fileid,filename);
-    }
     else
     	aimluck.io.addOption(ul,fileid,filename, false);//MultipeによるSelectとの互換性維持
     dojo.byId('folderName_' + pid).value =  foldername;

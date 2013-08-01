@@ -221,12 +221,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
       if (fileuploadList != null && !fileuploadList.isEmpty()) {
         // 新規にアップロードしたデータをつめる
         filebean = fileuploadList.get(0);
-        if (rundata.getParameters().getString("fileName") != null) {
-          file_name.setValue(rundata.getParameters().getString("fileName"));
-        } else {
-          file_name.setValue(filebean.getFileName());
-        }
-
+        file_name.setValue(filebean.getFileName());
       }
     } catch (Exception ex) {
       logger.error("cabinet", ex);
