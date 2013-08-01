@@ -206,29 +206,35 @@ public class TimelineResultData implements ALData {
    */
   public String getPreviewNote() {
     if (isLongNote()) {
+      try {
 
-      String subnote =
-        ALEipUtils
-          .getMessageList(note.getValue().substring(0, PRE_NOTE_LENGTH));
+        String subnote =
+          ALEipUtils.getMessageList(note.getValue().substring(
+            0,
+            PRE_NOTE_LENGTH));
 
-      String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-      if (sub.indexOf("http") == -1
-        || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
-        || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+        String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
+        if (sub.indexOf("http") == -1
+          || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
+          || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+          return subnote;
+        }
+        sub = note.getValue();
+
+        int i;
+
+        for (i = PRE_NOTE_LENGTH; i < sub.length()
+          && sub.charAt(i) != ' '
+          && sub.charAt(i) != '\n'; i++) {
+
+        }
+        subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
+
         return subnote;
+      } catch (Exception ex) {
+        // 文字数のカウントに失敗した場合は文字を丸めずに返す
+        return getNote();
       }
-      sub = note.getValue();
-
-      int i;
-
-      for (i = PRE_NOTE_LENGTH; i < sub.length()
-        && sub.charAt(i) != ' '
-        && sub.charAt(i) != '\n'; i++) {
-
-      }
-      subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
-
-      return subnote;
     } else {
       if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(timeline_type)) {
         return note.getValue();
