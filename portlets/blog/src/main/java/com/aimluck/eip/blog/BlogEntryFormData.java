@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.blog;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -49,6 +50,7 @@ import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -479,7 +481,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
           newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
-          byte[] fileThumbnail =
+          ShrinkImageSet shrinkImageSet =
             FileuploadUtils.getBytesShrinkFilebean(
               orgId,
               folderName,
@@ -488,7 +490,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
               acceptExts,
               FileuploadUtils.DEF_THUMBNAIL_WIDTH,
               FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-              msgList);
+              msgList,
+              true);
 
           String filename = j + "_" + String.valueOf(System.nanoTime());
 
@@ -497,21 +500,36 @@ public class BlogEntryFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setTitle(newfilebean.getFileName());
           file.setFilePath(BlogUtils.getRelativePath(filename));
-          if (fileThumbnail != null) {
-            file.setFileThumbnail(fileThumbnail);
+          if (shrinkImageSet.getShrinkImage() != null) {
+            file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTBlogEntry(entry);
           file.setCreateDate(Calendar.getInstance().getTime());
           file.setUpdateDate(Calendar.getInstance().getTime());
 
-          // ファイルの移動
-          ALStorageService.copyTmpFile(
-            uid,
-            folderName,
-            String.valueOf(newfilebean.getFileId()),
-            BlogUtils.FOLDER_FILEDIR_BLOG,
-            BlogUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
-            filename);
+          if (shrinkImageSet.getFixImage() != null) {
+            // ファイルの作成
+            ALStorageService.createNewFile(new ByteArrayInputStream(
+              shrinkImageSet.getFixImage()), BlogUtils.FOLDER_FILEDIR_BLOG
+              + ALStorageService.separator()
+              + Database.getDomainName()
+              + ALStorageService.separator()
+              + BlogUtils.CATEGORY_KEY
+              + ALStorageService.separator()
+              + uid
+              + ALStorageService.separator()
+              + filename);
+          } else {
+            // ファイルの移動
+            ALStorageService.copyTmpFile(
+              uid,
+              folderName,
+              String.valueOf(filebean.getFileId()),
+              BlogUtils.FOLDER_FILEDIR_BLOG,
+              BlogUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+              filename);
+          }
+
         }
 
         // 添付ファイル保存先のフォルダを削除

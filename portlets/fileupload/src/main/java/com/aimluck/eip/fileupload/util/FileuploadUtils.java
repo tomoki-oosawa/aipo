@@ -22,9 +22,13 @@ package com.aimluck.eip.fileupload.util;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -45,6 +49,12 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifIFD0Directory;
+import com.drew.metadata.jpeg.JpegDirectory;
 
 /**
  * ファイルアップロードのユーティリティクラスです。 <BR>
@@ -286,12 +296,17 @@ public class FileuploadUtils {
    * @param msgList
    * @return
    */
-  public static byte[] getBytesShrinkFilebean(String org_id, String folderName,
-      int uid, FileuploadLiteBean fileBean, String[] acceptExts, int width,
-      int height, List<String> msgList) {
+  public static ShrinkImageSet getBytesShrinkFilebean(String org_id,
+      String folderName, int uid, FileuploadLiteBean fileBean,
+      String[] acceptExts, int width, int height, List<String> msgList,
+      boolean isFixOrgImage) {
 
     byte[] result = null;
+    byte[] fixResult = null;
     InputStream is = null;
+    InputStream is2 = null;
+    BufferedImage orgImage = null;
+    boolean fixed = false;
 
     try {
 
@@ -326,19 +341,29 @@ public class FileuploadUtils {
           + ALStorageService.separator()
           + folderName, String.valueOf(fileBean.getFileId()));
 
+      is2 =
+        ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+          + ALStorageService.separator()
+          + folderName, String.valueOf(fileBean.getFileId()));
+
       Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix(ext);
       ImageReader reader = readers.next();
       reader.setInput(ImageIO.createImageInputStream(is));
 
-      BufferedImage orgImage = reader.read(0);
+      orgImage = reader.read(0);
       reader.reset();
       reader.dispose();
 
-      // BufferedImage orgImage = ImageIO.read(is);
+      ImageInformation readImageInformation = readImageInformation(is2);
+      if (readImageInformation != null) {
+        orgImage =
+          transformImage(orgImage, getExifTransformation(readImageInformation));
+        fixed = isFixOrgImage;
+      }
 
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
-      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpg");
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
       ImageWriter writer = writers.next();
 
       ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -347,6 +372,19 @@ public class FileuploadUtils {
       writer.write(shrinkImage);
 
       result = out.toByteArray();
+
+      if (fixed) {
+        Iterator<ImageWriter> writers2 = ImageIO.getImageWritersBySuffix(ext);
+        ImageWriter writer2 = writers2.next();
+
+        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        ImageOutputStream ios2 = ImageIO.createImageOutputStream(out2);
+        writer2.setOutput(ios2);
+        writer2.write(orgImage);
+
+        fixResult = out2.toByteArray();
+      }
+
     } catch (Exception e) {
       logger.error("fileupload", e);
       result = null;
@@ -359,8 +397,17 @@ public class FileuploadUtils {
         logger.error("fileupload", e);
         result = null;
       }
+      try {
+        if (is2 != null) {
+          is2.close();
+        }
+      } catch (Exception e) {
+        logger.error("fileupload", e);
+        result = null;
+      }
     }
-    return result;
+
+    return new ShrinkImageSet(result, fixed ? fixResult : null);
   }
 
   /**
@@ -484,7 +531,7 @@ public class FileuploadUtils {
       new BufferedImage(
         targetImage.getWidth(null),
         targetImage.getHeight(null),
-        BufferedImage.TYPE_INT_RGB);
+        imgfile.getType());
     Graphics2D g = tmpImage.createGraphics();
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, shrinkedWidth, shrinkedHeight);
@@ -533,6 +580,8 @@ public class FileuploadUtils {
         targetImage.getHeight(null),
         BufferedImage.TYPE_INT_RGB);
     Graphics2D g = tmpImage.createGraphics();
+    g.setBackground(Color.WHITE);
+    g.setColor(Color.WHITE);
     g.drawImage(targetImage, 0, 0, null);
     int _iwidth = tmpImage.getWidth();
     int _iheight = tmpImage.getHeight();
@@ -580,5 +629,136 @@ public class FileuploadUtils {
 
   public static int getMaxFileSize(String unit) {
     return ALCommonUtils.getMaxFileSize(unit);
+  }
+
+  public static class ImageInformation {
+    public final int orientation;
+
+    public final int width;
+
+    public final int height;
+
+    public ImageInformation(int orientation, int width, int height) {
+      this.orientation = orientation;
+      this.width = width;
+      this.height = height;
+    }
+
+    @Override
+    public String toString() {
+      return String.format(
+        "%dx%d,%d",
+        this.width,
+        this.height,
+        this.orientation);
+    }
+  }
+
+  public static ImageInformation readImageInformation(InputStream in) {
+    try {
+      Metadata metadata =
+        ImageMetadataReader.readMetadata(new BufferedInputStream(in), true);
+      Directory directory = metadata.getDirectory(ExifIFD0Directory.class);
+      JpegDirectory jpegDirectory = metadata.getDirectory(JpegDirectory.class);
+
+      int orientation = 1;
+      try {
+        orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
+      } catch (Exception me) {
+
+      }
+      int width = jpegDirectory.getImageWidth();
+      int height = jpegDirectory.getImageHeight();
+
+      return new ImageInformation(orientation, width, height);
+    } catch (IOException e) {
+      logger.debug(e.getMessage(), e);
+    } catch (ImageProcessingException e) {
+      logger.debug(e.getMessage(), e);
+    } catch (Exception e) {
+      logger.debug(e.getMessage(), e);
+    }
+    return null;
+  }
+
+  public static AffineTransform getExifTransformation(ImageInformation info) {
+
+    AffineTransform t = new AffineTransform();
+    if (info == null) {
+      return t;
+    }
+
+    switch (info.orientation) {
+      case 1:
+        break;
+      case 2: // Flip X
+        t.scale(-1.0, 1.0);
+        t.translate(-info.width, 0);
+        break;
+      case 3: // PI rotation
+        t.translate(info.width, info.height);
+        t.rotate(Math.PI);
+        break;
+      case 4: // Flip Y
+        t.scale(1.0, -1.0);
+        t.translate(0, -info.height);
+        break;
+      case 5: // - PI/2 and Flip X
+        t.rotate(-Math.PI / 2);
+        t.scale(-1.0, 1.0);
+        break;
+      case 6: // -PI/2 and -width
+        t.translate(info.height, 0);
+        t.rotate(Math.PI / 2);
+        break;
+      case 7: // PI/2 and Flip
+        t.scale(-1.0, 1.0);
+        t.translate(-info.height, 0);
+        t.translate(0, info.width);
+        t.rotate(3 * Math.PI / 2);
+        break;
+      case 8: // PI / 2
+        t.translate(0, info.width);
+        t.rotate(3 * Math.PI / 2);
+        break;
+    }
+
+    return t;
+  }
+
+  public static BufferedImage transformImage(BufferedImage image,
+      AffineTransform transform) throws Exception {
+
+    AffineTransformOp op =
+      new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+
+    BufferedImage destinationImage =
+      new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+    Graphics2D g = destinationImage.createGraphics();
+    g.setColor(Color.WHITE);
+
+    destinationImage = op.filter(image, destinationImage);
+
+    return destinationImage;
+  }
+
+  public static class ShrinkImageSet {
+
+    private byte[] shrinkImage = null;
+
+    private byte[] fixImage = null;
+
+    public ShrinkImageSet(byte[] shrinkImage, byte[] fixImage) {
+      this.shrinkImage = shrinkImage;
+      this.fixImage = fixImage;
+    }
+
+    public byte[] getShrinkImage() {
+      return this.shrinkImage;
+    }
+
+    public byte[] getFixImage() {
+      return this.fixImage;
+    }
   }
 }

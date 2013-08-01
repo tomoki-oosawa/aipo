@@ -372,7 +372,8 @@ public class AccountUserFormData extends ALAbstractFormData {
                 acceptExts,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-                msgList);
+                msgList,
+                false).getShrinkImage();
             facePhoto_smartphone =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
@@ -382,7 +383,8 @@ public class AccountUserFormData extends ALAbstractFormData {
                 acceptExts,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
-                msgList);
+                msgList,
+                false).getShrinkImage();
           } else {
             facePhoto = null;
             facePhoto_smartphone = null;

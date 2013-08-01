@@ -165,6 +165,7 @@
 	<classpathentry kind="var" path="M2_REPO/org/mnode/ical4j/ical4j/1.0.2/ical4j-1.0.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="var" path="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/drewnoakes/metadata-extractor/2.6.2/metadata-extractor-2.6.2.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>

@@ -296,7 +296,9 @@ public class AccountEditFormData extends ALAbstractFormData {
                 acceptExts,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
-                msgList);
+                msgList,
+                false).getShrinkImage();
+
             String[] acceptExts2 = ImageIO.getWriterFormatNames();
             facePhoto =
               FileuploadUtils.getBytesShrinkFilebean(
@@ -307,7 +309,8 @@ public class AccountEditFormData extends ALAbstractFormData {
                 acceptExts2,
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-                msgList);
+                msgList,
+                false).getShrinkImage();
           } else {
             facePhoto = null;
           }
