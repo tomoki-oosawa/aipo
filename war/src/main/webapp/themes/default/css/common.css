@@ -2290,7 +2290,7 @@ margin:0 3px 0 0;
 	width
 --------------------------------------------------*/
 .thin {width:2%;}
-.wide, .w100 {width:100%;}
+.wide, .w100 {width:100%; max-width:100%;}
 .w99 {width:99%;}
 .w95 {width:95%;}
 .w90 {width:90%;}

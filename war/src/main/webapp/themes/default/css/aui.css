@@ -2425,10 +2425,11 @@ select {
 textarea,
 select {
   border: solid 1px #ccc;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 
 input[type=text],
@@ -2440,6 +2441,7 @@ input[type=password] {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #c9c9c9;
   -webkit-box-sizing: border-box;
@@ -2460,11 +2462,15 @@ input[type=password] {
 select {
   min-height: 32px;
   padding: 0.25em;
+  max-width: 300px;
+}
+
+*:first-child + html select {
+  height: 32px;
+  padding: 0;
 }
 
 form textarea {
-  border-radius: 3px;
-  -ms-border-radius: 3px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
