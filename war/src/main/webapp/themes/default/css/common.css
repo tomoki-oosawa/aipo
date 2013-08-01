@@ -1172,6 +1172,7 @@ table.simpleTable td.caption {
 	background:url(../images/common/indicator.gif) no-repeat left;
 	padding:2px 0 2px 18px;
 	margin-left:2px;
+	clear: both;
 }
 i.indicator {
 	display:inline-block;
