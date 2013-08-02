@@ -721,6 +721,8 @@ public class FileuploadUtils {
         t.translate(0, info.width);
         t.rotate(3 * Math.PI / 2);
         break;
+      default:
+        break;
     }
 
     return t;
