@@ -37,7 +37,6 @@
 </div>
 
 <div class="auiSummfloatLeftaryMeta clearfix">
-<form class="auiForm">
 #ALselectpdheader("category" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
 
 #if ($all_flg)
@@ -52,7 +51,7 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
 #end
-</select></form></div>
+</select></div>
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('Workflow')
 #if($result.List.size() == 0)
