@@ -453,12 +453,12 @@ $!{record.ToDoResultData.TodoName}
 #if($!{record.Date.Value.equals($result.Today.Value)})
 ##</td></tr></tbody></table>
 #end
-#ALtablefooterCalendar()
+#ALtdcellfooter()
 #end
 </tr>
 #end
 ### 設備スケジュール（ここまで） ###
-#ALtablefooter()
+#ALtablefooterCalendar()
 #end
 </div>
 
