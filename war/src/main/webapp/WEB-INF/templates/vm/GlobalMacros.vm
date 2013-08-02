@@ -130,6 +130,7 @@
 #end
 
 #macro(ALtableheaderCalendar $width)
+<div class="calendarWrapper">
 <table class="calendar" width="$width">
   <tbody>
 #end
@@ -137,6 +138,7 @@
 #macro(ALtablefooter)
   </tbody>
 </table>
+</div>
 #end
 
 #macro(ALtableheaderBorder $border)
