@@ -25,7 +25,7 @@
 #if (${client}!= "IPHONE")
 	#ALdialogheaderPrintSchedule($l10n.SCHEDULE_SCHEDULE_DETAIL "$!portlet.ID" "ScheduleDetailScreenPrint" "$!{result.getViewDate().toString()})" "$!{result.Detail.User.UserId.toString()}")
 #else
-	#ALdialogheaderDetail("$l10n.SCHEDULE_SCHEDULE_DETAIL")
+	#ALdialogheaderDetailSmartPhone("$l10n.SCHEDULE_SCHEDULE_DETAIL")
 #end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID")
 #ALerrmsg($errmsgs)
