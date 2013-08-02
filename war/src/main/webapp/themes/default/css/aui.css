@@ -341,12 +341,48 @@ img.avatar,
   top: 0;
 }
 
+.auiPopupHead {
+  padding: 10px 0 10px 20px;
+  background: transparent url(../images/common/icon_p.gif) no-repeat left center;
+}
+
+.auiPopupHead .auiPopupTitle {
+  line-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auiPopupTool {
+  float: right;
+}
+
+.auiPopupTool > div {
+  float: left;
+  margin-left: 5px;
+}
+
+.auiPopupTool .auiButtonSmall {
+  padding: 3px !important;
+  font-size: 14px;
+  color: #666666;
+}
+
+.auiPopupTool .auiButtonSmall:hover i {
+  color: #333333;
+}
+
+.auiPopupTool .auiButtonSmall span {
+  width: 16px;
+  height: 16px;
+}
+
 .auiPopupMeta {
   width: 100%;
   margin-top: 10px;
 }
 
-.auiPopupTitle {
+.auiPopupMeta .auiPopupTitle {
   position: absolute;
   max-width: 90%;
   overflow: hidden;
@@ -393,6 +429,7 @@ img.avatar,
 .auiPopupButtons .auiButtonSearch,
 .auiPopupButtons .auiButtonSmall,
 .auiPopupButtons .auiButtonDisabled,
+.auiPopupButtons .auiButtonIcon,
 .auiPopupButtons input[type=submit],
 .auiPopupButtons input[type=button],
 .auiPopupButtons input[type=reset],
@@ -1665,6 +1702,41 @@ input.auiButtonSearch.active {
 *:first-child + html .auiButton img,
 *:first-child + html .auiButtonSmall img {
   padding: 2px 0;
+}
+
+/* auiButtonIcon */
+.auiButtonIcon {
+  width: 16px;
+  height: 16px;
+  padding: 3px !important;
+  font-size: 15px;
+  color: #666666;
+}
+
+.auiButtonIcon:hover i {
+  color: #666666;
+}
+
+.auiButtonIcon span {
+  display: table-cell;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.auiButtonIcon span,
+.auiButtonIcon i {
+  cursor: pointer;
+}
+
+*:first-child + html .auiButtonIcon span {
+  display: block;
+}
+
+*:first-child + html .auiButtonIcon i {
+  width: 16px;
 }
 
 .auiButtonGroup {
@@ -4063,7 +4135,7 @@ a.auiIconTrash:hover {
   display: inline-block;
   width: 15px;
   height: 18px;
-  vertical-align: middle;
+  vertical-align: baseline;
   background-image: url(../images/icon/auiIconSprites20130528.png);
   background-repeat: no-repeat;
 }
