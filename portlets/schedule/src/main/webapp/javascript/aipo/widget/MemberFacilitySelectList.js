@@ -249,7 +249,7 @@ dojo.declare("aipo.widget.MemberFacilitySelectList", [dijit._Widget, dijit._Temp
 			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
 			  opt.selected = true;
 			})(p_mo[i], i);
-			this.addMember(dojo.byId("member_to-"+portletId), dojo.byId("picked_memberlist-"+portletId));
+			this.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
         }
         input.innerHTML = html;
     },
