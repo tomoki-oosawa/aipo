@@ -529,7 +529,7 @@ $record.WbrName
 </tr>
 #end
 
-#ALtablefooter()
+#ALtablefooterCalendar()
 #end
 </div>
 

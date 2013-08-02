@@ -453,7 +453,7 @@ $!{record.ToDoResultData.TodoName}
 #if($!{record.Date.Value.equals($result.Today.Value)})
 ##</td></tr></tbody></table>
 #end
-#ALtdcellfooter()
+#ALtablefooterCalendar()
 #end
 </tr>
 #end
