@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -44,7 +42,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -283,61 +280,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
     // メモ
     note.validate(msgList);
-    if (existsFileName()) {
-      msgList.add(ALLocalizationUtils.getl10n("CABINET_SAME_NAME_ANOTHER"));
-    }
 
     /** 編集アクセス制限 */
     if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(), rundata)) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_AUTHORITY"));
     }
     return (msgList.size() == 0);
-  }
-
-  private boolean existsFileName() {
-    String fname = file_name.getValue();
-    if (fname == null || "".equals(fname)) {
-      return false;
-    }
-
-    try {
-      SelectQuery<EipTCabinetFile> query =
-        Database.query(EipTCabinetFile.class);
-      query.select(EipTCabinetFile.FILE_NAME_COLUMN);
-      if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        Expression exp =
-          ExpressionFactory.matchDbExp(
-            EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
-            Integer.valueOf((int) folder_id.getValue()));
-        query.setQualifier(exp);
-      } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp1 =
-          ExpressionFactory.matchDbExp(
-            EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
-            Integer.valueOf((int) folder_id.getValue()));
-        query.setQualifier(exp1);
-        Expression exp2 =
-          ExpressionFactory.noMatchDbExp(
-            EipTCabinetFile.FILE_ID_PK_COLUMN,
-            Integer.valueOf(fileid));
-        query.andQualifier(exp2);
-      }
-
-      List<EipTCabinetFile> list = query.fetchList();
-      if (list != null && list.size() > 0) {
-        for (EipTCabinetFile record : list) {
-          if (fname.equals(record.getFileName())) {
-            return true;
-          }
-        }
-      }
-    } catch (RuntimeException e) {
-      throw e;
-    } catch (Exception e) {
-      return true;
-    }
-
-    return false;
   }
 
   /**

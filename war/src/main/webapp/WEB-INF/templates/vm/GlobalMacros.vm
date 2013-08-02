@@ -135,10 +135,15 @@
   <tbody>
 #end
 
-#macro(ALtablefooter)
+#macro(ALtablefooterCalendar)
   </tbody>
 </table>
 </div>
+#end
+
+#macro(ALtablefooter)
+  </tbody>
+</table>
 #end
 
 #macro(ALtableheaderBorder $border)

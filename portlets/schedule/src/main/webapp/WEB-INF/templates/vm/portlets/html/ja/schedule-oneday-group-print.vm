@@ -581,7 +581,7 @@ $record.WbrName
 #ALtdcellheaderAtt("colspan='$colspan'")
 <div class="calendarScheduleDiv"><div class="small">
 </div></div>
-#ALtdcellfooter()
+#ALtablefooterCalendar()
 #else
 #ALtdcellAtt("" "colspan='$colspan' height='1'")
 #end
