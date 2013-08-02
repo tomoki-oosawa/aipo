@@ -2542,6 +2542,10 @@ select {
   padding: 0;
 }
 
+*:first-child + html select[multiple] {
+  height: auto;
+}
+
 form textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
