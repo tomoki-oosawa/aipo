@@ -28,7 +28,7 @@
 #if(${client}!="IPHONE")
 	#ALdialogheaderPrint($l10n.WEBMAIL_MAIL_DETAIL "$!portlet.ID" "WebMailDetailScreenPrint" "$!{result.getViewDate().toString()})")
 #else
-	#ALdialogheaderDetail("$l10n.WEBMAIL_MAIL_DETAIL")
+	#ALdialogheaderDetailSmartPhone("$l10n.WEBMAIL_MAIL_DETAIL")
 #end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader($l10n.WEBMAIL_MAIL)

@@ -23,7 +23,7 @@
 #if (${client}!= "IPHONE")
 	#ALdialogheaderPrint("$l10n.WORKFLOW_WORKFLOW_DETAILS" "$!portlet.ID" "WorkflowScreenPrint" "$!{result.getViewDate().toString()})")
 #else
-	#ALdialogheaderDetail("$l10n.WORKFLOW_WORKFLOW_DETAILS")
+	#ALdialogheaderDetailSmartPhone("$l10n.WORKFLOW_WORKFLOW_DETAILS")
 #end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
