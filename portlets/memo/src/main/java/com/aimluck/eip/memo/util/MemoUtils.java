@@ -83,7 +83,8 @@ public class MemoUtils {
       throws ALPageNotFoundException {
     try {
       String memoid = ALEipUtils.getTemp(rundata, context, NEW_FLAG);
-      if (isMemoIDEmpty(memoid)) {
+      if (isMemoIDEmpty(memoid)
+        || "MemoDetailScreen".equals(rundata.getScreenTemplate())) {
         memoid = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
         if (isMemoIDEmpty(memoid)) {
           memoid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);

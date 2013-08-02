@@ -28,7 +28,7 @@
 #else
 #set ($filtertype=$result.CurrentFilterType)
 #end
-<div class="auiSummaryMeta auiMultiSelector clearfix" style="margin-bottom:10px;">
+<div class="auiSummaryMeta auiMultiSelector clearfix" >
 <div class="floatRight mb_hide">
 <div class="auiSelectButton">
 
@@ -68,8 +68,8 @@
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 </ul>
-</div>
 <div class="count"><strong>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}</strong></div>
+</div>
 </div>
 
 </div>

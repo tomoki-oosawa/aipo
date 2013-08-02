@@ -1868,7 +1868,7 @@ input.auiButtonSearch.active {
 	auiMultiSelector
 --------------------------------------------------*/
 .auiMultiSelector.auiSummaryMeta {
-  margin: -5px 0;
+  margin-top: -5px;
 }
 
 *:first-child + html .auiMultiSelector.auiSummaryMeta {
@@ -1877,7 +1877,7 @@ input.auiButtonSearch.active {
 
 .auiMultiSelector .floatLeft,
 .auiMultiSelector .floatRight {
-  margin: 5px 0;
+  margin-top: 5px;
 }
 
 .auiMultiSelector .auiSelectButton ul {
@@ -2538,7 +2538,6 @@ select {
 }
 
 *:first-child + html select {
-  height: 32px;
   padding: 0;
 }
 
