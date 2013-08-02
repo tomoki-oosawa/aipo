@@ -168,7 +168,7 @@ $record3.AliasName
 #if(!$result.isMatch($record3.UserId.Value) && $result.hasAuthorityNote())
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId)))
 <br /><a class="btn_gray" style="margin-top:5px;" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
-<img src="images/schedule/plus_orange.gif" alt="+" />
+<i class="icon-plus fcOrange"></i>
 $l10n.SCHEDULE_ADD_NOTE
 </a>
 #end
@@ -529,7 +529,7 @@ $record.WbrName
 </tr>
 #end
 
-#ALtablefooter()
+#ALtablefooterCalendar()
 #end
 </div>
 

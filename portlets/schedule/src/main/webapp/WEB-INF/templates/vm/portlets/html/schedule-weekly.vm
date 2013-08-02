@@ -218,7 +218,7 @@ $!{record.ToDoResultData.TodoName}
 #end
 </tr>
 #end
-#ALtablefooter()
+#ALtablefooterCalendar()
 #ALformfooter()
 
 #if($!ajax_onloadimage)
