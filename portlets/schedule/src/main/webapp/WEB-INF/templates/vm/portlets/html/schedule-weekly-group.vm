@@ -24,7 +24,7 @@
 #set ($filter = $result.CurrentFilter)
 #end
 ## ---------------------------------------------------------------------------
-<div class="auiSummaryMeta auiMultiSelector clearfix" style="margin-bottom:5px;">
+<div class="auiSummaryMeta auiMultiSelector clearfix" >
 <div class="floatRight mb_hide">
 <div class="auiSelectButton">
 <ul>
@@ -63,8 +63,8 @@
 <a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 </ul>
-</div>
 <div class="count"><strong>$!{result.ViewStartFormat}$!{result.ViewStart.DayOfWeek}</strong></div>
+</div>
 </div>
 
 </div>
@@ -453,12 +453,12 @@ $!{record.ToDoResultData.TodoName}
 #if($!{record.Date.Value.equals($result.Today.Value)})
 ##</td></tr></tbody></table>
 #end
-#ALtdcellfooter()
+#ALtablefooterCalendar()
 #end
 </tr>
 #end
 ### 設備スケジュール（ここまで） ###
-#ALtablefooterCalendar()
+#ALtablefooter()
 #end
 </div>
 
