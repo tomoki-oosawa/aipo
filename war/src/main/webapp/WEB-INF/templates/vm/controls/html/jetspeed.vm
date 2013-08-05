@@ -172,8 +172,7 @@ function appsNaviSwitch() {
 			//ナビゲーション外のクリックイベントを無効化
             dojo.query("input,select,button,a").forEach(function(node){
     			if(!aipo.arrayContains(naviNodes,node))
-    				if(node.addEventListener)navEventList.push(node.addEventListener('click',f,true));
-    				else navEventList.push(dojo.connect(node,'click',f));
+					navEventList.push(dojo.connect(node,'click',f));
     		});
 
 			//ナビゲーション外のフォームオブジェクトの無効化
