@@ -166,7 +166,7 @@ aimluck.io.disableForm = function(form, bool) {
       }
     }
   } else {
-    var spans = dojo.query(".auiButtonDisabled");
+    var spans = dojo.query(".auiButtonDisabled", form);
     for ( var i = 0; i < spans.length; i++) {
       var uuid = spans[i].id;
       var element = dojo.query("." + uuid)[0];
