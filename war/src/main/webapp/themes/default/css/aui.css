@@ -1729,6 +1729,7 @@ input.auiButtonSearch.active {
 .auiButtonIcon span,
 .auiButtonIcon i {
   cursor: pointer;
+  vertical-align: baseline;
 }
 
 *:first-child + html .auiButtonIcon span {
@@ -3587,7 +3588,7 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
   width: 16px;
   height: 16px;
   overflow: hidden;
-  vertical-align: baseline;
+  vertical-align: middle;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
@@ -3625,10 +3626,12 @@ a.auiIcon:hover {
 
 .auiIconSetting {
   background-position: 0px 0px;
+  height: 17px;
 }
 
 .auiIconSetting_w {
   background-position: 0px -16px;
+  height: 17px;
 }
 
 a.auiIconSetting:hover {
