@@ -84,7 +84,7 @@ public class MemoUtils {
     try {
       String memoid = ALEipUtils.getTemp(rundata, context, NEW_FLAG);
       if (isMemoIDEmpty(memoid)
-        || "MemoDetailScreen".equals(rundata.getScreenTemplate())) {
+        || !"MemoScreen".equals(rundata.getScreenTemplate())) {
         memoid = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
         if (isMemoIDEmpty(memoid)) {
           memoid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
