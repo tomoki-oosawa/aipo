@@ -71,6 +71,7 @@
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 #if(${client}!="IPHONE")
+<div class="auiSummaryMeta clearfix">
 <div class="floatRight">
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>
@@ -110,6 +111,11 @@
         		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("filter",$!record.Name).addQueryData("filtertype","facilitygroup"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
             #end
         </select>
+	</div>
+#end
+
+
+#if(${client}!="IPHONE")
 	</div>
 #end
 
