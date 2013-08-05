@@ -210,9 +210,22 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールの表示開始日時
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_month")) {
-        ALEipUtils.setTemp(rundata, context, "view_month", rundata
-          .getParameters()
-          .getString("view_month"));
+        String tmpViewMonth = rundata.getParameters().getString("view_month");
+        if (!tmpViewMonth.equals(ALEipUtils.getTemp(
+          rundata,
+          context,
+          "view_month"))) {
+          ALEipUtils.setTemp(rundata, context, "view_start", tmpViewMonth
+            + "-01");
+        }
+        ALEipUtils.setTemp(rundata, context, "view_month", tmpViewMonth);
+      } else {
+        String tmpViewStart =
+          ALEipUtils.getTemp(rundata, context, "view_start");
+        if (tmpViewStart != null && tmpViewStart.length() >= 7) {
+          ALEipUtils.setTemp(rundata, context, "view_month", tmpViewStart
+            .substring(0, 7));
+        }
       }
     }
 
