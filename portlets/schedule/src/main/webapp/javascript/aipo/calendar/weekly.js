@@ -359,11 +359,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             });
             termTableHtml += "</tbody></table>"
             dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
-            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
-            dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
             dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
             dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
-
+            var tempTermHeight = (17 * (l_count - m_count)) + "px";
+            var tempTermTop = (-(17 * (l_count - m_count + 1))) + "px";
             for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
                 tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
                 tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
@@ -793,6 +792,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 ptConfig[_portletId].isScroll = true;
             }
             ptConfig[_portletId].isTooltipEnable = true;
+
+            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = tempTermHeight;
+            dojo.byId('termScheduleDivAdd_' + _portletId).style.top = tempTermTop;
         }
     });
 
