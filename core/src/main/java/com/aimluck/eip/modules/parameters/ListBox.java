@@ -102,6 +102,10 @@ public class ListBox extends ParameterPresentationStyle {
       select = new Select(name);
     }
 
+    if (this.getClass() != ListBox.class) {
+      select.setClass("w100");
+    }
+
     if (multiple) {
       select.setMultiple(multiple);
     }
