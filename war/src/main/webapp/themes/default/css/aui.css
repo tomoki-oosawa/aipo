@@ -3587,7 +3587,7 @@ IE6は透過PNGが利用できないため透過GIFへ置き換えている。
   width: 16px;
   height: 16px;
   overflow: hidden;
-  vertical-align: middle;
+  vertical-align: baseline;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
