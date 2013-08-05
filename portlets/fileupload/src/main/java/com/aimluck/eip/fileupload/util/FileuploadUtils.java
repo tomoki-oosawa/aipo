@@ -349,7 +349,13 @@ public class FileuploadUtils {
         bufferdImage =
           transformImage(
             bufferdImage,
-            getExifTransformation(readImageInformation));
+            getExifTransformation(readImageInformation),
+            readImageInformation.orientation >= 5
+              ? bufferdImage.getHeight()
+              : bufferdImage.getWidth(),
+            readImageInformation.orientation >= 5
+              ? bufferdImage.getWidth()
+              : bufferdImage.getHeight());
         fixed = isFixOrgImage;
       }
 
@@ -713,13 +719,13 @@ public class FileuploadUtils {
   }
 
   public static BufferedImage transformImage(BufferedImage image,
-      AffineTransform transform) throws Exception {
+      AffineTransform transform, int newWidth, int newHeight) throws Exception {
 
     AffineTransformOp op =
-      new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+      new AffineTransformOp(transform, AffineTransformOp.TYPE_BICUBIC);
 
     BufferedImage destinationImage =
-      new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
+      new BufferedImage(newWidth, newHeight, image.getType());
     Graphics2D g = destinationImage.createGraphics();
     g.setColor(Color.WHITE);
 
