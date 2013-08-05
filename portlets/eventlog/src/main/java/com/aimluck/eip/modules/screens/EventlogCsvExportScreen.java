@@ -144,7 +144,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
         }
         return sb.toString();
       } catch (Exception e) {
-        logger.error("[ERROR]" + e);
+        logger.error("[ERROR]", e);
         return null;
       }
     } else {

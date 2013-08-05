@@ -27,6 +27,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,10 +37,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -304,8 +305,6 @@ public class FileuploadUtils {
     byte[] result = null;
     byte[] fixResult = null;
     InputStream is = null;
-    InputStream is2 = null;
-    BufferedImage orgImage = null;
     boolean fixed = false;
 
     try {
@@ -341,28 +340,21 @@ public class FileuploadUtils {
           + ALStorageService.separator()
           + folderName, String.valueOf(fileBean.getFileId()));
 
-      is2 =
-        ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
-          + ALStorageService.separator()
-          + folderName, String.valueOf(fileBean.getFileId()));
-
-      Iterator<ImageReader> readers = ImageIO.getImageReadersBySuffix(ext);
-      ImageReader reader = readers.next();
-      reader.setInput(ImageIO.createImageInputStream(is));
-
-      orgImage = reader.read(0);
-      reader.reset();
-      reader.dispose();
-
-      ImageInformation readImageInformation = readImageInformation(is2);
+      byte[] imageInBytes = IOUtils.toByteArray(is);
+      ImageInformation readImageInformation =
+        readImageInformation(new ByteArrayInputStream(imageInBytes));
+      BufferedImage bufferdImage =
+        ImageIO.read(new ByteArrayInputStream(imageInBytes));
       if (readImageInformation != null) {
-        orgImage =
-          transformImage(orgImage, getExifTransformation(readImageInformation));
+        bufferdImage =
+          transformImage(
+            bufferdImage,
+            getExifTransformation(readImageInformation));
         fixed = isFixOrgImage;
       }
 
       BufferedImage shrinkImage =
-        FileuploadUtils.shrinkAndTrimImage(orgImage, width, height);
+        FileuploadUtils.shrinkAndTrimImage(bufferdImage, width, height);
       Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
       ImageWriter writer = writers.next();
 
@@ -380,7 +372,7 @@ public class FileuploadUtils {
         ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         ImageOutputStream ios2 = ImageIO.createImageOutputStream(out2);
         writer2.setOutput(ios2);
-        writer2.write(orgImage);
+        writer2.write(bufferdImage);
 
         fixResult = out2.toByteArray();
       }
@@ -392,14 +384,6 @@ public class FileuploadUtils {
       try {
         if (is != null) {
           is.close();
-        }
-      } catch (Exception e) {
-        logger.error("fileupload", e);
-        result = null;
-      }
-      try {
-        if (is2 != null) {
-          is2.close();
         }
       } catch (Exception e) {
         logger.error("fileupload", e);
@@ -675,7 +659,7 @@ public class FileuploadUtils {
       logger.debug(e.getMessage(), e);
     } catch (ImageProcessingException e) {
       logger.debug(e.getMessage(), e);
-    } catch (Exception e) {
+    } catch (Throwable e) {
       logger.debug(e.getMessage(), e);
     }
     return null;

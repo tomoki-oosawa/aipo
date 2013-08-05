@@ -71,7 +71,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
 
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]" + e);
+      logger.error("[ERROR]", e);
       return null;
     }
   }
@@ -114,14 +114,13 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
       }
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]" + e);
+      logger.error("[ERROR]", e);
       return null;
     }
   }
 
   @Override
   protected String getFileName() {
-    return ALOrgUtilsService.getAlias()
-      + "_addressbook_company.csv";
+    return ALOrgUtilsService.getAlias() + "_addressbook_company.csv";
   }
 }

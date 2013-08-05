@@ -98,7 +98,7 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
     } catch (ALPermissionException e) {
       throw new Exception();
     } catch (Exception e) {
-      logger.error("[ERROR]" + e);
+      logger.error("[ERROR]", e);
     }
 
   }

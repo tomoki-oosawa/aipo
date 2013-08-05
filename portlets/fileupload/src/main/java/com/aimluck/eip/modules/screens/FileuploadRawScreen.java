@@ -141,7 +141,7 @@ public class FileuploadRawScreen extends RawScreen {
         out.write(buf, 0, length);
       }
     } catch (Exception e) {
-      logger.error("[ERROR]" + e);
+      logger.error("[ERROR]", e);
     } finally {
       try {
         if (out != null) {
@@ -149,7 +149,7 @@ public class FileuploadRawScreen extends RawScreen {
           out.close();
         }
       } catch (IOException ex) {
-        logger.error("[ERROR]" + ex);
+        logger.error("[ERROR]", ex);
       }
     }
   }

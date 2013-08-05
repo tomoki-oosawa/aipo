@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALCellularUtils;
 
 /**
  * 顔写真を画像データとして出力するクラスです。 <br />
- * 
+ *
  */
 public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
 
@@ -48,7 +48,7 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
   private static final String KEY_FACE_PHOTO_ID = "uid";
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -105,7 +105,7 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
       super.setFileName("photo.jpg");
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]" + e);
+      logger.error("[ERROR]" , e);
     }
   }
 }
