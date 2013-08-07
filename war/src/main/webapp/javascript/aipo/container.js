@@ -235,12 +235,15 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             var appIdMap = {Workflow:"workflow", todo:"todo", Report:"report", Note:"note"};
             aipo.activityMax = data.max;
             var ac = dijit.byId("activitycheckerContainer");
-            var num;
+
+            var num = parseInt(unreadCount)||0;
             if(dojo.byId("messagechecker") != undefined) {
-            	num = parseInt(unreadCount) + parseInt(dojo.byId("messagechecker").innerHTML);
-            } else {
-            	num = parseInt(unreadCount);
+            	num +=  parseInt(dojo.byId("messagechecker").innerHTML);
             }
+            if(dojo.byId("supportchecker") != undefined){
+            	num +=  parseInt(dojo.byId("supportchecker").innerHTML);
+            }
+
             if (!num){
             	document.title = djConfig.siteTitle;
             } else if (num > 99) {
