@@ -2141,11 +2141,15 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 /* tip Class */
 .tipDivider {
   border-top: solid 1px #f0f0f0;
+}
+
+.menubar .tipDivider,
+.supportPopup .tipDivider {
   margin: 5px -5px;
 }
 
 .tipBox {
-  margin: 4px 6px;
+  margin: 4px 5px;
 }
 
 .tipTitle,
@@ -2164,7 +2168,7 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
 }
 
 .tipInfo {
-  margin-bottom: 10px !important;
+  margin-bottom: 5px !important;
   background: whitesmoke !important;
 }
 
@@ -2177,6 +2181,7 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
   padding: 8px 0 !important;
   border-top: solid 1px #d2d2d2;
   font-size: 11px;
+  background-image: none;
   -webkit-border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   -ms-border-radius: 0 !important;
@@ -2201,7 +2206,8 @@ background:url(../images/icon/account_user_add.gif) no-repeat;
   float: right;
 }
 
-.tipFoot i[class^="icon-"] {
+.tipFoot i[class^="icon-"],
+.tipFoot i[class*=" icon-"] {
   font-size: 24px;
   text-decoration: none;
   color: #333333;

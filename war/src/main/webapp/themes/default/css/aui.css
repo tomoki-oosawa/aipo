@@ -88,10 +88,6 @@ span[type="button"] {
   display: block;
 }
 
-.hdNavi div.active {
-  background: #ddd;
-}
-
 .hdLogo a:hover img {
   opacity: 0.75;
   filter: alpha(opacity=75);
@@ -322,16 +318,17 @@ img.avatar,
 
 .auiPopup,
 .activityPopup {
-  /*position:absolute;*/
   background: #FFF;
   padding: 9px;
-  border: 1px solid #999999;
+  border: 1px solid #B5B5B5;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
+  -o-border-radius: 4px;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 9998 !important;
 }
 
@@ -339,6 +336,11 @@ img.avatar,
   width: 400px;
   right: 0;
   top: 0;
+}
+
+.supportPopup {
+  width: 320px;
+  padding: 5px;
 }
 
 .auiPopupHead {
