@@ -2534,7 +2534,7 @@ input[type=password] {
 
 select {
   min-height: 32px;
-  padding: 0.25em;
+  padding: 5px;
   max-width: 300px;
 }
 
@@ -3260,7 +3260,7 @@ ul.attachments >li{
   display: block;
   right: 0;
   width: 20px;
-  height: 26px;
+  height: 30px;
   margin: 1px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -3269,15 +3269,16 @@ ul.attachments >li{
   vertical-align: middle;
 }
 
+.filterDropDrawer i {
+  cursor:pointer;
+}
+
 *:first-child + html .filterDropDrawer {
-  right: -1px;
   margin-top: 2px;
-  background: #fff;
-  border-right: solid 1px #c9c9c9;
+  background: #ffffff;
 }
 
 *:first-child + html .filterInputField:hover .filterDropDrawer {
-  border-right: solid 1px #999999;
 }
 
 .filterDropDrawer i {
@@ -3287,6 +3288,10 @@ ul.attachments >li{
 .filterInputField input[type=text] {
   max-width: 500px;
   padding-right: 20px;
+}
+
+*:first-child + html .filterInputField input[type=text] {
+  padding-right:15px;
 }
 
 .filterInputField .menubar.multi {
