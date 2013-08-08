@@ -48,7 +48,9 @@ function get_data(pid){
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
 	indicator.style.display = "none";
 	var parentFrom = window.parent.dojo.query(".auiPopup form")[0];
-	window.parent.aimluck.io.disableForm(parentFrom, false);
+	if(parentForm != null) {
+		window.parent.aimluck.io.disableForm(parentFrom, false);
+	}
 }
 
 function showErrorMessage(msg){

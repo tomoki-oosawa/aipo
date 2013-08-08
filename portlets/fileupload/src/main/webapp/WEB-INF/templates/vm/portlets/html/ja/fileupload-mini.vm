@@ -47,8 +47,10 @@ function get_data(pid){
 
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
 	indicator.style.display = "none";
-	var parentFrom = window.parent.dojo.query(".auiPopup form")[0];
-	window.parent.aimluck.io.disableForm(parentFrom, false);
+	var parentForm = window.parent.dojo.query(".auiPopup form")[0];
+	if(parentForm != null) {
+		window.parent.aimluck.io.disableForm(parentForm, false);
+	}
 }
 
 function showErrorMessage(msg){
@@ -94,8 +96,8 @@ function checkFile(){
 function submitMini(form, portletId){
 	var indicator = window.parent.document.getElementById("indicator-dlg-" + portletId);
 	indicator.style.display = "inline";
-	var parentFrom = window.parent.dojo.query(".auiPopup form")[0];
-	window.parent.aimluck.io.disableForm(parentFrom, true);
+	var parentForm = window.parent.dojo.query(".auiPopup form")[0];
+	window.parent.aimluck.io.disableForm(parentForm, true);
 	var button = document.getElementById("uploadContainer");
 	var span = document.createElement("span");
 	button.parentNode.insertBefore(span, button);

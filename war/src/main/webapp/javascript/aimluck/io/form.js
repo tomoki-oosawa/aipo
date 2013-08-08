@@ -148,6 +148,10 @@ aimluck.io.disableForm = function(form, bool) {
         + S4() + S4());
   }
 
+  if(form == null) {
+    return;
+  }
+
   if (bool) {
     var elements = form.elements;
     for ( var i = 0; i < elements.length; i++) {
