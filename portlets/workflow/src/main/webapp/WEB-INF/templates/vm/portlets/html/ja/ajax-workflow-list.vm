@@ -53,7 +53,6 @@
 #end
 </select></div>
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('Workflow')
 #if($result.List.size() == 0)
 <div class="message">$l10n.WORKFLOW_NO_WORKFLOW_YOU_SELECT</div>
 #else
@@ -90,7 +89,6 @@
 #AUIajaxpageview('WorkflowListScreen' $result)
 </div>
 #end
-#ALformfooter()
 #AUIcontentsAreaFooter()
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/workflow-widgets.vm")
