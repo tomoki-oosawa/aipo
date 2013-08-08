@@ -2510,7 +2510,6 @@ select {
 input[type=text],
 input[type=password] {
   height: 32px;
-  /*padding:0 2px;*/
   padding: 4px 2px;
   vertical-align: middle;
   -webkit-border-radius: 3px;
@@ -2518,11 +2517,11 @@ input[type=password] {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  border: 1px solid #c9c9c9;
+  border: 1px solid #d2d2d2;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 *:first-child + html input[type=text],
@@ -3153,21 +3152,21 @@ ul.attachments >li{
 }
 
 .filterTip {
-  display: inline-block;
   display: block;
   float: left;
   background: #e0e0e0;
   color: #000;
   margin: 0 2px 4px !important;
-  padding: 0 4px;
+  padding: 0 5px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
   height: 32px !important;
   line-height: 33px !important;
   white-space: nowrap;
-  font-size: 0.9em;
+  font-size: 11px;
   cursor: pointer;
 }
 
@@ -3217,44 +3216,40 @@ ul.attachments >li{
   margin-top: 5px;
 }
 
-.filterInputField .filterTip > a {
-  position: absolute;
-  margin: 5px -3px 0 3px;
-}
-
-.filterInputField *:first-child + html .filterTip > a {
-  margin-top: 4px;
-}
-
 .filterInputField {
   float: left;
   position: relative;
-}
-
-.filterInputField input.text {
-  width: auto;
-  min-width: auto;
+  border: solid 1px #d2d2d2;
+  height: 30px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  background: #ffffff;
 }
 
 *:first-child + html .filterInputField {
   overflow: hidden;
 }
 
-.filterInputField .menubar.multi {
-  left: auto;
-  right: 0;
-}
-
 .filterInputField .filters {
   position: absolute;
   height: 30px;
-  padding: 1px 1px 0 1px;
   overflow: hidden;
   white-space: normal;
 }
 
-*:first-child + html .filterInputField .filters {
-  padding-top: 2px;
+.filterInputField input[type=text] {
+  margin: 0 !important;
+  height: 30px;
+  border: none;
+  background: transparent;
+}
+
+.filterInputField .menubar.multi {
+  left: auto;
+  right: 0;
 }
 
 .filterDropDrawer {
@@ -3263,28 +3258,22 @@ ul.attachments >li{
   right: 0;
   width: 20px;
   height: 30px;
-  margin: 1px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   vertical-align: middle;
-}
-
-.filterDropDrawer i {
-  cursor:pointer;
-}
-
-*:first-child + html .filterDropDrawer {
-  margin-top: 2px;
   background: #ffffff;
 }
 
-*:first-child + html .filterInputField:hover .filterDropDrawer {
+*:first-child + html .filterDropDrawer {
+  top: 1px;
 }
 
 .filterDropDrawer i {
-  margin-top: 7px;
+  cursor: pointer;
+  margin: 7px 0 0 2px;
 }
 
 .filterInputField input[type=text] {
@@ -3293,7 +3282,7 @@ ul.attachments >li{
 }
 
 *:first-child + html .filterInputField input[type=text] {
-  padding-right:15px;
+  padding-right: 15px;
 }
 
 .filterInputField .menubar.multi {
