@@ -2154,13 +2154,16 @@ ul.blockList li a.selected {
   border-top: solid 1px #f0f0f0;
 }
 
-.menubar .tipDivider,
 .supportPopup .tipDivider {
+  margin: 9px -9px 10px;
+}
+
+.menubar .tipDivider {
   margin: 5px -5px;
 }
 
 .tipBox {
-  margin: 4px 5px;
+  margin: 4px 0;
 }
 
 .tipTitle,

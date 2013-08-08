@@ -86,11 +86,12 @@ body {
 #aipo_widget_ActivityList_0 {
 	width:100% !important;
 }
-.activityPopup {
-	/*width:280px;*/
-	width:90%;
-	margin:0 auto;
+.activityPopup,
+.supportPopup {
+  width: 91%;
+  margin: 0 auto;
 }
+
 /*
 .activitycheckerContainerstyle,
 #activitycheckerContainer {

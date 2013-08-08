@@ -246,23 +246,11 @@ img.avatar,
   border-radius: 3px;
 }
 
-.hdActivity div.active,
-.hdInformation div.active {
-  background: #e0e0e0;
+.hdActivity div,
+.hdInformation div {
+  outline: 0;
 }
 
-/*
-#activitychecker {
-  text-align: center;
-  right: 2px;
-  top: 2px;
-  background: url(../images/icon/activitychecker.png) top left no-repeat;
-}
-#activitycheckerContainer {
-	display:block;
-	margin-top:5px;
-}
-*/
 .activitychecker-right {
   float: left;
   display: block;
@@ -336,11 +324,6 @@ img.avatar,
   width: 400px;
   right: 0;
   top: 0;
-}
-
-.supportPopup {
-  width: 320px;
-  padding: 5px;
 }
 
 .auiPopupHead {
