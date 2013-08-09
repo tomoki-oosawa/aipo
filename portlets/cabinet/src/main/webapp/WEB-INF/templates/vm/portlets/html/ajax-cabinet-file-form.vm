@@ -54,7 +54,7 @@
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #if($mode=="edit_form")
-    <li data-fileid="1" data-filename="$!result.FileName"><span>$!result.FileNameHtml</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.CABINET_DELET</span></li>
+    <li data-fileid="1" data-filename="$!result.FileName"><span>$!result.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.CABINET_DELET</span></li>
     #end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />

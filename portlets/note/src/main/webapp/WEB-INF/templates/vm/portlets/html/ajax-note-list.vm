@@ -60,6 +60,7 @@
 #ALnoteResultList($msg_type)
 #end
 
+#ALajaxlistformheader($l10n.NOTE_NOTE)
 #if($result.List.size()<=0)
 <div class="message">
 #if($!result.targetKeyword.toString()!="")$l10n.NOTE_ALERT_NO_NOTE_IN_YOUR_SELECT #elseif($isReceive) $l10n.NOTE_ALERT_NO_RECIEVED_NOTE#else $l10n.NOTE_ALERT_NO_SENT_NOTE #end
@@ -133,6 +134,7 @@ style="font-weight:bold"
 #AUISummaryDivfooter()
 
 #end
+#ALformfooter()
 
 #AUIcontentsAreaFooter()
 

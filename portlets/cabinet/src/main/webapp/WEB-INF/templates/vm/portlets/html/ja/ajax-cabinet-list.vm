@@ -63,6 +63,9 @@
 </div>
 
 #if($result.isAccessible())
+<form name="cabinetlist$!portlet.ID" id="cabinetlist$!portlet.ID" action="#" method="post" onsubmit="return false;">
+<input type="hidden" name="_name" value="$l10n.CABINET_FILE" />
+<input type="hidden" name="secid" value="$secid" />
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 
 <div id="listmessageDiv"></div>
@@ -137,6 +140,7 @@
 #AUIajaxpageview('CabinetListScreen' $result)
 </div>
 #end
+</form>
 #else
 $l10n.CABINET_NOT_PERMISSION_VIEW
 #end
