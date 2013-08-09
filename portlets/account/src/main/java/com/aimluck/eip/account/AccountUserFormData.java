@@ -66,6 +66,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -363,7 +364,8 @@ public class AccountUserFormData extends ALAbstractFormData {
           if (filebean.getFileId() != 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
-            facePhoto =
+            facePhoto = null;
+            ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
                 folderName,
@@ -373,8 +375,12 @@ public class AccountUserFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList,
-                false).getShrinkImage();
-            facePhoto_smartphone =
+                false);
+            if (bytesShrinkFilebean != null) {
+              facePhoto = bytesShrinkFilebean.getShrinkImage();
+            }
+            facePhoto_smartphone = null;
+            ShrinkImageSet bytesShrinkFilebean2 =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
                 folderName,
@@ -384,7 +390,10 @@ public class AccountUserFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
                 msgList,
-                false).getShrinkImage();
+                false);
+            if (bytesShrinkFilebean2 != null) {
+              facePhoto_smartphone = bytesShrinkFilebean2.getShrinkImage();
+            }
           } else {
             facePhoto = null;
             facePhoto_smartphone = null;

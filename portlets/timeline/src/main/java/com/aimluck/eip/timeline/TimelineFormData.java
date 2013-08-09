@@ -379,7 +379,7 @@ public class TimelineFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setFileName(newfilebean.getFileName());
           file.setFilePath(TimelineUtils.getRelativePath(filename));
-          if (shrinkImageSet.getShrinkImage() != null) {
+          if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
             file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTTimeline(entry);

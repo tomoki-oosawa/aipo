@@ -67,6 +67,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -277,7 +278,8 @@ public class ReportUtils {
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
-        byte[] fileThumbnail =
+        byte[] fileThumbnail = null;
+        ShrinkImageSet bytesShrinkFilebean =
           FileuploadUtils.getBytesShrinkFilebean(
             orgId,
             folderName,
@@ -287,7 +289,10 @@ public class ReportUtils {
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
             FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
             msgList,
-            false).getShrinkImage();
+            false);
+        if (bytesShrinkFilebean != null) {
+          fileThumbnail = bytesShrinkFilebean.getShrinkImage();
+        }
 
         String filename = "0_" + String.valueOf(System.nanoTime());
 

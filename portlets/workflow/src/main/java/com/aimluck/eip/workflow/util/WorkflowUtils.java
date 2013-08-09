@@ -64,6 +64,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.ALAdminMailContext;
 import com.aimluck.eip.mail.ALAdminMailMessage;
 import com.aimluck.eip.mail.ALMailService;
@@ -1619,7 +1620,8 @@ public class WorkflowUtils {
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
-        byte[] fileThumbnail =
+        byte[] fileThumbnail = null;
+        ShrinkImageSet bytesShrinkFilebean =
           FileuploadUtils.getBytesShrinkFilebean(
             orgId,
             folderName,
@@ -1629,7 +1631,10 @@ public class WorkflowUtils {
             FileuploadUtils.DEF_THUMBNAIL_WIDTH,
             FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
             msgList,
-            false).getShrinkImage();
+            false);
+        if (bytesShrinkFilebean != null) {
+          fileThumbnail = bytesShrinkFilebean.getShrinkImage();
+        }
 
         String filename = i + "_" + String.valueOf(System.nanoTime());
 

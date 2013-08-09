@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
@@ -286,8 +287,8 @@ public class AccountEditFormData extends ALAbstractFormData {
           if (filebean.getFileId() != 0) {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
-
-            facePhoto_smartphone =
+            facePhoto_smartphone = null;
+            ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
                 folderName,
@@ -297,10 +298,14 @@ public class AccountEditFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
                 msgList,
-                false).getShrinkImage();
+                false);
+            if (bytesShrinkFilebean != null) {
+              facePhoto_smartphone = bytesShrinkFilebean.getShrinkImage();
+            }
 
             String[] acceptExts2 = ImageIO.getWriterFormatNames();
-            facePhoto =
+            facePhoto = null;
+            ShrinkImageSet bytesShrinkFilebean2 =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
                 folderName,
@@ -310,7 +315,10 @@ public class AccountEditFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList,
-                false).getShrinkImage();
+                false);
+            if (bytesShrinkFilebean2 != null) {
+              facePhoto = bytesShrinkFilebean2.getShrinkImage();
+            }
           } else {
             facePhoto = null;
           }

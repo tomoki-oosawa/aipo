@@ -500,14 +500,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setTitle(newfilebean.getFileName());
           file.setFilePath(BlogUtils.getRelativePath(filename));
-          if (shrinkImageSet.getShrinkImage() != null) {
+          if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
             file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTBlogEntry(entry);
           file.setCreateDate(Calendar.getInstance().getTime());
           file.setUpdateDate(Calendar.getInstance().getTime());
 
-          if (shrinkImageSet.getFixImage() != null) {
+          if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
             // ファイルの作成
             ALStorageService.createNewFile(new ByteArrayInputStream(
               shrinkImageSet.getFixImage()), BlogUtils.FOLDER_FILEDIR_BLOG

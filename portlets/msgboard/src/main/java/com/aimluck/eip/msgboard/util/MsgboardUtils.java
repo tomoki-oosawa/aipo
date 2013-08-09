@@ -951,7 +951,7 @@ public class MsgboardUtils {
         // ファイルパス
         file.setFilePath(MsgboardUtils.getRelativePath(filename));
         // サムネイル画像
-        if (shrinkImageSet.getShrinkImage() != null) {
+        if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
           file.setFileThumbnail(shrinkImageSet.getShrinkImage());
         }
         // 作成日
@@ -959,7 +959,7 @@ public class MsgboardUtils {
         // 更新日
         file.setUpdateDate(Calendar.getInstance().getTime());
 
-        if (shrinkImageSet.getFixImage() != null) {
+        if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
           // ファイルの作成
           ALStorageService.createNewFile(new ByteArrayInputStream(
             shrinkImageSet.getFixImage()), FOLDER_FILEDIR_MSGBOARD
