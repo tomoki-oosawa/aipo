@@ -64,6 +64,7 @@
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
+#ALajaxlistformheader('ToDo')
 #if($result.List.size() == 0)
 <div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
 #else
@@ -174,6 +175,7 @@
 </div>
 </div>
 
+#ALformfooter()
 #AUIcontentsAreaFooter()
 
 #parse("/portlets/html/ja/todo-widgets.vm")
