@@ -45,7 +45,7 @@
 <input type="hidden" name="secid" value="$!secid" />
 #ALtableheaderWide()
 #ALtdcaption("$l10n.GADGETS_APP_NAME")
-#ALtditem("#ALtextfield('current_title' $!current_title '75%' 50 'active')")
+#ALtditem("#ALtextfieldw100('current_title' $!current_title 50 'active')")
 #set ($counter=0)
 #foreach ( $param in $parameters )
 #if ($param.Type && $param.Type == "invisible")
