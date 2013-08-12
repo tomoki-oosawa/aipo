@@ -841,7 +841,7 @@ public class ReportFormData extends ALAbstractFormData {
           newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
-          // byte[] fileThumbnail = null;
+          byte[] fileThumbnail = null;
 
           ShrinkImageSet bytesShrinkFilebean =
             FileuploadUtils.getBytesShrinkFilebean(
@@ -855,7 +855,7 @@ public class ReportFormData extends ALAbstractFormData {
               msgList,
               false);
           if (bytesShrinkFilebean != null) {
-            bytesShrinkFilebean.getShrinkImage();
+            fileThumbnail = bytesShrinkFilebean.getShrinkImage();
           }
 
           String filename = j + "_" + String.valueOf(System.nanoTime());
@@ -865,9 +865,9 @@ public class ReportFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setFileName(newfilebean.getFileName());
           file.setFilePath(ReportUtils.getRelativePath(filename));
-          // if (fileThumbnail != null) {
-          // file.setFileThumbnail(fileThumbnail);
-          // }
+          if (fileThumbnail != null) {
+            file.setFileThumbnail(fileThumbnail);
+          }
           file.setEipTReport(entry);
           file.setCreateDate(Calendar.getInstance().getTime());
           file.setUpdateDate(Calendar.getInstance().getTime());
