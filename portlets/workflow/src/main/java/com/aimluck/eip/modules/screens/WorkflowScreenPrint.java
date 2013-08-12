@@ -26,6 +26,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.workflow.WorkflowAllSelectData;
 import com.aimluck.eip.workflow.WorkflowSelectData;
 import com.aimluck.eip.workflow.util.WorkflowUtils;
 
@@ -52,9 +53,18 @@ public class WorkflowScreenPrint extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      WorkflowSelectData detailData = new WorkflowSelectData();
-      detailData.initField();
-      detailData.doViewDetail(this, rundata, context);
+      String tabParam = rundata.getParameters().getString("tab");
+      String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+      if ((WorkflowAllSelectData.TAB_ALLDISPLAY).equals(tabParam)
+        || (WorkflowAllSelectData.TAB_ALLDISPLAY).equals(currentTab)) {
+        WorkflowAllSelectData detailData = new WorkflowAllSelectData();
+        detailData.initField();
+        detailData.doViewDetail(this, rundata, context);
+      } else {
+        WorkflowSelectData detailData = new WorkflowSelectData();
+        detailData.initField();
+        detailData.doViewDetail(this, rundata, context);
+      }
       String mailIndex =
         rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
       // context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
