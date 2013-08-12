@@ -32,7 +32,6 @@
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('Memo')
 #if($result.List.size() == 0)
 <div class="message">指定された条件に該当するメモはありません。</div>
 #else
@@ -72,7 +71,6 @@
     #AUIajaxpageview('MemoListScreen' $result)
 </div>
 #end
-#ALformfooter()
 #AUIcontentsAreaFooter()
 
 #parse("/portlets/html/ja/memo-widgets.vm")

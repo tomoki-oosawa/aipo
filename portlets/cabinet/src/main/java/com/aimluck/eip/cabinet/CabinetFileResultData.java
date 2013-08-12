@@ -276,6 +276,10 @@ public class CabinetFileResultData implements ALData {
     return folder_name;
   }
 
+  public String getFileNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(file_name.toString());
+  }
+
   public String getFolderNameHtml() {
     return ALCommonUtils.replaceToAutoCR(folder_name.toString());
   }

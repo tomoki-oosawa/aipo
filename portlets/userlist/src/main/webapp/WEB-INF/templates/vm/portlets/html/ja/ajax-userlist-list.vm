@@ -36,7 +36,6 @@
 #if($result.List.size() == 0)
 $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 #else
-#ALajaxlistformheader('AddressBook')
 #AUISummaryDiv()
 #AUIsearchresult($result.SearchWord.toString())
 #AUIajaxpageview("UserListListScreen" $result)
@@ -79,7 +78,6 @@ $post
 #end
 #AUItablefooter()
 #end
-#ALformfooter()
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/userlist-widgets.vm")
 
