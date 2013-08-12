@@ -43,7 +43,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('facility_group_name'))")
-#ALtditem("#ALtextfield('facility_group_name' $!result.FacilityGroupName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('facility_group_name' $!result.FacilityGroupName 50 'active')")
 #ALtdcaption("$l10n.FACILITIES_FACILITY")
 #ALtditemheader()
 <div dojoType="aipo.widget.MemberNormalSelectList"
