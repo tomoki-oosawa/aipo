@@ -21,9 +21,9 @@ dojo._hasResource["aipo.workflow.MemberNormalSelectList"] = true;
 
 dojo.provide("aipo.workflow.MemberNormalSelectList");
 
-dojo.require("aipo.widget.MemberNormalSelectList");
+dojo.require("aipo.widget.MemberNormalSelectListMb5");
 
-dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSelectList], {
+dojo.declare("aipo.workflow.MemberNormalSelectList", [aipo.widget.MemberNormalSelectListMb5], {
 
     addMember:function(select_member_from, select_member_to) {
     	if (document.all) {

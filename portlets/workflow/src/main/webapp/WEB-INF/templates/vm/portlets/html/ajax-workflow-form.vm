@@ -56,12 +56,12 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('request_name'))")
 #ALtditemheader()
-#ALselectpdheader("category_id" "90%" "aipo.workflow.categoryOnChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','categorytemplate')',value,'$Note','$NoteChangeFlag','$Route','route_id');")
+#ALselectpdheaderw100("category_id" "aipo.workflow.categoryOnChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','categorytemplate')',value,'$Note','$NoteChangeFlag','$Route','route_id');")
 #foreach( $record in $result.CategoryList )
 <option value="$!record.CategoryId" #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected #end>$!record.CategoryName</option>
 #end
 #ALselectfooter()
-#ALtextfield('request_name' $!result.RequestName '90%' 50 'active')
+#ALtextfieldw100('request_name' $!result.RequestName 50 'active')
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("priority"))
 #ALtditemheader()
