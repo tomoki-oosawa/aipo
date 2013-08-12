@@ -85,7 +85,7 @@
 <input type="hidden" name="user_id" value="$!result.loginUserId"/>
 #end
 #ALtdcaption("#ALrequired($!result.getFieldName('todo_name'))")
-#ALtditem("#ALtextfield('todo_name' $!result.TodoName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('todo_name' $!result.TodoName 50 'active')")
 #ALtdcaption($!result.getFieldName("start_date"))
 #ALtditemheader()
 <div dojoType="aipo.widget.DropdownDatepicker" id="startdatepicker" widgetId="startdatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.TODO_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartDate.Year}/$!{result.StartDate.Month}/$!{result.StartDate.Day}"checked="checked" #end inputId="input_startdate" dateId="start_date" displayCheck=""></div>
