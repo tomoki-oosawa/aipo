@@ -495,7 +495,7 @@ img.avatar,
 }
 
 .activityList li.unread {
-  background: #FFEFE5;
+  background: #f0f0f0 !important;
 }
 
 .activityList li.unread a {

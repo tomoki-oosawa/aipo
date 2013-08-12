@@ -2183,7 +2183,7 @@ ul.blockList li a.selected {
 
 .tipInfo {
   margin-bottom: 5px !important;
-  background: whitesmoke !important;
+  background: #f0f0f0 !important;
 }
 
 *:first-child + html .tipInfo {
@@ -2193,7 +2193,7 @@ ul.blockList li a.selected {
 .tipInfo li {
   margin: 0 8px !important;
   padding: 8px 0 !important;
-  border-top: solid 1px #d2d2d2;
+  border-top: solid 1px #dfdfdf;
   font-size: 11px;
   background-image: none;
   -webkit-border-radius: 0 !important;

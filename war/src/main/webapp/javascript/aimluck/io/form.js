@@ -526,6 +526,22 @@ aimluck.io.createOptions = function(selectId, params) {
   });
 }
 
+aimluck.io.replaceToAutoCRString = function(str){
+	var res="";
+	var step=4;
+	var size=str.length;
+	var count=Math.floor(size/step)
+	var i;
+	for(i=0;i<count;i++){
+		var j=i*step;
+		res=res.concat(str.substr(j,step)).concat("<wbr/>");
+	}
+	if (count * step < size) {
+		res=res.concat(str.substr(count * step));
+	}
+	return res;
+}
+
 aimluck.io.addFileToList = function(ul, fileid, filename) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   if (ul.parentNode.style.display == "none") {
@@ -536,7 +552,7 @@ aimluck.io.addFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-fileid', fileid);
     li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
-        + filename
+        + aimluck.io.replaceToAutoCRString(filename)
         + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
         + nlsStrings.DELETE_STR + "</span>";
 
@@ -547,7 +563,7 @@ aimluck.io.addFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
-        + filename
+        + aimluck.io.replaceToAutoCRString(filename)
         + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
         + nlsStrings.DELETE_STR + "</span>";
     return ul.appendChild(li);
@@ -561,7 +577,7 @@ aimluck.io.replaceFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-fileid', fileid);
     li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
-        + filename
+        + aimluck.io.replaceToAutoCRString(filename)
         + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
         + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";
@@ -572,7 +588,7 @@ aimluck.io.replaceFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
-        + filename
+        + aimluck.io.replaceToAutoCRString(filename)
         + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
         + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";

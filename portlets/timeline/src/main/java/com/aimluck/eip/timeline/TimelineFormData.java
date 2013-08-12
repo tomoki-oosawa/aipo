@@ -394,7 +394,7 @@ public class TimelineFormData extends ALAbstractFormData {
             TimelineUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
             filename);
 
-          if (shrinkImageSet.getFixImage() != null) {
+          if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
             // ファイルの作成
             ALStorageService.createNewFile(
               new ByteArrayInputStream(shrinkImageSet.getFixImage()),
