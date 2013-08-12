@@ -41,7 +41,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('facility_name'))")
-#ALtditem("#ALtextfield('facility_name' $!result.FacilityName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('facility_name' $!result.FacilityName 50 'active')")
 #ALtdcaption($!result.getFieldName("note"))
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
