@@ -61,7 +61,6 @@
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('Msgboard')
 #if($result.List.size() == 0)
 <div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
@@ -101,7 +100,6 @@ $!record.CategoryName
 </div>
 #end
 
-#ALformfooter()
 
 <img src="images/common/dot.gif" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none;">
