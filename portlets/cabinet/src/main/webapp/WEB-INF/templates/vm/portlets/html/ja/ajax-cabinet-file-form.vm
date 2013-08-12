@@ -44,7 +44,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('file_title'))")
-#ALtditem("#ALtextfield('file_title' $!result.FileTitle '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('file_title' $!result.FileTitle 50 'active')")
 <tr #if(!$result.isFileUploadable())class="mb_hide"#end>
 <td class="caption">#ALrequired($!result.getFieldName('file_name'))</td>
 <td>
