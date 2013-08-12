@@ -112,7 +112,7 @@
 #ALtextfield('position_name' $!result.Position.PositionName '90%' 50 'active')
 </div>
 <div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>
-<select name="position_id">
+<select name="position_id" class="w100">
 <option value="">$l10n.ACCOUNT_SETFIELDNAME_NOT_SET</option>
 #foreach( $record in $result.PositionMap )
 <option value="$!record.PositionId" #if ($!result.PositionId.toString() == $!record.PositionId.toString()) selected #end>$!record.PositionName</option>
