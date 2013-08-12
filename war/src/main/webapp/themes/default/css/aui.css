@@ -34,11 +34,6 @@ p {
   margin: 5px 0;
 }
 
-/* NO USE
-span[type="button"] {
-	outline:none;
-}
-*/
 /***************************************************
 	auiHeader
 --------------------------------------------------*/
@@ -63,9 +58,7 @@ span[type="button"] {
 
 .hdMessege,
 .hdActivity,
-.hdSearch,
 .hdUserName,
-.hdLogout,
 .hdSetting,
 .hdInformation {
   float: left;
@@ -79,9 +72,7 @@ span[type="button"] {
 
 .hdMessege a,
 .hdActivity a,
-.hdSearch a,
 .hdUserName a,
-.hdLogout a,
 .hdSetting a,
 .hdInformation a {
   text-decoration: none;
@@ -91,45 +82,6 @@ span[type="button"] {
 .hdLogo a:hover img {
   opacity: 0.75;
   filter: alpha(opacity=75);
-}
-
-form.searchbox {
-  padding: 0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  border: solid 1px #ccc;
-  overflow: hidden;
-}
-
-form.searchbox:hover {
-  border-color: #999999;
-}
-
-form.searchbox input {
-  border: none !important;
-  height: 21px !important;
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  -ms-border-radius: 0 !important;
-  border-radius: 0 !important;
-}
-
-form.searchbox input.submit,
-form.searchbox input.submit:hover,
-form.searchbox input.submit:active {
-  width: 24px;
-  border-left: solid 1px #ddd !important;
-  background: url(../images/icon/search.png) no-repeat center center;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-}
-
-form.searchbox input.submit:hover,
-form.searchbox input.submit:active {
-  background: #eeeeee url(../images/icon/search.png) no-repeat center center;
 }
 
 .hdActivity,
@@ -145,26 +97,6 @@ form.searchbox input.submit:active {
 .hdActivity:hover .mb_hide,
 .hdInformation:hover .mb_hide {
   color: #FF9900;
-}
-
-.hdNavi .hdLogout {
-  padding-right: 0;
-  height: 24px;
-}
-
-.hdLogout input {
-  height: 23px !important;
-  line-height: 23px !important;
-}
-
-*:first-child + html .hdLogout input {
-  /* IE7 Hack */
-  line-height: 20px !important;
-}
-
-.hdLogout input:hover {
-  box-shadow: none !important;
-  -webkit-box-shadow: none !important;
 }
 
 .hdUserName {
@@ -249,25 +181,6 @@ img.avatar,
 .hdActivity div,
 .hdInformation div {
   outline: 0;
-}
-
-.activitychecker-right {
-  float: left;
-  display: block;
-  height: 12px;
-  background: url(../images/icon/activitychecker.png) bottom right no-repeat;
-  padding: 0 4px;
-}
-
-.activitychecker-left {
-  float: left;
-  display: block;
-  height: 12px;
-  padding: 0;
-  background: #f03d25;
-  color: #FFF;
-  font-size: 8px;
-  line-height: 12px;
 }
 
 .counter {
@@ -536,17 +449,6 @@ img.avatar,
 .imgPopupTutorial img {
   max-width: 1000px;
   max-height: 1000px;
-}
-
-/***************************************************
-	auiColumns
---------------------------------------------------*/
-.auiColumnWrapper {
-  padding: 10px;
-}
-
-.auiColumn {
-  float: left;
 }
 
 /***************************************************
@@ -932,92 +834,6 @@ img.avatar,
   display: none;
 }
 
-/***************************************************
-	MainTab - NO USE - Delete Reserved
---------------------------------------------------
-#mainTab {
-	white-space:nowrap;
-	height:25px;
-	padding:0;
-	margin:0;
-	background:#fff url(../images/tab.png) left bottom repeat-x;
-	overflow:hidden;
-}
-#mainTab ul {
-	position:relative;
-}
-.tabContainer {
-	padding:0 20px;
-	margin:0;
-	white-space:nowrap;
-}
-.tabContainer li {
-	display:block;
-	float:left;
-	height:25px;
-	padding:0 20px 0 0;
-	font-size:11px;
-	background:url(../images/tab.png) right -75px no-repeat;
-}
-.tabContainer .menuTitle {
-	height:25px;
-	line-height:25px;
-	background:url(../images/tab.png) left -50px no-repeat;
-	float:left;
-	padding:0 0 0 20px;
-	overflow:hidden;
-}
-.tabContainer .menuIcon {
-	float:left;
-	height:25px;
-	background:url(../images/tab.png) right -50px no-repeat;
-}
-.tabContainer .menuIcon a {
-	margin-top:4px;
-}
-.tabContainer li.selectedMenu {
-	height:25px;
-	background:url(../images/tab.png) right -25px no-repeat;
-	text-decoration:none;
-}
-.tabContainer li.selectedMenu .menuTitle {
-	background:url(../images/tab.png) left 0px no-repeat;
-}
-.tabContainer li.selectedMenu .menuTitle a {
-	text-decoration:none;
-}
-.tabContainer li a.menuList {
-	margin:0 5px;
-	white-space:nowrap;
-	text-decoration:none;
-	text-shadow:0 1px 0 rgba(255,255,255,0.75);
-}
-.tabContainer li.selectedMenu a.menuList {
-	white-space:nowrap;
-}
-.tabContainer li.selectedMenu .menuIcon {
-	float:left;
-	height:25px;
-	background:url(../images/tab.png) right -0px no-repeat;
-}
-.tabContainer li.tooltip_box {
-	padding:0;
-	background:none;
-}
-.tooltip_gray {
-	display:none;
-}
-.menuStore:hover .tooltip_gray {
-	display:block;
-	height:14px;
-	width:190px;
-	background:url(../images/common/bg_tooltip_gray.gif) top left no-repeat;
-	position:absolute;
-	top:10px;
-	padding:3px 0 8px;
-	font-size:10px;
-	text-align:center;
-}*/
 /***************************************************
 	auiLogin
 --------------------------------------------------*/
@@ -2071,15 +1887,10 @@ input.auiButtonSearch.active {
 
 .auiRowTable div {
   width: 100%;
-  /*height:20px;
-  line-height:20px;
-  min-height:18px;*/
   margin: -8px 0;
   height: 35px;
   line-height: 35px;
   overflow: hidden;
-  /*    white-space:nowrap;
-      text-overflow:ellipsis;*/
 }
 
 .auiRowTable a {
@@ -2092,32 +1903,10 @@ input.auiButtonSearch.active {
   margin: 0;
 }
 
-/*.auiRowTable .sunday .day,
-.auiRowTable .holiday .day {
-	color:#ff3333;
-}
-.auiRowTable .sunday td,
-.auiRowTable .sunday th,
-.auiRowTable .holiday td,
-.auiRowTable .holiday th {
-	background:#ffefe5;
-}*/
-/*.auiRowTable .saturday .day {
-	color:#3333ff;
-}
-.auiRowTable .saturday td,
-.auiRowTable .saturday th {
-	background:#ebf0f6;
-}*/
 .auiRowTable .today .day {
-  /*color:#060;*/
   background: #f5f5f5;
 }
 
-/*.auiRowTable .today td,
-.auiRowTable .today th {
-	background:#e0ffe0;
-}*/
 .auiRowTable tr:hover td,
 .auiRowTable tr:hover th {
   background: #f5f5f5;
@@ -2821,13 +2610,7 @@ ul.attachments >li{
 }
 
 .tlDisplayGroup {
-  /*	display:inline-block;
-  	max-width:12em;
-  	text-overflow:ellipsis;
-  	white-space:nowrap;
-  	overflow:hidden;*/
   cursor: pointer;
-  /*IE7*/
 }
 
 .tlDisplayChanger .menubar {
@@ -3548,19 +3331,6 @@ ul.attachments >li{
 /***************************************************
 	auiIcon
 --------------------------------------------------*/
-/*
-auiIconは「class="auiIcon auiIconSetting"」と
-ベースクラスとサブクラスを同時に付与させること。
-
-基本形（リンク版）：<a href="#" class="auiIcon auiIconSetting"><span>設定</span></a>
-基本形（span版）：<span class="auiIcon auiIconSetting"><span>設定</span></span>
-
-auiIconでアイコンの形状全てを一元管理し
-サブクラスはあくまで背景位置の変更のみを行う。
-
-IE6は透過PNGが利用できないため透過GIFへ置き換えている。
-そのためバリを表示させないためhoverアクションを封じる。
-*/
 .auiIcon {
   display: block;
   display: inline-block;
