@@ -43,7 +43,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('route_name'))")
-#ALtditem("#ALtextfield('route_name' $!result.RouteName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('route_name' $!result.RouteName 50 'active')")
 #ALtdcaption("#ALrequired($!result.getFieldName('route'))")
 #ALtditemheader()
 <div id="membernormallist">
