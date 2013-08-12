@@ -90,7 +90,7 @@
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ACCOUNT_ADD_POST_TO_LEFT_SIDE</div>
-<div dojoType="aipo.widget.GroupNormalSelectList"
+<div dojoType="aipo.widget.GroupNormalSelectListMb5"
     id="groupnormalselect"
     widgetId="groupnormalselect"
     buttonAddId="button_group_add"
@@ -109,10 +109,10 @@
 #ALtdcaption($!result.getFieldName("position_id"))
 #ALtditemheader()
 <div id="positionInputField" #if(!$!{result.NewPosition})style="display:none"#end>
-#ALtextfield('position_name' $!result.Position.PositionName '90%' 50 'active')
+#ALtextfieldw100('position_name' $!result.Position.PositionName 50 'active')
 </div>
 <div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>
-<select name="position_id">
+<select name="position_id" class="w100">
 <option value="">$l10n.ACCOUNT_SETFIELDNAME_NOT_SET</option>
 #foreach( $record in $result.PositionMap )
 <option value="$!record.PositionId" #if ($!result.PositionId.toString() == $!record.PositionId.toString()) selected #end>$!record.PositionName</option>

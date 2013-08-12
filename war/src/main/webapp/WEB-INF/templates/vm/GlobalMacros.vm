@@ -339,6 +339,10 @@
 <input class="text" type="text" name="$name" id="$name" value="$value" maxlength="$max" style="width:$width;ime-mode:$mode" />
 #end
 
+#macro(ALtextfieldw100 $name $value $max $mode)
+<input class="text w100" type="text" name="$name" id="$name" value="$value" maxlength="$max" style="ime-mode:$mode" />
+#end
+
 #macro(ALpasswdfield $name $value $width $max $mode)
 <input class="text" type="password" name="$name" id="$name" value="$value" maxlength="$max" style="width:$width;ime-mode:$mode" />
 #end
