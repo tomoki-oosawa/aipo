@@ -43,7 +43,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('memo_name'))")
-#ALtditem("#ALtextfield('memo_name' $!result.MemoName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('memo_name' $!result.MemoName 50 'active')")
 #ALtdcaption($!result.getFieldName("note"))
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
