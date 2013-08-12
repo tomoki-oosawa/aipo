@@ -73,6 +73,9 @@ public class WorkflowAllSelectData extends
   /** サブメニュー（作成分）のタブ（完了） */
   public static final String TAB_FINISHED = "finished";
 
+  /** サブメニュー（すべての依頼）のタブ */
+  public static final String TAB_ALLDISPLAY = "alldisplay";
+
   /** 現在選択されているタブ */
   private String currentTab;
 
@@ -134,7 +137,7 @@ public class WorkflowAllSelectData extends
       currentTab = tabParam;
     }
     ALEipUtils.setTemp(rundata, context, "alltab", allTabParam);
-    ALEipUtils.setTemp(rundata, context, "tab", tabParam);
+    ALEipUtils.setTemp(rundata, context, "tab", currentTab);
 
     // カテゴリの初期値を取得する
     try {
