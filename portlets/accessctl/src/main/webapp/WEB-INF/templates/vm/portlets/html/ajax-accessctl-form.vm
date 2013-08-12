@@ -35,13 +35,13 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('acl_role_name'))")
-#ALtditem("#ALtextfield('acl_role_name' $!result.AclRoleName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('acl_role_name' $!result.AclRoleName 50 'active')")
 #ALtdcaption("#ALrequired($l10n.ACCESSCTL_AUTHORITY)")
 #ALtditemheader()
 
 
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','PortletFeatureLiteJSONScreen')")
-<select style="width: 90%;" name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
+<select class="w100 mb5" name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
 #foreach( $record in $result.PortletFeatureList )
 #if ($mode=="new_form")
     <option value="$!record.FeatureId"  selected="selected" >$!record.FeatureAliasName</option>
@@ -60,7 +60,7 @@
 #ALtdcaption("#ALrequired($l10n.ACCESSCTL_PERMITTED_MEMBER)")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ACCESSCTL_ADD_TO_LEFT_SIDE</div>
-<div dojoType="aipo.widget.MemberNormalSelectList"
+<div dojoType="aipo.widget.MemberNormalSelectListMb5"
     id="membernormalselect"
     widgetId="membernormalselect"
     buttonAddId="button_member_add"
