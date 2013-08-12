@@ -44,7 +44,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('group_name'))")
-#ALtditem("#ALtextfield('group_name' $!result.GroupName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('group_name' $!result.GroupName 50 'active')")
 #ALtdcaption($l10n.ADDRESSBOOK_BELONG_MEMBER)
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ADDRESSBOOK_BELONG_MEMBER_ADD</div>
