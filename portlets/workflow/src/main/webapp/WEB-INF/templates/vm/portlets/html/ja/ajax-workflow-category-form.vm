@@ -46,10 +46,10 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')")
 #ALtdcaption("$!result.getFieldName('route_id')")
 #ALtditemheader()
-#ALselectpdheader("route_id" "90%" "aipo.workflow_category.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
+#ALselectpdheaderw100("route_id" "aipo.workflow_category.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
 <option value="0">$l10n.WORKFLOW_NO_SPECIFIED</option>
 #foreach( $record in $result.RouteList )
 <option value="$!record.RouteId" #if ($!result.RouteId.toString() == $!record.RouteId.toString()) selected #end>$!record.RouteName</option>

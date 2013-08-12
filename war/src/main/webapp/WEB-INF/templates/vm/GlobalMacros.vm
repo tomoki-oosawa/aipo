@@ -331,6 +331,10 @@
 <select name="$name" id="$name" style="width:$width;" onchange="$onchange">
 #end
 
+#macro(ALselectpdheaderw100 $name $onchange)
+<select name="$name" id="$name" class="w100" onchange="$onchange">
+#end
+
 #macro(ALselectfooter)
 </select>
 #end
