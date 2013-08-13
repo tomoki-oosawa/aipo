@@ -42,7 +42,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('thema_name'))")
-#ALtditem("#ALtextfield('thema_name' $!result.ThemaName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('thema_name' $!result.ThemaName 50 'active')")
 #ALtdcaption($!result.getFieldName("description"))
 #ALtditemheader()
 #ALtextarea('description' $!result.Description 10 40)

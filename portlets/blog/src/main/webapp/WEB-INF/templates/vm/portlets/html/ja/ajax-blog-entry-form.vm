@@ -66,7 +66,7 @@
 #ALtditemheader()
 <div id="blogThemaInputField" #if(!$!{result.isNewThema})style="display:none"#end>
 
-#ALtextfield('thema_name' $!result.BlogThema.ThemaName '90%' 50 'active')
+#ALtextfieldw100('thema_name' $!result.BlogThema.ThemaName 50 'active')
 
 </div>
 <div id="blogThemaSelectField" #if($!{result.isNewThema})style="display:none"#end>
@@ -81,7 +81,7 @@
 </div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('title'))")
-#ALtditem("#ALtextfield('title' $!result.Title '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('title' $!result.Title 50 'active')")
 #ALtdcaption($!result.getFieldName("note"))
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
