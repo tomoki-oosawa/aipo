@@ -13,113 +13,14 @@ body {
 #header {padding:0;height:auto}
 #header .inner {height:auto}
 .hdNavi {
-	position:absolute;
-	right:0;
-	padding-top:0;
-}
-/*
-.hdActivity {
-	position:absolute;
-	top:0;
-	right:0;
-	width:45px;
-	line-height:45px;
-	height:45px;
-	padding:0;
-	text-align:center;
-	vertical-align:middle;
-	background:#333333 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.2)), color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-	text-shadow:0 1px 0 rgba(0,0,0,0.3);
-	color:#FFF;
-}
-.hdActivity:hover{
-	background:#333333 -webkit-gradient(linear, left top, left bottom,from(rgba(255,255,255,0.2)),color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-}
-.activityField {
-	display:table-cell;
-	width:45px;
-	height:45px;
-	padding:0;
-	text-align:center;
-	vertical-align:middle;
-	background:#333333
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.2)),
-		color-stop(0.5, rgba(255,255,255,0)),
-		to(rgba(0,0,0,0.1))
-	);
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-}
-.activityField:hover {
-	background:#666666;
-}
-.hdActivity div{
-	position:relative;
-}
-.hdActivity > div{
-	display:inline-block;
-	vertical-align:middle;
+  position:absolute;
+  right:0;
+  padding-top:0;
 }
 
-.hdActivity div.active {
-	background:#666666
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(0,0,0,0.3)),
-		color-stop(0.8, rgba(0,0,0,0)),
-		to(rgba(0,0,0,0))
-	);
-}
-*/
 #aipo_widget_ActivityList_0 {
 	width:100% !important;
 }
-.activityPopup,
-.supportPopup {
-  width: 91%;
-  margin: 0 auto;
-}
-
-/*
-.activitycheckerContainerstyle,
-#activitycheckerContainer {
-	margin-top:0;
-}
-.activitycheckerstyle,
-#activitychecker {
-    right:auto;
-    top:5px;
-    font-size:11px;
-    height:25px;
-    line-height:28px !important;
-    min-width:24px;
-    background:-moz-linear-gradient(top, #e63439, #da1b1f);
-    background:-webkit-gradient(linear, left top, left bottom, from(#e63439), to(#da1b1f));
-	-webkit-box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-    box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-    border:none;
-    border-bottom:1px solid rgba(0, 0, 0, 0.3);
-    font-weight:bold;
-    text-shadow:0 1px 0 rgba(0, 0, 0, 0.3);
-}
-
-.hdActivity > .dijitDropDownButton {
-height: 100%;
-}
-*/
 
 td.container {
   display: block;
@@ -129,7 +30,6 @@ td.container {
 #sharedStateIframe {
   display: none;
 }
-
 
 /***************************************************
 	HTML
@@ -162,37 +62,7 @@ button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-/*
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonSearch {
-  min-width: 32;
-  height: 32px;
-  line-height: 30px;
-  padding: 0 5px;
-}
-
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  min-width: 32px;
-  height: 32px;
-  line-height: 32px;
-  padding: 0 5px;
-}*/
-/*.auiButton span {
-  display: table-cell;
-  min-width: 30px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  vertical-align: middle;
-}*/
 .auiButtonDisabled {
-  /*	height:32px;
-  	line-height:32px;*/
   padding: 0 10px;
 }
 
@@ -210,9 +80,11 @@ input[type=password] {
 #roundWrapper .roundMainWrapper {
   padding: 46px 0 0;
 }
+
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
   background-image: none;
 }
+
 #roundWrapper .roundBlockWrapperTop {
   width: 100%;
   background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
@@ -224,23 +96,6 @@ input[type=password] {
 
 #roundWrapper .roundBlockWrapperTop .roundBlockIcon {
   display: none;
-}
-
-#roundWrapper .roundBlockWrapperTop .roundBlockTitle {
-  /*padding:0;
-  background-image:none;
-  text-align:center;
-  vertical-align:middle;
-  overflow:hidden;
-  color:#ffffff;
-  font-size:16px;
-  font-weight:bold;
-  text-shadow:0 1px 0 rgba(0,0,0,0.8);*/
-}
-
-#roundWrapper .roundBlockWrapperTop .roundBlockTitle a {
-  /*color:#ffffff;
-  text-decoration:none;*/
 }
 
 #roundWrapper .roundBlockWrapperTop .roundBlockTitle a:hover {
@@ -259,8 +114,9 @@ input[type=password] {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
-	background-image:none;
+  background-image: none;
 }
+
 .auiPortletHead {
   position: absolute;
   top: 0;
@@ -272,6 +128,7 @@ input[type=password] {
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 .auiPortletHead .inner {
 	margin:0 50px;
 	height: 44px;
@@ -356,71 +213,71 @@ input[type=password] {
 }
 
 .auiSmpHead .inner {
-	height:44px;
-	margin:0 80px 0 50px;
+  height: 44px;
+  margin: 0 80px 0 50px;
 }
 
 .auiShTitle {
-	width:100%;
-	line-height:44px;
-	padding:0;
-	text-align:center;
-	color:#ffffff;
-	font-size:14px;
-	font-weight:bold;
-	text-shadow:0 -1px 0 rgba(0,0,0,0.5);
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
+  width: 100%;
+  line-height: 44px;
+  padding: 0;
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .auiShTitle a {
-	color:#ffffff;
-	text-decoration:none;
-	padding:0;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0;
 }
 
 .auiShTools {
-	position:absolute;
-	top:0;
-	right:5px;
+  position: absolute;
+  top: 0;
+  right: 5px;
 }
+
 .auiShTools a {
-	display:block;
-	text-align:center;
-	padding:6px 4px;
+  display: block;
+  text-align: center;
+  padding: 6px 4px;
 }
+
 .alertVoice, .alertActivity {
-	float:left;
-	position:relative;
+  float: left;
+  position: relative;
 }
+
 .alertCount {
-	position:absolute;
-	top:5px;
-	right:3px;
-	background:#f00
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(0,0,0,0)),
-		to(rgba(0,0,0,0.3))
-	);
-	padding:1px 2px;
-	-webkit-border-radius:4px;
-	-moz-border-radius:4px;
-	-ms-border-radius:4px;
-	border-radius:4px;
-	font-size:9px;
-	color:#fff !important;
-	text-shadow:0 -1px 0 rgba(0,0,0,0.2);
-	-webkit-box-shadow:0 1px 0 rgba(0,0,0,0.4);
-	-moz-box-shadow:0 1px 0 rgba(0,0,0,0.4);
-	box-shadow:0 1px 0 rgba(0,0,0,0.4);
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  background: red -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.3)));
+  padding: 1px 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 9px;
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
+
 .iconAlertActivity, .iconAlertVoice {
-	display:block;
-	width:32px;
-	height:32px;
-	background:url(../images/mobile/sprits_smphead.png);
-	background-size:32px;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: url(../images/mobile/sprits_smphead.png);
+  background-size: 32px;
 }
 
 .iconAlertActivity {background-position:0 0}
@@ -729,61 +586,65 @@ input[type=password] {
 	auiContentsArea
 --------------------------------------------------*/
 #auiContentsArea {
-	float:none;
-	margin-left:0;
-	margin-bottom:45px;
+  float: none;
+  margin-left: 0;
+  margin-bottom: 45px;
 }
+
 #auiContentsAreaInner {
-	margin-left:0;
+  margin-left: 0;
 }
+
 /***************************************************
 	auiWidget
 --------------------------------------------------*/
 #auiWidgetsArea {
-	float:none;
-	width:100%;
-	height:43px;
-	position:fixed;
-	left:0;
-	bottom:0;
-	padding:0;
-	background:#666666
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.4)),
-		to(rgba(255,255,255,0))
-	);
-	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);
-	border-top:solid 1px #909090;
-	z-index:994;
+  float: none;
+  width: 100%;
+  height: 43px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 0;
+  background: #666666 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.4)), to(rgba(255, 255, 255, 0)));
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border-top: solid 1px #909090;
+  z-index: 994;
 }
+
 .auiWidget {
-	padding:5px;
-    border:none;
+  padding: 5px;
+  border: none;
 }
+
 .auiWidget p {
-	margin:0;
+  margin: 0;
 }
+
 .widgetButton {
-	position:absolute;
-	padding:5px;
+  position: absolute;
+  padding: 5px;
 }
+
 .widgetButton a {
-	height:32px;
-	line-height:32px;
-	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-    border:none !important;
+  height: 32px;
+  line-height: 32px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.3);
+  border: none !important;
 }
+
 .widgetButton a:hover {
-	-webkit-box-shadow:none;
-	box-shadow:none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
+
 .snDrawer {
-	float:right;
-	padding:4px;
+  float: right;
+  padding: 4px;
 }
+
 .snDrawer .auiButtonBold {
 	padding:5px;
 	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
@@ -912,379 +773,384 @@ input[type=password] {
 	modalDialog
 --------------------------------------------------*/
 .modalDialog {
-	width:auto;
-	width:100%;
-	margin:45px 0 0 0;
-	top:0 !important;
-	left:0 !important;
+  width: auto;
+  width: 100%;
+  margin: 45px 0 0 0;
+  top: 0 !important;
+  left: 0 !important;
 }
-.modalDialog.mb_dialog{
-	/*position: relative;
-	margin:0;*/
-}
-
 .modalDialogUnderlayWrapper{
 	display: none !important;
 }
 
 .listTable .caption, .subTable .caption {
-	width:auto !important;
+  width: auto !important;
 }
-.modalDialog .listTable th, .modalDialog .listTable td{
-	display:block;
-	padding:5px 0;
+
+.modalDialog .listTable th, .modalDialog .listTable td {
+  display: block;
+  padding: 5px 0;
 }
+
 .modalDialog .listTable th, .modalDialog .listTable .caption {
-	padding:5px;
-	background:#f6f6f6;
+  padding: 5px;
+  background: #f6f6f6;
 }
+
 .memberlistToTop,
 .memberlistToBody,
 .memberlistToBottom {
-	float:left;
+  float: left;
 }
+
 .memberlistFromTop,
 .memberlistFromBody,
 .memberlistFromBottom {
-	float:right;
+  float: right;
 }
 
 /***************************************************
 	modalDialog
 --------------------------------------------------*/
-.auiPopup {
-	max-width:300px;
-	margin:0 auto;
+.auiPopup,
+.activityPopup,
+.supportPopup {
+  position: relative;
+  width: auto;
+  margin: 0 5px;
 }
+
 .dijitPopup {
-	width:100%;
-	padding-top:8px;
-	position:fixed;
+  width: 100%;
+  position: fixed;
 }
 
 #imageDialog {
-	left:0 !important;
-	width:100% !important;
-	height:auto !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
 }
+
 .imgPopup {
-	width:100%;
+  width: 100%;
 }
+
 .imgBody {
-	width:100%;
+  width: 100%;
 }
+
 .imgPopup img {
-	width:100%;
-	height:auto;
+  width: 100%;
+  height: auto;
 }
+
 .auiPopup iframe {
-	max-width:100% !important;
+  max-width: 100% !important;
 }
+
 /***************************************************
 	login
 --------------------------------------------------*/
 #auiLoginBox {
-	width:auto;
-	margin:0;
-	padding:0;
-	background:none;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  background: none;
 }
+
 #auiLoginInner {
-	padding:10px;
-	background:none;
+  padding: 10px;
+  background: none;
 }
+
 #auiLoginBox .logo {
-	margin:20px 0;
+  margin: 20px 0;
 }
+
 #auiLoginBox .logo img {
-	width:150px;
-	height:55px;
+  width: 150px;
+  height: 55px;
 }
+
 #auiLoginBox select {
-	height:2.2em;
-	font-size:1.5em;
+  height: 2.2em;
+  font-size: 1.5em;
 }
+
 #auiLoginBox input.text {
-	width:100%;
-	height:auto;
-	padding:5px;
-	font-size:1.5em;
+  width: 100%;
+  height: auto;
+  padding: 5px;
+  font-size: 1.5em;
 }
+
 #auiLoginBox .guide {
-	height:1.5em;
-	line-height:1.5em;
-	font-size:1.5em;
-	margin:0.4em 0;
+  height: 1.5em;
+  line-height: 1.5em;
+  font-size: 1.5em;
+  margin: 0.4em 0;
 }
+
 #auiLoginBox .floatLeft, #auiLoginBox .floatRight {
-	float:none;
-	margin:10px auto 0 auto;
+  float: none;
+  margin: 10px auto 0 auto;
 }
+
 #auiLoginBox .floatLeft {
-	font-size:1.5em;
+  font-size: 1.5em;
 }
+
 #auiLoginBox input {
-	vertical-align:0em;
+  vertical-align: 0em;
 }
+
 #auiLoginBox .floatRight {
-	width:152px;
+  width: 152px;
 }
 
 /***************************************************
 	auiSummaryMeta
 --------------------------------------------------*/
 .auiSummaryMeta {
-	margin:6px 0;
+  margin: 6px 0;
 }
+
 /***************************************************
 	auiMultiTable
 --------------------------------------------------*/
 .auiMultiTable {
-	margin-bottom:20px;
-	border-top:1px solid #EEEEEE;
-}
-.wDays,.wType,.wTime {
-	width:auto;
-}
-.auiMultiTable tr {
-	float:left;
-	width:75%;
-}
-table tr.caption {
-	width:25%;
-}
-.auiMultiTable td ,
-.auiMultiTable th {
-	height:16px;
-}
-.auiMultiTable td {
-	padding:5px;
-	display:block;
-	/*width: 95%;*/
-	text-align:left;
-}
-.auiMultiTable th {
-	background:#F4F4F4;
-	padding:5px;
-	display:block;
-	/*width: 88%;*/
-	border-bottom:1px solid #EEEEEE;
-}
-.doubleHeight {
-	height:33px !important;
+  margin-bottom: 20px;
+  border-top: 1px solid #f0f0f0;
 }
 
-/***************************************************
-	auiScheduleList
---------------------------------------------------*/
-.auiScheduleList {
+.wDays, .wType, .wTime {
+  width: auto;
 }
-.auiScheduleList,
-.auiScheduleList ul {
-	width:100%;
+
+.auiMultiTable tr {
+  float: left;
+  width: 75%;
 }
-.auiScheduleList li {
-	clear:both;
-	width:100%;
-	background:none;
-	padding:0;
+
+table tr.caption {
+  width: 25%;
 }
-.auiScheduleList li ul {
-	margin:0;
+
+.auiMultiTable td,
+.auiMultiTable th {
+  height: 16px;
 }
-.auiScheduleList .day {
-	background:#f0f0f0;
-	padding:8px 5px;
-	font-weight:bold;
+
+.auiMultiTable td {
+  padding: 5px;
+  display: block;
+  text-align: left;
 }
-.auiScheduleList .today .day {
-	background:#e0ffe0;
+
+.auiMultiTable th {
+  background: #F4F4F4;
+  padding: 5px;
+  display: block;
+  border-bottom: 1px solid #f0f0f0;
 }
-.auiScheduleList a {
-	width:100%;
-	display:block;
-	text-decoration:none;
-	border-bottom:solid 1px #eee;
+
+.doubleHeight {
+  height: 33px !important;
 }
-.auiScheduleList span {
-	display:table-cell;
-	padding:10px 0;
-	overflow:hidden;
-}
-.auiScheduleList .hour {
-	width:3em;
-	padding-right:10px;
-	text-align:right;
-}
-.auiScheduleList .title {
-}
+
 /***************************************************
 	auiScheduleCalendar
 --------------------------------------------------*/
 .auiScheduleCalendar {
-	width:100%;
-    border-collapse: collapse;
-	background:#f0f0f0;
-    border:1px solid #cccccc;
-	-webkit-border-radius:4px;
-	-moz-border-radius:4px;
-	-ms-border-radius:4px;
-	border-radius:4px;
+  width: 100%;
+  border-collapse: collapse;
+  background: #f0f0f0;
+  border: 1px solid #cccccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
 }
+
 .auiScMonth th {
-    padding:5px 0;
-    text-align:center;
-	vertical-align:middle;
+  padding: 5px 0;
+  text-align: center;
+  vertical-align: middle;
 }
+
 .auiScMonthLabel {
-	font-size:16px;
+  font-size: 16px;
 }
+
 .auiScWeek {
-    font-weight:normal;
-    padding-top:.15em;
-    padding-bottom:0em;
-    color:#293a4b;
-    text-align:center;
-	border-bottom:solid 1px #c0c0c0;
+  font-weight: normal;
+  padding-top: .15em;
+  padding-bottom: 0em;
+  color: #293a4b;
+  text-align: center;
+  border-bottom: solid 1px #c0c0c0;
 }
+
 .auiScDate {
-    font-size: 0.9em;
-    font-weight: normal;
-    text-align: center;
-    letter-spacing: 1px;
-	border-right:solid 1px #c0c0c0;
-	border-bottom:solid 1px #c0c0c0;
-	background:#e0e0e0;
+  font-size: 0.9em;
+  font-weight: normal;
+  text-align: center;
+  letter-spacing: 1px;
+  border-right: solid 1px #c0c0c0;
+  border-bottom: solid 1px #c0c0c0;
+  background: #e0e0e0;
 }
+
 .auiScDate:hover {
-	background:#ffffff;
+  background: #ffffff;
 }
+
 .auiScDateLabel {
-	display:block;
-	padding:5px;
-	border-top:solid 1px rgba(255,255,255,0.8);
-	border-left:solid 1px rgba(255,255,255,0.8);
-    cursor:pointer;
-	text-shadow:0 1px 0 rgba(255,255,255,0.8);
-	font-size:16px;
+  display: block;
+  padding: 5px;
+  border-top: solid 1px rgba(255, 255, 255, 0.8);
+  border-left: solid 1px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  font-size: 16px;
 }
+
 .auiScPrevMonth,
 .auiScNextMonth {
-    color:#999999;
-	background:#e0e0e0;
-    cursor:pointer;
+  color: #999999;
+  background: #e0e0e0;
+  cursor: pointer;
 }
-.auiScCurrentMonth {
-}
+
 .auiScCurrentDate {
-    background-color:#c0c0c0;
+  background-color: #c0c0c0;
 }
+
 .auiScSelectedDate {
-    background-color:#909090 !important;
-    color:#ffffff !important;
+  background-color: #909090 !important;
+  color: #ffffff !important;
 }
+
 .auiScSelectedDate .auiScDateLabel {
-	text-shadow:0 1px 0 rgba(0,0,0,0.3);
-	border-top:solid 1px #606060;
-	border-left:solid 1px #606060;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  border-top: solid 1px #606060;
+  border-left: solid 1px #606060;
 }
-<style>
+
 /***************************************************
 	auiGradList
 --------------------------------------------------*/
-.auiGradList ul{
-	margin:10px 0;
+.auiGradList ul {
+  margin: 10px 0;
 }
-.auiGradList ul li{
-	overflow: hidden;
-	width: 100%;
-	padding:0;
-	border:1px #ccc solid;
-	border-bottom:0;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#F0F0F0));
-	display:block;
+
+.auiGradList ul li {
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 1px #ccc solid;
+  border-bottom: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
+  display: block;
 }
-.auiGradList ul li:first-child{
-	-webkit-border-top-left-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
+
+.auiGradList ul li:first-child {
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
 }
-.auiGradList ul li:last-child{
-	-webkit-border-bottom-left-radius: 3px;
-	-webkit-border-bottom-right-radius: 3px;
-	border-bottom:1px #ccc solid;
+
+.auiGradList ul li:last-child {
+  -webkit-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom: 1px #ccc solid;
 }
-.auiGradList ul li a{
-	background: url(spm_arrow.png) no-repeat 97% 50%;
-	-webkit-background-size: 6px 9px;
-	display: block;
-	margin: 0px;
-	padding: 7px 20px 6px 10px;
-	text-decoration:none;
+
+.auiGradList ul li a {
+  background: url(spm_arrow.png) no-repeat 97% 50%;
+  -webkit-background-size: 6px 9px;
+  display: block;
+  margin: 0px;
+  padding: 7px 20px 6px 10px;
+  text-decoration: none;
 }
-.auiGradList ul li span.title{
-	display:block;
-	padding:0 10px 0 0;
+
+.auiGradList ul li span.title {
+  display: block;
+  padding: 0 10px 0 0;
 }
-.auiGradList ul li span.meta{
-	display:block;
-	font-size:10px;
+
+.auiGradList ul li span.meta {
+  display: block;
+  font-size: 10px;
 }
+
 /***************************************************
 	dijitCalendar
 --------------------------------------------------*/
 .dijitCalendarContainer {
-    width:auto;
-	max-width:300px;
+  width: auto;
+  max-width: 300px;
 }
+
 .dijitCalendarMonthContainer th {/* month */
-    font-size:20px;
+  font-size: 20px;
 }
+
 .dijitCalendarDayLabelTemplate {/* week */
 }
+
 .dijitCalendarDateLabel {/* day */
-    font-size:20px;
+  font-size: 20px;
 }
+
 .dijitCalendarYearLabel {/* year */
-    font-size:16px;
+  font-size: 16px;
 }
 
 /* .calendar */
 .calendarWrapper {
-	overflow-x:visible;
+  overflow-x: visible;
 }
+
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
 .addressbookDialog {
-	width:auto;
+  width: auto;
 }
+
 .addressbookDialog .spaceLeft:nth-of-type(1) {
-	display:none;
+  display: none;
 }
+
 .addressbookDialog .dialogTable {
-	display:block;
-	margin-top:0 !important;
-	padding:0 5px;
-	border:none !important;
+  display: block;
+  margin-top: 0 !important;
+  padding: 0 5px;
+  border: none !important;
 }
+
 .addressbookDialog .dialogTable th, .addressbookDialog .dialogTable td {
-	display:block;
-	width:100% !important;
-	padding:10px 0;
+  display: block;
+  width: 100% !important;
+  padding: 10px 0;
 }
+
 .addressbookDialog .dialogTable .caption {
-	padding:10px 0 0 0;
-	border:none;
+  padding: 10px 0 0 0;
+  border: none;
 }
+
 .addressbookDialog .alignright {
-	float:none;
-	text-align:right;
+  float: none;
+  text-align: right;
 }
+
 /***************************************************
 	auiListWrapper
 --------------------------------------------------*/
 .auiListWrapper {
-	height:230px;
+  height: 230px;
 }
 
 /***************************************************
@@ -1366,13 +1232,15 @@ table tr.caption {
 	radioBlock
 --------------------------------------------------*/
 .radioBlock {
-	margin:0 0 1.5em;
+  margin: 0 0 1.5em;
 }
+
 .radioBlock label {
-	display: block;
+  display: block;
 }
+
 .radioBlock input[type="radio"] {
-	vertical-align: 0;
+  vertical-align: 0;
 }
 
 /***************************************************
