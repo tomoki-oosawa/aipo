@@ -90,7 +90,7 @@
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ACCOUNT_ADD_POST_TO_LEFT_SIDE</div>
-<div dojoType="aipo.widget.GroupNormalSelectListMb5"
+<div dojoType="aipo.widget.GroupNormalSelectList"
     id="groupnormalselect"
     widgetId="groupnormalselect"
     buttonAddId="button_group_add"

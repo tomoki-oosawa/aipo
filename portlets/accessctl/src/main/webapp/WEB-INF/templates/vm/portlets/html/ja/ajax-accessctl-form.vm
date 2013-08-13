@@ -60,7 +60,7 @@
 #ALtdcaption("#ALrequired($l10n.ACCESSCTL_PERMITTED_MEMBER)")
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ACCESSCTL_ADD_TO_LEFT_SIDE</div>
-<div dojoType="aipo.widget.MemberNormalSelectListMb5"
+<div dojoType="aipo.widget.MemberNormalSelectList"
     id="membernormalselect"
     widgetId="membernormalselect"
     buttonAddId="button_member_add"

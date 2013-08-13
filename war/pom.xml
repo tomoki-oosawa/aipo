@@ -73,10 +73,10 @@
                 <include>aipo/widget/ActivityList.js</include>
                 <include>aipo/widget/GroupSelectList.js</include>
                 <include>aipo/widget/GroupNormalSelectList.js</include>
-                <include>aipo/widget/GroupNormalSelectListMb5.js</include>
+                <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
-                <include>aipo/widget/MemberNormalSelectListMb5.js</include>
+                <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.js</include>
                 <include>aipo/widget/DateCalendar.js</include>
                 <include>aipo/widget/DropdownActivityChecker.js</include>
@@ -112,10 +112,10 @@
                 <include>aipo/widget/ActivityList.xd.js</include>
                 <include>aipo/widget/GroupSelectList.xd.js</include>
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
-                <include>aipo/widget/GroupNormalSelectListMb5.xd.js</include>
+                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
                 <include>aipo/widget/MemberSelectList.xd.js</include>
                 <include>aipo/widget/MemberNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberNormalSelectListMb5.xd.js</include>
+                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/DateCalendar.xd.js</include>
                 <include>aipo/widget/DropdownActivityChecker.xd.js</include>
