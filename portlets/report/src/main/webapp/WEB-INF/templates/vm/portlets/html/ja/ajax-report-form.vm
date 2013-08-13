@@ -48,7 +48,7 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('report_name'))")
 #ALtditemheader()
-#ALtextfield('report_name' $!result.ReportName '90%' 50 'active')
+#ALtextfieldw100('report_name' $!result.ReportName 50 'active')
 #ALtditemfooter()
 
 #ALtdcaption("#ALrequired($l10n.REPORT_SETFIELDNAME_MENVERS)")
