@@ -95,7 +95,7 @@
 <select name="clock_in_time_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.ClockInTime.Minute == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.ClockInTime.Minute == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 </select>
 &nbsp;-&nbsp;
@@ -115,7 +115,7 @@
 <select name="clock_out_time_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.ClockOutTime.Minute == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.ClockOutTime.Minute == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 </select>
 #ALtditemfooter()
@@ -142,7 +142,7 @@
 <select name=outgoing_time$!{outcome}_minute id="outgoing_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.getOutgoingTime($outcome).Minute == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 </select>
 &nbsp;-&nbsp;
@@ -162,7 +162,7 @@
 <select name=comeback_time$!{outcome}_minute id="comeback_time$!{outcome}_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
-<option value="$num" #if ($!result.getComebackTime($outcome).Minute == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.getComebackTime($outcome).Minute == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 </select>
 <input class="minus$outcome" type="button" name="minus$outcome" id="minus$outcome" value="-" onClick="aipo.exttimecard.hideOutCome(this)" />
