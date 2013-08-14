@@ -23,9 +23,9 @@
 <div class="auiPopup imgPopupTutorial">
  <div class="imgBody">
  	<a href="javascript:void(0)">
-		<img width="1000" height="650" id="popupImage1" onload="aipo.tutorial.onLoadImage(this)" src="images/slide01_130603.png"  onclick="aipo.tutorial.nextPage()"/>
-		<img width="1000" height="650" id="popupImage2" onload="aipo.tutorial.onLoadImage(this)" src="images/slide02_130603.png" style="display: none;" onclick="aipo.tutorial.nextPage()"/>
-		<img width="1000" height="650" id="popupImage3" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130603.png" style="display: none;" onclick="aipo.tutorial.showDialog('$jslink.getTemplate("TutorialForbidScreen")'); aipo.tutorial.hideDialog()" />
+		<img width="1000" height="650" id="popupImage1" onload="aipo.tutorial.onLoadImage(this)" src="images/slide01_130809.png"  onclick="aipo.tutorial.nextPage()"/>
+		<img width="1000" height="650" id="popupImage2" onload="aipo.tutorial.onLoadImage(this)" src="images/slide02_130809.png" style="display: none;" onclick="aipo.tutorial.nextPage()"/>
+		<img width="1000" height="650" id="popupImage3" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130809.png" style="display: none;" onclick="aipo.tutorial.showDialog('$jslink.getTemplate("TutorialForbidScreen")'); aipo.tutorial.hideDialog()" />
 	</a>
  </div>
 </div>
