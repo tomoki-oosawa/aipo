@@ -50,10 +50,10 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="todoCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
+#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
 </div>
 <div id="todoCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-#ALselectpdheader("category_id" "99%" "")
+#ALselectpdheaderw100("category_id" "")
 #foreach( $record in $result.CategoryList )
 <option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
