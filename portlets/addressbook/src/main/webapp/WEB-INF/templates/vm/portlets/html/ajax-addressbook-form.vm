@@ -118,7 +118,7 @@
 </div>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("position_name"))
-#ALtditem("#ALtextfield('position_name' $!result.PositionName '70%' 50 'active')")
+#ALtditem("#ALtextfieldw100('position_name' $!result.PositionName 50 'active')")
 #if($mode=="new_form" || $!result.OwnerId == $!result.UserId)
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
