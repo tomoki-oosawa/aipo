@@ -60,11 +60,11 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="msgboardCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
+#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
 
 </div>
 <div id="msgboardCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-#ALselectpdheader("category_id" "90%" "")
+#ALselectpdheader("category_id" "" "")
 #foreach( $record in $result.CategoryList )
 <option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
@@ -77,7 +77,7 @@
 #end
 
 #ALtdcaption("#ALrequired($!result.getFieldName('topic_name'))")
-#ALtditem("#ALtextfield('topic_name' $!result.TopicName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('topic_name' $!result.TopicName 50 'active')")
 #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
