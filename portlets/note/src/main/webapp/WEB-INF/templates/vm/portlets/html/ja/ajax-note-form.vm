@@ -70,9 +70,9 @@
 </select>&nbsp;<span id="destuserDiv"></span>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('client_name'))")
-#ALtditem("#ALtextfield('client_name' $!result.ClientName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('client_name' $!result.ClientName 50 'active')")
 #ALtdcaption("$!result.getFieldName('company_name')")
-#ALtditem("#ALtextfield('company_name' $!result.CompanyName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('company_name' $!result.CompanyName 50 'active')")
 #ALtdcaption($!result.getFieldName("telephone1"))
 #ALtditemheader()
 #ALtextfield('telephone1' $!result.Telephone1 '50px' 5 'disabled')
@@ -82,7 +82,7 @@
 #ALtextfield('telephone3' $!result.Telephone3 '50px' 4 'disabled')#ALcaution($l10n.NOTE_HALF_SIZE_Number)
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('email_address')")
-#ALtditem("#ALtextfield('email_address' $!result.EmailAddress '90%' 50 'disabled')")
+#ALtditem("#ALtextfieldw100('email_address' $!result.EmailAddress 50 'disabled')")
 #ALtdcaption($!result.getFieldName('add_dest_type_pc'))
 #ALtditemheader()
 <input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;$l10n.NOTE_EMAIL</label>
