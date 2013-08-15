@@ -48,7 +48,7 @@
 <span id="schedule_val_member2" style="display:none">$l10n.SCHEDULE_HIDE_SELECT_VIEW</span>
 <span id="schedule_val_facility1" style="display:none">$l10n.SCHEDULE_SELECT_FACILITY</span>
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($subtitle "aipo.schedule.hideDialog()")
+#ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #if($result.SelectData.Max)
