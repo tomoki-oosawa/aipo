@@ -70,7 +70,7 @@
 
 </div>
 <div id="blogThemaSelectField" #if($!{result.isNewThema})style="display:none"#end>
-#ALselectpdheader("thema_id" "99%" "")
+#ALselectpdheaderw100("thema_id" "")
 #foreach( $record in $result.ThemaList )
 <option value='$!record.ThemaId' #if ($!result.ThemaId.toString() == $!record.ThemaId.toString()) selected #end>$!record.ThemaName</option>
 #end
