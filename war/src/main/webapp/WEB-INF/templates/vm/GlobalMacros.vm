@@ -332,7 +332,11 @@
 #end
 
 #macro(ALselectpdheaderw100 $name $onchange)
-<select name="$name" id="$name" class="w100" onchange="$onchange">
+#ALselectpdheaderclass($name $onchange 'w100')
+#end
+
+#macro(ALselectpdheaderclass $name $onchange $class)
+<select name="$name" id="$name" class="$class" onchange="$onchange">
 #end
 
 #macro(ALselectfooter)

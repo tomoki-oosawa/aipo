@@ -41,7 +41,7 @@
 
 
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','PortletFeatureLiteJSONScreen')")
-<select class="w100 mb5" name="feature_id" id="feature_id" onchange="aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)">
+#ALselectpdheaderclass("feature_id" "aipo.accessctl.changeAcls('$!portlet.ID', '$screenlink', this.options[this.selectedIndex].value)" "w100 mb5")
 #foreach( $record in $result.PortletFeatureList )
 #if ($mode=="new_form")
     <option value="$!record.FeatureId"  selected="selected" >$!record.FeatureAliasName</option>
