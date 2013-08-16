@@ -112,7 +112,7 @@
 </div>
 </div>
 <div id="workflowRouteSelectField" #if(!$!{result.isSavedRoute})style="display:none"#end>
-#ALselectpdheader("route_id" "90%" "aipo.workflow.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
+#ALselectpdheaderw100("route_id" "aipo.workflow.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
 <option value="0">$l10n.WORKFLOW_NO_SPECIFIED</option>
 #foreach( $record in $result.RouteList )
 <option value="$!record.RouteId" #if ($!result.RouteId.toString() == $!record.RouteId.toString()) selected #end>$!record.RouteName</option>
