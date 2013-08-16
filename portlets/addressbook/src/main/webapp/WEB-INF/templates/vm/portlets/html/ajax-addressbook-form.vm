@@ -105,7 +105,7 @@
 #ALtablefooter()
 </div>
 <div id="AddressBookCompanySelectField" #if($!result.isNewCompany())style="display:none"#end>
-#ALselectpdheader("company_id" "90%" "")
+#ALselectpdheaderw100("company_id" "")
 <option value="">$l10n.ADDRESSBOOK_NOT_SET</option>
 #foreach( $record in $result.CompanyList )
 <option value='$!record.CompanyId' #if ($!result.CompanyId.toString() == $!record.CompanyId.toString()) selected #end>$!record.CompanyName</option>
