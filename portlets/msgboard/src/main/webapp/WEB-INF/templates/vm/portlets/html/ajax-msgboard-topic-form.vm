@@ -64,7 +64,7 @@
 
 </div>
 <div id="msgboardCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-#ALselectpdheader("category_id" "90%" "")
+#ALselectpdheaderw100("category_id" "")
 #foreach( $record in $result.CategoryList )
 <option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
 #end
