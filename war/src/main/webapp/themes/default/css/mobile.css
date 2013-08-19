@@ -17,72 +17,7 @@ body {
 	right:0;
 	padding-top:0;
 }
-/*
-.hdActivity {
-	position:absolute;
-	top:0;
-	right:0;
-	width:45px;
-	line-height:45px;
-	height:45px;
-	padding:0;
-	text-align:center;
-	vertical-align:middle;
-	background:#333333 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.2)), color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-	text-shadow:0 1px 0 rgba(0,0,0,0.3);
-	color:#FFF;
-}
-.hdActivity:hover{
-	background:#333333 -webkit-gradient(linear, left top, left bottom,from(rgba(255,255,255,0.2)),color-stop(0.5, rgba(255,255,255,0)), to(rgba(0,0,0,0.1)));
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-}
-.activityField {
-	display:table-cell;
-	width:45px;
-	height:45px;
-	padding:0;
-	text-align:center;
-	vertical-align:middle;
-	background:#333333
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.2)),
-		color-stop(0.5, rgba(255,255,255,0)),
-		to(rgba(0,0,0,0.1))
-	);
-	-webkit-border-radius:6px 0 0 6px;
-	-moz-border-radius:6px 0 0 6px;
-	-ms-border-radius:6px 0 0 6px;
-	border-radius:6px 0 0 6px;
-}
-.activityField:hover {
-	background:#666666;
-}
-.hdActivity div{
-	position:relative;
-}
-.hdActivity > div{
-	display:inline-block;
-	vertical-align:middle;
-}
 
-.hdActivity div.active {
-	background:#666666
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(0,0,0,0.3)),
-		color-stop(0.8, rgba(0,0,0,0)),
-		to(rgba(0,0,0,0))
-	);
-}
-*/
 #aipo_widget_ActivityList_0 {
 	width:100% !important;
 }
@@ -91,35 +26,6 @@ body {
   width: 91%;
   margin: 0 auto;
 }
-
-/*
-.activitycheckerContainerstyle,
-#activitycheckerContainer {
-	margin-top:0;
-}
-.activitycheckerstyle,
-#activitychecker {
-    right:auto;
-    top:5px;
-    font-size:11px;
-    height:25px;
-    line-height:28px !important;
-    min-width:24px;
-    background:-moz-linear-gradient(top, #e63439, #da1b1f);
-    background:-webkit-gradient(linear, left top, left bottom, from(#e63439), to(#da1b1f));
-	-webkit-box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-	-moz-box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-    box-shadow:inset 0 1px 1px 0px rgba(0, 0, 0, 0.5);
-    border:none;
-    border-bottom:1px solid rgba(0, 0, 0, 0.3);
-    font-weight:bold;
-    text-shadow:0 1px 0 rgba(0, 0, 0, 0.3);
-}
-
-.hdActivity > .dijitDropDownButton {
-height: 100%;
-}
-*/
 
 td.container {
   display: block;
@@ -162,37 +68,7 @@ button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-/*
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonSearch {
-  min-width: 32;
-  height: 32px;
-  line-height: 30px;
-  padding: 0 5px;
-}
-
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  min-width: 32px;
-  height: 32px;
-  line-height: 32px;
-  padding: 0 5px;
-}*/
-/*.auiButton span {
-  display: table-cell;
-  min-width: 30px;
-  height: 32px;
-  line-height: 32px;
-  text-align: center;
-  vertical-align: middle;
-}*/
 .auiButtonDisabled {
-  /*	height:32px;
-  	line-height:32px;*/
   padding: 0 10px;
 }
 
@@ -224,23 +100,6 @@ input[type=password] {
 
 #roundWrapper .roundBlockWrapperTop .roundBlockIcon {
   display: none;
-}
-
-#roundWrapper .roundBlockWrapperTop .roundBlockTitle {
-  /*padding:0;
-  background-image:none;
-  text-align:center;
-  vertical-align:middle;
-  overflow:hidden;
-  color:#ffffff;
-  font-size:16px;
-  font-weight:bold;
-  text-shadow:0 1px 0 rgba(0,0,0,0.8);*/
-}
-
-#roundWrapper .roundBlockWrapperTop .roundBlockTitle a {
-  /*color:#ffffff;
-  text-decoration:none;*/
 }
 
 #roundWrapper .roundBlockWrapperTop .roundBlockTitle a:hover {
@@ -337,11 +196,6 @@ input[type=password] {
   min-width: 0;
 }
 
-/*
-.hdNavi, .hdActivity, .auiPortletHead {
-	display:none;
-}
-*/
 .auiSmpHead {
   position: absolute;
   top: 0;
@@ -1188,7 +1042,7 @@ table tr.caption {
 	border-top:solid 1px #606060;
 	border-left:solid 1px #606060;
 }
-<style>
+
 /***************************************************
 	auiGradList
 --------------------------------------------------*/
