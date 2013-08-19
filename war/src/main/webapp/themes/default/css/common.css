@@ -94,7 +94,7 @@ div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textar
 
 ul li {
   list-style: none;
-  line-height: 150%;
+  line-height: 1.5;
   text-align: left;
   display: block;
   background: url(../images/common/li_icon.gif) 0 0.5em no-repeat;
