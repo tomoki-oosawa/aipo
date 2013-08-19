@@ -60,7 +60,7 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
 #ALtditemheader()
 <div id="msgboardCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')
+#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
 
 </div>
 <div id="msgboardCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
