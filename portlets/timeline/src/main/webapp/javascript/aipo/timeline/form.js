@@ -660,7 +660,7 @@ aipo.timeline.resizeThumbnailTag = function(elem){
 		return img;
 	}
 	var img=getImage(elem.src);
-    if (img.width < 86) {
+    if (img.width > 0 && img.width < 86) {
           dojo.style(elem, 'width', img.width + 'px');
           dojo.style(elem, 'padding', '0 ' + (86 - img.width)/2 + 'px');
     }
