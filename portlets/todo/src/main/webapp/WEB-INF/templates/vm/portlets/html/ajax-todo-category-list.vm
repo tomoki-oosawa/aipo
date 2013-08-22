@@ -35,7 +35,7 @@
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader($l10n.TODO_CATEGORY $jslink $portlet)
+#ALformheaderAction($l10n.TODO_CATEGORY $jslink $portlet)
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">

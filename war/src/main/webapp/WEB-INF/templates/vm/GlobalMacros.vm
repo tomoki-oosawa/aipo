@@ -323,6 +323,20 @@
 <input type="hidden" name="secid" value="$secid" />
 #end
 
+#macro(ALajaxlistformheaderOnsubmitAction $name $onsubmit $action $form $js $class $style)
+<form name="$form$!portlet.ID" id="$form$!portlet.ID" action="$action" method="post" onsubmit="$js;$onsubmit" class="$class" style="$style">
+<input type="hidden" name="_name" value="$name" />
+<input type="hidden" name="secid" value="$secid" />
+#end
+
+#macro(ALformheaderAction $name $jslink $portlet)
+#ALajaxlistformheaderOnsubmitAction($name "return (aimluck.io.disableForm(this, true));" "$!jslink.getPortletById($!portlet.ID)" "listform"  "" "" "")
+#end
+
+#macro(ALajaxlistformheaderAction $name)
+#ALajaxlistformheaderOnsubmitAction($name "return false;" "#" "listform"  "" "" "")
+#end
+
 #macro(ALformfooter)
 </form>
 #end

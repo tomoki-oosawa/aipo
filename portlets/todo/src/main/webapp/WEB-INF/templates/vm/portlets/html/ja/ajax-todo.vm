@@ -86,7 +86,7 @@
 <div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
 #else
 #if($result.TableColumNum == 4)
-#ALformheader('ToDo' $jslink $portlet)
+#ALformheaderAction('ToDo' $jslink $portlet)
 <table class="auiRowTable wide">
 <colgroup />
 <colgroup style="width:20%;" />
@@ -110,7 +110,7 @@
 </table>
 #ALformfooter()
 #else
-#ALformheader('ToDo' $jslink $portlet)
+#ALformheaderAction('ToDo' $jslink $portlet)
 <table class="auiRowTable wide">
 <colgroup />
 <colgroup style="width:6em;" />
