@@ -4006,4 +4006,18 @@ public class ScheduleUtils {
 
     return list;
   }
+
+  /**
+   * 入力フィールド値が数字かどうかを判定します。
+   * 
+   * @return
+   */
+  public static boolean isNumberValue(String string) {
+    try {
+      Integer.valueOf(string);
+    } catch (NumberFormatException ex) {
+      return false;
+    }
+    return true;
+  }
 }

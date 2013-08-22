@@ -438,8 +438,35 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         facilityIds =
           FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filteres[1]));
       } else {
-        facilityIds =
-          FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
+        if (ScheduleUtils.isNumberValue(filter)) {
+          facilityIds =
+            FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
+        } else {
+
+          String[] split = filter.split(",");
+          if (split.length == 2) {
+            // URLパラメータにfilterが含まれてしまっていた場合
+            // デフォルト値のセットしなおし
+            // facilityIds初期化
+            VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+            String groupName =
+              portlet.getPortletConfig().getInitParameter("p3a-group");
+            if (groupName != null) {
+              ALEipUtils.setTemp(
+                rundata,
+                context,
+                ScheduleUtils.FILTER_NAMESPACE,
+                groupName);
+              ALEipUtils.setTemp(
+                rundata,
+                context,
+                ScheduleUtils.FILTER_NAMESPACE_TYPE,
+                "group");
+              facilityIds = new ArrayList<Integer>();
+            }
+          }
+
+        }
       }
     }
 
@@ -483,8 +510,10 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
       } else {
 
-        facilityList =
-          FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
+        if (ScheduleUtils.isNumberValue(filter)) {
+          facilityList =
+            FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
+        }
 
       }
     } else {
