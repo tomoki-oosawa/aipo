@@ -704,6 +704,7 @@ public class ScheduleWeeklyJSONFormData {
                   newSchedule,
                   memberList,
                   destMember.getUserId()));
+                messageList.add(message);
               }
 
               ALMailService.sendAdminMailAsync(new ALAdminMailContext(
@@ -711,6 +712,7 @@ public class ScheduleWeeklyJSONFormData {
                 ALEipUtils.getUserId(rundata),
                 messageList,
                 ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+
 
             }
 
@@ -732,7 +734,7 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1175,7 +1177,7 @@ public class ScheduleWeeklyJSONFormData {
 
   /**
    * セキュリティをチェックします。
-   * 
+   *
    * @return
    */
   private boolean doCheckSecurity(RunData rundata, Context context) {
