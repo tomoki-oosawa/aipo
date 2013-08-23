@@ -235,7 +235,7 @@ function change_group(form, value) {
 </script>
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
-<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
+<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="$!{alias}" /></div>
 #if($!data.Message)
 <div class="loginAlert">
 $!data.Message

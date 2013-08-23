@@ -231,7 +231,7 @@ function change_group(form, value) {
 </script>
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
-<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="Aipo6" /></div>
+<div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="$!{alias}" /></div>
 <h3>$l10n.WAR_SESSION_TIMEOUT</h3>
 <div class="loginAlert">
 $l10n.WAR_NO_OPERATION_FOR_A_LONGTIME_AND_DISCONNECT_SURVER
