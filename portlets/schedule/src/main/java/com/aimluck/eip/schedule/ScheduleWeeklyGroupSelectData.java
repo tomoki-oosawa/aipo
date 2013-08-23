@@ -442,7 +442,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
           facilityIds =
             FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
         } else {
-
+          facilityIds = new ArrayList<Integer>();
           String[] split = filter.split(",");
           if (split.length == 2) {
             // URLパラメータにfilterが含まれてしまっていた場合
@@ -462,7 +462,6 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
                 context,
                 ScheduleUtils.FILTER_NAMESPACE_TYPE,
                 "group");
-              facilityIds = new ArrayList<Integer>();
             }
           }
 
