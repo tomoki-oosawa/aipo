@@ -84,7 +84,7 @@
 <div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
 #if($result.TableColumNum == 4)
-#ALformheader('Msgboard' $jslink $portlet)
+#ALformheaderAction('Msgboard' $jslink $portlet)
 <table class="auiRowTable wide">
 <colgroup />
 <colgroup style="width:20%;" />
@@ -108,7 +108,7 @@
 </table>
 #ALformfooter()
 #else
-#ALformheader('Msgboard' $jslink $portlet)
+#ALformheaderAction('Msgboard' $jslink $portlet)
 <table class="auiRowTable wide">
 <colgroup />
 <colgroup style="width:6em;" />

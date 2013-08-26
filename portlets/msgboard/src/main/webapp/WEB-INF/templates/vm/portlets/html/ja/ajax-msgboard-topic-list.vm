@@ -61,7 +61,7 @@
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('Msgboard')
+#ALajaxlistformheaderAction('Msgboard')
 #if($result.List.size() == 0)
 <div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else

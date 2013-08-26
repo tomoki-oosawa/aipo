@@ -40,7 +40,7 @@
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)
+#ALformheaderAction($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)
 #end
 #if($result.List.size() <= 0)
 #AUIbuttonActionInBlankBox($l10n.MSGBOARD_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
