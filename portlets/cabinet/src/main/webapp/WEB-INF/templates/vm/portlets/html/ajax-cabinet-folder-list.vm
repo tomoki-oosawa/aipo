@@ -29,7 +29,7 @@
 </p></div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALformheader("$l10n.CABINET_FOLDER" $jslink $portlet)
+#ALformheaderAction("$l10n.CABINET_FOLDER" $jslink $portlet)
 #AUIrowTableWide()
 <tr>
 #ALtdheadAtt("$l10n.CABINET_FOLDER_NAME" 'style=""')
