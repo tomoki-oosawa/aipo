@@ -1241,12 +1241,14 @@ public class ScheduleFormData extends ALAbstractFormData {
             message.setPcBody(ScheduleUtils.createMsgForPc(
               rundata,
               schedule,
-              memberList));
+              memberList,
+              true));
             message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
               rundata,
               schedule,
               memberList,
-              destMember.getUserId()));
+              destMember.getUserId(),
+              true));
             messageList.add(message);
           }
 
@@ -1791,12 +1793,14 @@ public class ScheduleFormData extends ALAbstractFormData {
               message.setPcBody(ScheduleUtils.createMsgForPc(
                 rundata,
                 newSchedule,
-                memberList));
+                memberList,
+                false));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 newSchedule,
                 memberList,
-                destMember.getUserId()));
+                destMember.getUserId(),
+                false));
             }
 
             ALMailService.sendAdminMailAsync(new ALAdminMailContext(
@@ -1816,12 +1820,14 @@ public class ScheduleFormData extends ALAbstractFormData {
               message.setPcBody(ScheduleUtils.createMsgForPc(
                 rundata,
                 schedule,
-                memberList));
+                memberList,
+                false));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 schedule,
                 memberList,
-                destMember.getUserId()));
+                destMember.getUserId(),
+                false));
               messageList.add(message);
             }
 

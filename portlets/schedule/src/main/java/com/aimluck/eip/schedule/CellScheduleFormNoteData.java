@@ -704,12 +704,14 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           message.setPcBody(ScheduleUtils.createMsgForPc(
             rundata,
             schedule,
-            form_data.getMemberList()));
+            form_data.getMemberList(),
+            true));
           message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
             rundata,
             schedule,
             form_data.getMemberList(),
-            destMember.getUserId()));
+            destMember.getUserId(),
+            true));
           messageList.add(message);
         }
 
@@ -1201,12 +1203,14 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           message.setPcBody(ScheduleUtils.createMsgForPc(
             rundata,
             schedule,
-            form_data.getMemberList()));
+            form_data.getMemberList(),
+            false));
           message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
             rundata,
             schedule,
             form_data.getMemberList(),
-            destMember.getUserId()));
+            destMember.getUserId(),
+            false));
           messageList.add(message);
         }
 

@@ -528,12 +528,14 @@ public class ScheduleWeeklyJSONFormData {
                 message.setPcBody(ScheduleUtils.createMsgForPc(
                   rundata,
                   schedule,
-                  memberList));
+                  memberList,
+                  false));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   schedule,
                   memberList,
-                  destMember.getUserId()));
+                  destMember.getUserId(),
+                  false));
                 messageList.add(message);
               }
 
@@ -698,12 +700,14 @@ public class ScheduleWeeklyJSONFormData {
                 message.setPcBody(ScheduleUtils.createMsgForPc(
                   rundata,
                   newSchedule,
-                  memberList));
+                  memberList,
+                  false));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   newSchedule,
                   memberList,
-                  destMember.getUserId()));
+                  destMember.getUserId(),
+                  false));
                 messageList.add(message);
               }
 
@@ -712,7 +716,6 @@ public class ScheduleWeeklyJSONFormData {
                 ALEipUtils.getUserId(rundata),
                 messageList,
                 ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
-
 
             }
 
@@ -734,7 +737,7 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -859,12 +862,14 @@ public class ScheduleWeeklyJSONFormData {
               message.setPcBody(ScheduleUtils.createMsgForPc(
                 rundata,
                 schedule,
-                memberList));
+                memberList,
+                true));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 schedule,
                 memberList,
-                destMember.getUserId()));
+                destMember.getUserId(),
+                true));
               messageList.add(message);
             }
 
@@ -1019,12 +1024,14 @@ public class ScheduleWeeklyJSONFormData {
               message.setPcBody(ScheduleUtils.createMsgForPc(
                 rundata,
                 newSchedule,
-                memberList));
+                memberList,
+                true));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 newSchedule,
                 memberList,
-                destMember.getUserId()));
+                destMember.getUserId(),
+                true));
               messageList.add(message);
             }
 
@@ -1177,7 +1184,7 @@ public class ScheduleWeeklyJSONFormData {
 
   /**
    * セキュリティをチェックします。
-   *
+   * 
    * @return
    */
   private boolean doCheckSecurity(RunData rundata, Context context) {
