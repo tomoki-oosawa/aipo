@@ -42,7 +42,7 @@
 
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>
-#ALajaxlistformheader("$l10n.WORKFLOW_CLASSIFICATION")
+#ALajaxlistformheaderAction("$l10n.WORKFLOW_CLASSIFICATION")
 #if($result.List.size() <= 0)
 <div class="message">$l10n.WORKFLOW_SELECT_CATEGORY_MSG</div>
 <div class="message">$l10n.WORKFLOW_ADD_CATEGORY_MSG </div>

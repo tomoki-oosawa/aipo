@@ -21,7 +21,7 @@
 #if ($result.List.size() == 0)
 <div class="message">$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU</div>
 #else
-#ALformheader('Workflow' $jslink $portlet)
+#ALformheaderAction('Workflow' $jslink $portlet)
 #AUISummaryDiv()
 #AUIajaxpageview('WorkflowScreen' $result)
 #AUISummaryDivfooter()

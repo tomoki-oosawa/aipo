@@ -49,7 +49,7 @@
 #end
 </select></form></div>
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('Workflow')
+#ALajaxlistformheaderAction('Workflow')
 #if($result.List.size() == 0)
 <div class="message">$l10n.WORKFLOW_NO_WORKFLOW_YOU_SELECT</div>
 #else
