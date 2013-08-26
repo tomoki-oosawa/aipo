@@ -23,7 +23,7 @@
 #if ($result.List.size() == 0)
 <div class="message">$l10n.NOTE_NO_NOTE</div>
 #else
-#ALformheader('noteForm' $jslink $portlet)
+#ALformheaderAction('noteForm' $jslink $portlet)
 #AUISummaryDiv()
 #AUIajaxpageview('NoteScreen' $result)
 #AUISummaryDivfooter()

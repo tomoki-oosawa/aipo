@@ -23,7 +23,7 @@
 <div class="message">$l10n.NOTE_ALERT_NO_ENTRY_MY_GROUP</div>
 #else
 #set($link = "$!jslink.getPortletById($!portlet.ID)")
-#ALformheader('NoteGroup' $jslink $portlet)
+#ALformheaderAction('NoteGroup' $jslink $portlet)
 #ALtableheaderSimpleWide()
 #ALtdcaption($l10n.NOTE_GROUP)
 #ALtditemheaderAtt("style='width: 80%;'")
@@ -44,7 +44,7 @@
 #if($result.List.size() == 0)
 <div class="message">$!result.UserAliasNameText</div>
 #end
-#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0 && $!{result.UnreadReceivedNotesAllSum} && $!{result.UnreadReceivedNotesAllSum} > 0) <a href='$!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc')'>#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0) $!{result.NewNoteAllSumText} #end</a> #end 
+#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0 && $!{result.UnreadReceivedNotesAllSum} && $!{result.UnreadReceivedNotesAllSum} > 0) <a href='$!jslink.getAction('controls.Maximize',$!portlet.getID()).addQueryData('mode','list').addQueryData('sort','note_stat').addQueryData('sorttype','asc')'>#if($!{result.NewNoteAllSum} && $!{result.NewNoteAllSum} > 0) $!{result.NewNoteAllSumText} #end</a> #end
 #if($result.List.size() > 0)
 #AUIajaxpageview('NoteGroupScreen' $result)
 #ALtableheaderWide()
