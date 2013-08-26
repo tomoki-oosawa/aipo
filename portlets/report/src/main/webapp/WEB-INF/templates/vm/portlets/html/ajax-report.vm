@@ -21,7 +21,7 @@
 #if ($result.List.size() == 0)
 <div class="message">$l10n.REPORT_REPORT$l10n.REPORT_NO_INFO_TO_YOU</div>
 #else
-#ALformheader('Report' $jslink $portlet)
+#ALformheaderAction('Report' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('ReportScreen' $result)
 </div>
