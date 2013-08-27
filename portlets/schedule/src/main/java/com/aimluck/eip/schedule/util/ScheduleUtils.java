@@ -2892,6 +2892,10 @@ public class ScheduleUtils {
       service.handleRequest(context, "mail/createSchedule.vm", out);
       out.flush();
       return out.toString();
+    } catch (RuntimeException e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
     } catch (Exception e) {
       String message = e.getMessage();
       logger.warn(message, e);
