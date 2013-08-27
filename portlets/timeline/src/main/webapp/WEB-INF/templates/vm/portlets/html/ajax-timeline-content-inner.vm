@@ -172,7 +172,7 @@
 		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))" method="post" onsubmit="dojo.byId('getTimelineOnClick').innerHTML='true';aimluck.io.submit(this,'${indicator_id}_$!{record.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
-				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
+				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
@@ -304,7 +304,7 @@
 		<form name="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$!{indicator_id}_$!{record2.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
-				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record2.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record2.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record2.TimelineId})"></textarea>
+				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record2.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record2.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record2.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record2.TimelineId})"></textarea>
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">

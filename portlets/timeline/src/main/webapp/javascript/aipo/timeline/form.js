@@ -297,6 +297,13 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
   objBody.removeChild(shadow);
 }
 
+aipo.timeline.onPaste=function(pid, tid, e) {
+	setTimeout(function(){
+		aipo.timeline.onKeyUp(pid, tid, e);
+	},100);
+}
+
+
 aipo.timeline.onReceiveMessage = function(msg) {
   var pid = dojo.byId("getTimelinePortletId").innerHTML;
   if (!msg) {
