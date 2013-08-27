@@ -54,6 +54,8 @@ public class Maximize extends Action {
     // Get jsp_peid parmameter. If it does not exist, then do nothing
     String peid = rundata.getParameters().getString("js_peid");
     if (peid == null) {
+      // // error redirect
+      // rundata.setRedirectURI("/aipo/portal");
       return;
     }
 
@@ -75,6 +77,11 @@ public class Maximize extends Action {
         + ") entry for User ("
         + rundata.getUser().getName()
         + ")");
+
+      // error redirect
+      jdata.getUser().removeTemp("js_peid");
+      rundata.setRedirectURI("/aipo/portal");
+
       return;
     }
 

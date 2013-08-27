@@ -281,6 +281,9 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
         "MultiColumnControllerAction: Probably got wrong coordinates",
         e);
     }
+
+    jdata.getUser().removeTemp("js_peid");
+    rundata.setRedirectURI("/aipo/portal");
   }
 
   public void doLayout(RunData rundata, Context context) {

@@ -66,6 +66,7 @@ public class Restore extends Action {
       JetspeedRunData jdata = (JetspeedRunData) rundata;
       peid = (String) jdata.getUser().getTemp("js_peid");
       if (peid == null) {
+
         return;
       }
     }
@@ -79,6 +80,11 @@ public class Restore extends Action {
         + ") entry for User ("
         + rundata.getUser().getName()
         + ")");
+
+      // error redirect
+      jdata.getUser().removeTemp("js_peid");
+      rundata.setRedirectURI("/aipo/portal");
+
       return;
     }
     Portlet portlet = PortletFactory.getPortlet(entry);
