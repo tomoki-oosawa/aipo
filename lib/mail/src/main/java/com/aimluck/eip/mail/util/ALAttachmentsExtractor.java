@@ -116,17 +116,9 @@ public class ALAttachmentsExtractor extends AttachmentsExtractor {
 
     try {
 
-      String name = "AttachmentFile";
+      String name = null;
       if (part.getFileName() != null) {
         name = MimeUtility.decodeText(part.getFileName());
-      } else {
-        String contentType = part.getContentType();
-        if (contentType != null && !contentType.isEmpty()) {
-          if (contentType.indexOf("text/html") != -1) {
-            // ignore html mail part
-            return null;
-          }
-        }
       }
 
       if (name == null) {
