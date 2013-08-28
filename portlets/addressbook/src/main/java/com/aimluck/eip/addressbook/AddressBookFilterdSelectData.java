@@ -473,4 +473,13 @@ public class AddressBookFilterdSelectData extends
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_OUTSIDE;
   }
+
+  /**
+   * 現在ページを設定します。
+   * 
+   * @param page
+   */
+  public void setCurrentPage(int page) {
+    current_page = page;
+  }
 }

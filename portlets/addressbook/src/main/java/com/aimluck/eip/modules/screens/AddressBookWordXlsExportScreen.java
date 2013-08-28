@@ -102,14 +102,6 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
   private void setupAddressBookSheet(RunData rundata, Context context,
       HSSFWorkbook wb) throws Exception {
 
-    AddressBookFilterdSelectData listData;
-    listData = new AddressBookFilterdSelectData();
-
-    listData.initField();
-    listData.setRowsNum(1000);
-    listData.doSelectList(this, rundata, context);
-    listData.loadGroups(rundata, context);
-
     String sheet_name = "アドレスブック";
     // ヘッダ部作成
     String[] headers =
@@ -156,30 +148,48 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
     style_col.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
     style_col.setAlignment(HSSFCellStyle.ALIGN_JUSTIFY);
 
-    int listsize = listData.getCount();
-    AddressBookResultData rd;
-    for (int j = 0; j < listsize; j++) {
-      rd = (AddressBookResultData) listData.getList().get(j);
-      String[] rows =
-        {
-          rd.getName().getValue(),
-          rd.getNameKana().getValue(),
-          rd.getEmail().getValue(),
-          rd.getTelephone().getValue(),
-          rd.getCellularPhone().getValue(),
-          rd.getCellularMail().getValue(),
-          rd.getCompanyName().getValue(),
-          rd.getCompanyNameKana().getValue(),
-          rd.getPostName().getValue(),
-          rd.getZipcode().getValue(),
-          rd.getCompanyAddress().getValue(),
-          rd.getCompanyTelephone().getValue(),
-          rd.getCompanyFaxNumber().getValue(),
-          rd.getCompanyUrl().getValue(),
-          rd.getPositionName().getValue() };
+    AddressBookFilterdSelectData listData;
+    listData = new AddressBookFilterdSelectData();
 
-      rowcount = rowcount + 1;
-      addRow(sheet.createRow(rowcount), cell_enc_types, rows);
+    listData.initField();
+    listData.setRowsNum(1000);
+    listData.doSelectList(this, rundata, context);
+    listData.loadGroups(rundata, context);
+    int page_num = listData.getPagesNum();
+    int current_page = 1;
+    while (true) {
+      int listsize = listData.getList().size();
+      AddressBookResultData rd;
+      for (int j = 0; j < listsize; j++) {
+        rd = (AddressBookResultData) listData.getList().get(j);
+        String[] rows =
+          {
+            rd.getName().getValue(),
+            rd.getNameKana().getValue(),
+            rd.getEmail().getValue(),
+            rd.getTelephone().getValue(),
+            rd.getCellularPhone().getValue(),
+            rd.getCellularMail().getValue(),
+            rd.getCompanyName().getValue(),
+            rd.getCompanyNameKana().getValue(),
+            rd.getPostName().getValue(),
+            rd.getZipcode().getValue(),
+            rd.getCompanyAddress().getValue(),
+            rd.getCompanyTelephone().getValue(),
+            rd.getCompanyFaxNumber().getValue(),
+            rd.getCompanyUrl().getValue(),
+            rd.getPositionName().getValue() };
+
+        rowcount = rowcount + 1;
+        addRow(sheet.createRow(rowcount), cell_enc_types, rows);
+      }
+
+      current_page++;
+      if (current_page > page_num) {
+        break;
+      }
+      listData.setCurrentPage(current_page);
+      listData.doSelectList(this, rundata, context);
     }
 
     int uid = ALEipUtils.getUserId(rundata);

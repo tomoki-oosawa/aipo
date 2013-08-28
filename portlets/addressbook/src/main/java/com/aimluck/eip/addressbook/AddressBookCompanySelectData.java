@@ -366,4 +366,13 @@ public class AddressBookCompanySelectData extends
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_COMPANY;
   }
+
+  /**
+   * 現在ページを設定します。
+   * 
+   * @param page
+   */
+  public void setCurrentPage(int page) {
+    current_page = page;
+  }
 }

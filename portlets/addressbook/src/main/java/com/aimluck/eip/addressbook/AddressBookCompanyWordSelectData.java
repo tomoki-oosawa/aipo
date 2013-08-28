@@ -318,4 +318,13 @@ public class AddressBookCompanyWordSelectData extends
   public List<AddressBookGroupResultData> getGroupList() {
     return groupList;
   }
+
+  /**
+   * 現在ページを設定します。
+   * 
+   * @param page
+   */
+  public void setCurrentPage(int page) {
+    current_page = page;
+  }
 }
