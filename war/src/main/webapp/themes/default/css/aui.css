@@ -184,7 +184,6 @@ img.avatar,
 }
 
 .counter {
-  position: inherit !important;
   float: left;
   font-size: 9px;
   height: 13px;
