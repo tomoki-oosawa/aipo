@@ -269,7 +269,6 @@ function activitySwitch(){
         var headerHeight = header?header.clientHeight:0;
         var minHeight = popupHeight + headerHeight;
         wrapper.style.minHeight = minHeight +  'px';
-        popup[0].style.position = "absolute";
     }
 }
 //]]>
