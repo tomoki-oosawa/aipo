@@ -25,6 +25,7 @@ import java.util.List;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
@@ -146,11 +147,19 @@ public class AccountResultData implements ALData {
     return name;
   }
 
+  public String getWbrName() {
+    return ALCommonUtils.replaceToAutoCR(getName().toString());
+  }
+
   /**
    * @return
    */
   public ALStringField getUserName() {
     return user_name;
+  }
+
+  public String getWbrUserName() {
+    return ALCommonUtils.replaceToAutoCR(getUserName().toString());
   }
 
   /**
@@ -202,11 +211,25 @@ public class AccountResultData implements ALData {
     return position_name;
   }
 
+  public String getWbrPositionName() {
+    return ALCommonUtils.replaceToAutoCR(getPositionName().toString());
+  }
+
   /**
    * @return
    */
   public List<ALStringField> getPostNameList() {
     return post_name_list;
+  }
+
+  public List<String> getWbrPostNameList() {
+    List<String> list = new ArrayList<String>();
+    for (ALStringField postName : getPostNameList()) {
+      if (postName != null && !postName.equals("")) {
+        list.add(ALCommonUtils.replaceToAutoCR(postName.toString()));
+      }
+    }
+    return list;
   }
 
   /**
@@ -230,11 +253,19 @@ public class AccountResultData implements ALData {
     return cellular_mail;
   }
 
+  public String getWbrCellularMail() {
+    return ALCommonUtils.replaceToAutoCR(getCellularMail().toString());
+  }
+
   /**
    * @return
    */
   public ALStringField getCellularPhone() {
     return cellular_phone;
+  }
+
+  public String getWbrCellularPhone() {
+    return ALCommonUtils.replaceToAutoCR(getCellularPhone().toString());
   }
 
   /**
@@ -244,6 +275,10 @@ public class AccountResultData implements ALData {
     return email;
   }
 
+  public String getWbrEmail() {
+    return ALCommonUtils.replaceToAutoCR(getEmail().toString());
+  }
+
   /**
    * @return
    */
@@ -251,11 +286,19 @@ public class AccountResultData implements ALData {
     return in_telephone;
   }
 
+  public String getWbrInTelephone() {
+    return ALCommonUtils.replaceToAutoCR(getInTelephone().toString());
+  }
+
   /**
    * @return
    */
   public ALStringField getOutTelephone() {
     return out_telephone;
+  }
+
+  public String getWbrOutTelephone() {
+    return ALCommonUtils.replaceToAutoCR(getOutTelephone().toString());
   }
 
   /**
@@ -300,6 +343,10 @@ public class AccountResultData implements ALData {
     return name_kana;
   }
 
+  public String getWbrNameKana() {
+    return ALCommonUtils.replaceToAutoCR(getNameKana().toString());
+  }
+
   /**
    * @param string
    */
@@ -336,6 +383,10 @@ public class AccountResultData implements ALData {
     return company_address;
   }
 
+  public String getWbrCompanyAddress() {
+    return ALCommonUtils.replaceToAutoCR(getCompanyAddress().toString());
+  }
+
   /**
    * @return
    */
@@ -357,6 +408,10 @@ public class AccountResultData implements ALData {
     return company_fax_number;
   }
 
+  public String getWbrCompanyFaxNumber() {
+    return ALCommonUtils.replaceToAutoCR(getCompanyFaxNumber().toString());
+  }
+
   /**
    * @return
    */
@@ -371,6 +426,10 @@ public class AccountResultData implements ALData {
     return company_name;
   }
 
+  public String getWbrCompanyName() {
+    return ALCommonUtils.replaceToAutoCR(getCompanyName().toString());
+  }
+
   /**
    * 会社の電話番号を取得します。
    * 
@@ -378,6 +437,10 @@ public class AccountResultData implements ALData {
    */
   public ALStringField getCompanyTelephone() {
     return company_telephone;
+  }
+
+  public String getWbrCompanyTelephone() {
+    return ALCommonUtils.replaceToAutoCR(getCompanyTelephone().toString());
   }
 
   /**
@@ -392,6 +455,10 @@ public class AccountResultData implements ALData {
    */
   public ALStringField getCompanyZipcode() {
     return company_zipcode;
+  }
+
+  public String getWbrCompanyZipcode() {
+    return ALCommonUtils.replaceToAutoCR(getCompanyZipcode().toString());
   }
 
   /**
