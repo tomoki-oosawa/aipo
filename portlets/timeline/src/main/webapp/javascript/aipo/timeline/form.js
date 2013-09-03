@@ -293,7 +293,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
   if (shadowHeight < 18)
     shadowHeight = 18;
-  dojo.byId(objId).style.height = shadowHeight + 21 + "px";
+  dojo.byId(objId).style.height = shadowHeight * 1.2 + 21 + "px";
   objBody.removeChild(shadow);
 }
 
