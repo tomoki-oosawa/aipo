@@ -671,6 +671,7 @@ aipo.timeline.resizeThumbnailTag = function(elem){
           dojo.style(elem, 'width', img.width + 'px');
           dojo.style(elem, 'padding', '0 ' + (86 - img.width)/2 + 'px');
     }
+    dojo.style(elem, 'visibility', 'visible');
 };
 
 aipo.timeline.inactiveFileAttachments=function(pid){

@@ -2746,6 +2746,12 @@ ul.attachments >li{
   max-height: 90px;
 }
 
+.tlClipImage .freeSizeHidden {
+  max-width: none;
+  max-height: none;
+  visibility: hidden;
+}
+
 .tlClipContents {
   display: table-cell;
 }
