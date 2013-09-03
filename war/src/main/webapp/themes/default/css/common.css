@@ -1526,7 +1526,6 @@ div.scheduleDivFirstLine {
   white-space: nowrap;
   border: solid #c33;
   border-width: 1px;
-  cursor: move;
 }
 
 div.scheduleDivFirstLine span.scheduleDivTime, div.scheduleDivFirstLine span.scheduleDivSepalater {
