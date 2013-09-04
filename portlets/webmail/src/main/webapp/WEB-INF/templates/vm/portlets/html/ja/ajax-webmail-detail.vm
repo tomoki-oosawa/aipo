@@ -26,9 +26,9 @@
 #end
 ## ---------------------------------------------------------------------------
 #if(${client}!="IPHONE")
-	#ALdialogheaderPrint($l10n.WEBMAIL_MAIL_DETAIL "$!portlet.ID" "WebMailDetailScreenPrint" "$!{result.getViewDate().toString()})")
+	#ALdialogheaderPrintMail($l10n.WEBMAIL_MAIL_DETAIL "$!portlet.ID" "WebMailDetailScreenPrint" "$!{result.getViewDate().toString()})")
 #else
-	#ALdialogheaderDetailSmartPhone("$l10n.WEBMAIL_MAIL_DETAIL")
+	#ALdialogheaderDetailSmartPhoneMail("$l10n.WEBMAIL_MAIL_DETAIL")
 #end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader($l10n.WEBMAIL_MAIL)
@@ -38,7 +38,6 @@
 #elseif($!result.Detail.Subject)
 #set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
-
 #ALtableheaderWide()
 #ALtditemheaderAtt("colspan='2' class='mailTitle'")
 <strong>

@@ -653,18 +653,25 @@ $item.get(0)
 #ALdialogheaderPrint($title "" "" "")
 #end
 
+
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
-#ALdialogheaderPrintSchedule($title $portlet_id $screen $view_date "")
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('modalDialog').hide();")
+#end
+#macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('modalDialog').hide();")
+#end
+#macro(ALdialogheaderPrintMail $title $portlet_id $screen $view_date)
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();")
 #end
 
-#macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
+#macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick)
 	<div class="auiPopup clearfix">
 		<div class="auiPopupHead clearfix">
 	    	<div class="auiPopupTool">
 	    		#if(($portlet_id!=""))
 	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);"><span><i class="auiIcon auiIconPrint"></i></span></a></div>
 	        	#end
-	        	#AUICloseIcon()
+	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="$onclick"><span><i class="icon-remove"></i></span></a></div>
 	    	</div>
 	    		<div class="auiPopupTitle">$title</div>
 		</div>
@@ -672,6 +679,8 @@ $item.get(0)
 
 		</div>
 #end
+
+
 
 
 #macro(ALdialogheaderCloseJS $title $js)
@@ -688,11 +697,18 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderDetailSmartPhone $title)
+#ALdialogheaderDetailSmartPhoneAbstract($title "dijit.byId('modalDialog').hide();")
+#end
+#macro(ALdialogheaderDetailSmartPhoneMail $title)
+#ALdialogheaderDetailSmartPhoneAbstract($title "aipo.webmail.hideDialog();")
+#end
+
+#macro(ALdialogheaderDetailSmartPhoneAbstract $title $onclick)
 	<!-- Smartphone  Header -->
 	<div class="auiPopup clearfix">
 		<div class="auiPopupHead clearfix">
 	    	<div class="auiPopupTool">
-	        	#AUICloseIcon()
+	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="$onclick"><span><i class="icon-remove"></i></span></a></div>
 	    	</div>
     			<div class="auiPopupTitle">$title</div>
 		</div>
@@ -760,7 +776,7 @@ $item.get(0)
 <table class="tableWrapper">
   <tbody>
     <tr>
-      <td class="top mb_hide" width="200">
+      <td class="top" width="200">
         <!-- SUBMENU -->
         <div class="submenu">
           <ul>
@@ -1539,16 +1555,6 @@ $item.get(0)
 
 #macro(AUIsubmit $name $value)
 <input name="$name" class="auiButton" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
-#end
-
-#macro(AUICloseIcon)
-<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="dijit.byId('modalDialog').hide()"><span><i class="icon-remove"></i></span></a></div>
-#end
-
-#macro(AUIPrintWindowCloseIcon)
-<div class="buttons">
-<a href="javascript:window.close();" class="auiButtonIcon" title="$l10n.COMMON_CLOSE"><i class="icon-remove"></i></a>
-</div>
 #end
 
 #macro(AUIselectpdheader $name $width $onchange)
