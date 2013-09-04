@@ -189,6 +189,10 @@
 <th class="w25">$text</th>
 #end
 
+#macro(ALtdheadW25Class $text $class)
+<th class="w25 $class">$text</th>
+#end
+
 #macro(ALtdheadW33 $text)
 <th class="w33">$text</th>
 #end
