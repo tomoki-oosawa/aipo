@@ -225,7 +225,7 @@ public class AccountResultData implements ALData {
   public List<String> getWbrPostNameList() {
     List<String> list = new ArrayList<String>();
     for (ALStringField postName : getPostNameList()) {
-      if (postName != null && !postName.equals("")) {
+      if (postName != null && !"".equals(postName.toString())) {
         list.add(ALCommonUtils.replaceToAutoCR(postName.toString()));
       }
     }
