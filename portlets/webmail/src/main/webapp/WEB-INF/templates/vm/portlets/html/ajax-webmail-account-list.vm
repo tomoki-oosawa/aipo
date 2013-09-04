@@ -36,7 +36,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdhead("<div>#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')</div>")
-#ALtdheadAtt("<div><wbr>$l10n.WEBMAIL_MAILADDRESS</div>" 'width="10%"')
+#ALtdheadAtt("<div><wbr>$l10n.WEBMAIL_MAILADDRESS</div>" 'class="mb_hide" width="10%"')
 #ALtdheadAtt($l10n.WEBMAIL_UNREAD_COUNT 'width="1%"')
 #ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center mb_hide""')
 </tr>
@@ -50,7 +50,7 @@
 #ALtdcellheader()
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountDetailScreen").addQueryData("accountid",$record.AccountId))');">$!record.AccountName</a>
 #ALtdcellfooter()
-#ALtdcellAtt("$!record.MailAddress" ' nowrap')
+#ALtdcellAtt("$!record.MailAddress" ' nowrap class="mb_hide"')
 #ALtdcellAtt("$countUnRead" 'align="right" nowrap')
 #if($!record.FinalAccessDate.toString() != "")
 #ALtdcellAtt("$!{record.FinalAccessDate.Month}$l10n.WEBMAIL_MONTH$!{record.FinalAccessDate.Day}$l10n.WEBMAIL_DAY$!{record.FinalAccessDate.time}" 'align="left" valign="center" nowrap class="mb_hide"')
