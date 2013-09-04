@@ -51,7 +51,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadW75("#ALajaxsort('category_name' $l10n.MSGBOARD_CATEGORY_NAME $result 'MsgboardCategoryListScreen')")
-#ALtdheadW25("#ALajaxsort('create_user' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardCategoryListScreen')")
+#ALtdheadW25Class("#ALajaxsort('create_user' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardCategoryListScreen')" "mb_hide")
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -63,7 +63,7 @@
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcell("$!{record.OwnerName}")
+#ALtdcellAtt("$!{record.OwnerName}" "class='mb_hide'")
 </tr>
 #end
 #AUItablefooter()

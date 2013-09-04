@@ -32,9 +32,9 @@
 #ALformheaderAction("$l10n.CABINET_FOLDER" $jslink $portlet)
 #AUIrowTableWide()
 <tr>
-#ALtdheadAtt("$l10n.CABINET_FOLDER_NAME" 'style=""')
-#ALtdheadAtt("$l10n.CABINET_MODIFIED" 'style="width:8em"')
-#ALtdheadAtt("$l10n.CABINET_UPDATE_DATE" 'style="width:6em"')
+#ALtdhead("$l10n.CABINET_FOLDER_NAME")
+#ALtdheadAtt("$l10n.CABINET_MODIFIED" 'style="width:8em" class="mb_hide"')
+#ALtdheadAtt("$l10n.CABINET_UPDATE_DATE" 'style="width:6em" class="mb_hide"')
 </tr>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())
@@ -53,13 +53,13 @@ $!{record.FolderName}
 #end
 #ALtdcellfooter()
 #if(${record.FolderId} > 1)
-#ALtdcellheader()
+#ALtdcellheaderAtt("class='mb_hide'")
 <div>$!{record.UpdateName.AliasName}</div>
 #ALtdcellfooter()
 #else
-#ALtdcellAtt("" "thin")
+#ALtdcellAtt("" "thin class='mb_hide'")
 #end
-#ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
+#ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide right" nowrap="nowrap"')
 </tr>
 
 #end
