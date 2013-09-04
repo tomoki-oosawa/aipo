@@ -79,6 +79,149 @@ aimluck.io.submit = function(form, indicator_id, portlet_id, callback) {
   return false;
 }
 
+// response data
+//
+// callback(err:Array,...params:any)
+
+aimluck.io.submit_callbackparams = function(form, indicator_id, portlet_id, callback) {
+  aimluck.io.disableForm(form, true);
+
+  var obj_indicator = dojo.byId(indicator_id + portlet_id);
+  if (obj_indicator) {
+    dojo.style(obj_indicator, "display", "");
+  }
+
+  var createErrorHTML=function(arr){
+	  var html = "";
+      if (dojo.isArray(arr) && arr.length > 0) {
+        if (arr[0] == "PermissionError") {
+          html += "<ul>";
+          html += "<li><span class='caution'>" + arr[1]
+              + "</span></li>";
+          html += "</ul>";
+        } else {
+          html += "<ul>";
+          dojo.forEach(arr, function(msg) {
+            html += "<li><span class='caution'>" + msg + "</span></li>";
+          });
+          html += "</ul>";
+        }
+      }
+      return html;
+  }
+
+  try {
+    dojo
+        .xhrPost({
+          url : form.action,
+          timeout : 30000,
+          form : form,
+          encoding : "utf-8",
+          handleAs : "json-comment-filtered",
+          headers : {
+            X_REQUESTED_WITH : "XMLHttpRequest"
+          },
+          load : function(response, ioArgs) {
+        	var params=[];
+        	var html="";
+        	if(response.err){
+	            html = createErrorHTML(response.err);
+        	}
+        	params.push(html);
+
+        	if(dojo.isArray(response.params)){
+        		 dojo.forEach(response.params, function(param) {
+        			 params.push(param);
+        		 });
+        	}
+            callback.apply(callback,params);
+
+            obj_indicator = dojo.byId(indicator_id + portlet_id);
+            if (obj_indicator) {
+              dojo.style(obj_indicator, "display", "none");
+            }
+
+            aimluck.io.disableForm(form, false);
+          },
+          error : function(error) {
+          }
+        });
+  } catch (E) {
+  }
+  return false;
+}
+
+aimluck.io.xhr_http_request = function(form, indicator_id, portlet_id, callback) {
+  aimluck.io.disableForm(form, true);
+
+  var obj_indicator = dojo.byId(indicator_id + portlet_id);
+  if (obj_indicator) {
+    dojo.style(obj_indicator, "display", "");
+  }
+
+  var createErrorHTML=function(arr){
+	  var html = "";
+      if (dojo.isArray(arr) && arr.length > 0) {
+        if (arr[0] == "PermissionError") {
+          html += "<ul>";
+          html += "<li><span class='caution'>" + arr[1]
+              + "</span></li>";
+          html += "</ul>";
+        } else {
+          html += "<ul>";
+          dojo.forEach(arr, function(msg) {
+            html += "<li><span class='caution'>" + msg + "</span></li>";
+          });
+          html += "</ul>";
+        }
+      }
+      return html;
+  }
+
+  try {
+    dojo
+        .xhrPost({
+          url : form.action,
+          timeout : 30000,
+          form : form,
+          encoding : "utf-8",
+          handleAs : "json-comment-filtered",
+          headers : {
+            X_REQUESTED_WITH : "XMLHttpRequest"
+          },
+          load : function(response, ioArgs) {
+        	var params=[];
+        	var html="";
+        	if(response.err){
+	            html = createErrorHTML(response.err);
+        	}
+        	params.push(html);
+
+        	if(dojo.isArray(response.params)){
+        		 dojo.forEach(response.params, function(param) {
+        			 params.push(param);
+        		 });
+        	}
+            callback.apply(callback,params);
+
+            obj_indicator = dojo.byId(indicator_id + portlet_id);
+            if (obj_indicator) {
+              dojo.style(obj_indicator, "display", "none");
+            }
+
+            aimluck.io.disableForm(form, false);
+          },
+          error : function(error) {
+          }
+        });
+  } catch (E) {
+  }
+  return false;
+}
+
+
+
+
 aimluck.io.sendData = function(url, params, callback) {
   var callbackArgs = new Array();
   callbackArgs["callback"] = callback;
@@ -212,7 +355,7 @@ aimluck.io.deleteSubmit = function(button) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ã“ã®'+button.form._name.value+'ã‚’å‰Šé™¤ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹?
+  // ‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©?
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -230,7 +373,7 @@ aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // 'ã“ã®'+button.form._name.value+'ã‚’å‰Šé™¤ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ'
+  // '‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H'
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -248,7 +391,7 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id,
     enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
     enableSubmit_name : button.form._name.value
   });
-  // ã“ã®'+button.form._name.value+'ã‚’æœ‰åŠ¹åŒ–ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‚±‚Ì'+button.form._name.value+'‚ğ—LŒø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -266,7 +409,7 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id,
     disableSubmit_disable : nlsStrings.DISABLESUBMIT_DISABLE,
     disableSubmit_name : button.form._name.value
   });
-  // ã“ã®'+button.form._name.value+'ã‚’ç„¡åŠ¹åŒ–ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‚±‚Ì'+button.form._name.value+'‚ğ–³Œø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -282,7 +425,7 @@ aimluck.io.deleteSubmitReturn = function(button, rtn) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ã“ã®'+button.form._name.value+'ã‚’å‰Šé™¤ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -299,7 +442,7 @@ aimluck.io.multiDeleteSubmit = function(button) {
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // é¸æŠã—ãŸ'+button.form._name.value+'ã‚’å‰Šé™¤ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -316,7 +459,7 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id,
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // é¸æŠã—ãŸ'+button.form._name.value+'ã‚’å‰Šé™¤ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -334,7 +477,7 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id,
         multiEnableSubmit_enable : nlsStrings.MULTIENABLESUBMIT_ENABLE,
         multiEnableSubmit_name : button.form._name.value
       });
-  // é¸æŠã—ãŸ'+button.form._name.value+'ã‚’æœ‰åŠ¹åŒ–ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğ—LŒø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -352,7 +495,7 @@ aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id,
         multiDisableSubmit_disable : nlsStrings.MULTIDISABLESUBMIT_DISABLE,
         multiDisableSubmit_name : button.form._name.value
       });
-  // é¸æŠã—ãŸ'+button.form._name.value+'ã‚’ç„¡åŠ¹åŒ–ã—ã¦ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ
+  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğ–³Œø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -422,7 +565,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ï¼‘ã¤ä»¥ä¸Šé¸æŠã—ã¦ãã ã•ã„ã€‚"
+    // "ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ‚P‚ÂˆÈã‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B"
     alert(alertString);
     return false;
   } else {
@@ -446,7 +589,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ï¼‘ã¤ä»¥ä¸Šé¸æŠã—ã¦ãã ã•ã„ã€‚"
+    // "ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ‚P‚ÂˆÈã‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B"
     alert(alertString);
     return false;
   } else {
@@ -774,7 +917,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
               portlet.setContent(html);
             }
           }
-          // ã‚¹ãƒãƒ¼ãƒˆãƒ•ã‚©ãƒ³å¯¾å¿œç”¨
+          // ƒXƒ}[ƒgƒtƒHƒ“‘Î‰—p
           if (aipo.onloadSmartPhone != null) {
             aipo.onloadSmartPhone();
           }
