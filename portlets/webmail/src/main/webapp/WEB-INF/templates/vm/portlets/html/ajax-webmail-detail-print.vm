@@ -40,6 +40,8 @@
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css" />
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome-ie7.min.css" /><![endif]-->
 <style>
 .p10 td{
 padding:10px;
@@ -66,9 +68,7 @@ line-height:140%;
 </head>
 <body>
 <div id="printHeader">
-<div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.WEBMAIL_CLOSE1" width="19" height="20" border="0" align="top" title="$l10n.WEBMAIL_CLOSE1" /></a>
-</div>
+#AUIPrintWindowCloseIcon()
 $l10n.WEBMAIL_NOT_REFLECT_MSG
 <table>
 <tr>

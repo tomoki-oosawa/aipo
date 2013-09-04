@@ -19,9 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 <div id="printHeader">
-<div class="buttons">
-<a href="javascript:window.close();"><img src="${external_resources_url}/images/close.gif" alt="$l10n.SCHEDULE_CLOSE" width="19" height="20" border="0" align="top" title="$l10n.SCHEDULE_CLOSE" /></a>
-</div>
+#AUIPrintWindowCloseIcon()
 $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <table>
 <tr>

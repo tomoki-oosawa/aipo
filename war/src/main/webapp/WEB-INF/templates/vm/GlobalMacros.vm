@@ -664,7 +664,7 @@ $item.get(0)
 	    		#if(($portlet_id!=""))
 	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);"><span><i class="auiIcon auiIconPrint"></i></span></a></div>
 	        	#end
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="dijit.byId('modalDialog').hide()"><span><i class="icon-remove"></i></span></a></div>
+	        	#AUICloseIcon()
 	    	</div>
 	    		<div class="auiPopupTitle">$title</div>
 		</div>
@@ -692,7 +692,7 @@ $item.get(0)
 	<div class="auiPopup clearfix">
 		<div class="auiPopupHead clearfix">
 	    	<div class="auiPopupTool">
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="dijit.byId('modalDialog').hide()"><span><i class="icon-remove"></i></span></a></div>
+	        	#AUICloseIcon()
 	    	</div>
     			<div class="auiPopupTitle">$title</div>
 		</div>
@@ -1539,6 +1539,16 @@ $item.get(0)
 
 #macro(AUIsubmit $name $value)
 <input name="$name" class="auiButton" type="submit" value="$value" onclick="aimluck.io.setHiddenValue(this);" />
+#end
+
+#macro(AUICloseIcon)
+<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="dijit.byId('modalDialog').hide()"><span><i class="icon-remove"></i></span></a></div>
+#end
+
+#macro(AUIPrintWindowCloseIcon)
+<div class="buttons">
+<a href="javascript:window.close();" class="auiButtonIcon" title="$l10n.COMMON_CLOSE"><i class="icon-remove"></i></a>
+</div>
 #end
 
 #macro(AUIselectpdheader $name $width $onchange)
