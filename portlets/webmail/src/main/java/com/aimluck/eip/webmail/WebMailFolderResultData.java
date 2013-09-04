@@ -23,6 +23,7 @@ import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ウェブメールのフォルダのResultDataです。 <BR>
@@ -58,8 +59,8 @@ public class WebMailFolderResultData implements ALData {
   }
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -85,6 +86,10 @@ public class WebMailFolderResultData implements ALData {
    */
   public ALStringField getFolderName() {
     return folder_name;
+  }
+
+  public String getWbrFolderName() {
+    return ALCommonUtils.replaceToAutoCR(getFolderName().toString());
   }
 
   /**

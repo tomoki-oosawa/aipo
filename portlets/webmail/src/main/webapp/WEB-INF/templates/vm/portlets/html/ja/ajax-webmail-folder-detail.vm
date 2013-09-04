@@ -31,7 +31,7 @@
 #if($result.CurrentPage)<input type="hidden" name="start" VALUE="$result.CurrentPage">#end
 #ALtableheaderWide()
 #ALtdcaption($l10n.WEBMAIL_FOLDER_NAME)
-#ALtditem($!result.Detail.FolderName)
+#ALtditem($!result.Detail.WbrFolderName)
 #ALtablefooter()
 #ALbuttonheader()
 #if($!result.Detail.CanUpdate)
