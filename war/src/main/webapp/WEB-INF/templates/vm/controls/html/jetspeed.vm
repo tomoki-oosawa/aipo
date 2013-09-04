@@ -258,7 +258,13 @@ function appsNaviSwitch() {
     	 <ul>
     	 #set($anApps=true)
       #end
-	<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><img src="$tab.Icon" alt="$tab.Title" /></span><span>$tab.Title</span></a></li>
+	<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon">
+		#if($tab.Icon.toString() == "")
+			<i class="icon-folder-close"></i>
+		#else
+			<img src="$tab.Icon" alt="$tab.Title" />
+		#end
+		</span><span>$tab.Title</span></a></li>
 	#end
 #end
                 </ul>
