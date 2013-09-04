@@ -31,7 +31,7 @@
 								#if($data.User.isAdmin() && $data.User.UserName != "admin")
                             	<!-- START GUIDE -->
                             	<div id="startGuide" #if (${start_guide_popup}) style="display:block;" #else  style="display:none;"  #end>
-                            		<div class="close"><a href="javascript:void(0);" onclick="$!{onclickClose}"><img src="images/close.gif" alt="$l10n.COMMON_CLOSE" width="19" height="20" border="0" align="absmiddle" title="$l10n.COMMON_CLOSE" /></a></div>
+                            		<div class="close">#ALdialogCloseButton("$!{onclickClose}")</div>
                             		<div class="clearfix">
                             			<div class="guideContents">
                             				<p>新しいアプリを使ってみましょう</p>
