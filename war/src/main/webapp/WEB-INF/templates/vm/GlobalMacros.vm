@@ -783,7 +783,7 @@ $item.get(0)
 <table class="tableWrapper">
   <tbody>
     <tr>
-      <td class="top" width="200">
+      <td class="top mb_hide" width="200">
         <!-- SUBMENU -->
         <div class="submenu">
           <ul>
