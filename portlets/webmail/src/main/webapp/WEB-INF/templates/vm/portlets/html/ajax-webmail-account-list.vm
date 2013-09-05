@@ -38,7 +38,7 @@
 #ALtdhead("<div>#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')</div>")
 #ALtdheadAtt("<div><wbr>$l10n.WEBMAIL_MAILADDRESS</div>" 'class="mb_hide" width="10%"')
 #ALtdheadAtt($l10n.WEBMAIL_UNREAD_COUNT 'width="1%"')
-#ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center mb_hide""')
+#ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 #if($!record.countUnRead>= 0)
