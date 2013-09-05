@@ -591,6 +591,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     // controller = (PanedPortletController) portlets.getController();
     // }
     int count = 0;
+    ArrayList<ALStringField> appTabIds = new ArrayList<ALStringField>();
     for (Iterator en = portlets.getPortletsIterator(); en.hasNext();) {
       Portlets p = (Portlets) en.next();
       // ここからtabs
@@ -600,7 +601,11 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       /**
        * リンク埋め込み。
        **/
-      for (PortletTab tab : atabs) {
+
+      for (Iterator<PortletTab> iterator = atabs.iterator(); iterator.hasNext();) {
+        PortletTab tab = iterator.next();
+
+        // for (PortletTab tab : atabs) {
         try {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
           DynamicURI duri =
@@ -626,6 +631,12 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           if ("GadgetsTemplate".equals(tab.getName().toString())) {
             for (ALApplication app : apps) {
               if (app.getTitle().toString().equals(tab.getTitle().toString())) {
+                if (appTabIds.indexOf(app.getAppId()) < 0) {
+                  appTabIds.add(app.getAppId());
+                } else {
+                  // atabs.remove(tab);
+                  iterator.remove();
+                }
                 ALApplication gadgetApp =
                   ALApplicationService.get(new ALApplicationGetRequest()
                     .withAppId(app.getAppId().getValue()));
