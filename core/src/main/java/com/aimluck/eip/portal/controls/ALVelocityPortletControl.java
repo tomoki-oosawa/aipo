@@ -578,14 +578,12 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * @return
    */
   private List<PortletTab> getAccountMenues(List<PortletTab> tabs) {
-    PortletTab[] accountMenues = new PortletTab[3];
+    PortletTab[] accountMenues = new PortletTab[2];
     for (PortletTab tab : tabs) {
       if (tab.getName().toString().equals("AccountPerson")) {
         accountMenues[0] = tab;
       } else if (tab.getName().toString().equals("MyGroup")) {
         accountMenues[1] = tab;
-      } else if (tab.getName().toString().equals("Cellular")) {
-        accountMenues[2] = tab;
       }
     }
 
