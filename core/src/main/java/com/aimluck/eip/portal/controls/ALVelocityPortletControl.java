@@ -22,6 +22,7 @@ package com.aimluck.eip.portal.controls;
 // Turbine stuff
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -301,7 +302,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         }
 
         context.put("tabs", tabs);
-        context.put("menus", getMenus(portlets, rundata, context));
+        List<PortletTab> menues = getMenus(portlets, rundata, context);
+        context.put("menus", menues);
+        context.put("accountMenues", getAccountMenues(menues));
 
         String mypageId = "";
         for (Portlets p : portlets.getPortletsArray()) {
@@ -566,6 +569,27 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       return this.alt;
     }
 
+  }
+
+  /**
+   * スマートフォン用：ユーザー情報タブのメニュー
+   * 
+   * @param tabs
+   * @return
+   */
+  private List<PortletTab> getAccountMenues(List<PortletTab> tabs) {
+    PortletTab[] accountMenues = new PortletTab[3];
+    for (PortletTab tab : tabs) {
+      if (tab.getName().toString().equals("AccountPerson")) {
+        accountMenues[0] = tab;
+      } else if (tab.getName().toString().equals("MyGroup")) {
+        accountMenues[1] = tab;
+      } else if (tab.getName().toString().equals("Cellular")) {
+        accountMenues[2] = tab;
+      }
+    }
+
+    return Arrays.asList(accountMenues);
   }
 
   /**
