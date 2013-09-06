@@ -40,10 +40,11 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ログイン画面を表示するアクションクラスです。
- *
+ * 
  */
 public class CellAccountLoginAction extends ALBaseAction {
 
@@ -70,6 +71,11 @@ public class CellAccountLoginAction extends ALBaseAction {
     Map<String, String> attribute = ALOrgUtilsService.getParameters();
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
+    }
+    if (rundata.getSession().getAttribute("changePc") != null
+      && "true"
+        .equals(rundata.getSession().getAttribute("changePc").toString())) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
     }
 
     doAccount_login(rundata, context);
@@ -144,7 +150,7 @@ public class CellAccountLoginAction extends ALBaseAction {
 
   /**
    * 簡易ログイン説明ページを表示する． <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -155,9 +161,9 @@ public class CellAccountLoginAction extends ALBaseAction {
   }
 
   /**
-   *
+   * 
    * 指定したchar型文字が記号であるかを判断します。
-   *
+   * 
    * @param ch
    * @return
    */

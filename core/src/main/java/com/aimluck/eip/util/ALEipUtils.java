@@ -2141,7 +2141,13 @@ public class ALEipUtils {
   }
 
   public static String getClient(RunData rundata) {
-    return getClient(rundata.getUserAgent().trim());
+    if (rundata.getSession().getAttribute("changePc") != null
+      && "true"
+        .equals(rundata.getSession().getAttribute("changePc").toString())) {
+      return "Mozilla";
+    } else {
+      return getClient(rundata.getUserAgent().trim());
+    }
   }
 
   public static String getClient(String userAgent) {

@@ -162,6 +162,11 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
+    if (rundata.getSession().getAttribute("changePc") != null
+      && "true"
+        .equals(rundata.getSession().getAttribute("changePc").toString())) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
