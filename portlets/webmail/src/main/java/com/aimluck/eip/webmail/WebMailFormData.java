@@ -461,7 +461,9 @@ public class WebMailFormData extends ALAbstractFormData {
           if (address instanceof InternetAddress) {
             InternetAddress internetAddress = (InternetAddress) address;
             String email = internetAddress.getAddress();
-            if (email != null && !email.equalsIgnoreCase(myaddress)) {
+            if (email != null
+              && !email.equalsIgnoreCase(myaddress)
+              && !email.contains("<" + myaddress + ">")) {
               replayList.add(address);
             }
           }
