@@ -25,6 +25,10 @@
 #set($linkAdminpassword = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemAdminFormScreen").addQueryData("entityid","new"))
 ## ---------------------------------------------------------------------------
 
+#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#end
+
 #AUISummaryDiv()
 #AUIconfigheader($!{portlet.ID} "16em")
 #AUIconfigitem($l10n.SYSTEM_CHANGE_COMPANYINFO $linkCompany)
@@ -72,3 +76,7 @@ ${alias}$l10n.SYSTEM_SITE_OUTSIDE
 </tr>
 #ALtablefooter()
 #ALformfooter()
+
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#end
