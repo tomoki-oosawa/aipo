@@ -254,7 +254,7 @@ function appsNaviSwitch() {
 	#if($tab.Name.toString() == "GadgetsTemplate")
        #if($anApps == false)
 		<div class="anApps">
-   		  <h2>追加アプリ</h2>
+   		  <h2>ソーシャルアプリ</h2>
     	 <ul>
     	 #set($anApps=true)
       #end
