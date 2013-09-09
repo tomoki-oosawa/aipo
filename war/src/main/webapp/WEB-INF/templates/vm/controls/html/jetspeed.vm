@@ -45,7 +45,7 @@ aipo.onloadSmartPhone = function(){
 	if(dojo.byId("snDrawer")) return;
 	if(widgets_area != null){
 		// classの追加
-		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList"].indexOf("$portlet.name") != -1;
+		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson"].indexOf("$portlet.name") != -1;
 		for(var i=0;i<widgets_area.childNodes.length;i++){
 			if(widgets_area.childNodes[i].className != null
 			&& widgets_area.childNodes[i].className.indexOf('auiWidget',0) >= 0){
@@ -344,6 +344,28 @@ function appsNaviSwitch() {
   <div class="roundMainWrapper">
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
 $portlet.getContent($data)
+  #set ($flag = false)
+  #if ($portlet.name=="AccountPerson")
+    #set ($flag = true)
+  #elseif($portlet.name=="MyGroup")
+   #set ($flag = true)
+  #elseif($portlet.name=="Cellular")
+    #set ($flag = true)
+  #end
+
+  #if ($flag)
+	<!-- auiWidgetsArea -->
+	<div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
+	<div class="auiWidget clearfix">
+	<ul>
+	#foreach($menue in $accountMenues)
+	<li#if ($menue.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($menue.MaximizeLink)">$menue.Title</a></li>
+	#end
+	</ul>
+	</div>
+	</div>
+	<!-- /auiWidgetsArea -->
+  #end
   </div>
 </div>
 <!-- /MAIN OUTER  -->
