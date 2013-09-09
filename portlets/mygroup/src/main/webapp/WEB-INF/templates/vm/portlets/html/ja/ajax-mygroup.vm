@@ -20,7 +20,9 @@
 ## ---------------------------------------------------------------------------
 #set($tabs = [["グループ一覧", "",""]])
 ## ---------------------------------------------------------------------------
-
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #if($result.List.size() == 0)
 #AUIbuttonActionInBlankBox("グループを追加する" "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','MyGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.mygroup.onLoadMygroupDialog);")
 #else
@@ -67,4 +69,7 @@
 	#AUISummaryDivfooter()
 #ALformfooter()
 
+#end
+#if(${client}=="IPHONE")
+#AUIcontentsAreaFooter()
 #end
