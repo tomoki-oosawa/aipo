@@ -260,7 +260,7 @@ dojo.addOnLoad(function() {
 #end
 function activitySwitch(){
     var wrapper = document.getElementById('wrapper');
-    var header = document.getElementById('mobileHeader');
+    var header = document.getElementById('mobileHeader_v2');
     var popup = dojo.query('.dijitPopup');
     if(popup[0] == null) {
         wrapper.style.minHeight = '';

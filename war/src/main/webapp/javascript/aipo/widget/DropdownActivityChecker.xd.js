@@ -40,42 +40,94 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     iconWidth: "",
     iconHeight: "",
     extendClass: "",
+    eventList:[],
     callback: function(){},
-    templateString: '<div class="dijit dijitLeft dijitInline"\n\tdojoAttachEvent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey"\n\t><div style="outline:0" class="" type="${type}"\n\t\tdojoAttachPoint="focusNode,titleNode" waiRole="button" waiState="haspopup-true,labelledby-${id}_label"\n\t\t><div class="" \tdojoAttachPoint="containerNode,popupStateNode"\n\t\tid="${id}_label"><div id="activitychecker" class="zero activitycheckerstyle ${extendClass}"></div>お知らせ</div></div></div>\n',
+    templateString: '<div class="dijit dijitLeft dijitInline"\n\tdojoAttachEvent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey"\n\t><div class="" type="${type}"\n\t\tdojoAttachPoint="focusNode,titleNode" waiRole="button" waiState="haspopup-true,labelledby-${id}_label"\n\t\t><div class="" \tdojoAttachPoint="containerNode,popupStateNode"\n\t\tid="${id}_label"><div id="activitychecker" class="activitycheckerstyle ${extendClass}"></div><span class="mb_hide">お知らせ</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div></div>\n',
     postCreate: function(){
         this.inherited(arguments);
         this.dropDown = new aipo.widget.ActivityList({},'activityLiteList');
     },
-    _openDropDown: function(){
+	_openDropDown: function(){
         this.inherited(arguments);
-		if(dojo.byId("auiMbBtnActivity"))dojo.addClass("auiMbBtnActivity","active");
+        if(dojo.byId('activitycheckerContainer')) {
+        	dojo.addClass(dojo.byId('activitycheckerContainer'), 'active');
+        }
         this.dropDown.reload();
+
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("iphone") > -1||userAgent.indexOf("android") > -1 ){
+          	//一番上へスクロール
+        	if(!!document.documentElement.scrollTop) document.documentElement.scrollTop=0;
+        	else if(!!document.body.scrollTop)document.body.scrollTop=0;
+        }
+        //android時 下位レイヤーを無効にする。
+    	if(aipo.userAgent.isAndroid()){
+    		var _this=this;
+
+    		var f=function(e){
+    			e.preventDefault();
+            	//e.stopImmediatePropagation();
+            	return false;
+            };
+
+            //モーダルダイアログ
+            var dialogNodes=dojo.query("input,select,button,a",this.domNode);
+
+            //ダイアログ表示時に機能しなくなるので、
+            //ヘッダとフッタ以下もpreventDefaultしない。
+            var navigationElems=dojo.byId("appsNavigation");
+            var navigationNodes=dojo.query("input,select,button,a",navigationElems);
+            var auiWidgetsElems=dojo.byId("auiWidgetsArea");
+            var auiWidgetsNodes=dojo.query("input,select,button,a",auiWidgetsElems);
+
+            //preventDefaultしないノード達
+            var excludeNodes=dialogNodes;
+            excludeNodes=excludeNodes.concat(navigationNodes);
+            excludeNodes=excludeNodes.concat(auiWidgetsNodes);
+
+    		dojo.query("input,select,button,a").forEach(function(node){
+    			if(!aipo.arrayContains(excludeNodes,node))
+    				_this.eventList.push(dojo.connect(node,'click',f));
+    		});
+    		dojo.query("input,select,button").forEach(function(node,index){
+        		if(!aipo.arrayContains(excludeNodes,node) && !node.disabled){
+        			dojo.addClass(node,"disabled-by-activity");
+        			node.disabled=true;
+        		}
+        	});
+    	}
     },
 	_closeDropDown:function(){
         this.inherited(arguments);
-        if(dojo.byId("auiMbBtnActivity"))dojo.removeClass("auiMbBtnActivity","active");
+        if(dojo.byId('activitycheckerContainer')) {
+        	dojo.removeClass(dojo.byId('activitycheckerContainer'), 'active');
+        }
+        if(document.getElementById('wrapper')) {
+    		document.getElementById('wrapper').style.minHeight = '';
+    	}
+
+        if(aipo.userAgent.isAndroid()){
+        	for(var i=0;i<this.eventList.length;i++){
+        		dojo.disconnect(this.eventList[i]);
+        	}
+        	this.eventList=[];
+        	dojo.query("input.disabled-by-activity,select.disabled-by-activity,button.disabled-by-activity").forEach(function(node,index){
+        		dojo.removeClass(node,"disabled-by-activity");
+        		node.disabled=false;
+        	});
+    	}
 	},
     onCheckActivity: function(count) {
     	var checker = dojo.byId("activitychecker");
-    	var activity = dojo.byId("auiMbBtnActivity");
         if (count > 99) {
         	checker.innerHTML = '99+';
         	dojo.removeClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.removeClass("auiMbBtnActivity", "zero");
-        	}
         } else if (count == 0) {
         	checker.innerHTML = count;
         	dojo.addClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.addClass("auiMbBtnActivity", "zero");
-        	}
         } else {
         	checker.innerHTML = count;
         	dojo.removeClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.removeClass("auiMbBtnActivity", "zero");
-        	}
         }
     },
     onCheckBlank: function(/*evt*/ e){

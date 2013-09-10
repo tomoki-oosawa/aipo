@@ -86,7 +86,7 @@ function widgetMenuSwitch() {
         var contents = document.getElementById('auiContentsArea');
    		var footer = document.getElementById('auiWidgetsArea');
     	var wrapper = document.getElementById('wrapper');
-   		var header = document.getElementById('mobileHeader');
+   		var header = document.getElementById('mobileHeader_v2');
 	    var body = dojo.body();
 
 		var subNaviStyle = subNavi.currentStyle || document.defaultView.getComputedStyle(subNavi, null);

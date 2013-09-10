@@ -284,7 +284,7 @@ aimluck.io.deleteSubmit = function(button) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©?
+  // ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½?
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -302,7 +302,7 @@ aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // '‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H'
+  // 'ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H'
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -320,7 +320,7 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id,
     enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
     enableSubmit_name : button.form._name.value
   });
-  // ‚±‚Ì'+button.form._name.value+'‚ğ—LŒø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½Lï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -338,7 +338,7 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id,
     disableSubmit_disable : nlsStrings.DISABLESUBMIT_DISABLE,
     disableSubmit_name : button.form._name.value
   });
-  // ‚±‚Ì'+button.form._name.value+'‚ğ–³Œø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ğ–³Œï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -354,7 +354,7 @@ aimluck.io.deleteSubmitReturn = function(button, rtn) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ‚±‚Ì'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -371,7 +371,7 @@ aimluck.io.multiDeleteSubmit = function(button) {
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -388,7 +388,7 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id,
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğíœ‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½ï¿½íœï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -406,7 +406,7 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id,
         multiEnableSubmit_enable : nlsStrings.MULTIENABLESUBMIT_ENABLE,
         multiEnableSubmit_name : button.form._name.value
       });
-  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğ—LŒø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ï¿½Lï¿½ï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -424,7 +424,7 @@ aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id,
         multiDisableSubmit_disable : nlsStrings.MULTIDISABLESUBMIT_DISABLE,
         multiDisableSubmit_name : button.form._name.value
       });
-  // ‘I‘ğ‚µ‚½'+button.form._name.value+'‚ğ–³Œø‰»‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H
+  // ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'+button.form._name.value+'ï¿½ğ–³Œï¿½ï¿½Ä‚ï¿½ë‚µï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½H
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -494,7 +494,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ‚P‚ÂˆÈã‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B"
+    // "ï¿½`ï¿½Fï¿½bï¿½Nï¿½{ï¿½bï¿½Nï¿½Xï¿½ï¿½ï¿½Pï¿½ÂˆÈï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B"
     alert(alertString);
     return false;
   } else {
@@ -518,7 +518,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ‚P‚ÂˆÈã‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢B"
+    // "ï¿½`ï¿½Fï¿½bï¿½Nï¿½{ï¿½bï¿½Nï¿½Xï¿½ï¿½ï¿½Pï¿½ÂˆÈï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B"
     alert(alertString);
     return false;
   } else {
@@ -846,7 +846,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
               portlet.setContent(html);
             }
           }
-          // ƒXƒ}[ƒgƒtƒHƒ“‘Î‰—p
+          // ï¿½Xï¿½}ï¿½[ï¿½gï¿½tï¿½Hï¿½ï¿½ï¿½Î‰ï¿½ï¿½p
           if (aipo.onloadSmartPhone != null) {
             aipo.onloadSmartPhone();
           }
@@ -857,7 +857,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
 }
 
 aimluck.io.onTextFieldFocus = function() {
-  var mobileHeader = document.getElementById('mobileHeader');
+  var mobileHeader = document.getElementById('mobileHeader_v2');
   if (mobileHeader) {
     mobileHeader.style.position = "absolute";
     mobileHeader.style.top = "0px";
@@ -865,7 +865,7 @@ aimluck.io.onTextFieldFocus = function() {
 }
 
 aimluck.io.onTextFieldBlur = function() {
-  var mobileHeader = document.getElementById('mobileHeader');
+  var mobileHeader = document.getElementById('mobileHeader_v2');
   if (mobileHeader) {
     mobileHeader.style.position = "fixed";
     mobileHeader.style.top = "0px";
