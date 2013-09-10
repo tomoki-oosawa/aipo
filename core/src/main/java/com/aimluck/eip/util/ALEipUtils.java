@@ -2141,10 +2141,9 @@ public class ALEipUtils {
   }
 
   public static String getClient(RunData rundata) {
-    if (rundata.getSession().getAttribute("changePc") != null
-      && "true"
-        .equals(rundata.getSession().getAttribute("changePc").toString())) {
-      return "Mozilla";
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      return "PCIPHONE";
     } else {
       return getClient(rundata.getUserAgent().trim());
     }

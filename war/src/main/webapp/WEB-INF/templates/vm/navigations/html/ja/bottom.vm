@@ -51,7 +51,9 @@
                             		<div id="guide_on" #if (${start_guide_popup}) style="display:none;" #else  style="display:inline;"  #end><a href="javascript:void(0);" onclick="$!{onclickOpen}">$l10n.WAR_START_GUIDE</a></div>
 									<div id="guide_off" #if (${start_guide_popup}) style="display:inline;" #else  style="display:none;"  #end><a href="javascript:void(0);" onclick="$!{onclickClose}">$l10n.WAR_START_GUIDE</a></div>
 								#end
-
+								#if("${client}" == "PCIPHONE")
+								<div><a href="javascript:void(0)" onclick="location.href='$jslink.setAction("ALChangeToSmartPhone")'">スマートフォン画面に戻す</a></div>
+								#end
                            </div>
                            </div>
                             <!-- /FOOTER -->

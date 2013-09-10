@@ -11,15 +11,15 @@ import org.apache.turbine.util.RunData;
  * PC表示切り替え処理用のクラスです。 <br />
  * 
  */
-public class ALChangeUser extends ActionEvent {
+public class ALChangeToPC extends ActionEvent {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALChangeUser.class.getName());
+    .getLogger(ALChangeToPC.class.getName());
 
   @Override
   public void doPerform(RunData data) throws Exception {
 
-    data.getSession().setAttribute("changePc", "true");
+    data.getSession().setAttribute("changeToPc", "true");
     JetspeedLink jsLink = null;
 
     try {

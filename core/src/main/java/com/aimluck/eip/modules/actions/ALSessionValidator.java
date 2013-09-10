@@ -433,14 +433,11 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           gadgetContext.getSecureToken()).append("&parent=").append(
           URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
           interval).append("#rpctoken=").append(rpctoken).toString();
-      if (data.getSession() != null) {
-        if (data.getSession().getAttribute("changePc") != null
-          && "true".equals(data
-            .getSession()
-            .getAttribute("changePc")
-            .toString())) { // PC表示切り替え用
-          context.put("client", ALEipUtils.getClient(data));
-        }
+      if (data.getSession() != null
+        && Boolean.parseBoolean((String) data.getSession().getAttribute(
+          "changeToPc"))) { // PC表示切り替え用
+        context.put("client", ALEipUtils.getClient(data));
+
       }
 
       context.put("requestUrl", requestUrl);
