@@ -310,7 +310,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
             gadgetCounts++;
           }
         }
-        context.put("gadgeteCounts", gadgetCounts);
+        context.put("gadgetCounts", gadgetCounts);
         context.put("accountMenues", getAccountMenues(menues));
 
         String mypageId = "";
