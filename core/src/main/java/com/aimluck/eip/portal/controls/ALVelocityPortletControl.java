@@ -304,6 +304,13 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         context.put("tabs", tabs);
         List<PortletTab> menues = getMenus(portlets, rundata, context);
         context.put("menus", menues);
+        int gadgetCounts = 0;
+        for (PortletTab tab : menues) {
+          if ("GadgetsTemplate".equals(tab.getName().toString())) {
+            gadgetCounts++;
+          }
+        }
+        context.put("gadgeteCounts", gadgetCounts);
         context.put("accountMenues", getAccountMenues(menues));
 
         String mypageId = "";

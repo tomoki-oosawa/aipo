@@ -248,7 +248,7 @@ function appsNaviSwitch() {
 #ALtabElementMaximize("Memo" "icon-pencil")
 </ul>
 </div>
-#if($menus && $menus.size()>0)
+#if($menus && $menus.size()>0 && $gadgetCounts>0)
 #set($anApps=false)
 #foreach($tab in $menus)
 	#if($tab.Name.toString() == "GadgetsTemplate")
