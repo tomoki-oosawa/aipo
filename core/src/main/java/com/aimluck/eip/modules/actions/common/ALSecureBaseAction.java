@@ -158,6 +158,10 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(

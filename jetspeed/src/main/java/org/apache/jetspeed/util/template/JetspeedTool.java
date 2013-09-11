@@ -160,7 +160,10 @@ public class JetspeedTool implements ApplicationTool {
         ClientRegistry registry =
           (ClientRegistry) Registry.get(Registry.CLIENT);
         ClientEntry entry = registry.findEntry(useragent);
-        if ("IPHONE".equals(entry == null ? null : entry.getManufacturer())) {
+
+        if ("IPHONE".equals(entry == null ? null : entry.getManufacturer())
+          && !Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+            "changeToPc"))) {
           for (@SuppressWarnings("unchecked")
           Iterator<Portlets> it = portlets.getPortletsIterator(); it.hasNext();) {
             Portlets subset = it.next();

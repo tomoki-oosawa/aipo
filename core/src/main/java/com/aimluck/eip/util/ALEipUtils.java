@@ -2141,7 +2141,12 @@ public class ALEipUtils {
   }
 
   public static String getClient(RunData rundata) {
-    return getClient(rundata.getUserAgent().trim());
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      return "PCIPHONE";
+    } else {
+      return getClient(rundata.getUserAgent().trim());
+    }
   }
 
   public static String getClient(String userAgent) {

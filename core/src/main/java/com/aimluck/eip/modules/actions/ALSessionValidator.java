@@ -189,7 +189,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     for (Map.Entry<String, String> e : attribute.entrySet()) {
       context.put(e.getKey(), e.getValue());
     }
-
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
 
@@ -434,6 +433,12 @@ public class ALSessionValidator extends JetspeedSessionValidator {
           gadgetContext.getSecureToken()).append("&parent=").append(
           URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
           interval).append("#rpctoken=").append(rpctoken).toString();
+      if (data.getSession() != null
+        && Boolean.parseBoolean((String) data.getSession().getAttribute(
+          "changeToPc"))) { // PC表示切り替え用
+        context.put("client", ALEipUtils.getClient(data));
+
+      }
 
       context.put("requestUrl", requestUrl);
       context.put("relayUrl", relayUrl);
