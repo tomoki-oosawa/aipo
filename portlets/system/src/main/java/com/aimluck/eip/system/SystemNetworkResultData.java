@@ -21,6 +21,7 @@ package com.aimluck.eip.system;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  *
@@ -64,6 +65,16 @@ public class SystemNetworkResultData implements ALData {
 
   /**
    * 
+   * @return
+   */
+  public String getWbrLocalUrl() {
+
+    return ALCommonUtils.replaceToAutoCR(getLocalUrl().toString());
+
+  }
+
+  /**
+   * 
    * @param str
    */
   public void setGlobalUrl(String str) {
@@ -76,6 +87,16 @@ public class SystemNetworkResultData implements ALData {
    */
   public ALStringField getGlobalUrl() {
     return global_url;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public String getWbrGlobalUrl() {
+
+    return ALCommonUtils.replaceToAutoCR(getGlobalUrl().toString());
+
   }
 
   /**

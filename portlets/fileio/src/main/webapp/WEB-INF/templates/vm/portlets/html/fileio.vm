@@ -18,18 +18,24 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($tabs = [["インポート管理", "",""]])
+#set($tabs = [["$l10n.FILEIO_IMPORT_MANAGEMENT", "",""]])
 ## ---------------------------------------------------------------------------
 #ALtabheader($tabs "")
+#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#end
 <form name="io_select" action="" method="post" enctype="multipart/form-data">
 <input type="hidden" name="secid" value="$secid" />
 <select name="post$!{portlet.ID}" onChange="location.href=this.options[this.selectedIndex].value">
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">ユーザーアカウント</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">部署</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">アドレス(会社)帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">アドレス帳</option>
-<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">スケジュール</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_form_csv','1')">$l10n.FILEIO_USER_ACCOUNT</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doAccount_postcsv_form','1')">$l10n.FILEIO_POST</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_company_form','1')">$l10n.FILEIO_ADDRESSBOOK_COMPANY</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doaddressbook_form','1')">$l10n.FILEIO_ADDRESSBOOK</option>
+<option value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventsubmit_doSchedule_form','1')">$l10n.FILEIO_SCHEDULE</option>
 </select>
-を一括登録します。
+$l10n.FILEIO_PACKAGE_REGISTER
 </form>
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#end
 #ALtabfooter()

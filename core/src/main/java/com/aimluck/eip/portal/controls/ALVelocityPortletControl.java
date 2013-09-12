@@ -22,6 +22,7 @@ package com.aimluck.eip.portal.controls;
 // Turbine stuff
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -301,7 +302,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         }
 
         context.put("tabs", tabs);
+        List<PortletTab> menus = getMenus(portlets, rundata, context);
         context.put("menus", getMenus(portlets, rundata, context));
+        context.put("systemMenus", getSystemMenus(menus));
 
         String mypageId = "";
         for (Portlets p : portlets.getPortletsArray()) {
@@ -566,6 +569,40 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       return this.alt;
     }
 
+  }
+
+  private List<PortletTab> getSystemMenus(List<PortletTab> tabs) {
+
+    PortletTab[] systemMenues = new PortletTab[11];
+
+    for (PortletTab tab : tabs) {
+      if (tab.getName().toString().equals("SysInfo")) {
+        systemMenues[0] = tab;
+      } else if (tab.getName().toString().equals("FileIO")) {
+        systemMenues[1] = tab;
+      } else if (tab.getName().toString().equals("Account")) {
+        systemMenues[2] = tab;
+      } else if (tab.getName().toString().equals("Post")) {
+        systemMenues[3] = tab;
+      } else if (tab.getName().toString().equals("Position")) {
+        systemMenues[4] = tab;
+      } else if (tab.getName().toString().equals("Facilities")) {
+        systemMenues[5] = tab;
+      } else if (tab.getName().toString().equals("GadgetsAdmin")) {
+        systemMenues[6] = tab;
+      } else if (tab.getName().toString().equals("WorkflowCategory")) {
+        systemMenues[7] = tab;
+      } else if (tab.getName().toString().equals("ExtTimecardSystem")) {
+        systemMenues[8] = tab;
+      } else if (tab.getName().toString().equals("AccessControl")) {
+        systemMenues[9] = tab;
+      } else if (tab.getName().toString().equals("Eventlog")) {
+        systemMenues[10] = tab;
+      }
+
+    }
+
+    return Arrays.asList(systemMenues);
   }
 
   /**

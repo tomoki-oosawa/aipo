@@ -45,7 +45,7 @@ aipo.onloadSmartPhone = function(){
 	if(dojo.byId("snDrawer")) return;
 	if(widgets_area != null){
 		// classの追加
-		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList"].indexOf("$portlet.name") != -1;
+		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList","SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl"].indexOf("$portlet.name") != -1;
 		for(var i=0;i<widgets_area.childNodes.length;i++){
 			if(widgets_area.childNodes[i].className != null
 			&& widgets_area.childNodes[i].className.indexOf('auiWidget',0) >= 0){
@@ -347,6 +347,45 @@ function appsNaviSwitch() {
   <div class="roundMainWrapper">
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
 $portlet.getContent($data)
+#set ($system = false)
+
+  #if ($portlet.name=="SysInfo")
+    #set ($system = true)
+  #elseif($portlet.name=="FileIO")
+   #set ($system = true)
+  #elseif($portlet.name=="Account")
+    #set ($system = true)
+   #elseif($portlet.name=="Post")
+    #set ($system = true)
+   #elseif($portlet.name=="Position")
+    #set ($system = true)
+   #elseif($portlet.name=="Facilities")
+    #set ($system = true)
+   #elseif($portlet.name=="GadgetsAdmin")
+    #set ($system = true)
+   #elseif($portlet.name=="WorkflowCategory")
+    #set ($system = true)
+   #elseif($portlet.name=="ExtTimecardSystem")
+    #set ($system = true)
+    #elseif($portlet.name=="AccessControl")
+    #set ($system = true)
+   #elseif($portlet.name=="Eventlog")
+    #set ($system = true)
+  #end
+  #if ($system)
+	<!-- auiWidgetsArea -->
+	<div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
+	<div class="auiWidget clearfix">
+	<ul>
+	#foreach($menu in $systemMenus)
+	<li#if ($menu.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($menu.MaximizeLink)">$menu.Title</a></li>
+	#end
+	</ul>
+	</div>
+	</div>
+	<!-- /auiWidgetsArea -->
+  #end
+
   </div>
 </div>
 <!-- /MAIN OUTER  -->
