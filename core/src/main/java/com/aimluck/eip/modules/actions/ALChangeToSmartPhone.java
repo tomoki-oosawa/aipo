@@ -27,7 +27,6 @@ public class ALChangeToSmartPhone extends ActionEvent {
     } catch (Exception e) {
       logger.error("Error getting jsLink", e);
     }
-    String redirectUrl = data.getParameters().getString("redirect", "");
     data.setRedirectURI(jsLink.getHomePage().addQueryData(
       "action",
       "controls.Restore").toString());
