@@ -21,6 +21,10 @@ body {
 #aipo_widget_ActivityList_0 {
 	width:100% !important;
 }
+
+#aipo_widget_SupportList_0 {
+	width:100% !important;
+}
 .activityPopup,
 .supportPopup {
   width: 91%;
@@ -958,32 +962,41 @@ input[type=password] {
 /***************************************************
 	modalDialog
 --------------------------------------------------*/
-.auiPopup {
-	max-width:300px;
-	margin:0 auto;
+.auiPopup,
+.activityPopup,
+.supportPopup {
+  position: relative;
+  width: auto;
+  margin: 0 5px;
 }
+
 .dijitPopup {
-	width:100%;
-	padding-top:8px;
+  width: 100%;
+  position: fixed;
+  padding-top:3px;
 }
 
 #imageDialog {
-	left:0 !important;
-	width:100% !important;
-	height:auto !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
 }
+
 .imgPopup {
-	width:100%;
+  width: 100%;
 }
+
 .imgBody {
-	width:100%;
+  width: 100%;
 }
+
 .imgPopup img {
-	width:100%;
-	height:auto;
+  width: 100%;
+  height: auto;
 }
+
 .auiPopup iframe {
-	max-width:100% !important;
+  max-width: 100% !important;
 }
 /***************************************************
 	login

@@ -127,7 +127,7 @@ aipo.cabinet.toggleMenu = function(node, filter, alwaysPulldown) {
 	var rect = filter.getBoundingClientRect();
 	var html = document.documentElement.getBoundingClientRect();
 	var footer = document.getElementById('auiWidgetsArea');
-	var header = document.getElementById('mobileHeader');
+	var header = document.getElementById('mobileHeader_v2');
 
 	if (node.style.display == "none") {
 		dojo.query("div.menubar").style("display", "none");
