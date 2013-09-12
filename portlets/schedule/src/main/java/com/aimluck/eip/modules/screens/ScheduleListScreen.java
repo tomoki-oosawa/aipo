@@ -74,11 +74,6 @@ public class ScheduleListScreen extends ScheduleScreen {
       // ポートレット ID を取得する．
       String portletId = portlet.getID();
 
-      if ("IPHONE".equals(ALEipUtils.getClient(rundata))
-        && "calendar".equals(currentTab)) {
-        currentTab = "oneday";
-      }
-
       useragent = useragent.trim();
       if (useragent.indexOf("Mac") != -1 && useragent.indexOf("iPad") == -1) {
         context.put("isMac", 1);
@@ -123,6 +118,9 @@ public class ScheduleListScreen extends ScheduleScreen {
         }
 
         context.put("member_list", memberList);
+        if ("IPHONE".equals(ALEipUtils.getClient(rundata))) {
+          context.put("top_form", "simple");
+        }
       } else if ("oneday".equals(currentTab)) {
         // tab = "oneday";
         listData = new ScheduleOnedaySelectData();

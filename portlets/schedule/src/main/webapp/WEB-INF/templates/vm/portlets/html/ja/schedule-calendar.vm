@@ -23,12 +23,14 @@
 <input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}" />
 <input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}" />
 
+#if($client == "IPHONE")
+<div class="relativeBlock auiSummaryMeta clearfix">
+#else
 <div class="auiSummaryMeta auiMultiSelector clearfix">
 <div class="floatRight mb_hide">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
 
-#if (${client} != "IPHONE")
 <ul>
 #set($tab = ["$l10n.SCHEDULE_BLOCK", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
@@ -42,11 +44,12 @@
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 #end
-#end
 </div>
 </div>
 
 <div class="floatLeft">
+#end
+
 <div class="auiSelectButton">
 <ul>
 #if($!top_form && $!top_form=='simple'&&${client} == "IPAD")
@@ -714,7 +717,7 @@
     </table>
 ##</div>
 #if($!ajax_onloadimage)
-  <img src="images/common/dot.gif" width="1" height="1" onload="initCalendar['$!{portlet.ID}'](true);" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="#if($client == 'IPHONE') aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID'); #end initCalendar['$!{portlet.ID}'](true);" />
 #else
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
