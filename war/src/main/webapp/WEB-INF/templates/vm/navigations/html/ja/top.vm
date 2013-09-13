@@ -92,7 +92,6 @@ dojo.addOnLoad(function () {
             iconURL: "themes/$!theme/images/mobile/an_activity.png",
             iconWidth: "24",
             iconHeight: "24",
-            extendClass: "counter",
 #else
             iconURL: "themes/$!theme/images/common/icon_message.gif",
             iconWidth: "19",

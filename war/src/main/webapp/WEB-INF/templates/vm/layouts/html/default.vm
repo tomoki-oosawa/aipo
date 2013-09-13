@@ -157,7 +157,10 @@ scheduleTooltipEnable = true;
 #else
 scheduleTooltipEnable = false;
 #end
-
+var dispChanger = false;
+#if("${client}" == "PCIPHONE")
+	dispChanger = true;
+#end
 #if ("$!{client}" != "IPAD")
 dojo.require("dojo.dnd.Source");
 dojo.require("aipo.customize.form");

@@ -348,6 +348,8 @@ public class TimelineSelectData extends
     rd.setUrlList(urlsMap.get(id));
     rd.setAttachmentFileList(filesMap.get(id));
     rd.setReplyCount(rd.getCoTopicList().size());
+    rd.setParentId(record.getParentId().longValue());
+    rd.setTimelineType(record.getTimelineType());
 
     loadAggregateUsers();
 

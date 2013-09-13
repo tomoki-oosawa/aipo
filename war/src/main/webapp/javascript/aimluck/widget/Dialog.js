@@ -190,7 +190,7 @@ dojo.declare(
             }
 
             //android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
-            if(aipo.userAgent.isAndroid2()){
+            if(aipo.userAgent.isAndroid2()&& !dispChanger ){
                var wrapper=dojo.byId("wrapper");
                // wrapper非表示はhiddenではなくdisplay:none;で
                // dojo.style(wrapper, "visibility", "hidden");
