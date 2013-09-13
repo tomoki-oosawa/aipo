@@ -129,6 +129,7 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
         	checker.innerHTML = count;
         	dojo.removeClass("activitychecker", "zero");
         }
+    	dojo.addClass("activitychecker", "counter");
     },
     onCheckBlank: function(/*evt*/ e){
     }
