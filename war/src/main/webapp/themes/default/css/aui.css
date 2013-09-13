@@ -2365,22 +2365,6 @@ ul.attachments {
   margin: 5px 0;
 }
 
-.tlInputControls ul.attachments {
-  float: left;
-  margin: 0;
-}
-
-.tlInputControls ul.attachments > li {
-  margin-left: 5px;
-}
-
-/*
-ul.attachments >li{
-	list-style: none;
-	background:none;
-	padding:0;
-}
-*/
 .attachments span.deletebutton {
   margin-left: 10px;
   cursor: pointer;
@@ -2398,11 +2382,6 @@ ul.attachments >li{
   width: 130px;
 }
 
-/*.tlInputControls .auiButtonAction,
-#uploadContainer .auiButtonBold {
-	height:$inputHeight;
-    line-height:$inputHeight;
-}*/
 .uploadText {
   position: absolute;
   top: 50%;
@@ -2560,15 +2539,28 @@ ul.attachments >li{
   padding: 4px;
   background: #f0f0f0;
 }
-
 .tlInputControls .floatRight li {
   float: left;
   background: none;
   padding: 0 0 0 5px;
 }
-
 .tlInputControls .floatRight li:first-child {
   padding: 0;
+}
+.tlInputControls .floatRight .indicatorglay {
+  display: inline-block;
+}
+.tlInputControls ul.attachments {
+  float: left;
+  margin: 0;
+}
+.tlInputControls ul.attachments > li {
+  margin-left: 5px;
+}
+
+*:first-child + html .tlInputControls .floatRight .indicatorglay {
+  display: inline;
+  /*IE7*/
 }
 
 .tlDisplayChanger {
