@@ -118,7 +118,7 @@
                             	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
                             #end
                     		<option value="">----------</option>
-							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if($!result.SelectedGroup &&  $result.SelectedGroup.equals("pickup")) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
+							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if(!($result.SelectedGroup) ||  $result.SelectedGroup.equals("pickup")) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
 						</select>
 						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" />
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">
@@ -136,7 +136,7 @@
                             	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!result.getFacilityName($!record.Name.Value)))"#if($result.SelectedGroup.equals($!result.getFacilityName($!record.Name.Value))) selected="selected" #end>$!record.AliasName</option>
                             #end
                     		<option value="">----------</option>
-							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if($!result.SelectedGroup &&  $result.SelectedGroup.equals("pickup")) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
+							<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" #if(!($result.SelectedGroup) ||  $result.SelectedGroup.equals("pickup")) selected="selected" #end>$l10n.SCHEDULE_SSELECT_USER</option>
 						</select>
 						<input id="groupselect-defaulturl-$!portlet.ID"  type="hidden" value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","pickup"))" />
 						<div id="memberpicker-$!portlet.ID" widgetId="memberpicker-$!portlet.ID">

@@ -38,14 +38,16 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     extendClass: "",
     eventList:[],
     callback: function(){},
-    templateString: '<div class="dijit dijitLeft dijitInline"\n\tdojoAttachEvent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey"\n\t><div style="outline:0" class="" type="${type}"\n\t\tdojoAttachPoint="focusNode,titleNode" waiRole="button" waiState="haspopup-true,labelledby-${id}_label"\n\t\t><div class="" \tdojoAttachPoint="containerNode,popupStateNode"\n\t\tid="${id}_label"><div id="activitychecker" class="zero activitycheckerstyle ${extendClass}"></div><span class="mb_hide">お知らせ</span></div></div></div>\n',
+    templateString: '<div class="dijit dijitLeft dijitInline"\n\tdojoAttachEvent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey"\n\t><div class="" type="${type}"\n\t\tdojoAttachPoint="focusNode,titleNode" waiRole="button" waiState="haspopup-true,labelledby-${id}_label"\n\t\t><div class="" \tdojoAttachPoint="containerNode,popupStateNode"\n\t\tid="${id}_label"><div id="activitychecker" class="activitycheckerstyle ${extendClass}"></div><span class="mb_hide">お知らせ</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div></div>\n',
     postCreate: function(){
         this.inherited(arguments);
         this.dropDown = new aipo.widget.ActivityList({},'activityLiteList');
     },
 	_openDropDown: function(){
         this.inherited(arguments);
-		if(dojo.byId("auiMbBtnActivity"))dojo.addClass("auiMbBtnActivity","active");
+        if(dojo.byId('activitycheckerContainer')) {
+        	dojo.addClass(dojo.byId('activitycheckerContainer'), 'active');
+        }
         this.dropDown.reload();
 
         var userAgent = window.navigator.userAgent.toLowerCase();
@@ -93,7 +95,12 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
     },
 	_closeDropDown:function(){
         this.inherited(arguments);
-        if(dojo.byId("auiMbBtnActivity"))dojo.removeClass("auiMbBtnActivity","active");
+        if(dojo.byId('activitycheckerContainer')) {
+        	dojo.removeClass(dojo.byId('activitycheckerContainer'), 'active');
+        }
+    	if(document.getElementById('wrapper')) {
+    		document.getElementById('wrapper').style.minHeight = '';
+    	}
 
         if(aipo.userAgent.isAndroid()){
         	for(var i=0;i<this.eventList.length;i++){
@@ -108,26 +115,17 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
 	},
     onCheckActivity: function(count) {
     	var checker = dojo.byId("activitychecker");
-    	var activity = dojo.byId("auiMbBtnActivity");
         if (count > 99) {
         	checker.innerHTML = '99+';
         	dojo.removeClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.removeClass("auiMbBtnActivity", "zero");
-        	}
         } else if (count == 0) {
         	checker.innerHTML = count;
         	dojo.addClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.addClass("auiMbBtnActivity", "zero");
-        	}
         } else {
         	checker.innerHTML = count;
         	dojo.removeClass("activitychecker", "zero");
-        	if(activity) {
-        		dojo.removeClass("auiMbBtnActivity", "zero");
-        	}
         }
+    	dojo.addClass("activitychecker", "counter");
     },
     onCheckBlank: function(/*evt*/ e){
     }

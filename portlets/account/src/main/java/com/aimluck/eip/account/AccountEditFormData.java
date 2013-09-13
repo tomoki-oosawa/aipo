@@ -476,8 +476,8 @@ public class AccountEditFormData extends ALAbstractFormData {
         dontUpdatePasswd = true;
       } else {
         if (!new_password.getValue().equals(new_password_confirm.getValue())) {
-          msgList.add(ALLocalizationUtils.getl10nFormat(ALLocalizationUtils
-            .getl10nFormat("ACCOUNT_ALERT_PASSWORD")));
+          msgList.add(ALLocalizationUtils
+            .getl10nFormat("ACCOUNT_ALERT_PASSWORD"));
         } else {
           new_password.validate(msgList);
           new_password_confirm.validate(msgList);
