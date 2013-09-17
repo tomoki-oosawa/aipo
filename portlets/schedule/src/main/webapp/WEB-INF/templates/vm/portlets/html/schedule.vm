@@ -32,6 +32,7 @@
     aipo.schedule.login_aliasname = "$current_user";
 //]]>
 </script>
+#ALjavascript("javascript/aipo/schedule/form.js")
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

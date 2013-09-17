@@ -354,7 +354,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		    	form.setAttribute("onsubmit", onsubmit);
 	    	} else{
 	    		var onsubmitString = onsubmit.toString().replace("\'like\'", "\'dislike\'");
-	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.indexOf("}") - 1);
+	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.lastIndexOf("}") - 1);
 	    		form.setAttribute("onsubmit", new Function(onsubmitString));
 	    	}
 	    	var onclick = a.getAttribute("onclick");
@@ -363,7 +363,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		    	a.setAttribute("onclick", onclick);
 	    	} else{
 	    		var onclickString = onclick.toString().replace("\'like\'", "\'dislike\'");
-	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.indexOf("}") - 1);
+	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.lastIndexOf("}") - 1);
 	    		a.setAttribute("onclick", new Function(onclickString));
 	    	}
 	    	a.innerHTML = "いいね！を取り消す";
@@ -379,7 +379,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		    	form.setAttribute("onsubmit", onsubmit);
 	    	} else{
 	    		var onsubmitString = onsubmit.toString().replace("\'dislike\'", "\'like\'");
-	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.indexOf("}") - 1);
+	    		onsubmitString = onsubmitString.substring(onsubmitString.indexOf("{") + 1, onsubmitString.lastIndexOf("}") - 1);
 	    		form.setAttribute("onsubmit", new Function(onsubmitString));
 	    	}
 	    	var onclick = a.getAttribute("onclick");
@@ -388,7 +388,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isCom
 		    	a.setAttribute("onclick", onclick);
 	    	} else{
 	    		var onclickString = onclick.toString().replace("\'dislike\'", "\'like\'");
-	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.indexOf("}") - 1);
+	    		onclickString = onclickString.substring(onclickString.indexOf("{") + 1, onclickString.lastIndexOf("}") - 1);
 	    		a.setAttribute("onclick", new Function(onclickString));
 	    	}
 	    	a.innerHTML = "いいね！";
