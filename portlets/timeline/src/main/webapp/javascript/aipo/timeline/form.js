@@ -337,7 +337,9 @@ aipo.timeline.onReceiveMessageToList = function(msg) {
 	}
 
 aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode, isComment) {
-	  var pid = dojo.byId("getTimelinePortletId").innerHTML;
+	var pidspan = dojo.byId("getTimelinePortletId");
+	if(pidspan == undefined) pid = portletId;
+	else var pid = pidspan.innerHTML;
 	    var arrDialog = dijit.byId("modalDialog_" + pid);
 	    if (arrDialog) {
 	      arrDialog.hide();
