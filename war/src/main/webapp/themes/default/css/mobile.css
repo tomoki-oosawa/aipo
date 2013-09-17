@@ -972,7 +972,6 @@ input[type=password] {
 
 .dijitPopup {
   width: 100%;
-  position: fixed;
   padding-top:3px;
 }
 
