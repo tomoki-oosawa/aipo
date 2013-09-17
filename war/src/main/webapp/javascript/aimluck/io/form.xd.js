@@ -284,7 +284,7 @@ aimluck.io.deleteSubmit = function(button) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ����'+button.form._name.value+'���폜���Ă�낵���ł���?
+  // この'+button.form._name.value+'を削除してよろしいですか?
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -302,7 +302,7 @@ aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // '����'+button.form._name.value+'���폜���Ă�낵���ł����H'
+  // 'この'+button.form._name.value+'を削除してよろしいですか？'
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -320,7 +320,7 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id,
     enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
     enableSubmit_name : button.form._name.value
   });
-  // ����'+button.form._name.value+'��L���Ă�낵���ł����H
+  // この'+button.form._name.value+'を有効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -338,7 +338,7 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id,
     disableSubmit_disable : nlsStrings.DISABLESUBMIT_DISABLE,
     disableSubmit_name : button.form._name.value
   });
-  // ����'+button.form._name.value+'�𖳌��Ă�낵���ł����H
+  // この'+button.form._name.value+'を無効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -354,7 +354,7 @@ aimluck.io.deleteSubmitReturn = function(button, rtn) {
     dw_this : nlsStrings.DW_THIS,
     dw_name : button.form._name.value
   });
-  // ����'+button.form._name.value+'���폜���Ă�낵���ł����H
+  // この'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -371,7 +371,7 @@ aimluck.io.multiDeleteSubmit = function(button) {
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // �I������'+button.form._name.value+'���폜���Ă�낵���ł����H
+  // 選択した'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -388,7 +388,7 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id,
     dws_sel : nlsStrings.DWS_SEL,
     dws_name : button.form._name.value
   });
-  // �I������'+button.form._name.value+'���폜���Ă�낵���ł����H
+  // 選択した'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -406,7 +406,7 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id,
         multiEnableSubmit_enable : nlsStrings.MULTIENABLESUBMIT_ENABLE,
         multiEnableSubmit_name : button.form._name.value
       });
-  // �I������'+button.form._name.value+'��L���Ă�낵���ł����H
+  // 選択した'+button.form._name.value+'を有効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -424,7 +424,7 @@ aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id,
         multiDisableSubmit_disable : nlsStrings.MULTIDISABLESUBMIT_DISABLE,
         multiDisableSubmit_name : button.form._name.value
       });
-  // �I������'+button.form._name.value+'�𖳌��Ă�낵���ł����H
+  // 選択した'+button.form._name.value+'を無効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
@@ -494,7 +494,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "�`�F�b�N�{�b�N�X���P�ȏ�I�����Ă��������B"
+    // "チェックボックスを１つ以上選択してください。"
     alert(alertString);
     return false;
   } else {
@@ -518,7 +518,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
       verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
       verifycb_cb : nlsStrings.VERIFYCB_CB
     });
-    // "�`�F�b�N�{�b�N�X���P�ȏ�I�����Ă��������B"
+    // "チェックボックスを１つ以上選択してください。"
     alert(alertString);
     return false;
   } else {
@@ -846,7 +846,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
               portlet.setContent(html);
             }
           }
-          // �X�}�[�g�t�H���Ή��p
+          // スマートフォン対応用
           if (aipo.onloadSmartPhone != null) {
             aipo.onloadSmartPhone();
           }
