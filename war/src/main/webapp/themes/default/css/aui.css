@@ -239,7 +239,8 @@ img.avatar,
 }
 
 .auiPopupHead {
-  padding: 10px 0 10px 20px;
+  padding-left: 20px;
+  margin-bottom: 10px;
   background: transparent url(../images/common/icon_p.gif) no-repeat left center;
 }
 
