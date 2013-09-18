@@ -903,6 +903,16 @@ img.avatar,
   -webkit-animation-duration: 1s;
 }
 
+.alertSuccess {
+  margin: 10px 0;
+  padding: 10px;
+  background: #f0f0f0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+}
+
 /***************************************************
 	dialogTable
 --------------------------------------------------*/
