@@ -61,7 +61,7 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUIajaxpageview('WorkflowListScreen' $result)
 </div>
-#AUIrowTableWide()
+#AUIrowMTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowListScreen')")
 #ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowListScreen')" 'style="width:6em" class="center"')
@@ -75,6 +75,14 @@
 #set ($user = $!record.LastUpdateUser)
 #end
 <tr>
+#if(${client}=="IPHONE")
+<td class="auiMTCaption">
+	<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </a>
+</td>
+<td>$!record.StateString</td>
+<td>$user</td>
+<td>$!record.CreateDateTime</td>
+#else
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
@@ -83,6 +91,7 @@
 #ALtdcellAtt("$!record.StateString" 'class="center" nowrap="nowrap"')
 #ALtdcellAtt("$user" 'nowrap="nowrap"')
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
+#end
 </tr>
 #end
 #AUItablefooter()
