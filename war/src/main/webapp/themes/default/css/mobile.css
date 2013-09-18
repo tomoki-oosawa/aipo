@@ -365,7 +365,7 @@ input[type=password] {
   left: 0;
   width: 100%;
   background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
-  border-top: solid 1px #dcdcdc;
+  border-top: solid 1px #f0f0f0;
   border-bottom: solid 1px #d0d0d0;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -1206,14 +1206,14 @@ table tr.caption {
 	auiScheduleCalendar
 --------------------------------------------------*/
 .auiScheduleCalendar {
-	width:100%;
-    border-collapse: collapse;
-	background:#f0f0f0;
-    border:1px solid #cccccc;
-	-webkit-border-radius:4px;
-	-moz-border-radius:4px;
-	-ms-border-radius:4px;
-	border-radius:4px;
+  width: 100%;
+  border-collapse: collapse;
+  background: #f0f0f0;
+  border: 1px solid #d2d2d2;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
 }
 .auiScMonth th {
     padding:5px 0;
@@ -1279,24 +1279,28 @@ table tr.caption {
 .auiGradList ul{
 	margin:10px 0;
 }
-.auiGradList ul li{
-	overflow: hidden;
-	width: 100%;
-	padding:0;
-	border:1px #ccc solid;
-	border-bottom:0;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#F0F0F0));
-	display:block;
+
+.auiGradList ul li {
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 1px #d2d2d2 solid;
+  border-bottom: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(#f0f0f0));
+  display: block;
 }
+
 .auiGradList ul li:first-child{
 	-webkit-border-top-left-radius: 3px;
 	-webkit-border-top-right-radius: 3px;
 }
-.auiGradList ul li:last-child{
-	-webkit-border-bottom-left-radius: 3px;
-	-webkit-border-bottom-right-radius: 3px;
-	border-bottom:1px #ccc solid;
+
+.auiGradList ul li:last-child {
+  -webkit-border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom: 1px #c0c0c0 solid;
 }
+
 .auiGradList ul li a{
 	background: url(spm_arrow.png) no-repeat 97% 50%;
 	-webkit-background-size: 6px 9px;
@@ -1410,7 +1414,7 @@ table tr.caption {
 }
 
 .menubar.multi .caption {
-  border-top: solid 1px #ccc;
+  border-top: solid 1px #c0c0c0;
 }
 
 .menubar.multi > div:first-child .caption {
