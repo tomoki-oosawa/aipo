@@ -1398,7 +1398,7 @@ $link.get(0)
   <tbody>
 #end
 
-#macro(AUIrowTableWide)
+#macro(AUIrowMTableWide)
 <table class="auiRowTable auiMbTable wide">
   <tbody>
 #end
