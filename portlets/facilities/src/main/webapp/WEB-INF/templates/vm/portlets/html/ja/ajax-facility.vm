@@ -83,7 +83,7 @@ $l10n.FACILITIES_MSG_NO_FACILITIES<br />
 #ALtdcellAtt("<input name='check$!record.FacilityId' type='checkbox' value='$!record.FacilityId'/>" 'class="center"')
 #ALtdcellheader()
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityDetailScreen").addQueryData("entityid",$record.FacilityId))');">$!record.FacilityName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityDetailScreen").addQueryData("entityid",$record.FacilityId))');">$result.getStringCR($!record.FacilityName)</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellheader()
@@ -91,7 +91,7 @@ $l10n.FACILITIES_MSG_NO_FACILITIES<br />
 <div>
 #foreach($group in $!record.getFacilityGroupListByFacilityId($!record.FacilityId.toString()))
 #if($gcount != 0)、&nbsp;#end
-$!group.GroupName
+$result.getStringCR($!group.GroupName)
 #set($gcount = $gcount + 1)
 #end
 </div>

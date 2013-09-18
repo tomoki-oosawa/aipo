@@ -72,12 +72,12 @@
     #ALtdcellAtt("<input name='check$!record.RouteId' type='checkbox' value='$!record.RouteId'/>" 'align="center"')
     #ALtdcellheader()
     <div>
-    <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteDetailScreen").addQueryData("entityid",$record.RouteId))');">$!record.RouteName</a>
+    <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteDetailScreen").addQueryData("entityid",$record.RouteId))');">$result.getStringCR($!record.RouteName)</a>
     </div>
     #ALtdcellfooter()
     #ALtdcellheader()
     <div>
-    $!record.RouteH
+    $result.getStringCR($!record.RouteH)
     </div>
     #ALtdcellfooter()
     </tr>

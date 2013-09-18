@@ -38,13 +38,13 @@
 #if ($all_flg)
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
 #foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$result.getStringCR($!record.CategoryName)</option>
 #end
 
 #else
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
 #foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("submenu", "created").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$result.getStringCR($!record.CategoryName)</option>
 #end
 #end
 </select></form></div>
