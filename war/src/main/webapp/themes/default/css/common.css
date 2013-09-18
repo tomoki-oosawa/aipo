@@ -8,7 +8,7 @@ h1, h2, h3, h4, h5, h6, p, pre, address, cite {
 blockquote {
   margin: 2em;
   padding: 10px;
-  border: solid 3px #e0e0e0;
+  border: solid 3px #d2d2d2;
   background: #fff;
 }
 
@@ -40,7 +40,7 @@ form {
 
 fieldset {
   padding: 0 .5em .5em .5em;
-  border: solid 1px #ccc;
+  border: solid 1px #c0c0c0;
 }
 
 legend {
@@ -60,7 +60,7 @@ a img {
 }
 
 hr {
-  border: 1px solid #DCDCDC;
+  border: 1px solid #d2d2d2;
 }
 
 hr.bold {
@@ -153,7 +153,7 @@ h3 {
   line-height: 150%;
   padding: 3px 5px;
   margin: 0 0 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #d2d2d2;
 }
 
 h4 {
@@ -164,16 +164,16 @@ h4 {
 }
 
 blockquote {
-  border: 5px solid #ddd;
+  border: 5px solid #d2d2d2;
   background: #f5f5f5;
   padding: 3px;
 }
 
 div.outer {
-  border-top: 1px solid #eeeeee;
-  border-left: 1px solid #eeeeee;
-  border-bottom: 1px solid #C9C9C9;
-  border-right: 1px solid #C9C9C9;
+  border-top: 1px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
   margin-bottom: 2px;
   margin-top: 2px;
 }
@@ -263,7 +263,7 @@ table.center {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   background-color: #FFF;
-  border: 1px solid #C9C9C9;
+  border: 1px solid #c0c0c0;
   padding: 2px;
 }
 
@@ -525,14 +525,14 @@ a.button:hover {
 }
 
 td.item {
-  border: 1px solid #C9C9C9;
+  border: 1px solid #c0c0c0;
   padding: 5px;
 }
 
 .listTable {
   margin-bottom: 10px;
   margin-top: 5px;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px #d2d2d2;
   border-spacing: 0;
   border-collapse: collapse;
   padding: 0;
@@ -548,7 +548,7 @@ td.item {
 .listTableBorder {
   margin-bottom: 10px;
   margin-top: 5px;
-  border: solid 1px #ddd;
+  border: solid 1px #d2d2d2;
   border-spacing: 0;
   border-collapse: collapse;
   padding: 0;
@@ -559,7 +559,7 @@ td.item {
   white-space: nowrap;
   text-align: center;
   font-weight: bold;
-  border: solid 1px #ddd;
+  border: solid 1px #d2d2d2;
 }
 
 .listTableNoBorder {
@@ -579,7 +579,7 @@ td.item {
 
 .listTable td, .subTable td {
   padding: 5px 3px;
-  border-bottom: solid 1px #ddd;
+  border-bottom: solid 1px #d2d2d2;
 }
 
 .listTable th, .listTable thead td, .subTable th, .subTable thead td {
@@ -587,7 +587,7 @@ td.item {
   white-space: nowrap;
   text-align: center;
   font-weight: bold;
-  border-bottom: solid 1px #ddd;
+  border-bottom: solid 1px #d2d2d2;
 }
 
 .listTable th a, .listTable thead td a, .subTable th a, .subTable thead td a {
@@ -690,7 +690,7 @@ table.simpleTable .caption {
   display: block;
   width: auto !important;
   padding: 5px;
-  border: 3px solid #ddd;
+  border: 3px solid #d2d2d2;
   background: #f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
 }
 
@@ -783,7 +783,7 @@ table.simpleTable .caption {
 }
 
 .fileuploadDialog {
-  border: 5px solid #ddd;
+  border: 5px solid #d2d2d2;
   background-color: #fff;
   width: 300px;
   z-index: 999;
@@ -828,7 +828,7 @@ table.simpleTable .caption {
 
 /* addressbookDialog */
 .addressbookDialog {
-  border: 5px solid #ddd;
+  border: 5px solid #d2d2d2;
   background-color: #fff;
   width: 600px;
   z-index: 999;
@@ -845,7 +845,7 @@ table.simpleTable .caption {
 }
 
 .addressbookDialogUnderlay {
-  background: #eee;
+  background: #f0f0f0;
   opacity: .5;
 }
 
@@ -920,10 +920,10 @@ table.simpleTable .caption {
 /* END tutorialDialog */
 .popupMenu {
   position: absolute;
-  border-top: 1px solid #eee;
-  border-left: 1px solid #eee;
-  border-bottom: 1px solid #C9C9C9;
-  border-right: 1px solid #C9C9C9;
+  border-top: 1px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  border-right: 1px solid #c0c0c0;
   background: #f5f5f5;
   padding: 1px;
   margin-top: 5px;
@@ -1032,14 +1032,14 @@ table.simpleTable .caption {
 
 .menuSeparatorTop {
   height: 50%;
-  border-bottom: 1px solid #C9C9C9;
+  border-bottom: 1px solid #c0c0c0;
   margin: 0 2px;
   font-size: 1px;
 }
 
 .menuSeparatorBottom {
   height: 50%;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #f0f0f0;
   margin: 0 2px;
   font-size: 1px;
 }
@@ -1101,7 +1101,7 @@ table.simpleTable .caption {
   text-align: center;
   width: 140px;
   padding: 5px;
-  border: 3px solid #ddd;
+  border: 3px solid #d2d2d2;
   background: #f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
 }
 
@@ -1287,7 +1287,7 @@ i.indicator {
 }
 
 .indicatorDialog {
-  border: 5px solid #ddd;
+  border: 5px solid #d2d2d2;
   background: #ffffff;
 }
 
@@ -1314,11 +1314,11 @@ div.weeklyScrollPane {
   position: relative;
   overflow: scroll;
   overflow-x: hidden;
-  border-bottom: solid #ddd 1px;
+  border-bottom: solid #d2d2d2 1px;
 }
 
 .scrollRight {
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #d2d2d2;
 }
 
 .scroll_width {
@@ -1339,7 +1339,7 @@ div.weeklyScrollPane {
 
 div.weeklyHeadLeft {
   width: 50px;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 0 0 1px;
   float: left;
 }
@@ -1365,7 +1365,7 @@ div.weeklyHeadRights div.weeklyHeadRight {
   position: absolute;
   width: 14.2857%;
   text-align: center;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 0 0 1px;
   overflow: hidden;
 }
@@ -1374,7 +1374,7 @@ div.weeklyHeadRights div.weeklyHeadRightR {
   position: absolute;
   width: 14.2857%;
   text-align: center;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 1px 0 1px;
   overflow: hidden;
 }
@@ -1389,7 +1389,7 @@ div.weeklyHeadRights div.weeklyHeadRight div.weeklyHeadRightBottom, div.weeklyHe
 
 div.weeklyTermLeft {
   width: 50px;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 0 0 1px;
   float: left;
 }
@@ -1412,15 +1412,15 @@ div.weeklyTermRights {
 }
 
 div.weeklyTermRights div.weeklyTermRightL {
-  border-left: solid #ddd !important;
+  border-left: solid #d2d2d2 !important;
   border-width: 1px 0 0 1px !important;
 }
 
 div.weeklyTermRights div.weeklyTermRight {
   position: absolute;
   width: 14.2857%;
-  border: solid #ddd;
-  border-left: solid #ddd;
+  border: solid #d2d2d2;
+  border-left: solid #d2d2d2;
   border-width: 1px 0 0 1px;
 }
 
@@ -1445,8 +1445,8 @@ div.weeklyTermTail {
 
 div.weeklyLeft {
   width: 50px;
-  border-top: solid #ddd;
-  border-left: solid #ddd;
+  border-top: solid #d2d2d2;
+  border-left: solid #d2d2d2;
   border-width: 1px 0 0 1px;
   float: left;
 }
@@ -1461,7 +1461,7 @@ div.weeklyLeft div.leftMinute {
 
 div.weeklyLeft div.leftMinuteBottom {
   height: 17px;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 0 1px 0;
   font-size: 1px;
   line-height: 1;
@@ -1477,27 +1477,27 @@ div.weeklyRights {
 div.weeklyRights div.weeklyRight {
   position: absolute;
   width: 14.2857%;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 1px 0 0 1px;
 }
 
 div.weeklyRights div.weeklyRightR {
   position: absolute;
   width: 14.2857%;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 1px 1px 0 1px;
 }
 
 div.weeklyRights div.weeklyRight div.rightMinute, div.weeklyRights div.weeklyRightR div.rightMinute {
   height: 17px;
-  border: dotted #ddd;
+  border: dotted #d2d2d2;
   border-width: 0 0 1px 0;
   font-size: 1px;
 }
 
 div.weeklyRights div.weeklyRight div.rightMinuteBottom, div.weeklyRights div.weeklyRightR div.rightMinuteBottom {
   height: 17px;
-  border: solid #ddd;
+  border: solid #d2d2d2;
   border-width: 0 0 1px 0;
   font-size: 1px;
 }
@@ -1579,7 +1579,7 @@ div.scheduleDivAdd {
   top: 0;
   width: 14.2857%;
   height: 864px;
-  background-color: #ddd;
+  background-color: #d2d2d2;
 }
 
 div.scheduleDivRightLine {
@@ -1729,8 +1729,8 @@ div.off, td.off {
   margin-bottom: 5px;
   border-collapse: collapse;
   border-spacing: 0;
-  border: 1px solid #ddd;
-  border-top: 2px solid #ddd;
+  border: 1px solid #d2d2d2;
+  border-top: 2px solid #d2d2d2;
 }
 
 .calendar td.calendarHeader {
@@ -1738,7 +1738,7 @@ div.off, td.off {
 }
 
 .calendar td {
-  border: 1px solid #ddd;
+  border: 1px solid #d2d2d2;
   padding: 2px;
   vertical-align: top;
 }
@@ -1900,7 +1900,7 @@ div.calerndarTermScheduleDiv a:link, div.calerndarTermScheduleDiv a:visited {
 
 div.calerndarTermScheduleDiv a:hover {
   background-color: #FFFFE5;
-  border: 1px solid #ddd;
+  border: 1px solid #d2d2d2;
   text-decoration: none;
   padding: 0;
 }
@@ -1920,7 +1920,7 @@ div.calerndarTodoDiv a:link, div.calerndarTodoDiv a:visited {
 
 div.calerndarTodoDiv a:hover {
   background-color: #FFFFE5;
-  border: 1px solid #ddd;
+  border: 1px solid #d2d2d2;
   text-decoration: none;
   padding: 0;
 }
@@ -2245,7 +2245,7 @@ div.userInfo {
   position: absolute;
   background: #ffffff;
   padding: 5px;
-  border: 1px solid #B5B5B5;
+  border: 1px solid #c0c0c0;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -2460,7 +2460,7 @@ ul.blockList li a.selected {
 }
 
 .controllerTable td.selected img {
-  border: 2px solid #DCDCDC;
+  border: 2px solid #f0f0f0;
 }
 
 .addUser {
@@ -2480,7 +2480,7 @@ ul.blockList li a.selected {
   background: url(../images/common/bg_btn_gray.gif) bottom left repeat-x white;
   display: inline-block;
   padding: 2px 3px;
-  border: 1px solid #BFBFBF;
+  border: 1px solid #c0c0c0;
   vertical-align: middle;
   white-space: nowrap;
 }
