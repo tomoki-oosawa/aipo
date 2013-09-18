@@ -40,7 +40,7 @@
 #AUIsearchresult($result.targetKeyword.toString())
 #AUIajaxpageview('ReportListScreen' $result)
 #AUISummaryDivfooter()
-#AUIrowTableWide()
+#AUIrowMTableWide()
 <tr>
 #ALtdhead("#ALajaxsort('report_name' $l10n.REPORT_SETFIELDNAME_REPORT_NAME $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('start_date' $l10n.REPORT_SETFIELDNAME_CREATEDATE $result 'ReportListScreen')")
@@ -49,14 +49,14 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellheader()
+#ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportDetailScreen").addQueryData("entityid",$record.ReportId).addQueryData("clientid",$!record.ClientId))');">$!record.ReportName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$!{record.StartDate.toString($l10n.REPORT_TIME)}&nbsp;-&nbsp;$!{record.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}</div>")
 #ALtdcell("<div>$!record.ClientName</div>")
-#ALtdcellAtt("<div>$!record.CreateDateTime</div>" 'class="right" nowrap="nowrap"')
+#ALtdcellAtt("<div>$!record.CreateDateTime</div>" 'class="right mb_hide" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()
