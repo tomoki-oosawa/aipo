@@ -87,9 +87,9 @@
 ##ヘッダー名を変更する場合はEventlogCsvExportScreenも変更してください
 #ALtdhead("#ALajaxsort('event_date' $l10n.EVENTLOG_DATE $result 'EventlogScreen')")
 #ALtdhead("#ALajaxsort('user_name' $l10n.EVENTLOG_NAME $result 'EventlogScreen')")
-#ALtdheadAtt("#ALajaxsort('portlet_id' $l10n.EVENTLOG_FEATURE_NAME $result 'EventlogScreen')"'class="center"')
-#ALtdheadAtt("#ALajaxsort('event_type' $l10n.EVENTLOG_OPERATION $result 'EventlogScreen')"'class="center"')
-#ALtdhead("#ALajaxsort('ip_addr' $l10n.EVENTLOG_IP $result 'EventlogScreen')")
+#ALtdheadAtt("#ALajaxsort('portlet_id' $l10n.EVENTLOG_FEATURE_NAME $result 'EventlogScreen')" 'class="center mb_hide"')
+#ALtdheadAtt("#ALajaxsort('event_type' $l10n.EVENTLOG_OPERATION $result 'EventlogScreen')" 'class="center mb_hide"')
+#ALtdheadAtt("#ALajaxsort('ip_addr' $l10n.EVENTLOG_IP $result 'EventlogScreen')" 'class="mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -98,9 +98,9 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogDetailScreen").addQueryData("entityid",$record.EventlogId))');">$!record.EventDate</a>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UserFullName</div>"'')
-#ALtdcellAtt("<div>$!record.PortletName</div>"'')
-#ALtdcellAtt("<div>$!record.EventName</div>"'')
-#ALtdcellAtt("<div>$!record.IpAddr</div>"'')
+#ALtdcellAtt("<div>$!record.PortletName</div>" 'class="mb_hide"')
+#ALtdcellAtt("<div>$!record.EventName</div>" 'class="mb_hide"')
+#ALtdcellAtt("<div>$!record.IpAddr</div>" 'class="mb_hide"')
 </tr>
 #end
 </tbody>

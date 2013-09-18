@@ -57,7 +57,7 @@
 #ALtdhead("#ALswitchCheckbox()")
 #ALtdhead("#ALajaxsort('acl_role_name' $l10n.ACCESSCTL_ROLE_NAME $result 'AccessControlScreen')")
 #ALtdhead("#ALajaxsort('feature_alias_name' $l10n.ACCESSCTL_FEATURE_NAME $result 'AccessControlScreen')")
-#ALtdhead("$l10n.ACCESSCTL_FEATURE_AUTHORITY")
+#ALtdheadAtt("$l10n.ACCESSCTL_FEATURE_AUTHORITY" 'class="mb_hide"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -68,7 +68,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$record.FeatureName</div>")
-#ALtdcellheader()
+#ALtdcellheaderAtt('class="mb_hide"')
 <div>
 #if($record.hasAclList()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_LISTVIEW</span> #end
 #if($record.hasAclDetail()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_DETAILVIEW</span> #end

@@ -83,8 +83,8 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 #ALtdheadThin($l10n.ACCOUNT_STATUS)
 #ALtdheadW33("#ALajaxsort('login_name' $l10n.ACCOUNT_USER_ACCOUNT $result 'AccountUserListScreen')")
 #ALtdheadW25("#ALajaxsort('name_kana' $l10n.ACCOUNT_USER_NAME $result 'AccountUserListScreen')")
-#ALtdheadW25($l10n.ACCOUNT_POST_NAME)
-#ALtdheadW10($l10n.ACCOUNT_POSITION_NAME)
+#ALtdheadW25Class($l10n.ACCOUNT_POST_NAME "mb_hide")
+#ALtdheadW10Class($l10n.ACCOUNT_POSITION_NAME "mb_hide")
 </tr>
 #foreach ($record in $result.List)
 #set($disabled_flg = $!record.Disabled)
@@ -101,7 +101,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.UserName))');">$!record.Name</a>
 </div>
 #ALtdcellfooter()
-#ALtdcellheader()
+#ALtdcellheaderAtt('class="mb_hide"')
 #set($pcount = 0)
 <div>
 #foreach($postname in $!record.getPostNameList())
@@ -111,7 +111,7 @@ $!postname
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcell("<div>$!record.PositionName</div>")
+#ALtdcellAtt("<div>$!record.PositionName</div>" 'class="mb_hide"')
 </tr>
 #end
 </table>
