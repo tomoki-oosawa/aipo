@@ -114,6 +114,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
         || ALPortalApplicationService.isActive(portletName)) {
         this.doOutput(rundata, context);
       } else {
+        context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
         setTemplate(rundata, context, "screens/html/Inactive.vm");
       }
 

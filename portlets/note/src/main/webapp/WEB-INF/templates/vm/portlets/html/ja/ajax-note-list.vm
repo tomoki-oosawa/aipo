@@ -83,7 +83,7 @@
 #AUIsearchresult($!result.targetKeyword.toString())
 #AUISummaryDivfooter()
 #end
-#AUIrowTableWide()
+#AUIrowMTableWide()
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'class="thin"')
 #ALtdheadAtt("#ALajaxsort('client_name' $l10n.NOTE_CLIENT_POSITION $result 'NoteListScreen')" 'style="width:8em"')
@@ -105,11 +105,18 @@ style="font-weight:bold"
 #end
 >
 #ALsetEven($setEven)
-#ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
 
+#if($!{client}=="IPHONE")
+#ALtdcellheaderAtt('class="auiMTCaption"')
+<div><input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/> <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');" style="display:inline;">$!{record.ClientName}#if($record.CompanyName != "")（$!record.CompanyName）#end</a></div>
+#ALtdcellfooter()
+#else
+#ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!{record.ClientName}#if($record.CompanyName != "")（$!record.CompanyName）#end</a></div>
 #ALtdcellfooter()
+#end
+
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #if (!$isReceive)
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.DestUserFullName.Value</div>#ALtdcellfooter()

@@ -177,6 +177,73 @@ input[type=password] {
 }
 
 /***************************************************
+	auiMbTable
+--------------------------------------------------*/
+.auiMbTable {
+  display: block;
+  margin: 0 -5px;
+  padding: 0 5px;
+  border-top: solid 1px #eee;
+}
+
+.auiMbTable tbody {
+  margin: 0 -5px;
+  display: block;
+}
+
+.auiMbTable tr:first-child {
+  display: none;
+}
+
+.auiMbTable tr {
+  padding: 8px 5px;
+  display: block;
+  border-bottom: solid 1px #eee;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.auiMbTable tr:hover {
+  background: #f6f6f6 !important;
+}
+
+.auiMbTable td {
+  display: inline-block;
+  width: auto;
+  border: none;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.auiMbTable .auiMTCheck {
+  display: table-cell;
+  margin: 0;
+  padding: 0 10px 0 5px;
+  vertical-align: middle;
+}
+
+.auiMbTable .auiMTCaption {
+  display: table-cell;
+  margin: 0;
+}
+
+.auiMbTable .auiMTCaption div {
+  margin: 0;
+  height: auto;
+  line-height: 1;
+}
+
+.auiMbTable .auiMTCaption a {
+  display: block;
+  margin: 0;
+  height: 24px;
+  line-height: 24px;
+  font-size: 14px;
+  overflow: hidden;
+}
+
+/***************************************************
 	auiBlogEntry
 --------------------------------------------------*/
 #auiBlogEntries {
