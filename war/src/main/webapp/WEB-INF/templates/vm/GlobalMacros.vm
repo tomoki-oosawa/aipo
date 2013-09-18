@@ -683,6 +683,9 @@ $item.get(0)
 #macro(ALdialogheaderPrintMail $title $portlet_id $screen $view_date)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();")
 #end
+#macro(ALdialogheaderPrintNote $title $portlet_id $screen $view_date)
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.note.hideDialog();")
+#end
 
 #macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick)
 	<div class="auiPopup clearfix">
@@ -706,7 +709,7 @@ $item.get(0)
 			<tbody>
 				<tr>
 					<td class="roundBlockTitle wide">$title</td>
-					<td class="roundBlockIcon last"><div style="float:right">#ALdialogCloseButtonCommon()</div></td>
+					<td class="roundBlockIcon last"><div style="float:right">#ALdialogCloseButton($js)</div></td>
 				</tr>
 			</tbody>
 		</table>
@@ -718,6 +721,9 @@ $item.get(0)
 #end
 #macro(ALdialogheaderDetailSmartPhoneMail $title)
 #ALdialogheaderDetailSmartPhoneAbstract($title "aipo.webmail.hideDialog();")
+#end
+#macro(ALdialogheaderDetailSmartPhoneNote $title)
+#ALdialogheaderDetailSmartPhoneAbstract($title "aipo.note.hideDialog();")
 #end
 
 #macro(ALdialogheaderDetailSmartPhoneAbstract $title $onclick)
