@@ -81,7 +81,7 @@
 					<a href="javascript:void(0)"  onclick="aipo.timeline.addHiddenValue(dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'like');dojo.byId('likeForm_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();">$l10n.TIMELINE_LIKE</a>
 				</form>
 			#end
-			#if($timelineViewType=="detail")
+			#if($!{timelineViewType} && $!{timelineViewType}=="detail")
 		    	#if($!{record.ParentId.getValueAsString()}=="0"||$!{record.TimelineType}!="T")
 			&nbsp;
 			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
