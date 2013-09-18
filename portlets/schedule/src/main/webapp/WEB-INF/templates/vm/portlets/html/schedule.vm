@@ -54,7 +54,7 @@
     dojo.style("scheduleDivAdd04_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd05_"+portletId,'opacity', 0);
     dojo.style("scheduleDivAdd06_"+portletId,'opacity', 0);
-    dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px');
+    #if("${client}" != "IPHONE") dojo.style(dojo.byId('weeklyScrollPane_$!portlet.ID'), 'height', ($!time_end - $!time_start)*(60/$!time_interval)*18 + 'px'); #end
 
 	#if (${client} == "IPAD")
 	dojo.query(".scroll_width").style("width", "17px");

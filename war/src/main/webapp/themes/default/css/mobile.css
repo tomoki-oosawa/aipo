@@ -1381,6 +1381,38 @@ table tr.caption {
 }
 
 /***************************************************
+	schedule block
+--------------------------------------------------*/
+[id^=groupselect] {
+  width: 100%;
+}
+
+.weeklyScrollPane > table {
+  width: 100%;
+  overflow: hidden;
+}
+
+div.weeklyHeadRights div.weeklyHeadRightR {
+  position: static;
+  border-width: 0 0 0 1px;
+  box-sizing: border-box;
+}
+
+div.weeklyTermRights div.weeklyTermRight {
+  position: static;
+  box-sizing: border-box;
+}
+
+div.weeklyTermRights div.weeklyTermRightR {
+  border-width: 1px 0 0 1px !important;
+}
+
+[id^=weeklySpan],
+[class^=weeklyTermTailTd] {
+  display: none !important;
+}
+
+/***************************************************
 	radioBlock
 --------------------------------------------------*/
 .radioBlock {
