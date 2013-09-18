@@ -672,17 +672,15 @@ img.avatar,
   height: 25px;
   padding: 0;
   margin: 0;
-  background: white url(../images/tab.png) left bottom repeat-x;
+  background: white url("../images/tab.png") left bottom repeat-x;
   overflow: hidden;
 }
-
 #auiTabs ul {
   position: relative;
   padding: 0 20px;
   margin: 0;
   white-space: nowrap;
 }
-
 #auiTabs li {
   display: block;
   float: left;
@@ -691,128 +689,96 @@ img.avatar,
   font-size: 11px;
   background: none;
 }
-
-#auiTabs .tab {
-  height: 100%;
-}
-
-/* basic */
-#auiTabs .title {
-  float: left;
-  height: 25px;
-  line-height: 25px;
-  padding-left: 20px;
-  background: url(../images/tab.png) left -180px no-repeat;
-}
-
-#auiTabs .setting {
-  float: left;
-  height: 25px;
-  background: url(../images/tab.png) left -270px no-repeat;
-}
-
-#auiTabs .setting a {
-  margin-top: 4px;
-}
-
-/* first */
-#auiTabs .first .title {
-  background: url(../images/tab.png) left -120px no-repeat;
-}
-
-/* last */
-#auiTabs .last .setting {
-  padding-right: 20px;
-  background: url(../images/tab.png?20120928) right -150px no-repeat;
-}
-
-/* active */
-#auiTabs .active .title {
-  background: url(../images/tab.png) left -60px no-repeat;
-}
-
-#auiTabs .active .setting {
-  background: url(../images/tab.png) left -240px no-repeat;
-}
-
-#auiTabs .activeNext {
-  padding-left: 20px;
-  background: url(../images/tab.png) left -90px no-repeat;
-}
-
-#auiTabs .activeNext .title {
-  padding-left: 0;
-  background: url(../images/tab.png) left -270px no-repeat;
-}
-
-#auiTabs .first .active .title {
-  background: url(../images/tab.png) left 0px no-repeat;
-}
-
-#auiTabs .last .active {
-  padding-right: 20px;
-  background: url(../images/tab.png) right -30px no-repeat;
-}
-
-#auiTabs .last .active .setting {
-  padding-right: 0;
-}
-
-#auiTabs .last .activeNext {
-  background: url(../images/tab.png) left -90px no-repeat;
-}
-
-#auiTabs .store {
-  padding-right: 20px;
-  background: url(../images/tab.png) right -150px no-repeat;
-}
-
-#auiTabs li.selectedMenu {
-  height: 25px;
-  background: url(../images/tab.png) right -25px no-repeat;
-  text-decoration: none;
-}
-
-#auiTabs li.selectedMenu .title {
-  background: url(../images/tab.png) left 0px no-repeat;
-}
-
-#auiTabs li.selectedMenu .title a {
-  text-decoration: none;
-}
-
 #auiTabs li a {
   margin: 0 5px;
   white-space: nowrap;
   text-decoration: none;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
 }
-
+#auiTabs .tab {
+  height: 100%;
+}
+#auiTabs .title {
+  float: left;
+  height: 25px;
+  line-height: 25px;
+  padding-left: 20px;
+  background: url("../images/tab.png") left -180px no-repeat;
+}
+#auiTabs .setting {
+  float: left;
+  height: 25px;
+  background: url("../images/tab.png") left -270px no-repeat;
+}
+#auiTabs .setting a {
+  margin-top: 4px;
+}
+#auiTabs .first .title {
+  background: url("../images/tab.png") left -120px no-repeat;
+}
+#auiTabs .first .active .title {
+  background: url("../images/tab.png") left 0px no-repeat;
+}
+#auiTabs .last .setting {
+  padding-right: 20px;
+  background: url("../images/tab.png") right -150px no-repeat;
+}
+#auiTabs .last .active {
+  padding-right: 20px;
+  background: url("../images/tab.png") right -30px no-repeat;
+}
+#auiTabs .last .active .setting {
+  padding-right: 0;
+}
+#auiTabs .last .activeNext {
+  background: url("../images/tab.png") left -90px no-repeat;
+}
+#auiTabs .active .title {
+  background: url("../images/tab.png") left -60px no-repeat;
+}
+#auiTabs .active .setting {
+  background: url("../images/tab.png") left -240px no-repeat;
+}
+#auiTabs .activeNext {
+  padding-left: 20px;
+  background: url("../images/tab.png") left -90px no-repeat;
+}
+#auiTabs .activeNext .title {
+  padding-left: 0;
+  background: url("../images/tab.png") left -270px no-repeat;
+}
+#auiTabs .store {
+  padding-right: 20px;
+  background: url("../images/tab.png") right -150px no-repeat;
+}
+#auiTabs li.selectedMenu {
+  height: 25px;
+  background: url("../images/tab.png") right -25px no-repeat;
+  text-decoration: none;
+}
+#auiTabs li.selectedMenu .title {
+  background: url("../images/tab.png") left 0px no-repeat;
+}
+#auiTabs li.selectedMenu .title a {
+  text-decoration: none;
+}
 #auiTabs li.selectedMenu a {
   white-space: nowrap;
   text-decoration: none;
 }
-
 #auiTabs li.selectedMenu .menuIcon {
   float: left;
   height: 25px;
-  background: url(../images/tab.png) right 0px no-repeat;
+  background: url("../images/tab.png") right 0px no-repeat;
 }
-
-.tooltip_gray {
-  display: none;
-}
-
 #auiTabs .singleTab {
   height: 25px;
   line-height: 25px;
-  background: url(../images/tab.png) left -100px no-repeat;
+  background: url("../images/tab.png") left -100px no-repeat;
 }
-
 #auiTabs .singleTab a {
   text-decoration: none;
 }
-
 #auiTabs .addTab a {
   display: block;
   margin: 0 0 0 -5px;
@@ -824,12 +790,14 @@ img.avatar,
   text-align: center;
   background: url(../images/addtab.png) 0 0 no-repeat;
 }
-
 #auiTabs .addTab a:hover {
   background: url(../images/addtab.png) 0 -25px no-repeat;
 }
-
 #auiTabs .addTab span {
+  display: none;
+}
+
+.tooltip_gray {
   display: none;
 }
 
