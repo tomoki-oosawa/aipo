@@ -654,41 +654,14 @@ input[type=password] {
   color: #ffffff;
   z-index: 10000;
 }
-
-#appsNavigationBack {
-  display: none;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  right: 0;
-  z-index: 9999;
-}
-
-#appsNavigation ul {
-  display: none;
-}
-
-#appsNavigationBack a {
-  display: block;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.2);
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-.anDrawer {
+#appsNavigation .anDrawer {
   display: none;
   position: fixed;
   left: 270px;
   top: 7px;
   overflow: hidden;
 }
-
-.anDrawer a {
+#appsNavigation .anDrawer a {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
@@ -702,12 +675,10 @@ input[type=password] {
   border-radius: 30px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
-.anDrawer img {
+#appsNavigation .anDrawer img {
   width: 24px;
   height: 24px;
 }
-
 #appsNavigation h2 {
   line-height: 2em;
   padding: 0 5px;
@@ -715,7 +686,9 @@ input[type=password] {
   text-shadow: 0 1px 0 black;
   background: #505050;
 }
-
+#appsNavigation ul {
+  display: none;
+}
 #appsNavigation li {
   clear: both;
   padding: 0;
@@ -723,12 +696,6 @@ input[type=password] {
   overflow: hidden;
   background: #333333;
 }
-
-#appsNavigation a {
-  text-decoration: none;
-  color: #ffffff;
-}
-
 #appsNavigation li a {
   display: block;
   height: 40px;
@@ -739,33 +706,55 @@ input[type=password] {
   border-top: solid 1px rgba(255, 255, 255, 0.3);
   border-bottom: solid 1px rgba(0, 0, 0, 0.8);
 }
-
-.anUser {
-	font-size:16px;
-	font-weight:bold;
-	text-shadow:0 1px 0 rgba(0,0,0,1);
-	background:#333333
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.2)),
-		color-stop(0.5, rgba(255,255,255,0)),
-		to(rgba(0,0,0,0.1))
-	);
-	border-bottom:solid 1px rgba(0,0,0,0.7);
+#appsNavigation a {
+  text-decoration: none;
+  color: #ffffff;
 }
-
-.anUser > div {
-  display: table-cell;
-  vertical-align: middle;
-  height: 45px;
-  line-height: 45px;
+#appsNavigation .anUser {
+  height: 44px;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 black;
+  background: #333333 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.2)), color-stop(0.5, rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.1)));
+  border-bottom: solid 1px rgba(0, 0, 0, 0.7);
 }
-
-.anUser .avatar {
+#appsNavigation .anUser > div {
+  float: left;
+  height: 44px;
+  line-height: 44px;
+}
+#appsNavigation .anUser .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+#appsNavigation .anUser .close a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 20px;
+  padding: 12px 15px;
+  text-align: center;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+#appsNavigation .anUser .avatar {
   width: 40px;
   text-align: center;
 }
-
+#appsNavigation .anUser .avatar img {
+  margin-top: 12px;
+}
+#appsNavigation .anUser .name {
+  font-size: 16px;
+  font-weight: bold;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 #appsNavigation .icon {
   display: block;
   float: left;
@@ -773,12 +762,10 @@ input[type=password] {
   vertical-align: middle;
   text-align: center;
 }
-
 #appsNavigation .icon img {
   width: 20px;
   max-height: 20px;
 }
-
 #appsNavigation .icon i {
   display: block;
   width: 20px;
@@ -786,8 +773,7 @@ input[type=password] {
   line-height: 20px;
   color: #fff !important;
 }
-
-.anFooter {
+#appsNavigation .anFooter {
   display: table-cell;
   width: 260px;
   height: 43px;
@@ -795,7 +781,27 @@ input[type=password] {
   vertical-align: middle;
   background: #505050;
   overflow: hidden;
-  text-shadow:0 1px 0 rgba(0,0,0,1);
+  text-shadow: 0 1px 0 black;
+}
+
+#appsNavigationBack {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+}
+#appsNavigationBack a {
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.2);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 /***************************************************
