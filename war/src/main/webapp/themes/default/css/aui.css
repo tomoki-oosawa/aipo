@@ -3316,6 +3316,30 @@ ul.attachments {
 }
 
 /***************************************************
+	auiRowList
+--------------------------------------------------*/
+.auiRowList {
+  text-align: center;
+}
+.auiRowList li {
+  display: inline-block;
+  text-align: center;
+  background-image: none;
+  padding: 0 10px;
+}
+.auiRowList .section {
+  display: block;
+  margin: 5px 0;
+}
+.auiRowList label {
+  display: block;
+}
+
+*:first-child + html .auiRowList li {
+  display: inline;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {

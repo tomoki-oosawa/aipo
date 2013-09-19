@@ -1493,6 +1493,28 @@ table tr.caption {
 }
 
 /***************************************************
+	auiRowList
+--------------------------------------------------*/
+.auiRowList {
+  text-align: left;
+}
+.auiRowList li {
+  display: block;
+  text-align: left;
+  padding: 5px 0;
+}
+.auiRowList .section {
+  display: inline-block;
+  margin: 0;
+  vertical-align: middle;
+}
+
+.auiRowListImg img {
+  max-width: 60px;
+  height: auto;
+}
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none !important;}
