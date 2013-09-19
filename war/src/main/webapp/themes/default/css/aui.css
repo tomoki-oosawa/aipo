@@ -1152,7 +1152,7 @@ button.active,
 .auiSelectButton a:focus,
 .auiSelectButton a:active {
   color: #333333;
-  background-color: #f0f0f0;
+  background-color: #e6e6e6;
 }
 
 input[type=submit]:active,
