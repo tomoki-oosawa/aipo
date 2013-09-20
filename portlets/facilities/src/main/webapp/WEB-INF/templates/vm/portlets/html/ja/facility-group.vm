@@ -33,6 +33,6 @@
 #end
 #parse("/portlets/html/ja/ajax-facility-group.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end
