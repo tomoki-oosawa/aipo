@@ -35,27 +35,29 @@
 </div>
 
 <p class="center">$l10n.GADGETS_CHANGE_SETTING_ALLUSER_MSG</p>
-<table class="wide center mt10">
-<colgroup style="width:33%;"></colgroup>
-<colgroup style="width:33%;"></colgroup>
-<colgroup style="width:33%;"></colgroup>
-<tbody>
-<tr>
-<td valign="top"><label for="layout01"><img src="themes/default/images/function/btn_selectlayout_timeline.gif" alt="$l10n.GADGETS_TIMELINE_MAIN" width="130" height="130" class="mb5" /></label>
-<br />
-<input type="radio" name="layout" id="layout01" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'timeline')"/><br /><label for="layout01"><span class="small">$l10n.GADGETS_SET_TIMELINE_MAIN</span></label></td>
-
-<td valign="top"><label for="layout02"><img src="themes/default/images/function/btn_selectlayout_schedule.gif" alt="$l10n.GADGETS_SCHEDULE_MAIN" width="130" height="130" class="mb5" /></label>
-<br />
-<input type="radio" name="layout" id="layout02" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'schedule')"/><br /><label for="layout02"><span class="small">$l10n.GADGETS_SET_SCHEDULE_MAIN</span></label></td>
-
-<td valign="top"><label for="layout03"><img src="themes/default/images/function/btn_selectlayout_mine.gif" alt="$l10n.GADGETS_THIS_SETTING_MAIN" width="130" height="130" class="mb5" /></label>
-<br />
-<input type="radio" name="layout" id="layout03" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')"/><br /><label for="layout03"><span class="small">$l10n.GADGETS_SET_THIS_SETTING</span></label></td>
-
-</tr>
-</tbody>
-</table>
+<ul class="auiRowList mb10">
+    <li>
+        <label for="layout01">
+        <span class="section auiRowListImg"><img src="themes/default/images/function/btn_selectlayout_timeline.gif" alt="$l10n.GADGETS_TIMELINE_MAIN" width="130" height="130"></span>
+        <span class="section"><input type="radio" name="layout" id="layout01" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'timeline')"></span>
+        <span class="section small">$l10n.GADGETS_SET_TIMELINE_MAIN</span>
+        </label>
+    </li>
+    <li>
+        <label for="layout02">
+        <span class="section auiRowListImg"><img src="themes/default/images/function/btn_selectlayout_schedule.gif" alt="$l10n.GADGETS_SCHEDULE_MAIN" width="130" height="130"></span>
+        <span class="section"><input type="radio" name="layout" id="layout02" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'schedule')"></span>
+        <span class="section small">$l10n.GADGETS_SET_SCHEDULE_MAIN</span>
+        </label>
+    </li>
+    <li>
+        <label for="layout03">
+        <span class="section auiRowListImg"><img src="themes/default/images/function/btn_selectlayout_mine.gif" alt="$l10n.GADGETS_THIS_SETTING_MAIN" width="130" height="130"></span>
+        <span class="section"><input type="radio" name="layout" id="layout03" onclick="aipo.gadgets_admin.beforeSubmit(this,'$!portlet.ID', 'all_user')"></span>
+        <span class="section small">$l10n.GADGETS_SET_THIS_SETTING</span>
+        </label>
+    </li>
+</ul>
 
 <div class="p spaceBottom">
 <div class="spaceTop caution" align="center"><span class="small em" id="caution"></span></div>
