@@ -62,3 +62,5 @@
 #end
 #ALspacebothfooter()
 
+<div id="tutorial_schedule" style='background-color:white; position:absolute; Z-index:10000'>マス目をドラッグしてスケジュールを登録してみましょう。<a href="javascript:void(0);">X</a></div>
+

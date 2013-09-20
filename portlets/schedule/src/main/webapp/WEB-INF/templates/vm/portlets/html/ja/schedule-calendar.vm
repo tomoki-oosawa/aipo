@@ -146,6 +146,7 @@
 					#end
 					<div class="message" id="calender_m_empty_$!portlet.ID" style="display:none;">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 					<div id="weeklyTableHeadWrapper_$!portlet.ID" style="width:100%;">
+
                     <table class="weeklyTableHead" id="weeklyTableHead_$!portlet.ID" cellspacing="0" cellpadding="0" border="0" width="100%">
                       <tbody>
                         <tr>
@@ -280,6 +281,7 @@
                     </table>
                     </div>
                     <div class="tableBorderM">&nbsp;</div>
+                    <div class="tutorial_tooltip" id="tutorial_schedule" style='display:none; background-color:white; position:absolute; Z-index:10000'>マス目をドラッグしてスケジュールを登録してみましょう。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_schedule');">X</a></div>
                     <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
                       <table cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody>

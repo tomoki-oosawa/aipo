@@ -182,3 +182,6 @@
   </div>
 #end
 </div>
+
+<div class="tutorial_tooltip" id="tutorial_timeline1" style='display:none; background-color:white; position:absolute; Z-index:10000'>タイムラインへ近況やニュースを書き込んでみましょう。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_timeline1');">X</a></div>
+<div class="tutorial_tooltip" id="tutorial_timeline2" style='display:none; background-color:white; position:absolute; Z-index:10000'>タイムラインの投稿へいいね！や、コメントをしてみましょう。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_timeline2');">X</a></div>
