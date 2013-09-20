@@ -45,7 +45,7 @@ aipo.onloadSmartPhone = function(){
 	if(dojo.byId("snDrawer")) return;
 	if(widgets_area != null){
 		// classの追加
-		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson"].indexOf("$portlet.name") != -1;
+		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson", "SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl"].indexOf("$portlet.name") != -1;
 		for(var i=0;i<widgets_area.childNodes.length;i++){
 			if(widgets_area.childNodes[i].className != null
 			&& widgets_area.childNodes[i].className.indexOf('auiWidget',0) >= 0){
@@ -277,6 +277,9 @@ function appsNaviSwitch() {
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Maximize'))"><span class="icon"><i class="icon-cog"></i></span>$l10n.PERSONAL</a></li>
 					#end
     					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction("ALChangeToPC")'"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li>
+					#if ($data.User.isAdmin())
+						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Maximize'))"><span class="icon"><i class="icon-cogs"></i></span>$l10n.TOP_MANAGE_SETTING</a></li>
+					#end
     					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><i class="icon-power-off"></i></span>$l10n.TOP_LOGOUT</a></li>
 				</ul>
         </div>
@@ -366,6 +369,45 @@ $portlet.getContent($data)
 	</div>
 	<!-- /auiWidgetsArea -->
   #end
+#set ($system = false)
+
+  #if ($portlet.name=="SysInfo")
+    #set ($system = true)
+  #elseif($portlet.name=="FileIO")
+   #set ($system = true)
+  #elseif($portlet.name=="Account")
+    #set ($system = true)
+   #elseif($portlet.name=="Post")
+    #set ($system = true)
+   #elseif($portlet.name=="Position")
+    #set ($system = true)
+   #elseif($portlet.name=="Facilities")
+    #set ($system = true)
+   #elseif($portlet.name=="GadgetsAdmin")
+    #set ($system = true)
+   #elseif($portlet.name=="WorkflowCategory")
+    #set ($system = true)
+   #elseif($portlet.name=="ExtTimecardSystem")
+    #set ($system = true)
+    #elseif($portlet.name=="AccessControl")
+    #set ($system = true)
+   #elseif($portlet.name=="Eventlog")
+    #set ($system = true)
+  #end
+  #if ($system)
+	<!-- auiWidgetsArea -->
+	<div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
+	<div class="auiWidget clearfix">
+	<ul>
+	#foreach($menu in $systemMenus)
+	<li#if ($menu.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($menu.MaximizeLink)">$menu.Title</a></li>
+	#end
+	</ul>
+	</div>
+	</div>
+	<!-- /auiWidgetsArea -->
+  #end
+
   </div>
 </div>
 <!-- /MAIN OUTER  -->

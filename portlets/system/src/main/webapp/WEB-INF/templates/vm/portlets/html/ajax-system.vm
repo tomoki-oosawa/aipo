@@ -25,6 +25,11 @@
 #set($linkAdminpassword = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemAdminFormScreen").addQueryData("entityid","new"))
 ## ---------------------------------------------------------------------------
 
+#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#AUIcontentsAreaHeader()
+#end
+
 #AUISummaryDiv()
 #AUIconfigheader($!{portlet.ID} "16em")
 #AUIconfigitem($l10n.SYSTEM_CHANGE_COMPANYINFO $linkCompany)
@@ -46,7 +51,7 @@ $l10n.SYSTEM_IN_ADDRESS_MSG1${alias}$l10n.SYSTEM_IN_ADDRESS_MSG2
 #ALtdcaptionheader()
 ${alias}$l10n.SYSTEM_SITE_IN
 #ALtdcaptionfooter()
-#ALtditem("$!result.Detail.LocalUrl")
+#ALtditem("$!result.Detail.WbrLocalUrl")
 <tr>
 #ALtdcellheaderAtt("align='center' colspan='2'")
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen').addQueryData('mode','local')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
@@ -64,7 +69,7 @@ $l10n.SYSTEM_OUTSIDE_ADDRESS_MSG1${alias}$l10n.SYSTEM_OUTSIDE_ADDRESS_MSG2
 #ALtdcaptionheader()
 ${alias}$l10n.SYSTEM_SITE_OUTSIDE
 #ALtdcaptionfooter()
-#ALtditem("$!result.Detail.GlobalUrl")
+#ALtditem("$!result.Detail.WbrGlobalUrl")
 <tr>
 #ALtdcellheaderAtt("align='center' colspan='2'")
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemNetworkFormScreen').addQueryData('mode','global')" "$!portlet.ID" 'aipo.system.onLoadNetworkInfoDialog')
@@ -72,3 +77,8 @@ ${alias}$l10n.SYSTEM_SITE_OUTSIDE
 </tr>
 #ALtablefooter()
 #ALformfooter()
+
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#AUIcontentsAreaFooter()
+#end

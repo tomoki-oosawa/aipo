@@ -27,7 +27,15 @@
 //]]>
 </script>
 #if($!result.hasAuthority())
+	#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#AUIcontentsAreaHeader()
+#end
 #parse("/portlets/html/ja/ajax-exttimecard.vm")
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#AUIcontentsAreaFooter()
+#end
 #else
 #parse("/portlets/html/PermissionError.vm")
 #end

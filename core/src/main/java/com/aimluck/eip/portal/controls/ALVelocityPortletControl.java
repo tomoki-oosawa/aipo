@@ -312,6 +312,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         }
         context.put("gadgetCounts", gadgetCounts);
         context.put("accountMenues", getAccountMenues(menues));
+        context.put("systemMenus", getSystemMenus(menues));
 
         String mypageId = "";
         for (Portlets p : portlets.getPortletsArray()) {
@@ -576,6 +577,42 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       return this.alt;
     }
 
+  }
+
+  private List<PortletTab> getSystemMenus(List<PortletTab> tabs) {
+
+    PortletTab[] systemMenues = new PortletTab[11];
+
+    for (PortletTab tab : tabs) {
+      if (tab.getName().toString().contains("SysInfo")) {
+        systemMenues[0] = tab;
+      } else if (tab.getName().toString().contains("FileIO")) {
+        systemMenues[1] = tab;
+      } else if (tab.getName().toString().contains("Account")) {
+        if (!tab.getName().toString().equals("AccountPerson")) {
+          systemMenues[2] = tab;
+        }
+      } else if (tab.getName().toString().equals("Post")) {
+        systemMenues[3] = tab;
+      } else if (tab.getName().toString().equals("Position")) {
+        systemMenues[4] = tab;
+      } else if (tab.getName().toString().equals("Facilities")) {
+        systemMenues[5] = tab;
+      } else if (tab.getName().toString().contains("GadgetsAdmin")) {
+        systemMenues[6] = tab;
+      } else if (tab.getName().toString().equals("WorkflowCategory")) {
+        systemMenues[7] = tab;
+      } else if (tab.getName().toString().equals("ExtTimecardSystem")) {
+        systemMenues[8] = tab;
+      } else if (tab.getName().toString().equals("AccessControl")) {
+        systemMenues[9] = tab;
+      } else if (tab.getName().toString().equals("Eventlog")) {
+        systemMenues[10] = tab;
+      }
+
+    }
+
+    return Arrays.asList(systemMenues);
   }
 
   /**

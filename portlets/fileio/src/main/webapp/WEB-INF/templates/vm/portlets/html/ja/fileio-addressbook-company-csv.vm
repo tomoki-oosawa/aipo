@@ -142,6 +142,11 @@ function hide_Attention(){
 
 //-->
 </script>
+#ALtabheader($tabs "")
+#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#AUIcontentsAreaHeader()
+#end
 #if((! $result.List || $result.List.size() == 0) && !$!validateError)#ALerrmsg($errmsgs)#end
 #if($result.getClass().getName() == "com.aimluck.eip.account.AccountCsvSelectData")
 #if(! $result.List || $result.List.size() <= 0)
@@ -402,3 +407,7 @@ function hide_Attention(){
 #end
 #end
 </form>
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#AUIcontentsAreaFooter()
+#end
