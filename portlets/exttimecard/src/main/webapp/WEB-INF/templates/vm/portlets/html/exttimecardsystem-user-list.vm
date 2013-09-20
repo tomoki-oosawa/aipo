@@ -33,7 +33,7 @@
 #end
 #parse("/portlets/html/ja/ajax-exttimecardsystem-user-list.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end
 

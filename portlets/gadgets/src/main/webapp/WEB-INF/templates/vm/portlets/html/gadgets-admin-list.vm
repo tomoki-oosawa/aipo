@@ -34,8 +34,7 @@
 #end
 #parse("/portlets/html/ja/ajax-gadgets-admin-list.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
-
+#ALcontentfooter()
 #end
 

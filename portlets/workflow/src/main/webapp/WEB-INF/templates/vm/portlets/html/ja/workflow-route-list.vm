@@ -34,7 +34,7 @@
 #parse("/portlets/html/ja/ajax-workflow-route-list.vm")
 #parse("/portlets/html/ja/workflow-route-menu.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end
 
