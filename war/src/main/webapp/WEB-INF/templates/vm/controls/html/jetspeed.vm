@@ -221,7 +221,7 @@ function appsNaviSwitch() {
 <div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
 <div id="appsNavigation"><div id="anInner">
         <div class="anUser">
-                <div class="close"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="icon-remove"></i></a></div
+                <div class="close"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="icon-remove"></i></a></div>
                 <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="$l10n.USERLIST_PHOTO" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="$l10n.USERLIST_PHOTO" width="20" height="20"/>#end </div>
                 <div class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</div>
         </div>
