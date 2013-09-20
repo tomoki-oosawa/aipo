@@ -61,10 +61,14 @@ public class AccessControlAction extends ALBaseAction {
    * @param portlet
    * @param context
    * @param rundata
+   * @throws Exception
    */
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
-      Context context, RunData rundata) {
+      Context context, RunData rundata) throws Exception {
+    if (getMode() == null) {
+      doAccessctl_list(rundata, context);
+    }
   }
 
   /**

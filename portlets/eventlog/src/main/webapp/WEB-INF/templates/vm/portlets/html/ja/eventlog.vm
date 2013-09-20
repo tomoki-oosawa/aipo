@@ -27,4 +27,13 @@
 
 //]]>
 </script>
+#if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#AUIcontentsAreaHeader()
+#end
 #parse("/portlets/html/ja/ajax-eventlog.vm")
+
+#if(${client}=="IPHONE")
+#ALcontentfooter()
+#AUIcontentsAreaFooter()
+#end
