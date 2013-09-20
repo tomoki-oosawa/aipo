@@ -25,8 +25,13 @@
     <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
   </div>
   <div class="hdNavi">
+    <div class="tutorial_tooltip" id="tutorial_activity" style='display:none; background-color:white; position:absolute; Z-index:10000'>あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_activity');">X</a></div>
+	<div class="tutorial_tooltip" id="tutorial_support" style='display:none; background-color:white; position:absolute; Z-index:10000'>ヘルプや公式アカウントなどサポートに関するリンクを集めています。重要なお知らせもこちらで通知いたします。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_support');">X</a></div>
+  	<div class="tutorial_tooltip" id="tutorial_user" style='display:none; background-color:white; position:absolute; Z-index:10000'>ユーザー情報の設定と編集はこちらの「個人設定」から行えます。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_user');">X</a></div>
 #if ($data.User.getUserName()!="admin" && ${client} != "IPHONE")
-    <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero counter activitycheckerstyle"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div>
+    <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" >
+    <div id="activitychecker" class="zero counter activitycheckerstyle"></div>
+    <span class="mb_hide">$l10n.WIDGET_NOTICE</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div>
 #end
 		<!-- /hdActivity -->
 
