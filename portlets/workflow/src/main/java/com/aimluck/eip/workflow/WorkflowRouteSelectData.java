@@ -203,4 +203,8 @@ public class WorkflowRouteSelectData extends
     return routeSum;
   }
 
+  public String getStringCR(String str) {
+    return ALCommonUtils.replaceToAutoCR(str);
+  }
+
 }
