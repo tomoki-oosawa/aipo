@@ -35,8 +35,8 @@
 #end
 #parse("/portlets/html/ja/ajax-exttimecardsystem-list.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end
 
 

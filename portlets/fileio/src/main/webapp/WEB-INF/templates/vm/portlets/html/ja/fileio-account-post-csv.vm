@@ -371,6 +371,6 @@ function hide_Attention(){
 #end
 </form>
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end

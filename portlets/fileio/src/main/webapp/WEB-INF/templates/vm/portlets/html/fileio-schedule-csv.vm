@@ -424,6 +424,6 @@ $!record.EndDate.toString($l10n.FILEIO_PERIOD)
 #end
 </form>
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end

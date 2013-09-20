@@ -34,6 +34,6 @@
 #parse("/portlets/html/ja/ajax-account-user.vm")
 ##parse("/portlets/html/ja/account-user-menu.vm")
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
 #end

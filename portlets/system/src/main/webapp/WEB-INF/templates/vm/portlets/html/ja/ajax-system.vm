@@ -79,6 +79,7 @@ ${alias}$l10n.SYSTEM_SITE_OUTSIDE
 #ALformfooter()
 
 #if(${client}=="IPHONE")
-#ALcontentfooter()
 #AUIcontentsAreaFooter()
+#ALcontentfooter()
+
 #end
