@@ -1,67 +1,192 @@
 dojo.provide('aipo.tutorial');
 
-aipo.tutorial.showDialog = function(url, portlet_id, callback) {
-	var dialog = dijit.byId("imageDialog");
+var url, portlet_id, callback;
+
+aipo.tutorial.showDialog=function(url_value, portlet_id_value, callback_value){
+
+  url = url_value;
+  portlet_id = portlet_id_value;
+  callback = callback_value;
+  if(state != 6){
+    aipo.tutorial.setTooltips();
+    aipo.tutorial.showFirst();
+  }else{
+    var dialog = dijit.byId("imageDialog");
     dojo.query(".roundBlockContent").addClass("mb_dialoghide");
     dojo.query("#imageDialog").addClass("mb_dialog");
 
     if(!dialog){
-    	dialog = new aipo.widget.TutorialDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
+      dialog = new aipo.widget.TutorialDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
     }else{
-    	dialog.setCallback(portlet_id, callback);
+      dialog.setCallback(portlet_id, callback);
     }
     if(dialog){
-    	dialog.setHref(url);
-    	dialog.show();
+      dialog.setHref(url);
+      dialog.show();
     }
+  }
+};
+
+
+aipo.tutorial.showFirst = function(){
+
+  var schedule = document.getElementById('tutorial_schedule');
+  if(typeof schedule != "undefined"){
+    schedule.style.display = "";
+  }
+
+  var timeline1 = document.getElementById('tutorial_timeline1');
+  if(typeof timeline1 != "undefined"){
+    timeline1.style.display = "";
+  }
+
+  var timeline2 = document.getElementById('tutorial_timeline2');
+  if(typeof timeline2 != "undefined"){
+    timeline2.style.display = "";
+  }
+}
+
+
+aipo.tutorial.setTooltips=function(){
+
+
+  selectObj = document.getElementsByTagName('table');
+  var match_schedule = "weeklyScrollPane_P"
+  matchObj= new RegExp(match_schedule);
+  var x=-100,y=-100, width = 0, height = 0;
+  for(i=0; i < selectObj.length; i++){
+    if(selectObj[i].id.match(matchObj)){
+      width = selectObj[i].offsetWidth;
+      height = selectObj[i].offsetHeight;
+      break;
+    }
+  }
+  var schedule = document.getElementById('tutorial_schedule');
+  if(typeof schedule != "undefined"){
+    schedule.style.left = (width / 2) + "px";
+    schedule.style.top = (height / 2) + "px";
+    schedule.parentNode.style.position = "relative";
+  }
+
+  selectObj = document.getElementsByTagName('iframe');
+  var match_timeline1 = "if_fileupload_P"
+  matchObj= new RegExp(match_timeline1);
+  x=-100;
+  y=-100;
+  width = 0;
+  for(i=0; i < selectObj.length; i++){
+    if(selectObj[i].id.match(matchObj)){
+      x = selectObj[i].offsetLeft;
+      width = selectObj[i].offsetWidth;
+      height = selectObj[i].offsetHeight;
+      y = selectObj[i].offsetTop;
+      break;
+    }
+  }
+  var timeline1 = document.getElementById('tutorial_timeline1');
+  if(typeof timeline1 != "undefined"){
+    timeline1.style.left = x + width + "px";
+    timeline1.style.top = y + (height / 2) +  "px";
+    timeline1.parentNode.style.position = "relative";
+  }
+
+  selectObj = document.getElementsByTagName('form');
+  var match_timeline2 = "likeForm_P"
+  matchObj= new RegExp(match_timeline2);
+  x=-100;
+  y=-100;
+  for(i=0; i < selectObj.length; i++){
+    if(selectObj[i].id.match(matchObj)){
+      x = selectObj[i].offsetLeft;
+      y = selectObj[i].offsetTop + 15;
+      height = selectObj[i].offsetHeight;
+      break;
+    }
+  }
+  var timeline2 = document.getElementById('tutorial_timeline2');
+  if(typeof timeline2 != "undefined"){
+    timeline2.style.left = x + "px";
+    timeline2.style.top = y + height + "px";
+    timeline2.parentNode.style.position = "relative";
+  }
+
+  height = document.getElementsByClassName('hdNavi')[0].offsetHeight;
+  var activity = document.getElementById('tutorial_activity');
+  if(typeof activity != "undefined"){
+    activity.style.top = height + "px";
+  }
+  var support = document.getElementById('tutorial_support');
+  if(typeof support != "undefined"){
+    support.style.top = height + "px";
+  }
+  var user = document.getElementById('tutorial_user');
+  if(typeof user != "undefined"){
+    user.style.top = height + "px";
+  }
+
+
+};
+
+var state = 0;
+aipo.tutorial.hideTip=function(id){
+  document.getElementById(id).style.display = "none";
+  if(id == "tutorial_schedule")
+    state++;
+  if(id == "tutorial_timeline1")
+    state++;
+  if(id == "tutorial_timeline2")
+    state++;
+  if(id == "tutorial_activity")
+    state++;
+  if(id == "tutorial_support")
+    state++;
+  if(id == "tutorial_user")
+    state++;
+
+  if(state == 3){
+    document.getElementById('tutorial_activity').style.display = "";
+  }
+  else if(state == 4){
+    document.getElementById('tutorial_support').style.display = "";
+  }
+  else if(state == 5){
+    document.getElementById('tutorial_user').style.display = "";
+  }
+  else if(state == 6){
+    var dialog = dijit.byId("imageDialog");
+      dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+      dojo.query("#imageDialog").addClass("mb_dialog");
+
+      if(!dialog){
+        dialog = new aipo.widget.TutorialDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
+      }else{
+        dialog.setCallback(portlet_id, callback);
+      }
+      if(dialog){
+        dialog.setHref(url);
+        dialog.show();
+      }
+  }
+
 };
 
 aipo.tutorial.hideDialog = function() {
-    var dialog = dijit.byId("imageDialog");
+  var dialog = dijit.byId("imageDialog");
 
-    if(dialog){
-    	dialog.hide();
-    }
+  if(dialog){
+    dialog.hide();
+  }
 };
 
 aipo.tutorial.onLoadImage=function(image){
-	var dialog=dojo.byId('imageDialog');
-	dialog.style.visibility="hidden";
-	dialog.style.width=1050+"px";
-	dialog.style.height=650+"px";
-	dijit.byId("imageDialog")._position();//再調整
-	dialog.style.visibility="visible";
+  var dialog=dojo.byId('imageDialog');
+  dialog.style.visibility="hidden";
+  dialog.style.width=1050+"px";
+  dialog.style.height=650+"px";
+  dijit.byId("imageDialog")._position();//再調整
+  dialog.style.visibility="visible";
 };
 
-aipo.tutorial.nextPage=function(){
-	var page = dojo.byId('page_tutorial');
-	var val = page.value - 0;
-	dojo.byId('popupImage' + val).style.display = "none";
-	if(val == 1){
-		dojo.byId('tutorial_prev').style.display = "";
-	}
-	val++;
-	dojo.byId('popupImage' + val).style.display = "";
-	if(val == 3){
-		dojo.byId('tutorial_next').style.display = "none";
-	}
-	page.value = val + "";
-};
-
-aipo.tutorial.prevPage=function(){
-	var page = dojo.byId('page_tutorial');
-	var val = page.value - 0;
-	dojo.byId('popupImage' + val).style.display = "none";
-	if(val == 3){
-		dojo.byId('tutorial_next').style.display = "";
-	}
-	val--;
-	dojo.byId('popupImage' + val).style.display = "";
-	if(val == 1){
-		dojo.byId('tutorial_prev').style.display = "none";
-	}
-	page.value = val + "";
-};
 
 dojo.provide("aipo.widget.TutorialDialog");
 dojo.provide("aipo.widget.TutorialDialogUnderlay");
