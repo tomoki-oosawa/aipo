@@ -28,7 +28,6 @@ aipo.common.showDialog = function(url, portlet_id, callback) {
     }else{
        arrDialog.setCallback(portlet_id, callback);
     }
-//    dojo.query("#modalDialog").addClass("supportDialog");
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
@@ -68,6 +67,54 @@ aipo.common.customizeDialog=function(){
 	}
 }
 
-aipo.common.enlargeDialog =function() {
-	dojo.query("#modalDialog").addClass("supportDialog");
+aipo.common.showsupportDialog = function(url, portlet_id, callback) {
+    var arrDialog = dijit.byId("supportDialog");
+    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+    dojo.query("#supportDialog").addClass("mb_dialog");
+    if(! arrDialog){
+       arrDialog = new aimluck.widget.Dialog({widgetId:'supportDialog', _portlet_id: portlet_id, _callback:callback}, "supportDialog");
+    }else{
+       arrDialog.setCallback(portlet_id, callback);
+    }
+    if(arrDialog){
+      arrDialog.setHref(url);
+      arrDialog.show();
+    }
 };
+
+aipo.common.hidesupportDialog = function() {
+    var arrDialog = dijit.byId("supportDialog");
+    if(arrDialog){
+      arrDialog.hide();
+    }
+};
+aipo.common.showsupportDialogSub = function(url, portlet_id, callback) {
+    var arrDialogSub = dijit.byId('supportDialog');
+	 var userAgent = window.navigator.userAgent.toLowerCase();
+	 dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+    if(! arrDialogSub){
+       arrDialogSub = new aimluck.widget.DialogSub({widgetId:'supportDialog', _portlet_id: portlet_id, _callback:callback ,templateString:"<div id='supportDialog' class='modalDialog supportDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
+}, "supportDialog");
+    }else{
+       arrDialogSub.setCallback(portlet_id, callback);
+    }
+
+    if(arrDialogSub){
+      arrDialogSub.setHref(url);
+      arrDialogSub.show();
+    }
+};
+
+aipo.common.hidesupportDialogSub = function() {
+    dijit.byId('supportDialog').hide();
+};
+aipo.common.customizesupportDialog=function(){
+	if(dojo.byId("data-activecustomizeurl") != undefined && dojo.byId("data-activecustomizeurl") !=""){
+		var url=dojo.byId("data-activecustomizeurl").value;
+		aipo.common.showDialog(url);
+	}
+}
+
+//aipo.common.enlargeDialog =function() {
+//	dojo.query("#modalDialog").addClass("supportDialog");
+//};

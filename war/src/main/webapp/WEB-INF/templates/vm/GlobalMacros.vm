@@ -46,8 +46,16 @@
 <a class="button" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)');" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
 #end
 
+#macro(ALajaxsupportbuttonLink $title $url $image)
+<a class="button" href="javascript:void(0);" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)');" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
+#end
+
 #macro(ALajaxbuttonLinkCallback $title $url $image $portlet_id $callback)
 <a class="button" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
+#end
+
+#macro(ALajaxsupportbuttonLinkCallback $title $url $image $portlet_id $callback)
+<a class="button" href="javascript:void(0);" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
 #end
 
 #macro(ALpsmlLink $baseLink)
@@ -462,12 +470,24 @@
 <input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialog();" />
 #end
 
+#macro(ALajaxsupportbuttonClose)
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hidesupportDialog();" />
+#end
+
 #macro(ALajaxbuttonDialogSubClose)
-	<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialogSub();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialogSub();" />
+#end
+
+#macro(ALajaxsupportbuttonDialogSubClose)
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hidesupportDialogSub();" />
 #end
 
 #macro(ALajaxbuttonCancel)
 <input name="ajaxbuttonCancel" class="button" type="button" value="$l10n.COMMON_CANCEL" onclick="aipo.common.hideDialog();" />
+#end
+
+#macro(ALajaxsupportbuttonCancel)
+<input name="ajaxbuttonCancel" class="button" type="button" value="$l10n.COMMON_CANCEL" onclick="aipo.common.hidesupportDialog();" />
 #end
 
 #macro(ALrequired $title)
@@ -664,6 +684,10 @@ $item.get(0)
 #ALdialogCloseButton("dijit.byId('modalDialog').hide();")
 #end
 
+#macro(ALsupportdialogCloseButtonCommon)
+#ALdialogCloseButton("dijit.byId('supportDialog').hide();")
+#end
+
 #macro(ALdialogCloseButton $onclick)
 <a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="$onclick"><span><i class="icon-remove"></i></span></a>
 #end
@@ -677,8 +701,14 @@ $item.get(0)
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('modalDialog').hide();")
 #end
+#macro(ALsupportdialogheaderPrint $title $portlet_id $screen $view_date)
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('supportDialog').hide();")
+#end
 #macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('modalDialog').hide();")
+#end
+#macro(ALsupportdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('supportDialog').hide();")
 #end
 #macro(ALdialogheaderPrintMail $title $portlet_id $screen $view_date)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();")
@@ -718,6 +748,9 @@ $item.get(0)
 
 #macro(ALdialogheaderDetailSmartPhone $title)
 #ALdialogheaderDetailSmartPhoneAbstract($title "dijit.byId('modalDialog').hide();")
+#end
+#macro(ALsupportdialogheaderDetailSmartPhone $title)
+#ALdialogheaderDetailSmartPhoneAbstract($title "dijit.byId('supportDialog').hide();")
 #end
 #macro(ALdialogheaderDetailSmartPhoneMail $title)
 #ALdialogheaderDetailSmartPhoneAbstract($title "aipo.webmail.hideDialog();")
@@ -1447,15 +1480,32 @@ $link.get(0)
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)');" >$title</a>
 #end
 
+#macro(AUIajaxsupportbuttonLink $title $url)
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)');" >$title</a>
+#end
+
 #macro(AUIajaxbuttonLinkCallback $title $url $portlet_id $callback)
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
 #end
+
+#macro(AUIajaxsupportbuttonLinkCallback $title $url $portlet_id $callback)
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
+#end
+
 #macro(AUIajaxbuttonLinkCallbackBold $title $url $portlet_id $callback)
 <a class="auiButtonBold" title="$title" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
 #end
 
+#macro(AUIajaxsupportbuttonLinkCallbackBold $title $url $portlet_id $callback)
+<a class="auiButtonBold" title="$title" href="javascript:void(0);" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" >$title</a>
+#end
+
 #macro(AUIajaxbuttonLinkCallbackBoldInput $title $url $portlet_id $callback)
 <input type="button" value="$title" class="auiButtonBold" title="$title" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+#end
+
+#macro(AUIajaxsupportbuttonLinkCallbackBoldInput $title $url $portlet_id $callback)
+<input type="button" value="$title" class="auiButtonBold" title="$title" onclick="aipo.common.showsupportDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
 #macro(AUIactionMenu $items $currentItem)

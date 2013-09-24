@@ -54,6 +54,7 @@
 <body onload="aipo.container.renderGadgets()">
 <div id="modalDialog" class="modalDialog" style="display:none"></div>
 <div id="imageDialog" class="modalDialog imageDialog" style="display:none"></div>
+<div id="supportDialog" class="modalDialog supportDialog" style="diplay:none"></div>
 #if($!utils.isAndroid2Browser($data))
 <script type="text/javascript">
 function androidLocale(){
