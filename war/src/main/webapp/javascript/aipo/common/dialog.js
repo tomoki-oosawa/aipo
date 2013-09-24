@@ -28,6 +28,7 @@ aipo.common.showDialog = function(url, portlet_id, callback) {
     }else{
        arrDialog.setCallback(portlet_id, callback);
     }
+//    dojo.query("#modalDialog").addClass("supportDialog");
     if(arrDialog){
       arrDialog.setHref(url);
       arrDialog.show();
@@ -66,3 +67,7 @@ aipo.common.customizeDialog=function(){
 		aipo.common.showDialog(url);
 	}
 }
+
+aipo.common.enlargeDialog =function() {
+	dojo.query("#modalDialog").addClass("supportDialog");
+};
