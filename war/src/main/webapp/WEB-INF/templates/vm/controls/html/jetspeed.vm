@@ -138,7 +138,6 @@ function appsNaviSwitch() {
     var wrapper = document.getElementById('wrapper');
     var bk = document.getElementById('appsNavigationBack_v2');
     var mh = document.getElementById('mobileHeader_v2');
-    var ua = navigator.userAgent;
 
     if(navi.className!='anOpen'){
         navi.style.display = 'block';
@@ -148,7 +147,7 @@ function appsNaviSwitch() {
         bk.style.height = document.getElementById('anInner').clientHeight + 'px';
         mh.style.position = 'absolute';
         mh.style.top = '0';
-        if(ua.indexOf('Android') > 0) {
+        if (aipo.userAgent.isAndroid()){
             navi.className = 'anOpen';
             bk.className = 'anOpen';
 
@@ -191,7 +190,7 @@ function appsNaviSwitch() {
         mh.style.position = 'fixed';
         mh.style.top = '';
         navi.className = '';
-        if(ua.indexOf('Android') > 0) {
+        if (aipo.userAgent.isAndroid()){
             bk.className = '';
             bk.style.display = 'none';
 
@@ -218,11 +217,11 @@ function appsNaviSwitch() {
         }
     }
 }
-function setClassName ($obj,$class) {
-    document.getElementById($obj).className = $class;
+function setClassName (obj,string) {
+    document.getElementById(obj).className = string;
 }
-function setNaviDisp ($obj,$str){
-    document.getElementById($obj).style.display = $str;
+function setNaviDisp (obj,str){
+    document.getElementById(obj).style.display = str;
 }
 function setWrapperHeight() {
     document.getElementById("wrapper").style.height = "auto";
