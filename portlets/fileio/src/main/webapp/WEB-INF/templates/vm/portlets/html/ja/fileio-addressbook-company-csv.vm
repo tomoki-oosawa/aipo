@@ -411,3 +411,4 @@ function hide_Attention(){
 #AUIcontentsAreaFooter()
 #ALcontentfooter()
 #end
+#ALtabfooter()

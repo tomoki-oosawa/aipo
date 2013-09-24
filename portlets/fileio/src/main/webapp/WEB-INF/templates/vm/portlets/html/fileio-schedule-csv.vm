@@ -427,3 +427,4 @@ $!record.EndDate.toString($l10n.FILEIO_PERIOD)
 #AUIcontentsAreaFooter()
 #ALcontentfooter()
 #end
+#ALtabfooter()

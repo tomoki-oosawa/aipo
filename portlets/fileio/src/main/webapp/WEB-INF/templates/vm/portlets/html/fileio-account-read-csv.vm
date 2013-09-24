@@ -405,5 +405,6 @@ $!rec
 </form>
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
-#ALcontentfooter()#end
-
+#ALcontentfooter()
+#end
+#ALtabfooter()
