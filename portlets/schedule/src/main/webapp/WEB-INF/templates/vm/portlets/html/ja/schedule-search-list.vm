@@ -165,11 +165,7 @@
 
 #if($filter=="all")#set($filter="")#end
 #if($filtertemp && $filtertypetemp)#set($filter="$filtertemp")#set($filtertype="$filtertypetemp")#else#set($filtertype="group")#end
-#if($client != "IPHONE")
 #set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group').addQueryData('view_start',$record.DateDay).addQueryData('filter',$filter).addQueryData('filtertype',$filtertype)"])
-#else
-#set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar').addQueryData('view_start',$record.DateDay).addQueryData('filter',$filter).addQueryData('filtertype',$filtertype)"])
-#end
 #if($record.isDayStart())
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end class="day"><a  href="javascript:void(0);"onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">${record.getDateShort()}</a></td>
 #else
