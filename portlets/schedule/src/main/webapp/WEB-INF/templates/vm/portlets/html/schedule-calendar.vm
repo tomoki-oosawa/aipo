@@ -23,12 +23,14 @@
 <input type="hidden" id="top_form_$!portlet.ID" value="$!{top_form}" />
 <input type="hidden" id="view_type_$!portlet.ID" value="$!{dayList}" />
 
+#if($client == "IPHONE")
+<div class="relativeBlock auiSummaryMeta clearfix">
+#else
 <div class="auiSummaryMeta auiMultiSelector clearfix">
 <div class="floatRight mb_hide">
 <div class="auiSelectButton">
 #if(($!{schedulescreen}=="ScheduleScreen" && (!$!top_form || $!top_form!='simple')) || $!{schedulescreen}!="ScheduleScreen")
 
-#if (${client} != "IPHONE")
 <ul>
 #set($tab = ["$l10n.SCHEDULE_BLOCK", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
@@ -42,11 +44,12 @@
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 #end
-#end
 </div>
 </div>
 
 <div class="floatLeft">
+#end
+
 <div class="auiSelectButton">
 <ul>
 #if($!top_form && $!top_form=='simple'&&${client} == "IPAD")
@@ -68,16 +71,24 @@
 <li title="$l10n.SCHEDULE_NEXT_WEEK">
 <a href="javascript:void(0);" class="btn arrow" onclick='aipo.calendar.populateWeeklySchedule("$!portlet.ID", "&amp;view_start=" + ptConfig["$!portlet.ID"].jsonData["nextWeek"]);' title='$l10n.SCHEDULE_NEXT_WEEK'><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
-#if($!top_form && $!top_form=='simple')
+#if($!top_form && $!top_form=='simple' && "${client}" != "IPHONE")
 <li class="ml5" style="width: 3em;" title="$!{dayList}$l10n.SCHEDULE_DAY">
 <a id="indicateDate_$portlet.ID" href="javascript:void(0);" class="btn menubarOpenButton" onclick="aipo.customize.showMenuSchedule('$!{portlet.ID}');"><span>$!{dayList}$l10n.SCHEDULE_DAY</span></a>
 </li>
 #end
 </ul>
-<div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong></div>
+#if("${client}" != "IPHONE")
+	<div class="count"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong></div>
+#end
 </div>
+#if("${client}" == "IPHONE")
+	<div style="line-height:24px; text-align:right;"><strong id="viewWeekly-$!portlet.ID">&nbsp;</strong></div>
+#end
 </div>
+
+#if("${client}" != "IPHONE")
 </div>
+#end
 
 <div class="indicator" id="indicator-$!portlet.ID">$l10n.SCHEDULE_READING</div>
 <!-- WRAPPER -->
@@ -280,7 +291,7 @@
                     </table>
                     </div>
                     <div class="tableBorderM">&nbsp;</div>
-                    <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
+                    <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" #if("${client}" != "IPHONE") style="height:0px;" #end>
                       <table cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody>
                           <tr valign="top">
@@ -714,7 +725,7 @@
     </table>
 ##</div>
 #if($!ajax_onloadimage)
-  <img src="images/common/dot.gif" width="1" height="1" onload="initCalendar['$!{portlet.ID}'](true);" />
+  <img src="images/common/dot.gif" width="1" height="1" onload="#if($client == 'IPHONE') aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID'); #end initCalendar['$!{portlet.ID}'](true);" />
 #else
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
@@ -738,6 +749,9 @@ dojo.addOnLoad(function () {
 <div id="modalDialog2" class="modalDialog" style="display:none"></div>
 <input type="hidden" id="secid-$!portlet.ID" name="secid-$!portlet.ID" value="$secid" />
 <input style="display:none" type="checkbox" id="showAll-$!portlet.ID" value='$!init_s_all' #if($init_s_all == "t") checked="checked" #end />
+#if("${client}" =="IPHONE")
+</div>
+#end
 
 #if($!top_form && $!top_form=='simple')
 <div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
