@@ -209,10 +209,19 @@ function hide_Attention(){
 </td>
 </tr>
 
+#if(${client}!="IPHONE")
 <tr>
 <td class="caption">$l10n.FILEIO_SPECIFIED_CSV_FILE</td>
 <td nowrap="nowrap"><input type="file" style="ime-mode:disable" size="30" value="" name="attachment" class="" /></td>
 </tr>
+#else
+<tr>
+<td class="caption">$l10n.FILEIO_SPECIFIED_CSV_FILE</td>
+</tr>
+<tr>
+<td nowrap="nowrap"><input type="file" style="ime-mode:disable" value="" name="attachment" class="" /></td>
+</tr>
+#end
 
 <tr>
 <td colspan="2" class="center">
