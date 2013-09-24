@@ -582,6 +582,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   private List<PortletTab> getSystemMenus(List<PortletTab> tabs) {
 
     PortletTab[] systemMenues = new PortletTab[11];
+    ArrayList<PortletTab> arrayList = new ArrayList<PortletTab>();
 
     for (PortletTab tab : tabs) {
       if (tab.getName().toString().contains("SysInfo")) {
@@ -612,7 +613,14 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     }
 
-    return Arrays.asList(systemMenues);
+    // ワークフローがない場合
+    for (PortletTab menues : systemMenues) {
+      if (menues != null) {
+        arrayList.add(menues);
+      }
+    }
+
+    return arrayList;
   }
 
   /**
