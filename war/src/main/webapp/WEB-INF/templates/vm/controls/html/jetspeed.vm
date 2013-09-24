@@ -37,7 +37,7 @@
 #if( ! $portlet.isClosed($data) )
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
-<!-- appsNavigation -->
+<!-- appsNavigation_v2 -->
 <script language="javascript">
 // ウィジェットメニュー用
 aipo.onloadSmartPhone = function(){
@@ -134,92 +134,102 @@ function widgetMenuSwitch() {
 // ナビゲーションメニュー用
 var navEventList=[];
 function appsNaviSwitch() {
-	var navi = document.getElementById('appsNavigation');
-	var lists = navi.getElementsByTagName("ul");
-	var bk = document.getElementById('appsNavigationBack');
-	var wrapper = document.getElementById('wrapper');
-	var nLeft = '-260px';
+    var navi = document.getElementById('appsNavigation_v2');
+    var wrapper = document.getElementById('wrapper');
+    var bk = document.getElementById('appsNavigationBack_v2');
+    var mh = document.getElementById('mobileHeader_v2');
+    var ua = navigator.userAgent;
 
-	var naviStyle = navi.currentStyle || document.defaultView.getComputedStyle(navi, null);
-	if(naviStyle.left==nLeft){
-		//show
-		for (var i=0; i<lists.length; i++){
-			lists[i].style.display = "block";
-		}
-		navi.style.left = '0px';
-		navi.style.boxShadow = '0 5px 5px rgba(0,0,0,0.5)';
-		navi.style.borderRight = 'solid 1px #909090';
-		bk.style.display = 'block';
-		wrapper.style.overflow = 'hidden';
-		wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
-		 if (aipo.userAgent.isAndroid()){
-		 	var content=dojo.query(".roundBlockContent")[0];
-		 	if(content){
-		 		content.style.display="none";
-		 	}
+    if(navi.className!='anOpen'){
+        navi.style.display = 'block';
+        wrapper.style.overflow = 'hidden';
+        wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
+        bk.style.display = 'block';
+        bk.style.height = document.getElementById('anInner').clientHeight + 'px';
+        mh.style.position = 'absolute';
+        mh.style.top = '0';
+        if(ua.indexOf('Android') > 0) {
+            navi.className = 'anOpen';
+            bk.className = 'anOpen';
 
-			//クリック無効化
-    		var f=function(e){
-            	e.preventDefault();
-            	//e.stopImmediatePropagation();
-            	return false;
+             var content=dojo.query(".roundBlockContent")[0];
+             if(content){
+                 content.style.display="none";
+             }
+
+            //クリック無効化
+             var f=function(e){
+                e.preventDefault();
+                //e.stopImmediatePropagation();
+                return false;
             };
 
-            var naviNodes=dojo.query("input,select,button,a",dojo.byId("appsNavigation"));
+            var naviNodes=dojo.query("input,select,button,a",dojo.byId("appsNavigation_v2"));
 
-			//ナビゲーション外のクリックイベントを無効化
+            //ナビゲーション外のクリックイベントを無効化
             dojo.query("input,select,button,a").forEach(function(node){
-    			if(!aipo.arrayContains(naviNodes,node))
-					navEventList.push(dojo.connect(node,'click',f));
-    		});
+                if(!aipo.arrayContains(naviNodes,node))
+                    if(node.addEventListener)navEventList.push(node.addEventListener('click',f,true));
+                    else navEventList.push(dojo.connect(node,'click',f));
+            });
 
-			//ナビゲーション外のフォームオブジェクトの無効化
-    		dojo.query("input,select,button").forEach(function(node,index){
-        		if(!aipo.arrayContains(naviNodes,node) && !node.disabled){
-        			dojo.addClass(node,"disabled-by-navi");
-        			node.disabled=true;
-        		}
-        	});
+            //ナビゲーション外のフォームオブジェクトの無効化
+            dojo.query("input,select,button").forEach(function(node,index){
+                if(!aipo.arrayContains(naviNodes,node) && !node.disabled){
+                    dojo.addClass(node,"disabled-by-navi");
+                    node.disabled=true;
+                }
+            });
 
-		 }
+        } else {
+            setTimeout('setClassName("appsNavigation_v2","anOpen")',100);
+            setTimeout('setClassName("appsNavigationBack_v2","anOpen")',1);
+        }
+    }else{
+        wrapper.style.overflow = 'visible';
+        setTimeout('setWrapperHeight()',300);
+        mh.style.position = 'fixed';
+        mh.style.top = '';
+        navi.className = '';
+        if(ua.indexOf('Android') > 0) {
+            bk.className = '';
+            bk.style.display = 'none';
 
+             var content=dojo.query(".roundBlockContent")[0];
+             if(content){
+                 content.style.display="";
+             }
 
-	}else{
-		//hide
-		navi.style.left = nLeft;
-		navi.style.boxShadow = 'none';
-		navi.style.borderRight = 'none';
-		bk.style.display = 'none';
-		wrapper.style.overflow = 'visible';
-		wrapper.style.height = 'auto';
-		for (var i=0; i<lists.length; i++){
-			lists[i].style.display = "none";
-		}
+            //無効化していたクリックイベントの有効化
+             for(var i=0;i<navEventList.length;i++){
+                dojo.disconnect(navEventList[i]);
+            }
+            navEventList=[];
 
-		 if (aipo.userAgent.isAndroid()){
-		 	var content=dojo.query(".roundBlockContent")[0];
-		 	if(content){
-		 		content.style.display="";
-		 	}
+            //無効化していたフォームオブジェクトの有効化
+            dojo.query("input.disabled-by-navi,select.disabled-by-navi,button.disabled-by-navi").forEach(function(node,index){
+                dojo.removeClass(node,"disabled-by-navi");
+                node.disabled=false;
+            });
 
-
-			//無効化していたクリックイベントの有効化
-	 		for(var i=0;i<navEventList.length;i++){
-        		dojo.disconnect(navEventList[i]);
-        	}
-        	navEventList=[];
-
-			//無効化していたフォームオブジェクトの有効化
-        	dojo.query("input.disabled-by-navi,select.disabled-by-navi,button.disabled-by-navi").forEach(function(node,index){
-        		dojo.removeClass(node,"disabled-by-navi");
-        		node.disabled=false;
-        	});
-		 }
-	}
+        } else {
+            setTimeout('setClassName("appsNavigationBack_v2","")',100);
+            setTimeout('setNaviDisp("appsNavigationBack_v2","none")',300);
+        }
+    }
+}
+function setClassName ($obj,$class) {
+    document.getElementById($obj).className = $class;
+}
+function setNaviDisp ($obj,$str){
+    document.getElementById($obj).style.display = $str;
+}
+function setWrapperHeight() {
+    document.getElementById("wrapper").style.height = "auto";
 }
 </script>
-<div id="appsNavigationBack"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
-<div id="appsNavigation"><div id="anInner">
+<div id="appsNavigationBack_v2"><a class="backLayer" href="javascript:void(0)" onClick="appsNaviSwitch()"><!--test--></a></div>
+<div id="appsNavigation_v2"><div id="anInner">
         <div class="anUser">
                 <div class="close"><a href="javascript:void(0)" onClick="appsNaviSwitch()"><i class="icon-remove"></i></a></div>
                 <div class="avatar">#if ($data.User.hasPhoto())<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" alt="$l10n.USERLIST_PHOTO" width="20" height="20" />#else<img src="images/common/avatar_default3.png" alt="$l10n.USERLIST_PHOTO" width="20" height="20"/>#end </div>

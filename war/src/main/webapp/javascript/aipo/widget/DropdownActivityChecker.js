@@ -71,7 +71,7 @@ dojo.declare("aipo.widget.DropdownActivityChecker", [aimluck.widget.Dropdown], {
 
             //ダイアログ表示時に機能しなくなるので、
             //ヘッダとフッタ以下もpreventDefaultしない。
-            var navigationElems=dojo.byId("appsNavigation");
+            var navigationElems=dojo.byId("appsNavigation_v2");
             var navigationNodes=dojo.query("input,select,button,a",navigationElems);
             var auiWidgetsElems=dojo.byId("auiWidgetsArea");
             var auiWidgetsNodes=dojo.query("input,select,button,a",auiWidgetsElems);
