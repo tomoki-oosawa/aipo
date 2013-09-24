@@ -258,6 +258,12 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         }
         if (rd.getRefixFlag().getValue() == "1") {
           remark = rd.getReason().getValue();
+          if (rd.getRemarksFlg()) {
+            remark += "、";
+          }
+        }
+        if (rd.getRemarksFlg()) {
+          remark += rd.getRemarks().getValue();
         }
         late_coming_day = tclistrd.isLateComing() ? "1" : "0";
         early_leaving_day = tclistrd.isEarlyLeaving() ? "1" : "0";
