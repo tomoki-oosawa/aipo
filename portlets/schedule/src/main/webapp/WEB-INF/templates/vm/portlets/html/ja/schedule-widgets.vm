@@ -106,8 +106,8 @@
    	</div>
 	<div class="auiWidget clearfix" style="display:none;">
 	    <ul>
-		    <li #if ("$!result.Viewtype" == "calendar") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')','$!portlet.ID')">$l10n.SCHEDULE_BLOCK</a></li>
-	    	<li #if ("$!result.Viewtype" == "list") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list')','$!portlet.ID')">$l10n.SCHEDULE_LIST</a></li>
+	    	<li #if ("$!result.Viewtype" == "calendar") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar'))','$!portlet.ID')">$l10n.SCHEDULE_BLOCK</a></li>
+	    	<li #if ("$!result.Viewtype" == "list") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list'))','$!portlet.ID')">$l10n.SCHEDULE_LIST</a></li>
 	    </ul>
 	</div>
 
