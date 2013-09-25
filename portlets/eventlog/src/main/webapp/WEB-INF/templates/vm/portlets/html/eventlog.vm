@@ -22,18 +22,14 @@
 #ALjavascript("javascript/aipo/eventlog/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-
     ptConfig['$!portlet.ID'] = { group:"eventlog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogScreen"))', reloadFunction:aipo.reloadPage };
-
 //]]>
 </script>
-#if(${client}=="IPHONE")
-#ALcontentheader($!portlet.Title '')
-#AUIcontentsAreaHeader()
-#end
-#parse("/portlets/html/ja/ajax-eventlog.vm")
 
 #if(${client}=="IPHONE")
-#AUIcontentsAreaFooter()
+#ALcontentheader($!portlet.Title '')
+#end
+#parse("/portlets/html/ja/ajax-eventlog.vm")
+#if(${client}=="IPHONE")
 #ALcontentfooter()
 #end
