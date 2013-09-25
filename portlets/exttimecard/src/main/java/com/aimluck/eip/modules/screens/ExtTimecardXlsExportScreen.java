@@ -258,7 +258,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         }
         if (rd.getRefixFlag().getValue() == "1") {
           remark = rd.getReason().getValue();
-          if (rd.getRemarksFlg()) {
+          if (rd.getReasonFlg() && rd.getRemarksFlg()) {
             remark += "、";
           }
         }
