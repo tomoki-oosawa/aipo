@@ -73,7 +73,7 @@
 </div>
 #AUIajaxpageview('EventlogScreen' $result)
 #AUISummaryDivfooter()
-<table class="auiRowTable wide">
+<table class="auiRowTable auiMbTable wide">
 <colgroup style="width:20px;">
 </colgroup><colgroup style="">
 </colgroup><colgroup style="width:10em;">
@@ -93,14 +93,26 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
+#if($!{client}=="IPHONE")
+
+#ALtdcellheaderAtt('class="auiMTCaption"')
+<div><input name='check$!record.EventlogId' type='checkbox' value='$!record.EventlogId'/>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogDetailScreen").addQueryData("entityid",$record.EventlogId))');" style="display:inline;">$!record.EventDate</a>
+#ALtdcellfooter()
+#ALtdcell("<div>$!record.UserFullName</div>")
+#ALtdcell("<div>$!record.PortletName</div>")
+#ALtdcell("<div>$!record.EventName</div>")
+#ALtdcell("<div>$!record.IpAddr</div>")
+#else
 #ALtdcellAtt("<input name='check$!record.EventlogId' type='checkbox' value='$!record.EventlogId'/>" 'class="center"')
 #ALtditemheaderAtt("nowrap='nowrap'")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogDetailScreen").addQueryData("entityid",$record.EventlogId))');">$!record.EventDate</a>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.UserFullName</div>"'')
-#ALtdcellAtt("<div>$!record.PortletName</div>" 'class="mb_hide"')
-#ALtdcellAtt("<div>$!record.EventName</div>" 'class="mb_hide"')
-#ALtdcellAtt("<div>$!record.IpAddr</div>" 'class="mb_hide"')
+#ALtdcell("<div>$!record.UserFullName</div>")
+#ALtdcell("<div>$!record.PortletName</div>")
+#ALtdcell("<div>$!record.EventName</div>")
+#ALtdcell("<div>$!record.IpAddr</div>")
+#end
 </tr>
 #end
 </tbody>
