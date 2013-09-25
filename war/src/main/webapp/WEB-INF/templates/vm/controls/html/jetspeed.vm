@@ -214,6 +214,7 @@ function appsNaviSwitch() {
         } else {
             setTimeout('setClassName("appsNavigationBack_v2","")',100);
             setTimeout('setNaviDisp("appsNavigationBack_v2","none")',300);
+			setTimeout('setNaviDisp("appsNavigation_v2","none")',300);
         }
     }
 }
