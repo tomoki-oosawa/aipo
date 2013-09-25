@@ -1566,13 +1566,14 @@ $item.get(0)
 #macro(AUIcontentsAreaHeader)
 <div id="auiContentsArea" #if($clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 #end
-
+#macro(AUIcontentsAreaFooter)
+</div></div>
+#end
 
 #macro(AUIwideAreaHeader)
 <div id="auiWideArea"><div id="auiWideAreaInner">
 #end
-
-#macro(AUIcontentsAreaFooter)
+#macro(AUIwideAreaFooter)
 </div></div>
 #end
 
