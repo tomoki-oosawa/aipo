@@ -70,7 +70,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
-<table class="auiRowTable wide">
+<table class="auiRowTable auiMbTable wide">
 <colgroup style="width:20px;"></colgroup>
 <colgroup style="width:3em;"></colgroup>
 <colgroup style=""></colgroup>
@@ -89,6 +89,30 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 #foreach ($record in $result.List)
 #set($disabled_flg = $!record.Disabled)
 <tr>
+#if($!{client}=="IPHONE")
+#ALtdcellheaderAtt('class="auiMTCaption"')
+<div><input name='check$!record.UserName' type='checkbox' value='$!record.UserName'/>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.UserName))');" style="display:inline;">$!record.Name</a>
+
+#if("$disabled_flg" == "N")
+#ALtdcellAtt($l10n.ACCOUNT_INVALID 'class="center" nowrap="nowrap"')
+#elseif("$disabled_flg" == "F")
+#ALtdcellAtt($l10n.ACCOUNT_VALID 'class="center" nowrap="nowrap"')
+#end
+#ALtdcell("<div>$!record.UserName</div>")
+#ALtdcellheader()
+#set($pcount = 0)
+<div>
+#foreach($postname in $!record.getPostNameList())
+#if($pcount != 0)、&nbsp;#end
+$!postname
+#set($pcount = $pcount + 1)
+#end
+</div>
+#ALtdcellfooter()
+#ALtdcell("<div>$!record.PositionName</div>")
+
+#else
 #ALtdcellAtt("<input name='check$!record.UserName' type='checkbox' value='$!record.UserName'/>" 'class="center"')
 #if("$disabled_flg" == "N")
 #ALtdcellAtt($l10n.ACCOUNT_INVALID 'class="center" nowrap="nowrap"')
@@ -101,7 +125,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.UserName))');">$!record.Name</a>
 </div>
 #ALtdcellfooter()
-#ALtdcellheaderAtt('class="mb_hide"')
+#ALtdcellheader()
 #set($pcount = 0)
 <div>
 #foreach($postname in $!record.getPostNameList())
@@ -111,7 +135,8 @@ $!postname
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.PositionName</div>" 'class="mb_hide"')
+#ALtdcell("<div>$!record.PositionName</div>")
+#end
 </tr>
 #end
 </table>
