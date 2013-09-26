@@ -42,6 +42,7 @@ import org.apache.cayenne.query.Ordering;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -1536,22 +1537,14 @@ public class ScheduleUtils {
       // monthly: 月間表示
       if (rundata.getParameters().containsKey("tab")) {
         String tab = rundata.getParameters().getString("tab");
-
-        if (!"search".equals(tab)) {
-          ALEipUtils.setPsmlParameters(
-            rundata,
-            context,
-            "pba-template",
-            ScheduleUtils.getLayoutFromTabName(tab));
-        }
-
         ALEipUtils.setTemp(rundata, context, "tab", tab);
       }
     }
     String currentTab;
     String tmpCurrentTab = ALEipUtils.getTemp(rundata, context, "tab");
     if (!ScheduleUtils.validateTabName(tmpCurrentTab)) {
-      currentTab = "calendar";
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      currentTab = portlet.getPortletConfig().getInitParameter("pba-template");
     } else {
       currentTab = tmpCurrentTab;
     }

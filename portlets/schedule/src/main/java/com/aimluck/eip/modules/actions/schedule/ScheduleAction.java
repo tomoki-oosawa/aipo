@@ -163,7 +163,10 @@ public class ScheduleAction extends ALBaseAction {
       if ("simple".equals(top_form)) {
         _template = "schedule-calendar";
       } else {
-        _template = portlet.getPortletConfig().getInitParameter("pba-template");
+        _template = ScheduleUtils.getCurrentTab(rundata, context);
+        if (!_template.startsWith("schedule-")) {
+          _template = "schedule-" + _template;
+        }
       }
 
       // 現在のユーザー名を取得する
@@ -312,8 +315,9 @@ public class ScheduleAction extends ALBaseAction {
       }
 
       ALEipUtils.setPsmlParameters(rundata, context, "pba-template", template);
-      ALEipUtils.setTemp(rundata, context, "tab", tab);
-
+      if (!"simple".equals(top_form)) {
+        ALEipUtils.setTemp(rundata, context, "tab", tab);
+      }
       listData.initField();
 
       // 最低限表示するのに必要な権限のチェック
@@ -597,9 +601,12 @@ public class ScheduleAction extends ALBaseAction {
       String currentTab;
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
 
-      currentTab = ScheduleUtils.getCurrentTab(rundata, context);
+      currentTab =
+        ScheduleUtils.getCurrentTab(rundata, context).replaceFirst(
+          "schedule-",
+          "");
 
-      if ("search".equals(currentTab)) {
+      if ("search".equals(currentTab) || "search-list".equals(currentTab)) {
         currentTab =
           ScheduleUtils.getTabNameFromLayout(portlet
             .getPortletConfig()

@@ -6,10 +6,28 @@ body {
   height: 100%;
 }
 
+/***************************************************
+	HTML
+--------------------------------------------------*/
+input[type=radio],
+input[type=checkbox] {
+    top:-0.3em;
+}
+
+/***************************************************
+	appsNavigation_v2
+--------------------------------------------------*/
 #appsNavigation_v2,
 #appsNavigationBack_v2 {
   -webkit-transition: none;
   -moz-transition: none;
   -o-transition: none;
   transition: none;
+}
+
+/***************************************************
+	auiIcon
+--------------------------------------------------*/
+[class^="auiButton"] [class^="auiIcon "] {
+  margin-top: -1px;
 }

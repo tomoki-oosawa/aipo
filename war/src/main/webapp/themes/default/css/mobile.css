@@ -52,6 +52,12 @@ select[multiple] {
   height:auto;
 }
 
+input[type=radio],
+input[type=checkbox] {
+  position: relative;
+  top: -0.1em;
+}
+
 /***************************************************
 	auiButton
 --------------------------------------------------*/
@@ -1783,6 +1789,10 @@ div.weeklyTermRights div.weeklyTermRightR {
   background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+}
+
+[class^="auiButton"] [class^="auiIcon "] {
+  vertical-align: text-top;
 }
 
 /***************************************************
