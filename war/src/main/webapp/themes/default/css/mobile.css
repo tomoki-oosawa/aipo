@@ -1199,9 +1199,9 @@ input[type=password] {
 	top:0 !important;
 	left:0 !important;
 }
-.modalDialog.mb_dialog{
-	/*position: relative;
-	margin:0;*/
+.modalDialog input[type=checkbox],
+.modalDialog input[type=radio] {
+  vertical-align: 0;
 }
 
 .modalDialogUnderlayWrapper{
