@@ -52,12 +52,6 @@ select[multiple] {
   height:auto;
 }
 
-input[type=radio],
-input[type=checkbox] {
-  position: relative;
-  top: -0.1em;
-}
-
 /***************************************************
 	auiButton
 --------------------------------------------------*/
