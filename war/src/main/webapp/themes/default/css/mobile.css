@@ -1785,6 +1785,10 @@ div.weeklyTermRights div.weeklyTermRightR {
   background-size: 16px auto;
 }
 
+[class^="auiButton"] [class^="auiIcon "] {
+  vertical-align: text-top;
+}
+
 /***************************************************
 	auiIcon
 --------------------------------------------------*/

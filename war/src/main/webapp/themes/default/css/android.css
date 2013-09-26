@@ -13,3 +13,10 @@ body {
   -o-transition: none;
   transition: none;
 }
+
+/***************************************************
+	auiIcon
+--------------------------------------------------*/
+[class^="auiButton"] [class^="auiIcon "] {
+  margin-top: -1px;
+}
