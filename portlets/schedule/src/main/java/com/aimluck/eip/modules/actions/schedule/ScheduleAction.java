@@ -606,7 +606,7 @@ public class ScheduleAction extends ALBaseAction {
           "schedule-",
           "");
 
-      if ("search".equals(currentTab)) {
+      if ("search".equals(currentTab) || "search-list".equals(currentTab)) {
         currentTab =
           ScheduleUtils.getTabNameFromLayout(portlet
             .getPortletConfig()
