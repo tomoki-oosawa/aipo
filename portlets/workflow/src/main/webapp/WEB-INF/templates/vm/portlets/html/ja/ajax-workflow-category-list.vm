@@ -54,30 +54,6 @@
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()
-
-#if($!{client}=="IPHONE")
-#AUIrowMTableWide()
-<tr>
-#ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('category_name' $l10n.WORKFLOW_CLASSIFICATION_NAME $result 'WorkflowCategoryListScreen')")
-#ALtdhead("#ALajaxsort('route_name' $l10n.WORKFLOW_APPLICATION_ROUTE_NAME $result 'WorkflowCategoryListScreen')")
-</tr>
-#foreach ($record in $result.List)
-<tr>
-#ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId' />
-<a href='javascript:void(0);' onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');" style="display:inline;">
-$!record.CategoryName
-</a>
-</div>
-#ALtdcellAtt("#if($!record.HasRouteName)$!record.RouteName#end" 'align="center" nowrap="nowrap"')
-#ALtdcellfooter()
-#end
-</tbody>
-</table>
-
-#else
-
 <table class="auiRowTable wide">
 <colgroup style="width:20px;">
 </colgroup><colgroup style="">
@@ -111,9 +87,6 @@ $!record.RouteName
 #end
 </tbody>
 </table>
-
-#end
-
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete($l10n.WORKFLOW_DO_REMOVE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
