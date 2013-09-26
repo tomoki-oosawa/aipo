@@ -601,7 +601,10 @@ public class ScheduleAction extends ALBaseAction {
       String currentTab;
       ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
 
-      currentTab = ScheduleUtils.getCurrentTab(rundata, context);
+      currentTab =
+        ScheduleUtils.getCurrentTab(rundata, context).replaceFirst(
+          "schedule-",
+          "");
 
       if ("search".equals(currentTab)) {
         currentTab =
