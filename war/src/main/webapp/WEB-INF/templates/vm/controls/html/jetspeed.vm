@@ -186,13 +186,14 @@ function appsNaviSwitch() {
         }
     }else{
         wrapper.style.overflow = 'visible';
-        setTimeout('setWrapperHeight()',300);
         mh.style.position = 'fixed';
         mh.style.top = '';
         navi.className = '';
         if (aipo.userAgent.isAndroid()){
             bk.className = '';
             bk.style.display = 'none';
+            wrapper.style.height = 'auto';
+            navi.style.display = 'none';
 
              var content=dojo.query(".roundBlockContent")[0];
              if(content){
@@ -214,7 +215,8 @@ function appsNaviSwitch() {
         } else {
             setTimeout('setClassName("appsNavigationBack_v2","")',100);
             setTimeout('setNaviDisp("appsNavigationBack_v2","none")',300);
-			setTimeout('setNaviDisp("appsNavigation_v2","none")',300);
+            setTimeout('setNaviDisp("appsNavigation_v2","none")',300);
+            setTimeout('setWrapperHeight()',300);
         }
     }
 }
