@@ -702,8 +702,6 @@ $item.get(0)
 	    		<div class="auiPopupTitle">$title</div>
 		</div>
 		<div class="roundBlockContent">
-
-		</div>
 #end
 
 #macro(ALdialogheaderCloseJS $title $js)
