@@ -334,12 +334,12 @@ public class MsgboardTopicSelectData extends
     super.buildSelectQueryForFilter(query, rundata, context);
 
     if (current_filterMap.containsKey("category")) {
-        // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
-        List<String> categoryIds = current_filterMap.get("category");
-        categoryId = categoryIds.get(0).toString();
-        updateCategoryName();
-      }
-    
+      // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
+      List<String> categoryIds = current_filterMap.get("category");
+      categoryId = categoryIds.get(0).toString();
+      updateCategoryName();
+    }
+
     if (current_filterMap.containsKey("post")) {
       // 部署を含んでいる場合デフォルトとは別にフィルタを用意
 
@@ -819,22 +819,28 @@ public class MsgboardTopicSelectData extends
 
     String pairParam =
       portlet.getPortletConfig().getInitParameter("p12f-filters");
-    String[] param = pairParam.split(",");
-    if (filterType.isEmpty()) {
-      // カテゴリを初期設定値に
-      // 初期選択カテゴリ
-      this.categoryId =
-        portlet.getPortletConfig().getInitParameter("p3a-category");
-      updateCategoryName();
-      String reparam = param[0] + "," + categoryId;
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, reparam);
+    if (pairParam != null) {
+      String[] param = pairParam.split(",");
+      if (filterType.isEmpty()) {
+        // カテゴリを初期設定値に
+        // 初期選択カテゴリ
+        this.categoryId =
+          portlet.getPortletConfig().getInitParameter("p3a-category");
+        updateCategoryName();
+        String reparam = param[0] + "," + categoryId;
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, reparam);
+      } else {
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+          .getPortletConfig()
+          .getInitParameter("p12f-filters"));
+
+        categoryId = param[1];
+        updateCategoryName();
+      }
     } else {
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
         .getPortletConfig()
         .getInitParameter("p12f-filters"));
-
-      categoryId = param[1];
-      updateCategoryName();
     }
 
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
