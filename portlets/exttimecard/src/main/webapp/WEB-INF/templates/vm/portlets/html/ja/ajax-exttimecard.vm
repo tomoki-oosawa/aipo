@@ -20,6 +20,9 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #ALajaxIndicator("$!indicator_id" "$!{portlet.ID}" "")
 <div id="exttimecardmessageDiv"></div>
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
@@ -105,3 +108,6 @@ $l10n.EXTTIMECARD_OUTGOING<br />$!{result.Detail.OutgoingTime.Time}
 </tr>
 #ALtablefooter()
 #ALformfooter()
+#if(${client}=="IPHONE")
+#AUIcontentsAreaFooter()
+#end

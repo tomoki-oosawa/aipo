@@ -21,6 +21,9 @@
 
 #set ($addSystem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #AUIwideAreaHeader()
 #AUISummaryDiv()
 <div class="floatRight">
@@ -80,4 +83,7 @@ $l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 #AUISummaryDivfooter()
 #ALformfooter()
 #end
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#end

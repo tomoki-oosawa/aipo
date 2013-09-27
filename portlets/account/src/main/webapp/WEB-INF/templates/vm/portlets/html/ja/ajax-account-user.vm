@@ -31,6 +31,9 @@
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #AUIwideAreaHeader()
 
 #AUISummaryDiv()
@@ -150,4 +153,7 @@ $!postname
 #AUISummaryDivfooter()
 </form>
 #end
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#end

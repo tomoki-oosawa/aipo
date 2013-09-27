@@ -19,6 +19,9 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #AUIwideAreaHeader()
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
@@ -103,4 +106,7 @@ $l10n.EXTTIMECARD_CHANGE_SYSTEMNAME
 #AUISummaryDivfooter()
 #ALformfooter()
 #end
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#end

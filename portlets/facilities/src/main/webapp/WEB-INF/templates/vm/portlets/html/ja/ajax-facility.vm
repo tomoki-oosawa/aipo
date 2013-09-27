@@ -22,6 +22,9 @@
 #set ($addFacility = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityFormScreen").addQueryData("entityid","new")))
 #set ($orderFacility = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityChangeTurnFormScreen"))
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #AUIwideAreaHeader()
 #AUISummaryDiv()
 #if($result.getAllFacilitySum() != 0)
@@ -108,4 +111,7 @@ $result.getStringCR($!group.GroupName)
 #AUISummaryDivfooter()
 #end
 #ALformfooter()
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#end

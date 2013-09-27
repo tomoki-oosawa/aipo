@@ -21,6 +21,9 @@
 
 #set ($addFacilityGroup = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #AUIwideAreaHeader()
 #AUISummaryDiv()
 #if($result.List.size() != 0)
@@ -91,4 +94,7 @@ $result.getStringCR($!group.FacilityName)
 #AUISummaryDivfooter()
 #ALformfooter()
 #end
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#end
