@@ -145,7 +145,7 @@ function hide_Attention(){
 <form enctype="multipart/form-data" method="post" action="" name="readcsv">
 <input type="hidden" value="$secid" name="secid" />
 #if($temp_folder)
-<input type="hidden" value="$!{temp_folder}" name="temp_folder" />
+<input type="hidden" value="$temp_folder" name="temp_folder" />
 #end
 
 <table class="listTable wide">
@@ -171,7 +171,7 @@ function hide_Attention(){
 <td class="caption">$l10n.FILEIO_SPECIFIED_CSV_FILE</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><input type="file" style="ime-mode:disable" value="" name="attachment" class="" /></td>
+<td nowrap="nowrap" colspan="2"><input type="file" style="ime-mode:disable" value="" name="attachment" class="" /></td>
 </tr>
 #end
 

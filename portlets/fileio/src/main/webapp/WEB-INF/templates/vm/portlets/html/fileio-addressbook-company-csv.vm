@@ -219,7 +219,7 @@ function hide_Attention(){
 <td class="caption">$l10n.FILEIO_SPECIFIED_CSV_FILE</td>
 </tr>
 <tr>
-<td nowrap="nowrap"><input type="file" style="ime-mode:disable" value="" name="attachment" class="" /></td>
+<td nowrap="nowrap" colspan="2"><input type="file" style="ime-mode:disable" value="" name="attachment" class="" /></td>
 </tr>
 #end
 
