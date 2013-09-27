@@ -378,6 +378,9 @@ public class CabinetSelectData extends
     if (!(post_name.equals("") || post_name.equals("0"))) {
       HashSet<Integer> userIds = new HashSet<Integer>();
       List<Integer> userId = ALEipUtils.getUserIds(post_name);
+      if (userId.isEmpty()) {
+        userId.add(-1);
+      }
       userIds.addAll(userId);
       Expression exp =
         ExpressionFactory.inExp(
