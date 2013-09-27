@@ -161,7 +161,7 @@
                     </div>
                     <div class="tableBorderM">&nbsp;</div>
                     <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
-                    <div id="tutorial_schedule" style='background-color:white; position:absolute; Z-index:10000'>マス目をドラッグしてスケジュールを登録してみましょう。<a href="javascript:void(0);">X</a></div>
+					#ALtutorialTooltip("tutorial_schedule" "マス目をドラッグしてスケジュールを登録してみましょう。")
                       <table cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody>
                           <tr valign="top">

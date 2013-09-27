@@ -281,7 +281,7 @@
                     </table>
                     </div>
                     <div class="tableBorderM">&nbsp;</div>
-                    <div class="tutorial_tooltip" id="tutorial_schedule" style='display:none; background-color:white; position:absolute; Z-index:10000'>マス目をドラッグしてスケジュールを登録してみましょう。<a href="javascript:void(0);" onclick="aipo.tutorial.hideDialog('tutorial_schedule');">X</a></div>
+                    #ALtutorialTooltip("tutorial_schedule" "マス目をドラッグしてスケジュールを登録してみましょう。")
                     <div class="weeklyScrollPane" id="weeklyScrollPane_$!portlet.ID" style="height:0px;">
                       <table cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody>

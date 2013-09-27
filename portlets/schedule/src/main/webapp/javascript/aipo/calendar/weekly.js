@@ -25,6 +25,7 @@ dojo.require("aimluck.dnd.Draggable");
 dojo.require("aipo.widget.ToolTip");
 dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("aipo.widget.GroupNormalSelectList");
+dojo.require("aipo.tutorial.tutorial");
 
 aipo.calendar.objectlist = Array();
 aipo.calendar.maximum_to = 30;
@@ -700,6 +701,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
             obj_indicator = dojo.byId('indicator-'+_portletId);
             dojo.style(obj_indicator, "display" , "none");
             dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
+            aipo.tutorial.scheduleLoad();
             var Element = dojo.byId("weeklyScrollPane_" + _portletId);
 
             if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){

@@ -1,9 +1,11 @@
-dojo.provide('aipo.tutorial');
+dojo.provide('aipo.tutorial.tutorial');
 
+var show_flag = false;
 var url, portlet_id, callback;
+var schedule_load_flag = false;
 
 aipo.tutorial.showDialog=function(url_value, portlet_id_value, callback_value){
-
+  show_flag = true;
   url = url_value;
   portlet_id = portlet_id_value;
   callback = callback_value;
@@ -30,10 +32,10 @@ aipo.tutorial.showDialog=function(url_value, portlet_id_value, callback_value){
 
 aipo.tutorial.showFirst = function(){
 
-  var schedule = document.getElementById('tutorial_schedule');
-  if(typeof schedule != "undefined"){
-    schedule.style.display = "";
-  }
+//  var schedule = document.getElementById('tutorial_schedule');
+//  if(typeof schedule != "undefined"){
+//    schedule.style.display = "";
+//  }
 
   var timeline1 = document.getElementById('tutorial_timeline1');
   if(typeof timeline1 != "undefined"){
@@ -44,28 +46,71 @@ aipo.tutorial.showFirst = function(){
   if(typeof timeline2 != "undefined"){
     timeline2.style.display = "";
   }
-}
+};
+
+
+
+aipo.tutorial.scheduleLoad = function(){
+  if(!show_flag)return;
+
+  schedule_load_flag = true;
+  aipo.tutorial.setTooltips();
+  var schedule = document.getElementById('tutorial_schedule');
+  if(typeof schedule != "undefined"){
+    schedule.style.display = "";
+  }
+};
 
 
 aipo.tutorial.setTooltips=function(){
 
-
-  selectObj = document.getElementsByTagName('table');
-  var match_schedule = "weeklyScrollPane_P"
-  matchObj= new RegExp(match_schedule);
+  var match_schedule;
   var x=-100,y=-100, width = 0, height = 0;
-  for(i=0; i < selectObj.length; i++){
-    if(selectObj[i].id.match(matchObj)){
-      width = selectObj[i].offsetWidth;
-      height = selectObj[i].offsetHeight;
-      break;
+  if(schedule_load_flag){
+    selectObj = document.getElementsByTagName('table');
+    match_schedule = "weeklyScrollPane_P"
+      matchObj= new RegExp(match_schedule);
+    for(i=0; i < selectObj.length; i++){
+      if(selectObj[i].id.match(matchObj)){
+
+        height = selectObj[i].offsetHeight;
+        break;
+      }
     }
-  }
-  var schedule = document.getElementById('tutorial_schedule');
-  if(typeof schedule != "undefined"){
-    schedule.style.left = (width / 2) + "px";
-    schedule.style.top = (height / 2) + "px";
-    schedule.parentNode.style.position = "relative";
+
+
+    var table_height = 0;
+    selectObj = document.getElementsByTagName('table');
+    match_schedule = "weeklyTableHead_P"
+      matchObj= new RegExp(match_schedule);
+    for(i=0; i < selectObj.length; i++){
+      if(selectObj[i].id.match(matchObj)){
+        table_height = selectObj[i].offsetHeight;
+        break;
+      }
+    }
+
+    selectObj = document.getElementsByTagName('div');
+    match_schedule = "weeklyScrollPane_P"
+      matchObj= new RegExp(match_schedule);
+    for(i=0; i < selectObj.length; i++){
+      if(selectObj[i].id.match(matchObj)){
+        width = selectObj[i].offsetWidth;
+        table_height += selectObj[i].offsetHeight;
+        break;
+      }
+    }
+
+   var schedule = document.getElementById('tutorial_schedule');
+    if(typeof schedule != "undefined"){
+      var display_state = schedule.style.display;
+      schedule.style.top = -3000 + "px";
+      schedule.style.display = "";
+      schedule.style.left = ((width - schedule.offsetWidth) / 2) + "px";
+      schedule.style.top = display_state;
+      schedule.style.top = (table_height / 3) + "px";
+      schedule.parentNode.style.position = "relative";
+    }
   }
 
   selectObj = document.getElementsByTagName('iframe');
@@ -115,10 +160,10 @@ aipo.tutorial.setTooltips=function(){
   if(typeof activity != "undefined"){
     activity.style.top = height + "px";
   }
-  var support = document.getElementById('tutorial_support');
-  if(typeof support != "undefined"){
-    support.style.top = height + "px";
-  }
+//  var support = document.getElementById('tutorial_support');
+//  if(typeof support != "undefined"){
+//    support.style.top = height + "px";
+//  }
   var user = document.getElementById('tutorial_user');
   if(typeof user != "undefined"){
     user.style.top = height + "px";
@@ -138,21 +183,21 @@ aipo.tutorial.hideTip=function(id){
     state++;
   if(id == "tutorial_activity")
     state++;
-  if(id == "tutorial_support")
-    state++;
+//  if(id == "tutorial_support")
+//    state++;
   if(id == "tutorial_user")
     state++;
 
   if(state == 3){
     document.getElementById('tutorial_activity').style.display = "";
   }
+//  else if(state == 4){
+//    document.getElementById('tutorial_support').style.display = "";
+//  }
   else if(state == 4){
-    document.getElementById('tutorial_support').style.display = "";
-  }
-  else if(state == 5){
     document.getElementById('tutorial_user').style.display = "";
   }
-  else if(state == 6){
+  else if(state == 5){
     var dialog = dijit.byId("imageDialog");
       dojo.query(".roundBlockContent").addClass("mb_dialoghide");
       dojo.query("#imageDialog").addClass("mb_dialog");
