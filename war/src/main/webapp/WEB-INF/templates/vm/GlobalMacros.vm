@@ -806,7 +806,7 @@ $item.get(0)
           <ul>
 #set($index = 0)
 #foreach($tab in $tabs)
-	#if($tab.Title.toString()!="ページ設定")
+	#if($tab.Title.toString()!="ページ設定" && $tab.Title.toString()!="メッセンジャー")
             <li#if ($tab.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($tab.Link)">$tab.Title</a></li>
 	#end
 #set($index = $index + 1)
