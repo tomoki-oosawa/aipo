@@ -36,10 +36,10 @@
         Also, apparently works on a DIV as well as a FIELDSET.
     */
 /*  display:-moz-inline-box;        /* FF2 */
-    display:inline-block;           /* webkit and FF3 */
-    border:0px;
-    padding:0px;
-    vertical-align:middle;
+  display: inline;
+  border: 0px;
+  padding: 0px;
+  vertical-align: middle;
 }
 
 .moz-inline-box {
@@ -442,11 +442,7 @@
   background-color: #999999 !important;
   color: #ffffff !important;
 }
-.dijitCalendarSelectedDate .dijitCalendarDateLabel {
-	text-shadow:0 1px 0 rgba(0,0,0,0.3);
-	border-top:solid 1px #606060;
-	border-left:solid 1px #606060;
-}
+
 .dijitCalendarYearContainer {
   /* footer of the table that contains the year display/selector */
   /*background:white url("images/calendarYearLabel.png") repeat-x bottom;*/
@@ -665,4 +661,26 @@ background-repeat:no-repeat;
     display: none;
 }
 .dojoDndAvatarItem {
+}
+
+/* pinpoint modify */
+.dijitDropDownButton div,
+.dijitDropDownButton span {
+  display: inline;
+  float: none !important;
+  line-height: 24px;
+}
+
+*:first-child + html .dijitDropDownButton div,
+*:first-child + html .dijitDropDownButton span {
+  vertical-align: middle !important;
+}
+
+#allDayField {
+  position: relative;
+  top: 2px;
+}
+
+*:first-child + html #allDayField {
+  position: static;
 }
