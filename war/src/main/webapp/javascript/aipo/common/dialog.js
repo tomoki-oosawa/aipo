@@ -32,6 +32,9 @@ aipo.common.showDialog = function(url, portlet_id, callback) {
       arrDialog.setHref(url);
       arrDialog.show();
     }
+    if (url.search("template=ScheduleFormScreen&entityid=new") != -1 && dojo.byId("tutorial_schedule") != null) {
+      dojo.byId("tutorial_schedule").style.display = "none";
+    }
 };
 
 aipo.common.hideDialog = function() {
