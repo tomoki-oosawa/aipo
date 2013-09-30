@@ -19,32 +19,7 @@ var url, portlet_id, callback;
 var schedule_load_flag = false;
 
 aipo.tutorial.showDialog = function(url_value, portlet_id_value, callback_value) {
-  show_flag = true;
-  url = url_value;
-  portlet_id = portlet_id_value;
-  callback = callback_value;
-  if (state != 6) {
-    aipo.tutorial.setTooltips();
-    aipo.tutorial.showFirst();
-  } else {
-    var dialog = dijit.byId("imageDialog");
-    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
-    dojo.query("#imageDialog").addClass("mb_dialog");
-
-    if (!dialog) {
-      dialog = new aipo.widget.TutorialDialog({
-        widgetId : 'imageDialog',
-        _portlet_id : portlet_id,
-        _callback : callback
-      }, "imageDialog");
-    } else {
-      dialog.setCallback(portlet_id, callback);
-    }
-    if (dialog) {
-      dialog.setHref(url);
-      dialog.show();
-    }
-  }
+  aipo.tutorial.setTooltips();
 };
 
 aipo.tutorial.pushFlag = function(url) {
@@ -130,7 +105,7 @@ aipo.tutorial.setTooltips = function() {
     }
 
     var schedule = document.getElementById('tutorial_schedule');
-    if (typeof schedule != "undefined") {
+    if (typeof schedule != "undefined" && schedule != null) {
       var display_state = schedule.style.display;
       schedule.style.top = -3000 + "px";
       schedule.style.display = "";
@@ -157,7 +132,7 @@ aipo.tutorial.setTooltips = function() {
     }
   }
   var timeline1 = document.getElementById('tutorial_timeline1');
-  if (typeof timeline1 != "undefined") {
+  if (typeof timeline1 != "undefined" && timeline1 != null) {
     timeline1.style.left = x + width + "px";
     timeline1.style.top = y + (height / 2) + "px";
     timeline1.parentNode.style.position = "relative";
@@ -177,7 +152,7 @@ aipo.tutorial.setTooltips = function() {
     }
   }
   var timeline2 = document.getElementById('tutorial_timeline2');
-  if (typeof timeline2 != "undefined") {
+  if (typeof timeline2 != "undefined" && timeline2 != null) {
     timeline2.style.left = x + "px";
     timeline2.style.top = y + height + "px";
     timeline2.parentNode.style.position = "relative";
@@ -185,7 +160,7 @@ aipo.tutorial.setTooltips = function() {
 
   height = document.getElementsByClassName('hdNavi')[0].offsetHeight;
   var activity = document.getElementById('tutorial_activity');
-  if (typeof activity != "undefined") {
+  if (typeof activity != "undefined" && activity != null) {
     activity.style.top = height + "px";
   }
   // var support = document.getElementById('tutorial_support');
@@ -193,7 +168,7 @@ aipo.tutorial.setTooltips = function() {
   // support.style.top = height + "px";
   // }
   var user = document.getElementById('tutorial_user');
-  if (typeof user != "undefined") {
+  if (typeof user != "undefined"  && user != null) {
     user.style.top = height + "px";
   }
 

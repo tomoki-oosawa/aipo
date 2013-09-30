@@ -43,7 +43,7 @@
 		<!-- /hdActivity -->
 
     <div class="hdUserName">
-		<a href="javascript:void(0);" class="arrow_bottom" onclick="aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
+		<a href="javascript:void(0);" class="arrow_bottom" onclick="if(dojo.byId('tutorial_user') != null) dojo.byId('tutorial_user').style.display = 'none'; aipo.tutorial.pushFlag('$jslink.getTemplate("TutorialForbidScreen").addQueryData("id", "tutorial_user")'); aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
 		#if ($data.User.getUserName()!="admin")
 			#if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />
