@@ -30,9 +30,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -53,13 +52,13 @@ import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALTutorialUtil;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -447,23 +446,32 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       context.put("st", gadgetContext.getSecureToken());
 
       try {
-        context.put("tutorialForbid", false);
-        String client = ALEipUtils.getClient(data);
-        if ("IPHONE".equals(client)) {
-          context.put("tutorialForbid", true);
-        } else {
-          SelectQuery<TurbineUser> userQuery =
-            Database.query(TurbineUser.class);
-          Expression exp1 =
-            ExpressionFactory.matchDbExp(
-              TurbineUser.USER_ID_PK_COLUMN,
-              loginuser.getPerm("USER_ID").toString());
-          userQuery.setQualifier(exp1);
-          TurbineUser tUser = userQuery.fetchSingle();
-          if (tUser.getTutorialForbid() != null
-            && tUser.getTutorialForbid().equals("T")) {
-            context.put("tutorialForbid", true);
-          }
+        TurbineUser user =
+          ALEipUtils.getTurbineUser(ALEipUtils.getUserId(data));
+        String forbid = user.getTutorialForbid();
+        boolean commitFlag = false;
+        if (forbid == null || forbid.equals("") || forbid.equals("F")) {
+          forbid =
+            StringUtils.repeat("F", ALTutorialUtil.ID_LIST.size())
+              + StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH
+                - ALTutorialUtil.ID_LIST.size());
+          commitFlag = true;
+        } else if (forbid != null
+          && forbid.equals("T")
+          || forbid.length() != ALTutorialUtil.FORBID_FLAG_LENGTH) {
+          forbid = StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH);
+          commitFlag = true;
+        }
+        if (commitFlag) {
+          user.setTutorialForbid(forbid);
+          Database.commit();
+        }
+        for (int i = 0; i < ALTutorialUtil.ID_LIST.size(); i++) {
+          data.getParameters().add(
+            "forbid_" + ALTutorialUtil.ID_LIST.get(i),
+            forbid.charAt(i));
+          context.put("forbid_" + ALTutorialUtil.ID_LIST.get(i), forbid
+            .charAt(i) == 'T');
         }
       } catch (Throwable ignore) {
         // ignore

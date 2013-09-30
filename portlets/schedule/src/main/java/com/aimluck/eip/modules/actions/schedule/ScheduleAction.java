@@ -85,6 +85,8 @@ public class ScheduleAction extends ALBaseAction {
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
 
+  private static final String FORBID_TUTORIAL = "forbid_tutorial_schedule";
+
   /**
    * 
    * @param portlet
@@ -97,6 +99,10 @@ public class ScheduleAction extends ALBaseAction {
 
     // セッション情報をクリアする
     clearScheduleSession(rundata, context);
+
+    context.put(FORBID_TUTORIAL, rundata
+      .getParameters()
+      .getInt(FORBID_TUTORIAL) == 'T');
 
     String tab;
     String portletId;

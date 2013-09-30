@@ -61,6 +61,3 @@
 #parse("/portlets/html/ja/schedule-search-result.vm")
 #end
 #ALspacebothfooter()
-
-#ALtutorialTooltip("tutorial_schedule" "マス目をドラッグしてスケジュールを登録してみましょう。")
-

@@ -23,7 +23,7 @@
 <div class="auiPopup imgPopupTutorial">
  <div class="imgBody">
  	<a href="javascript:void(0)">
-		<img width="1000" height="650" id="popupImage1" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130809.png" style="" onclick="aipo.tutorial.showDialog('$jslink.getTemplate("TutorialForbidScreen")'); aipo.tutorial.hideDialog()" />
+		<img width="1000" height="650" id="popupImage1" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130809.png" style="" onclick="aipo.tutorial.pushFlag('$jslink.getTemplate("TutorialForbidScreen").addQueryData("id", tutorial_last_image)'); aipo.tutorial.hideDialog()" />
 	</a>
  </div>
 </div>

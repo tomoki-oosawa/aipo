@@ -25,8 +25,16 @@
     <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
   </div>
   <div class="hdNavi">
+  #if (!$forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
 	#ALtutorialTooltip("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
+  #else
+  	#ALtutorialTooltipHide("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
+  #end
+  #if (!$forbid_tutorial_user && $forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
 	#ALtutorialTooltip("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
+  #else
+	#ALtutorialTooltipHide("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
+  #end
 #if ($data.User.getUserName()!="admin" && ${client} != "IPHONE")
     <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" >
     <div id="activitychecker" class="zero counter activitycheckerstyle"></div>

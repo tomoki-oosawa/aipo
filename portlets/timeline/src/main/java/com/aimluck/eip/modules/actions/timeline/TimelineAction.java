@@ -46,6 +46,10 @@ public class TimelineAction extends ALBaseAction {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineAction.class.getName());
 
+  private static final String FORBID_TUTORIAL_1 = "forbid_tutorial_timeline1";
+
+  private static final String FORBID_TUTORIAL_2 = "forbid_tutorial_timeline2";
+
   /**
    * 通常表示の際の処理を記述します。
    * 
@@ -60,6 +64,12 @@ public class TimelineAction extends ALBaseAction {
 
     // セッション情報をクリアする．
     clearTimelineSession(rundata, context);
+
+    context.put(FORBID_TUTORIAL_1, rundata.getParameters().getInt(
+      FORBID_TUTORIAL_1) == 'T');
+
+    context.put(FORBID_TUTORIAL_2, rundata.getParameters().getInt(
+      FORBID_TUTORIAL_2) == 'T');
 
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();

@@ -827,9 +827,16 @@ $item.get(0)
 #end
 
 #macro(ALtutorialTooltip $id $text)
-<div class="tutorial_tooltip" id="$id" style='display:none; background-color:white; position:absolute; Z-index:10000'>
+<div id="$id" class="tutorial_tooltip" style='background-color:white; position:absolute; Z-index:10000'>
 	$text
-	<a href="javascript:void(0);" onclick="aipo.tutorial.hideTip('$id');">X</a>
+	<a href="javascript:void(0);" onclick="this.parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');">X</a>
+</div>
+#end
+
+#macro(ALtutorialTooltipHide $id $text)
+<div id="$id" class="tutorial_tooltip" style='display:none; background-color:white; position:absolute; Z-index:10000'>
+	$text
+	<a href="javascript:void(0);" onclick="this.parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');">X</a>
 </div>
 #end
 
