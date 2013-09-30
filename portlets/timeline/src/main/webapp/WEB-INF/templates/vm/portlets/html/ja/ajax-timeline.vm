@@ -185,6 +185,6 @@
 #if (!$forbid_tutorial_timeline1)
 #ALtutorialTooltip("tutorial_timeline1" "タイムラインへ近況やニュースを書き込んでみましょう。")
 #end
-#if (!$forbid_tutorial_timeline2)
+#if (!$forbid_tutorial_timeline2 && $result.List.size() > 0)
 #ALtutorialTooltip("tutorial_timeline2" "タイムラインの投稿へいいね！や、コメントをしてみましょう。")
 #end

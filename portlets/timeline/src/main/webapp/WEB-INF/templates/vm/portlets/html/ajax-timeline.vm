@@ -38,7 +38,7 @@
 #ALajaxscreenformheader("timelineForm" $jslink $portlet "TimelineJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.timeline.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
 
 <div class="tlInputMention" style="position:relative">
-  <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', null, event);" onfocus="aipo.timeline.onFocus('$!{portlet.ID}')" onblur="aipo.timeline.onBlur('$!{portlet.ID}')"></textarea>
+  <textarea class="elastic" id="note_$!{portlet.ID}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px;" onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', null, event);aipo.tutorial.setTooltips();" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', null, event);aipo.tutorial.setTooltips();" onfocus="aipo.timeline.onFocus('$!{portlet.ID}');aipo.tutorial.setTooltips();" onblur="aipo.timeline.onBlur('$!{portlet.ID}');aipo.tutorial.setTooltips();"></textarea>
   <span class="guide" id="guide_$!{portlet.ID}" onclick="this.style.display='none';document.getElementById('note_$!{portlet.ID}').focus();" style="display: block; position:absolute; color: #999999; top:5px; left:5px">$l10n.TIMELINE_LETS_SHARE</span>
 </div>
 <div class="clearfix tlInputClip" id="tlInputClip_$!{portlet.ID}">
@@ -182,3 +182,9 @@
   </div>
 #end
 </div>
+#if (!$forbid_tutorial_timeline1)
+#ALtutorialTooltip("tutorial_timeline1" "タイムラインへ近況やニュースを書き込んでみましょう。")
+#end
+#if (!$forbid_tutorial_timeline2 && $result.List.size() > 0)
+#ALtutorialTooltip("tutorial_timeline2" "タイムラインの投稿へいいね！や、コメントをしてみましょう。")
+#end
