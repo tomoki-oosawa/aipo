@@ -91,7 +91,7 @@
 #AUIajaxpageview('AccessControlScreen' $result)
 #AUISummaryDivfooter()
 #end
-</form>#AUIwideAreaFooter()
+</form>
 #AUIwideAreaFooter()
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
