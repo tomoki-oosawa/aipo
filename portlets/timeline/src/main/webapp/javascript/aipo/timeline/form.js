@@ -31,6 +31,9 @@ aipo.timeline.addHiddenValue = function(form, name, value) {
     q.value = value;
     form.appendChild(q);
   }
+  if (name == "mode" && value == "comment" || value == "like" && dojo.byId("tutorial_timeline2") != null) {
+    dojo.byId("tutorial_timeline2").style.display = "none"
+  }
 }
 
 aipo.timeline.addLike = function(form, name, value) {
