@@ -83,6 +83,8 @@ public class ALBaseUser extends
 
   public static final String HAS_PHOTO_SMARTPHONE = "HAS_PHOTO_SMARTPHONE";
 
+  public static final String MIGRATE_VERSION = "MIGRATE_VERSION";
+
   @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseUser.class.getName());
@@ -470,5 +472,19 @@ public class ALBaseUser extends
       return null;
     }
     return (Date) (getPerm(PHOTO_MODIFIED_SMARTPHONE));
+  }
+
+  /**
+   *
+   */
+  public int getMigrateVersion() {
+    return ((Integer) (getPerm(MIGRATE_VERSION))).intValue();
+  }
+
+  /**
+   *
+   */
+  public void setMigrateVersion(int id) {
+    setPerm(MIGRATE_VERSION, Integer.valueOf(id));
   }
 }

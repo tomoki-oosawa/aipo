@@ -865,6 +865,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           user.setPhotoModified(new Date());
           user.setPhotoModifiedSmartphone(new Date());
         }
+        user.setMigrateVersion(0);
 
         // ユーザーを追加
         JetspeedSecurity.addUser(user);
