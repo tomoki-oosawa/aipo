@@ -664,23 +664,21 @@ background-repeat:no-repeat;
 }
 
 /* pinpoint modify */
-.dijitDropDownButton div,
-.dijitDropDownButton span {
+.auiSetDate .dijitDropDownButton div,
+.auiSetDate .dijitDropDownButton span {
   display: inline;
   float: none !important;
   line-height: 24px;
 }
-
-*:first-child + html .dijitDropDownButton div,
-*:first-child + html .dijitDropDownButton span {
-  vertical-align: middle !important;
-}
-
-#allDayField {
+.auiSetDate #allDayField {
   position: relative;
   top: 2px;
 }
 
-*:first-child + html #allDayField {
-  position: static;
+*:first-child + html .auiSetDate .dijitDropDownButton div,
+*:first-child + html .auiSetDate .dijitDropDownButton span {
+  vertical-align: middle !important;
+}
+*:first-child + html .auiSetDate #allDayField {
+  position: static !important;
 }
