@@ -22,7 +22,6 @@ package com.aimluck.eip.modules.actions.schedule;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -34,13 +33,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALTutorialUtil;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.AjaxScheduleWeeklyGroupEmptySelectData;
 import com.aimluck.eip.schedule.ScheduleChangeStatusFormData;
 import com.aimluck.eip.schedule.ScheduleFormData;
@@ -172,32 +169,7 @@ public class ScheduleAction extends ALBaseAction {
       String _template = "";
       if ("simple".equals(top_form)) {
         _template = "schedule-calendar";
-        TurbineUser user =
-          ALEipUtils.getTurbineUser(ALEipUtils.getUserId(rundata));
-        String prevValue = user.getTutorialForbid();
-        if (prevValue.charAt(ALTutorialUtil.ID_LIST
-          .indexOf("tutorial_schedule")) == 'F') {
-
-          if (prevValue == null
-            || prevValue.equals("")
-            || prevValue.equals("F")) {
-            prevValue =
-              StringUtils.repeat("F", ALTutorialUtil.ID_LIST.size())
-                + StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH
-                  - ALTutorialUtil.ID_LIST.size());
-          } else if (prevValue != null && prevValue.equals("T")) {
-            prevValue =
-              StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH);
-          }
-
-          StringBuilder sb = new StringBuilder(prevValue);
-          sb
-            .setCharAt(ALTutorialUtil.ID_LIST.indexOf("tutorial_schedule"), 'T');
-          String value = sb.toString();
-
-          user.setTutorialForbid(value);
-          Database.commit();
-        }
+        ALTutorialUtil.updateForbid(rundata, "tutorial_schedule");
       } else {
         _template = portlet.getPortletConfig().getInitParameter("pba-template");
       }

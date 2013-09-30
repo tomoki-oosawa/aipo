@@ -21,19 +21,15 @@ package com.aimluck.eip.modules.screens;
 
 import net.sf.json.JSONArray;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALTutorialUtil;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.timeline.TimelineFormData;
 import com.aimluck.eip.timeline.TimelineLikeFormData;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムラインをJSONデータとして出力するクラスです。
@@ -112,36 +108,18 @@ public class TimelineJSONScreen extends ALJSONScreen {
         }
       }
 
-      if (mode.equals("comment") || mode.equals("like")) {
-        TurbineUser user =
-          ALEipUtils.getTurbineUser(ALEipUtils.getUserId(rundata));
-        String prevValue = user.getTutorialForbid();
-
-        if (prevValue.charAt(ALTutorialUtil.ID_LIST
-          .indexOf("tutorial_timeline2")) == 'F') {
-
-          if (prevValue == null
-            || prevValue.equals("")
-            || prevValue.equals("F")) {
-            prevValue =
-              StringUtils.repeat("F", ALTutorialUtil.ID_LIST.size())
-                + StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH
-                  - ALTutorialUtil.ID_LIST.size());
-          } else if (prevValue != null && prevValue.equals("T")) {
-            prevValue =
-              StringUtils.repeat("T", ALTutorialUtil.FORBID_FLAG_LENGTH);
-          }
-
-          StringBuilder sb = new StringBuilder(prevValue);
-          sb.setCharAt(
-            ALTutorialUtil.ID_LIST.indexOf("tutorial_timeline2"),
-            'T');
-          String value = sb.toString();
-
-          user.setTutorialForbid(value);
-          Database.commit();
+      if (mode.equals("comment")
+        || mode.equals("like")
+        || mode.equals(ALEipConstants.MODE_INSERT)) {
+        String name;
+        if (mode.equals(ALEipConstants.MODE_INSERT)) {
+          name = "tutorial_timeline1";
+        } else {
+          name = "tutorial_timeline2";
         }
+        ALTutorialUtil.updateForbid(rundata, name);
       }
+
     } catch (Exception e) {
       logger.error("[TimelineJSONScreen]", e);
     }
