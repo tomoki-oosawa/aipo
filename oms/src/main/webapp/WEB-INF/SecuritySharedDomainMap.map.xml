@@ -42,6 +42,7 @@
 		<db-attribute name="LAST_NAME" type="VARCHAR" isMandatory="true" length="99"/>
 		<db-attribute name="LAST_NAME_KANA" type="VARCHAR" length="99"/>
 		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="MIGRATE_VERSION" type="INTEGER"/>
 		<db-attribute name="MODIFIED" type="TIMESTAMP"/>
 		<db-attribute name="OBJECTDATA" type="BINARY"/>
 		<db-attribute name="OUT_TELEPHONE" type="VARCHAR" length="15"/>
@@ -108,6 +109,7 @@
 		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="LAST_NAME"/>
 		<obj-attribute name="lastNameKana" type="java.lang.String" db-attribute-path="LAST_NAME_KANA"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
+		<obj-attribute name="migrateVersion" type="java.lang.Integer" db-attribute-path="MIGRATE_VERSION"/>
 		<obj-attribute name="modified" type="java.util.Date" db-attribute-path="MODIFIED"/>
 		<obj-attribute name="objectdata" type="byte[]" db-attribute-path="OBJECTDATA"/>
 		<obj-attribute name="outTelephone" type="java.lang.String" db-attribute-path="OUT_TELEPHONE"/>
