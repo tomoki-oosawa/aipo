@@ -185,6 +185,24 @@ public class MsgboardTopicSelectData extends
     // My グループの一覧を取得する．
     postList = ALEipUtils.getMyGroups(rundata);
 
+    // カテゴリの初期値を取得する
+    try {
+      filterType = rundata.getParameters().getString("filtertype", "");
+      if (filterType.equals("category")) {
+        String categoryId = rundata.getParameters().getString("filter", "");
+        if (!categoryId.equals("")) {
+          this.categoryId = categoryId;
+        } else {
+          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+          this.categoryId =
+            portlet.getPortletConfig().getInitParameter("p3a-category");
+        }
+      }
+      updateCategoryName();
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+    }
+
     target_keyword = new ALStringField();
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
@@ -327,6 +345,7 @@ public class MsgboardTopicSelectData extends
     }
   }
 
+  // :TODO
   @Override
   protected SelectQuery<EipTMsgboardTopic> buildSelectQueryForFilter(
       SelectQuery<EipTMsgboardTopic> query, RunData rundata, Context context) {
@@ -813,35 +832,9 @@ public class MsgboardTopicSelectData extends
 
   public void setFiltersPSML(VelocityPortlet portlet, Context context,
       RunData rundata) {
-
-    // filterが入っているかどうか
-    filterType = rundata.getParameters().getString("filtertype", "");
-
-    String pairParam =
-      portlet.getPortletConfig().getInitParameter("p12f-filters");
-    if (pairParam != null) {
-      String[] param = pairParam.split(",");
-      if (filterType.isEmpty()) {
-        // カテゴリを初期設定値に
-        // 初期選択カテゴリ
-        this.categoryId =
-          portlet.getPortletConfig().getInitParameter("p3a-category");
-        updateCategoryName();
-        String reparam = param[0] + "," + categoryId;
-        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, reparam);
-      } else {
-        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
-          .getPortletConfig()
-          .getInitParameter("p12f-filters"));
-
-        categoryId = param[1];
-        updateCategoryName();
-      }
-    } else {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
-        .getPortletConfig()
-        .getInitParameter("p12f-filters"));
-    }
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
 
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
       .getPortletConfig()
