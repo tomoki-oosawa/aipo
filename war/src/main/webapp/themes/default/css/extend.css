@@ -36,7 +36,7 @@
         Also, apparently works on a DIV as well as a FIELDSET.
     */
 /*  display:-moz-inline-box;        /* FF2 */
-  display: inline;
+  display: inline-block;
   border: 0px;
   padding: 0px;
   vertical-align: middle;
@@ -664,6 +664,9 @@ background-repeat:no-repeat;
 }
 
 /* pinpoint modify */
+.auiSetDate .dijitDropDownButton {
+  display: inline !important;
+}
 .auiSetDate .dijitDropDownButton div,
 .auiSetDate .dijitDropDownButton span {
   display: inline;
