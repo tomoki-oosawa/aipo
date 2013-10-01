@@ -1605,7 +1605,7 @@ $item.get(0)
 
 #macro(AUIconfigheader $portlet_id $width)
 <div class="floatRight clearfix relative">
-<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting"></span> $l10n.WAR_SET_UP</a></div>
+<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting mr5"></span>$l10n.WAR_SET_UP</a></div>
 <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; display: none; ">
 <ul>
 #end
