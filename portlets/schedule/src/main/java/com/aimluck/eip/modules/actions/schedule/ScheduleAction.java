@@ -682,10 +682,10 @@ public class ScheduleAction extends ALBaseAction {
         boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
-
         listData = new ScheduleWeeklyGroupSelectData();
         ((ScheduleWeeklyGroupSelectData) listData).setPortletId(portletId);
       }
+      ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       listData.initField();
       if (!ScheduleUtils.hasMinimumAuthority(rundata)) {
         setTemplate(rundata, "schedule-list");
