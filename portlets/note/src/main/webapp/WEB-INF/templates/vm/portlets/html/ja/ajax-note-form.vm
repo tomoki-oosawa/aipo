@@ -38,7 +38,7 @@
 <input type="hidden" name="mode" value="insert" />
 #ALtableheaderWide()
 #ALtdcaption("$!result.getFieldName('accept_date')")
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 <div dojoType="aipo.widget.DropdownDatepicker" id="acceptdatepicker" widgetId="acceptdatepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.NOTE_CLERK_DAY" hiddenId="accept_date" initValue="$!{result.AcceptDate.Year}/$!{result.AcceptDate.Month}/$!{result.AcceptDate.Day}" inputId="input_acceptdate" dateId="accept_date" displayCheck="none"></div>
 &nbsp;
 <select name="accept_date_hour" size="1">

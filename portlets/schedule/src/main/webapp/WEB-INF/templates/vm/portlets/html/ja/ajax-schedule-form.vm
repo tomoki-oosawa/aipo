@@ -98,7 +98,7 @@
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
-    <div class="p">
+    <div class="p auiSetDate">
         <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
           <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
@@ -110,7 +110,7 @@
     </div>
   </div>
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
-    <div class="p">
+    <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_TYPE</h3>
       <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeD">$l10n.SCHEDULE_EVERY_DAY</label>
@@ -140,7 +140,7 @@
       #end
       </select>
    </div>
-    <div class="p">
+    <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
       <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag"/>
       <label for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
@@ -152,7 +152,7 @@
             &nbsp;-&nbsp;<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
     </div>
   </div>
-  <div class="p">
+  <div class="p auiSetDate">
     <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">$l10n.SCHEDULE_TIME</h3>
     <div id="timeField"  style="display:#if($!{result.Span})none#end">
         <span id="startTimeSpan">

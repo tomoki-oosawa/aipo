@@ -47,7 +47,7 @@
 
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('create_date'))")
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 <div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.BLOG_DAY_DAY" hiddenId="create_date" initValue="$!{result.CreateDate.Year}/$!{result.CreateDate.Month}/$!{result.CreateDate.Day}" inputId="create_date_input" dateId="create_date" displayCheck="none"></div>
 &nbsp;
 <select name="create_date_hour" size="1">
