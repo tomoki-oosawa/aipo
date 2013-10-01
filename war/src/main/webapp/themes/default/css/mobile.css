@@ -1198,6 +1198,7 @@ input[type=password] {
 	margin:45px 0 0 0;
 	top:0 !important;
 	left:0 !important;
+	z-index: 9998;
 }
 .modalDialog input[type=checkbox],
 .modalDialog input[type=radio] {
