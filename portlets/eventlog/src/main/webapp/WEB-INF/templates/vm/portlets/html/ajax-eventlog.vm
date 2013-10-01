@@ -29,7 +29,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader($l10n.EVENTLOG)
 
-<div class="clearfix">
+<div #if(${client}=="IPHONE") class="auiSummaryMeta clearfix" #else class="clearfix" #end>
 <select id="start_date_year" name="start_date_year" size="1" onchange="aipo.eventlog.onChangeDate('$baselink', '$!portlet.ID')" >
 #foreach ( $num in [2006..$!result.ViewDateMaxYear] )
 <option value="$num" #if ($!result.StartDate.Year == "$num") selected="selected" #end>$!{num}$l10n.EVENTLOG_YEAR</option>
