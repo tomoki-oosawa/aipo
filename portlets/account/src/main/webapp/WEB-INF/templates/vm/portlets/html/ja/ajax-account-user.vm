@@ -41,9 +41,9 @@
 #AUIbuttonAction($l10n.ACCOUNT_USER_ADD "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
 </div>
 
-#AUIconfigheader($!{portlet.ID} "15em")
-#AUIconfigitem($l10n.ACCOUNT_USER_SORT $orderUser)
-#AUIconfigfooter()
+##AUIconfigheader($!{portlet.ID} "15em")
+##AUIconfigitem($l10n.ACCOUNT_USER_SORT $orderUser)
+##AUIconfigfooter()
 
 #AUISummaryDivfooter()
 #AUISummaryDiv()
@@ -70,6 +70,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 #AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
