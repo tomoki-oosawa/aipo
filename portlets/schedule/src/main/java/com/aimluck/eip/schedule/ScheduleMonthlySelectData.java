@@ -215,8 +215,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
           rundata,
           context,
           "view_month"))) {
-          ALEipUtils.setTemp(rundata, context, "view_start", tmpViewMonth
-            + "-01");
+          // ALEipUtils.setTemp(rundata, context, "view_start", tmpViewMonth
+          // + "-01");
         }
         ALEipUtils.setTemp(rundata, context, "view_month", tmpViewMonth);
       } else {
