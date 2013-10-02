@@ -77,16 +77,20 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #foreach ($record in $result.List)
 <tr>
 #if($!{client}=="IPHONE")
+#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" /></td>
+#ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.AddressId' type='checkbox' value='$!record.AddressId' />
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');" style="display:inline;">$!record.Name</a></div>
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');" >$!record.Name</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
 #ALtdcellfooter()
-#ALtdcell("<div>$result.getStringCR($!record.Email)</div>")
-#ALtdcell($!record.Telephone)
-#ALtdcell($!record.CellularPhone)
+#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap" class="mb_hide"')
+#ALtdcellAtt($!record.Telephone 'nowrap="nowrap" class="mb_hide"')
+#ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap" class="mb_hide"')
 #else
 #ALtdcellAtt("<input name='check$!record.AddressId' type='checkbox' value='$!record.AddressId' />" 'align="center"')
 #ALtdcellheader()
