@@ -189,7 +189,14 @@ public class MsgboardTopicSelectData extends
     try {
       filterType = rundata.getParameters().getString("filtertype", "");
       if (filterType.equals("category")) {
-        this.setCategory(rundata, context);
+        String categoryId = rundata.getParameters().getString("filter", "");
+        if (!categoryId.equals("")) {
+          this.categoryId = categoryId;
+        } else {
+          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+          this.categoryId =
+            portlet.getPortletConfig().getInitParameter("p3a-category");
+        }
       }
       updateCategoryName();
     } catch (Exception ex) {
@@ -208,29 +215,6 @@ public class MsgboardTopicSelectData extends
   public void loadCategoryList(RunData rundata, Context context) {
     // カテゴリ一覧
     categoryList = MsgboardUtils.loadCategoryList(rundata);
-  }
-
-  /**
-   * 
-   * @param rundata
-   * @param context
-   */
-  public void setCategory(RunData rundata, Context context) {
-    String categoryId = rundata.getParameters().getString("filter", "");
-    if (!categoryId.equals("")) {
-      this.categoryId = categoryId;
-      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
-    } else {
-      categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
-      if (categoryId == null || categoryId.isEmpty()) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        categoryId =
-          portlet.getPortletConfig().getInitParameter("p3a-category");
-      }
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-      this.categoryId = categoryId;
-    }
   }
 
   /**
