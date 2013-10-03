@@ -70,7 +70,7 @@
 #else
 #ALtdcellAtt("<div><strong>$!record.Person</strong></div>" '')
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);aipo.portletReload('webmail');"><strong>$MailSubject</strong></a></div>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);"><strong>$MailSubject</strong></a></div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div><strong>$!record.Date</strong></div>" 'class="right" nowrap="nowrap"')
 #end

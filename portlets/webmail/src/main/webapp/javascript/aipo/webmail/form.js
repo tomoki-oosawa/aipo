@@ -85,6 +85,9 @@ aipo.webmail.hideDialog = function() {
     aipo.portletReload('webmail');
 };
 
+aipo.webmail.onLoadMailListDetail = function(){
+  aipo.portletReload('webmail');
+}
 
 aipo.webmail.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
 	if(confirm('この'+button.form._name.value+'を削除してよろしいですか？なお、フォルダに含まれるメールはすべて削除されます。\nまた、このフォルダを振り分け先として指定してあるフィルタは、振り分け先がデフォルト（フォルダリストの一番上のフォルダ）に変更されます。')) {
