@@ -27,8 +27,9 @@
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
-#end
+#else
 #AUIwideAreaHeader()
+#end
 #AUISummaryDiv()
 #if($result.List.size() > 0)
 <div class="floatLeft">
@@ -58,7 +59,7 @@
     </div>
     #AUIajaxpageview('WorkflowRouteListScreen' $result)
   #AUISummaryDivfooter()
-  <table class="auiRowTable wide">
+  <table class="auiRowTable auiMbTable wide">
   <colgroup style="width:20px;">
   </colgroup><colgroup style="width:15em;">
   </colgroup><colgroup style="width:15em;">
@@ -68,21 +69,37 @@
   #ALtdheadThin("#ALswitchCheckbox()")
   #ALtdhead("#ALajaxsort('route_name' $l10n.WORKFLOW_APPLICATION_ROUTE_NAME $result 'WorkflowRouteListScreen')")
   #ALtdhead("#ALajaxsort('route' $l10n.WORKFLOW_APPLICATION_ROUTE $result 'WorkflowRouteListScreen')")
-  #ALtdheadThin(' ')
   </tr>
   #foreach ($record in $result.List)
     <tr>
-    #ALtdcellAtt("<input name='check$!record.RouteId' type='checkbox' value='$!record.RouteId'/>" 'align="center"')
-    #ALtdcellheader()
-    <div>
-    <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteDetailScreen").addQueryData("entityid",$record.RouteId))');">$result.getStringCR($!record.RouteName)</a>
-    </div>
-    #ALtdcellfooter()
-    #ALtdcellheader()
-    <div>
-    $result.getStringCR($!record.RouteH)
-    </div>
-    #ALtdcellfooter()
+	#if($!{client}=="IPHONE")
+		#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+		<input name='check$!record.RouteId' type='checkbox' value='$!record.RouteId' />
+		#ALtdcellfooter()
+		#ALtdcellheaderAtt('class="auiMTCaption"')
+		<div>
+		<a href='javascript:void(0);' onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteDetailScreen").addQueryData("entityid",$record.RouteId))');">
+		$result.getStringCR($!record.RouteName)</a>
+		</div>
+		#ALtdcellfooter()
+		#ALtdcellheader()
+		<div>
+		$result.getStringCR($!record.RouteH)
+		</div>
+		#ALtdcellfooter()
+	#else
+	    #ALtdcellAtt("<input name='check$!record.RouteId' type='checkbox' value='$!record.RouteId'/>" 'align="center"')
+	    #ALtdcellheader()
+	    <div>
+	    <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteDetailScreen").addQueryData("entityid",$record.RouteId))');">$result.getStringCR($!record.RouteName)</a>
+	    </div>
+	    #ALtdcellfooter()
+	    #ALtdcellheader()
+	    <div>
+	    $result.getStringCR($!record.RouteH)
+	    </div>
+	    #ALtdcellfooter()
+	#end
     </tr>
   #end
   </tbody>
@@ -95,7 +112,8 @@
   #AUISummaryDivfooter()
   #ALformfooter()
 #end
-#AUIcontentsAreaFooter()
 #if(${client}=="IPHONE")
-#ALcontentfooter()
+#AUIcontentsAreaFooter()
+#else
+#AUIwideAreaFooter()
 #end
