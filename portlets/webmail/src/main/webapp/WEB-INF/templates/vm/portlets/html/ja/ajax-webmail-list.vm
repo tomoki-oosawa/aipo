@@ -101,7 +101,7 @@
 
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div><input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
-<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))");aipo.portletReload("webmail");'>
+<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);'>
 #if($!record.isRead())
 $MailSubject
 #else
@@ -131,7 +131,7 @@ $MailSubject
 #ALtdcellAtt("<div>$!record.Person</div>" 'align="left"')
 #ALtdcellheader()
 <div>
-<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))");aipo.portletReload("webmail");'>
+<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);'>
 #if($!record.isRead())
 $MailSubject
 #else
