@@ -250,6 +250,7 @@ public class MsgboardAction extends ALBaseAction {
     MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
     listData.initField();
     listData.loadCategoryList(rundata, context);
+    listData.setCategory(rundata, context);
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(Integer.parseInt(ALEipUtils
