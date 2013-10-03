@@ -101,10 +101,6 @@ public class ScheduleAction extends ALBaseAction {
     // セッション情報をクリアする
     clearScheduleSession(rundata, context);
 
-    context.put(FORBID_TUTORIAL, rundata
-      .getParameters()
-      .getInt(FORBID_TUTORIAL) == 'T');
-
     String tab;
     String portletId;
     ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> listData;
@@ -169,10 +165,13 @@ public class ScheduleAction extends ALBaseAction {
       String _template = "";
       if ("simple".equals(top_form)) {
         _template = "schedule-calendar";
-        ALTutorialUtil.updateForbid(rundata, "tutorial_schedule");
       } else {
         _template = portlet.getPortletConfig().getInitParameter("pba-template");
+        ALTutorialUtil.updateForbid(rundata, "tutorial_schedule");
       }
+
+      context.put(FORBID_TUTORIAL, rundata.getParameters().getInt(
+        FORBID_TUTORIAL) == 'T');
 
       // 現在のユーザー名を取得する
       ALEipUser loginuser = ALEipUtils.getALEipUser(rundata);

@@ -26,9 +26,11 @@ aipo.tutorial.pushFlag = function(url) {
   dojo.xhrGet({
     url : url,
     load : function(data) {
-      if ((data & 0x1F) == 0) {
-      } else if ((data & 0x0F) == 0) {
+      if ((data & 0x3F) == 0) {
+      } else if ((data & 0x1F) == 0) {
         document.getElementById('tutorial_user').style.display = "";
+      } else if ((data & 0x0F) == 0) {
+        document.getElementById('tutorial_support').style.display = "";
       } else if ((data & 0x07) == 0) {
         document.getElementById('tutorial_activity').style.display = "";
       }

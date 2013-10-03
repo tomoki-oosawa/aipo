@@ -25,16 +25,21 @@
     <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
   </div>
   <div class="hdNavi">
-  #if (!$forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
-	#ALtutorialTooltip("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
-  #else
-  	#ALtutorialTooltipHide("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
-  #end
-  #if (!$forbid_tutorial_user && $forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
-	#ALtutorialTooltip("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
-  #else
-	#ALtutorialTooltipHide("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
-  #end
+			#if (!$forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
+				#ALtutorialTooltip("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
+			#else
+				#ALtutorialTooltipHide("tutorial_activity" "あなたが投稿したメッセージに反応があった場合やあなたを含むスケジュールが投稿された場合などにお知らせいたします。")
+			#end
+			#if (!$forbid_tutorial_support && $forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
+				#ALtutorialTooltip("tutorial_support" "ヘルプや公式アカウントなどサポートに関するリンクを集めています。重要なお知らせもこちらで通知いたします。")
+			#else	
+				#ALtutorialTooltipHide("tutorial_support" "ヘルプや公式アカウントなどサポートに関するリンクを集めています。重要なお知らせもこちらで通知いたします。")
+			#end
+			#if (!$forbid_tutorial_user && $forbid_tutorial_support && $forbid_tutorial_activity && $forbid_tutorial_schedule && $forbid_tutorial_timeline1 && $forbid_tutorial_timeline2)
+				#ALtutorialTooltip("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
+			#else
+				#ALtutorialTooltipHide("tutorial_user" "ユーザー情報の設定と編集はこちらの「個人設定」から行えます。")
+			#end
 #if ($data.User.getUserName()!="admin" && ${client} != "IPHONE")
     <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" >
     <div id="activitychecker" class="zero counter activitycheckerstyle"></div>
@@ -43,7 +48,7 @@
 		<!-- /hdActivity -->
 
     <div class="hdUserName">
-		<a href="javascript:void(0);" class="arrow_bottom" onclick="aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
+		<a href="javascript:void(0);" class="arrow_bottom" onclick="if(dojo.byId('tutorial_user') != null) dojo.byId('tutorial_user').style.display = 'none'; aipo.tutorial.pushFlag('$jslink.getTemplate("TutorialForbidScreen").addQueryData("id", "tutorial_user")'); aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
 		#if ($data.User.getUserName()!="admin")
 			#if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />

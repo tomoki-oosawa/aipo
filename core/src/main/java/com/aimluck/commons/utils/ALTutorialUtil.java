@@ -40,8 +40,8 @@ public class ALTutorialUtil {
     "tutorial_timeline1",
     "tutorial_timeline2",
     "tutorial_activity",
-    "tutorial_user",
     "tutorial_support",
+    "tutorial_user",
     "tutorial_last_image");
 
   public static final int FORBID_FLAG_LENGTH = 64;

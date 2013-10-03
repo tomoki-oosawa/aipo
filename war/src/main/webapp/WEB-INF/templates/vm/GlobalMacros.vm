@@ -847,7 +847,7 @@ $item.get(0)
       <p class="tutorial_tooltipText">$text</p>
       <!--/MdFVGuide01-->
     </div>
-    <span><a href="javascript:void(0)" class="auiButtonIcon tutorial_tooltipClose" title="閉じる" onclick="dojo.byId($id).parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');"><span><i class="icon-remove"></i></span></a>
+    <span><a href="javascript:void(0)" class="auiButtonIcon tutorial_tooltipClose" title="閉じる" onclick="dojo.byId($id).style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');"><span><i class="icon-remove"></i></span></a>
 </span></div>
   <span class="tutorial_tooltip_arrow"></span>
   <!--/tutorial_tooltip-->
