@@ -827,16 +827,30 @@ $item.get(0)
 #end
 
 #macro(ALtutorialTooltip $id $text)
-<div id="$id" class="tutorial_tooltip" style='background-color:white; position:absolute; Z-index:10000'>
-	$text
-	<a href="javascript:void(0);" onclick="this.parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');">X</a>
+<div id="$id" class="tutorial_tooltip" style='position:absolute;'>
+  <div class="tutorial_tooltipBody">
+    <div class="tutorial_tooltip_inner">
+      <p class="tutorial_tooltipText">$text</p>
+      <!--/MdFVGuide01-->
+    </div>
+    <span><a href="javascript:void(0)" class="auiButtonIcon tutorial_tooltipClose" title="閉じる" onclick="dojo.byId($id).style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');"><span><i class="icon-remove"></i></span></a>
+</span></div>
+  <span class="tutorial_tooltip_arrow"></span>
+  <!--/tutorial_tooltip-->
 </div>
 #end
 
 #macro(ALtutorialTooltipHide $id $text)
-<div id="$id" class="tutorial_tooltip" style='display:none; background-color:white; position:absolute; Z-index:10000'>
-	$text
-	<a href="javascript:void(0);" onclick="this.parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');">X</a>
+<div id="$id" class="tutorial_tooltip" style='display:none; position:absolute;'>
+  <div class="tutorial_tooltipBody">
+    <div class="tutorial_tooltip_inner">
+      <p class="tutorial_tooltipText">$text</p>
+      <!--/MdFVGuide01-->
+    </div>
+    <span><a href="javascript:void(0)" class="auiButtonIcon tutorial_tooltipClose" title="閉じる" onclick="dojo.byId($id).parentNode.style.display = 'none';aipo.tutorial.pushFlag('$jslink.getTemplate('TutorialForbidScreen').addQueryData('id', $id)');"><span><i class="icon-remove"></i></span></a>
+</span></div>
+  <span class="tutorial_tooltip_arrow"></span>
+  <!--/tutorial_tooltip-->
 </div>
 #end
 

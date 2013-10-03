@@ -3960,3 +3960,47 @@ a.auiIconTrash:hover {
     opacity: 1;
   }
 }
+
+/***************************************************
+	tutorial_tooltip
+--------------------------------------------------*/
+
+.tutorial_tooltip_arrow {
+    background: url(../images/bg_arrow.png) no-repeat 0 0;
+    height: 6px;
+    width: 10px;
+}
+.tutorial_tooltip {
+    box-shadow: 1px 1px 2px rgba(204, 204, 204, 0.75);
+    z-index: 501;
+}
+.tutorial_tooltip .tutorial_tooltipBody {
+    background-color: #FFFFFF;
+    border: 1px solid #C0C0C0;
+    position: relative;
+    width: 100%;
+}
+.tutorial_tooltip .tutorial_tooltipClose {
+    position: absolute;
+    right: 9px;
+    top: 9px;
+}
+.tutorial_tooltip .tutorial_tooltip_arrow {
+    left: 7px;
+    position: absolute;
+    top: -5px;
+}
+.tutorial_tooltip {
+    position: absolute;
+}
+.tutorial_tooltip .tutorial_tooltip_arrow {
+    left: 50%;
+    margin-left: -8px;
+}
+.tutorial_tooltip_inner {
+    padding: 11px 35px 10px 15px;
+}
+.tutorial_tooltipText {
+        margin:0;
+        font-weight:bold;
+}
