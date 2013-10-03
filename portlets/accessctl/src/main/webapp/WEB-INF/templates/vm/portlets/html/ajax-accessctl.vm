@@ -24,8 +24,9 @@
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
-#end
+#else
 #AUIwideAreaHeader()
+#end
 #AUISummaryDiv()
 #AUIbuttonAction("$l10n.ACCESSCTL_ROLE_ADD" "javascript:aipo.common.showDialog('$addRole','$!portlet.ID',aipo.accessctl.onLoadAccessctlDialog);")
 #AUISummaryDivfooter()
@@ -50,7 +51,7 @@
 </div>
 #AUIajaxpageview('AccessControlScreen' $result)
 #AUISummaryDivfooter()
-<table class="auiRowTable wide">
+<table class="auiRowTable auiMbTable wide">
 <colgroup style="width:20px;"></colgroup>
 <colgroup style=""></colgroup>
 <colgroup style=""></colgroup>
@@ -60,12 +61,15 @@
 #ALtdhead("#ALswitchCheckbox()")
 #ALtdhead("#ALajaxsort('acl_role_name' $l10n.ACCESSCTL_ROLE_NAME $result 'AccessControlScreen')")
 #ALtdhead("#ALajaxsort('feature_alias_name' $l10n.ACCESSCTL_FEATURE_NAME $result 'AccessControlScreen')")
-#ALtdheadAtt("$l10n.ACCESSCTL_FEATURE_AUTHORITY" 'class="mb_hide"')
+#ALtdhead("$l10n.ACCESSCTL_FEATURE_AUTHORITY")
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.AclRoleId' type='checkbox' value='$!record.AclRoleId'/>" 'align="center"')
-#ALtdcellheader()
+#if($!{client}=="IPHONE")
+#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+<input name='check$!record.AclRoleId' type='checkbox' value='$!record.AclRoleId'/>
+#ALtdcellfooter()
+#ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccessControlDetailScreen").addQueryData("entityid",$record.AclRoleId))');">$!record.AclRoleName</a>
 </div>
@@ -81,6 +85,25 @@
 #if($record.hasAclExport()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_EXPORT</span> #end
 </div>
 #ALtdcellfooter()
+#else
+#ALtdcellAtt("<input name='check$!record.AclRoleId' type='checkbox' value='$!record.AclRoleId'/>" 'align="center"')
+#ALtdcellheader()
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccessControlDetailScreen").addQueryData("entityid",$record.AclRoleId))');">$!record.AclRoleName</a>
+</div>
+#ALtdcellfooter()
+#ALtdcell("<div>$record.FeatureName</div>")
+#ALtdcellheader()
+<div>
+#if($record.hasAclList()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_LISTVIEW</span> #end
+#if($record.hasAclDetail()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_DETAILVIEW</span> #end
+#if($record.hasAclInsert()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_ADD</span> #end
+#if($record.hasAclUpdate()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_EDIT</span> #end
+#if($record.hasAclDelete()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_DELETE</span> #end
+#if($record.hasAclExport()) <span class="spaceRight">$l10n.ACCESSCTL_FEATURE_EXPORT</span> #end
+</div>
+#ALtdcellfooter()
+#end
 </tr>
 #end
 </table>
@@ -92,7 +115,8 @@
 #AUISummaryDivfooter()
 #end
 </form>
-#AUIwideAreaFooter()
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#else
+#AUIwideAreaFooter()
 #end
