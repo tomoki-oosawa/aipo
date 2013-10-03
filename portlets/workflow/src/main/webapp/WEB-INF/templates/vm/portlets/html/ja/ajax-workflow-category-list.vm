@@ -26,8 +26,9 @@
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
-#end
+#else
 #AUIwideAreaHeader()
+#end
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIbuttonAction("$l10n.WORKFLOW_DO_ADD_CLASSIFICATION" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
@@ -57,7 +58,7 @@
 </div>
 #AUIajaxpageview('WorkflowCategoryListScreen' $result)
 #AUISummaryDivfooter()
-<table class="auiRowTable wide">
+<table class="auiRowTable auiMbTable wide">
 <colgroup style="width:20px;">
 </colgroup><colgroup style="">
 </colgroup>
@@ -69,6 +70,24 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
+#if($!{client}=="IPHONE")
+#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId' />
+#ALtdcellfooter()
+#ALtdcellheaderAtt('class="auiMTCaption"')
+<div>
+<a href='javascript:void(0);' onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">
+$!record.CategoryName</a>
+</div>
+#ALtdcellfooter()
+#ALtdcellheader()
+<div>
+#if($!record.HasRouteName)
+	$!record.RouteName
+#end
+</div>
+#ALtdcellfooter()
+#else
 #if($!record.CategoryId.toString() == "1")
 #ALtdcellAtt("<input type='checkbox' disabled='disabled' />" 'align="center"')
 #else
@@ -86,6 +105,7 @@ $!record.RouteName
 #end
 </div>
 #ALtdcellfooter()
+#end
 </tr>
 #end
 </tbody>
@@ -99,7 +119,8 @@ $!record.RouteName
 
 #end
 #ALformfooter()
-#AUIcontentsAreaFooter()
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
+#else
+#AUIwideAreaFooter()
 #end

@@ -77,7 +77,7 @@
 <tr>
 #if(${client}=="IPHONE")
 <td class="auiMTCaption">
-	<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </a>
+<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
 </td>
 <td>$!record.StateString</td>
 <td>$user</td>
