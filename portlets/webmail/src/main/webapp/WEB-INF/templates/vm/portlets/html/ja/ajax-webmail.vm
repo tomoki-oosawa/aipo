@@ -64,13 +64,13 @@
 #if($!record.Read)
 #ALtdcellAtt("<div>$!record.Person</div>" '')
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl');">$MailSubject</a></div>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl');aipo.portletReload('webmail');">$MailSubject</a></div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.Date</div>" 'class="right" nowrap="nowrap"')
 #else
 #ALtdcellAtt("<div><strong>$!record.Person</strong></div>" '')
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl');"><strong>$MailSubject</strong></a></div>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl');aipo.portletReload('webmail');"><strong>$MailSubject</strong></a></div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div><strong>$!record.Date</strong></div>" 'class="right" nowrap="nowrap"')
 #end
