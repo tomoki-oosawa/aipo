@@ -30,6 +30,7 @@
     <module>social</module>
     <module>storage</module>
     <module>portal</module>
+    <module>preexecute</module>
   </modules>
 
   <dependencies>

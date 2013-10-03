@@ -159,6 +159,9 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setPhotoModifiedSmartphone(tuser.getPhotoModifiedSmartphone());
       baseuser.setHasPhoto("T".equals(tuser.getHasPhoto()));
       baseuser.setHasPhotoSmartphone("T".equals(tuser.getHasPhotoSmartphone()));
+      baseuser.setMigrateVersion((tuser.getMigrateVersion() != null) ? tuser
+        .getMigrateVersion()
+        .intValue() : 0);
       return baseuser;
     } catch (Exception e) {
       logger.error("ALUserManagement.row2UserObject", e);
@@ -306,6 +309,7 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setPhotoModified(baseuser.getPhotoModified());
       tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
       tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
+      tuser.setMigrateVersion(baseuser.getMigrateVersion());
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {
@@ -378,6 +382,7 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setPhotoModified(new Date());
     tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
+    tuser.setMigrateVersion(baseuser.getMigrateVersion());
     Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる
