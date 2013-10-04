@@ -612,7 +612,6 @@ $item.get(0)
 <div class="dojoDndItem auiPortlet">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
-	<div id="roundWrapper">
 		<div id="mobileHeader_v2" class="clearfix">
 		<div class="inner">
 		<h1><span>#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
@@ -631,7 +630,7 @@ $item.get(0)
 			#end
 			#ALSupport()
 		</div>
-		</div></div>
+		</div>
 	</div>
 	<!-- /Smartphone Header -->
 	#end
