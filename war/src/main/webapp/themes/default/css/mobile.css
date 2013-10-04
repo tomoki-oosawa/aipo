@@ -185,16 +185,13 @@ input[type=password] {
   padding: 0 5px;
   border-top: solid 1px #f0f0f0;
 }
-
 .auiMbTable tbody {
   margin: 0 -5px;
   display: block;
 }
-
 .auiMbTable tr:first-child {
   display: none;
 }
-
 .auiMbTable tr {
   padding: 8px 5px;
   display: block;
@@ -204,11 +201,9 @@ input[type=password] {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 .auiMbTable tr:hover {
   background: #f6f6f6 !important;
 }
-
 .auiMbTable td {
   display: inline;
   width: auto;
@@ -217,49 +212,43 @@ input[type=password] {
   margin-right: 10px;
   color: #999999;
 }
-
 .auiMbTable td div {
   display: inline;
 }
-
 .auiMbTable td a {
   display: inline;
   color: #999999;
 }
-
 .auiMbTable .auiMTCheck {
   display: block;
   float: left;
   margin: 0;
-  padding: 3px 10px 0 5px;
+  padding: 5px 10px 0 5px;
   vertical-align: middle;
 }
-
 .auiMbTable .auiMTCheck input[type=checkbox] {
   height: 20px;
-  line-height: 20px;
+  line-height: 25px;
 }
-
 .auiMbTable .auiMTCaption {
-  display: inline;
+  display: block;
   width: 100%;
+  line-height: 25px !important;
   margin: 0;
+  font-size: 18px;
   color: #1b1b1b;
 }
-
 .auiMbTable .auiMTCaption div {
   display: inline;
   margin: 0;
   height: auto;
   line-height: 1;
 }
-
 .auiMbTable .auiMTCaption a {
   display: block;
-  margin: 0;
   height: 25px;
   line-height: 25px !important;
-  font-size: 18px;
+  margin: 0;
   color: #1b1b1b;
   overflow: hidden;
 }
@@ -269,7 +258,6 @@ input[type=password] {
   line-height: normal !important;
   margin: 0 !important;
 }
-
 .auiRowTable.auiMbTable div a {
   line-height: normal;
 }
