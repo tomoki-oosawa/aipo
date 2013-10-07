@@ -119,10 +119,11 @@
 						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 							#if($attachmentFile.isImage())
 								<div style="padding-top:3px;padding-left:12px;">
-									<div id='popc' style='position:absolute'>
-									</div>
+									<div id='popc' style='position:absolute'></div>
+									<div class="thumbBlock">
 									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
 									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
 								</div>
 							#end
 						#end
