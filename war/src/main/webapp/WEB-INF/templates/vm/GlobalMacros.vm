@@ -677,24 +677,28 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('modalDialog').hide();")
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('modalDialog').hide();" "$link")
 #end
 #macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('modalDialog').hide();")
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('modalDialog').hide();" "$link")
 #end
-#macro(ALdialogheaderPrintMail $title $portlet_id $screen $view_date)
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();")
+#macro(ALdialogheaderPrintMail $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();" "$link")
 #end
 #macro(ALdialogheaderPrintNote $title $portlet_id $screen $view_date)
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.note.hideDialog();")
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.note.hideDialog();" "$link")
 #end
 
-#macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick)
+#macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick $link)
 	<div class="auiPopup clearfix">
 		<div class="auiPopupHead clearfix">
 	    	<div class="auiPopupTool">
 	    		#if(($portlet_id!=""))
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid")');void(0);"><span><i class="auiIcon auiIconPrint"></i></span></a></div>
+	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="auiIcon auiIconPrint"></i></span></a></div>
 	        	#end
 	        	<div>#ALdialogCloseButton($onclick)</div>
 	    	</div>
