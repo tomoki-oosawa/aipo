@@ -620,6 +620,7 @@ $item.get(0)
 			<a href="javascript:void(0)" class="auiMbBtnNavi" onClick="appsNaviSwitch()">
 				<i class="icon-reorder"></i>
 			</a>
+			#ALUnreadchecker()
 		</div>
 		<div class="mhRight clearfix">
 			#if($data.User.getUserName() != "admin")
