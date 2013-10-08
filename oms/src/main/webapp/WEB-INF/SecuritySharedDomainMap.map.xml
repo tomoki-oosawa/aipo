@@ -53,7 +53,7 @@
 		<db-attribute name="PHOTO_MODIFIED_SMARTPHONE" type="TIMESTAMP"/>
 		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
-		<db-attribute name="TUTORIAL_FORBID" type="CHAR" length="1"/>
+		<db-attribute name="TUTORIAL_FORBID" type="CHAR" length="64"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
