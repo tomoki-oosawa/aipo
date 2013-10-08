@@ -172,11 +172,11 @@ function hide_Attention(){
 <tr>
 <td width="150" class="caption">$l10n.FILEIO_TYPE</td>
 <td>
-<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountCsvFileScreen')" />$l10n.FILEIO_USER_ACCOUNT</label></p>
-<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')" />$l10n.FILEIO_UNIT</label></p>
-<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCompanyCsvFileScreen')" />$l10n.FILEIO_ADDRESSBOOK_COMPANY</label></p>
-<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCsvFileScreen')" />$l10n.FILEIO_ADDRESSBOOK</label></p>
-<p><label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOScheduleCsvFileScreen')" />$l10n.FILEIO_SCHEDULE</label></p>
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountCsvFileScreen')" />$l10n.FILEIO_USER_ACCOUNT</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAccountPostCsvFileScreen')" />$l10n.FILEIO_UNIT</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCompanyCsvFileScreen')" />$l10n.FILEIO_ADDRESSBOOK_COMPANY</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOAddressBookCsvFileScreen')" />$l10n.FILEIO_ADDRESSBOOK</label><br />
+<label><input type="radio" name="downloadcsv" class="mb5 mr5" value="$jslink.getTemplate('FileIOScheduleCsvFileScreen')" />$l10n.FILEIO_SCHEDULE</label><br />
 </td>
 </tr>
 
@@ -202,11 +202,11 @@ function hide_Attention(){
 <tr>
 <td width="150" class="caption">$l10n.FILEIO_TYPE</td>
 <td>
-<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Account_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />$l10n.FILEIO_USER_ACCOUNT</label></p>
-<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />$l10n.FILEIO_UNIT</label></p>
-<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />$l10n.FILEIO_ADDRESSBOOK_COMPANY</label></p>
-<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />$l10n.FILEIO_ADDRESSBOOK</label></p>
-<p><label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Schedule_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>$l10n.FILEIO_SCHEDULE</label></p>
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Account_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_upload_csv','1')" />$l10n.FILEIO_USER_ACCOUNT</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAccount_postcsv_upload','1')" />$l10n.FILEIO_UNIT</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_upload_csv','1')" />$l10n.FILEIO_ADDRESSBOOK_COMPANY</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="hide_Attention()" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_upload_csv','1')" />$l10n.FILEIO_ADDRESSBOOK</label><br />
+<label><input type="radio" name="importcsv" class="mb5 mr5" onClick="show_Attention('Schedule_Attention','AttentionGroup')" value="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_upload_csv','1')"/>$l10n.FILEIO_SCHEDULE</label><br />
 </td>
 </tr>
 
