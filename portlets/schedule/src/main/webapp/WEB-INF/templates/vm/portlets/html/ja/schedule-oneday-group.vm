@@ -55,7 +55,7 @@
 <a href="javascript:void(0);" class="last arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextDate.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a>
 </li>
 <li title="$l10n.SCHEDULE_NEXT_WEEK">
-<a href="javascript:void(0);" class="btn arrow"onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
+<a href="javascript:void(0);" class="btn arrow" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextWeek.toString()}))', '$!portlet.ID');"><span><i class="auiIconArrow auiIconArrowRightW"></i></span></a>
 </li>
 </ul>
 <div class="count"><strong>$!{result.ViewDateText}$!{result.ViewDate.DayOfWeek}</strong></div>

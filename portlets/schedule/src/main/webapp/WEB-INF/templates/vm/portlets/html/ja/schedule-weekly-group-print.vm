@@ -64,9 +64,9 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <td>
 <label><input id=print_icon type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
 <label><input id=print_term type="checkbox" checked="checked" onclick="change_print_form()"/> $l10n.SCHEDULE_DISPLAY_SPAN_SCHEDULE</label><br />
-<label><input id=print_todo type="checkbox" checked="checked"onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
+<label><input id=print_todo type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
 <label><input id=print_holiday type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_HOLIDAY</label><br />
-##<label><input type="checkbox" checked="checked"onclick="change_print_form()" /> 記念日を表示する。</label></td>
+##<label><input type="checkbox" checked="checked" onclick="change_print_form()" /> 記念日を表示する。</label></td>
 </tr>
 <tr>
 <td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
