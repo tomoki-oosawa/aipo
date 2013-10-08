@@ -145,7 +145,6 @@ function appsNaviSwitch() {
         wrapper.style.height = document.getElementById('anInner').clientHeight + 'px';
         bk.style.display = 'block';
         bk.style.height = document.getElementById('anInner').clientHeight + 'px';
-        mh.style.position = 'absolute';
         mh.style.top = '0';
         if (aipo.userAgent.isAndroid()){
             navi.className = 'anOpen';
@@ -181,12 +180,12 @@ function appsNaviSwitch() {
             });
 
         } else {
+            mh.style.position = 'absolute';
             setTimeout('setClassName("appsNavigation_v2","anOpen")',100);
             setTimeout('setClassName("appsNavigationBack_v2","anOpen")',1);
         }
     }else{
         wrapper.style.overflow = 'visible';
-        mh.style.position = 'fixed';
         mh.style.top = '';
         navi.className = '';
         if (aipo.userAgent.isAndroid()){
@@ -213,6 +212,7 @@ function appsNaviSwitch() {
             });
 
         } else {
+       		mh.style.position = 'fixed';
             setTimeout('setClassName("appsNavigationBack_v2","")',100);
             setTimeout('setNaviDisp("appsNavigationBack_v2","none")',300);
             setTimeout('setNaviDisp("appsNavigation_v2","none")',300);
