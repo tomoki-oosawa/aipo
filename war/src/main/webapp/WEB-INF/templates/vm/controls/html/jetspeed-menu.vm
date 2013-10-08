@@ -38,9 +38,9 @@ document.body.style.display = 'none';
 });
 </script>
 #else
-#ALsubmenuheader($tabs)
+##ALsubmenuheader($tabs)
 $portlet.getContent($data)
-#ALsubmenufooter()
+##ALsubmenufooter()
 #end
 
 #end

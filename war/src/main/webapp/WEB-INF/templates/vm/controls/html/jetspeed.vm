@@ -478,7 +478,14 @@ $portlet.getContent($data)
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody dndIdentifier">
     <div class="inner" dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
+	#if (${submenuTabsFlag})
+		#AUIcontentsAreaHeader()
+	#end
     $!portlet.getContent($data)
+	#if (${submenuTabsFlag})
+		#AUIcontentsAreaFooter()
+		#ALPreferenceWidgetAbstract($submenuTabs)
+	#end
 	  </div>
   </div>
 	<!-- /auiPortletBody -->

@@ -50,6 +50,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -85,6 +86,18 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
       Collection<PortletTab> tabs = getTabs(set, rundata, context);
 
+      // サブメニュー表示
+      for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+        PortletTab tab = i.next();
+        if (tab.isSelected()
+          && (tab.getTitle().toString().equals("個人設定") || tab
+            .getTitle()
+            .toString()
+            .equals("システム管理"))) {
+          HttpServletRequestLocator.get().setAttribute("submenuTabsFlag", true);
+        }
+      }
+
       // remove "個人設定"
       for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
         PortletTab tab = i.next();
@@ -94,10 +107,11 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         if (tab.getTitle().toString().equals("システム管理")) {
           i.remove();
         }
-
       }
 
       context.put("tabs", tabs);
+      // サブメニュー表示
+      HttpServletRequestLocator.get().setAttribute("submenuTabs", tabs);
       String mypageId = "";
       for (Enumeration<?> en = set.getPortlets(); en.hasMoreElements();) {
         Portlet p = (Portlet) en.nextElement();

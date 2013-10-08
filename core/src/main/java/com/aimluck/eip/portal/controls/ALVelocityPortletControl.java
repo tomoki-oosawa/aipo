@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 import org.apache.jetspeed.om.profile.Entry;
@@ -71,6 +73,7 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipInformation;
 import com.aimluck.eip.common.ALFunction;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -163,6 +166,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * Handles the content generation for this control using Velocity
    */
+  @SuppressWarnings("unchecked")
   @Override
   public ConcreteElement getContent(RunData rundata) {
     Portlet portlet = getPortlet();
@@ -199,6 +203,22 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       context.put("runs", getPortletList(rundata));
     } catch (NullPointerException e) {
 
+    }
+
+    // サブメニュー表示セット
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      Object obj1 = request.getAttribute("submenuTabsFlag");
+      Object obj2 = request.getAttribute("submenuTabs");
+      Boolean submenuTabsFlag = false;
+      if (obj1 != null) {
+        submenuTabsFlag = (Boolean) obj1;
+        context.put("submenuTabsFlag", submenuTabsFlag);
+      }
+      if (submenuTabsFlag && obj2 != null) {
+        Collection<PortletTab> submenuTabs = (Collection<PortletTab>) obj2;
+        context.put("submenuTabs", submenuTabs);
+      }
     }
 
     // アクセス権限がなかった場合の削除表示フラグ
