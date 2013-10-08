@@ -22,7 +22,6 @@ package com.aimluck.eip.portal.controls;
 // Turbine stuff
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -31,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
@@ -71,6 +72,7 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipInformation;
 import com.aimluck.eip.common.ALFunction;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -163,6 +165,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * Handles the content generation for this control using Velocity
    */
+  @SuppressWarnings("unchecked")
   @Override
   public ConcreteElement getContent(RunData rundata) {
     Portlet portlet = getPortlet();
@@ -199,6 +202,22 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       context.put("runs", getPortletList(rundata));
     } catch (NullPointerException e) {
 
+    }
+
+    // サブメニュー表示セット
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      Object obj1 = request.getAttribute("submenuTabsFlag");
+      Object obj2 = request.getAttribute("submenuTabs");
+      Boolean submenuTabsFlag = false;
+      if (obj1 != null) {
+        submenuTabsFlag = (Boolean) obj1;
+        context.put("submenuTabsFlag", submenuTabsFlag);
+      }
+      if (submenuTabsFlag && obj2 != null) {
+        Collection<PortletTab> submenuTabs = (Collection<PortletTab>) obj2;
+        context.put("submenuTabs", submenuTabs);
+      }
     }
 
     // アクセス権限がなかった場合の削除表示フラグ
@@ -290,6 +309,18 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         Collection<PortletTab> tabs =
           getTabs(PortalToolkit.getSet(portlets), rundata, context);
 
+        // サブメニュー表示
+        for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
+          PortletTab tab = i.next();
+          if (tab.isSelected()
+            && (tab.getTitle().toString().equals("個人設定") || tab
+              .getTitle()
+              .toString()
+              .equals("システム管理"))) {
+            context.put("submenuTabsFlag", true);
+          }
+        }
+
         // remove "個人設定"
         for (Iterator<PortletTab> i = tabs.iterator(); i.hasNext();) {
           PortletTab tab = i.next();
@@ -304,6 +335,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         context.put("tabs", tabs);
         List<PortletTab> menues = getMenus(portlets, rundata, context);
         context.put("menus", menues);
+        List<PortletTab> submenuTabs = getSubMenus(portlets, rundata, context);
+        context.put("submenuTabs", submenuTabs);
         int gadgetCounts = 0;
         for (PortletTab tab : menues) {
           if ("GadgetsTemplate".equals(tab.getName().toString())) {
@@ -311,8 +344,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
           }
         }
         context.put("gadgetCounts", gadgetCounts);
-        context.put("accountMenues", getAccountMenues(menues));
-        context.put("systemMenus", getSystemMenus(menues));
 
         String mypageId = "";
         for (Portlets p : portlets.getPortletsArray()) {
@@ -579,69 +610,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
   }
 
-  private List<PortletTab> getSystemMenus(List<PortletTab> tabs) {
-
-    PortletTab[] systemMenues = new PortletTab[11];
-    ArrayList<PortletTab> arrayList = new ArrayList<PortletTab>();
-
-    for (PortletTab tab : tabs) {
-      if (tab.getName().toString().contains("SysInfo")) {
-        systemMenues[0] = tab;
-      } else if (tab.getName().toString().contains("FileIO")) {
-        systemMenues[1] = tab;
-      } else if (tab.getName().toString().contains("Account")) {
-        if (!tab.getName().toString().equals("AccountPerson")) {
-          systemMenues[2] = tab;
-        }
-      } else if (tab.getName().toString().equals("Post")) {
-        systemMenues[3] = tab;
-      } else if (tab.getName().toString().equals("Position")) {
-        systemMenues[4] = tab;
-      } else if (tab.getName().toString().equals("Facilities")) {
-        systemMenues[5] = tab;
-      } else if (tab.getName().toString().contains("GadgetsAdmin")) {
-        systemMenues[6] = tab;
-      } else if (tab.getName().toString().equals("WorkflowCategory")) {
-        systemMenues[7] = tab;
-      } else if (tab.getName().toString().equals("ExtTimecardSystem")) {
-        systemMenues[8] = tab;
-      } else if (tab.getName().toString().equals("AccessControl")) {
-        systemMenues[9] = tab;
-      } else if (tab.getName().toString().equals("Eventlog")) {
-        systemMenues[10] = tab;
-      }
-
-    }
-
-    // ワークフローがない場合
-    for (PortletTab menues : systemMenues) {
-      if (menues != null) {
-        arrayList.add(menues);
-      }
-    }
-
-    return arrayList;
-  }
-
-  /**
-   * スマートフォン用：ユーザー情報タブのメニュー
-   * 
-   * @param tabs
-   * @return
-   */
-  private List<PortletTab> getAccountMenues(List<PortletTab> tabs) {
-    PortletTab[] accountMenues = new PortletTab[2];
-    for (PortletTab tab : tabs) {
-      if (tab.getName().toString().equals("AccountPerson")) {
-        accountMenues[0] = tab;
-      } else if (tab.getName().toString().equals("MyGroup")) {
-        accountMenues[1] = tab;
-      }
-    }
-
-    return Arrays.asList(accountMenues);
-  }
-
   /**
    * iphoneメニュー用にすべてのポートレットのリストを取り出す。
    * 
@@ -725,6 +693,79 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
         }
       }
       tabs.addAll(atabs);
+    }
+    return tabs;
+  }
+
+  /**
+   * iphoneメニュー用に個人設定・システム管理で自分と同じ親を持つポートレットのリストを取り出す。
+   * 
+   * @param portlet
+   * 
+   * @param portlets
+   * @param rundata
+   * @param context
+   * @return
+   */
+  @SuppressWarnings("rawtypes")
+  private List<PortletTab> getSubMenus(Portlets portlets, RunData rundata,
+      Context context) {
+    List<PortletTab> tabs = new ArrayList<PortletTab>();
+    for (Iterator en = portlets.getPortletsIterator(); en.hasNext();) {
+      Portlets p = (Portlets) en.next();
+      if (p.getTitle().toString().equals("個人設定")
+        || p.getTitle().toString().equals("システム管理")) {
+
+        // ここからtabs
+        String pane = p.getId();
+        Collection<PortletTab> atabs =
+          getTabs(PortalToolkit.getSet(p), rundata, context);
+
+        /**
+         * リンク埋め込み。
+         **/
+        boolean selected = false;
+        for (Iterator<PortletTab> iterator = atabs.iterator(); iterator
+          .hasNext();) {
+          PortletTab tab = iterator.next();
+
+          if (tab.isSelected()) {
+            selected = true;
+          }
+
+          // for (PortletTab tab : atabs) {
+          try {
+            JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+            DynamicURI duri =
+              jsLink.getLink(
+                JetspeedLink.CURRENT,
+                null,
+                null,
+                JetspeedLink.CURRENT,
+                null);
+            // 最大化リンクを登録する
+            // tab.setMaximizeLink(controller.getPortletURI(p,
+            // rundata).addQueryData(
+            // "action",
+            // "controls.Maximize").toString());
+            duri =
+              duri
+                .addPathInfo(JetspeedResources.PATH_PANEID_KEY, pane)
+                .addPathInfo(JetspeedResources.PATH_PORTLETID_KEY, tab.getId())
+                .addQueryData(
+                  JetspeedResources.PATH_ACTION_KEY,
+                  "controls.Maximize");
+            tab.setMaximizeLink(duri.toString());
+            tab.setLink(duri.toString());
+
+          } catch (Exception e) {
+            logger.warn("[ALVelocityPortletControl]", e);
+          }
+        }
+        if (selected) {
+          tabs.addAll(atabs);
+        }
+      }
     }
     return tabs;
   }
