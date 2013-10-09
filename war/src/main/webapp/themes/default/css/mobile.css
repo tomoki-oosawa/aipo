@@ -1289,8 +1289,12 @@ input[type=password] {
 
 .imgPopup {
   left: 0 !important;
-  width: 100% !important;
+  width: 96% !important;
   height: auto !important;
+  margin: 0 2%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .imgBody {
