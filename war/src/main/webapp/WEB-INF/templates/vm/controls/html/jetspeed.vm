@@ -17,19 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#macro(ALtabElementMaximize $name $imageclass)
+#macro(ALtabElementMaximizeAbstract $name $imageclass $prefix)
 #set($break=false)
 #foreach($tab in $menus)
 	#if($break==false)
 		#if($tab.Name.toString()==$name)
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+		<li>$!{prefix}<a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
 		#set($break=true)
 		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+		<li>$!{prefix}<a href="$!utils.escapeXML($tab.MaximizeLink)"><span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
 		#set($break=true)
 		#end
 	#end
 #end
+#end
+
+#macro(ALtabElementMaximize $name $imageclass)
+#ALtabElementMaximizeAbstract($name $imageclass "")
 #end
 
 ## ---------------------------------------------------------------------------
