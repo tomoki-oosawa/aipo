@@ -1908,6 +1908,7 @@ div.calerndarTermScheduleDiv a:hover {
   padding: 0;
   font-weight: normal;
   text-align: center;
+  border: 1px solid #f0a0a0;
   background-color: #FFE5E5;
 }
 
