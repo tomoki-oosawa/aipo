@@ -60,6 +60,15 @@ aipo.common.showDialogSub = function(url, portlet_id, callback) {
 aipo.common.hideDialogSub = function() {
     dijit.byId('modalDialog').hide();
 };
+
+
+aipo.common.startGuideCustomizeDialog=function(){
+	if(dojo.byId("startguide-data-activecustomizeurl") != undefined && dojo.byId("startguide-data-activecustomizeurl") !=""){
+		var url=dojo.byId("startguide-data-activecustomizeurl").value;
+		aipo.common.showDialog(url);
+	}
+};
+
 aipo.common.customizeDialog=function(){
 	if(dojo.byId("data-activecustomizeurl") != undefined && dojo.byId("data-activecustomizeurl") !=""){
 		var url=dojo.byId("data-activecustomizeurl").value;
