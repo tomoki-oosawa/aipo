@@ -297,6 +297,7 @@ public class AccountUserSelectData extends
       rd.setDisabled(record.getDisabled());
       rd.setHasPhoto("T".equals(record.getHasPhoto()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
+      rd.setEmail(record.getEmail());
 
       return rd;
     } catch (Exception ex) {
