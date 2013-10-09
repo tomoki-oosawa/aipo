@@ -42,7 +42,7 @@ aipo.tutorial.nextPage=function(){
 	}
 	val++;
 	dojo.byId('popupImage' + val).style.display = "";
-	if(val == 3){
+	if(val == 4){
 		dojo.byId('tutorial_next').style.display = "none";
 	}
 	page.value = val + "";
@@ -52,7 +52,7 @@ aipo.tutorial.prevPage=function(){
 	var page = dojo.byId('page_tutorial');
 	var val = page.value - 0;
 	dojo.byId('popupImage' + val).style.display = "none";
-	if(val == 3){
+	if(val == 4){
 		dojo.byId('tutorial_next').style.display = "";
 	}
 	val--;
