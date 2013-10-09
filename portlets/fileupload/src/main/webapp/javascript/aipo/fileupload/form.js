@@ -76,7 +76,7 @@ aipo.fileupload.showImageDialog = function(url, portlet_id, callback) {
 	var dialog=dojo.byId('imageDialog');
 	dojo.query("#imageDialog").addClass("preLoadImage");
 	aipo.fileupload.ImageDialog = dijit.byId("imageDialog");
-    dojo.query(".roundBlockContent").addClass("mb_dialoghide");
+    dojo.query(".auiPopup:not(.imgPopup)").addClass("mb_dialoghide");
     dojo.query("#imageDialog").addClass("mb_dialog");
 
     if(! aipo.fileupload.ImageDialog){
