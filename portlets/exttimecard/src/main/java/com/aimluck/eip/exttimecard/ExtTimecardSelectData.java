@@ -668,6 +668,9 @@ public class ExtTimecardSelectData extends
    */
   private void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
+    if (target_group_name.equals("only")) {
+      target_group_name = "all";
+    }
     if ((target_group_name != null)
       && (!target_group_name.equals(""))
       && (!target_group_name.equals("all"))) {
@@ -733,6 +736,11 @@ public class ExtTimecardSelectData extends
     target_user_id =
       ALEipUtils.getTemp(rundata, context, ExtTimecardUtils.TARGET_USER_ID);
 
+    if (userList.size() == 0) {
+      ALEipUtils.removeTemp(rundata, context, ExtTimecardUtils.TARGET_USER_ID);
+      return "";
+    }
+
     if (idParam == null && (target_user_id == null)) {
       // ログインユーザのスケジュールを表示するため，ログイン ID を設定する．
       ALEipUtils.setTemp(
@@ -749,13 +757,6 @@ public class ExtTimecardSelectData extends
         ALEipUser eipUser = null;
         boolean found = false;
         int length = userList.size();
-        if (length == 0) {
-          ALEipUtils.removeTemp(
-            rundata,
-            context,
-            ExtTimecardUtils.TARGET_USER_ID);
-          return "";
-        }
         for (int i = 0; i < length; i++) {
           eipUser = userList.get(i);
           String eipUserId = eipUser.getUserId().getValueAsString();
