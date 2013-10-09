@@ -538,6 +538,7 @@ input[type=password] {
   text-shadow: 0 1px 0 white;
 }
 #mobileHeader_v2 .mhLeft {
+  position: relative;
   float: left;
 }
 #mobileHeader_v2 .mhRight {
@@ -927,13 +928,11 @@ input[type=password] {
   line-height: 40px;
   font-size: 16px;
   font-weight: bold;
-  text-shadow: 0 1px 0 black;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: none;
   color: #333333;
-  text-shadow: 0 1px 0 white;
   border-top: solid 1px white;
   border-bottom: solid 1px #f0f0f0;
   background: white;
@@ -941,6 +940,18 @@ input[type=password] {
 #appsNavigation_v2 .anApps li:last-child a,
 #appsNavigation_v2 .anSetting li:last-child a {
   border-bottom: 0;
+}
+#appsNavigation_v2 .anApps .counter,
+#appsNavigation_v2 .anSetting .counter {
+  float: right !important;
+  font-size: 12px;
+  font-weight: normal;
+  min-width: 14px;
+  height: auto !important;
+  line-height: 24px !important;
+  margin: 8px 10px;
+  padding: 0 5px;
+  color: white !important;
 }
 #appsNavigation_v2 .anFooter {
   width: 100%;
