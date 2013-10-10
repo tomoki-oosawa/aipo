@@ -355,68 +355,14 @@ function setWrapperHeight() {
 <div id="roundWrapper">
   <div class="roundMainWrapper">
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
-$portlet.getContent($data)
-  #set ($flag = false)
-  #if ($portlet.name=="AccountPerson")
-    #set ($flag = true)
-  #elseif($portlet.name=="MyGroup")
-   #set ($flag = true)
-  #elseif($portlet.name=="Cellular")
-    #set ($flag = true)
-  #end
-
-  #if ($flag)
-	<!-- auiWidgetsArea -->
-	<div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
-	<div class="auiWidget clearfix">
-	<ul>
-	#foreach($menue in $accountMenues)
-	<li#if ($menue.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($menue.MaximizeLink)">$menue.Title</a></li>
+	#if (${submenuTabsFlag})
+		#AUIcontentsAreaHeader()
 	#end
-	</ul>
-	</div>
-	</div>
-	<!-- /auiWidgetsArea -->
-  #end
-#set ($system = false)
-
-  #if ($portlet.name=="SysInfo")
-    #set ($system = true)
-  #elseif($portlet.name=="FileIO")
-   #set ($system = true)
-  #elseif($portlet.name=="Account")
-    #set ($system = true)
-   #elseif($portlet.name=="Post")
-    #set ($system = true)
-   #elseif($portlet.name=="Position")
-    #set ($system = true)
-   #elseif($portlet.name=="Facilities")
-    #set ($system = true)
-   #elseif($portlet.name=="GadgetsAdmin")
-    #set ($system = true)
-   #elseif($portlet.name=="WorkflowCategory")
-    #set ($system = true)
-   #elseif($portlet.name=="ExtTimecardSystem")
-    #set ($system = true)
-    #elseif($portlet.name=="AccessControl")
-    #set ($system = true)
-   #elseif($portlet.name=="Eventlog")
-    #set ($system = true)
-  #end
-  #if ($system)
-	<!-- auiWidgetsArea -->
-	<div id="auiWidgetsArea" #if("$!{clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
-	<div class="auiWidget clearfix">
-	<ul>
-	#foreach($menu in $systemMenus)
-	<li#if ($menu.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($menu.MaximizeLink)">$menu.Title</a></li>
+    $!portlet.getContent($data)
+	#if (${submenuTabsFlag})
+		#AUIcontentsAreaFooter()
+		#ALPreferenceWidgetAbstract($submenuTabs)
 	#end
-	</ul>
-	</div>
-	</div>
-	<!-- /auiWidgetsArea -->
-  #end
-
   </div>
 </div>
 <!-- /MAIN OUTER  -->
@@ -477,13 +423,15 @@ $portlet.getContent($data)
 	</div></div>
 	<!-- auiPortletBody -->
 	<div class="auiPortletBody dndIdentifier">
-    <div class="inner" dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
 	#if (${submenuTabsFlag})
-		#AUIcontentsAreaHeader()
+		<div class="inner">
+		<div dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
+	#else
+		<div class="inner" dojoType="aimluck.widget.Contentpane" widgetId="portlet_$!portlet.ID" id="portlet_$!portlet.ID">
 	#end
     $!portlet.getContent($data)
 	#if (${submenuTabsFlag})
-		#AUIcontentsAreaFooter()
+		</div>
 		#ALPreferenceWidgetAbstract($submenuTabs)
 	#end
 	  </div>
