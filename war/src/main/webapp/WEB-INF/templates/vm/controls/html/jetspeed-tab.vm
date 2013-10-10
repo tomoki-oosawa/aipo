@@ -45,10 +45,8 @@ $portlet.getContent($data)
 	                                        #else
 
 	                                        #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
-											#set($sgclink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=StartGuideCustomizeFormScreen") )
 											#if ($tab.isSelected() == true)
 												#set($activeurlselected=$clink)
-												#set($startguideactiveurlselected=$sgclink)
 											#end
 											<a href="javascript:void(0);" id="menubar_button_tab_$!{tab.Id}" class="customizeMenuIcon auiIcon auiIconSetting" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ"></a>
 											<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
@@ -79,7 +77,6 @@ $portlet.getContent($data)
                             </div>
 							#if($activeurlselected)
 							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
-							<input id="startguide-data-activecustomizeurl" type="hidden" value="$startguideactiveurlselected" />
                             #else
                              <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
 							#end
