@@ -25,7 +25,10 @@
  	<a href="javascript:void(0)">
 		<img width="1000" height="650" id="popupImage1" onload="aipo.tutorial.onLoadImage(this)" src="images/slide01_130809.png"  onclick="aipo.tutorial.nextPage()"/>
 		<img width="1000" height="650" id="popupImage2" onload="aipo.tutorial.onLoadImage(this)" src="images/slide02_130809.png" style="display: none;" onclick="aipo.tutorial.nextPage()"/>
-		<img width="1000" height="650" id="popupImage3" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130809.png" style="display: none;" onclick="aipo.tutorial.showDialog('$jslink.getTemplate("TutorialForbidScreen")'); aipo.tutorial.hideDialog()" />
+		<img width="1000" height="650" id="popupImage3" onload="aipo.tutorial.onLoadImage(this)" src="images/slide03_130809.png" style="display: none;" onclick="aipo.tutorial.nextPage()" />
+		<div id="popupImage4" style="background:url(images/slide04_130809.png) no-repeat left top; width:1000px; height:650px; position:relative; display: none;" onclick="aipo.tutorial.showDialog('$jslink.getTemplate("TutorialForbidScreen")'); aipo.tutorial.hideDialog()">
+          <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:430px; height:63px; position:absolute; top:360px; left:290px;" src="http://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Faipocom.jp&amp;width=430&amp;height=60&amp;colorscheme=light&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;send=false&amp;appId=207529679428894"></iframe>
+        </div>
 	</a>
  </div>
 </div>
