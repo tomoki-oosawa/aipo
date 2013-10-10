@@ -82,6 +82,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.EVENT_TYPE_UPDATE_PASSWORD;
     } else if (ALActionEventlogConstants.EVENT_MODE_DOWNLOAD.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_DOWNLOAD;
+    } else if (ALActionEventlogConstants.EVENT_MODE_STARTGUIDE.equals(mode)) {
+      return ALActionEventlogConstants.EVENT_TYPE_STARTGUIDE;
     }
     return ALActionEventlogConstants.EVENT_TYPE_NONE;
   }

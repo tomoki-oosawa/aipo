@@ -72,6 +72,8 @@ public class ALActionEventlogConstants {
 
   public static final int EVENT_TYPE_DOWNLOAD = 19;
 
+  public static final int EVENT_TYPE_STARTGUIDE = 20;
+
   /* EVENT_NUMBER */
   public static final String EVENT_MODE_UPDATE = ALEipConstants.MODE_UPDATE;
 
@@ -116,6 +118,8 @@ public class ALActionEventlogConstants {
 
   public static final String EVENT_MODE_DOWNLOAD = "download";
 
+  public static final String EVENT_MODE_STARTGUIDE = "startguide";
+
   /**
    * EVENT_ALIAS_NAME
    */
@@ -139,7 +143,8 @@ public class ALActionEventlogConstants {
     "参加・キャンセル",
     "Excelファイルとしてダウンロード",
     "パスワード変更",
-    "ダウンロード" };
+    "ダウンロード",
+    "スタートガイド" };
 
   public static final String PORTLET_TYPE_STR_STR_NONE = "その他の機能";
 
