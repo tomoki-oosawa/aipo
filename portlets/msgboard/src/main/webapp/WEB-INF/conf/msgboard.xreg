@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>掲示板</title>
-            <description>お知らせを掲載できる掲示板です。</description>
+            <description>カテゴリやトピックを設定して、お知らせなどを掲載できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="msgboard-topic" hidden="true" cachedOnName="true" cachedOnValue="true"/>
