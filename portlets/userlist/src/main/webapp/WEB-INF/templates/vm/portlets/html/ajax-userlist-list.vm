@@ -54,7 +54,6 @@ $l10n.USERLIST_POSITION
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($!{client}=="IPHONE")
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserDetailScreen").addQueryData("entityid",$record.UserId))');">$result.getStringCR($!record.Name)</a>
@@ -76,29 +75,7 @@ $post
 #ALtdcellAtt("$!record.Email" "class='mb_hide'")
 #ALtdcellAtt("$!record.OutTelephone" "class='mb_hide' nowrap='nowrap'")
 #ALtdcellAtt("$!record.InTelephone" "class='mb_hide' nowrap='nowrap'")
-#else
-#ALtdcellheader()
-<div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserDetailScreen").addQueryData("entityid",$record.UserId))');">$result.getStringCR($!record.Name)</a>
-</div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div>
-#set($pcount = 0)
-#foreach($post in $record.getPostNameList())
-#if($pcount != 0)、&nbsp;#end
-$post
-#set($pcount = $pcount + 1)
-#end
-</div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div>$result.getStringCR($!record.PositionName)</div>
-#ALtdcellfooter()
-#ALtdcellAtt("$!record.Email" "class='mb_hide'")
-#ALtdcellAtt("$!record.OutTelephone" "class='mb_hide' nowrap='nowrap'")
-#ALtdcellAtt("$!record.InTelephone" "class='mb_hide' nowrap='nowrap'")
-#end
+
 </tr>
 #end
 #AUItablefooter()
