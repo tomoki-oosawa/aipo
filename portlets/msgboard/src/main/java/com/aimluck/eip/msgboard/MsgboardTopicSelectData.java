@@ -876,9 +876,11 @@ public class MsgboardTopicSelectData extends
     if (categoryList != null) {
       for (int i = 0; i < categoryList.size(); i++) {
         String cid = categoryList.get(i).getCategoryId().toString();
-        if (cid.equals(categoryId.toString())) {
-          categoryName = categoryList.get(i).getCategoryName().toString();
-          return;
+        if (cid != null && categoryId != null) {
+          if (cid.equals(categoryId.toString())) {
+            categoryName = categoryList.get(i).getCategoryName().toString();
+            return;
+          }
         }
       }
     }
