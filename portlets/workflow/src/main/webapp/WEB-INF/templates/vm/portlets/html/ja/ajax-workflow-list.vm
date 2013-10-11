@@ -76,8 +76,8 @@
 #end
 <tr>
 <td class="auiMTCaption">
-	<div >
-		<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </a>
+	<div>
+		<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
 	</div>
 </td>
 #ALtdcellAtt("$!record.StateString" 'nowrap="nowrap" align="center"')
