@@ -76,7 +76,6 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($!{client}=="IPHONE")
 #ALtdcellheaderAtt('align="center" class="auiMTCheck"')
 <input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" /></td>
 #ALtdcellfooter()
@@ -91,21 +90,6 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap" class="mb_hide"')
 #ALtdcellAtt($!record.Telephone 'nowrap="nowrap" class="mb_hide"')
 #ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap" class="mb_hide"')
-#else
-#ALtdcellAtt("<input name='check$!record.AddressId' type='checkbox' value='$!record.AddressId' />" 'align="center"')
-#ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');">$!record.Name</a></div>
-#if($!record.PublicFlag.toString() == 'F')
-<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.ADDRESSBOOK_CLOSE_PUBLIC" title="$l10n.ADDRESSBOOK_CLOSE_PUBLIC" />
-#end
-#ALtdcellfooter()
-#ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
-#ALtdcellfooter()
-#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap"')
-#ALtdcellAtt($!record.Telephone 'nowrap="nowrap"')
-#ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap"')
-#end
 </tr>
 #end
 #AUItablefooter()
