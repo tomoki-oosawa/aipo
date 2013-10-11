@@ -154,10 +154,6 @@ public class NoteResultData implements ALData {
     return ALEipUtils.getFormattedTime(accept_date);
   }
 
-  public ALDateTimeField getAuiAcceptDate2() {
-    return ALEipUtils.getFormattedTime2(accept_date);
-  }
-
   /**
    * @return
    */
@@ -202,10 +198,6 @@ public class NoteResultData implements ALData {
 
   public ALDateTimeField getAuiCreateDate() {
     return ALEipUtils.getFormattedTime(create_date);
-  }
-
-  public ALDateTimeField getAuiCreateDate2() {
-    return ALEipUtils.getFormattedTime2(create_date);
   }
 
   /**

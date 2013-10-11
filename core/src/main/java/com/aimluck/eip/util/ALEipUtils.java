@@ -2048,36 +2048,6 @@ public class ALEipUtils {
   }
 
   /**
-   * Dateに対して整形されたALDateTimeFieldを返します。
-   * 
-   * @param date
-   * @return 整形されたALDateTimeField
-   */
-  public static ALDateTimeField getFormattedTime2(Date date) {
-    Calendar Now = new GregorianCalendar();
-    Now.setTime(new Date());
-    Calendar Time = new GregorianCalendar();
-    Time.setTime(date);
-    ALDateTimeField rtn;
-
-    rtn =
-      (Now.get(Calendar.YEAR) == Time.get(Calendar.YEAR)) ? (Now
-        .get(Calendar.MONTH) == Time.get(Calendar.MONTH)
-        && Now.get(Calendar.DATE) == Time.get(Calendar.DATE)
-        ? new ALDateTimeField("H時mm分")
-        : new ALDateTimeField("M月d日H時mm分")) : new ALDateTimeField("yyyy年M月d日");
-    rtn.setValue(date);
-    return rtn;
-  }
-
-  public static ALDateTimeField getFormattedTime2(ALDateTimeField timeField) {
-    if (!timeField.isNotNullValue()) {
-      return null;
-    }
-    return getFormattedTime2(timeField.getValue());
-  }
-
-  /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
    * 
    * @param user_name

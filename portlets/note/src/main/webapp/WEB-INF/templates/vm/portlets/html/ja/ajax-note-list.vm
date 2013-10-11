@@ -122,11 +122,7 @@ style="font-weight:bold"
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.DestUserFullName.Value</div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.ReadNote.Value/$!record.SentNote.Value</div>#ALtdcellfooter()
 #end
-#if($!{client}=="IPHONE")
-#ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate2} #else $!{record.AuiCreateDate2} #end" 'nowrap="nowrap"class="right"')
-#else
 #ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"class="right"')
-#end
 </tr>
 #end
 
