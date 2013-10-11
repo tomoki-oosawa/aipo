@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>伝言メモ</title>
-            <description>伝言メモをメールで通知できます。自分宛の伝言メモも表示されます。</description>
+            <description>メンバーを指定して連絡事項をメールで通知できます。自分宛の伝言メモも表示されます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
@@ -60,7 +60,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>伝言メモ</title>
-            <description>伝言メモをメールで通知できます。自分宛の伝言メモも表示されます。</description>
+            <description>メンバーを指定して連絡事項をメールで通知できます。自分宛の伝言メモも表示されます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">

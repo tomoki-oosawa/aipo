@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>タイムライン</title>
-            <description>チャット感覚で素早く情報共有できるコミュニケーションツールです。</description>
+            <description>チャット感覚で情報共有ができ、予定やToDoの追加・編集などが時系列に表示されることで社内の動きを把握してコミュニケーションできます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="timeline" hidden="true" cachedOnName="true" cachedOnValue="true"/>
