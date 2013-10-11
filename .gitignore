@@ -30,9 +30,6 @@ sass-twitter-bootstrap-master/
 # PDT-specific
 .buildpath
 
-dbcp-org001.properties
-dbcp-org001-mysql.properties
-
 
 #################
 ## Java
