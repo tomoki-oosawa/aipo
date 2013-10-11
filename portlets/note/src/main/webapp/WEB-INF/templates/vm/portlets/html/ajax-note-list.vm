@@ -85,9 +85,9 @@
 #end
 #AUIrowMTableWide()
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" 'class="thin"')
+#ALtdheadAtt("#ALswitchCheckbox()" 'class="width:20px"')
 #ALtdheadAtt("#ALajaxsort('client_name' $l10n.NOTE_CLIENT_POSITION $result 'NoteListScreen')" 'style="width:8em"')
-#ALtdheadAtt("#ALajaxsort('subject_type' $l10n.NOTE_AFFAIR $result 'NoteListScreen')" 'style="width:30%"')
+#ALtdheadAtt("#ALajaxsort('subject_type' $l10n.NOTE_AFFAIR $result 'NoteListScreen')" 'style=""')
 #if(!$isReceive)
 #ALtdheadAtt($l10n.NOTE_RECEIVE_PERSON 'class="mb_hide" style="width:20%"')
 #ALtdheadAtt($l10n.NOTE_SITUATION 'class="mb_hide" style="width:5%"')
@@ -106,23 +106,19 @@ style="font-weight:bold"
 >
 #ALsetEven($setEven)
 
-#if($!{client}=="IPHONE")
-#ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/> <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');" style="display:inline;">$!{record.ClientName}#if($record.CompanyName != "")（$!record.CompanyName）#end</a></div>
+#ALtdcellheaderAtt('class="auiMTCheck"')
+<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>
 #ALtdcellfooter()
-#else
-#ALtdcell("<input name='check$!record.NoteId' type='checkbox' value='$!record.NoteId'/>")
-#ALtdcellheader()
+#ALtdcellheaderAtt('class="auiMTCaption"')
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","NoteDetailScreen").addQueryData("entityid",$record.NoteId))');">$!{record.ClientName}#if($record.CompanyName != "")（$!record.CompanyName）#end</a></div>
 #ALtdcellfooter()
-#end
 
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #if (!$isReceive)
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.DestUserFullName.Value</div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.ReadNote.Value/$!record.SentNote.Value</div>#ALtdcellfooter()
 #end
-#ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"class="right"')
+#ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"')
 </tr>
 #end
 
