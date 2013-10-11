@@ -223,36 +223,41 @@ public class MsgboardTopicSelectData extends
     } else {
       return;
     }
+    boolean exsitedCategoryId = false;
     if (!categoryId.equals("")) {
-      this.categoryId = categoryId;
-      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
+      exsitedCategoryId = true;
     } else {
       categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
       if (categoryId == null || categoryId.isEmpty()) {
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
-        List<MsgboardCategoryResultData> categoryList =
-          MsgboardUtils.loadCategoryList(rundata);
-        boolean existCategory = false;
-        if (categoryList != null && categoryList.size() > 0) {
-          for (MsgboardCategoryResultData category : categoryList) {
-            if (categoryId.equals(category.getCategoryId().toString())) {
-              existCategory = true;
-              break;
-            }
-          }
-
-        }
-        if (!existCategory) {
-          categoryId = "0";
-        }
-
       }
+    }
+    List<MsgboardCategoryResultData> categoryList =
+      MsgboardUtils.loadCategoryList(rundata);
+    boolean existCategory = false;
+    if (categoryList != null && categoryList.size() > 0) {
+      for (MsgboardCategoryResultData category : categoryList) {
+        if (categoryId.equals(category.getCategoryId().toString())) {
+          existCategory = true;
+          break;
+        }
+      }
+
+    }
+    if (!existCategory) {
+      categoryId = "";
+    }
+    if (exsitedCategoryId) {
+      this.categoryId = categoryId;
+      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
+    } else {
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
       this.categoryId = categoryId;
     }
+
   }
 
   /**
@@ -387,15 +392,32 @@ public class MsgboardTopicSelectData extends
   @Override
   protected SelectQuery<EipTMsgboardTopic> buildSelectQueryForFilter(
       SelectQuery<EipTMsgboardTopic> query, RunData rundata, Context context) {
-
-    super.buildSelectQueryForFilter(query, rundata, context);
-
     if (current_filterMap.containsKey("category")) {
       // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
       List<String> categoryIds = current_filterMap.get("category");
       categoryId = categoryIds.get(0).toString();
+      List<MsgboardCategoryResultData> categoryList =
+        MsgboardUtils.loadCategoryList(rundata);
+      boolean existCategory = false;
+      if (categoryList != null && categoryList.size() > 0) {
+        for (MsgboardCategoryResultData category : categoryList) {
+          if (categoryId.equals(category.getCategoryId().toString())) {
+            existCategory = true;
+            break;
+          }
+        }
+
+      }
+      if (!existCategory) {
+        categoryId = "";
+        current_filterMap.remove("category");
+
+      }
+
       updateCategoryName();
     }
+
+    super.buildSelectQueryForFilter(query, rundata, context);
 
     if (current_filterMap.containsKey("post")) {
       // 部署を含んでいる場合デフォルトとは別にフィルタを用意
