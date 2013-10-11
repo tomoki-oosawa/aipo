@@ -108,20 +108,14 @@
 #end
 <tr $lsStyle>
 
-#if($!{client}=="IPHONE")
-#ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.TodoId' type='checkbox' value='$!record.TodoId'/> <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');" style="display:inline;">$!record.TodoName</a></div>
-#ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.UserName</div>" "")
-#ALtdcellAtt("<div>$!record.EndDate</div>" 'nowrap="nowrap"')
-#else
-#ALtdcellAtt("<input name='check$!record.TodoId' type='checkbox' value='$!record.TodoId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!record.TodoId' type='checkbox' value='$!record.TodoId'/>" 'align="center" class="auiMTCheck"')
 #ALtdcellAtt("<img src='images/todo/$!record.PriorityImage' alt='$!record.PriorityString'  title='$!record.PriorityString'/>" 'class=" mb_hide" align="center"')
-#ALtdcellheader()
+#ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
-#if(! $record.Public)
-<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" style="vertical-align: middle;" alt="$l10n.TODO_CLOSE_PUBLIC" title="$l10n.TODO_CLOSE_PUBLIC"/>
+#if(! $!record.Public)
+&nbsp;
+<i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>
 #end
 </div>
 #ALtdcellfooter()
@@ -144,7 +138,6 @@
 </select>
 #ALtdcellfooter()
 </tr>
-#end
 
 #end
 #AUItablefooter()

@@ -175,8 +175,8 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
    * @param note
    * @return
    */
-  private boolean saveEvent(int event_type, int uid, int p_type, int entity_id,
-      String ip_addr, String note) {
+  protected boolean saveEvent(int event_type, int uid, int p_type,
+      int entity_id, String ip_addr, String note) {
     try {
 
       // 新規オブジェクトモデル
