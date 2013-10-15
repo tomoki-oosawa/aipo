@@ -330,8 +330,9 @@ function hide_Attention(){
 
 <table class="listTable wide">
 <td>
-
-#if($result.getErrorCount() > 0)
+#if($result.getErrorCount() == 100)
+<span class="caution">$l10n.FILEIO_ERROR_LIMIT</span>
+#elseif($result.getErrorCount() > 0)
 <span class="caution">${result.getLineCount2()}</span>
 #end
 #if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
@@ -421,6 +422,8 @@ $!record.EndDate.toString($l10n.FILEIO_PERIOD)
 #if($result.isError())
 #ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_GO_BACK 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
+#ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
+#elseif($result.getErrorCount() ==100)
 #ALtdcellAtt("#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
 #ALtdcellAtt("#ALauibutton('eventSubmit_doSchedule_insert_csv' $l10n.FILEIO_REGISTER_ONLY_NORMAL_PART 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doSchedule_form' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')

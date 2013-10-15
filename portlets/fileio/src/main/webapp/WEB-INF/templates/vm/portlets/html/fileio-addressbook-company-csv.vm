@@ -322,8 +322,9 @@ function hide_Attention(){
 <br>
 <div style="margin:0px 0px 5px 0px">$l10n.FILEIO_CLICK_BUTTOM_REGISTER</div>
 #end
-
-#if($result.getErrorCount() > 0)
+#if($result.getErrorCount() == 100)
+<span class="caution">$l10n.FILEIO_ERROR_LIMIT</span>
+#elseif($result.getErrorCount() > 0)
 <span class="caution">${result.getLineCount2()}</span>
 
 #end
@@ -406,6 +407,8 @@ function hide_Attention(){
 #if($result.isError())
 #ALtdcellAtt("#ALbutton('eventSubmit_doAddressbook_company_form' $l10n.FILEIO_GO_BACK 'event_csv(this)')" 'colspan="11" align="center"')
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
+#ALtdcellAtt("#ALbutton('eventSubmit_doAddressbook_company_form' $l10n.FILEIO_DO_CANCEL 'event_csv(this)')" 'colspan="11" align="center"')
+#elseif($result.getErrorCount() ==100)
 #ALtdcellAtt("#ALbutton('eventSubmit_doAddressbook_company_form' $l10n.FILEIO_DO_CANCEL 'event_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
 #ALtdcellAtt("#ALauibutton('eventSubmit_doAddressbook_company_insert_csv' $l10n.FILEIO_REGISTER_ONLY_NORMAL_PART 'event_csv_regist(this)')#ALbutton('eventSubmit_doAddressbook_company_form' $l10n.FILEIO_DO_CANCEL 'event_csv(this)')" 'colspan="12" align="center"')

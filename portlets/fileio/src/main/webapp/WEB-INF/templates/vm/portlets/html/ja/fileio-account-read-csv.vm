@@ -303,8 +303,9 @@ function hide_Attention(){
 <br>
 <div style="margin:0px 0px 5px 0px">$l10n.FILEIO_CLICK_BUTTOM_REGISTER</div>
 #end
-
-#if($result.getErrorCount() > 0)
+#if($result.getErrorCount() == 100)
+<span class="caution">$l10n.FILEIO_ERROR_LIMIT</span>
+#elseif($result.getErrorCount() > 0)
 <span class="caution">${result.getLineCount2()}</span>
 #end
 #if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
@@ -403,6 +404,8 @@ $!rec
 #if($result.isError() || $result.overMaxUser())
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' $l10n.FILEIO_GO_BACK 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif(($result.getErrorCount() >= $result.getLineCount()))
+#ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
+#elseif($result.getErrorCount() ==100)
 #ALtdcellAtt("#ALbutton('eventSubmit_doAccount_form_csv' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="11" align="center"')
 #elseif($result.getErrorCount() > 0)
 #ALtdcellAtt("#ALauibutton('eventSubmit_doAccount_insert_csv' $l10n.FILEIO_REGISTER_ONLY_NORMAL_PART 'event_account_csv_regist(this)')#ALbutton('eventSubmit_doAccount_form_csv' $l10n.FILEIO_DO_CANCEL 'event_account_csv(this)')" 'colspan="12" align="center"')
