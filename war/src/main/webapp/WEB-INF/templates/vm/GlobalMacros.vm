@@ -806,7 +806,7 @@ $item.get(0)
     <tr>
       <td class="top mb_hide" width="200">
         <!-- SUBMENU -->
-        <div class="submenu">
+        <div class="submenu_v2">
           <ul>
 #set($index = 0)
 #foreach($tab in $tabs)
@@ -816,10 +816,8 @@ $item.get(0)
 #set($index = $index + 1)
 #end
           </ul>
-          <div class="endcap"></div>
         </div>
-		<img src="images/common/dot.gif" width="200" height="1" alt="" />
-        <!-- /SUBMENU -->
+	    <!-- /SUBMENU -->
       </td>
       <td class="wide top">
 #end
