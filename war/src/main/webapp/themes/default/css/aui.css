@@ -1006,6 +1006,55 @@ img.avatar,
 }
 
 /***************************************************
+	submenu_v2
+--------------------------------------------------*/
+.submenu_v2 {
+  clear: both;
+  width: 190px;
+  margin: 0 0 10px 0;
+  padding: 0 10px 10px 0;
+  border-bottom: solid 1px #f0f0f0;
+}
+.submenu_v2 li {
+  padding: 0;
+  background: none;
+}
+.submenu_v2 li span {
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 18px;
+}
+.submenu_v2 li a {
+  display: block;
+  line-height: 1.8em;
+  padding: 0.3em 0 0.3em 10px;
+  text-decoration: none;
+  background: none;
+  white-space: nowrap;
+  overflow: hidden;
+  width: auto;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.submenu_v2 li a:hover {
+  color: #000;
+  background: #f6f6f6;
+}
+.submenu_v2 li ul {
+  margin: 0;
+}
+.submenu_v2 li li a,
+.submenu_v2 li li a:hover,
+.submenu_v2 li li.active a {
+  padding: 0.3em 0 0.3em 36px;
+  background-position: 23px 1em;
+}
+.submenu_v2 li.selected > a {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+/***************************************************
 	auiContentsArea
 --------------------------------------------------*/
 #auiContentsArea {
