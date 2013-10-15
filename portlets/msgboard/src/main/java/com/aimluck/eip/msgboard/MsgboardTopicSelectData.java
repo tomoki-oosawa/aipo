@@ -234,17 +234,22 @@ public class MsgboardTopicSelectData extends
           portlet.getPortletConfig().getInitParameter("p3a-category");
       }
     }
-    List<MsgboardCategoryResultData> categoryList =
-      MsgboardUtils.loadCategoryList(rundata);
     boolean existCategory = false;
-    if (categoryList != null && categoryList.size() > 0) {
-      for (MsgboardCategoryResultData category : categoryList) {
-        if (categoryId.equals(category.getCategoryId().toString())) {
-          existCategory = true;
-          break;
-        }
-      }
+    if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
+      existCategory = true;
+    } else {
+      List<MsgboardCategoryResultData> categoryList =
+        MsgboardUtils.loadCategoryList(rundata);
 
+      if (categoryList != null && categoryList.size() > 0) {
+        for (MsgboardCategoryResultData category : categoryList) {
+          if (categoryId.equals(category.getCategoryId().toString())) {
+            existCategory = true;
+            break;
+          }
+        }
+
+      }
     }
     if (!existCategory) {
       categoryId = "";
