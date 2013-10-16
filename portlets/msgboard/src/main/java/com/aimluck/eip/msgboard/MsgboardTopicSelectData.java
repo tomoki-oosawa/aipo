@@ -234,13 +234,10 @@ public class MsgboardTopicSelectData extends
           portlet.getPortletConfig().getInitParameter("p3a-category");
       }
     }
-    boolean existCategory = false;
-    if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
-      existCategory = true;
-    } else {
+    if (categoryId != null) {
       List<MsgboardCategoryResultData> categoryList =
         MsgboardUtils.loadCategoryList(rundata);
-
+      boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
         for (MsgboardCategoryResultData category : categoryList) {
           if (categoryId.equals(category.getCategoryId().toString())) {
@@ -250,19 +247,18 @@ public class MsgboardTopicSelectData extends
         }
 
       }
+      if (!existCategory) {
+        categoryId = "";
+      }
+      if (exsitedCategoryId) {
+        this.categoryId = categoryId;
+        ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
+      } else {
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+        this.categoryId = categoryId;
+      }
     }
-    if (!existCategory) {
-      categoryId = "";
-    }
-    if (exsitedCategoryId) {
-      this.categoryId = categoryId;
-      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
-    } else {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-      this.categoryId = categoryId;
-    }
-
   }
 
   /**
