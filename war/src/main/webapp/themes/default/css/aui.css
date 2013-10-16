@@ -1875,6 +1875,10 @@ input.auiButtonSearch.active {
   line-height: 35px;
 }
 
+.auiRowTable div a {
+	margin: 0;
+}
+
 .auiRowTable .auiMTCaption div a {
   display: inline;
 }
