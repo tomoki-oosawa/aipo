@@ -857,7 +857,7 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
 }
 
 aimluck.io.onTextFieldFocus = function() {
-	var mobileHeader = document.getElementById('mobileHeader_v2');
+	var mobileHeader = document.getElementById('mobileHeader_v3');
 	  if (mobileHeader) {
 		 if(!aipo.userAgent.isAndroid()){
 			 mobileHeader.style.position = "absolute";
@@ -867,7 +867,7 @@ aimluck.io.onTextFieldFocus = function() {
 	}
 
 aimluck.io.onTextFieldBlur = function() {
-  var mobileHeader = document.getElementById('mobileHeader_v2');
+  var mobileHeader = document.getElementById('mobileHeader_v3');
   if (mobileHeader) {
 	  if(!aipo.userAgent.isAndroid()){
 		  mobileHeader.style.position = "";
