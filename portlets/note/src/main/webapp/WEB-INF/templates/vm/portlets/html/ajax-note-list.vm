@@ -37,6 +37,8 @@
 #set ($isReceive = false)
 #end
 #set ($indicator_id = "indicator-list-")
+
+#parse("/portlets/html/ja/noteMacro.vm")
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
