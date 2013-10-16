@@ -283,47 +283,51 @@ public class AccessControlFormData extends ALAbstractFormData {
     if (memberList.size() == 0) {
       msgList.add(ALLocalizationUtils
         .getl10n("ACCESSCTL_ALERT_NO_MEMBER_SELECTED"));
-    }
+    } else {
+      try {
+        // 同一機能の他ロールには所属できないようにする
 
-    try {
-      // 同一機能の他ロールには所属できないようにする
+        List<Integer> uids = new ArrayList<Integer>();
+        int msize = memberList.size();
+        for (int i = 0; i < msize; i++) {
+          ALEipUser user = memberList.get(i);
+          uids.add(Integer.valueOf((int) user.getUserId().getValue()));
+        }
 
-      List<Integer> uids = new ArrayList<Integer>();
-      int msize = memberList.size();
-      for (int i = 0; i < msize; i++) {
-        ALEipUser user = memberList.get(i);
-        uids.add(Integer.valueOf((int) user.getUserId().getValue()));
+        SelectQuery<EipTAclRole> rolequery = Database.query(EipTAclRole.class);
+        Expression exp11 =
+          ExpressionFactory.matchDbExp(
+            EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
+              + "."
+              + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN,
+            Integer.valueOf((int) feature_id.getValue()));
+        Expression exp12 =
+          ExpressionFactory.inDbExp(
+            EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
+              + "."
+              + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
+              + "."
+              + TurbineUser.USER_ID_PK_COLUMN,
+            uids);
+        rolequery.setQualifier(exp11.andExp(exp12));
+
+        if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+          Expression exp13 =
+            ExpressionFactory.noMatchDbExp(
+              EipTAclRole.ROLE_ID_PK_COLUMN,
+              Integer.valueOf(acl_role_id));
+          rolequery.andQualifier(exp13);
+        }
+
+        List<EipTAclRole> roleList = rolequery.fetchList();
+        if (roleList != null && roleList.size() != 0) {
+          msgList
+            .add(ALLocalizationUtils.getl10n("ACCESSCTL_ALERT_OTHER_ROLE"));
+        }
+      } catch (Exception ex) {
+        logger.error("AccessControlFormData.validate", ex);
+        return false;
       }
-
-      SelectQuery<EipTAclRole> rolequery = Database.query(EipTAclRole.class);
-      Expression exp11 =
-        ExpressionFactory.matchDbExp(
-          EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-            + "."
-            + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN,
-          Integer.valueOf((int) feature_id.getValue()));
-      Expression exp12 =
-        ExpressionFactory.inDbExp(EipTAclRole.EIP_TACL_USER_ROLE_MAPS_PROPERTY
-          + "."
-          + EipTAclUserRoleMap.TURBINE_USER_PROPERTY
-          + "."
-          + TurbineUser.USER_ID_PK_COLUMN, uids);
-      rolequery.setQualifier(exp11.andExp(exp12));
-
-      if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
-        Expression exp13 =
-          ExpressionFactory.noMatchDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, Integer
-            .valueOf(acl_role_id));
-        rolequery.andQualifier(exp13);
-      }
-
-      List<EipTAclRole> roleList = rolequery.fetchList();
-      if (roleList != null && roleList.size() != 0) {
-        msgList.add(ALLocalizationUtils.getl10n("ACCESSCTL_ALERT_OTHER_ROLE"));
-      }
-    } catch (Exception ex) {
-      logger.error("AccessControlFormData.validate", ex);
-      return false;
     }
 
     return (msgList.size() == 0);
