@@ -1918,6 +1918,20 @@ input.auiButtonSearch.active {
   overflow: hidden;
 }
 
+.auiRowTable a {
+  display: block;
+  margin: -8px 0;
+  line-height: 35px;
+}
+
+.auiRowTable div a {
+	margin: 0;
+}
+
+.auiRowTable .auiMTCaption div a {
+  display: inline;
+}
+
 .auiRowTable .today .day {
   background: #f5f5f5;
 }
