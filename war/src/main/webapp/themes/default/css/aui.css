@@ -1012,7 +1012,7 @@ img.avatar,
   clear: both;
   width: 190px;
   margin: 0 0 10px 0;
-  padding: 0 10px 10px 0;
+  padding: 5px 10px 10px 5px;
   border-bottom: solid 1px #f0f0f0;
 }
 .submenu_v2 li {
