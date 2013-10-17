@@ -96,10 +96,12 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<div>
 #if(! $!record.Public)
 <i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>
-#end</div>
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
 #ALtdcellAtt("<div>$!record.userNameHtml</div>" '')
@@ -118,10 +120,12 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<div>
 #if(! $!record.Public)
 <i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>
-#end</div>
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
