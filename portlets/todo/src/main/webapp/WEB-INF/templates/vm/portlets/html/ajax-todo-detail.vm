@@ -37,7 +37,7 @@ $!result.Detail.CategoryName
 #ALtditemheader()
 $!result.Detail.TodoName
 #if(! ${result.Detail.Public})
-<img src="images/todo/todo_secret.png" border="0" width="16" height="16" align="absmiddle" alt="$l10n.TODO_CLOSE_PUBLIC" title="$l10n.TODO_CLOSE_PUBLIC"/>
+<i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.TODO_PREPARED)
