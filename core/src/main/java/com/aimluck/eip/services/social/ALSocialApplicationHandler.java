@@ -113,6 +113,8 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract void deleteUserData(List<String> loginNameList);
 
+  protected abstract void daysFirstActivate(int uid);
+
   public static enum Property {
 
     LOCKED_DOMAIN_REQUIRED("lockedDomainRequired") {

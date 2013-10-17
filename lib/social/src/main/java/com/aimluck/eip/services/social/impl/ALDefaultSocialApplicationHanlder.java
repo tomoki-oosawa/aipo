@@ -928,6 +928,8 @@ public class ALDefaultSocialApplicationHanlder extends
 
           Database.commit();
 
+          this.daysFirstActivate(request.getUserId());
+
           ALApplication application2 =
             getApplication(new ALApplicationGetRequest().withAppId(request
               .getAppId()));
@@ -1104,5 +1106,13 @@ public class ALDefaultSocialApplicationHanlder extends
   @Override
   public void deleteUserData(List<String> loginNameList) {
     deleteUserData(loginNameList.toArray(new String[loginNameList.size()]));
+  }
+
+  /**
+   * 
+   */
+  @Override
+  protected void daysFirstActivate(int uid) {
+    // noop
   }
 }
