@@ -38,9 +38,13 @@ aipo.tutorial.onLoadImage = function(image) {
 };
 
 aipo.tutorial.imageName = function(page) {
-	if (dojo.byId("isAdmin").value && page <= 4) {
+	var isAdmin = false;
+	if(dojo.byId("isAdmin")){
+		isAdmin = dojo.byId("isAdmin").value;
+	}
+	if (isAdmin && page <= 4) {
 		return "adminPopupImage" + page;
-	} else if (dojo.byId("isAdmin").value){
+	} else if (isAdmin){
 		return "popupImage" + (page - 5);
 	} else {
 		return "popupImage" + page;
@@ -48,7 +52,11 @@ aipo.tutorial.imageName = function(page) {
 }
 
 aipo.tutorial.isLastPage = function(page) {
-	if (dojo.byId("isAdmin").value){
+	var isAdmin = false;
+	if(dojo.byId("isAdmin")){
+		isAdmin = dojo.byId("isAdmin").value;
+	}
+	if (isAdmin){
 		return page == 9;
 	} else {
 		return page == 4;
