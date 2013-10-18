@@ -531,17 +531,81 @@ td.item {
 .listTable {
   margin-bottom: 10px;
   margin-top: 5px;
-  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
   border-spacing: 0;
   border-collapse: collapse;
   padding: 0;
 }
-
+.listTable td table tr:first-child td {
+  border-top: none;
+}
 .listTable caption {
   background: #f0f0f0;
   padding: 5px;
   font-weight: bold;
   text-align: left;
+}
+.listTable .caption {
+  width: 135px;
+}
+
+.subTable {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+.subTable td {
+  padding-left: 0;
+  padding-right: 0;
+}
+.subTable .caption {
+  width: 90px;
+}
+
+.listTable td,
+.subTable td {
+  padding: 5px 3px;
+  border-top: solid 1px #d2d2d2;
+}
+.listTable th,
+.listTable thead td,
+.subTable th,
+.subTable thead td {
+  padding: 5px 3px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: bold;
+  border-top: solid 1px #d2d2d2;
+}
+.listTable th a,
+.listTable thead td a,
+.subTable th a,
+.subTable thead td a {
+  padding-right: 10px;
+  padding-left: 10px;
+  display: block;
+}
+.listTable th a.headDown,
+.listTable thead td.headDown a,
+.subTable th a.headDown,
+.subTable thead td.headDown a {
+  padding: 3px 20px 1px 0;
+  background: transparent url(../images/common/btn_up.gif) no-repeat right 7px;
+}
+.listTable th a.headUp,
+.listTable thead td.headUp a,
+.subTable th a.headUp,
+.subTable thead td.headUp a {
+  padding: 3px 20px 1px 0;
+  background: transparent url(../images/common/btn_down.gif) no-repeat right 8px;
+}
+.listTable .caption,
+.subTable .caption {
+  white-space: nowrap;
+  font-weight: bold;
+}
+.listTable .selected,
+.subTable .selected {
+  background: #f6f6f6;
 }
 
 .listTableBorder {
@@ -552,7 +616,6 @@ td.item {
   border-collapse: collapse;
   padding: 0;
 }
-
 .listTableBorder th {
   padding: 5px 3px;
   white-space: nowrap;
@@ -563,64 +626,11 @@ td.item {
 
 .listTableNoBorder {
   margin-top: 5px;
-  border-top: none;
+  border-bottom: none;
   border-spacing: 0;
   border-collapse: collapse;
   padding: 0;
   border-bottom: none;
-}
-
-.subTable {
-  margin-top: 2px;
-  border-spacing: 0;
-  border-collapse: collapse;
-}
-
-.listTable td, .subTable td {
-  padding: 5px 3px;
-  border-bottom: solid 1px #d2d2d2;
-}
-
-.listTable th, .listTable thead td, .subTable th, .subTable thead td {
-  padding: 5px 3px;
-  white-space: nowrap;
-  text-align: center;
-  font-weight: bold;
-  border-bottom: solid 1px #d2d2d2;
-}
-
-.listTable th a, .listTable thead td a, .subTable th a, .subTable thead td a {
-  padding-right: 10px;
-  padding-left: 10px;
-  display: block;
-}
-
-.listTable th a.headDown, .listTable thead td.headDown a, .subTable th a.headDown, .subTable thead td.headDown a {
-  padding: 3px 20px 1px 0;
-  background: transparent url(../images/common/btn_up.gif) no-repeat right 7px;
-}
-
-.listTable th a.headUp, .listTable thead td.headUp a, .subTable th a.headUp, .subTable thead td.headUp a {
-  padding: 3px 20px 1px 0;
-  background: transparent url(../images/common/btn_down.gif) no-repeat right 8px;
-}
-
-.listTable .caption, .subTable .caption {
-  white-space: nowrap;
-  font-weight: bold;
-}
-
-.listTable .caption {
-  width: 135px;
-}
-
-.subTable .caption {
-  width: 90px;
-}
-
-.listTable .selected, .subTable .selected {
-  background-color: #FFFFE5;
-  background: #ffffe5 url(../images/common/bg_slash.gif) repeat left top;
 }
 
 table.none {
