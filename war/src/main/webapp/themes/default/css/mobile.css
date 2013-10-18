@@ -1055,86 +1055,100 @@ input[type=password] {
 	auiWidget
 --------------------------------------------------*/
 #auiWidgetsArea {
-	float:none;
-	width:100%;
-	height:43px;
-	position:fixed;
-	left:0;
-	bottom:0;
-	padding:0;
-	background:#666666
-		-webkit-gradient(
-		linear, left top, left bottom,
-		from(rgba(255,255,255,0.4)),
-		to(rgba(255,255,255,0))
-	);
-	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.4);
-	border-top:solid 1px #909090;
-	z-index:994;
-}
-.auiWidget {
-	padding:5px;
-    border:none;
-}
-.auiWidget p {
-	margin:0;
-}
-.widgetButton {
-	position:absolute;
-	padding:5px;
-}
-.widgetButton a {
-	height:32px;
-	line-height:32px;
-	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-    border:none !important;
-}
-.widgetButton a:hover {
-	-webkit-box-shadow:none;
-	box-shadow:none;
-}
-.snDrawer {
-	float:right;
-	padding:4px;
-}
-.snDrawer .auiButtonBold {
-	padding:5px;
-	-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-	box-shadow:inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 0 rgba(0,0,0,0.3);
-	box-sizing:border-box;
-	-webkit-box-sizing:border-box;
-    border:none;
-	height:35px;
-	width:35px;
-}
-.snDrawer img {
-	width:24px;
-	height:24px;
-}
-#subNavigation {
-	display:none;
-	position:absolute;
-	right:0;
-	bottom:44px;
-	min-width:150px;
-	max-width:300px;
-	/*padding:0 5px;*/
-	background:#ffffff;
-	border:solid 1px #999999;
-	border-right:none;
-	border-bottom:none;
-	-webkit-border-radius:4px 0 0 0;
-	-moz-border-radius:4px 0 0 0;
-	-ms-border-radius:4px 0 0 0;
-	border-radius:4px 0 0 0;
-	-webkit-box-shadow:-1px -1px 3px rgba(0,0,0,0.2);
-	box-shadow:-1px -1px 3px rgba(0,0,0,0.2);
+  float: none;
+  width: 100%;
+  height: 43px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  padding: 0;
+  background: #f6f6f6;
+  border-top: solid 1px white;
+  -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  z-index: 994;
 }
 
+.auiWidget {
+  padding: 5px;
+  border: none;
+}
+.auiWidget p {
+  margin: 0;
+}
 .auiWidget select {
-  width:100%;
+  width: 100%;
+}
+
+.widgetButton {
+  position: absolute;
+  padding: 5px;
+}
+.widgetButton a {
+  height: 32px;
+  line-height: 32px;
+  border: none !important;
+}
+.widgetButton a:hover {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.snDrawer {
+  float: right;
+  padding-right: 5px;
+}
+.snDrawer a {
+  display: inline-block;
+  height: 42px;
+  width: 42px;
+  text-align: center;
+  text-decoration: none;
+}
+.snDrawer a [class^="icon-"],
+.snDrawer a [class*=" icon-"] {
+  color: #999999;
+  font-size: 20px;
+  line-height: 42px;
+  cursor: pointer;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+}
+.snDrawer .auiButtonBold {
+  padding: 5px;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 0 rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border: none;
+  height: 35px;
+  width: 35px;
+}
+.snDrawer img {
+  width: 24px;
+  height: 24px;
+}
+
+#subNavigation {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 44px;
+  min-width: 150px;
+  max-width: 300px;
+  overflow: auto;
+  background: #ffffff;
+  border: solid 1px #d2d2d2;
+  border-right: none;
+  border-bottom: none;
+  -webkit-border-radius: 4px 0 0 0;
+  -moz-border-radius: 4px 0 0 0;
+  -ms-border-radius: 4px 0 0 0;
+  -o-border-radius: 4px 0 0 0;
+  border-radius: 4px 0 0 0;
+  -webkit-box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.1);
 }
 
 /***************************************************
