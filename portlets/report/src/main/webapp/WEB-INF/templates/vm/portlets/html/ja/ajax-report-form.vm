@@ -86,8 +86,9 @@
 
 #ALtdcaption("#ALrequired($!result.getFieldName('createDate'))")
 #ALtditemheaderAtt('class="auiSetDate"')
-<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.REPORT_DATE" hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
-<br />
+<div class="mb5">
+	<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.REPORT_DATE" hiddenId="startDate" initValue="$!{result.startDate.Year}/$!{result.startDate.Month}/$!{result.startDate.Day}" inputId="input_date" dateId="startDate" displayCheck="none"></div>
+</div>
 <select name="startDate_hour" size="1">
 #foreach ( $num in [0..23] )
 <option value="$num" #if ($!result.StartDate.Hour == "$num") selected #end>$num</option>
