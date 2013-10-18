@@ -40,3 +40,10 @@ body {
 #roundWrapper .roundMainWrapper {
   padding:0;
 }
+
+/***************************************************
+	auiMbTable
+--------------------------------------------------*/
+.auiMbTable .auiMTCheck {
+  padding: 0 10px 0 5px;
+}
