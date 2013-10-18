@@ -65,7 +65,11 @@ aipo.customize.showMenu = function(portlet_id) {
         	 menuNode.style("top",rect.bottom+scroll.top+"px");
         }
          else{
+        	 if(rect.top-menuNode[0].clientHeight+scroll.top<0){
+        		 menuNode.style("top",rect.bottom+scroll.top+"px");
+        	 }else{
         	menuNode.style("top",rect.top-menuNode[0].clientHeight+scroll.top+"px");
+        	 }
         }
         menuNode.style("opacity","1");
 
