@@ -56,7 +56,7 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('request_name'))")
 #ALtditemheader()
-#ALselectpdheaderw100("category_id" "aipo.workflow.categoryOnChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','categorytemplate')',value,'$Note','$NoteChangeFlag','$Route','route_id');")
+#ALselectpdheaderclass("category_id" "aipo.workflow.categoryOnChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('mode','categorytemplate')',value,'$Note','$NoteChangeFlag','$Route','route_id');" 'w100 mb5')
 #foreach( $record in $result.CategoryList )
 <option value="$!record.CategoryId" #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected #end>$!record.CategoryName</option>
 #end

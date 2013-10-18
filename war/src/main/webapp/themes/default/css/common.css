@@ -1270,6 +1270,22 @@ table.simpleTable .caption {
   float: right;
 }
 
+.memberlistToTop,
+.memberlistFromTop,
+.memberlistToBody,
+.memberlistFromBody {
+  margin-bottom: 5px;
+}
+
+.memberlistToTop {
+  line-height: 32px;
+}
+
+*:first-child + html .memberlistToTop {
+  line-height: 2em;
+}
+
+
 .indicator {
   background: url(../images/common/indicator.gif) no-repeat left;
   padding: 2px 0 2px 18px;
