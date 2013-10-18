@@ -20,6 +20,7 @@
 package com.aimluck.eip.modules.screens;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 import javax.servlet.ServletOutputStream;
@@ -61,7 +62,15 @@ public class ProxyScreen extends ALVelocityScreen {
       return;
     }
 
-    URL url = new URL(urlString);
+    URI uri = new URI(urlString).normalize();
+    String path =
+      uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
+    URL url =
+      new URL(String.format(
+        "%s://%s%s",
+        uri.getScheme(),
+        uri.getAuthority(),
+        path));
 
     InputStream in = url.openStream();
     ServletOutputStream out = null;

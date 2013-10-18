@@ -33,7 +33,7 @@
 #ALtditemheader()
 $!result.Detail.Name
 #if($!result.Detail.PublicFlag.toString() == 'F')
-<img src="images/addressbook/addressbook_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開">
+<i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.ADDRESSBOOK_NAME_KANA)
