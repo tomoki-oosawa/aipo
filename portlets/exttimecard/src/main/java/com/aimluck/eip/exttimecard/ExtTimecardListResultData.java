@@ -60,6 +60,9 @@ public class ExtTimecardListResultData implements ALData {
   /** 計算済み就業時間 */
   private float calculated_work_hour = NO_DATA;
 
+  /** 計算済み全込み就業時間 */
+  private float calculated_total_work_hour = NO_DATA;
+
   /** 計算済み残業時間 */
   private float calculated_overtime_hour = NO_DATA;
 
@@ -383,13 +386,41 @@ public class ExtTimecardListResultData implements ALData {
       float time = 0f;
       float in = getInworkHour();// 残業以外
       float over = getOvertimeHour();// 残業
+      if (getIsSaturdayOrSundayOrHoliday() == 0) {
+        if (in != NO_DATA) {
+          time += in;
+        }
+        // 残業を就業に含める
+        // if (over != NO_DATA) {
+        // time += over;
+        // }
+      }
+      calculated_work_hour = time;
+      return time;
+    }
+  }
+
+  /**
+   * すべてを含めた就業時間を計算します。
+   * 
+   * @return float
+   */
+  public float getTotalWorkHour() {
+    if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
+      return NO_DATA;
+    } else if (calculated_total_work_hour != NO_DATA) {
+      return calculated_total_work_hour;
+    } else {
+      float time = 0f;
+      float in = getInworkHour();// 残業以外
+      float over = getOvertimeHour();// 残業
       if (in != NO_DATA) {
         time += in;
       }
       if (over != NO_DATA) {
         time += over;
       }
-      calculated_work_hour = time;
+      calculated_total_work_hour = time;
       return time;
     }
   }
@@ -520,7 +551,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public float getOffWorkHour() {
     if (getIsSaturdayOrSundayOrHoliday() != 0) {
-      return getWorkHour();
+      return getTotalWorkHour();
     }
     return -1f;
   }
@@ -631,6 +662,7 @@ public class ExtTimecardListResultData implements ALData {
 
   public float getOvertimeHourWithoutRestHour(boolean round) {
     float time = NO_DATA;
+
     if (calculated_overtime_hour > NO_DATA) {
       time = calculated_overtime_hour;
     } else {
@@ -638,6 +670,11 @@ public class ExtTimecardListResultData implements ALData {
     }
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
+    }
+    if (getIsSaturdayOrSundayOrHoliday() != 0) {
+      if (time != NO_DATA) {
+        time = 0f;
+      }
     }
     return time;
   }
@@ -653,7 +690,16 @@ public class ExtTimecardListResultData implements ALData {
 
   public float getOffHour(boolean round) {
     if (getIsSaturdayOrSundayOrHoliday() != 0) {
-      return getWorkHourWithoutRestHour(round);
+      float time = NO_DATA;
+      if (calculated_total_work_hour != NO_DATA) {
+        time = calculated_total_work_hour;
+      } else {
+        time = getTotalWorkHour();
+      }
+      if (round) {
+        time = ExtTimecardUtils.roundHour(time);
+      }
+      return time;
     }
     return NO_DATA;
   }
