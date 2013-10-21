@@ -928,7 +928,7 @@ public class ALDefaultSocialApplicationHanlder extends
 
           Database.commit();
 
-          this.daysFirstActivate(request.getUserId());
+          this.daysFirstActivate(request.getLoginName());
 
           ALApplication application2 =
             getApplication(new ALApplicationGetRequest().withAppId(request
@@ -1109,10 +1109,10 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    */
   @Override
-  protected void daysFirstActivate(int uid) {
+  protected void daysFirstActivate(String uid) {
     // noop
   }
 }

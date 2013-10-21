@@ -113,7 +113,7 @@ public abstract class ALSocialApplicationHandler {
 
   public abstract void deleteUserData(List<String> loginNameList);
 
-  protected abstract void daysFirstActivate(int uid);
+  protected abstract void daysFirstActivate(String uid);
 
   public static enum Property {
 
