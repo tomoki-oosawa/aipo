@@ -84,6 +84,8 @@ public class ALEventlogUtils {
       return ALActionEventlogConstants.EVENT_TYPE_DOWNLOAD;
     } else if (ALActionEventlogConstants.EVENT_MODE_STARTGUIDE.equals(mode)) {
       return ALActionEventlogConstants.EVENT_TYPE_STARTGUIDE;
+    } else if (ALActionEventlogConstants.EVENT_MODE_COMMENT.equals(mode)) {
+      return ALActionEventlogConstants.EVENT_TYPE_COMMENT;
     }
     return ALActionEventlogConstants.EVENT_TYPE_NONE;
   }
