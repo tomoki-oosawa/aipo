@@ -29,14 +29,34 @@ body {
   margin-top: -1px;
 }
 
+/***************************************************
+	mobileHeader
+--------------------------------------------------*/
 .auiPortletHead {
-  display:none;
+  display: none;
 }
 
 #mobileHeader_v2 {
-  position:static;
+  position: static;
+}
+#mobileHeader_v2 .counter {
+  padding: 2px 2px 0;
+}
+
+#mobileHeader_v3 {
+  position: static;
+}
+#mobileHeader_v3 .counter {
+  padding: 2px 2px 0;
 }
 
 #roundWrapper .roundMainWrapper {
-  padding:0;
+  padding: 0;
+}
+
+/***************************************************
+	auiMbTable
+--------------------------------------------------*/
+.auiMbTable .auiMTCheck {
+  padding: 2px 10px 0 5px;
 }
