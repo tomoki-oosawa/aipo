@@ -123,30 +123,26 @@ if(document.all!=undefined){
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
-	$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}&nbsp;-&nbsp;
-	$!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
-	#if(! ${result.Detail.isPublic()})
-	<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
-	#end
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}&nbsp;-&nbsp;
+$!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 #elseif($!{result.Detail.isRepeat()})
-	$!{result.Detail.Text}<br/>
-	$!{result.Detail.Date2}
-	#if(! ${result.Detail.isPublic()})
-	<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
-	#end
-	<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
+$!{result.Detail.Text}<br/>
+$!{result.Detail.Date2}
 #else
-	$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
-	$!{result.Detail.Date2}
-	#if(! ${result.Detail.isPublic()})
-	<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
-	#end
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.Date2}
 #end
-#if($!{result.Detail.isTmpreserve()})
-	<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
+#if(! ${result.Detail.isPublic()})
+<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #if($!{result.Detail.isDuplicate()})
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
+#end
+#if($!{result.Detail.isRepeat()})
+<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
+#end
+#if($!{result.Detail.isTmpreserve()})
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
