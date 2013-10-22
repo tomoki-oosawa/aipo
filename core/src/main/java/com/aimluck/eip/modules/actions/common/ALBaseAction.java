@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction;
 import org.apache.jetspeed.portal.PortletInstance;
 import org.apache.jetspeed.portal.portlets.GenericMVCPortlet;
@@ -34,6 +36,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -165,6 +168,14 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
       "changeToPc"))) { // PC表示切り替え用
       context.put("client", ALEipUtils.getClient(rundata));
+    }
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      Object obj1 = request.getAttribute("SaaSMessageActionUrl");
+      if (obj1 != null) {
+        context.put("SaaSMessageActionUrl", obj1.toString());
+      }
     }
 
     // For security
