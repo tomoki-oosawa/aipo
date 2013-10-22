@@ -622,11 +622,7 @@ $item.get(0)
 			#ALUnreadchecker()
 		</div>
 		<div class="mhRight clearfix">
-			<div class="hdMessege" title="メッセージ">
-				<a href="https://message.aipo.com" target="_blank">
-					#ALMessage()
-				</a>
-			</div>
+			#ALMessage()
 			#if($data.User.getUserName() != "admin")
 				<div class="hdActivity" title="お知らせ">
 					<a href="javascript:void(0)" onClick="activitySwitch()">
@@ -652,12 +648,6 @@ $item.get(0)
 
 #macro(ALActivity)
 <div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle"><div id="activitychecker" class="activitycheckerstyle counter zero"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
-#end
-
-#macro(ALMessage)
-<div id="messagechecker" class="zero counter">0</div>
-<span class="mb_hide">メッセージ</span>
-<span class="pc_hide"><i class="icon-comments"></i></span>
 #end
 
 #macro(ALcontentfooter)
