@@ -385,7 +385,6 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       float in = getInworkHour();// 残業以外
-      float over = getOvertimeHour();// 残業
       if (getIsSaturdayOrSundayOrHoliday() == 0) {
         if (in != NO_DATA) {
           time += in;
