@@ -99,18 +99,19 @@
 #set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 
+#ALtdcellheaderAtt('class="auiMTCheck"')
+<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
+#ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
 <a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);' style="display:inline;">
 #if($!record.isRead())
-$MailSubject
+$!record.Person
 #else
-<strong>$MailSubject</strong>
+<strong>$!record.Person</strong>
 #end
 </a>
-</div>
 
-#ALtdcellAtt("<div>$!record.Person</div>" 'align="left"')
+#ALtdcellAtt("<div>$MailSubject</div>" 'align="left"')
 #ALtdcellAtt("$!{record.Date}" 'class="right" nowrap="nowrap"')
 
 #ALtdcellfooter()
