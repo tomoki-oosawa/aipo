@@ -91,59 +91,27 @@
 #foreach ($record in $result.List)
 <tr>
 
-#if($!{client}=="IPHONE")
-
 #if(($!record.Subject) && ($!record.getSubject().toString() != ""))
 #set($MailSubject = $!record.Subject)
 #elseif($!record.Subject)
 #set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 
+#ALtdcellheaderAtt('class="auiMTCheck" align="center"')
+<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
+#ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div><input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
 <a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);' style="display:inline;">
 #if($!record.isRead())
-$MailSubject
+$!record.Person
 #else
-<strong>$MailSubject</strong>
+<strong>$!record.Person</strong>
 #end
 </a>
-</div>
-
-#ALtdcellAtt("<div>$!record.Person</div>" 'align="left"')
+#ALtdcell("<div>$MailSubject</div>")
 #ALtdcellAtt("$!{record.Date}" 'class="right" nowrap="nowrap"')
 
 #ALtdcellfooter()
-
-#else
-#ALtdcellAtt("<input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />" 'align="center"')
-##if($!record.hasAttachments())
-##ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' /><img src='$!record.WithFilesImage' alt='$!record.WithFilesImageDescription' title='$!record.WithFilesImageDescription' />" 'align="center" nowrap')
-##else
-##ALtdcellAtt("<img src='$!record.ReadImage' alt='$!record.ReadImageDescription' title='$!record.ReadImageDescription' />" 'align="center"')
-##end
-#if(($!record.Subject) && ($!record.getSubject().toString() != ""))
-#set($MailSubject = $!record.Subject)
-#elseif($!record.Subject)
-#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
-#end
-
-#ALtdcellAtt("<div>$!record.Person</div>" 'align="left"')
-#ALtdcellheader()
-<div>
-<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);'>
-#if($!record.isRead())
-$MailSubject
-#else
-<strong>$MailSubject</strong>
-#end
-</a>
-</div>
-#ALtdcellfooter()
-#ALtdcellAtt("$!{record.Date}" 'class="right" nowrap="nowrap"')
-#end
-
-
 </tr>
 #end
 #end
