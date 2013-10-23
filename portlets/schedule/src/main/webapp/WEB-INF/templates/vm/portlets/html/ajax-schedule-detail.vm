@@ -65,7 +65,7 @@ $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/
 $!{result.Detail.Date}
 #end
 #if(! ${result.Detail.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+	#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 #if($!{result.Detail.isDuplicate()})
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>

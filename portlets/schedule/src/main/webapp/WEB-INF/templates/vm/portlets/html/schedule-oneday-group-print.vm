@@ -265,7 +265,7 @@ $record3.AliasName
 
 ${record.TodoName}
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 </a>
 </div>
@@ -287,7 +287,7 @@ ${record.TodoName}
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
@@ -299,7 +299,7 @@ $record.WbrName
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
@@ -337,7 +337,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 #if($record.isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
@@ -411,7 +411,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #if(${record.isRepeat()})
@@ -496,7 +496,7 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 #if($record.isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
@@ -560,7 +560,7 @@ $record.WbrName
 #end
 
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #if(${record.isRepeat()})

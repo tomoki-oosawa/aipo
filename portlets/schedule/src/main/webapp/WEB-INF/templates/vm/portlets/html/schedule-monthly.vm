@@ -71,6 +71,7 @@
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 #if (${client} != "IPHONE")
+<div class="auiSummaryMeta clearfix">
 <div class="floatRight">
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>
@@ -111,7 +112,9 @@
         #end
     </select>
 </div>
-
+#if (${client} != "IPHONE")
+	</div>
+#end
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
@@ -199,14 +202,14 @@
 #if(${record.TermResultData.isShowDetail()})
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record.TermResultData.WbrName}
-	#if(!${record.TermResultData.isPublic()})&nbsp;<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
+	#if(!${record.TermResultData.isPublic()})&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
 	#if(${record.TermResultData.isTmpreserve()})<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end
 	</a>
 #else
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small">
 	$!{record.TermResultData.WbrName}
 	#if(!${record.TermResultData.isPublic()})
-	<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+	#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 	#end
 	#if(${record.TermResultData.isTmpreserve()})
 	<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
@@ -282,7 +285,7 @@
 </div>
 #end
 #if(! ${record2.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 #if($record2.isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
@@ -321,7 +324,7 @@
 ##<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
 $!{record.ToDoResultData.TodoName}
 #if(! ${record.ToDoResultData.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 </a>
 </div>

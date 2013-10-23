@@ -133,7 +133,7 @@ $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/
 $!{result.Detail.Date2}
 #end
 #if(! ${result.Detail.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"></i>
+#AUIiconSecretAtt('title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"')
 #end
 #if($!{result.Detail.isDuplicate()})
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>

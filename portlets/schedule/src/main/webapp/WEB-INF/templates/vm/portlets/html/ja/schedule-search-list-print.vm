@@ -121,7 +121,7 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #end
 #if($record.isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>

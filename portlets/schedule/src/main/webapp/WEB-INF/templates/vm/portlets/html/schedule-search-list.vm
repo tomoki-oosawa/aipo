@@ -175,7 +175,7 @@
 <td><div>
 #set ($count =0)
 #if(! ${record.isPublic()})
-<i class="auiIcon auiIconSecret" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
 #set($count=$count + 1)
 #end
 #if($record.isDuplicate())
