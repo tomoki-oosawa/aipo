@@ -61,14 +61,14 @@ $l10n.EXTTIMECARD_ALERT_NO_USER<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
 #ALtdhead("#ALajaxsort('name_kana' $l10n.EXTTIMECARD_NAME $result 'ExtTimecardSystemMapListScreen')")
 #ALtdhead($l10n.EXTTIMECARD_POST_NAME)
 #ALtdhead($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.UserId' type='checkbox' value='$!record.UserId'/>" 'class="center"')
+#ALtdcellAtt("<input name='check$!record.UserId' type='checkbox' value='$!record.UserId'/>" 'class="center auiMTCheck"')
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.LoginName).addQueryData("noedit",1))');">$!record.Name</a>
