@@ -69,7 +69,7 @@ aipo.onloadSmartPhone = function(){
 		if(is_menu){
 			var elem = document.createElement('div');
 			elem.className = 'snDrawer';
-			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" class="auiButtonBold" onClick="widgetMenuSwitch()"><img src="themes/default/images/mobile/sn_list.png" /></a>';
+			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" onClick="widgetMenuSwitch()"><i class="icon-reorder"></i></a>';
 			widgets_area.appendChild(elem);
 		}
 	}
@@ -90,7 +90,7 @@ function widgetMenuSwitch() {
         var contents = document.getElementById('auiContentsArea');
    		var footer = document.getElementById('auiWidgetsArea');
     	var wrapper = document.getElementById('wrapper');
-   		var header = document.getElementById('mobileHeader_v2');
+   		var header = document.getElementById('mobileHeader_v3');
 	    var body = dojo.body();
 
 		var subNaviStyle = subNavi.currentStyle || document.defaultView.getComputedStyle(subNavi, null);
@@ -141,7 +141,7 @@ function appsNaviSwitch() {
     var navi = document.getElementById('appsNavigation_v2');
     var wrapper = document.getElementById('wrapper');
     var bk = document.getElementById('appsNavigationBack_v2');
-    var mh = document.getElementById('mobileHeader_v2');
+    var mh = document.getElementById('mobileHeader_v3');
 
     if(navi.className!='anOpen'){
         navi.style.display = 'block';

@@ -97,7 +97,11 @@
 #set($MailSubject = $l10n.WEBMAIL_NOTITLE)
 #end
 
+<<<<<<< HEAD
 #ALtdcellheaderAtt('class="auiMTCheck" align="center"')
+=======
+#ALtdcellheaderAtt('class="auiMTCheck"')
+>>>>>>> branch 'master' of https://github.com/aipocom/aipo.git
 <input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')

@@ -71,6 +71,7 @@ import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipInformation;
 import com.aimluck.eip.common.ALFunction;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -718,6 +719,12 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
                 break;
               }
             }
+          }
+
+          if ("SaaSMessage".equals(tab.getName().toString())) {
+            HttpServletRequestLocator.get().setAttribute(
+              "SaaSMessageActionUrl",
+              duri.toString());
           }
 
         } catch (Exception e) {

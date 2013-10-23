@@ -163,11 +163,8 @@ public class ScheduleDetailOnedaySelectData extends
       if ("R".equals(record.getStatus())) {
         return rd;
       }
-      if (!ScheduleUtils.isView(
-        getViewDate(),
-        record.getRepeatPattern(),
-        record.getStartDate(),
-        record.getEndDate())) {
+      if (!ScheduleUtils.isView(view_date, record.getRepeatPattern(), record
+        .getStartDate(), record.getEndDate())) {
         return rd;
       }
 
@@ -229,7 +226,7 @@ public class ScheduleDetailOnedaySelectData extends
 
       if (!rd.getPattern().equals("N")) {
         // 繰り返しスケジュール
-        if (!ScheduleUtils.isView(getViewDate(), rd.getPattern(), rd
+        if (!ScheduleUtils.isView(view_date, rd.getPattern(), rd
           .getStartDate()
           .getValue(), rd.getEndDate().getValue())) {
           return rd;

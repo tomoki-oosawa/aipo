@@ -4,3 +4,6 @@
 #macro(ALUnreadchecker)
 ##
 #end
+#macro(ALMessage)
+##
+#end

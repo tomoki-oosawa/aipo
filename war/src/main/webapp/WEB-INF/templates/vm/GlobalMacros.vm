@@ -612,7 +612,7 @@ $item.get(0)
 <div class="dojoDndItem auiPortlet">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
-		<div id="mobileHeader_v2" class="clearfix">
+		<div id="mobileHeader_v3" class="clearfix">
 		<div class="inner">
 		<h1><span>#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
 		<div class="mhLeft">
@@ -622,6 +622,7 @@ $item.get(0)
 			#ALUnreadchecker()
 		</div>
 		<div class="mhRight clearfix">
+			#ALMessage()
 			#if($data.User.getUserName() != "admin")
 				<div class="hdActivity" title="お知らせ">
 					<a href="javascript:void(0)" onClick="activitySwitch()">
