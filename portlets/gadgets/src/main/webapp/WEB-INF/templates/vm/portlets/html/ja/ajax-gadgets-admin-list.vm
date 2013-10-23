@@ -84,7 +84,7 @@ $l10n.GADGETS_APP_NOT_EXIST_MSG<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
 #ALtdhead($l10n.GADGETS_STATUS)
 #ALtdhead($l10n.GADGETS_APP_NAME)
 </tr>
@@ -92,7 +92,7 @@ $l10n.GADGETS_APP_NOT_EXIST_MSG<br />
 <tr>
 #if($record.Parent == "GadgetsTemplate")
 #set($appId = $!result.getStringNumber($!record.Name))
-#ALtdcellAtt("<input name='check$!appId' type='checkbox' value='$!appId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!appId' type='checkbox' value='$!appId'/>" 'align="center"  class="auiMTCheck"')
 #else
 #ALtdcellAtt("" "")
 #end
