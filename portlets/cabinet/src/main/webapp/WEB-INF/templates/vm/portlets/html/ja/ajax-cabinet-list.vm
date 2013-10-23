@@ -90,7 +90,7 @@
 <tr>
 
 #if($result.isEditable())
-#ALtdheadAtt("#ALswitchCheckbox()" "class='thin center'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='thin center auiMTCheck'")
 ##<th class="thin">編集</th>
 #end
 
@@ -103,7 +103,7 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($result.isEditable()) #ALtdcellAtt("<input name='check$!record.FileId' type='checkbox' value='$!record.FileId'/>" 'align="center"') #end
+#if($result.isEditable()) #ALtdcellAtt("<input name='check$!record.FileId' type='checkbox' value='$!record.FileId'/>" 'align="center" class="auiMTCheck"') #end
 ##編集ボタン
 #*
 #if($result.isEditable())
