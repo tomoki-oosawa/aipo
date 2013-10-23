@@ -97,13 +97,11 @@
 #set($setEven = true)
 #foreach ($record in $result.List)
 #ALsetSubject($record)
-<tr #if(!$setEven) class="even" #end
-#if($isReceive)
-#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2")
-style="font-weight:bold"
-#end
-#end
->
+<tr class="#if(!$setEven) even #end
+#if($isReceive)#if($record.NoteStat.toString() == "1" || $record.NoteStat.toString() == "2")
+unread
+#end#end
+">
 #ALsetEven($setEven)
 
 #ALtdcellheaderAtt('class="auiMTCheck"')
