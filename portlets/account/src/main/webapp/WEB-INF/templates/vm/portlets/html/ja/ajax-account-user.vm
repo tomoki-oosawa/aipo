@@ -112,7 +112,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 <input name='check$!record.UserName' type='checkbox' value='$!record.UserName'/>
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.UserName))');" style="display:inline;">$!record.Name</a>
+<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserDetailScreen").addQueryData("entityid",$record.UserName))');">$!record.Name</a>
 #ALtdcellfooter()
 #ALtdcell("<div>$!record.Email</div>")
 #ALtdcellheaderAtt('class="mb_hide"')
