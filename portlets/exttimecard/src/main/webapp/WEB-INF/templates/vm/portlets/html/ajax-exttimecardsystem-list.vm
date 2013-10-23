@@ -56,16 +56,16 @@ $l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
 #ALtdhead("#ALajaxsort('system_name' $l10n.EXTTIMECARD_WORKING_ARRANGEMENTS $result 'ExtTimecardSystemListScreen')")
 
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #if($record.isSystemIdNormal())
-    #ALtdcellAtt("<input name='check$!record.SystemName' type='checkbox' value='$!record.SystemId' disabled/>" 'class="center"')
+    #ALtdcellAtt("<input name='check$!record.SystemName' type='checkbox' value='$!record.SystemId' disabled/>" 'class="center auiMTCheck"')
 #else
-    #ALtdcellAtt("<input name='check$!record.SystemName' type='checkbox' value='$!record.SystemId'/>" 'class="center"')
+    #ALtdcellAtt("<input name='check$!record.SystemName' type='checkbox' value='$!record.SystemId'/>" 'class="center auiMTCheck"')
 #end
 #ALtdcellheader()
 <div>
