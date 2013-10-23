@@ -1395,6 +1395,29 @@ $link.get(0)
 
 
 ##
+## smartphone menu macros
+##
+
+#macro(ALtabElementMaximizeAbstract $name $imageclass $prefix)
+#set($break=false)
+#foreach($tab in $menus)
+	#if($break==false)
+		#if($tab.Name.toString()==$name)
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+		#set($break=true)
+		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
+		<li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+		#set($break=true)
+		#end
+	#end
+#end
+#end
+
+#macro(ALtabElementMaximize $name $imageclass)
+#ALtabElementMaximizeAbstract($name $imageclass "")
+#end
+
+##
 ##  AUI MACROS
 ##
 #macro(AUIrowTableWide)
