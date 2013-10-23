@@ -1,0 +1,25 @@
+/* CSS Document */
+/***************************************************
+	mobileHeader
+--------------------------------------------------*/
+#mobileHeader_v2 .counter {
+  padding: 2px 2px 0;
+}
+
+#mobileHeader_v3 .counter {
+  padding: 3px 2px 0;
+}
+
+/***************************************************
+	auiRowTable
+--------------------------------------------------*/
+.auiRowTable .auiMTCheck {
+  padding-top: 4px;
+}
+
+/***************************************************
+	auiMbTable
+--------------------------------------------------*/
+.auiMbTable .auiMTCheck {
+  padding: 0 10px 0 5px;
+}

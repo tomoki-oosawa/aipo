@@ -70,7 +70,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALajaxpageview('CabinetFileSearchListScreen' $result)
 #ALtableheader("100%")
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='thin auiMTCheck'")
 #ALtdheadW33("#ALajaxsort('file_title' "$l10n.CABINET_TITLE" $result 'CabinetFileSearchListScreen')")
 #ALtdheadW33("#ALajaxsort('file_name' "$l10n.CABINET_FILE_NAME" $result 'CabinetFileSearchListScreen')")
 ##ALtdheadThin("#ALajaxsort('update_user' "$l10n.CABINET_MODIFIED" $result 'CabinetListScreen')")
@@ -82,7 +82,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #foreach ($record in $result.List)
 <tr>
 #if($record.isEditable())
-#ALtdcellAtt("<input name='check$!record.FileId' type='checkbox' value='$!record.FileId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!record.FileId' type='checkbox' value='$!record.FileId'/>" 'align="center" class="auiMTCheck"')
 #else
 #ALtdcellheader()
 #ALtdcellfooter()

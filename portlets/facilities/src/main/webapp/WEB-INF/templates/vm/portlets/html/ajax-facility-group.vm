@@ -61,13 +61,13 @@
 </colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
 #ALtdhead("#ALajaxsort('group_name' $l10n.FACILITIES_FACILITYGROUP_NAME $result 'FacilityGroupListScreen')")
 #ALtdhead("$l10n.FACILITIES_FACILITY_NAME")
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.GroupId' type='checkbox' value='$!record.GroupId'/>" 'class="center"')
+#ALtdcellAtt("<input name='check$!record.GroupId' type='checkbox' value='$!record.GroupId'/>" 'class="center auiMTCheck"')
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","FacilityGroupDetailScreen").addQueryData("entityid",$record.GroupId))');">$result.getStringCR($!record.GroupName)</a>

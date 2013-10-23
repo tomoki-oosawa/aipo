@@ -49,12 +49,12 @@
 </colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()"  "class='auiMTCheck'")
 #ALtdhead("#ALajaxsort('post_name' $l10n.ACCOUNT_POST_NAME $result 'AccountPostListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.PostId' type='checkbox' value='$!record.PostId'/>" 'align="center"')
+#ALtdcellAtt("<input name='check$!record.PostId' type='checkbox' value='$!record.PostId'/>" 'align="center" class="auiMTCheck"')
 #ALtdcellheader()
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPostDetailScreen").addQueryData("entityid",$record.PostId))');">$result.getStringCR($!record.PostName)</a>
