@@ -443,6 +443,13 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
     } else {
       end_date.setValue(tmpEnd);
+      Calendar tmpEndCal = Calendar.getInstance();
+      tmpEndCal.setTime(end_date.getValue());
+      int endHour = tmpEndCal.get(Calendar.HOUR_OF_DAY);
+      if (endHour != 23) {
+        tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 1);
+      }
+      end_date.setValue(tmpEndCal.getTime());
     }
     end_date.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
