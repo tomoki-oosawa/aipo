@@ -24,6 +24,9 @@
 #set ($newAfterFunction2 = "aipo.account_company.onLoadPositionDialog")
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
 #if($result.List.size() == 0)
 #AUIbuttonActionInBlankBox($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 #else
