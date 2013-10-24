@@ -449,9 +449,50 @@ public class ScheduleFormData extends ALAbstractFormData {
     // 開始日時と終了日時が同じか
     if (start_date.toString().equals(end_date.toString())) {
       is_same_date = true;
+      Calendar tmpEndCal = Calendar.getInstance();
+      tmpEndCal.setTime(end_date.getValue());
+      int endHour = tmpEndCal.get(Calendar.HOUR_OF_DAY);
+      if (endHour != 23) {
+        tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 1);
+      }
+      end_date.setValue(tmpEndCal.getTime());
     } else {
       is_same_date = false;
     }
+
+    // 分の端数切上げ
+    Calendar tmpStartCal = Calendar.getInstance();
+    tmpStartCal.setTime(start_date.getValue());
+    int startMinute = tmpStartCal.get(Calendar.MINUTE);
+    if (startMinute > 55) {
+      int startHour = tmpStartCal.get(Calendar.HOUR_OF_DAY);
+      if (startHour != 23) {
+        tmpStartCal.set(Calendar.HOUR_OF_DAY, startHour + 1);
+        tmpStartCal.set(Calendar.MINUTE, 0);
+      } else {
+        tmpStartCal.set(Calendar.MINUTE, 55);
+      }
+    } else if (startMinute % 5 != 0) {
+      tmpStartCal.set(Calendar.MINUTE, startMinute + (5 - (startMinute % 5)));
+    }
+    start_date.setValue(tmpStartCal.getTime());
+
+    Calendar tmpEndCal = Calendar.getInstance();
+    tmpEndCal.setTime(end_date.getValue());
+    int endMinute = tmpEndCal.get(Calendar.MINUTE);
+    if (endMinute > 55) {
+      int endHour = tmpEndCal.get(Calendar.HOUR_OF_DAY);
+      if (endHour != 23) {
+        tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 1);
+        tmpEndCal.set(Calendar.MINUTE, 0);
+      } else {
+        tmpEndCal.set(Calendar.MINUTE, 55);
+      }
+    } else if (endMinute % 5 != 0) {
+      tmpEndCal.set(Calendar.MINUTE, endMinute + (5 - (endMinute % 5)));
+    }
+    end_date.setValue(tmpEndCal.getTime());
+
     // 繰り返しタイプ
     repeat_type = new ALStringField();
     repeat_type.setFieldName(ALLocalizationUtils
