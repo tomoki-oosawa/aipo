@@ -70,5 +70,8 @@
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()
 #ALformfooter()
+#AUIwideAreaFooter()
+#end
+#if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
 #end
