@@ -637,7 +637,12 @@ $item.get(0)
 	<!-- /Smartphone Header -->
 	#end
 	<div class="auiPortletHead"><div class="inner">
-		<div class="auiPortletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
+		#if(${client} == "IPHONE")
+		<div class="auiPortletTitle" style="visibility:hidden">
+		#else
+		<div class="auiPortletTitle">
+		#end
+		#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
 		<div class="auiPortletTool">
 		</div>
 	</div></div>
