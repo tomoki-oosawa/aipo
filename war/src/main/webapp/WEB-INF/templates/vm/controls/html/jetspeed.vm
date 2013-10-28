@@ -51,7 +51,7 @@ aipo.onloadSmartPhone = function(){
 		if(is_menu){
 			var elem = document.createElement('div');
 			elem.className = 'snDrawer';
-			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" onClick="widgetMenuSwitch()"><i class="icon-reorder"></i></a>';
+			elem.innerHTML = '<a id="snDrawer" href="javascript:void(0)" onClick="widgetMenuSwitch()"><i class="icon-caret-up"></i></a>';
 			widgets_area.appendChild(elem);
 		}
 	}
