@@ -285,10 +285,23 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setLastName(baseuser.getLastName());
       tuser.setEmail(baseuser.getEmail());
       tuser.setConfirmValue(baseuser.getConfirmed());
-      tuser.setModified(baseuser.getCreateDate());
-      tuser.setCreated(baseuser.getCreateDate());
-      tuser.setLastLogin(baseuser.getCreateDate());
-      // tuser.setDisabled((baseuser.getDisabled() ? "T" : "F"));
+
+      if (baseuser.isNew()) {
+        tuser.setCreated(baseuser.getCreateDate());
+        tuser.setModified(baseuser.getCreateDate());
+        tuser.setLastLogin(baseuser.getCreateDate());
+      } else {
+        Date lastLogin = baseuser.getLastLogin();
+        Date lastLoginDb = tuser.getLastLogin();
+        if (lastLogin != null
+          && lastLoginDb != null
+          && !(lastLogin.equals(lastLoginDb))) {
+          tuser.setLastLogin(baseuser.getLastLogin());
+        } else {
+          tuser.setModified(new Date());
+        }
+      }
+
       tuser.setDisabled(baseuser.getDisabled());
       tuser.setObjectdata(null);
       tuser.setPasswordChanged(baseuser.getPasswordChanged());
