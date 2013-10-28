@@ -97,12 +97,12 @@ function widgetMenuSwitch() {
 			    		wrapper.style.minHeight = naviHeight+ 'px';
 						footer.style.top = (subNavi.clientHeight + headerHeight + 50) + 'px';
 			    	}
+        			window.scrollTo(0, wrapper.clientHeight);
 			    } else {
 			        //ナビが静的な時
 			    	wrapper.style.minHeight = displayHeight+ 'px';
 			    }
 			    body.style.overflowX = "hidden";//効かない
-        		window.scrollTo(0, wrapper.clientHeight);
 				if(aipo.userAgent.isAndroid2()) {
 					widgets.style.zIndex = 1024;
 				}
