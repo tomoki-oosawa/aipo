@@ -473,15 +473,8 @@ public class ALEipUtils {
           .sql(TurbineUser.class, query)
           .param("groupName", groupname)
           .fetchList();
-
-      ALEipUser user;
       for (TurbineUser tuser : list2) {
-        user = new ALEipUser();
-        user.initField();
-        user.setUserId(tuser.getUserId());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        list.add(user);
+        list.add(getALEipUser(tuser));
       }
     } catch (Throwable t) {
       logger.error("ALEipUtils.getUsers", t);
@@ -526,14 +519,8 @@ public class ALEipUtils {
           .param("groupName", groupname)
           .fetchList();
 
-      ALEipUser user;
       for (TurbineUser tuser : list2) {
-        user = new ALEipUser();
-        user.initField();
-        user.setUserId(tuser.getUserId());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        list.add(user);
+        list.add(getALEipUser(tuser));
       }
     } catch (Throwable t) {
       logger.error("ALEipUtils.getUsersIncludingN", t);
@@ -618,14 +605,8 @@ public class ALEipUtils {
           .param("postId", postid)
           .fetchList();
 
-      ALEipUser user;
       for (TurbineUser tuser : list2) {
-        user = new ALEipUser();
-        user.initField();
-        user.setUserId(tuser.getUserId());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        list.add(user);
+        list.add(getALEipUser(tuser));
       }
     } catch (Throwable t) {
       logger.error("ALEipUtils.getUsersFromPost", t);
@@ -650,13 +631,8 @@ public class ALEipUtils {
             + "."
             + EipMUserPosition.POSITION_PROPERTY).fetchList();
 
-      for (TurbineUser record : ulist) {
-        ALEipUser user = new ALEipUser();
-        user.initField();
-        user.setUserId(record.getUserId().intValue());
-        user.setName(record.getLoginName());
-        user.setAliasName(record.getFirstName(), record.getLastName());
-        list.add(user);
+      for (TurbineUser tuser : ulist) {
+        list.add(getALEipUser(tuser));
       }
     } catch (Throwable t) {
       logger.error("ALEipUtils.getUsersFromSelectQuery", t);
@@ -672,13 +648,13 @@ public class ALEipUtils {
    */
   public static ALEipUser getALEipUser(RunData rundata) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
+    ALBaseUser baseuser = (ALBaseUser) jdata.getJetspeedUser();
     ALEipUser user = new ALEipUser();
     user.initField();
-    user.setUserId(Integer.parseInt(jdata.getJetspeedUser().getUserId()));
-    user.setName(jdata.getJetspeedUser().getUserName());
-    user.setAliasName(jdata.getJetspeedUser().getFirstName(), jdata
-      .getJetspeedUser()
-      .getLastName());
+    user.setUserId(Integer.parseInt(baseuser.getUserId()));
+    user.setName(baseuser.getUserName());
+    user.setAliasName(baseuser.getFirstName(), baseuser.getLastName());
+    user.setCreated(baseuser.getCreated());
     return user;
   }
 
@@ -713,6 +689,7 @@ public class ALEipUtils {
     user.setPhotoModified(tuser.getPhotoModified() != null ? tuser
       .getPhotoModified()
       .getTime() : 0);
+    user.setCreated(tuser.getCreated());
     return user;
   }
 
@@ -728,14 +705,7 @@ public class ALEipUtils {
     if (tuser == null) {
       return null;
     }
-
-    ALEipUser user = new ALEipUser();
-    user.initField();
-    user.setUserId(tuser.getUserId().intValue());
-    user.setName(tuser.getLoginName());
-    user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-
-    return user;
+    return getALEipUser(tuser);
   }
 
   /**
