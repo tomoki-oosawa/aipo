@@ -485,6 +485,10 @@
 <div class="center auiPopupButtons">
 #end
 
+#macro(ALbuttonheaderPt10)
+<div class="center auiPopupButtons pt10">
+#end
+
 #macro(ALbuttonfooter)
 </div>
 #end
