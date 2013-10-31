@@ -453,7 +453,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       tmpEndCal.setTime(end_date.getValue());
       int endHour = tmpEndCal.get(Calendar.HOUR_OF_DAY);
       if (endHour != 23) {
-        tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 1);
+        tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour);
       }
       end_date.setValue(tmpEndCal.getTime());
     } else {
