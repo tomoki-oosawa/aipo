@@ -81,7 +81,7 @@
         <parameter name="addRefDisabled.style.no-access" value="addRefDisabled" hidden="false"/>
         <parameter name="size" value="50" hidden="false"/>
         <meta-info>
-            <title>カスタマイズ区画</title>
+            <title>ページ設定</title>
         </meta-info>
         <category>管理</category>
         <category>カスタマイズ</category>

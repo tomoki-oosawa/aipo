@@ -34,4 +34,4 @@ dojo.provide("aipo.portletset");
 #ALcontentheader("$!{portlet.Title}" $navilist)
 #parse ($feature)
 #ALcontentfooter()
-#parse("/portlets/html/customizer-portletset-menu.vm")
+##parse("/portlets/html/customizer-portletset-menu.vm")
