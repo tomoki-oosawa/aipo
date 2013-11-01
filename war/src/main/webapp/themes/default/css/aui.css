@@ -1010,14 +1010,18 @@ img.avatar,
 --------------------------------------------------*/
 .submenu_v2 {
   clear: both;
-  width: 190px;
+  width: 200px;
   margin: 0 0 10px 0;
-  padding: 5px 10px 10px 5px;
-  border-bottom: solid 1px #f0f0f0;
+  padding: 0;
+  background: url(../images/common/bg_submenu.gif) no-repeat bottom right;
+}
+.submenu_v2 > ul {
+  padding: 20px 0;
+  background: url(../images/common/bg_submenu.gif) no-repeat top left;
 }
 .submenu_v2 li {
-  padding: 0;
-  background: none;
+  padding: 0 6px;
+  background: url(../images/common/bg_submenu.gif) repeat-y top center;
 }
 .submenu_v2 li span {
   display: block;
