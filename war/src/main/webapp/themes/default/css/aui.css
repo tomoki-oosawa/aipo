@@ -455,6 +455,28 @@ img.avatar,
   max-height: 1000px;
 }
 
+/* startPopup */
+.startPopup {
+  width: 600px;
+  padding: 45px 50px 30px;
+  position: relative;
+}
+
+.startPopupTool {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.startPopupHead {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.startPopupContent {
+  text-align: left;
+}
+
 /***************************************************
 	auiPortlet
 --------------------------------------------------*/
