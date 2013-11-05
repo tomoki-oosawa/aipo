@@ -65,7 +65,10 @@
 #ALtablefooter()
 <input type="hidden" name="size" value="30"/>
 #ALbuttonheader()
-#ALbutton('eventSubmit_doAdd' $l10n.TODO_ADD 'aimluck.io.checkboxActionSubmit(this)')#ALsubmit('eventSubmit_doCancel' $l10n.ACCOUNT_CANCEL)
+<div class="center auiPopupButtons">
+<input name="eventSubmit_doAdd" class="auiButtonAction" type="button" value="$l10n.COMMON_ADD" onclick="aimluck.io.checkboxActionSubmit(this)">
+<input name="eventSubmit_doCancel" class="button" type="submit" value="$l10n.COMMON_BACK" onclick="aimluck.io.setHiddenValue(this);">
+</div>
 #ALbuttonfooter()
 #ALformfooter()
 #ALspacebothfooter()
