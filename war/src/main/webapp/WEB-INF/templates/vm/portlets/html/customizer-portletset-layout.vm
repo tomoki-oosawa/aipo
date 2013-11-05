@@ -23,15 +23,15 @@
 ## ---------------------------------------------------------------------------
 ##ALtabheader($tabs "")
 #ALspacebothheader()
-##if($portletsum <= 0)
-##<div class="auiBlankBox">
-##<a title="アプリを追加する" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-##</div>
-##else
-##<h3>$l10n.WAR_ADD_APP</h3>
-##<div class="center">
-##<a title="$l10n.WAR_ADD_APPLICATION" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-##</div>
+#if($portletsum <= 0)
+<div class="auiBlankBox">
+<a title="アプリを追加する" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
+</div>
+#else
+<h3>$l10n.WAR_ADD_APP</h3>
+<div class="center">
+<a title="$l10n.WAR_ADD_APPLICATION" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
+</div>
 <h3>$l10n.WAR_SELECT_POSITION</h3>
 <div class="message">$l10n.WAR_SELECT_LAYOUT_BUTTON</div>
 <table class="tableWrapper center">
@@ -58,7 +58,7 @@ $data.User.setTemp("customizer",$customizer)
 $!set.Controller.getContent($data)
 </tbody>
 </table>
-##end
+#end
 #ALspacebothfooter()
 ##ALtabfooter()
 
