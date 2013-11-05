@@ -1935,6 +1935,9 @@ input.auiButtonSearch.active {
   font-weight: bold;
   color: black;
 }
+.auiRowTable .auiMTCheck {
+  width: 20px;
+}
 
 .auiRowTable.scheduleList {
   border-bottom: solid 1px #f0f0f0;
