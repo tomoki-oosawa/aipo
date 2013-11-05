@@ -23,8 +23,15 @@
 #set($internalScreenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserEmailLiteJSONScreen')")
 #set($externalScreenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','AddressBookUserEmailLiteJSONScreen')")
 ## ---------------------------------------------------------------------------
-
-<div class="spaceAll"><h4>$subtitle</h4>
+<div class="auiPopup clearfix">
+	<div class="auiPopupHead clearfix">
+		<div class="auiPopupTool">
+			<a href="javascript:void(0)" class="auiButtonIcon" title="閉じる" onclick="aipo.webmail.close();">
+				<span><i class="icon-remove"></i></span>
+			</a>
+		</div>
+		<div class="auiPopupTitle">$subtitle</div>
+    </div>
 #ALajaxdetailformheader("webmailAddressbookForm")
 #ALdialogtableheaderWide()
 <tr>
@@ -32,7 +39,7 @@
 <div style="width: 250px;">
 <p style="line-height:1" class="mb5">
 <input name="type_company" type="radio" value="1" id="corpId$!{portlet.ID}" #if($DefTypeCompany == "1") checked="checked" #end onclick="aipo.webmail.switchTypeCompany(this)">
-<label for="corpId$!{portlet.ID}">$l10n.WEBMAIL_USERLIST</label>
+<label for="corpId$!{portlet.ID}">$l10n.WEBMAIL_USERLIST</label>&emsp;
 <input name="type_company" type="radio" value="0" id="syagaiId$!{portlet.ID}" #if($DefTypeCompany == "0") checked="checked" #end onclick="aipo.webmail.switchTypeCompany(this)">
 <label for="syagaiId$!{portlet.ID}">$l10n.WEBMAIL_ADDRESSBOOK</label>
 </p>
@@ -65,32 +72,32 @@
 #ALbutton('add_bcc' $l10n.WEBMAIL_ADD_BCC "aipo.webmail.exAddMember(this.form, this.form.detail_bcc_recipients, '${portlet.ID}')")
 </div>
 </td>
-<td class="caption" style="min-width:50px;width:50px">$l10n.WEBMAIL_TO</td>
+<td class="caption">$l10n.WEBMAIL_TO</td>
 #ALtditemheader()
-<select name="detail_to_recipients" id="detail_to_recipients" size="3" multiple="multiple" style="width: 230px;">
+<select name="detail_to_recipients" id="detail_to_recipients" size="3" multiple="multiple" class="mb5 wide">
 #foreach( $record in $!result.ToRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="alignright">$l10n.WEBMAIL_SELECTED_ADDRESS#ALbutton('del_to' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_to' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
 #ALtditemfooter()
-<td  class="caption" style="min-width:50px;width:50px">CC</td>
+<td  class="caption">CC</td>
 #ALtditemheader()
-<select name="detail_cc_recipients" id="detail_cc_recipients" size="3" multiple="multiple" style="width: 230px;">
+<select name="detail_cc_recipients" id="detail_cc_recipients" size="3" multiple="multiple" class="mb5 wide">
 #foreach( $record in $!result.CcRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="alignright">$l10n.WEBMAIL_SELECTED_ADDRESS#ALbutton('del_cc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_cc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
 #ALtditemfooter()
-<td  class="caption" style="min-width:50px;width:50px">BCC</td>
+<td  class="caption">BCC</td>
 #ALtditemheader()
-<select name="detail_bcc_recipients" id="detail_bcc_recipients" size="3" multiple="multiple" style="width: 230px;">
+<select name="detail_bcc_recipients" id="detail_bcc_recipients" size="3" multiple="multiple" class="mb5 wide">
 #foreach( $record in $!result.BccRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="alignright">$l10n.WEBMAIL_SELECTED_ADDRESS#ALbutton('del_bcc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_bcc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
 #ALtditemfooter()
 </tr>
 #ALtablefooter()
@@ -101,4 +108,5 @@
 <input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$internalScreenlink" />
 <input type="hidden" id="urlAddrlist$!portlet.ID" name="urlAddrlist$!portlet.ID" value="$externalScreenlink" />
 #ALformfooter()
+</div>
 </div>
