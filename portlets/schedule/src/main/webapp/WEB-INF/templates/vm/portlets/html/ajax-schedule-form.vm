@@ -194,33 +194,18 @@
             :
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameDate) selected="selected" #end>--</option>
-            #if($!result.EndDate.Hour == $!result.StartDate.Hour && $!result.EndDate.Minute == $!result.StartDate.Minute)
-            <option value="0">00</option>
-            <option value="5">05</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="20">20</option>
-            <option value="25">25</option>
-            <option value="30">30</option>
-            <option value="35">35</option>
-            <option value="40">40</option>
-            <option value="45">45</option>
-            <option value="50">50</option>
-            <option value="55">55</option>
-            #else
-            <option value="0" #if ($!result.EndDate.Minute == "0") selected="selected" #end>00</option>
-            <option value="5" #if ($!result.EndDate.Minute == "5") selected="selected" #end>05</option>
-            <option value="10" #if ($!result.EndDate.Minute == "10") selected="selected" #end>10</option>
-            <option value="15" #if ($!result.EndDate.Minute == "15") selected="selected" #end>15</option>
-            <option value="20" #if ($!result.EndDate.Minute == "20") selected="selected" #end>20</option>
-            <option value="25" #if ($!result.EndDate.Minute == "25") selected="selected" #end>25</option>
-            <option value="30" #if ($!result.EndDate.Minute == "30") selected="selected" #end>30</option>
-            <option value="35" #if ($!result.EndDate.Minute == "35") selected="selected" #end>35</option>
-            <option value="40" #if ($!result.EndDate.Minute == "40") selected="selected" #end>40</option>
-            <option value="45" #if ($!result.EndDate.Minute == "45") selected="selected" #end>45</option>
-            <option value="50" #if ($!result.EndDate.Minute == "50") selected="selected" #end>50</option>
-            <option value="55" #if ($!result.EndDate.Minute == "55") selected="selected" #end>55</option>
-            #end
+            <option value="0" #if (!$!result.isSameDate && $!result.EndDate.Minute == "0") selected="selected" #end>00</option>
+            <option value="5" #if (!$!result.isSameDate && $!result.EndDate.Minute == "5") selected="selected" #end>05</option>
+            <option value="10" #if (!$!result.isSameDate && $!result.EndDate.Minute == "10") selected="selected" #end>10</option>
+            <option value="15" #if (!$!result.isSameDate && $!result.EndDate.Minute == "15") selected="selected" #end>15</option>
+            <option value="20" #if (!$!result.isSameDate && $!result.EndDate.Minute == "20") selected="selected" #end>20</option>
+            <option value="25" #if (!$!result.isSameDate && $!result.EndDate.Minute == "25") selected="selected" #end>25</option>
+            <option value="30" #if (!$!result.isSameDate && $!result.EndDate.Minute == "30") selected="selected" #end>30</option>
+            <option value="35" #if (!$!result.isSameDate && $!result.EndDate.Minute == "35") selected="selected" #end>35</option>
+            <option value="40" #if (!$!result.isSameDate && $!result.EndDate.Minute == "40") selected="selected" #end>40</option>
+            <option value="45" #if (!$!result.isSameDate && $!result.EndDate.Minute == "45") selected="selected" #end>45</option>
+            <option value="50" #if (!$!result.isSameDate && $!result.EndDate.Minute == "50") selected="selected" #end>50</option>
+            <option value="55" #if (!$!result.isSameDate && $!result.EndDate.Minute == "55") selected="selected" #end>55</option>
             </select>
         </span></div>
   </div>
