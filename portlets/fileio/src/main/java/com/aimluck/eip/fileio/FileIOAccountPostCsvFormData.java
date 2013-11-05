@@ -348,7 +348,7 @@ public class FileIOAccountPostCsvFormData extends ALAbstractFormData {
         || !post_out_telephone2.validate(dummy)
         || !post_out_telephone3.validate(dummy)) {
         msgList.add(ALLocalizationUtils
-          .getl10n("ADDRESSBOOK_ALERT_SET_TELEPHON"));
+          .getl10n("ADDRESSBOOK_ALERT_SET_TELEPHONE"));
         post_out_telephone.setValue(null);
       } else {
         post_out_telephone.setValue(new StringBuffer().append(
