@@ -31,6 +31,26 @@ body {
   margin: 0 auto;
 }
 
+.auiPopup iframe,
+.startPopup iframe {
+  max-width: 100% !important;
+}
+
+/* startPopup */
+.startPopup {
+  width: auto;
+  padding: 20px 10px 10px;
+}
+
+.startPopupHead {
+  margin-bottom: 20px;
+}
+
+.startPopupHead img {
+  max-width: 70%;
+  max-height: auto;
+}
+
 td.container {
   display: block;
   width: auto;
