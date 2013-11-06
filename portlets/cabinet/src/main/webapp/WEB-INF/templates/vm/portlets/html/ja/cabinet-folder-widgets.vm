@@ -34,11 +34,11 @@
 ##全フォルダを表示するのでvisibleの条件は無視
 #if($record.isAuthorizedVisible())
 #if($record.HierarchyIndex <= 0)
-<div class="d1#if("$!result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+<div class="d1#if("$!result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end#if($record.isOpened()) open#end">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">#if($record.isOpened())<i class="icon-folder-open"></i>#else<i class="icon-folder-close"></i>#end${record.FolderName}</span></a></div>
 #else
-<div class="d$index#if("$!result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+<div class="d$index#if("$!result.SelectedFolderInfo.FolderId" == "$record.FolderId") active#end#if($record.isOpened()) open#end">
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">#if($record.isOpened())<i class="icon-folder-open"></i>#else<i class="icon-folder-close"></i>#end${record.FolderName}</span></a></div>
 #end
 #end
 #end
