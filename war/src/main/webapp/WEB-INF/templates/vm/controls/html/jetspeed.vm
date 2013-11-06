@@ -340,6 +340,7 @@ function setWrapperHeight() {
 <!-- MAIN OUTER -->
 <div id="roundWrapper">
   <div class="roundMainWrapper">
+	<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
 $portlet.getContent($data)
   #set ($flag = false)
