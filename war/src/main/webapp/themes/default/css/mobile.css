@@ -1792,31 +1792,44 @@ table tr.caption {
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
-.addressbookDialog {
-	width:auto;
-}
+#addressbookDialog .spaceLeft:nth-of-type(1),
 .addressbookDialog .spaceLeft:nth-of-type(1) {
-	display:none;
+  display: none;
 }
+#addressbookDialog .dialogTable,
 .addressbookDialog .dialogTable {
-	display:block;
-	margin-top:0 !important;
-	padding:0 5px;
-	border:none !important;
+  margin-top: 0 !important;
 }
-.addressbookDialog .dialogTable th, .addressbookDialog .dialogTable td {
-	display:block;
-	width:100% !important;
-	padding:10px 0;
+#addressbookDialog .dialogTable th,
+#addressbookDialog .dialogTable td,
+.addressbookDialog .dialogTable th,
+.addressbookDialog .dialogTable td {
+  display: block;
+  width: 100% !important;
+  padding: 10px 0;
 }
+#addressbookDialog .dialogTable .caption,
 .addressbookDialog .dialogTable .caption {
-	padding:10px 0 0 0;
-	border:none;
+  padding: 10px 0 0 0;
+  border: none;
 }
+#addressbookDialog .dialogTable div,
+.addressbookDialog .dialogTable div {
+  width: 100% !important;
+}
+#addressbookDialog .dialogTable select,
+.addressbookDialog .dialogTable select {
+  width: 100% !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#addressbookDialog .alignright,
 .addressbookDialog .alignright {
-	float:none;
-	text-align:right;
+  float: none;
+  text-align: right;
 }
+
 /***************************************************
 	auiListWrapper
 --------------------------------------------------*/

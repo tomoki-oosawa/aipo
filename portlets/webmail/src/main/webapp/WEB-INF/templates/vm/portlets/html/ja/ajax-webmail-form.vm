@@ -41,7 +41,7 @@
 #ALajaxscreenformheader("workflowForm" $jslink $portlet "WebMailFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.webmail.onReceiveMessage)")
 <input type="hidden" name="mode" value="insert" />
 <input type="hidden" name="mailtype" value="$!result.MailType">
-<div id="addressbookDialog" class="addressbookDialog" style="width:600px;display:none"></div>
+<div id="addressbookDialog" class="modalDialog" style="width:600px;display:none"></div>
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('to'))")
 #ALtditemheader()
