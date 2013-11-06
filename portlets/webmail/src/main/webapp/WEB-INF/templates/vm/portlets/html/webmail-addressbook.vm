@@ -103,7 +103,7 @@
 #ALtablefooter()
 #ALbuttonheader()
 #ALbutton('addAddresses' $l10n.WEBMAIL_DO_DECIDE 'aipo.webmail.insertData()')
-<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.close();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="　$l10n.WEBMAIL_CLOSE1　" onclick="aipo.webmail.close();" />
 #ALbuttonfooter()
 <input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$internalScreenlink" />
 <input type="hidden" id="urlAddrlist$!portlet.ID" name="urlAddrlist$!portlet.ID" value="$externalScreenlink" />
