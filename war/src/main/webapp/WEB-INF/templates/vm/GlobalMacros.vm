@@ -177,6 +177,10 @@
 <th class="thin">$text</th>
 #end
 
+#macro(ALtdheadThinClass $text $class)
+<th class="thin $class">$text</th>
+#end
+
 #macro(ALtdheadWide $text)
 <th class="wide">$text</th>
 #end

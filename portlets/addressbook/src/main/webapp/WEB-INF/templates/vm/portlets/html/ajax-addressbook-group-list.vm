@@ -48,7 +48,7 @@
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdhead("#ALajaxsortaddressbook('group_name' $l10n.ADDRESSBOOK_GROUP_NAME $result 'AddressBookGroupListScreen')")
 </tr>
 #foreach ($record in $result.List)

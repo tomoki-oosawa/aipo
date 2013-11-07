@@ -51,7 +51,7 @@
 #ALformfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadThin("#ALajaxsort('sort_order' $l10n.WEBMAIL_PROCESS_ORDER $result 'WebMailFilterListScreen')")
 #ALtdhead("#ALajaxsort('filter_name' $l10n.WEBMAIL_FILTER_NAME $result 'WebMailFilterListScreen')")
 #ALtdhead("#ALajaxsort('filter_string' $l10n.WEBMAIL_DIVIDE_CONDITION $result 'WebMailFilterListScreen')")

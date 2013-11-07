@@ -76,7 +76,7 @@
 
 #AUIrowMTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 ##ALtdheadThin("#ALajaxsort('read_flg' $l10n.WEBMAIL_STATE $result 'WebMailListScreen')")
 #ALtdheadAtt("#ALajaxsort('person' $person $result 'WebMailListScreen')" 'style="width:10em;"')
 #ALtdhead("#ALajaxsort('subject' $l10n.WEBMAIL_TITLE $result 'WebMailListScreen')")

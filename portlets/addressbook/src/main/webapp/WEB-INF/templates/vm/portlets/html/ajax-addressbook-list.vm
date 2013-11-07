@@ -67,7 +67,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #end
 #AUIrowMTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 <th>#ALajaxsortaddressbook('name_kana' $l10n.ADDRESSBOOK_NAME $result 'AddressBookListScreen')</th>
 <th>#ALajaxsortaddressbook('company_name_kana' $l10n.ADDRESSBOOK_COMPANY_NAME $result 'AddressBookListScreen')</th>
 #ALtdheadAtt($l10n.ADDRESSBOOK_EMAIL 'class="mb_hide"')

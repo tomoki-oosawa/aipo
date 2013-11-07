@@ -66,7 +66,7 @@
   </colgroup>
   <tbody>
   <tr>
-  #ALtdheadThin("#ALswitchCheckbox()")
+  #ALtdheadThinClass("#ALswitchCheckbox()" "center")
   #ALtdhead("#ALajaxsort('route_name' $l10n.WORKFLOW_APPLICATION_ROUTE_NAME $result 'WorkflowRouteListScreen')")
   #ALtdhead("#ALajaxsort('route' $l10n.WORKFLOW_APPLICATION_ROUTE $result 'WorkflowRouteListScreen')")
   </tr>
