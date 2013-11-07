@@ -61,7 +61,7 @@ $l10n.EXTTIMECARD_ALERT_NO_USER<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('name_kana' $l10n.EXTTIMECARD_NAME $result 'ExtTimecardSystemMapListScreen')")
 #ALtdhead($l10n.EXTTIMECARD_POST_NAME)
 #ALtdhead($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)

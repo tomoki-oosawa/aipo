@@ -61,7 +61,7 @@
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('group_name' $l10n.FACILITIES_FACILITYGROUP_NAME $result 'FacilityGroupListScreen')")
 #ALtdhead("$l10n.FACILITIES_FACILITY_NAME")
 </tr>
