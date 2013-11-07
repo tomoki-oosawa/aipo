@@ -34,7 +34,8 @@ public abstract class ALEventlogHandler {
 
   public abstract void log(int entity_id, int portlet_type, String note);
 
-  public abstract void log(int entity_id, int portlet_type, String note, String mode);
+  public abstract void log(int entity_id, int portlet_type, String note,
+      String mode);
 
   public abstract void logLogin(int userid);
 
@@ -42,4 +43,9 @@ public abstract class ALEventlogHandler {
 
   public abstract void logXlsScreen(int userid, String Note, int _p_type);
 
+  public abstract int getEventTypeValue(String mode);
+
+  public abstract String getEventAliasName(int eventType);
+
+  public abstract String getPortletAliasName(int portletType);
 }

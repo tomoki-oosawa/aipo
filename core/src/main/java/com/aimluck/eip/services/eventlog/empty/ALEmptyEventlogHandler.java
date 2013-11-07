@@ -58,4 +58,31 @@ public class ALEmptyEventlogHandler extends ALEventlogHandler {
   public void logXlsScreen(int userid, String Note, int _p_type) {
 
   }
+
+  /**
+   * @param mode
+   * @return
+   */
+  @Override
+  public int getEventTypeValue(String mode) {
+    return 0;
+  }
+
+  /**
+   * @param eventType
+   * @return
+   */
+  @Override
+  public String getEventAliasName(int eventType) {
+    return null;
+  }
+
+  /**
+   * @param portletType
+   * @return
+   */
+  @Override
+  public String getPortletAliasName(int portletType) {
+    return null;
+  }
 }
