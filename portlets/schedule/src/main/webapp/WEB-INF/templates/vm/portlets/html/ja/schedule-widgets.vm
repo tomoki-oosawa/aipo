@@ -107,9 +107,9 @@
 	<div class="auiWidget clearfix" style="display:none;">
 	    <ul>
 	    	<li #if ("$!result.Viewtype" == "calendar") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar'))','$!portlet.ID')">$l10n.SCHEDULE_BLOCK</a></li>
-			<li #if ("$!result.Viewtype" == "oneday-group") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group'))','$!portlet.ID')">$l10n.SCHEDULE_ONEDAY_GROUP</a></li>
-			<li #if ("$!result.Viewtype" == "weekly-group") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group'))','$!portlet.ID')">$l10n.SCHEDULE_WEEKLY_GROUP</a></li>
-			<li #if ("$!result.Viewtype" == "monthly") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly'))','$!portlet.ID')">$l10n.SCHEDULE_MONTHLY</a></li>
+			<li #if ("$!result.Viewtype" == "oneday-group") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group'))','$!portlet.ID')">１日</a></li>
+			<li #if ("$!result.Viewtype" == "weekly-group") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','weekly-group'))','$!portlet.ID')">週間</a></li>
+			<li #if ("$!result.Viewtype" == "monthly") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','monthly'))','$!portlet.ID')">月間</a></li>
 			<li #if ("$!result.Viewtype" == "list") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list'))','$!portlet.ID')">$l10n.SCHEDULE_LIST</a></li>
 	    </ul>
 	</div>
