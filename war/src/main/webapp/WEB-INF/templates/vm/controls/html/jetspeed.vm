@@ -295,9 +295,6 @@ function setWrapperHeight() {
 				<div class="setting">
 				#if ($!tab.Authority)
 					#foreach ($action in $tab.Actions)
-					#if (${client} == "IPAD")
-					<a href="${action.Link}" class="auiIcon auiIconSetting" title="${action.Alt}"></a>
-					#else
 					#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
 					#if ($tab.isSelected() == true)
 						#set($activeurlselected=$clink)
@@ -306,7 +303,11 @@ function setWrapperHeight() {
 					<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
 					<ul>
 						<li>
-						<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
+							#if (${client} == "IPAD")
+								<a href="${action.Link}" title="${action.Alt}">設定</a>
+							#else
+								<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
+							#end
 						</li>
 						#if($!tab.Title.Value != "マイページ")
 						<li class="last">
@@ -315,7 +316,6 @@ function setWrapperHeight() {
 						#end
 					</ul>
 					</div>
-					#end
 				    #end
 				 #end
 				</div>
