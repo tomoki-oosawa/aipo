@@ -19,9 +19,9 @@
 ## ---------------------------------------------------------------------------
 #set ($record = $result.Detail)
 ## ---------------------------------------------------------------------------
+<div class="borderAuiHead">
 <div id="messageDiv"></div>
-<div class="auiPopup">
-<h2>$l10n.TIMELINE_SAYING_LIKE</h2>
+#ALdialogheader($l10n.TIMELINE_SAYING_LIKE)
     <div class="auiListWrapper">
 		<ul class="userList">
 #foreach ($record2 in $record.LikeList)
@@ -41,9 +41,8 @@
 </li>
 #end
 </ul>
-</div>
+#ALdialogfooter()
 #ALbuttonheaderPt10()
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 </div>
-
