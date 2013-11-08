@@ -49,7 +49,7 @@
 #end
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadW75("#ALajaxsort('memo_name' 'タイトル' $result 'MemoListScreen')")
 #ALtdheadThin("#ALajaxsort('update_date' '更新日' $result 'MemoListScreen')")
 </tr>

@@ -96,7 +96,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 <colgroup style="width:10em;"></colgroup>
 <tbody>
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadThin($l10n.ACCOUNT_STATUS)
 #ALtdheadW33("#ALajaxsort('login_name' $l10n.ACCOUNT_USER_ACCOUNT $result 'AccountUserListScreen')")
 #ALtdheadW25("#ALajaxsort('name_kana' $l10n.ACCOUNT_USER_NAME $result 'AccountUserListScreen')")

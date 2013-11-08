@@ -42,7 +42,7 @@
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 <tr>
-#ALtdheadThin("#ALswitchCheckbox()")
+#ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadWide("#ALajaxsort('thema_name' $l10n.BLOG_THEME_NAME $result 'BlogThemaListScreen')")
 </tr>
 #foreach ($record in $result.List)

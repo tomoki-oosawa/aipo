@@ -49,7 +49,7 @@
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()"  "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()"  "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('post_name' $l10n.ACCOUNT_POST_NAME $result 'AccountPostListScreen')")
 </tr>
 #foreach ($record in $result.List)

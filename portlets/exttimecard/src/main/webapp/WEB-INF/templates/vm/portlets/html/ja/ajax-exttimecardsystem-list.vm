@@ -56,7 +56,7 @@ $l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('system_name' $l10n.EXTTIMECARD_WORKING_ARRANGEMENTS $result 'ExtTimecardSystemListScreen')")
 
 </tr>

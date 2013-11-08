@@ -77,7 +77,7 @@ $l10n.FACILITIES_MSG_NO_FACILITIES<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('facility_name' $l10n.FACILITIES_FACILITY_NAME $result 'FacilityListScreen')")
 #ALtdhead("$l10n.FACILITIES_FACILITYGROUP_NAME")
 </tr>

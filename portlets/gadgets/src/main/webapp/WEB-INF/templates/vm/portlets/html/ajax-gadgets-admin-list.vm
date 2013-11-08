@@ -84,7 +84,7 @@ $l10n.GADGETS_APP_NOT_EXIST_MSG<br />
 </colgroup>
 <tbody>
 <tr>
-#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck'")
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead($l10n.GADGETS_STATUS)
 #ALtdhead($l10n.GADGETS_APP_NAME)
 </tr>
