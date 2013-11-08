@@ -45,18 +45,18 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('to'))")
 #ALtditemheader()
-#ALtextfield('to' $!result.To '60%' 512 'disable')
+#ALtextfieldw100mb5('to' $!result.To 512 'disable')
 ##ALbutton('addressbook' $l10n.WEBMAIL_ADDRESSBOOK 'open_addressbook()')
 #if($result.hasAuthorityAddressBook())
-<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', '$indicator_id', aipo.webmail.onLoadAddressbookDialog);" value="$l10n.WEBMAIL_ADDRESSBOOK" class="button" name="open_addressbook"/>
+<input type="button" onclick="aipo.webmail.showAddressbookDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAddressbookFormScreen"))', '$!portlet.ID', '$indicator_id', aipo.webmail.onLoadAddressbookDialog);" value="$l10n.WEBMAIL_ADD_FROM_ADDRESSBOOK" class="button" name="open_addressbook"/>
 #end
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('cc')")
-#ALtditem("#ALtextfield('cc' $!result.Cc '60%' 512 'disable')")
+#ALtditem("#ALtextfieldw100('cc' $!result.Cc 512 'disable')")
 #ALtdcaption("$!result.getFieldName('bcc')")
-#ALtditem("#ALtextfield('bcc' $!result.Bcc '60%' 512 'disable')")
+#ALtditem("#ALtextfieldw100('bcc' $!result.Bcc 512 'disable')")
 #ALtdcaption("$!result.getFieldName('subject')")
-#ALtditem("#ALtextfield('subject' $!result.Subject '60%' $!result.Subject.MaxLength 'active')")
+#ALtditem("#ALtextfieldw100('subject' $!result.Subject $!result.Subject.MaxLength 'active')")
 #ALtdcaption("$!result.getFieldName('body')")
 #ALtditemheader()
 #ALtextarea('body' $!result.Body 10 40)
