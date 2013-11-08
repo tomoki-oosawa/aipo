@@ -86,6 +86,7 @@ $portlet.getContent($data)
 							#else
 							<div class="roundMainWrapper" style="min-height:1000px">
 							#end
+							<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
 							#AuiInformation($information_title $information_text $information_cookie_name $information_display)
 							#if(!$run)
 								$portlet.getContent($data)

@@ -333,6 +333,13 @@ table.center {
 .roundMainWrapper {
   padding: 10px;
 }
+.roundMainWrapper noscript .alert {
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  border-radius: 8px;
+  margin: 0 5px 5px;
+}
 
 *:first-child+html .roundMainWrapper {/* IE7 Hack */
 	padding-bottom:30px;
