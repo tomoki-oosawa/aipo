@@ -248,6 +248,16 @@ img.avatar,
   background: transparent url(../images/common/icon_p.gif) no-repeat left center;
 }
 
+
+.borderAuiHead .auiPopupHead {
+  margin-bottom: 0px;
+}
+
+.borderAuiHead .roundBlockContent {
+  margin-top:5px;
+  border-top: solid 1px #c0c0c0;
+}
+
 .auiPopupHead .auiPopupTitle {
   line-height: 24px;
   white-space: nowrap;
