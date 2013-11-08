@@ -43,7 +43,7 @@
 </ul>
 </div>
 #ALbuttonheaderPt10()
-<button onclick="aipo.common.hideDialog();">$l10n.TIMELINE_CLOSE</button>
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 </div>
 
