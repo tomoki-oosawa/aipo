@@ -1893,6 +1893,7 @@ input.auiButtonSearch.active {
 .auiRowTable {
   border-spacing: 0;
   border-collapse: collapse;
+  word-break: break-all;
 }
 .auiRowTable th {
   padding: 8px 5px;
@@ -2267,6 +2268,7 @@ input.auiButtonSearch.active {
 
 #auiContentsArea .entryBody {
   margin-left: 60px;
+  word-break: break-all;
 }
 
 .entryHeader {
@@ -2351,6 +2353,7 @@ input[type=password] {
 
 select {
   min-height: 32px;
+  min-height: 20px \9; /* IE8 and below */
   padding: 5px;
   max-width: 300px;
 }
@@ -3241,9 +3244,9 @@ ul.attachments {
   display: block;
   height: 100%;
   background: #ffffff\9;
-  /*IE8*/
+  /*IE7*/
   -ms-filter: "alpha(opacity=0)";
-  /*IE8*/
+  /*IE7*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 

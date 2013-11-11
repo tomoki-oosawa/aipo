@@ -36,7 +36,7 @@
 #AUIrowTableWide()
 <tr>
 #ALtdhead("<div>#ALajaxsort('account_name' $l10n.WEBMAIL_ACCOUNT_NAME $result 'WebMailAccountListScreen')</div>")
-#ALtdheadAtt("<div><wbr>$l10n.WEBMAIL_MAILADDRESS</div>" 'class="mb_hide" width="10%"')
+#ALtdheadAtt("<div>$l10n.WEBMAIL_MAILADDRESS</div>" 'class="mb_hide" width="10%"')
 #ALtdheadAtt($l10n.WEBMAIL_UNREAD_COUNT 'width="1%"')
 #ALtdheadAtt($l10n.WEBMAIL_LAST_RECEIVE_DATE 'width="1%"class="center mb_hide"')
 </tr>
