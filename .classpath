@@ -103,9 +103,9 @@
 	<classpathentry kind="src" path="portlets/gadgets/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/system/src/test/java"/>
 	<classpathentry kind="src" path="portlets/fileuploadadv/src/main/java"/>
-	<classpathentry kind="src" path="portlets/fileuploadadv/src/test/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/fileuploadadv/src/test/java"/>
 	<classpathentry kind="src" path="portlets/gpdb/src/main/java"/>
-	<classpathentry kind="src" path="portlets/gpdb/src/test/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/gpdb/src/test/java"/>
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
