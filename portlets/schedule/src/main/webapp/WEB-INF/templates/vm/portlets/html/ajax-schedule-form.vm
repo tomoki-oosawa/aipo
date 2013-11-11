@@ -231,7 +231,7 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 5 50)
 #ALtditemfooter()
-#ALtdcaption($l10n.SCHEDULE_PUBLIC)
+#ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/>&nbsp;<label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>
 <p><input name="public_flag" type="radio" value="C" id="public_flagC_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "C") checked="checked" #end onclick="aipo.schedule.formPublicOff(this.form)"/>&nbsp;<label for="public_flagC_$!{portlet.ID}" onclick="aipo.schedule.formPublicOff(this.form)">$l10n.SCHEDULE_CLOSED_PUBLIC</label></p>
