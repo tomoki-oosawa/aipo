@@ -23,6 +23,23 @@
 ## ---------------------------------------------------------------------------
 ##ALtabheader($tabs "")
 #ALspacebothheader()
+<h3>ページ名</h3>
+<p style="margin-bottom:10px">
+#if($isMypage)
+$!pageTitle
+#else
+<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
+<input type="hidden" name="_name" value="ページ" />
+<input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="portlet_id" value="$!{js_peid}" />
+<input type="hidden" name="mode" value="add" />
+#ALbuttonheader()
+#ALtextfield('pageTitle' $!pageTitle '40%' 10 'active')
+#ALsubmit('setPageTitle' 'ページ名を変更する')
+#ALbuttonfooter()
+</form>
+#end
+</p>
 #if($portletsum <= 0)
 <div class="auiBlankBox">
 <a title="アプリを追加する" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
