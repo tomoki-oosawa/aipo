@@ -93,7 +93,9 @@ import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
@@ -231,6 +233,34 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
     // 2007.04.04 update
     context.put("utils", new ALCommonUtils());
+
+    String pid = rundata.getParameters().get("js_peid");
+    Portlets[] portletArrays =
+      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
+        .getPortletsArray();
+    ALStringField pageTitle = new ALStringField();
+    String mypageId = "";
+    for (Portlets p : portletArrays) {
+      if ("マイページ".equals(p.getTitle())) {
+        mypageId = p.getId();
+      }
+      if (p.getId().equals(pid)) {
+        MetaInfo info = p.getMetaInfo();
+        pageTitle.setValue(info.getTitle());
+      }
+    }
+
+    PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
+    ArrayList<PortletEntry> all = new ArrayList<PortletEntry>();
+    buildPortletList(rundata, set, mediaType, all);
+    String reqSecid =
+      (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID);
+
+    context.put("js_peid", pid);
+    context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
+    context.put("mypageId", mypageId);
+    context.put("pageTitle", pageTitle);
+    context.put("secid", reqSecid);
 
     /**
      * Special handling for wml profiles no skins, no properties menuentry, no
