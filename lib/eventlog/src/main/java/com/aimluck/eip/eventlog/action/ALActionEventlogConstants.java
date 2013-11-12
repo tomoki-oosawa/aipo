@@ -203,9 +203,9 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_WHATSNEW = "新着情報";
 
-  public static final String PORTLET_TYPE_STR_CABINET_FILE = "共有フォルダ";
+  public static final String PORTLET_TYPE_STR_CABINET_FILE = "フォルダ";
 
-  public static final String PORTLET_TYPE_STR_CABINET_FOLDER = "共有フォルダ";
+  public static final String PORTLET_TYPE_STR_CABINET_FOLDER = "フォルダ";
 
   public static final String PORTLET_TYPE_STR_WEBMAIL = "Webメールアカウント";
 

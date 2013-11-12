@@ -24,7 +24,7 @@
     <portlet-entry name="Cabinet" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>共有フォルダ</title>
+            <title>フォルダ</title>
             <description>階層化されたフォルダでファイルを共有できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
