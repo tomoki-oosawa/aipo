@@ -255,11 +255,11 @@ public class ExtTimecardSelectData extends
 
     datemap = new LinkedHashMap<String, ExtTimecardListResultData>();
 
-    if (target_user_id == null) {
+    if (target_user_id == null || "".equals(target_user_id)) {
       timecard_system =
         ExtTimecardUtils
           .getEipTExtTimecardSystemCurrentUserId(rundata, context);
-    } else if (!"".equals(target_user_id)) {
+    } else {
       timecard_system =
         ExtTimecardUtils.getEipTExtTimecardSystemByUserId(Integer
           .valueOf(target_user_id));
