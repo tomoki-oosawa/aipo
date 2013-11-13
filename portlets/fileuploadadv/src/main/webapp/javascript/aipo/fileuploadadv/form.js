@@ -89,7 +89,8 @@ aipo.fileuploadadv.createSelectFromFileList = function(form, pid){
 		idList.push("attachments_select");
 		nmList.push("attachments");
 	} else {
-		var elems = document.all.tags("ul");
+		var elems=document.all? document.all.tags("ul"):document.querySelectorAll("ul");
+
 		for (var i = 0; i < elems.length; i++) {
 			if (elems[i].id.indexOf("attachments_" + pid + "_") == 0) {
 				var itemId = elems[i].id.replace("attachments_" + pid + "_", "");
