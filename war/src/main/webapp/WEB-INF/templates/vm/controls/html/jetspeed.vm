@@ -31,7 +31,7 @@ aipo.onloadSmartPhone = function(){
 	if(dojo.byId("snDrawer")) return;
 	if(widgets_area != null){
 		// classの追加
-		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson", "SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl"].indexOf("$portlet.name") != -1;
+		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson", "SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl",""].indexOf("$portlet.name") != -1;
 		for(var i=0;i<widgets_area.childNodes.length;i++){
 			if(widgets_area.childNodes[i].className != null
 			&& widgets_area.childNodes[i].className.indexOf('auiWidget',0) >= 0){
@@ -241,6 +241,8 @@ function setWrapperHeight() {
 #ALtabElementMaximize("AddressBook" "icon-compass")
 #ALtabElementMaximize("UserList" "icon-group")
 #ALtabElementMaximize("Memo" "icon-pencil")
+#ALtabElementMaximize("Gpdb" "icon-circle")
+
 </ul>
 </div>
 #if($menus && $menus.size()>0 && $gadgetCounts>0)
