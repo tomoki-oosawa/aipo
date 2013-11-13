@@ -65,10 +65,10 @@ public class GpdbItemChangeTurnFormData extends ALAbstractFormData {
   /** 項目定義オブジェクトのリスト */
   private List<EipTGpdbItem> rawGpdbItemList = null;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   private String gpdbId = null;
 
-  /** 汎用データベースオブジェクト */
+  /** Webデータベースオブジェクト */
   private EipTGpdb gpdb = null;
 
   /**
@@ -89,10 +89,10 @@ public class GpdbItemChangeTurnFormData extends ALAbstractFormData {
     gpdbItemList = new ArrayList<GpdbItemResultData>();
     rawGpdbItemList = new ArrayList<EipTGpdbItem>();
 
-    // 汎用データベースID
+    // WebデータベースID
     gpdbId = rundata.getParameters().getString("gpdb_id");
 
-    // 汎用データベースオブジェクト
+    // Webデータベースオブジェクト
     gpdb = GpdbUtils.getEipTGpdb(gpdbId);
   }
 
@@ -324,9 +324,9 @@ public class GpdbItemChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースIDを返す
+   * WebデータベースIDを返す
    * 
-   * @return 汎用データベースID
+   * @return WebデータベースID
    */
   public String getGpdbId() {
     return gpdbId;

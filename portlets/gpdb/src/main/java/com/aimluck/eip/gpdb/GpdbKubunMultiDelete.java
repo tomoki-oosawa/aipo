@@ -91,7 +91,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
         int kubunCount =
           GpdbUtils.getRecordCountKubunUsed("" + value.getGpdbKubunValueId());
         if (kubunCount > 0) {
-          // 汎用データベースレコードが登録されている場合
+          // Webデータベースレコードが登録されている場合
           msgList.add("区分 『"
             + Gpdbkubun.getGpdbKubunName()
             + "』 の区分値 『"
@@ -143,7 +143,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           value.getGpdbKubunValueId(),
           ALEventlogConstants.PORTLET_TYPE_NONE,
-          "汎用データベース 区分マスタ「"
+          "Webデータベース 区分マスタ「"
             + Gpdbkubun.getGpdbKubunName()
             + "」 区分値 「"
             + value.getGpdbKubunValue()

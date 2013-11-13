@@ -23,12 +23,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("汎用データベース詳細")
+#ALdialogheader("Webデータベース詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("汎用データベース")
+#ALajaxdetailformheader("Webデータベース")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
-#ALtdcaption("汎用データベース名")
+#ALtdcaption("Webデータベース名")
 #ALtditemheader()
 $!result.Detail.GpdbName
 #ALtditemfooter()

@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
- * 汎用データベース項目定義のResultDataです。 <BR>
+ * Webデータベース項目定義のResultDataです。 <BR>
  * 
  */
 public class GpdbItemResultData implements ALData {
@@ -39,10 +39,10 @@ public class GpdbItemResultData implements ALData {
   /** 項目定義名 */
   protected ALStringField gpdb_item_name;
 
-  /** 汎用データベース ID */
+  /** Webデータベース ID */
   protected ALNumberField gpdb_id;
 
-  /** 汎用データベース名 */
+  /** Webデータベース名 */
   protected ALStringField gpdb_name;
 
   /** タイトルフラグ */
@@ -147,38 +147,38 @@ public class GpdbItemResultData implements ALData {
   }
 
   /**
-   * 汎用データベースIDを取得する
+   * WebデータベースIDを取得する
    * 
-   * @return 汎用データベースID
+   * @return WebデータベースID
    */
   public ALNumberField getGpdbId() {
     return gpdb_id;
   }
 
   /**
-   * 汎用データベースを設定する
+   * Webデータベースを設定する
    * 
    * @param i
-   *          汎用データベースID
+   *          WebデータベースID
    */
   public void setGpdbId(long i) {
     gpdb_id.setValue(i);
   }
 
   /**
-   * 汎用データベース名を取得する
+   * Webデータベース名を取得する
    * 
-   * @return 汎用データベース名
+   * @return Webデータベース名
    */
   public String getGpdbName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_name.toString());
   }
 
   /**
-   * 汎用データベース名を設定する
+   * Webデータベース名を設定する
    * 
    * @param string
-   *          汎用データベース名
+   *          Webデータベース名
    */
   public void setGpdbName(String string) {
     gpdb_name.setValue(string);

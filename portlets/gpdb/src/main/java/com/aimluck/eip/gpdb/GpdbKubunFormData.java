@@ -190,7 +190,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
         int recordCount = GpdbUtils.getRecordCountKubunUsed(gpdbKubunValueId);
         if (recordCount > 0) {
-          // 汎用データベースレコードが登録されている場合
+          // Webデータベースレコードが登録されている場合
 
           if (is_new_kubun
             || !gpdbKubunValue.getGpdbKubunId().toString().equals(
@@ -369,7 +369,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 区分マスタ「"
+        "Webデータベース 区分マスタ「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 区分値 「"
           + value.getGpdbKubunValue()
@@ -466,7 +466,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 区分マスタ「"
+        "Webデータベース 区分マスタ「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 区分値 「"
           + value.getGpdbKubunValue()
@@ -506,7 +506,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       int kubunCount =
         GpdbUtils.getRecordCountKubunUsed("" + value.getGpdbKubunValueId());
       if (kubunCount > 0) {
-        // 汎用データベースレコードが登録されている場合
+        // Webデータベースレコードが登録されている場合
         msgList.add("使用されている区分値のため削除できません。");
         return false;
 
@@ -535,7 +535,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 区分マスタ「"
+        "Webデータベース 区分マスタ「"
           + gpdbKubun.getGpdbKubunName()
           + "」 区分値 「"
           + value.getGpdbKubunValue()

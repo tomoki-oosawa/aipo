@@ -24,14 +24,14 @@
     <portlet-entry name="Gpdb" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>汎用データベース</title>
+            <title>Webデータベース</title>
             <description>色々な用途に使用できるデータベースを作成できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="gpdb-top" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>汎用データベース表示件数（トップページ）</title>
+                <title>Webデータベース表示件数（トップページ）</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -39,7 +39,7 @@
         <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="20" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>汎用データベース表示件数</title>
+                <title>Webデータベース表示件数</title>
             </meta-info>
         </parameter>
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -47,7 +47,7 @@
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort" value="sort" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>汎用データベースソート方法</title>
+                <title>Webデータベースソート方法</title>
             </meta-info>
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>

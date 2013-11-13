@@ -41,7 +41,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
- * 汎用データベースの複数削除を行うためのクラスです。 <BR>
+ * Webデータベースの複数削除を行うためのクラスです。 <BR>
  * 
  */
 public class GpdbMultiDelete extends ALAbstractCheckList {
@@ -95,7 +95,7 @@ public class GpdbMultiDelete extends ALAbstractCheckList {
           // 項目定義を削除
           GpdbUtils.removeGpdbItem(gpdb);
 
-          // 汎用データベース削除
+          // Webデータベース削除
           Database.delete(gpdb);
           Database.commit();
 
@@ -103,7 +103,7 @@ public class GpdbMultiDelete extends ALAbstractCheckList {
           ALEventlogFactoryService.getInstance().getEventlogHandler().log(
             gpdb.getGpdbId(),
             ALEventlogConstants.PORTLET_TYPE_NONE,
-            "汎用データベース 「" + gpdb.getGpdbName() + "」 削除");
+            "Webデータベース 「" + gpdb.getGpdbName() + "」 削除");
         }
       }
 

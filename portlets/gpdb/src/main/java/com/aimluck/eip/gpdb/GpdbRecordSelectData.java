@@ -48,7 +48,7 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベースレコードの検索データを管理するクラスです。 <BR>
+ * Webデータベースレコードの検索データを管理するクラスです。 <BR>
  * 
  */
 public class GpdbRecordSelectData extends
@@ -61,13 +61,13 @@ public class GpdbRecordSelectData extends
   /** 項目定義よりフィールド一覧を保持する */
   private List<GpdbItemResultData> gpdbItemList;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   private String gpdbId;
 
-  /** 汎用データベース全リスト */
+  /** Webデータベース全リスト */
   private List<GpdbResultData> gpdbAllList;
 
-  /** 汎用データベースレコードマップ。キー：項目定義ID */
+  /** Webデータベースレコードマップ。キー：項目定義ID */
   private Map<String, GpdbRecordResultData> mapGpdbRecord;
 
   /** 区分値マップ。キー：区分値ID */
@@ -113,7 +113,7 @@ public class GpdbRecordSelectData extends
   protected ResultList<EipTGpdbRecord> selectList(RunData rundata,
       Context context) {
     try {
-      // 全汎用データベース
+      // 全Webデータベース
       gpdbAllList = GpdbUtils.getGpdbAllList();
 
       // セッション情報を設定
@@ -370,18 +370,18 @@ public class GpdbRecordSelectData extends
   }
 
   /**
-   * 汎用データベースIDを取得する
+   * WebデータベースIDを取得する
    * 
-   * @return 汎用データベースID
+   * @return WebデータベースID
    */
   public String getGpdbId() {
     return gpdbId;
   }
 
   /**
-   * 汎用データベース全リストを取得する
+   * Webデータベース全リストを取得する
    * 
-   * @return 汎用データベース全リスト
+   * @return Webデータベース全リスト
    */
   public List<GpdbResultData> getGpdbAllList() {
     return gpdbAllList;

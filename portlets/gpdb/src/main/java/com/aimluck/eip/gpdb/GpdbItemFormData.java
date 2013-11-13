@@ -101,10 +101,10 @@ public class GpdbItemFormData extends ALAbstractFormData {
   /** 項目定義ID */
   private String gpdbItemId;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   private String gpdbId;
 
-  /** 汎用データベースオブジェクト */
+  /** Webデータベースオブジェクト */
   private EipTGpdb gpdb;
 
   /** ユーザーID */
@@ -131,10 +131,10 @@ public class GpdbItemFormData extends ALAbstractFormData {
     userId = ALEipUtils.getUserId(rundata);
     allGpdbKubun = GpdbUtils.getGpdbKubunAllList(); // 全区分
 
-    // 汎用データベースID
+    // WebデータベースID
     gpdbId = rundata.getParameters().getString("gpdb_id");
 
-    // 汎用データベースオブジェクト
+    // Webデータベースオブジェクト
     gpdb = GpdbUtils.getEipTGpdb(gpdbId);
   }
 
@@ -207,9 +207,9 @@ public class GpdbItemFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
-    // 汎用データベース名必須項目
+    // Webデータベース名必須項目
     gpdb_item_name.setNotNull(true);
-    // 汎用データベース名の文字数制限
+    // Webデータベース名の文字数制限
     gpdb_item_name.limitMaxLength(50);
   }
 
@@ -403,7 +403,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       }
 
       if (ALEipConstants.MODE_EDIT_FORM.equals(getMode())) {
-        // 汎用データベースID
+        // WebデータベースID
         gpdbId = rundata.getParameters().getString("gpdb_id");
       }
 
@@ -482,9 +482,9 @@ public class GpdbItemFormData extends ALAbstractFormData {
 
           // 新規オブジェクトモデル
           EipTGpdbRecord gpdbRecord = Database.create(EipTGpdbRecord.class);
-          // 汎用データベースオブジェクト
+          // Webデータベースオブジェクト
           gpdbRecord.setGpdb(gpdb);
-          // 汎用データベース項目定義
+          // Webデータベース項目定義
           gpdbRecord.setGpdbItem(gpdbItem);
           // レコードNo
           gpdbRecord.setRecordNo(no);
@@ -532,7 +532,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「"
+        "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
           + gpdbItem.getGpdbItemName()
@@ -573,14 +573,14 @@ public class GpdbItemFormData extends ALAbstractFormData {
       // 登録／更新値設定
       setInputForm(rundata, gpdbItem, gpdbId);
 
-      // 汎用データベースを更新
+      // Webデータベースを更新
       Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「"
+        "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
           + gpdbItem.getGpdbItemName()
@@ -602,7 +602,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
    * @param gpdbItem
    *          項目定義オブジェクト
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    */
   private void setInputForm(RunData rundata, EipTGpdbItem gpdbItem,
       String gpdbId) {
@@ -612,7 +612,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       GpdbUtils.gpdbItemTitleOff(gpdb);
     }
 
-    // 汎用データベース
+    // Webデータベース
     gpdbItem.setGpdb(gpdb);
 
     if (GpdbUtils.FLG_ON.equals(title_flg.getValue())) {
@@ -717,7 +717,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「"
+        "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
           + gpdbItem.getGpdbItemName()
@@ -858,9 +858,9 @@ public class GpdbItemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースIDを返す
+   * WebデータベースIDを返す
    * 
-   * @return 汎用データベースID
+   * @return WebデータベースID
    */
   public String getGpdbId() {
     return gpdbId;

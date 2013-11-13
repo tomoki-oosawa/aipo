@@ -89,10 +89,10 @@ public class GpdbKubunChangeTurnFormData extends ALAbstractFormData {
     gpdbKubunValueList = new ArrayList<GpdbKubunValueResultData>();
     rawGpdbKubunValueList = new ArrayList<EipMGpdbKubunValue>();
 
-    // 汎用データベースID
+    // WebデータベースID
     kubunId = rundata.getParameters().getInteger("gpdb_kubun_id");
 
-    // 汎用データベースオブジェクト
+    // Webデータベースオブジェクト
     kubun = GpdbUtils.getEipMGpdbKubun(kubunId);
   }
 

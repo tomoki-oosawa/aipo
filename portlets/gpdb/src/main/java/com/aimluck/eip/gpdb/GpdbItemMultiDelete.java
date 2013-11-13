@@ -88,7 +88,7 @@ public class GpdbItemMultiDelete extends ALAbstractCheckList {
 
       if (msgList.isEmpty()) {
 
-        // 汎用データベースオブジェクト
+        // Webデータベースオブジェクト
         EipTGpdb gpdb =
           GpdbUtils.getEipTGpdb(rundata.getParameters().getString("gpdb_id"));
 
@@ -103,7 +103,7 @@ public class GpdbItemMultiDelete extends ALAbstractCheckList {
           ALEventlogFactoryService.getInstance().getEventlogHandler().log(
             gpdbItem.getGpdbItemId(),
             ALEventlogConstants.PORTLET_TYPE_NONE,
-            "汎用データベース 「"
+            "Webデータベース 「"
               + gpdb.getGpdbName()
               + "」 項目定義 「"
               + gpdbItem.getGpdbItemName()

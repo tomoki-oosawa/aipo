@@ -27,7 +27,7 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #if($result.GpdbSum == 0)
-<div class="message">汎用データベースが登録されていません。</div>
+<div class="message">Webデータベースが登録されていません。</div>
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('GpdbTopScreen' $result)

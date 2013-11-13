@@ -30,7 +30,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecordFile;
 import com.aimluck.eip.gpdb.util.GpdbUtils;
 
 /**
- * 汎用データベースレコードの添付ファイルのサムネイルを処理するクラスです。
+ * Webデータベースレコードの添付ファイルのサムネイルを処理するクラスです。
  */
 public class GpdbRecordFileThumbnailScreen extends FileuploadThumbnailScreen {
 

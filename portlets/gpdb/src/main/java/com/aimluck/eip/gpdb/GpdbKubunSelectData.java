@@ -44,7 +44,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベース区分値の検索データを管理するクラスです。 <BR>
+ * Webデータベース区分値の検索データを管理するクラスです。 <BR>
  * 
  */
 public class GpdbKubunSelectData extends
@@ -64,7 +64,7 @@ public class GpdbKubunSelectData extends
   /** 全区分値の一覧（サイズ取得用） */
   private List<GpdbKubunValueResultData> allGpdbKubunValue;
 
-  /** 全汎用データベースの一覧 */
+  /** 全Webデータベースの一覧 */
   private List<GpdbResultData> gpdbAllList;
 
   /**
@@ -91,7 +91,7 @@ public class GpdbKubunSelectData extends
     allGpdbKubun = GpdbUtils.getGpdbKubunAllList();
     allGpdbKubunValue = GpdbUtils.getGpdbKubunValueAllList();
 
-    gpdbAllList = GpdbUtils.getGpdbAllList(); // 全汎用データベース
+    gpdbAllList = GpdbUtils.getGpdbAllList(); // 全Webデータベース
 
     super.init(action, rundata, context);
   }
@@ -265,9 +265,9 @@ public class GpdbKubunSelectData extends
   }
 
   /**
-   * 汎用データベースの全リストを返す
+   * Webデータベースの全リストを返す
    * 
-   * @return 汎用データベースの全リスト
+   * @return Webデータベースの全リスト
    */
   public List<GpdbResultData> getGpdbAllList() {
     return gpdbAllList;

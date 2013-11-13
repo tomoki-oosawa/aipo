@@ -83,7 +83,7 @@ import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベースのユーティリティクラスです。
+ * Webデータベースのユーティリティクラスです。
  * 
  */
 public class GpdbUtils {
@@ -324,17 +324,17 @@ public class GpdbUtils {
   }
 
   // ---------------------------------------------------
-  // 汎用データベース取得
+  // Webデータベース取得
   // ---------------------------------------------------
 
   /**
-   * 汎用データベース オブジェクトモデルを取得します。
+   * Webデータベース オブジェクトモデルを取得します。
    * 
    * @param rundata
    *          RunData
    * @param context
    *          Context
-   * @return 汎用データベースオブジェクトモデル
+   * @return Webデータベースオブジェクトモデル
    */
   public static EipTGpdb getEipTGpdb(RunData rundata, Context context) {
     String gpdbid =
@@ -343,11 +343,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースオブジェクトモデルを取得します。
+   * Webデータベースオブジェクトモデルを取得します。
    * 
    * @param gpdbId
-   *          汎用データベースID
-   * @return 汎用データベース オブジェクトモデル
+   *          WebデータベースID
+   * @return Webデータベース オブジェクトモデル
    */
   public static EipTGpdb getEipTGpdb(String gpdbId) {
 
@@ -366,7 +366,7 @@ public class GpdbUtils {
       List<EipTGpdb> gpdbList = query.fetchList();
 
       if (gpdbList == null || gpdbList.isEmpty()) {
-        // 指定した汎用データベースIDのレコードが見つからない場合
+        // 指定したWebデータベースIDのレコードが見つからない場合
         logger.debug("[GpdbUtils] Not found ID...");
         return null;
       }
@@ -379,9 +379,9 @@ public class GpdbUtils {
   }
 
   /**
-   * 全汎用データベースを返す
+   * 全Webデータベースを返す
    * 
-   * @return 汎用データベースオブジェクト全リスト
+   * @return Webデータベースオブジェクト全リスト
    */
   public static List<GpdbResultData> getGpdbAllList() {
     List<GpdbResultData> gpdbAllList = new ArrayList<GpdbResultData>();
@@ -406,11 +406,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースオブジェクトより汎用データベースResult情報を返す
+   * WebデータベースオブジェクトよりWebデータベースResult情報を返す
    * 
    * @param model
-   *          汎用データベースオブジェクト
-   * @return 汎用データベースResult情報
+   *          Webデータベースオブジェクト
+   * @return WebデータベースResult情報
    */
   public static GpdbResultData getGpdbResultData(EipTGpdb model) {
 
@@ -419,8 +419,8 @@ public class GpdbUtils {
 
     GpdbResultData data = new GpdbResultData();
     data.initField();
-    data.setGpdbId(model.getGpdbId()); // 汎用データベースID
-    data.setGpdbName(model.getGpdbName()); // 汎用データベース名
+    data.setGpdbId(model.getGpdbId()); // WebデータベースID
+    data.setGpdbName(model.getGpdbName()); // Webデータベース名
     data.setMailFlg(model.getMailFlg()); // メール配信フラグ
 
     data.setCreateUserName(new StringBuffer()
@@ -519,8 +519,8 @@ public class GpdbUtils {
     data.initField();
     data.setGpdbItemId(gpdbItem.getGpdbItemId()); // 項目定義ID
     data.setGpdbItemName(gpdbItem.getGpdbItemName()); // 項目定義名
-    data.setGpdbId(gpdbItem.getGpdb().getGpdbId()); // 汎用データベースID
-    data.setGpdbName(gpdbItem.getGpdb().getGpdbName()); // 汎用データベース名
+    data.setGpdbId(gpdbItem.getGpdb().getGpdbId()); // WebデータベースID
+    data.setGpdbName(gpdbItem.getGpdb().getGpdbName()); // Webデータベース名
     data.setTitleFlg(gpdbItem.getTitleFlg()); // タイトルフラグ
     data.setRequiredFlg(gpdbItem.getRequiredFlg()); // 必須フラグ
     data.setType(gpdbItem.getType()); // 入力形式
@@ -557,7 +557,7 @@ public class GpdbUtils {
    * 項目定義Result情報リストを返す
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @return 項目定義Result情報リスト
    */
   public static List<GpdbItemResultData> getGpdbItemResultList(String gpdbId) {
@@ -579,15 +579,15 @@ public class GpdbUtils {
   }
 
   // ---------------------------------------------------
-  // 汎用データベースレコード取得
+  // Webデータベースレコード取得
   // ---------------------------------------------------
 
   /**
-   * 汎用データベースレコード オブジェクトリストを取得します。 <br/>
+   * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @return レコードオブジェクトモデル
    */
   public static List<EipTGpdbRecord> getEipTGpdbRecord(String gpdbId) {
@@ -595,11 +595,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコード オブジェクトリストを取得します。 <br/>
+   * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * タイトル項目のリストを取得します。
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @return レコードオブジェクトモデル
    */
   public static List<EipTGpdbRecord> getEipTGpdbRecordTitle(String gpdbId) {
@@ -607,11 +607,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコード オブジェクトリストを取得します。 <br/>
+   * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @param recordNo
    *          レコードNo
    * @return レコードオブジェクトモデル
@@ -622,11 +622,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコード オブジェクトリストを取得します。 <br/>
+   * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @param recordNo
    *          レコードNo
    * @param titleOnly
@@ -684,7 +684,7 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコード オブジェクトリストを取得します。 <br/>
+   * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
    * 
    * @param gpdbId
@@ -732,11 +732,11 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコードオブジェクトより汎用データベースレコードResult情報を返す
+   * WebデータベースレコードオブジェクトよりWebデータベースレコードResult情報を返す
    * 
    * @param model
-   *          汎用データベースレコードオブジェクト
-   * @return 汎用データベースレコードResult情報
+   *          Webデータベースレコードオブジェクト
+   * @return WebデータベースレコードResult情報
    */
   public static GpdbRecordResultData getGpdbRecordResultData(
       EipTGpdbRecord model) {
@@ -800,13 +800,13 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコードのマップを返す
+   * Webデータベースレコードのマップを返す
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @param recordNo
    *          レコードNo
-   * @return 汎用データベースレコードのマップ
+   * @return Webデータベースレコードのマップ
    */
   public static Map<String, GpdbRecordResultData> getGpdbRecordMap(
       String gpdbId, String recordNo) {
@@ -820,7 +820,7 @@ public class GpdbUtils {
       list.add(getGpdbRecordResultData(rec));
     }
 
-    // 項目定義IDをキーに汎用データベースレコード情報を保持する
+    // 項目定義IDをキーにWebデータベースレコード情報を保持する
     for (GpdbRecordResultData data : list) {
       map.put("" + data.getGpdbItemId(), data);
     }
@@ -829,10 +829,10 @@ public class GpdbUtils {
   }
 
   /**
-   * 汎用データベースレコードの登録件数を取得します
+   * Webデータベースレコードの登録件数を取得します
    * 
    * @param gpdbId
-   *          汎用データベースID
+   *          WebデータベースID
    * @return レコード登録件数
    */
   public static int getRecordCount(String gpdbId) {
@@ -866,7 +866,7 @@ public class GpdbUtils {
   }
 
   /**
-   * 指定の区分値を使用している汎用データベースレコードの登録件数を取得します
+   * 指定の区分値を使用しているWebデータベースレコードの登録件数を取得します
    * 
    * @param gpdbKubunValueId
    *          区分値スID
@@ -1187,16 +1187,16 @@ public class GpdbUtils {
   // ---------------------------------------------------
 
   /**
-   * 汎用データベースに紐づく項目定義を削除する
+   * Webデータベースに紐づく項目定義を削除する
    * 
    * @param gpdb
-   *          汎用データベースオブジェクト
+   *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
    */
   public static boolean removeGpdbItem(EipTGpdb gpdb) {
 
     try {
-      // 汎用データベースに紐づく項目定義
+      // Webデータベースに紐づく項目定義
       SelectQuery<EipTGpdbItem> query = Database.query(EipTGpdbItem.class);
       query.setQualifier(ExpressionFactory.matchExp(
         EipTGpdbItem.GPDB_PROPERTY,
@@ -1208,7 +1208,7 @@ public class GpdbUtils {
         return true;
       }
 
-      // 汎用データベースに紐づく項目定義を削除
+      // Webデータベースに紐づく項目定義を削除
       Database.deleteAll(gpdbItemList);
 
     } catch (Exception ex) {
@@ -1263,7 +1263,7 @@ public class GpdbUtils {
    * @param rundata
    *          RunData
    * @param gpdbRecordList
-   *          汎用データベースレコードリスト
+   *          Webデータベースレコードリスト
    * @return TRUE 成功 FALSE 失敗
    */
   public static boolean removeGpdbRecordFile(RunData rundata,
@@ -1341,7 +1341,7 @@ public class GpdbUtils {
    * 項目定義でタイトル指定されているものをOFFにする
    * 
    * @param gpdb
-   *          汎用データベースオブジェクト
+   *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
    */
   public static boolean gpdbItemTitleOff(EipTGpdb gpdb) {
@@ -1367,7 +1367,7 @@ public class GpdbUtils {
    * 項目定義でデフォルトソート指定されているものをOFFにする
    * 
    * @param gpdb
-   *          汎用データベースオブジェクト
+   *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
    */
   public static boolean gpdbItemDefaultSortOff(EipTGpdb gpdb) {
@@ -1501,7 +1501,7 @@ public class GpdbUtils {
       throws Exception {
 
     String orgId = Database.getDomainName();
-    String subject = "[" + ALOrgUtilsService.getAlias() + "]汎用データベース";
+    String subject = "[" + ALOrgUtilsService.getAlias() + "]Webデータベース";
 
     try {
       List<ALEipUser> memberList = new ArrayList<ALEipUser>();
@@ -1548,7 +1548,7 @@ public class GpdbUtils {
    * @param context
    *          Context
    * @param record
-   *          汎用データベースレコードオブジェクト
+   *          Webデータベースレコードオブジェクト
    * @param fileuploadList
    *          アップロードファイルリスト
    * @param folderName
@@ -1877,7 +1877,7 @@ public class GpdbUtils {
    * 添付ファイルリストを取得する
    * 
    * @param gpdbRecordId
-   *          汎用データベースレコードID
+   *          WebデータベースレコードID
    * @return 添付ファイルリスト
    */
   public static List<EipTGpdbRecordFile> getEipTGpdbRecordFileList(
@@ -1897,7 +1897,7 @@ public class GpdbUtils {
    * 添付ファイル一覧を取得する
    * 
    * @param gpdbRecordId
-   *          汎用データベースレコードID
+   *          WebデータベースレコードID
    * @return 添付ファイル一覧
    */
   public static List<FileuploadBean> getAttachmentFiles(int gpdbRecordId) {

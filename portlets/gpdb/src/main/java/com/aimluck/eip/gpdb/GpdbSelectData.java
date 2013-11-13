@@ -43,7 +43,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベース検索データを管理するクラスです。 <BR>
+ * Webデータベース検索データを管理するクラスです。 <BR>
  * 
  */
 public class GpdbSelectData extends ALAbstractSelectData<EipTGpdb, EipTGpdb>
@@ -53,10 +53,10 @@ public class GpdbSelectData extends ALAbstractSelectData<EipTGpdb, EipTGpdb>
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(GpdbSelectData.class.getName());
 
-  /** 汎用データベースの総数 */
+  /** Webデータベースの総数 */
   private int gpdbSum;
 
-  /** 全汎用データベースの一覧 */
+  /** 全Webデータベースの一覧 */
   private List<GpdbResultData> gpdbAllList;
 
   /**
@@ -80,7 +80,7 @@ public class GpdbSelectData extends ALAbstractSelectData<EipTGpdb, EipTGpdb>
         .getInitParameter("p2a-sort"));
     }
 
-    gpdbAllList = GpdbUtils.getGpdbAllList(); // 全汎用データベース
+    gpdbAllList = GpdbUtils.getGpdbAllList(); // 全Webデータベース
 
     super.init(action, rundata, context);
   }
@@ -134,7 +134,7 @@ public class GpdbSelectData extends ALAbstractSelectData<EipTGpdb, EipTGpdb>
    *          RunData
    * @param context
    *          Context
-   * @return 汎用データベースオブジェクトモデル
+   * @return Webデータベースオブジェクトモデル
    */
   @Override
   protected EipTGpdb selectDetail(RunData rundata, Context context) {
@@ -179,18 +179,18 @@ public class GpdbSelectData extends ALAbstractSelectData<EipTGpdb, EipTGpdb>
   }
 
   /**
-   * 汎用データベースの総数を取得する
+   * Webデータベースの総数を取得する
    * 
-   * @return 汎用データベース総数
+   * @return Webデータベース総数
    */
   public int getGpdbSum() {
     return gpdbSum;
   }
 
   /**
-   * 汎用データベースの全リストを返す
+   * Webデータベースの全リストを返す
    * 
-   * @return 汎用データベースの全リスト
+   * @return Webデータベースの全リスト
    */
   public List<GpdbResultData> getGpdbAllList() {
     return gpdbAllList;

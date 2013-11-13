@@ -24,10 +24,10 @@
 #if  ($mode=="new_form")
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doGpdb_insert")
-#set ($subtitle = "汎用データベース追加")
+#set ($subtitle = "Webデータベース追加")
 #else
 #set ($action_str = "更新する")
-#set ($subtitle = "汎用データベース編集")
+#set ($subtitle = "Webデータベース編集")
 #set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")

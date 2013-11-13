@@ -57,13 +57,13 @@ public class GpdbFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(GpdbFormData.class.getName());
 
-  /** 汎用データベース名 */
+  /** Webデータベース名 */
   private ALStringField gpdb_name;
 
   /** メール配信フラグ */
   private ALStringField mail_flg;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   private String gpdbId;
 
   /** ユーザーID */
@@ -92,9 +92,9 @@ public class GpdbFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // 汎用データベース名
+    // Webデータベース名
     gpdb_name = new ALStringField();
-    gpdb_name.setFieldName("汎用データベース名");
+    gpdb_name.setFieldName("Webデータベース名");
     gpdb_name.setTrim(true);
     // メール配信フラグ
     mail_flg = new ALStringField();
@@ -104,13 +104,13 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースの各フィールドに対する制約条件を設定します。
+   * Webデータベースの各フィールドに対する制約条件を設定します。
    */
   @Override
   protected void setValidator() {
-    // 汎用データベース名必須項目
+    // Webデータベース名必須項目
     gpdb_name.setNotNull(true);
-    // 汎用データベース名の文字数制限
+    // Webデータベース名の文字数制限
     gpdb_name.limitMaxLength(50);
   }
 
@@ -144,7 +144,7 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースのフォームに入力されたデータの妥当性検証を行います。
+   * Webデータベースのフォームに入力されたデータの妥当性検証を行います。
    * 
    * @param msgList
    *          エラーメッセージリスト
@@ -171,7 +171,7 @@ public class GpdbFormData extends ALAbstractFormData {
       }
 
       if (!query.fetchList().isEmpty()) {
-        msgList.add("汎用データベース名『 <span class='em'>"
+        msgList.add("Webデータベース名『 <span class='em'>"
           + gpdb_name.toString()
           + "</span> 』は既に登録されています。");
       }
@@ -180,7 +180,7 @@ public class GpdbFormData extends ALAbstractFormData {
       return false;
     }
 
-    // 汎用データベース名
+    // Webデータベース名
     gpdb_name.validate(msgList);
     // メール配信フラグ
     mail_flg.validate(msgList);
@@ -189,7 +189,7 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースから読み出します。
+   * Webデータベースをデータベースから読み出します。
    * 
    * @param rundata
    *          RunData
@@ -208,7 +208,7 @@ public class GpdbFormData extends ALAbstractFormData {
       if (gpdb == null) {
         return false;
       }
-      // 汎用データベース名
+      // Webデータベース名
       gpdb_name.setValue(gpdb.getGpdbName());
       // メール配信フラグ
       mail_flg.setValue(gpdb.getMailFlg());
@@ -221,7 +221,7 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースに格納します。
+   * Webデータベースをデータベースに格納します。
    * 
    * @param rundata
    *          RunData
@@ -241,7 +241,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
       // 新規オブジェクトモデル
       EipTGpdb gpdb = Database.create(EipTGpdb.class);
-      // 汎用データベース名
+      // Webデータベース名
       gpdb.setGpdbName(gpdb_name.getValue());
       // メール配信フラグ
       gpdb.setMailFlg(mail_flg.getValue());
@@ -258,7 +258,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
       // 新規オブジェクトモデル
       EipTGpdbItem gpdbItem = Database.create(EipTGpdbItem.class);
-      // 汎用データベース
+      // Webデータベース
       gpdbItem.setGpdb(gpdb);
       // 項目定義名
       gpdbItem.setGpdbItemName(GpdbUtils.ITEM_NAME_DEFAULT);
@@ -285,14 +285,14 @@ public class GpdbFormData extends ALAbstractFormData {
       // 更新日
       gpdbItem.setUpdateDate(Calendar.getInstance().getTime());
 
-      // 汎用データベースを登録
+      // Webデータベースを登録
       Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 追加");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 追加");
 
     } catch (Exception ex) {
       Database.rollback();
@@ -303,7 +303,7 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースを更新します。
+   * Webデータベースを更新します。
    * 
    * @param rundata
    *          RunData
@@ -323,21 +323,21 @@ public class GpdbFormData extends ALAbstractFormData {
         return false;
       }
 
-      // 汎用データベース名
+      // Webデータベース名
       gpdb.setGpdbName(gpdb_name.getValue());
       // メモ
       gpdb.setMailFlg(mail_flg.getValue());
       // 更新日
       gpdb.setUpdateDate(Calendar.getInstance().getTime());
 
-      // 汎用データベースを更新
+      // Webデータベースを更新
       Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 更新");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 更新");
 
     } catch (Exception ex) {
       Database.rollback();
@@ -348,7 +348,7 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースから削除します。
+   * Webデータベースをデータベースから削除します。
    * 
    * @param rundata
    *          RunData
@@ -379,7 +379,7 @@ public class GpdbFormData extends ALAbstractFormData {
       // 項目定義を削除
       GpdbUtils.removeGpdbItem(gpdb);
 
-      // 汎用データベースを削除
+      // Webデータベースを削除
       Database.delete(gpdb);
       Database.commit();
 
@@ -387,7 +387,7 @@ public class GpdbFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 削除");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 削除");
 
     } catch (Exception ex) {
       Database.rollback();
@@ -398,9 +398,9 @@ public class GpdbFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベース名を取得します。
+   * Webデータベース名を取得します。
    * 
-   * @return 汎用データベース名
+   * @return Webデータベース名
    */
   public ALStringField getGpdbName() {
     return gpdb_name;

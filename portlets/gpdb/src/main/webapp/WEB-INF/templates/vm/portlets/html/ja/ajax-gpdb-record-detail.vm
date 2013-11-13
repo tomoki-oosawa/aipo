@@ -25,7 +25,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader("データ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("汎用データベースレコード")
+#ALajaxdetailformheader("Webデータベースレコード")
 #ALtableheaderWide()
 ##=====================項目配置START=====================
 #foreach($item in $result.Detail)

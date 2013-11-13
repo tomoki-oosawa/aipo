@@ -32,7 +32,7 @@ import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
 /**
- * 汎用データベースレコードの添付ファイルの一覧を処理するクラスです。
+ * Webデータベースレコードの添付ファイルの一覧を処理するクラスです。
  */
 public class GpdbRecordFileRawScreen extends FileuploadRawScreen {
 

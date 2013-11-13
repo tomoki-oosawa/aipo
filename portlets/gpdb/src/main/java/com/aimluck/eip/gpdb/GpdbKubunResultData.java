@@ -28,7 +28,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
- * 汎用データベースのResultDataです。 <BR>
+ * WebデータベースのResultDataです。 <BR>
  * 
  */
 public class GpdbKubunResultData implements ALData {

@@ -32,7 +32,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベースレコード情報のResultDataです。 <BR>
+ * Webデータベースレコード情報のResultDataです。 <BR>
  * 
  */
 public class GpdbRecordResultData implements ALData {
@@ -40,7 +40,7 @@ public class GpdbRecordResultData implements ALData {
   /** レコードID */
   protected ALNumberField gpdb_record_id;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   protected ALNumberField gpdb_id;
 
   /** 項目定義ID */
@@ -96,19 +96,19 @@ public class GpdbRecordResultData implements ALData {
   }
 
   /**
-   * 汎用データベースIDを取得する
+   * WebデータベースIDを取得する
    * 
-   * @return 汎用データベースID
+   * @return WebデータベースID
    */
   public ALNumberField getGpdbId() {
     return gpdb_id;
   }
 
   /**
-   * 汎用データベースIDを設定する
+   * WebデータベースIDを設定する
    * 
    * @param i
-   *          汎用データベースID
+   *          WebデータベースID
    */
   public void setGpdbId(long i) {
     gpdb_id.setValue(i);

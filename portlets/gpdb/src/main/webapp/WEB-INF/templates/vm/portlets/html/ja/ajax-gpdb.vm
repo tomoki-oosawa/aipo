@@ -26,12 +26,12 @@
 #set ($righting = "style='text-align:right'")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>汎用データベースの管理</h2>
+<h2>Webデータベースの管理</h2>
 #AUISummaryDiv()
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["汎用データベース", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
+#set($tab = ["Webデータベース", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:10em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = ["区分", "gpdb_kubun", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
@@ -39,7 +39,7 @@
 </div>
 </div>
 #if($result.getGpdbSum() != 0)
-#AUIbuttonAction("汎用データベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("Webデータベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #end
 #AUISummaryDivfooter()
 #if($result.getGpdbSum() != 0)
@@ -49,12 +49,12 @@
 #AUISummaryDivfooter()
 #end
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader("汎用データベース")
+#ALajaxlistformheader("Webデータベース")
 #if($result.getGpdbSum() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("汎用データベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("Webデータベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
@@ -78,7 +78,7 @@
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
 #ALtdhead("")
-#ALtdhead("#ALajaxsort('gpdb_name' '汎用データベース名' $result 'GpdbListScreen')")
+#ALtdhead("#ALajaxsort('gpdb_name' 'Webデータベース名' $result 'GpdbListScreen')")
 #ALtdhead("作成者")
 #ALtdhead("作成日")
 #ALtdhead("データ件数")

@@ -32,7 +32,7 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["汎用データベース一覧に戻る", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
+#set($tab = ["Webデータベース一覧に戻る", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
 <li><a class="last" style="width:15em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>

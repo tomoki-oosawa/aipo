@@ -36,7 +36,7 @@
 <div class="floatRight">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["汎用データベース", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
+#set($tab = ["Webデータベース", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:10em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = ["区分", "gpdb_kubun", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>

@@ -38,7 +38,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 汎用データベースの管理者用アクションクラスです。
+ * Webデータベースの管理者用アクションクラスです。
  * 
  */
 public class GpdbAction extends ALBaseAction {
@@ -97,7 +97,7 @@ public class GpdbAction extends ALBaseAction {
   }
 
   /**
-   * 汎用データベースを一覧表示します。
+   * Webデータベースを一覧表示します。
    * 
    * @param rundata
    *          RunData
@@ -140,7 +140,7 @@ public class GpdbAction extends ALBaseAction {
   }
 
   /**
-   * 汎用データベースレコードを一覧表示します。 <BR>
+   * Webデータベースレコードを一覧表示します。 <BR>
    * 
    * @param rundata
    *          RunData

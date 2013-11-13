@@ -72,16 +72,16 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   /** 項目定義よりフィールド一覧を保持する */
   private List<GpdbItemResultData> gpdbItemList;
 
-  /** 汎用データベースレコードマップ。キー：項目定義ID */
+  /** Webデータベースレコードマップ。キー：項目定義ID */
   private Map<String, GpdbRecordResultData> mapGpdbRecord;
 
   /** 区分値マップ。キー：区分値ID */
   private Map<String, List<GpdbKubunValueResultData>> mapGpdbKubunValue;
 
-  /** 汎用データベースID */
+  /** WebデータベースID */
   private String gpdbId;
 
-  /** 汎用データベースオブジェクト */
+  /** Webデータベースオブジェクト */
   private EipTGpdb gpdb;
 
   /** RunData(validate用) */
@@ -111,7 +111,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
     this.context = context;
     gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
 
-    // 汎用データベースオブジェクト
+    // Webデータベースオブジェクト
     gpdb = GpdbUtils.getEipTGpdb(gpdbId);
 
     // 項目定義を取得（編集画面ではsetFormDataが呼ばれないためここに記述）
@@ -129,7 +129,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースの各フィールドに対する制約条件を設定します。
+   * Webデータベースの各フィールドに対する制約条件を設定します。
    */
   @Override
   protected void setValidator() {
@@ -159,7 +159,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースのフォームに入力されたデータの妥当性検証を行います。
+   * Webデータベースのフォームに入力されたデータの妥当性検証を行います。
    * 
    * @param msgList
    *          エラーメッセージリスト
@@ -246,7 +246,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースから読み出します。
+   * Webデータベースをデータベースから読み出します。
    * 
    * @param rundata
    *          RunData
@@ -293,7 +293,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースに格納します。
+   * Webデータベースをデータベースに格納します。
    * 
    * @param rundata
    *          RunData
@@ -430,9 +430,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         // -----------------------------
         // レコード情報の登録
         // -----------------------------
-        // 汎用データベースオブジェクト
+        // Webデータベースオブジェクト
         gpdbRecord.setGpdb(gpdb);
-        // 汎用データベース項目定義
+        // Webデータベース項目定義
         gpdbRecord.setGpdbItem(GpdbUtils.getEipTGpdbItem(item
           .getGpdbItemId()
           .getValueAsString()));
@@ -464,7 +464,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
           tuser.getLastName()
             + " "
             + tuser.getFirstName()
-            + "さんが汎用データベース 「"
+            + "さんがWebデータベース 「"
             + gpdb.getGpdbName()
             + "」 にデータを登録しました。";
 
@@ -475,7 +475,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         recordNo,
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 データ追加");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 データ追加");
 
     } catch (Exception ex) {
       Database.rollback();
@@ -486,7 +486,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースを更新します。
+   * Webデータベースを更新します。
    * 
    * @param rundata
    *          RunData
@@ -603,14 +603,14 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         gpdbRecord.setUpdateDate(Calendar.getInstance().getTime());
       }
 
-      // 汎用データベースを更新
+      // Webデータベースを更新
       Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         Integer.valueOf(recordNo),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 データ更新");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 データ更新");
 
     } catch (Exception ex) {
       Database.rollback();
@@ -621,7 +621,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
   }
 
   /**
-   * 汎用データベースをデータベースから削除します。
+   * Webデータベースをデータベースから削除します。
    * 
    * @param rundata
    *          RunData
@@ -644,7 +644,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
       List<EipTGpdbRecord> gpdbRecordList =
         GpdbUtils.getEipTGpdbRecord(gpdbId, recordNo);
 
-      // 汎用データベースレコードを削除
+      // Webデータベースレコードを削除
       Database.deleteAll(gpdbRecordList);
 
       // 添付ファイルを削除
@@ -656,7 +656,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         Integer.valueOf(recordNo),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "汎用データベース 「" + gpdb.getGpdbName() + "」 データ削除");
+        "Webデータベース 「" + gpdb.getGpdbName() + "」 データ削除");
 
     } catch (Exception ex) {
       Database.rollback();
