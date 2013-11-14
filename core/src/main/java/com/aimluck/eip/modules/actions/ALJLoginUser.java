@@ -244,6 +244,17 @@ public class ALJLoginUser extends ActionEvent {
       data.getUser().setHasLoggedIn(Boolean.FALSE);
 
       if (e instanceof FailedLoginException) {
+        if (ALEipConstants.USER_STAT_DISABLED.equals(message)) {
+          data.setMessage(Localization.getString(
+            rundata,
+            "JLOGINUSER_ACCOUNT_DISABLED"));
+          return;
+        } else if (ALEipConstants.USER_STAT_NUTRAL.equals(message)) {
+          data.setMessage(ALLocalizationUtils
+            .getl10n("LOGINACTION_INVALIDATION_USER"));
+          return;
+        }
+
         if (!disableCheck(data)) {
           logger.info("JLoginUser: Credential Failure on login for user: "
             + username);
@@ -278,29 +289,6 @@ public class ALJLoginUser extends ActionEvent {
       JetspeedUser juser =
         new FakeJetspeedUser(JetspeedSecurity.getAnonymousUserName(), false);
       data.setUser(juser);
-      return;
-    }
-    if ("T".equals(user.getDisabled())) {
-      // 理由等 ：ブラウザの戻るボタンを押した場合に，
-      // ログイン無効ユーザに対してログイン画面を表示していた．
-      // 対処方法：ログイン無効のユーザーを匿名ユーザーとして取り扱い処理する．
-      data.setUser(JetspeedSecurity.getAnonymousUser());
-      data.setMessage(Localization.getString(
-        rundata,
-        "JLOGINUSER_ACCOUNT_DISABLED"));
-      // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
-      data.getUser().setHasLoggedIn(Boolean.FALSE);
-
-      return;
-    } else if ("N".equals(user.getDisabled())) {
-      // 理由等 ：ブラウザの戻るボタンを押した場合に，
-      // ログイン無効ユーザに対してログイン画面を表示していた．
-      // 対処方法：ログイン無効のユーザーを匿名ユーザーとして取り扱い処理する．
-      data.setUser(JetspeedSecurity.getAnonymousUser());
-      data.setMessage(ALLocalizationUtils
-        .getl10n("LOGINACTION_INVALIDATION_USER"));
-      // data.setScreenTemplate(JetspeedResources.getString("logon.disabled.form"));
-      data.getUser().setHasLoggedIn(Boolean.FALSE);
       return;
     }
 

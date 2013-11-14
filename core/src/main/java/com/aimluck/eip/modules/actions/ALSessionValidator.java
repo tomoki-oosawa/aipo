@@ -170,13 +170,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
       }
 
-      String contextPath = ServletContextLocator.get().getContextPath();
-      if ("/".equals(contextPath)) {
-        contextPath = "";
-      }
-      String requestURI = hreq.getRequestURI();
-
-      if (requestURI.equalsIgnoreCase(contextPath + "/ical/calendar.ics")) {
+      if (isICalRequest(data)) {
         data.setScreenTemplate("ScheduleiCalScreen");
         return;
       } else {
@@ -504,5 +498,15 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
   private boolean isLogin(JetspeedUser loginuser) {
     return (loginuser != null && loginuser.hasLoggedIn());
+  }
+
+  protected boolean isICalRequest(RunData data) {
+    String contextPath = ServletContextLocator.get().getContextPath();
+    if ("/".equals(contextPath)) {
+      contextPath = "";
+    }
+    HttpServletRequest hreq = data.getRequest();
+    String requestURI = hreq.getRequestURI();
+    return requestURI.equalsIgnoreCase(contextPath + "/ical/calendar.ics");
   }
 }
