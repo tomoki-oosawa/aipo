@@ -705,6 +705,10 @@ $item.get(0)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.note.hideDialog();" "$link")
 #end
+#macro(ALdialogheaderPrintTimeline $title $portlet_id $screen $view_date)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.timeline.hideDialog();" "$link")
+#end
 
 #macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick $link)
 	<div class="auiPopup clearfix">
