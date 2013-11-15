@@ -23,7 +23,7 @@
 #set ($record = $result.Detail)
 #set ($timelineViewType = "detail")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($l10n.TIMELINE_TIMELINE_DETAIL "aipo.timeline.hideDialog()")
+#ALdialogheaderPrintTimeline("$l10n.TIMELINE_TIMELINE_DETAIL" "" "" "")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="timelineOuter">
   <div id="timeline_$!{portlet.ID}" class="timeline">
