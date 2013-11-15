@@ -33,7 +33,7 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
-<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />

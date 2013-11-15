@@ -65,10 +65,10 @@
 	DELETE_STR:"Delete",
     //指定しない
 	NOT_SPECIFIED_STR:"Not specified",
-	//　＜ 追加　
-	ADDBTN_STR:"  < Add  ",
-		//　削除　
-	DELETEBTN_STR:"  Delete  ",
+	//＜ 追加
+	ADDBTN_STR:"< Add",
+	//削除
+	DELETEBTN_STR:"Delete",
 	//"一覧の総数が"+max+"件を超えています。\n日付の範囲を変更してください。"
 	EVENTLOG_STR:"The total number of the list is over ${max}. \nPlease chanege the range of years.",
 	// 新しく入力する
