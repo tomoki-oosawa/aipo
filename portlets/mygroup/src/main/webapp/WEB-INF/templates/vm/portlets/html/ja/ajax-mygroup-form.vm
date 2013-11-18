@@ -44,7 +44,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('group_alias_name'))")
-#ALtditem("#ALtextfield('group_alias_name' $!result.GroupAliasName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('group_alias_name' $!result.GroupAliasName 50 'active')")
 #ALtdcaption('所属メンバー')
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">左側にメンバーを追加してください。</div>
