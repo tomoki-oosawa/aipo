@@ -215,6 +215,9 @@ public abstract class ALAbstractFormData implements ALData {
       action.setResultData(this);
       if (!msgList.isEmpty()) {
         action.addErrorMessages(msgList);
+      } else if (!res) {
+        msgList.add(ALLocalizationUtils.getl10n("ERROR_INSERT_FAILURE"));
+        action.addErrorMessages(msgList);
       }
       action.putData(rundata, context);
 
@@ -279,6 +282,9 @@ public abstract class ALAbstractFormData implements ALData {
       action.setResultData(this);
       if (!msgList.isEmpty()) {
         action.addErrorMessages(msgList);
+      } else if (!res) {
+        msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
+        action.addErrorMessages(msgList);
       }
       action.putData(rundata, context);
 
@@ -326,6 +332,9 @@ public abstract class ALAbstractFormData implements ALData {
       boolean res = deleteFormData(rundata, context, msgList);
       action.setResultData(this);
       if (!msgList.isEmpty()) {
+        action.addErrorMessages(msgList);
+      } else if (!res) {
+        msgList.add(ALLocalizationUtils.getl10n("ERROR_DELETE_FAILURE"));
         action.addErrorMessages(msgList);
       }
       action.putData(rundata, context);
