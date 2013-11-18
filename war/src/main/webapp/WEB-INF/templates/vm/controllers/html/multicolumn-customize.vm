@@ -27,7 +27,6 @@
 #set ($col = 0)
 #set ($timelineCount = 0)
 
-
 #foreach ( $column in $portlets )
 #foreach ( $portlet in $column )
 #if($portlet.parent == "Timeline")
@@ -48,7 +47,7 @@
 #foreach ( $portlet in $column )
                 <tr>
                   <td class="wide">
-                    <form action="#ALpsmlLink($jslink.Template)" method="post">
+                    <form action="#ALpsmlLink($jslink.Template $!{js_peid})" method="post">
 #if ($action)
                       <input type="hidden" name="$jslink.ActionKey" value="$action" />
 #end
@@ -60,52 +59,67 @@
                         <div class="auiPortletHead">
                             <div class="inner ">
                                 <div class="auiPortletTitle">$!utils.escapeXML($titles.get($portlet.id))</div>
-									<div class="auiPortletTool">
-										<div class="auiPortletSetting">
-										</div>
+								<div class="auiPortletTool">
+#if($accessControl == "true" && ($portlet.parent != "Timeline" || ($timelineCount > 1)))
+									<div class="auiPortletDelete">
+										<a href="javascript:(function(e){ document.getElementById('remove_button_$portlet.id').click()})();" class="auiIcon"><i class="icon-remove"></i></a>
+										<button  type="submit" id="remove_button_$portlet.id" style="display:none" name="eventSubmit_doDelete"/>&nbsp;<i class="icon-remove"></i>&nbsp;</button>
 									</div>
+#end
+								</div>
 							</div>
-						</div>	
+						</div>
 						<div class="auiPortletBody">
-							<div class="inner">			
-                                            <table width="100%" cellspacing="0" cellpadding="0">
-                                              <tbody>
-                                                <tr>
-                                                  <td nowrap="nowrap" class="top right">
-#if($accessControl == "true")
-#if($portlet.parent != "Timeline" || ($timelineCount > 1))
-                                                    <input type="image" src="images/close.gif" alt="$l10n.CUSTOMIZER_REMOVE" title="$l10n.CUSTOMIZER_REMOVE" name="eventSubmit_doDelete" />
-#end
-#end
-#if ($col == 0)
-                                                    <img src="images/common/dot.gif" width="19" alt=""/>
-#else
-                                                    <input type="image" src="images/left.gif" alt="$l10n.CUSTOMIZER_MOVELEFT" title="$l10n.CUSTOMIZER_MOVELEFT" name="eventSubmit_doLeft"/>
-#end
+							<div class="inner">
+								<table width="100%" cellspacing="0" cellpadding="0">
+								 <tbody>
+								  <tr>
+								   <td nowrap="nowrap" class="middle center">
+								   <table style="margin:0 auto;"><tbody>
+								    <tr>
+								     <td>&nbsp;</td>
+								     <td>
 #if ($row == 0)
-                                                    <img src="images/common/dot.gif" width="19" alt="" />
+								     	#AUIDisableArrowbutton('icon-arrow-up')
 #else
-                                                    <input type="image" src="images/up.gif" alt="$l10n.CUSTOMIZER_MOVEUP" title="$l10n.CUSTOMIZER_MOVEUP" name="eventSubmit_doUp"/>
+								     	#AUIArrowbutton('eventSubmit_doUp' 'icon-arrow-up')
 #end
-#if ($row == ($column.size() - 1))
-                                                    <img src="images/common/dot.gif" width="19" alt=""/>
+								     </td>
+								     <td>&nbsp;</td>
+								    </tr>
+								    <tr>
+								     <td>
+#if ($col == 0)
+								     	#AUIDisableArrowbutton('icon-arrow-left')
 #else
-                                                    <input type="image" src="images/down.gif" alt="$l10n.CUSTOMIZER_MOVEDOWN" title="$l10n.CUSTOMIZER_MOVEDOWN" name="eventSubmit_doDown"/>
+								     	#AUIArrowbutton('eventSubmit_doLeft' 'icon-arrow-left')
 #end
+								     </td>
+								     <td>&nbsp;</td>
+								     <td>
 #if ($col == ($sizes.size() - 1))
-                                                    <img src="images/common/dot.gif" width="19" alt=""/>
+								     	#AUIDisableArrowbutton('icon-arrow-right')
 #else
-                                                    <input type="image" src="images/right.gif" alt="$l10n.CUSTOMIZER_MOVERIGHT" title="$l10n.CUSTOMIZER_MOVERIGHT" name="eventSubmit_doRight"/>
+								     	#AUIArrowbutton('eventSubmit_doRight' 'icon-arrow-right')
 #end
-                                                  </td>
-                                                </tr>
-                                                <tr>
-                                                  <td align="center" valign="middle">
-                                                    <strong>$!utils.escapeXML($titles.get($portlet.id))</strong>
-                                                  </td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
+								     </td>
+								    </tr>
+								    <tr>
+								     <td>&nbsp;</td>
+								     <td>
+#if ($row == ($column.size() - 1))
+								     	#AUIDisableArrowbutton('icon-arrow-down')
+#else
+								     	#AUIArrowbutton('eventSubmit_doDown' 'icon-arrow-down')
+#end
+								     </td>
+								     <td>&nbsp;</td>
+								    </tr>
+								    </tbody></table>
+								   </td>
+								  </tr>
+								 </tbody>
+								</table>
 							</div>
 						</div>
 						<!-- /auiPortletBody -->
@@ -134,7 +148,7 @@
 </tr>
 <tr>
   <td>
-    <form action="#ALpsmlLink($jslink.Template)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
+    <form action="#ALpsmlLink($jslink.Template $!{js_peid})" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 #if ($action)
       <input type="hidden" name="$jslink.ActionKey" value="$action"/>
 #end

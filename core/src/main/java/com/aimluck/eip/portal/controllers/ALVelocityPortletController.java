@@ -62,13 +62,14 @@ public class ALVelocityPortletController extends AbstractPortletController {
     // create a blank context and with all the global application
     // Pull Tools inside
     Context context = TurbineVelocity.getContext();
-
     context.put("data", rundata);
     context.put("controller", this);
     context.put("portlets", this.getPortlets().toArray());
     context.put("config", this.getConfig());
     context.put("skin", this.getPortlets().getPortletConfig().getPortletSkin());
     context.put("template", getConfig().getInitParameter("template"));
+
+    context.put("js_peid", rundata.getParameters().get("js_peid"));
 
     // アクセス権限がなかった場合の削除表示フラグ
     boolean hasAuthority =

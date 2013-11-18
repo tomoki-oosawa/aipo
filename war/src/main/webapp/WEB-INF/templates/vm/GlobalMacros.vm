@@ -50,12 +50,15 @@
 <a class="button" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" title="$title"><img src="$image" style="vertical-align:middle;margin-right:2px;padding:0px 0px 1px;" />$title</a>
 #end
 
-#macro(ALpsmlLink $baseLink)
+#macro(ALpsmlLink $baseLink $js_peid)
 #set ($theLink = $baseLink)
 #set ($mtype = $!data.Parameters.getString("mtype"))
 #if  ($!mtype)
 #set ($theLink = $theLink.addQueryData("mtype", $mtype))
-#end$theLink#end
+#end
+#set ($theLink = $theLink.addQueryData("js_peid", $js_peid))
+$theLink
+#end
 
 #macro(ALajaxIndicator $indicator_id $portlet_id $msg)
 #if($msg == '') #set ($tmpmsg = "$l10n.EXTTIMECARD_SEND_DATA") #else #set ($tmpmsg = $msg) #end
@@ -1481,6 +1484,14 @@ $link.get(0)
 </a>
 #end
 
+#macro(AUIArrowbutton $name $aclass)
+<button class="auiButton" type="submit" name="$name"/>&nbsp;<i class="$aclass"></i>&nbsp;</button>
+#end
+
+#macro(AUIDisableArrowbutton $aclass)
+<span class="auiButtonDisabled">&nbsp;<i class="$aclass"></i>&nbsp;</span>
+#end
+
 #macro(AUIbutton $text $url)
 <a title="$text" href="$url" class="auiButton">$text</a>
 #end
@@ -1679,7 +1690,6 @@ $item.get(0)
 </div></div>
 #end
 #end
-
 
 #macro(AUIiconSecretAtt $option)
 	<i class="auiIcon auiIconSecret" $option></i>

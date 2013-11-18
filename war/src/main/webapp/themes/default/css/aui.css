@@ -547,6 +547,20 @@ img.avatar,
   zoom: 1;
 }
 
+.auiPortletDelete a {
+  background: none;
+  color: #666666;
+  font-size: 15px;
+}
+.auiPortletDelete a:hover {
+  color: white;
+}
+.auiPortletDelete a, .auiPortletDelete i {
+  line-height: 16px;
+  text-decoration: none;
+  text-align: center;
+}
+
 .auiPortletBody {
   background: white url(../images/common/portlet_l.gif?20130918) repeat-y left 0;
 }

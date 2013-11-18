@@ -233,35 +233,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
     // 2007.04.04 update
     context.put("utils", new ALCommonUtils());
-
-    String pid = rundata.getParameters().get("js_peid");
-    Portlets[] portletArrays =
-      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
-        .getPortletsArray();
-    ALStringField pageTitle = new ALStringField();
-    String mypageId = "";
-    for (Portlets p : portletArrays) {
-      if ("マイページ".equals(p.getTitle())) {
-        mypageId = p.getId();
-      }
-      if (p.getId().equals(pid)) {
-        MetaInfo info = p.getMetaInfo();
-        pageTitle.setValue(info.getTitle());
-      }
-    }
-
-    PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
-    ArrayList<PortletEntry> all = new ArrayList<PortletEntry>();
-    buildPortletList(rundata, set, mediaType, all);
-    String reqSecid =
-      (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID);
-
-    context.put("js_peid", pid);
-    context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
-    context.put("mypageId", mypageId);
-    context.put("pageTitle", pageTitle);
-    context.put("secid", reqSecid);
-
+    setContexts(rundata, context);
     /**
      * Special handling for wml profiles no skins, no properties menuentry, no
      * panes
@@ -421,6 +393,34 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       // nothing specific to do
     }
 
+  }
+
+  private void setContexts(RunData rundata, Context context) {
+    String pid = rundata.getParameters().get("js_peid");
+    if (pid == null) {
+      // pid=rundata.get
+    }
+    context.put("js_peid", pid);
+    Portlets[] portletArrays =
+      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
+        .getPortletsArray();
+    ALStringField pageTitle = new ALStringField();
+    String mypageId = "";
+    for (Portlets p : portletArrays) {
+      if ("マイページ".equals(p.getTitle())) {
+        mypageId = p.getId();
+      }
+      if (p.getId().equals(pid)) {
+        MetaInfo info = p.getMetaInfo();
+        pageTitle.setValue(info.getTitle());
+      }
+    }
+    context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
+    context.put("mypageId", mypageId);
+    context.put("pageTitle", pageTitle);
+
+    context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
+      ALEipConstants.SECURE_ID));
   }
 
   public int getSize(VelocityPortlet portlet) {
@@ -925,6 +925,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           }
         }
       }
+      setContexts(rundata, context);
     } catch (Exception e) {
       logger.error("ALCustomizeSetAction.doLayout", e);
     }

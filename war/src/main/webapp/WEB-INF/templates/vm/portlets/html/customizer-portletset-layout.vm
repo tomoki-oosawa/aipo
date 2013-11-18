@@ -21,9 +21,8 @@
 #if($!set) #set($portletsum = $!set.size()) #else #set($portletsum = 0) #end
 #set($tabs = [["$l10n.WAR_SET_UP_LAYOUT", "",""]])
 ## ---------------------------------------------------------------------------
-##ALtabheader($tabs "")
 #ALspacebothheader()
-<h3>ページ名</h3>
+<h3>$l10n.WAR_PAGE_NAME</h3>
 <p style="margin-bottom:10px">
 #if($isMypage)
 $!pageTitle
@@ -35,40 +34,29 @@ $!pageTitle
 <input type="hidden" name="mode" value="add" />
 #ALbuttonheader()
 #ALtextfield('pageTitle' $!pageTitle '40%' 10 'active')
-#ALsubmit('setPageTitle' 'ページ名を変更する')
+#ALsubmit('setPageTitle' $l10n.WAR_PAGE_NAME_DO_EDIT)
 #ALbuttonfooter()
 </form>
 #end
 </p>
 #if($portletsum <= 0)
-<div class="auiBlankBox">
-<a title="アプリを追加する" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-</div>
+<div class="message">$l10n.WAR_ADD_APPLICATION_BUTTON</div>
+#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize&template=CustomizeFormScreen") )
+<div class="auiSummaryMeta clearfix center"><input class="auiButtonAction" type="button" value="アプリを追加する" onclick="aipo.common.showDialog('$clink')"></div>
 #else
-<h3>$l10n.WAR_ADD_APP</h3>
-<div class="center">
-<a title="$l10n.WAR_ADD_APPLICATION" href="$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','add').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-</div>
 <h3>$l10n.WAR_SELECT_POSITION</h3>
-<div class="message">$l10n.WAR_SELECT_LAYOUT_BUTTON</div>
-<table class="tableWrapper center">
-<tbody>
-<tr>
-<td width="40%"></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="72" height="72" border="0"  /></a></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="72" height="72" border="0" /></a></td>
-<td width="72" align="center" nowrap="nowrap"><a href="#ALpsmlLink($jslink.Template)&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="72" height="72" border="0" /></a></td>
-<td width="40%"></td>
-</tr>
-</tbody>
-</table>
+<ul class="auiRowList">
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="/aipo/themes/default/images/layout/layout_100.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="70"></a></li>
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="/aipo/themes/default/images/layout/layout_50-50.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="70"></a></li>
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="/aipo/themes/default/images/layout/layout_25-75.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="70"></a></li>
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="/aipo/themes/default/images/layout/layout_75-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="70"></a></li>
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="/aipo/themes/default/images/layout/layout_33-33-33.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="70"></a></li>
+ <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="/aipo/themes/default/images/layout/layout_25-50-25.gif" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="70"></a></li>
+</ul>
 <br />
 <h3>$l10n.WAR_ARRANGE_APP</h3>
-$l10n.WAR_ARRANGE_APP_UP_DOWN
-$l10n.WAR_DELETE_APP
+#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize&template=CustomizeFormScreen") )
+<div class="auiSummaryMeta clearfix center"><input class="auiButtonAction" type="button" value="アプリを追加する" onclick="aipo.common.showDialog('$clink')"></div>
 <table class="tableWrapper">
 <tbody>
 $data.User.setTemp("customizer",$customizer)
@@ -76,8 +64,12 @@ $!set.Controller.getContent($data)
 </tbody>
 </table>
 #end
+
+#if(!$!isMypage)
+<h3>$l10n.WAR_PAGE_DELETE</h3>
+<div align="center"><input name="eventSubmit_doCancel" class="auiButtonAction" type="button" value="$l10n.WAR_PAGE_DO_DELETE" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{js_peid}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})"></div>
+#end
 #ALspacebothfooter()
-##ALtabfooter()
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

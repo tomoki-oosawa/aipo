@@ -90,10 +90,66 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
       if ("layout".equals(mode)) {
         doLayout(rundata, context);
       }
+      if ("page_title".equals(mode)) {
+        doPageTitleEdit(rundata, context);
+      }
     } catch (Exception e) {
       logger.error("CustomizeFormJSONScreen.getJSONString", e);
     }
     return result;
+  }
+
+  public void doPageTitleEdit(RunData rundata, Context context)
+      throws Exception {
+    // maintainUserSelections(rundata);
+    // Map<String, PortletEntry> userSelections =
+    // CustomizeUtils.getUserSelections(rundata);
+    // String[] pnames = new String[userSelections.size()];
+    // userSelections.keySet().toArray(pnames);
+    //
+    // // Create a ClearPortletControl
+    // Control ctrl = new PsmlControl();
+    // ctrl.setName("ClearPortletControl");
+    //
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    Profile profile = jdata.getProfile();
+
+    String pid = rundata.getParameters().get("portlet_id");
+    Portlets portlets = profile.getDocument().getPortletsById(pid);
+
+    setController(rundata, context, portlets);
+
+    editPageTitle(rundata, context);
+
+    // 理由等 ：追加したポートレットを PSML に保存する．
+    if (portlets != null) {
+      doSaveAddAction(rundata, context, portlets);
+    }
+
+    SessionState customizationState =
+      ((JetspeedRunData) rundata).getPageSessionState();
+    customizationState.setAttribute("customize-mode", "layout");
+  }
+
+  private void editPageTitle(RunData rundata, Context context) {
+    String pid = rundata.getParameters().get("portlet_id");
+    Portlets[] portletArrays =
+      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
+        .getPortletsArray();
+    String pageTitle = rundata.getParameters().getString("pageTitle");
+    if (pageTitle != null
+      && pageTitle.length() > 0
+      && !"マイページ".equals(pageTitle)) {
+      for (Portlets p : portletArrays) {
+        if (p.getId().equals(pid)) {
+          MetaInfo info = p.getMetaInfo();
+          if (info != null) {
+            info.setTitle(pageTitle);
+          }
+          p.setTitle(pageTitle);
+        }
+      }
+    }
   }
 
   /** Add new portlets in the customized set */
@@ -179,23 +235,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
     }
     // --------------------------------------------------------------------------
 
-    Portlets[] portletArrays =
-      (((JetspeedRunData) rundata).getProfile().getDocument().getPortlets())
-        .getPortletsArray();
-    String pageTitle = rundata.getParameters().getString("pageTitle");
-    if (pageTitle != null
-      && pageTitle.length() > 0
-      && !"マイページ".equals(pageTitle)) {
-      for (Portlets p : portletArrays) {
-        if (p.getId().equals(pid)) {
-          MetaInfo info = p.getMetaInfo();
-          if (info != null) {
-            info.setTitle(pageTitle);
-          }
-          p.setTitle(pageTitle);
-        }
-      }
-    }
+    editPageTitle(rundata, context);
 
     // 理由等 ：追加したポートレットを PSML に保存する．
     if (portlets != null) {

@@ -29,7 +29,7 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 
-<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
+<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_peid/$!{js_peid}?action=controls.Customize' });return false;">
 <input type="hidden" name="_name" value="ページ" />
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="portlet_id" value="$!{js_peid}" />
