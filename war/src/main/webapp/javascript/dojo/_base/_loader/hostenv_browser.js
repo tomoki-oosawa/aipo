@@ -53,10 +53,17 @@ if(typeof window != 'undefined'){
 		d.isIE = 0;
 		try{
 			if(d.isMoz){
-				d.isFF = parseFloat(dua.split("Firefox/")[1].split(" ")[0]);
+				if(dua.indexOf("Firefox/") >= 0){
+					d.isFF = parseFloat(dua.split("Firefox/")[1].split(" ")[0]);
+				}
 			}
 			if((document.all)&&(!d.isOpera)){
-				d.isIE = parseFloat(dav.split("MSIE ")[1].split(";")[0]);
+				if(dav.indexOf("MSIE") >= 0){
+					d.isIE = parseFloat(dav.split("MSIE ")[1].split(";")[0]);
+				}
+			}
+			if(dav.indexOf("rv:") >= 0){
+				d.isIE = parseFloat(dav.split("rv:")[1].split(")")[0]);
 			}
 		}catch(e){}
 
@@ -78,7 +85,7 @@ if(typeof window != 'undefined'){
 		d._XMLHTTP_PROGIDS = ['Msxml2.XMLHTTP', 'Microsoft.XMLHTTP', 'Msxml2.XMLHTTP.4.0'];
 
 		d._xhrObj= function(){
-			// summary: 
+			// summary:
 			//		does the work of portably generating a new XMLHTTPRequest
 			//		object.
 			var http = null;
@@ -196,7 +203,7 @@ if(typeof window != 'undefined'){
 	//	START DOMContentLoaded
 	// Mozilla and Opera 9 expose the event we could use
 	if(document.addEventListener){
-		// NOTE: 
+		// NOTE:
 		//		due to a threading issue in Firefox 2.0, we can't enable
 		//		DOMContentLoaded on that platform. For more information, see:
 		//		http://trac.dojotoolkit.org/ticket/1704

@@ -183,7 +183,7 @@ dojo.mixin(dijit,
 					// node not displayed or something like that
 					focusNode.focus();
 				}catch(e){/*quiet*/}
-			}			
+			}
 			dijit._onFocusNode(node);
 		}
 
@@ -225,7 +225,7 @@ dojo.mixin(dijit,
 		// Listen for blur and focus events on targetWindow's body
 		var body = targetWindow.document.body || targetWindow.document.getElementsByTagName("body")[0];
 		if(body){
-			if(dojo.isIE){
+			if(dojo.isIE && dojo.isIE < 11){
 				body.attachEvent('onactivate', function(evt){
 					if(evt.srcElement.tagName.toLowerCase() != "body"){
 						dijit._onFocusNode(evt.srcElement);
@@ -330,7 +330,7 @@ dojo.mixin(dijit,
 		// summary
 		//	The stack of active widgets has changed.  Send out appropriate events and record new stack
 
-		var oldStack = dijit._activeStack;		
+		var oldStack = dijit._activeStack;
 		dijit._activeStack = newStack;
 
 		// compare old stack to new stack to see how many elements they have in common
@@ -538,14 +538,14 @@ dijit.placeOnScreen = function(
 	//		expected to be the desired document position.
 	//
 	//		Set which corner(s) you want to bind to, such as
-	//		
+	//
 	//			placeOnScreen(node, {x: 10, y: 20}, ["TR", "BL"])
-	//		
+	//
 	//		The desired x/y will be treated as the topleft(TL)/topright(TR) or
 	//		BottomLeft(BL)/BottomRight(BR) corner of the node. Each corner is tested
 	//		and if a perfect match is found, it will be used. Otherwise, it goes through
 	//		all of the specified corners, and choose the most appropriate one.
-	//		
+	//
 	//		NOTE: node is assumed to be absolutely or relatively positioned.
 
 	var choices = dojo.map(corners, function(corner){ return { corner: corner, pos: pos }; });
@@ -864,19 +864,19 @@ dijit.popup = new function(){
 				iframe = top.iframe,
 				widget = top.widget,
 				onClose = top.onClose;
-	
+
 			if(widget.onClose){
 				widget.onClose();
 			}
 			dojo.forEach(top.handlers, dojo.disconnect);
-	
+
 			// #2685: check if the widget still has a domNode so ContentPane can change its URL without getting an error
 			if(!widget||!widget.domNode){ return; }
 			dojo.style(widget.domNode, "display", "none");
 			dojo.body().appendChild(widget.domNode);
 			iframe.destroy();
 			dojo._destroyElement(wrapper);
-	
+
 			if(onClose){
 				onClose();
 			}
@@ -1480,7 +1480,7 @@ dojo.date.stamp.toISOString = function(/*Date*/dateObject, /*Object?*/options){
 		}else if(options.selector != "time"){
 			var timezoneOffset = dateObject.getTimezoneOffset();
 			var absOffset = Math.abs(timezoneOffset);
-			time += (timezoneOffset > 0 ? "-" : "+") + 
+			time += (timezoneOffset > 0 ? "-" : "+") +
 				_(Math.floor(absOffset/60)) + ":" + _(absOffset%60);
 		}
 		formattedDate.push(time);
@@ -1527,7 +1527,7 @@ dojo.parser = new function(){
 			case "function":
 				if(d.isFunction(value)){
 					// IE gives us a function, even when we say something like onClick="foo"
-					// (in which case it gives us an invalid function "function(){ foo }"). 
+					// (in which case it gives us an invalid function "function(){ foo }").
 					//  Therefore, convert to string
 					value=value.toString();
 					value=d.trim(value.substring(value.indexOf('{')+1, value.length-1));
@@ -1558,14 +1558,14 @@ dojo.parser = new function(){
 		// map from fully qualified name (like "dijit.Button") to structure like
 		// { cls: dijit.Button, params: {label: "string", disabled: "boolean"} }
 	};
-	
+
 	function getClassInfo(/*String*/ className){
 		// className:
 		//		fully qualified name (like "dijit.Button")
 		// returns:
 		//		structure like
-		//			{ 
-		//				cls: dijit.Button, 
+		//			{
+		//				cls: dijit.Button,
 		//				params: { label: "string", disabled: "boolean"}
 		//			}
 
@@ -1577,7 +1577,7 @@ dojo.parser = new function(){
 					"'. Did you spell the name correctly and use a full path, like 'dijit.form.Button'?");
 			}
 			var proto = cls.prototype;
-	
+
 			// get table of parameter names & types
 			var params={};
 			for(var name in proto){
@@ -1614,7 +1614,7 @@ dojo.parser = new function(){
 		// summary:
 		//		Takes array of nodes, and turns them into class instances and
 		//		potentially calls a layout method to allow them to connect with
-		//		any children		
+		//		any children
 		var thelist = [];
 		d.forEach(nodes, function(node){
 			if(!node){ return; }
@@ -1698,8 +1698,8 @@ dojo.parser = new function(){
 		// widgets).  Parent widgets will recursively call startup on their
 		// (non-top level) children
 		d.forEach(thelist, function(instance){
-			if(	instance  && 
-				(instance.startup) && 
+			if(	instance  &&
+				(instance.startup) &&
 				((!instance.getParent) || (!instance.getParent()))
 			){
 				instance.startup();
@@ -1724,9 +1724,9 @@ dojo.parser = new function(){
 //after the a11y test.
 
 (function(){
-	var parseRunner = function(){ 
+	var parseRunner = function(){
 		if(djConfig["parseOnLoad"] == true){
-			dojo.parser.parse(); 
+			dojo.parser.parse();
 		}
 	};
 
@@ -1744,7 +1744,7 @@ dojo.parser._anon = {}; // why is this property required?
 dojo.parser._nameAnonFunc = function(/*Function*/anonFuncPtr, /*Object*/thisObj){
 	// summary:
 	//		Creates a reference to anonFuncPtr in thisObj with a completely
-	//		unique name. The new name is returned as a String. 
+	//		unique name. The new name is returned as a String.
 	var jpn = "$joinpoint";
 	var nso = (thisObj|| dojo.parser._anon);
 	if(dojo.isIE){
@@ -1771,7 +1771,7 @@ dojo.provide("dijit._Widget");
 
 dojo.declare("dijit._Widget", null, {
 	// summary:
-	//		The foundation of dijit widgets. 	
+	//		The foundation of dijit widgets.
 	//
 	// id: String
 	//		a unique, opaque ID string that can be assigned by users or by the
@@ -1835,7 +1835,7 @@ dojo.declare("dijit._Widget", null, {
 		//		Below is a list of the methods that are called, in the order
 		//		they are fired, along with notes about what they do and if/when
 		//		you should over-ride them in your widget:
-		//			
+		//
 		//			postMixInProperties:
 		//				a stub function that you can over-ride to modify
 		//				variables that may have been naively assigned by
@@ -1913,7 +1913,7 @@ dojo.declare("dijit._Widget", null, {
 		// If srcNodeRef has been processed and removed from the DOM (e.g. TemplatedWidget) then delete it to allow GC.
 		if(this.srcNodeRef && !this.srcNodeRef.parentNode){
 			delete this.srcNodeRef;
-		}	
+		}
 	},
 
 	postMixInProperties: function(){
@@ -2141,9 +2141,9 @@ dojo.string.pad = function(/*String*/text, /*int*/size, /*String?*/ch, /*boolean
 	return out;	// String
 };
 
-dojo.string.substitute = function(	/*String*/template, 
-									/*Object or Array*/map, 
-									/*Function?*/transform, 
+dojo.string.substitute = function(	/*String*/template,
+									/*Object or Array*/map,
+									/*Function?*/transform,
 									/*Object?*/thisObject){
 	// summary:
 	//		Performs parameterized substitutions on a string. Throws an
@@ -2154,15 +2154,15 @@ dojo.string.substitute = function(	/*String*/template,
 	//		|	dojo.string.substitute("File '${name}' is not found in directory '${info.dir}'.",{name: "foo.html", info: {dir: "/temp"}});
 	//		both return
 	//			"File 'foo.html' is not found in directory '/temp'."
-	// template: 
+	// template:
 	//		a string with expressions in the form ${key} to be replaced or
 	//		${key:format} which specifies a format function.  NOTE syntax has
 	//		changed from %{key}
 	// map: where to look for substitutions
-	// transform: 
+	// transform:
 	//		a function to process all parameters before substitution takes
 	//		place, e.g. dojo.string.encodeXML
-	// thisObject: 
+	// thisObject:
 	//		where to look for optional format function; default to the global
 	//		namespace
 
@@ -2177,9 +2177,9 @@ dojo.string.substitute = function(	/*String*/template,
 dojo.string.trim = function(/*String*/ str){
 	// summary: trims whitespaces from both sides of the string
 	// description:
-	//	This version of trim() was taken from Steven Levithan's blog: 
+	//	This version of trim() was taken from Steven Levithan's blog:
 	//	http://blog.stevenlevithan.com/archives/faster-trim-javascript.
-	//	The short yet good-performing version of this function is 
+	//	The short yet good-performing version of this function is
 	//	dojo.trim(), which is part of the base.
 	str = str.replace(/^\s+/, '');
 	for(var i = str.length - 1; i > 0; i--){
@@ -2312,7 +2312,7 @@ dojo.declare("dijit._Templated",
 			//		the dom node and it's descendants. This function iterates over all
 			//		nodes and looks for these properties:
 			//			* dojoAttachPoint
-			//			* dojoAttachEvent	
+			//			* dojoAttachEvent
 			//			* waiRole
 			//			* waiState
 			// rootNode: DomNode|Array[Widgets]
@@ -2429,7 +2429,7 @@ dijit._Templated.getCachedTemplate = function(templatePath, templateString, alwa
 };
 
 dijit._Templated._sanitizeTemplateString = function(/*String*/tString){
-	// summary: 
+	// summary:
 	//		Strips <?xml ...?> declarations so that external SVG and XML
 	// 		documents can be added to a document without worry. Also, if the string
 	//		is an HTML document, only the part inside the body tag is returned.
@@ -2892,7 +2892,7 @@ dojo.declare("dijit.layout._LayoutWidget",
 			// summary:
 			//		Explicitly set this widget's size (in pixels),
 			//		and then call layout() to resize contents (and maybe adjust child widgets)
-			//	
+			//
 			// args: Object?
 			//		{w: int, h: int, l: int, t: int}
 
@@ -3088,7 +3088,7 @@ dojo.declare("dijit.form._FormWidget", [dijit._Widget, dijit._Templated],
 
 	// These mixins assume that the focus node is an INPUT, as many but not all _FormWidgets are.
 	// Don't attempt to mixin the 'type', 'name' attributes here programatically -- they must be declared
-	// directly in the template as read by the parser in order to function. IE is known to specifically 
+	// directly in the template as read by the parser in order to function. IE is known to specifically
 	// require the 'name' attribute at element creation time.
 	attributeMap: dojo.mixin(dojo.clone(dijit._Widget.prototype.attributeMap),
 		{id:"focusNode", tabIndex:"focusNode", alt:"focusNode"}),
@@ -3127,13 +3127,13 @@ dojo.declare("dijit.form._FormWidget", [dijit._Widget, dijit._Templated],
 
 		if(!this.disabled){
 			switch(event.type){
-				case "mouseenter" :	
+				case "mouseenter" :
 				case "mouseover" :
 					this._hovering = true;
 					break;
 
-				case "mouseout" :	
-				case "mouseleave" :	
+				case "mouseout" :
+				case "mouseleave" :
 					this._hovering = false;
 					break;
 
@@ -3250,7 +3250,7 @@ dojo.declare("dijit.form._FormWidget", [dijit._Widget, dijit._Templated],
 		if(this._lastValueReported == undefined && priorityChange === null){ // don't report the initial value
 			this._lastValueReported = newValue;
 		}
-		if((this.intermediateChanges || priorityChange) && 
+		if((this.intermediateChanges || priorityChange) &&
 			((newValue && newValue.toString)?newValue.toString():newValue) !== ((this._lastValueReported && this._lastValueReported.toString)?this._lastValueReported.toString():this._lastValueReported)){
 			this._lastValueReported = newValue;
 			this.onChange(newValue);
@@ -3274,7 +3274,7 @@ dojo.declare("dijit.form._FormWidget", [dijit._Widget, dijit._Templated],
 			// Equality comparison of objects such as dates are done by reference so
 			// two distinct objects are != even if they have the same data. So use
 			// toStrings in case the values are objects.
-			if((typeof lv != "undefined") && ((v!==null && v.toString)?v.toString():null) !== lv.toString()){	
+			if((typeof lv != "undefined") && ((v!==null && v.toString)?v.toString():null) !== lv.toString()){
 				this.undo();
 				dojo.stopEvent(e);
 				return false;

@@ -2244,7 +2244,7 @@ public class ALEipUtils {
 
   public static boolean isIE(String userAgent) {
     return (userAgent.matches(".*((MSIE)+ [0-9]\\.[0-9]).*") || userAgent
-      .matches(".*((Trident/)+ [0-9]\\.[0-9]).*"));
+      .matches(".*(.*(Trident/)+[0-9]\\.[0-9]).*"));
 
   }
 
@@ -2376,7 +2376,7 @@ public class ALEipUtils {
       String words = matcher.group();
       return words.replaceAll("MSIE\\s", "");
     } else if (matcher2.find()) {
-      String words2 = matcher.group();
+      String words2 = matcher2.group();
       return words2.replaceAll("rv:", "");
     }
 
