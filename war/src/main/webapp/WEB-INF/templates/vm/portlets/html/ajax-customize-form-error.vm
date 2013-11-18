@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#ALdialogheader("アプリ設定")
+#ALdialogheader($l10n.WAR_SET_UP_APP)
 #ALbuttonheader()
 <div class="message"><div class="auiIcon"></div>がついているページ上でクリックしてください。</div>
 #ALajaxbuttonClose()
