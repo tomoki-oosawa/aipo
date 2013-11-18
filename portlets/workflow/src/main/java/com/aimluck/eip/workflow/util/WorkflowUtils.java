@@ -1748,6 +1748,8 @@ public class WorkflowUtils {
         EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
         Integer.valueOf(requestid));
     query.setQualifier(exp);
+    query.orderAscending(EipTWorkflowFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTWorkflowFile.FILE_PATH_PROPERTY);
     return query;
   }
 

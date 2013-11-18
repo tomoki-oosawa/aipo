@@ -386,6 +386,8 @@ public class BlogEntrySelectData extends
           + "."
           + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
       filequery.setQualifier(fileexp);
+      filequery.orderAscending(EipTBlogFile.UPDATE_DATE_PROPERTY);
+      filequery.orderAscending(EipTBlogFile.FILE_PATH_PROPERTY);
       List<EipTBlogFile> files = filequery.fetchList();
 
       if (files != null && files.size() > 0) {
