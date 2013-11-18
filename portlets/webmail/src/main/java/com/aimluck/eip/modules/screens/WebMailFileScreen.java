@@ -30,7 +30,6 @@ import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALLocalMailMessage;
 import com.aimluck.eip.mail.ALMailFactoryService;
@@ -90,7 +89,7 @@ public class WebMailFileScreen extends RawScreen {
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
 
       String fileName;
-      boolean isMsie = FileuploadUtils.isMsieBrowser(rundata);
+      boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
       if (isMsie) {
         fileName =
           new String(
