@@ -2147,7 +2147,9 @@ public class ALEipUtils {
    */
   public static boolean isMsieBrowser(RunData rundata) {
     return isMatchUserAgent("Win", rundata)
-      && isMatchUserAgent("MSIE", rundata);
+      && (isMatchUserAgent("MSIE", rundata) || isMatchUserAgent(
+        "Trident",
+        rundata));
   }
 
   /**
