@@ -2136,6 +2136,7 @@ public class ALEipUtils {
     if (userAgent == null || "".equals(userAgent)) {
       return false;
     }
+
     return userAgent.indexOf(expect) > -1;
   }
 
@@ -2147,7 +2148,9 @@ public class ALEipUtils {
    */
   public static boolean isMsieBrowser(RunData rundata) {
     return isMatchUserAgent("Win", rundata)
-      && isMatchUserAgent("MSIE", rundata);
+      && (isMatchUserAgent("MSIE", rundata) || isMatchUserAgent(
+        "Trident",
+        rundata));
   }
 
   /**
@@ -2240,7 +2243,9 @@ public class ALEipUtils {
   }
 
   public static boolean isIE(String userAgent) {
-    return userAgent.matches(".*((MSIE)+ [0-9]\\.[0-9]).*");
+    return (userAgent.matches(".*((MSIE)+ [0-9]\\.[0-9]).*") || userAgent
+      .matches(".*((Trident/)+ [0-9]\\.[0-9]).*"));
+
   }
 
   /**
@@ -2364,10 +2369,15 @@ public class ALEipUtils {
   public static String getIEVersion(String userAgent) {
     Pattern pattern = Pattern.compile("MSIE\\s[0-9_]+");
     Matcher matcher = pattern.matcher(userAgent);
+    Pattern pattern2 = Pattern.compile("rv:[0-9_]+");
+    Matcher matcher2 = pattern2.matcher(userAgent);
 
     if (matcher.find()) {
       String words = matcher.group();
       return words.replaceAll("MSIE\\s", "");
+    } else if (matcher2.find()) {
+      String words2 = matcher.group();
+      return words2.replaceAll("rv:", "");
     }
 
     return "";

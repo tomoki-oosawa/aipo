@@ -596,7 +596,7 @@ public class FileuploadUtils {
   public static boolean isMsieBrowser(RunData rundata) {
     // String os = "Win";
     String browserNames = "MSIE";
-
+    String browserNames2 = "Trident";
     // User-Agent の取得
     String userAgent = rundata.getRequest().getHeader("User-Agent");
     if (userAgent == null || userAgent.equals("")) {
@@ -607,7 +607,8 @@ public class FileuploadUtils {
       return false;
     }
 
-    if (userAgent.indexOf(browserNames) > 0) {
+    if (userAgent.indexOf(browserNames) > 0
+      || userAgent.indexOf(browserNames2) > 0) {
       return true;
     }
     return false;
