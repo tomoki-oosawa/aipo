@@ -1189,32 +1189,6 @@ public class ScheduleUtils {
   }
 
   /**
-   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   * 
-   * @param rundata
-   * @return MSIE の場合は，true．
-   */
-  public static boolean isMsieBrowser(RunData rundata) {
-    // String os = "Win";
-    String browserNames = "MSIE";
-
-    // User-Agent の取得
-    String userAgent = rundata.getRequest().getHeader("User-Agent");
-    if (userAgent == null || userAgent.equals("")) {
-      return false;
-    }
-
-    if (userAgent.indexOf("Win") < 0) {
-      return false;
-    }
-
-    if (userAgent.indexOf(browserNames) > 0) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * ダミースケジュールを登録する．
    * 
    * @param schedule

@@ -145,7 +145,7 @@ dojo.mixin(dijit,
 					// node not displayed or something like that
 					focusNode.focus();
 				}catch(e){/*quiet*/}
-			}			
+			}
 			dijit._onFocusNode(node);
 		}
 
@@ -187,7 +187,7 @@ dojo.mixin(dijit,
 		// Listen for blur and focus events on targetWindow's body
 		var body = targetWindow.document.body || targetWindow.document.getElementsByTagName("body")[0];
 		if(body){
-			if(dojo.isIE){
+			if(dojo.isIE && dojo.isIE < 11){
 				body.attachEvent('onactivate', function(evt){
 					if(evt.srcElement.tagName.toLowerCase() != "body"){
 						dijit._onFocusNode(evt.srcElement);
@@ -292,7 +292,7 @@ dojo.mixin(dijit,
 		// summary
 		//	The stack of active widgets has changed.  Send out appropriate events and record new stack
 
-		var oldStack = dijit._activeStack;		
+		var oldStack = dijit._activeStack;
 		dijit._activeStack = newStack;
 
 		// compare old stack to new stack to see how many elements they have in common

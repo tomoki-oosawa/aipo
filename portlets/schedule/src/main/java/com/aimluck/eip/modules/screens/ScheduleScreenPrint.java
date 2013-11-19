@@ -201,7 +201,7 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly".equals(currentTab)) {
         // tab = "weekly";
@@ -244,7 +244,7 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly-group".equals(currentTab)) {
         // tab = "weekly-group";

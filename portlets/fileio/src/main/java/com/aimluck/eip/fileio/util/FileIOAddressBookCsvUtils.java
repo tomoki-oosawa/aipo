@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.fileio.util;
 
-import org.apache.turbine.util.RunData;
-
 import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.services.storage.ALStorageService;
 
@@ -39,31 +37,6 @@ public class FileIOAddressBookCsvUtils {
 
   /** CSVファイルを一時保管するディレクトリの指定 */
   public static final String CSV_ADDRESSBOOK_TEMP_FOLDER = "address_book";
-
-  /**
-   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   * 
-   * @param rundata
-   * @return MSIE の場合は，true．
-   */
-  public static boolean isMsieBrowser(RunData rundata) {
-    String browserNames = "MSIE";
-
-    // User-Agent の取得
-    String userAgent = rundata.getRequest().getHeader("User-Agent");
-    if (userAgent == null || userAgent.equals("")) {
-      return false;
-    }
-
-    if (userAgent.indexOf("Win") < 0) {
-      return false;
-    }
-
-    if (userAgent.indexOf(browserNames) > 0) {
-      return true;
-    }
-    return false;
-  }
 
   /**
    * 一時ファイルの保存先フォルダを取得
