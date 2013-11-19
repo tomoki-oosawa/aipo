@@ -289,7 +289,7 @@ input[type=password] {
   color: #1b1b1b;
   overflow: hidden;
 }
-<<<<<<< HEAD
+
 .auiMbTable .auiMTCheck ~ .auiMTCaption .auiIcon {
   float: left;
   margin: 2px 5px 0 0;
@@ -2050,6 +2050,11 @@ div.weeklyTermRights div.weeklyTermRightR {
   background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+}
+
+.auiIconIndicator {
+  background-image: url(../images/common/loading_smp_white.gif);
+  background-repeat: no-repeat;
 }
 
 [class^="auiButton"] [class^="auiIcon"],
