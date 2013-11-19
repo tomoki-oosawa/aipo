@@ -51,7 +51,7 @@
 #ALtdcaption($l10n.WEBMAIL_MAILACCOUNT_SELECTED)
 #ALtditem($!result.MailAccountName)
 #ALtdcaption("#ALrequired($!result.getFieldName('filter_name'))")
-#ALtditem("#ALtextfield('filter_name' $!result.FilterName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('filter_name' $!result.FilterName 50 'active')")
 #ALtdcaption("#ALrequired($!result.getFieldName('filter_string'))")
 #ALtdcellheader()
 <select name="filter_type">

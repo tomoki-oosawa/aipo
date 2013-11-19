@@ -39,7 +39,7 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)")
 #ALtditemheader()
-#ALtextfield('system_name' $!result.SystemName '70%' 30 'enabled')
+#ALtextfieldw100('system_name' $!result.SystemName 30 'enabled')
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($l10n.EXTTIMECARD_WORKTIME)")
 #ALtditemheader()

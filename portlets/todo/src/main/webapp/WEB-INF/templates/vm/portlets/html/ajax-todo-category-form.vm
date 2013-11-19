@@ -41,7 +41,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfield('category_name' $!result.CategoryName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonCancel()

@@ -45,7 +45,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('page_title'))")
-#ALtditem("#ALtextfield('page_title' $!result.PageTitle '90%' 10 'active')")
+#ALtditem("#ALtextfieldw100('page_title' $!result.PageTitle 10 'active')")
 <input type="hidden" name="page_description" value="" />
 ##ALtdcaption("$!result.getFieldName('page_description')")
 ##ALtditem("#ALtextfield('page_description' $!result.PageDescription '90%' 50 'active')")
