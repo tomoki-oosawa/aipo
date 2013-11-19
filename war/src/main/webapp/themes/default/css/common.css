@@ -1320,9 +1320,8 @@ i.indicator {
   height: 18px;
 }
 
-.indicatorDialog {
-  border: 5px solid #d2d2d2;
-  background: #ffffff;
+.indicatorDialog .auiIconIndicator {
+  vertical-align: -0.4em;
 }
 
 .indicatorglay {
