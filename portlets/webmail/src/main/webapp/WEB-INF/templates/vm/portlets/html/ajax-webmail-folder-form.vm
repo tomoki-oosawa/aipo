@@ -48,7 +48,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('folder_name'))")
-#ALtditem("#ALtextfield('folder_name' $!result.FolderName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('folder_name' $!result.FolderName 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

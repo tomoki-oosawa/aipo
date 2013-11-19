@@ -57,7 +57,7 @@ ${title}
 #end
 #ALtableheaderWide()
 #ALtdcaptionAttWebmail($!result.getFieldName('account_name'))
-#ALtditem("#ALtextfield('account_name' $!result.AccountName '60%' 50 'active')")
+#ALtditem("#ALtextfieldw100('account_name' $!result.AccountName 50 'active')")
 #ALtdcaptionAttWebmail($!result.getFieldName('smtpserver_name') )
 #ALtditem("#ALtextfield('smtpserver_name' $!result.SmtpserverName '60%' 50 'disabled')#ALcaution($l10n.WEBMAIL_HALFWIDTH_ALPHANUM)")
 #ALtdcaptionAttWebmail($!result.getFieldName('pop3server_name') )
@@ -69,7 +69,7 @@ ${title}
 <input class="text" name="pop3_password" value="$!result.Pop3Password" type="password" size="20" maxlength="50" >#ALcaution($l10n.WEBMAIL_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
 #ALtdcaptionAttWebmail($!result.getFieldName('mail_user_name') )
-#ALtditem("#ALtextfield('mail_user_name' $!result.MailUserName '60%' 50 'active')")
+#ALtditem("#ALtextfieldw100('mail_user_name' $!result.MailUserName 50 'active')")
 #ALtdcaptionAttWebmail($!result.getFieldName('mail_address') )
 #ALtditem("#ALtextfield('mail_address' $!result.MailAddress '60%' 50 'disabled')#ALcaution($l10n.WEBMAIL_HALFWIDTH_ALPHANUM)")
 #ALtdcaptionAttWebmail($!result.getFieldName('smtp_port') )
