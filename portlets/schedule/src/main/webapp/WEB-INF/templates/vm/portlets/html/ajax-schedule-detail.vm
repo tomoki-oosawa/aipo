@@ -27,7 +27,7 @@
 #else
 	#ALdialogheaderDetailSmartPhone("$l10n.SCHEDULE_SCHEDULE_DETAIL")
 #end
-#ALajaxIndicator("$indicator_id" "$!portlet.ID")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxdetailformheader($l10n.SCHEDULE_SCHEDULE)

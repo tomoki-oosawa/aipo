@@ -250,7 +250,7 @@ public class ScheduleAction extends ALBaseAction {
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
 
         // 初期選択メンバーリストを取得する
@@ -281,7 +281,7 @@ public class ScheduleAction extends ALBaseAction {
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if (template.equals("schedule-weekly")) {
         tab = "weekly-group";
@@ -296,7 +296,7 @@ public class ScheduleAction extends ALBaseAction {
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if (template.equals("schedule-weekly-group")) {
         tab = "weekly-group";
@@ -437,7 +437,7 @@ public class ScheduleAction extends ALBaseAction {
       formData.doViewForm(this, rundata, context);
 
       // ブラウザ名を受け渡す．
-      boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+      boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
       context.put("isMeie", Boolean.valueOf(isMsie));
 
       // トップ画面からのスケジュール入力であるかを判定する．
@@ -465,7 +465,7 @@ public class ScheduleAction extends ALBaseAction {
       formData.initField();
 
       // ブラウザ名を受け渡す．
-      boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+      boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
       context.put("isMeie", Boolean.valueOf(isMsie));
 
       String afterBehavior = rundata.getRequest().getParameter(AFTER_BEHAVIOR);
@@ -511,7 +511,7 @@ public class ScheduleAction extends ALBaseAction {
       formData.initField();
 
       // ブラウザ名を受け渡す．
-      boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+      boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
       context.put("isMeie", Boolean.valueOf(isMsie));
 
       String afterBehavior = rundata.getRequest().getParameter(AFTER_BEHAVIOR);
@@ -631,7 +631,7 @@ public class ScheduleAction extends ALBaseAction {
 
       if (currentTab.equals("calendar")) {
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
 
         // 初期選択メンバーリストを取得する
@@ -661,7 +661,7 @@ public class ScheduleAction extends ALBaseAction {
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if (currentTab.equals("weekly")) {
         listData = new ScheduleWeeklySelectData();
@@ -673,13 +673,13 @@ public class ScheduleAction extends ALBaseAction {
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if (currentTab.equals("list")) {
         listData = new ScheduleListSelectData();
         ((ScheduleListSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
         listData = new ScheduleWeeklyGroupSelectData();

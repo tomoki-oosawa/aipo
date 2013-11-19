@@ -159,7 +159,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       if ("calendar".equals(currentTab)) {
         // tab = "calendar"
         listData = new AjaxScheduleWeeklyGroupEmptySelectData();
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
 
         // 初期選択メンバーリストを取得する
@@ -191,7 +191,7 @@ public class ScheduleScreen extends ALVelocityScreen {
         listData = new ScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("weekly".equals(currentTab)) {
         listData = new ScheduleWeeklySelectData();
@@ -205,14 +205,14 @@ public class ScheduleScreen extends ALVelocityScreen {
         listData = new ScheduleOnedayGroupSelectData();
         ((ScheduleOnedayGroupSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("list".equals(currentTab)) {
         // tab = "list";
         listData = new ScheduleListSelectData();
         ((ScheduleListSelectData) listData).setPortletId(portletId);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else if ("search".equals(currentTab)) {
         // tab = "search";
@@ -221,7 +221,7 @@ public class ScheduleScreen extends ALVelocityScreen {
         // TODO: 表示カスタマイズ
         listData.setRowsNum(20);
         // ブラウザ名を受け渡す．
-        boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+        boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
       } else {
         // tab = "weekly-group";

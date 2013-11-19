@@ -54,7 +54,7 @@ public class ScheduleDetailScreenPrint extends ALVelocityScreen {
     try {
       ScheduleSelectData detailData = new ScheduleSelectData();
 
-      boolean isMsie = ScheduleUtils.isMsieBrowser(rundata);
+      boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
       context.put("isMeie", Boolean.valueOf(isMsie));
       context.put("widthALL", Integer.toString(160) + "px");
       context.put("ajax_onloadimage", "true");

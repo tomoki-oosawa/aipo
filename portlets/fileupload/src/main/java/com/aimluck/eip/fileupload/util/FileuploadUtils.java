@@ -586,34 +586,6 @@ public class FileuploadUtils {
     return _tmpImage;
   }
 
-  /**
-   * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する． ALEipUtils.isMsieBrowser
-   * 
-   * @param rundata
-   * @return MSIE の場合は，true．
-   */
-  @Deprecated
-  public static boolean isMsieBrowser(RunData rundata) {
-    // String os = "Win";
-    String browserNames = "MSIE";
-    String browserNames2 = "Trident";
-    // User-Agent の取得
-    String userAgent = rundata.getRequest().getHeader("User-Agent");
-    if (userAgent == null || userAgent.equals("")) {
-      return false;
-    }
-
-    if (userAgent.indexOf("Win") < 0) {
-      return false;
-    }
-
-    if (userAgent.indexOf(browserNames) > 0
-      || userAgent.indexOf(browserNames2) > 0) {
-      return true;
-    }
-    return false;
-  }
-
   public static int getMaxFileSize() {
     return ALCommonUtils.getMaxFileSize("MB");
   }
