@@ -469,6 +469,9 @@ public class TimelineSelectData extends
     query
       .where(Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
 
+    query.orderAscending(EipTTimelineFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTTimelineFile.FILE_PATH_PROPERTY);
+
     List<EipTTimelineFile> list = query.fetchList();
     Map<Integer, List<FileuploadBean>> result =
       new HashMap<Integer, List<FileuploadBean>>(parentIds.size());

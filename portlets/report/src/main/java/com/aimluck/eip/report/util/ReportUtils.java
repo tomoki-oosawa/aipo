@@ -647,6 +647,8 @@ public class ReportUtils {
       ExpressionFactory.matchDbExp(EipTReport.REPORT_ID_PK_COLUMN, Integer
         .valueOf(requestid));
     query.setQualifier(exp);
+    query.orderAscending(EipTReportFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTReportFile.FILE_PATH_PROPERTY);
     return query;
   }
 

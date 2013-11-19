@@ -653,6 +653,8 @@ public class MsgboardTopicSelectData extends
         EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
         Integer.valueOf(topicid));
     query.setQualifier(exp);
+    query.orderAscending(EipTMsgboardFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTMsgboardFile.FILE_PATH_PROPERTY);
     return query;
   }
 
