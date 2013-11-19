@@ -44,7 +44,7 @@
 #if($isMypage)
 $!pageTitle
 #else
-#ALtextfield('pageTitle' $!pageTitle '90%' 10 'active')
+#ALtextfieldw100('pageTitle' $!pageTitle 10 'active')
 #end
 </p>
 
