@@ -40,7 +40,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('position_name'))")
-#ALtditem("#ALtextfield('position_name' $!result.PositionName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('position_name' $!result.PositionName 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
