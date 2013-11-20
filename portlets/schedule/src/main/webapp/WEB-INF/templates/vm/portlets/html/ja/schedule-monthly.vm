@@ -73,7 +73,7 @@
 #if (${client} != "IPHONE")
 <div class="auiSummaryMeta clearfix">
 <div class="floatRight">
-#AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
+#AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new").addQueryData("view_month",$!{result.ViewMonth.toString()}))
 </div>
 #end
 
