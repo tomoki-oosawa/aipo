@@ -38,6 +38,8 @@
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');">データベースの管理</a>
 </div>
+</div>
+<div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')', '$!portlet.ID');">区分の管理</a>
 </div>
