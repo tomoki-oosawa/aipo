@@ -86,7 +86,7 @@ public class ALCommonUtils {
     int j;
     for (int i = 0; i < count; i++) {
       j = i * step;
-      res.append(str.substring(j, j + step)).append("<wbr/>");
+      res.append(str.substring(j, j + step)).append("<wbr/>&shy;");
     }
     if (count * step < size) {
       res.append(str.substring(count * step));
