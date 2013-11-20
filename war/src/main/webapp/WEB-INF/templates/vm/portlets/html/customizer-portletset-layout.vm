@@ -46,12 +46,12 @@ $!pageTitle
 #else
 <h3>$l10n.WAR_SELECT_POSITION</h3>
 <ul class="auiRowList layoutList">
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="70"></a></li>
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="70"></a></li>
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="70"></a></li>
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="70"></a></li>
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="70"></a></li>
- <li><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="70"></a></li>
+ <li #if($!currentController == 'OneColumn') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="70"></a></li>
+ <li #if($!currentController == 'TwoColumns') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="70"></a></li>
+ <li #if($!currentController == 'TwoColumnsRight') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="70"></a></li>
+ <li #if($!currentController == 'TwoColumnsLeft') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="70"></a></li>
+ <li #if($!currentController == 'ThreeColumnsSymetric') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="70"></a></li>
+ <li #if($!currentController == 'ThreeColumns') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="70"></a></li>
 </ul>
 <br />
 <h3>$l10n.WAR_ARRANGE_APP</h3>
@@ -67,7 +67,6 @@ $!set.Controller.getContent($data)
 
 #if(!$!isMypage)
 <h3>$l10n.WAR_PAGE_DELETE</h3>
-<div>$l10n.WAR_PAGE_MESSAGE_DELETE</div>
 <div align="center"><input name="eventSubmit_doCancel" class="auiButtonAction" type="button" value="$l10n.WAR_PAGE_DO_DELETE" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{js_peid}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})"></div>
 #end
 #ALspacebothfooter()
