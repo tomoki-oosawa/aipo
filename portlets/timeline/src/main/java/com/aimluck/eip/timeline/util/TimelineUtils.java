@@ -886,6 +886,20 @@ public class TimelineUtils {
     return charset;
   }
 
+  public static boolean isYoutubeUrl(String url) {
+    return url.startsWith("http://www.youtube.com")
+      || url.startsWith("https://www.youtube.com");
+  }
+
+  public static String getYoutubeId(String url) {
+    int startpoint = url.indexOf("v=");
+    int endpoint = url.indexOf("&", startpoint);
+    if (endpoint == -1) {
+      endpoint = url.length();
+    }
+    return url.substring(startpoint + 2, endpoint);
+  }
+
   /**
    * 
    * @param url_str
@@ -906,6 +920,12 @@ public class TimelineUtils {
           basePath =
             (new StringBuilder()).append(url_str).append("/").toString();
       }
+
+      if (isYoutubeUrl(pagePath)) {
+        tub.setYoutubeId(getYoutubeId(url_str));
+        tub.setYoutubeFlag(true);
+      }
+
       String protocolString =
         url_str.substring(0, url_str.lastIndexOf(':') + 1);
 
