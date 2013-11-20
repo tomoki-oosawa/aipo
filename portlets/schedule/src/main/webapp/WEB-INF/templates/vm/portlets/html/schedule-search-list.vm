@@ -73,7 +73,8 @@
 </div>
 
 </div>
-<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
+##<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><img src="http://59.106.173.26/aipo-html/htmlmock/themes/default/images/common/loading_lg.gif" width="24" height="24"></div>
 
 <div class="auiSummaryMeta">
 #if(${client}!="IPHONE")
