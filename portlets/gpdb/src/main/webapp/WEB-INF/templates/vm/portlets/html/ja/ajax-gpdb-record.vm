@@ -23,6 +23,16 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+
+#if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
+	<div class="auiBlankBox">データベースの管理よりデータベースを追加してください。</div>
+#elseif(!$result.List)
+	<div class="auiBlankBox">データベースを選択してください。</div>
+#elseif($result.List.size() == 0)
+	<div class="auiBlankBox">指定された条件に該当するレコードはありません。</div>
+#else
+
+<h2>$result.Gpdb.GpdbName</h2>
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -30,20 +40,12 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('データ')
-#if(!$result.GpdbAllList)
-	<div class="message">データベースが登録されていません。</div>
-#elseif(!$result.List)
-	<div class="message">データベースを選択してください。</div>
-#elseif($result.List.size() == 0)
-	<div class="message">指定された条件に該当するレコードはありません。</div>
-#else
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
 			#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 		</div>
-	#AUIajaxpageview('GpdbRecordListScreen' $result)
+		#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>
-
 	#AUIrowTableWide()
 	<tr>
 	#ALtdheadAtt("#ALswitchCheckbox()" "class='thin center'")
@@ -87,9 +89,8 @@
 		</div>
 	#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>
-#end
 #ALformfooter()
+#end
 #AUIcontentsAreaFooter()
-
 #parse("/portlets/html/ja/gpdb-widgets.vm")
 

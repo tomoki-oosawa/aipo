@@ -64,6 +64,9 @@ public class GpdbRecordSelectData extends
   /** WebデータベースID */
   private String gpdbId;
 
+  /** Webデータベース */
+  private GpdbResultData gpdb;
+
   /** Webデータベース全リスト */
   private List<GpdbResultData> gpdbAllList;
 
@@ -113,9 +116,9 @@ public class GpdbRecordSelectData extends
   protected ResultList<EipTGpdbRecord> selectList(RunData rundata,
       Context context) {
     try {
+
       // 全Webデータベース
       gpdbAllList = GpdbUtils.getGpdbAllList();
-
       // セッション情報を設定
       setCurrentFilterAndSort(rundata, context);
 
@@ -123,6 +126,14 @@ public class GpdbRecordSelectData extends
       // 項目定義を取得
       // -----------------------
       gpdbItemList = GpdbUtils.getGpdbItemResultList(gpdbId);
+
+      // dbデータを取得
+      {
+        EipTGpdb etgpdb = GpdbUtils.getEipTGpdb(gpdbId);
+        if (etgpdb != null) {
+          gpdb = GpdbUtils.getGpdbResultData(etgpdb);
+        }
+      }
 
       // -----------------------
       // ソート項目の設定
@@ -394,6 +405,15 @@ public class GpdbRecordSelectData extends
    */
   public List<GpdbItemResultData> getGpdbItemList() {
     return gpdbItemList;
+  }
+
+  /**
+   * 項目定義リストを取得します。
+   * 
+   * @return 項目定義リスト
+   */
+  public GpdbResultData getGpdb() {
+    return gpdb;
   }
 
   /**

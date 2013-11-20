@@ -33,32 +33,23 @@
 #AUIcontentsAreaHeader()
 <h2>区分の管理</h2>
 #AUISummaryDiv()
-<div class="floatRight">
-<div class="auiSelectButton">
-<ul>
-#set($tab = ["Webデータベース", "gpdb","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:10em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["区分", "gpdb_kubun", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-</ul>
-</div>
-</div>
+<div class="floatLeft">
 #if($result.getAllGpdbKubunValueSum() != 0)
 #AUIbuttonAction("区分を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #end
-#AUISummaryDivfooter()
+</div>
+<div class="floatRight">
 #if($result.getAllGpdbKubunValueSum() != 0)
-#AUISummaryDiv()
-<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべての区分</option>
 #foreach( $record in $result.AllGpdbKubun )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
 #end
 </select>
-#ALformfooter()
-#AUISummaryDivfooter()
 #end
+</div>
+#AUISummaryDivfooter()
+
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("区分値")
 #if($result.getAllGpdbKubunValueSum() == 0)
