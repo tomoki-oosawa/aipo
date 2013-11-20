@@ -200,6 +200,9 @@ input[type=password] {
 /***************************************************
 	auiRowTable
 --------------------------------------------------*/
+.auiRowTable tr.mb_hide + tr {
+  border-top: solid 1px #f0f0f0;
+}
 .auiRowTable div a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -2006,6 +2009,13 @@ div.weeklyTermRights div.weeklyTermRightR {
 .auiRowListImg img {
   max-width: 60px;
   height: auto;
+}
+
+/***************************************************
+	auiBlankBox
+--------------------------------------------------*/
+.auiBlankBox {
+  text-align: left;
 }
 
 /***************************************************
