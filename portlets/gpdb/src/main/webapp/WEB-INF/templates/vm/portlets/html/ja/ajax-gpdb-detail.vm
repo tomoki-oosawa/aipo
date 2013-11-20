@@ -32,7 +32,7 @@
 #ALtditemheader()
 $!result.Detail.GpdbName
 #ALtditemfooter()
-#ALtdcaption("メール配信")
+#ALtdcaption("メール通知")
 #if("$result.Detail.MailFlg" == "t")
 #ALtdcell("データ登録時にメールを送信する")
 #else

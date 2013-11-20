@@ -193,7 +193,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
     line.limitValue(1, 99);
     // デフォルトソートフラグ
     default_sort_flg = new ALStringField();
-    default_sort_flg.setFieldName("デフォルトソート");
+    default_sort_flg.setFieldName("ソート");
     default_sort_flg.setTrim(false);
     default_sort_flg.setValue(GpdbUtils.FLG_OFF);
     // ソート順
@@ -326,7 +326,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
 
           if (GpdbUtils.DISP_FIELD_SELECT_ITEM.contains(type.getValue())
             && gpdbItem.getGpdbKubunId() != gpdb_kubun_id.getValue()) {
-            msgList.add("既にデータが存在するため区分マスタは変更できません。");
+            msgList.add("既にデータが存在するため区分は変更できません。");
           }
         }
       }

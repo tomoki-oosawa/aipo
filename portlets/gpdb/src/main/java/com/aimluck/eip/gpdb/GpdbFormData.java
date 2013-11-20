@@ -98,7 +98,7 @@ public class GpdbFormData extends ALAbstractFormData {
     gpdb_name.setTrim(true);
     // メール配信フラグ
     mail_flg = new ALStringField();
-    mail_flg.setFieldName("メール配信");
+    mail_flg.setFieldName("メール通知");
     mail_flg.setTrim(false);
     mail_flg.setValue(GpdbUtils.FLG_OFF);
   }

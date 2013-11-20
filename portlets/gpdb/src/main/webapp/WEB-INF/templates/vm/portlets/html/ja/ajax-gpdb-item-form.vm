@@ -85,7 +85,7 @@
 ##------区分マスタ------
 ##  <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type) || $!result.GpdbKubunUseFlg.toString() != "t") style="display:none;"#end>
     <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
-      <td class="caption">#ALrequired('区分マスタ')</td>
+      <td class="caption">#ALrequired('区分')</td>
 #ALtditemheader()
 	#ALselectpdheader("gpdb_kubun_id" "" "")
 	#foreach( $record in $result.AllGpdbKubun )
@@ -97,19 +97,19 @@
     <tr id="tr_size_col"#if (!$!result.displayField('size_col',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired($!result.getFieldName("size_col"))</td>
 #ALtditemheader()
-#ALtextfield('size_col' $size_col '10%' 50 'inactive')px (デフォルト300)
+#ALtextfield('size_col' $size_col '10%' 50 'inactive')px (初期値300)
 #ALtditemfooter()
 ##------サイズ（縦）------
     <tr id="tr_size_row"#if (!$!result.displayField('size_row',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired($!result.getFieldName("size_row"))</td>
 #ALtditemheader()
-#ALtextfield('size_row' $size_row '10%' 50 'inactive')px (デフォルト100)
+#ALtextfield('size_row' $size_row '10%' 50 'inactive')px (初期値100)
 #ALtditemfooter()
 ##------行数------
     <tr id="tr_line"#if (!$!result.displayField('line',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired($!result.getFieldName("line"))</td>
 #ALtditemheader()
-#ALtextfield('line' $line '10%' 50 'inactive')行 (デフォルト3)
+#ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
 #ALtditemfooter()
 ##------必須------
     <tr id="tr_required"#if (!$!result.displayField('required',$type)) style="display:none;"#end>

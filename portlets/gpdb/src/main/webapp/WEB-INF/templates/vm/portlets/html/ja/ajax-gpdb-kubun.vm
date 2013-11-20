@@ -76,7 +76,7 @@
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 #if ($result.CurrentFilter)
-#AUIajaxbuttonLink("区分の順番を変更する" $orderGpdbKubun)
+#AUIajaxbuttonLink("区分値の順番を変更する" $orderGpdbKubun)
 #end
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
@@ -111,7 +111,7 @@
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 #if ($result.CurrentFilter)
-#AUIajaxbuttonLink("区分の順番を変更する" $orderGpdbKubun)
+#AUIajaxbuttonLink("区分値の順番を変更する" $orderGpdbKubun)
 #end
 </div>
 #AUIajaxpageview('GpdbKubunListScreen' $result)
