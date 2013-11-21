@@ -24,11 +24,12 @@
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
-<div class="auiWidget clearfix">
+<div class="auiWidget clearfix widgetButton">
 #if($result.List && $!result.GpdbId)
 #AUIbuttonAction("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadGpdbDialog);")
 #end
 </div>
+<div id="subNavigation">
 <div class="auiWidget clearfix">
 <ul>
 #foreach($record in $!result.GpdbAllList )
@@ -42,6 +43,7 @@
 <div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')', '$!portlet.ID');">区分の管理</a>
+</div>
 </div>
 </div>
 </div>
