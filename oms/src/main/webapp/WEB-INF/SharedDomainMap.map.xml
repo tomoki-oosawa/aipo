@@ -68,18 +68,18 @@
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_m_gpdb_kubun">
-		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="GPDB_KUBUN_NAME" type="CLOB" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_m_gpdb_kubun_value">
-		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_KUBUN_VALUE" type="CLOB" isMandatory="true"/>
 		<db-attribute name="GPDB_KUBUN_VALUE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ORDER_NO" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 	</db-entity>
 	<db-entity name="eip_m_mail_account">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
@@ -275,47 +275,47 @@
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_gpdb">
-		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="GPDB_NAME" type="CLOB" isMandatory="true"/>
-		<db-attribute name="MAIL_FLG" type="CHAR" isMandatory="true"/>
-		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="MAIL_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_gpdb_item">
-		<db-attribute name="ASC_DESC" type="VARCHAR"/>
-		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="ASC_DESC" type="VARCHAR" length="4"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="DEFAULT_SORT_FLG" type="CHAR" isMandatory="true"/>
-		<db-attribute name="DETAIL_FLG" type="CHAR" isMandatory="true"/>
+		<db-attribute name="DEFAULT_SORT_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="DETAIL_FLG" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="GPDB_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_ITEM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="GPDB_ITEM_NAME" type="CLOB" isMandatory="true"/>
 		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER"/>
 		<db-attribute name="LINE" type="INTEGER"/>
-		<db-attribute name="LIST_FLG" type="CHAR" isMandatory="true"/>
+		<db-attribute name="LIST_FLG" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="ORDER_NO" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="REQUIRED_FLG" type="CHAR" isMandatory="true"/>
+		<db-attribute name="REQUIRED_FLG" type="CHAR" isMandatory="true" length="1"/>
 		<db-attribute name="SIZE_COL" type="INTEGER"/>
 		<db-attribute name="SIZE_ROW" type="INTEGER"/>
-		<db-attribute name="TITLE_FLG" type="CHAR" isMandatory="true"/>
-		<db-attribute name="TYPE" type="CHAR" isMandatory="true"/>
-		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="TITLE_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="TYPE" type="CHAR" isMandatory="true" length="2"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_gpdb_record">
-		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_ITEM_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="GPDB_RECORD_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="RECORD_NO" type="INTEGER" isMandatory="true"/>
-		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="VALUE" type="CLOB"/>
 	</db-entity>
 	<db-entity name="eip_t_gpdb_record_file">
 		<db-attribute name="CREATE_DATE" type="DATE" length="8"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
