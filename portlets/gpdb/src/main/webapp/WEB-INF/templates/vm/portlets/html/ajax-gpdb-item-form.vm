@@ -1,0 +1,150 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * General Purpose Database Portlet was developed by Advance,Inc.
+ * http://www.a-dvance.co.jp/
+ *#
+
+## ---------------------------------------------------------------------------
+#if  ($mode=="new_form")
+	#set ($action_str = "追加する")
+	#set ($event_submit = "eventSubmit_doGpdb_insert")
+	#set ($subtitle = "項目定義追加")
+#else
+	#set ($action_str = "更新する")
+	#set ($subtitle = "項目定義編集")
+	#set ($event_submit = "eventSubmit_doGpdb_update")
+#end
+#set ($indicator_id = "indicator-dlg-")
+#if($!result.SizeCol.toString() != '')
+	#set ($size_col = $!result.SizeCol.toString())
+#else
+	#set ($size_col = "300")
+#end
+#if($!result.SizeRow.toString() != '')
+	#set ($size_row = $!result.SizeRow.toString())
+#else
+	#set ($size_row = "100")
+#end
+#if($!result.Line.toString() != '')
+	#set ($line = $!result.Line.toString())
+#else
+	#set ($line = "3")
+#end
+#set ($type = $!result.Type.toString())
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxscreenformheader("gpdbForm" $jslink $portlet "GpdbItemFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gpdb.onReceiveMessage)")
+<input type="hidden" name="gpdb_id" value="$!result.GpdbId" />
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALtableheaderWide()
+##------項目名------
+#ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
+#ALtditemheader()
+#ALtextfield('gpdb_item_name' $!result.GpdbItemName '90%' 50 'active')
+<div>
+<input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">タイトルにする</label>
+<input name="title_flg" type="hidden" id="title_flg" value="$!result.TitleFlg.toString()" />
+</div>
+#ALtditemfooter()
+##------入力形式------
+#ALtdcaption("#ALrequired($!result.getFieldName('type'))")
+#ALtditemheader()
+#ALselectpdheader("type" "" "aipo.gpdb.formTypeChanged(this);")
+#foreach($mapEntry in $result.GpdbTypeMap.entrySet())
+<option value='$!mapEntry.key' #if ($type == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+#end
+#ALselectfooter()
+<div id="type_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
+##<input name="gpdb_kubun_use_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}gpdb_kubun_use_flg_id" #if($!result.GpdbKubunUseFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'gpdb_kubun_use_flg');aipo.gpdb.formKubunUseCheck();"/>&nbsp;<label for="$!{portlet.ID}gpdb_kubun_use_flg_id">選択肢に区分マスタを使用する</label>
+<input name="gpdb_kubun_use_flg" type="hidden" id="gpdb_kubun_use_flg" value="$!result.GpdbKubunUseFlg.toString()" />
+</div>
+#ALtditemfooter()
+##------区分マスタ------
+##  <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type) || $!result.GpdbKubunUseFlg.toString() != "t") style="display:none;"#end>
+    <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
+      <td class="caption">#ALrequired('区分')</td>
+#ALtditemheader()
+	#ALselectpdheader("gpdb_kubun_id" "" "")
+	#foreach( $record in $result.AllGpdbKubun )
+	<option value="$record.GpdbKubunId" #if ($!result.GpdbKubunId.toString() == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
+	#end
+	#ALselectfooter()
+#ALtditemfooter()
+##------サイズ（横）------
+    <tr id="tr_size_col"#if (!$!result.displayField('size_col',$type)) style="display:none;"#end>
+      <td class="caption">#ALrequired($!result.getFieldName("size_col"))</td>
+#ALtditemheader()
+#ALtextfield('size_col' $size_col '10%' 50 'inactive')px (初期値300)
+#ALtditemfooter()
+##------サイズ（縦）------
+    <tr id="tr_size_row"#if (!$!result.displayField('size_row',$type)) style="display:none;"#end>
+      <td class="caption">#ALrequired($!result.getFieldName("size_row"))</td>
+#ALtditemheader()
+#ALtextfield('size_row' $size_row '10%' 50 'inactive')px (初期値100)
+#ALtditemfooter()
+##------行数------
+    <tr id="tr_line"#if (!$!result.displayField('line',$type)) style="display:none;"#end>
+      <td class="caption">#ALrequired($!result.getFieldName("line"))</td>
+#ALtditemheader()
+#ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
+#ALtditemfooter()
+##------必須------
+    <tr id="tr_required"#if (!$!result.displayField('required',$type)) style="display:none;"#end>
+      <td class="caption">$!result.getFieldName("required_flg")</td>
+#ALtditemheader()
+<input name="required_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}required_flg_id" #if($!result.RequiredFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'required_flg');"/>&nbsp;<label for="$!{portlet.ID}required_flg_id">必須にする</label>
+<input name="required_flg" type="hidden" id="required_flg" value="$!result.RequiredFlg.toString()" />
+#ALtditemfooter()
+##------画面表示------
+#ALtdcaption("一覧画面表示 ")
+#ALtditemheader()
+<div>
+<input name="list_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}list_flg_id" #if($!result.ListFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'list_flg');"/>&nbsp;<label for="$!{portlet.ID}list_flg_id">一覧画面に表示する</label>
+<input name="list_flg" type="hidden" id="list_flg" value="$!result.ListFlg.toString()" />
+</div>
+<div>
+<input name="detail_flg_checkbox" type="hidden" value="" id="$!{portlet.ID}detail_flg_id"/>
+<input name="detail_flg" type="hidden" id="detail_flg" value="$!result.DetailFlg.toString()" />
+</div>
+#ALtditemfooter()
+#ALtdcaption("$!result.getFieldName('default_sort_flg')")
+#ALtditemheader()
+<div>
+<input name="default_sort_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}default_sort_flg_id" #if($!result.DefaultSortFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'default_sort_flg');aipo.gpdb.checkOnSort(this)"/>&nbsp;<label for="$!{portlet.ID}default_sort_flg_id">ソート項目に指定する</label>
+<input name="default_sort_flg" type="hidden" id="default_sort_flg" value="$!result.DefaultSortFlg.toString()" />
+</div>
+<div id="tr_asc_desc"#if ($!result.DefaultSortFlg.toString() != "t") style="display:none;"#end>
+<label><input name="asc_desc" type="radio" value="ASC" #if(!$!result.AscDesc || $!result.AscDesc.toString() != "DESC") checked #end/>&nbsp;昇順</label>
+<label><input name="asc_desc" type="radio" value="DESC" #if($!result.AscDesc.toString() == "DESC") checked #end/>&nbsp;降順</label>
+</div>
+#ALtditemfooter()
+
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

@@ -94,7 +94,7 @@ public class GpdbFormData extends ALAbstractFormData {
   public void initField() {
     // Webデータベース名
     gpdb_name = new ALStringField();
-    gpdb_name.setFieldName("Webデータベース名");
+    gpdb_name.setFieldName("データベース名");
     gpdb_name.setTrim(true);
     // メール配信フラグ
     mail_flg = new ALStringField();
