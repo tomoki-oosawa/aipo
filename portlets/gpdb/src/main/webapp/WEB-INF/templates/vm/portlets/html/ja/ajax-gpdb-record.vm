@@ -33,9 +33,6 @@
 #else
 
 <h2>$result.Gpdb.GpdbName</h2>
-<div class="auiSummaryMeta clearfix">
-<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
-</div>
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -43,16 +40,23 @@
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
 			#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+			#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>
-	#AUIrowTableWide()
+	<table class="auiRowTable wide">
+	<colgroup style=""></colgroup>
+	#foreach($item in $result.GpdbItemList)
+		<colgroup style="#if ($velocityCount == 1) width:20em;#elseif ($velocityCount == 2) width:12em;#else width:8em;#end"></colgroup>
+	#end
 	<tr>
-	#ALtdheadAtt("#ALswitchCheckbox()" "class='thin center'")
+	#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 	#set($titleItemId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
-			<th>#ALajaxsort($!item.GpdbItemId $!item.GpdbItemName $result 'GpdbRecordListScreen')</th>
+			<th #if ($item.TitleFlg.toString() != 't') class="mb_hide" #end>
+				#ALajaxsort($!item.GpdbItemId $!item.GpdbItemName $result 'GpdbRecordListScreen')
+			</th>
 		#end
 		#if ($item.TitleFlg.toString()=='t')
 			#set($titleItemId = $!item.GpdbItemId.toString())
@@ -66,15 +70,17 @@
 				</tr>
 			#end
 			<tr>
-			#ALtdcellAtt("<input name='check$!record.RecordNo' type='checkbox' value='$!record.RecordNo'/>" 'class="center"')
+			#ALtdcellAtt("<input name='check$!record.RecordNo' type='checkbox' value='$!record.RecordNo'/>" 'class="auiMTCheck center"')
 			#set($recordNo = $record.RecordNo.toString())
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
 			#ALtdcellheader()
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
 			#ALtdcellfooter()
+		#elseif ($item.TitleFlg.toString()=='t')
+			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
 		#else
-			#ALtdcell($!record.DispValue)
+			#ALtdcellAtt($!record.DispValue 'class="mb_hide"')
 		#end
 		#if($velocityCount == $result.List.size())
 			##最終行の場合
