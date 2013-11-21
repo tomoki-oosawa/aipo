@@ -82,10 +82,8 @@ public class GpdbKubunSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-sort"));
+      ALEipUtils
+        .setTemp(rundata, context, LIST_SORT_STR, GpdbUtils.SORT_STRING);
     }
 
     allGpdbKubun = GpdbUtils.getGpdbKubunAllList();

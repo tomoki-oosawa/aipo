@@ -185,6 +185,9 @@ public class GpdbUtils {
   /** エラーメッセージ：データが存在する汎用DB削除不可エラー */
   public static final String ERRMSG_DB_DELETE = "データが登録されているため、削除できません。";
 
+  /** ソート形式 */
+  public static final String SORT_STRING = "sort";
+
   /** 入力形式のマップ */
   @SuppressWarnings("serial")
   public static final Map<String, String> ITEM_TYPE = Collections
