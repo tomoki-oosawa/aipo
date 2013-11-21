@@ -2486,12 +2486,35 @@ ul.blockList li a.selected {
   margin-bottom: 5px;
 }
 
-.controllerTable td img {
-  border: 2px solid #FFF;
+/***************************************************
+	controllerTable
+--------------------------------------------------*/
+.controllerTable {
+  margin-right: auto;
+  margin-left: auto;
+}
+.controllerTable td {
+  text-align: center;
 }
 
-.controllerTable td.selected img {
-  border: 2px solid #f0f0f0;
+.layoutList a {
+  display: inline-block;
+  overflow: hidden;
+  background: white;
+  border: solid 1px #d2d2d2;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -ms-border-radius: 6px;
+  border-radius: 6px;
+}
+.layoutList a:hover {
+  background: #f6f6f6;
+}
+.layoutList .selected a {
+  border: solid 2px #ff9900;
+}
+.layoutList .selected a:hover {
+  background: white;
 }
 
 .addUser {
