@@ -175,7 +175,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
     detail_flg = new ALStringField();
     detail_flg.setFieldName("詳細画面表示");
     detail_flg.setTrim(false);
-    detail_flg.setValue(GpdbUtils.FLG_OFF);
+    detail_flg.setValue(GpdbUtils.FLG_ON);
     // 表示サイズ（横）
     size_col = new ALNumberField();
     size_col.setFieldName("表示サイズ（横）");

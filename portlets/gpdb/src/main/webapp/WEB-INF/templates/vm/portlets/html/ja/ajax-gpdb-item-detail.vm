@@ -64,18 +64,18 @@ $!result.Detail.TypeName
 	#ALtdcell("必須でない")
 	#end
 #end
-#ALtdcaption("画面表示")
+#ALtdcaption("一覧画面表示")
 #ALtditemheader()
 #if($!result.Detail.ListFlg.toString() == "t")
 <div>一覧画面に表示する<div>
 #else
 <div>一覧画面に表示しない<div>
 #end
-#if($!result.Detail.DetailFlg.toString() == "t")
-<div>詳細画面に表示する<div>
-#else
-<div>詳細画面に表示しない<div>
-#end
+###if($!result.Detail.DetailFlg.toString() == "t")
+##<div>詳細画面に表示する<div>
+###else
+##<div>詳細画面に表示しない<div>
+###end
 #ALtditemfooter()
 #ALtdcaption("ソート")
 #ALtditemheader()

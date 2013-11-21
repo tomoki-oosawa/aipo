@@ -119,14 +119,14 @@
 <input name="required_flg" type="hidden" id="required_flg" value="$!result.RequiredFlg.toString()" />
 #ALtditemfooter()
 ##------画面表示------
-#ALtdcaption("画面表示")
+#ALtdcaption("一覧画面表示 ")
 #ALtditemheader()
 <div>
 <input name="list_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}list_flg_id" #if($!result.ListFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'list_flg');"/>&nbsp;<label for="$!{portlet.ID}list_flg_id">一覧画面に表示する</label>
 <input name="list_flg" type="hidden" id="list_flg" value="$!result.ListFlg.toString()" />
 </div>
 <div>
-<input name="detail_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}detail_flg_id" #if($!result.DetailFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'detail_flg');"/>&nbsp;<label for="$!{portlet.ID}detail_flg_id">詳細画面に表示する</label>
+<input name="detail_flg_checkbox" type="hidden" value="" id="$!{portlet.ID}detail_flg_id"/>
 <input name="detail_flg" type="hidden" id="detail_flg" value="$!result.DetailFlg.toString()" />
 </div>
 #ALtditemfooter()
