@@ -44,7 +44,7 @@
 #end
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_name'))")
-#ALtditem("#ALtextfield('gpdb_name' $!result.GpdbName '90%' 50 'active')")
+#ALtditem("#ALtextfield('gpdb_name' $!result.GpdbName '100%' 50 'active')")
 #ALtdcaption($!result.getFieldName("mail_flg"))
 #ALtditemheader()
 <input name="mail_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}mail_flg_id" #if($!result.MailFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'mail_flg');"/>&nbsp;<label for="$!{portlet.ID}mail_flg_id">データ登録時にメールを送信する</label>

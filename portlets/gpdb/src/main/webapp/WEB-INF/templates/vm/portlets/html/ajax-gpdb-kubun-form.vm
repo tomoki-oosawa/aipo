@@ -51,19 +51,21 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_kubun_id'))")
 #ALtditemheader()
 <div id="gpdbKubunInputField" #if(!$!{result.NewKubun})style="display:none"#end>
-#ALtextfield('gpdb_kubun_name' $!result.GpdbKubunName '90%' 50 'active')
+#ALtextfieldw100('gpdb_kubun_name' $!result.GpdbKubunName 50 'active')
 </div>
 <div id="gpdbKubunSelectField" #if($!{result.NewKubun})style="display:none"#end>
-#ALselectpdheader("gpdb_kubun_id" "99%" "")
+#ALselectpdheaderclass("gpdb_kubun_id" "" "w100")
 #foreach( $record in $result.GpdbKubunList )
 <option value='$!record.GpdbKubunId' #if ($!result.GpdbKubunId.toString() == $!record.GpdbKubunId.toString()) selected #end>$!record.GpdbKubunName</option>
 #end
 #ALselectfooter()
 </div>
+<div class="mt5">
 <input name="kubun_input_button" type="button" class="button" value=" #if(!$!{result.NewKubun})新しく入力する#else一覧から選択する#end " onclick="aipo.gpdb.formSwitchKubunInput(this)" />
+</div>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_kubun_value'))")
-#ALtditem("#ALtextfield('gpdb_kubun_value' $!result.GpdbKubunValue '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('gpdb_kubun_value' $!result.GpdbKubunValue 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

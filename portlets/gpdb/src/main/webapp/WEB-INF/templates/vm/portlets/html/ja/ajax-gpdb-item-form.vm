@@ -63,7 +63,7 @@
 ##------項目名------
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
 #ALtditemheader()
-#ALtextfield('gpdb_item_name' $!result.GpdbItemName '90%' 50 'active')
+#ALtextfield('gpdb_item_name' $!result.GpdbItemName '100%' 50 'active')
 <div>
 <input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">タイトルにする</label>
 <input name="title_flg" type="hidden" id="title_flg" value="$!result.TitleFlg.toString()" />

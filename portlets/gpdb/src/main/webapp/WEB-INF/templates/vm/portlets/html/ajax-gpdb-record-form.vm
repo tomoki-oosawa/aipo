@@ -70,7 +70,9 @@
 	##-----------項目出力-----------
 	#if ($type=='02')
 		##テキストエリア
-		#ALtditem("<textarea class='text wide' name='$field' style='width:$sizeCol;height:$sizeRow'>$!record.Value</textarea>")
+		#ALtditemheader()
+		#ALtextarea($field "$!record.Value" 10 40)
+		#ALtditemfooter()
 	#elseif ($type=='04' || $type=='05')
 		##選択式（択一／複数）
 		#ALtditemheader()
@@ -131,9 +133,9 @@
 	#else
 		##テキスト、リンク、メール
 		#if($record)
-			#ALtditem("#ALtextfield($field $!record.Value $sizeCol 50 '')")
+			#ALtditem("#ALtextfield($field $!record.Value '100%' 50 '')")
 		#else
-			#ALtditem("#ALtextfield($field '' $sizeCol 50 '')")
+			#ALtditem("#ALtextfield($field '' '100%' 50 '')")
 		#end
 	#end
 #end
