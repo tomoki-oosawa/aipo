@@ -100,7 +100,6 @@
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 #if ($result.CurrentFilter)
 #AUIajaxbuttonLink("区分値の順番を変更する" $orderGpdbKubun)
 #end
