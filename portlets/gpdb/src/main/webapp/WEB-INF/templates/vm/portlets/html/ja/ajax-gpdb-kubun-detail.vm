@@ -25,7 +25,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader("区分詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("Webデータベース")
+#ALajaxdetailformheader("gpdbKubunForm")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
 #ALtdcaption("区分名")
