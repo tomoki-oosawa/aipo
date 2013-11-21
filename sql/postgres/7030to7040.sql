@@ -128,6 +128,7 @@ ALTER SEQUENCE pk_eip_m_gpdb_kubun_value OWNED BY EIP_M_GPDB_KUBUN_VALUE.GPDB_KU
 CREATE INDEX eip_t_gpdb_record_record_no_index ON EIP_T_GPDB_RECORD (RECORD_NO);
 
 INSERT INTO EIP_M_GPDB_KUBUN VALUES (1, '都道府県', now(), now());
+SELECT setval('pk_eip_m_gpdb_kubun',1);
 
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (1, 1, '北海道', 1, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (2, 1, '青森県', 2, now(), now());
@@ -176,3 +177,4 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (44, 1, '大分県', 44, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
+SELECT setval('pk_eip_m_gpdb_kubun_value',47);

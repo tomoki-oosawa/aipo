@@ -1923,6 +1923,7 @@ INSERT INTO EIP_T_EXT_TIMECARD_SYSTEM VALUES(1, 0, '通常', 9, 0, 18, 0, 1, 360
 SELECT setval('pk_eip_t_ext_timecard_system',1);
 
 INSERT INTO EIP_M_GPDB_KUBUN VALUES (1, '都道府県', now(), now());
+SELECT setval('pk_eip_m_gpdb_kubun',1);
 
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (1, 1, '北海道', 1, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (2, 1, '青森県', 2, now(), now());
@@ -1971,3 +1972,4 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (44, 1, '大分県', 44, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
+SELECT setval('pk_eip_m_gpdb_kubun_value',47);
