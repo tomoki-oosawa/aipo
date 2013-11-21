@@ -241,7 +241,7 @@ function setWrapperHeight() {
 #ALtabElementMaximize("AddressBook" "icon-compass")
 #ALtabElementMaximize("UserList" "icon-group")
 #ALtabElementMaximize("Memo" "icon-pencil")
-#ALtabElementMaximize("Gpdb" "icon-circle")
+#ALtabElementMaximize("Gpdb" "icon-hdd")
 
 </ul>
 </div>
