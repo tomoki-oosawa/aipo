@@ -40,7 +40,7 @@
 </div>
 <div class="floatRight">
 #if($result.getAllGpdbKubunValueSum() != 0)
-<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="max-width: 180px">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべての区分</option>
 #foreach( $record in $result.AllGpdbKubun )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
@@ -79,15 +79,15 @@
 <colgroup style=""></colgroup>
 <tbody>
 <tr>
-#ALtdhead("#ALswitchCheckbox()")
+#ALtdheadAtt("#ALswitchCheckbox()" 'class="auiMTCheck center"')
 ##ALtdhead("#ALajaxsort('gpdb_kubun_name' '区分' $result 'GpdbKubunListScreen')")
 #ALtdhead("区分")
 #ALtdhead("区分値")
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#ALtdcellAtt("<input name='check$!record.GpdbKubunValueId' type='checkbox' value='$!record.GpdbKubunValueId'/>" 'class="center"')
-#ALtdcellheader()
+#ALtdcellAtt("<input name='check$!record.GpdbKubunValueId' type='checkbox' value='$!record.GpdbKubunValueId'/>" 'class="auiMTCheck center"')
+#ALtdcellheaderAtt('class="auiMTCaption"')
 <div>$!record.GpdbKubunName</div>
 #ALtdcellfooter()
 #ALtdcellheader()
@@ -99,12 +99,6 @@
 #end
 </table>
 #AUISummaryDiv()
-<div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
-#if ($result.CurrentFilter)
-#AUIajaxbuttonLink("区分値の順番を変更する" $orderGpdbKubun)
-#end
-</div>
 #AUIajaxpageview('GpdbKubunListScreen' $result)
 #AUISummaryDivfooter()
 #end
