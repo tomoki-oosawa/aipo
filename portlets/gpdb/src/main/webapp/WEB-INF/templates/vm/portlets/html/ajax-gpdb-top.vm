@@ -40,16 +40,11 @@
 	<tr>
 	#ALtdcellheader()
 	<div>
-	#if($record.RecordCnt > 0)
-		#set($name = "$!record.GpdbName （$record.RecordCnt）")
-	#else
-		#set($name = $!record.GpdbName)
-	#end
-	<a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('action','controls.Maximize').addQueryData('filter',$record.GpdbId).addQueryData('filtertype','gpdb_id'))">$!name</a>
+	<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbTopRecordListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))','$!portlet.ID');">$!record.GpdbName</a>
 	</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
-	<div>$!record.CreateDate</div>
+	<div class="right">$record.RecordCnt</div>
 	#ALtdcellfooter()
 	</tr>
 #end
