@@ -78,7 +78,9 @@
 		#ALtditemheader()
 		<select name="$field"#if ($type=='05') multiple size="$!item.Line"#end>
 		##選択式（択一）
-		<option value=""></option>
+		#if ($type=='04')
+		<option value="">(指定しない)</option>
+		#end
 		#foreach($kubun in $result.getKubunValueList($item.GpdbKubunId.toString()))
 			<option value="$!kubun.GpdbKubunValueId" #if($!record.ValueList.contains($!kubun.GpdbKubunValueId.toString())) selected#end>$!kubun.GpdbKubunValue</option>
 		#end
