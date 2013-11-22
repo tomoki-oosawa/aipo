@@ -54,10 +54,10 @@
 			</td>
 		#elseif($!type=="07")
 			##画像
-			<td>
+			<td style="border-bottom:none;">
 			#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
 				#foreach( $attachmentFile in $!record.AttachmentFileList )
-					<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+					<img src="images/gpdb/gpdb_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
 					#if($attachmentFile.isImage())
 						<div style="padding-top:3px;padding-left:12px;">
 							<div id='popc' style='position:absolute'>

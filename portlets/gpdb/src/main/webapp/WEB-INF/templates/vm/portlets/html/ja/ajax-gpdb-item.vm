@@ -36,6 +36,11 @@
 #end
 </h2>
 #AUISummaryDiv()
+	#if($result.getGpdbSum() != 0)
+	<div class="floatLeft">
+	#AUIbuttonAction("項目を追加する" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+	</div>
+	#end
 	<div class="floatRight">
 		#if($result.getGpdbSum() != 0)
 		<form class="auiForm" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
@@ -47,12 +52,6 @@
 		#ALformfooter()
 		#end
 	</div>
-
-	#if($result.getGpdbSum() != 0)
-	<div class="floatLeft">
-	#AUIbuttonAction("項目を追加する" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
-	</div>
-	#end
 #AUISummaryDivfooter()
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("項目")
