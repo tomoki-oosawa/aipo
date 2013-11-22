@@ -1275,6 +1275,7 @@ public class GpdbUtils {
     try {
       // 添付ファイルデータを削除
       List<String> fpaths = new ArrayList<String>();
+      List<Integer> fownerIds = new ArrayList<Integer>();
       if (gpdbRecordList != null) {
         for (EipTGpdbRecord record : gpdbRecordList) {
           List<EipTGpdbRecordFile> fileList =
@@ -1282,17 +1283,21 @@ public class GpdbUtils {
           Database.deleteAll(fileList);
 
           for (EipTGpdbRecordFile file : fileList) {
-            fpaths.add(file.getFilePath());
+            if (file.getFilePath() != null && file.getOwnerId() != null) {
+              fpaths.add(file.getFilePath());
+              fownerIds.add(file.getOwnerId());
+            }
           }
         }
       }
 
       if (!fpaths.isEmpty()) {
         // 保存されている添付ファイルを削除する
-        for (String path : fpaths) {
-          ALStorageService.deleteFile(GpdbUtils.getSaveDirPath(ALEipUtils
-            .getUserId(rundata))
-            + path);
+        int fsize = fpaths.size();
+        for (int i = 0; i < fsize; i++) {
+          ALStorageService.deleteFile(GpdbUtils
+            .getSaveDirPath(fownerIds.get(i))
+            + fpaths.get(i));
         }
       }
 
@@ -1595,8 +1600,9 @@ public class GpdbUtils {
     if (delFiles.size() > 0) {
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        ALStorageService.deleteFile(getSaveDirPath(uid)
-          + (delFiles.get(i)).getFilePath());
+        ALStorageService
+          .deleteFile(getSaveDirPath(delFiles.get(i).getOwnerId())
+            + (delFiles.get(i)).getFilePath());
       }
       // データベースから添付ファイルのデータ削除
       Database.deleteAll(delFiles);
