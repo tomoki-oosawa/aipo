@@ -221,7 +221,7 @@ aipo.gpdb.formTypeChanged = function(form) {
 
 	} else if (form.value == aipo.gpdb.ITEM_TYPE_TEXTAREA) {	//テキストエリア
 //		dojo.byId('tr_size_col').style.display = "";
-		dojo.byId('tr_size_row').style.display = "";
+//		dojo.byId('tr_size_row').style.display = "";
 		dojo.byId('tr_required').style.display = "";
 
 	} else if (form.value == aipo.gpdb.ITEM_TYPE_FILE		//ファイル
