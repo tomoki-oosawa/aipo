@@ -23,16 +23,16 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("区分詳細")
+#ALdialogheader("カテゴリ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("gpdbKubunForm")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
-#ALtdcaption("区分名")
+#ALtdcaption("カテゴリ名")
 #ALtditemheader()
 $!result.Detail.GpdbKubunName
 #ALtditemfooter()
-#ALtdcaption("区分値")
+#ALtdcaption("値")
 #ALtditemheader()
 $!result.Detail.GpdbKubunValue
 #ALtditemfooter()

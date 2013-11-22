@@ -113,14 +113,14 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   public void initField() {
     // 区分ID
     gpdb_kubun_id = new ALStringField();
-    gpdb_kubun_id.setFieldName("区分");
+    gpdb_kubun_id.setFieldName("カテゴリ");
     // 区分名
     gpdb_kubun_name = new ALStringField();
-    gpdb_kubun_name.setFieldName("区分");
+    gpdb_kubun_name.setFieldName("カテゴリ");
     gpdb_kubun_name.setTrim(true);
     // 区分値
     gpdb_kubun_value = new ALStringField();
-    gpdb_kubun_value.setFieldName("区分値");
+    gpdb_kubun_value.setFieldName("値");
     gpdb_kubun_value.setTrim(true);
   }
 
@@ -196,14 +196,14 @@ public class GpdbKubunFormData extends ALAbstractFormData {
             || !gpdbKubunValue.getGpdbKubunId().toString().equals(
               gpdb_kubun_id.getValue())) {
             // 別の区分が入力された場合
-            msgList.add("登録されている区分値のため区分は変更できません。");
+            msgList.add("登録されている値のためカテゴリは変更できません。");
             return false;
           }
         }
 
         if (existsItemAndLastKubun(gpdbKubunValue.getGpdbKubunId())) {
           // 項目定義されている区分でかつ区分値が1件のみの場合
-          msgList.add("項目定義されている区分のため、別の区分に変更できません。");
+          msgList.add("項目定義されているカテゴリのため、別のカテゴリに変更できません。");
           return false;
         }
       }
@@ -224,7 +224,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
             gpdb_kubun_name.getValue()));
 
           if (!query.fetchList().isEmpty()) {
-            msgList.add("区分『 <span class='em'>"
+            msgList.add("カテゴリ『 <span class='em'>"
               + gpdb_kubun_name.toString()
               + "</span> 』は既に登録されています。");
           }
@@ -257,7 +257,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
           }
 
           if (!query.fetchList().isEmpty()) {
-            msgList.add("区分値『 <span class='em'>"
+            msgList.add("値『 <span class='em'>"
               + gpdb_kubun_value.toString()
               + "</span> 』は既に登録されています。");
           }
@@ -369,9 +369,9 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "Webデータベース 区分マスタ「"
+        "Webデータベース カテゴリマスタ「"
           + value.getGpdbKubun().getGpdbKubunName()
-          + "」 区分値 「"
+          + "」 値 「"
           + value.getGpdbKubunValue()
           + "」 追加");
 
@@ -466,9 +466,9 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "Webデータベース 区分マスタ「"
+        "Webデータベース カテゴリマスタ「"
           + value.getGpdbKubun().getGpdbKubunName()
-          + "」 区分値 「"
+          + "」 値 「"
           + value.getGpdbKubunValue()
           + "」 更新");
 
@@ -507,14 +507,14 @@ public class GpdbKubunFormData extends ALAbstractFormData {
         GpdbUtils.getRecordCountKubunUsed("" + value.getGpdbKubunValueId());
       if (kubunCount > 0) {
         // Webデータベースレコードが登録されている場合
-        msgList.add("使用されている区分値のため削除できません。");
+        msgList.add("使用されている値のため削除できません。");
         return false;
 
       } else {
 
         if (existsItemAndLastKubun(value.getGpdbKubunId())) {
           // 項目定義されている区分でかつ区分値が1件のみの場合
-          msgList.add("項目定義されている区分のため、全ての区分値は削除できません。");
+          msgList.add("項目定義されているカテゴリのため、全ての値は削除できません。");
           return false;
         }
       }
@@ -535,9 +535,9 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "Webデータベース 区分マスタ「"
+        "Webデータベース カテゴリマスタ「"
           + gpdbKubun.getGpdbKubunName()
-          + "」 区分値 「"
+          + "」 値 「"
           + value.getGpdbKubunValue()
           + "」 削除");
 

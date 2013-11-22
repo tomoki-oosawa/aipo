@@ -27,10 +27,10 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.GpdbKubunValueList) || $result.GpdbKubunValueList.size() == 0)
-<div class="message">区分は登録されていません。</div>
+<div class="message">カテゴリは登録されていません。</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した区分値の順番を自由に変更できます。<br>
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した値の順番を自由に変更できます。<br>
  Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
 #ALajaxscreenformheader("GpdbKubunChangeTurnForm" $jslink $portlet "GpdbKubunChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.gpdb.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
@@ -39,7 +39,7 @@
 <table class="dialogTable wide">
 <tbody>
 <tr>
-<td class="caption" width="30%" nowrap="">区分値一覧</td>
+<td class="caption" width="30%" nowrap="">値一覧</td>
 <td width="5%">
 <div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
 <div class="mb40"><a href="javascript:doUpOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div

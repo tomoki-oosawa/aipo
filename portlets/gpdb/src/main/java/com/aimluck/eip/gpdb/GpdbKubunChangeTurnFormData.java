@@ -105,7 +105,7 @@ public class GpdbKubunChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // 区分値のリスト
     positions = new ALStringField();
-    positions.setFieldName("区分値リスト");
+    positions.setFieldName("値リスト");
     positions.setTrim(true);
   }
 

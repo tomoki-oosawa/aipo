@@ -41,7 +41,7 @@ $!result.Detail.GpdbItemName
 $!result.Detail.TypeName
 #ALtditemfooter()
 #if ($!result.displayField('select_kubun',$type))
-	#ALtdcaption("区分")
+	#ALtdcaption("カテゴリ")
 	#ALtditem($!result.Detail.GpdbKubunName)
 #end
 #if ($!result.displayField('size_col',$type))

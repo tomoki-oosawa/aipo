@@ -92,9 +92,9 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
           GpdbUtils.getRecordCountKubunUsed("" + value.getGpdbKubunValueId());
         if (kubunCount > 0) {
           // Webデータベースレコードが登録されている場合
-          msgList.add("区分 『"
+          msgList.add("カテゴリ 『"
             + Gpdbkubun.getGpdbKubunName()
-            + "』 の区分値 『"
+            + "』 の値 『"
             + value.getGpdbKubunValue()
             + "』 は使用されているため削除できません。");
 
@@ -116,9 +116,9 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
               List<GpdbKubunValueResultData> valList =
                 GpdbUtils.getGpdbKubunValueList("" + kubunId);
               if (valList != null && !valList.isEmpty()) {
-                msgList.add("区分 『"
+                msgList.add("カテゴリ 『"
                   + Gpdbkubun.getGpdbKubunName()
-                  + "』 は項目定義されているため、全ての区分値は削除できません。");
+                  + "』 は項目定義されているため、全ての値は削除できません。");
               }
             }
             checkedKubunList.add(kubunId);
@@ -143,9 +143,9 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           value.getGpdbKubunValueId(),
           ALEventlogConstants.PORTLET_TYPE_NONE,
-          "Webデータベース 区分マスタ「"
+          "Webデータベース カテゴリマスタ「"
             + Gpdbkubun.getGpdbKubunName()
-            + "」 区分値 「"
+            + "」 値 「"
             + value.getGpdbKubunValue()
             + "」 削除");
       }
