@@ -77,7 +77,7 @@
 </div>
 
 
-<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><img src="themes/$!{theme}/images/common/loading_lg.gif" width="24" height="24" alt="" />&nbsp;$l10n.SCHEDULE_READING</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 
 <div id="listmessageDiv"></div>
