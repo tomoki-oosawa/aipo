@@ -24,9 +24,9 @@
 #set ($indicator_id = "indicator-dlg-")
 #set ($type = $!result.Detail.Type.toString())
 ## ---------------------------------------------------------------------------
-#ALdialogheader("項目定義詳細")
+#ALdialogheader("項目詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("項目定義")
+#ALajaxdetailformheader("項目")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
 #ALtdcaption("項目名")
