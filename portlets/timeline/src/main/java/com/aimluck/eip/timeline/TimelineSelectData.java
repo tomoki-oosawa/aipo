@@ -440,16 +440,8 @@ public class TimelineSelectData extends
       rd.setThumbnailFlag(flag);
 
       String url = model.getUrl();
-      if (url.startsWith("http://www.youtube.com")
-        || url.startsWith("https://www.youtube.com")) {
-        String youtubeId = model.getUrl();
-        int startpoint = youtubeId.indexOf("v=");
-        int endpoint = youtubeId.indexOf("&", startpoint);
-        if (endpoint == -1) {
-          endpoint = youtubeId.length();
-        }
-        youtubeId = youtubeId.substring(startpoint + 2, endpoint);
-        rd.setYoutubeId(youtubeId);
+      if (TimelineUtils.isYoutubeUrl(url)) {
+        rd.setYoutubeId(TimelineUtils.getYoutubeId(url));
         rd.setYoutubeFlag(true);
       }
       rdList.add(rd);

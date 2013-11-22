@@ -139,10 +139,10 @@ aipo.timeline.refreshImageList = function(pid, i) {
 		var page = dojo.byId("TimelinePage_" + pid);
 		var value = parseInt(page.value);
 		if (aipo.timeline.revmaxlist[pid] > 0) {
-			if (dojo.byId("auiSummaryMeta_" + pid).style.display != "block") {
+			if (dojo.hasClass(dojo.byId("auiSummaryMeta_" + pid),"hide")) {
 				document.getElementById("tlClipImage_" + pid + "_1").style.display = "";
-				dojo.byId("auiSummaryMeta_" + pid).style.display = "block";
-				dojo.byId("ViewThumbnail_" + pid).style.display = "block";
+				dojo.removeClass(dojo.byId("auiSummaryMeta_" + pid),"hide");
+				dojo.removeClass(dojo.byId("ViewThumbnail_" + pid),"hide");
 			}
 			if (!value) {
 				value = 1;
@@ -581,10 +581,10 @@ aipo.timeline.viewThumbnail = function(pid) {
 	var value = parseInt(page.value);
 	if (dojo.byId("checkbox_" + pid).checked) {
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
-		dojo.byId("auiSummaryMeta_" + pid).style.display = "none";
+		dojo.addClass(dojo.byId("auiSummaryMeta_" + pid),"hide");
 	} else {
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-		dojo.byId("auiSummaryMeta_" + pid).style.display = "";
+		dojo.removeClass(dojo.byId("auiSummaryMeta_" + pid),"hide");
 	}
 }
 

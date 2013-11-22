@@ -45,11 +45,15 @@
 #end#end
 </div>#end
 				#foreach ($attachmentUrl in $record.UrlList)
-					#if(!$attachmentUrl.isYoutubeFlag())
+					###if(!$attachmentUrl.isYoutubeFlag())
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
 							#if ($attachmentUrl.isThumbnailFlag())
-							<img class="freeSizeHidden width_thumbs" onload="if(aipo && aipo.timeline && aipo.timeline.resizeThumbnailTag){aipo.timeline.resizeThumbnailTag(this);}else{dojo.connect(null,'onload',this,function(){aipo.timeline.resizeThumbnailTag(this);});} " border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})" />
+								#if($attachmentUrl.isYoutubeFlag())
+									<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="https://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg"></a>
+								#else
+									<img class="freeSizeHidden width_thumbs" onload="if(aipo && aipo.timeline && aipo.timeline.resizeThumbnailTag){aipo.timeline.resizeThumbnailTag(this);}else{dojo.connect(null,'onload',this,function(){aipo.timeline.resizeThumbnailTag(this);});} " border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})" />
+								#end
 							#end
 						</div>
 						<div class="tlClipContents">
@@ -58,11 +62,18 @@
 							<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!attachmentUrl.AutoCRBody</div>
 						</div>
 					</div>
-					#else
-					<div class="tlImageBlock clearfix">
-						<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="https://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" width="480" height="360"></a>
-					</div>
-					#end
+					###else
+					##<div class="tlImageBlock clearfix">
+					##	<div class="tlClipImage">
+					##		<a href="javascript:void(0)" onclick="aipo.fileupload.showYoutubeDialog('$attachmentUrl.YoutubeId', '$jslink.getTemplate('FileuploadYoutubeViewScreen').addQueryData('vid',$attachmentUrl.YoutubeId).addQueryData('title',$attachmentUrl.Title).addQueryData('id',$attachmentUrl.TimelineId)')"><img src="https://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" width="480" height="360"></a>
+					##	</div>
+					##	<div class="tlClipContents">
+					##		<div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$attachmentUrl.Url" target="_blank">$!attachmentUrl.AutoCRTitle</a></div>
+					##		<div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}">$!attachmentUrl.AutoCRBasePath</div>
+					##		<div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!attachmentUrl.AutoCRBody</div>
+					##	</div>
+					##	</div>
+					###end
 				#end
 			#end
 		</div>
