@@ -210,7 +210,7 @@ aipo.gpdb.formTypeChanged = function(form) {
 		dojo.byId('kubun_select').style.display = "";
 		dojo.byId('tr_required').style.display = "";
 		if (form.value == aipo.gpdb.ITEM_TYPE_SELECT_MULTI) {
-			dojo.byId('tr_line').style.display = "";
+		//	dojo.byId('tr_line').style.display = "";
 		}
 
 	} else if (form.value == aipo.gpdb.ITEM_TYPE_TEXT		//テキスト

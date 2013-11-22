@@ -44,7 +44,7 @@
 #if($!result.Line.toString() != '')
 	#set ($line = $!result.Line.toString())
 #else
-	#set ($line = "3")
+	#set ($line = "5")
 #end
 #set ($type = $!result.Type.toString())
 ## ---------------------------------------------------------------------------
@@ -109,7 +109,8 @@
     <tr id="tr_line"#if (!$!result.displayField('line',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired($!result.getFieldName("line"))</td>
 #ALtditemheader()
-#ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
+<input name="line" type="hidden" value="$line" />
+###ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
 #ALtditemfooter()
 ##------必須------
     <tr id="tr_required"#if (!$!result.displayField('required',$type)) style="display:none;"#end>
