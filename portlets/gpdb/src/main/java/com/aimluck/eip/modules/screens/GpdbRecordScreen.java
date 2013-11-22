@@ -54,6 +54,7 @@ public class GpdbRecordScreen extends GpdbScreen {
 
       GpdbRecordSelectData listData = new GpdbRecordSelectData();
       listData.initField();
+      listData.setGpdbId(context, rundata);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-gpdb-record.vm";

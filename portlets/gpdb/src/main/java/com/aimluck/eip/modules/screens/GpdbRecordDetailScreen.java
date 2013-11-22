@@ -56,6 +56,8 @@ public class GpdbRecordDetailScreen extends ALVelocityScreen {
     try {
       GpdbRecordSelectData detailData = new GpdbRecordSelectData();
       detailData.initField();
+      detailData.setGpdbId(context, rundata);
+
       detailData.doViewDetail(this, rundata, context);
 
       String entityid =

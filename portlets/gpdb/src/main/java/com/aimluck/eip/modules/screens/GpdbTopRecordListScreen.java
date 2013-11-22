@@ -55,6 +55,7 @@ public class GpdbTopRecordListScreen extends GpdbScreen {
 
       GpdbRecordSelectData listData = new GpdbRecordSelectData();
       listData.initField();
+      listData.setGpdbId(context, rundata);
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));

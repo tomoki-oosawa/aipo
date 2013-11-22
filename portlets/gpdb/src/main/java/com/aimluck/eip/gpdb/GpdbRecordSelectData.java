@@ -98,7 +98,7 @@ public class GpdbRecordSelectData extends
     super.init(action, rundata, context);
 
     // super.init()後にLIST_FILTER_STRに格納される
-    gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    // gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
   }
 
   /**
@@ -385,6 +385,58 @@ public class GpdbRecordSelectData extends
    */
   public String getGpdbId() {
     return gpdbId;
+  }
+
+  /**
+   * WebデータベースIDの設定
+   * 
+   */
+
+  public void setGpdbId(Context context, RunData rundata) {
+    String gpdbId = rundata.getParameters().getString("filter", "");
+    String filterType = rundata.getParameters().getString("filtertype", "");
+    List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
+    if ((gpdbId != null && !"".equals(gpdbId)) && "gpdb_id".equals(filterType)) {
+      for (GpdbResultData gpdb : gpdbAllList) {
+
+        if (gpdb.getGpdbId().toString().equals(gpdbId)) {
+          this.gpdbId = gpdbId;
+        }
+      }
+    }
+
+    if (filterType == null || "".equals(filterType)) {
+      if (ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR) != null
+        && !"".equals(ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR))) {
+        for (GpdbResultData gpdb : gpdbAllList) {
+          if (gpdb.getGpdbId().toString().equals(
+            ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR))) {
+            this.gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+          }
+        }
+      } else {
+        String filter =
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3a-category");
+        if (filter == null || "".equals(filter)) {
+          return;
+        }
+        for (GpdbResultData gpdb : gpdbAllList) {
+          if (gpdb.getGpdbId().toString().equals(filter)) {
+            this.gpdbId = filter;
+            ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, filter);
+            ALEipUtils.setTemp(
+              rundata,
+              context,
+              LIST_FILTER_TYPE_STR,
+              "gpdb_id");
+
+          }
+        }
+      }
+    }
   }
 
   /**

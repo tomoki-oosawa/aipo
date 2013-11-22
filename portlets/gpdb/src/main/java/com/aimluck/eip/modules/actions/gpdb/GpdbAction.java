@@ -153,6 +153,7 @@ public class GpdbAction extends ALBaseAction {
       throws Exception {
     GpdbRecordSelectData listData = new GpdbRecordSelectData();
     listData.initField();
+    listData.setGpdbId(context, rundata);
     listData.doViewList(this, rundata, context);
 
     setTemplate(rundata, "gpdb-record");

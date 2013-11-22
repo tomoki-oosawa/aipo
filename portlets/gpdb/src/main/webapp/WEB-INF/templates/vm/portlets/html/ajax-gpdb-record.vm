@@ -77,7 +77,7 @@
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
 			#ALtdcellheader()
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
+			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
 			#ALtdcellfooter()
 		#elseif ($item.TitleFlg.toString()=='t')
 			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
