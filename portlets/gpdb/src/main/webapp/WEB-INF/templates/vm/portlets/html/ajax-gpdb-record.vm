@@ -47,7 +47,9 @@
 	<table class="auiRowTable wide">
 	<colgroup style=""></colgroup>
 	#foreach($item in $result.GpdbItemList)
+		#if ($item.ListFlg.toString()=='t')
 		<colgroup style="#if ($velocityCount == 1) width:20em;#elseif ($velocityCount == 2) width:12em;#else width:8em;#end"></colgroup>
+		#end
 	#end
 	<tr>
 	#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
