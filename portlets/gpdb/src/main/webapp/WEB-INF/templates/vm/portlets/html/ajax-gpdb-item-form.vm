@@ -94,10 +94,11 @@
 	#ALselectfooter()
 #ALtditemfooter()
 ##------サイズ（横）------
-    <tr id="tr_size_col"#if (!$!result.displayField('size_col',$type)) style="display:none;"#end>
+    <tr id="tr_size_col" style="display:none;">
       <td class="caption">#ALrequired($!result.getFieldName("size_col"))</td>
 #ALtditemheader()
-#ALtextfield('size_col' $size_col '10%' 50 'inactive')px (初期値300)
+<input class="text" type="hidden" name="size_col" id="size_col" value="$size_col" maxlength="50" style="width:'10%';ime-mode:'inactive'" />
+###ALtextfield('size_col' $size_col '10%' 50 'inactive')px (初期値300)
 #ALtditemfooter()
 ##------サイズ（縦）------
     <tr id="tr_size_row"#if (!$!result.displayField('size_row',$type)) style="display:none;"#end>

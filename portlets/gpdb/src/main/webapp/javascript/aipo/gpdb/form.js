@@ -216,11 +216,11 @@ aipo.gpdb.formTypeChanged = function(form) {
 	} else if (form.value == aipo.gpdb.ITEM_TYPE_TEXT		//テキスト
 			|| form.value == aipo.gpdb.ITEM_TYPE_LINK		//リンク
 			|| form.value == aipo.gpdb.ITEM_TYPE_MAIL) {	//メール
-		dojo.byId('tr_size_col').style.display = "";
+//		dojo.byId('tr_size_col').style.display = "";
 		dojo.byId('tr_required').style.display = "";
 
 	} else if (form.value == aipo.gpdb.ITEM_TYPE_TEXTAREA) {	//テキストエリア
-		dojo.byId('tr_size_col').style.display = "";
+//		dojo.byId('tr_size_col').style.display = "";
 		dojo.byId('tr_size_row').style.display = "";
 		dojo.byId('tr_required').style.display = "";
 
