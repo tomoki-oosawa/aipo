@@ -301,7 +301,9 @@ public class GpdbUtils {
     .getString("aipo.filedir", "");
 
   /** 添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = "gpdb";
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.gpdb.categorykey",
+    "");;
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
   public static final String FILE_ENCODING = JetspeedResources.getString(

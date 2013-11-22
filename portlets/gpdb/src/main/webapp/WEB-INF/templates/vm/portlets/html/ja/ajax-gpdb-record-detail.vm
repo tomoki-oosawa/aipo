@@ -62,8 +62,10 @@
 						<div style="padding-top:3px;padding-left:12px;">
 							<div id='popc' style='position:absolute'>
 							</div>
-							<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','GpdbRecordFileRawScreen').addPathInfo("entityid", $record.GpdbRecordId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-							<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("GpdbRecordFileThumbnailScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+							<div class="thumbBlock">
+								<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','GpdbRecordFileRawScreen').addPathInfo("entityid", $record.GpdbRecordId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+								<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("GpdbRecordFileThumbnailScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+							</div>
 						</div>
 					#end
 				#end

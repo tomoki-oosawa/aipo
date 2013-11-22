@@ -24,10 +24,10 @@
 #if  ($mode=="new_form")
 	#set ($action_str = "追加する")
 	#set ($event_submit = "eventSubmit_doGpdb_insert")
-	#set ($subtitle = "項目定義追加")
+	#set ($subtitle = "項目追加")
 #else
 	#set ($action_str = "更新する")
-	#set ($subtitle = "項目定義編集")
+	#set ($subtitle = "項目編集")
 	#set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -44,7 +44,7 @@
 #if($!result.Line.toString() != '')
 	#set ($line = $!result.Line.toString())
 #else
-	#set ($line = "3")
+	#set ($line = "5")
 #end
 #set ($type = $!result.Type.toString())
 ## ---------------------------------------------------------------------------
@@ -63,7 +63,7 @@
 ##------項目名------
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
 #ALtditemheader()
-#ALtextfield('gpdb_item_name' $!result.GpdbItemName '100%' 50 'active')
+#ALtextfieldw100mb5('gpdb_item_name' $!result.GpdbItemName 50 'active')
 <div>
 <input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">タイトルにする</label>
 <input name="title_flg" type="hidden" id="title_flg" value="$!result.TitleFlg.toString()" />
@@ -109,7 +109,8 @@
     <tr id="tr_line"#if (!$!result.displayField('line',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired($!result.getFieldName("line"))</td>
 #ALtditemheader()
-#ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
+<input name="line" type="hidden" value="$line" />
+###ALtextfield('line' $line '10%' 50 'inactive')行 (初期値3)
 #ALtditemfooter()
 ##------必須------
     <tr id="tr_required"#if (!$!result.displayField('required',$type)) style="display:none;"#end>
