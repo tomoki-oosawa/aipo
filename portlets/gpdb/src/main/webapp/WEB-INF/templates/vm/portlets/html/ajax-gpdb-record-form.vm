@@ -111,12 +111,14 @@
 		#end
 	#elseif ($type=='10')
 		##日付
-		#ALtditemheader()
+		#ALtditemheaderAtt('class="auiSetDate"')
+		<div class="mb5">
 		#if ($item.RequiredFlg.toString() == "t")
-    	    <span dojoType="aipo.widget.DropdownDatepicker" id="${field}Span" widgetId="${field}Span"  iconURL="images/icon/icon_date.gif" iconAlt="$item.GpdbItemName" hiddenId="${field}" #if ($!record.Value.toString()) initValue="$!{record.Value}" #else initValue="" checked="checked" #end inputId="${field}_input" dateId="${field}" displayCheck="none"></span>
+    	    <div dojoType="aipo.widget.DropdownDatepicker" id="${field}Span" widgetId="${field}Span"  iconURL="images/icon/icon_date.gif" iconAlt="$item.GpdbItemName" hiddenId="${field}" #if ($!record.Value.toString()) initValue="$!{record.Value}" #else initValue="" checked="checked" #end inputId="${field}_input" dateId="${field}" displayCheck="none"></div>
 		#else
-    	    <span dojoType="aipo.widget.DropdownDatepicker" id="${field}Span" widgetId="${field}Span"  iconURL="images/icon/icon_date.gif" iconAlt="$item.GpdbItemName" hiddenId="${field}" #if ($!record.Value.toString())) initValue="$!{record.Value}" #else initValue="" checked="checked" #end inputId="${field}_input" dateId="${field}" displayCheck=""></span>
+    	    <div dojoType="aipo.widget.DropdownDatepicker" id="${field}Span" widgetId="${field}Span"  iconURL="images/icon/icon_date.gif" iconAlt="$item.GpdbItemName" hiddenId="${field}" #if ($!record.Value.toString())) initValue="$!{record.Value}" #else initValue="" checked="checked" #end inputId="${field}_input" dateId="${field}" displayCheck=""></div>
 		#end
+		</div>
 		#ALtditemfooter()
 	#elseif ($type=='11' || $type=='13')
 		##登録日時、登録者
