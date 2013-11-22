@@ -137,6 +137,15 @@ public class GpdbItemResultData implements ALData {
   }
 
   /**
+   * 項目名を取得する
+   * 
+   * @return 項目名
+   */
+  public String getRawGpdbItemName() {
+    return gpdb_item_name.toString();
+  }
+
+  /**
    * 項目名を設定する
    * 
    * @param string

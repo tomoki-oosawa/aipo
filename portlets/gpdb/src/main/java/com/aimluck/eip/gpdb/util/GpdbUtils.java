@@ -25,6 +25,7 @@ package com.aimluck.eip.gpdb.util;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -44,10 +45,18 @@ import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
+import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.services.JetspeedSecurity;
+import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.util.ServiceUtil;
+import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMGpdbKubun;
@@ -57,6 +66,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem;
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecord;
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecordFile;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
@@ -1501,14 +1511,15 @@ public class GpdbUtils {
    *          RunData
    * @param destUser
    *          送信先ユーザ
-   * @param msg
+   * @param gpdb
    *          メッセージ
+   * @param gpdbItemList
    * @return 成功：TRUE 失敗：FALSE
    * @throws Exception
    *           例外
    */
-  public static boolean sendMail(RunData rundata, ALEipUser destUser, String msg)
-      throws Exception {
+  public static boolean sendMail(RunData rundata, ALEipUser destUser,
+      EipTGpdb gpdb, String gpdbItemName, String dispValue) throws Exception {
 
     String orgId = Database.getDomainName();
     String subject = "[" + ALOrgUtilsService.getAlias() + "]Webデータベース";
@@ -1530,8 +1541,18 @@ public class GpdbUtils {
         ALAdminMailMessage message = new ALAdminMailMessage(destMember);
         message.setPcSubject(subject);
         message.setCellularSubject(subject);
-        message.setPcBody(msg);
-        message.setCellularBody(msg);
+        message.setPcBody(createMsgForPc(
+          rundata,
+          gpdb,
+          gpdbItemName,
+          dispValue,
+          true));
+        message.setCellularBody(createMsgForCellPhone(
+          rundata,
+          gpdb,
+          gpdbItemName,
+          dispValue,
+          true));
         messageList.add(message);
       }
 
@@ -1544,6 +1565,86 @@ public class GpdbUtils {
       return false;
     }
     return true;
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する．
+   * 
+   * @param gpdbItemList
+   * 
+   * @return
+   */
+  public static String createMsgForPc(RunData rundata, EipTGpdb gpdb,
+      String gpdbItemName, String dispValue, Boolean isNew)
+      throws ALDBErrorException {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(rundata);
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+    } catch (Exception e) {
+      return "";
+    }
+    context.put("loginUser", loginUser.getAliasName().toString());
+    context.put("hasEmail", !user.getEmail().equals(""));
+    context.put("email", user.getEmail());
+    context.put("isNew", isNew);
+    // タイトル
+    context.put("GpdbName", gpdb.getGpdbName());
+    // 件名
+    context.put("GpdbItemName", gpdbItemName);
+    context.put("DispValue", dispValue);
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && lang.equals("ja")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/gpdb-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/gpdb-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する．
+   * 
+   * @param gpdbItemList
+   * 
+   * @return
+   */
+  public static String createMsgForCellPhone(RunData rundata, EipTGpdb gpdb,
+      String gpdbItemName, String dispValue, Boolean isNew)
+      throws ALDBErrorException {
+    return createMsgForPc(rundata, gpdb, gpdbItemName, dispValue, isNew);
   }
 
   // ---------------------------------------------------

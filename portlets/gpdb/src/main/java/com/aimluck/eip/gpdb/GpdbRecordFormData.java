@@ -325,6 +325,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         recordNo = maxRecordNoObj.getRecordNo() + 1;
       }
 
+      String mailGpdbItemName = "";
+      String mailDispValue = "";
+
       // 新規オブジェクトモデル
       for (GpdbItemResultData item : gpdbItemList) {
         String field = FIELD_PREFIX + item.getGpdbItemId();
@@ -448,6 +451,11 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         gpdbRecord.setCreateDate(Calendar.getInstance().getTime());
         // 更新日
         gpdbRecord.setUpdateDate(Calendar.getInstance().getTime());
+
+        if ("t".equals(item.getTitleFlg().toString())) {
+          mailGpdbItemName = item.getRawGpdbItemName();
+          mailDispValue = value;
+        }
       }
 
       // レコード情報を登録
@@ -460,15 +468,12 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         ALEipUser createUser =
           ALEipUtils.getALEipUser(gpdb.getTurbineUser().getUserId());
 
-        String msg =
-          tuser.getLastName()
-            + " "
-            + tuser.getFirstName()
-            + "さんがWebデータベース 「"
-            + gpdb.getGpdbName()
-            + "」 にデータを登録しました。";
-
-        GpdbUtils.sendMail(rundata, createUser, msg);
+        GpdbUtils.sendMail(
+          rundata,
+          createUser,
+          gpdb,
+          mailGpdbItemName,
+          mailDispValue);
       }
 
       // イベントログに保存
