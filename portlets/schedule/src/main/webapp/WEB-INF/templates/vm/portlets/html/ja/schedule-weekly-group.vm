@@ -68,7 +68,7 @@
 </div>
 
 </div>
-<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><img src="http://59.106.173.26/aipo-html/htmlmock/themes/default/images/common/loading_lg.gif" width="24" height="24"></div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><img src="themes/$!{theme}/images/common/loading_lg.gif" width="24" height="24" alt="" />&nbsp;$l10n.SCHEDULE_READING</div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 #if(${client}!="IPHONE")
 <div class="auiSummaryMeta clearfix">
