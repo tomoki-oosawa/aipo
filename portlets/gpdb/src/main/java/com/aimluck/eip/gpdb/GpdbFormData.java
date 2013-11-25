@@ -291,7 +291,7 @@ public class GpdbFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「" + gpdb.getGpdbName() + "」 追加");
 
     } catch (Exception ex) {
@@ -336,7 +336,7 @@ public class GpdbFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「" + gpdb.getGpdbName() + "」 更新");
 
     } catch (Exception ex) {
@@ -386,7 +386,7 @@ public class GpdbFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdb.getGpdbId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「" + gpdb.getGpdbName() + "」 削除");
 
     } catch (Exception ex) {

@@ -102,7 +102,7 @@ public class GpdbItemMultiDelete extends ALAbstractCheckList {
           // イベントログに保存
           ALEventlogFactoryService.getInstance().getEventlogHandler().log(
             gpdbItem.getGpdbItemId(),
-            ALEventlogConstants.PORTLET_TYPE_NONE,
+            ALEventlogConstants.PORTLET_TYPE_GPDB,
             "Webデータベース 「"
               + gpdb.getGpdbName()
               + "」 項目定義 「"
