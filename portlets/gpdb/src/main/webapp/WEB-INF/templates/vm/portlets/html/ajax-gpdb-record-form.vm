@@ -76,7 +76,7 @@
 	#elseif ($type=='04' || $type=='05')
 		##選択式（択一／複数）
 		#ALtditemheader()
-		<select name="$field"#if ($type=='05') multiple size="$!item.Line"#end>
+		<select name="$field"#if ($type=='05') multiple size="$!item.Line"#end class="w100">
 		##選択式（択一）
 		#if ($type=='04')
 		<option value="">(指定しない)</option>
