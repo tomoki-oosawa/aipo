@@ -158,7 +158,16 @@ public class GpdbRecordResultData implements ALData {
    * 
    * @return 値
    */
-  public String getValue() {
+  public ALStringField getValue() {
+    return value;
+  }
+
+  /**
+   * 値を取得する(Wbr挿入)
+   * 
+   * @return 値
+   */
+  public String getWbrValue() {
     return ALCommonUtils.replaceToAutoCR(value.toString());
   }
 
@@ -177,7 +186,16 @@ public class GpdbRecordResultData implements ALData {
    * 
    * @return 値（表示用）
    */
-  public String getDispValue() {
+  public ALStringField getDispValue() {
+    return disp_value;
+  }
+
+  /**
+   * 値（表示用）を取得する(Wbr挿入)
+   * 
+   * @return 値（表示用）
+   */
+  public String getWbrDispValue() {
     return ALCommonUtils.replaceToAutoCR(disp_value.toString());
   }
 

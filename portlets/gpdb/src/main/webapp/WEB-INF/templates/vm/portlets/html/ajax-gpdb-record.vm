@@ -32,7 +32,7 @@
 	<div class="auiBlankBox">指定された条件に該当するレコードはありません。</div>
 #else
 
-<h2>$result.Gpdb.GpdbName</h2>
+<h2>$result.Gpdb.WbrGpdbName</h2>
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -57,7 +57,7 @@
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
 			<th #if ($item.TitleFlg.toString() != 't') class="mb_hide" #end>
-				#ALajaxsort($!item.GpdbItemId $!item.GpdbItemName $result 'GpdbRecordListScreen')
+				#ALajaxsort($!item.GpdbItemId $!item.WbrGpdbItemName $result 'GpdbRecordListScreen')
 			</th>
 		#end
 		#if ($item.TitleFlg.toString()=='t')
@@ -77,12 +77,12 @@
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
 			#ALtdcellheader()
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
+			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
 			#ALtdcellfooter()
 		#elseif ($item.TitleFlg.toString()=='t')
-			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
+			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
-			#ALtdcellAtt($!record.DispValue 'class="mb_hide"')
+			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end
 		#if($velocityCount == $result.List.size())
 			##最終行の場合

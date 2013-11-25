@@ -30,7 +30,7 @@
 <div id="messageDiv"></div>
 #ALtdcaption("データベース名")
 #ALtditemheader()
-$!result.Detail.GpdbName
+$!result.Detail.WbrGpdbName
 #ALtditemfooter()
 #ALtdcaption("メール通知")
 #if("$result.Detail.MailFlg" == "t")
@@ -39,7 +39,7 @@ $!result.Detail.GpdbName
 #ALtdcell("データ登録時にメールを送信しない")
 #end
 #ALtdcaption("作成者")
-#ALtditem($!result.Detail.CreateUserName)
+#ALtditem($!result.Detail.WbrCreateUserName)
 #ALtdcaption("作成日")
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption("更新日")

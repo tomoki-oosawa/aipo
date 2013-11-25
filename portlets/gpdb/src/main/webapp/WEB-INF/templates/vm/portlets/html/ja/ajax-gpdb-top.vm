@@ -54,12 +54,12 @@
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
 			<td class="auiMTCaption">
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
+			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
 			</td>
 		#elseif ($item.TitleFlg.toString()=='t')
-			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
+			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
-			#ALtdcellAtt($!record.DispValue 'class="mb_hide"')
+			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end
 		#if($velocityCount == $result.List.size())
 			##最終行の場合

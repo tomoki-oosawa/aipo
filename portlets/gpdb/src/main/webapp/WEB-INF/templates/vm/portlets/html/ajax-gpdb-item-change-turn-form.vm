@@ -51,7 +51,7 @@
 <option value=""></option>
 #else
 #foreach($record in $!result.GpdbItemList)
-<option value="$!record.gpdbItemId">$!record.GpdbItemName</option>
+<option value="$!record.gpdbItemId">$!record.WbrGpdbItemName</option>
 #end
 #end
 </select>

@@ -59,7 +59,7 @@ public class GpdbAllListBox extends ListBox {
     while (iter.hasNext()) {
       gpdbData = iter.next();
       categoryKeys[count] = gpdbData.getGpdbId().toString();
-      categoryValues[count] = gpdbData.getGpdbName();
+      categoryValues[count] = gpdbData.getGpdbName().toString();
       count++;
     }
 

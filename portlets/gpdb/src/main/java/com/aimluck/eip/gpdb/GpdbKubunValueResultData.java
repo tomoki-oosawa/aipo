@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * WebデータベースのResultDataです。 <BR>
- *
+ * 
  */
 public class GpdbKubunValueResultData implements ALData {
 
@@ -59,7 +59,7 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分値IDを取得する
-   *
+   * 
    * @return 区分値ID
    */
   public ALNumberField getGpdbKubunValueId() {
@@ -68,7 +68,7 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分値IDを設定する
-   *
+   * 
    * @param i
    *          区分値ID
    */
@@ -78,7 +78,7 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分マスタIDを取得する
-   *
+   * 
    * @return　区分マスタID
    */
   public ALNumberField getGpdbKubunId() {
@@ -87,7 +87,7 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分マスタIDを設定する
-   *
+   * 
    * @param i
    *          区分マスタID
    */
@@ -97,16 +97,25 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分名を取得する
-   *
+   * 
    * @return 区分名
    */
-  public String getGpdbKubunName() {
+  public ALStringField getGpdbKubunName() {
+    return gpdb_kubun_name;
+  }
+
+  /**
+   * 区分名を取得する(Wbr挿入)
+   * 
+   * @return 区分名
+   */
+  public String getWbrGpdbKubunName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_kubun_name.toString());
   }
 
   /**
    * 区分名を設定する
-   *
+   * 
    * @param string
    *          区分名
    */
@@ -116,16 +125,25 @@ public class GpdbKubunValueResultData implements ALData {
 
   /**
    * 区分値を取得する
-   *
+   * 
    * @return 区分値
    */
-  public String getGpdbKubunValue() {
+  public ALStringField getGpdbKubunValue() {
+    return gpdb_kubun_value;
+  }
+
+  /**
+   * 区分値を取得する(Wbr挿入)
+   * 
+   * @return 区分値
+   */
+  public String getWbrGpdbKubunValue() {
     return ALCommonUtils.replaceToAutoCR(gpdb_kubun_value.toString());
   }
 
   /**
    * 区分値を設定する
-   *
+   * 
    * @param string
    *          区分値
    */

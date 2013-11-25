@@ -73,7 +73,16 @@ public class GpdbKubunResultData implements ALData {
    * 
    * @return 区分マスタ名
    */
-  public String getGpdbKubunName() {
+  public ALStringField getGpdbKubunName() {
+    return gpdb_kubun_name;
+  }
+
+  /**
+   * 区分マスタ名を取得する(Wbr挿入)
+   * 
+   * @return 区分マスタ名
+   */
+  public String getWbrGpdbKubunName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_kubun_name.toString());
   }
 

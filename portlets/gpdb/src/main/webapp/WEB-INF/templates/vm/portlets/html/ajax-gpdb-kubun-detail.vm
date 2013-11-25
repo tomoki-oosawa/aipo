@@ -30,11 +30,11 @@
 <div id="messageDiv"></div>
 #ALtdcaption("カテゴリ名")
 #ALtditemheader()
-$!result.Detail.GpdbKubunName
+$!result.Detail.WbrGpdbKubunName
 #ALtditemfooter()
 #ALtdcaption("値")
 #ALtditemheader()
-$!result.Detail.GpdbKubunValue
+$!result.Detail.WbrGpdbKubunValue
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

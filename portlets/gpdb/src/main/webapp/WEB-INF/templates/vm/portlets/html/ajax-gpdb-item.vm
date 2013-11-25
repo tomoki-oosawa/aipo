@@ -32,7 +32,7 @@
 #AUIcontentsAreaHeader()
 <h2>データベースの項目設定:
 #foreach( $record in $result.GpdbAllList )
-	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.GpdbName #end
+	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
 #end
 </h2>
 #AUISummaryDiv()
@@ -46,7 +46,7 @@
 		<form class="auiForm" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 		<select sytle="max-width: 180px" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
 		#foreach( $record in $result.GpdbAllList )
-		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) selected="selected" #end>$!record.GpdbName</option>
+		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) selected="selected" #end>$!record.WbrGpdbName</option>
 		#end
 		</select>
 		#ALformfooter()
@@ -99,7 +99,7 @@
 #end
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemDetailScreen").addQueryData("entityid",$record.GpdbItemId).addQueryData("gpdb_id",$record.GpdbId))');">$!record.GpdbItemName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemDetailScreen").addQueryData("entityid",$record.GpdbItemId).addQueryData("gpdb_id",$record.GpdbId))');">$!record.WbrGpdbItemName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellheader()

@@ -35,14 +35,14 @@
 		#set ($type = $!item.Type.toString())    ##入力形式
 		#set ($field = "field_$item.GpdbItemId") ##フィールド名
 		##-----------項目名出力-----------
-		#ALtdcaption("$item.GpdbItemName")
+		#ALtdcaption("$item.WbrGpdbItemName")
 		##-----------項目出力-----------
 		#if($!type=="02")
 			##テキストエリア
 			<td>$!record.ValueBr</td>
 		#elseif($!type=="03")
 			##リンク
-			<td><a href="$!record.Value" target="_blank">$!record.Value</a></td>
+			<td><a href="$!record.Value" target="_blank">$!record.WbrValue</a></td>
 		#elseif($!type=="06")
 			##ファイル
 			<td>
@@ -73,9 +73,9 @@
 			</td>
 		#elseif($!type=="09")
 			##メール
-			<td><a href="mailto:$!record.Value">$!record.Value</a></td>
+			<td><a href="mailto:$!record.Value">$!record.WbrValue</a></td>
 		#else
-			<td>$!record.DispValue</td>
+			<td>$!record.WbrDispValue</td>
 		#end
 	#end
 #end

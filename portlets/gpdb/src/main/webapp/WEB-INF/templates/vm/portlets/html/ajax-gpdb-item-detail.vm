@@ -31,7 +31,7 @@
 <div id="messageDiv"></div>
 #ALtdcaption("項目名")
 #ALtditemheader()
-$!result.Detail.GpdbItemName
+$!result.Detail.WbrGpdbItemName
 #if("$result.Detail.TitleFlg" == "t")
 <div>※タイトルにする</div>
 #end
@@ -42,7 +42,7 @@ $!result.Detail.TypeName
 #ALtditemfooter()
 #if ($!result.displayField('select_kubun',$type))
 	#ALtdcaption("カテゴリ")
-	#ALtditem($!result.Detail.GpdbKubunName)
+	#ALtditem($!result.Detail.WbrGpdbKubunName)
 #end
 #if ($!result.displayField('size_col',$type))
 	#ALtdcaption("表示サイズ（横）")

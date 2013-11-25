@@ -63,9 +63,9 @@
 	#end
 	##-----------項目名出力-----------
 	#if ($item.RequiredFlg.toString() == "t")
-		#ALtdcaption("#ALrequired($item.GpdbItemName)")
+		#ALtdcaption("#ALrequired($item.WbrGpdbItemName)")
 	#else
-		#ALtdcaption("$item.GpdbItemName")
+		#ALtdcaption("$item.WbrGpdbItemName")
 	#end
 	##-----------項目出力-----------
 	#if ($type=='02')
@@ -105,7 +105,7 @@
 	#elseif ($type=='08')
 		##自動採番
 		#if($record)
-			#ALtditem("$!record.Value")
+			#ALtditem("$!record.WbrValue")
 		#else
 			#ALtditem("※自動採番")
 		#end
@@ -123,14 +123,14 @@
 	#elseif ($type=='11' || $type=='13')
 		##登録日時、登録者
 		#if($record)
-			#ALtditem("$!record.DispValue")
+			#ALtditem("$!record.WbrDispValue")
 		#else
 			#ALtditem("※登録時に設定")
 		#end
 	#elseif ($type=='12' || $type=='14')
 		##更新日時、更新者
 		#if($record)
-			#ALtditem("$!record.DispValue")
+			#ALtditem("$!record.WbrDispValue")
 		#else
 			#ALtditem("※更新時に設定")
 		#end

@@ -95,7 +95,16 @@ public class GpdbResultData implements ALData {
    * 
    * @return Webデータベース名
    */
-  public String getGpdbName() {
+  public ALStringField getGpdbName() {
+    return gpdb_name;
+  }
+
+  /**
+   * Webデータベース名を取得する(Wbr挿入)
+   * 
+   * @return Webデータベース名
+   */
+  public String getWbrGpdbName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_name.toString());
   }
 
@@ -114,7 +123,16 @@ public class GpdbResultData implements ALData {
    * 
    * @return 作成者名
    */
-  public String getCreateUserName() {
+  public ALStringField getCreateUserName() {
+    return create_user_name;
+  }
+
+  /**
+   * 作成者名を取得する(Wbr挿入)
+   * 
+   * @return 作成者名
+   */
+  public String getWbrCreateUserName() {
     return ALCommonUtils.replaceToAutoCR(create_user_name.toString());
   }
 

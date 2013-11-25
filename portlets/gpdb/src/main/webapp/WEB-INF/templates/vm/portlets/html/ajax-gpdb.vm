@@ -80,11 +80,11 @@
 #ALtdcellfooter()
 #ALtdcellheaderAtt("class='auiMTCaption'")
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbDetailScreen").addQueryData("entityid",$record.GpdbId))');">$!record.GpdbName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbDetailScreen").addQueryData("entityid",$record.GpdbId))');">$!record.WbrGpdbName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellheaderAtt("class='right mb_hide'")
-<div>$!record.CreateUserName</div>
+<div>$!record.WbrCreateUserName</div>
 #ALtdcellfooter()
 #ALtdcellheaderAtt("class='right mb_hide'")
 <div>$!record.CreateDate</div>

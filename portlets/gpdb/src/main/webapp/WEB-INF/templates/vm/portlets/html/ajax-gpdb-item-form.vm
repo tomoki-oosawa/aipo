@@ -63,7 +63,7 @@
 ##------項目名------
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
 #ALtditemheader()
-#ALtextfieldw100mb5('gpdb_item_name' $!result.GpdbItemName 50 'active')
+#ALtextfieldw100mb5('gpdb_item_name' $!result.WbrGpdbItemName 50 'active')
 <div>
 <input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">タイトルにする</label>
 <input name="title_flg" type="hidden" id="title_flg" value="$!result.TitleFlg.toString()" />
@@ -89,7 +89,7 @@
 #ALtditemheader()
 	#ALselectpdheader("gpdb_kubun_id" "" "")
 	#foreach( $record in $result.AllGpdbKubun )
-	<option value="$record.GpdbKubunId" #if ($!result.GpdbKubunId.toString() == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
+	<option value="$record.GpdbKubunId" #if ($!result.GpdbKubunId.toString() == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.WbrGpdbKubunName</option>
 	#end
 	#ALselectfooter()
 #ALtditemfooter()

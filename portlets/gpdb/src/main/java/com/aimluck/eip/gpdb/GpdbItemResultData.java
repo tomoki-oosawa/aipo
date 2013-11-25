@@ -132,7 +132,16 @@ public class GpdbItemResultData implements ALData {
    * 
    * @return 項目名
    */
-  public String getGpdbItemName() {
+  public ALStringField getGpdbItemName() {
+    return gpdb_item_name;
+  }
+
+  /**
+   * 項目名を取得する(Wbr挿入)
+   * 
+   * @return 項目名
+   */
+  public String getWbrGpdbItemName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_item_name.toString());
   }
 
@@ -179,7 +188,16 @@ public class GpdbItemResultData implements ALData {
    * 
    * @return Webデータベース名
    */
-  public String getGpdbName() {
+  public ALStringField getGpdbName() {
+    return gpdb_name;
+  }
+
+  /**
+   * Webデータベース名を取得する(Wbr挿入)
+   * 
+   * @return Webデータベース名
+   */
+  public String getWbrGpdbName() {
     return ALCommonUtils.replaceToAutoCR(gpdb_name.toString());
   }
 
