@@ -531,7 +531,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
@@ -579,7 +579,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
@@ -716,7 +716,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         gpdbItem.getGpdbItemId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「"
           + gpdb.getGpdbName()
           + "」 項目定義 「"
