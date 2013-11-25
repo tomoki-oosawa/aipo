@@ -143,7 +143,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           value.getGpdbKubunValueId(),
           ALEventlogConstants.PORTLET_TYPE_GPDB,
-          "Webデータベース カテゴリマスタ「"
+          "Webデータベース カテゴリ「"
             + Gpdbkubun.getGpdbKubunName()
             + "」 値 「"
             + value.getGpdbKubunValue()

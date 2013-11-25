@@ -369,7 +369,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリマスタ「"
+        "Webデータベース カテゴリ「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()
@@ -466,7 +466,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリマスタ「"
+        "Webデータベース カテゴリ「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()
@@ -535,7 +535,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリマスタ「"
+        "Webデータベース カテゴリ「"
           + gpdbKubun.getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()
