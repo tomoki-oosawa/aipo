@@ -29,6 +29,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -157,8 +158,8 @@ public class GpdbRecordResultData implements ALData {
    * 
    * @return 値
    */
-  public ALStringField getValue() {
-    return value;
+  public String getValue() {
+    return ALCommonUtils.replaceToAutoCR(value.toString());
   }
 
   /**
@@ -176,8 +177,8 @@ public class GpdbRecordResultData implements ALData {
    * 
    * @return 値（表示用）
    */
-  public ALStringField getDispValue() {
-    return disp_value;
+  public String getDispValue() {
+    return ALCommonUtils.replaceToAutoCR(disp_value.toString());
   }
 
   /**

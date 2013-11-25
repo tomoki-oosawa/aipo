@@ -114,8 +114,8 @@ public class GpdbResultData implements ALData {
    * 
    * @return 作成者名
    */
-  public ALStringField getCreateUserName() {
-    return create_user_name;
+  public String getCreateUserName() {
+    return ALCommonUtils.replaceToAutoCR(create_user_name.toString());
   }
 
   /**
