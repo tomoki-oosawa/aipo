@@ -179,6 +179,10 @@ public class GpdbAction extends ALBaseAction {
     GpdbRecordSelectData listData = new GpdbRecordSelectData();
     listData.initField();
     listData.setGpdbId(context, rundata);
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
 
     setTemplate(rundata, "gpdb-record");

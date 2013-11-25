@@ -58,7 +58,7 @@ public class GpdbScreen extends ALVelocityScreen {
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
-        context).getPortletConfig().getInitParameter("p1b-rows")));
+        context).getPortletConfig().getInitParameter("p1c-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-gpdb.vm";
