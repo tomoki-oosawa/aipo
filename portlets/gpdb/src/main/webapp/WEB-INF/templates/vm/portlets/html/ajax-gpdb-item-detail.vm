@@ -45,16 +45,16 @@ $!result.Detail.TypeName
 	#ALtditem($!result.Detail.WbrGpdbKubunName)
 #end
 #if ($!result.displayField('size_col',$type))
-	#ALtdcaption("表示サイズ（横）")
-	#ALtditem("$!{result.Detail.SizeCol} px")
+##	#ALtdcaption("表示サイズ（横）")
+##	#ALtditem("$!{result.Detail.SizeCol} px")
 #end
 #if ($!result.displayField('size_row',$type))
-	#ALtdcaption("表示サイズ（縦）")
-	#ALtditem("$!{result.Detail.SizeRow} px")
+##	#ALtdcaption("表示サイズ（縦）")
+##	#ALtditem("$!{result.Detail.SizeRow} px")
 #end
 #if ($!result.displayField('line',$type))
-	#ALtdcaption("表示行数")
-	#ALtditem("$!{result.Detail.Line} 行")
+##	#ALtdcaption("表示行数")
+##	#ALtditem("$!{result.Detail.Line} 行")
 #end
 #if ($!result.displayField('required',$type))
 	#ALtdcaption("必須")
