@@ -27,7 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.gpdb.GpdbSelectData;
+import com.aimluck.eip.gpdb.GpdbRecordSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -52,8 +52,9 @@ public class GpdbTopScreen extends GpdbScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
 
-      GpdbSelectData listData = new GpdbSelectData();
+      GpdbRecordSelectData listData = new GpdbRecordSelectData();
       listData.initField();
+      listData.setGpdbId(context, rundata);
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));

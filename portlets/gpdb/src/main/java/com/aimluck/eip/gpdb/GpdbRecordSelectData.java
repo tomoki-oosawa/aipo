@@ -396,9 +396,8 @@ public class GpdbRecordSelectData extends
     String gpdbId = rundata.getParameters().getString("filter", "");
     String filterType = rundata.getParameters().getString("filtertype", "");
     List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
-    if ((gpdbId != null && !"".equals(gpdbId)) && "gpdb_id".equals(filterType)) {
+    if ((gpdbId != null && !"".equals(gpdbId)) && "gpdb_id".equals(filterType)) { // 最大化画面でデータベース選択した場合と詳細画面
       for (GpdbResultData gpdb : gpdbAllList) {
-
         if (gpdb.getGpdbId().toString().equals(gpdbId)) {
           this.gpdbId = gpdbId;
         }
@@ -414,26 +413,11 @@ public class GpdbRecordSelectData extends
             this.gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
           }
         }
-      } else {
-        String filter =
-          ALEipUtils
-            .getPortlet(rundata, context)
-            .getPortletConfig()
-            .getInitParameter("p3a-category");
-        if (filter == null || "".equals(filter)) {
-          return;
-        }
-        for (GpdbResultData gpdb : gpdbAllList) {
-          if (gpdb.getGpdbId().toString().equals(filter)) {
-            this.gpdbId = filter;
-            ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, filter);
-            ALEipUtils.setTemp(
-              rundata,
-              context,
-              LIST_FILTER_TYPE_STR,
-              "gpdb_id");
-
-          }
+      }
+      if (this.gpdbId == null) {
+        if (gpdbAllList != null && gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
+          this.gpdbId = gpdbAllList.get(0).gpdb_id.toString();
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, this.gpdbId);
         }
       }
     }

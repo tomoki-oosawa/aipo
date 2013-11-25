@@ -27,7 +27,7 @@
 
     ptConfig['$!portlet.ID'] = {
     	group:"gpdb",
-    	initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemValueScreen"))',
+    	initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbTopScreen"))',
     	reloadFunction:aipo.reloadPage};
 
 //]]>

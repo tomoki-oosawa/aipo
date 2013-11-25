@@ -33,7 +33,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.gpdb.GpdbRecordSelectData;
-import com.aimluck.eip.gpdb.GpdbSelectData;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -88,6 +87,18 @@ public class GpdbAction extends ALBaseAction {
 
     // セッション情報のクリア
     clearSession(rundata, context);
+    String filter =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-category");
+
+    if (filter != null && !"0".equals(filter)) {
+      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-category"));
+    }
 
     if (ALEipConstants.MODE_LIST.equals(getMode())) {
       doGpdb_list(rundata, context);
@@ -107,8 +118,9 @@ public class GpdbAction extends ALBaseAction {
    *           例外
    */
   public void doGpdb_list(RunData rundata, Context context) throws Exception {
-    GpdbSelectData listData = new GpdbSelectData();
+    GpdbRecordSelectData listData = new GpdbRecordSelectData();
     listData.initField();
+    listData.setGpdbId(context, rundata);
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()
@@ -130,6 +142,19 @@ public class GpdbAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
+    String filter =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-category");
+
+    if (filter != null && !"0".equals(filter)) {
+      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p3a-category"));
+    }
+
     try {
       if (getMode() == null) {
         doGpdbRecord_list(rundata, context);

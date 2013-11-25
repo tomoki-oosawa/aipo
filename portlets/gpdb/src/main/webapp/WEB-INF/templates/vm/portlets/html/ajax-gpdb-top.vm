@@ -29,26 +29,46 @@
 #if($result.GpdbSum == 0)
 <div class="message">データベースが登録されていません。</div>
 #else
-#AUISummaryDiv()
+#if($result.List.size() == 0)
+<div class="message">指定された条件に該当するレコードはありません。</div>
+#else
+<div class="auiSummaryMeta clearfix mt0">
 #AUIajaxpageview('GpdbTopScreen' $result)
-#AUISummaryDivfooter()
+</div>
 <table class="auiRowTable wide">
-<colgroup style=""></colgroup>
-<colgroup style="width:6em;" />
-<tbody>
-#foreach ($record in $result.List)
-	<tr>
-	#ALtdcellheader()
-	<div>
-	<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbTopRecordListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))','$!portlet.ID');">$!record.GpdbName</a>
-	</div>
-	#ALtdcellfooter()
-	#ALtdcellheader()
-	<div class="right">$record.RecordCnt</div>
-	#ALtdcellfooter()
-	</tr>
-#end
+	<tbody>
+	#set($titleItemId = "")
+	#foreach($item in $result.GpdbItemList)
+		#if ($item.TitleFlg.toString()=='t')
+			#set($titleItemId = $!item.GpdbItemId.toString())
+		#end
+	#end
+	#set($recordNo = "")
+	#foreach($record in $result.List)
+		#if($recordNo.toString() != $record.RecordNo.toString())
+			#if($velocityCount > 1)
+				</tr>
+			#end
+			<tr>
+			#set($recordNo = $record.RecordNo.toString())
+		#end
+		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
+			<td class="auiMTCaption">
+			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.DispValue</a>
+			</td>
+		#elseif ($item.TitleFlg.toString()=='t')
+			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
+		#else
+			#ALtdcellAtt($!record.DispValue 'class="mb_hide"')
+		#end
+		#if($velocityCount == $result.List.size())
+			##最終行の場合
+			<!--最後！-->
+			</tr>
+		#end
+	#end
+    </tbody>
 </table>
 #end
-#ALformfooter()
+#end
 #AUIcontentsAreaFooter()
