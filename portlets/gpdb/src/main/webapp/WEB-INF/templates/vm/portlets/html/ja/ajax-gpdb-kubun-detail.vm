@@ -25,7 +25,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader("カテゴリ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("gpdbKubunForm")
+#ALajaxdetailformheader("カテゴリ")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
 #ALtdcaption("カテゴリ名")
