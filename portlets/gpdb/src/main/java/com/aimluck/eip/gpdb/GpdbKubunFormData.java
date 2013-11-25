@@ -46,6 +46,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -594,12 +595,30 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   }
 
   /**
+   * 区分マスタ名を取得します。(Wbr挿入)
+   * 
+   * @return　区分マスタ名を
+   */
+  public String getWbrGpdbKubunName() {
+    return ALCommonUtils.replaceToAutoCRString(gpdb_kubun_name.toString());
+  }
+
+  /**
    * 区分値を取得します。
    * 
    * @return　区分値
    */
   public ALStringField getGpdbKubunValue() {
     return gpdb_kubun_value;
+  }
+
+  /**
+   * 区分値を取得します。(Wbr挿入)
+   * 
+   * @return　区分値
+   */
+  public String getWbrGpdbKubunValue() {
+    return ALCommonUtils.replaceToAutoCRString(gpdb_kubun_value.toString());
   }
 
   /**

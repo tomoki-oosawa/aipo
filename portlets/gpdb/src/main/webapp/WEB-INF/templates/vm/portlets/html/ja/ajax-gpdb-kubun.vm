@@ -43,7 +43,7 @@
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="max-width: 180px">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべてのカテゴリ</option>
 #foreach( $record in $result.AllGpdbKubun )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.WbrGpdbKubunName</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
 #end
 </select>
 #end

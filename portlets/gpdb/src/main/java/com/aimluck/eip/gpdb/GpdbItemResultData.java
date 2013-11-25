@@ -316,6 +316,15 @@ public class GpdbItemResultData implements ALData {
   }
 
   /**
+   * 区分マスタ名を取得する(Wbr挿入)
+   * 
+   * @return 区分マスタ名
+   */
+  public String getWbrGpdbKubunName() {
+    return ALCommonUtils.replaceToAutoCRString(gpdb_kubun_name.toString());
+  }
+
+  /**
    * 区分マスタ名を設定する
    * 
    * @param string
