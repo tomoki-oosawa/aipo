@@ -249,7 +249,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
           query.andQualifier(ExpressionFactory.matchExp(
             EipMGpdbKubunValue.GPDB_KUBUN_PROPERTY,
-            gpdb_kubun_id));
+            gpdb_kubun_id.getValue()));
 
           if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
             query.andQualifier(ExpressionFactory.noMatchDbExp(
