@@ -27,7 +27,7 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.GpdbKubunValueList) || $result.GpdbKubunValueList.size() == 0)
-<div class="message">カテゴリは登録されていません。</div>
+<div class="message">選択項目は登録されていません。</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した値の順番を自由に変更できます。<br>

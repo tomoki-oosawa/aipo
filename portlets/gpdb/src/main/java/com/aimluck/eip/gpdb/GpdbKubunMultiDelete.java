@@ -92,7 +92,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
           GpdbUtils.getRecordCountKubunUsed("" + value.getGpdbKubunValueId());
         if (kubunCount > 0) {
           // Webデータベースレコードが登録されている場合
-          msgList.add("カテゴリ 『"
+          msgList.add("選択項目 『"
             + Gpdbkubun.getGpdbKubunName()
             + "』 の値 『"
             + value.getGpdbKubunValue()
@@ -116,7 +116,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
               List<GpdbKubunValueResultData> valList =
                 GpdbUtils.getGpdbKubunValueList("" + kubunId);
               if (valList != null && !valList.isEmpty()) {
-                msgList.add("カテゴリ 『"
+                msgList.add("選択項目 『"
                   + Gpdbkubun.getGpdbKubunName()
                   + "』 は項目定義されているため、全ての値は削除できません。");
               }
@@ -143,7 +143,7 @@ public class GpdbKubunMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           value.getGpdbKubunValueId(),
           ALEventlogConstants.PORTLET_TYPE_GPDB,
-          "Webデータベース カテゴリ「"
+          "Webデータベース 選択項目「"
             + Gpdbkubun.getGpdbKubunName()
             + "」 値 「"
             + value.getGpdbKubunValue()

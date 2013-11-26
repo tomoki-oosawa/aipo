@@ -164,7 +164,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
     type.setNotNull(true);
     // 区分ID
     gpdb_kubun_id = new ALNumberField();
-    gpdb_kubun_id.setFieldName("カテゴリ");
+    gpdb_kubun_id.setFieldName("選択項目");
     gpdb_kubun_id.setNotNull(true);
     // 一覧画面表示フラグ
     list_flg = new ALStringField();
@@ -326,7 +326,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
 
           if (GpdbUtils.DISP_FIELD_SELECT_ITEM.contains(type.getValue())
             && gpdbItem.getGpdbKubunId() != gpdb_kubun_id.getValue()) {
-            msgList.add("既にデータが存在するためカテゴリは変更できません。");
+            msgList.add("既にデータが存在するため選択項目は変更できません。");
           }
         }
       }

@@ -31,17 +31,17 @@
 #set ($orderGpdbKubun = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunChangeTurnFormScreen").addQueryData("gpdb_kubun_id",$gpdbKubunId))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>カテゴリの管理</h2>
+<h2>選択項目の管理</h2>
 #AUISummaryDiv()
 <div class="floatLeft">
 #if($result.getAllGpdbKubunValueSum() != 0)
-#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("選択項目を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #end
 </div>
 <div class="floatRight">
 #if($result.getAllGpdbKubunValueSum() != 0)
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="max-width: 180px">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべてのカテゴリ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべての選択項目</option>
 #foreach( $record in $result.AllGpdbKubun )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
 #end
@@ -56,12 +56,12 @@
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("カテゴリを追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("選択項目を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
 #elseif($result.List.size() == 0)
-指定された条件に該当するカテゴリはありません。<br />
+指定された条件に該当する選択項目はありません。<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -80,8 +80,8 @@
 <tbody>
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'class="auiMTCheck center"')
-##ALtdhead("#ALajaxsort('gpdb_kubun_name' 'カテゴリ' $result 'GpdbKubunListScreen')")
-#ALtdhead("カテゴリ")
+##ALtdhead("#ALajaxsort('gpdb_kubun_name' '選択項目' $result 'GpdbKubunListScreen')")
+#ALtdhead("選択項目")
 #ALtdhead("値")
 </tr>
 #foreach ($record in $result.List)

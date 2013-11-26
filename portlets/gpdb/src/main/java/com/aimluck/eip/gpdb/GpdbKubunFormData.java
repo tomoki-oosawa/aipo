@@ -114,10 +114,10 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   public void initField() {
     // 区分ID
     gpdb_kubun_id = new ALStringField();
-    gpdb_kubun_id.setFieldName("カテゴリ");
+    gpdb_kubun_id.setFieldName("選択項目");
     // 区分名
     gpdb_kubun_name = new ALStringField();
-    gpdb_kubun_name.setFieldName("カテゴリ");
+    gpdb_kubun_name.setFieldName("選択項目");
     gpdb_kubun_name.setTrim(true);
     // 区分値
     gpdb_kubun_value = new ALStringField();
@@ -197,14 +197,14 @@ public class GpdbKubunFormData extends ALAbstractFormData {
             || !gpdbKubunValue.getGpdbKubunId().toString().equals(
               gpdb_kubun_id.getValue())) {
             // 別の区分が入力された場合
-            msgList.add("登録されている値のためカテゴリは変更できません。");
+            msgList.add("登録されている値のため選択項目は変更できません。");
             return false;
           }
         }
 
         if (existsItemAndLastKubun(gpdbKubunValue.getGpdbKubunId())) {
           // 項目定義されている区分でかつ区分値が1件のみの場合
-          msgList.add("項目定義されているカテゴリのため、別のカテゴリに変更できません。");
+          msgList.add("項目定義されている選択項目のため、別の選択項目に変更できません。");
           return false;
         }
       }
@@ -225,7 +225,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
             gpdb_kubun_name.getValue()));
 
           if (!query.fetchList().isEmpty()) {
-            msgList.add("カテゴリ『 <span class='em'>"
+            msgList.add("選択項目『 <span class='em'>"
               + gpdb_kubun_name.toString()
               + "</span> 』は既に登録されています。");
           }
@@ -331,7 +331,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
       int orderNo = 1;
       if (is_new_kubun) {
-        // カテゴリの登録処理
+        // 選択項目の登録処理
         if (!insertKubunData(msgList)) {
           return false;
         }
@@ -370,7 +370,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリ「"
+        "Webデータベース 選択項目「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()
@@ -467,7 +467,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリ「"
+        "Webデータベース 選択項目「"
           + value.getGpdbKubun().getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()
@@ -515,7 +515,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
         if (existsItemAndLastKubun(value.getGpdbKubunId())) {
           // 項目定義されている区分でかつ区分値が1件のみの場合
-          msgList.add("項目定義されているカテゴリのため、全ての値は削除できません。");
+          msgList.add("項目定義されている選択項目のため、全ての値は削除できません。");
           return false;
         }
       }
@@ -536,7 +536,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         value.getGpdbKubunValueId(),
         ALEventlogConstants.PORTLET_TYPE_GPDB,
-        "Webデータベース カテゴリ「"
+        "Webデータベース 選択項目「"
           + gpdbKubun.getGpdbKubunName()
           + "」 値 「"
           + value.getGpdbKubunValue()

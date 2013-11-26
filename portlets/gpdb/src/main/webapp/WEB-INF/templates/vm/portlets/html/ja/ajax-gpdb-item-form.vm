@@ -78,14 +78,14 @@
 #end
 #ALselectfooter()
 <div id="type_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
-##<input name="gpdb_kubun_use_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}gpdb_kubun_use_flg_id" #if($!result.GpdbKubunUseFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'gpdb_kubun_use_flg');aipo.gpdb.formKubunUseCheck();"/>&nbsp;<label for="$!{portlet.ID}gpdb_kubun_use_flg_id">選択肢にカテゴリマスタを使用する</label>
+##<input name="gpdb_kubun_use_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}gpdb_kubun_use_flg_id" #if($!result.GpdbKubunUseFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'gpdb_kubun_use_flg');aipo.gpdb.formKubunUseCheck();"/>&nbsp;<label for="$!{portlet.ID}gpdb_kubun_use_flg_id">選択肢に選択項目マスタを使用する</label>
 <input name="gpdb_kubun_use_flg" type="hidden" id="gpdb_kubun_use_flg" value="$!result.GpdbKubunUseFlg.toString()" />
 </div>
 #ALtditemfooter()
 ##------区分マスタ------
 ##  <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type) || $!result.GpdbKubunUseFlg.toString() != "t") style="display:none;"#end>
     <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
-      <td class="caption">#ALrequired('カテゴリ')</td>
+      <td class="caption">#ALrequired('選択項目')</td>
 #ALtditemheader()
 	#ALselectpdheader("gpdb_kubun_id" "" "")
 	#foreach( $record in $result.AllGpdbKubun )

@@ -43,7 +43,7 @@ public class GpdbAllListBox extends ListBox {
    */
   @Override
   protected void init(RunData data) {
-    // カテゴリ一覧を取得
+    // 選択項目一覧を取得
     List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
     int length = 1 + gpdbAllList.size();
     String[] categoryKeys = new String[length];
@@ -53,7 +53,7 @@ public class GpdbAllListBox extends ListBox {
     categoryValues[0] = (String) this.getParm(INITIAL_VALUE, DEF_INITIAL_VALUE);
     int count = 1;
 
-    // カテゴリの登録
+    // 選択項目の登録
     GpdbResultData gpdbData = null;
     Iterator<GpdbResultData> iter = gpdbAllList.iterator();
     while (iter.hasNext()) {

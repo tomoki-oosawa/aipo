@@ -23,12 +23,12 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("カテゴリ詳細")
+#ALdialogheader("選択項目詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("カテゴリ")
+#ALajaxdetailformheader("選択項目")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
-#ALtdcaption("カテゴリ名")
+#ALtdcaption("選択項目")
 #ALtditemheader()
 $!result.Detail.WbrGpdbKubunName
 #ALtditemfooter()

@@ -41,7 +41,7 @@ $!result.Detail.WbrGpdbItemName
 $!result.Detail.TypeName
 #ALtditemfooter()
 #if ($!result.displayField('select_kubun',$type))
-	#ALtdcaption("カテゴリ")
+	#ALtdcaption("選択項目")
 	#ALtditem($!result.Detail.WbrGpdbKubunName)
 #end
 #if ($!result.displayField('size_col',$type))
