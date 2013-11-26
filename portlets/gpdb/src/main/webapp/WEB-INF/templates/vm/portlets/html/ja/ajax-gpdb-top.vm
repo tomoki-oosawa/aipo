@@ -33,7 +33,16 @@
 <div class="message">指定された条件に該当するレコードはありません。</div>
 #else
 <div class="auiSummaryMeta clearfix mt0">
-#AUIajaxpageview('GpdbTopScreen' $result)
+  <div class="floatLeft">
+      <div class="caption">
+	#foreach( $record in $result.GpdbAllList )
+	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName
+	#end
+#end</div>
+  </div>
+  <div class="floatRight">
+     #AUIajaxpageview('GpdbTopScreen' $result)
+  </div>
 </div>
 <table class="auiRowTable wide">
 	<tbody>
