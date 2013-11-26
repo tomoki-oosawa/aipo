@@ -62,10 +62,15 @@
 		#set ($sizeRow = "100px")
 	#end
 	##-----------項目名出力-----------
-	#if ($item.RequiredFlg.toString() == "t")
-		#ALtdcaption("#ALrequired($item.WbrGpdbItemName)")
+
+
+	#if (($type=='11' || $type=='13' || $type=='12' || $type=='14') && !$record)
 	#else
-		#ALtdcaption("$item.WbrGpdbItemName")
+    	#if ($item.RequiredFlg.toString() == "t")
+    		#ALtdcaption("#ALrequired($item.WbrGpdbItemName)")
+    	#else
+    		#ALtdcaption("$item.WbrGpdbItemName")
+    	#end
 	#end
 	##-----------項目出力-----------
 	#if ($type=='02')
@@ -125,14 +130,14 @@
 		#if($record)
 			#ALtditem("$!record.WbrDispValue")
 		#else
-			#ALtditem("※登録時に設定")
+##			#ALtditem("※登録時に設定")
 		#end
 	#elseif ($type=='12' || $type=='14')
 		##更新日時、更新者
 		#if($record)
 			#ALtditem("$!record.WbrDispValue")
 		#else
-			#ALtditem("※更新時に設定")
+##			#ALtditem("※更新時に設定")
 		#end
 	#else
 		##テキスト、リンク、メール
