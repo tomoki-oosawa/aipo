@@ -119,6 +119,10 @@ public class GpdbRecordSelectData extends
       gpdbAllList = GpdbUtils.getGpdbAllList();
       // セッション情報を設定
       setCurrentFilterAndSort(rundata, context);
+      if (gpdbAllList == null || gpdbAllList.size() == 0) {
+        // データベース未登録時
+        return null;
+      }
 
       // -----------------------
       // 項目定義を取得
