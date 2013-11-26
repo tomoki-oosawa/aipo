@@ -349,7 +349,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
             Database.query(EipTGpdbRecord.class);
           querySeq.setQualifier(ExpressionFactory.matchExp(
             EipTGpdbRecord.GPDB_ITEM_PROPERTY,
-            item.getGpdbItemId()));
+            item.getGpdbItemId().getValue()));
           querySeq.orderDesending(EipTGpdbRecord.RECORD_NO_PROPERTY);
           EipTGpdbRecord maxSeqObj = querySeq.fetchSingle();
 
