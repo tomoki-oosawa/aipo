@@ -407,6 +407,10 @@ public class WebMailFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
 
+    mailType.setValue(rundata.getParameters().getInt(
+      WebMailUtils.MAIL_TYPE,
+      TYPE_NEW_MAIL));
+
     try {
       ALLocalMailMessage msg =
         (ALLocalMailMessage) WebMailUtils.getSelectedLocalMailMessage(
@@ -416,10 +420,6 @@ public class WebMailFormData extends ALAbstractFormData {
       if (msg == null) {
         return false;
       }
-
-      mailType.setValue(rundata.getParameters().getInt(
-        WebMailUtils.MAIL_TYPE,
-        TYPE_NEW_MAIL));
 
       String tmpSubject = null;
       if (getMailType().getValue() == TYPE_NEW_MAIL) {
@@ -438,15 +438,13 @@ public class WebMailFormData extends ALAbstractFormData {
         tmpSubject = msg.getSubject();
       } else if (getMailType().getValue() == TYPE_REPLY_MAIL) {
         // TO
-        Address[] tos = msg.getFrom();
-        this.setTo(ALMailUtils.getAddressString(tos));
-
+        this.setTo(ALMailUtils.getFromDelegateExtract(msg));
         tmpSubject = "Re: " + msg.getSubject();
       } else if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
         tmpSubject = "Fwd: " + msg.getSubject();
       } else if (getMailType().getValue() == TYPE_REPLY_ALL_MAIL) {
         // TO
-        Address[] from = msg.getFrom();
+        Address[] from = ALMailUtils.getFromDelegateExtractForAddress(msg);
         Address[] to = msg.getRecipients(Message.RecipientType.TO, false);
 
         EipMMailAccount myaccount =

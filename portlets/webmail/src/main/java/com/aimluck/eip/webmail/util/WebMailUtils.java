@@ -151,7 +151,8 @@ public class WebMailUtils {
     ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountId);
     ALMailMessage msg = folder.getMail(Integer.valueOf(mailid));
 
-    if (WebMailFormData.TYPE_REPLY_MAIL == mailType) {
+    if (WebMailFormData.TYPE_REPLY_MAIL == mailType
+      || WebMailFormData.TYPE_REPLY_ALL_MAIL == mailType) {
       return ALMailUtils.getReplyMessage(msg);
     } else if (WebMailFormData.TYPE_FORWARD_MAIL == mailType) {
       return ALMailUtils.getForwardMessage(msg);
