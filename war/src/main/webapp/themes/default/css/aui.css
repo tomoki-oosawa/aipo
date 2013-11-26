@@ -1830,6 +1830,10 @@ input.auiButtonSearch.active {
   margin: 10px 0;
   vertical-align: middle;
 }
+.auiSummaryMeta .caption {
+  padding: 8px 0;
+  font-weight: bold;
+}
 
 *:first-child + html .auiSummaryMeta {
   overflow: hidden;

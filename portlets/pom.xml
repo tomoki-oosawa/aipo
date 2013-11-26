@@ -54,6 +54,8 @@
     <module>whatsnew</module>
     <module>workflow</module>
     <module>gadgets</module>
+    <module>gpdb</module>
+    <module>fileuploadadv</module>
   </modules>
 
   <dependencies>
