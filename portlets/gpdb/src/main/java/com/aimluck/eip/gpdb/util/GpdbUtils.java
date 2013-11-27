@@ -791,7 +791,7 @@ public class GpdbUtils {
         } else if (ITEM_TYPE_CREATE_USER.equals(type)
           || ITEM_TYPE_UPDATE_USER.equals(type)) {
           // 登録者、更新者の場合、名称をセットする
-          if (value != null && !"".equals(value.trim())) {
+          if (!"".equals(value.trim())) {
             Integer userid = Integer.valueOf(value);
             value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
           }
