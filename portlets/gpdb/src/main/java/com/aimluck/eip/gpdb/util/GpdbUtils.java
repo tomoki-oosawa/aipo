@@ -975,7 +975,7 @@ public class GpdbUtils {
   public static EipMGpdbKubun getEipMGpdbKubun(Integer gpdbKubunId) {
     try {
 
-      if (gpdbKubunId == null || "".equals(gpdbKubunId)) {
+      if (gpdbKubunId == null) {
         return null;
       }
 
