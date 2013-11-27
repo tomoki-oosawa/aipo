@@ -236,7 +236,8 @@ public class GpdbRecordSelectData extends
 
       // ページャ情報反映
       return new ResultList<EipTGpdbRecord>(buildPaginatedList(list));
-
+    } catch (RuntimeException ex) {
+      throw ex;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
