@@ -1075,85 +1075,6 @@ CREATE TABLE `eip_t_acl_map` (
   PRIMARY KEY (`acl_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `eip_m_gpdb_kubun` (
-  `gpdb_kubun_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gpdb_kubun_name` text COLLATE utf8_unicode_ci NOT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`gpdb_kubun_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO eip_m_gpdb_kubun VALUES (1, '都道府県', now(), now());
-
-CREATE TABLE `eip_m_gpdb_kubun_value` (
-  `gpdb_kubun_value_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gpdb_kubun_id` int(11) NOT NULL,
-  `gpdb_kubun_value` text COLLATE utf8_unicode_ci NOT NULL,
-  `order_no` int(11) NOT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`gpdb_kubun_value_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO eip_m_gpdb_kubun_value VALUES (1, 1, '北海道', 1, now(), now()),(2, 1, '青森県', 2, now(), now()),(3, 1, '岩手県', 3, now(), now()),(4, 1, '宮城県', 4, now(), now()),(5, 1, '秋田県', 5, now(), now()),(6, 1, '山形県', 6, now(), now()),(7, 1, '福島県', 7, now(), now()),(8, 1, '茨城県', 8, now(), now()),(9, 1, '栃木県', 9, now(), now()),(10, 1, '群馬県', 10, now(), now()),(11, 1, '埼玉県', 11, now(), now()),(12, 1, '千葉県', 12, now(), now()),(13, 1, '東京都', 13, now(), now()),(14, 1, '神奈川県', 14, now(), now()),(15, 1, '新潟県', 15, now(), now()),(16, 1, '富山県', 16, now(), now()),(17, 1, '石川県', 17, now(), now()),(18, 1, '福井県', 18, now(), now()),(19, 1, '山梨県', 19, now(), now()),(20, 1, '長野県', 20, now(), now()),(21, 1, '岐阜県', 21, now(), now()),(22, 1, '静岡県', 22, now(), now()),(23, 1, '愛知県', 23, now(), now()),(24, 1, '三重県', 24, now(), now()),(25, 1, '滋賀県', 25, now(), now()),(26, 1, '京都府', 26, now(), now()),(27, 1, '大阪府', 27, now(), now()),(28, 1, '兵庫県', 28, now(), now()),(29, 1, '奈良県', 29, now(), now()),(30, 1, '和歌山県', 30, now(), now()),(31, 1, '鳥取県', 31, now(), now()),(32, 1, '島根県', 32, now(), now()),(33, 1, '岡山県', 33, now(), now()),(34, 1, '広島県', 34, now(), now()),(35, 1, '山口県', 35, now(), now()),(36, 1, '徳島県', 36, now(), now()),(37, 1, '香川県', 37, now(), now()),(38, 1, '愛媛県', 38, now(), now()),(39, 1, '高知県', 39, now(), now()),(40, 1, '福岡県', 40, now(), now()),(41, 1, '佐賀県', 41, now(), now()),(42, 1, '長崎県', 42, now(), now()),(43, 1, '熊本県', 43, now(), now()),(44, 1, '大分県', 44, now(), now()),(45, 1, '宮崎県', 45, now(), now()),(46, 1, '鹿児島県', 46, now(), now()),(47, 1, '沖縄県', 47, now(), now());
-
-CREATE TABLE `eip_t_gpdb` (
-  `gpdb_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gpdb_name` text COLLATE utf8_unicode_ci NOT NULL,
-  `mail_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `create_user_id` int(11) NOT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`gpdb_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `eip_t_gpdb_item` (
-  `gpdb_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gpdb_id` int(11) NOT NULL,
-  `gpdb_item_name` text COLLATE utf8_unicode_ci NOT NULL,
-  `title_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `required_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
-  `gpdb_kubun_id` int(11) DEFAULT NULL,
-  `list_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `detail_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `size_col` int(11) DEFAULT NULL,
-  `size_row` int(11) DEFAULT NULL,
-  `line` int(11) DEFAULT NULL,
-  `order_no` int(11) NOT NULL,
-  `default_sort_flg` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
-  `asc_desc` varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `create_user_id` int(11) NOT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`gpdb_item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `eip_t_gpdb_record` (
-  `gpdb_record_id` int(11) NOT NULL AUTO_INCREMENT,
-  `gpdb_id` int(11) NOT NULL,
-  `gpdb_item_id` int(11) NOT NULL,
-  `record_no` int(11) NOT NULL,
-  `value` text COLLATE utf8_unicode_ci,
-  `create_user_id` int(11) NOT NULL,
-  `update_user_id` int(11) NOT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`gpdb_record_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `eip_t_gpdb_record_file` (
-  `file_id` int(11) NOT NULL AUTO_INCREMENT,
-  `owner_id` int(11) DEFAULT NULL,
-  `gpdb_record_id` int(11) DEFAULT NULL,
-  `file_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `file_path` text COLLATE utf8_unicode_ci NOT NULL,
-  `file_thumbnail` blob,
-  `create_date` date DEFAULT NULL,
-  `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1225,6 +1146,4 @@ ALTER TABLE `eip_t_timeline_map` ADD FOREIGN KEY (  `timeline_id` ) REFERENCES  
 ALTER TABLE `eip_m_config` ADD INDEX (`name`);
 
 ALTER TABLE `container_config` ADD INDEX (`name`);
-
-ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 
