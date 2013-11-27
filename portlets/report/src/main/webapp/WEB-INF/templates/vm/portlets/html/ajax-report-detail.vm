@@ -69,6 +69,15 @@ $!record.AliasName<br />
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
 <a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.URLEncodedValue})">$attachmentFile.FileName</a><br>
+#if($attachmentFile.isImage())
+<div style="padding-top:3px;padding-left:12px;">
+	<div id='popc' style='position:absolute'></div>
+	<div class="thumbBlock">
+		<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+		<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+	</div>
+</div>
+#end
 #end
 #ALtditemfooter()
 #end
@@ -111,14 +120,22 @@ $!record.AliasName
 #end
 #end
 </div>
-</div>
 <div>
 ${record.Note}
 #if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
 <div style="padding-top:15px;">
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <div style="padding-top:5px;">
-<img src="images/msgboard/msgboard_item.gif">&nbsp;<a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+<img src="images/report/report_item.gif">&nbsp;<a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+#if($attachmentFile.isImage())
+<div style="padding-top:3px;padding-left:12px;">
+	<div id='popc' style='position:absolute'></div>
+	<div class="thumbBlock">
+		<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+		<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+	</div>
+</div>
+#end
 </div>
 #end
 </div>
