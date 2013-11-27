@@ -570,9 +570,6 @@ public class GpdbKubunFormData extends ALAbstractFormData {
     // 区分値リストを取得
     List<GpdbKubunValueResultData> valList =
       GpdbUtils.getGpdbKubunValueList("" + kubunId);
-    if (valList == null) {
-      return false;
-    }
     return (valList.size() <= 1);
   }
 
