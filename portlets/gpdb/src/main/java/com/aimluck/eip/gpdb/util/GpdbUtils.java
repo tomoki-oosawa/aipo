@@ -807,8 +807,7 @@ public class GpdbUtils {
       rd.setDispValue(value);
       rd.setValueList(valueList);
       return rd;
-    } catch (RuntimeException ex) {
-      throw ex;
+
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return null;
