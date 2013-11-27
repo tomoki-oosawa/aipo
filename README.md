@@ -9,4 +9,4 @@ Javaで構築したオープンソースグループウェアです。パソコ�
 
 ライセンス
 ----------
-[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+[AGPLv3](http://ja.wikipedia.org/wiki/Affero_General_Public_License)
