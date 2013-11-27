@@ -87,7 +87,7 @@
     <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
       <td class="caption">#ALrequired('選択項目')</td>
 #ALtditemheader()
-	#ALselectpdheader("gpdb_kubun_id" "" "")
+	#ALselectpdheaderw100("gpdb_kubun_id" "")
 	#foreach( $record in $result.AllGpdbKubun )
 	<option value="$record.GpdbKubunId" #if ($!result.GpdbKubunId.toString() == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
 	#end
