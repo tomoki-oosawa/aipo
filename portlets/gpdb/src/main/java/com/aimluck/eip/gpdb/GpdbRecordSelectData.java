@@ -182,7 +182,7 @@ public class GpdbRecordSelectData extends
         EipTGpdbItem item = GpdbUtils.getEipTGpdbItem("" + sort);
         if (GpdbUtils.ITEM_TYPE_SEQ.equals(item.getType())) {
           // 自動採番項目の場合は数値として扱う
-          sortValue = "r2.value::integer";
+          sortValue = Database.castToIntRawColumn("r2.value");
           nullSort = " IS NULL ";
         } else {
           sortValue = "r2.value";
