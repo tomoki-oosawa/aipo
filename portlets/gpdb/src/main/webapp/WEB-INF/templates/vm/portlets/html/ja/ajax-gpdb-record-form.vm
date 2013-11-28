@@ -67,9 +67,9 @@
 	#if (($type=='11' || $type=='13' || $type=='12' || $type=='14') && !$record)
 	#else
     	#if ($item.RequiredFlg.toString() == "t")
-    		#ALtdcaption("#ALrequired($item.WbrGpdbItemName)")
+			#ALtdcaptionAtt("#ALrequired($item.WbrGpdbItemName)" "style='word-break: break-all;white-space: normal;'")
     	#else
-    		#ALtdcaption("$item.WbrGpdbItemName")
+			#ALtdcaptionAtt("$item.WbrGpdbItemName" "style='word-break: break-all;white-space: normal;'")
     	#end
 	#end
 	##-----------項目出力-----------
