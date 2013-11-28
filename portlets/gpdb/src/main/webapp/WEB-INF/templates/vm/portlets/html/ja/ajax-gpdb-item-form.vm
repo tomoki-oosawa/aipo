@@ -136,7 +136,7 @@
 #ALtdcaption("$!result.getFieldName('default_sort_flg')")
 #ALtditemheader()
 <div>
-<input name="default_sort_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}default_sort_flg_id" #if($!result.DefaultSortFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'default_sort_flg');aipo.gpdb.checkOnSort(this)"/>&nbsp;<label for="$!{portlet.ID}default_sort_flg_id">ソート項目に指定する</label>
+<input name="default_sort_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}default_sort_flg_id" #if($!result.DefaultSortFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'default_sort_flg');aipo.gpdb.checkOnSort(this)"/>&nbsp;<label for="$!{portlet.ID}default_sort_flg_id">ソート項目に指定する</label>
 <input name="default_sort_flg" type="hidden" id="default_sort_flg" value="$!result.DefaultSortFlg.toString()" />
 </div>
 <div id="tr_asc_desc"#if ($!result.DefaultSortFlg.toString() != "t") style="display:none;"#end>
