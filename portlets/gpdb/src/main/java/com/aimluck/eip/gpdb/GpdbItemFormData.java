@@ -879,4 +879,13 @@ public class GpdbItemFormData extends ALAbstractFormData {
     return GpdbUtils.dipslayField(field, type);
   }
 
+  /**
+   * Webデータベースを取得します。
+   * 
+   * @return Webデータベース
+   */
+  public EipTGpdb getGpdb() {
+    return gpdb;
+  }
+
 }

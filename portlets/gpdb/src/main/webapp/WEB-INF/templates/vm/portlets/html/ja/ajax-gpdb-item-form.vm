@@ -60,6 +60,9 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
+##------対象データベース------
+#ALtdcaption("データベース名")
+#ALtditem($result.Gpdb.GpdbName)
 ##------項目名------
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
 #ALtditemheader()

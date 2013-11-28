@@ -28,6 +28,10 @@
 <div class="auiWidget clearfix widgetButton">
 #AUIbuttonAction("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadGpdbDialog);")
 </div>
+#else
+<div class="auiWidget clearfix widgetButton">
+#AUIbutton("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadGpdbDialog);")
+</div>
 #end
 <div id="subNavigation">
 <div class="auiWidget clearfix">

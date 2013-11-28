@@ -715,4 +715,13 @@ public class GpdbRecordFormData extends ALAbstractFormData {
     return folderName;
   }
 
+  /**
+   * Webデータベースを取得します。
+   * 
+   * @return Webデータベース
+   */
+  public EipTGpdb getGpdb() {
+    return gpdb;
+  }
+
 }
