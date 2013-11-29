@@ -87,17 +87,10 @@ public class GpdbAction extends ALBaseAction {
 
     // セッション情報のクリア
     clearSession(rundata, context);
-    String filter =
-      ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-category");
+    String filter = "";
 
     if (filter != null && !"0".equals(filter)) {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-category"));
+      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "");
     }
 
     if (ALEipConstants.MODE_LIST.equals(getMode())) {
@@ -142,17 +135,10 @@ public class GpdbAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
-    String filter =
-      ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-category");
+    String filter = "";
 
     if (filter != null && !"0".equals(filter)) {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-category"));
+      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "");
     }
 
     try {

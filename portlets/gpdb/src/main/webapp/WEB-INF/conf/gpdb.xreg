@@ -53,13 +53,6 @@
         <parameter name="p1c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-category" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>初期選択データベース</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p3a-category.style" value="GpdbAllListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-category.style.initialvalue" value="(初期データベースを選択して下さい)" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="gpdb.GpdbAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
