@@ -24,7 +24,7 @@
 #if($result.DateListKeys.size() == 0)
 <div class="message">$l10n.EXTTIMECARD_NO_TIMECARD_MESSAGE</div>
 #else
-#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.submit(this, '','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #if($!result.TargetUserId != "")
 <div class="auiSummaryMeta clearfix">
 <div class="auiSelectButton floatLeft">

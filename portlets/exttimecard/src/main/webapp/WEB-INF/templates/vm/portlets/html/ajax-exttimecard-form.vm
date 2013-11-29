@@ -35,7 +35,7 @@
 #if($!result.IsPast)
 #ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.onSubmit(this); aimluck.io.submit(this,'$!indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
 #else
-#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this,'$!indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.submit(this,'$!indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
 #end
 
 #if($mode=="new_form")

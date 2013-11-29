@@ -25,7 +25,7 @@
 #end
 #ALajaxIndicator("$!indicator_id" "$!{portlet.ID}" "")
 <div id="exttimecardmessageDiv"></div>
-#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
+#ALajaxscreenformheader("exttimecardForm" $jslink $portlet "ExtTimecardFormJSONScreen" "aipo.exttimecard.submit(this, '$!indicator_id','$!portlet.ID',aipo.exttimecard.onListReceiveMessage)")
 #ALtableheaderAtt("wide")
 <tr>
 
