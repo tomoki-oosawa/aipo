@@ -59,6 +59,7 @@ $!result.LoginName
 #ALtditemfooter()
 #ALtdcaption($!result.CellularMail.FieldName)
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 #ALtditemheader()
 <div>
@@ -73,6 +74,7 @@ $!result.LoginName
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 <input type="hidden" id="delete_photo_$!{portlet.ID}"  name="delete_photo" value="false" />
 #ALtditemfooter()
+#end
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
 #foreach($record in $!result.PostNameList)
@@ -84,8 +86,9 @@ $!result.LoginName
 #ALtditem($!result.PositionName)
 #ALtablefooter()
 #ALbuttonheader()
-<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.ACCOUNT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
+
 #ALdialogfooter()
