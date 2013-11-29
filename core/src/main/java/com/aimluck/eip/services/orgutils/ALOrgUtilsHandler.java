@@ -131,6 +131,8 @@ public abstract class ALOrgUtilsHandler {
 
     } catch (IllegalStateException ignore) {
       // ignore
+    } catch (Exception ignore) {
+      // ignore
     }
 
     if (unlockedDomain.isEmpty()) {
