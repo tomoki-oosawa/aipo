@@ -68,7 +68,7 @@ $!record.AliasName<br />
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
 #ALtditemheader()
 #foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
-<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.URLEncodedValue})">$attachmentFile.FileName</a><br>
+<img src="images/report/report_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.URLEncodedValue})">$attachmentFile.FileName</a><br>
 #if($attachmentFile.isImage())
 <div style="padding-top:3px;padding-left:12px;">
 	<div id='popc' style='position:absolute'></div>
@@ -119,6 +119,7 @@ $!record.AliasName
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
 #end
+</div>
 </div>
 <div>
 ${record.Note}
