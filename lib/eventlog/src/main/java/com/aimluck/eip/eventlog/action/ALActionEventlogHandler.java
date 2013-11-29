@@ -378,8 +378,6 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_REPORT;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TIMELINE) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_TIMELINE;
-    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_GPDB) {
-      return ALActionEventlogConstants.PORTLET_TYPE_STR_GPDB;
     } else {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_STR_NONE;
     }

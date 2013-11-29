@@ -235,6 +235,4 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_TIMELINE = "タイムライン";
 
-  public static final String PORTLET_TYPE_STR_GPDB = "Webデータベース";
-
 }
