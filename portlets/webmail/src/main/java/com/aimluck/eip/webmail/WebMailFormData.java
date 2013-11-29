@@ -510,6 +510,14 @@ public class WebMailFormData extends ALAbstractFormData {
       }
 
       if (getMailType().getValue() == TYPE_FORWARD_MAIL) {
+        msg =
+          (ALLocalMailMessage) WebMailUtils.getSelectedLocalMailMessage(
+            rundata,
+            context,
+            TYPE_NEW_MAIL);
+        if (msg == null) {
+          return false;
+        }
         String[] filenames = msg.getAttachmentFileNameArray();
         if (filenames != null && filenames.length > 0) {
           /** 添付ファイルを含んだメールを転送する */
