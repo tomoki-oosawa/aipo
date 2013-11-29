@@ -88,7 +88,7 @@ $!result.LoginName
 #ALtditem($!result.PositionName)
 #ALtablefooter()
 #ALbuttonheader()
-<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.ACCOUNT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
