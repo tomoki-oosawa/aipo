@@ -29,21 +29,32 @@
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
 <div class="message">データベースが登録されていません。</div>
 #else
-#if($result.List.size() == 0)
-<div class="message">指定された条件に該当するレコードはありません。</div>
-#else
 <div class="auiSummaryMeta clearfix mt0">
-  <div class="floatLeft">
+  <div class="filters floatLeft" id="filters_$!{portlet.ID}">
       <div class="caption">
-	#foreach( $record in $result.GpdbAllList )
-	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName
+#foreach( $record in $result.GpdbAllList )##あとでデータベースがないときの処理
+	#if($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString())
+		<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.gpdb.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.WbrGpdbName</span></a>
 	#end
-#end</div>
+#end
+</div>
   </div>
   <div class="floatRight">
      #AUIajaxpageview('GpdbTopScreen' $result)
   </div>
 </div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
+	<div>
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			#foreach( $record in $result.GpdbAllList )
+			<li #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) class="selected" #end><a href="javascript:void(0)"  #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbTopScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');" >$record.WbrGpdbName</a></li>
+			#end
+		</ul>
+	</div>
+</div>
+#if($result.List.size() == 0)
+<div class="message">指定された条件に該当するレコードはありません。</div>
+#else
 <table class="auiRowTable wide">
 	<tbody>
 	#set($titleItemId = "")
