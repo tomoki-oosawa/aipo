@@ -110,13 +110,13 @@ public class GpdbRecordFormData extends ALAbstractFormData {
     this.rundata = rundata;
     this.context = context;
     gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    if (gpdbId != null && !"".equals(gpdbId)) {
+      // Webデータベースオブジェクト
+      gpdb = GpdbUtils.getEipTGpdb(gpdbId);
+      // 項目定義を取得（編集画面ではsetFormDataが呼ばれないためここに記述）
+      gpdbItemList = GpdbUtils.getGpdbItemResultList(gpdbId);
 
-    // Webデータベースオブジェクト
-    gpdb = GpdbUtils.getEipTGpdb(gpdbId);
-
-    // 項目定義を取得（編集画面ではsetFormDataが呼ばれないためここに記述）
-    gpdbItemList = GpdbUtils.getGpdbItemResultList(gpdbId);
-
+    }
     // 区分値を取得（編集画面ではsetFormDataが呼ばれないためここに記述）
     mapGpdbKubunValue = GpdbUtils.getKubunMap();
   }
