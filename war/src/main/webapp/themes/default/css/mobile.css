@@ -1386,6 +1386,16 @@ input[type=password] {
   float: none;
 }
 
+.indicator {
+  background: url(../images/common/loading_smp_white.gif) no-repeat left;
+  background-size: 16px;
+}
+
+.indicatorglay {
+  background: url(../images/common/loading_smp_lg.gif) no-repeat left;
+  background-size: 16px;
+}
+
 /***************************************************
 	auiThreeClumns
 --------------------------------------------------*/
