@@ -113,7 +113,7 @@
 #end
 
 <tr class="$class">
-#ALtdcellheaderAtt("class='day'")
+#ALtdcellheaderAtt("class='day' nowrap='nowrap'")
 
 #set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
 #set($formLink_ins = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date).addQueryData('userid', "$!result.TargetUserId"))
@@ -128,14 +128,14 @@
 #end
 #ALtdcellfooter()
 
-#ALtdcellheaderAtt('align="center" class="mb_hide"')
+#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemDetailScreen").addQueryData("entityid",$result.TimecardSystem.SystemId))');">$!utils.escapeXML($result.TimecardSystem.SystemName)</a>
 #ALtdcellfooter()
 
 #if($beforeafter > 0)
 
   #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
-    <td nowrap='nowrap' align='center' colspan='7' class="$class">
+    <td class='center $class' nowrap='nowrap' colspan='7'>
     #if($!{rd.IsTypeA})
 $l10n.EXTTIMECARD_ABSENT_DAY
     #elseif($!{rd.IsTypeH})
@@ -173,7 +173,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 #else
 
 #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
-  <td nowrap='nowrap' align='center' colspan='7' class="$class">
+  <td class='center $class' nowrap='nowrap' colspan='7'>
   #if($!{rd.IsTypeA})
       $l10n.EXTTIMECARD_ABSENT_DAY
   #elseif($!{rd.IsTypeH})
@@ -198,25 +198,25 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 
 #else
   #if($rdlist.IsNotNullClockInTime)
-        #ALtdcellAtt("$!{rd.ClockInTimeHourMinuteText}" "nowrap='nowrap' align='center'")
+        #ALtdcellAtt("$!{rd.ClockInTimeHourMinuteText}" "class='center' nowrap='nowrap'")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
-          <td nowrap="nowrap" align="center"><input type="button" value="$l10n.EXTTIMECARD_PUNCH_IN" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
+          <td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_PUNCH_IN" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
         #else
-          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "class='center' nowrap='nowrap'")
         #end
       #else
         #ALtdcellAtt('' "")
       #end
     ###else
-      ###ALtdcellAtt("" "nowrap='nowrap' align='center'")
+      ###ALtdcellAtt("" "class='center' nowrap='nowrap'")
     ###end
   #end
 
   #if($rdlist.IsNotNullClockOutTime)
-    #ALtdcellAtt("$!{rd.ClockOutTimeHourMinuteText}" "nowrap='nowrap' align='center' ")
+    #ALtdcellAtt("$!{rd.ClockOutTimeHourMinuteText}" "class='center' nowrap='nowrap'")
   #else
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
@@ -232,13 +232,13 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
               #set($leaving = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_PUNCH_OUT</span>")
           #end
         #else
-          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "nowrap='nowrap'")
+          #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "class='center' nowrap='nowrap'")
         #end
       #else
         #ALtdcellAtt('' "")
       #end
     ###else
-      ###ALtdcellAtt("" "nowrap='nowrap' align='center'")
+      ###ALtdcellAtt("" "class='center' nowrap='nowrap'")
     ###end
   #end
 
@@ -280,12 +280,12 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 	  #set($leaving = "<span class='auiButtonDisabled'>$l10n.EXTTIMECARD_PUNCH_OUT</span>")
 	#end
 	#if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていないならボタンを出力
-	  #ALtdcellAtt($leaving "align='center' nowrap='nowrap'")
+	  #ALtdcellAtt($leaving "class='center' nowrap='nowrap'")
 	#end
 
   	#if(!($rdlist.IsNotNullClockInTime)) ## 出勤ボタンが押されていない
-  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_OUTGOING</span></td>
-  	  <td nowrap="nowrap" align="center"><span class="auiButtonDisabled">$l10n.EXTTIMECARD_COMEBACK</span></td>
+  	  <td class='center' nowrap='nowrap'><span class="auiButtonDisabled">$l10n.EXTTIMECARD_OUTGOING</span></td>
+  	  <td class='center' nowrap='nowrap'><span class="auiButtonDisabled">$l10n.EXTTIMECARD_COMEBACK</span></td>
   	#else
   	  #if(!($rdlist.IsNotNullClockOutTime)) ## 退勤ボタンが押されていない
   	  	#set($q = '"')
@@ -307,13 +307,13 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #end
 
   #if($rdlist.IsNotNullClockInTime || $class != "today" || $!result.TargetUserId != $!result.UserId)
-    #ALtdcellAtt($outgoings "align='center' nowrap='nowrap'")
-    #ALtdcellAtt($comebacks "align='center' nowrap='nowrap' ")
+    #ALtdcellAtt($outgoings "class='center' nowrap='nowrap'")
+    #ALtdcellAtt($comebacks "class='center' nowrap='nowrap'")
   #end
 
-  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
-  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='mb_hide' align='center'")
-  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='mb_hide' align='center'")
+  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
+  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
+  #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
 
   <td class='mb_hide'>
   #if($!{rd.ReasonFlg})
