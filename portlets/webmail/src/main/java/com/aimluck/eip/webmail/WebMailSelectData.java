@@ -429,12 +429,11 @@ public class WebMailSelectData extends
       rd.initField();
       rd.setHeaders(msg.getHeaderArray());
       rd.setSubject(msg.getSubject());
-      rd.setFrom(ALMailUtils.getAddressString(msg.getFrom()));
+      rd.setFrom(ALMailUtils.getFromDelegate(msg));
       rd.setTo(ALMailUtils.getAddressString(msg.getRecipients(
         Message.RecipientType.TO,
         false)));
       rd.setDate(date);
-
       rd.setBody(msg.getBodyText());
       rd.setAttachmentFileNames(msg.getAttachmentFileNameArray());
     } catch (Exception e) {

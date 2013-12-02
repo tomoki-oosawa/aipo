@@ -40,6 +40,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.crypto.Cipher;
@@ -51,6 +53,7 @@ import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Part;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
@@ -285,9 +288,7 @@ public class ALMailUtils {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
-        CR);
-      sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
+      sb.append("From: ").append(getFromDelegate(msg)).append(CR);
       sb
         .append("To: ")
         .append(
@@ -303,7 +304,8 @@ public class ALMailUtils {
 
       msg.setSubject(MimeUtility.encodeText("Re: "
         + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
-      msg.setRecipient(Message.RecipientType.TO, msg.getReplyTo()[0]);
+      msg
+        .setRecipient(Message.RecipientType.TO, getReplyToDelegateExtract(msg));
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
         int length = lines.length;
@@ -335,9 +337,7 @@ public class ALMailUtils {
       msg = (ALLocalMailMessage) mailmsg;
 
       StringBuffer sb = new StringBuffer();
-      sb.append(" ").append(CR).append("----- Original Message ----- ").append(
-        CR);
-      sb.append("From: ").append(getAddressString(msg.getFrom())).append(CR);
+      sb.append("From: ").append(getFromDelegate(msg)).append(CR);
       sb
         .append("To: ")
         .append(
@@ -1923,5 +1923,117 @@ public class ALMailUtils {
   /** 送受信可能なメール容量．Base64 処理後のサイズ */
   public static int getMaxMailSize() {
     return (int) (TurbineUpload.getSizeMax() * 1.37);
+  }
+
+  public static String getRawFrom(MimeMessage msg) {
+    String rawFrom = null;
+    try {
+      rawFrom = msg.getHeader("From", ",");
+      if (null == rawFrom) {
+        rawFrom = msg.getHeader("Sender", ",");
+      }
+    } catch (MessagingException ignore) {
+    }
+    return null != rawFrom ? rawFrom : "";
+  }
+
+  public static String getRawReplyTo(MimeMessage msg) {
+    String rawReplyto = null;
+    try {
+      rawReplyto = msg.getHeader("Reply-To", ",");
+
+      if (rawReplyto == null) {
+        rawReplyto = getRawFrom(msg);
+      }
+    } catch (MessagingException ignore) {
+    }
+    return null != rawReplyto ? rawReplyto : "";
+  }
+
+  public static String getFromInetAddressForBroken(MimeMessage msg) {
+    String rawFrom = getRawFrom(msg);
+    String inetAddress = null;
+    try {
+      inetAddress = MimeUtility.decodeText(MimeUtility.unfold(rawFrom));
+    } catch (UnsupportedEncodingException ignore) {
+    }
+    return null != inetAddress ? inetAddress : "";
+  }
+
+  public static String getReplytoInetAddressForBroken(MimeMessage msg) {
+    String rawReplyto = getRawReplyTo(msg);
+    String inetAddress = null;
+    try {
+      inetAddress = MimeUtility.decodeText(MimeUtility.unfold(rawReplyto));
+    } catch (UnsupportedEncodingException ignore) {
+    }
+    return null != inetAddress ? inetAddress : "";
+  }
+
+  public static String extractAddress(String rawAddress) {
+    String regex =
+      "[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})";
+    Pattern mailPattern = Pattern.compile(regex);
+    Matcher matcher = mailPattern.matcher(rawAddress);
+    if (matcher.find()) {
+      String result = matcher.group(0);
+      return null != result ? result : "";
+    } else {
+      return "";
+    }
+  }
+
+  public static String getFromDelegate(MimeMessage msg)
+      throws MessagingException {
+    String from = null;
+    try {
+      from = ALMailUtils.getAddressString(msg.getFrom());
+    } catch (AddressException e) {
+      logger.info("ALMailUtils.getFromDelegate", e);
+      from = ALMailUtils.getFromInetAddressForBroken(msg);
+    }
+    return null != from ? from : "";
+  }
+
+  public static String getFromDelegateExtract(MimeMessage msg)
+      throws MessagingException {
+    String from = null;
+    try {
+      from = ALMailUtils.getAddressString(msg.getFrom());
+    } catch (AddressException e) {
+      logger.info("ALMailUtils.getFromDelegateExtract", e);
+      from = ALMailUtils.getFromInetAddressForBroken(msg);
+      from = ALMailUtils.extractAddress(from);
+    }
+    return null != from ? from : "";
+  }
+
+  public static Address[] getFromDelegateExtractForAddress(MimeMessage msg)
+      throws MessagingException {
+    Address[] addresses = new InternetAddress[1];
+    try {
+      addresses = msg.getFrom();
+    } catch (AddressException e) {
+      logger.info("ALMailUtils.getFromDelegateExtractForAddress", e);
+      String from = ALMailUtils.getFromInetAddressForBroken(msg);
+      from = ALMailUtils.extractAddress(from);
+      Address address = new InternetAddress(from, false);
+      addresses[0] = address;
+    }
+    return addresses;
+  }
+
+  public static Address getReplyToDelegateExtract(MimeMessage msg)
+      throws MessagingException {
+    Address replyTo = null;
+    try {
+      replyTo = msg.getReplyTo()[0];
+    } catch (AddressException e) {
+      logger.info("ALMailUtils.getReplyToDelegateExtract", e);
+      String _replyTo = getReplytoInetAddressForBroken(msg);
+      _replyTo = ALMailUtils.extractAddress(_replyTo);
+      replyTo = new InternetAddress(_replyTo, false);
+    }
+    return replyTo;
   }
 }
