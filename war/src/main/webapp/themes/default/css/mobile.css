@@ -1397,6 +1397,14 @@ input[type=password] {
 }
 
 /***************************************************
+	loader
+--------------------------------------------------*/
+.loader {
+  background: url(../images/common/loading_smp_white.gif) no-repeat center center;
+  background-size: 16px;
+}
+
+/***************************************************
 	auiThreeClumns
 --------------------------------------------------*/
 #auiThreeClumns {
