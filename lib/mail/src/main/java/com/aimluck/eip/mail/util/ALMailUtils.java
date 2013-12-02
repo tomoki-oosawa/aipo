@@ -304,7 +304,8 @@ public class ALMailUtils {
 
       msg.setSubject(MimeUtility.encodeText("Re: "
         + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
-      msg.setRecipient(Message.RecipientType.TO, msg.getReplyTo()[0]);
+      msg
+        .setRecipient(Message.RecipientType.TO, getReplyToDelegateExtract(msg));
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
         int length = lines.length;
@@ -1936,11 +1937,34 @@ public class ALMailUtils {
     return null != rawFrom ? rawFrom : "";
   }
 
+  public static String getRawReplyTo(MimeMessage msg) {
+    String rawReplyto = null;
+    try {
+      rawReplyto = msg.getHeader("Reply-To", ",");
+
+      if (rawReplyto == null) {
+        rawReplyto = getRawFrom(msg);
+      }
+    } catch (MessagingException ignore) {
+    }
+    return null != rawReplyto ? rawReplyto : "";
+  }
+
   public static String getFromInetAddressForBroken(MimeMessage msg) {
     String rawFrom = getRawFrom(msg);
     String inetAddress = null;
     try {
       inetAddress = MimeUtility.decodeText(MimeUtility.unfold(rawFrom));
+    } catch (UnsupportedEncodingException ignore) {
+    }
+    return null != inetAddress ? inetAddress : "";
+  }
+
+  public static String getReplytoInetAddressForBroken(MimeMessage msg) {
+    String rawReplyto = getRawReplyTo(msg);
+    String inetAddress = null;
+    try {
+      inetAddress = MimeUtility.decodeText(MimeUtility.unfold(rawReplyto));
     } catch (UnsupportedEncodingException ignore) {
     }
     return null != inetAddress ? inetAddress : "";
@@ -1997,5 +2021,19 @@ public class ALMailUtils {
       addresses[0] = address;
     }
     return addresses;
+  }
+
+  public static Address getReplyToDelegateExtract(MimeMessage msg)
+      throws MessagingException {
+    Address replyTo = null;
+    try {
+      replyTo = msg.getReplyTo()[0];
+    } catch (AddressException e) {
+      logger.info("ALMailUtils.getReplyToDelegateExtract", e);
+      String _replyTo = getReplytoInetAddressForBroken(msg);
+      _replyTo = ALMailUtils.extractAddress(_replyTo);
+      replyTo = new InternetAddress(_replyTo, false);
+    }
+    return replyTo;
   }
 }

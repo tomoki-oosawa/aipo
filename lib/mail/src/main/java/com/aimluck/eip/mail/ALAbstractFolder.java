@@ -197,7 +197,8 @@ public abstract class ALAbstractFolder implements ALFolder {
       // 差出人 or 受取人
       if ("R".equals(type0)) {
         try {
-          personAddress = mimeMessage.getFrom();
+          personAddress =
+            ALMailUtils.getFromDelegateExtractForAddress(mimeMessage);
         } catch (MessagingException ex) {
           personAddress = null;
         }
