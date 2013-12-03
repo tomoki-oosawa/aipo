@@ -55,6 +55,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
@@ -93,14 +94,16 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     try {
       super.doPerform(data);
     } catch (Throwable other) {
+      setOrgParametersForError(data);
       data.setScreenTemplate(JetspeedResources
         .getString(TurbineConstants.TEMPLATE_ERROR));
-      String message =
-        other.getMessage() != null ? other.getMessage() : other.toString();
-      data.setMessage(message);
-      data.setStackTrace(
-        org.apache.turbine.util.StringUtils.stackTrace(other),
-        other);
+      return;
+    }
+
+    // not login and can not connect database
+    if (checkDbError(data)) {
+      setOrgParametersForError(data);
+      data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
       return;
     }
 
@@ -116,7 +119,18 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     JetspeedUser loginuser = (JetspeedUser) data.getUser();
 
     if (isLogin(loginuser)) {
-      JetspeedSecurityCache.load(loginuser.getUserName());
+      try {
+        JetspeedSecurityCache.load(loginuser.getUserName());
+      } catch (Exception e1) {
+        // login and can not connect database
+        String message = e1.getMessage();
+        if (message != null
+          && message.indexOf(ALConstants.DB_ERROR_DETECT) != -1) {
+          setOrgParametersForError(data);
+          data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
+          return;
+        }
+      }
     }
 
     if (ALSessionUtils.isImageRequest(data)) {
@@ -179,13 +193,10 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       }
     }
 
-    // for switching theme org by org
     Context context =
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    // for switching theme org by org
+    setOrgParameters(data, context);
     // for preventing XSS on user name
     context.put("utils", new ALCommonUtils());
 
@@ -508,5 +519,28 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     HttpServletRequest hreq = data.getRequest();
     String requestURI = hreq.getRequestURI();
     return requestURI.equalsIgnoreCase(contextPath + "/ical/calendar.ics");
+  }
+
+  private void setOrgParametersForError(RunData data) {
+    Context context =
+      org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
+    setOrgParameters(data, context);
+    context.put("tutorialForbid", true);
+    context.put("isError", "true");
+  }
+
+  private void setOrgParameters(RunData data, Context context) {
+    Map<String, String> attribute = ALOrgUtilsService.getParameters();
+    for (Map.Entry<String, String> e : attribute.entrySet()) {
+      context.put(e.getKey(), e.getValue());
+    }
+  }
+
+  private boolean checkDbError(RunData data) {
+    String message = data.getMessage();
+    if (null != message && message.indexOf(ALConstants.DB_ERROR_DETECT) != -1) {
+      return true;
+    }
+    return false;
   }
 }

@@ -21,6 +21,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.common.ALConstants;
 import com.aimluck.eip.util.ALSessionUtils;
 
 /**
@@ -49,6 +50,19 @@ public class ALAccessController extends JetspeedAccessController {
     }
 
     super.doPerform(data);
+
+    if (checkDBError(data)) {
+      // JetspeedAccessController set to ShowError.vm, reset to DBError.vm
+      data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
+    }
+  }
+
+  private boolean checkDBError(RunData data) {
+    String message = data.getMessage();
+    if (null != message && message.indexOf(ALConstants.DB_ERROR_PROFILE) != -1) {
+      return true;
+    }
+    return false;
   }
 
 }

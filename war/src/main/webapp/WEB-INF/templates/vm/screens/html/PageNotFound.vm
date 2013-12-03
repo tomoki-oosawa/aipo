@@ -42,7 +42,7 @@
 <td nowrap="nowrap">
 $l10n.ERROR_CANNOT_USE_PAGE<br />
 $l10n.ERROR_WRONG_URL2<br />
-・$l10n.WAR_ALIAS_FAILED_INSTALL<br /><br />
+・${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}<br /><br />
 #if($config.getString("support.mail"))
  <br />
 $l10n.WAR_NO_ERROR_URL_INQUILY

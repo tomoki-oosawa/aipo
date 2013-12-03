@@ -19,20 +19,20 @@
 
 ## ---------------------------------------------------------------------------
 <!-- HEADER -->
-#if ($data.User.hasLoggedIn())
+#if ($data.User.hasLoggedIn() && "$!isError" != "true")
 <div id="header" class="clearfix"><div class="inner">
   <div class="hdSign">
     <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
   </div>
   <div class="hdNavi">
-#if ($data.User.getUserName()!="admin" && ${client} != "IPHONE")
+#if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
     <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero counter activitycheckerstyle"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div>
 #end
 		<!-- /hdActivity -->
 
     <div class="hdUserName">
 		<a href="javascript:void(0);" class="arrow_bottom" onclick="aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
-		#if ($data.User.getUserName()!="admin")
+		#if ("$!data.User.getUserName()" != "admin")
 			#if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />
 			#else
@@ -47,7 +47,7 @@
 		</a>
 		<div class="menubar body-child" id="menubar_hdSetting" style="position: absolute; display:none;">
 		<ul>
-			#if ($data.User.getUserName()!="admin")
+			#if ("$!data.User.getUserName()" != "admin")
 			<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
 			#if ($data.User.isAdmin())
 				<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
@@ -60,7 +60,7 @@
   </div>
 </div></div>
 #end
-#if ($data.User.getUserName()!="admin")
+#if ("$!data.User.getUserName()" != "admin")
 <!-- /HEADER -->
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[

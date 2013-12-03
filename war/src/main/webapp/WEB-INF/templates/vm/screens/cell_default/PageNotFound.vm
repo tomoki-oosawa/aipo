@@ -20,11 +20,11 @@
 ## ---------------------------------------------------------------------------
 ##pagetitle
 #ALcell_hr($career '')#ALcell_center_header($career)
-$l10n.WAR_ALIAS_INFO
+${alias}${l10n.WAR_ALIAS_INFO}
 #ALcell_center_footer($career)#ALcell_hr($career '')
 $l10n.ERROR_CANNOT_USE_PAGE#ALcell_br($career)
 <ul>
 #ALcell_li_header($career)$l10n.ERROR_WRONG_URL#ALcell_li_footer($career)
-#ALcell_li_header($career)$l10n.WAR_ALIAS_FAILED_INSTALL#ALcell_li_footer($career)
+#ALcell_li_header($career)${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}#ALcell_li_footer($career)
 </ul>
 

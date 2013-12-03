@@ -1,4 +1,4 @@
-#*
+/*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
  * http://www.aipo.com
@@ -15,33 +15,20 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *#
+ */
 
-## ---------------------------------------------------------------------------
-#set($career = 'iphone')
-#ALcell_pagetitle_iphone($career "$l10n.ERROR_PAGE_NOT_FOUND1")
-#ALcell_contents_header($career)
+package com.aimluck.eip.common;
 
-$l10n.ERROR_CANNOT_USE_PAGE<br />
-<br />
-<ul>
-  <li>$l10n.ERROR_WRONG_URL</li>
-  <li>${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}</li>
-</ul>
-$l10n.WAR_AGAIN2<br />
-<br />
+/**
+ * Aimluck の定数です。
+ * 
+ */
+public class ALConstants {
 
-#if($config.getString("support.mail"))
+  public static final String DB_ERROR_DETECT = "Error detecting database type";
 
-<br />
-$l10n.WAR_NO_ERROR_URL_INQUILY
-<br />
-[e-mail : <a href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</a> ]
-<br />
-<br />
+  public static final String DB_ERROR_PROFILE = "Could not get profile from DB";
 
-#end
+  public static final String DB_ERROR_TEMPLATE = "DBError.vm";
 
-<a class="btn" href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>
-
-#ALcell_contents_footer($career)
+}
