@@ -24,15 +24,17 @@
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
+
 #if($result.List && $!result.GpdbId)
 <div class="auiWidget clearfix widgetButton">
-#AUIbuttonAction("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadGpdbDialog);")
+#AUIbuttonAction("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #else
 <div class="auiWidget clearfix widgetButton">
-#AUIbutton("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadGpdbDialog);")
+#AUIbutton("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #end
+
 <div id="subNavigation">
 <div class="auiWidget clearfix">
 <ul>
