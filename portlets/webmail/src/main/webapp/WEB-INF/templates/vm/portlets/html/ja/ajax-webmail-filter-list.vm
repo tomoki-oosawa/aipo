@@ -48,7 +48,6 @@
 #AUIajaxpageview('WebMailFilterListScreen' $result)
 </div>
 #AUISummaryDivfooter()
-#ALformfooter()
 #AUIrowTableWide()
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
@@ -82,6 +81,7 @@ $!{record.FilterType}$l10n.WEBMAIL_IS$!{record.FilterString}$l10n.WEBMAIL_CONTAI
 #AUIajaxpageview('WebMailFilterListScreen' $result)
 </div>
 #AUISummaryDivfooter()
+#ALformfooter()
 
 #end
 
