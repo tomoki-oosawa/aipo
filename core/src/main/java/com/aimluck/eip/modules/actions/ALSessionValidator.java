@@ -125,7 +125,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         // login and can not connect database
         String message = e1.getMessage();
         if (message != null
-          && message.indexOf(ALConstants.DB_ERROR_DECTECT) != -1) {
+          && message.indexOf(ALConstants.DB_ERROR_DETECT) != -1) {
           setOrgParametersForError(data);
           data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
           return;
@@ -538,7 +538,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
   private boolean checkDbError(RunData data) {
     String message = data.getMessage();
-    if (null != message && message.indexOf(ALConstants.DB_ERROR_DECTECT) != -1) {
+    if (null != message && message.indexOf(ALConstants.DB_ERROR_DETECT) != -1) {
       return true;
     }
     return false;
