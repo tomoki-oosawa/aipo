@@ -54,6 +54,12 @@
         <parameter name="p1c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="gpdb.GpdbAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_mode1" value="GpdbRecordFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_caption1" value="データ追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_after_function1" value="aipo.gpdb.onLoadGpdbDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
