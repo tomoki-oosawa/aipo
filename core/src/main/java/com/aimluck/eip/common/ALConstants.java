@@ -25,7 +25,7 @@ package com.aimluck.eip.common;
  */
 public class ALConstants {
 
-  public static final String DB_ERROR_DECTECT = "Error detecting database type";
+  public static final String DB_ERROR_DETECT = "Error detecting database type";
 
   public static final String DB_ERROR_PROFILE = "Could not get profile from DB";
 

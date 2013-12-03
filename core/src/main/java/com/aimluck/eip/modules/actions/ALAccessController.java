@@ -51,13 +51,13 @@ public class ALAccessController extends JetspeedAccessController {
 
     super.doPerform(data);
 
-    if (checkEbError(data)) {
+    if (checkDBError(data)) {
       // JetspeedAccessController set to ShowError.vm, reset to DBError.vm
       data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
     }
   }
 
-  private boolean checkEbError(RunData data) {
+  private boolean checkDBError(RunData data) {
     String message = data.getMessage();
     if (null != message && message.indexOf(ALConstants.DB_ERROR_PROFILE) != -1) {
       return true;
