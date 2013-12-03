@@ -25,8 +25,9 @@
 <input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('userlist$!portlet.ID').onsubmit();">$!l10n.USERLIST_SEARCH</a>
 <input name="mode" type="hidden" value="ajaxsearch" />
+ &nbsp;
+ <i class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;"></i>
 </form>
-<div class="floatLeft"><div class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;">&nbsp;</div></div>
 
 #AUISummaryDivfooter()
 #if($result.List)
