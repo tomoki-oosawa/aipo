@@ -33,12 +33,12 @@
 #AUIcontentsAreaHeader()
 <h2>選択項目の管理</h2>
 #AUISummaryDiv()
-<div class="floatLeft">
 #if($result.getAllGpdbKubunValueSum() != 0)
 #AUIbuttonAction("選択項目を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #end
-</div>
-<div class="floatRight">
+#AUISummaryDivfooter()
+
+#AUISummaryDiv()
 #if($result.getAllGpdbKubunValueSum() != 0)
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="max-width: 180px">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべての選択項目</option>
@@ -47,7 +47,6 @@
 #end
 </select>
 #end
-</div>
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
