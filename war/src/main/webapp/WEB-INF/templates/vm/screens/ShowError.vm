@@ -35,7 +35,7 @@ $l10n.WAR_RELOADING
 <strong>$l10n.WAR_NO_PAGE</strong><br /><br />
 $l10n.ERROR_CANNOT_USE_PAGE<br /><br />
 $l10n.ERROR_WRONG_URL2<br />
-・$l10n.WAR_ALIAS_FAILED_INSTALL<br /><br />
+・${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}<br /><br />
 $l10n.WAR_AGAIN2
 
 #if($config.getString("support.mail"))

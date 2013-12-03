@@ -23,7 +23,7 @@
 <td class="tl" width="18" height="40"><img src="images/common/dot.gif" width="18" height="40" alt="" /></td>
 <td  height="40" valign="middle" class="t"><table width="100%" height="38"  border="0" cellpadding="0" cellspacing="0"><tbody>
 <tr>
-<td width="100%" nowrap="nowrap">$l10n.ERROR_PAGE_NOT_FOUND2</td>
+<td width="100%" nowrap="nowrap">$l10n.WAR_DBERROR_TITLE</td>
 </tr>
 </tbody></table></td>
 <td class="tr" width="18" height="40"><img src="images/common/dot.gif" width="18" height="40" alt="" /></td>
@@ -40,10 +40,7 @@
 <table  border="0" cellspacing="0" cellpadding="0"><tbody>
 <tr>
 <td nowrap="nowrap">
-$l10n.WAR_DATABASE_ERROR_AND_REASON<br /><br />
-$l10n.ERROR_WRONG_URL2<br />
-$l10n.WAR_STOP_DATABACE2<br /><br />
-$l10n.WAR_AGAIN<br /><br />
+$l10n.WAR_DBERROR_CONTENT<br />
 
 #if($config.getString("support.mail"))
  <br />

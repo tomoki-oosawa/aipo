@@ -26,7 +26,7 @@ $l10n.ERROR_CANNOT_USE_PAGE<br />
 <br />
 <ul>
   <li>$l10n.ERROR_WRONG_URL</li>
-  <li>$l10n.WAR_ALIAS_FAILED_INSTALL</li>
+  <li>${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}</li>
 </ul>
 $l10n.WAR_AGAIN2<br />
 <br />

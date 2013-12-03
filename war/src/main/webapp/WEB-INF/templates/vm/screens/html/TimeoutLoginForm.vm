@@ -236,9 +236,7 @@ function change_group(form, value) {
 <div class="loginAlert">
 $l10n.WAR_NO_OPERATION_FOR_A_LONGTIME_AND_DISCONNECT_SURVER
 $l10n.WAR_AGAIN_FROM_UNDER_LOGIN_FORM
-#if(!$!data.getMessage().toString().startsWith("__errLicenseType:"))
-$!data.getMessage().toString()
-#else
+#if($!data.getMessage().toString().startsWith("__errLicenseType:"))
 $l10n.WAR_CANNOT_LOGIN_COMMON_USER
 #end
 </div>

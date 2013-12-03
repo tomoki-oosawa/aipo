@@ -27,7 +27,7 @@ $l10n.WAR_DATABASE_ERROR_AND_REASON#ALcell_br($career)#ALcell_br($career)
 <ul>
 #ALcell_li_header($career)$l10n.ERROR_WRONG_URL#ALcell_li_footer($career)
 #ALcell_li_header($career)$l10n.WAR_STOP_DATABACE#ALcell_li_footer($career)
-#ALcell_li_header($career)$l10n.WAR_ALIAS_FAILED_INSTALL#ALcell_li_footer($career)
+#ALcell_li_header($career)${alias}${l10n.WAR_ALIAS_FAILED_INSTALL}#ALcell_li_footer($career)
 </ul>
 #ALcell_br($career)
 $l10n.WAR_AGAIN#ALcell_br($career)

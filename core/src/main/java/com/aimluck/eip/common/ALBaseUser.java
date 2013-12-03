@@ -366,10 +366,14 @@ public class ALBaseUser extends
    * @return 会社名
    */
   public String getCompanyName(int id) {
+    String companyName = "";
     Map<Integer, ALEipCompany> companyMap =
       ALEipManager.getInstance().getCompanyMap();
     ALEipCompany company = companyMap.get(Integer.valueOf(id));
-    return company.getCompanyName().toString();
+    if (company != null) {
+      companyName = company.getCompanyName().toString();
+    }
+    return companyName;
   }
 
   /**

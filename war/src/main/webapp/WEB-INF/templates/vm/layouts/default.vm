@@ -127,7 +127,7 @@ dojo.addOnLoad(function() {
     #if (!${tutorialForbid} && $data.User.hasLoggedIn())
     aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
     #end
-#if ($data.User.hasLoggedIn())
+#if ($data.User.hasLoggedIn() && "$!checkUrl" != "" && "$!relayUrl" != "" && "$!rpctoken" != "")
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
