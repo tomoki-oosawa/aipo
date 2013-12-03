@@ -1992,7 +1992,7 @@ public class ALMailUtils {
       logger.info("ALMailUtils.getFromDelegate", e);
       from = ALMailUtils.getFromInetAddressForBroken(msg);
     }
-    return null != from ? from : "";
+    return from;
   }
 
   public static String getFromDelegateExtract(MimeMessage msg)
@@ -2005,7 +2005,7 @@ public class ALMailUtils {
       from = ALMailUtils.getFromInetAddressForBroken(msg);
       from = ALMailUtils.extractAddress(from);
     }
-    return null != from ? from : "";
+    return from;
   }
 
   public static Address[] getFromDelegateExtractForAddress(MimeMessage msg)
