@@ -28,6 +28,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.gpdb.GpdbRecordSelectData;
+import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -51,6 +52,8 @@ public class GpdbRecordScreen extends GpdbScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
+      // 新規データベース登録直後項目設定一覧転送処理
+      GpdbUtils.redirectItemList(rundata, context);
 
       GpdbRecordSelectData listData = new GpdbRecordSelectData();
       listData.initField();

@@ -294,6 +294,11 @@ public class GpdbFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_GPDB,
         "Webデータベース 「" + gpdb.getGpdbName() + "」 追加");
 
+      // 新規データベース登録直後リダイレクト処理用
+      ALEipUtils.setTemp(rundata, context, GpdbUtils.TEMP_KEY, gpdb
+        .getGpdbId()
+        .toString());
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("Exception", ex);
