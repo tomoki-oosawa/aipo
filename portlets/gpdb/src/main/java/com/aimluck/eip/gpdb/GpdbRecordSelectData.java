@@ -400,9 +400,16 @@ public class GpdbRecordSelectData extends
 
   public void setGpdbId(Context context, RunData rundata) {
     String gpdbId = rundata.getParameters().getString("filter", "");
+    String sesGpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    if ("".equals(gpdbId)) {
+      gpdbId = null == sesGpdbId ? "" : sesGpdbId;
+    }
     String filterType = rundata.getParameters().getString("filtertype", "");
+
     List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
-    if ((gpdbId != null && !"".equals(gpdbId)) && "gpdb_id".equals(filterType)) { // 最大化画面でデータベース選択した場合と詳細画面
+    if ((gpdbId != null && !"".equals(gpdbId))
+      && ("gpdb_id".equals(filterType) || filterType == null || ""
+        .equals(filterType))) { // 最大化画面でデータベース選択した場合と詳細画面
       for (GpdbResultData gpdb : gpdbAllList) {
         if (gpdb.getGpdbId().toString().equals(gpdbId)) {
           this.gpdbId = gpdbId;
@@ -410,23 +417,13 @@ public class GpdbRecordSelectData extends
       }
     }
 
-    if (filterType == null || "".equals(filterType)) {
-      if (ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR) != null
-        && !"".equals(ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR))) {
-        for (GpdbResultData gpdb : gpdbAllList) {
-          if (gpdb.getGpdbId().toString().equals(
-            ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR))) {
-            this.gpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-          }
-        }
-      }
-      if (this.gpdbId == null) {
-        if (gpdbAllList != null && gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
-          this.gpdbId = gpdbAllList.get(0).gpdb_id.toString();
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, this.gpdbId);
-        }
+    if (this.gpdbId == null) {
+      if (gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
+        this.gpdbId = gpdbAllList.get(0).gpdb_id.toString();
       }
     }
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, this.gpdbId);
   }
 
   /**

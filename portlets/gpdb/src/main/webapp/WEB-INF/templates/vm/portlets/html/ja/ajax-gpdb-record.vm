@@ -67,12 +67,12 @@
 	#set($titleItemId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
-			<th #if ($item.TitleFlg.toString() != 't') class="mb_hide" #end>
+			<th #if ("$!item.TitleFlg.toString()" != "t") class="mb_hide" #end>
 				#ALajaxsort($!item.GpdbItemId $!item.WbrGpdbItemName $result 'GpdbRecordListScreen')
 			</th>
 		#end
-		#if ($item.TitleFlg.toString()=='t')
-			#set($titleItemId = $!item.GpdbItemId.toString())
+		#if ("$!item.TitleFlg.toString()" == "t")
+			#set($titleItemId = "$!item.GpdbItemId.toString()")
 		#end
 	#end
 	</tr>
@@ -90,7 +90,7 @@
 			#ALtdcellheader()
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
 			#ALtdcellfooter()
-		#elseif ($item.TitleFlg.toString()=='t')
+		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
 			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')

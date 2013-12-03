@@ -59,7 +59,7 @@
 	<tbody>
 	#set($titleItemId = "")
 	#foreach($item in $result.GpdbItemList)
-		#if ($item.TitleFlg.toString()=='t')
+		#if ("$!item.TitleFlg.toString()" == "t")
 			#set($titleItemId = $!item.GpdbItemId.toString())
 		#end
 	#end
@@ -76,7 +76,7 @@
 			<td class="auiMTCaption">
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
 			</td>
-		#elseif ($item.TitleFlg.toString()=='t')
+		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
 			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')

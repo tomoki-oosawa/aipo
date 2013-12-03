@@ -84,15 +84,8 @@ public class GpdbAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-
     // セッション情報のクリア
     clearSession(rundata, context);
-    String filter = "";
-
-    if (filter != null && !"0".equals(filter)) {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "");
-    }
-
     if (ALEipConstants.MODE_LIST.equals(getMode())) {
       doGpdb_list(rundata, context);
     } else if (getMode() == null) {
@@ -135,18 +128,12 @@ public class GpdbAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
-    String filter = "";
-
-    if (filter != null && !"0".equals(filter)) {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, "");
-    }
-
     try {
       if (getMode() == null) {
         doGpdbRecord_list(rundata, context);
       }
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
+    } catch (Exception e) {
+      logger.error("GpdbAction.buildMaximizedContext", e);
     }
   }
 
@@ -170,7 +157,6 @@ public class GpdbAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
-
     setTemplate(rundata, "gpdb-record");
   }
 
@@ -186,8 +172,8 @@ public class GpdbAction extends ALBaseAction {
     List<String> list = new ArrayList<String>();
     list.add(LIST_SORT_STR);
     list.add(LIST_SORT_TYPE_STR);
-    list.add(LIST_FILTER_STR);
-    list.add(LIST_FILTER_TYPE_STR);
+    // list.add(LIST_FILTER_STR);
+    // list.add(LIST_FILTER_TYPE_STR);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 

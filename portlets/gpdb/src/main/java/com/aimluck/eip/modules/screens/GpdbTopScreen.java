@@ -63,8 +63,8 @@ public class GpdbTopScreen extends GpdbScreen {
       String layout_template = "portlets/html/ja/ajax-gpdb-top.vm";
       setTemplate(rundata, context, layout_template);
 
-    } catch (Exception ex) {
-      logger.error("[GpdbUserListScreen] Exception.", ex);
+    } catch (Exception e) {
+      logger.error("GpdbTopScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }
