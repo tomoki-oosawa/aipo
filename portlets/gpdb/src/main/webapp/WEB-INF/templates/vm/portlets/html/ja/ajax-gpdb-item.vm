@@ -22,26 +22,32 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 
+#if($result.GpdbAllList && $result.GpdbAllList.size()>0)
 #set ($addGpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemFormScreen").addQueryData("entityid","new").addQueryData("gpdb_id",$!result.CurrentFilter)))
 #set ($orderGpdbItem = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemChangeTurnFormScreen").addQueryData("gpdb_id",$!result.CurrentFilter))
 #set ($centering = "style='text-align:center'")
 #set ($centeringMb_hide = "class='center mb_hide'")
-
+#end
 
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>データベースの項目設定:
-#foreach( $record in $result.GpdbAllList )
-	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
-#end
+
+<h2>データベースの項目設定##:
+##foreach( $record in $result.GpdbAllList )
+##	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
+##end
 </h2>
+
+#if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
+	<div class="auiBlankBox">データベースの管理よりデータベースを追加してください。</div>
+#else
 #AUISummaryDiv()
 	#if($result.getGpdbSum() != 0)
-	<div class="floatLeft">
 	#AUIbuttonAction("項目を追加する" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
-	</div>
 	#end
-	<div class="floatRight">
+#AUISummaryDivfooter()
+
+#AUISummaryDiv()
 		#if($result.getGpdbSum() != 0)
 		<form class="auiForm" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 		<select sytle="max-width: 180px" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
@@ -51,7 +57,6 @@
 		</select>
 		#ALformfooter()
 		#end
-	</div>
 #AUISummaryDivfooter()
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("項目")
@@ -133,6 +138,7 @@ $!record.TypeName
 #AUISummaryDivfooter()
 #end
 #ALformfooter()
+#end
 #AUIcontentsAreaFooter()
 
 #parse("/portlets/html/ja/gpdb-widgets.vm")
