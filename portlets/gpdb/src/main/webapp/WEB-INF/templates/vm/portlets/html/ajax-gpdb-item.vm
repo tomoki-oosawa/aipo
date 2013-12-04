@@ -32,10 +32,10 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
-<h2>データベースの項目設定##:
-##foreach( $record in $result.GpdbAllList )
-##	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
-##end
+<h2>データベースの項目設定:
+#foreach( $record in $result.GpdbAllList )
+	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
+#end
 </h2>
 
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
@@ -47,17 +47,17 @@
 	#end
 #AUISummaryDivfooter()
 
-#AUISummaryDiv()
-		#if($result.getGpdbSum() != 0)
-		<form class="auiForm" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
-		<select sytle="max-width: 180px" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-		#foreach( $record in $result.GpdbAllList )
-		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) selected="selected" #end>$!record.WbrGpdbName</option>
-		#end
-		</select>
-		#ALformfooter()
-		#end
-#AUISummaryDivfooter()
+###AUISummaryDiv()
+##		#if($result.getGpdbSum() != 0)
+##		<form class="auiForm" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
+##		<select sytle="max-width: 180px" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
+##		#foreach( $record in $result.GpdbAllList )
+##		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData("filter",$!record.GpdbId).addQueryData("filtertype","gpdb_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) selected="selected" #end>$!record.WbrGpdbName</option>
+##		#end
+##		</select>
+##		#ALformfooter()
+##		#end
+###AUISummaryDivfooter()
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("項目")
 #if($result.getGpdbSum() == 0)
