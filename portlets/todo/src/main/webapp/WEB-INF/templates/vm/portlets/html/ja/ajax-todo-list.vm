@@ -151,7 +151,7 @@
 </div>
 #end
 
-<img src="images/common/dot.gif" alt="" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<img src="images/common/dot.gif" alt="" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0){dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none; top:85px; left:276px;">
 <div>

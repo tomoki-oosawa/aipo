@@ -66,7 +66,9 @@ aipo.todo.initFilterSearch = function(portlet_id) {
 			q.style.width = parseInt(dojo.getComputedStyle(q).width) - filterOffset + "px"
 			q.style.paddingLeft = "0px"
 		} else {
-			q.style.paddingLeft = filterOffset + "px"
+			if(filterOffset != 0) {
+				q.style.paddingLeft = filterOffset + "px"
+			}
 		}
 	}
 }
