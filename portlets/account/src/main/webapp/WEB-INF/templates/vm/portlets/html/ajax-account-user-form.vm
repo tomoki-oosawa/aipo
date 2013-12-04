@@ -33,7 +33,7 @@
 ##ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("accountuserForm" $jslink $portlet "AccountUserFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.selectAllOptions(this.group_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.account_user.onReceiveMessage)")
+#ALajaxscreenformheader("accountuserForm" $jslink $portlet "AccountUserFormJSONScreen" "#if($result.isFileUploadable())aimluck.io.createSelectFromFileList(this, '$!portlet.ID');#end aimluck.io.selectAllOptions(this.group_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID', aipo.account_user.onReceiveMessage)")
 <input name="is_new_post" type="hidden" value="$!result.NewPost"/>
 <input name="is_new_position" type="hidden" value="$!result.NewPosition"/>
 #if($mode=="new_form")
