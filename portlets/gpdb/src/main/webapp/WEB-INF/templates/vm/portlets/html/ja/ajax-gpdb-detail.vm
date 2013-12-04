@@ -22,6 +22,8 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
+#set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('filter',$!result.Detail.GpdbId).addQueryData('filtertype','gpdb_id')))
+
 ## ---------------------------------------------------------------------------
 #ALdialogheader("データベース詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -46,7 +48,10 @@ $!result.Detail.WbrGpdbName
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gpdb.onLoadGpdbDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onReceiveMessage")#ALajaxbuttonClose()
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gpdb.onLoadGpdbDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onReceiveMessage")
+#ALbutton("ajaxbuttonLink" "項目設定" "aipo.common.hideDialog();aipo.viewPage('$GpdbItem', '$!portlet.ID')")
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
