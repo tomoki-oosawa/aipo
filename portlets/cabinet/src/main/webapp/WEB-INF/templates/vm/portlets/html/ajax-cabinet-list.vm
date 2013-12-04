@@ -147,7 +147,7 @@ $l10n.CABINET_NOT_PERMISSION_VIEW
 
 #AUIcontentsAreaFooter()
 
-<img src="images/common/dot.gif" width="1" height="1" onload='dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' alt="" />
+<img src="images/common/dot.gif" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' alt="" />
 
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>

@@ -2359,9 +2359,16 @@ input[type=password] {
   background-color: #ffffff;
 }
 
+/*IE8Hack*/
+html > body input[type=text],
+html > body input[type=password] {
+  line-height/*\**/: 32px \9;
+  padding/*\**/: 0 2px \9;
+}
+
+/*IE7Hack*/
 *:first-child + html input[type=text],
 *:first-child + html input[type=password] {
-  /*IE7Hack*/
   height: 30px;
   line-height: 30px;
   max-width: 99.2%;
