@@ -52,8 +52,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.util.ServiceUtil;
-import org.apache.jetspeed.util.template.JetspeedLink;
-import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.Template;
@@ -199,9 +197,6 @@ public class GpdbUtils {
 
   /** ソート形式 */
   public static final String SORT_STRING = "sort";
-
-  /** GpdbId一時保存キー */
-  public static final String TEMP_KEY = "temp_new_gpdbid";
 
   /** 入力形式のマップ */
   @SuppressWarnings("serial")
@@ -2049,32 +2044,6 @@ public class GpdbUtils {
       return attachmentFileList;
     }
     return new ArrayList<FileuploadBean>();
-  }
-
-  /**
-   * 新規データベース登録直後項目設定一覧転送処理
-   * 
-   */
-  public static void redirectItemList(RunData rundata, Context context) {
-    try {
-      String temp = ALEipUtils.getTemp(rundata, context, TEMP_KEY);
-      if (temp != null && !"".equals(temp)) {
-        ALEipUtils.removeTemp(rundata, context, TEMP_KEY);
-        JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "template",
-          "GpdbItemListScreen").addQueryData("filter", temp).addQueryData(
-          "filtertype",
-          "gpdb_id").toString());
-        rundata.getResponse().sendRedirect(rundata.getRedirectURI());
-        JetspeedLinkFactory.putInstance(jsLink);
-        jsLink = null;
-      }
-    } catch (Exception ex) {
-      logger.error("[GpdbUtils] Exception.", ex);
-    }
-
   }
 
 }

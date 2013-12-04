@@ -69,6 +69,12 @@ public class GpdbFormData extends ALAbstractFormData {
   /** ユーザーID */
   private int userId;
 
+  /** フィルタ値のキー */
+  private static final String RECORD_LIST_FILTER_STR = new StringBuffer()
+    .append(GpdbRecordSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER)
+    .toString();
+
   /**
    * 初期設定
    * 
@@ -295,7 +301,7 @@ public class GpdbFormData extends ALAbstractFormData {
         "Webデータベース 「" + gpdb.getGpdbName() + "」 追加");
 
       // 新規データベース登録直後リダイレクト処理用
-      ALEipUtils.setTemp(rundata, context, GpdbUtils.TEMP_KEY, gpdb
+      ALEipUtils.setTemp(rundata, context, RECORD_LIST_FILTER_STR, gpdb
         .getGpdbId()
         .toString());
 

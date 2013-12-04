@@ -34,7 +34,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.gpdb.GpdbItemSelectData;
 import com.aimluck.eip.gpdb.GpdbRecordSelectData;
-import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -190,7 +189,6 @@ public class GpdbAction extends ALBaseAction {
     list.add(ITEM_LIST_SORT_TYPE_STR);
     // list.add(LIST_FILTER_STR);
     // list.add(LIST_FILTER_TYPE_STR);
-    list.add(GpdbUtils.TEMP_KEY);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 
