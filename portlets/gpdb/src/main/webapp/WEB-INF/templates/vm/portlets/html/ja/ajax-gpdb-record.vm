@@ -25,17 +25,7 @@
 #AUIcontentsAreaHeader()
 
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-
-#set ($addGpdb = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbFormScreen").addQueryData("entityid","new")))
-
-<h2>データベースの管理</h2>
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction("データベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
+<img src="images/common/dot.gif" width="1" height="1" onload="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');" style="display:none" />
 
 #elseif(!$result.List)
 	<div class="auiBlankBox">データベースを選択してください。</div>
