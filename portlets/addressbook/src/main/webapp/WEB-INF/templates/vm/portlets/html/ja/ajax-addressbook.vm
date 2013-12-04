@@ -23,10 +23,12 @@
 <form class="auiSearch auiForm" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="#" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID','','$indicator_id'); return false;">
 <input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
 <a class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">$l10n.ADDRESSBOOK_SEARCH</a>
- &nbsp;
- <i class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;"></i>
-
 <input name="mode" type="hidden" value="ajaxsearch" />
+&nbsp;
+<i class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;"></i>
+</form>
+#AUISummaryDivfooter()
+
 #if("$!result.CurrentTab" != "")
   #if($result.List.size() == 0)
     $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
@@ -34,7 +36,7 @@
     #AUISummaryDiv()
     #AUIsearchresult($result.SearchWord.toString())
     #AUIajaxpageview('AddressBookScreen' $result)
-    </div>
+    #AUISummaryDivfooter()
     <table class="auiRowTable wide">
     <colgroup style="width:8em;" />
     <colgroup />
@@ -59,5 +61,5 @@
   </tbody></table>
   #end
 #end
-</form>
-#AUISummaryDivfooter()
+
+
