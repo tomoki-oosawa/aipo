@@ -25,6 +25,7 @@
 #set ($action_str = "追加する")
 #set ($event_submit = "eventSubmit_doGpdb_insert")
 #set ($subtitle = "データベース追加")
+#set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('reset_keyword_params','true')))
 #else
 #set ($action_str = "更新する")
 #set ($subtitle = "データベース編集")
@@ -36,7 +37,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("gpdbForm" $jslink $portlet "GpdbFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gpdb.onReceiveMessage)")
+#ALajaxscreenformheader("gpdbForm" $jslink $portlet "GpdbFormJSONScreen" "#if($mode=='new_form')ptConfig['$!portlet.ID'].reloadUrl='$GpdbItem'#end;aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gpdb.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
