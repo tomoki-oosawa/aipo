@@ -1770,7 +1770,7 @@ input.auiButtonSearch.active {
 }
 
 .auiSearch input.long {
-  min-width: 480px;
+  min-width: 320px;
 }
 
 .auiSearch input.date {
