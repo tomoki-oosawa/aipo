@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -407,18 +409,25 @@ public class GpdbRecordSelectData extends
     String filterType = rundata.getParameters().getString("filtertype", "");
 
     List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
-    if ((gpdbId != null && !"".equals(gpdbId))
+    if (!"".equals(gpdbId)
       && ("gpdb_id".equals(filterType) || filterType == null || ""
         .equals(filterType))) { // 最大化画面でデータベース選択した場合と詳細画面
-      for (GpdbResultData gpdb : gpdbAllList) {
-        if (gpdb.getGpdbId().toString().equals(gpdbId)) {
-          this.gpdbId = gpdbId;
-        }
+      if (validateGpdbId(gpdbAllList, gpdbId)) {
+        this.gpdbId = gpdbId;
       }
     }
 
     if (this.gpdbId == null) {
-      if (gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      String database =
+        portlet.getPortletConfig().getInitParameter("p1d-database", "");
+      if (!database.isEmpty() && StringUtils.isNumeric(database)) {
+        if (validateGpdbId(gpdbAllList, database)) {
+          this.gpdbId = database;
+        }
+      }
+
+      if (this.gpdbId == null && gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
         this.gpdbId = gpdbAllList.get(0).gpdb_id.toString();
       }
     }
@@ -473,5 +482,14 @@ public class GpdbRecordSelectData extends
    */
   public List<GpdbKubunValueResultData> getKubunValueList(String kubunId) {
     return mapGpdbKubunValue.get(kubunId);
+  }
+
+  private boolean validateGpdbId(List<GpdbResultData> allList, String gpdbId) {
+    for (GpdbResultData gpdb : allList) {
+      if (gpdb.getGpdbId().toString().equals(gpdbId)) {
+        return true;
+      }
+    }
+    return false;
   }
 }
