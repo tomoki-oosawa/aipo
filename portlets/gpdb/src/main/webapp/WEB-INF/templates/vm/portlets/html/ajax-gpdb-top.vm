@@ -31,17 +31,19 @@
 #else
 <div class="auiSummaryMeta clearfix mt0">
   <div class="filters floatLeft" id="filters_$!{portlet.ID}">
-      <div class="caption">
+    <div class="caption">
 #foreach( $record in $result.GpdbAllList )##あとでデータベースがないときの処理
 	#if($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString())
 		<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.gpdb.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.WbrGpdbName</span></a>
 	#end
 #end
-</div>
+    </div>
   </div>
+  #if($result.List.size() > 0)
   <div class="floatRight">
      #AUIajaxpageview('GpdbTopScreen' $result)
   </div>
+  #end
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 	<div>
