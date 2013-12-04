@@ -1314,6 +1314,7 @@ i.indicator {
   padding: 0;
   width: 18px;
   height: 18px;
+  vertical-align: middle;
 }
 
 .indicatorDialog .auiIconIndicator {
