@@ -65,7 +65,6 @@
 <tbody>
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
-#ALtdheadAtt("項目設定"  "class='thin center'")
 #ALtdhead("#ALajaxsort('gpdb_name' 'データベース名' $result 'GpdbListScreen')")
 #ALtdheadAtt("作成者" "class='wName mb_hide'")
 #ALtdheadAtt("作成日" "class='w10 mb_hide'")
@@ -74,9 +73,6 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellAtt("<input name='check$!record.GpdbId' type='checkbox' value='$!record.GpdbId'/>" 'class="auiMTCheck center"')
-#ALtdcellheader()
-<a name="ajaxbuttonCheckboxAction" class="auiButton" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemListScreen').addQueryData('filter',$record.GpdbId).addQueryData('filtertype','gpdb_id'))', '$!portlet.ID');">項目設定</a>
-#ALtdcellfooter()
 #ALtdcellheaderAtt("class='auiMTCaption'")
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbDetailScreen").addQueryData("entityid",$record.GpdbId))');">$!record.WbrGpdbName</a>
