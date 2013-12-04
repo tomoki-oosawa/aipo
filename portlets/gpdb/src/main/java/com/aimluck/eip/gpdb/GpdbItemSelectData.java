@@ -34,6 +34,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -58,6 +59,15 @@ public class GpdbItemSelectData extends
 
   /** 全Webデータベースの一覧 */
   private List<GpdbResultData> gpdbAllList;
+
+  /** WebデータベースID */
+  private String gpdbId;
+
+  /** フィルタ値のキー */
+  private static final String RECORD_LIST_FILTER_STR = new StringBuffer()
+    .append(GpdbRecordSelectData.class.getName())
+    .append(ALEipConstants.LIST_FILTER)
+    .toString();
 
   /**
    * 初期設定
@@ -206,5 +216,49 @@ public class GpdbItemSelectData extends
    */
   public boolean displayField(String field, String type) {
     return GpdbUtils.dipslayField(field, type);
+  }
+
+  /**
+   * WebデータベースIDの設定
+   * 
+   */
+
+  public void setGpdbId(Context context, RunData rundata) {
+    String gpdbId = rundata.getParameters().getString("filter", "");
+    String reset =
+      rundata.getParameters().getString("reset_keyword_params", "");
+    if ("true".equals(reset)) {
+      ALEipUtils.removeTemp(rundata, context, LIST_FILTER_STR);
+    }
+    String sesGpdbId =
+      ALEipUtils.getTemp(rundata, context, RECORD_LIST_FILTER_STR);
+    String itemGpdbId = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    if ("".equals(gpdbId)) {
+      gpdbId = null == itemGpdbId ? "" : itemGpdbId;
+    }
+    if ("".equals(gpdbId)) {
+      gpdbId = null == sesGpdbId ? "" : sesGpdbId;
+    }
+    String filterType = rundata.getParameters().getString("filtertype", "");
+
+    List<GpdbResultData> gpdbAllList = GpdbUtils.getGpdbAllList();
+    if ((gpdbId != null && !"".equals(gpdbId))
+      && ("gpdb_id".equals(filterType) || filterType == null || ""
+        .equals(filterType))) { // 最大化画面でデータベース選択した場合と詳細画面
+      for (GpdbResultData gpdb : gpdbAllList) {
+        if (gpdb.getGpdbId().toString().equals(gpdbId)) {
+          this.gpdbId = gpdbId;
+        }
+      }
+    }
+
+    if (this.gpdbId == null) {
+      if (gpdbAllList.size() > 0) {// 初期設定されていない場合リストの一番目を表示
+        this.gpdbId = gpdbAllList.get(0).gpdb_id.toString();
+      }
+    }
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, this.gpdbId);
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "gpdb_id");
   }
 }

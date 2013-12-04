@@ -32,6 +32,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.gpdb.GpdbItemSelectData;
 import com.aimluck.eip.gpdb.GpdbRecordSelectData;
 import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
@@ -69,6 +70,18 @@ public class GpdbAction extends ALBaseAction {
   private static final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
     GpdbRecordSelectData.class.getName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
+
+  /** ソート値のキー */
+  private static final String ITEM_LIST_SORT_STR = new StringBuffer()
+    .append(GpdbItemSelectData.class.getName())
+    .append(ALEipConstants.LIST_SORT)
+    .toString();
+
+  /** ソート項目のキー */
+  private static final String ITEM_LIST_SORT_TYPE_STR = new StringBuffer()
+    .append(GpdbItemSelectData.class.getName())
+    .append(ALEipConstants.LIST_SORT_TYPE)
+    .toString();
 
   /**
    * 通常表示の際の処理を記述します。
@@ -173,6 +186,8 @@ public class GpdbAction extends ALBaseAction {
     List<String> list = new ArrayList<String>();
     list.add(LIST_SORT_STR);
     list.add(LIST_SORT_TYPE_STR);
+    list.add(ITEM_LIST_SORT_STR);
+    list.add(ITEM_LIST_SORT_TYPE_STR);
     // list.add(LIST_FILTER_STR);
     // list.add(LIST_FILTER_TYPE_STR);
     list.add(GpdbUtils.TEMP_KEY);
