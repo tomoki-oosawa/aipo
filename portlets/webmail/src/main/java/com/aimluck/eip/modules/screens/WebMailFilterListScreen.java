@@ -29,7 +29,7 @@ import com.aimluck.eip.webmail.WebMailFilterSelectData;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
- * Webメールアカウントの一覧を処理するクラスです。 <br />
+ * Webメールフィルタの一覧を処理するクラスです。 <br />
  * 
  */
 public class WebMailFilterListScreen extends ALVelocityScreen {
