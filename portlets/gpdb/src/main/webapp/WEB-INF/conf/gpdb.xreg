@@ -66,7 +66,7 @@
             </meta-info>
         </parameter>
         <parameter name="p1d-database.style" value="GpdbAllListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1d-database.style.initialvalue" value="" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1d-database.style.initialvalue" value="（初期に表示するWebデータベースの選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
