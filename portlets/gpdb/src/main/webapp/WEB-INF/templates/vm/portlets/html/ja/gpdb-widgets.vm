@@ -48,7 +48,7 @@
 </div>
 <div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemListScreen')', '$!portlet.ID');">データベースの項目設定</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemListScreen').addQueryData('reset_keyword_params','true')', '$!portlet.ID');">データベースの項目設定</a>
 </div>
 </div>
 <div class="auiWidget clearfix">
