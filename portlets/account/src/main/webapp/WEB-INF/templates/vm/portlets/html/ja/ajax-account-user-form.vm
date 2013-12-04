@@ -76,6 +76,7 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("cellular_mail"))
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#if($result.isFileUploadable())
 #ALtdcaption($!result.getFieldName("photo"))
 #ALtditemheader()
   #IFFileUpload()
@@ -86,6 +87,7 @@
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 #ALtditemfooter()
+#end
 
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
