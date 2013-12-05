@@ -52,7 +52,7 @@ $!result.LoginName
 #ALtextfield('out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')- #ALtextfield('out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')- #ALtextfield('out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
 #ALtdcaption($!result.InTelephone.FieldName)
-#ALtditem("#ALtextfield('in_telephone' $!result.InTelephone '30%' 13 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('in_telephone' $!result.InTelephone '30%' 13 'disabled')#ALcaution($l10n.ACCOUNT_HYPHEN_OR_HALFWIDTH_NUM)")
 #ALtdcaption($!result.CellularPhone1.FieldName)
 #ALtditemheader()
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')- #ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')- #ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
