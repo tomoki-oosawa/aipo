@@ -283,6 +283,7 @@ $!data.Message
 </form>
 </div></div>
 <!-- /auiLoginBox -->
+<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
 
 <script language="JavaScript" type="text/JavaScript">
 <!--
