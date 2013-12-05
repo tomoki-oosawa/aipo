@@ -320,7 +320,7 @@ aipo.gpdb.replaceFileInfo = function(foldername, fileid, filename, pid) {
     dojo.byId('folderName_' + pid).value =  foldername;
 }
 
-aipo.gpdb.toggleMenu=function (node,filters,event){
+aipo.gpdb.toggleMenu = function (node,filters,event){
 	var rect=filters.getBoundingClientRect();
 	var html=document.documentElement.getBoundingClientRect();
 	if (node.style.display == "none") {
@@ -346,4 +346,4 @@ aipo.gpdb.toggleMenu=function (node,filters,event){
     } else {
         dojo.query("div.menubar").style("display", "none");
     }
-};
+}
