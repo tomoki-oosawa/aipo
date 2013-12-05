@@ -173,6 +173,15 @@
 	<db-relationship name="eipTEventlog" source="turbine_user" target="eip_t_eventlog" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTGpdb" source="turbine_user" target="eip_t_gpdb" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbItem" source="turbine_user" target="eip_t_gpdb_item" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbRecord" source="turbine_user" target="eip_t_gpdb_record" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTMsgboardCategory" source="turbine_user" target="eip_t_msgboard_category" toMany="true">
 		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
 	</db-relationship>
@@ -221,6 +230,9 @@
 	<obj-relationship name="eipTAclUserRoleMaps" source="TurbineUser" target="EipTAclUserRoleMap" db-relationship-path="eipTAclUserRoleMaps"/>
 	<obj-relationship name="eipTCabinetFile" source="TurbineUser" target="EipTCabinetFile" db-relationship-path="eipTCabinet"/>
 	<obj-relationship name="eipTEventlog" source="TurbineUser" target="EipTEventlog" db-relationship-path="eipTEventlog"/>
+	<obj-relationship name="eipTGpdb" source="TurbineUser" target="EipTGpdb" db-relationship-path="eipTGpdb"/>
+	<obj-relationship name="eipTGpdbItem" source="TurbineUser" target="EipTGpdbItem" db-relationship-path="eipTGpdbItem"/>
+	<obj-relationship name="eipTGpdbRecord" source="TurbineUser" target="EipTGpdbRecord" db-relationship-path="eipTGpdbRecord"/>
 	<obj-relationship name="eipTMsgboardCategory" source="TurbineUser" target="EipTMsgboardCategory" db-relationship-path="eipTMsgboardCategory"/>
 	<obj-relationship name="eipTReport" source="TurbineUser" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTTimeline" source="TurbineUser" target="EipTTimeline" db-relationship-path="eipTTimeline"/>

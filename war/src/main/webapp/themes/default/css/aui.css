@@ -1834,6 +1834,11 @@ input.auiButtonSearch.active {
   line-height: 32px;
 }
 
+.auiSummaryMeta .caption {
+  padding: 8px 0;
+  font-weight: bold;
+}
+
 *:first-child + html .auiSummaryMeta {
   overflow: hidden;
 }

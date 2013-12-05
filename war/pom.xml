@@ -152,6 +152,8 @@
                 <include>../../../../target/aipo/javascript/aipo/tutorial/tutorial.js</include>
                 <include>../../../../target/aipo/javascript/aipo/calendar/weekly.js</include>
                 <include>../../../../target/aipo/javascript/aipo/mygroup/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/gpdb/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/fileuploadadv/form.js</include>
               </includes>
             </aggregation>
             <aggregation>

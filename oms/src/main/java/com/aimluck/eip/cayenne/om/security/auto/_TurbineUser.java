@@ -44,6 +44,9 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TACL_USER_ROLE_MAPS_PROPERTY = "eipTAclUserRoleMaps";
     public static final String EIP_TCABINET_FILE_PROPERTY = "eipTCabinetFile";
     public static final String EIP_TEVENTLOG_PROPERTY = "eipTEventlog";
+    public static final String EIP_TGPDB_PROPERTY = "eipTGpdb";
+    public static final String EIP_TGPDB_ITEM_PROPERTY = "eipTGpdbItem";
+    public static final String EIP_TGPDB_RECORD_PROPERTY = "eipTGpdbRecord";
     public static final String EIP_TMSGBOARD_CATEGORY_PROPERTY = "eipTMsgboardCategory";
     public static final String EIP_TREPORT_PROPERTY = "eipTReport";
     public static final String EIP_TTIMELINE_PROPERTY = "eipTTimeline";
@@ -343,6 +346,39 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTEventlog() {
         return (List)readProperty("eipTEventlog");
+    }
+    
+    
+    public void addToEipTGpdb(com.aimluck.eip.cayenne.om.portlet.EipTGpdb obj) {
+        addToManyTarget("eipTGpdb", obj, true);
+    }
+    public void removeFromEipTGpdb(com.aimluck.eip.cayenne.om.portlet.EipTGpdb obj) {
+        removeToManyTarget("eipTGpdb", obj, true);
+    }
+    public List getEipTGpdb() {
+        return (List)readProperty("eipTGpdb");
+    }
+    
+    
+    public void addToEipTGpdbItem(com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem obj) {
+        addToManyTarget("eipTGpdbItem", obj, true);
+    }
+    public void removeFromEipTGpdbItem(com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem obj) {
+        removeToManyTarget("eipTGpdbItem", obj, true);
+    }
+    public List getEipTGpdbItem() {
+        return (List)readProperty("eipTGpdbItem");
+    }
+    
+    
+    public void addToEipTGpdbRecord(com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecord obj) {
+        addToManyTarget("eipTGpdbRecord", obj, true);
+    }
+    public void removeFromEipTGpdbRecord(com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecord obj) {
+        removeToManyTarget("eipTGpdbRecord", obj, true);
+    }
+    public List getEipTGpdbRecord() {
+        return (List)readProperty("eipTGpdbRecord");
     }
     
     

@@ -1,0 +1,69 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * General Purpose Database Portlet was developed by Advance,Inc.
+ * http://www.a-dvance.co.jp/
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($subtitle = "順番変更")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALerrmsg($errmsgs)
+#if((! $!result.GpdbKubunValueList) || $result.GpdbKubunValueList.size() == 0)
+<div class="message">選択項目は登録されていません。</div>
+#else
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択した値の順番を自由に変更できます。<br>
+ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
+#ALajaxscreenformheader("GpdbKubunChangeTurnForm" $jslink $portlet "GpdbKubunChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.gpdb.onReceiveMessage)")
+<input type="hidden" name="mode" value="update">
+<input type="hidden" name="positions" value="">
+<input type="hidden" name="gpdb_kubun_id" value="$!result.GpdbKubunId">
+<table class="dialogTable wide">
+<tbody>
+<tr>
+<td class="caption" width="30%" nowrap="">値一覧</td>
+<td width="5%">
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
+</td>
+<td width="65%"><select id="gpdb_so_$!portlet.ID" name="gpdb_so" size="20" multiple="multiple" style="WIDTH: 100%">
+#if($!result.UserList.size() <= 0)
+<option value=""></option>
+#else
+#foreach($record in $!result.GpdbKubunValueList)
+<option value="$!record.gpdbKubunValueId">$!record.GpdbKubunValue</option>
+#end
+#end
+</select>
+</td>
+</tr>
+</tbody>
+</table>
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmitJS('eventSubmit_doGpdbKubun_change_turn_update' "更新する" 'setHiddenValue(this);aipo.gpdb.sortsubmit(this.form)')
+#ALajaxbuttonCancel()
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALdialogfooter()

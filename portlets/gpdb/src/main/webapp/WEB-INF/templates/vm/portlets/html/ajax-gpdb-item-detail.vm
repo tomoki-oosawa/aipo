@@ -1,0 +1,97 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * General Purpose Database Portlet was developed by Advance,Inc.
+ * http://www.a-dvance.co.jp/
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($type = $!result.Detail.Type.toString())
+## ---------------------------------------------------------------------------
+#ALdialogheader("項目詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("項目")
+#ALtableheaderWide()
+<div id="messageDiv"></div>
+#ALtdcaption("項目名")
+#ALtditemheader()
+$!result.Detail.WbrGpdbItemName
+#if("$result.Detail.TitleFlg" == "t")
+<div>※タイトルにする</div>
+#end
+#ALtditemfooter()
+#ALtdcaption("入力形式")
+#ALtditemheader()
+$!result.Detail.TypeName
+#ALtditemfooter()
+#if ($!result.displayField('select_kubun',$type))
+	#ALtdcaption("選択項目")
+	#ALtditem($!result.Detail.WbrGpdbKubunName)
+#end
+#if ($!result.displayField('size_col',$type))
+##	#ALtdcaption("表示サイズ（横）")
+##	#ALtditem("$!{result.Detail.SizeCol} px")
+#end
+#if ($!result.displayField('size_row',$type))
+##	#ALtdcaption("表示サイズ（縦）")
+##	#ALtditem("$!{result.Detail.SizeRow} px")
+#end
+#if ($!result.displayField('line',$type))
+##	#ALtdcaption("表示行数")
+##	#ALtditem("$!{result.Detail.Line} 行")
+#end
+#if ($!result.displayField('required',$type))
+	#ALtdcaption("必須")
+	#if("$result.Detail.RequiredFlg" == "t")
+	#ALtdcell("必須")
+	#else
+	#ALtdcell("必須でない")
+	#end
+#end
+#ALtdcaption("一覧画面表示")
+#ALtditemheader()
+#if($!result.Detail.ListFlg.toString() == "t")
+<div>一覧画面に表示する<div>
+#else
+<div>一覧画面に表示しない<div>
+#end
+###if($!result.Detail.DetailFlg.toString() == "t")
+##<div>詳細画面に表示する<div>
+###else
+##<div>詳細画面に表示しない<div>
+###end
+#ALtditemfooter()
+#ALtdcaption("ソート")
+#ALtditemheader()
+#if($!result.Detail.DefaultSortFlg.toString() == "t")
+<div>#if($!result.Detail.AscDesc.toString() == "DESC")降順#else昇順#endで指定する<div>
+#else
+<div>指定しない<div>
+#end
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemFormScreen').addQueryData('entityid',$entityid).addQueryData('gpdb_id',$!result.Detail.GpdbId)" "$!portlet.ID" "aipo.gpdb.onLoadGpdbDialog")
+#if("$result.Detail.TitleFlg" != "t")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('gpdb_id',$!result.Detail.GpdbId).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onReceiveMessage")
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

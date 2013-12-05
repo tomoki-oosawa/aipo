@@ -67,6 +67,20 @@
 		<db-attribute name="GROUP_ID" type="INTEGER"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
+	<db-entity name="eip_m_gpdb_kubun">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="GPDB_KUBUN_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_m_gpdb_kubun_value">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_KUBUN_VALUE" type="CLOB" isMandatory="true"/>
+		<db-attribute name="GPDB_KUBUN_VALUE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="ORDER_NO" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+	</db-entity>
 	<db-entity name="eip_m_mail_account">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="ACCOUNT_NAME" type="VARCHAR" isMandatory="true" length="200"/>
@@ -259,6 +273,55 @@
 		<db-attribute name="SYSTEM_MAP_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_gpdb">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="GPDB_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="MAIL_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="eip_t_gpdb_item">
+		<db-attribute name="ASC_DESC" type="VARCHAR" length="4"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="DEFAULT_SORT_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="DETAIL_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="GPDB_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_ITEM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="GPDB_ITEM_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="GPDB_KUBUN_ID" type="INTEGER"/>
+		<db-attribute name="LINE" type="INTEGER"/>
+		<db-attribute name="LIST_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="ORDER_NO" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="REQUIRED_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="SIZE_COL" type="INTEGER"/>
+		<db-attribute name="SIZE_ROW" type="INTEGER"/>
+		<db-attribute name="TITLE_FLG" type="CHAR" isMandatory="true" length="1"/>
+		<db-attribute name="TYPE" type="CHAR" isMandatory="true" length="2"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+	</db-entity>
+	<db-entity name="eip_t_gpdb_record">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_ITEM_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="GPDB_RECORD_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="RECORD_NO" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true" length="8"/>
+		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="VALUE" type="CLOB"/>
+	</db-entity>
+	<db-entity name="eip_t_gpdb_record_file">
+		<db-attribute name="CREATE_DATE" type="DATE" length="8"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="GPDB_RECORD_ID" type="INTEGER" length="4"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_mail">
 		<db-attribute name="ACCOUNT_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -647,6 +710,18 @@
 		<obj-attribute name="FacilityId" type="java.lang.Integer" db-attribute-path="FACILITY_ID"/>
 		<obj-attribute name="GroupId" type="java.lang.Integer" db-attribute-path="GROUP_ID"/>
 	</obj-entity>
+	<obj-entity name="EipMGpdbKubun" className="com.aimluck.eip.cayenne.om.portlet.EipMGpdbKubun" dbEntityName="eip_m_gpdb_kubun">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="gpdbKubunName" type="java.lang.String" db-attribute-path="GPDB_KUBUN_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipMGpdbKubunValue" className="com.aimluck.eip.cayenne.om.portlet.EipMGpdbKubunValue" dbEntityName="eip_m_gpdb_kubun_value">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="gpdbKubunId" type="java.lang.Integer" db-attribute-path="GPDB_KUBUN_ID"/>
+		<obj-attribute name="gpdbKubunValue" type="java.lang.String" db-attribute-path="GPDB_KUBUN_VALUE"/>
+		<obj-attribute name="orderNo" type="java.lang.Integer" db-attribute-path="ORDER_NO"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
 	<obj-entity name="EipMMailAccount" className="com.aimluck.eip.cayenne.om.portlet.EipMMailAccount" dbEntityName="eip_m_mail_account">
 		<obj-attribute name="accountName" type="java.lang.String" db-attribute-path="ACCOUNT_NAME"/>
 		<obj-attribute name="accountType" type="java.lang.String" db-attribute-path="ACCOUNT_TYPE"/>
@@ -815,6 +890,46 @@
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTGpdb" className="com.aimluck.eip.cayenne.om.portlet.EipTGpdb" dbEntityName="eip_t_gpdb">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="gpdbName" type="java.lang.String" db-attribute-path="GPDB_NAME"/>
+		<obj-attribute name="mailFlg" type="java.lang.String" db-attribute-path="MAIL_FLG"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTGpdbItem" className="com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem" dbEntityName="eip_t_gpdb_item">
+		<obj-attribute name="ascDesc" type="java.lang.String" db-attribute-path="ASC_DESC"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="defaultSortFlg" type="java.lang.String" db-attribute-path="DEFAULT_SORT_FLG"/>
+		<obj-attribute name="detailFlg" type="java.lang.String" db-attribute-path="DETAIL_FLG"/>
+		<obj-attribute name="gpdbItemName" type="java.lang.String" db-attribute-path="GPDB_ITEM_NAME"/>
+		<obj-attribute name="gpdbKubunId" type="java.lang.Integer" db-attribute-path="GPDB_KUBUN_ID"/>
+		<obj-attribute name="line" type="java.lang.Integer" db-attribute-path="LINE"/>
+		<obj-attribute name="listFlg" type="java.lang.String" db-attribute-path="LIST_FLG"/>
+		<obj-attribute name="orderNo" type="java.lang.Integer" db-attribute-path="ORDER_NO"/>
+		<obj-attribute name="requiredFlg" type="java.lang.String" db-attribute-path="REQUIRED_FLG"/>
+		<obj-attribute name="sizeCol" type="java.lang.Integer" db-attribute-path="SIZE_COL"/>
+		<obj-attribute name="sizeRow" type="java.lang.Integer" db-attribute-path="SIZE_ROW"/>
+		<obj-attribute name="titleFlg" type="java.lang.String" db-attribute-path="TITLE_FLG"/>
+		<obj-attribute name="type" type="java.lang.String" db-attribute-path="TYPE"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTGpdbRecord" className="com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecord" dbEntityName="eip_t_gpdb_record">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="gpdbItemId" type="java.lang.Integer" db-attribute-path="GPDB_ITEM_ID"/>
+		<obj-attribute name="recordNo" type="java.lang.Integer" db-attribute-path="RECORD_NO"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+		<obj-attribute name="value" type="java.lang.String" db-attribute-path="VALUE"/>
+	</obj-entity>
+	<obj-entity name="EipTGpdbRecordFile" className="com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecordFile" dbEntityName="eip_t_gpdb_record_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="gpdbRecordId" type="java.lang.Integer" db-attribute-path="GPDB_RECORD_ID"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTMail" className="com.aimluck.eip.cayenne.om.portlet.EipTMail" dbEntityName="eip_t_mail">
 		<obj-attribute name="accountId" type="java.lang.Integer" db-attribute-path="ACCOUNT_ID"/>
@@ -1138,6 +1253,12 @@
 	<db-relationship name="eip_m_facility_group" source="eip_m_facility_group_map" target="eip_m_facility_group" toMany="false">
 		<db-attribute-pair source="GROUP_ID" target="GROUP_ID"/>
 	</db-relationship>
+	<db-relationship name="eipMGpdbKubun" source="eip_m_gpdb_kubun" target="eip_m_gpdb_kubun_value" toMany="true">
+		<db-attribute-pair source="GPDB_KUBUN_ID" target="GPDB_KUBUN_ID"/>
+	</db-relationship>
+	<db-relationship name="gpdbKubun" source="eip_m_gpdb_kubun_value" target="eip_m_gpdb_kubun" toMany="false">
+		<db-attribute-pair source="GPDB_KUBUN_ID" target="GPDB_KUBUN_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTMailFilters" source="eip_m_mail_account" target="eip_t_mail_filter" toMany="true">
 		<db-attribute-pair source="ACCOUNT_ID" target="ACCOUNT_ID"/>
 	</db-relationship>
@@ -1206,6 +1327,39 @@
 	</db-relationship>
 	<db-relationship name="eipTExtTimecardSystem" source="eip_t_ext_timecard_system_map" target="eip_t_ext_timecard_system" toMany="false">
 		<db-attribute-pair source="SYSTEM_ID" target="SYSTEM_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbItem" source="eip_t_gpdb" target="eip_t_gpdb_item" toMany="true">
+		<db-attribute-pair source="GPDB_ID" target="GPDB_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbRecord" source="eip_t_gpdb" target="eip_t_gpdb_record" toMany="true">
+		<db-attribute-pair source="GPDB_ID" target="GPDB_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_gpdb" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbRecord" source="eip_t_gpdb_item" target="eip_t_gpdb_record" toMany="true">
+		<db-attribute-pair source="GPDB_ITEM_ID" target="GPDB_ITEM_ID"/>
+	</db-relationship>
+	<db-relationship name="gpdb" source="eip_t_gpdb_item" target="eip_t_gpdb" toMany="false">
+		<db-attribute-pair source="GPDB_ID" target="GPDB_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_gpdb_item" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbRecordFile" source="eip_t_gpdb_record" target="eip_t_gpdb_record_file" toMany="true">
+		<db-attribute-pair source="GPDB_RECORD_ID" target="GPDB_RECORD_ID"/>
+	</db-relationship>
+	<db-relationship name="gpdb" source="eip_t_gpdb_record" target="eip_t_gpdb" toMany="false">
+		<db-attribute-pair source="GPDB_ID" target="GPDB_ID"/>
+	</db-relationship>
+	<db-relationship name="gpdbItem" source="eip_t_gpdb_record" target="eip_t_gpdb_item" toMany="false">
+		<db-attribute-pair source="GPDB_ITEM_ID" target="GPDB_ITEM_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_gpdb_record" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTGpdbRecord" source="eip_t_gpdb_record_file" target="eip_t_gpdb_record" toMany="false">
+		<db-attribute-pair source="GPDB_RECORD_ID" target="GPDB_RECORD_ID"/>
 	</db-relationship>
 	<db-relationship name="eipMMailAccount" source="eip_t_mail_filter" target="eip_m_mail_account" toMany="false">
 		<db-attribute-pair source="ACCOUNT_ID" target="ACCOUNT_ID"/>
@@ -1365,6 +1519,8 @@
 	<obj-relationship name="eipMFacilityGroup" source="EipMFacilityGroup" target="EipMFacilityGroupMap" db-relationship-path="eip_m_facility_group"/>
 	<obj-relationship name="eipMFacilityFacilityId" source="EipMFacilityGroupMap" target="EipMFacility" db-relationship-path="eip_m_facility_facility_id"/>
 	<obj-relationship name="eipMFacilityGroupId" source="EipMFacilityGroupMap" target="EipMFacilityGroup" db-relationship-path="eip_m_facility_group"/>
+	<obj-relationship name="eipMGpdbKubun" source="EipMGpdbKubun" target="EipMGpdbKubunValue" db-relationship-path="eipMGpdbKubun"/>
+	<obj-relationship name="gpdbKubun" source="EipMGpdbKubunValue" target="EipMGpdbKubun" db-relationship-path="gpdbKubun"/>
 	<obj-relationship name="eipMAddressbook" source="EipTAddressbookGroupMap" target="EipMAddressbook" db-relationship-path="eipMAddressbook"/>
 	<obj-relationship name="eipTAddressGroup" source="EipTAddressbookGroupMap" target="EipMAddressGroup" db-relationship-path="eipTAddressGroup"/>
 	<obj-relationship name="eipTBlogEntrys" source="EipTBlog" target="EipTBlogEntry" db-relationship-path="eipTBlogEntrys"/>
@@ -1386,6 +1542,17 @@
 	<obj-relationship name="turbineUser" source="EipTEventlog" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTExtTimecardSystemMaps" source="EipTExtTimecardSystem" target="EipTExtTimecardSystemMap" db-relationship-path="eipTExtTimecardSystemMaps"/>
 	<obj-relationship name="eipTExtTimecardSystem" source="EipTExtTimecardSystemMap" target="EipTExtTimecardSystem" db-relationship-path="eipTExtTimecardSystem"/>
+	<obj-relationship name="eipTGpdbItem" source="EipTGpdb" target="EipTGpdbItem" db-relationship-path="eipTGpdbItem"/>
+	<obj-relationship name="eipTGpdbRecord" source="EipTGpdb" target="EipTGpdbRecord" db-relationship-path="eipTGpdbRecord"/>
+	<obj-relationship name="turbineUser" source="EipTGpdb" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTGpdbRecord" source="EipTGpdbItem" target="EipTGpdbRecord" db-relationship-path="eipTGpdbRecord"/>
+	<obj-relationship name="gpdb" source="EipTGpdbItem" target="EipTGpdb" db-relationship-path="gpdb"/>
+	<obj-relationship name="turbineUser" source="EipTGpdbItem" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTGpdbRecordFile" source="EipTGpdbRecord" target="EipTGpdbRecordFile" db-relationship-path="eipTGpdbRecordFile"/>
+	<obj-relationship name="gpdb" source="EipTGpdbRecord" target="EipTGpdb" db-relationship-path="gpdb"/>
+	<obj-relationship name="gpdbItem" source="EipTGpdbRecord" target="EipTGpdbItem" db-relationship-path="gpdbItem"/>
+	<obj-relationship name="turbineUser" source="EipTGpdbRecord" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTGpdbRecord" source="EipTGpdbRecordFile" target="EipTGpdbRecord" db-relationship-path="eipTGpdbRecord"/>
 	<obj-relationship name="eipMMailAccount" source="EipTMailFilter" target="EipMMailAccount" db-relationship-path="eipMMailAccount"/>
 	<obj-relationship name="eipTMailFolder" source="EipTMailFilter" target="EipTMailFolder" db-relationship-path="eipTMailFolder"/>
 	<obj-relationship name="eipMMailAccount" source="EipTMailFolder" target="EipMMailAccount" db-relationship-path="eipMMailAccount"/>
