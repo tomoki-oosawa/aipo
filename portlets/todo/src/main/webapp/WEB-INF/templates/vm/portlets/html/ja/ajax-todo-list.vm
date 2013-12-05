@@ -55,7 +55,7 @@
 #end#end
 </div>
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
-<input class="text" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
 <a class="auiButtonSearch" onclick="dojo.byId('searchForm_$!portlet.ID').onsubmit();">$l10n.TODO_SEARCH</a>
 </form>
