@@ -240,6 +240,7 @@ $l10n.WAR_AGAIN_FROM_UNDER_LOGIN_FORM
 $l10n.WAR_CANNOT_LOGIN_COMMON_USER
 #end
 </div>
+<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
 <form name="frm" action="${context_path}/portal/?${jslink.ActionKey}=${config.getString("action.login")}" onsubmit="disableSubmit(this);submit2(this)" method="post" enctype="application/x-www-form-urlencoded">
 <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")" />
 #if($!data.getUser().getTemp("company_id"))
