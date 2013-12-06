@@ -74,14 +74,14 @@ aipo.fileupload.ImageDialog
 
 aipo.fileupload.showImageDialog = function(url, portlet_id, callback) {
 	var dialog=dojo.byId('imageDialog');
-	dojo.query("#imageDialog").addClass("preLoadImage");
+	//dojo.query("#imageDialog").addClass("preLoadImage");
 	aipo.fileupload.ImageDialog = dijit.byId("imageDialog");
     dojo.query(".auiPopup:not(.imgPopup)").addClass("mb_dialoghide");
     dojo.query("#imageDialog").addClass("mb_dialog");
 
     if(! aipo.fileupload.ImageDialog){
     	aipo.fileupload.ImageDialog = new aipo.fileupload.widget.FileuploadViewDialog({widgetId:'imageDialog', _portlet_id: portlet_id, _callback:callback}, "imageDialog");
-    	dojo.query("#imageDialog").addClass("preLoadImage");
+    	//dojo.query("#imageDialog").addClass("preLoadImage");
     }else{
     	aipo.fileupload.ImageDialog.setCallback(portlet_id, callback);
     }
@@ -96,15 +96,20 @@ aipo.fileupload.hideImageDialog = function() {
 
     if(arrDialog){
       arrDialog.hide();
+      var _dialog = dojo.byId("imageDialog");
+      if(_dialog){
+    	  _dialog.removeAttribute("style");
+      }
     }
 };
 
 aipo.fileupload.onLoadImage=function(image){
+	dojo.query(".indicatorDialog").style('display', 'none');
 	var dialog=dojo.byId('imageDialog');
 	dialog.style.width=image.width+"px";
 	dialog.style.height=image.height+"px";
 	aipo.fileupload.ImageDialog._position();//再調整
-	dojo.query("#imageDialog").removeClass("preLoadImage");
+	//dojo.query("#imageDialog").removeClass("preLoadImage");
 };
 
 aipo.fileupload.removeFileFromList=function(ul, li, pid){
