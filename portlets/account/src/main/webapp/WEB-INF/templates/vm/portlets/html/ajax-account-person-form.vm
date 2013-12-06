@@ -26,7 +26,7 @@
 #ALdialogheaderCloseJS($subtitle "aipo.common.hideDialog()")
 <div id="messageDiv"></div>
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("accountpersonForm" $jslink $portlet "AccountPersonFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id', '$!portlet.ID', aipo.account_person.onReceiveMessage)")
+#ALajaxscreenformheader("accountpersonForm" $jslink $portlet "AccountPersonFormJSONScreen" "#if($result.isFileUploadable())aimluck.io.createSelectFromFileList(this, '$!portlet.ID');#end aimluck.io.submit(this,'$indicator_id', '$!portlet.ID', aipo.account_person.onReceiveMessage)")
 <input type="hidden" name="mode" value="update" />
 #ALtableheaderWide()
 #ALtdcaptionAtt($l10n.ACCOUNT_LOGIN_NAME "style='width:100px;'")
