@@ -55,7 +55,7 @@
 ## 追加
 	<div class="floatRight">
 	#if($result.List.size() && $result.List.size() != 0)
-	#AUIajaxpageview('BlogScreen' $result)
+	#AUIajaxindicatorpageview('BlogScreen' $result $!portlet.ID)
 	#end
 	</div>
 </div>

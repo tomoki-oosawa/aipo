@@ -21,9 +21,10 @@
 #if ($result.List.size() == 0)
 <div class="message">$l10n.REPORT_REPORT$l10n.REPORT_NO_INFO_TO_YOU</div>
 #else
+#ALindicatorheader()
 #ALformheaderAction('Report' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ReportScreen' $result)
+#AUIajaxindicatorpageview('ReportScreen' $result $!portlet.ID)
 </div>
 <table class="activityTable">
 <tbody>
@@ -39,4 +40,5 @@ $l10n.REPORT_REPORT「$!{record.ReportName}」 $l10n.REPORT_INFO_TO_YOU
 #end
 </tbody></table>
 #ALformfooter()
+#ALindicatorfooter()
 #end

@@ -303,3 +303,10 @@ aipo.arrayContains=function(a,val){//:TODO binary search
 	}
 	return false;
 };
+
+
+aipo.setIndicator = function(portletId){
+    obj_indicator = dojo.byId('loader-'+portletId);
+    dojo.style(obj_indicator, "display" , "");
+
+}

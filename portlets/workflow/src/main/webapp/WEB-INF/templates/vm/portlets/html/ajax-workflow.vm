@@ -24,7 +24,7 @@
 #ALindicatorheader()
 #ALformheaderAction('Workflow' $jslink $portlet)
 #AUISummaryDiv()
-#AUIajaxpageview('WorkflowScreen' $result)
+#AUIajaxindicatorpageview('WorkflowScreen' $result $!portlet.ID)
 #AUISummaryDivfooter()
 <table class="activityTable">
 <tbody>

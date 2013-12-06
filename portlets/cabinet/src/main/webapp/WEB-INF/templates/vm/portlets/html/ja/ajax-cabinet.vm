@@ -31,7 +31,7 @@
 		*##end#*
 	*#</div>
 	#if ($result.List && $result.List.size() != 0 && $result.isAccessible())
-		#AUIajaxpageview('CabinetScreen' $result)
+		#AUIajaxindicatorpageview('CabinetScreen' $result $!portlet.ID)
 	#end
 </div>
 <div class="menubar multi" id="menubar_filter_$!portlet.ID" style="width:260px;display:none;">

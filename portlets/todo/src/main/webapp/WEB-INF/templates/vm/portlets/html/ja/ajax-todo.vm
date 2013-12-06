@@ -53,7 +53,7 @@
 	 </div>
 	<div class="floatRight">
 	#if($result.List.size() != 0)
-	#AUIajaxpageview('ToDoScreen' $result)
+	#AUIajaxindicatorpageview('ToDoScreen' $result $!portlet.ID)
 	#end
 	</div>
 </div>

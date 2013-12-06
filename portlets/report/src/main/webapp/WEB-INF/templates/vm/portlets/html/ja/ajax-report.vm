@@ -24,7 +24,7 @@
 #ALindicatorheader()
 #ALformheaderAction('Report' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ReportScreen' $result)
+#AUIajaxindicatorpageview('ReportScreen' $result $!portlet.ID)
 </div>
 <table class="activityTable">
 <tbody>

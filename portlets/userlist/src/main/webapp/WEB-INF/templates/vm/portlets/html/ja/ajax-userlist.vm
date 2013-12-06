@@ -36,7 +36,7 @@ $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 #ALindicatorheader()
 #AUISummaryDiv()
 #AUIsearchresult($result.SearchWord.toString())
-#AUIajaxpageview('UserListScreen' $result)
+#AUIajaxindicatorpageview('UserListScreen' $result $!portlet.ID)
 #AUISummaryDivfooter()
 #AUIrowTableWide()
 #foreach ($record in $result.List)

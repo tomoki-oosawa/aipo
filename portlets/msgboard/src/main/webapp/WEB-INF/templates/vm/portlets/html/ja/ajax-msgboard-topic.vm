@@ -52,7 +52,7 @@
 		*##end#*
 	*#</div>
 	#if("$result.List.size()" != "0")
-		#AUIajaxpageview('MsgboardTopicScreen' $result)
+		#AUIajaxindicatorpageview('MsgboardTopicScreen' $result $!portlet.ID)
 	#end
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
