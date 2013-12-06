@@ -83,6 +83,7 @@
 #if("$result.List.size()" == "0")
 <div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
+#ALindicatorheader()
 #if($result.TableColumNum == 4)
 #ALformheaderAction('Msgboard' $jslink $portlet)
 <table class="auiRowTable wide">
@@ -128,4 +129,5 @@
 </table>
 #ALformfooter()
 #end
+#ALindicatorfooter()
 #end

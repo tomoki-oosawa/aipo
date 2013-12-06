@@ -526,6 +526,15 @@ $theLink
 <span class="caution">$text</span>
 #end
 
+#macro(ALindicatorheader)
+<div class="auiLoadWrapper">
+<div class="loader"></div>
+#end
+
+#macro(ALindicatorfooter)
+</div>
+#end
+
 #* S O R T *#
 #macro(ALsort $key $name $result $link)
 #if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end

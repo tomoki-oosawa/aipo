@@ -80,6 +80,7 @@
 #if (!$result.List || $result.List.size() == 0)
 <div class="message">$l10n.CABINET_NOTHING_FILE_IN_FOLDER</div>
 #else
+#ALindicatorheader()
 #if($result.TableColumNum == 4)
 #ALformheaderAction('Cabinet' $jslink $portlet)
 <table class="auiRowTable wide">
@@ -119,5 +120,6 @@
 </table>
 #ALformfooter()
 #end
+#ALindicatorfooter()
 #end
 #end

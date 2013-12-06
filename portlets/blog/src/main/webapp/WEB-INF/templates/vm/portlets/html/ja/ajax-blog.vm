@@ -93,6 +93,7 @@
 <div class="message">$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME</div>
 <div id="messageDivList_$!portlet.ID"></div>
 #else
+#ALindicatorheader()
 <div id="auiBlogEntries">
 #foreach ($record in $result.List)
 <div class="entry clearfix">
@@ -114,4 +115,5 @@
 #end
 </div>
 <div id="messageDivList_$!portlet.ID"></div>
+#ALindicatorfooter()
 #end

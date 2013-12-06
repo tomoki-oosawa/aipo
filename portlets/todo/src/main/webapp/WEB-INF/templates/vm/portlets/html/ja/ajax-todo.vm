@@ -85,6 +85,7 @@
 #if ($result.List.size() == 0)
 <div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
 #else
+#ALindicatorheader()
 #if($result.TableColumNum == 4)
 #ALformheaderAction('ToDo' $jslink $portlet)
 <table class="auiRowTable wide">
@@ -134,4 +135,5 @@
 </table>
 #ALformfooter()
 #end
+#ALindicatorfooter()
 #end

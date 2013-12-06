@@ -33,6 +33,7 @@
 #if($result.List.size() == 0)
 $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 #else
+#ALindicatorheader()
 #AUISummaryDiv()
 #AUIsearchresult($result.SearchWord.toString())
 #AUIajaxpageview('UserListScreen' $result)
@@ -48,6 +49,7 @@ $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 </tr>
 #end
 #ALtablefooter()
+#ALindicatorfooter()
 #end
 #end
 
