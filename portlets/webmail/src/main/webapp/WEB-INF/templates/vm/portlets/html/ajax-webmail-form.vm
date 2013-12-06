@@ -80,7 +80,7 @@
 #ALtablefooter()
 #ALbuttonheader()
 <input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.WEBMAIL_DO_SEND" onclick="aimluck.io.setHiddenValue(this);">
-<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.common.hideDialog();if(dojo.isIE==8){location.reload();}">
+#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #end
