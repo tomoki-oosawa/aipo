@@ -81,9 +81,9 @@
 <colgroup style="width:20px;"></colgroup>
 <colgroup style="width:12em;"></colgroup>
 <colgroup style="width:8em;"></colgroup>
-<colgroup style="width:8em;"></colgroup>
-<colgroup style="width:8em;"></colgroup>
-<colgroup style="width:8em;"></colgroup>
+<colgroup class="mb_hide" style="width:8em;"></colgroup>
+<colgroup class="mb_hide" style="width:8em;"></colgroup>
+<colgroup class="mb_hide" style="width:8em;"></colgroup>
 <colgroup style=""></colgroup>
 <tbody>
 <tr class="mb_hide">
