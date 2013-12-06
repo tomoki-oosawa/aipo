@@ -237,6 +237,7 @@ public class MsgboardTopicSelectData extends
     boolean existCategory = false;
     if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
       existCategory = true;
+      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
     } else {
       if (categoryId != null) {
         List<MsgboardCategoryResultData> categoryList =
@@ -257,9 +258,9 @@ public class MsgboardTopicSelectData extends
           this.categoryId = categoryId;
           ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
         } else {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-          ALEipUtils
-            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+          // ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+          // ALEipUtils
+          // .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
           this.categoryId = categoryId;
         }
       }
