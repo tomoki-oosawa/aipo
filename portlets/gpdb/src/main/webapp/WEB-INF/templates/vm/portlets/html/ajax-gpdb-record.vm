@@ -30,7 +30,7 @@
 #elseif(!$result.List)
 	<div class="auiBlankBox">データベースを選択してください。</div>
 #elseif($result.List.size() == 0)
-	<div class="auiBlankBox">指定された条件に該当するレコードはありません。</div>
+	<div class="auiBlankBox">指定された条件に該当するデータはありません。</div>
 #else
 
 <h2>$result.Gpdb.WbrGpdbName</h2>
