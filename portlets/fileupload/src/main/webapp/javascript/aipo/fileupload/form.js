@@ -104,10 +104,19 @@ aipo.fileupload.hideImageDialog = function() {
 };
 
 aipo.fileupload.onLoadImage=function(image){
+	dojo.style(image, 'display', '');
 	dojo.query(".indicatorDialog").style('display', 'none');
 	var dialog=dojo.byId('imageDialog');
-	dialog.style.width=image.width+"px";
-	dialog.style.height=image.height+"px";
+	if(dojo.style(image, 'max-width')){
+		dialog.style.width= Math.min(image.width, dojo.style(image, 'max-width'))+"px";
+	} else {
+		dialog.style.width= image.width + "px";
+	}
+	if(dojo.style(image, 'max-height')){
+		dialog.style.height= Math.min(image.height, dojo.style(image, 'max-height'))+"px";
+	} else {
+		dialog.style.height= image.height + "px";
+	}
 	aipo.fileupload.ImageDialog._position();//再調整
 	//dojo.query("#imageDialog").removeClass("preLoadImage");
 };

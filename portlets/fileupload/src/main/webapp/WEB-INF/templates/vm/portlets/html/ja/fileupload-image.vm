@@ -22,6 +22,6 @@
  <div class="imgBody">
 	<div class="indicatorDialog center"><i class="auiIcon auiIconIndicator"></i> 読み込み中...</div></div>
  	<a href="javascript:void(0)">
-		<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" />
+		<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" onerror="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" style="display:none;" />
 	</a>
  </div>
