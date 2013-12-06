@@ -50,7 +50,7 @@
 #end
 #ALtableheaderWide()
 	##対象データベース
-	#ALtdcaption("対象データベース")
+	#ALtdcaption("データベース")
 	#ALtditem($result.Gpdb.GpdbName)
 ##=====================項目配置START=====================
 #foreach($item in $result.GpdbItemList)
