@@ -75,7 +75,7 @@
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdhead("#ALajaxsortaddressbook('company_name_kana' $l10n.ADDRESSBOOK_COMPANY_NAME $result 'AddressBookCompanyListScreen')")
 #ALtdhead($l10n.ADDRESSBOOK_POST_NAME)
-#ALtdhead($l10n.ADDRESSBOOK_ADDRESS)
+#ALtdhead($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtdhead($l10n.ADDRESSBOOK_TELEPHONE)
 #ALtdhead($l10n.ADDRESSBOOK_URL)
 </tr>

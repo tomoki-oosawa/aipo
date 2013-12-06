@@ -66,7 +66,7 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.PostName))
 #ALtdcaption($l10n.ADDRESSBOOK_ZIPCODE)
 #ALtditem($!result.Detail.Zipcode)
-#ALtdcaption($l10n.ADDRESSBOOK_ADDRESS)
+#ALtdcaption($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtditem($result.getStringCR($!result.Detail.CompanyAddress))
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
 #ALtditem($!result.Detail.CompanyTelephone)
