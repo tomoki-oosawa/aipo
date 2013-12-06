@@ -1586,14 +1586,12 @@ input.auiButtonSearch.active {
   width: 16px;
   height: 16px;
   padding: 3px !important;
-  font-size: 15px;
-  color: #666666;
+  font-size: 14px;
+  color: #666666 !important;
 }
-
 .auiButtonIcon:hover i {
-  color: #666666;
+  color: #666666 !important;
 }
-
 .auiButtonIcon span {
   display: table-cell;
   width: 16px;
@@ -1602,11 +1600,17 @@ input.auiButtonSearch.active {
   text-align: center;
   vertical-align: middle;
 }
-
 .auiButtonIcon span,
 .auiButtonIcon i {
   cursor: pointer;
   vertical-align: baseline;
+}
+
+[class^="auiButton"] [class^="icon-"] {
+  line-height: 16px;
+}
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
 }
 
 *:first-child + html .auiButtonIcon span {
