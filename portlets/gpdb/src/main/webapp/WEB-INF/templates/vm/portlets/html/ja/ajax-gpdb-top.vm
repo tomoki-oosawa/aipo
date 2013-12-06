@@ -55,7 +55,7 @@
 	</div>
 </div>
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するレコードはありません。</div>
+<div class="message">指定された条件に該当するデータはありません。</div>
 #else
 <table class="auiRowTable wide">
 	<tbody>
