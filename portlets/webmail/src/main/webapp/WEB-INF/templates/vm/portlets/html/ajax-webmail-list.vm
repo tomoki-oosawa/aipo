@@ -78,7 +78,7 @@
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 ##ALtdheadThin("#ALajaxsort('read_flg' $l10n.WEBMAIL_STATE $result 'WebMailListScreen')")
-#ALtdheadAtt("#ALajaxsort('person' $person $result 'WebMailListScreen')" 'style="width:10em;"')
+#ALtdheadAtt("#ALajaxsort('person' $person $result 'WebMailListScreen')" 'style="width:16em;"')
 #ALtdhead("#ALajaxsort('subject' $l10n.WEBMAIL_TITLE $result 'WebMailListScreen')")
 #ALtdheadAtt("#ALajaxsort('date' $l10n.WEBMAIL_DATE $result 'WebMailListScreen')" 'style="width:6em" class="center"')
 ##ALtdheadThin($l10n.WEBMAIL_CAPACITY)
@@ -101,13 +101,13 @@
 <input name='check$!record.MailId' type='checkbox' value='$!record.MailId' />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);' style="display:inline;">
+<div><a href='javascript:void(0);' onclick='aipo.common.showDialog("$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId).addQueryData('tab', $!result.currentTab))","$!portlet.ID",aipo.webmail.onLoadMailListDetail);' style="display:inline;">
 #if($!record.isRead())
 $!record.Person
 #else
 <strong>$!record.Person</strong>
 #end
-</a>
+</a></div>
 #ALtdcell("<div>$MailSubject</div>")
 #ALtdcellAtt("$!{record.Date}" 'class="right" nowrap="nowrap"')
 
