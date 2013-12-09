@@ -1632,7 +1632,6 @@ input.auiButtonSearch.active {
 *:first-child + html .auiButtonIconDummy span {
   display: block;
 }
-
 *:first-child + html .auiButtonIcon i,
 *:first-child + html .auiButtonIconDummy i {
   width: 16px;
