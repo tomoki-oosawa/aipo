@@ -121,7 +121,7 @@
 		#if($record)
 			#ALtditem("$!record.WbrValue")
 		#else
-##			#ALtditem("※自動採番")("登録画面では非表示")
+##			#ALtditem("※自動採番")
 		#end
 	#elseif ($type=='10')
 		##日付
