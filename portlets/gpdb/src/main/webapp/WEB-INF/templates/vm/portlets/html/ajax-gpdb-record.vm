@@ -45,19 +45,13 @@
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>
-	<table class="auiRowTable wide">
-	<colgroup style=""></colgroup>
-	#foreach($item in $result.GpdbItemList)
-		#if ($item.ListFlg.toString()=='t')
-		<colgroup style="#if ($velocityCount == 1) width:20em;#elseif ($velocityCount == 2) width:12em;#else width:8em;#end"></colgroup>
-		#end
-	#end
+	<table class="auiRowTable auiWebdbTable wide">
 	<tr>
 	#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 	#set($titleItemId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
-			<th #if ("$!item.TitleFlg.toString()" != "t") class="mb_hide" #end>
+			<th class="#if ("$!item.TitleFlg.toString()" != "t") mb_hide #end #if ("$!item.Type.toString()" == "08") thin #end #if ("$!item.Type.toString()" == ("11")||"$!item.Type.toString()" == ("12")) thDate #end">
 				#ALajaxsort($!item.GpdbItemId $!item.WbrGpdbItemName $result 'GpdbRecordListScreen')
 			</th>
 		#end
