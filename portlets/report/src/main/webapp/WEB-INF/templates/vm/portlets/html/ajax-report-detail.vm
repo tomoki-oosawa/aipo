@@ -85,9 +85,9 @@ $!record.AliasName<br />
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MapList)
 #if($result.ParentReport.getStatus($record.UserId.Value) == "R")
-<img src="images/report/report_read.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_READ" title="$l10n.REPORT_READ"/>
+<i class="auiIcon auiIconMailOpen" title="$l10n.REPORT_READ"></i>
 #else
-<img src="images/report/report_unread.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.REPORT_UNREAD" title="$l10n.REPORT_UNREAD"/>
+<i class="auiIcon auiIconMail" title="$l10n.REPORT_UNREAD"></i>
 #end
 $!record.AliasName
 <br />

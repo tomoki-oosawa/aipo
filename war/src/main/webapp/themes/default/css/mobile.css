@@ -1431,7 +1431,7 @@ input[type=password] {
 
 .iconLike,
 .iconComment {
-  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -2059,7 +2059,7 @@ div.weeklyTermRights div.weeklyTermRightR {
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
-  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -2080,7 +2080,7 @@ div.weeklyTermRights div.weeklyTermRightR {
 	auiIcon
 --------------------------------------------------*/
 .auiIconArrow {
-  background-image: url(../images/icon/auiIconSpritesMobile20130625.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }

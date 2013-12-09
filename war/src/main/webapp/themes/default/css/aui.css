@@ -2908,13 +2908,13 @@ ul.attachments {
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-image: url(../images/icon/auiIconSprites20131205.png);
   background-repeat: no-repeat;
 }
 
 * html .iconLike,
 * html .iconComment {
-  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-image: url(../images/icon/auiIconSprites20131205.gif);
   background-repeat: no-repeat;
 }
 
@@ -3460,12 +3460,12 @@ ul.attachments {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-image: url(../images/icon/auiIconSprites20131205.png);
   background-repeat: no-repeat;
 }
 
 * html .auiIcon {
-  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-image: url(../images/icon/auiIconSprites20131205.gif);
   background-repeat: no-repeat;
 }
 
@@ -4000,6 +4000,42 @@ a.auiIconTrash:hover {
 }
 
 /*IE6*/
+.auiIconMail {
+  background-position: 0px -784px;
+}
+
+a.auiIconMail:hover {
+  background-position: 0px -784px;
+}
+
+* html .auiIconMail {
+  background-position: 0px -784px;
+}
+
+/*IE6*/
+* html a.auiIconMail:hover {
+  background-position: 0px -784px;
+}
+
+/*IE6*/
+.auiIconMailOpen {
+  background-position: 0px -800px;
+}
+
+a.auiIconMailOpen:hover {
+  background-position: 0px -800px;
+}
+
+* html .auiIconMailOpen {
+  background-position: 0px -800px;
+}
+
+/*IE6*/
+* html a.auiIconMailOpen:hover {
+  background-position: 0px -800px;
+}
+
+/*IE6*/
 .auiIconIndicator {
   background-image: url(../images/common/indicator.gif);
   background-repeat: no-repeat;
@@ -4013,12 +4049,12 @@ a.auiIconTrash:hover {
   width: 15px;
   height: 18px;
   vertical-align: baseline;
-  background-image: url(../images/icon/auiIconSprites20130528.png);
+  background-image: url(../images/icon/auiIconSprites20131205.png);
   background-repeat: no-repeat;
 }
 
 * html .auiIconArrow {
-  background-image: url(../images/icon/auiIconSprites20130528.gif);
+  background-image: url(../images/icon/auiIconSprites20131205.gif);
   background-repeat: no-repeat;
 }
 
