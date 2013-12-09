@@ -483,8 +483,8 @@ public class MsgboardAction extends ALBaseAction {
     list.add("entityid");
     list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasort");
     list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasorttype");
-    list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafilter");
-    list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafiltertype");
+    // list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafilter");
+    // list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafiltertype");
     list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasearch");
     ALEipUtils.removeTemp(rundata, context, list);
 

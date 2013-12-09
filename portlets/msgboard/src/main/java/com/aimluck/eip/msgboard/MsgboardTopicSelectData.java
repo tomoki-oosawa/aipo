@@ -228,10 +228,12 @@ public class MsgboardTopicSelectData extends
       exsitedCategoryId = true;
     } else {
       categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
-      if (categoryId == null || categoryId.isEmpty()) {
+      if (categoryId == null || categoryId.isEmpty()) { // ログイン後初期設定
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
+      } else {
+        exsitedCategoryId = true;
       }
     }
     boolean existCategory = false;
@@ -258,9 +260,9 @@ public class MsgboardTopicSelectData extends
           this.categoryId = categoryId;
           ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
         } else {
-          // ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-          // ALEipUtils
-          // .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+          ALEipUtils
+            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
           this.categoryId = categoryId;
         }
       }
