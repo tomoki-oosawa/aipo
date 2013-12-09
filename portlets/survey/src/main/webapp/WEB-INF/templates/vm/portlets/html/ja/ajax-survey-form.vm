@@ -1,0 +1,107 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+## ---------------------------------------------------------------------------
+#if  ($mode=="new_form")
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doSurvey_insert")
+#set ($subtitle = "アンケート追加")
+#else
+#set ($action_str = "更新する")
+#set ($subtitle = "アンケート編集")
+#set ($event_submit = "eventSubmit_doSurvey_update")
+#end
+#set ($indicator_id = "indicator-dlg-")
+#ALdialogheader($subtitle)
+
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#ALajaxscreenformheader("surveyForm" $jslink $portlet "SurveyFormJSONScreen" "aimluck.io.selectAllOptions(this.positions);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.survey.onReceiveMessage);return false;")
+<input type="hidden" name="mode" value="$!modesrv" />
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($!result.getFieldName('name'))")
+#ALtditemheader()
+#ALtextfieldw100('name' $!result.Name 50 'active')
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('comment'))")
+#ALtditemheader()
+#ALtextarea('comment' $!result.Comment 5 50)
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('optionType'))")
+#ALtditemheader()
+<label for="optionTypeRadio"><input type="radio" name="optionType" value="R" id="optionTypeRadio">1つだけ選択</label><br>
+<label for="optionTypeCheck"><input type="radio" name="optionType" value="C" id="optionTypeCheck">複数選択</label>
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('options'))")
+#ALtditemheader()
+<a href="javascript:void(0)" onclick="">項目を追加する</a>
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('respondentType'))")
+#ALtditemheader()
+<div id="mapFieldButton"></div>
+<div id="mapField">
+<table class="none">
+  <tr><td>
+	<label for="surveyAnserAll"><input type="radio" name="respondentType" value="A" id="surveyAnserAll" onchange="aipo.survey.toggleRespondentType(this,'select','memberField');">すべてのユーザー</label><br>
+    <label for="surveyAnserSelect"><input type="radio" name="respondentType" value="M" id="surveyAnserSelect" onchange="aipo.survey.toggleRespondentType(this,'select','memberField');">ユーザーを選択</label>							
+    <div class="spaceTop spaceLeft small">左側に回答対象者を追加してください。</div>
+        <div dojoType="aipo.widget.MemberNormalSelectList"
+        id="membernormalselect"
+        widgetId="membernormalselect"
+        buttonAddId="button_member_add"
+        buttonRemoveId="button_member_remove"
+        memberFromId="tmp_member_from"
+        memberToTitle="$l10n.REPORT_MEMVER_LIST"
+        memberToId="members"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+        memberFromOptionKey="name"
+        memberFromOptionValue="aliasName"
+        groupSelectId="tmp_group"
+        groupSelectPreOptionKey="LoginUser"
+        groupSelectPreOptionValue="$l10n.REPORT_ALL_GROUP"
+        groupSelectOptionKey="groupId"
+        groupSelectOptionValue="name"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
+        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
+    </div>
+    <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+  </td></tr>
+</table>
+</div>
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('closeDate'))")
+#ALtditemheaderAtt('class="auiSetDate"')
+<div class="mb5">
+	<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$!result.getFieldName('closeDate')" hiddenId="closeDate" initValue="$!{result.closeDate.Year}/$!{result.closeDate.Month}/$!{result.closeDate.Day}" inputId="input_date" dateId="closeDate" displayCheck="none"></div>
+</div>
+#ALtditemfooter()
+#ALtdcaption($!result.getFieldName("anonymousFlag"))
+#ALtditemheader()
+<input name="anonymousFlag_checkbox" type="checkbox" value="" id="$!{portlet.ID}anonymousFlag_id" #if($!result.MailFlg.toString() == "T") checked="checked" #end onchange="aipo.survey.toggleCheck(this,'anonymousFlag');"/>&nbsp;<label for="$!{portlet.ID}anonymousFlag_id">匿名の回答にする</label>
+<input name="anonymousFlag" type="hidden" id="anonymousFlag" value="$!result.MailFlg.toString()" />
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

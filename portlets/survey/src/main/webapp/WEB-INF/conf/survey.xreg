@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registry>
+    <portlet-entry name="Survey" hidden="false" type="ref" parent="Velocity" application="false">
+        <security-ref parent="user-view"/>
+        <meta-info>
+            <title>アンケート</title>
+            <description>社内アンケート</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="survey" hidden="true" cachedOnName="true" cachedOnValue="true"/>       
+        <parameter name="action" value="survey.SurveyAction" hidden="true" cachedOnName="true" cachedOnValue="true"/> 
+        <parameter name="function_mode1" value="SurveyFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_caption1" value="アンケート追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="function_after_function1" value="aipo.survey.onLoadSurveyDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>       
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

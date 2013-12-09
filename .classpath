@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="portlets/timeline/src/test/java"/>
+	<classpathentry kind="src" path="portlets/survey/src/main/java"/>
 	<classpathentry kind="src" path="portlets/timeline/src/main/java"/>
 	<classpathentry kind="src" path="portlets/userlist/src/main/java"/>
 	<classpathentry kind="src" path="portlets/psml/src/main/java"/>

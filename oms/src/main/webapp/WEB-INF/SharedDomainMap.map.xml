@@ -484,6 +484,40 @@
 		<db-attribute name="TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
+	<db-entity name="eip_t_survey">
+		<db-attribute name="ANONYMOUS_FLAG" type="CHAR" length="1"/>
+		<db-attribute name="CLOSE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="CLOSE_FLAG" type="CHAR" length="1"/>
+		<db-attribute name="COMMENT" type="CLOB"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER"/>
+		<db-attribute name="EDITABLE_FLAG" type="CHAR" length="1"/>
+		<db-attribute name="NAME" type="VARCHAR" length="99"/>
+		<db-attribute name="OPEN_DATE" type="TIMESTAMP"/>
+		<db-attribute name="OPEN_FLAG" type="CHAR" length="1"/>
+		<db-attribute name="OPTION_TYPE" type="CHAR" length="1"/>
+		<db-attribute name="RESPONDENT_TYPE" type="CHAR" length="1"/>
+		<db-attribute name="SURVEY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_t_survey_option">
+		<db-attribute name="NAME" type="VARCHAR" length="255"/>
+		<db-attribute name="OPTION_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="SURVEY_ID" type="INTEGER"/>
+	</db-entity>
+	<db-entity name="eip_t_survey_respondent">
+		<db-attribute name="RESPONDENT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="RESPONSE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="RESPONSE_FLAG" type="CHAR" length="1"/>
+		<db-attribute name="SURVEY_ID" type="INTEGER"/>
+		<db-attribute name="USER_ID" type="INTEGER"/>
+	</db-entity>
+	<db-entity name="eip_t_survey_response_map">
+		<db-attribute name="OPTION_ID" type="INTEGER"/>
+		<db-attribute name="RESPONSE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="SURVEY_ID" type="INTEGER"/>
+		<db-attribute name="USER_ID" type="INTEGER"/>
+	</db-entity>
 	<db-entity name="eip_t_timecard">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="REASON" type="CLOB"/>
@@ -1070,6 +1104,32 @@
 		<obj-attribute name="type" type="java.lang.String" db-attribute-path="TYPE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipTSurvey" className="com.aimluck.eip.cayenne.om.portlet.EipTSurvey" dbEntityName="eip_t_survey">
+		<obj-attribute name="anonymousFlag" type="java.lang.String" db-attribute-path="ANONYMOUS_FLAG"/>
+		<obj-attribute name="closeDate" type="java.util.Date" db-attribute-path="CLOSE_DATE"/>
+		<obj-attribute name="closeFlag" type="java.lang.String" db-attribute-path="CLOSE_FLAG"/>
+		<obj-attribute name="comment" type="java.lang.String" db-attribute-path="COMMENT"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
+		<obj-attribute name="editableFlag" type="java.lang.String" db-attribute-path="EDITABLE_FLAG"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="openDate" type="java.util.Date" db-attribute-path="OPEN_DATE"/>
+		<obj-attribute name="openFlag" type="java.lang.String" db-attribute-path="OPEN_FLAG"/>
+		<obj-attribute name="optionType" type="java.lang.String" db-attribute-path="OPTION_TYPE"/>
+		<obj-attribute name="respondentType" type="java.lang.String" db-attribute-path="RESPONDENT_TYPE"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTSurveyOption" className="com.aimluck.eip.cayenne.om.portlet.EipTSurveyOption" dbEntityName="eip_t_survey_option">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+	</obj-entity>
+	<obj-entity name="EipTSurveyRespondent" className="com.aimluck.eip.cayenne.om.portlet.EipTSurveyRespondent" dbEntityName="eip_t_survey_respondent">
+		<obj-attribute name="responseDate" type="java.util.Date" db-attribute-path="RESPONSE_DATE"/>
+		<obj-attribute name="responseFlag" type="java.lang.String" db-attribute-path="RESPONSE_FLAG"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTSurveyResponseMap" className="com.aimluck.eip.cayenne.om.portlet.EipTSurveyResponseMap" dbEntityName="eip_t_survey_response_map">
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
 	<obj-entity name="EipTTimecard" className="com.aimluck.eip.cayenne.om.portlet.EipTTimecard" dbEntityName="eip_t_timecard">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="reason" type="java.lang.String" db-attribute-path="REASON"/>
@@ -1433,6 +1493,30 @@
 	<db-relationship name="turbineUserGroupRole" source="eip_t_schedule_map" target="turbine_user_group_role" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTSurveyOptions" source="eip_t_survey" target="eip_t_survey_option" toMany="true">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurveyRespondents" source="eip_t_survey" target="eip_t_survey_respondent" toMany="true">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurveyResponseMaps" source="eip_t_survey" target="eip_t_survey_response_map" toMany="true">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurvey" source="eip_t_survey_option" target="eip_t_survey" toMany="false">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurveyResponseMap" source="eip_t_survey_option" target="eip_t_survey_response_map" toMany="false">
+		<db-attribute-pair source="OPTION_ID" target="OPTION_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurvey" source="eip_t_survey_respondent" target="eip_t_survey" toMany="false">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurvey" source="eip_t_survey_response_map" target="eip_t_survey" toMany="false">
+		<db-attribute-pair source="SURVEY_ID" target="SURVEY_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSurveyOption" source="eip_t_survey_response_map" target="eip_t_survey_option" toMany="false">
+		<db-attribute-pair source="OPTION_ID" target="OPTION_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTTimelineFile" source="eip_t_timeline" target="eip_t_timeline_file" toMany="true">
 		<db-attribute-pair source="TIMELINE_ID" target="TIMELINE_ID"/>
 	</db-relationship>
@@ -1576,6 +1660,14 @@
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>
+	<obj-relationship name="eipTSurveyOptions" source="EipTSurvey" target="EipTSurveyOption" db-relationship-path="eipTSurveyOptions"/>
+	<obj-relationship name="eipTSurveyRespondents" source="EipTSurvey" target="EipTSurveyRespondent" db-relationship-path="eipTSurveyRespondents"/>
+	<obj-relationship name="eipTSurveyResponseMaps" source="EipTSurvey" target="EipTSurveyResponseMap" db-relationship-path="eipTSurveyResponseMaps"/>
+	<obj-relationship name="eipTSurvey" source="EipTSurveyOption" target="EipTSurvey" db-relationship-path="eipTSurvey"/>
+	<obj-relationship name="eipTSurveyResponseMap" source="EipTSurveyOption" target="EipTSurveyResponseMap" db-relationship-path="eipTSurveyResponseMap"/>
+	<obj-relationship name="eipTSurvey" source="EipTSurveyRespondent" target="EipTSurvey" db-relationship-path="eipTSurvey"/>
+	<obj-relationship name="eipTSurvey" source="EipTSurveyResponseMap" target="EipTSurvey" db-relationship-path="eipTSurvey"/>
+	<obj-relationship name="eipTSurveyOption" source="EipTSurveyResponseMap" target="EipTSurveyOption" db-relationship-path="eipTSurveyOption"/>
 	<obj-relationship name="eipTTimelineFile" source="EipTTimeline" target="EipTTimelineFile" deleteRule="Nullify" db-relationship-path="eipTTimelineFile"/>
 	<obj-relationship name="eipTTimelineLike" source="EipTTimeline" target="EipTTimelineLike" deleteRule="Nullify" db-relationship-path="eipTTimelineLike"/>
 	<obj-relationship name="turbineUser" source="EipTTimeline" target="TurbineUser" db-relationship-path="turbineUser"/>
