@@ -323,8 +323,8 @@ function hide_Attention(){
 <th nowrap="nowrap" class="head">$l10n.FILEIO_PASSWORD</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_FIRST_NAME</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_LAST_NAME</th>
-<th nowrap="nowrap" class="head">$l10n.FILEIO_FILEIO_FIRST_NAME_SPELL2</th>
-<th nowrap="nowrap" class="head">$l10n.FILEIO_FILEIO_LAST_NAME_SPELL2</th>
+<th nowrap="nowrap" class="head">$l10n.FILEIO_FIRST_NAME_SPELL2</th>
+<th nowrap="nowrap" class="head">$l10n.FILEIO_LAST_NAME_SPELL2</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_MAILADDRESS</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_OUTSIDE_TELL_NUMBER</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_EXTENTION_TELL_NUMBER</th>
