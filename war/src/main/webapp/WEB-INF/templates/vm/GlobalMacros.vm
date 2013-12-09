@@ -679,7 +679,7 @@ $item.get(0)
 #end
 
 #macro(ALdialogCloseButtonCommon)
-#ALdialogCloseButton("dijit.byId('modalDialog').hide();")
+#ALdialogCloseButton("aipo.common.hideDialog();")
 #end
 
 #macro(ALdialogCloseButton $onclick)
@@ -694,11 +694,11 @@ $item.get(0)
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "dijit.byId('modalDialog').hide();" "$link")
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
 #end
 #macro(ALdialogheaderPrintSchedule $title $portlet_id $screen $view_date $userid)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid","$userid"))
-#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "dijit.byId('modalDialog').hide();" "$link")
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date $userid "aipo.common.hideDialog();" "$link")
 #end
 #macro(ALdialogheaderPrintMail $title $portlet_id $screen $entityid)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
@@ -741,7 +741,7 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderDetailSmartPhone $title)
-#ALdialogheaderDetailSmartPhoneAbstract($title "dijit.byId('modalDialog').hide();")
+#ALdialogheaderDetailSmartPhoneAbstract($title "aipo.common.hideDialog();")
 #end
 #macro(ALdialogheaderDetailSmartPhoneMail $title)
 #ALdialogheaderDetailSmartPhoneAbstract($title "aipo.webmail.hideDialog();")
