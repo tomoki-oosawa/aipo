@@ -56,15 +56,6 @@ public class AccountLoginAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
-    // マッキントッシュからのアクセスを弾きます
-    if (isMac(rundata)) {
-      if (!isMacBrowser(rundata, ".*Mac.*Safari.*")
-        && !isMacBrowser(rundata, ".*Mac.*FireFox.*")
-        && !isMacBrowser(rundata, ".*Mac.*Netscape.*")) {
-        setTemplate(rundata, "accountlogin-mac");
-        return;
-      }
-    }
 
     setResultData(this);
     putData(rundata, context);
