@@ -98,8 +98,8 @@ public class SurveySelectData extends
       ExpressionFactory.matchExp(EipTSurvey.EIP_TSURVEY_RESPONDENTS_PROPERTY
         + "."
         + EipTSurveyRespondent.USER_ID_PROPERTY, loginUserId);
-    Expression exp = exp1_1.orExp(exp1_2.andExp(exp1_3));
 
+    Expression exp = exp1_1.orExp(exp1_2.andExp(exp1_3));
     query.andQualifier(exp);
     return buildSelectQueryForFilter(query, rundata, context);
   }
@@ -128,6 +128,7 @@ public class SurveySelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     SurveyResultData rd = new SurveyResultData();
     rd.initField();
+    rd.setSurveyId(obj.getSurveyId());
     rd.setName(obj.getName());
     rd.setCreateUser(ALEipUtils.getALEipUser(obj.getCreateUserId().intValue()));
     rd.setCreatedDate(obj.getCreateDate());

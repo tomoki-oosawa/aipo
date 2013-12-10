@@ -23,12 +23,14 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("dijit.form.ComboBox");
 dojo.require("aipo.widget.DropdownDatepicker");
 
-aipo.survey.onLoadReportDetail = function(portlet_id){
+aipo.survey.optionMin = 3;
+aipo.survey.optionMax = 10;
+
+aipo.survey.onLoadSurveyDetail = function(portlet_id){
     aipo.portletReload('survey');
-}
+};
 
-aipo.survey.onLoadReportDialog = function(portlet_id){
-
+aipo.survey.onLoadSurveyDialog = function(portlet_id){
     var mpicker = dijit.byId("membernormalselect");
 	if(mpicker){
 	    var select = dojo.byId('init_memberlist');
@@ -39,64 +41,14 @@ aipo.survey.onLoadReportDialog = function(portlet_id){
 	        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
 	    }
     }
-
-    var mpicker = dijit.byId("mapnormalselect");
-	if(mpicker){
-	    var select = dojo.byId('init_maplist');
-	    var i;
-	    var s_o = select.options;
-	    if (s_o.length == 1 && s_o[0].value == "") return;
-	    for(i = 0 ; i < s_o.length; i ++ ) {
-	        mpicker.addOptionSync(s_o[i].value,s_o[i].text,true);
-	    }
-    }
-
-    var btn_ma = dojo.byId("button_member_add");
-    if(btn_ma){
-       dojo.connect(btn_ma, "onclick", function(){
-          aipo.survey.expandMember();
-       });
-    }
-
-    var btn_ma = dojo.byId("button_map_add");
-    if(btn_ma){
-       dojo.connect(btn_ma, "onclick", function(){
-          aipo.survey.expandMap();
-       });
-    }
-
-    var btn_mr = dojo.byId("button_member_remove");
-    if(btn_mr){
-       dojo.connect(btn_mr, "onclick", function(){
-          var select = dojo.byId("members");
-          if(select.options.length == 0){
-              if((mpicker) && (aipo.survey.login_aliasname != "undefined")){
-                  var alias = aipo.survey.login_aliasname.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-                  mpicker.addOptionSync(aipo.survey.login_name, alias, true);
-              }
-          }
-          aipo.survey.expandMember();
-       });
-    }
-
-    var btn_mr = dojo.byId("button_map_remove");
-    if(btn_mr){
-       dojo.connect(btn_mr, "onclick", function(){
-          var select = dojo.byId("positions");
-          if(select.options.length == 0){
-              if((mpicker) && (aipo.survey.login_aliasname != "undefined")){
-                  var alias = aipo.survey.login_aliasname.replace(/&amp;/g, "&").replace(/&quot;/g, "\"").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
-                  mpicker.addOptionSync(aipo.survey.login_name, alias, true);
-              }
-          }
-          aipo.survey.expandMap();
-       });
-    }
-
-
-    aipo.survey.shrinkMember();
-    aipo.survey.expandMap();
-}
+	
+	var currentNum = dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption').length;
+	if(aipo.survey.optionMin > currentNum){
+		for( var i = currentNum ;  i < aipo.survey.optionMin; i++) {
+			aipo.survey.addOptionField(portlet_id);
+		}		
+	}
+};
 
 aipo.survey.onReceiveMessage = function(msg){
     if(!msg) {
@@ -114,140 +66,7 @@ aipo.survey.onReceiveMessage = function(msg){
     if(msg != '') {
     	aipo.survey.setWrapperHeight();
     }
-}
-
-
-aipo.survey.shrinkMember = function(){
-   var node = dojo.byId("memberFieldButton");
-   if(node){
-       var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
-       var m_t = dojo.byId("members");
-        if(m_t){
-            var t_o = m_t.options;
-            to_size = t_o.length;
-            for(i = 0 ; i < to_size; i++ ) {
-              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              HTML += "<span>" + text + "</span>";
-              if(i < to_size - 1){
-                  HTML += ",<wbr/>";
-              }
-            }
-        }
-        HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("survey_val_member1")+'\" onclick=\"aipo.survey.expandMember();\" />'
-        HTML += "</td></tr></tbody></table>";
-       node.innerHTML = HTML;
-   }
-
-   var _node = dojo.byId("memberField");
-   if(_node){
-       dojo.style(_node, "display" , "none")
-   }
-   aipo.survey.setWrapperHeight();
-}
-
-
-aipo.survey.shrinkMap = function(){
-   var node = dojo.byId("mapFieldButton");
-   if(node){
-       var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
-       var m_t = dojo.byId("positions");
-        if(m_t){
-            var t_o = m_t.options;
-            to_size = t_o.length;
-            for(i = 0 ; i < to_size; i++ ) {
-              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              HTML += "<span>" + text + "</span>";
-              if(i < to_size - 1){
-                  HTML += ",<wbr/>";
-              }
-            }
-        }
-        HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("survey_val_member2")+'\" onclick=\"aipo.survey.expandMap();\" />'
-        HTML += "</td></tr></tbody></table>";
-       node.innerHTML = HTML;
-   }
-
-   var _node = dojo.byId("mapField");
-   if(_node){
-       dojo.style(_node, "display" , "none")
-   }
-   aipo.survey.setWrapperHeight();
-}
-
-aipo.survey.expandMember = function(){
-   var node = dojo.byId("memberFieldButton");
-   if(node){
-       var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
-       var m_t = dojo.byId("members");
-       if(m_t){
-            var t_o = m_t.options;
-            to_size = t_o.length;
-            for(i = 0 ; i < to_size; i++ ) {
-              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              HTML += "<span>" +  text + "</span>";
-              if(i < to_size - 1){
-                  HTML += ",<wbr/>";
-              }
-            }
-       }
-       HTML += "</td><td style=\"border:none;\">";
-       HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("survey_val_member3")+'\" onclick=\"aipo.survey.shrinkMember();\" />'
-       HTML += "</td></tr></tbody></table>";
-       node.innerHTML = HTML;
-   }
-
-   var _node = dojo.byId("memberField");
-   if(_node){
-       dojo.style(_node, "display" , "block");
-   }
-   aipo.survey.setWrapperHeight();
-}
-
-aipo.survey.expandMap = function(){
-   var node = dojo.byId("mapFieldButton");
-   if(node){
-       var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
-       var m_t = dojo.byId("positions");
-       if(m_t){
-            var t_o = m_t.options;
-            to_size = t_o.length;
-            for(i = 0 ; i < to_size; i++ ) {
-              var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-              HTML += "<span>" +  text + "</span>";
-              if(i < to_size - 1){
-                  HTML += ",<wbr/>";
-              }
-            }
-       }
-       HTML += "</td><td style=\"border:none;\">";
-       HTML += "</td></tr></tbody></table>";
-       node.innerHTML = HTML;
-   }
-
-   var _node = dojo.byId("mapField");
-   if(_node){
-       dojo.style(_node, "display" , "block");
-   }
-   aipo.survey.setWrapperHeight();
-}
-
-aipo.survey.formatNum = function(num) {
-  var src = new String(num);
-  var cnt = 2 - src.length;
-    if (cnt <= 0) return src;
-    while (cnt-- > 0) src = "0" + src; return src;
-}
-aipo.survey.delaySelectAllOptions = function(form, func)
-{
-    return function(form){aimluck.io.selectAllOptions(form.attachments)};
-}
-
+};
 
 aipo.survey.setWrapperHeight = function() {
 	var modalDialog = document.getElementById('modalDialog');
@@ -255,4 +74,76 @@ aipo.survey.setWrapperHeight = function() {
     	var wrapper = document.getElementById('wrapper');
     	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
-}
+};
+
+aipo.survey.allocateId = function(portlet_id){
+	function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+                 .toString(16)
+                 .substring(1);
+    };
+	return portlet_id + '-' + s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+			s4() + '-' + s4() + s4() + s4();
+};
+
+aipo.survey.addOptionField = function(portlet_id, value){
+	var currentNum = dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption').length;
+	if(aipo.survey.optionMax > currentNum){
+		var container = dojo.byId('surveyFormOptions-' + portlet_id);
+		if(container) {
+			if(!value){
+				value = '';
+			}
+			var oid = 'surveyFormOption-' + aipo.survey.allocateId(portlet_id);
+			container.innerHTML += 
+				'<div class="mb5 surveyFormOption" id="' + oid + '" >'
+				+ '<input type="text" name="options[]" value="' + value + '" class="w90 mr10">'
+				+ '<a href="javascript:void(0)" onclick="aipo.survey.removeOptionField(\'' + portlet_id + '\', \'' + oid + '\');return false;" title="項目を削除"><span><i class="icon-remove"></i></span></a>'
+				+ '</div>';
+			aipo.survey.onChangeOptionField(portlet_id);
+		}
+	}
+};
+
+aipo.survey.removeOptionField = function(portlet_id, oid){
+	if(dojo.byId(oid)){
+		dojo.byId(oid).remove();
+		aipo.survey.onChangeOptionField(portlet_id);
+	}
+};
+
+aipo.survey.onChangeOptionField = function(portlet_id){
+	var currentNum = dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption').length;
+	var link = dojo.byId('surveyLinkOptions-' + portlet_id);
+	if(currentNum >= aipo.survey.optionMax) {		
+		dojo.style(link, 'display', 'none');
+	} else {
+		dojo.style(link, 'display', '');
+	}
+	
+	if(currentNum <= 1) {	
+		dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption a').style('display', 'none');
+	} else {
+		dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption a').style('display', '');
+	}
+	aipo.survey.setWrapperHeight();
+};
+
+aipo.survey.toggleRespondentType = function(option, portlet_id) {
+	if(option.value == 'A') {
+		dojo.query('.respondentForm-' + portlet_id).style('display', 'none');
+	} else {
+		dojo.query('.respondentForm-' + portlet_id).style('display', '');
+	}
+	aipo.survey.setWrapperHeight();
+};
+
+aipo.survey.toggleCheck = function(check, targetId){
+	if(dojo.byId(targetId)) {
+		if(check.checked) {
+			dojo.byId(targetId).value = 'T';
+		} else {
+			dojo.byId(targetId).value = 'F';
+		}
+	}	
+};
