@@ -73,7 +73,7 @@ function checkFile(){
 </div>
 <div style="padding:10px 0px 3px 0px">
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALbutton("cancel" "　閉じる　" 'window.close()')
+#ALsubmit($event_submit $action_str)#ALbutton("cancel" "閉じる" 'window.close()')
 #ALbuttonfooter()
 </div>
 </form>
