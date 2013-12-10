@@ -64,7 +64,7 @@ public class AccountEditSelectData extends
    */
   @Override
   protected ALBaseUser selectDetail(RunData rundata, Context context) {
-    ALBaseUser baseUser = (ALBaseUser) rundata.getUser();
+    ALBaseUser baseUser = AccountUtils.getBaseUser(rundata, context);
     return baseUser;
   }
 

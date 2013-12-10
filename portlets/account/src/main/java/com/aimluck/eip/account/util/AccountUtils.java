@@ -91,6 +91,9 @@ public class AccountUtils {
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (userid == null) {
+        userid = rundata.getUser().getUserName();
+      }
+      if (userid == null) {
         logger.debug("Empty ID...");
         return null;
       }
