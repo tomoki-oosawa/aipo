@@ -40,7 +40,7 @@
 </tr>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.license.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.license.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

@@ -33,6 +33,6 @@
   </div>
 </div>
 <div align="center" style="margin:10px 0 0 0">
-<input name="ajaxbuttonClose" class="button" type="button" value="　閉じる　" onclick="aipo.timeline.hideDialog();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="aipo.timeline.hideDialog();" />
 </div>
 #ALdialogfooter()
