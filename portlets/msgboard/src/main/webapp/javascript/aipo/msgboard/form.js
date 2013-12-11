@@ -66,19 +66,21 @@ aipo.msgboard.toggleMenu=function (node,filters,event){
  * @param portlet_id
  */
 aipo.msgboard.initFilterSearch = function(portlet_id) {
-	var q = dojo.byId("q" + portlet_id)
-	var filters = dojo.byId('filters_' + portlet_id)
+	var q = dojo.byId("q" + portlet_id);
+	var filters = dojo.byId('filters_' + portlet_id);
 	if (filters && q) {
-		var filterOffset = filters.offsetWidth
-		if (aipo.userAgent.isAndroid4()) {
-			var searchForm = dojo.query("div.filterInputField")[0]
-			searchForm.style.left = filterOffset + "px"
-			filters.style.left = -filterOffset + "px"
-			q.style.width = parseInt(dojo.getComputedStyle(q).width) - filterOffset + "px"
-			q.style.paddingLeft = "0px"
+		var filterOffset = filters.offsetWidth;
+		if (aipo.userAgent.isAndroid4_0()) {
+			var searchForm = dojo.query("div.filterInputField")[0];
+			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+			searchForm.style.left = filterOffset + "px";
+			filters.style.left = -filterOffset + "px";
+			q.style.width = fieldlength - filterOffset + "px";
+			searchForm.style.width = fieldlength - filterOffset + "px";
+			q.style.paddingLeft = "2px";
 		} else {
 			if(filterOffset != 0) {
-				q.style.paddingLeft = filterOffset + "px"
+				q.style.paddingLeft = filterOffset + "px";
 			}
 		}
 	}
@@ -90,16 +92,18 @@ aipo.msgboard.initFilterSearch = function(portlet_id) {
  * @param portlet_id
  */
 aipo.msgboard.finFilterSearch = function(portlet_id) {
-	if (aipo.userAgent.isAndroid4()) {
-		var q = dojo.byId("q" + portlet_id)
-		var filters = dojo.byId('filters_' + portlet_id)
+	if (aipo.userAgent.isAndroid4_0()) {
+		var q = dojo.byId("q" + portlet_id);
+		var filters = dojo.byId('filters_' + portlet_id);
 		if (filters && q) {
-			var filterOffset = filters.offsetWidth
-			var searchForm = dojo.query("div.filterInputField")[0]
-			searchForm.style.left = "0px"
-			filters.style.left = "0px"
-			q.style.width = parseInt(dojo.getComputedStyle(q).width) + filterOffset + "px"
-			q.style.paddingLeft = filterOffset + "px"
+			var filterOffset = filters.offsetWidth;
+			var searchForm = dojo.query("div.filterInputField")[0];
+			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+			searchForm.style.left = "0px";
+			filters.style.left = "0px";
+			q.style.width = fieldlength + filterOffset + "px";
+			searchForm.style.width = fieldlength + filterOffset + "px";
+			q.style.paddingLeft = filterOffset + 2 + "px";
 		}
 	}
 }

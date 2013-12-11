@@ -265,6 +265,10 @@ aipo.userAgent={
 		var version = this.androidVersion();
 		return !!version && version[1]==4;
 	},
+	isAndroid4_0:function(){
+		var version = this.androidVersion();
+		return !!version && version[1]==4 && version[2]==0;
+	},
 	androidVersion:function(){
 		return this.__userAgent.match(/android ([\d]+)\.([\d]+)\.([\d]+)/);
 	},
