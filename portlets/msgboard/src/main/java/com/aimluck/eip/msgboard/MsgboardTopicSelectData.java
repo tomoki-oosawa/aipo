@@ -228,15 +228,18 @@ public class MsgboardTopicSelectData extends
       exsitedCategoryId = true;
     } else {
       categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
-      if (categoryId == null || categoryId.isEmpty()) {
+      if (categoryId == null || categoryId.isEmpty()) { // ログイン後初期設定
         VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         categoryId =
           portlet.getPortletConfig().getInitParameter("p3a-category");
+      } else {
+        exsitedCategoryId = true;
       }
     }
     boolean existCategory = false;
     if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
       existCategory = true;
+      ALEipUtils.setTemp(rundata, context, "p3a-category", categoryId);
     } else {
       if (categoryId != null) {
         List<MsgboardCategoryResultData> categoryList =
