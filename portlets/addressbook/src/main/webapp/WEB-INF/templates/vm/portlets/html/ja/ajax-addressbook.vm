@@ -29,17 +29,25 @@
 
 <input name="mode" type="hidden" value="ajaxsearch" />
 #if("$!result.CurrentTab" != "")
+
+ #ALindicatorheader()
   #if($result.List.size() == 0)
     $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
   #else
     #AUISummaryDiv()
     #AUIsearchresult($result.SearchWord.toString())
-    #AUIajaxpageview('AddressBookScreen' $result)
+    #AUIajaxindicatorpageview('AddressBookScreen' $result $!portlet.ID)
+
+
+
     </div>
     <table class="auiRowTable wide">
     <colgroup style="width:8em;" />
     <colgroup />
     <tbody>
+
+
+
     #foreach ($record in $result.List)
     <tr>
     #ALtdcellheader()
@@ -56,8 +64,10 @@
     </div>
     #ALtdcellfooter()
     </tr>
+
     #end
   </tbody></table>
   #end
+  #ALindicatorfooter()
 #end
 </form>

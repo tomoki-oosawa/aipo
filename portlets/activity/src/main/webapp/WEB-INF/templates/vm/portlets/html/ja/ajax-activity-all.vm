@@ -18,12 +18,14 @@
  *#
 
 ## ---------------------------------------------------------------------------
+
+#ALindicatorheader()
 #if ($result.List.size() == 0)
 <div class="message">$l10n.ACTIVITY_NO_DATA</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllScreen' $result)
+#AUIajaxindicatorpageview('ActivityAllScreen' $result $!portlet.ID)
 </div>
 <table class="activityTable">
 <tbody>
@@ -40,4 +42,6 @@
 #end
 </tbody></table>
 #ALformfooter()
+
+#ALindicatorfooter()
 #end

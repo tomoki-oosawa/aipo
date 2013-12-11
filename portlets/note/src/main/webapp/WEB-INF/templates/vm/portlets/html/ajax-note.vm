@@ -20,12 +20,14 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+
+#ALindicatorheader()
 #if ($result.List.size() == 0)
 <div class="message">$l10n.NOTE_NO_NOTE</div>
 #else
 #ALformheaderAction('noteForm' $jslink $portlet)
 #AUISummaryDiv()
-#AUIajaxpageview('NoteScreen' $result)
+#AUIajaxindicatorpageview('NoteScreen' $result $!portlet.ID)
 #AUISummaryDivfooter()
 <table class="activityTable">
 <tbody>
@@ -41,4 +43,6 @@ $!record.getCompanyName() $!record.ClientNameSubjectText
 #end
 </tbody></table>
 #ALformfooter()
+
+#ALindicatorfooter()
 #end
