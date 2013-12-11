@@ -1582,19 +1582,20 @@ input.auiButtonSearch.active {
 }
 
 /* auiButtonIcon */
-.auiButtonIcon {
+.auiButtonIcon,
+.auiButtonIconDummy {
   width: 16px;
   height: 16px;
+  line-height: 16px;
   padding: 3px !important;
-  font-size: 15px;
-  color: #666666;
+  color: #666666 !important;
 }
-
-.auiButtonIcon:hover i {
-  color: #666666;
+.auiButtonIcon:hover i,
+.auiButtonIconDummy:hover i {
+  color: #666666 !important;
 }
-
-.auiButtonIcon span {
+.auiButtonIcon span,
+.auiButtonIconDummy span {
   display: table-cell;
   width: 16px;
   height: 16px;
@@ -1602,21 +1603,46 @@ input.auiButtonSearch.active {
   text-align: center;
   vertical-align: middle;
 }
-
 .auiButtonIcon span,
-.auiButtonIcon i {
+.auiButtonIcon i,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
   cursor: pointer;
   vertical-align: baseline;
 }
+.auiButtonIcon [class^=auiButton],
+.auiButtonIcon [class^=icon-],
+.auiButtonIconDummy [class^=auiButton],
+.auiButtonIconDummy [class^=icon-] {
+  font-size: 14px;
+}
 
-*:first-child + html .auiButtonIcon span {
+[class^="auiButton"] [class^="icon-"] {
+  line-height: 16px;
+}
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
+  line-height: 15px !important;
+}
+
+*:first-child + html .auiButtonIcon span,
+*:first-child + html .auiButtonIconDummy span {
   display: block;
 }
 
-*:first-child + html .auiButtonIcon i {
+*:first-child + html .auiButtonIcon i,
+*:first-child + html .auiButtonIconDummy i {
   width: 16px;
 }
 
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+  cursor: default !important;
+}
 .auiButtonGroup {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
