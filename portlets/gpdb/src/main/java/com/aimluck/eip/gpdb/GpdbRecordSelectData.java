@@ -432,7 +432,7 @@ public class GpdbRecordSelectData extends
       }
     }
 
-    ALEipUtils.setTemp(rundata, context, "p1d-database", this.gpdbId);
+    GpdbUtils.passPSML(rundata, context, "p1d-database", this.gpdbId);
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, this.gpdbId);
   }
 
