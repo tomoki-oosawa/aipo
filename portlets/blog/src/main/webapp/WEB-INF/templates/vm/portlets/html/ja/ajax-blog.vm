@@ -22,31 +22,31 @@
 	## 追加 "floatLeft"
 	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
 		*##if(!$!result.issetFilter("post"))#*
-			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_GROUP_LIST</span></a>#*
+			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_GROUP_LIST</span></a>#*
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.postList)#*
 		 		*##if(!$break)#*
 				*##if($!result.issetFilter("post",$!{record.Name}))#*
-					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
+					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
 
 		 	*##foreach($record in $result.PostMap)#if(!$break)#*
 				*##if($!result.issetFilter("post",$!{record.GroupName}))#*
-					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
+					*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
 		 *##end#*
 		 *##if(!$!result.issetFilter("thema"))#*
-			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_ALL_THEMA</span></a>#*
+			*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.setIndicator('$!portlet.ID');aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.BLOG_ALL_THEMA</span></a>#*
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.ThemaList)#if(!$break)#*
 		 		*##if ($!result.issetFilter("thema",$!{record.ThemaId}))#*
-					*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.ThemaName</span></a>#*
+					*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.blog.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.ThemaName</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
@@ -89,9 +89,11 @@
 ## #end
 ## </div>
 
+#ALindicatorheader()
 #if($result.List && $result.List.size() == 0)
 <div class="message">$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME</div>
 <div id="messageDivList_$!portlet.ID"></div>
+#ALindicatorfooter()
 #else
 #ALindicatorheader()
 <div id="auiBlogEntries">

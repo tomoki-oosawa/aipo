@@ -22,12 +22,12 @@
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen")' />
 	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
 		*##if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")#*
-			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>#*
+			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedPostAliasName</span></a>#*
 		*##else#*
-			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>#*
+			*#<a href="javascript:void(0);" id="filter_group_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$l10n.CABINET_ALL_GROUP</span></a>#*
 		*##end#*
 		*##if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")#*
-			*#<a href="javascript:void(0);" id="filter_folder_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedFolderInfo.FolderName</span></a>#*
+			*#<a href="javascript:void(0);" id="filter_folder_$!portlet.ID" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.setIndicator('$!portlet.ID');aipo.cabinet.toggleMenu(dojo.byId('menubar_filter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'));"><span>$!result.SelectedFolderInfo.FolderName</span></a>#*
 		*##end#*
 	*#</div>
 	#if ($result.List && $result.List.size() != 0 && $result.isAccessible())
@@ -78,7 +78,9 @@
 <div class="message">$l10n.CABINET_NOT_PERMISSION_VIEW</div>
 #else
 #if (!$result.List || $result.List.size() == 0)
+#ALindicatorheader()
 <div class="message">$l10n.CABINET_NOTHING_FILE_IN_FOLDER</div>
+#ALindicatorfooter()
 #else
 #ALindicatorheader()
 #if($result.TableColumNum == 4)
