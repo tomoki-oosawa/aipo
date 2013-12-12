@@ -28,7 +28,12 @@
 <div class="message">$l10n.WEBMAIL_FILTER_NOT_CREATED_MSG</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><span class="auiButtonIcon"><i class="icon-double-angle-up"></i></span></span><span class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></span><span class="auiButtonIcon"><span><i class="icon-angle-down"></i></span></span><span class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></span>$l10n.WEBMAIL_FILTER_ORDER_MSG<br>
+<div style="padding:0px 0px 5px 5px">
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
+$l10n.WEBMAIL_FILTER_ORDER_MSG<br>
 $l10n.WEBMAIL_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("filterOrderForm" $jslink $portlet "WebMailFilterOrderFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.webmail.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
