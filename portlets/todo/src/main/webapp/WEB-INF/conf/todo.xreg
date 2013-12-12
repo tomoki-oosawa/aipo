@@ -52,15 +52,6 @@
         <parameter name="p1c-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1c-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
-        <parameter name="p1d-categories" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
-            <meta-info>
-                <title>初期表示カテゴリ（トップページ）</title>
-            </meta-info>
-        </parameter>
-        <parameter name="p1d-categories.style" value="TodoCategoryListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1d-categories.style.initialvalue" value="すべてのカテゴリ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <parameter name="p0e-rows" value="4" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>表示項目（トップページ）</title>
