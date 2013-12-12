@@ -121,4 +121,6 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_GPDB = 340;
 
+  public static final int PORTLET_TYPE_ACCESSCTL = 350;
+
 }
