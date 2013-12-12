@@ -496,6 +496,8 @@
 		<db-attribute name="OPEN_DATE" type="TIMESTAMP"/>
 		<db-attribute name="OPEN_FLAG" type="CHAR" length="1"/>
 		<db-attribute name="OPTION_TYPE" type="CHAR" length="1"/>
+		<db-attribute name="RESPONDENT_COMPLETE_COUNT" type="INTEGER"/>
+		<db-attribute name="RESPONDENT_COUNT" type="INTEGER"/>
 		<db-attribute name="RESPONDENT_TYPE" type="CHAR" length="1"/>
 		<db-attribute name="SURVEY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
@@ -1116,6 +1118,8 @@
 		<obj-attribute name="openDate" type="java.util.Date" db-attribute-path="OPEN_DATE"/>
 		<obj-attribute name="openFlag" type="java.lang.String" db-attribute-path="OPEN_FLAG"/>
 		<obj-attribute name="optionType" type="java.lang.String" db-attribute-path="OPTION_TYPE"/>
+		<obj-attribute name="respondentCompleteCount" type="java.lang.Integer" db-attribute-path="RESPONDENT_COMPLETE_COUNT"/>
+		<obj-attribute name="respondentCount" type="java.lang.Integer" db-attribute-path="RESPONDENT_COUNT"/>
 		<obj-attribute name="respondentType" type="java.lang.String" db-attribute-path="RESPONDENT_TYPE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>

@@ -19,41 +19,43 @@
 
 package com.aimluck.eip.modules.screens;
 
+import net.sf.json.JSONArray;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.survey.SurveySelectData;
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.survey.SurveyResponseFormData;
 
 /**
- * アンケートの一覧を処理するクラスです。 <br />
+ * アンケートをJSONデータとして出力するクラスです。 <br />
  * 
  */
-public class SurveyListScreen extends SurveyScreen {
+public class SurveyResponseFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(SurveyListScreen.class.getName());
+    .getLogger(SurveyResponseFormJSONScreen.class.getName());
 
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
   @Override
-  protected void doOutput(RunData rundata, Context context) throws Exception {
+  protected String getJSONString(RunData rundata, Context context)
+      throws Exception {
+    String result = new JSONArray().toString();
     try {
-      SurveySelectData listData = new SurveySelectData();
-      listData.initField();
-      listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-survey-list.vm";
-      setTemplate(rundata, context, layout_template);
-    } catch (Exception ex) {
-      logger.error("[SurveyListScreen] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
+      SurveyResponseFormData formData = new SurveyResponseFormData();
+      formData.initField();
+      if (formData.doUpdate(this, rundata, context)) {
+      } else {
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+        result = json.toString();
+      }
+    } catch (Exception e) {
+      logger.error("[SurveyResponseFormJSONScreen]", e);
     }
+
+    return result;
   }
 }

@@ -20,6 +20,8 @@ public class _EipTSurvey extends org.apache.cayenne.CayenneDataObject {
     public static final String OPEN_DATE_PROPERTY = "openDate";
     public static final String OPEN_FLAG_PROPERTY = "openFlag";
     public static final String OPTION_TYPE_PROPERTY = "optionType";
+    public static final String RESPONDENT_COMPLETE_COUNT_PROPERTY = "respondentCompleteCount";
+    public static final String RESPONDENT_COUNT_PROPERTY = "respondentCount";
     public static final String RESPONDENT_TYPE_PROPERTY = "respondentType";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TSURVEY_OPTIONS_PROPERTY = "eipTSurveyOptions";
@@ -113,6 +115,22 @@ public class _EipTSurvey extends org.apache.cayenne.CayenneDataObject {
     }
     public String getOptionType() {
         return (String)readProperty("optionType");
+    }
+    
+    
+    public void setRespondentCompleteCount(Integer respondentCompleteCount) {
+        writeProperty("respondentCompleteCount", respondentCompleteCount);
+    }
+    public Integer getRespondentCompleteCount() {
+        return (Integer)readProperty("respondentCompleteCount");
+    }
+    
+    
+    public void setRespondentCount(Integer respondentCount) {
+        writeProperty("respondentCount", respondentCount);
+    }
+    public Integer getRespondentCount() {
+        return (Integer)readProperty("respondentCount");
     }
     
     

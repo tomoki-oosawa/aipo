@@ -29,7 +29,7 @@ import com.aimluck.eip.survey.util.SurveyUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 報告書を処理するクラスです。 <br />
+ * アンケートを処理するクラスです。 <br />
  * 
  */
 public class SurveyFormScreen extends ALVelocityScreen {

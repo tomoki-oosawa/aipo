@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipUser;
@@ -36,6 +37,9 @@ import com.aimluck.eip.common.ALEipUser;
  * 
  */
 public class SurveyResultData implements ALData {
+
+  /** ID */
+  private ALNumberField surveyId;
 
   /** タイトル */
   private ALStringField name;
@@ -86,6 +90,7 @@ public class SurveyResultData implements ALData {
    */
   @Override
   public void initField() {
+    surveyId = new ALNumberField();
     name = new ALStringField();
     comment = new ALStringField();
     optionType = new ALStringField();
@@ -325,6 +330,21 @@ public class SurveyResultData implements ALData {
    */
   public void setOptionType(String str) {
     this.optionType.setValue(str);
+  }
+
+  /**
+   * @return surveyId
+   */
+  public ALNumberField getSurveyId() {
+    return surveyId;
+  }
+
+  /**
+   * @param surveyId
+   *          セットする surveyId
+   */
+  public void setSurveyId(long value) {
+    this.surveyId.setValue(value);
   }
 
 }

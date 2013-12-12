@@ -30,7 +30,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.survey.SurveyFormData;
 
 /**
- * 報告書をJSONデータとして出力するクラスです。 <br />
+ * アンケートをJSONデータとして出力するクラスです。 <br />
  * 
  */
 public class SurveyFormJSONScreen extends ALJSONScreen {

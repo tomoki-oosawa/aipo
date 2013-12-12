@@ -24,18 +24,19 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.survey.SurveySelectData;
+import com.aimluck.eip.survey.SurveyResponseFormData;
+import com.aimluck.eip.survey.util.SurveyUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * アンケートの一覧を処理するクラスです。 <br />
+ * アンケートを処理するクラスです。 <br />
  * 
  */
-public class SurveyListScreen extends SurveyScreen {
+public class SurveyResponseFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(SurveyListScreen.class.getName());
+    .getLogger(SurveyResponseFormScreen.class.getName());
 
   /**
    * 
@@ -45,15 +46,29 @@ public class SurveyListScreen extends SurveyScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
+
     try {
-      SurveySelectData listData = new SurveySelectData();
-      listData.initField();
-      listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-survey-list.vm";
-      setTemplate(rundata, context, layout_template);
+      doSurvey_form(rundata, context);
     } catch (Exception ex) {
-      logger.error("[SurveyListScreen] Exception.", ex);
+      logger.error("[SurveyResponseFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
+  }
+
+  protected void doSurvey_form(RunData rundata, Context context) {
+    SurveyResponseFormData formData = new SurveyResponseFormData();
+    formData.initField();
+    formData.doViewForm(this, rundata, context);
+
+    String layout_template = "portlets/html/ja/ajax-survey-response-form.vm";
+    setTemplate(rundata, context, layout_template);
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return SurveyUtils.PORTLET_NAME;
   }
 }
