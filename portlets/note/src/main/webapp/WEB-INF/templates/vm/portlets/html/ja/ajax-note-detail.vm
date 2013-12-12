@@ -42,7 +42,6 @@ $person_value
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
-$!record.AliasName
 #if($result.getStatus($record.UserId.Value) == "1")
 <img src="images/note/note_new_message.gif" alt="$l10n.NOTE_NEW_MESSAGE" title="$l10n.NOTE_NEW_MESSAGE"/>
 #elseif($result.getStatus($record.UserId.Value) == "2")
@@ -52,6 +51,7 @@ $!record.AliasName
 #else
 <img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
 #end
+$!record.AliasName
 <br/>
 #end
 #end
