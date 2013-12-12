@@ -552,12 +552,6 @@ td.item {
 .listTable .caption {
   width: 135px;
 }
-.listTable ul {
-  margin-left: 1em;
-}
-.listTable ol {
-  margin-left: 2em;
-}
 
 .subTable {
   border-spacing: 0;

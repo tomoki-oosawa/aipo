@@ -3479,6 +3479,19 @@ ul.attachments {
 }
 
 /***************************************************
+	auiWikiContent
+--------------------------------------------------*/
+.auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
+  margin: 1em 0;
+}
+.auiWikiContent ul {
+  margin: 1em;
+}
+.auiWikiContent ol {
+  margin: 1em 2em;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
