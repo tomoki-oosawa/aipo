@@ -111,13 +111,13 @@
 $!record.TypeName
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.TitleFlg"=="t")○#end
+#if("$!record.TitleFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.RequiredFlg"=="t")○#end
+#if("$!record.RequiredFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.ListFlg"=="t")○#end
+#if("$!record.ListFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
 #if("$!record.DefaultSortFlg"=="t")

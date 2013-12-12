@@ -22,13 +22,13 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.GPDB_ADD")
 #set ($event_submit = "eventSubmit_doGpdb_insert")
-#set ($subtitle = "データベース追加")
+#set ($subtitle = "$l10n.GPDB_DATABASE_ADD")
 #set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('reset_keyword_params','true')))
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = "データベース編集")
+#set ($action_str = "$l10n.GPDB_EDIT")
+#set ($subtitle = "$l10n.GPDB_DATABASE_EDIT")
 #set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")

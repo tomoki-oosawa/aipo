@@ -43,7 +43,7 @@
 #end
 </ul>
 <div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');">データベースの管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');">$l10n.GPDB_MANAGEMENT</a>
 </div>
 </div>
 ##<div class="auiWidget clearfix">
@@ -53,7 +53,7 @@
 ##</div>
 <div class="auiWidget clearfix">
 <div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')', '$!portlet.ID');">選択項目の管理</a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunListScreen')', '$!portlet.ID');">$l10n.GPDB_MANAGE_SELECTION_ITEMS</a>
 </div>
 </div>
 </div>

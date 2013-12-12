@@ -72,9 +72,9 @@ $!result.Detail.TypeName
 <div>$l10n.GPDB_DONOT_DISPLAY_LIST_SCREEN<div>
 #end
 ###if($!result.Detail.DetailFlg.toString() == "t")
-##<div>詳細画面に表示する<div>
+##<div>$l10n.GPDB_DISPLAY_DETAIL_SCREEN<div>
 ###else
-##<div>詳細画面に表示しない<div>
+##<div>$l10n.GPDB_DONOT_DISPLAY_DETAIL_SCREEN<div>
 ###end
 #ALtditemfooter()
 #ALtdcaption("$l10n.GPDB_SORT")

@@ -27,7 +27,7 @@
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-<div class="message">データベースが登録されていません。</div>
+<div class="message">$l10n.GPDB_NOT_CREATED</div>
 #else
 <div class="auiSummaryMeta clearfix mt0">
   <div class="filters floatLeft" id="filters_$!{portlet.ID}">
@@ -53,7 +53,7 @@
 	</div>
 </div>
 #if($result.List.size() == 0)
-<div class="message">指定された条件に該当するデータはありません。</div>
+<div class="message">$l10n.GPDB_NO_DATA</div>
 #else
 <table class="auiRowTable wide">
 	<tbody>

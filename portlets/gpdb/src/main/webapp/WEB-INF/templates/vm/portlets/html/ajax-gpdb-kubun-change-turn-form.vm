@@ -22,7 +22,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($subtitle = "順番変更")
+#set ($subtitle = "$l10n.GPDB_CHANGE_ORDER")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
