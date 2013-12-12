@@ -27,11 +27,11 @@
 
 #if($result.List && $!result.GpdbId)
 <div class="auiWidget clearfix widgetButton">
-#AUIbuttonAction("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #else
 <div class="auiWidget clearfix widgetButton">
-#AUIbutton("データを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbutton("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #end
 

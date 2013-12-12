@@ -33,8 +33,8 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 ## IE文字化け対策
-<span id="gpdb_val_switch1" style="display:none">新しく入力する</span>
-<span id="gpdb_val_switch2" style="display:none">一覧から選択する</span>
+<span id="gpdb_val_switch1" style="display:none">$l10n.GPDB_INPUT_NEW_ITEM</span>
+<span id="gpdb_val_switch2" style="display:none">$l10n.GPDB_SELECT_FROM_A_LIST</span>
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

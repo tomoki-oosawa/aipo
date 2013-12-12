@@ -23,9 +23,9 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("データ詳細")
+#ALdialogheader("$l10n.GPDB_DATA_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("データ")
+#ALajaxdetailformheader("$l10n.GPDB_DATA")
 #ALtableheaderWide()
 ##=====================項目配置START=====================
 #foreach($item in $result.Detail)

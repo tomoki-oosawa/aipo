@@ -24,52 +24,52 @@
 #set ($indicator_id = "indicator-dlg-")
 #set ($type = $!result.Detail.Type.toString())
 ## ---------------------------------------------------------------------------
-#ALdialogheader("項目詳細")
+#ALdialogheader("$l10n.GPDB_DETAILED_ITEM")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("項目")
+#ALajaxdetailformheader("$l10n.GPDB_ITEM")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
-#ALtdcaption("項目名")
+#ALtdcaption("$l10n.GPDB_ITEM_NAME")
 #ALtditemheader()
 $!result.Detail.WbrGpdbItemName
 #if("$result.Detail.TitleFlg" == "t")
-<div>※タイトルにする</div>
+<div>$l10n.GPDB_SET_TITLE</div>
 #end
 #ALtditemfooter()
-#ALtdcaption("入力形式")
+#ALtdcaption("$l10n.GPDB_INPUT_FORM")
 #ALtditemheader()
 $!result.Detail.TypeName
 #ALtditemfooter()
 #if ($!result.displayField('select_kubun',$type))
-	#ALtdcaption("選択項目")
+	#ALtdcaption("$l10n.GPDB_SELECTION_ITEMS")
 	#ALtditem($!result.Detail.WbrGpdbKubunName)
 #end
 #if ($!result.displayField('size_col',$type))
-##	#ALtdcaption("表示サイズ（横）")
+##	#ALtdcaption("$l10n.GPDB_DISPLAY_SIZE_WIDTH")
 ##	#ALtditem("$!{result.Detail.SizeCol} px")
 #end
 #if ($!result.displayField('size_row',$type))
-##	#ALtdcaption("表示サイズ（縦）")
+##	#ALtdcaption("$l10n.GPDB_DISPLAY_SIZE_HEIGHT")
 ##	#ALtditem("$!{result.Detail.SizeRow} px")
 #end
 #if ($!result.displayField('line',$type))
-##	#ALtdcaption("表示行数")
-##	#ALtditem("$!{result.Detail.Line} 行")
+##	#ALtdcaption("$l10n.GPDB_NUMBER_OF_LINES")
+##	#ALtditem("$!{result.Detail.Line} $l10n.GPDB_LINE")
 #end
 #if ($!result.displayField('required',$type))
-	#ALtdcaption("必須")
+	#ALtdcaption("$l10n.GPDB_ESSENTIAL")
 	#if("$result.Detail.RequiredFlg" == "t")
-	#ALtdcell("必須")
+	#ALtdcell("$l10n.GPDB_ESSENTIAL")
 	#else
-	#ALtdcell("必須でない")
+	#ALtdcell("$l10n.GPDB_NOT_ESSENTIAL")
 	#end
 #end
-#ALtdcaption("一覧画面表示")
+#ALtdcaption("$l10n.GPDB_DISPLAY_LIST")
 #ALtditemheader()
 #if($!result.Detail.ListFlg.toString() == "t")
-<div>一覧画面に表示する<div>
+<div>$l10n.GPDB_DISPLAY_LIST_SCREEN<div>
 #else
-<div>一覧画面に表示しない<div>
+<div>$l10n.GPDB_DONOT_DISPLAY_LIST_SCREEN<div>
 #end
 ###if($!result.Detail.DetailFlg.toString() == "t")
 ##<div>詳細画面に表示する<div>
@@ -77,12 +77,12 @@ $!result.Detail.TypeName
 ##<div>詳細画面に表示しない<div>
 ###end
 #ALtditemfooter()
-#ALtdcaption("ソート")
+#ALtdcaption("$l10n.GPDB_SORT")
 #ALtditemheader()
 #if($!result.Detail.DefaultSortFlg.toString() == "t")
-<div>#if($!result.Detail.AscDesc.toString() == "DESC")降順#else昇順#endで指定する<div>
+<div>#if($!result.Detail.AscDesc.toString() == "DESC")$l10n.GPDB_DESC#else$l10n.GPDB_ASC#end$l10n.GPDB_SPECIFY<div>
 #else
-<div>指定しない<div>
+<div>$l10n.GPDB_DONOT_SPECIFY<div>
 #end
 #ALtditemfooter()
 #ALtablefooter()

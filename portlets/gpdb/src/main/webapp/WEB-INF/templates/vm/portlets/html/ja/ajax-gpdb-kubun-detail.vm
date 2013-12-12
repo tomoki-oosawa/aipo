@@ -23,16 +23,16 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("選択項目詳細")
+#ALdialogheader("$l10n.GPDB_SELECTION_ITEM_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("選択項目")
+#ALajaxdetailformheader("$l10n.GPDB_SELECTION_ITEMS")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
-#ALtdcaption("選択項目")
+#ALtdcaption("$l10n.GPDB_SELECTION_ITEMS")
 #ALtditemheader()
 $!result.Detail.WbrGpdbKubunName
 #ALtditemfooter()
-#ALtdcaption("値")
+#ALtdcaption("$l10n.GPDB_VALUE")
 #ALtditemheader()
 $!result.Detail.WbrGpdbKubunValue
 #ALtditemfooter()
