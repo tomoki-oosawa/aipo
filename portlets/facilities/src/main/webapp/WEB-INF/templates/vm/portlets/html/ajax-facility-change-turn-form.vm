@@ -29,10 +29,10 @@
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div style="padding:0px 0px 5px 5px">
-<span class="auiButtonIcon"><i class="icon-double-angle-up"></i></span></span>
-<span class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></span>
-<span class="auiButtonIcon"><span><i class="icon-angle-down"></i></span></span>
-<span class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></span>
+<span class="auiButtonIconDummy"><i class="icon-double-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
 $l10n.FACILITIES_MSG_OPERATION_ORDER1<br>
  $l10n.FACILITIES_MSG_OPETATION_ORDER2</div>
 #ALajaxscreenformheader("FacilityChangeTurnForm" $jslink $portlet "FacilityChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.facility.onReceiveMessage)")
