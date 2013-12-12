@@ -148,6 +148,10 @@ ${record.Note}
 #ALtablefooter()
 ##pageview($link $result)
 #end
+<table class="listTable wide mb0">
+<caption>コメント</cation>
+
+</table>
 #ALformfooter()
 #if($!resultOnReportDetail)
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
