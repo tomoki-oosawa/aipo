@@ -120,21 +120,7 @@ public class DefaultJetspeedParameterParser extends DefaultParameterParser {
     // setCharacterEncoding( enc );
   }
 
-  /**
-   * Return a String for the given name. If the name does not exist, return
-   * null.
-   * 
-   * @param name
-   *          A String with the name.
-   * @return A String.
-   */
-  @Override
-  public String getString(String name) {
-    String str = super.getString(name);
-    if (str == null) {
-      return null;
-    }
-
+  private String convertEncoding(String str) {
     String header = getRequest().getHeader("Content-type");
     if (header != null && header.startsWith("multipart/form-data")) {
       return str;
@@ -156,7 +142,45 @@ public class DefaultJetspeedParameterParser extends DefaultParameterParser {
         e);
       return str;
     }
+  }
 
+  /**
+   * Return a String for the given name. If the name does not exist, return
+   * null.
+   * 
+   * @param name
+   *          A String with the name.
+   * @return A String.
+   */
+  @Override
+  public String getString(String name) {
+    String str = super.getString(name);
+    if (str == null) {
+      return null;
+    }
+    return convertEncoding(str);
+  }
+
+  /**
+   * Return a String for the given name. If the name does not exist, return
+   * null.
+   * 
+   * @param name
+   *          A String with the name.
+   * @return A String.
+   */
+  @Override
+  public String[] getStrings(String name) {
+    String strings[] = super.getStrings(name);
+    if (strings == null) {
+      return null;
+    }
+
+    int length = strings.length;
+    for (int i = 0; i < length; i++) {
+      strings[i] = convertEncoding(strings[i]);
+    }
+    return strings;
   }
 
 }

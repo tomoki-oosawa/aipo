@@ -8,6 +8,7 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _EipTSurveyOption extends org.apache.cayenne.CayenneDataObject {
 
     public static final String NAME_PROPERTY = "name";
+    public static final String SORT_NUMBER_PROPERTY = "sortNumber";
     public static final String EIP_TSURVEY_PROPERTY = "eipTSurvey";
     public static final String EIP_TSURVEY_RESPONSE_MAP_PROPERTY = "eipTSurveyResponseMap";
 
@@ -18,6 +19,14 @@ public class _EipTSurveyOption extends org.apache.cayenne.CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+    
+    
+    public void setSortNumber(Integer sortNumber) {
+        writeProperty("sortNumber", sortNumber);
+    }
+    public Integer getSortNumber() {
+        return (Integer)readProperty("sortNumber");
     }
     
     

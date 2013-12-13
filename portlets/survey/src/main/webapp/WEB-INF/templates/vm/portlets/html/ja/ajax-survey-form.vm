@@ -36,7 +36,7 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("surveyForm" $jslink $portlet "SurveyFormJSONScreen" "aimluck.io.selectAllOptions(this.members);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.survey.onReceiveMessage);return false;")
+#ALajaxscreenformheader("surveyForm" $jslink $portlet "SurveyFormJSONScreen" "aimluck.io.selectAllOptions(this.members);aipo.survey.addHiddenValues('$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.survey.onReceiveMessage);return false;")
 <input type="hidden" name="mode" value="$!modesrv" />
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
@@ -57,6 +57,8 @@
 <span id="surveyFormOptions-$!portlet.ID">
 
 </span>
+<span id="surveyHiddenFormOptions-$!portlet.ID">
+</span>
 <a id="surveyLinkOptions-$!portlet.ID" href="javascript:void(0)" onclick="aipo.survey.addOptionField('$!portlet.ID');">項目を追加する</a>
 #ALtditemfooter()
 #ALtdcaption("#ALrequired($!result.getFieldName('respondentType'))")
@@ -74,14 +76,14 @@
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="$l10n.REPORT_MEMVER_LIST"
+        memberToTitle="回答対象者一覧"
         memberToId="members"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="$l10n.REPORT_ALL_GROUP"
+        groupSelectPreOptionValue="すべてのグループ"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -105,7 +107,7 @@
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

@@ -18,17 +18,9 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "回答する")
 #set ($event_submit = "eventSubmit_doSurvey_insert")
-#set ($subtitle = "アンケート追加")
-#set ($modesrv = "insert")
-#else
-#set ($action_str = "更新する")
-#set ($subtitle = "アンケート編集")
-#set ($event_submit = "eventSubmit_doSurvey_update")
-#set ($modesrv = "update")
-#end
+#set ($subtitle = "アンケート詳細")
 #set ($indicator_id = "indicator-dlg-")
 #ALdialogheader($subtitle)
 
@@ -36,8 +28,8 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("surveyForm" $jslink $portlet "SurveyFormJSONScreen" "aimluck.io.selectAllOptions(this.members);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.survey.onReceiveMessage);return false;")
-<input type="hidden" name="mode" value="$!modesrv" />
+#ALajaxscreenformheader("surveyForm" $jslink $portlet "SurveyResponseFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.survey.onReceiveMessage);return false;")
+<input type="hidden" name="entityid" value="$!result.Detail.SurveyId" />
 #ALtableheaderWide()
 #ALtdcaption("タイトル")
 #ALtditemheader()
@@ -57,17 +49,17 @@ $!result.Detail.Comment
 #ALtditemfooter()
 #ALtdcaption("#ALrequired('回答項目')")
 #ALtditemheader()
-#foreach ($map in $!result.Options)
-#if($!result.Detail.OptionType == "M")
-<div class="mh10"><label for="svcheck$map.key"><input type="checkbox" name="options" value=$map.key id="$map.key"> $map.value</label></div>
+#foreach ($map in $!result.Options.entrySet())
+#if($!result.Detail.OptionType.Value == "M")
+<div class="mh10"><label for="svcheck$map.key"><input #if($!result.OldResponses.contains($map.key)) checked="checked" #end type="checkbox" name="responses[]" value=$map.key id="svcheck$map.key"> $map.value</label></div>
 #else
-<div class="mh10"><label for="svcheck$map.key"><input type="radio" name="options" value=$map.key id="$map.key"> $map.value</label></div>	
+<div class="mh10"><label for="svcheck$map.key"><input #if($!result.OldResponses.contains($map.key)) checked="checked" #end type="radio" name="responses[]" value=$map.key id="svcheck$map.key"> $map.value</label></div>	
 #end
 #end
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="回答する" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

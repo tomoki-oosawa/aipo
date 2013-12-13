@@ -25,7 +25,11 @@ package com.aimluck.eip.survey;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -86,7 +90,7 @@ public class SurveyFormData extends ALAbstractFormData {
   private ALStringField respondentType;
 
   /** 回答項目(改行区切) */
-  private List<String> optionList;
+  private Map<Integer, String> optionList;
 
   private ALStringField options;
 
@@ -114,7 +118,7 @@ public class SurveyFormData extends ALAbstractFormData {
 
     options = new ALStringField();
     options.setFieldName("回答項目");
-    optionList = new ArrayList<String>();
+    optionList = new HashMap<Integer, String>();
 
     respondentType = new ALStringField();
     respondentType.setFieldName("回答対象者");
@@ -168,7 +172,7 @@ public class SurveyFormData extends ALAbstractFormData {
     if (optionList == null || optionList.size() == 0) {
       msgList.add("『 <span class=\"em\">回答項目</span> 』を入力してください。</span>");
     } else {
-      for (String option : optionList) {
+      for (String option : optionList.values()) {
         ALStringField dummy = new ALStringField();
         dummy.setFieldName("回答項目");
         dummy.setNotNull(false);
@@ -198,7 +202,7 @@ public class SurveyFormData extends ALAbstractFormData {
         optionType.setValue(SurveyUtils.OPTION_TYPE_SINGLE);
       }
       if (respondentType.toString().equals("")) {
-        respondentType.setValue(SurveyUtils.RESPONDENT_TYPE_ALL);
+        respondentType.setValue(SurveyUtils.RESPONDENT_TYPE_MEMBER);
       }
       if (openDate.toString().equals("")) {
         Calendar cal = Calendar.getInstance();
@@ -210,11 +214,24 @@ public class SurveyFormData extends ALAbstractFormData {
         closeDate.setValue(cal.getTime());
       }
 
-      String _options[] = rundata.getParameters().getStrings("options[]");
+      String _options[] = rundata.getParameters().getStrings("optionsHidden[]");
       if (_options != null) {
+        int cursor = 0;
         for (String line : _options) {
+          String convertedLine = line.trim();
           if (line.trim().length() > 0) {
-            optionList.add(line.trim());
+            String regex = "([0-9]+)@(.+)";
+            String value = "";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(convertedLine);
+            if (m.find()) {
+              cursor = Integer.parseInt(m.group(1));
+              value = m.group(2);
+            } else {
+              cursor++;
+              value = convertedLine;
+            }
+            optionList.put(cursor, value);
           }
         }
       }
@@ -275,10 +292,11 @@ public class SurveyFormData extends ALAbstractFormData {
       survey.setName(name.getValue());
       survey.setComment(comment.getValue());
 
-      for (String option : optionList) {
+      for (Integer optionKey : optionList.keySet()) {
         EipTSurveyOption _option = Database.create(EipTSurveyOption.class);
         _option.setEipTSurvey(survey);
-        _option.setName(option);
+        _option.setName(optionList.get(optionKey));
+        _option.setSortNumber(optionKey);
       }
 
       if (SurveyUtils.OPTION_TYPE_MULTIPLE.equals(optionType.getValue())) {

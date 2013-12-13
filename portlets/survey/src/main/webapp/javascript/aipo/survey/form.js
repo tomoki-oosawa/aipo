@@ -147,3 +147,13 @@ aipo.survey.toggleCheck = function(check, targetId){
 		}
 	}	
 };
+
+aipo.survey.addHiddenValues = function(portlet_id){
+	var container = dojo.byId('surveyHiddenFormOptions-' + portlet_id);
+	container.innerHTML = '';
+	var index = 1;
+	dojo.query('#surveyFormOptions-' + portlet_id + ' .surveyFormOption input').forEach(function(item) {
+		container.innerHTML += "<input type='hidden' name='optionsHidden[]' value='" + index + "@" + item.value + "'/>";
+		index++;
+	});
+};

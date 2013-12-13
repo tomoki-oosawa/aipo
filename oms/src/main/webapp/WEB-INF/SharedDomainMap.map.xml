@@ -505,6 +505,7 @@
 	<db-entity name="eip_t_survey_option">
 		<db-attribute name="NAME" type="VARCHAR" length="255"/>
 		<db-attribute name="OPTION_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="SORT_NUMBER" type="INTEGER"/>
 		<db-attribute name="SURVEY_ID" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="eip_t_survey_respondent">
@@ -1125,6 +1126,7 @@
 	</obj-entity>
 	<obj-entity name="EipTSurveyOption" className="com.aimluck.eip.cayenne.om.portlet.EipTSurveyOption" dbEntityName="eip_t_survey_option">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="sortNumber" type="java.lang.Integer" db-attribute-path="SORT_NUMBER"/>
 	</obj-entity>
 	<obj-entity name="EipTSurveyRespondent" className="com.aimluck.eip.cayenne.om.portlet.EipTSurveyRespondent" dbEntityName="eip_t_survey_respondent">
 		<obj-attribute name="responseDate" type="java.util.Date" db-attribute-path="RESPONSE_DATE"/>

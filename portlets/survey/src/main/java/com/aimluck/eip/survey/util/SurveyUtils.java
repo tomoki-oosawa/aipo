@@ -20,6 +20,7 @@
 package com.aimluck.eip.survey.util;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -29,11 +30,16 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTSurvey;
+import com.aimluck.eip.cayenne.om.portlet.EipTSurveyOption;
+import com.aimluck.eip.cayenne.om.portlet.EipTSurveyRespondent;
+import com.aimluck.eip.cayenne.om.portlet.EipTSurveyResponseMap;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -71,6 +77,12 @@ public class SurveyUtils {
   public static final String OPTION_TYPE_SINGLE = "S";
 
   public static final String OPTION_TYPE_MULTIPLE = "M";
+
+  public static final String LIST_UNRESPONDED = "unresponded";
+
+  public static final String LIST_RESPONDED = "responded";
+
+  public static final String LIST_CREATED = "created";
 
   public static void clearSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
@@ -111,5 +123,64 @@ public class SurveyUtils {
       logger.error("Survey", ex);
       throw new ALDBErrorException();
     }
+  }
+
+  public static LinkedHashMap<Integer, ALStringField> getOptions(
+      EipTSurvey _survey) {
+    LinkedHashMap<Integer, EipTSurveyOption> eipTSurveyOptions =
+      getEipTSurveyOptions(_survey);
+    LinkedHashMap<Integer, ALStringField> options =
+      new LinkedHashMap<Integer, ALStringField>();
+
+    for (EipTSurveyOption option : eipTSurveyOptions.values()) {
+      ALStringField field = new ALStringField();
+      field.setValue(option.getName());
+      options.put(option.getOptionId(), field);
+    }
+    return options;
+  }
+
+  public static LinkedHashMap<Integer, EipTSurveyOption> getEipTSurveyOptions(
+      EipTSurvey _survey) {
+    LinkedHashMap<Integer, EipTSurveyOption> options =
+      new LinkedHashMap<Integer, EipTSurveyOption>();
+    SelectQuery<EipTSurveyOption> query =
+      Database.query(EipTSurveyOption.class);
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyOption.EIP_TSURVEY_PROPERTY,
+      _survey));
+    query.orderAscending(EipTSurveyOption.SORT_NUMBER_PROPERTY);
+    ResultList<EipTSurveyOption> list = query.getResultList();
+    for (EipTSurveyOption option : list) {
+      options.put(option.getOptionId(), option);
+    }
+    return options;
+  }
+
+  public static ResultList<EipTSurveyResponseMap> getResponseMap(
+      EipTSurvey _survey, Integer userId) {
+    SelectQuery<EipTSurveyResponseMap> query =
+      Database.query(EipTSurveyResponseMap.class);
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyResponseMap.EIP_TSURVEY_PROPERTY,
+      _survey));
+
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyResponseMap.USER_ID_PROPERTY,
+      userId));
+    return query.getResultList();
+  }
+
+  public static EipTSurveyRespondent getEipTSurveyRespondent(
+      EipTSurvey _survey, Integer userId) {
+    SelectQuery<EipTSurveyRespondent> query =
+      Database.query(EipTSurveyRespondent.class);
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyRespondent.EIP_TSURVEY_PROPERTY,
+      _survey));
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyRespondent.USER_ID_PROPERTY,
+      userId));
+    return query.fetchSingle();
   }
 }

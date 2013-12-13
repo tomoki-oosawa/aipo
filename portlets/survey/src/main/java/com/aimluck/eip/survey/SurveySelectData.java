@@ -50,6 +50,8 @@ public class SurveySelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(SurveySelectData.class.getName());
 
+  private final String listMode = SurveyUtils.LIST_UNRESPONDED;
+
   /**
    * @param rundata
    * @param context
@@ -91,15 +93,38 @@ public class SurveySelectData extends
         EipTSurvey.RESPONDENT_TYPE_PROPERTY,
         SurveyUtils.RESPONDENT_TYPE_ALL);
     Expression exp1_2 =
+      ExpressionFactory.matchExp(EipTSurvey.EIP_TSURVEY_RESPONDENTS_PROPERTY
+        + "."
+        + EipTSurveyRespondent.USER_ID_PROPERTY, SurveyUtils.RESPONDENT_DUMMY);
+
+    Expression exp2_1 =
       ExpressionFactory.matchExp(
         EipTSurvey.RESPONDENT_TYPE_PROPERTY,
         SurveyUtils.RESPONDENT_TYPE_MEMBER);
-    Expression exp1_3 =
+    Expression exp2_2 =
       ExpressionFactory.matchExp(EipTSurvey.EIP_TSURVEY_RESPONDENTS_PROPERTY
         + "."
         + EipTSurveyRespondent.USER_ID_PROPERTY, loginUserId);
 
-    Expression exp = exp1_1.orExp(exp1_2.andExp(exp1_3));
+    Expression exp = (exp1_1.andExp(exp1_2)).orExp(exp2_1.andExp(exp2_2));
+
+    if (SurveyUtils.LIST_UNRESPONDED.equals(listMode)) {
+      Expression exp3 =
+        ExpressionFactory.matchExp(EipTSurvey.EIP_TSURVEY_RESPONDENTS_PROPERTY
+          + "."
+          + EipTSurveyRespondent.RESPONSE_FLAG_PROPERTY, "F");
+
+      Expression exp4_1 =
+        ExpressionFactory.noMatchExp(
+          EipTSurvey.OPEN_FLAG_PROPERTY,
+          SurveyUtils.OPEN_FLAG_NOT_OPENED);
+
+      Expression exp4_2 =
+        ExpressionFactory.matchExp(
+          EipTSurvey.CLOSE_FLAG_PROPERTY,
+          SurveyUtils.CLOSE_FLAG_NOT_CLOSED);
+      exp = exp.andExp(exp3.andExp(exp4_1.andExp(exp4_2)));
+    }
     query.andQualifier(exp);
     return buildSelectQueryForFilter(query, rundata, context);
   }
