@@ -111,7 +111,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
         <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
-        <img src="images/schedule/schedule_remove.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.SCHEDULE_DELETED" title="$l10n.SCHEDULE_DELETED"/>
+        <i class="icon-remove fcRed" title="削除されました"></i>
         #end
     <br/>
     #end
