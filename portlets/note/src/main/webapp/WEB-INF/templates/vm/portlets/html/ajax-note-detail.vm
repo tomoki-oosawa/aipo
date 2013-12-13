@@ -43,9 +43,9 @@ $person_value
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
 $!record.AliasName
-#if($result.getStatus($record.UserId.Value) == "1")
-<img src="images/note/note_new_message.gif" alt="$l10n.NOTE_NEW_MESSAGE" title="$l10n.NOTE_NEW_MESSAGE"/>
-#elseif($result.getStatus($record.UserId.Value) == "2")
+###if($result.getStatus($record.UserId.Value) == "1")
+##<img src="images/note/note_new_message.gif" alt="$l10n.NOTE_NEW_MESSAGE" title="$l10n.NOTE_NEW_MESSAGE"/>
+#if($result.getStatus($record.UserId.Value) == "1" || $result.getStatus($record.UserId.Value) == "2")
 ##<img src="images/note/note_unread_message.gif" alt="$l10n.NOTE_UNREAD_MESSAGE" title="$l10n.NOTE_UNREAD_MESSAGE"/>
 <i class="auiIcon auiIconMail" title="未読"></i>
 #elseif($result.getStatus($record.UserId.Value) == "3")
