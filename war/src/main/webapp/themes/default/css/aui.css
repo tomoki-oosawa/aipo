@@ -342,6 +342,8 @@ img.avatar,
 .auiPopupButtons .auiButtonSmall,
 .auiPopupButtons .auiButtonDisabled,
 .auiPopupButtons .auiButtonIcon,
+.auiPopupButtons .auiButtonDummy,
+.auiPopupButtons .auiButtonIconDummy,
 .auiPopupButtons input[type=submit],
 .auiPopupButtons input[type=button],
 .auiPopupButtons input[type=reset],
@@ -1161,6 +1163,8 @@ button,
 .auiButtonSmall,
 .auiButtonDisabled,
 .auiButtonIcon,
+.auiButtonDummy,
+.auiButtonIconDummy,
 .auiSelectButton a,
 .auiWidget .auiSelectButton a {
   display: inline-block;
@@ -1296,6 +1300,8 @@ button:first-child,
 .auiButtonSmall:first-child,
 .auiButtonDisabled:first-child,
 .auiButtonIcon:first-child,
+.auiButtonDummy:first-child,
+.auiButtonIconDummy:first-child,
 .auiSelectButton a:first-child {
   *margin-left: 0;
 }
@@ -1383,6 +1389,8 @@ button.active,
 .auiButtonBold,
 .auiButtonDisabled,
 .auiButtonIcon,
+.auiButtonDummy,
+.auiButtonIconDummy,
 .auiButtonSearch,
 .auiSelectButton a,
 input[type=submit],
@@ -1398,6 +1406,8 @@ button {
 *:first-child + html input.auiButton,
 *:first-child + html input.auiButtonAction,
 *:first-child + html input.auiButtonIcon,
+*:first-child + html .auiButtonDummy,
+*:first-child + html .auiButtonIconDummy,
 *:first-child + html input.auiButtonBold,
 *:first-child + html input.auiButtonSearch {
   padding: 0 2px;
@@ -1582,19 +1592,20 @@ input.auiButtonSearch.active {
 }
 
 /* auiButtonIcon */
-.auiButtonIcon {
+.auiButtonIcon,
+.auiButtonIconDummy {
   width: 16px;
   height: 16px;
   padding: 3px !important;
-  font-size: 15px;
-  color: #666666;
+  font-size: 14px;
+  color: #666666 !important;
 }
-
-.auiButtonIcon:hover i {
-  color: #666666;
+.auiButtonIcon:hover i,
+.auiButtonIconDummy:hover i {
+  color: #666666 !important;
 }
-
-.auiButtonIcon span {
+.auiButtonIcon span,
+.auiButtonIconDummy span {
   display: table-cell;
   width: 16px;
   height: 16px;
@@ -1602,19 +1613,37 @@ input.auiButtonSearch.active {
   text-align: center;
   vertical-align: middle;
 }
-
 .auiButtonIcon span,
-.auiButtonIcon i {
+.auiButtonIcon i,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
   cursor: pointer;
   vertical-align: baseline;
 }
 
-*:first-child + html .auiButtonIcon span {
-  display: block;
+[class^="auiButton"] [class^="icon-"] {
+  line-height: 16px;
+}
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
 }
 
-*:first-child + html .auiButtonIcon i {
+*:first-child + html .auiButtonIcon span,
+*:first-child + html .auiButtonIconDummy span {
+  display: block;
+}
+*:first-child + html .auiButtonIcon i,
+*:first-child + html .auiButtonIconDummy i {
   width: 16px;
+}
+
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+  cursor: default !important;
 }
 
 .auiButtonGroup {
