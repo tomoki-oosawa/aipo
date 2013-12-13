@@ -98,8 +98,10 @@ public class ToDoAction extends ALBaseAction {
     if (listData.getTableColumNum() == 4) {
       ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
         .getPortletConfig()
-        .getInitParameter("p1d-categories")
-        .trim());
+        .getInitParameter("p12f-filters")
+        .split(",")[0]
+        + ","
+        + portlet.getPortletConfig().getInitParameter("p1d-categories").trim());
     }
     ALEipUtils.setTemp(
       rundata,
@@ -526,8 +528,8 @@ public class ToDoAction extends ALBaseAction {
     list.add("keyword");
     list.add("target_user_id");
     list.add("target_group_name");
-    list.add("com.aimluck.eip.todo.ToDoSelectDatafilter");
-    list.add("com.aimluck.eip.todo.ToDoSelectDatafiltertype");
+    // list.add("com.aimluck.eip.todo.ToDoSelectDatafilter");
+    // list.add("com.aimluck.eip.todo.ToDoSelectDatafiltertype");
     list.add("com.aimluck.eip.todo.ToDoCategorySelectDatasort");
     list.add("com.aimluck.eip.todo.ToDoCategorySelectDatasorttype");
     list.add("com.aimluck.eip.todo.ToDoPublicSelectDatasort");
