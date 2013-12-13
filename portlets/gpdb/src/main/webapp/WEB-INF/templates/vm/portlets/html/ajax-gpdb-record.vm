@@ -28,19 +28,19 @@
 <img src="images/common/dot.gif" width="1" height="1" onload="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');" style="display:none" />
 
 #elseif(!$result.List)
-	<div class="auiBlankBox">データベースを選択してください。</div>
+	<div class="auiBlankBox">$l10n.GPDB_SELECT_DATABASE</div>
 #elseif($result.List.size() == 0)
-	<div class="auiBlankBox">指定された条件に該当するデータはありません。</div>
+	<div class="auiBlankBox">$l10n.GPDB_NO_DATA</div>
 #else
 
 <h2>$result.Gpdb.WbrGpdbName</h2>
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader('データ')
+#ALajaxlistformheader('$l10n.GPDB_DATA')
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
-			#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+			#AUIajaxbuttonCheckboxDelete("$l10n.GPDB_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 			#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)
@@ -88,7 +88,7 @@
 	#AUItablefooter()
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
-			#AUIajaxbuttonCheckboxDelete("削除する" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+			#AUIajaxbuttonCheckboxDelete("$l10n.GPDB_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 		</div>
 	#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>

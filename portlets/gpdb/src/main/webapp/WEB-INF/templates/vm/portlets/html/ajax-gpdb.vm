@@ -26,14 +26,14 @@
 ##set ($righting = "style='text-align:right'")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>データベースの管理</h2>
+<h2>$l10n.GPDB_MANAGEMENT</h2>
 
 #if($result.getGpdbSum() == 0)
 
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("データベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_DATABASE" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
@@ -41,12 +41,12 @@
 #else
 
 #AUISummaryDiv()
-#AUIbuttonAction("データベースを追加する" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_DATABASE" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
 
-#ALajaxlistformheader("Webデータベース")
+#ALajaxlistformheader("$l10n.GPDB_WEB_DATABASE")
 
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -65,10 +65,10 @@
 <tbody>
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
-#ALtdhead("#ALajaxsort('gpdb_name' 'データベース名' $result 'GpdbListScreen')")
-#ALtdheadAtt("作成者" "class='wName mb_hide'")
-#ALtdheadAtt("作成日" "class='w10 mb_hide'")
-#ALtdheadAtt("データ件数" "class='w10 mb_hide'")
+#ALtdhead("#ALajaxsort('gpdb_name' $l10n.GPDB_DATABASE_NAME $result 'GpdbListScreen')")
+#ALtdheadAtt("$l10n.GPDB_AUTHOR" "class='wName mb_hide'")
+#ALtdheadAtt("$l10n.GPDB_CREATION_DATE" "class='w10 mb_hide'")
+#ALtdheadAtt("$l10n.GPDB_NUMBER_OF_DATA" "class='w10 mb_hide'")
 </tr>
 #foreach ($record in $result.List)
 <tr>

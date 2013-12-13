@@ -22,21 +22,20 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($subtitle = "順番変更")
+#set ($subtitle = "$l10n.GPDB_CHANGE_ORDER")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.GpdbKubunValueList) || $result.GpdbKubunValueList.size() == 0)
-<div class="message">選択項目は登録されていません。</div>
+<div class="message">$l10n.GPDB_NO_SELECTION_ITEM</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div style="padding:0px 0px 5px 5px">
-	<span class="auiButtonIconDummy"><i class="icon-double-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-up"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
-の各ボタンで、マウスで選択した値の順番を自由に変更できます。<br>
-Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
+$l10n.GPDB_MULTIPLE_SELECT_KEY</div>
 #ALajaxscreenformheader("GpdbKubunChangeTurnForm" $jslink $portlet "GpdbKubunChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.gpdb.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
@@ -44,12 +43,12 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 <table class="dialogTable wide">
 <tbody>
 <tr>
-<td class="caption" width="30%" nowrap="">値一覧</td>
+<td class="caption" width="30%" nowrap="">$l10n.GPDB_VALUE_LIST</td>
 <td width="5%">
-<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="10 ずつ順番を上げる"class="auiButtonIcon"><span><i class="icon-double-angle-up"></i></span></a></div>
-<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="1 ずつ順番を上げる"class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></a></div
-<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="1 ずつ順番を下げる"class="auiButtonIcon"><span><i class="icon-angle-down"></i></span></a></div>
-<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="10 ずつ順番を下げる"class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></a></div>
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="$l10n.GPDB_UP_10"class="auiButtonIcon"><span><i class="icon-double-angle-up"></i></span></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="$l10n.GPDB_UP_1"class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('gpdb_so_$!portlet.ID'))" title="$l10n.GPDB_DOWN_1"class="auiButtonIcon"><span><i class="icon-angle-down"></i></span></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('gpdb_so_$!portlet.ID'))" title="$l10n.GPDB_DOWN_10"class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></a></div>
 </td>
 <td width="65%"><select id="gpdb_so_$!portlet.ID" name="gpdb_so" size="20" multiple="multiple" style="WIDTH: 100%">
 #if($!result.UserList.size() <= 0)
@@ -66,7 +65,7 @@ Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『�
 </table>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doGpdbKubun_change_turn_update' "更新する" 'setHiddenValue(this);aipo.gpdb.sortsubmit(this.form)')
+#ALsubmitJS('eventSubmit_doGpdbKubun_change_turn_update' "$l10n.GPDB_UPDATE" 'setHiddenValue(this);aipo.gpdb.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
