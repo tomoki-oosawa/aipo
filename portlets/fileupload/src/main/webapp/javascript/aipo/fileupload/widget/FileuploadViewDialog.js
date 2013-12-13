@@ -37,9 +37,10 @@ dojo.declare(
     "aipo.fileupload.widget.FileuploadViewDialog",
     [aimluck.widget.Dialog],
     {
-        loadingMessage:"<div class='indicator'>読み込み中...</div>",
+    	loadingMessage:"<div class='indicatorDialog center'><i class='auiIcon auiIconIndicator'></i> "+nlsStrings.LOADING_STR+"</div>",
+    	errorMessage: "<div class='indicatorDialog center'>${errorState}</div>",
         templateCssString:"auiPopup imgPopup fileuploadViewDialog",
-        templateString:"<div id='fileuploadViewDialog' class='${templateCssString}' dojoattachpoint='wrapper' onclick='aipo.fileupload.hideImageDialog()'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
+        templateString:"<div id='imageDialog' class='${templateCssString}' dojoattachpoint='wrapper' onclick='aipo.fileupload.hideImageDialog()'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
         _setup: function(){
 
             this._modalconnects = [];
@@ -65,26 +66,26 @@ dojo.declare(
             );
 
             this._fadeOut = dojo.fx.combine(
-                [dojo.fadeOut({
-                    node: node,
-                    duration: this.duration,
-                    onEnd: function(){
-                        node.style.display="none";
-                    }
-                 }),
-                 dojo.fadeOut({
-                    node: this._underlay.domNode,
-                    duration: this.duration,
-                    onEnd: dojo.hitch(this._underlay, "hide")
-                 })
-                ]
-            );
-        },
-        onLoad: function(){
-            // when href is specified we need to reposition
-            // the dialog after the data is loaded
-            this._position();
-            aimluck.widget.Dialog.superclass.onLoad.call(this);
+                    [dojo.fadeOut({
+                        node: node,
+                        dialog: this,
+                        duration: this.duration,
+                        onEnd: function(){
+                            node.style.display="none";
+                            //** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
+                            if (document.all) { // for IE
+                                this.dialog.fixTmpScroll();
+                            }
+                            //**//
+                        }
+                     }),
+                     dojo.fadeOut({
+                        node: this._underlay.domNode,
+                        duration: this.duration,
+                        onEnd: dojo.hitch(this._underlay, "hide")
+                     })
+                    ]
+                );
         }
     }
 );
