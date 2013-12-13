@@ -36,6 +36,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
@@ -498,7 +499,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      ALBaseUser user = (ALBaseUser) rundata.getUser();
+      ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
       if (user == null) {
         logger
           .debug("Not found. (" + AccountEditFormData.class.getName() + ")");
@@ -609,7 +610,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // 編集者自身を示すオブジェクト
-      ALBaseUser user = (ALBaseUser) rundata.getUser();
+      ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
       if (user == null) {
         return false;
       }
@@ -655,16 +656,14 @@ public class AccountEditFormData extends ALAbstractFormData {
       user.setLastNameKana(last_name_kana.getValue());
       user.setEmail(email.getValue());
 
-      if (filebean != null) {
-        if (filebean.getFileId() != 0) {
-          // 顔写真を登録する．
-          user.setPhotoSmartphone(facePhoto_smartphone);
-          user.setHasPhotoSmartphone(true);
-          user.setPhotoModifiedSmartphone(new Date());
-          user.setPhoto(facePhoto);
-          user.setHasPhoto(true);
-          user.setPhotoModified(new Date());
-        }
+      if (filebean != null && filebean.getFileId() != 0) {
+        // 顔写真を登録する．
+        user.setPhotoSmartphone(facePhoto_smartphone);
+        user.setHasPhotoSmartphone(true);
+        user.setPhotoModifiedSmartphone(new Date());
+        user.setPhoto(facePhoto);
+        user.setHasPhoto(true);
+        user.setPhotoModified(new Date());
       } else if (delete_photo) {
         user.setPhoto(null);
         user.setHasPhoto(false);
