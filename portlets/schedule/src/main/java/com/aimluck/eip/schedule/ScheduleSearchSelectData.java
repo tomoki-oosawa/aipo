@@ -165,6 +165,9 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
     ScheduleSearchResultData rd = new ScheduleSearchResultData();
     rd.initField();
     try {
+      if ("R".equals(record.getStatus())) {
+        return null;
+      }
 
       boolean is_member = record.isMember();
 
@@ -202,7 +205,6 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       rd.setMember(is_member);
       // 繰り返しパターン
       rd.setPattern(record.getRepeatPattern());
-
       rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
       rd.setNote(record.getNote());
       rd.setPlace(record.getPlace());
