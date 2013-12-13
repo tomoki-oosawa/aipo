@@ -86,12 +86,13 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       listData.setTableColumNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1e-rows")));
-      String categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
-      MsgboardUtils.passPSML(rundata, context, "p3a-category", categoryId);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-msgboard-topic.vm";
       setTemplate(rundata, context, layout_template);
+
+      String categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
+      MsgboardUtils.passPSML(rundata, context, "p3a-category", categoryId);
 
     } catch (Exception ex) {
       logger.error("[MsgboardTopicScreen] Exception.", ex);
