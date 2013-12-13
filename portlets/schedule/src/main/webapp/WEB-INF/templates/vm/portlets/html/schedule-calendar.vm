@@ -90,7 +90,7 @@
 </div>
 #end
 
-<div class="center loader" id="indicator-$!portlet.ID"><img src="themes/$!{theme}/images/common/loading_lg.gif" width="24" height="24" alt="" />&nbsp;$l10n.SCHEDULE_READING</div>
+<div class="center loader" id="indicator-$!portlet.ID"></div>
 <!-- WRAPPER -->
     <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
         <tbody>

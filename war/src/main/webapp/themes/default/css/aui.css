@@ -4126,14 +4126,19 @@ a.auiIconMailOpen:hover {
   background-position: 0 -463px;
 }
 
-/* loader ********************/
+/***************************************************
+	loader
+--------------------------------------------------*/
 .loader {
   padding: 10px;
+  height: 20px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px;
+  background: url(../images/common/indicator.gif) no-repeat center center;
+  background-size: 16px;
 }
 .loader img {
   vertical-align: middle;
