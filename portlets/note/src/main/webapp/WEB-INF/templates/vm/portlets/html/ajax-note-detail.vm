@@ -42,18 +42,14 @@ $person_value
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
-$!record.AliasName
-###if($result.getStatus($record.UserId.Value) == "1")
-##<img src="images/note/note_new_message.gif" alt="$l10n.NOTE_NEW_MESSAGE" title="$l10n.NOTE_NEW_MESSAGE"/>
 #if($result.getStatus($record.UserId.Value) == "1" || $result.getStatus($record.UserId.Value) == "2")
-##<img src="images/note/note_unread_message.gif" alt="$l10n.NOTE_UNREAD_MESSAGE" title="$l10n.NOTE_UNREAD_MESSAGE"/>
-<i class="auiIcon auiIconMail" title="未読"></i>
+<i class="auiIcon auiIconMail" title="$l10n.NOTE_UNREAD_MESSAGE"></i>
 #elseif($result.getStatus($record.UserId.Value) == "3")
-##<img src="images/note/note_read_message.gif" alt="$l10n.NOTE_READ_MESSAGE" title="$l10n.NOTE_READ_MESSAGE"/>
-<i class="auiIcon auiIconMailOpen" title="既読"></i>
+<i class="auiIcon auiIconMailOpen" title="$l10n.NOTE_READ_MESSAGE"></i>
 #else
 <img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
 #end
+$!record.AliasName
 <br/>
 #end
 #end
