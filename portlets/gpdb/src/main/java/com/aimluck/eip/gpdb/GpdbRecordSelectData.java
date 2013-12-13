@@ -182,7 +182,7 @@ public class GpdbRecordSelectData extends
         sortWhere = " AND r2.gpdb_item_id = #bind($sort) ";
 
         EipTGpdbItem item = GpdbUtils.getEipTGpdbItem("" + sort);
-        if (GpdbUtils.ITEM_TYPE_SEQ.equals(item.getType())) {
+        if (item != null && GpdbUtils.ITEM_TYPE_SEQ.equals(item.getType())) {
           // 自動採番項目の場合は数値として扱う
           sortValue = Database.castToIntRawColumn("r2.value");
           nullSort = " IS NULL ";
