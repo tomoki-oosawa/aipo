@@ -229,7 +229,7 @@
 #ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
 #ALtdcaption("$!result.getFieldName('note')")
 #ALtditemheader()
-#ALtextarea('note' $!result.Note 5 50)
+#ALtextarea('note' $!result.Note 10 50)
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
