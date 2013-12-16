@@ -64,7 +64,7 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("note"))
 #ALtditemheader()
-#ALtextarea('note' $!result.Note 6 40)
+#ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
