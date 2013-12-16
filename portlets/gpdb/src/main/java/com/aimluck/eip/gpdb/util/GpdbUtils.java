@@ -895,21 +895,40 @@ public class GpdbUtils {
     int cnt = 0;
 
     try {
-      String sql =
-        "SELECT COUNT(0) AS data_cnt"
-          + " FROM eip_t_gpdb_record r"
-          + "   INNER JOIN eip_t_gpdb_item i"
-          + "     ON i.gpdb_item_id = r.gpdb_item_id"
-          + "   WHERE i.type IN (#bind($type1), #bind($type2))"
-          + "   AND r.value ~ #bind($gpdb_kubun_value_id)";
+      String sql = "";
+      if (Database.isJdbcMySQL()) {
+        sql =
+          "SELECT COUNT(0) AS data_cnt"
+            + " FROM eip_t_gpdb_record r"
+            + "   INNER JOIN eip_t_gpdb_item i"
+            + "     ON i.gpdb_item_id = r.gpdb_item_id"
+            + "   WHERE i.type IN (#bind($type1), #bind($type2))"
+            + "   AND r.value REGEXP #bind($gpdb_kubun_value_id)";
+      } else if (Database.isJdbcPostgreSQL()) {
+        sql =
+          "SELECT COUNT(0) AS data_cnt"
+            + " FROM eip_t_gpdb_record r"
+            + "   INNER JOIN eip_t_gpdb_item i"
+            + "     ON i.gpdb_item_id = r.gpdb_item_id"
+            + "   WHERE i.type IN (#bind($type1), #bind($type2))"
+            + "   AND r.value ~ #bind($gpdb_kubun_value_id)";
+      }
 
       SQLTemplate<EipTGpdbRecord> sqltemp =
         Database.sql(EipTGpdbRecord.class, String.valueOf(sql));
       sqltemp.param("type1", ITEM_TYPE_SELECT);
       sqltemp.param("type2", ITEM_TYPE_SELECT_MULTI);
-      sqltemp.param("gpdb_kubun_value_id", "(?:^|\\||)"
-        + gpdbKubunValueId
-        + "(?:\\||$)");
+
+      if (Database.isJdbcMySQL()) {
+        sqltemp.param("gpdb_kubun_value_id", "(^|\\|)"
+          + gpdbKubunValueId
+          + "(\\||$)");
+
+      } else if (Database.isJdbcPostgreSQL()) {
+        sqltemp.param("gpdb_kubun_value_id", "(?:^|\\||)"
+          + gpdbKubunValueId
+          + "(?:\\||$)");
+      }
 
       List<DataRow> result = sqltemp.fetchListAsDataRow();
 
