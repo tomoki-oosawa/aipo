@@ -58,12 +58,6 @@ public class WebMailAction extends ALBaseAction {
     clearWebMailSession(rundata, context);
     ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "true");
 
-    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
-      .getPortlet(rundata, context)
-      .getPortletConfig()
-      .getInitParameter("p3a-accounts")
-      .trim());
-
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
@@ -71,6 +65,7 @@ public class WebMailAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
     listData.setStrLength(0);
+    listData.setFiltersPSML(portlet, context, rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail");
   }
@@ -110,6 +105,9 @@ public class WebMailAction extends ALBaseAction {
    */
   public void doWebmail_list(RunData rundata, Context context) throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
+      .getParameters()
+      .getString(WebMailUtils.ACCOUNT_ID));
 
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
@@ -202,6 +200,9 @@ public class WebMailAction extends ALBaseAction {
   public void doWebmail_folder_list(RunData rundata, Context context)
       throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
+      .getParameters()
+      .getString(WebMailUtils.ACCOUNT_ID));
 
     WebMailFolderSelectData listData = new WebMailFolderSelectData();
     listData.initField();
