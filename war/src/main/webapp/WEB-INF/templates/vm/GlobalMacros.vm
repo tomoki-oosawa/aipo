@@ -96,8 +96,19 @@ $theLink
   <tbody>
 #end
 
+#macro(ALtableheaderMt0Wide)
+<table class="listTable wide mt0">
+  <tbody>
+#end
+
 #macro(ALtableheaderWideWithCaption $capt)
 <table class="listTable wide">
+  <caption>$capt</caption>
+  <tbody>
+#end
+
+#macro(ALtableheaderWideMb0WithCaption $capt)
+<table class="listTable wide mb0">
   <caption>$capt</caption>
   <tbody>
 #end
