@@ -3490,7 +3490,7 @@ ul.attachments {
   width: 16px;
   height: 16px;
   overflow: hidden;
-  vertical-align: -25%;
+  vertical-align: middle;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
