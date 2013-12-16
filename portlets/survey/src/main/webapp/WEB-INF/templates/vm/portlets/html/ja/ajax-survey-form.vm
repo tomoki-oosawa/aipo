@@ -67,8 +67,9 @@
 <div id="mapField">
 <table class="none">
   <tr><td>
-	<label for="surveyAnserAll"><input type="radio" name="respondentType" value="A" #if( $!result.RespondentType.Value == "A" ) checked="checked" #end id="surveyAnserAll" onchange="aipo.survey.toggleRespondentType(this, '$!portlet.ID');">すべてのユーザー</label><br>
-    <label for="surveyAnserSelect"><input type="radio" name="respondentType" value="M" #if( $!result.RespondentType.Value == "M" ) checked="checked" #end id="surveyAnserSelect" onchange="aipo.survey.toggleRespondentType(this, '$!portlet.ID');">ユーザーを選択</label>							
+	##<label for="surveyAnserAll"><input type="radio" name="respondentType" value="A" #if( $!result.RespondentType.Value == "A" ) checked="checked" #end id="surveyAnserAll" onchange="aipo.survey.toggleRespondentType(this, '$!portlet.ID');"/>すべてのユーザー</label><br>
+    ##<label for="surveyAnserSelect"><input type="radio" name="respondentType" value="M" #if( $!result.RespondentType.Value == "M" ) checked="checked" #end id="surveyAnserSelect" onchange="aipo.survey.toggleRespondentType(this, '$!portlet.ID');"/>ユーザーを選択</label>
+	<input type="hidden" name="respondentType" value="M"/>
     <div #if($!result.RespondentType.Value != "M") style="display:none;" #end class="respondentForm-$!portlet.ID spaceTop spaceLeft small">左側に回答対象者を追加してください。</div>
     <div #if($!result.RespondentType.Value != "M") style="display:none;" #end class="respondentForm-$!portlet.ID" dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"

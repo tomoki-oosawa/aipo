@@ -65,6 +65,10 @@ public class SurveyResponseFormData extends ALAbstractFormData {
 
   private int loginUserId = -1;
 
+  private boolean isResponsible = false;
+
+  private boolean isOwner = false;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -102,6 +106,11 @@ public class SurveyResponseFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
+    if (SurveyUtils.OPTION_TYPE_SINGLE
+      .equals(survey.getOptionType().getValue())
+      && newResponses.size() < 1) {
+      msgList.add("『 <span class=\"em\">回答</span> 』を選択してください。</span>");
+    }
     return msgList.size() == 0;
   }
 
@@ -110,6 +119,18 @@ public class SurveyResponseFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (res) {
+      EipTSurvey _survey = SurveyUtils.getEipTSurvey(rundata, context);
+      if (_survey == null) {
+        return false;
+      }
+      survey.setSurveyId(_survey.getSurveyId());
+      survey.setName(_survey.getName());
+      survey.setComment(_survey.getName());
+      survey.setCreateUser(ALEipUtils.getALEipUser(_survey.getCreateUserId()));
+      survey.setCloseDate(_survey.getCloseDate());
+      survey.setAnonymousFlag(_survey.getAnonymousFlag());
+      survey.setOptionType(_survey.getOptionType());
+
       String responses[] = rundata.getParameters().getStrings("responses[]");
       if (responses != null) {
         for (String line : responses) {
@@ -153,6 +174,21 @@ public class SurveyResponseFormData extends ALAbstractFormData {
         SurveyUtils.getResponseMap(_survey, loginUserId);
       for (EipTSurveyResponseMap map : list) {
         oldResponses.add(map.getEipTSurveyOption().getOptionId());
+      }
+
+      if (SurveyUtils.isOpen(_survey)) {
+        EipTSurveyRespondent respondent =
+          SurveyUtils.getEipTSurveyRespondent(_survey, loginUserId);
+        if (respondent != null) {
+          isResponsible = true;
+        }
+        survey.setCloseFlag("受付中");
+      } else {
+        survey.setCloseFlag("終了");
+      }
+
+      if (loginUserId == _survey.getCreateUserId()) {
+        isOwner = true;
       }
 
     } catch (Exception ex) {
@@ -216,6 +252,7 @@ public class SurveyResponseFormData extends ALAbstractFormData {
         }
       }
       Database.commit();
+      SurveyUtils.refreshResponseRate(_survey);
       return true;
     } catch (Exception ex) {
       Database.rollback();
@@ -248,5 +285,13 @@ public class SurveyResponseFormData extends ALAbstractFormData {
 
   public List<Integer> getOldResponses() {
     return oldResponses;
+  }
+
+  public boolean isResponsible() {
+    return isResponsible;
+  }
+
+  public boolean isOwner() {
+    return isOwner;
   }
 }

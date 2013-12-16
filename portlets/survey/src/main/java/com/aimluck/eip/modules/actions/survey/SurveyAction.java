@@ -33,10 +33,34 @@ public class SurveyAction extends ALBaseAction {
       RunData rundata) throws Exception {
     // セッション情報をクリア
     SurveyUtils.clearSession(rundata, context);
+    SurveyUtils.refreshFlagsByDate();
+    rundata.getParameters().setString("listmode", SurveyUtils.LIST_UNRESPONDED);
     SurveySelectData listData = new SurveySelectData();
     listData.initField();
     if (listData.doViewList(this, rundata, context)) {
       setTemplate(rundata, "survey");
+    }
+  }
+
+  /**
+   * 最大化表示の際の処理を記述します。 <BR>
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
+   */
+  @Override
+  protected void buildMaximizedContext(VelocityPortlet portlet,
+      Context context, RunData rundata) {
+    // セッション情報をクリア
+    SurveyUtils.clearSession(rundata, context);
+    SurveyUtils.refreshFlagsByDate();
+    rundata.getParameters().setString("maximized", "true");
+
+    SurveySelectData listData = new SurveySelectData();
+    listData.initField();
+    if (listData.doViewList(this, rundata, context)) {
+      setTemplate(rundata, "survey-list");
     }
   }
 

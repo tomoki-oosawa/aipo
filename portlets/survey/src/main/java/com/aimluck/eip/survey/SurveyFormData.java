@@ -89,7 +89,7 @@ public class SurveyFormData extends ALAbstractFormData {
 
   private ALStringField respondentType;
 
-  /** 回答項目(改行区切) */
+  /** 回答項目 */
   private Map<Integer, String> optionList;
 
   private ALStringField options;
@@ -327,7 +327,7 @@ public class SurveyFormData extends ALAbstractFormData {
       survey.setOpenFlag(SurveyUtils.OPEN_FLAG_AUTO_OPENED);
 
       survey.setCloseFlag(SurveyUtils.CLOSE_FLAG_NOT_CLOSED);
-      survey.setCloseDate(closeDate.getValue());
+      survey.setCloseDate(SurveyUtils.getEndtimeOfDay(closeDate.getValue()));
 
       survey.setEditableFlag("T");
       survey.setCreateUserId(ALEipUtils.getUserId(rundata));
@@ -337,6 +337,8 @@ public class SurveyFormData extends ALAbstractFormData {
       survey.setUpdateDate(nowDate);
 
       Database.commit();
+
+      SurveyUtils.refreshResponseRate(survey);
       return true;
     } catch (Exception ex) {
       Database.rollback();

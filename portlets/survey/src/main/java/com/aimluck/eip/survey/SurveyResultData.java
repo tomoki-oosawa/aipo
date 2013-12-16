@@ -22,15 +22,35 @@
 
 package com.aimluck.eip.survey;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipUser;
+
+class SurveyListDateField extends ALDateTimeField {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -4167331118973029695L;
+
+  @Override
+  public String toString() {
+    try {
+      SimpleDateFormat format = new SimpleDateFormat("yyyy年M月d日");
+      format.setTimeZone(TimeZone.getDefault());
+      return format.format(getValue());
+    } catch (Exception e) {
+      return super.toString();
+    }
+  }
+}
 
 /**
  * WebデータベースのResultDataです。 <BR>
@@ -56,14 +76,8 @@ public class SurveyResultData implements ALData {
   /** 作成日時 */
   private ALDateTimeField createdDate;
 
-  /** 受付開始日 */
-  private ALDateTimeField openDate;
-
   /** 回答期日 */
   private ALDateTimeField closeDate;
-
-  /** 受付フラグ */
-  private ALStringField openFlag;
 
   /** 締切フラグ */
   private ALStringField closeFlag;
@@ -73,6 +87,9 @@ public class SurveyResultData implements ALData {
 
   /** 回答率 */
   private ALStringField responseRate;
+
+  /** 回答状況 */
+  private ALStringField responseFlag;
 
   /** 回答項目 */
   private List<ALStringField> options;
@@ -94,13 +111,12 @@ public class SurveyResultData implements ALData {
     name = new ALStringField();
     comment = new ALStringField();
     optionType = new ALStringField();
-    createdDate = new ALDateTimeField();
-    openDate = new ALDateTimeField();
-    closeDate = new ALDateTimeField();
-    openFlag = new ALStringField();
+    createdDate = new SurveyListDateField();
+    closeDate = new SurveyListDateField();
     closeFlag = new ALStringField();
     editableFlag = new ALStringField();
     responseRate = new ALStringField();
+    responseFlag = new ALStringField();
     options = new ArrayList<ALStringField>();
     respondentType = new ALStringField();
     respondents = new ArrayList<ALEipUser>();
@@ -153,21 +169,6 @@ public class SurveyResultData implements ALData {
   }
 
   /**
-   * @return openDate
-   */
-  public ALDateTimeField getOpenDate() {
-    return openDate;
-  }
-
-  /**
-   * @param openDate
-   *          セットする openDate
-   */
-  public void setOpenDate(Date date) {
-    this.openDate.setValue(date);
-  }
-
-  /**
    * @return closeDate
    */
   public ALDateTimeField getCloseDate() {
@@ -180,21 +181,6 @@ public class SurveyResultData implements ALData {
    */
   public void setCloseDate(Date date) {
     this.closeDate.setValue(date);
-  }
-
-  /**
-   * @return openFlag
-   */
-  public ALStringField getOpenFlag() {
-    return openFlag;
-  }
-
-  /**
-   * @param openFlag
-   *          セットする openFlag
-   */
-  public void setOpenFlag(String str) {
-    this.openFlag.setValue(str);
   }
 
   /**
@@ -240,6 +226,21 @@ public class SurveyResultData implements ALData {
    */
   public void setResponseRate(String str) {
     this.responseRate.setValue(str);
+  }
+
+  /**
+   * @return responseFlag
+   */
+  public ALStringField getResponseFlag() {
+    return responseFlag;
+  }
+
+  /**
+   * @param responseFlag
+   *          セットする responseFlag
+   */
+  public void setResponseFlag(String str) {
+    this.responseFlag.setValue(str);
   }
 
   /**

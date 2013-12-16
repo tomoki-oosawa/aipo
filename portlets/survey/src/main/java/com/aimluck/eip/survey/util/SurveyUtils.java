@@ -20,6 +20,8 @@
 package com.aimluck.eip.survey.util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -35,6 +37,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTSurvey;
 import com.aimluck.eip.cayenne.om.portlet.EipTSurveyOption;
 import com.aimluck.eip.cayenne.om.portlet.EipTSurveyRespondent;
 import com.aimluck.eip.cayenne.om.portlet.EipTSurveyResponseMap;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -80,7 +83,9 @@ public class SurveyUtils {
 
   public static final String LIST_UNRESPONDED = "unresponded";
 
-  public static final String LIST_RESPONDED = "responded";
+  public static final String LIST_OPENED = "opened";
+
+  public static final String LIST_CLOSED = "closed";
 
   public static final String LIST_CREATED = "created";
 
@@ -182,5 +187,110 @@ public class SurveyUtils {
       EipTSurveyRespondent.USER_ID_PROPERTY,
       userId));
     return query.fetchSingle();
+  }
+
+  public static List<EipTSurveyRespondent> getEipTSurveyRespondentList(
+      EipTSurvey _survey) {
+    SelectQuery<EipTSurveyRespondent> query =
+      Database.query(EipTSurveyRespondent.class);
+    query.andQualifier(ExpressionFactory.matchExp(
+      EipTSurveyRespondent.EIP_TSURVEY_PROPERTY,
+      _survey));
+    query.andQualifier(ExpressionFactory.noMatchExp(
+      EipTSurveyRespondent.USER_ID_PROPERTY,
+      RESPONDENT_DUMMY));
+    return query.fetchList();
+  }
+
+  public static EipTSurvey refreshResponseRate(EipTSurvey _survey) {
+    List<EipTSurveyRespondent> eipTSurveyRespondentList =
+      getEipTSurveyRespondentList(_survey);
+    int completed = 0;
+    for (EipTSurveyRespondent respondent : eipTSurveyRespondentList) {
+      if ("T".equals(respondent.getResponseFlag())) {
+        completed++;
+      }
+    }
+    _survey.setRespondentCompleteCount(completed);
+    if (RESPONDENT_TYPE_MEMBER.equals(_survey.getRespondentType())) {
+      _survey.setRespondentCount(eipTSurveyRespondentList.size());
+    }
+    Database.commit();
+    return _survey;
+  }
+
+  public static Integer getAllActiveUserCount() {
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+
+    Expression exp11 =
+      ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F");
+    query.setQualifier(exp11);
+    Expression exp21 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(1));
+    Expression exp22 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(2));
+    Expression exp23 =
+      ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+        .valueOf(3));
+    query.andQualifier(exp21.andExp(exp22).andExp(exp23));
+    return query.getCount();
+  }
+
+  public static boolean isOpen(EipTSurvey survey) {
+    return !SurveyUtils.OPEN_FLAG_NOT_OPENED.equals(survey.getOpenFlag())
+      && SurveyUtils.CLOSE_FLAG_NOT_CLOSED.equals(survey.getCloseFlag());
+  }
+
+  public static Date getEndtimeOfDay(Date input) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(input);
+    cal.set(Calendar.HOUR_OF_DAY, 23);
+    cal.set(Calendar.MINUTE, 59);
+    cal.set(Calendar.SECOND, 59);
+    return cal.getTime();
+  }
+
+  public static void refreshFlagsByDate() {
+    try {
+      SelectQuery<EipTSurvey> query1 = Database.query(EipTSurvey.class);
+      Date now = new Date();
+      Expression exp1_1 =
+        ExpressionFactory.matchExp(
+          EipTSurvey.OPEN_FLAG_PROPERTY,
+          SurveyUtils.OPEN_FLAG_NOT_OPENED);
+      Expression exp1_2 =
+        ExpressionFactory.lessExp(EipTSurvey.OPEN_DATE_PROPERTY, now);
+      Expression exp1 = exp1_1.andExp(exp1_2);
+      query1.andQualifier(exp1);
+      int count1 = query1.getCount();
+      if (count1 > 0) {
+        List<EipTSurvey> fetchList = query1.fetchList();
+        for (EipTSurvey item : fetchList) {
+          item.setOpenFlag(SurveyUtils.OPEN_FLAG_AUTO_OPENED);
+        }
+      }
+
+      SelectQuery<EipTSurvey> query2 = Database.query(EipTSurvey.class);
+      Expression exp2_1 =
+        ExpressionFactory.matchExp(
+          EipTSurvey.CLOSE_FLAG_PROPERTY,
+          SurveyUtils.CLOSE_FLAG_NOT_CLOSED);
+      Expression exp2_2 =
+        ExpressionFactory.lessExp(EipTSurvey.CLOSE_DATE_PROPERTY, now);
+      Expression exp2 = exp2_1.andExp(exp2_2);
+
+      query2.andQualifier(exp2);
+      int count2 = query2.getCount();
+      if (count2 > 0) {
+        List<EipTSurvey> fetchList = query2.fetchList();
+        for (EipTSurvey item : fetchList) {
+          item.setCloseFlag(SurveyUtils.CLOSE_FLAG_AUTO_CLOSED);
+        }
+      }
+      Database.commit();
+    } catch (Exception e) {
+    }
   }
 }

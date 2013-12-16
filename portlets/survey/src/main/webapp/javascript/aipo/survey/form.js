@@ -107,7 +107,8 @@ aipo.survey.addOptionField = function(portlet_id, value){
 
 aipo.survey.removeOptionField = function(portlet_id, oid){
 	if(dojo.byId(oid)){
-		dojo.byId(oid).remove();
+		var item = dojo.byId(oid);
+		item.parentNode.removeChild(item);
 		aipo.survey.onChangeOptionField(portlet_id);
 	}
 };
