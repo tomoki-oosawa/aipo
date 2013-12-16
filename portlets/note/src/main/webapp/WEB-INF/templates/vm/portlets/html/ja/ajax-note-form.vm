@@ -82,7 +82,7 @@
 #ALtextfield('telephone3' $!result.Telephone3 '20%' 4 'disabled')#ALcaution($l10n.NOTE_HALF_SIZE_Number)
 #ALtditemfooter()
 #ALtdcaption("$!result.getFieldName('email_address')")
-#ALtditem("#ALtextfieldw100('email_address' $!result.EmailAddress 50 'disabled')")
+#ALtditem("#ALtextfield('email_address' $!result.EmailAddress '70%' 50 'disabled')#ALcaution($l10n.NOTE_HALF_SIZE_Number)")
 #ALtdcaption($!result.getFieldName('add_dest_type_pc'))
 #ALtditemheader()
 <input name="add_dest_type_pc" type="checkbox" value="1" id="$!{portlet.ID}add_dest_type_pc_id" #if($!result.AddDestTypePc.toString() == "1") checked="checked" #end/><label for="$!{portlet.ID}add_dest_type_pc_id">&nbsp;$l10n.NOTE_EMAIL</label>
