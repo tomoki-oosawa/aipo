@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -293,7 +294,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         ALEipUtils.getParameter(rundata, context, ALEipConstants.ENTITY_ID);
 
       // デフォルトのフォルダは削除不可。
-      if (mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
+      if (StringUtils.isEmpty(folderId)
+        || mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
         return false;
       }
 
@@ -333,9 +335,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
 
       // 一緒にメールを削除する
       String sql =
-        "DELETE FROM eip_t_mail WHERE FOLDER_ID = '"
-          + folder.getFolderId()
-          + "'";
+        "DELETE FROM eip_t_mail WHERE FOLDER_ID = "
+          + String.valueOf(folder.getFolderId());
       Database.sql(EipTMail.class, sql).execute();
 
       // フォルダ情報を削除
