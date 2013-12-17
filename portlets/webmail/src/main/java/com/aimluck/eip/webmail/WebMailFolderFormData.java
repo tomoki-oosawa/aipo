@@ -330,6 +330,14 @@ public class WebMailFolderFormData extends ALAbstractFormData {
           mailPaths.add(mail.getFilePath());
         }
       }
+
+      // 一緒にメールを削除する
+      String sql =
+        "DELETE FROM eip_t_mail WHERE FOLDER_ID = '"
+          + folder.getFolderId()
+          + "'";
+      Database.sql(EipTMail.class, sql).execute();
+
       // フォルダ情報を削除
       Database.delete(folder);
       Database.commit();
