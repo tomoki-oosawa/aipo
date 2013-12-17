@@ -85,7 +85,7 @@
 </table>
 
 <table class="listTable wide mb0">
-#if($showReplyForm || ($!result.CoTopicList && $!result.CoTopicList.size() > 0))
+#if($!result.showReplyForm() || ($!result.CoTopicList && $!result.CoTopicList.size() > 0))
 <caption>$l10n.MSGBOARD_COMMENT</caption>
 #end
 #if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
