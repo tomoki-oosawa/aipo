@@ -105,10 +105,10 @@ public class ToDoSelectData extends
   private int table_colum_num;
 
   /** カテゴリの初期値を取得する */
-  private String filterType = "";
+  private final String filterType = "";
 
   /** カテゴリ　ID */
-  private String categoryId = "";
+  private final String categoryId = "";
 
   /** ターゲット　 */
   private ALStringField target_keyword;
@@ -172,32 +172,8 @@ public class ToDoSelectData extends
 
     // My グループの一覧を取得する．
     postList = ALEipUtils.getMyGroups(rundata);
-
-    // カテゴリの初期値を取得する
-    try {
-      filterType = rundata.getParameters().getString("filtertype", "");
-      if (filterType.equals("category")) {
-        String categoryId = rundata.getParameters().getString("filter", "");
-        if (!categoryId.equals("")) {
-          this.categoryId = categoryId;
-          ALEipUtils.setPsmlParameters(
-            rundata,
-            context,
-            "p1d-categories",
-            categoryId);
-        } else {
-          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-          this.categoryId =
-            portlet.getPortletConfig().getInitParameter("p1d-categories");
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("todo", ex);
-    }
-
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
-
   }
 
   /**
