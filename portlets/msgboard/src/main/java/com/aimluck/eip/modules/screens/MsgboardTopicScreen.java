@@ -91,9 +91,6 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
       String layout_template = "portlets/html/ja/ajax-msgboard-topic.vm";
       setTemplate(rundata, context, layout_template);
 
-      String categoryId = ALEipUtils.getTemp(rundata, context, "p3a-category");
-      MsgboardUtils.passPSML(rundata, context, "p3a-category", categoryId);
-
     } catch (Exception ex) {
       logger.error("[MsgboardTopicScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

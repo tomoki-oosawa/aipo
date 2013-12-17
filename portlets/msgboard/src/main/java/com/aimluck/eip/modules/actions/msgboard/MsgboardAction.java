@@ -90,6 +90,8 @@ public class MsgboardAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1e-rows")));
 
+    listData.setFiltersPSML(portlet, context, rundata);
+
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "msgboard-topic");
   }
