@@ -94,9 +94,10 @@ $!record.AliasName
 #end
 #ALtditemfooter()
 #ALtablefooter()
-#if($!result.CoReportList && $!result.CoReportList.size() > 0)
+
 ##pageview($link $result)
-#ALtableheaderWideWithCaption($l10n.REPORT_INSERTION)
+#ALtableheaderWideMb0WithCaption($l10n.REPORT_INSERTION)
+#if($!result.CoReportList && $!result.CoReportList.size() > 0)
 #set($firstCoReport = true)
 #foreach ($record in $result.CoReportList)
 #set($firstCoReport = false)
@@ -145,9 +146,10 @@ ${record.Note}
 #ALtditemfooter()
 </tr>
 #end
-#ALtablefooter()
 ##pageview($link $result)
 #end
+#ALtablefooter()
+
 #ALformfooter()
 #if($!resultOnReportDetail)
 #ALajaxscreenformheader("reportForm" $jslink $portlet "ReportFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.report.onReceiveMessage)")
@@ -159,7 +161,7 @@ ${record.Note}
 #else
 <input type="hidden" name="mode" value="update" />
 #end
-#ALtableheaderWide()
+#ALtableheaderMt0Wide()
 #ALtdcaption("#ALrequired($!resultOnReportDetail.getFieldName('note'))")
 #ALtditemheader()
 <textarea class="text wide" name="note" rows="5" cols="40">$!resultOnReportDetail.Note</textarea>
