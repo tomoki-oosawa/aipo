@@ -46,7 +46,7 @@ $!result.LoginName
 #ALtdcaption("#ALrequired($l10n.ACCOUNT_USER_NAME_KANA)")
 #ALtditem("#ALtextfield('last_name_kana' $!result.LastNameKana '30%' 20 'active')#ALtextfield('first_name_kana' $!result.FirstNameKana '30%' 20 'active')")
 #ALtdcaption($!result.Email.FieldName)
-#ALtditem("#ALtextfield('email' $!result.Email '60%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('email' $!result.Email '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
 #ALtdcaption($!result.OutTelephone1.FieldName)
 #ALtditemheader()
 #ALtextfield('out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')- #ALtextfield('out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')- #ALtextfield('out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
