@@ -180,10 +180,15 @@ public class ToDoSelectData extends
         String categoryId = rundata.getParameters().getString("filter", "");
         if (!categoryId.equals("")) {
           this.categoryId = categoryId;
+          ALEipUtils.setPsmlParameters(
+            rundata,
+            context,
+            "p1d-categories",
+            categoryId);
         } else {
           VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
           this.categoryId =
-            portlet.getPortletConfig().getInitParameter("p3a-category");
+            portlet.getPortletConfig().getInitParameter("p1d-categories");
         }
       }
     } catch (Exception ex) {
