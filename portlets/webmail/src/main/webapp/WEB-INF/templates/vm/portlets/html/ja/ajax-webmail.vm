@@ -21,76 +21,93 @@
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
 ## ---------------------------------------------------------------------------
 #if($!result.AccountId && $!result.AccountId != 0)
-<div class="auiSummaryMeta clearfix">
-<div class="floatLeft w30">
-<form class="auiForm">
-#ALselectpdheader("target_category" "100%" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-#foreach( $record in $result.MailAccountList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",$!record.AccountId))" #if ($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) selected="selected" #end>$!record.AccountName</option>
-#end
-</select>
-</form>
-</div>
-<div class="floatLeft pl5">
-<a class="auiButton" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/$!theme/images/icon/icon_reload.gif" width="18" height="18" alt="再読み込み" /></span></a>
-</div>
-#if($!result.List && $!result.List.size() > 0)
-#AUIajaxpageview('WebMailScreen' $result)
-#end
-</div>
+	<div class="auiSummaryMeta auiFilter clearfix">
+
+		<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")' />
+		<div class="filters floatLeft" id="filters_$!{portlet.ID}">
+			#foreach( $record in $result.MailAccountList )
+				#if($!result.isMatch($!result.AccountId,$!record.AccountId.Value))
+					<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.webmail.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.AccountName</span></a>
+				#end
+			#end
+		</div>
+		<div class="floatLeft pl5">
+			<a class="auiButton" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/$!theme/images/icon/icon_reload.gif" width="18" height="18" alt="再読み込み" /></span></a>
+		</div>
+		<div class="floatRight">
+			#if($!result.List && $!result.List.size() > 0)
+				#AUIajaxpageview('WebMailScreen' $result)
+			#end
+		</div>
+	</div>
 
 
-#set ($StatStr = $!{result.StatStr})
-#if($StatStr && !($StatStr == ''))
-<div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
-#end
-#if($!result.List && $!result.List.size() <= 0)
-<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
+
+	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
+		<div>
+			<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+				#foreach( $record in $result.MailAccountList )
+					<li #if($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="selected" #end>
+						<a href="javascript:void(0)" #if($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",$!record.AccountId))','$!portlet.ID');">$record.AccountName</a>
+					</li>
+				#end
+			</ul>
+		</div>
+	</div>
+
+
+
+	#set ($StatStr = $!{result.StatStr})
+	#if($StatStr && !($StatStr == ''))
+		<div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
+	#end
+	#if($!result.List && $!result.List.size() <= 0)
+		<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
+	#else
+		#ALajaxlistformheaderOnsubmitAction('WebMail' $jslink $portlet)
+		<table class="auiRowTable wide">
+			<colgroup style="width:10em;" />
+			<colgroup />
+			<colgroup style="width:6em;" />
+			<tbody>
+				#foreach ($record in $result.List)
+					#set ($subjectUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId)))
+					#if(($!record.Subject) && ($!record.getSubject().toString() != ""))
+						#set($MailSubject = $!record.Subject)
+					#elseif($!record.Subject)
+						#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
+					#end
+					<tr>
+						#if($!record.Read)
+						#ALtdcellheader()
+						<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);">$!record.Person</a></div>
+						#ALtdcellfooter()
+						#ALtdcellheader()
+						<div>$MailSubject</div>
+						#ALtdcellfooter()
+						#ALtdcellAtt("<div>$!record.Date</div>" 'class="right" nowrap="nowrap"')
+						#else
+						#ALtdcellheader()
+						<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);"><strong>$!record.Person</strong></a></div>
+						#ALtdcellfooter()
+						#ALtdcellheader()
+						<div><strong>$MailSubject</strong></div>
+						#ALtdcellfooter()
+						#ALtdcellAtt("<div><strong>$!record.Date</strong></div>" 'class="right" nowrap="nowrap"')
+						#end
+					</tr>
+				#end
+			</tbody>
+		</table>
+	#end
+	#ALformfooter()
+
+	#if($StatStr && !($StatStr == ''))
+		#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")))
+		<input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
+		<input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
+	#end
+
 #else
-#ALformheader('WebMail' $jslink $portlet)
-<table class="auiRowTable wide">
-<colgroup style="width:10em;" />
-<colgroup />
-<colgroup style="width:6em;" />
-<tbody>
-#foreach ($record in $result.List)
-#set ($subjectUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailDetailScreen').addQueryData('entityid',$record.MailId)))
-#if(($!record.Subject) && ($!record.getSubject().toString() != ""))
-#set($MailSubject = $!record.Subject)
-#elseif($!record.Subject)
-#set($MailSubject = $l10n.WEBMAIL_NOTITLE)
-#end
-<tr>
-#if($!record.Read)
-#ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);">$!record.Person</a></div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div>$MailSubject</div>
-#ALtdcellfooter()
-#ALtdcellAtt("<div>$!record.Date</div>" 'class="right" nowrap="nowrap"')
-#else
-#ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$subjectUrl','$!portlet.ID',aipo.webmail.onLoadMailListDetail);"><strong>$!record.Person</strong></a></div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div><strong>$MailSubject</strong></div>
-#ALtdcellfooter()
-#ALtdcellAtt("<div><strong>$!record.Date</strong></div>" 'class="right" nowrap="nowrap"')
-#end
-</tr>
-#end
-</tbody>
-</table>
-#end
-#ALformfooter()
-
-#if($StatStr && !($StatStr == ''))
-#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")))
-<input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
-<input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
-#end
-
-#else
-#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
+	#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
 #end

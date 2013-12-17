@@ -18,6 +18,7 @@
  */
 
 dojo.provide("aipo.webmail");
+dojo.require("aipo.widget.DropdownDatepicker");
 
 aipo.webmail.onLoadMailDialog = function(portlet_id){
 
@@ -473,4 +474,33 @@ aipo.webmail.filter_order_submit = function(form) {
 aipo.webmail.action=function(_this,portlet_id){
 	var action=dojo.byId(portlet_id+"_action").value;
 	aimluck.io.openDialog(_this,action,portlet_id, aipo.webmail.onLoadMailDialog);
+}
+
+
+aipo.webmail.toggleMenu = function (node,filters,event){
+	var rect=filters.getBoundingClientRect();
+	var html=document.documentElement.getBoundingClientRect();
+	if (node.style.display == "none") {
+        dojo.query("div.menubar").style("display", "none");
+
+        var scroll={
+        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
+        	top:document.documentElement.scrollTop||document.body.scrollTop
+        };
+        node.style.opacity="0";
+        node.style.display="block";
+        if(html.right-node.clientWidth>rect.left){
+       		node.style.left=rect.left+scroll.left+"px";
+        }else{
+        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
+        }
+         if(html.bottom-node.clientHeight>rect.bottom||event){
+       		node.style.top=rect.bottom+scroll.top+"px";
+        }else{
+        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
+        }
+        node.style.opacity="";
+    } else {
+        dojo.query("div.menubar").style("display", "none");
+    }
 }
