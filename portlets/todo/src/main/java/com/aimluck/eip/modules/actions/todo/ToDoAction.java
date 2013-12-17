@@ -95,6 +95,14 @@ public class ToDoAction extends ALBaseAction {
 
     listData.setFiltersPSML(portlet, context, rundata);
 
+    if (listData.getTableColumNum() == 4) {
+      String p12f_filters =
+        portlet.getPortletConfig().getInitParameter("p12f-filters");
+      if (null != p12f_filters) {
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, p12f_filters
+          .trim());
+      }
+    }
     ALEipUtils.setTemp(
       rundata,
       context,
