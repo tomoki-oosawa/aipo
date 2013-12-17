@@ -3505,6 +3505,22 @@ ul.attachments {
   background-repeat: no-repeat;
 }
 
+.auiButton .auiIcon,
+.auiButtonAction .auiIcon,
+.auiButtonBold .auiIcon,
+.auiButtonSearch .auiIcon,
+.auiButtonSmall .auiIcon,
+.auiButtonDisabled .auiIcon,
+.auiButtonIcon .auiIcon,
+.auiButtonDummy .auiIcon,
+.auiButtonIconDummy .auiIcon,
+input[type=submit] .auiIcon,
+input[type=button] .auiIcon,
+input[type=reset] .auiIcon,
+button .auiIcon {
+  vertical-align: middle;
+}
+
 .auiIcon span {
   display: none;
 }
