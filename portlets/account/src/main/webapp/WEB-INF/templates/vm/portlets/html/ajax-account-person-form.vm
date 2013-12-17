@@ -58,7 +58,7 @@ $!result.LoginName
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')- #ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')- #ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
 #ALtdcaption($!result.CellularMail.FieldName)
-#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
 #if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 

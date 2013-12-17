@@ -46,7 +46,7 @@
 <h3>$!result.getFieldName("cellular_phone1")</h3>
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')-#ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')-#ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')<br />#ALcaution('（半角数字）')
 <h3>$!result.getFieldName("cellular_mail")</h3>
-#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')<br />#ALcaution('（半角英数字）')
+#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')<br />#ALcaution('（半角英数字）')
 #ALcell_submit($career $event_submit $action_str)
 #ALcell_formfooter()
 #ALcell_contents_footer($career)
