@@ -33,8 +33,6 @@
 	<div class="auiBlankBox">$l10n.GPDB_NO_DATA</div>
 #else
 
-<h2>$result.Gpdb.WbrGpdbName</h2>
-
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('$l10n.GPDB_DATA')
