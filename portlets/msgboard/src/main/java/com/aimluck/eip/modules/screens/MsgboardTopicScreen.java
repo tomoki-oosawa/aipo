@@ -72,9 +72,9 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
 
       ParameterParser parser = rundata.getParameters();
 
-      MsgboardUtils.passPSML(rundata, context, "p12f-filters", parser
+      ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
         .getString(ALEipConstants.LIST_FILTER));
-      MsgboardUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+      ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
         .getString(ALEipConstants.LIST_FILTER_TYPE));
 
       MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
