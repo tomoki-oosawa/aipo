@@ -76,9 +76,11 @@ $!result.Detail.RouteName
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption($l10n.WORKFLOW_ATTACHMENT)
 #ALtditemheader()
+<ul>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<img src="images/workflow/workflow_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a><br>
+<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
 #end
+</ul>
 #ALtditemfooter()
 #end
 #ALtablefooter()
