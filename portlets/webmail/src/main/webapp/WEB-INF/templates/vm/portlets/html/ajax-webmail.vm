@@ -64,7 +64,6 @@
 	#if($!result.List && $!result.List.size() <= 0)
 		<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
 	#else
-		#ALajaxlistformheaderOnsubmitAction('WebMail' $jslink $portlet)
 		<table class="auiRowTable wide">
 			<colgroup style="width:10em;" />
 			<colgroup />
@@ -100,7 +99,6 @@
 			</tbody>
 		</table>
 	#end
-	#ALformfooter()
 
 	#if($StatStr && !($StatStr == ''))
 		#set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen")))
