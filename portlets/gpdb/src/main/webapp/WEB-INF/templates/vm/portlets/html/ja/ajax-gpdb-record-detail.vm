@@ -47,9 +47,11 @@
 			##ファイル
 			<td>
 			#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+				<ul>
 				#foreach( $attachmentFile in $!record.AttachmentFileList )
-					<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+					<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a></li>
 				#end
+				</ul>
 			#end
 			</td>
 		#elseif($!type=="07")
