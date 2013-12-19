@@ -29,6 +29,7 @@ import javax.mail.Message;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -613,4 +614,12 @@ public class WebMailSelectData extends
       accountId,
       mailReceiveThreadStatus);
   }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, portlet
+      .getPortletConfig()
+      .getInitParameter("p3a-accounts"));
+  }
+
 }
