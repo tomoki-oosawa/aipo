@@ -62,9 +62,6 @@ public class WebMailListScreen extends ALVelocityScreen {
       // }
 
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-      WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
-        .getParameters()
-        .getString(WebMailUtils.ACCOUNT_ID));
 
       // 受信フォルダもしくは送信フォルダに保存されているメールの一覧を表示する．
       WebMailSelectData listData = new WebMailSelectData();

@@ -62,7 +62,7 @@ public class WebMailScreen extends ALVelocityScreen {
 
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
 
-      WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
+      ALEipUtils.passPSML(rundata, context, "p3a-accounts", rundata
         .getParameters()
         .getString(WebMailUtils.ACCOUNT_ID));
 

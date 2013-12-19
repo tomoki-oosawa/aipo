@@ -105,10 +105,6 @@ public class WebMailAction extends ALBaseAction {
    */
   public void doWebmail_list(RunData rundata, Context context) throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
-      .getParameters()
-      .getString(WebMailUtils.ACCOUNT_ID));
-
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
@@ -200,10 +196,6 @@ public class WebMailAction extends ALBaseAction {
   public void doWebmail_folder_list(RunData rundata, Context context)
       throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    WebMailUtils.passPSML(rundata, context, "p3a-accounts", rundata
-      .getParameters()
-      .getString(WebMailUtils.ACCOUNT_ID));
-
     WebMailFolderSelectData listData = new WebMailFolderSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet
