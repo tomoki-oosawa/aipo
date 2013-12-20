@@ -571,8 +571,6 @@ aipo.timeline.addText = function(form, pid) {
 			aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo
 					.byId("tlClipUrl_" + pid).children[0].getAttribute("href"));
 		}
-		aipo.timeline.addHiddenValue(form, "tlClipBody", dojo
-				.byId("tlClipBody_" + pid).innerHTML);
 	}
 }
 
