@@ -21,6 +21,7 @@ package com.aimluck.eip.timeline;
 
 import java.util.List;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
@@ -100,6 +101,13 @@ public class TimelineUrlBeans {
    */
   public String getBody() {
     return body;
+  }
+
+  /**
+   * @return body
+   */
+  public String getSanitizingBody() {
+    return ALStringUtil.sanitizing(body);
   }
 
   /**
