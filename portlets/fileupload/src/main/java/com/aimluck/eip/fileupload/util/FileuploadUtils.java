@@ -545,17 +545,16 @@ public class FileuploadUtils {
     double ratio =
       Math.max((double) width / (double) iwidth, (double) height
         / (double) iheight);
-    int shrinkedWidth = (int) (iwidth * ratio);
-    int shrinkedHeight = (int) (iheight * ratio);
 
-    // 縮小後の画像よりも大きくトリミングしないようにする
-    int _width = width;
-    int _height = height;
-    if (shrinkedWidth < width) {
-      _width = shrinkedWidth;
-    }
-    if (shrinkedHeight < height) {
-      _height = shrinkedHeight;
+    int shrinkedWidth;
+    int shrinkedHeight;
+
+    if ((iwidth <= width) || (iheight < height)) {
+      shrinkedWidth = iwidth;
+      shrinkedHeight = iheight;
+    } else {
+      shrinkedWidth = (int) (iwidth * ratio);
+      shrinkedHeight = (int) (iheight * ratio);
     }
 
     // イメージデータを縮小する
@@ -564,24 +563,41 @@ public class FileuploadUtils {
         shrinkedWidth,
         shrinkedHeight,
         Image.SCALE_AREA_AVERAGING);
+
+    int w_size = targetImage.getWidth(null);
+    int h_size = targetImage.getHeight(null);
+    if (targetImage.getWidth(null) < width) {
+      w_size = width;
+    }
+    if (targetImage.getHeight(null) < height) {
+      h_size = height;
+    }
     BufferedImage tmpImage =
-      new BufferedImage(
-        targetImage.getWidth(null),
-        targetImage.getHeight(null),
-        BufferedImage.TYPE_INT_RGB);
+      new BufferedImage(w_size, h_size, BufferedImage.TYPE_INT_RGB);
     Graphics2D g = tmpImage.createGraphics();
     g.setBackground(Color.WHITE);
     g.setColor(Color.WHITE);
-    g.drawImage(targetImage, 0, 0, null);
+    // 画像が小さい時には余白を追加してセンタリングした画像にする
+    g.fillRect(0, 0, w_size, h_size);
+    int diff_w = 0;
+    int diff_h = 0;
+    if (width > shrinkedWidth) {
+      diff_w = (width - shrinkedWidth) / 2;
+    }
+    if (height > shrinkedHeight) {
+      diff_h = (height - shrinkedHeight) / 2;
+    }
+    g.drawImage(targetImage, diff_w, diff_h, null);
+
     int _iwidth = tmpImage.getWidth();
     int _iheight = tmpImage.getHeight();
     BufferedImage _tmpImage;
     if (_iwidth > _iheight) {
-      int diff = _iwidth - _width;
-      _tmpImage = tmpImage.getSubimage(diff / 2, 0, _width, _height);
+      int diff = _iwidth - width;
+      _tmpImage = tmpImage.getSubimage(diff / 2, 0, width, height);
     } else {
-      int diff = _iheight - _height;
-      _tmpImage = tmpImage.getSubimage(0, diff / 2, _width, _height);
+      int diff = _iheight - height;
+      _tmpImage = tmpImage.getSubimage(0, diff / 2, width, height);
     }
     return _tmpImage;
   }
