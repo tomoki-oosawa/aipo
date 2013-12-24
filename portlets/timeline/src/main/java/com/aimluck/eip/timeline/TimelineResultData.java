@@ -293,6 +293,15 @@ public class TimelineResultData implements ALData {
     }
   }
 
+  public boolean isDetailNote() {
+    if (getDetailNote() != null && !"".equals(getDetailNote())) {
+      return true;
+    } else {
+
+      return false;
+    }
+  }
+
   /**
    * @param string
    */
