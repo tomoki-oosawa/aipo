@@ -95,10 +95,6 @@ button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.auiButtonDisabled {
-  padding: 0 10px;
-}
-
 /***************************************************
 	auiForm
 --------------------------------------------------*/
