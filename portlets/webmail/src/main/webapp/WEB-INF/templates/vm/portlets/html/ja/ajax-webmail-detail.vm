@@ -51,7 +51,8 @@ $!MailSubject
   $headerline<br />
   #end
 </div>
-<div id="WebMailHeaderFieldTiny">
+<div id="WebMailHeaderFieldTiny" style="word-break: break-all;" >
+
 #if($!{result.Detail.Date.toString()} != "")
 $l10n.WEBMAIL_DATE$l10n.WEBMAIL_COLON$!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.WEBMAIL_MONTH$!{result.Detail.Date.Day}$l10n.WEBMAIL_DAY$!{result.Detail.Date.time}<br />
 #end
@@ -62,11 +63,15 @@ $l10n.WEBMAIL_SENDER$l10n.WEBMAIL_COLON$!result.Detail.From
 </div>
 <div class="mt5" style="cursor: pointer;"><a name="category_input_button" onclick="aipo.webmail.switchHeader(this,'$!portlet.ID')">$l10n.WEBMAIL_OPEN_DETAIL</a></div>
 #ALtditemfooter()
+<tr>
 #ALtditemheaderAtt("colspan='2'")
 $!result.Detail.Body
 #ALtditemfooter()
-#ALtdcaption($l10n.WEBMAIL_ATTACHMENT)
-#ALtditemheader()
+#ALtablefooter()
+#ALtableheaderMt0Wide()
+<tr>
+#ALtdcellAtt($l10n.WEBMAIL_ATTACHMENT 'class="caption noBorder"')
+#ALtdcellheaderAtt('class="noBorder"')
 #set($count = 0)
 #foreach( $attachmentFileName in $!result.Detail.AttachmentFileNames )
 <a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WebMailFileScreen").addPathInfo("accountid", $accountid).addPathInfo("tab", $!result.currentTab).addPathInfo("entityid", $entityid).addPathInfo("attachmentIndex", $count).addPathInfo("f",${attachmentFileName.getURLEncodedValue()})">$result.getStringCR($attachmentFileName)</a><br>
