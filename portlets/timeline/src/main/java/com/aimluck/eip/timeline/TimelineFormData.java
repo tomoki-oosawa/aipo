@@ -36,7 +36,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
@@ -283,10 +282,7 @@ public class TimelineFormData extends ALAbstractFormData {
         url.setUrl(ALEipUtils.getParameter(rundata, context, "tlClipUrl"));
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipBody") != null) {
-          url.setBody(ALStringUtil.unsanitizing(ALEipUtils.getParameter(
-            rundata,
-            context,
-            "tlClipBody")));
+          url.setBody(ALEipUtils.getParameter(rundata, context, "tlClipBody"));
         }
         url.setEipTTimeline(topic);
         clearTimelineSession(rundata, context);
