@@ -42,6 +42,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.mail.ALFolder;
+import com.aimluck.eip.mail.ALMailFactoryService;
+import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -349,11 +352,33 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
         folder.getFolderName());
 
+      // ローカルファイルに保存されているファイルのパスを取得する．
+      String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
+          : ALFolder.TYPE_SEND;
+      int userId = ALEipUtils.getUserId(rundata);
+
+      String orgId = Database.getDomainName();
+
+      int accountId = -1;
+      accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          WebMailUtils.ACCOUNT_ID));
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALFolder alFolder =
+        handler.getALFolder(type_mail, orgId, userId, Integer
+          .valueOf(accountId));
       // ローカルファイルに保存されているファイルを削除する．
       if (mailPaths.size() > 0) {
         int size = mailPaths.size();
         for (int k = 0; k < size; k++) {
-          ALStorageService.deleteFile(ALMailUtils.getLocalurl()
+          ALStorageService.deleteFile(alFolder.getFullName()
+            + ALStorageService.separator()
             + mailPaths.get(k));
         }
       }
