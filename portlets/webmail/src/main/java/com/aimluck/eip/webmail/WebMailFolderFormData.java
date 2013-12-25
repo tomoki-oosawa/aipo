@@ -337,10 +337,11 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       }
 
       // 一緒にメールを削除する
-      // String sql =
-      // "DELETE FROM eip_t_mail WHERE FOLDER_ID = "
-      // + String.valueOf(folder.getFolderId());
-      // Database.sql(EipTMail.class, sql).execute();
+      String sql = "DELETE FROM eip_t_mail WHERE FOLDER_ID = #bind($folderId)";
+      Database
+        .sql(EipTMail.class, sql)
+        .param("folderId", folder.getFolderId())
+        .execute();
 
       // フォルダ情報を削除
       Database.delete(folder);
@@ -385,7 +386,7 @@ public class WebMailFolderFormData extends ALAbstractFormData {
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[WebMailFolderFormData]", t);
+      logger.error("[WebMailFolderFormData.deleteFormData]", t);
       return false;
     }
   }
