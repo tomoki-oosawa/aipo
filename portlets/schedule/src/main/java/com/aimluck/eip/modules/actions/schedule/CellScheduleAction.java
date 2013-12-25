@@ -168,7 +168,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
@@ -176,7 +176,7 @@ public class CellScheduleAction extends ALBaseAction {
 
       currentTab = ScheduleUtils.getCurrentTab(rundata, context);
 
-      if (currentTab.equals("oneday")) {
+      if ("oneday".equals(currentTab)) {
         listData = new CellScheduleOnedaySelectData();
         ((ScheduleOnedaySelectData) listData).setPortletId(portletId);
         listData.initField();
@@ -862,7 +862,7 @@ public class CellScheduleAction extends ALBaseAction {
           || tmpCurrentTab.equals("weekly")
           || tmpCurrentTab.equals("monthly")
           || tmpCurrentTab.equals("oneday-group") || tmpCurrentTab
-          .equals("weekly-group"))) {
+            .equals("weekly-group"))) {
         currentTab = "oneday";
       } else {
         currentTab = tmpCurrentTab;
