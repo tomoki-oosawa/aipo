@@ -24,7 +24,7 @@
 
     dojo.require("aipo.widget.AddressbookDialog");
 
-    ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen"))', reloadFunction:aipo.webmail.reloadMailList };
 
 	aipo.webmail.onProcessingTimer();
 
