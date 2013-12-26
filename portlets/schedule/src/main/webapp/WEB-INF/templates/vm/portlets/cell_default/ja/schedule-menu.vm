@@ -38,7 +38,7 @@
 #set($daycount = 0)
 #foreach($record in $!result.List)
 #set($yearindex = $!daylist.get($daycount).indexOf("-") + 1)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1').addQueryData('tab','oneday').addQueryData('view_date', $!daylist.get($daycount))">$!daylist.get($daycount).substring($yearindex).replace('-','/')$!weekdaylist.get($daycount)</a>
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1').addQueryData('tab','oneday').addQueryData('view_start', $!daylist.get($daycount))">$!daylist.get($daycount).substring($yearindex).replace('-','/')$!weekdaylist.get($daycount)</a>
 #foreach($schedule in $!record)
 #ALcell_li_header($career)
 #if($schedule.Repeat)$l10n.SCHEDULE_TERM：#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
