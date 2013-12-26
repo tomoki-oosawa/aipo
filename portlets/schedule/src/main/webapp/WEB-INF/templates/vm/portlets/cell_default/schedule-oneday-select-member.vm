@@ -23,9 +23,9 @@
 #set($linklist = [["$result.AliasNameText", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)"]])
 #ALcell_pagetitle($career "$result.AliasNameOnedayListText")
 $!{result.ViewDateNospaceText}$!{result.ViewDate.DayOfWeek}#ALcell_br($career)
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_YESTERDAY</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
-<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_date',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXTDAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_start',$!{result.PrevDate.toString()})">$l10n.SCHEDULE_YESTERDAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_start',$!{result.Today.toString()})">$l10n.SCHEDULE_THIS_DAY</a>
+<a href="$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId).addQueryData('view_start',$!{result.NextDate.toString()})">$l10n.SCHEDULE_NEXTDAY</a>
 #ALcell_hr($career '1')
 #if($!{result.List.size()} <= 0)
 $l10n.SCHEDULE_NO_SCHEDULE
