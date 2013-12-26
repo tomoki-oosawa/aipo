@@ -1723,7 +1723,7 @@ $item.get(0)
 
 
 #macro(AUISearchHeader $id $name $action $onsubmit)
-<form class="auiSearch floatLeft" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
+<form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
 #end
 
 #macro(AUISearchInput $id $name $value $option)
