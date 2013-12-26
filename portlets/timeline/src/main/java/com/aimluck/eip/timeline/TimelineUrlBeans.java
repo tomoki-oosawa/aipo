@@ -19,8 +19,10 @@
 
 package com.aimluck.eip.timeline;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.util.ALCommonUtils;
 
 /**
@@ -32,19 +34,31 @@ public class TimelineUrlBeans {
   private List<String> images;
 
   /** タイトル */
-  private String title;
+  private final ALStringField title;
 
   /** URL */
-  private String url;
+  private final ALStringField url;
 
   /** メモ */
-  private String body;
+  private final ALStringField body;
 
   /** YouTube動画Id */
-  private String youtubeId;
+  private final ALStringField youtubeId;
 
   /** YouTubeの判断 */
   private boolean youtubeFlag;
+
+  /**
+   * コンストラクタ
+   */
+  public TimelineUrlBeans() {
+    images = new ArrayList<String>();
+    title = new ALStringField();
+    url = new ALStringField();
+    body = new ALStringField();
+    youtubeId = new ALStringField();
+    youtubeFlag = false;
+  }
 
   /**
    * @return images
@@ -64,7 +78,7 @@ public class TimelineUrlBeans {
   /**
    * @return title
    */
-  public String getTitle() {
+  public ALStringField getTitle() {
     return title;
   }
 
@@ -73,18 +87,18 @@ public class TimelineUrlBeans {
    *          セットする title
    */
   public void setTitle(String title) {
-    this.title = title;
+    this.title.setValue(title);
   }
 
   /**
    * @return url
    */
-  public String getUrl() {
+  public ALStringField getUrl() {
     return url;
   }
 
   public String getAutoCRUrl() {
-    return ALCommonUtils.replaceToAutoCRString(url);
+    return ALCommonUtils.replaceToAutoCRString(url.getValue());
   }
 
   /**
@@ -92,13 +106,13 @@ public class TimelineUrlBeans {
    *          セットする url
    */
   public void setUrl(String url) {
-    this.url = url;
+    this.url.setValue(url);
   }
 
   /**
    * @return body
    */
-  public String getBody() {
+  public ALStringField getBody() {
     return body;
   }
 
@@ -107,13 +121,13 @@ public class TimelineUrlBeans {
    *          セットする body
    */
   public void setBody(String body) {
-    this.body = body;
+    this.body.setValue(body);
   }
 
   /**
    * @return youtubeId
    */
-  public String getYoutubeId() {
+  public ALStringField getYoutubeId() {
     return youtubeId;
   }
 
@@ -122,7 +136,7 @@ public class TimelineUrlBeans {
    *          セットする youtubeId
    */
   public void setYoutubeId(String youtubeId) {
-    this.youtubeId = youtubeId;
+    this.youtubeId.setValue(youtubeId);
   }
 
   /**

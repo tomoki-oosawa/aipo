@@ -565,14 +565,10 @@ aipo.timeline.addText = function(form, pid) {
 							"tlClipImage",
 							dojo.byId("tlClipImage_" + pid + "_" + page.value).children[0].name);
 		}
-		aipo.timeline.addHiddenValue(form, "tlClipTitle", dojo
-				.byId("tlClipTitle_" + pid).children[0].innerHTML);
 		if (dojo.byId("tlClipUrl_" + pid).children[0].innerHTML) {
 			aipo.timeline.addHiddenValue(form, "tlClipUrl", dojo
 					.byId("tlClipUrl_" + pid).children[0].getAttribute("href"));
 		}
-		aipo.timeline.addHiddenValue(form, "tlClipBody", dojo
-				.byId("tlClipBody_" + pid).innerHTML);
 	}
 }
 
