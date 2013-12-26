@@ -1648,6 +1648,15 @@ $item.get(0)
 </div>
 #end
 
+##フィルター機能あり
+#macro(AUISummaryFilterDivHeader)
+<div class="auiSummaryMeta auiFilter clearfix">
+#end
+
+#macro(AUISummaryFilterDivFooter)
+</div>
+#end
+
 ##表記揺れ
 #macro(AUISummaryDiv)
 	#AUISummaryDivHeader()
@@ -1731,7 +1740,7 @@ $item.get(0)
 #end
 
 #macro(AUIButtonSearch $onclick $text)
-	<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="$onclick">$text</a>
+	<a href="javascript:void(0)" class="auiButtonSearch floatLeft" onclick="$onclick">$text</a>
 #end
 
 #macro(AUISearchIndicator)

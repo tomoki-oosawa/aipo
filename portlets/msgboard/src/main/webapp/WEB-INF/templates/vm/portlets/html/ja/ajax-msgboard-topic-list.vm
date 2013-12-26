@@ -30,7 +30,7 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta auiFilter clearfix">
+#AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 
 <div class="filterInputField">
@@ -59,7 +59,8 @@
 #AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;" "$l10n.MSGBOARD_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
-</div>
+#AUISummaryFilterDivFooter()
+
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Msgboard')

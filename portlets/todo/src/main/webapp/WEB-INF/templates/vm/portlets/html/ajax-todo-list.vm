@@ -23,7 +23,7 @@
 #set ($categoryEtc = false) ## msgboard-widgets.vmでのカテゴリ表示の判断用
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta auiFilter clearfix">
+#AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
 <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen")' />
 <input type="hidden" name="template" value="ToDoListScreen"/>
@@ -60,7 +60,7 @@
 #AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
-</div>
+#AUISummaryFilterDivFooter()
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
