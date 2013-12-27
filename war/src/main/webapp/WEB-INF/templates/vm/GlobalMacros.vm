@@ -1638,12 +1638,31 @@ $item.get(0)
 </div></div>
 #end
 
-#macro(AUISummaryDiv)
+
+
+#macro(AUISummaryDivHeader)
 <div class="auiSummaryMeta clearfix">
 #end
 
-#macro(AUISummaryDivfooter)
+#macro(AUISummaryDivFooter)
 </div>
+#end
+
+##フィルター機能あり
+#macro(AUISummaryFilterDivHeader)
+<div class="auiSummaryMeta auiFilter clearfix">
+#end
+
+#macro(AUISummaryFilterDivFooter)
+</div>
+#end
+
+##表記揺れ
+#macro(AUISummaryDiv)
+	#AUISummaryDivHeader()
+#end
+#macro(AUISummaryDivfooter)
+	#AUISummaryDivFooter()
 #end
 
 #macro(AUIsubmit $name $value)
@@ -1704,4 +1723,32 @@ $item.get(0)
 
 #macro(AUIiconSecretAtt $option)
 	<i class="auiIcon auiIconSecret" $option></i>
+#end
+
+
+
+
+
+
+
+#macro(AUISearchHeader $id $name $action $onsubmit)
+<form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
+#end
+
+#macro(AUISearchInput $id $name $value $option)
+	<input class="text floatLeft long" type="text" id="$id" name="$name" value="$value" $option/>
+#end
+
+#macro(AUIButtonSearch $onclick $text)
+	<a href="javascript:void(0)" class="auiButtonSearch floatLeft" onclick="$onclick">$text</a>
+#end
+
+#macro(AUISearchIndicator)
+<div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">
+	#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
+</div>
+#end
+
+#macro(AUISearchFooter)
+</form>
 #end
