@@ -22,7 +22,7 @@
 #AUIcontentsAreaHeader()
 
 #AUISummaryDivHeader()
-#AUISearchHeader("searchForm_" "" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;")
+#AUISearchHeader("searchForm_" "" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="UserListListScreen"/>
 <input type="hidden" name="mode" value="ajaxsearch"/>
 #AUISearchInput("sword" "sword" "$!result.SearchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")

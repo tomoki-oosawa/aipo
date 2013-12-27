@@ -44,7 +44,7 @@
 #AUIcontentsAreaHeader()
 
 #AUISummaryDivHeader()
-#AUISearchHeader("searchForm" "searchForm" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="NoteListScreen"/>
 #AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
 #AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.NOTE_SEARCH")

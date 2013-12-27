@@ -24,7 +24,7 @@
 
 
 #AUISummaryDivHeader()
-#AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','search'))" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-indicator-list-'); return false;")
+#AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','search'))" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 #AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
 #AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.SCHEDULE_SEARCH")
 #AUISearchIndicator()
