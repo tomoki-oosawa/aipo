@@ -18,5 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/schedule-detail.vm")
+## One day
+#set($career = 'docomo_foma')
+#parse("/portlets/cell_default/ja/schedule-list-select-member.vm")
