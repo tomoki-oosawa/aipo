@@ -760,6 +760,7 @@ img.avatar,
   background: url("../images/tab.png") left -270px no-repeat;
 }
 #auiTabs .setting a {
+  display: inline-block;
   margin-top: 4px;
 }
 #auiTabs .first .title {
@@ -4140,6 +4141,44 @@ a.auiIconMailOpen:hover {
 
 .auiIconArrowTop {
   background-position: 0 -463px;
+}
+
+/***************************************************
+	auiWFicon
+--------------------------------------------------*/
+.auiWFicon {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.auiWFicon,
+.auiWFicon [class^="icon-"] {
+  display: inline-block;
+  text-align: center;
+  height: 16px;
+  width: 16px;
+  line-height: 16px;
+  font-size: 14px;
+  vertical-align: middle;
+  color: #666666;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+a:hover .auiWFicon {
+  background: #999999;
+}
+
+a:hover .auiWFicon [class^="icon-"] {
+  color: #fff;
+}
+
+[class^="icon-"] {
+  font-size: 14px;
+  color: #666666;
 }
 
 /***************************************************
