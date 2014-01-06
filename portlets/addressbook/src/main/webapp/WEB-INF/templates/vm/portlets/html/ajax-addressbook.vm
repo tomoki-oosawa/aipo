@@ -21,8 +21,8 @@
 ## ---------------------------------------------------------------------------
 #AUISummaryDiv()
 
-#AUISearchHeader("addressbook" "addressbook" "#" "aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID','','$indicator_id'); return false;")
-#AUISearchInput("sword" "sword" "$!result.SearchWord" "style='width:60%; margin-right:5px;'" )
+#AUISearchHeader("searchForm_" "searchForm_" "#" "aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID','','$indicator_id'); return false;")
+<input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
 #AUIButtonSearch("dojo.byId('addressbook$!portlet.ID').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
 <input name="mode" type="hidden" value="ajaxsearch" />
 &nbsp;
