@@ -302,15 +302,15 @@ public class ALMailUtils {
         .append(" ")
         .append(CR);
 
-      msg.setSubject(MimeUtility.encodeText("Re: "
-        + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
+      msg.setSubject(MimeUtility.encodeText(UnicodeCorrecter
+        .correctToISO2022JP(msg.getSubject())));
       msg
         .setRecipient(Message.RecipientType.TO, getReplyToDelegateExtract(msg));
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
         int length = lines.length;
         for (int i = 0; i < length; i++) {
-          sb.append("> ").append(lines[i]).append(CR);
+          sb.append(lines[i]).append(CR);
         }
       }
       msg.setText(UnicodeCorrecter.correctToISO2022JP(sb.toString()));
@@ -351,8 +351,8 @@ public class ALMailUtils {
         .append(" ")
         .append(CR);
 
-      msg.setSubject(MimeUtility.encodeText("Fwd: "
-        + UnicodeCorrecter.correctToISO2022JP(msg.getSubject())));
+      msg.setSubject(MimeUtility.encodeText(UnicodeCorrecter
+        .correctToISO2022JP(msg.getSubject())));
       // msg.setRecipient(Message.RecipientType.TO, msg.getFrom()[0]);
       String[] lines = msg.getBodyTextArray();
       if (lines != null && lines.length > 0) {
