@@ -49,7 +49,7 @@
 #AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))" "aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;")
 <input name="mode" type="hidden" value="ajaxsearch" />
 #AUISearchInput("sword" "sword" "$!result.targetKeyword" "maxlength='100' style='margin-right:5px;ime-mode:active'")
-#AUIButtonSearch("dojo.byId('addressbook$!portlet.ID').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
+#AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
 #AUISearchFooter()
 #AUISummaryDivfooter()
 
