@@ -29,10 +29,10 @@
 #ALsetCategoryList('all' $l10n.ACTIVITY_ALL_APP)
 #ALsetCategoryList('Schedule' $l10n.ACTIVITY_SCHEDULE)
 #ALsetCategoryList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
-#ALsetCategoryList('blog' $l10n.ACTIVITY_BLOG)
-#ALsetCategoryList('todo' $l10n.ACTIVITY_TODO)
+#ALsetCategoryList('Blog' $l10n.ACTIVITY_BLOG)
+#ALsetCategoryList('ToDo' $l10n.ACTIVITY_TODO)
 #ALsetCategoryList('Cabinet' $l10n.ACTIVITY_CABINET)
-#ALsetCategoryList('GadgetAdd' $l10n.ACTIVITY_AIPO_APP)
+#ALsetCategoryList('Gadget' $l10n.ACTIVITY_AIPO_APP)
 </ul>
 </div>
 </div>
