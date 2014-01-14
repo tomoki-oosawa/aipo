@@ -1800,25 +1800,41 @@ table tr.caption {
 	dijitCalendar
 --------------------------------------------------*/
 .dijitCalendarContainer {
-    width:auto;
-	max-width:300px;
+  width: auto;
+  max-width: 300px;
 }
-.dijitCalendarMonthContainer th {/* month */
-    font-size:20px;
+
+.dijitCalendarDateTemplate {
+  /* cell */
 }
-.dijitCalendarDayLabelTemplate {/* week */
+.dijitCalendarDateTemplate span {
+  padding: 4px 8px;
 }
-.dijitCalendarDateLabel {/* day */
-    font-size:20px;
+
+.dijitCalendarMonthContainer th {
+  /* month */
+  font-size: 16px;
 }
-.dijitCalendarYearLabel {/* year */
-    font-size:16px;
+
+.dijitCalendarDayLabelTemplate {
+  /* week */
+}
+
+.dijitCalendarDateLabel {
+  /* day */
+  font-size: 16px;
+}
+
+.dijitCalendarYearLabel {
+  /* year */
+  font-size: 16px;
 }
 
 /* .calendar */
 .calendarWrapper {
-	overflow-x:visible;
+  overflow-x: visible;
 }
+
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
