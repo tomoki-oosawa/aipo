@@ -604,26 +604,53 @@ img.avatar,
 --------------------------------------------------*/
 .userList li {
   background: none;
-  padding: 5px 0;
-  border-bottom: solid 1px #f0f0f0;
+  padding: 0;
+  border-bottom: solid 1px #ededed;
 }
-
-.userList .avatar {
-  height: 50px;
-  padding-right: 10px;
+.userList label {
+  display: inline-block;
+  width: 100%;
 }
-
 .userList .content {
-  display: table-cell;
+  width: 100%;
   overflow: hidden;
   vertical-align: middle;
 }
-
 .userList .content div {
   display: table-cell;
   *display: inline;
   vertical-align: middle;
   zoom: 1;
+  padding: 5px 10px 5px 0;
+}
+.userList .content div.check {
+  padding-left: 10px;
+}
+.userList .avatar {
+  height: 50px;
+}
+.userList .avatar img {
+  height: 50px;
+  width: 50px;
+}
+.userList .avatar_s {
+  height: 24px;
+}
+.userList .avatar_s img {
+  height: 24px;
+  width: 24px;
+}
+
+.userListIcon li {
+  display: block;
+  float: left;
+  background: none;
+  margin: 0 4px 5px 0;
+  padding: 0;
+}
+.userListIcon .avatar img {
+  width: 24px;
+  height: 24px;
 }
 
 /***************************************************
@@ -999,27 +1026,16 @@ img.avatar,
   padding: 0.8em 0;
   border-bottom: solid 1px #f0f0f0;
 }
-
 .auiWidget h2 {
   line-height: 2em;
 }
-
 .auiWidget p {
   margin: 0.8em 0;
 }
-
 .auiWidget li {
   padding: 0;
   background: none;
 }
-
-.auiWidget li span {
-  display: block;
-  line-height: 1.8em;
-  padding: 0.3em 0 0.3em 18px;
-  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
-}
-
 .auiWidget li a {
   display: block;
   line-height: 1.8em;
@@ -1032,26 +1048,34 @@ img.avatar,
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .auiWidget li a:hover {
   color: #000;
   background: #f6f6f6;
 }
-
-.auiWidget li.active > a {
-  font-weight: bold;
-  background: #f0f0f0;
-}
-
 .auiWidget li ul {
   margin: 0;
 }
-
 .auiWidget li li a,
 .auiWidget li li a:hover,
 .auiWidget li li.active a {
   padding: 0.3em 0 0.3em 36px;
   background-position: 23px 1em;
+}
+.auiWidget li.active > a {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+.inlistCount {
+  color: black;
+  display: inline-block;
+  font-size: 10px;
+  width: 20px;
+  margin: 0 5px 0 -5px;
+  text-align: center;
+}
+.inlistCount.noread {
+  font-weight: bold;
 }
 
 /***************************************************
