@@ -53,6 +53,7 @@ input, textarea {
 
 label {
   cursor: pointer;
+  white-space: normal;
 }
 
 a img {
