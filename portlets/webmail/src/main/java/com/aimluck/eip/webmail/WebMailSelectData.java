@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.webmail;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -103,10 +104,12 @@ public class WebMailSelectData extends
   private WebMailFolderResultData selectedFolder;
 
   /** メールアカウント一覧 */
-  private List<WebmailAccountLiteBean> mailAccountList;
+  private List<WebmailAccountLiteBean> mailAccountList =
+    new ArrayList<WebmailAccountLiteBean>();
 
   /** メールフォルダ一覧 */
-  private List<WebMailFolderResultData> mailFolderList;
+  private List<WebMailFolderResultData> mailFolderList =
+    new ArrayList<WebMailFolderResultData>();
 
   /**
    * 

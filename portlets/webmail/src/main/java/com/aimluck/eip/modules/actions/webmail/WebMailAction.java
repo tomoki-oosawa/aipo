@@ -81,18 +81,16 @@ public class WebMailAction extends ALBaseAction {
       Context context, RunData rundata) {
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+
     ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "false");
 
     try {
-      if (ALEipConstants.MODE_LIST.equals(mode)) {
+      if (ALEipConstants.MODE_LIST.equals(mode) || getMode() == null) {
         doWebmail_list(rundata, context);
       }
 
-      if (getMode() == null) {
-        doWebmail_list(rundata, context);
-      }
     } catch (Exception e) {
-      logger.error("webmail", e);
+      logger.error("WebMailAction.buildMaximizedContext", e);
     }
   }
 
