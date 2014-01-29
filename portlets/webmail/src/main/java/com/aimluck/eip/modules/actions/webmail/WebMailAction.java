@@ -102,6 +102,8 @@ public class WebMailAction extends ALBaseAction {
    * @throws Exception
    */
   public void doWebmail_list(RunData rundata, Context context) throws Exception {
+    ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "false");
+
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
