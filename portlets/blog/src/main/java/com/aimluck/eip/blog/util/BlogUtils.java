@@ -48,6 +48,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.utils.ALDeleteFileUtil;
+import com.aimluck.eip.blog.BlogCategoryResultData;
 import com.aimluck.eip.blog.BlogThemaResultData;
 import com.aimluck.eip.blog.BlogUserResultData;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
@@ -963,7 +964,7 @@ public class BlogUtils {
         .append("にコメントしました。");
 
       String portletParams =
-        new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+        new StringBuilder("?template=BlogTopicDetailScreen").append(
           "&entityid=").append(blog.getEntryId()).toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Blog")
@@ -1225,5 +1226,42 @@ public class BlogUtils {
     ALEipUtils.setTemp(rundata, context, "comment_view_uid", String
       .valueOf(view_uid));
     return view_uid;
+  }
+
+  public static List<BlogCategoryResultData> loadCategoryList(RunData rundata) {
+    // カテゴリ一覧
+    List<BlogCategoryResultData> categoryList =
+      new ArrayList<BlogCategoryResultData>();
+    try {
+      SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
+
+      query.orderAscending(EipTBlogThema.THEMA_NAME_PROPERTY);
+      query.distinct(true);
+
+      BlogCategoryResultData otherRd = null;
+
+      List<EipTBlogThema> aList = query.fetchList();
+      int size = aList.size();
+      for (int i = 0; i < size; i++) {
+        EipTBlogThema record = aList.get(i);
+        BlogCategoryResultData rd = new BlogCategoryResultData();
+        rd.initField();
+        rd.setCategoryId(record.getThemaId().longValue());
+        rd.setCategoryName(record.getThemaName());
+        if (record.getThemaId().longValue() == 1) {
+          // カテゴリ「その他」は最後に追加するため，ここではリストに追加しない．
+          otherRd = rd;
+        } else {
+          categoryList.add(rd);
+        }
+      }
+      if (otherRd != null) {
+        categoryList.add(otherRd);
+      }
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+      return null;
+    }
+    return categoryList;
   }
 }

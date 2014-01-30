@@ -22,8 +22,11 @@ package com.aimluck.eip.blog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -39,7 +42,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -62,7 +65,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class BlogEntrySelectData extends
-    ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
+    ALAbstractMultiFilterSelectData<EipTBlogEntry, EipTBlogEntry> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -112,6 +116,24 @@ public class BlogEntrySelectData extends
   private List<ALEipGroup> myGroupList;
 
   private final List<Integer> users = new ArrayList<Integer>();
+
+  /** カテゴリID */
+  private String categoryId = "";
+
+  /** グループID */
+  private String postId = "";
+
+  /** カテゴリ一覧 */
+  private List<BlogCategoryResultData> categoryList;
+
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
+
+  /** カテゴリ名 */
+  private String categoryName = "";
+
+  /** グループ名 */
+  private String postName = "";
 
   /**
    * 
@@ -189,6 +211,16 @@ public class BlogEntrySelectData extends
         context,
         ALAccessControlConstants.VALUE_ACL_DELETE,
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY);
+
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
+    // カテゴリの初期値を取得する
+    try {
+      updateCategoryName();
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+    }
   }
 
   /**
@@ -242,6 +274,89 @@ public class BlogEntrySelectData extends
     query = BlogUtils.buildSelectQueryForBlogFilter(query, rundata, context);
     query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
     return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  @Override
+  protected SelectQuery<EipTBlogEntry> buildSelectQueryForFilter(
+      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context) {
+    if (current_filterMap.containsKey("category")) {
+      // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
+      List<String> categoryIds = current_filterMap.get("category");
+      categoryId = categoryIds.get(0).toString();
+      List<BlogCategoryResultData> categoryList =
+        BlogUtils.loadCategoryList(rundata);
+      boolean existCategory = false;
+      if (categoryList != null && categoryList.size() > 0) {
+        for (BlogCategoryResultData category : categoryList) {
+          if (categoryId.equals(category.getCategoryId().toString())) {
+            existCategory = true;
+            break;
+          }
+        }
+
+      }
+      if (!existCategory) {
+        categoryId = "";
+        current_filterMap.remove("category");
+
+      }
+
+      updateCategoryName();
+    }
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+
+      postId = postIds.get(0).toString();
+      updatePostName();
+    }
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+
+    if (search != null && !"".equals(search)) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTBlogEntry.NOTE_PROPERTY, "%"
+          + search
+          + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTBlogEntry.TITLE_PROPERTY, "%"
+          + search
+          + "%");
+      SelectQuery<EipTBlogEntry> q = Database.query(EipTBlogEntry.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTBlogEntry> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTBlogEntry item : queryList) {
+        if (!resultid.contains(item.getEntryId())) {
+          resultid.add(item.getEntryId());
+        }
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+    }
+    return query;
   }
 
   /**
@@ -563,5 +678,69 @@ public class BlogEntrySelectData extends
 
   protected void loadAggregateUsers() {
     ALEipManager.getInstance().getUsers(users);
+  }
+
+  private void updateCategoryName() {
+    categoryName = "";
+    if (categoryList != null) {
+      for (int i = 0; i < categoryList.size(); i++) {
+        String cid = categoryList.get(i).getCategoryId().toString();
+        if (cid != null && categoryId != null) {
+          if (cid.equals(categoryId.toString())) {
+            categoryName = categoryList.get(i).getCategoryName().toString();
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public String getCategoryName() {
+    return categoryName;
+  }
+
+  private void updatePostName() {
+    postName = "";
+    for (int i = 0; i < postList.size(); i++) {
+      String pid = postList.get(i).getName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = postList.get(i).getAliasName().toString();
+        return;
+      }
+    }
+    Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+    for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+      String pid = item.getValue().getGroupName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = item.getValue().getPostName().toString();
+        return;
+      }
+    }
+  }
+
+  public String getPostName() {
+    return postName;
+  }
+
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
   }
 }
