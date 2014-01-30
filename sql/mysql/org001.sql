@@ -1154,6 +1154,30 @@ CREATE TABLE `eip_t_gpdb_record_file` (
   PRIMARY KEY (`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_wiki` (
+  `wiki_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wiki_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `note` text COLLATE utf8_unicode_ci,
+  `create_user_id` int(11) DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`wiki_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_wiki_category` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `update_user_id` int(11) NOT NULL,
+  `category_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',NULL,NULL);
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1227,4 +1251,6 @@ ALTER TABLE `eip_m_config` ADD INDEX (`name`);
 ALTER TABLE `container_config` ADD INDEX (`name`);
 
 ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
+
+ALTER TABLE `eip_t_wiki` ADD FOREIGN KEY (  `category_id` ) REFERENCES  `eip_t_wiki_category` (`category_id`) ON DELETE CASCADE ;
 
