@@ -2206,57 +2206,50 @@ input.auiButtonSearch.active {
   width: 100%;
   border-collapse: collapse;
 }
-
 .auiCalendar th {
   font-weight: normal;
   padding-bottom: 5px;
 }
-
 .auiCalendar th div {
   line-height: 32px;
 }
-
 .auiCalendar td {
   text-align: center;
   font-size: 11px;
   width: 26px;
 }
-
+.auiCalendar td a {
+  padding: 3px 1px;
+  display: block;
+  color: black;
+  text-decoration: none;
+}
+.auiCalendar td a:hover {
+  background: #f0f0f0;
+}
 .auiCalendar .auiButton {
   padding: 0 0.7em;
 }
-
 .auiCalendar .sunday {
-  background: #fff0f0;
+  background: none;
   width: 25px;
 }
-
 .auiCalendar .saturday {
-  background: #f0ffff;
+  background: none;
   width: 25px;
 }
-
-.auiCalendar td a {
-  padding: 1px;
-  display: block;
-  color: #000;
-  text-decoration: none;
+.auiCalendar .holiday {
+  background: none;
 }
-
-.auiCalendar td a:hover {
-  background: #ffffe0;
-}
-
 .auiCalendar .out a {
   color: #999999;
 }
-
 .auiCalendar .today a {
   /*background:#e0ffe0;*/
+  background: #f0f0f0;
 }
-
 .auiCalendar .selected a {
-  padding: 0;
+  padding: 2px 1px;
   border: solid 1px #999999;
 }
 
