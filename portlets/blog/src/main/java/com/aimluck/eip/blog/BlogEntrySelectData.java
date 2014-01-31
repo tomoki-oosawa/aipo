@@ -722,6 +722,14 @@ public class BlogEntrySelectData extends
     return postName;
   }
 
+  public String getCategoryId() {
+    return categoryId;
+  }
+
+  public String getPostId() {
+    return postId;
+  }
+
   /**
    * パラメータをマップに変換します。
    * 

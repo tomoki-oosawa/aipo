@@ -25,7 +25,7 @@
 <div id="auiThreeClumnsInner">
 
 #AUISummaryDivHeader()
-#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aipo.blog.filteredSearch('$!{portlet.ID}'); return false;")
 
 <div class="filterInputField">
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen")' />
@@ -128,6 +128,7 @@ ${user.AliasName}</a></li>
 </div>
 </div>
 
+<img src="images/common/dot.gif" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none;">
   <div>
     <p class="caption">グループ</p>
