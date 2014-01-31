@@ -186,14 +186,17 @@ SELECT setval('pk_eip_m_gpdb_kubun_value',47);
 
 CREATE TABLE EIP_T_WIKI_CATEGORY
 (
-    CATEGORY_ID INTEGER NOT NULL,
-    USER_ID INTEGER NOT NULL,
-    UPDATE_USER_ID INTEGER NOT NULL,
-    CATEGORY_NAME VARCHAR (64) NOT NULL,
-    CREATE_DATE DATE,
-    UPDATE_DATE TIMESTAMP,
-    PRIMARY KEY(CATEGORY_ID)
-);
+    `category_id` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) NOT NULL,
+    `update_user_id` int(11) NOT NULL,
+    `category_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',NULL,NULL);
+ALTER TABLE `eip_t_wiki` ADD FOREIGN KEY (  `category_id` ) REFERENCES  `eip_t_wiki_category` (`category_id`) ON DELETE CASCADE ;
 
 -----------------------------------------------------------------------------
 -- EIP_T_WIKI

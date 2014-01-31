@@ -21,3 +21,5 @@
 #AUIcontentsAreaHeader()
 
 #AUIcontentsAreaFooter()
+
+#parse("/portlets/html/ja/wiki-widgets.vm")
