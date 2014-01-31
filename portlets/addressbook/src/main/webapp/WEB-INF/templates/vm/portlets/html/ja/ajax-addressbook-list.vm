@@ -60,11 +60,14 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 <a class="auiButton" title="$l10n.ADDRESSBOOK_DOWNLOAD_LIST" href="javascript:void(0);" onclick="dojo.byId('form$!portlet.ID').action='$dlLink';dojo.byId('form$!portlet.ID').submit();" >$l10n.ADDRESSBOOK_DOWNLOAD_LIST</a>
 <input type="hidden" name="sword" value="$!result.searchWord"/>
 </div>
+#if($!result.SearchWord && ($!result.SearchWord.toString() == ""))
 #AUIajaxpageview(${pageviewscreen} $result)
+#end
 #AUISummaryDivfooter()
 #if($!result.SearchWord && ($!result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 #AUIsearchresult($!result.SearchWord.toString())
+#AUIajaxpageview(${pageviewscreen} $result)
 #AUISummaryDivfooter()
 #end
 #AUIrowMTableWide()
