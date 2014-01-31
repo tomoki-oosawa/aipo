@@ -97,7 +97,15 @@ public class WikiSelectData extends
   @Override
   protected Object getResultData(EipTWiki record) {
     try {
-      return null;
+      WikiResultData rd = new WikiResultData();
+      rd.initField();
+      rd.setId(record.getWikiId().longValue());
+      rd.setName(record.getWikiName());
+      rd.setCategoryId(record.getCategoryId().longValue());
+      rd.setNote(record.getNote());
+      rd.setCreateDate(record.getCreateDate());
+      rd.setUpdateDate(record.getUpdateDate());
+      return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultData", e);
       return null;
@@ -126,7 +134,15 @@ public class WikiSelectData extends
   @Override
   protected Object getResultDataDetail(EipTWiki record) {
     try {
-      return null;
+      WikiResultData rd = new WikiResultData();
+      rd.initField();
+      rd.setId(record.getWikiId().longValue());
+      rd.setName(record.getWikiName());
+      rd.setCategoryId(record.getCategoryId().longValue());
+      rd.setNote(record.getNote());
+      rd.setCreateDate(record.getCreateDate());
+      rd.setUpdateDate(record.getUpdateDate());
+      return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);
       return null;

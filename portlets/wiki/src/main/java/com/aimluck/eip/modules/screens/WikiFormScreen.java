@@ -50,6 +50,7 @@ public class WikiFormScreen extends ALVelocityScreen {
 
       WikiFormData formData = new WikiFormData();
       formData.initField();
+      formData.loadCategoryList(rundata, context);
       formData.doViewForm(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
       setTemplate(rundata, context, layout_template);

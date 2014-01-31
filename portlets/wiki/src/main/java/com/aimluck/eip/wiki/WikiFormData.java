@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.wiki;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -26,16 +27,46 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
+import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiのフォームデータを管理するクラスです。 <BR>
  * 
  */
 public class WikiFormData extends ALAbstractFormData {
+
+  /** wiki名 */
+  private ALStringField name;
+
+  /** カテゴリ ID */
+  private ALNumberField category_id;
+
+  /** カテゴリ名 */
+  private ALStringField category_name;
+
+  /** メモ */
+  private ALStringField note;
+
+  /** */
+  private boolean is_new_category;
+
+  private EipTWikiCategory category;
+
+  /** カテゴリ一覧 */
+  private List<WikiCategoryResultData> categoryList;
+
+  private int uid;
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -53,6 +84,18 @@ public class WikiFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+    is_new_category = rundata.getParameters().getBoolean("is_new_category");
+
+    uid = ALEipUtils.getUserId(rundata);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void loadCategoryList(RunData rundata, Context context) {
+    categoryList = WikiUtils.loadCategoryList(rundata);
   }
 
   /**
@@ -60,6 +103,19 @@ public class WikiFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
+    name = new ALStringField();
+    name.setFieldName("タイトル");
+    name.setTrim(true);
+    // カテゴリID
+    category_id = new ALNumberField();
+    category_id.setFieldName("カテゴリ");
+    // カテゴリ
+    category_name = new ALStringField();
+    category_name.setFieldName("カテゴリ名");
+    // メモ
+    note = new ALStringField();
+    note.setFieldName("内容");
+    note.setTrim(false);
 
   }
 
@@ -68,6 +124,20 @@ public class WikiFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
+    // wiki名必須項目
+    name.setNotNull(true);
+    // wiki名の文字数制限
+    name.limitMaxLength(50);
+    // メモ必須項目
+    note.setNotNull(true);
+    // メモの文字数制限
+    note.limitMaxLength(10000);
+    if (is_new_category) {
+      // カテゴリ名必須項目
+      category_name.setNotNull(true);
+      // カテゴリ名文字数制限
+      category_name.limitMaxLength(50);
+    }
 
   }
 
@@ -80,6 +150,14 @@ public class WikiFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+    // wiki名
+    name.validate(msgList);
+    // メモ
+    note.validate(msgList);
+    if (is_new_category) {
+      // カテゴリ名
+      category_name.validate(msgList);
+    }
     return (msgList.size() == 0);
   }
 
@@ -94,6 +172,23 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+
+      // wiki名
+      name.setValue(wiki.getWikiName());
+      // カテゴリID
+      category_id.setValue(wiki.getCategoryId());
+      // 内容
+      note.setValue(wiki.getNote());
+
+    } catch (RuntimeException ex) {
+      throw ex;
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+      return false;
+    }
     return true;
   }
 
@@ -122,6 +217,78 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
+    try {
+      if (is_new_category) {
+        // カテゴリの登録処理
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
+        }
+      } else {
+        category =
+          Database.get(EipTWikiCategory.class, Integer
+            .valueOf((int) category_id.getValue()));
+      }
+
+      // 新規オブジェクトモデル
+      EipTWiki wiki = Database.create(EipTWiki.class);
+      // トピック名
+      wiki.setWikiName(name.getValue());
+      // カテゴリID
+      wiki.setEipTWikiCategory(category);
+      // メモ
+      wiki.setNote(note.getValue());
+      // 作成者
+      wiki.setCreateUserId(Integer.valueOf(uid));
+      // 更新者
+      wiki.setUpdateUserId(Integer.valueOf(uid));
+      // 作成日
+      wiki.setCreateDate(Calendar.getInstance().getTime());
+      // 更新日
+      wiki.setUpdateDate(Calendar.getInstance().getTime());
+
+      Database.commit();
+
+    } catch (RuntimeException ex) {
+      throw ex;
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * トピックカテゴリをデータベースに格納します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   */
+  private boolean insertCategoryData(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+      TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
+
+      // 新規オブジェクトモデル
+      category = Database.create(EipTWikiCategory.class);
+      // カテゴリ名
+      category.setCategoryName(category_name.getValue());
+      // ユーザーID
+      category.setTurbineUser(tuser);
+      // 作成日
+      category.setCreateDate(Calendar.getInstance().getTime());
+      // 更新日
+      category.setUpdateDate(Calendar.getInstance().getTime());
+
+      Database.commit();
+
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("msgboard", ex);
+      msgList.add("エラーが発生しました。");
+      return false;
+    }
     return true;
   }
 
@@ -136,6 +303,43 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
+    try {
+      if (is_new_category) {
+        // カテゴリの登録処理
+        if (!insertCategoryData(rundata, context, msgList)) {
+          return false;
+        }
+      } else {
+        category =
+          Database.get(EipTWikiCategory.class, Integer
+            .valueOf((int) category_id.getValue()));
+      }
+
+      // 新規オブジェクトモデル
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+      // トピック名
+      wiki.setWikiName(name.getValue());
+      // カテゴリID
+      wiki.setEipTWikiCategory(category);
+      // メモ
+      wiki.setNote(note.getValue());
+      // 作成者
+      wiki.setCreateUserId(Integer.valueOf(uid));
+      // 更新者
+      wiki.setUpdateUserId(Integer.valueOf(uid));
+      // 作成日
+      wiki.setCreateDate(Calendar.getInstance().getTime());
+      // 更新日
+      wiki.setUpdateDate(Calendar.getInstance().getTime());
+
+      Database.commit();
+
+    } catch (RuntimeException ex) {
+      throw ex;
+    } catch (Exception ex) {
+      logger.error("msgboard", ex);
+      return false;
+    }
     return true;
   }
 
@@ -148,6 +352,42 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   public String getAclPortletFeature() {
     return aclPortletFeature;
+  }
+
+  /**
+   * カテゴリIDを取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALNumberField getCategoryId() {
+    return category_id;
+  }
+
+  /**
+   * カテゴリ名を取得します。
+   * 
+   * @return
+   */
+  public ALStringField getCategoryName() {
+    return category_name;
+  }
+
+  /**
+   * メモを取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALStringField getNote() {
+    return note;
+  }
+
+  /**
+   * トピック名を取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALStringField getName() {
+    return name;
   }
 
 }

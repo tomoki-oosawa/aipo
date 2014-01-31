@@ -19,22 +19,47 @@
 
 dojo.provide("aipo.wiki");
 
-aipo.wiki.onLoadWikiDialog = function(portlet_id){
+aipo.wiki.onLoadWikiDialog = function(portlet_id) {
   var obj = dojo.byId("wiki_name");
-  if(obj){
-     obj.focus();
+  if (obj) {
+    obj.focus();
   }
 }
 
-aipo.wiki.onReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('wiki');
+aipo.wiki.onReceiveMessage = function(msg) {
+  if (!msg) {
+    var arrDialog = dijit.byId("modalDialog");
+    if (arrDialog) {
+      arrDialog.hide();
     }
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
-    }
+    aipo.portletReload('wiki');
+  }
+  if (dojo.byId('messageDiv')) {
+    dojo.byId('messageDiv').innerHTML = msg;
+  }
+}
+
+aipo.wiki.formSwitchCategoryInput = function(button) {
+  if (button.form.is_new_category.value == 'TRUE'
+      || button.form.is_new_category.value == 'true') {
+    button.value = aimluck.io.escapeText("wiki_val_switch1");
+    aipo.wiki.formCategoryInputOff(button.form);
+  } else {
+    button.value = aimluck.io.escapeText("wiki_val_switch2");
+    aipo.wiki.formCategoryInputOn(button.form);
+  }
+}
+
+aipo.wiki.formCategoryInputOn = function(form) {
+  dojo.byId('wikiCategorySelectField').style.display = "none";
+  dojo.byId('wikiCategoryInputField').style.display = "";
+
+  form.is_new_category.value = 'TRUE';
+}
+
+aipo.wiki.formCategoryInputOff = function(form) {
+  dojo.byId('wikiCategoryInputField').style.display = "none";
+  dojo.byId('wikiCategorySelectField').style.display = "";
+
+  form.is_new_category.value = 'FALSE';
 }
