@@ -20,4 +20,104 @@
 
 #AUIcontentsAreaHeader()
 
+#AUISummaryDiv()
+<form class="auiSearch">
+	<input class="text floatLeft long" type="text" name="q" id="q" style="margin-right:5px;">
+		<a class="auiButtonSearch" onclick="aimluck.io.setHiddenValue(this);">$l10n.WIKI_SEARCH</a>
+</form>
+#AUISummaryDivfooter()
+
+#AUISummaryDiv()
+<div class="floatLeft"><a href="#" class="auiButton">削除する</a></div>
+	<div class="floatRight">
+		<div class="count">1 - 10 / 20</div>
+		<div class="auiSelectButton floatLeft">
+			<ul class="floatLeft">
+				<li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+				<li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage();" class="last arrow" title="次の 2 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+			</ul>
+		</div>
+	</div>
+#AUISummaryDivfooter()
+
+<table class="auiRowTable auiMbTable wide">
+	<colgroup span="3"></colgroup>
+	<colgroup style="width: 9em;"></colgroup>
+	<tbody>
+		<tr>
+			<th class="auiMTCheck center"><input type="checkbox" /></th>
+			<th class=""><a href="#">タイトル</a></th>
+			<th class="wName"><a href="#">更新者</a></th>
+			<th><a href="#">更新日</a></th>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+                              </div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+                                  <a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>	
+			</td>	
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+#AUItablefooter()
+
+#AUISummaryDiv()
+#*
+#if ($result.List.size() != 0)
+#AUIajaxpageview('BlogEntryListScreen' $result)
+#end
+*#
+<div class="floatRight">
+	<div class="count">1 - 10 / 20</div>
+	<div class="auiSelectButton floatLeft">
+		<ul class="floatLeft">
+			<li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+			<li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage();" class="last arrow" title="次の 2 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+		</ul>
+	</div>
+</div>
+#AUISummaryDivfooter()
+
 #AUIcontentsAreaFooter()
+#parse("/portlets/html/ja/wiki-widgets.vm")

@@ -24,5 +24,70 @@
 #set ($subtitle = $l10n.WIKI_WIKI_EDITION)
 #end
 ## ---------------------------------------------------------------------------
+
+<div id="modalDialog_wikicreate" class="modalDialog dijitContentPane mb_dialog" dojoattachpoint="wrapper" widgetid="modalDialog" title="" style="display: none; left: 50%; top: 50px; margin-left:-275px;"><span dojoattachpoint="tabStartOuter" dojoonfocus="trapTabs" dojoonblur="clearTrap" tabindex="0"></span><span dojoattachpoint="tabStart" dojoonfocus="trapTabs" dojoonblur="clearTrap" tabindex="0"></span><div dojoattachpoint="containerNode" style="position: relative; z-index: 2;">
 #ALdialogheader($subtitle)
+	<div class="indicator" id="indicator-dlg-P" style="display: none;">データを送信しています...</div>
+	<div id="messageDiv"></div>
+	<form name="formP-1424f148b96-10000" id="formP" action="" method="post" onsubmit="aipo.fileuploadadv.createSelectFromFileList(this, 'P-1424f148b96-10000');aimluck.io.submit(this,'indicator-dlg-','P-1424f148b96-10000',aipo.gpdb.onReceiveMessage);return false;">
+	<input type="hidden" name="_name" value="gpdbForm">
+	<input type="hidden" name="secid" value="">
+		<input type="hidden" name="mode" value="insert">
+			<table class="listTable wide">
+				<tbody>
+					<tr>
+						<td class="caption"><span class="required">カテゴリ</span></td>
+						<td>
+							<div>
+								<select name="" id="" class="w100">
+									<option value="">未分類</option>
+                                    <option value="">カテゴリ名</option>
+                                    <option value="">カテゴリ名</option>
+                                </select>
+                            </div>
+                            <div class="mt5">
+                                <input name="category_input_button" type="button" class="button" value="新しく入力する">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="caption"><span class="required">タイトル<wbr></span>
+                        </td>
+                        <td><input class="text w100" type="text" name="field_241" id="field_241" value="" maxlength="50" style="ime-mode:">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="caption"><span class="required">内容</span></td>
+                        <td>
+                            <div class="mb5">
+                                <span class="auiButtonIcon"><i class="icon-bold"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-italic"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-underline"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-strikethrough"></i></span>
+                                <span class="auiButtonIcon">h1</span>
+                                <span class="auiButtonIcon">h2</span>
+                                <span class="auiButtonIcon">h3</span>
+                                <span class="auiButtonIcon"><i class="icon-list-ul"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-list-ol"></i></span>
+                            </div>
+                            <textarea name="" id="" rows="10" class="w100"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="caption">添付ファイル</td>
+                        <td>
+                            <input name="" type="button" class="button" value="ファイルを追加する">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="center auiPopupButtons">
+                    <input name="eventSubmit_doGpdb_insert" class="auiButtonAction" type="submit" id="al_submit_P-1424f148b96-10000" value="作成する" onclick="">
+                    <input name="ajaxbuttonClose" class="button" type="button" value="閉じる" onclick="popupToggle(this,'modalDialog_wikicreate');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
 #ALdialogfooter()

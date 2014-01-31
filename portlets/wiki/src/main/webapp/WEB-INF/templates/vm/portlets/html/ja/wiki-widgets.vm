@@ -1,0 +1,47 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+
+<script language="javascript">
+function widgetMenuSwitch() {
+	var subNavi = document.getElementById('subNavigation');
+	if(document.defaultView.getComputedStyle(subNavi,null).display=='none'){
+		subNavi.style.display = 'block';
+	}else{
+		subNavi.style.display = 'none';
+	}
+}
+</script>
+<div id="auiWidgetsArea">
+	<div class="auiWidget clearfix widgetButton">
+		<a title="" href="javascript:void(0)" class="auiButtonAction" onclick="popupToggle(this,'modalDialog_wikicreate');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">Wikiを作成する</a>
+	</div>
+	<div id="subNavigation">
+		<div class="auiWidget clearfix">
+			<ul>
+				<li class="active"><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+				<li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+				<li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+			</ul>
+			<div style="margin:0.5em 0;">
+				<a href="category_mng.html">カテゴリの管理</a>
+			</div>
+		</div>
+	</div>
+</div>
