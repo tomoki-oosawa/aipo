@@ -1,0 +1,207 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Project Management Portlet was developed by Advance,Inc.
+ * http://www.a-dvance.co.jp/
+ *#
+
+## ---------------------------------------------------------------------------
+#if  ($mode=="new_form")
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doTask_insert")
+#set ($subtitle = "タスク追加")
+#else
+#set ($action_str = "更新する")
+#set ($subtitle = "タスク編集")
+#set ($event_submit = "eventSubmit_doTask_update")
+#end
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxscreenformheader("taskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessage)")
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+<input type="hidden" name="parent_task_id" value="$!result.ParentTaskId" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALtableheaderWide()
+##分類
+#ALtdcaption("#ALrequired($!result.getFieldName('tracker'))")
+#ALtditemheader()
+<select name="tracker" id="tracker">
+	<option value=''></option>
+#foreach($mapEntry in $result.TrackerMap.entrySet())
+	<option value='$!mapEntry.key' #if ($!result.Tracker.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+#end
+</select>
+#ALtditemfooter()
+##タスク名
+#ALtdcaption("#ALrequired($!result.getFieldName('task_name'))")
+#ALtditem("#ALtextfield('task_name' $!result.TaskName '90%' 50 'active')")
+##説明
+#ALtdcaption("$!result.getFieldName('explanation')")
+#ALtditem("<textarea class='text wide' name='explanation'>$!result.Explanation</textarea>")
+##ステータス
+#ALtdcaption("#ALrequired($!result.getFieldName('status'))")
+#ALtditemheader()
+<select name="status" id="status">
+	<option value=''></option>
+#foreach($mapEntry in $result.StatusMap.entrySet())
+	<option value='$!mapEntry.key' #if ($!result.Status.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+#end
+</select>
+#ALtditemfooter()
+##優先度
+#ALtdcaption("#ALrequired($!result.getFieldName('priority'))")
+#ALtditemheader()
+<select name="priority" id="status">
+	<option value=''></option>
+#foreach($mapEntry in $result.PriorityMap.entrySet())
+	<option value='$!mapEntry.key' #if ($!result.Priority.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+#end
+</select>
+#ALtditemfooter()
+##担当者
+#if(!$!result.HasChildren)
+	#ALtdcaption("#ALrequired('担当者')")
+#else
+	#ALtdcaption("担当者")
+#end
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	<div><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">担当者を追加</a></div>
+	<ul id="members_form">
+	#foreach( $taskMember in $result.TaskMembers )
+		##担当者が登録されている場合（更新時）
+		<li id="members_li_$velocityCount">
+		<select name="task_member" id="task_member_$velocityCount">
+		#foreach( $record in $result.ProjectMembers )
+			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
+		#end
+		</select>
+		作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:10%;ime-mode:$mode" />時間
+		#if($velocityCount > 1)
+		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)">削除</a>
+		#end
+		</li>
+	#end
+	#if(!$result.TaskMembers || $result.TaskMembers.isEmpty())
+		##担当者が登録されていない場合（新規登録時）
+		<li id="members_li_1">
+		<select name="task_member" id="task_member_1">
+		#foreach( $record in $result.ProjectMembers )
+			<option value="$record.UserId" #if ($!result.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
+		#end
+		</select>
+		作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:10%;ime-mode:$mode" />時間
+		</li>
+	#end
+	</ul>
+#else
+	<table style="width:100%">
+	#foreach($record in $!result.TaskMembers)
+		<tr>
+			<td style="border-bottom:none;">$!record.UserName</td>
+			<td style="border-bottom:none;">作業時間：$!{record.Workload}時間</td>
+		</tr>
+	#end
+	</table>
+#end
+#ALtditemfooter()
+##開始予定日
+#ALtdcaption($!result.getFieldName("start_plan_date"))
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	<div dojoType="aipo.widget.DropdownDatepicker" id="start_plan_date_picker" widgetId="start_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="開始予定日" hiddenId="start_date" #if ($!result.StartPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartPlanDate.Year}/$!{result.StartPlanDate.Month}/$!{result.StartPlanDate.Day}"checked="checked" #end inputId="input_start_plan_date" dateId="start_plan_date" displayCheck=""></div>
+#else
+	$!result.StartPlanDateString
+#end
+#ALtditemfooter()
+##完了予定日
+#ALtdcaption($!result.getFieldName("end_plan_date"))
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="完了予定日" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
+#else
+	$!result.EndPlanDateString
+#end
+#ALtditemfooter()
+##開始実績日
+#ALtdcaption($!result.getFieldName("start_date"))
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	<div dojoType="aipo.widget.DropdownDatepicker" id="startdatepicker" widgetId="startdatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="開始実績日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartDate.Year}/$!{result.StartDate.Month}/$!{result.StartDate.Day}"checked="checked" #end inputId="input_startdate" dateId="start_date" displayCheck=""></div>
+#else
+	$!result.StartDateString
+#end
+#ALtditemfooter()
+##完了実績日
+#ALtdcaption($!result.getFieldName("end_date"))
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	<div dojoType="aipo.widget.DropdownDatepicker" id="enddatepicker" widgetId="enddatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="完了実績日" #if ($!result.EndDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndDate.Year}/$!{result.EndDate.Month}/$!{result.EndDate.Day}" #end dateId="end_date"></div>
+#else
+	$!result.EndDateString
+#end
+#ALtditemfooter()
+##計画工数
+#ALtdcaption("計画工数")
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	#ALtextfield('plan_workload' $!result.PlanWorkload.toString() '10%' 50 'active')時間
+#else
+	$!result.PlanWorkload.toString()
+#end
+#ALtditemfooter()
+##進捗率
+#ALtdcaption("$!result.getFieldName('progress_rate')")
+#ALtditemheader()
+#if(!$!result.HasChildren)
+	#ALtextfield('progress_rate' $!result.ProgressRate.toString() '10%' 50 'active')%
+#else
+	$!result.ProgressRate.toString()
+#end
+#ALtditemfooter()
+##ファイル
+<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+<td class="caption">ファイル</td>
+<td>
+  <div class="clearfix">
+  <div>
+  	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  </div>
+  	<ul id="attachments_$!{portlet.ID}" class="attachments">
+  	#foreach($record in $!result.AttachmentFileNameList )
+  	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+  	#end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
+#ALtablefooter()
+#ALbuttonheader()
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

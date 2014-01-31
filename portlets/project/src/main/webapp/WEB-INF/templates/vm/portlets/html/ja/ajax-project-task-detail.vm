@@ -1,0 +1,217 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Project Management Portlet was developed by Advance,Inc.
+ * http://www.a-dvance.co.jp/
+ *#
+
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader("タスク詳細")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("タスク")
+<div class="alignleft">
+    $!result.Detail.TopicPath
+	<div id="messageDiv"></div>
+</div>
+<div class="alignright">
+	#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormScreen').addQueryData('entityid',$entityid).addQueryData('projectid',$!{result.Detail.ProjectId})" "$!portlet.ID" "aipo.project.onLoadProjectTaskDialog")
+	#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete').addQueryData('projectid',$!{result.Detail.ProjectId})" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
+</div>
+
+##ALtableheaderWide()
+<table class="listTable wide" style="clear:both">
+  <tbody>
+
+#ALtdcaption("分類")
+#ALtditemheader()
+$!result.Detail.TrackerString
+#ALtditemfooter()
+
+#ALtdcaption("タスク名")
+#ALtditemheader()
+$!result.Detail.TaskName
+#ALtditemfooter()
+
+#ALtdcaption("説明")
+#ALtditemheader()
+$!result.Detail.Explanation
+#ALtditemfooter()
+
+#ALtdcaption("ステータス")
+#ALtditemheader()
+$!result.Detail.StatusString
+#ALtditemfooter()
+
+#ALtdcaption("優先度")
+#ALtditemheader()
+$!result.Detail.PriorityString
+#ALtditemfooter()
+
+#ALtdcaption("担当者")
+#ALtditemheader()
+<table style="width:100%">
+#foreach($record in $!result.Detail.MemberList)
+	<tr>
+		<td style="border-bottom:none;">$!record.UserName</td>
+		<td style="border-bottom:none;">作業時間：$!{record.Workload}時間</td>
+	</tr>
+#end
+</table>
+#ALtditemfooter()
+
+#ALtdcaption("開始予定日")
+#ALtditemheader()
+#if($!{result.Detail.StartPlanDate.toString()} != "")
+$!{result.Detail.StartPlanDate.Year}年$!{result.Detail.StartPlanDate.Month}月$!{result.Detail.StartPlanDate.Day}日$!{result.Detail.StartPlanDate.DayOfWeek}
+#end
+#ALtditemfooter()
+
+#ALtdcaption("完了予定日")
+#ALtditemheader()
+#if($!{result.Detail.EndPlanDate.toString()} != "")
+$!{result.Detail.EndPlanDate.Year}年$!{result.Detail.EndPlanDate.Month}月$!{result.Detail.EndPlanDate.Day}日$!{result.Detail.EndPlanDate.DayOfWeek}
+#end
+#ALtditemfooter()
+
+#ALtdcaption("開始実績日")
+#ALtditemheader()
+#if($!{result.Detail.StartDate.toString()} != "")
+$!{result.Detail.StartDate.Year}年$!{result.Detail.StartDate.Month}月$!{result.Detail.StartDate.Day}日$!{result.Detail.StartDate.DayOfWeek}
+#end
+#ALtditemfooter()
+
+#ALtdcaption("完了実績日")
+#ALtditemheader()
+#if($!{result.Detail.EndDate.toString()} != "")
+$!{result.Detail.EndDate.Year}年$!{result.Detail.EndDate.Month}月$!{result.Detail.EndDate.Day}日$!{result.Detail.EndDate.DayOfWeek}
+#end
+#ALtditemfooter()
+
+#ALtdcaption("計画工数")
+#ALtditemheader()
+$!{result.Detail.PlanWorkload}時間
+#ALtditemfooter()
+
+#ALtdcaption("進捗率")
+#ALtditemheader()
+$!{result.Detail.ProgressRate}%
+#ALtditemfooter()
+
+#if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaptionAtt("ファイル" "style='border-bottom:none;'")
+#ALtditemheaderAtt("style='border-bottom:none;'")
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+	<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskFileRawScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+#end
+#ALtditemfooter()
+#end
+
+#ALtablefooter()
+#ALformfooter()
+
+##if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
+
+#ALajaxdetailformheader("コメント")
+<table class="listTable wide mb0">
+<caption>コメント</caption>
+#if (!$result.Detail.CommentList.isEmpty())
+<tbody>
+#foreach ($record in $result.Detail.CommentList)
+	<tr>
+		<td style="border-bottom:none;border-top:solid 1px #DDD">
+			<div class="clearfix">
+				<div class="alignright">
+					##if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+					#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('comment_id',${record.CommentId}).addQueryData('mode', 'comment_delete')" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
+					##end
+				</div>
+				<div class="avatar floatLeft mr10">
+					#if($!{record.hasPhoto()})
+					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.CreateUserId}).addQueryData("t", $!{record.CreateUserId}))" alt="$!{record.CreateUserId}" width="32" height="32" />
+					#else
+					<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+					#end
+				</div>
+				<div class="alignleft">
+					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
+				</div>
+			</div>
+			<div><br>
+				${record.Comment}
+				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+					<div class="mt20">
+						#foreach( $attachmentFile in $!record.AttachmentFileList )
+						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskCommentFileRawScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+							#if($attachmentFile.isImage())
+								<div style="padding-top:3px;padding-left:12px;">
+									<div id='popc' style='position:absolute'>
+									</div>
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskCommentFileRawScreen').addPathInfo("entityid", $!record.CommentId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskCommentFileThumbnailScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
+							#end
+						#end
+					</div>
+				#end
+			</div>
+    	</td>
+  	</tr>
+#end
+</tbody>
+#end
+</table>
+##end
+#ALformfooter()
+
+<div id="messageDivComment"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#ALajaxscreenformheader("projectTaskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessageComment)")
+<input type="hidden" name="mode" value="comment_insert" />
+<input type="hidden" name="entityid" value="${result.Detail.TaskId}" />
+	<table class="listTable wide">
+		<tbody>
+			<tr>
+				<td class="caption"><span class="required">内容</span></td>
+				<td>
+					#ALtextarea('comment' '' 5 40)
+				</td>
+			</tr>
+			<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+				<td class="caption">添付ファイル</td>
+				<td>
+					<div class="clearfix">
+					<div>
+					<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+					</div>
+					<ul id="attachments_$!{portlet.ID}" class="attachments">
+					</ul>
+					</div>
+				</td>
+			</tr>
+			<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  		</tbody>
+	</table>
+
+#ALbuttonheader()
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="コメントする" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()
