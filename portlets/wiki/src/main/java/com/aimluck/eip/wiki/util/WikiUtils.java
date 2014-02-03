@@ -277,20 +277,16 @@ public class WikiUtils {
       SelectQuery<EipTWikiCategory> query =
         Database.query(EipTWikiCategory.class);
 
-      query.distinct(true);
-
       WikiCategoryResultData otherRd = null;
 
-      List<EipTWikiCategory> aList = query.fetchList();
-      int size = aList.size();
-      for (int i = 0; i < size; i++) {
-        EipTWikiCategory record = aList.get(i);
+      List<EipTWikiCategory> result = query.fetchList();
+      for (EipTWikiCategory category : result) {
         WikiCategoryResultData rd = new WikiCategoryResultData();
         rd.initField();
-        rd.setCategoryId(record.getCategoryId().longValue());
-        rd.setCategoryName(record.getCategoryName());
-        if (record.getCategoryId().longValue() == 1) {
-          // カテゴリ「その他」は最後に追加するため，ここではリストに追加しない．
+        rd.setCategoryId(category.getCategoryId().longValue());
+        rd.setCategoryName(category.getCategoryName());
+        if (category.getCategoryId().longValue() == 1) {
+          // カテゴリ「未分類」は最後に追加するため，ここではリストに追加しない．
           otherRd = rd;
         } else {
           categoryList.add(rd);
@@ -299,9 +295,8 @@ public class WikiUtils {
       if (otherRd != null) {
         categoryList.add(otherRd);
       }
-    } catch (Exception ex) {
-      logger.error("msgboard", ex);
-      return null;
+    } catch (Exception e) {
+      logger.error("WikiUtils.loadCategoryList", e);
     }
     return categoryList;
   }

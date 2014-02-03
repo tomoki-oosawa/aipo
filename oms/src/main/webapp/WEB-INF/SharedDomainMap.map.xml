@@ -1519,7 +1519,7 @@
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
 	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_wiki_category" target="turbine_user" toMany="false">
-		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTWorkflowRequest" source="eip_t_workflow_category" target="eip_t_workflow_request" toMany="true">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>

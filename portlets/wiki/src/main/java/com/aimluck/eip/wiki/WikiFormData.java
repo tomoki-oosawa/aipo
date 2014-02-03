@@ -390,4 +390,8 @@ public class WikiFormData extends ALAbstractFormData {
     return name;
   }
 
+  public List<WikiCategoryResultData> getCategoryList() {
+    return categoryList;
+  }
+
 }

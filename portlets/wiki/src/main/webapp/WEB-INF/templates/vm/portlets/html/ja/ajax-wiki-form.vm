@@ -43,24 +43,23 @@
         #end
 		#ALtableheaderWide()
 		<tr>
-			<td>
-            	#ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
-            	#ALtditemheader()
-            	<div id="wikiCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-            		#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
-            	</div>
-            	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-            		#ALselectpdheaderw100("category_id" "")
-            		#foreach( $record in $result.CategoryList )
-            			<option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-            		#end
-            		#ALselectfooter()
-            	</div>
-            	<div class="mt5">
-            		<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.WIKI_TYPE_NEW_WORD#else$l10n.WIKI_SELECT_DATE_FROM_LIST#end " onclick="aipo.wiki.formSwitchCategoryInput(this)" />
-            	</div>
-            	#ALtditemfooter()
-            </td>
+        	#ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
+        	#ALtditemheader()
+        	<div id="wikiCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
+        		#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
+        	</div>
+        	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
+        		#ALselectpdheaderw100("category_id" "")
+        		#foreach( $record in $result.CategoryList )
+        			<option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+        		#end
+        		#ALselectfooter()
+        	</div>
+        	<div class="mt5">
+        		<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.WIKI_TYPE_NEW_WORD#else$l10n.WIKI_SELECT_DATE_FROM_LIST#end " onclick="aipo.wiki.formSwitchCategoryInput(this)" />
+        	</div>
+        	#ALtditemfooter()
+        
         </tr>
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
