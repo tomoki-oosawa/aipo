@@ -42,6 +42,12 @@ public class WikiCategoryResultData implements ALData {
   /** 所有者名 */
   private ALStringField owner_name;
 
+  /** ユーザー名 */
+  private ALStringField user_name;
+
+  /** 更新ユーザー名 */
+  private ALStringField update_user_name;
+
   /** メモ */
   private ALStringField note;
 
@@ -70,8 +76,10 @@ public class WikiCategoryResultData implements ALData {
     note = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
+    user_name = new ALStringField();
     access_flag = new ALNumberField();
     is_public = true;
+    update_user_name = new ALStringField();
   }
 
   /**
@@ -182,6 +190,28 @@ public class WikiCategoryResultData implements ALData {
 
   public ALNumberField getAccessFlag() {
     return access_flag;
+  }
+
+  /**
+   * @param value
+   */
+  public void setUserName(String user_name) {
+    this.user_name.setValue(user_name);
+  }
+
+  public ALStringField getUserName() {
+    return user_name;
+  }
+
+  /**
+   * @param value
+   */
+  public void setUpdateUserName(String update_user_name) {
+    this.update_user_name.setValue(update_user_name);
+  }
+
+  public ALStringField getUpdateUserName() {
+    return update_user_name;
   }
 
 }
