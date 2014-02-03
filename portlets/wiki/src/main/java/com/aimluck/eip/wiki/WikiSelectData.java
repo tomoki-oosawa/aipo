@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wiki検索データを管理するクラスです。 <BR>
@@ -118,11 +119,17 @@ public class WikiSelectData extends
    * @param rundata
    * @param context
    * @return
+   * @throws ALDBErrorException
    */
   @Override
   public EipTWiki selectDetail(RunData rundata, Context context)
-      throws ALPageNotFoundException {
-    return null;
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, true);
+      return wiki;
+    } catch (ALPageNotFoundException pageNotFound) {
+      throw pageNotFound;
+    }
   }
 
   /**
