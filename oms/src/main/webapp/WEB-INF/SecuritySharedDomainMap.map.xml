@@ -158,6 +158,9 @@
 	<db-relationship name="turbineRole" source="turbine_role_permission" target="turbine_role" toMany="false">
 		<db-attribute-pair source="ROLE_ID" target="ROLE_ID"/>
 	</db-relationship>
+	<db-relationship name="EipTProjectTaskComment" source="turbine_user" target="eip_t_project_task_comment" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
 	<db-relationship name="EipTTimelineLike" source="turbine_user" target="eip_t_timeline_like" toMany="true">
 		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
 	</db-relationship>
@@ -185,6 +188,12 @@
 	<db-relationship name="eipTMsgboardCategory" source="turbine_user" target="eip_t_msgboard_category" toMany="true">
 		<db-attribute-pair source="USER_ID" target="OWNER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTProject" source="turbine_user" target="eip_t_project" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="turbine_user" target="eip_t_project_task" toMany="true">
+		<db-attribute-pair source="USER_ID" target="CREATE_USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTReport" source="turbine_user" target="eip_t_report" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
@@ -205,6 +214,9 @@
 	</db-relationship>
 	<db-relationship name="turbineUserGroupRole" source="turbine_user" target="turbine_user_group_role" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="untitledRel" source="turbine_user" target="eip_t_project_task" toMany="true">
+		<db-attribute-pair source="USER_ID" target="create_user_id"/>
 	</db-relationship>
 	<db-relationship name="eipTScheduleMap" source="turbine_user_group_role" target="eip_t_schedule_map" toMany="true">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
