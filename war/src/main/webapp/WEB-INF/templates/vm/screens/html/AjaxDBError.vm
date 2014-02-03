@@ -29,15 +29,18 @@
     </table>
     <div class="roundBlockWrapperBottom clearfix">
       <div class="roundBlockContent">
-<div style="padding:5px;" >
-$l10n.WAR_NOT_FOUND_PAGE_AND_REASON
-<div style="padding:5px;">
-<ul>
-<li>$l10n.WAR_DELETE_DATA</li>
-<li>$l10n.ERROR_WRONG_URL</li>
-<li>$l10n.WAR_STOP_DATABACE</li>
-</ul>
-</div>
+		<div style="padding:5px;" >
+			$l10n.WAR_NOT_FOUND_PAGE_AND_REASON
+			<div style="padding:5px;">
+				<ul>
+					<li>$l10n.WAR_DELETE_DATA</li>
+					<li>$l10n.ERROR_WRONG_URL</li>
+					<li>$l10n.WAR_STOP_DATABACE</li>
+				</ul>
+			</div>
+		</div>
+	  </div>
+    </div>
 </div>
 #if($config.getString("support.mail"))
 $l10n.WAR_INQUILY
