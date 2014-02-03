@@ -22,10 +22,10 @@ package com.aimluck.eip.wiki;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 
 /**
- * 掲示板トピックのResultData <BR>
+ * WikiカテゴリのResultDataです。<BR>
  * 
  */
 public class WikiCategoryResultData implements ALData {
@@ -36,12 +36,6 @@ public class WikiCategoryResultData implements ALData {
   /** カテゴリ名 */
   private ALStringField category_name;
 
-  /** オーナ ID */
-  private ALNumberField owner_id;
-
-  /** 所有者名 */
-  private ALStringField owner_name;
-
   /** ユーザー名 */
   private ALStringField user_name;
 
@@ -51,17 +45,17 @@ public class WikiCategoryResultData implements ALData {
   /** メモ */
   private ALStringField note;
 
-  /** 公開/非公開フラグ */
-  private boolean is_public;
-
-  /** 閲覧/返信フラグ */
-  private ALNumberField access_flag;
-
   /** 登録日 */
   private ALStringField create_date;
 
   /** 更新日 */
   private ALStringField update_date;
+
+  private boolean hasAclEditCategoryOther;
+
+  private boolean hasAclDeleteCategoryOther;
+
+  private boolean is_self_category;
 
   /**
    *
@@ -71,15 +65,12 @@ public class WikiCategoryResultData implements ALData {
   public void initField() {
     category_id = new ALNumberField();
     category_name = new ALStringField();
-    owner_id = new ALNumberField();
-    owner_name = new ALStringField();
     note = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
     user_name = new ALStringField();
-    access_flag = new ALNumberField();
-    is_public = true;
     update_user_name = new ALStringField();
+    is_self_category = false;
   }
 
   /**
@@ -89,11 +80,15 @@ public class WikiCategoryResultData implements ALData {
     return category_name.toString();
   }
 
+  public String getCategoryNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(category_name.toString());
+  }
+
   /**
    * @return
    */
   public String getNote() {
-    return ALEipUtils.getMessageList(note.getValue());
+    return ALCommonUtils.replaceToAutoCR(note.toString());
   }
 
   /**
@@ -152,49 +147,6 @@ public class WikiCategoryResultData implements ALData {
     update_date.setValue(string);
   }
 
-  public ALNumberField getOwnerId() {
-    return owner_id;
-  }
-
-  public void setOwnerId(long i) {
-    owner_id.setValue(i);
-  }
-
-  /**
-   * 公開/非公開フラグ．
-   * 
-   * @return
-   */
-  public boolean isPublic() {
-    return is_public;
-  }
-
-  /**
-   * @return
-   */
-  public void setPublicFlag(boolean bool) {
-    is_public = bool;
-  }
-
-  public void setOwnerName(String string) {
-    owner_name.setValue(string);
-  }
-
-  public ALStringField getOwnerName() {
-    return owner_name;
-  }
-
-  public void setAccessFlag(int value) {
-    access_flag.setValue(value);
-  }
-
-  public ALNumberField getAccessFlag() {
-    return access_flag;
-  }
-
-  /**
-   * @param value
-   */
   public void setUserName(String user_name) {
     this.user_name.setValue(user_name);
   }
@@ -203,15 +155,37 @@ public class WikiCategoryResultData implements ALData {
     return user_name;
   }
 
-  /**
-   * @param value
-   */
   public void setUpdateUserName(String update_user_name) {
     this.update_user_name.setValue(update_user_name);
   }
 
   public ALStringField getUpdateUserName() {
     return update_user_name;
+  }
+
+  public void setHasAclEditCategoryOther(boolean hasAclEditCategoryOther) {
+    this.hasAclEditCategoryOther = hasAclEditCategoryOther;
+  }
+
+  public boolean hasAclEditCategoryOther() {
+    return hasAclEditCategoryOther;
+  }
+
+  public void setHasAclDeleteCategoryOther(boolean hasAclDeleteCategoryOther) {
+    this.hasAclDeleteCategoryOther = hasAclDeleteCategoryOther;
+  }
+
+  public boolean hasAclDeleteCategoryOther() {
+    return hasAclDeleteCategoryOther;
+  }
+
+  public void setIsSelfCategory(boolean is_self_category) {
+    this.is_self_category = is_self_category;
+  }
+
+  public boolean isSelfCategory() {
+    return is_self_category;
+
   }
 
 }

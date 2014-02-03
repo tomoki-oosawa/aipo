@@ -19,24 +19,20 @@
 ## ---------------------------------------------------------------------------
 
 ## ---------------------------------------------------------------------------
-<div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
-<div class="auiWidget clearfix">
-#AUIbutton($l10n.WIKI_WIKI_CREATE "javascript:aipo.common.showDialog();")
-</div>
-<div class="auiWidget clearfix">
-##AUIwidgetViewPageMenuList($menues $!result.currentTab)
-<input type="hidden" id="topic" value="2" />
-<ul>
-<li #if (!$result.issetFilter("category") && !$categoryEtc && $!result.currentTab != "complete") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filter","").addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$l10n.WIKI_ALL_CATEGORY</a></li>
-#foreach($record in $!result.CategoryList )
-<li #if ($!result.issetFilter("category",$!record.CategoryId.toString())) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true'))','$!portlet.ID');">$!{record.CategoryName}</a></li>
-#end
-</ul>
-<div style="margin:0.5em 0;">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryListScreen')', '$!portlet.ID');">$l10n.WIKI_MANAGEMENT</a>
-</div>
-</div>
-<div class="auiWidget clearfix">
-#AUIwidgetViewPageMenuList($menues3 $!result.currentTab)
-</div>
-</div>
+<div id="auiWidgetsArea">
+                <div class="auiWidget clearfix widgetButton">
+                    <a title="" href="javascript:void(0)" class="auiButton" onclick="popupToggle(this,'modalDialog_wikicreate');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">Wikiを作成する</a>
+                </div>
+                <div id="subNavigation">
+                    <div class="auiWidget clearfix">
+                        <ul>
+                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
+                        </ul>
+                        <div style="margin:0.5em 0;">
+                            <a href="category_mng.html">カテゴリの管理</a>
+                        </div>
+                    </div>
+                </div>
+            </div>

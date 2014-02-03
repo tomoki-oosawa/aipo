@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.wiki;
 
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -48,6 +49,8 @@ public class WikiSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiSelectData.class.getName());
 
+  private List<WikiCategoryResultData> categoryList = null;
+
   /**
    * 
    * @param action
@@ -60,6 +63,10 @@ public class WikiSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+  }
+
+  public void loadCategoryList(RunData rundata) {
+    categoryList = WikiUtils.loadCategoryList(rundata);
   }
 
   /**
@@ -194,6 +201,10 @@ public class WikiSelectData extends
   @Override
   public String getAclPortletFeature() {
     return "";
+  }
+
+  public List<WikiCategoryResultData> getCategoryList() {
+    return categoryList;
   }
 
 }

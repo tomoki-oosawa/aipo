@@ -36,11 +36,11 @@
 	<colgroup span="3"></colgroup>
 	<colgroup style="width: 9em;"></colgroup>
 	<tbody>
-		<tr>
+		<tr>	
 			<th class="auiMTCheck center"><input type="checkbox" /></th>
-			<th class=""><a href="#">タイトル</a></th>
-			<th class="wName"><a href="#">更新者</a></th>
-			<th><a href="#">更新日</a></th>
+			#ALtdheadAtt("#ALajaxsort('wiki_name' 'タイトル' $result 'WikiListScreen')" "class=''")
+			#ALtdheadAtt("#ALajaxsort('user_name' '更新者' $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>

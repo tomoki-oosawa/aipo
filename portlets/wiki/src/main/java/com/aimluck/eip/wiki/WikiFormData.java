@@ -183,10 +183,8 @@ public class WikiFormData extends ALAbstractFormData {
       // 内容
       note.setValue(wiki.getNote());
 
-    } catch (RuntimeException ex) {
-      throw ex;
-    } catch (Exception ex) {
-      logger.error("msgboard", ex);
+    } catch (Exception e) {
+      logger.error("WikiFormData.loadFormData", e);
       return false;
     }
     return true;
@@ -238,9 +236,10 @@ public class WikiFormData extends ALAbstractFormData {
       // メモ
       wiki.setNote(note.getValue());
       // 作成者
-      wiki.setCreateUserId(Integer.valueOf(uid));
+      TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
+      wiki.setCreateUser(turbineUser);
       // 更新者
-      wiki.setUpdateUserId(Integer.valueOf(uid));
+      wiki.setUpdateUser(turbineUser);
       // 作成日
       wiki.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
@@ -248,10 +247,8 @@ public class WikiFormData extends ALAbstractFormData {
 
       Database.commit();
 
-    } catch (RuntimeException ex) {
-      throw ex;
-    } catch (Exception ex) {
-      logger.error("msgboard", ex);
+    } catch (Exception e) {
+      logger.error("WikiFormData.insertFormData", e);
       return false;
     }
     return true;
@@ -323,10 +320,9 @@ public class WikiFormData extends ALAbstractFormData {
       wiki.setEipTWikiCategory(category);
       // メモ
       wiki.setNote(note.getValue());
-      // 作成者
-      wiki.setCreateUserId(Integer.valueOf(uid));
+      TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
       // 更新者
-      wiki.setUpdateUserId(Integer.valueOf(uid));
+      wiki.setUpdateUser(turbineUser);
       // 作成日
       wiki.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
@@ -334,10 +330,8 @@ public class WikiFormData extends ALAbstractFormData {
 
       Database.commit();
 
-    } catch (RuntimeException ex) {
-      throw ex;
-    } catch (Exception ex) {
-      logger.error("msgboard", ex);
+    } catch (Exception e) {
+      logger.error("WikiFormData.updateFormData", e);
       return false;
     }
     return true;
@@ -388,6 +382,10 @@ public class WikiFormData extends ALAbstractFormData {
    */
   public ALStringField getName() {
     return name;
+  }
+
+  public List<WikiCategoryResultData> getCategoryList() {
+    return categoryList;
   }
 
 }
