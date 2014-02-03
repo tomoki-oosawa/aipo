@@ -19,54 +19,64 @@
 
 package com.aimluck.eip.modules.screens;
 
+import net.sf.json.JSONArray;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.wiki.WikiFormData;
-import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiを処理するクラスです。 <br />
  * 
  */
-public class WikiFormScreen extends ALVelocityScreen {
+public class WikiFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiFormScreen.class.getName());
 
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
   @Override
-  protected void doOutput(RunData rundata, Context context) throws Exception {
+  protected String getJSONString(RunData rundata, Context context)
+      throws Exception {
+    String result = new JSONArray().toString();
+    String mode = this.getMode();
     try {
 
-      WikiFormData formData = new WikiFormData();
-      formData.initField();
-      formData.loadCategoryList(rundata, context);
-      formData.doViewForm(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
-      setTemplate(rundata, context, layout_template);
+      if (ALEipConstants.MODE_INSERT.equals(mode)) {
+        //
+        WikiFormData formData = new WikiFormData();
+        formData.initField();
+        formData.loadCategoryList(rundata, context);
+        if (formData.doInsert(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
+        //
+        WikiFormData formData = new WikiFormData();
+        formData.initField();
+        formData.loadCategoryList(rundata, context);
+        if (formData.doUpdate(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      }
 
     } catch (Exception e) {
-      logger.error("WikiFormScreen.doOutput", e);
-      ALEipUtils.redirectDBError(rundata);
+      logger.error("[MsgboardTopicFormJSONScreen]", e);
     }
-  }
 
-  /**
-   * @return
-   */
-  @Override
-  protected String getPortletName() {
-    return WikiUtils.WIKI_PORTLET_NAME;
+    return result;
   }
 
 }
