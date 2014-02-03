@@ -20,7 +20,7 @@
 
 #AUIcontentsAreaHeader()
 <h2>$l10n.TODO_MANAGEMENT</h2>
-#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.wiki.onLoadCategoryDialog);")
 #AUIrowMTableWide()
 <tr>
 <th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY $result 'ToDoListScreen')</th>

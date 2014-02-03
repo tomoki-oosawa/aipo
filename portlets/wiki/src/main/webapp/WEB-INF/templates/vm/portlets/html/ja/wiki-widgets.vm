@@ -17,22 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
+#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryListScreen')))
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
-                <div class="auiWidget clearfix widgetButton">
-                    <a title="" href="javascript:void(0)" class="auiButton" onclick="popupToggle(this,'modalDialog_wikicreate');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">Wikiを作成する</a>
-                </div>
-                <div id="subNavigation">
-                    <div class="auiWidget clearfix">
-                        <ul>
-                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
-                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
-                            <li><a href="fullwindow.html" onclick="">カテゴリ名カテゴリ名</a></li>
-                        </ul>
-                        <div style="margin:0.5em 0;">
-                            <a href="category_mng.html">カテゴリの管理</a>
-                        </div>
-                    </div>
-                </div>
+    <div class="auiWidget clearfix widgetButton">
+        <a title="$l10n.WIKI_WIKI_CREATE" href="javascript:void(0)" #if($!isCategory) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_WIKI_CREATE</a>
+    </div>
+    <div id="subNavigation">
+        <div class="auiWidget clearfix">
+            <ul>
+				#foreach($record in $!result.CategoryList )
+                <li><a href="fullwindow.html" onclick="">$!record.CategoryName</a></li>
+				#end
+            </ul>
+            <div style="margin:0.5em 0;">
+                <a href="javascript:void(0)" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID')">${l10n.WIKI_MANAGEMENT}</a>
             </div>
+        </div>
+    </div>
+</div>

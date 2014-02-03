@@ -55,6 +55,8 @@ public class WikiCategoryListScreen extends ALVelocityScreen {
       listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 
+      context.put("isCategory", true);
+
       String layout_template = "portlets/html/ja/ajax-wiki-category-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

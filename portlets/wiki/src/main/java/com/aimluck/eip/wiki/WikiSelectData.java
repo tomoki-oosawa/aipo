@@ -33,7 +33,10 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -78,11 +81,21 @@ public class WikiSelectData extends
   @Override
   public ResultList<EipTWiki> selectList(RunData rundata, Context context) {
     try {
-      return null;
+      SelectQuery<EipTWiki> query = getSelectQuery(rundata, context);
+      buildSelectQueryForListView(query);
+      buildSelectQueryForListViewSort(query, rundata, context);
+      ResultList<EipTWiki> list = query.getResultList();
+      setPageParam(list.getTotalCount());
+      return list;
     } catch (Exception e) {
       logger.error("WikiSelectData.selectList", e);
       return null;
     }
+  }
+
+  private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
+    SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    return query;
   }
 
   /**
@@ -110,7 +123,7 @@ public class WikiSelectData extends
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
-      rd.setNote(record.getNote());
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()));
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
@@ -148,6 +161,8 @@ public class WikiSelectData extends
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
       rd.setNote(record.getNote());
+      rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()));
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
@@ -164,6 +179,9 @@ public class WikiSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
+    map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
+    map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
+    map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);
     return map;
   }
 

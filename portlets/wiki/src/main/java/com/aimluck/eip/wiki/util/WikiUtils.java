@@ -300,4 +300,13 @@ public class WikiUtils {
     }
     return categoryList;
   }
+
+  /**
+   * セレクトボックス内のwikiを取得する。
+   * 
+   * @return
+   */
+  public static List<EipTWiki> getSelectWiki() {
+    return null;
+  }
 }
