@@ -585,7 +585,7 @@ public class BlogUtils {
         // aタグが入れ子でない限り、差は必ず0か1
         src = src.concat("</a>");
       }
-      src = src.concat(ALLocalizationUtils.getl10n("BLOG_LONG_ROUND"));
+      src = src.concat(ALLocalizationUtils.getl10n("WAR_LONG_ROUND"));
     }
     return src;
   }
