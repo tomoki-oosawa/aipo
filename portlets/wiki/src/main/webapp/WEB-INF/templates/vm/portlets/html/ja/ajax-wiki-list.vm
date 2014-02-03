@@ -17,130 +17,91 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiCategoryFormScreen").addQueryData("entityid","new")))
-
-## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
 
-                  <h2>カテゴリの管理</h2>
+#AUISummaryDiv()
+<form class="auiSearch">
+	<input class="text floatLeft long" type="text" name="q" id="q" style="margin-right:5px;">
+		<a class="auiButtonSearch" onclick="aimluck.io.setHiddenValue(this);">$l10n.WIKI_SEARCH</a>
+</form>
+#AUISummaryDivfooter()
 
-                  #AUIbuttonAction($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadCategoryDialog);")
-                  <div class="auiSummaryMeta clearfix">
-                      <div class="floatRight">
-                          <div class="count">1 - 10 / 20</div>
-                          <div class="auiSelectButton floatLeft">
-                              <ul class="floatLeft">
-                                  <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
-                                  <li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage();" class="last arrow" title="次の 2 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
+#AUISummaryDiv()
+<div class="floatLeft"><a href="#" class="auiButton">削除する</a></div>
+#AUIajaxpageview('WikiListScreen' $result)
+#AUISummaryDivfooter()
 
-                  <table class="auiRowTable wide">
-                      <tbody>
-                      <tr>
-                          <th class="w75"> <a class="headDown" href="javascript:void(0);" onclick="">カテゴリ名</a>
-                          </th>
-                          <th class="w25 mb_hide"><a href="javascript:void(0);" onclick="">作成者</a>
-                          </th>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
+<table class="auiRowTable auiMbTable wide">
+	<colgroup span="3"></colgroup>
+	<colgroup style="width: 9em;"></colgroup>
+	<tbody>
+		<tr>	
+			<th class="auiMTCheck center"><input type="checkbox" /></th>
+			#ALtdheadAtt("#ALajaxsort('wiki_name' 'タイトル' $result 'WikiListScreen')" "class=''")
+			#ALtdheadAtt("#ALajaxsort('user_name' '更新者' $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'WikiListScreen')" "")
+		</tr>
+		#foreach ($record in $result.List)
+		<tr>
+			#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+			<input name="check$!record.Id" type="checkbox" value="$!record.Id" /></td>
+		    #ALtdcellfooter()
+		    #ALtdcellheaderAtt('class="auiMTCaption"')
+				<div>
+					<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$record.Id))');" >$!record.NameHtml</a>
+				</div>
+			#ALtdcellfooter()
+			<td><div>$!record.UpdateUser</div></td>
+			<td>$!record.UpdateDate</td>
+		</tr>
+		#end
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
                               </div>
-                          </td>
-                          <td class="mb_hide"><div>アーノルド シュワルツェネッガー</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>木村 一郎</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>アーノルド シュワルツェネッガー</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>木村 一郎</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>アーノルド シュワルツェネッガー</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>木村 一郎</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>アーノルド シュワルツェネッガー</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>木村 一郎</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>アーノルド シュワルツェネッガー</div></td>
-                      </tr>
-                      <tr>
-                          <td>
-                              <div>
-                                  <a href="javascript:void(0);" onclick="">カテゴリ名カテゴリ名</a>
-                              </div>
-                          </td>
-                          <td class="mb_hide"><div>木村 一郎</div></td>
-                      </tr>
-                      </tbody>
-                  </table>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+                                  <a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>
+			</td>
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+		<tr>
+			<td class="auiMTCheck center"><input type="checkbox" /></td>
+			<td class="auiMTCaption">
+				<div>
+					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
+				</div>	
+			</td>	
+			<td><div>アーノルド シュワルツェネッガー</div></td>
+			<td>2013年12月10日</td>
+		</tr>
+#AUItablefooter()
 
-                  <div class="auiSummaryMeta clearfix">
-                      <div class="floatRight">
-                          <div class="count">1 - 10 / 20</div>
-                          <div class="auiSelectButton floatLeft">
-                              <ul class="floatLeft">
-                                  <li title="前へ"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
-                                  <li title="次へ"><a href="javascript:void(0);" onclick="aipo.viewPage();" class="last arrow" title="次の 2 件"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
-                              </ul>
-                          </div>
-                      </div>
-                  </div>
+#AUISummaryDiv()
+#AUIajaxpageview('WikiListScreen' $result)
+
+#AUISummaryDivfooter()
 
 #AUIcontentsAreaFooter()
-
 #parse("/portlets/html/ja/wiki-widgets.vm")
