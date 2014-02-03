@@ -30,9 +30,11 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -143,6 +145,23 @@ public class WikiSelectData extends
     try {
       WikiResultData rd = new WikiResultData();
       rd.initField();
+
+      // 登録ユーザ名の設定
+      ALEipUser createdUser =
+        ALEipUtils.getALEipUser(record.getCreateUserId().intValue());
+      String createdUserName = createdUser.getAliasName().getValue();
+      rd.setCreateUser(createdUserName);
+
+      // 更新ユーザ名の設定
+      String updatedUserName;
+      if (record.getCreateUserId().equals(record.getUpdateUserId())) {
+        updatedUserName = createdUserName;
+      } else {
+        ALEipUser updatedUser =
+          ALEipUtils.getALEipUser(record.getUpdateUserId().intValue());
+        updatedUserName = updatedUser.getAliasName().getValue();
+      }
+      rd.setUpdateUser(updatedUserName);
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
