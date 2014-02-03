@@ -26,25 +26,25 @@ import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
-import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -63,7 +63,21 @@ public class WikiCategorySelectData extends
   /** カテゴリの総数 */
   private int categorySum;
 
+  private String target_user_id;
+
+  private String target_group_name;
+
+  private ArrayList<ALEipGroup> myGroupList;
+
   private ArrayList<WikiCategoryResultData> categoryList;
+
+  private boolean hasAclShowCategoryOther;
+
+  private boolean hasAclEditCategoryOther;
+
+  private boolean hasAclDeleteCategoryOther;
+
+  private int login_user_id;
 
   /**
    * 
@@ -81,12 +95,33 @@ public class WikiCategorySelectData extends
         + "category_name");
     }
 
-    ALEipUtils.getUserId(rundata);
+    login_user_id = ALEipUtils.getUserId(rundata);
 
-    ALAccessControlFactoryService aclservice =
-      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
-    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    // ALAccessControlFactoryService aclservice =
+    // (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+    // .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    // ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    //
+    // // アクセス権(他人のカテゴリー閲覧)
+    // hasAclShowCategoryOther =
+    // aclhandler.hasAuthority(
+    // login_user_id,
+    // ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_OTHER,
+    // ALAccessControlConstants.VALUE_ACL_LIST);
+    //
+    // // アクセス権(他人のカテゴリー編集)
+    // hasAclEditCategoryOther =
+    // aclhandler.hasAuthority(
+    // login_user_id,
+    // ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_OTHER,
+    // ALAccessControlConstants.VALUE_ACL_UPDATE);
+    //
+    // // アクセス権(他人のカテゴリー削除)
+    // hasAclDeleteCategoryOther =
+    // aclhandler.hasAuthority(
+    // login_user_id,
+    // ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_OTHER,
+    // ALAccessControlConstants.VALUE_ACL_DELETE);
 
     super.init(action, rundata, context);
   }
@@ -102,6 +137,10 @@ public class WikiCategorySelectData extends
   protected ResultList<EipTWikiCategory> selectList(RunData rundata,
       Context context) {
     try {
+      target_group_name = WikiUtils.getTargetGroupName(rundata, context);
+      target_user_id = WikiUtils.getTargetUserId(rundata, context);
+      setMyGroupList(new ArrayList<ALEipGroup>());
+      getMyGroupList().addAll(ALEipUtils.getMyGroups(rundata));
 
       SelectQuery<EipTWikiCategory> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -126,9 +165,14 @@ public class WikiCategorySelectData extends
    */
   private SelectQuery<EipTWikiCategory> getSelectQuery(RunData rundata,
       Context context) {
-    return Database.query(EipTWikiCategory.class).where(
-      Operations.eq(EipTWikiCategory.USER_ID_PROPERTY, ALEipUtils
-        .getUserId(rundata)));
+    if (hasAclShowCategoryOther) {
+      return Database.query(EipTWikiCategory.class).where(
+        Operations.ne(EipTWikiCategory.USER_ID_PROPERTY, 0));
+    } else {
+      return Database.query(EipTWikiCategory.class).where(
+        Operations.eq(EipTWikiCategory.USER_ID_PROPERTY, ALEipUtils
+          .getUserId(rundata)));
+    }
   }
 
   /**
@@ -160,6 +204,9 @@ public class WikiCategorySelectData extends
       record.getCategoryName(),
       getStrLength()));
 
+    // rd.setHasAclDeleteCategoryOther(hasAclDeleteCategoryOther);
+    // rd.setHasAclEditCategoryOther(hasAclEditCategoryOther);
+    rd.setIsSelfCategory(record.getUserId() == login_user_id);
     try {
       rd.setUserName(ALEipUtils
         .getALEipUser(record.getUserId())
@@ -195,6 +242,11 @@ public class WikiCategorySelectData extends
     } catch (ALDBErrorException ex) {
       logger.error("wiki", ex);
     }
+    rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
+    rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+    // rd.setHasAclDeleteCategoryOther(hasAclDeleteCategoryOther);
+    // rd.setHasAclEditCategoryOther(hasAclEditCategoryOther);
+    rd.setIsSelfCategory(record.getUserId() == login_user_id);
     return rd;
   }
 
@@ -235,11 +287,59 @@ public class WikiCategorySelectData extends
   }
 
   /**
+   * @return target_group_name
+   */
+  public String getTargetGroupName() {
+    return target_group_name;
+  }
+
+  /**
+   * @return target_user_id
+   */
+  public String getTargetUserId() {
+    return target_user_id;
+  }
+
+  /**
    * 
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   * 
+   * @param groupname
+   * @return
+   */
+  public List<ALEipUser> getUsers() {
+    if ((target_group_name != null)
+      && (!target_group_name.equals(""))
+      && (!target_group_name.equals("all"))) {
+      return ALEipUtils.getUsers(target_group_name);
+    } else {
+      return ALEipUtils.getUsers("LoginUser");
+    }
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   * 
+   * @return
+   */
+  // @Override
+  // public String getAclPortletFeature() {
+  // return ALAccessControlConstants.POERTLET_FEATURE_TODO_CATEGORY_SELF;
+  // }
+
+  public void setMyGroupList(ArrayList<ALEipGroup> myGroupList) {
+    this.myGroupList = myGroupList;
+  }
+
+  public ArrayList<ALEipGroup> getMyGroupList() {
+    return myGroupList;
   }
 
   /**

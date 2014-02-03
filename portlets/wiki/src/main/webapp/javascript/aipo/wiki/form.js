@@ -63,3 +63,11 @@ aipo.wiki.formCategoryInputOff = function(form) {
 
   form.is_new_category.value = 'FALSE';
 }
+
+aipo.wiki.onLoadCategoryDialog = function(portlet_id){
+
+  var obj = dojo.byId("category_name");
+  if(obj){
+     obj.focus();
+  }
+}

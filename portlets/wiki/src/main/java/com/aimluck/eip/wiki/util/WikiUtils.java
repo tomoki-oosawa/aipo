@@ -51,60 +51,34 @@ public class WikiUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiUtils.class.getName());
 
+  /** グループによる表示切り替え用変数の識別子 */
+  public static final String TARGET_GROUP_NAME = "target_group_name";
+
+  /** ユーザによる表示切り替え用変数の識別子 */
+  public static final String TARGET_USER_ID = "target_user_id";
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_KEYWORD_FLAG = "reset_keyword_params";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_TARGET_FLAG = "reset_target_params";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
+  /** 期限状態（期限前） */
+  public static final int LIMIT_STATE_BEFORE = -1;
+
+  /** 期限状態（期限当日） */
+  public static final int LIMIT_STATE_TODAY = 0;
+
+  /** 期限状態（期限後） */
+  public static final int LIMIT_STATE_AFTER = 1;
+
   public static final String WIKI_PORTLET_NAME = "Wiki";
-
-  /**
-   * プルダウン用のカテゴリーリストを返します
-   * 
-   * @param rundata
-   * @return
-   */
-  public static ArrayList<WikiCategoryResultData> getCategoryList(
-      RunData rundata) {
-    ArrayList<WikiCategoryResultData> categoryList =
-      new ArrayList<WikiCategoryResultData>();
-
-    WikiCategoryResultData rd;
-
-    try {
-      // カテゴリ一覧
-      List<EipTWikiCategory> categoryList2 =
-        Database.query(EipTWikiCategory.class).orderAscending(
-          EipTWikiCategory.CATEGORY_NAME_PROPERTY).fetchList();
-
-      StringBuffer title;
-      ALEipUser user;
-      for (EipTWikiCategory record : categoryList2) {
-        user = ALEipUtils.getALEipUser(record.getUserId());
-        // exclude 「その他」
-        if (user != null) {
-          rd = new WikiCategoryResultData();
-          rd.initField();
-          rd.setCategoryId(record.getCategoryId().longValue());
-          title = new StringBuffer(record.getCategoryName());
-          // title.append(" （");
-          // title.append(user.getAliasName());
-          // title.append("）");
-          rd.setCategoryName(title.toString());
-          categoryList.add(rd);
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("wiki", ex);
-    }
-
-    // その他追加
-    EipTWikiCategory unCategorized =
-      Database.query(EipTWikiCategory.class).where(
-        Operations.eq(EipTWikiCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
-    rd = new WikiCategoryResultData();
-    rd.initField();
-    rd.setCategoryId(unCategorized.getCategoryId());
-    rd.setCategoryName(unCategorized.getCategoryName());
-    categoryList.add(rd);
-
-    return categoryList;
-  }
 
   /**
    * Wikiカテゴリ オブジェクトモデルを取得します。 <BR>
@@ -160,6 +134,101 @@ public class WikiUtils {
       logger.error("wiki", ex);
       return null;
     }
+  }
+
+  /**
+   * 表示切り替えで指定したグループ ID を取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetGroupName(RunData rundata, Context context) {
+    String target_group_name = null;
+    String idParam = rundata.getParameters().getString(TARGET_GROUP_NAME);
+    target_group_name = ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
+    if (idParam == null && target_group_name == null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, "all");
+      target_group_name = "all";
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, idParam);
+      target_group_name = idParam;
+    }
+    return target_group_name;
+  }
+
+  /**
+   * 表示切り替えで指定したユーザ ID を取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetUserId(RunData rundata, Context context) {
+    String target_user_id = null;
+    String idParam = rundata.getParameters().getString(TARGET_USER_ID);
+    target_user_id = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
+
+    if (idParam == null && (target_user_id == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, "all");
+      target_user_id = "all";
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_USER_ID, idParam);
+      target_user_id = idParam;
+    }
+    return target_user_id;
+  }
+
+  /**
+   * プルダウン用のカテゴリーリストを返します
+   * 
+   * @param rundata
+   * @return
+   */
+  public static ArrayList<WikiCategoryResultData> getCategoryList(
+      RunData rundata) {
+    ArrayList<WikiCategoryResultData> categoryList =
+      new ArrayList<WikiCategoryResultData>();
+
+    WikiCategoryResultData rd;
+
+    try {
+      // カテゴリ一覧
+      List<EipTWikiCategory> categoryList2 =
+        Database.query(EipTWikiCategory.class).orderAscending(
+          EipTWikiCategory.CATEGORY_NAME_PROPERTY).fetchList();
+
+      StringBuffer title;
+      ALEipUser user;
+      for (EipTWikiCategory record : categoryList2) {
+        user = ALEipUtils.getALEipUser(record.getUserId());
+        // exclude 「その他」
+        if (user != null) {
+          rd = new WikiCategoryResultData();
+          rd.initField();
+          rd.setCategoryId(record.getCategoryId().longValue());
+          title = new StringBuffer(record.getCategoryName());
+          // title.append(" （");
+          // title.append(user.getAliasName());
+          // title.append("）");
+          rd.setCategoryName(title.toString());
+          categoryList.add(rd);
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("wiki", ex);
+    }
+
+    // その他追加
+    EipTWikiCategory unCategorized =
+      Database.query(EipTWikiCategory.class).where(
+        Operations.eq(EipTWikiCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
+    rd = new WikiCategoryResultData();
+    rd.initField();
+    rd.setCategoryId(unCategorized.getCategoryId());
+    rd.setCategoryName(unCategorized.getCategoryName());
+    categoryList.add(rd);
+    return categoryList;
   }
 
   public static EipTWiki getEipTWiki(RunData rundata, Context context,
@@ -236,5 +305,4 @@ public class WikiUtils {
     }
     return categoryList;
   }
-
 }
