@@ -1509,11 +1509,14 @@
 	<db-relationship name="turbineUser" source="eip_t_todo_category" target="turbine_user" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
+	<db-relationship name="createUser" source="eip_t_wiki" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTWikiCategory" source="eip_t_wiki" target="eip_t_wiki_category" toMany="false">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
 	</db-relationship>
-	<db-relationship name="turbineUser" source="eip_t_wiki" target="turbine_user" toMany="false">
-		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	<db-relationship name="updateUser" source="eip_t_wiki" target="turbine_user" toMany="false">
+		<db-attribute-pair source="UPDATE_USER_ID" target="USER_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTWiki" source="eip_t_wiki_category" target="eip_t_wiki" toMany="true">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
@@ -1635,7 +1638,8 @@
 	<obj-relationship name="eipTTodoArray" source="EipTTodoCategory" target="EipTTodo" db-relationship-path="eipTTodo"/>
 	<obj-relationship name="turbineUser" source="EipTTodoCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTWikiCategory" source="EipTWiki" target="EipTWikiCategory" db-relationship-path="eipTWikiCategory"/>
-	<obj-relationship name="turbineUser" source="EipTWiki" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="createUser" source="EipTWiki" target="TurbineUser" db-relationship-path="createUser"/>
+	<obj-relationship name="updateUser" source="EipTWiki" target="TurbineUser" db-relationship-path="updateUser"/>
 	<obj-relationship name="eipTWiki" source="EipTWikiCategory" target="EipTWiki" db-relationship-path="eipTWiki"/>
 	<obj-relationship name="turbineUser" source="EipTWikiCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowCategory" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>

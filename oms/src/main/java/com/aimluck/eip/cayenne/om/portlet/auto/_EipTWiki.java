@@ -14,8 +14,9 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String UPDATE_USER_ID_PROPERTY = "updateUserId";
     public static final String WIKI_NAME_PROPERTY = "wikiName";
+    public static final String CREATE_USER_PROPERTY = "createUser";
     public static final String EIP_TWIKI_CATEGORY_PROPERTY = "eipTWikiCategory";
-    public static final String TURBINE_USER_PROPERTY = "turbineUser";
+    public static final String UPDATE_USER_PROPERTY = "updateUser";
 
     public static final String WIKI_ID_PK_COLUMN = "WIKI_ID";
 
@@ -75,6 +76,15 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     }
     
     
+    public void setCreateUser(com.aimluck.eip.cayenne.om.security.TurbineUser createUser) {
+        setToOneTarget("createUser", createUser, true);
+    }
+
+    public com.aimluck.eip.cayenne.om.security.TurbineUser getCreateUser() {
+        return (com.aimluck.eip.cayenne.om.security.TurbineUser)readProperty("createUser");
+    } 
+    
+    
     public void setEipTWikiCategory(com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory eipTWikiCategory) {
         setToOneTarget("eipTWikiCategory", eipTWikiCategory, true);
     }
@@ -84,12 +94,12 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     } 
     
     
-    public void setTurbineUser(com.aimluck.eip.cayenne.om.security.TurbineUser turbineUser) {
-        setToOneTarget("turbineUser", turbineUser, true);
+    public void setUpdateUser(com.aimluck.eip.cayenne.om.security.TurbineUser updateUser) {
+        setToOneTarget("updateUser", updateUser, true);
     }
 
-    public com.aimluck.eip.cayenne.om.security.TurbineUser getTurbineUser() {
-        return (com.aimluck.eip.cayenne.om.security.TurbineUser)readProperty("turbineUser");
+    public com.aimluck.eip.cayenne.om.security.TurbineUser getUpdateUser() {
+        return (com.aimluck.eip.cayenne.om.security.TurbineUser)readProperty("updateUser");
     } 
     
     
