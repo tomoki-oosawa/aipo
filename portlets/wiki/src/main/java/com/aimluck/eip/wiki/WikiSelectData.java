@@ -224,4 +224,8 @@ public class WikiSelectData extends
     return categoryList;
   }
 
+  public String getSelectedCategoryId() {
+    return "";
+  }
+
 }
