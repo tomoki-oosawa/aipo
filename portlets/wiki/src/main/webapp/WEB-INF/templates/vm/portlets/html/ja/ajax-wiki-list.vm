@@ -39,7 +39,7 @@
 		<tr>	
 			<th class="auiMTCheck center"><input type="checkbox" /></th>
 			#ALtdheadAtt("#ALajaxsort('wiki_name' 'タイトル' $result 'WikiListScreen')" "class=''")
-			#ALtdheadAtt("#ALajaxsort('user_name' '更新者' $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_user' '更新者' $result 'WikiListScreen')" "class='wName'")
 			#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
@@ -56,47 +56,8 @@
 			<td>$!record.UpdateDate</td>
 		</tr>
 		#end
-		<tr>
-			<td class="auiMTCheck center"><input type="checkbox" /></td>
-			<td class="auiMTCaption">
-				<div>
-					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
-                              </div>
-			</td>
-			<td><div>アーノルド シュワルツェネッガー</div></td>
-			<td>2013年12月10日</td>
-		</tr>
-		<tr>
-			<td class="auiMTCheck center"><input type="checkbox" /></td>
-			<td class="auiMTCaption">
-				<div>
-					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
-				</div>
-			</td>
-			<td><div>アーノルド シュワルツェネッガー</div></td>
-			<td>2013年12月10日</td>
-		</tr>
-		<tr>
-			<td class="auiMTCheck center"><input type="checkbox" /></td>
-			<td class="auiMTCaption">
-				<div>
-                                  <a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
-				</div>
-			</td>
-			<td><div>アーノルド シュワルツェネッガー</div></td>
-			<td>2013年12月10日</td>
-		</tr>
-		<tr>
-			<td class="auiMTCheck center"><input type="checkbox" /></td>
-			<td class="auiMTCaption">
-				<div>
-					<a href="javascript:void(0)" onclick="popupToggle(this,'modalDialog_wikidetail');popupToggle(this,'aimluck_widget_DialogUnderlay_1');">タイトルタイトルタイトルタイトルタイトル</a>
-				</div>	
-			</td>	
-			<td><div>アーノルド シュワルツェネッガー</div></td>
-			<td>2013年12月10日</td>
-		</tr>
-#AUItablefooter()
+	</tbody>
+</table>
 
 #AUISummaryDiv()
 #AUIajaxpageview('WikiListScreen' $result)

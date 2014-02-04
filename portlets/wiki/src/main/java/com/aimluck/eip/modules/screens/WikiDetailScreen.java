@@ -25,18 +25,18 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiCategorySelectData;
+import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
- * Wikiカテゴリの一覧を処理するクラスです。 <br />
+ * Wikiの詳細画面を処理するクラスです。 <br />
  * 
  */
-public class WikiCategoryListScreen extends ALVelocityScreen {
+public class WikiDetailScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiCategoryListScreen.class.getName());
+    .getLogger(WikiDetailScreen.class.getName());
 
   /**
    * 
@@ -47,20 +47,14 @@ public class WikiCategoryListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      WikiCategorySelectData listData = new WikiCategorySelectData();
-      listData.initField();
-      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
-        rundata,
-        context).getPortletConfig().getInitParameter("p1c-rows")));
-      listData.loadCategoryList(rundata);
-      listData.doViewList(this, rundata, context);
+      WikiSelectData detailData = new WikiSelectData();
+      detailData.initField();
+      detailData.doViewDetail(this, rundata, context);
 
-      context.put("isCategory", true);
-
-      String layout_template = "portlets/html/ja/ajax-wiki-category-list.vm";
+      String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[WikiCategoryListScreen] Exception.", ex);
+      logger.error("[WikiDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

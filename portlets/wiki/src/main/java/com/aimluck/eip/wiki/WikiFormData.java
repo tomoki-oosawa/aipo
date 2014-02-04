@@ -273,6 +273,8 @@ public class WikiFormData extends ALAbstractFormData {
       category.setCategoryName(category_name.getValue());
       // ユーザーID
       category.setTurbineUser(tuser);
+      // 更新ユーザーID
+      category.setUpdateUserId(Integer.valueOf(uid));
       // 作成日
       category.setCreateDate(Calendar.getInstance().getTime());
       // 更新日
@@ -280,9 +282,9 @@ public class WikiFormData extends ALAbstractFormData {
 
       Database.commit();
 
-    } catch (Exception ex) {
+    } catch (Exception e) {
       Database.rollback();
-      logger.error("msgboard", ex);
+      logger.error("insertCategoryData", e);
       msgList.add("エラーが発生しました。");
       return false;
     }
