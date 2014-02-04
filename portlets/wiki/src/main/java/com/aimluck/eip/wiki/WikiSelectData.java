@@ -38,6 +38,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.util.WikiCategoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -68,7 +69,7 @@ public class WikiSelectData extends
   }
 
   public void loadCategoryList(RunData rundata) {
-    categoryList = WikiUtils.loadCategoryList(rundata);
+    categoryList = WikiCategoryUtils.loadCategoryList(rundata);
   }
 
   /**
@@ -184,6 +185,8 @@ public class WikiSelectData extends
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
+      rd.setCategoryName(WikiCategoryUtils.getWikiCategory(
+        record.getCategoryId()).getCategoryName());
       rd.setNote(record.getNote());
       rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
       rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()));
@@ -222,10 +225,6 @@ public class WikiSelectData extends
 
   public List<WikiCategoryResultData> getCategoryList() {
     return categoryList;
-  }
-
-  public String getSelectedCategoryId() {
-    return "";
   }
 
 }

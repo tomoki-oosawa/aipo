@@ -19,12 +19,16 @@
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
-<h2>$l10n.TODO_MANAGEMENT</h2>
-#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.wiki.onLoadCategoryDialog);")
+<h2>$l10n.WIKI_MANAGEMENT</h2>
+<div class="auiSummaryMeta clearfix">
+<p>
+#AUIbuttonAction($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.wiki.onLoadCategoryDialog);")
+</p>
+</div>
 #AUIrowMTableWide()
 <tr>
-<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY $result 'ToDoListScreen')</th>
-<th class="wName">#ALajaxsort('user_name' $l10n.WIKI_CREATE_USER $result 'ToDoListScreen')</th>
+<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY $result 'WikiCategoryListScreen')</th>
+<th class="wName">#ALajaxsort('user_name' $l10n.WIKI_CREATE_USER $result 'WikiCategoryListScreen')</th>
 </tr>
 #AUItablefooter()
 

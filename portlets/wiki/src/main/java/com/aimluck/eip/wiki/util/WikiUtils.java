@@ -269,35 +269,4 @@ public class WikiUtils {
     }
   }
 
-  public static List<WikiCategoryResultData> loadCategoryList(RunData rundata) {
-    // カテゴリ一覧
-    List<WikiCategoryResultData> categoryList =
-      new ArrayList<WikiCategoryResultData>();
-    try {
-      SelectQuery<EipTWikiCategory> query =
-        Database.query(EipTWikiCategory.class);
-
-      WikiCategoryResultData otherRd = null;
-
-      List<EipTWikiCategory> result = query.fetchList();
-      for (EipTWikiCategory category : result) {
-        WikiCategoryResultData rd = new WikiCategoryResultData();
-        rd.initField();
-        rd.setCategoryId(category.getCategoryId().longValue());
-        rd.setCategoryName(category.getCategoryName());
-        if (category.getCategoryId().longValue() == 1) {
-          // カテゴリ「未分類」は最後に追加するため，ここではリストに追加しない．
-          otherRd = rd;
-        } else {
-          categoryList.add(rd);
-        }
-      }
-      if (otherRd != null) {
-        categoryList.add(otherRd);
-      }
-    } catch (Exception e) {
-      logger.error("WikiUtils.loadCategoryList", e);
-    }
-    return categoryList;
-  }
 }
