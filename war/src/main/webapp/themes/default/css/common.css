@@ -2463,6 +2463,10 @@ ul.blockList li a.selected {
   overflow: hidden;
 }
 
+.menubar.multi > div.single {
+  width: 197px;
+}
+
 .menubar.multi .caption {
   color: #999999;
   font-weight: bold;
