@@ -30,7 +30,6 @@
 
 #AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
-<input type="hidden" name="template" value="WorkflowListScreen"/>
 ##AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
 <div class="filterInputField">
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen")' />
