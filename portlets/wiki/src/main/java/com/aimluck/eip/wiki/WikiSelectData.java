@@ -147,7 +147,7 @@ public class WikiSelectData extends
   public EipTWiki selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, true);
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
       return wiki;
     } catch (ALPageNotFoundException pageNotFound) {
       throw pageNotFound;

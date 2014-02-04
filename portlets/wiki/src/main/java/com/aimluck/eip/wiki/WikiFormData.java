@@ -19,9 +19,12 @@
 
 package com.aimluck.eip.wiki;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -34,6 +37,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -76,6 +80,10 @@ public class WikiFormData extends ALAbstractFormData {
   /** ACL用の変数 * */
   private final String aclPortletFeature = "";
 
+  private String entityId = null;
+
+  private String mode = null;
+
   /**
    * @param action
    * @param rundata
@@ -86,8 +94,9 @@ public class WikiFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
     is_new_category = rundata.getParameters().getBoolean("is_new_category");
-
     uid = ALEipUtils.getUserId(rundata);
+    entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
   }
 
   /**
@@ -105,17 +114,18 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     name = new ALStringField();
-    name.setFieldName("タイトル");
+    name.setFieldName(getl10n("WIKI_TITLE"));
     name.setTrim(true);
+
     // カテゴリID
     category_id = new ALNumberField();
-    category_id.setFieldName("カテゴリ");
+    category_id.setFieldName(getl10n("WIKI_CATEGORY"));
     // カテゴリ
     category_name = new ALStringField();
-    category_name.setFieldName("カテゴリ名");
+    category_name.setFieldName(getl10n("WIKI_CATEGORY_NAME"));
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(getl10n("WIKI_NOTE"));
     note.setTrim(false);
 
   }
@@ -139,7 +149,6 @@ public class WikiFormData extends ALAbstractFormData {
       // カテゴリ名文字数制限
       category_name.limitMaxLength(50);
     }
-
   }
 
   /**
@@ -159,6 +168,20 @@ public class WikiFormData extends ALAbstractFormData {
       // カテゴリ名
       category_name.validate(msgList);
     }
+
+    boolean duplication = false;
+    if (ALEipConstants.MODE_UPDATE.equals(mode)
+      && !StringUtils.isEmpty(entityId)
+      && StringUtils.isNumeric(entityId)) {
+      duplication =
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(entityId));
+    } else {
+      duplication = WikiUtils.isTitleDuplicate(name.getValue());
+    }
+    if (duplication) {
+      msgList.add(getl10n("WIKI_DUPLICATE_TITLE"));
+    }
+
     return (msgList.size() == 0);
   }
 
@@ -175,7 +198,7 @@ public class WikiFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
 
       // wiki名
       name.setValue(wiki.getWikiName());
@@ -316,7 +339,7 @@ public class WikiFormData extends ALAbstractFormData {
       }
 
       // 新規オブジェクトモデル
-      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
       // トピック名
       wiki.setWikiName(name.getValue());
       // カテゴリID

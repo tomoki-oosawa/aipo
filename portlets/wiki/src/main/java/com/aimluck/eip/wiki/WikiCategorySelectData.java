@@ -47,6 +47,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.wiki.util.WikiCategoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -69,9 +70,7 @@ public class WikiCategorySelectData extends
 
   private ArrayList<ALEipGroup> myGroupList;
 
-  private ArrayList<WikiCategoryResultData> categoryList;
-
-  private int login_user_id;
+  private List<WikiCategoryResultData> categoryList;
 
   /**
    * 
@@ -86,7 +85,6 @@ public class WikiCategorySelectData extends
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "category_name");
     }
-    login_user_id = ALEipUtils.getUserId(rundata);
     super.init(action, rundata, context);
   }
 
@@ -232,7 +230,7 @@ public class WikiCategorySelectData extends
    * @param context
    */
   public void loadCategoryList(RunData rundata) {
-    categoryList = WikiUtils.getCategoryList(rundata);
+    categoryList = WikiCategoryUtils.loadCategoryList(rundata);
   }
 
   public int getCategorySum() {

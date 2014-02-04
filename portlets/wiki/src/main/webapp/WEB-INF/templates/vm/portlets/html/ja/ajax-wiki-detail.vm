@@ -49,17 +49,8 @@ $!result.Detail.CategoryName
 #ALtditem($updateDate_word)
 #ALtablefooter()
 #ALbuttonheader()
-#if($result.Detail.isSelfWiki())
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadWikiDialog")
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
-#else
-#if($result.Detail.hasAclEditWikiOther())
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadWikiDialog")
-#end
-#if($result.Detail.hasAclDeleteWikiOther())
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
-#end
-#end
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

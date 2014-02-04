@@ -52,6 +52,7 @@ public class WikiCategoryUtils {
     try {
       SelectQuery<EipTWikiCategory> query =
         Database.query(EipTWikiCategory.class);
+      query.orderAscending(EipTWikiCategory.CATEGORY_NAME_PROPERTY);
 
       WikiCategoryResultData otherRd = null;
 
