@@ -103,6 +103,57 @@ aipo.workflow.finFilterSearch = function(portlet_id) {
 	}
 }
 
+/**
+ * urlを整形して送信。
+ */
+aipo.workflow.filteredSearch=function(portlet_id){
+	//filtertype
+
+	var baseuri=dojo.byId("baseuri_"+portlet_id).value;
+
+	var types=[];
+	var params=[];
+	dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
+			//console.info(ul);
+			var type=ul.getAttribute("data-type");
+			types.push(type);
+
+			var activeli=dojo.query("li.selected",ul)[0];
+			if(activeli){
+				var param=activeli.getAttribute("data-param");
+				params.push(param);
+			}else{
+				params.push(ul.getAttribute("data-defaultparam"));
+			}
+		}
+	);
+	var q=dojo.byId("q"+portlet_id);
+	var qs=[["filter",params.join(",")],
+	        ["filtertype",types.join(",")],
+		["keyword",q?q.value:""]
+	];
+	aipo.viewPage(baseuri,portlet_id,qs);
+};
+
+/**
+ * 指定したフィルタにデフォルト値を設定する。(または消す)
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.workflow.filterSetDefault=function(portlet_id,type){
+	var ul=dojo.query("ul.filtertype[data-type="+type+"]")[0];
+	var defval=ul.getAttribute("data-defaultparam");
+	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
+	aipo.workflow.filterSelect(ul,defaultli);
+	aipo.workflow.filteredSearch(portlet_id);
+};
+
+aipo.workflow.filterSelect=function(ul,li){
+	dojo.query("li",ul).removeClass("selected");
+	dojo.query(li).addClass("selected");
+};
+
 aipo.workflow.filterClick=function(portlet_id,thisnode,event){
 	var li=thisnode.parentNode;
 	var ul=li.parentNode;

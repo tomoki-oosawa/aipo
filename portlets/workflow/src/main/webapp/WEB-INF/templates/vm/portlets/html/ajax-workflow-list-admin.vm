@@ -29,7 +29,15 @@
 <div class="filterInputField">
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen")' />
 <input type="hidden" name="template" value="WorkflowAllListScreen"/>
-<div class="filters" id="filters_$!portlet.ID"></div>
+<div class="filters" id="filters_$!portlet.ID">#*
+*##foreach($record in $result.CategoryList)#*
+*##if("$!result.CurrentFilter"=="$!record.CategoryId")#*
+	*#<span class="filterTip">#*
+		*#<span>$!{record.CategoryName}</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.workflow.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#end#*
+*#</div>
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.workflow.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.workflow.initFilterSearch("$!portlet.ID");' onblur='aipo.workflow.finFilterSearch("$!portlet.ID");' />
 </div>
@@ -78,7 +86,7 @@
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
   <div class="single">
     <p class="caption">$l10n.WORKFLOW_CLASSIFICATION</p>
-    <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="0">
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$l10n.WORKFLOW_ALL_CATEGORY</a></li>
     #foreach($record in $result.CategoryList)
       <li data-param="$!record.CategoryId" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
