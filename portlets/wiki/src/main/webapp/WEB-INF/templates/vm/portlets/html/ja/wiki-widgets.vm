@@ -19,6 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
 #set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryListScreen')))
+#set ($fileterUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filter",$!record.CategoryId).addQueryData("filtertype","category").addQueryData('tab','list').addQueryData('reset_keyword_params','true')))
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
     <div class="auiWidget clearfix widgetButton">
@@ -28,7 +29,7 @@
         <div class="auiWidget clearfix">
             <ul>
 				#foreach($record in $!result.CategoryList )
-                <li><a href="fullwindow.html" onclick="">$!record.CategoryName</a></li>
+                <li #if ($!result.issetFilter("category",$!record.CategoryId.toString())) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$fileterUrl','$!portlet.ID');">$!record.CategoryName</a></li>
 				#end
             </ul>
             <div style="margin:0.5em 0;">
