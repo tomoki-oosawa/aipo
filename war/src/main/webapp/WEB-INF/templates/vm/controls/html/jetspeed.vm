@@ -431,7 +431,7 @@ $portlet.getContent($data)
 			<div class="auiPortletSetting">
 				#foreach ( $action in $actions )
 					#if (${client} == "IPAD")
-					<a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")' title="${action.Alt}" class="auiIcon auiIconSetting" ></a>
+					<a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")' title="${action.Alt}"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
 					#else
 					<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" onclick="aipo.customize.showMenu('$!{portlet.ID}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="${action.Alt}"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
 					#end
