@@ -38,6 +38,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.util.WikiCategoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -95,7 +96,7 @@ public class WikiFormData extends ALAbstractFormData {
    * @param context
    */
   public void loadCategoryList(RunData rundata, Context context) {
-    categoryList = WikiUtils.loadCategoryList(rundata);
+    categoryList = WikiCategoryUtils.loadCategoryList(rundata);
   }
 
   /**

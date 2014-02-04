@@ -19,7 +19,12 @@
 
 package com.aimluck.eip.wiki;
 
+import info.bliki.wiki.model.WikiModel;
+
 import java.util.Date;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
@@ -34,6 +39,10 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class WikiResultData implements ALData {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WikiResultData.class.getName());
 
   /** トピック ID */
   private ALNumberField id;
@@ -54,7 +63,7 @@ public class WikiResultData implements ALData {
   private boolean new_wiki;
 
   /** メモ */
-  private ALStringField note;
+  private String note;
 
   /** 登録者名 */
   private ALStringField create_user;
@@ -78,13 +87,11 @@ public class WikiResultData implements ALData {
     name = new ALStringField();
     category_id = new ALNumberField();
     category_name = new ALStringField();
-
-    note = new ALStringField();
-    note.setTrim(false);
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
+    note = "";
 
     is_public = true;
     new_wiki = false;
@@ -158,14 +165,21 @@ public class WikiResultData implements ALData {
    * @return
    */
   public String getNote() {
-    return ALEipUtils.getMessageList(note.getValue());
+    String htmlText;
+    try {
+      htmlText = WikiModel.toHtml(note);
+    } catch (Exception e) {
+      logger.error("getNote", e);
+      return "Wikiの構文エラーが発生しました";
+    }
+    return htmlText;
   }
 
   /**
    * @param string
    */
   public void setNote(String string) {
-    note.setValue(string);
+    note = string;
   }
 
   /**
