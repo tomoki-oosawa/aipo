@@ -17,14 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
 
+#set ($categoryEtc = false)
+## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-
 #AUISummaryDiv()
-<form class="auiSearch">
-	<input class="text floatLeft long" type="text" name="q" id="q" style="margin-right:5px;">
-		<a class="auiButtonSearch" onclick="aimluck.io.setHiddenValue(this);">$l10n.WIKI_SEARCH</a>
+<form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
+<div class="filterInputField">
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen")' />
+<input type="hidden" name="template" value="WikiListScreen"/>
+
+<div class="filters" id="filters_$!portlet.ID">
+#if("$!result.CategoryName"!="")
+<span class="filterTip">
+<span>$!result.CategoryName</span>
+<a href="javascript:void(0);" class="btn" onclick='aipo.wiki.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end
+</div>
+
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.wiki.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.wiki.initFilterSearch("$!portlet.ID");' onblur='aipo.wiki.finFilterSearch("$!portlet.ID");' />
+</div>
+<a href="javascript:void(0);" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;">$l10n.WIKI_SEARCH</a>
+<div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </form>
+
 #AUISummaryDivfooter()
 
 #AUISummaryDiv()

@@ -47,7 +47,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
-import com.aimluck.eip.wiki.util.WikiCategoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -230,7 +229,7 @@ public class WikiCategorySelectData extends
    * @param context
    */
   public void loadCategoryList(RunData rundata) {
-    categoryList = WikiCategoryUtils.loadCategoryList(rundata);
+    categoryList = WikiUtils.loadCategoryList(rundata);
   }
 
   public int getCategorySum() {

@@ -22,6 +22,7 @@ package com.aimluck.eip.wiki;
 import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,7 +39,6 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.util.WikiCategoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -52,7 +52,17 @@ public class WikiSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiSelectData.class.getName());
 
-  private List<WikiCategoryResultData> categoryList = null;
+  /** カテゴリ一覧 */
+  private List<WikiCategoryResultData> categoryList;
+
+  /** カテゴリの初期値を取得する */
+  private final String filterType = "";
+
+  /** カテゴリ　ID */
+  private final String categoryId = "";
+
+  /** カテゴリ名 */
+  private String categoryName = "";
 
   /**
    * 
@@ -66,10 +76,29 @@ public class WikiSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-  }
 
-  public void loadCategoryList(RunData rundata) {
-    categoryList = WikiCategoryUtils.loadCategoryList(rundata);
+    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+    if (sort == null || sort.equals("")) {
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      String sortStr = null;
+      if (portlet != null) {
+        sortStr = portlet.getPortletConfig().getInitParameter("p2a-sort");
+      } else {
+        sortStr = "update_date";
+      }
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
+      if ("update_date".equals(sortStr)) {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
+      }
+    }
+
+    // カテゴリの初期値を取得する
+    try {
+      updateCategoryName();
+    } catch (Exception ex) {
+      logger.error("wiki", ex);
+    }
+
   }
 
   /**
@@ -98,17 +127,6 @@ public class WikiSelectData extends
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     return query;
-  }
-
-  /**
-   * パラメータをマップに変換します。
-   * 
-   * @param key
-   * @param val
-   */
-  @Override
-  protected void parseFilterMap(String key, String val) {
-
   }
 
   /**
@@ -188,8 +206,9 @@ public class WikiSelectData extends
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
-      rd.setCategoryName(WikiCategoryUtils.getWikiCategory(
-        record.getCategoryId()).getCategoryName());
+      rd.setCategoryName(WikiUtils
+        .getEipTWikiCategory(record.getCategoryId())
+        .getCategoryName());
       rd.setNote(record.getNote());
       rd.setCreateUser(ALEipUtils
         .getALEipUser(record.getCreateUserId())
@@ -221,15 +240,27 @@ public class WikiSelectData extends
     return map;
   }
 
-  /**
-   * アクセス権限チェック用メソッド。<br />
-   * アクセス権限の機能名を返します。
-   * 
-   * @return
-   */
-  @Override
-  public String getAclPortletFeature() {
-    return "";
+  public String getCategoryId() {
+    return categoryId;
+  }
+
+  private void updateCategoryName() {
+    categoryName = "";
+    if (categoryList != null) {
+      for (int i = 0; i < categoryList.size(); i++) {
+        String cid = categoryList.get(i).getCategoryId().toString();
+        if (cid != null && categoryId != null) {
+          if (cid.equals(categoryId.toString())) {
+            categoryName = categoryList.get(i).getCategoryName().toString();
+            return;
+          }
+        }
+      }
+    }
+  }
+
+  public String getCategoryName() {
+    return categoryName;
   }
 
   public List<WikiCategoryResultData> getCategoryList() {
