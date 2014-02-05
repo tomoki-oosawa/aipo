@@ -28,7 +28,7 @@
 #AUISummaryDivfooter()
 
 #AUISummaryDiv()
-<div class="floatLeft"><a href="#" class="auiButton">削除する</a></div>
+<div class="floatLeft"><a href="#" class="auiButton">$l10n.WIKI_DELETE</a></div>
 #AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 
@@ -38,9 +38,9 @@
 	<tbody>
 		<tr>	
 			<th class="auiMTCheck center"><input type="checkbox" /></th>
-			#ALtdheadAtt("#ALajaxsort('wiki_name' 'タイトル' $result 'WikiListScreen')" "class=''")
-			#ALtdheadAtt("#ALajaxsort('update_user' '更新者' $result 'WikiListScreen')" "class='wName'")
-			#ALtdheadAtt("#ALajaxsort('update_date' '更新日' $result 'WikiListScreen')" "")
+			<th>#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')</th>
+			<th class="wName">#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')</th>
+			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>

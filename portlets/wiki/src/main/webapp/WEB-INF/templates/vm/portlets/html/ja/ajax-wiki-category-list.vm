@@ -25,6 +25,9 @@
 #AUIbuttonAction($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.wiki.onLoadCategoryDialog);")
 </p>
 </div>
+#AUISummaryDiv()
+#AUIajaxpageview('WikiCategoryListScreen' $result)
+#AUISummaryDivfooter()
 #AUIrowMTableWide()
 <tr>
 <th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY $result 'WikiCategoryListScreen')</th>
