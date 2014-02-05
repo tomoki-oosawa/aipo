@@ -186,17 +186,14 @@ SELECT setval('pk_eip_m_gpdb_kubun_value',47);
 
 CREATE TABLE EIP_T_WIKI_CATEGORY
 (
-    `category_id` int(11) NOT NULL AUTO_INCREMENT,
-    `user_id` int(11) NOT NULL,
-    `update_user_id` int(11) NOT NULL,
-    `category_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-    `create_date` date DEFAULT NULL,
-    `update_date` datetime DEFAULT NULL,
-    PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',NULL,NULL);
-ALTER TABLE `eip_t_wiki` ADD FOREIGN KEY (  `category_id` ) REFERENCES  `eip_t_wiki_category` (`category_id`) ON DELETE CASCADE ;
+    CATEGORY_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    UPDATE_USER_ID INTEGER NOT NULL,
+    CATEGORY_NAME VARCHAR (64) NOT NULL,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY(CATEGORY_ID)
+);
 
 -----------------------------------------------------------------------------
 -- EIP_T_WIKI
@@ -222,5 +219,5 @@ CREATE SEQUENCE pk_eip_t_wiki_category INCREMENT 20;
 ALTER SEQUENCE pk_eip_t_wiki_category OWNED BY EIP_T_WIKI_CATEGORY.CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
 
-INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',NULL ,NULL);
+INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',now(), now());
 SELECT setval('pk_eip_t_wiki_category',1);

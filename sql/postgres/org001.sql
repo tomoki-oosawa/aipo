@@ -2011,5 +2011,5 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
 
-INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',NULL ,NULL);
+INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',now(), now());
 SELECT setval('pk_eip_t_wiki_category',1);

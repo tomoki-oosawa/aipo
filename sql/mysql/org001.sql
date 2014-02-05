@@ -1176,7 +1176,7 @@ CREATE TABLE `eip_t_wiki_category` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',NULL,NULL);
+INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',,now(),now());
 
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
