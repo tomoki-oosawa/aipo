@@ -724,10 +724,13 @@ table.simpleTable .caption {
 /***************************************************
 	modalDialog
 --------------------------------------------------*/
-/* End hides from IE-mac */ .modalDialog {
-  width: 550px;
+/* End hides from IE-mac */
+.modalDialog {
+  width: 700px;
   z-index: 997;
   position: absolute;
+  margin-left: -350px;
+  left: 50%;
 }
 
 .modalDialogTitleBar {
