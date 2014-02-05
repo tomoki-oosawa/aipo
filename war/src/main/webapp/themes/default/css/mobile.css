@@ -150,9 +150,13 @@ input[type=password] {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
-	background-image:none;
+  background-image: none !important;
 }
-.auiPortletHead {
+
+.auiPortlet {
+  margin: 0;
+}
+.auiPortlet .auiPortletHead {
   position: absolute;
   top: 0;
   width: 100%;
@@ -166,11 +170,10 @@ input[type=password] {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.auiPortletHead .inner {
+.auiPortlet .auiPortletHead .inner {
   margin: 1px 0;
 }
-
-.auiPortletTitle {
+.auiPortlet .auiPortletTitle {
   display: block;
   width: 48%;
   margin-left: 45px;
@@ -184,22 +187,20 @@ input[type=password] {
   font-weight: bold;
   color: #333;
 }
-.auiPortletTitle a {
+.auiPortlet .auiPortletTitle a {
   color: #ffffff;
   text-decoration: none;
   padding: 0;
 }
-
-.auiPortletTool {
+.auiPortlet .auiPortletTool {
   display: none;
 }
-
-.auiPortletBody {
+.auiPortlet .auiPortletBody {
   margin-top: 6px;
+  border: none;
 }
-
-.auiPortletBody .inner {
-	padding:0 5px;
+.auiPortlet .auiPortletBody .inner {
+  padding: 0 5px;
 }
 
 /***************************************************
