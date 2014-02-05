@@ -30,7 +30,6 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -217,24 +216,16 @@ public class WikiResultData implements ALData {
     return create_user;
   }
 
-  public void setCreateUser(String str) {
-    create_user.setValue(str);
-  }
-
-  public void setCreateUser(ALEipUser user) {
-    create_user = user.getName();
+  public void setCreateUser(String create_user) {
+    this.create_user.setValue(create_user);
   }
 
   public ALStringField getUpdateUser() {
     return update_user;
   }
 
-  public void setUpdateUser(ALEipUser user) {
-    update_user = user.getName();
-  }
-
-  public void setUpdateUser(String str) {
-    update_user.setValue(str);
+  public void setUpdateUser(String update_user) {
+    this.update_user.setValue(update_user);
   }
 
   /**

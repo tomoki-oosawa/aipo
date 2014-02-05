@@ -125,7 +125,10 @@ public class WikiSelectData extends
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       rd.setCategoryId(record.getCategoryId().longValue());
-      rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()));
+      rd.setUpdateUser(ALEipUtils
+        .getALEipUser(record.getUpdateUserId())
+        .getAliasName()
+        .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
@@ -188,8 +191,14 @@ public class WikiSelectData extends
       rd.setCategoryName(WikiCategoryUtils.getWikiCategory(
         record.getCategoryId()).getCategoryName());
       rd.setNote(record.getNote());
-      rd.setCreateUser(ALEipUtils.getALEipUser(record.getCreateUserId()));
-      rd.setUpdateUser(ALEipUtils.getALEipUser(record.getUpdateUserId()));
+      rd.setCreateUser(ALEipUtils
+        .getALEipUser(record.getCreateUserId())
+        .getAliasName()
+        .getValue());
+      rd.setUpdateUser(ALEipUtils
+        .getALEipUser(record.getUpdateUserId())
+        .getAliasName()
+        .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
