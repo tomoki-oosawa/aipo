@@ -79,7 +79,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheaderAtt('align="center" class="auiMTCheck"')
-<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" /></td>
+<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
