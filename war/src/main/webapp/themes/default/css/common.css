@@ -149,7 +149,7 @@ h3 {
   line-height: 150%;
   padding: 2px 0;
   margin: 0 0 10px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #ededed;
 }
 
 h4 {
@@ -166,15 +166,17 @@ blockquote {
 }
 
 div.outer {
-  border-top: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
+  border-left: 1px solid #ededed;
   border-bottom: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
   margin-bottom: 2px;
   margin-top: 2px;
 }
 
-.clearfix, .inner {zoom:1;}
+.clearfix, .inner {
+  zoom: 1;
+}
 
 .clearfix:after, .inner:after {
   content: "";
@@ -182,7 +184,9 @@ div.outer {
   clear: both;
 }
 
-.clear {clear:both;}
+.clear {
+  clear: both;
+}
 
 .alignleft {
   float: left;
@@ -328,7 +332,8 @@ table.center {
 }
 
 .roundMainWrapper {
-  padding: 10px;
+  padding: 0 5px;
+  background: white;
 }
 .roundMainWrapper noscript .alert {
   -webkit-border-radius: 8px;
@@ -408,11 +413,6 @@ table.roundBlockWrapperTop td.roundBlockIcon img {
   padding: 8px 1px 0 4px;
   vertical-align: top;
   width: 100%;
-}
-
-.roundBlockContent {
-	padding-left:5px;
-	padding-right:5px;
 }
 
 .relativeBlock{
@@ -935,8 +935,8 @@ table.simpleTable .caption {
 /* END tutorialDialog */
 .popupMenu {
   position: absolute;
-  border-top: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
+  border-left: 1px solid #ededed;
   border-bottom: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
   background: #f5f5f5;
@@ -1054,7 +1054,7 @@ table.simpleTable .caption {
 
 .menuSeparatorBottom {
   height: 50%;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
   margin: 0 2px;
   font-size: 1px;
 }
@@ -1691,15 +1691,15 @@ div.termScheduleDivTgt {
 
 table.weeklyTableHead {
   margin-top: 5px;
-  border-top: solid 1px #ddd;
-  border-right: solid 1px #ddd;
+  border-top: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
 }
 
 div.weeklyBorder {
   width: 100%;
   height: 2px;
-  border-right: solid #ddd 1px;
-  background-color: #ddd;
+  border-right: solid #d2d2d2 1px;
+  background-color: #d2d2d2;
   font-size: 1px;
   line-height: 1px;
 }
@@ -2331,6 +2331,7 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
+  max-width: 180px;
   padding: 4px 6px !important;
   margin: 0;
   text-decoration: none;
@@ -2365,7 +2366,7 @@ ul.blockList li a.selected {
 
 /* tip Class */
 .tipDivider {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
 
 .supportPopup .tipDivider {

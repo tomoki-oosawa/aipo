@@ -366,7 +366,7 @@ img.avatar,
 .activityTable td {
   padding: 3px;
   margin: 0;
-  border-bottom: #f0f0f0 solid 1px;
+  border-bottom: #ededed solid 1px;
   vertical-align: top;
 }
 
@@ -409,7 +409,7 @@ img.avatar,
 .activityList li {
   padding: 3px;
   margin: 0;
-  border-bottom: #f0f0f0 solid 1px;
+  border-bottom: #ededed solid 1px;
   vertical-align: top;
   background: none;
 }
@@ -494,100 +494,93 @@ img.avatar,
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet {
-  background: url(../images/common/portlet_x.gif?20130918) repeat-x bottom center;
+  background: white;
+  background: white url("../images/common/portlet_20140116.gif") repeat-x left bottom;
+  margin: 10px 5px;
 }
-
-.auiPortletHead {
-  background: url(../images/common/portlet_x.gif?20130918) repeat-x left -189px;
-  height: 45px;
+.auiPortlet .auiPortletHead {
+  border-bottom: solid 1px #ededed;
+  background: url("../images/common/portlet_20140116.gif") repeat-x left top;
 }
-.auiPortletHead .inner {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat left 0;
-  height: 45px;
+.auiPortlet .auiPortletHead .inner {
+  background: url("../images/common/portlet_20140116.gif") no-repeat left -100px;
+  padding: 9px 10px;
   position: relative;
+  overflow: hidden;
 }
-
-.auiPortletBody .auiPortletHead .inner {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat left 0 !important;
+.auiPortlet .auiPortletBody .auiPortletHead .inner {
   padding: 0 !important;
 }
-
-.auiPortletTitle {
+.auiPortlet .auiPortletTitle {
   float: left;
-  padding: 13px 0 0 30px;
   white-space: nowrap;
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat left -144px;
 }
-
-.auiPortletTool {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -50px;
+.auiPortlet .auiPortletTool {
+  background: url("../images/common/portlet_20140116.gif") no-repeat right -200px;
   top: 0;
   right: 0;
   float: right;
-  min-width: 25px;
-  height: 32px;
-  padding: 13px 10px 0 0;
+  min-height: 15px;
+  padding: 10px;
   position: absolute;
 }
-.auiPortletTool > div {
+.auiPortlet .auiPortletTool > div {
   float: left;
   padding: 0 5px;
-  border-left: solid 1px #d2d2d2;
   background: #ffffff;
-  box-shadow: -5px 0 3px #ffffff;
-  -webkit-box-shadow: -5px 0 3px #fff;
+  -webkit-box-shadow: -5px 0 3px white;
+  -moz-box-shadow: -5px 0 3px white;
+  box-shadow: -5px 0 3px white;
   white-space: nowrap;
 }
-
-.auiPortletSetting .menubar {
+.auiPortlet .auiPortletSetting {
+  padding-right: 0 !important;
+}
+.auiPortlet .auiPortletSetting .menubar {
   right: 15px;
 }
-
-*:first-child + html .auiPortletSetting .menubar {
+.auiPortlet *:first-child + html .auiPortletSetting .menubar {
   top: 30px;
   z-index: 9999;
   zoom: 1;
 }
-
-.auiPortletDelete a {
+.auiPortlet .auiPortletDelete a {
   background: none;
   color: #666666;
   font-size: 15px;
 }
-.auiPortletDelete a:hover {
+.auiPortlet .auiPortletDelete a:hover {
   color: white;
 }
-.auiPortletDelete a, .auiPortletDelete i {
+.auiPortlet .auiPortletDelete a, .auiPortlet .auiPortletDelete i {
   line-height: 16px;
   text-decoration: none;
   text-align: center;
 }
-
-.auiPortletBody {
-  background: white url(../images/common/portlet_l.gif?20130918) repeat-y left 0;
+.auiPortlet .auiPortletBody {
+  background: #ffffff;
+  border-left: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
 }
-.auiPortletBody .inner {
-  background: url(../images/common/portlet_r.gif?20130918) repeat-y right 0;
-  padding: 4px 22px 0 22px;
+.auiPortlet .auiPortletBody .inner {
+  position: relative;
+  padding: 10px 10px 0 10px;
 }
-.auiPortletBody .inner:after {
+.auiPortlet .auiPortletBody .inner:after {
   content: ".";
   display: block;
   height: 0;
   clear: both;
   visibility: hidden;
 }
-
-.auiPortletFoot {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat left -102px;
+.auiPortlet .auiPortletFoot {
+  background: url("../images/common/portlet_20140116.gif") no-repeat left -390px;
 }
-.auiPortletFoot .inner {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -124px;
-  height: 20px;
+.auiPortlet .auiPortletFoot .inner {
+  height: 10px;
+  background: url("../images/common/portlet_20140116.gif") no-repeat right -490px;
 }
-
-.auiPortletBody .auiPortletFoot .inner {
-  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -124px !important;
+.auiPortlet .auiPortletBody .auiPortletFoot .inner {
   padding: 0 !important;
 }
 
@@ -604,26 +597,53 @@ img.avatar,
 --------------------------------------------------*/
 .userList li {
   background: none;
-  padding: 5px 0;
-  border-bottom: solid 1px #f0f0f0;
+  padding: 0;
+  border-bottom: solid 1px #ededed;
 }
-
-.userList .avatar {
-  height: 50px;
-  padding-right: 10px;
+.userList label {
+  display: inline-block;
+  width: 100%;
 }
-
 .userList .content {
-  display: table-cell;
+  width: 100%;
   overflow: hidden;
   vertical-align: middle;
 }
-
 .userList .content div {
   display: table-cell;
   *display: inline;
   vertical-align: middle;
   zoom: 1;
+  padding: 5px 10px 5px 0;
+}
+.userList .content div.check {
+  padding-left: 10px;
+}
+.userList .avatar {
+  height: 50px;
+}
+.userList .avatar img {
+  height: 50px;
+  width: 50px;
+}
+.userList .avatar_s {
+  height: 24px;
+}
+.userList .avatar_s img {
+  height: 24px;
+  width: 24px;
+}
+
+.userListIcon li {
+  display: block;
+  float: left;
+  background: none;
+  margin: 0 4px 5px 0;
+  padding: 0;
+}
+.userListIcon .avatar img {
+  width: 24px;
+  height: 24px;
 }
 
 /***************************************************
@@ -948,6 +968,7 @@ img.avatar,
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
+  -o-border-radius: 2px;
   border-radius: 2px;
   -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 1s;
@@ -960,6 +981,7 @@ img.avatar,
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
+  -o-border-radius: 2px;
   border-radius: 2px;
 }
 
@@ -968,14 +990,14 @@ img.avatar,
 --------------------------------------------------*/
 .dialogTable {
   margin: 15px 0;
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
   border-collapse: collapse;
 }
 
 .dialogTable th,
 .dialogTable td {
   padding: 10px;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 
 .dialogTable .caption {
@@ -998,29 +1020,24 @@ img.avatar,
 .auiWidget {
   clear: both;
   padding: 0.8em 0;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
-
 .auiWidget h2 {
   line-height: 2em;
 }
-
 .auiWidget p {
   margin: 0.8em 0;
 }
-
 .auiWidget li {
   padding: 0;
   background: none;
 }
-
 .auiWidget li span {
   display: block;
   line-height: 1.8em;
   padding: 0.3em 0 0.3em 18px;
   background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
-
 .auiWidget li a {
   display: block;
   line-height: 1.8em;
@@ -1033,45 +1050,55 @@ img.avatar,
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .auiWidget li a:hover {
   color: #000;
   background: #f6f6f6;
 }
-
-.auiWidget li.active > a {
-  font-weight: bold;
-  background: #f0f0f0;
-}
-
 .auiWidget li ul {
   margin: 0;
 }
-
 .auiWidget li li a,
 .auiWidget li li a:hover,
 .auiWidget li li.active a {
   padding: 0.3em 0 0.3em 36px;
   background-position: 23px 1em;
 }
+.auiWidget li.active > a {
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+.inlistCount {
+  color: black;
+  display: inline-block;
+  font-size: 10px;
+  width: 20px;
+  margin: 0 5px 0 -5px;
+  text-align: center;
+}
+.inlistCount.noread {
+  font-weight: bold;
+}
 
 /***************************************************
 	submenu_v2
 --------------------------------------------------*/
 .submenu_v2 {
+  margin: 10px 5px;
   clear: both;
   width: 200px;
-  margin: 0 0 10px 0;
-  padding: 0;
-  background: url(../images/common/bg_submenu.gif) no-repeat bottom right;
+  overflow: hidden;
+  background: url("../images/common/bg_submenu_20140116.gif") no-repeat left top;
 }
 .submenu_v2 > ul {
-  padding: 20px 0;
-  background: url(../images/common/bg_submenu.gif) no-repeat top left;
+  background: url("../images/common/bg_submenu_20140116.gif") no-repeat right bottom;
+  padding: 6px 0;
 }
 .submenu_v2 li {
-  padding: 0 6px;
-  background: url(../images/common/bg_submenu.gif) repeat-y top center;
+  padding: 0 5px;
+  background: none;
+  border-right: solid 1px #d2d2d2;
+  border-left: solid 1px #d2d2d2;
 }
 .submenu_v2 li span {
   display: block;
@@ -1080,8 +1107,8 @@ img.avatar,
 }
 .submenu_v2 li a {
   display: block;
-  line-height: 1.8em;
-  padding: 0.3em 0 0.3em 10px;
+  line-height: 35px;
+  padding: 0 10px;
   text-decoration: none;
   background: none;
   white-space: nowrap;
@@ -1089,6 +1116,11 @@ img.avatar,
   width: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
 }
 .submenu_v2 li a:hover {
   color: #000;
@@ -1546,7 +1578,6 @@ input.auiButtonSearch.active {
   background-color: #c0c0c0 \9;
 }
 
-/* other */
 .auiButton span {
   display: table-cell;
   min-width: 20px;
@@ -1798,11 +1829,9 @@ input.auiButtonSearch.active {
 .auiSearch {
   position: relative;
 }
-
 .auiSearch input.long {
   min-width: 320px;
 }
-
 .auiSearch input.date {
   width: 7em;
 }
@@ -1824,17 +1853,14 @@ input.auiButtonSearch.active {
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
 .auiSearchOption .close {
   float: right;
 }
-
 .auiSearchOption .element {
   margin-bottom: 10px;
   padding-bottom: 5px;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
-
 .auiSearchOption label {
   line-height: 2em;
   cursor: default;
@@ -1860,13 +1886,12 @@ input.auiButtonSearch.active {
   margin: 10px 0;
   vertical-align: middle;
 }
-.auiSummaryMeta form {
-  line-height: 32px;
-}
-
 .auiSummaryMeta .caption {
   padding: 8px 0;
   font-weight: bold;
+}
+.auiSummaryMeta form {
+  line-height: 32px;
 }
 
 *:first-child + html .auiSummaryMeta {
@@ -1955,10 +1980,10 @@ input.auiButtonSearch.active {
 }
 .auiRowTable td {
   padding: 8px 5px;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 .auiRowTable .dayStart td {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
 .auiRowTable .day,
 .auiRowTable .time {
@@ -2004,7 +2029,7 @@ input.auiButtonSearch.active {
 }
 
 .auiRowTable.scheduleList {
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 .auiRowTable.scheduleList td {
   border-bottom: none;
@@ -2037,7 +2062,7 @@ input.auiButtonSearch.active {
 }
 
 .auiMultiTable td {
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #ededed;
 }
 
 .wDays {
@@ -2291,7 +2316,7 @@ input.auiButtonSearch.active {
 --------------------------------------------------*/
 #auiBlogEntries {
   padding-top: 1em;
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
 
 #auiBlogEntries .avatar {
@@ -2300,7 +2325,7 @@ input.auiButtonSearch.active {
 
 #auiBlogEntries .entry {
   margin: 0 0 1em 0;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 
 .entry:first-child .entryHeader p {
@@ -2550,13 +2575,12 @@ ul.attachments {
 --------------------------------------------------*/
 #timelineOuter {
   position: relative;
-  margin: 5px 0;
 }
 #timelineOuter .message {
   margin: 0;
   padding: 10px 0 0;
   clear: both;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
 }
 #timelineOuter .message:first-child,
 #timelineOuter .message.first {
@@ -2623,7 +2647,7 @@ ul.attachments {
 }
 
 .tlInputControls {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
   padding: 4px;
   background: #f6f6f6;
 }
@@ -2656,7 +2680,7 @@ ul.attachments {
   height: 10px;
   line-height: 10px;
   /*text-align:right;*/
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
   z-index: 1;
 }
 .tlDisplayChanger .btn {
@@ -2890,7 +2914,7 @@ ul.attachments {
 .timeline .commentInputDummy {
   padding: 5px;
   border-top: solid 1px #fff;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 
 .timeline .commentInputDummy span {
@@ -2910,7 +2934,7 @@ ul.attachments {
 .timeline .commentField {
   padding: 5px;
   border-top: solid 1px #fff;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
 }
 
 .timeline .commentField form {
@@ -3158,7 +3182,7 @@ ul.attachments {
   width: 100%;
   background: none;
   padding: 0;
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
   overflow: hidden;
 }
 
@@ -3220,12 +3244,12 @@ ul.attachments {
   margin: 6px 0;
   margin-right: -5px;
   margin-left: -5px;
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
 .auiWideList .row {
   position: relative;
   padding: 7px 5px 6px 5px;
-  border-bottom: solid 1px #f0f0f0;
+  border-bottom: solid 1px #ededed;
   overflow: hidden;
 }
 .auiWideList .row:hover {
@@ -3414,34 +3438,34 @@ ul.attachments {
 	auiDispChanger
 --------------------------------------------------*/
 .auiDispChanger {
-	text-align: center;
-	background: #d2d2d2;
-	background: #333333;
+  text-align: center;
+  background: #d2d2d2;
+  background: #333333;
 }
 .auiDispChanger a {
-	color: white;
-	display: block;
-	height: 40px;
-	line-height: 40px;
-	font-size: 16px;
-	font-weight: bold;
-	text-decoration: none;
-	text-shadow: 0 1px 0 black;
-	border-top: solid 1px rgba(255, 255, 255, 0.3);
-	border-bottom: solid 1px rgba(0, 0, 0, 0.8);
+  color: white;
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-shadow: 0 1px 0 black;
+  border-top: solid 1px rgba(255, 255, 255, 0.3);
+  border-bottom: solid 1px rgba(0, 0, 0, 0.8);
 }
 .auiDispChanger .icon {
-	display: inline-block;
-	padding: 10px;
-	vertical-align: middle;
-	text-align: center;
+  display: inline-block;
+  padding: 10px;
+  vertical-align: middle;
+  text-align: center;
 }
 .auiDispChanger .icon i {
-	display: block;
-	width: 20px;
-	font-size: 20px;
-	line-height: 20px;
-	color: #fff !important;
+  display: block;
+  width: 20px;
+  font-size: 20px;
+  line-height: 20px;
+  color: #fff !important;
 }
 
 /***************************************************
@@ -4088,7 +4112,7 @@ a.auiIconMailOpen:hover {
 }
 
 /***************************************************
-	auiIcon
+	auiIconArrow
 --------------------------------------------------*/
 .auiIconArrow {
   display: inline-block;
@@ -4156,7 +4180,7 @@ a.auiIconMailOpen:hover {
   line-height: 16px;
   font-size: 14px;
   vertical-align: middle;
-  color: #666666;
+  color: #999999;
   text-decoration: none;
   text-shadow: none;
 }
@@ -4166,7 +4190,7 @@ a:hover .auiWFicon {
 }
 
 a:hover .auiWFicon [class^="icon-"] {
-  color: #fff;
+  color: #333333;
 }
 
 [class^="icon-"] {
