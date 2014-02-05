@@ -75,7 +75,7 @@ public class WikiAction extends ALBaseAction {
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
     WikiSelectData listData = new WikiSelectData();
-    listData.loadCategoryList(rundata);
+    // listData.loadCategoryList(rundata);
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()

@@ -51,7 +51,7 @@ public class WikiListScreen extends WikiScreen {
     try {
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
-      listData.loadCategoryList(rundata);
+      // listData.loadCategoryList(rundata);
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1b-rows")));
