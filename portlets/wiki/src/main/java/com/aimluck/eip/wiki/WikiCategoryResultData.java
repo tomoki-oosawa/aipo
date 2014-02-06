@@ -51,12 +51,6 @@ public class WikiCategoryResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
-  private boolean hasAclEditCategoryOther;
-
-  private boolean hasAclDeleteCategoryOther;
-
-  private boolean is_self_category;
-
   /**
    *
    *
@@ -70,7 +64,6 @@ public class WikiCategoryResultData implements ALData {
     update_date = new ALStringField();
     user_name = new ALStringField();
     update_user_name = new ALStringField();
-    is_self_category = false;
   }
 
   /**
@@ -161,31 +154,6 @@ public class WikiCategoryResultData implements ALData {
 
   public ALStringField getUpdateUserName() {
     return update_user_name;
-  }
-
-  public void setHasAclEditCategoryOther(boolean hasAclEditCategoryOther) {
-    this.hasAclEditCategoryOther = hasAclEditCategoryOther;
-  }
-
-  public boolean hasAclEditCategoryOther() {
-    return hasAclEditCategoryOther;
-  }
-
-  public void setHasAclDeleteCategoryOther(boolean hasAclDeleteCategoryOther) {
-    this.hasAclDeleteCategoryOther = hasAclDeleteCategoryOther;
-  }
-
-  public boolean hasAclDeleteCategoryOther() {
-    return hasAclDeleteCategoryOther;
-  }
-
-  public void setIsSelfCategory(boolean is_self_category) {
-    this.is_self_category = is_self_category;
-  }
-
-  public boolean isSelfCategory() {
-    return is_self_category;
-
   }
 
 }

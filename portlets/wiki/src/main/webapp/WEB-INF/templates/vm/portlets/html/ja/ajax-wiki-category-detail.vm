@@ -39,15 +39,11 @@
 #ALtablefooter()
 #ALbuttonheader()
 #if($result.Detail.isSelfCategory())
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadCategoryDialog")
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadCategoryDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
 #else
-#if($result.Detail.hasAclEditCategoryOther())
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.todo.onLoadCategoryDialog")
-#end
-#if($result.Detail.hasAclDeleteCategoryOther())
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onReceiveMessage")
-#end
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadCategoryDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
