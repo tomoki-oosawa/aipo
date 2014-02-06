@@ -213,11 +213,31 @@ CREATE TABLE EIP_T_WIKI
     PRIMARY KEY(WIKI_ID)
 );
 
+-----------------------------------------------------------------------------
+-- EIP_T_WIKI_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    WIKI_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (WIKI_ID) REFERENCES EIP_T_WIKI (WIKI_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
 CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki_category INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
 
 ALTER SEQUENCE pk_eip_t_wiki_category OWNED BY EIP_T_WIKI_CATEGORY.CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
+ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
 
 INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',now(), now());
 SELECT setval('pk_eip_t_wiki_category',1);
