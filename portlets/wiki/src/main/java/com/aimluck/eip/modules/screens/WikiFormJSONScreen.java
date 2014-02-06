@@ -70,6 +70,18 @@ public class WikiFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
+      } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
+        //
+        WikiFormData formData = new WikiFormData();
+        formData.initField();
+        formData.loadCategoryList(rundata, context);
+        if (formData.doDelete(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
       }
 
     } catch (Exception e) {

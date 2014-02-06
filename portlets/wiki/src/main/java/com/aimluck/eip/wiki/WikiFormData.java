@@ -41,6 +41,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
@@ -224,6 +226,33 @@ public class WikiFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) {
+    try {
+      // オブジェクトモデルを取得
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+      if (wiki == null) {
+        return false;
+      }
+
+      // entityIdの取得
+      int entityId = wiki.getWikiId();
+      // タイトルの取得
+      String wikiName = wiki.getWikiName();
+
+      // Wikiを削除
+      Database.delete(wiki);
+      Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_WIKI,
+        wikiName);
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("[WikiFormData]", t);
+      return false;
+    }
     return true;
   }
 
