@@ -49,6 +49,9 @@ public class WikiCategoryListScreen extends ALVelocityScreen {
     try {
       WikiCategorySelectData listData = new WikiCategorySelectData();
       listData.initField();
+      listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
+        rundata,
+        context).getPortletConfig().getInitParameter("p1c-rows")));
       listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 

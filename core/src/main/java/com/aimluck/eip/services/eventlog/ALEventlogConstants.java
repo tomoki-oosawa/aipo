@@ -123,4 +123,6 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_WIKI = 350;
 
+  public static final int PORTLET_TYPE_WIKI_CATEGORY = 351;
+
 }

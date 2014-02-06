@@ -237,4 +237,8 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_GPDB = "Webデータベース";
 
+  public static final String PORTLET_TYPE_STR_WIKI = "Wiki";
+
+  public static final String PORTLET_TYPE_STR_WIKI_CATEGORY = "Wikiカテゴリ";
+
 }

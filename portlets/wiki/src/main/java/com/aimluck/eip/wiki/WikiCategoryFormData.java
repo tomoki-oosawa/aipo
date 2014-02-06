@@ -38,6 +38,8 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
@@ -74,31 +76,13 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    // String categoryid =
-    // ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-    // if (categoryid != null && Integer.valueOf(categoryid) != null) {
-    // category_id = Integer.valueOf(categoryid);
-    // }
-    //
-    // user_id = ALEipUtils.getUserId(rundata);
-    //
-    // String categoryId =
-    // rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-    // if (categoryId == null || categoryId.equals("new")) {
-    // aclPortletFeature =
-    // ALAccessControlConstants.POERTLET_FEATURE_WIKI_CATEGORY_SELF;
-    // } else {
-    // EipTWikiCategory category =
-    // WikiUtils.getEipTWikiCategory(rundata, context);
-    // if ((category != null && category.getTurbineUser().getUserId() !=
-    // user_id)) {
-    // aclPortletFeature =
-    // ALAccessControlConstants.POERTLET_FEATURE_WIKI_CATEGORY_OTHER;
-    // } else {
-    // aclPortletFeature =
-    // ALAccessControlConstants.POERTLET_FEATURE_WIKI_CATEGORY_SELF;
-    // }
-    // }
+    String categoryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    if (categoryid != null && Integer.valueOf(categoryid) != null) {
+      category_id = Integer.valueOf(categoryid);
+    }
+
+    user_id = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -233,10 +217,10 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // イベントログに保存
-      // ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-      // category.getCategoryId(),
-      // ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
-      // category_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
+        category_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();
@@ -274,10 +258,10 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       // Wikiカテゴリを更新
       Database.commit();
       // イベントログに保存
-      // ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-      // category.getCategoryId(),
-      // ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
-      // category_name.getValue());
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        category.getCategoryId(),
+        ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
+        category_name.getValue());
 
     } catch (Throwable t) {
       Database.rollback();
@@ -321,10 +305,10 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       Database.commit();
 
       // ログに保存
-      // ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-      // entityId,
-      // ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
-      // categoryName);
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_WIKI_CATEGORY,
+        categoryName);
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
