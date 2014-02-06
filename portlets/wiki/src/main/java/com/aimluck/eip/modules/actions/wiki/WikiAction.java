@@ -87,9 +87,9 @@ public class WikiAction extends ALBaseAction {
       if (getMode() == null) {
         doWiki_list(rundata, context);
       }
-      assert (false);
+
     } catch (Exception ex) {
-      logger.error("todo", ex);
+      logger.error("wiki", ex);
     }
   }
 

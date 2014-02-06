@@ -21,17 +21,29 @@ package com.aimluck.eip.wiki;
 
 import java.util.List;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 
  */
 public class WikiMultiDelete extends ALAbstractCheckList {
+
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WikiMultiDelete.class.getName());
 
   /**
    * @param rundata
@@ -46,7 +58,40 @@ public class WikiMultiDelete extends ALAbstractCheckList {
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+
+      Expression exp1 =
+        ExpressionFactory.inDbExp(EipTWiki.WIKI_ID_PK_COLUMN, values);
+
+      List<EipTWiki> wikiList =
+        Database.query(EipTWiki.class, exp1).fetchList();
+      if (wikiList == null || wikiList.size() == 0) {
+        return false;
+      }
+
+      for (EipTWiki wiki : wikiList) {
+
+        // entityIdを取得
+        Integer entityId = wiki.getWikiId();
+        // Wiki名を取得
+        String wikiName = wiki.getWikiName();
+
+        // Wikiを削除
+        Database.delete(wiki);
+        Database.commit();
+
+        // ログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          entityId,
+          ALEventlogConstants.PORTLET_TYPE_WIKI,
+          wikiName);
+      }
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("[WikiMultiDelete]", t);
+      return false;
+    }
+    return true;
   }
 
 }
