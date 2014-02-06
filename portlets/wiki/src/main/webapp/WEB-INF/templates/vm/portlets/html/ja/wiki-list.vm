@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [[$l10n.WIKI_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WIKI_WIKILIST, ""]])
+#set ($navilist = [[$l10n.WIKI_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WIKI_WIKI_LIST, ""]])
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/wiki/form.js")
 <script language="JavaScript" type="text/javascript">

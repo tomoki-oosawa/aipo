@@ -27,7 +27,7 @@
 <div id="messageDiv"></div>
 #ALajaxdetailformheader("Wiki")
 #ALtableheaderWide()
-#ALtdcaption($l10n.SCHEDULE_TITLE)
+#ALtdcaption($l10n.WIKI_TITLE)
 #ALtditem($!result.Detail.name)
 #ALtdcaption($l10n.WIKI_CATEGORY)
 #ALtditemheader()
