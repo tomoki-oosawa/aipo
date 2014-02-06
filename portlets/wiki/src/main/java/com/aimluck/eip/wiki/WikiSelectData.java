@@ -80,12 +80,8 @@ public class WikiSelectData extends
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-      String sortStr = null;
-      if (portlet != null) {
-        sortStr = portlet.getPortletConfig().getInitParameter("p2a-sort");
-      } else {
-        sortStr = "update_date";
-      }
+      // default sort
+      String sortStr = "update_date";
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
       if ("update_date".equals(sortStr)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
@@ -99,6 +95,15 @@ public class WikiSelectData extends
       logger.error("wiki", ex);
     }
 
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void loadCategoryList(RunData rundata) {
+    categoryList = WikiUtils.getCategoryList(rundata);
   }
 
   /**
