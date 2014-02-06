@@ -563,7 +563,6 @@ img.avatar,
   border-right: solid 1px #d2d2d2;
 }
 .auiPortlet .auiPortletBody .inner {
-  position: relative;
   padding: 10px 10px 0 10px;
 }
 .auiPortlet .auiPortletBody .inner:after {
