@@ -45,11 +45,12 @@
 </form>
 
 #AUISummaryDivfooter()
+#ALajaxlistformheaderAction('Wiki')
 #if($result.List.size() == 0)
 <div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
 #else
 #AUISummaryDiv()
-<div class="floatLeft"><a href="#" class="auiButton">$l10n.WIKI_DELETE</a></div>
+#AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 
@@ -84,6 +85,7 @@
 #AUIajaxpageview('WikiListScreen' $result)
 
 #AUISummaryDivfooter()
+#ALformfooter()
 #end
 
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />

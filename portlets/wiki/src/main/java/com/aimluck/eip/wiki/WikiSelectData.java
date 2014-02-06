@@ -22,12 +22,15 @@ package com.aimluck.eip.wiki;
 import java.util.List;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
@@ -64,6 +67,9 @@ public class WikiSelectData extends
 
   /** カテゴリ名 */
   private String categoryName = "";
+
+  /** ターゲット　 */
+  private ALStringField target_keyword;
 
   /**
    * 
@@ -111,6 +117,8 @@ public class WikiSelectData extends
       logger.error("wiki", ex);
     }
 
+    target_keyword = new ALStringField();
+    super.init(action, rundata, context);
   }
 
   /**
@@ -133,6 +141,8 @@ public class WikiSelectData extends
   @Override
   public ResultList<EipTWiki> selectList(RunData rundata, Context context) {
     try {
+      target_keyword.setValue(WikiUtils.getTargetKeyword(rundata, context));
+
       SelectQuery<EipTWiki> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
@@ -147,6 +157,16 @@ public class WikiSelectData extends
 
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      // 選択したキーワードを指定する．
+      String keyword = "%" + target_keyword.getValue() + "%";
+
+      Expression exp =
+        ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, keyword);
+      Expression exp2 =
+        ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
+      query.andQualifier(exp.orExp(exp2));
+    }
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -321,4 +341,10 @@ public class WikiSelectData extends
     return categoryList;
   }
 
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getTargetKeyword() {
+    return target_keyword;
+  }
 }

@@ -28,6 +28,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.wiki.WikiFormData;
+import com.aimluck.eip.wiki.WikiMultiDelete;
 
 /**
  * Wikiを処理するクラスです。 <br />
@@ -37,7 +38,7 @@ public class WikiFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiFormScreen.class.getName());
+    .getLogger(WikiFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -82,10 +83,19 @@ public class WikiFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
+      } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
+        WikiMultiDelete delete = new WikiMultiDelete();
+        if (delete.doMultiAction(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
       }
 
     } catch (Exception e) {
-      logger.error("[MsgboardTopicFormJSONScreen]", e);
+      logger.error("[WikiFormJSONScreen]", e);
     }
 
     return result;
