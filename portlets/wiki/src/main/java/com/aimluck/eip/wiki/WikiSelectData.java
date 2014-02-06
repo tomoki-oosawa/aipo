@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
+import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -59,10 +60,10 @@ public class WikiSelectData extends
   private List<WikiCategoryResultData> categoryList;
 
   /** カテゴリの初期値を取得する */
-  private final String filterType = "";
+  private String filterType = "";
 
   /** カテゴリ　ID */
-  private final String categoryId = "";
+  private String categoryId = "";
 
   /** カテゴリ名 */
   private String categoryName = "";
@@ -95,6 +96,21 @@ public class WikiSelectData extends
     }
 
     // カテゴリの初期値を取得する
+    try {
+      filterType = rundata.getParameters().getString("filtertype", "");
+      if (filterType.equals("category")) {
+        String categoryId = rundata.getParameters().getString("filter", "");
+        if (!categoryId.equals("")) {
+          this.categoryId = categoryId;
+        } else {
+          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+          this.categoryId =
+            portlet.getPortletConfig().getInitParameter("p3a-category");
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("todo", ex);
+    }
     try {
       updateCategoryName();
     } catch (Exception ex) {
@@ -151,6 +167,38 @@ public class WikiSelectData extends
         ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
       query.andQualifier(exp.orExp(exp2));
     }
+    return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  @Override
+  protected SelectQuery<EipTWiki> buildSelectQueryForFilter(
+      SelectQuery<EipTWiki> query, RunData rundata, Context context) {
+    if (current_filterMap.containsKey("category")) {
+      // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
+      List<String> categoryIds = current_filterMap.get("category");
+      categoryId = categoryIds.get(0).toString();
+      List<WikiCategoryResultData> categoryList =
+        WikiUtils.loadCategoryList(rundata);
+      boolean existCategory = false;
+      if (categoryList != null && categoryList.size() > 0) {
+        for (WikiCategoryResultData category : categoryList) {
+          if (categoryId.equals(category.getCategoryId().toString())) {
+            existCategory = true;
+            break;
+          }
+        }
+
+      }
+      if (!existCategory) {
+        categoryId = "";
+        current_filterMap.remove("category");
+      }
+
+      updateCategoryName();
+    }
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
     return query;
   }
 
@@ -259,6 +307,7 @@ public class WikiSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
+    map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
     map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
     map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);

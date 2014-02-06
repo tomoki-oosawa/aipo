@@ -601,6 +601,16 @@
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
+	<db-entity name="eip_t_wiki_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="WIKI_ID" type="INTEGER"/>
+	</db-entity>
 	<db-entity name="eip_t_workflow_category">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CATEGORY_NAME" type="VARCHAR" isMandatory="true" length="64"/>
@@ -1191,6 +1201,15 @@
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipTWikiFile" className="com.aimluck.eip.cayenne.om.portlet.EipTWikiFile" dbEntityName="eip_t_wiki_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="wikiId" type="java.lang.Integer" db-attribute-path="WIKI_ID"/>
+	</obj-entity>
 	<obj-entity name="EipTWorkflowCategory" className="com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory" dbEntityName="eip_t_workflow_category">
 		<obj-attribute name="categoryName" type="java.lang.String" db-attribute-path="CATEGORY_NAME"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1515,6 +1534,9 @@
 	<db-relationship name="eipTWikiCategory" source="eip_t_wiki" target="eip_t_wiki_category" toMany="false">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTWikiFiles" source="eip_t_wiki" target="eip_t_wiki_file" toMany="true">
+		<db-attribute-pair source="WIKI_ID" target="WIKI_ID"/>
+	</db-relationship>
 	<db-relationship name="updateUser" source="eip_t_wiki" target="turbine_user" toMany="false">
 		<db-attribute-pair source="UPDATE_USER_ID" target="USER_ID"/>
 	</db-relationship>
@@ -1523,6 +1545,9 @@
 	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_wiki_category" target="turbine_user" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTWiki" source="eip_t_wiki_file" target="eip_t_wiki" toMany="false">
+		<db-attribute-pair source="WIKI_ID" target="WIKI_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTWorkflowRequest" source="eip_t_workflow_category" target="eip_t_workflow_request" toMany="true">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
@@ -1637,11 +1662,12 @@
 	<obj-relationship name="turbineUser" source="EipTTodo" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTodoArray" source="EipTTodoCategory" target="EipTTodo" db-relationship-path="eipTTodo"/>
 	<obj-relationship name="turbineUser" source="EipTTodoCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
-	<obj-relationship name="eipTWikiCategory" source="EipTWiki" target="EipTWikiCategory" db-relationship-path="eipTWikiCategory"/>
 	<obj-relationship name="createUser" source="EipTWiki" target="TurbineUser" db-relationship-path="createUser"/>
+	<obj-relationship name="eipTWikiCategory" source="EipTWiki" target="EipTWikiCategory" db-relationship-path="eipTWikiCategory"/>
 	<obj-relationship name="updateUser" source="EipTWiki" target="TurbineUser" db-relationship-path="updateUser"/>
 	<obj-relationship name="eipTWiki" source="EipTWikiCategory" target="EipTWiki" db-relationship-path="eipTWiki"/>
 	<obj-relationship name="turbineUser" source="EipTWikiCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTWiki" source="EipTWikiFile" target="EipTWiki" db-relationship-path="eipTWiki"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowCategory" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>
 	<obj-relationship name="eipTWorkflowRoute" source="EipTWorkflowCategory" target="EipTWorkflowRoute" db-relationship-path="eipTWorkflowRoute"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowFile" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>

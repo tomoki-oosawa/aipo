@@ -28,8 +28,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.WikiMultiDelete;
 import com.aimluck.eip.wiki.WikiSelectData;
 
 /**
@@ -74,19 +76,83 @@ public class WikiAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
+    String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+
+    try {
+      if (ALEipConstants.MODE_DETAIL.equals(mode)) {
+        doWiki_detail(rundata, context);
+      } else if (ALEipConstants.MODE_LIST.equals(mode)) {
+        doWiki_list(rundata, context);
+      }
+      if (getMode() == null) {
+        doWiki_list(rundata, context);
+      }
+      assert (false);
+    } catch (Exception ex) {
+      logger.error("todo", ex);
+    }
+  }
+
+  private void clearWikiSession(RunData rundata, Context context) {
+    List<String> list = new ArrayList<String>();
+    ALEipUtils.removeTemp(rundata, context, list);
+  }
+
+  /**
+   * Wikiを削除します。（複数） <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doWiki_multi_delete(RunData rundata, Context context)
+      throws Exception {
+    WikiMultiDelete delete = new WikiMultiDelete();
+    delete.doMultiAction(this, rundata, context);
+    doWiki_list(rundata, context);
+    // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+    // rundata.setRedirectURI(jsLink.getPortletById(
+    // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+    // "eventSubmit_doTodo_list", "1").toString());
+    // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+    // jsLink = null;
+  }
+
+  /**
+   * Wikiを一覧表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doWiki_list(RunData rundata, Context context) throws Exception {
     WikiSelectData listData = new WikiSelectData();
-    listData.loadCategoryList(rundata);
     listData.initField();
-    listData.setRowsNum(Integer.parseInt(portlet
+    listData.loadCategoryList(rundata);
+
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "wiki-list");
   }
 
-  private void clearWikiSession(RunData rundata, Context context) {
-    List<String> list = new ArrayList<String>();
-    ALEipUtils.removeTemp(rundata, context, list);
+  /**
+   * Wikiを詳細表示します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doWiki_detail(RunData rundata, Context context) throws Exception {
+    WikiSelectData detailData = new WikiSelectData();
+    detailData.initField();
+    if (detailData.doViewDetail(this, rundata, context)) {
+      setTemplate(rundata, "wiki-detail");
+    } else {
+      doWiki_list(rundata, context);
+    }
   }
 
 }

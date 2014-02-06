@@ -1178,6 +1178,18 @@ CREATE TABLE `eip_t_wiki_category` (
 
 INSERT INTO `eip_t_wiki_category` VALUES (1,0,0,'未分類',,now(),now());
 
+CREATE TABLE `eip_t_wiki_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `wiki_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `file_path` text COLLATE utf8_unicode_ci NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1253,4 +1265,6 @@ ALTER TABLE `container_config` ADD INDEX (`name`);
 ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 
 ALTER TABLE `eip_t_wiki` ADD FOREIGN KEY (  `category_id` ) REFERENCES  `eip_t_wiki_category` (`category_id`) ON DELETE CASCADE ;
+
+ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
 
