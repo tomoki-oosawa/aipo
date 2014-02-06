@@ -108,12 +108,14 @@ h1, h2, h3, h4, h5, h6, p, span {
   padding-right: 0;
 }
 
-.hdUserName .auiIcon {
+.hdUserName .auiIcon,
+.hdUserName .auiWFicon {
   margin-bottom: 2px;
   vertical-align: middle;
 }
 
-*:first-child + html .hdUserName .auiIcon {
+*:first-child + html .hdUserName .auiIcon,
+*:first-child + html .hdUserName .auiWFicon {
   margin-bottom: 1px;
 }
 
@@ -4139,14 +4141,6 @@ a.auiIconMailOpen:hover {
 /***************************************************
 	auiWFicon
 --------------------------------------------------*/
-.auiWFicon {
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-}
-
 .auiWFicon,
 .auiWFicon [class^="icon-"] {
   display: inline-block;
@@ -4156,17 +4150,13 @@ a.auiIconMailOpen:hover {
   line-height: 16px;
   font-size: 14px;
   vertical-align: middle;
-  color: #666666;
+  color: #999999;
   text-decoration: none;
   text-shadow: none;
 }
 
-a:hover .auiWFicon {
-  background: #999999;
-}
-
 a:hover .auiWFicon [class^="icon-"] {
-  color: #fff;
+  color: #333333;
 }
 
 [class^="icon-"] {
