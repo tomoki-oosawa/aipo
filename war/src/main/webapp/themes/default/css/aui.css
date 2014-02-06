@@ -2637,8 +2637,7 @@ ul.attachments {
 
 .tlInputAttachment {
   border-top: dotted 1px #d2d2d2;
-  margin-top: 5px;
-  padding: 10px 6px;
+  padding: 10px;
 }
 
 .tlInputAttachmentTitle {
@@ -2823,10 +2822,6 @@ ul.attachments {
 }
 
 /* clipBloard */
-.tlClipBoard {
-  margin: 10px 0;
-}
-
 .tlClipImage {
   float: left;
   max-width: 90px;
