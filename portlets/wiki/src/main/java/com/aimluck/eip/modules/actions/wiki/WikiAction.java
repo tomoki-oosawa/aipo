@@ -31,6 +31,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.WikiMultiDelete;
 import com.aimluck.eip.wiki.WikiSelectData;
 
 /**
@@ -86,6 +87,7 @@ public class WikiAction extends ALBaseAction {
       if (getMode() == null) {
         doWiki_list(rundata, context);
       }
+      assert (false);
     } catch (Exception ex) {
       logger.error("todo", ex);
     }
@@ -94,6 +96,26 @@ public class WikiAction extends ALBaseAction {
   private void clearWikiSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
     ALEipUtils.removeTemp(rundata, context, list);
+  }
+
+  /**
+   * Wikiを削除します。（複数） <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
+  public void doWiki_multi_delete(RunData rundata, Context context)
+      throws Exception {
+    WikiMultiDelete delete = new WikiMultiDelete();
+    delete.doMultiAction(this, rundata, context);
+    doWiki_list(rundata, context);
+    // JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+    // rundata.setRedirectURI(jsLink.getPortletById(
+    // ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
+    // "eventSubmit_doTodo_list", "1").toString());
+    // rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+    // jsLink = null;
   }
 
   /**

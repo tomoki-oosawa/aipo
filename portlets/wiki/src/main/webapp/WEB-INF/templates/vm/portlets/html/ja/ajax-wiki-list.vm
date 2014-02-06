@@ -46,8 +46,9 @@
 
 #AUISummaryDivfooter()
 
+#ALajaxlistformheaderAction('Wiki')
 #AUISummaryDiv()
-<div class="floatLeft"><a href="#" class="auiButton">$l10n.WIKI_DELETE</a></div>
+#AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 
@@ -82,6 +83,7 @@
 #AUIajaxpageview('WikiListScreen' $result)
 
 #AUISummaryDivfooter()
+#ALformfooter()
 
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/wiki-widgets.vm")
