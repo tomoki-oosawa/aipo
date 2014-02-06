@@ -138,7 +138,6 @@ public class WikiCategorySelectData extends
     query.setQualifier(exp);
 
     return query;
-    // return Database.query(EipTWikiCategory.class);
   }
 
   /**
