@@ -32,7 +32,7 @@
 #ALtdcaption($l10n.WIKI_CATEGORY)
 #ALtditemheader()
 #if ($!result.Detail.CategoryId.toString() != "1")
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiCategoryDetailScreen").addQueryData("entityid",$!result.Detail.CategoryId))');">$!result.Detail.CategoryNameHtml</a>
+$!result.Detail.CategoryNameHtml
 #else
 $!result.Detail.CategoryName
 #end
