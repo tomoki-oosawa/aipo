@@ -33,6 +33,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiMultiDelete;
 import com.aimluck.eip.wiki.WikiSelectData;
+import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiのアクションクラスです。 <BR>
@@ -57,7 +58,10 @@ public class WikiAction extends ALBaseAction {
       RunData rundata) throws Exception {
     // セッション情報のクリア
     clearWikiSession(rundata, context);
+    WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
+
     WikiSelectData listData = new WikiSelectData();
+    listData.loadCategoryList(rundata);
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
