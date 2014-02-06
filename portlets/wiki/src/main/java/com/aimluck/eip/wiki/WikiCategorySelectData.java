@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -126,7 +128,17 @@ public class WikiCategorySelectData extends
    */
   private SelectQuery<EipTWikiCategory> getSelectQuery(RunData rundata,
       Context context) {
-    return Database.query(EipTWikiCategory.class);
+    SelectQuery<EipTWikiCategory> query =
+      Database.query(EipTWikiCategory.class);
+
+    Expression exp =
+      ExpressionFactory.noMatchDbExp(
+        EipTWikiCategory.CATEGORY_ID_PK_COLUMN,
+        Integer.valueOf(1));
+    query.setQualifier(exp);
+
+    return query;
+    // return Database.query(EipTWikiCategory.class);
   }
 
   /**

@@ -34,7 +34,7 @@
 #AUISummaryDivfooter()
 #AUIrowMTableWide()
 <tr>
-<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY $result 'WikiCategoryListScreen')</th>
+<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY_NAME $result 'WikiCategoryListScreen')</th>
 <th class="wName">#ALajaxsort('user_name' $l10n.WIKI_CREATE_USER $result 'WikiCategoryListScreen')</th>
 </tr>
 #foreach ($record in $result.List)
