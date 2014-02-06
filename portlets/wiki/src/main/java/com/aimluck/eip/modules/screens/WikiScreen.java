@@ -55,8 +55,11 @@ public class WikiScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
+      context.put("ajax_onloadimage", "true");
+
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
+      listData.loadCategoryList(rundata);
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1a-rows")));
