@@ -73,7 +73,7 @@ public class WikiSelectData extends
   private List<ALEipGroup> postList;
 
   /** 初期表示 */
-  private int table_colum_num = 6;
+  private int table_colum_num = 2;
 
   /** カテゴリの初期値を取得する */
   private String filterType = "";
@@ -332,7 +332,6 @@ public class WikiSelectData extends
       if (!existCategory) {
         categoryId = "";
         current_filterMap.remove("category");
-
       }
 
       updateCategoryName();
