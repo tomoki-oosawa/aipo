@@ -32,7 +32,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -81,52 +80,6 @@ public class WikiUtils {
   public static final String WIKI_PORTLET_NAME = "Wiki";
 
   /**
-   * Wiki オブジェクトモデルを取得します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @param isJoin
-   *          カテゴリテーブルをJOINするかどうか
-   * @return
-   */
-  public static EipTWiki getEipTWiki(RunData rundata, Context context,
-      boolean isJoin) throws ALPageNotFoundException {
-    String wikiid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-    try {
-      if (wikiid == null || Integer.valueOf(wikiid) == null) {
-        // Wiki IDが空の場合
-        logger.debug("[Wiki] Empty ID...");
-        throw new ALPageNotFoundException();
-      }
-
-      Expression exp =
-        ExpressionFactory.matchDbExp(EipTWiki.WIKI_ID_PK_COLUMN, wikiid);
-      exp.andExp(ExpressionFactory.matchDbExp(EipTWiki.UPDATE_USER_PROPERTY
-        + "."
-        + TurbineUser.USER_ID_PK_COLUMN, Integer.valueOf(ALEipUtils
-        .getUserId(rundata))));
-
-      List<EipTWiki> wikiList = Database.query(EipTWiki.class, exp).fetchList();
-
-      if (wikiList == null || wikiList.size() == 0) {
-        // 指定したWiki IDのレコードが見つからない場合
-        logger.debug("[Wiki] Not found ID...");
-        throw new ALPageNotFoundException();
-      }
-
-      EipTWiki wiki = wikiList.get(0);
-      return wiki;
-    } catch (ALPageNotFoundException pageNotFound) {
-      // logger.error("[WikiUtils]", pageNotFound);
-      throw pageNotFound;
-    } catch (Exception ex) {
-      logger.error("wiki", ex);
-      return null;
-    }
-  }
-
-  /**
    * Wikiカテゴリ オブジェクトモデルを取得します。 <BR>
    * 
    * @param rundata
@@ -144,26 +97,14 @@ public class WikiUtils {
       throw new ALPageNotFoundException();
     }
 
-    try {
-      Expression exp1 =
-        ExpressionFactory.matchDbExp(
-          EipTWikiCategory.CATEGORY_ID_PK_COLUMN,
-          categoryid);
+    EipTWikiCategory category =
+      getEipTWikiCategory(Integer.parseInt(categoryid));
 
-      List<EipTWikiCategory> categoryList =
-        Database.query(EipTWikiCategory.class, exp1).fetchList();
-
-      if (categoryList == null || categoryList.size() == 0) {
-        // 指定したカテゴリIDのレコードが見つからない場合
-        logger.debug("[Wiki] Not found ID...");
-        throw new ALPageNotFoundException();
-      }
-
-      return categoryList.get(0);
-    } catch (Exception ex) {
-      logger.error("wiki", ex);
-      throw new ALDBErrorException();
+    if (null == category) {
+      throw new ALPageNotFoundException();
     }
+
+    return category;
   }
 
   /**

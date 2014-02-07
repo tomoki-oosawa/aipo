@@ -257,7 +257,7 @@ public class WikiFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context, false);
+      EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
       if (wiki == null) {
         return false;
       }
