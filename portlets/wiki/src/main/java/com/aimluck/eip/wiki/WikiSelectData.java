@@ -189,56 +189,67 @@ public class WikiSelectData extends
    * @param context
    */
   public void setCategory(RunData rundata, Context context) {
-    filterType = rundata.getParameters().getString("filtertype", "");
-    String categoryId;
-    if (filterType.equals("category") || filterType.equals("")) {
-      categoryId = rundata.getParameters().getString("filter", "");
+    // validate categoryId and filterType, categoryId set
+    String filter = rundata.getParameters().getString("filter", "");
+    String filterType = rundata.getParameters().getString("filtertype", "");
+    String sesFilter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    String sesFilterType =
+      ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+
+    sesFilter = sesFilter == null ? "" : sesFilter;
+    sesFilterType = sesFilterType == null ? "" : sesFilterType;
+
+    if (filterType.isEmpty()) {
+      filter = sesFilter;
+      filterType = sesFilterType;
+    }
+
+    if (filterType.equals("category")) {
+      filter = "0," + filter;
+      filterType = "post,category";
     } else if (filterType.equals("post,category")) {
-      categoryId =
-        rundata.getParameters().getString("filter", "").split(",")[1];
+      // do nothing
     } else {
+      filter = "";
+      filterType = "";
+    }
+
+    if (StringUtils.isEmpty(filter) || StringUtils.isEmpty(filterType)) {
+      this.filterType = "";
+      categoryId = "";
       return;
     }
-    boolean exsitedCategoryId = false;
-    if (!categoryId.equals("")) {
-      exsitedCategoryId = true;
-    } else {
-      categoryId = ALEipUtils.getTemp(rundata, context, "p2a-post-category");
-      if (categoryId == null || categoryId.isEmpty()) { // ログイン後初期設定
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-        categoryId =
-          portlet.getPortletConfig().getInitParameter("p2a-post-category");
-      } else {
-        exsitedCategoryId = true;
+
+    String[] splited = filter.split(",");
+    if (splited.length < 2) {
+      this.filterType = "";
+      categoryId = "";
+      return;
+    }
+
+    categoryId = filter.split(",")[1];
+    this.filterType = filterType;
+
+    boolean existCategory = false;
+    for (WikiCategoryResultData data : categoryList) {
+      if (categoryId.equals(data.getCategoryId().toString())) {
+        existCategory = true;
+        break;
       }
     }
-    boolean existCategory = false;
-    if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
-      existCategory = true;
-      ALEipUtils.setTemp(rundata, context, "p2a-post-category", categoryId);
-    } else {
-      if (categoryId != null) {
-        if (categoryList != null && categoryList.size() > 0) {
-          for (WikiCategoryResultData category : categoryList) {
-            if (categoryId.equals(category.getCategoryId().toString())) {
-              existCategory = true;
-              break;
-            }
-          }
-        }
-        if (!existCategory) {
-          categoryId = "";
-        }
-        if (exsitedCategoryId) {
-          this.categoryId = categoryId;
-          ALEipUtils.setTemp(rundata, context, "p2a-post-category", categoryId);
-        } else {
-          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
-          ALEipUtils
-            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
-          this.categoryId = categoryId;
-        }
-      }
+
+    if (!existCategory) {
+      categoryId = "0";
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_FILTER_STR,
+        filter.split(",")[0] + "," + categoryId);
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_FILTER_TYPE_STR,
+        "post,category");
     }
   }
 
@@ -531,5 +542,16 @@ public class WikiSelectData extends
 
   public String getPostName() {
     return postName;
+  }
+
+  public void setFiltersFromPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
+
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12g-filtertypes"));
   }
 }
