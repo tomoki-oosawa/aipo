@@ -241,3 +241,6 @@ ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
 
 INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',now(), now());
 SELECT setval('pk_eip_t_wiki_category',1);
+
+CREATE INDEX eip_t_wiki_wiki_name_index ON EIP_T_WIKI (WIKI_NAME);
+CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);

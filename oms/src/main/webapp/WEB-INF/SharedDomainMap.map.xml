@@ -602,14 +602,14 @@
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_wiki_file">
-		<db-attribute name="CREATE_DATE" type="DATE"/>
-		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
 		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
 		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
-		<db-attribute name="OWNER_ID" type="INTEGER"/>
-		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
-		<db-attribute name="WIKI_ID" type="INTEGER"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="WIKI_ID" type="INTEGER" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_workflow_category">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>

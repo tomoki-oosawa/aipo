@@ -21,9 +21,11 @@ package com.aimluck.eip.wiki;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -34,16 +36,21 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTWikiFile;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.util.WikiFileUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -85,6 +92,13 @@ public class WikiFormData extends ALAbstractFormData {
 
   private String mode = null;
 
+  /** 添付ファイルリスト */
+  private List<FileuploadLiteBean> fileuploadList =
+    new ArrayList<FileuploadLiteBean>();
+
+  /** 添付フォルダ名 */
+  private String folderName = null;
+
   /**
    * @param action
    * @param rundata
@@ -98,6 +112,7 @@ public class WikiFormData extends ALAbstractFormData {
     uid = ALEipUtils.getUserId(rundata);
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
+    folderName = rundata.getParameters().getString("folderName");
   }
 
   /**
@@ -208,6 +223,20 @@ public class WikiFormData extends ALAbstractFormData {
       // 内容
       note.setValue(wiki.getNote());
 
+      // ファイル
+      SelectQuery<EipTWikiFile> query = Database.query(EipTWikiFile.class);
+      query.andQualifier(ExpressionFactory.matchExp(
+        EipTWikiFile.WIKI_ID_PROPERTY,
+        wiki.getWikiId()));
+      List<EipTWikiFile> fileList = query.fetchList();
+      for (EipTWikiFile file : fileList) {
+        FileuploadLiteBean fbean = new FileuploadLiteBean();
+        fbean.initField();
+        fbean.setFileId(file.getFileId());
+        fbean.setFileName(file.getFileName());
+        fileuploadList.add(fbean);
+      }
+
     } catch (Exception e) {
       logger.error("WikiFormData.loadFormData", e);
       return false;
@@ -297,7 +326,21 @@ public class WikiFormData extends ALAbstractFormData {
       // 更新日
       wiki.setUpdateDate(Calendar.getInstance().getTime());
 
+      // ファイルをデータベースに登録する．
+      if (!WikiFileUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        wiki,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
+      }
+
       Database.commit();
+
+      // 添付ファイル保存先のフォルダを削除
+      ALStorageService.deleteTmpFolder(uid, folderName);
 
     } catch (Exception e) {
       logger.error("WikiFormData.insertFormData", e);
@@ -382,13 +425,51 @@ public class WikiFormData extends ALAbstractFormData {
       // 更新日
       wiki.setUpdateDate(Calendar.getInstance().getTime());
 
+      // ファイルをデータベースに登録する．
+      if (!WikiFileUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        wiki,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
+      }
+
       Database.commit();
+
+      // 添付ファイル保存先のフォルダを削除
+      ALStorageService.deleteTmpFolder(uid, folderName);
 
     } catch (Exception e) {
       logger.error("WikiFormData.updateFormData", e);
       return false;
     }
     return true;
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  @Override
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+
+    boolean res = super.setFormData(rundata, context, msgList);
+
+    try {
+      fileuploadList = WikiFileUtils.getFileuploadList(rundata);
+    } catch (Exception e) {
+      logger.error("WikiFormData.setFormData", e);
+    }
+
+    return res;
   }
 
   /**
@@ -440,6 +521,14 @@ public class WikiFormData extends ALAbstractFormData {
 
   public List<WikiCategoryResultData> getCategoryList() {
     return categoryList;
+  }
+
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    return fileuploadList;
+  }
+
+  public String getFolderName() {
+    return folderName;
   }
 
 }

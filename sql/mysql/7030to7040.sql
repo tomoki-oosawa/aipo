@@ -173,3 +173,6 @@ CREATE TABLE `eip_t_wiki_file` (
 ALTER TABLE `eip_t_wiki` ADD FOREIGN KEY (  `category_id` ) REFERENCES  `eip_t_wiki_category` (`category_id`) ON DELETE CASCADE ;
 
 ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
+
+ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`);
+ALTER TABLE `eip_t_wiki_file` ADD INDEX (`wiki_id`);

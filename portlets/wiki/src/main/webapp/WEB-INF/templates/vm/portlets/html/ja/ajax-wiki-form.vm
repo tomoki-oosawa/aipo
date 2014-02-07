@@ -34,7 +34,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 	<div id="messageDiv"></div>
 	<div id="messageDiv_$!portlet.ID"></div>
-	#ALajaxscreenformheader("wikiForm" $jslink $portlet "WikiFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.wiki.onReceiveMessage)")
+	#ALajaxscreenformheader("wikiForm" $jslink $portlet "WikiFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.wiki.onReceiveMessage)")
 		<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
         #if("$!mode"=="new_form")
         	<input type="hidden" name="mode" value="insert" />
@@ -69,6 +69,22 @@
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
             #ALtditemheader()
             #ALtextarea('note' $!result.Note 10 40)
+        </tr>
+		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+        <td class="caption" >$l10n.WIKI_FILE_ATTACH</td>
+            <td>
+              <div class="clearfix">
+              <div>
+              #IFFileUpload()
+              </div>
+              <ul id="attachments_$!{portlet.ID}" class="attachments">
+                #foreach($record in $!result.AttachmentFileNameList )
+                  <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.DELETE</span></li>
+                #end
+              </ul>
+              <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+              </div>
+            </td>
         </tr>
 		#ALtablefooter()
 		#ALbuttonheader()

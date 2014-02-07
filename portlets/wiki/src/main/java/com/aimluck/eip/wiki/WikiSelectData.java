@@ -108,13 +108,13 @@ public class WikiSelectData extends
             portlet.getPortletConfig().getInitParameter("p3a-category");
         }
       }
-    } catch (Exception ex) {
-      logger.error("todo", ex);
+    } catch (Exception e) {
+      logger.error("WikiSelectData.init", e);
     }
     try {
       updateCategoryName();
-    } catch (Exception ex) {
-      logger.error("wiki", ex);
+    } catch (Exception e) {
+      logger.error("WikiSelectData.init", e);
     }
 
     target_keyword = new ALStringField();
