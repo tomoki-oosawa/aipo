@@ -19,11 +19,17 @@
 
 package com.aimluck.eip.wiki;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -36,6 +42,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -60,8 +69,20 @@ public class WikiSelectData extends
   /** カテゴリ一覧 */
   private List<WikiCategoryResultData> categoryList;
 
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
+
+  /** 初期表示 */
+  private int table_colum_num = 6;
+
   /** カテゴリの初期値を取得する */
   private String filterType = "";
+
+  /** グループID */
+  private String postId = "";
+
+  /** グループ名 */
+  private String postName = "";
 
   /** カテゴリ　ID */
   private String categoryId = "";
@@ -87,7 +108,6 @@ public class WikiSelectData extends
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       // default sort
       String sortStr = "update_date";
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
@@ -96,30 +116,17 @@ public class WikiSelectData extends
       }
     }
 
-    // カテゴリの初期値を取得する
-    try {
-      filterType = rundata.getParameters().getString("filtertype", "");
-      if (filterType.equals("category")) {
-        String categoryId = rundata.getParameters().getString("filter", "");
-        if (!categoryId.equals("")) {
-          this.categoryId = categoryId;
-        } else {
-          VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-          this.categoryId =
-            portlet.getPortletConfig().getInitParameter("p3a-category");
-        }
-      }
-    } catch (Exception e) {
-      logger.error("WikiSelectData.init", e);
-    }
-    try {
-      updateCategoryName();
-    } catch (Exception e) {
-      logger.error("WikiSelectData.init", e);
-    }
-
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
+
+    /** for selected category deleted */
+    if (!validateCategory()) {
+      this.categoryId = "";
+    }
+
+    updateCategoryName();
+
+    postList = ALEipUtils.getMyGroups(rundata);
   }
 
   /**
@@ -127,8 +134,112 @@ public class WikiSelectData extends
    * @param rundata
    * @param context
    */
-  public void loadCategoryList(RunData rundata) {
+  public void loadCategoryList(RunData rundata, Context context) {
     categoryList = WikiUtils.getCategoryList(rundata);
+    setCategory(rundata, context);
+  }
+
+  public boolean validateCategory() {
+    if (StringUtils.isEmpty(categoryId)) {
+      return true;
+    }
+    for (WikiCategoryResultData data : categoryList) {
+      if (data.getCategoryId().toString().equals(categoryId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private void updateCategoryName() {
+    categoryName = "";
+    if (categoryList == null) {
+      return;
+    }
+    for (WikiCategoryResultData data : categoryList) {
+      if (data.getCategoryId().toString().equals(categoryId)) {
+        categoryName = data.getCategoryName();
+        return;
+      }
+    }
+  }
+
+  private void updatePostName() {
+    postName = "";
+    for (int i = 0; i < postList.size(); i++) {
+      String pid = postList.get(i).getName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = postList.get(i).getAliasName().toString();
+        return;
+      }
+    }
+    Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+    for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+      String pid = item.getValue().getGroupName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = item.getValue().getPostName().toString();
+        return;
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   */
+  public void setCategory(RunData rundata, Context context) {
+    filterType = rundata.getParameters().getString("filtertype", "");
+    String categoryId;
+    if (filterType.equals("category") || filterType.equals("")) {
+      categoryId = rundata.getParameters().getString("filter", "");
+    } else if (filterType.equals("post,category")) {
+      categoryId =
+        rundata.getParameters().getString("filter", "").split(",")[1];
+    } else {
+      return;
+    }
+    boolean exsitedCategoryId = false;
+    if (!categoryId.equals("")) {
+      exsitedCategoryId = true;
+    } else {
+      categoryId = ALEipUtils.getTemp(rundata, context, "p2a-post-category");
+      if (categoryId == null || categoryId.isEmpty()) { // ログイン後初期設定
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        categoryId =
+          portlet.getPortletConfig().getInitParameter("p2a-post-category");
+      } else {
+        exsitedCategoryId = true;
+      }
+    }
+    boolean existCategory = false;
+    if (categoryId != null && "0".equals(categoryId)) { // 「すべてのカテゴリ」選択時
+      existCategory = true;
+      ALEipUtils.setTemp(rundata, context, "p2a-post-category", categoryId);
+    } else {
+      if (categoryId != null) {
+        if (categoryList != null && categoryList.size() > 0) {
+          for (WikiCategoryResultData category : categoryList) {
+            if (categoryId.equals(category.getCategoryId().toString())) {
+              existCategory = true;
+              break;
+            }
+          }
+        }
+        if (!existCategory) {
+          categoryId = "";
+        }
+        if (exsitedCategoryId) {
+          this.categoryId = categoryId;
+          ALEipUtils.setTemp(rundata, context, "p2a-post-category", categoryId);
+        } else {
+          ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, categoryId);
+          ALEipUtils
+            .setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+          this.categoryId = categoryId;
+        }
+      }
+    }
   }
 
   /**
@@ -172,14 +283,31 @@ public class WikiSelectData extends
   }
 
   @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  @Override
   protected SelectQuery<EipTWiki> buildSelectQueryForFilter(
       SelectQuery<EipTWiki> query, RunData rundata, Context context) {
     if (current_filterMap.containsKey("category")) {
       // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
       List<String> categoryIds = current_filterMap.get("category");
       categoryId = categoryIds.get(0).toString();
-      List<WikiCategoryResultData> categoryList =
-        WikiUtils.loadCategoryList(rundata);
+      if (null == categoryList) {
+        categoryList = WikiUtils.loadCategoryList(rundata);
+      }
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
         for (WikiCategoryResultData category : categoryList) {
@@ -193,6 +321,7 @@ public class WikiSelectData extends
       if (!existCategory) {
         categoryId = "";
         current_filterMap.remove("category");
+
       }
 
       updateCategoryName();
@@ -200,6 +329,52 @@ public class WikiSelectData extends
 
     super.buildSelectQueryForFilter(query, rundata, context);
 
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTWiki.UPDATE_USER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+
+      postId = postIds.get(0).toString();
+      updatePostName();
+    }
+
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+
+    if (search != null && !"".equals(search)) {
+      current_search = search;
+      Expression ex1 =
+        ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, "%" + search + "%");
+      Expression ex2 =
+        ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, "%"
+          + search
+          + "%");
+      SelectQuery<EipTWiki> q = Database.query(EipTWiki.class);
+      q.andQualifier(ex1.orExp(ex2));
+      List<EipTWiki> queryList = q.fetchList();
+      List<Integer> resultid = new ArrayList<Integer>();
+      for (EipTWiki item : queryList) {
+        resultid.add(item.getWikiId());
+      }
+      if (resultid.size() == 0) {
+        // 検索結果がないことを示すために-1を代入
+        resultid.add(-1);
+      }
+      Expression ex =
+        ExpressionFactory.inDbExp(EipTWiki.WIKI_ID_PK_COLUMN, resultid);
+      query.andQualifier(ex);
+    }
     return query;
   }
 
@@ -323,21 +498,6 @@ public class WikiSelectData extends
     return categoryId;
   }
 
-  private void updateCategoryName() {
-    categoryName = "";
-    if (categoryList != null) {
-      for (int i = 0; i < categoryList.size(); i++) {
-        String cid = categoryList.get(i).getCategoryId().toString();
-        if (cid != null && categoryId != null) {
-          if (cid.equals(categoryId.toString())) {
-            categoryName = categoryList.get(i).getCategoryName().toString();
-            return;
-          }
-        }
-      }
-    }
-  }
-
   public String getCategoryName() {
     return categoryName;
   }
@@ -351,5 +511,25 @@ public class WikiSelectData extends
    */
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  public void setTableColumNum(int table_colum_num) {
+    this.table_colum_num = table_colum_num;
+  }
+
+  public int getTableColumNum() {
+    return table_colum_num;
+  }
+
+  public String getPostName() {
+    return postName;
   }
 }

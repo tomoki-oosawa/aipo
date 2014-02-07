@@ -56,10 +56,23 @@ public class WikiAction extends ALBaseAction {
       RunData rundata) throws Exception {
     // セッション情報のクリア
     clearWikiSession(rundata, context);
-    WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
+
+    String postCategory =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2a-post-category");
+
+    if (null != postCategory) {
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        WikiUtils.WIKI_POST_CATEGORY,
+        postCategory.trim());
+    }
 
     WikiSelectData listData = new WikiSelectData();
-    listData.loadCategoryList(rundata);
+    listData.loadCategoryList(rundata, context);
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
@@ -80,7 +93,7 @@ public class WikiAction extends ALBaseAction {
       Context context, RunData rundata) {
     WikiSelectData listData = new WikiSelectData();
     listData.initField();
-    listData.loadCategoryList(rundata);
+    listData.loadCategoryList(rundata, context);
 
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)

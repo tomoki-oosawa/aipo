@@ -82,6 +82,8 @@ public class WikiUtils {
 
   public static final String WIKI_PORTLET_NAME = "Wiki";
 
+  public static final String WIKI_POST_CATEGORY = "wiki_post_category";
+
   /**
    * Wiki オブジェクトモデルを取得します。 <BR>
    * 

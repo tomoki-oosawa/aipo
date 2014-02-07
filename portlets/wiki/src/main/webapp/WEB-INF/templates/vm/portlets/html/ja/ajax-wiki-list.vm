@@ -47,7 +47,7 @@
 #AUISummaryDivfooter()
 #ALajaxlistformheaderAction('Wiki')
 #if($result.List.size() == 0)
-<div class="message">$l10n.WIKI_NOTHING_TOPIC</div>
+<div class="message">$l10n.WIKI_NOTHING_DATA</div>
 #else
 #AUISummaryDiv()
 #AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")

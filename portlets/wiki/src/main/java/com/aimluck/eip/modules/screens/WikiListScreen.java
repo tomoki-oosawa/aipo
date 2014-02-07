@@ -53,7 +53,7 @@ public class WikiListScreen extends WikiScreen {
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1b-rows")));
-      listData.loadCategoryList(rundata);
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-wiki-list.vm";

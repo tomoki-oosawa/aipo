@@ -55,11 +55,19 @@ public class WikiScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
+
+      if ("category"
+        .equals(rundata.getParameters().getString("filtertype", ""))) {
+        ALEipUtils.passPSML(rundata, context, "p2a-category", rundata
+          .getParameters()
+          .getString("filter", ""));
+      }
+
       context.put("ajax_onloadimage", "true");
 
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
-      listData.loadCategoryList(rundata);
+      listData.loadCategoryList(rundata, context);
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()
         .getInitParameter("p1a-rows")));
@@ -68,7 +76,7 @@ public class WikiScreen extends ALVelocityScreen {
       String layout_template = "portlets/html/ja/ajax-wiki.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[WikiScreen] Exception.", ex);
+      logger.error("WikiScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
