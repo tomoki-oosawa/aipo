@@ -49,6 +49,8 @@
 #if($result.List.size() == 0)
 <div class="message">$l10n.WIKI_NOTHING_TOPIC</div>
 #else
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div id="listmessageDiv"></div>
 #AUISummaryDiv()
 #AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiListScreen' $result)
@@ -58,7 +60,7 @@
 	<colgroup span="3"></colgroup>
 	<colgroup style="width: 9em;"></colgroup>
 	<tbody>
-		<tr>	
+		<tr>
 			<th class="auiMTCheck center"><input type="checkbox" /></th>
 			<th>#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')</th>
 			<th class="wName">#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')</th>
