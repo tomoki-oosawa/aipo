@@ -68,7 +68,20 @@
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
             #ALtditemheader()
-            #ALtextarea('note' $!result.Note 10 40)
+            <div class="mb5">
+				#set($textarea="dojo.byId('wiki_note')")
+                                <span class="auiButtonIcon"><i class="icon-bold" onclick="aipo.wiki.bold($textarea)"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-italic"　onclick="aipo.wiki.italic($textarea)"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-underline"　onclick="aipo.wiki.underline($textarea)"></i></span>
+                                <span class="auiButtonIcon"><i class="icon-strikethrough"　onclick="aipo.wiki.strikethrough($textarea)"></i></span>
+                                <span class="auiButtonIcon"　onclick="aipo.wiki.header($textarea)">h1</span>
+                                <span class="auiButtonIcon"　onclick="aipo.wiki.headerTwo($textarea)">h2</span>
+                                <span class="auiButtonIcon"　onclick="aipo.wiki.headerThree($textarea)">h3</span>
+                                <span class="auiButtonIcon"　onclick="aipo.wiki.ulist($textarea)"><i class="icon-list-ul"></i></span>
+                                <span class="auiButtonIcon"　onclick="aipo.wiki.olist($textarea)"><i class="icon-list-ol"></i></span>
+                            </div>
+            
+			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</$textarea>
         </tr>
 		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
         <td class="caption" >$l10n.WIKI_FILE_ATTACH</td>
