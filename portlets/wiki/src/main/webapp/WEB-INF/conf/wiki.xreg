@@ -24,7 +24,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Wiki</title>
-            <description>作業の進捗を共有できるWikiです。</description>
+            <description>文書を共有できるWikiです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="wiki" hidden="true" cachedOnName="true" cachedOnValue="true"/>
