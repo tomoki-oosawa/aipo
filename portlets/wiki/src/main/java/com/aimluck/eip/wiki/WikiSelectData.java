@@ -135,7 +135,7 @@ public class WikiSelectData extends
    * @param context
    */
   public void loadCategoryList(RunData rundata, Context context) {
-    categoryList = WikiUtils.getCategoryList(rundata);
+    categoryList = WikiUtils.loadCategoryList(rundata);
     setCategory(rundata, context);
   }
 
