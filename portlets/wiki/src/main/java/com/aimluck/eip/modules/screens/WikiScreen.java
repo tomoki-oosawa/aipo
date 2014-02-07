@@ -25,9 +25,11 @@ package com.aimluck.eip.modules.screens;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -56,12 +58,11 @@ public class WikiScreen extends ALVelocityScreen {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
 
-      if ("category"
-        .equals(rundata.getParameters().getString("filtertype", ""))) {
-        ALEipUtils.passPSML(rundata, context, "p2a-category", rundata
-          .getParameters()
-          .getString("filter", ""));
-      }
+      ParameterParser parser = rundata.getParameters();
+      ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
+        .getString(ALEipConstants.LIST_FILTER));
+      ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+        .getString(ALEipConstants.LIST_FILTER_TYPE));
 
       context.put("ajax_onloadimage", "true");
 

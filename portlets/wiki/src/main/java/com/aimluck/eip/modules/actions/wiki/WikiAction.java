@@ -31,7 +31,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiSelectData;
-import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiのアクションクラスです。 <BR>
@@ -57,23 +56,10 @@ public class WikiAction extends ALBaseAction {
     // セッション情報のクリア
     clearWikiSession(rundata, context);
 
-    String postCategory =
-      ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-post-category");
-
-    if (null != postCategory) {
-      ALEipUtils.setTemp(
-        rundata,
-        context,
-        WikiUtils.WIKI_POST_CATEGORY,
-        postCategory.trim());
-    }
-
     WikiSelectData listData = new WikiSelectData();
     listData.loadCategoryList(rundata, context);
     listData.initField();
+    listData.setFiltersFromPSML(portlet, context, rundata);
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
