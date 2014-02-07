@@ -35,10 +35,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiCategoryResultData;
@@ -194,7 +192,11 @@ public class WikiUtils {
 
       WikiCategoryResultData otherRd = null;
 
-      List<EipTWikiCategory> aList = query.fetchList();
+      List<EipTWikiCategory> aList =
+        query
+          .orderAscending(EipTWikiCategory.CATEGORY_NAME_PROPERTY)
+          .fetchList();
+
       int size = aList.size();
       for (int i = 0; i < size; i++) {
         EipTWikiCategory record = aList.get(i);
@@ -362,59 +364,6 @@ public class WikiUtils {
       .append(className)
       .append(ALEipConstants.LIST_FILTER_TYPE)
       .toString());
-  }
-
-  /**
-   * プルダウン用のカテゴリーリストを返します
-   * 
-   * @param rundata
-   * @return
-   */
-  public static ArrayList<WikiCategoryResultData> getCategoryList(
-      RunData rundata) {
-    ArrayList<WikiCategoryResultData> categoryList =
-      new ArrayList<WikiCategoryResultData>();
-
-    WikiCategoryResultData rd;
-
-    try {
-      // カテゴリ一覧
-      List<EipTWikiCategory> categoryList2 =
-        Database.query(EipTWikiCategory.class).orderAscending(
-          EipTWikiCategory.CATEGORY_NAME_PROPERTY).fetchList();
-
-      StringBuffer title;
-      ALEipUser user;
-      for (EipTWikiCategory record : categoryList2) {
-        user = ALEipUtils.getALEipUser(record.getUserId());
-        // exclude 「その他」
-        if (user != null) {
-          rd = new WikiCategoryResultData();
-          rd.initField();
-          rd.setCategoryId(record.getCategoryId().longValue());
-          title = new StringBuffer(record.getCategoryName());
-          // title.append(" （");
-          // title.append(user.getAliasName());
-          // title.append("）");
-          rd.setCategoryName(title.toString());
-          categoryList.add(rd);
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("wiki", ex);
-    }
-
-    // その他追加
-    EipTWikiCategory unCategorized =
-      Database.query(EipTWikiCategory.class).where(
-        Operations.eq(EipTWikiCategory.TURBINE_USER_PROPERTY, 0)).fetchSingle();
-    rd = new WikiCategoryResultData();
-    rd.initField();
-    rd.setCategoryId(unCategorized.getCategoryId());
-    rd.setCategoryName(unCategorized.getCategoryName());
-    categoryList.add(rd);
-
-    return categoryList;
   }
 
   public static EipTWiki getEipTWiki(RunData rundata, Context context)
