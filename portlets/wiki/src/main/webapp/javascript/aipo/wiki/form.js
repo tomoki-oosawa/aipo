@@ -142,6 +142,19 @@ aipo.wiki.onReceiveMessage = function(msg) {
   }
 }
 
+aipo.wiki.onListReceiveMessage = function(msg){
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(arrDialog){
+            arrDialog.hide();
+        }
+        aipo.portletReload('wiki');
+    }
+    if (dojo.byId('listmessageDiv')) {
+        dojo.byId('listmessageDiv').innerHTML = msg;
+    }
+}
+
 /**
  * 検索バーの幅を調節する。
  *
@@ -252,7 +265,7 @@ aipo.wiki.onLoadCategoryDialog = function(portlet_id){
   if(obj){
      obj.focus();
   }
- 
+
 }
 aipo.wiki.insertTag=function(textarea,tag,text){
       var index = textarea.selectionStart;
@@ -278,7 +291,7 @@ aipo.wiki.italic=function(textarea){
   tag="''";
   text="斜体文";
   aipo.wiki.insertTag(textarea,tag,text);
-  
+
 }
 aipo.wiki.underline=function(textarea){
   tag="%%%";
