@@ -44,6 +44,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -331,4 +332,49 @@ public class WikiFileUtils {
     return new StringBuffer().append("/").append(fileName).toString();
   }
 
+  public static List<FileuploadBean> getAttachmentFiles(Integer wikiId) {
+    SelectQuery<EipTWikiFile> query = Database.query(EipTWikiFile.class);
+    query.where(Operations.eq(EipTWikiFile.WIKI_ID_PROPERTY, wikiId));
+    query.orderAscending(EipTWikiFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTWikiFile.FILE_PATH_PROPERTY);
+    List<EipTWikiFile> result = query.fetchList();
+
+    List<FileuploadBean> beanlist = new ArrayList<FileuploadBean>();
+    for (EipTWikiFile file : result) {
+      FileuploadBean bean = new FileuploadBean();
+      bean.initField();
+      bean.setFileId(file.getFileId());
+      bean.setFileName(file.getFileName());
+      bean.setFlagNewFile(false);
+      javax.activation.DataHandler hData =
+        new javax.activation.DataHandler(new javax.activation.FileDataSource(
+          file.getFileName()));
+      if (hData != null) {
+        bean.setContentType(hData.getContentType());
+      }
+      bean.setIsImage(FileuploadUtils.isImage(file.getFileName()));
+      beanlist.add(bean);
+    }
+    return beanlist;
+  }
+
+  /**
+   * ファイルオブジェクトモデルを取得します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTWikiFile getEipTWikiFile(RunData rundata) {
+    int attachmentIndex = rundata.getParameters().getInt("attachmentIndex", -1);
+    if (attachmentIndex < 0) {
+      return null;
+    }
+    SelectQuery<EipTWikiFile> query = Database.query(EipTWikiFile.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTWikiFile.FILE_ID_PK_COLUMN, Integer
+        .valueOf(attachmentIndex));
+    query.andQualifier(exp);
+    return query.fetchSingle();
+  }
 }

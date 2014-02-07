@@ -21,7 +21,9 @@ package com.aimluck.eip.wiki;
 
 import info.bliki.wiki.model.WikiModel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -31,6 +33,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -76,6 +79,10 @@ public class WikiResultData implements ALData {
 
   /** 更新日 */
   private ALDateTimeField update_date;
+
+  /** 添付ファイルリスト */
+  private List<FileuploadBean> attachmentFileList =
+    new ArrayList<FileuploadBean>();
 
   /**
    *
@@ -259,5 +266,13 @@ public class WikiResultData implements ALData {
 
   public void setNewFlag(boolean bool) {
     new_wiki = bool;
+  }
+
+  public List<FileuploadBean> getAttachmentFileList() {
+    return attachmentFileList;
+  }
+
+  public void setAttachmentFiles(List<FileuploadBean> list) {
+    attachmentFileList = list;
   }
 }

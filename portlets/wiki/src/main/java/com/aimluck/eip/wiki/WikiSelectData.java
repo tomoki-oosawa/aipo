@@ -43,6 +43,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.wiki.util.WikiFileUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -293,6 +294,10 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+
+      rd.setAttachmentFiles(WikiFileUtils
+        .getAttachmentFiles(record.getWikiId()));
+
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);

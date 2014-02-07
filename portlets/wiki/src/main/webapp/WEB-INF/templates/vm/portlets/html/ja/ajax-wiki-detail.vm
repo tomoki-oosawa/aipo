@@ -37,8 +37,31 @@
 $!result.Detail.CategoryName
 #end
 #ALtditemfooter()
-#ALtdcaption($l10n.WIKI_NOTE)
-#ALtditem($!result.Detail.note)
+
+<tr>
+  <td class="caption">$l10n.WIKI_NOTE</td>
+  <td>
+	$!result.Detail.note
+    #if($!result.Detail.AttachmentFileList.size() > 0)
+    <div class="mt20">
+    	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+    		<img src="images/wiki/wiki_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
+    		#if($attachmentFile.isImage())
+    			<div  style="padding-top:3px;padding-left:12px;">
+    				<div id='popc' style='position:absolute'></div>
+    					<div class="thumbBlock">
+    						<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','WikiFileRawScreen').addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+    						<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("WikiFileThumbnailScreen").addQueryData("entityid", $!result.Detail.Id).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br />
+    					</div>
+    				</div>
+    			</div>
+    		#end
+    	#end
+    </div>
+    #end
+  </td>
+</tr>
+
 #ALtdcaption($l10n.WIKI_CREATE_USER)
 #ALtditem($!result.Detail.createUser)
 #ALtdcaption($l10n.WIKI_CREATE_DATE)
