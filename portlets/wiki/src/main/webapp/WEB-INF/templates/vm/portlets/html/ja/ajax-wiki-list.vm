@@ -61,9 +61,9 @@
 	<colgroup style="width: 9em;"></colgroup>
 	<tbody>
 		<tr>
-			<th class="auiMTCheck center"><input type="checkbox" /></th>
-			<th>#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')</th>
-			<th class="wName">#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')</th>
+			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
+			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "wName")
 			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
