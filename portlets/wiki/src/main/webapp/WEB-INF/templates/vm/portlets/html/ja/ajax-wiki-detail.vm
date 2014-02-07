@@ -41,7 +41,7 @@ $!result.Detail.CategoryName
 <tr>
   <td class="caption">$l10n.WIKI_NOTE</td>
   <td>
-	$!result.Detail.note
+	$!result.Detail.getNote()
     #if($!result.Detail.AttachmentFileList.size() > 0)
     <div class="mt20">
     	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )

@@ -81,10 +81,10 @@
                                 <span class="auiButtonIcon"　onclick="aipo.wiki.olist($textarea)"><i class="icon-list-ol"></i></span>
                             </div>
             
-			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</$textarea>
+			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
         </tr>
 		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-        <td class="caption" >$l10n.WIKI_FILE_ATTACH</td>
+        <td class="caption">$l10n.WIKI_FILE_ATTACH</td>
             <td>
               <div class="clearfix">
               <div>
@@ -101,7 +101,7 @@
         </tr>
 		#ALtablefooter()
 		#ALbuttonheader()
-			<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
+			<input name="" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
 			#ALajaxbuttonClose()
         #ALbuttonfooter()
 	#ALformfooter()

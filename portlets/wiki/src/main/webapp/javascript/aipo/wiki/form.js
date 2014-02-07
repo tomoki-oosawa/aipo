@@ -127,8 +127,8 @@ aipo.wiki.filterClick=function(portlet_id,thisnode,event){
   var li=thisnode.parentNode;
   var ul=li.parentNode;
   var param=li.getAttribute("data-param");//liのdata-param
-  aipo.msgboard.filterSelect(ul,li);
-  aipo.msgboard.filteredSearch(portlet_id);
+  aipo.wiki.filterSelect(ul,li);
+  aipo.wiki.filteredSearch(portlet_id);
 }
 
 aipo.wiki.onReceiveMessage = function(msg) {

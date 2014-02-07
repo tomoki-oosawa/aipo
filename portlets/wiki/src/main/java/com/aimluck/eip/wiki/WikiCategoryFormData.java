@@ -188,8 +188,8 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       }
       // カテゴリ名
       category_name.setValue(category.getCategoryName());
-    } catch (Exception ex) {
-      logger.error("todo", ex);
+    } catch (Exception e) {
+      logger.error("WikiCategoryFormData.loadFormData", e);
       return false;
     }
     return true;
@@ -300,7 +300,6 @@ public class WikiCategoryFormData extends ALAbstractFormData {
       // カテゴリ名を取得
       String categoryName = category.getCategoryName();
 
-      // Todoカテゴリを削除
       Database.delete(category);
       Database.commit();
 
