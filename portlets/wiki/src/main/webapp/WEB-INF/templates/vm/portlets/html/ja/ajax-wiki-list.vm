@@ -62,13 +62,13 @@
 		<tr>
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
 			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "wName")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
 			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>
 			#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
-			<input name="check$!record.Id" type="checkbox" value="$!record.Id" /></td>
+			<input name="check$!record.Id" type="checkbox" value="$!record.Id" />
 		    #ALtdcellfooter()
 		    #ALtdcellheaderAtt('class="auiMTCaption"')
 				<div>
@@ -84,10 +84,10 @@
 
 #AUISummaryDiv()
 #AUIajaxpageview('WikiListScreen' $result)
-
 #AUISummaryDivfooter()
-#ALformfooter()
+
 #end
+#ALformfooter()
 
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
