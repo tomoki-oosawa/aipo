@@ -22,7 +22,7 @@
 #set ($createDate_word = "$!{result.Detail.CreateDate.Year}$l10n.WIKI_YEAR$!{result.Detail.CreateDate.Month}$l10n.WIKI_MONTH$!{result.Detail.CreateDate.Day}$l10n.WIKI_DATE")
 #set ($updateDate_word = "$!{result.Detail.UpdateDate.Year}$l10n.WIKI_YEAR$!{result.Detail.UpdateDate.Month}$l10n.WIKI_MONTH$!{result.Detail.UpdateDate.Day}$l10n.WIKI_DATE")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.WIKI_WIKI_DETAIL)
+#ALdialogheader($l10n.WIKI_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxdetailformheader("Wiki")
