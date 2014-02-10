@@ -219,6 +219,10 @@ $theLink
 <th class="w75">$text</th>
 #end
 
+#macro(ALtdheadW75Class $text $class)
+<th class="w75 $class">$text</th>
+#end
+
 #macro(ALtdheadAtt $text $option)
 <th $option>$text</th>
 #end

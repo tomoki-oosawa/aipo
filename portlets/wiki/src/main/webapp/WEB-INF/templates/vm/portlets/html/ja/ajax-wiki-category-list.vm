@@ -36,10 +36,10 @@
 #AUISummaryDiv()
 #AUIajaxpageview('WikiCategoryListScreen' $result)
 #AUISummaryDivfooter()
-#AUIrowMTableWide()
+#AUIrowTableWide()
 <tr>
-<th class="wCategory mb_hide">#ALajaxsort('category_name' $l10n.WIKI_CATEGORY_NAME $result 'WikiCategoryListScreen')</th>
-<th class="wName">#ALajaxsort('user_name' $l10n.WIKI_CREATE_USER $result 'WikiCategoryListScreen')</th>
+#ALtdheadW75Class("#ALajaxsort('category_name' $l10n.WIKI_CATEGORY_NAME $result 'WikiCategoryListScreen')" "WCategory")
+#ALtdheadW25Class("#ALajaxsort('user_name' $l10n.WIKI_CREATE_USER $result 'WikiCategoryListScreen')" "wName mb_hide")
 </tr>
 #foreach ($record in $result.List)
 <tr>
