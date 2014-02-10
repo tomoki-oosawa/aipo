@@ -267,10 +267,25 @@ aipo.wiki.onLoadCategoryDialog = function(portlet_id){
   }
 
 }
-aipo.wiki.insertTag=function(textarea,tag,text){
-      var index = textarea.selectionStart;
+aipo.wiki.insertTag=function(tag,text){
+  var textarea =dojo.byId('wiki_note');
+  var index=0;
+  var length=0;
+   if(dojo.isIE){
+     textarea.focus();
+     var textRange = document.selection.createRange();
+     var clone = textRange.duplicate();
+      
+     clone.moveToElementText(textarea);
+     clone.setEndPoint( 'EndToEnd', textRange );
+      
+      index = clone.text.length - textRange.text.length;
+      length  = clone.text.length - index;
+   }else{
+      index = textarea.selectionStart;
 
-       var length = textarea.selectionEnd - index;
+      length = textarea.selectionEnd - index;
+   }
       if(length==0){
        textarea.value = textarea.value.substr(0, index) +
        tag +text+tag+ textarea.value.substr(index + length);
@@ -278,54 +293,52 @@ aipo.wiki.insertTag=function(textarea,tag,text){
         textarea.value = textarea.value.substr(0, index) +tag+textarea.value.substr(index, length)
                          +tag+textarea.value.substr(index + length);
       }
-       textarea.focus();
-       var newCaretPosition = index + tag.length;
-       textarea.setSelectionRange(newCaretPosition, newCaretPosition);
+       
 }
-aipo.wiki.bold=function(textarea){
-    tag="'''";
-    text="太文字文";
-    aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.bold=function(){
+   var tag="'''";
+  var  text="太文字文";
+    aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.italic=function(textarea){
-  tag="''";
-  text="斜体文";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.italic=function(){
+ var  tag="''";
+var   text="斜体文";
+  aipo.wiki.insertTag(tag,text);
 
 }
-aipo.wiki.underline=function(textarea){
-  tag="%%%";
-  text="下線";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.underline=function(){
+var   tag="%%%";
+var   text="下線";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.strikethrough=function(textarea){
-  tag="%%";
-  text="取り消し線";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.strikethrough=function(){
+ var tag="%%";
+ var text="取り消し線";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.header=function(textarea){
-  tag="=";
-  text="見出し１";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.header=function(){
+ var tag="=";
+  var text="見出し１";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.headerTwo=function(textarea){
-  tag="==";
-  text="見出し２";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.headerTwo=function(){
+ var  tag="==";
+ var  text="見出し２";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.headerThree=function(textarea){
-  tag="===";
-  text="見出し３";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.headerThree=function(){
+ var  tag="===";
+ var text="見出し３";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.ulist=function(textarea){
-  tag="* ";
-  text="番号なし項目";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.ulist=function(){
+ var tag="* ";
+ var  text="番号なし項目";
+  aipo.wiki.insertTag(tag,text);
 }
-aipo.wiki.olist=function(textarea){
-  tag="#";
-  text="番号付き項目";
-  aipo.wiki.insertTag(textarea,tag,text);
+aipo.wiki.olist=function(){
+ var tag="#";
+ var text="番号付き項目";
+  aipo.wiki.insertTag(tag,text);
 }
 

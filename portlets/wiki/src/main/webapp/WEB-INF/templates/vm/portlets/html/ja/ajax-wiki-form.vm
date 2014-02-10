@@ -69,16 +69,15 @@
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
             #ALtditemheader()
             <div class="mb5">
-				#set($textarea="dojo.byId('wiki_note')")
-                                <span class="auiButtonIcon"><i class="icon-bold" onclick="aipo.wiki.bold($textarea)"></i></span>
-                                <span class="auiButtonIcon"><i class="icon-italic"　onclick="aipo.wiki.italic($textarea)"></i></span>
-                                <span class="auiButtonIcon"><i class="icon-underline"　onclick="aipo.wiki.underline($textarea)"></i></span>
-                                <span class="auiButtonIcon"><i class="icon-strikethrough"　onclick="aipo.wiki.strikethrough($textarea)"></i></span>
-                                <span class="auiButtonIcon"　onclick="aipo.wiki.header($textarea)">h1</span>
-                                <span class="auiButtonIcon"　onclick="aipo.wiki.headerTwo($textarea)">h2</span>
-                                <span class="auiButtonIcon"　onclick="aipo.wiki.headerThree($textarea)">h3</span>
-                                <span class="auiButtonIcon"　onclick="aipo.wiki.ulist($textarea)"><i class="icon-list-ul"></i></span>
-                                <span class="auiButtonIcon"　onclick="aipo.wiki.olist($textarea)"><i class="icon-list-ol"></i></span>
+                                <span class="auiButtonIcon"><a onclick="aipo.wiki.bold()" href="javascript:void(0);"><i class="icon-bold" ></i></a></span>
+                                <span class="auiButtonIcon"><a onclick="aipo.wiki.italic()" href="javascript:void(0);"> <i class="icon-italic"　></i></a></span>
+                                <span class="auiButtonIcon"><a onclick="aipo.wiki.underline()" href="javascript:void(0);" ><i class="icon-underline"　></i></a></span>
+                                <span class="auiButtonIcon"><a onclick="aipo.wiki.strikethrough()" href="javascript:void(0);"><i class="icon-strikethrough"　></i></a></span>
+                                <span class="auiButtonIcon"　><a onclick="aipo.wiki.header()"  href="javascript:void(0);">h1</a></span>
+                                <span class="auiButtonIcon"　><a onclick="aipo.wiki.headerTwo()" href="javascript:void(0);">h2</a></span>
+                                <span class="auiButtonIcon"　><a onclick="aipo.wiki.headerThree()" href="javascript:void(0);">h3</a></span>
+                                <span class="auiButtonIcon"　><a onclick="aipo.wiki.ulist()" href="javascript:void(0);"><i class="icon-list-ul" ></i></a></span>
+                                <span class="auiButtonIcon"　><a onclick="aipo.wiki.olist()" href="javascript:void(0);"><i class="icon-list-ol" ></i></a></span>
                             </div>
             
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
