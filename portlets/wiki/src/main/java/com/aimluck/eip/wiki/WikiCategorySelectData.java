@@ -212,7 +212,7 @@ public class WikiCategorySelectData extends
         ALLocalizationUtils.getl10n("WIKI_YEAR_MONTH_DAY")));
       rd.setUpdateDate(ALDateUtil.format(
         record.getUpdateDate(),
-        ALLocalizationUtils.getl10n("WIKI_YEAR_MONTH_DAY_HOUR_MINUTE")));
+        ALLocalizationUtils.getl10n("WIKI_YEAR_MONTH_DAY")));
     } catch (ALDBErrorException e) {
       logger.error("getResultDataDetail", e);
       return null;
