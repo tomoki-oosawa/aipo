@@ -267,78 +267,96 @@ aipo.wiki.onLoadCategoryDialog = function(portlet_id){
   }
 
 }
-aipo.wiki.insertTag=function(tag,text){
-  var textarea =dojo.byId('wiki_note');
-  var index=0;
-  var length=0;
-   if(dojo.isIE){
-     textarea.focus();
-     var textRange = document.selection.createRange();
-     var clone = textRange.duplicate();
-      
-     clone.moveToElementText(textarea);
-     clone.setEndPoint( 'EndToEnd', textRange );
-      
-      index = clone.text.length - textRange.text.length;
-      length  = clone.text.length - index;
-   }else{
-      index = textarea.selectionStart;
 
-      length = textarea.selectionEnd - index;
-   }
-      if(length==0){
-       textarea.value = textarea.value.substr(0, index) +
-       tag +text+tag+ textarea.value.substr(index + length);
-      }else{
-        textarea.value = textarea.value.substr(0, index) +tag+textarea.value.substr(index, length)
-                         +tag+textarea.value.substr(index + length);
-      }
-       
+aipo.wiki.insertTag = function(prefix, suffix, text){
+	var textarea = dojo.byId('wiki_note');
+	var start, end, sel, scrollPos, subst, res;
+	
+	textarea.focus();
+	
+	if(typeof(document["selection"]) != "undefined"){ // isIE
+		sel = document.selection.createRange().text;
+	} else if(typeof(textarea["setSelectionRange"]) != "undefined"){
+		start = textarea.selectionStart;
+		end = textarea.selectionEnd;
+		scrollPos = textarea.scrollTop;
+		sel = textarea.value.substring(start, end);
+	}
+	
+	if (sel.match(/ $/)) { // exclude ending space char, if any
+		sel = sel.substring(0, sel.length - 1);
+		suffix = suffix + " ";
+	}
+	
+	res = (sel) ? sel : '';
+	
+	if(sel){
+		subst = prefix + res + suffix;
+	} else {
+		subst = prefix + text + suffix;
+	}
+
+	if (typeof(document["selection"]) != "undefined") { // isIE
+		var range = document.selection.createRange();
+		range.text = subst;
+		range.setEndPoint('EndToEnd', range);
+	} else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+		textarea.value = textarea.value.substring(0, start) + subst +
+		textarea.value.substring(end);
+		if (sel) {
+			textarea.setSelectionRange(start + subst.length, start + subst.length);
+		} else {
+			textarea.setSelectionRange(start + subst.length, start + subst.length);
+		}
+		textarea.scrollTop = scrollPos;
+	}
+
 }
+
 aipo.wiki.bold=function(){
-   var tag="'''";
-  var  text="太文字文";
-    aipo.wiki.insertTag(tag,text);
+  var tag="'''";
+  var text="太文字文";
+    aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.italic=function(){
  var  tag="''";
 var   text="斜体文";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 
 }
 aipo.wiki.underline=function(){
 var   tag="%%%";
 var   text="下線";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.strikethrough=function(){
  var tag="%%";
  var text="取り消し線";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.header=function(){
  var tag="=";
   var text="見出し１";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.headerTwo=function(){
  var  tag="==";
  var  text="見出し２";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.headerThree=function(){
  var  tag="===";
  var text="見出し３";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, tag, text);
 }
 aipo.wiki.ulist=function(){
  var tag="* ";
  var  text="番号なし項目";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, "", text);
 }
 aipo.wiki.olist=function(){
  var tag="#";
  var text="番号付き項目";
-  aipo.wiki.insertTag(tag,text);
+  aipo.wiki.insertTag(tag, "", text);
 }
 
