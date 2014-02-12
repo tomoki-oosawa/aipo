@@ -1,0 +1,40 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
+#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryListScreen')))
+## ---------------------------------------------------------------------------
+<div id="auiWidgetsArea">
+    <div class="auiWidget clearfix widgetButton">
+        <a title="$l10n.WIKI_CREATE" href="javascript:void(0)" #if($!isCategory) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_CREATE</a>
+    </div>
+    <div id="subNavigation">
+        <div class="auiWidget clearfix">
+            <ul>
+				<li #if ("$!result.CategoryId" == "" || "$!result.CategoryId" == "0") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.WIKI_ALL_CATEGORY</a></li>
+				#foreach($record in $!result.CategoryList )
+				<li #if ("$!result.CategoryId" == "$!record.CategoryId.toString()") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filtertype","category").addQueryData("filter",$!record.CategoryId).addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.CategoryName}</a></li>
+				#end
+            </ul>
+            <div style="margin:0.5em 0;">
+                <a href="javascript:void(0)" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID')">${l10n.WIKI_MANAGEMENT}</a>
+            </div>
+        </div>
+    </div>
+</div>
