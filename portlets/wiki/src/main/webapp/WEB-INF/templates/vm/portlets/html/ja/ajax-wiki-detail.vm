@@ -37,6 +37,7 @@ $!result.Detail.CategoryNameHtml
 <tr>
   <td class="caption">$l10n.WIKI_NOTE</td>
   <td>
+	<div class="auiWikiContent">
 	$!result.Detail.getNote()
     #if($!result.Detail.AttachmentFileList.size() > 0)
     <div class="mt20">
@@ -54,7 +55,8 @@ $!result.Detail.CategoryNameHtml
     		#end
     	#end
     </div>
-    #end
+	#end
+    </div>
   </td>
 </tr>
 
