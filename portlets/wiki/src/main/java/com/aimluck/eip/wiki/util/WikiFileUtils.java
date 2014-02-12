@@ -24,7 +24,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -39,6 +41,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiFile;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -376,5 +379,43 @@ public class WikiFileUtils {
         .valueOf(attachmentIndex));
     query.andQualifier(exp);
     return query.fetchSingle();
+  }
+
+  public static void deleteFiles(EipTWiki wiki)
+      throws ALFileNotRemovedException {
+    String orgId = Database.getDomainName();
+    SelectQuery<EipTWikiFile> query = Database.query(EipTWikiFile.class);
+    query.andQualifier(ExpressionFactory.matchDbExp(
+      EipTWikiFile.EIP_TWIKI_PROPERTY,
+      wiki));
+
+    ArrayList<Map<String, String>> fpaths =
+      new ArrayList<Map<String, String>>();
+    List<EipTWikiFile> fileList = query.fetchList();
+    for (EipTWikiFile file : fileList) {
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("userId", String.valueOf(file.getOwnerId()));
+      map.put("fpath", file.getFilePath());
+      fpaths.add(map);
+    }
+    Database.deleteAll(fileList);
+
+    for (Map<String, String> fmap : fpaths) {
+      int userId = Integer.parseInt(fmap.get("userId"));
+      String fpath = fmap.get("fpath");
+      try {
+        ALStorageService.deleteFile(getSaveDirPath(orgId, userId) + fpath);
+
+      } catch (Exception e) {
+        Database.rollback();
+        ALFileNotRemovedException fe = new ALFileNotRemovedException();
+        fe.initCause(e);
+        throw fe;
+      }
+
+    }
+
+    Database.commit();
+
   }
 }

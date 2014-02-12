@@ -266,6 +266,8 @@ public class WikiFormData extends ALAbstractFormData {
       int entityId = wiki.getWikiId();
       // タイトルの取得
       String wikiName = wiki.getWikiName();
+      // 添付ファイルの削除
+      WikiFileUtils.deleteFiles(wiki);
 
       // Wikiを削除
       Database.delete(wiki);
