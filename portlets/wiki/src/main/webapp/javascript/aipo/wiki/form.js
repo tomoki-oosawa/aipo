@@ -325,14 +325,12 @@ var   text="斜体文";
 
 }
 aipo.wiki.underline=function(){
-var   tag="%%%";
 var   text="下線";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag("<u>", "</u>", text);
 }
 aipo.wiki.strikethrough=function(){
- var tag="%%";
  var text="取り消し線";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag("<del>", "</del>", text);
 }
 aipo.wiki.header=function(){
  var tag="=";
@@ -355,7 +353,7 @@ aipo.wiki.ulist=function(){
   aipo.wiki.insertTag(tag, "", text);
 }
 aipo.wiki.olist=function(){
- var tag="#";
+ var tag="# ";
  var text="番号付き項目";
   aipo.wiki.insertTag(tag, "", text);
 }

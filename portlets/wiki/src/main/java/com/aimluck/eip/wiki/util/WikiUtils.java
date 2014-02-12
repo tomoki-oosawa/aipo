@@ -323,6 +323,15 @@ public class WikiUtils {
     }
   }
 
+  public static int getEipTWikiCategoryWikiCount(EipTWikiCategory category) {
+    SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    query.setQualifier(ExpressionFactory.matchDbExp(
+      EipTWiki.EIP_TWIKI_CATEGORY_PROPERTY,
+      category));
+    return query.getCount();
+
+  }
+
   public static boolean isTitleDuplicate(String title) {
     return isTitleDuplicate(title, null);
   }
