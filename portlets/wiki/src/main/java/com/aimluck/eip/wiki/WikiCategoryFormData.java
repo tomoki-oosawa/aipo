@@ -41,6 +41,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -290,8 +291,8 @@ public class WikiCategoryFormData extends ALAbstractFormData {
         return false;
       }
 
-      if (category.getEipTWiki().size() > 0) {
-        msgList.add("1つ以上のWikiを含むカテゴリを削除することはできません。");
+      if (WikiUtils.getEipTWikiCategoryWikiCount(category) > 0) {
+        msgList.add(ALLocalizationUtils.getl10n("WIKI_CATEGORY_NOT_DELETE"));
         return false;
       }
 
