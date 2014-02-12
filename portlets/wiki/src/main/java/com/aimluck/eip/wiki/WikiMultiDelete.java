@@ -35,6 +35,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.wiki.util.WikiFileUtils;
 
 /**
  * 
@@ -75,6 +76,8 @@ public class WikiMultiDelete extends ALAbstractCheckList {
         Integer entityId = wiki.getWikiId();
         // Wiki名を取得
         String wikiName = wiki.getWikiName();
+        // 添付ファイルの削除
+        WikiFileUtils.deleteFiles(wiki.getWikiId());
 
         // Wikiを削除
         Database.delete(wiki);

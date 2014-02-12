@@ -24,9 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -381,41 +379,25 @@ public class WikiFileUtils {
     return query.fetchSingle();
   }
 
-  public static void deleteFiles(EipTWiki wiki)
+  public static void deleteFiles(Integer wikiId)
       throws ALFileNotRemovedException {
+    /** eip_t_wiki_file has delete cascade, not delete files from database here */
+    if (null == wikiId) {
+      return;
+    }
     String orgId = Database.getDomainName();
     SelectQuery<EipTWikiFile> query = Database.query(EipTWikiFile.class);
-    query.andQualifier(ExpressionFactory.matchDbExp(
-      EipTWikiFile.EIP_TWIKI_PROPERTY,
-      wiki));
-
-    ArrayList<Map<String, String>> fpaths =
-      new ArrayList<Map<String, String>>();
+    query.setQualifier(ExpressionFactory.matchExp(
+      EipTWikiFile.WIKI_ID_PROPERTY,
+      wikiId));
     List<EipTWikiFile> fileList = query.fetchList();
-    for (EipTWikiFile file : fileList) {
-      Map<String, String> map = new HashMap<String, String>();
-      map.put("userId", String.valueOf(file.getOwnerId()));
-      map.put("fpath", file.getFilePath());
-      fpaths.add(map);
-    }
-    Database.deleteAll(fileList);
-
-    for (Map<String, String> fmap : fpaths) {
-      int userId = Integer.parseInt(fmap.get("userId"));
-      String fpath = fmap.get("fpath");
-      try {
-        ALStorageService.deleteFile(getSaveDirPath(orgId, userId) + fpath);
-
-      } catch (Exception e) {
-        Database.rollback();
-        ALFileNotRemovedException fe = new ALFileNotRemovedException();
-        fe.initCause(e);
-        throw fe;
+    try {
+      for (EipTWikiFile file : fileList) {
+        ALStorageService.deleteFile(getSaveDirPath(orgId, file.getOwnerId())
+          + file.getFilePath());
       }
-
+    } catch (Exception e) {
+      throw new ALFileNotRemovedException(e);
     }
-
-    Database.commit();
-
   }
 }
