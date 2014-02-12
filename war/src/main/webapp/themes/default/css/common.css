@@ -844,6 +844,13 @@ table.simpleTable .caption {
   display: inline;
 }
 
+/***************************************************
+	imageDialog
+--------------------------------------------------*/
+#imageDialog {
+	left:50%;
+}
+
 /* addressbookDialog */
 .addressbookDialog {
   border: 5px solid #d2d2d2;
