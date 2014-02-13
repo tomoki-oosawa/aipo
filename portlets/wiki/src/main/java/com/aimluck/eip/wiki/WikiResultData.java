@@ -175,6 +175,10 @@ public class WikiResultData implements ALData {
     String htmlText;
     try {
       htmlText = WikiModel.toHtml(note);
+
+      /* TOCを削除 */
+      htmlText =
+        htmlText.replaceFirst("<table\\sid=\"toc\"(.|\n|\r)*</table><hr/>", "");
     } catch (Exception e) {
       logger.error("getNote", e);
       return "Wikiの構文エラーが発生しました";
