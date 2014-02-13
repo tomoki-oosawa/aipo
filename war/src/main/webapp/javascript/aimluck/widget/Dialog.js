@@ -283,7 +283,9 @@ dojo.declare(
             var mb = dojo.marginBox(this.domNode);
 
             var style = this.domNode.style;
-            //style.left = Math.floor((viewport.l + (viewport.w - mb.w)/2)) + "px";
+
+            if(this.id=="imageDialog"){style.left = Math.floor((viewport.l + (viewport.w - mb.w)/2)) + "px";}
+            
             if(Math.floor((viewport.t + (viewport.h - mb.h)/2)) > 0){
                 style.top = Math.floor((viewport.t + (viewport.h - mb.h)/2)) + "px";
             } else {
