@@ -268,7 +268,7 @@ aipo.wiki.onLoadCategoryDialog = function(portlet_id){
 
 }
 
-aipo.wiki.insertTag = function(prefix, suffix, text){
+aipo.wiki.insertTag = function(prefix, suffix, text, islist){
 	var textarea = dojo.byId('wiki_note');
 	var start, end, sel, scrollPos, subst, res;
 	
@@ -291,7 +291,22 @@ aipo.wiki.insertTag = function(prefix, suffix, text){
 	res = (sel) ? sel : '';
 	
 	if(sel){
-		subst = prefix + res + suffix;
+	  if(islist){
+	    var linefeed=res.match(/([\r\n|\r|\n])/);
+	    if(linefeed){
+	      var lfchr=linefeed[0];
+	      var arr=res.split(/\r\n|\r|\n/);
+	      subst='';
+	      for(var i=0;i<arr.length;i++){
+	        subst += prefix + arr[i] + suffix;
+	        if(i<arr.length-1) subst += lfchr;
+	      }
+	    }else{
+	      subst = prefix + res + suffix;
+	    }
+	  }else{
+	    subst = prefix + res + suffix;
+	  }
 	} else {
 		subst = prefix + text + suffix;
 	}
@@ -316,45 +331,45 @@ aipo.wiki.insertTag = function(prefix, suffix, text){
 aipo.wiki.bold=function(){
   var tag="'''";
   var text="太文字文";
-    aipo.wiki.insertTag(tag, tag, text);
+    aipo.wiki.insertTag(tag, tag, text, false);
 }
 aipo.wiki.italic=function(){
  var  tag="''";
 var   text="斜体文";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag(tag, tag, text, false);
 
 }
 aipo.wiki.underline=function(){
 var   text="下線";
-  aipo.wiki.insertTag("<u>", "</u>", text);
+  aipo.wiki.insertTag("<u>", "</u>", text, false);
 }
 aipo.wiki.strikethrough=function(){
  var text="取り消し線";
-  aipo.wiki.insertTag("<del>", "</del>", text);
+  aipo.wiki.insertTag("<del>", "</del>", text, false);
 }
 aipo.wiki.header=function(){
  var tag="=";
   var text="見出し１";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag(tag, tag, text, false);
 }
 aipo.wiki.headerTwo=function(){
  var  tag="==";
  var  text="見出し２";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag(tag, tag, text, false);
 }
 aipo.wiki.headerThree=function(){
  var  tag="===";
  var text="見出し３";
-  aipo.wiki.insertTag(tag, tag, text);
+  aipo.wiki.insertTag(tag, tag, text, false);
 }
 aipo.wiki.ulist=function(){
  var tag="* ";
  var  text="番号なし項目";
-  aipo.wiki.insertTag(tag, "", text);
+  aipo.wiki.insertTag(tag, "", text, true);
 }
 aipo.wiki.olist=function(){
  var tag="# ";
  var text="番号付き項目";
-  aipo.wiki.insertTag(tag, "", text);
+  aipo.wiki.insertTag(tag, "", text, true);
 }
 
