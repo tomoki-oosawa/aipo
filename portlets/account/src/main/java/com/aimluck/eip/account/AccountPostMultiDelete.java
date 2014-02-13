@@ -35,6 +35,8 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -84,6 +86,12 @@ public class AccountPostMultiDelete extends ALAbstractCheckList {
 
         // 部署を削除
         Database.deleteAll(record);
+
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          record.getPostId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "部署「" + record.getPostName() + "」を削除");
       }
 
       Database.commit();

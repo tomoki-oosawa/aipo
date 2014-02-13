@@ -41,6 +41,8 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -215,6 +217,12 @@ public class AccountPositionFormData extends ALAbstractFormData {
       position.setUpdateDate(now);
       Database.commit();
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        position.getPositionId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "役職「" + position.getPositionName() + "」を追加");
+
       position_id = position.getPositionId().intValue();
 
       ALEipManager.getInstance().reloadPosition();
@@ -246,6 +254,13 @@ public class AccountPositionFormData extends ALAbstractFormData {
       record.setPositionName(position_name.getValue());
       record.setUpdateDate(new Date());
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getPositionId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "役職「" + record.getPositionName() + "」を更新");
+
       ALEipManager.getInstance().reloadPosition();
     } catch (Exception ex) {
       Database.rollback();
@@ -279,6 +294,12 @@ public class AccountPositionFormData extends ALAbstractFormData {
       // 役職を削除
       Database.delete(record);
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getPositionId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "役職「" + record.getPositionName() + "」を削除");
 
       // この役職に設定されているユーザーの役職IDを0とする
       String sql =

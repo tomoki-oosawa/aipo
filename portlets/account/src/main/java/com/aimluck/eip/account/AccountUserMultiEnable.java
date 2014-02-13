@@ -33,6 +33,8 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -97,6 +99,11 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
         user.setPositionId(Integer.valueOf(0));
         user.setDisabled("F");
 
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          user.getUserId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "ユーザー「" + user.getLoginName() + "」を有効化");
       }
 
       Database.commit();

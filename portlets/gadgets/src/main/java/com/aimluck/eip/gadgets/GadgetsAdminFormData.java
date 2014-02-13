@@ -35,6 +35,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALOAuthConsumer;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.ALOAuthConsumerService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
@@ -232,6 +234,12 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
         .withIcon(metaData.getIcon())
         .withActivityLoginName(activityLoginName));
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        ALEipUtils.getUserId(rundata),
+        ALEventlogConstants.PORTLET_TYPE_GADGET,
+        "アプリ「" + metaData.getTitle() + "」を追加");
+
     } catch (Throwable t) {
       logger.error(t, t);
       throw new ALDBErrorException();
@@ -271,6 +279,12 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
             ? Type.RSASHA1
             : Type.HMACSHA1));
       }
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        ALEipUtils.getUserId(rundata),
+        ALEventlogConstants.PORTLET_TYPE_GADGET,
+        "アプリ「" + metaData.getTitle() + "」を更新");
 
     } catch (Throwable t) {
       logger.error(t, t);
