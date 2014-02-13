@@ -193,8 +193,20 @@ public class WikiResultData implements ALData {
       htmlText = WikiModel.toHtml(noteText);
 
       /* TOCを削除 */
-      htmlText =
-        htmlText.replaceFirst("<table\\sid=\"toc\"(.|\n|\r)*</table><hr/>", "");
+      if (htmlText.startsWith("<table id=\"toc\"")) {
+        String[] texts = htmlText.split("\r|\n");
+        htmlText = "";
+        int i;
+        for (i = 0; i < texts.length; i++) {
+          if (texts[i].contains("</table>")) {
+            break;
+          }
+        }
+        for (int j = i + 1; j < texts.length; j++) {
+          htmlText += texts[j];
+        }
+      }
+
     } catch (Exception e) {
       logger.error("getNote", e);
       return "Wikiの構文エラーが発生しました";
