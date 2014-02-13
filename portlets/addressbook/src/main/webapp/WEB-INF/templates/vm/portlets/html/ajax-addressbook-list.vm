@@ -34,14 +34,16 @@
 #set ($button_flag = "true")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
+
 #AUISummaryDiv()
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="AddressBookListScreen"/>
-<input class="text floatLeft long" type="text" name="sword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.SearchWord"/>
-<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.ADDRESSBOOK_SEARCH</a>
-</form>
-<div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
+#AUISearchInput("q$!{portlet.ID}" "sword" "$!result.searchWord" "style='margin-right:5px;'")
+#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()
 #AUISummaryDivfooter()
+
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #if(!($result.hasAuthorityList))
   $l10n.ADDRESSBOOK_PERMISSION_DENIED
@@ -77,7 +79,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheaderAtt('align="center" class="auiMTCheck"')
-<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" /></td>
+<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>

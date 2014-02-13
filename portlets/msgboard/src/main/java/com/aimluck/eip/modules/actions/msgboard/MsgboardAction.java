@@ -82,6 +82,7 @@ public class MsgboardAction extends ALBaseAction {
 
     MsgboardTopicSelectData listData = new MsgboardTopicSelectData();
     listData.initField();
+    listData.setFiltersFromPSML(portlet, context, rundata);
     listData.loadCategoryList(rundata, context);
     listData.setRowsNum(Integer.parseInt(portlet
       .getPortletConfig()

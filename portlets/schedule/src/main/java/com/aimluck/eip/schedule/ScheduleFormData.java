@@ -384,7 +384,15 @@ public class ScheduleFormData extends ALAbstractFormData {
           return;
         }
       } else {
-        dummy.setValue(new Date());
+        Date date = new Date();
+        Calendar tmpStartCal = Calendar.getInstance();
+        tmpStartCal.setTime(date);
+        int startHour = tmpStartCal.get(Calendar.HOUR_OF_DAY);
+        if (startHour != 23) {
+          tmpStartCal.set(Calendar.HOUR_OF_DAY, startHour + 1);
+          tmpStartCal.set(Calendar.MINUTE, 0);
+        }
+        dummy.setValue(tmpStartCal.getTime());
         ALEipUtils.setTemp(rundata, context, "tmpStart", dummy.toString());
       }
       if (rundata.getParameters().containsKey("form_end")) {
@@ -399,7 +407,18 @@ public class ScheduleFormData extends ALAbstractFormData {
           return;
         }
       } else {
-        dummy.setValue(new Date());
+        Date date = new Date();
+        Calendar tmpEndCal = Calendar.getInstance();
+        tmpEndCal.setTime(date);
+        int endHour = tmpEndCal.get(Calendar.HOUR_OF_DAY);
+        if (endHour != 22 && endHour != 23) {
+          tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 2);
+          tmpEndCal.set(Calendar.MINUTE, 0);
+        } else if (endHour == 22) {
+          tmpEndCal.set(Calendar.HOUR_OF_DAY, endHour + 1);
+          tmpEndCal.set(Calendar.MINUTE, 55);
+        }
+        dummy.setValue(tmpEndCal.getTime());
         ALEipUtils.setTemp(rundata, context, "tmpEnd", dummy.toString());
       }
     }

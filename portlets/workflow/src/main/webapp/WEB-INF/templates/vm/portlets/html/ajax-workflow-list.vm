@@ -24,34 +24,38 @@
 #else
 #set ($title = "$l10n.WORKFLOW_APPROVER")
 #end
+#if($all_flg)
+#set ($baseurl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab")))
+#else
+#set ($baseurl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("tab","$!result.currentTab")))
+#end
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta clearfix">
-<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;">
+
+#AUISummaryFilterDivHeader()
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
+##AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
+<div class="filterInputField">
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$baseurl' />
 <input type="hidden" name="template" value="WorkflowListScreen"/>
-<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">$l10n.WORKFLOW_SAERCH</a>
-</form>
-<div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
+<div class="filters" id="filters_$!portlet.ID">#*
+*##foreach($record in $result.CategoryList)#*
+*##if("$!result.CurrentFilter"=="$!record.CategoryId")#*
+	*#<span class="filterTip">#*
+		*#<span>$!{record.CategoryName}</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick='aipo.workflow.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#end#*
+*#</div>
+
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.workflow.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.workflow.initFilterSearch("$!portlet.ID");' onblur='aipo.workflow.finFilterSearch("$!portlet.ID");' />
 </div>
-
-<div class="auiSummfloatLeftaryMeta clearfix">
-#ALselectpdheader("category" "180px" "aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')")
-
-#if ($all_flg)
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowAllListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("eventSubmit_doWorkflow_list_all","1").addQueryData("alltab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-
-#else
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("filtertype","category").addQueryData("filter","").addQueryData("tab","$!result.currentTab"))">$l10n.WORKFLOW_ALL_CATEGORY</option>
-#foreach( $record in $result.CategoryList )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen").addQueryData("filtertype","category").addQueryData("filter","$!record.CategoryId").addQueryData("tab","$!result.currentTab"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
-#end
-#end
-</select></div>
+#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.WORKFLOW_SAERCH")
+#AUISearchIndicator()
+#AUISearchFooter()
+#AUISummaryDivFooter()
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Workflow')
 #if($result.List.size() == 0)
@@ -65,7 +69,7 @@
 <tr>
 #ALtdheadAtt("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowListScreen')" 'class=""')
 #ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowListScreen')" 'class="thin"')
-#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin""')#else#ALtdheadAtt("$title" 'class="thin"')#end
+#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin"')#else#ALtdheadAtt("$title" 'class="thin"')#end
 #ALtdheadAtt("#ALajaxsort('create_date' $l10n.WORKFLOW_CREATEDATE $result 'WorkflowListScreen')" 'class="thin"')
 </tr>
 #foreach ($record in $result.List)
@@ -91,6 +95,18 @@
 </div>
 #end
 #ALformfooter()
+<img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
+  <div class="single">
+    <p class="caption">$l10n.WORKFLOW_CLASSIFICATION</p>
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
+      <li data-param="" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$l10n.WORKFLOW_ALL_CATEGORY</a></li>
+    #foreach($record in $result.CategoryList)
+      <li data-param="$!record.CategoryId" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
+    #end
+    </ul>
+  </div>
+</div>
 #AUIcontentsAreaFooter()
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/workflow-widgets.vm")

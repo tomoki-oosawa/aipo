@@ -67,18 +67,19 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   $!{result.Detail.Note}
   #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
     <div style="padding-top:15px;">
+    <ul>
     #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-      <div style="padding-top:5px;">
-      <img src="images/blog/blog_item.gif">&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})"> $result.getStringCR($attachmentFile.FileNameField) </a><br />
+      <li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
       #if($attachmentFile.isImage())
-        <div style="padding-top:3px;padding-left:12px;" class="thumbBlock">
+        <div class="thumbBlock">
         <div id='popc' style='position:absolute'></div>
         <a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
         <img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a>
         </div>
       #end
-      </div>
+      </li>
     #end
+    </ul>
     </div>
   #end
   </div>

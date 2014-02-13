@@ -28,7 +28,12 @@
 <div class="message">$l10n.ACCOUNT_ALERT_NO_USER</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;$l10n.ACCOUNT_MULTICHOICE_MSG0<br>
+<div style="padding:0px 0px 5px 5px">
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
+<span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
+$l10n.ACCOUNT_MULTICHOICE_MSG0<br>
 $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("accountChangeTurnForm" $jslink $portlet "AccountUserChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_user.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
@@ -38,10 +43,10 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 <tr>
 <td class="caption" width="30%" nowrap="">$l10n.ACCOUNT_USER_LIST</td>
 <td width="5%">
-<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_10"><img src="images/account/account_up_10.gif" alt="$l10n.ACCOUNT_ACEND_ORDER_10" border="0"></a></div>
-<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_1"><img src="images/account/account_up_1.gif" alt="$l10n.ACCOUNT_ACEND_ORDER_1" border="0"></a></div
-<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_DECEND_ORDER_1"><img src="images/account/account_down_1.gif" alt="$l10n.ACCOUNT_DECEND_ORDER_1" border="0"></a></div>
-<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_DECEND_ORDER_10"><img src="images/account/account_down_10.gif" alt="$l10n.ACCOUNT_DECEND_ORDER_10" border="0"></a></div>
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_10" class="auiButtonIcon"><span><i class="icon-double-angle-up"></i></span></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_1" class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_DECEND_ORDER_1" class="auiButtonIcon"><span><i class="icon-angle-down"></i></span></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_DECEND_ORDER_10" class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></a></div>
 </td>
 <td width="65%"><select id="member_so_$!portlet.ID" name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">
 #if($!result.UserList.size() <= 0)

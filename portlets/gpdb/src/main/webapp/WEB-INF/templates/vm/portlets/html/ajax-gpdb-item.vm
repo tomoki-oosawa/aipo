@@ -32,18 +32,18 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
-<h2>データベースの項目設定:
+<h2>$l10n.GPDB_SETTING_DATABASE_ITEM:
 #foreach( $record in $result.GpdbAllList )
 	#if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbId.toString()) $!record.WbrGpdbName #end
 #end
 </h2>
 
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-	<div class="auiBlankBox">データベースの管理よりデータベースを追加してください。</div>
+	<div class="auiBlankBox">$l10n.GPDB_ADD_DATABASE_ITEM</div>
 #else
 #AUISummaryDiv()
 	#if($result.getGpdbSum() != 0)
-	#AUIbuttonAction("項目を追加する" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+	#AUIbuttonAction("$l10n.GPDB_ADD_ITEM" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 	#end
 #AUISummaryDivfooter()
 
@@ -59,12 +59,12 @@
 ##		#end
 ###AUISummaryDivfooter()
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader("項目")
+#ALajaxlistformheader("$l10n.GPDB_ITEM")
 #if($result.getGpdbSum() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("項目を追加する" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_ITEM" "javascript:aipo.common.showDialog('$addGpdbItem','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
@@ -72,7 +72,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemFormJSONScreen').addQueryData('gpdb_id',$!result.CurrentFilter).addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
-#AUIajaxbuttonLink("項目の順番を変更する" $orderGpdbItem)
+#AUIajaxbuttonLink("$l10n.GPDB_CHANGE_ITEM_ORDER" $orderGpdbItem)
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('GpdbItemListScreen' $result)
@@ -88,12 +88,12 @@
 <tbody>
 <tr class="mb_hide">
 #ALtdheadAtt("#ALswitchCheckbox()" 'class="auiMTCheck center"')
-#ALtdhead("項目名")
-#ALtdhead("入力形式")
-#ALtdheadAtt("タイトル項目" $centering)
-#ALtdheadAtt("必須" $centering)
-#ALtdheadAtt("一覧表示" $centering)
-#ALtdheadAtt("ソート" $centering)
+#ALtdhead("$l10n.GPDB_ITEM_NAME")
+#ALtdhead("$l10n.GPDB_INPUT_FORM")
+#ALtdheadAtt("$l10n.GPDB_ITEM_TITLE" $centering)
+#ALtdheadAtt("$l10n.GPDB_ESSENTIAL" $centering)
+#ALtdheadAtt("$l10n.GPDB_LIST" $centering)
+#ALtdheadAtt("$l10n.GPDB_SORT" $centering)
 #ALtdhead("")
 </tr>
 #foreach ($record in $result.List)
@@ -111,17 +111,17 @@
 $!record.TypeName
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.TitleFlg"=="t")○#end
+#if("$!record.TitleFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.RequiredFlg"=="t")○#end
+#if("$!record.RequiredFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
-#if("$!record.ListFlg"=="t")○#end
+#if("$!record.ListFlg"=="t")$l10n.GPDB_YES #end
 #ALtdcellfooter()
 #ALtdcellheaderAtt($centeringMb_hide)
 #if("$!record.DefaultSortFlg"=="t")
-	#if("$!record.AscDesc" == "DESC")降順#else昇順#end
+	#if("$!record.AscDesc" == "DESC")$l10n.GPDB_DESC#else$l10n.GPDB_ASC#end
 #end
 #ALtdcellfooter()
 #ALtdcellheader()
@@ -132,7 +132,7 @@ $!record.TypeName
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbItemFormJSONScreen').addQueryData('gpdb_id',$!result.CurrentFilter).addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
-#AUIajaxbuttonLink("項目の順番を変更する" $orderGpdbItem)
+#AUIajaxbuttonLink("$l10n.GPDB_CHANGE_ITEM_ORDER" $orderGpdbItem)
 </div>
 #AUIajaxpageview('GpdbItemListScreen' $result)
 #AUISummaryDivfooter()

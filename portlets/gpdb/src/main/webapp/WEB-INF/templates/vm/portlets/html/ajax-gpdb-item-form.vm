@@ -22,12 +22,12 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-	#set ($action_str = "追加する")
+	#set ($action_str = "$l10n.COMMON_ADD")
 	#set ($event_submit = "eventSubmit_doGpdb_insert")
-	#set ($subtitle = "項目追加")
+	#set ($subtitle = "$l10n.GPDB_ITEM_ADDITION")
 #else
-	#set ($action_str = "更新する")
-	#set ($subtitle = "項目編集")
+	#set ($action_str = "$l10n.GPDB_UPDATE")
+	#set ($subtitle = "$l10n.GPDB_EDIT_ITEM")
 	#set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -61,14 +61,14 @@
 #end
 #ALtableheaderWide()
 ##------対象データベース------
-#ALtdcaption("データベース名")
+#ALtdcaption("$l10n.GPDB_DATABASE_NAME")
 #ALtditem($result.Gpdb.GpdbName)
 ##------項目名------
 #ALtdcaption("#ALrequired($!result.getFieldName('gpdb_item_name'))")
 #ALtditemheader()
 #ALtextfieldw100mb5('gpdb_item_name' $!result.GpdbItemName 50 'active')
 <div>
-<input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">タイトルにする</label>
+<input name="title_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}title_flg_id" #if($!result.TitleFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'title_flg');aipo.gpdb.checkOnWithTitle(this,'$!{portlet.ID}')"/>&nbsp;<label for="$!{portlet.ID}title_flg_id">$l10n.GPDB_SET_TITLE2</label>
 <input name="title_flg" type="hidden" id="title_flg" value="$!result.TitleFlg.toString()" />
 </div>
 #ALtditemfooter()
@@ -88,7 +88,7 @@
 ##------区分マスタ------
 ##  <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type) || $!result.GpdbKubunUseFlg.toString() != "t") style="display:none;"#end>
     <tr id="kubun_select"#if (!$!result.displayField('select_kubun',$type)) style="display:none;"#end>
-      <td class="caption">#ALrequired('選択項目')</td>
+      <td class="caption">#ALrequired("$l10n.GPDB_SELECTION_ITEMS")</td>
 #ALtditemheader()
 	#ALselectpdheaderw100("gpdb_kubun_id" "")
 	#foreach( $record in $result.AllGpdbKubun )
@@ -121,14 +121,14 @@
     <tr id="tr_required"#if (!$!result.displayField('required',$type)) style="display:none;"#end>
       <td class="caption">$!result.getFieldName("required_flg")</td>
 #ALtditemheader()
-<input name="required_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}required_flg_id" #if($!result.RequiredFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'required_flg');"/>&nbsp;<label for="$!{portlet.ID}required_flg_id">必須にする</label>
+<input name="required_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}required_flg_id" #if($!result.RequiredFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'required_flg');"/>&nbsp;<label for="$!{portlet.ID}required_flg_id">$l10n.GPDB_SET_ESSENTIAL</label>
 <input name="required_flg" type="hidden" id="required_flg" value="$!result.RequiredFlg.toString()" />
 #ALtditemfooter()
 ##------画面表示------
-#ALtdcaption("一覧画面表示 ")
+#ALtdcaption("$l10n.GPDB_DISPLAY_LIST ")
 #ALtditemheader()
 <div>
-<input name="list_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}list_flg_id" #if($!result.ListFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'list_flg');"/>&nbsp;<label for="$!{portlet.ID}list_flg_id">一覧画面に表示する</label>
+<input name="list_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}list_flg_id" #if($!result.ListFlg.toString() == "t") checked="checked" #end onchange="aipo.gpdb.formFlgToggle(this,'list_flg');"/>&nbsp;<label for="$!{portlet.ID}list_flg_id">$l10n.GPDB_DISPLAY_LIST_SCREEN</label>
 <input name="list_flg" type="hidden" id="list_flg" value="$!result.ListFlg.toString()" />
 </div>
 <div>
@@ -139,12 +139,12 @@
 #ALtdcaption("$!result.getFieldName('default_sort_flg')")
 #ALtditemheader()
 <div>
-<input name="default_sort_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}default_sort_flg_id" #if($!result.DefaultSortFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'default_sort_flg');aipo.gpdb.checkOnSort(this)"/>&nbsp;<label for="$!{portlet.ID}default_sort_flg_id">ソート項目に指定する</label>
+<input name="default_sort_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}default_sort_flg_id" #if($!result.DefaultSortFlg.toString() == "t") checked="checked" #end onclick="aipo.gpdb.formFlgToggle(this,'default_sort_flg');aipo.gpdb.checkOnSort(this)"/>&nbsp;<label for="$!{portlet.ID}default_sort_flg_id">$l10n.GPDB_SPECIFY_SORT_ITEM</label>
 <input name="default_sort_flg" type="hidden" id="default_sort_flg" value="$!result.DefaultSortFlg.toString()" />
 </div>
 <div id="tr_asc_desc"#if ($!result.DefaultSortFlg.toString() != "t") style="display:none;"#end>
-<label><input name="asc_desc" type="radio" value="ASC" #if(!$!result.AscDesc || $!result.AscDesc.toString() != "DESC") checked #end/>&nbsp;昇順</label>
-<label><input name="asc_desc" type="radio" value="DESC" #if($!result.AscDesc.toString() == "DESC") checked #end/>&nbsp;降順</label>
+<label><input name="asc_desc" type="radio" value="ASC" #if(!$!result.AscDesc || $!result.AscDesc.toString() != "DESC") checked #end/>&nbsp;$l10n.GPDB_ASC</label>
+<label><input name="asc_desc" type="radio" value="DESC" #if($!result.AscDesc.toString() == "DESC") checked #end/>&nbsp;$l10n.GPDB_DESC</label>
 </div>
 #ALtditemfooter()
 

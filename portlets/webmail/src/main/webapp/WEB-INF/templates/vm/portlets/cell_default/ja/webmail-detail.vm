@@ -30,6 +30,9 @@
 #set($methodlist = [["$l10n.WEBMAIL_REPLY_HALFWIDTH", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["ﾒｰﾙ転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
 #set($linklist = [["$l10n.WEBMAIL_DO_WATCH_MAILLIST_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"],["$l10n.WEBMAIL_WEBMAIL_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
 #ALcell_pagetitle($career "$l10n.WEBMAIL_DETAIL_HAFLWIDTH")
+#if($hasError)
+$l10n.ERROR_DETAIL_FAILURE
+#else
 #ALcell_dt($career $l10n.WEBMAIL_TITLE)#ALcell_dd($career "$!{result.Detail.Subject}")
 #ALcell_dt($career $l10n.WEBMAIL_DATE)
 #ALcell_dd_header($career)
@@ -37,6 +40,7 @@ $!{result.Detail.Date.Year}$l10n.WEBMAIL_YEAR$!{result.Detail.Date.Month}$l10n.W
 #ALcell_dd_footer($career)
 #ALcell_dt($career $person)#ALcell_dd($career "$person_value")
 #ALcell_dt($career $l10n.WEBMAIL_BODY)#ALcell_dd($career "$!{result.Detail.Body}")
+#end
 #ALcell_hr($career '1')
 #ALcell_linklist($career $methodlist)
 #ALcell_hr($career '1')

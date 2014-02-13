@@ -796,7 +796,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3659,14 +3659,14 @@ public class ScheduleUtils {
     StringBuilder select = new StringBuilder();
 
     select.append("select");
-    if (!isSearch) {
-      select.append(" eip_t_schedule_map.id, ");
-      select.append(" eip_t_schedule_map.user_id,");
-      select.append(" eip_t_schedule_map.status,");
-      select.append(" eip_t_schedule_map.type,");
-    } else {
+    if (isSearch) {
       select.append(" distinct");
     }
+    select.append(" eip_t_schedule_map.id, ");
+    select.append(" eip_t_schedule_map.user_id,");
+    select.append(" eip_t_schedule_map.status,");
+    select.append(" eip_t_schedule_map.type,");
+
     select.append(" eip_t_schedule.schedule_id,");
     select.append(" eip_t_schedule_map.common_category_id,");
     select.append(" eip_t_schedule.owner_id,");

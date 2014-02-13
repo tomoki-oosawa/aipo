@@ -55,5 +55,3 @@
 ##ALajaxtabfooter()
 #AUIcontentsAreaFooter()
 #parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
-
-

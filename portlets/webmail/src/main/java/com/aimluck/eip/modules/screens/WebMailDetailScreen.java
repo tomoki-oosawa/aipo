@@ -50,6 +50,7 @@ public class WebMailDetailScreen extends ALVelocityScreen {
     try {
       WebMailSelectData detailData = new WebMailSelectData();
       detailData.initField();
+      detailData.loadMailAccountList(rundata, context);
       detailData.doViewDetail(this, rundata, context);
       String mailIndex =
         rundata.getParameters().getString(ALEipConstants.ENTITY_ID);

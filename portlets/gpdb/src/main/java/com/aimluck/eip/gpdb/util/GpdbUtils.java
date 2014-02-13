@@ -46,6 +46,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
+import org.apache.jetspeed.portal.PortletConfig;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -893,21 +895,40 @@ public class GpdbUtils {
     int cnt = 0;
 
     try {
-      String sql =
-        "SELECT COUNT(0) AS data_cnt"
-          + " FROM eip_t_gpdb_record r"
-          + "   INNER JOIN eip_t_gpdb_item i"
-          + "     ON i.gpdb_item_id = r.gpdb_item_id"
-          + "   WHERE i.type IN (#bind($type1), #bind($type2))"
-          + "   AND r.value ~ #bind($gpdb_kubun_value_id)";
+      String sql = "";
+      if (Database.isJdbcMySQL()) {
+        sql =
+          "SELECT COUNT(0) AS data_cnt"
+            + " FROM eip_t_gpdb_record r"
+            + "   INNER JOIN eip_t_gpdb_item i"
+            + "     ON i.gpdb_item_id = r.gpdb_item_id"
+            + "   WHERE i.type IN (#bind($type1), #bind($type2))"
+            + "   AND r.value REGEXP #bind($gpdb_kubun_value_id)";
+      } else if (Database.isJdbcPostgreSQL()) {
+        sql =
+          "SELECT COUNT(0) AS data_cnt"
+            + " FROM eip_t_gpdb_record r"
+            + "   INNER JOIN eip_t_gpdb_item i"
+            + "     ON i.gpdb_item_id = r.gpdb_item_id"
+            + "   WHERE i.type IN (#bind($type1), #bind($type2))"
+            + "   AND r.value ~ #bind($gpdb_kubun_value_id)";
+      }
 
       SQLTemplate<EipTGpdbRecord> sqltemp =
         Database.sql(EipTGpdbRecord.class, String.valueOf(sql));
       sqltemp.param("type1", ITEM_TYPE_SELECT);
       sqltemp.param("type2", ITEM_TYPE_SELECT_MULTI);
-      sqltemp.param("gpdb_kubun_value_id", "(?:^|\\||)"
-        + gpdbKubunValueId
-        + "(?:\\||$)");
+
+      if (Database.isJdbcMySQL()) {
+        sqltemp.param("gpdb_kubun_value_id", "(^|\\|)"
+          + gpdbKubunValueId
+          + "(\\||$)");
+
+      } else if (Database.isJdbcPostgreSQL()) {
+        sqltemp.param("gpdb_kubun_value_id", "(?:^|\\||)"
+          + gpdbKubunValueId
+          + "(?:\\||$)");
+      }
 
       List<DataRow> result = sqltemp.fetchListAsDataRow();
 
@@ -2044,6 +2065,28 @@ public class GpdbUtils {
       return attachmentFileList;
     }
     return new ArrayList<FileuploadBean>();
+  }
+
+  /**
+   * 
+   * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
+   * 
+   * 
+   * @param rundata
+   * @param context
+   * @param config
+   * @return
+   */
+  public static String passPSML(RunData rundata, Context context, String key,
+      String value) {
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    PortletConfig config = portlet.getPortletConfig();
+    if (value == null || "".equals(value)) {
+      value = config != null ? config.getInitParameter(key) : "";
+    } else {
+      ALEipUtils.setPsmlParameters(rundata, context, key, value);
+    }
+    return value;
   }
 
 }

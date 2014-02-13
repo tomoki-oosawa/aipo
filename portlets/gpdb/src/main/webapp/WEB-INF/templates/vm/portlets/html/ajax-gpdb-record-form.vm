@@ -22,12 +22,12 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.GPDB_ADD")
 #set ($event_submit = "eventSubmit_doGpdb_insert")
-#set ($subtitle = "データ追加")
+#set ($subtitle = "$l10n.GPDB_DATA_ADD")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = "データ編集")
+#set ($action_str = "$l10n.GPDB_UPDATE")
+#set ($subtitle = "$l10n.GPDB_DATA_UPDATE")
 #set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -35,7 +35,7 @@
 #ALdialogheader($subtitle)
 #if(!$!result.Gpdb)
 	#ALbuttonheader()
-	<div class="message">データベースを選択して下さい。</div>
+	<div class="message">$l10n.GPDB_SELECT_DATABASE</div>
 	#ALajaxbuttonClose()
 #ALbuttonfooter()
 #else
@@ -50,7 +50,7 @@
 #end
 #ALtableheaderWide()
 	##対象データベース
-	#ALtdcaption("データベース")
+	#ALtdcaption("$l10n.GPDB_DATABASE")
 	#ALtditem($result.Gpdb.GpdbName)
 ##=====================項目配置START=====================
 #foreach($item in $result.GpdbItemList)
@@ -93,7 +93,7 @@
 		<select name="$field"#if ($type=='05') multiple size="$!item.Line"#end class="w100">
 		##選択式（択一）
 		#if ($type=='04')
-		<option value="">(指定しない)</option>
+		<option value="">$l10n.GPDB_NOT_SET</option>
 		#end
 		#foreach($kubun in $result.getKubunValueList($item.GpdbKubunId.toString()))
 			<option value="$!kubun.GpdbKubunValueId" #if($!record.ValueList.contains($!kubun.GpdbKubunValueId.toString())) selected#end>$!kubun.GpdbKubunValue</option>
@@ -109,7 +109,7 @@
 		</div>
 		<ul id="attachments_$!{portlet.ID}_$!{item.GpdbItemId}" class="attachments">
 		#foreach($line in $!record.AttachmentFileList)
-			<li data-fileid="s${line.FileId}" data-filename="$!{line.FileName}"><span>$!line.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+			<li data-fileid="s${line.FileId}" data-filename="$!{line.FileName}"><span>$!line.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.GPDB_DELETE</span></li>
 		#end
 		</ul>
 		<div id="messageDiv_$!{portlet.ID}_$!{item.GpdbItemId}"></div>

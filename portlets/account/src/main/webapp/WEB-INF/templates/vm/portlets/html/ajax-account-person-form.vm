@@ -46,7 +46,7 @@ $!result.LoginName
 #ALtdcaption("#ALrequired($l10n.ACCOUNT_USER_NAME_KANA)")
 #ALtditem("#ALtextfield('last_name_kana' $!result.LastNameKana '30%' 20 'active')#ALtextfield('first_name_kana' $!result.FirstNameKana '30%' 20 'active')")
 #ALtdcaption($!result.Email.FieldName)
-#ALtditem("#ALtextfield('email' $!result.Email '60%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('email' $!result.Email '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
 #ALtdcaption($!result.OutTelephone1.FieldName)
 #ALtditemheader()
 #ALtextfield('out_telephone1' $!result.OutTelephone1 '20%' 5 'disabled')- #ALtextfield('out_telephone2' $!result.OutTelephone2 '20%' 4 'disabled')- #ALtextfield('out_telephone3' $!result.OutTelephone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
@@ -58,7 +58,7 @@ $!result.LoginName
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')- #ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')- #ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
 #ALtdcaption($!result.CellularMail.FieldName)
-#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '75%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
 #if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 
@@ -67,10 +67,13 @@ $!result.LoginName
 #IFFileUpload()
 </div>
 
-<ul id="attachments_$!{portlet.ID}" class="attachments singleFile">
+<ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aipo.fileupload.removeFileFromList(this.parentNode.parentNode, this.parentNode, '$!{portlet.ID}');aipo.account_person.setDeletePhotoValue('$!{portlet.ID}');">$l10n.ACCOUNT_DELETION</span></li>
-	<li><img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", ${record.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" style="display:block" /></li>
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}">
+		<span>$!record.FileName</span><span class="deletebutton" onclick="aipo.fileupload.removeFileFromList(this.parentNode.parentNode, this.parentNode, '$!{portlet.ID}');aipo.account_person.setDeletePhotoValue('$!{portlet.ID}');">$l10n.ACCOUNT_DELETION</span>
+        <img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", ${record.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" style="display:block" />
+	</li>
+	
 	#end
 </ul>
 <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />

@@ -27,22 +27,22 @@
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction($l10n.ADDRESSBOOK_COMPANY_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookCompanyDialog);")
 </p></div>
-<form class="auiSearch floatLeft" id="AddressBookCompanyDownload$!portlet.ID" name="AdressBook" action="$jslink.getTemplate('AddressBookCompanyWordXlsExportScreen')" method="post">
+
+#AUISearchHeader("AddressBookCompanyDownload" "AdressBook" "$jslink.getTemplate('AddressBookCompanyWordXlsExportScreen')" "")
 <input type="hidden" name="mode" value="ajaxsearch"/>
 <input type="hidden" name="sword" value="$!result.searchWord"/>
 <input type="hidden" name="user_id" value="$!result.UserId"/>
 <input type="hidden" name="idx" value="$!result.Index"/>
-</form>
+#AUISearchFooter()
 #end
 #if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
-<form class="auiSearch floatLeft" name="addressbook$!portlet.ID" id="addressbook$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" method="post" onsubmit="aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;">
-<input class="text floatLeft long" name="sword" id="sword" value="$!result.SearchWord" maxlength="100" style="margin-right:5px;ime-mode:active" />
-<a href="javascript:void(0)" tabindex="0" class="auiButtonSearch floatLeft" onclick="dojo.byId('addressbook$!portlet.ID').onsubmit();">$l10n.ADDRESSBOOK_SEARCH</a>
- &nbsp;
- <i class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;"></i>
+#AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" "aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;")
 <input name="mode" type="hidden" value="ajaxsearch" />
-</form>
+#AUISearchInput("sword" "sword" "$!result.searchWord" "maxlength='100' style='margin-right:5px;ime-mode:active'")
+#AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
+#AUISearchFooter()
+
 #AUISummaryDivfooter()
 #end
 

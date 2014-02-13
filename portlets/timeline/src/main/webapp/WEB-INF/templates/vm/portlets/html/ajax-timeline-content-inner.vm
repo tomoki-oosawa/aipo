@@ -37,8 +37,8 @@
 			#if($record.TimelineType=="A")
 				<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
 			#else
-				$!{record.PreviewNote}#if($record.isLongNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
-				<p class="more">...<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
+				$!{record.PreviewNote}#if($record.isDetailNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
+				<p class="more">$l10n.WAR_LONG_ROUND<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
 				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
 					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
@@ -102,12 +102,12 @@
 	</div>
 	<div id="comments_$!{portlet.ID}_$!{record.TimelineId}" class="comments #if($record.LikeCount==0&&$record.CoTopicList.size()==0)mb0#end" >
 		<div id="like_$!{record.TimelineId}" class="commentCaption" #if($record.LikeCount <= 0) style="display:none" #end>
-			<span class="iconLike"></span>
+			<i class="icon-thumbs-up-alt"></i>
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record.TimelineId}))','$!portlet.ID');">${record.LikeCountText}
 		</div>
 		#if($record.ReplyCountInteger > 2)
 			<div id="commentCaption_$!{portlet.ID}_$!{record.TimelineId}" class="commentCaption">
-				<span class="iconComment"></span>
+				<i class="icon-comment"></i>
 				<a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll('$!{portlet.ID}', $!{record.TimelineId})">${record.ReplyCountText}</a>
 			</div>
 		#end
@@ -152,7 +152,7 @@
 							</form>
 						#end
 						&nbsp;
-						<a href="javascript:void(0);" id="likeCount_$!{record2.TimelineId}" #if($record2.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record2.LikeCount}</a>
+						<a href="javascript:void(0);" id="likeCount_$!{record2.TimelineId}" #if($record2.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');"><i class="icon-thumbs-up-alt"></i>${record2.LikeCount}</a>
 				</div>
 			</div>
 		</div>
@@ -235,12 +235,12 @@
 </div>
 <div id="comments_$!{portlet.ID}_$!{record2.TimelineId}" class="comments text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end #if($record2.LikeCount==0&&$record2.CoTopicList.size()==0)mb0#end">
 <div id="like_$!{record2.TimelineId}" class="commentCaption"#if($record2.LikeCount <= 0) style="display:none" #end>
-		<span class="iconLike"></span>
+		<i class="icon-thumbs-up-alt"></i>
 		<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record2.TimelineId}))','$!portlet.ID');">${record2.LikeCountText}
 	</div>
 	#if($record2.ReplyCountInteger > 2)
 	<div id="commentCaption_$!{portlet.ID}_$!{record2.TimelineId}" class="commentCaption">
-		<span class="iconComment"></span>
+		<i class="icon-comment"></i>
 		<a href="javascript:void(0)" onclick="aipo.timeline.showCommentAll('$!{portlet.ID}', $!{record2.TimelineId})">${record2.ReplyCountText}</a>
 	</div>
 	#end
@@ -284,7 +284,7 @@
 					</form>
 				#end
 				&nbsp;
-				<a href="javascript:void(0);" id="likeCount_$!{record3.TimelineId}" #if($record3.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><span class="iconLike"></span>${record3.LikeCount}</a>
+				<a href="javascript:void(0);" id="likeCount_$!{record3.TimelineId}" #if($record3.LikeCount <= 0) style="display:none" #end onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineLikeDetailScreen").addQueryData("entityid",$!{record3.TimelineId}))','$!portlet.ID');"><i class="icon-thumbs-up-alt"></i>${record3.LikeCount}</a>
 			</div>
 		</div>
 	</div>

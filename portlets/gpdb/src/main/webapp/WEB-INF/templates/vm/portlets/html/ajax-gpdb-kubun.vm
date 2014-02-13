@@ -31,17 +31,17 @@
 #set ($orderGpdbKubun = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunChangeTurnFormScreen").addQueryData("gpdb_kubun_id",$gpdbKubunId))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>選択項目の管理</h2>
+<h2>$l10n.GPDB_MANAGE_SELECTION_ITEMS</h2>
 #AUISummaryDiv()
 #if($result.getAllGpdbKubunValueSum() != 0)
-#AUIbuttonAction("選択項目を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_SELECTION_ITEMS" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #end
 #AUISummaryDivfooter()
 
 #AUISummaryDiv()
 #if($result.getAllGpdbKubunValueSum() != 0)
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="max-width: 180px">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">すべての選択項目</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter","").addQueryData("filtertype","gpdb_kubun_id"))">$l10n.GPDB_ALL_SELECTION_ITEMS</option>
 #foreach( $record in $result.AllGpdbKubun )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbKubunListScreen").addQueryData("filter",$!record.GpdbKubunId).addQueryData("filtertype","gpdb_kubun_id"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.GpdbKubunId.toString()) selected="selected" #end>$!record.GpdbKubunName</option>
 #end
@@ -50,23 +50,23 @@
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader("値")
+#ALajaxlistformheader("$l10n.GPDB_VALUE")
 #if($result.getAllGpdbKubunValueSum() == 0)
 #AUIrowTableWide()
 <tr><td colspan="4" class="auiNoData">
 <p class="mh10">
-#AUIbuttonAction("選択項目を追加する" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
+#AUIbuttonAction("$l10n.GPDB_ADD_SELECTION_ITEMS" "javascript:aipo.common.showDialog('$addGpdbKubun','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </p>
 </td></tr>
 #AUItablefooter()
 #elseif($result.List.size() == 0)
-指定された条件に該当する選択項目はありません。<br />
+$l10n.GPDB_NO_SELECTION_ITEM<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbKubunFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 #if ($result.CurrentFilter)
-#AUIajaxbuttonLink("値の順番を変更する" $orderGpdbKubun)
+#AUIajaxbuttonLink("$l10n.GPDB_CHANGE_VALUE_ORDER" $orderGpdbKubun)
 #end
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
@@ -79,9 +79,9 @@
 <tbody>
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" 'class="auiMTCheck center"')
-##ALtdhead("#ALajaxsort('gpdb_kubun_name' '選択項目' $result 'GpdbKubunListScreen')")
-#ALtdhead("選択項目")
-#ALtdhead("値")
+##ALtdhead("#ALajaxsort('gpdb_kubun_name' '$l10n.GPDB_SELECTION_ITEMS' $result 'GpdbKubunListScreen')")
+#ALtdhead("$l10n.GPDB_SELECTION_ITEMS")
+#ALtdhead("$l10n.GPDB_VALUE")
 </tr>
 #foreach ($record in $result.List)
 <tr>

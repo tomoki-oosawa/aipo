@@ -133,19 +133,18 @@ public class CellWebMailAction extends WebMailAction {
       throws Exception {
     WebMailSelectData detailData = new WebMailSelectData();
     detailData.initField();
-    if (detailData.doViewDetail(this, rundata, context)) {
-      String mailIndex =
-        rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-      context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(
-        rundata,
-        context,
-        WebMailUtils.ACCOUNT_ID));
-      context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
-      context.put(ALEipConstants.ENTITY_ID, mailIndex);
-      setTemplate(rundata, "webmail-detail");
-    } else {
-      doWebmail_account_list(rundata, context);
-    }
+    detailData.loadMailAccountList(rundata, context);
+    boolean result = detailData.doViewDetail(this, rundata, context);
+    String mailIndex =
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    context.put(WebMailUtils.ACCOUNT_ID, ALEipUtils.getTemp(
+      rundata,
+      context,
+      WebMailUtils.ACCOUNT_ID));
+    context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
+    context.put(ALEipConstants.ENTITY_ID, mailIndex);
+    context.put("hasError", !result);
+    setTemplate(rundata, "webmail-detail");
   }
 
   /**
@@ -196,6 +195,7 @@ public class CellWebMailAction extends WebMailAction {
 
     // メールを受信する．
     // if (WebMailUtils.isNewMessage(rundata, context)) {
+    ALEipUtils.setTemp(rundata, context, "start_recieve", "1");
     WebMailUtils.receiveMailsThread(rundata, context);
     // }
     doWebmail_show_received_mails(rundata, context);
@@ -226,6 +226,7 @@ public class CellWebMailAction extends WebMailAction {
   public void doWebmail_menu(RunData rundata, Context context) {
     // ACCOUNT_ID をセッションから削除する．
     ALEipUtils.removeTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
+    ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "true");
 
     // // 新着メールの最終確認日をセッションに追加する．
     // if (confirmNewmail) {

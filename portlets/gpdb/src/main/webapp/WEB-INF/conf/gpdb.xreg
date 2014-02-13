@@ -60,7 +60,7 @@
         <parameter name="function_caption1" value="データ追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.gpdb.onLoadGpdbDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
-        <parameter name="p1d-database" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1d-database" value="" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択データベース</title>
             </meta-info>

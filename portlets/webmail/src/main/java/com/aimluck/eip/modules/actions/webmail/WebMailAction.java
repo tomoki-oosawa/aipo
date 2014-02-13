@@ -58,12 +58,6 @@ public class WebMailAction extends ALBaseAction {
     clearWebMailSession(rundata, context);
     ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "true");
 
-    ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, ALEipUtils
-      .getPortlet(rundata, context)
-      .getPortletConfig()
-      .getInitParameter("p3a-accounts")
-      .trim());
-
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
@@ -71,6 +65,7 @@ public class WebMailAction extends ALBaseAction {
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
     listData.setStrLength(0);
+    listData.setFiltersPSML(portlet, context, rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "webmail");
   }
@@ -86,18 +81,16 @@ public class WebMailAction extends ALBaseAction {
       Context context, RunData rundata) {
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
+
     ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "false");
 
     try {
-      if (ALEipConstants.MODE_LIST.equals(mode)) {
+      if (ALEipConstants.MODE_LIST.equals(mode) || getMode() == null) {
         doWebmail_list(rundata, context);
       }
 
-      if (getMode() == null) {
-        doWebmail_list(rundata, context);
-      }
     } catch (Exception e) {
-      logger.error("webmail", e);
+      logger.error("WebMailAction.buildMaximizedContext", e);
     }
   }
 
@@ -109,8 +102,9 @@ public class WebMailAction extends ALBaseAction {
    * @throws Exception
    */
   public void doWebmail_list(RunData rundata, Context context) throws Exception {
-    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    ALEipUtils.setTemp(rundata, context, "WebMail_Normal", "false");
 
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     WebMailSelectData listData = new WebMailSelectData();
     listData.initField();
     listData.loadMailAccountList(rundata, context);
@@ -202,7 +196,6 @@ public class WebMailAction extends ALBaseAction {
   public void doWebmail_folder_list(RunData rundata, Context context)
       throws Exception {
     VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-
     WebMailFolderSelectData listData = new WebMailFolderSelectData();
     listData.initField();
     listData.setRowsNum(Integer.parseInt(portlet

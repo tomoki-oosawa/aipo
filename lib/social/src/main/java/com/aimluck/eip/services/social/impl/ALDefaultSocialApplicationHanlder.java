@@ -784,7 +784,15 @@ public class ALDefaultSocialApplicationHanlder extends
     }
     String appId = request.getAppId();
     if (appId != null && appId.length() > 0) {
-      query.where(Operations.eq(Activity.APP_ID_PROPERTY, appId));
+      if (appId.equals("Gadget")) {
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Schedule"));
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Blog"));
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Msgboard"));
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "ToDo"));
+        query.where(Operations.ne(Activity.APP_ID_PROPERTY, "Cabinet"));
+      } else {
+        query.where(Operations.eq(Activity.APP_ID_PROPERTY, appId));
+      }
     }
     long max = request.getMax();
     if (max > 0) {

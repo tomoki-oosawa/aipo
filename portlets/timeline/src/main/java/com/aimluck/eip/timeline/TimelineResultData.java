@@ -200,6 +200,34 @@ public class TimelineResultData implements ALData {
   }
 
   /**
+   * 部分文字列の最後がアドレスのときTrueを返します。
+   * 
+   * @param 部分文字列sub
+   * @return
+   */
+  private boolean isLastWordAddress(String sub) {
+    if (sub.indexOf("http") != -1
+      && sub.lastIndexOf("http") > sub.lastIndexOf(" ")
+      && sub.lastIndexOf("http") > sub.lastIndexOf("\n")) {
+      return true; // httpが最後の行にある
+    }
+
+    if (sub.indexOf("h") != -1
+      && sub.lastIndexOf("h") > sub.lastIndexOf(" ")
+      && sub.lastIndexOf("h") > sub.lastIndexOf("\n")) {
+      String nextSub =
+        note.getValue().substring(
+          sub.lastIndexOf("h"),
+          sub.lastIndexOf("h") + 4);
+      if (nextSub.equals("http")) {
+        return true;// httpのhだけが部分文字列に含まれている時
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * 続きを見るで隠されない部分を返します。
    * 
    * @return String
@@ -212,24 +240,18 @@ public class TimelineResultData implements ALData {
           ALEipUtils.getMessageList(note.getValue().substring(
             0,
             PRE_NOTE_LENGTH));
-
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-        if (sub.indexOf("http") == -1
-          || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
-          || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+        if (!isLastWordAddress(sub)) {
           return subnote;
         }
+
         sub = note.getValue();
-
         int i;
-
         for (i = PRE_NOTE_LENGTH; i < sub.length()
           && sub.charAt(i) != ' '
           && sub.charAt(i) != '\n'; i++) {
-
         }
         subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
-
         return subnote;
       } catch (Exception ex) {
         // 文字数のカウントに失敗した場合は文字を丸めずに返す
@@ -253,27 +275,30 @@ public class TimelineResultData implements ALData {
     if (isLongNote()) {
       String subnote =
         ALEipUtils.getMessageList(note.getValue().substring(PRE_NOTE_LENGTH));
-
       String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-      if (sub.indexOf("http") == -1
-        || sub.lastIndexOf("http") < sub.lastIndexOf(" ")
-        || sub.lastIndexOf("http") < sub.lastIndexOf("\n")) {
+      if (!isLastWordAddress(sub)) {
         return subnote;
       }
+
       sub = note.getValue();
-
       int i;
-
       for (i = PRE_NOTE_LENGTH; i < sub.length()
         && sub.charAt(i) != ' '
         && sub.charAt(i) != '\n'; i++) {
-
       }
       subnote = ALEipUtils.getMessageList(note.getValue().substring(i));
-
       return subnote;
     } else {
       return null;
+    }
+  }
+
+  public boolean isDetailNote() {
+    if (getDetailNote() != null && !"".equals(getDetailNote())) {
+      return true;
+    } else {
+
+      return false;
     }
   }
 

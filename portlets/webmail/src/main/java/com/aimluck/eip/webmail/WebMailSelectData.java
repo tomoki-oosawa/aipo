@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.webmail;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,9 @@ import javax.mail.Message;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
@@ -101,10 +104,12 @@ public class WebMailSelectData extends
   private WebMailFolderResultData selectedFolder;
 
   /** メールアカウント一覧 */
-  private List<WebmailAccountLiteBean> mailAccountList;
+  private List<WebmailAccountLiteBean> mailAccountList =
+    new ArrayList<WebmailAccountLiteBean>();
 
   /** メールフォルダ一覧 */
-  private List<WebMailFolderResultData> mailFolderList;
+  private List<WebMailFolderResultData> mailFolderList =
+    new ArrayList<WebMailFolderResultData>();
 
   /**
    * 
@@ -160,12 +165,18 @@ public class WebMailSelectData extends
       }
 
     } else {
-
-      ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p3a-accounts"));
-
+      String _accountId =
+        ALEipUtils.getTemp(rundata, context, WebMailUtils.ACCOUNT_ID);
+      if (StringUtils.isEmpty(_accountId) || !StringUtils.isNumeric(_accountId)) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          WebMailUtils.ACCOUNT_ID,
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p3a-accounts"));
+      }
     }
 
     try {
@@ -174,7 +185,7 @@ public class WebMailSelectData extends
           rundata,
           context,
           WebMailUtils.ACCOUNT_ID));
-    } catch (Exception e) {
+    } catch (Exception ignore) {
       accountId = 0;
     }
 
@@ -186,6 +197,11 @@ public class WebMailSelectData extends
           WebMailUtils.FOLDER_ID));
     } catch (Exception e) {
       folderId = 0;
+    }
+
+    // accountIdが消されてしまっていないかチェックする
+    if (!validateAccountId()) {
+      accountId = 0;
     }
 
     // アカウントIDが取得できなかったとき、デフォルトのアカウントIDを取得する
@@ -271,6 +287,15 @@ public class WebMailSelectData extends
           ALEipConstants.LIST_SORT_TYPE_DESC);
       }
     }
+  }
+
+  private boolean validateAccountId() {
+    for (WebmailAccountLiteBean bean : mailAccountList) {
+      if (accountId == (int) bean.getAccountId().getValue()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -613,4 +638,12 @@ public class WebMailSelectData extends
       accountId,
       mailReceiveThreadStatus);
   }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, WebMailUtils.ACCOUNT_ID, portlet
+      .getPortletConfig()
+      .getInitParameter("p3a-accounts"));
+  }
+
 }

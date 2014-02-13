@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -41,6 +42,9 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.mail.ALFolder;
+import com.aimluck.eip.mail.ALMailFactoryService;
+import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -293,7 +297,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         ALEipUtils.getParameter(rundata, context, ALEipConstants.ENTITY_ID);
 
       // デフォルトのフォルダは削除不可。
-      if (mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
+      if (StringUtils.isEmpty(folderId)
+        || mailAccount.getDefaultFolderId() == Integer.parseInt(folderId)) {
         return false;
       }
 
@@ -330,6 +335,14 @@ public class WebMailFolderFormData extends ALAbstractFormData {
           mailPaths.add(mail.getFilePath());
         }
       }
+
+      // 一緒にメールを削除する
+      String sql = "DELETE FROM eip_t_mail WHERE FOLDER_ID = #bind($folderId)";
+      Database
+        .sql(EipTMail.class, sql)
+        .param("folderId", folder.getFolderId())
+        .execute();
+
       // フォルダ情報を削除
       Database.delete(folder);
       Database.commit();
@@ -340,18 +353,40 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_WEBMAIL_FOLDER,
         folder.getFolderName());
 
+      // ローカルファイルに保存されているファイルのパスを取得する．
+      String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
+      int type_mail =
+        (WebMailUtils.TAB_RECEIVE.equals(currentTab))
+          ? ALFolder.TYPE_RECEIVE
+          : ALFolder.TYPE_SEND;
+      int userId = ALEipUtils.getUserId(rundata);
+
+      String orgId = Database.getDomainName();
+
+      int accountId = -1;
+      accountId =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          WebMailUtils.ACCOUNT_ID));
+      ALMailHandler handler =
+        ALMailFactoryService.getInstance().getMailHandler();
+      ALFolder alFolder =
+        handler.getALFolder(type_mail, orgId, userId, Integer
+          .valueOf(accountId));
       // ローカルファイルに保存されているファイルを削除する．
       if (mailPaths.size() > 0) {
         int size = mailPaths.size();
         for (int k = 0; k < size; k++) {
-          ALStorageService.deleteFile(ALMailUtils.getLocalurl()
+          ALStorageService.deleteFile(alFolder.getFullName()
+            + ALStorageService.separator()
             + mailPaths.get(k));
         }
       }
       return true;
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[WebMailFolderFormData]", t);
+      logger.error("[WebMailFolderFormData.deleteFormData]", t);
       return false;
     }
   }

@@ -95,10 +95,6 @@ button {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.auiButtonDisabled {
-  padding: 0 10px;
-}
-
 /***************************************************
 	auiForm
 --------------------------------------------------*/
@@ -154,9 +150,13 @@ input[type=password] {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
-	background-image:none;
+  background-image: none !important;
 }
-.auiPortletHead {
+
+.auiPortlet {
+  margin: 0;
+}
+.auiPortlet .auiPortletHead {
   position: absolute;
   top: 0;
   width: 100%;
@@ -170,11 +170,10 @@ input[type=password] {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.auiPortletHead .inner {
+.auiPortlet .auiPortletHead .inner {
   margin: 1px 0;
 }
-
-.auiPortletTitle {
+.auiPortlet .auiPortletTitle {
   display: block;
   width: 48%;
   margin-left: 45px;
@@ -188,22 +187,20 @@ input[type=password] {
   font-weight: bold;
   color: #333;
 }
-.auiPortletTitle a {
+.auiPortlet .auiPortletTitle a {
   color: #ffffff;
   text-decoration: none;
   padding: 0;
 }
-
-.auiPortletTool {
+.auiPortlet .auiPortletTool {
   display: none;
 }
-
-.auiPortletBody {
+.auiPortlet .auiPortletBody {
   margin-top: 6px;
+  border: none;
 }
-
-.auiPortletBody .inner {
-	padding:0 5px;
+.auiPortlet .auiPortletBody .inner {
+  padding: 0 5px;
 }
 
 /***************************************************
@@ -1354,23 +1351,21 @@ input[type=password] {
 	auiSearch
 --------------------------------------------------*/
 .auiSearch {
+  position: relative;
   width: 100%;
   padding-right: 65px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
 .auiSearch:after {
   content: "";
   display: block;
   clear: both;
 }
-
 .auiSearch input.long {
   min-width: 0 !important;
 }
-
 .auiSearch input.text {
   width: 100%;
 }
@@ -1386,8 +1381,31 @@ input[type=password] {
 	indicator
 --------------------------------------------------*/
 .indicatorWrap {
-  margin: 0 !important;
-  float: none;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  position: absolute;
+  top: 5px;
+  right: 67px;
+  background: #fff;
+  box-shadow: -7px 0 5px 0 #fff;
+}
+
+.indicator {
+  background: url(../images/common/loading_smp_white.gif) no-repeat left;
+  background-size: 16px;
+}
+
+.indicatorglay {
+  background: url(../images/common/loading_smp_lg.gif) no-repeat left;
+  background-size: 16px;
+}
+
+/***************************************************
+	loader
+--------------------------------------------------*/
+.loader {
+  background: url(../images/common/loading_smp_white.gif) no-repeat center center;
+  background-size: 16px;
 }
 
 /***************************************************
@@ -1783,25 +1801,41 @@ table tr.caption {
 	dijitCalendar
 --------------------------------------------------*/
 .dijitCalendarContainer {
-    width:auto;
-	max-width:300px;
+  width: auto;
+  max-width: 300px;
 }
-.dijitCalendarMonthContainer th {/* month */
-    font-size:20px;
+
+.dijitCalendarDateTemplate {
+  /* cell */
 }
-.dijitCalendarDayLabelTemplate {/* week */
+.dijitCalendarDateTemplate span {
+  padding: 4px 8px;
 }
-.dijitCalendarDateLabel {/* day */
-    font-size:20px;
+
+.dijitCalendarMonthContainer th {
+  /* month */
+  font-size: 16px;
 }
-.dijitCalendarYearLabel {/* year */
-    font-size:16px;
+
+.dijitCalendarDayLabelTemplate {
+  /* week */
+}
+
+.dijitCalendarDateLabel {
+  /* day */
+  font-size: 16px;
+}
+
+.dijitCalendarYearLabel {
+  /* year */
+  font-size: 16px;
 }
 
 /* .calendar */
 .calendarWrapper {
-	overflow-x:visible;
+  overflow-x: visible;
 }
+
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
@@ -1919,10 +1953,6 @@ table tr.caption {
   width: 20px;
   height: 30px;
   margin: 1px;
-}
-
-.filterDropDrawer i {
-  margin-top: 8px;
 }
 
 /***************************************************

@@ -43,7 +43,9 @@ aipo.msgboard.toggleMenu=function (node,filters,event){
         	top:document.documentElement.scrollTop||document.body.scrollTop
         };
         node.style.opacity="0";
-        node.style.display="block";
+        setTimeout( function(){
+			dojo.style(node, "display" , "block");
+		}, 0);
         if(html.right-node.clientWidth>rect.left){
        		node.style.left=rect.left+scroll.left+"px";
         }else{
