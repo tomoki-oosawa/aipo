@@ -66,7 +66,7 @@ public class WikiResultData implements ALData {
   private boolean new_wiki;
 
   /** メモ */
-  private String note;
+  private ALStringField note;
 
   /** 登録者名 */
   private ALStringField create_user;
@@ -98,7 +98,7 @@ public class WikiResultData implements ALData {
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
-    note = "";
+    note = new ALStringField();
 
     is_public = true;
     new_wiki = false;
@@ -174,7 +174,23 @@ public class WikiResultData implements ALData {
   public String getNote() {
     String htmlText;
     try {
-      htmlText = WikiModel.toHtml(note);
+      String noteText = note.toString();
+
+      /* 太字 */
+      noteText = noteText.replaceAll("&#39;&#39;&#39;", "'''");
+
+      /* 斜体 */
+      noteText = noteText.replaceAll("&#39;&#39;", "''");
+
+      /* 下線 */
+      noteText = noteText.replaceAll("&lt;u&gt;", "<u>");
+      noteText = noteText.replaceAll("&lt;/u&gt;", "</u>");
+
+      /* 取り消し線 */
+      noteText = noteText.replaceAll("&lt;del&gt;", "<del>");
+      noteText = noteText.replaceAll("&lt;/del&gt;", "</del>");
+
+      htmlText = WikiModel.toHtml(noteText);
 
       /* TOCを削除 */
       htmlText =
@@ -190,7 +206,7 @@ public class WikiResultData implements ALData {
    * @param string
    */
   public void setNote(String string) {
-    note = string;
+    note.setValue(string);
   }
 
   /**
