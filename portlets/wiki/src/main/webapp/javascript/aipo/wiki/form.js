@@ -19,39 +19,39 @@
 
 dojo.provide("aipo.wiki");
 
-aipo.wiki.onLoadWikiDialog = function(portlet_id) {
+aipo.wiki.onLoadWikiDialog = function (portlet_id) {
   var obj = dojo.byId("wiki_name");
   if (obj) {
     obj.focus();
   }
 }
 
-aipo.wiki.toggleMenu=function (node,filters,event){
-	var rect=filters.getBoundingClientRect();
-	var html=document.documentElement.getBoundingClientRect();
-	if (node.style.display == "none") {
-        dojo.query("div.menubar").style("display", "none");
+aipo.wiki.toggleMenu = function (node, filters, event) {
+  var rect = filters.getBoundingClientRect();
+  var html = document.documentElement.getBoundingClientRect();
+  if (node.style.display == "none") {
+    dojo.query("div.menubar").style("display", "none");
 
-        var scroll={
-        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
-        	top:document.documentElement.scrollTop||document.body.scrollTop
-        };
-        node.style.opacity="0";
-        node.style.display="block";
-        if(html.right-node.clientWidth>rect.left){
-       		node.style.left=rect.left+scroll.left+"px";
-        }else{
-        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
-        }
-         if(html.bottom-node.clientHeight>rect.bottom||event){
-       		node.style.top=rect.bottom+scroll.top+"px";
-        }else{
-        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
-        }
-        node.style.opacity="";
+    var scroll = {
+      left: document.documentElement.scrollLeft || document.body.scrollLeft,
+      top: document.documentElement.scrollTop || document.body.scrollTop
+    };
+    node.style.opacity = "0";
+    node.style.display = "block";
+    if (html.right - node.clientWidth > rect.left) {
+      node.style.left = rect.left + scroll.left + "px";
     } else {
-        dojo.query("div.menubar").style("display", "none");
+      node.style.left = rect.right - node.clientWidth + scroll.left + "px";
     }
+    if (html.bottom - node.clientHeight > rect.bottom || event) {
+      node.style.top = rect.bottom + scroll.top + "px";
+    } else {
+      node.style.top = rect.top - node.clientHeight + scroll.top + "px";
+    }
+    node.style.opacity = "";
+  } else {
+    dojo.query("div.menubar").style("display", "none");
+  }
 }
 
 /**
@@ -59,7 +59,7 @@ aipo.wiki.toggleMenu=function (node,filters,event){
  *
  * @param portlet_id
  */
-aipo.wiki.initFilterSearch = function(portlet_id) {
+aipo.wiki.initFilterSearch = function (portlet_id) {
   var q = dojo.byId("q" + portlet_id);
   var filters = dojo.byId('filters_' + portlet_id);
   if (filters && q) {
@@ -73,7 +73,7 @@ aipo.wiki.initFilterSearch = function(portlet_id) {
       searchForm.style.width = fieldlength - filterOffset + "px";
       q.style.paddingLeft = "2px";
     } else {
-      if(filterOffset != 0) {
+      if (filterOffset != 0) {
         q.style.paddingLeft = filterOffset + "px";
       }
     }
@@ -85,7 +85,7 @@ aipo.wiki.initFilterSearch = function(portlet_id) {
  *
  * @param portlet_id
  */
-aipo.wiki.finFilterSearch = function(portlet_id) {
+aipo.wiki.finFilterSearch = function (portlet_id) {
   if (aipo.userAgent.isAndroid4_0()) {
     var q = dojo.byId("q" + portlet_id);
     var filters = dojo.byId('filters_' + portlet_id);
@@ -108,28 +108,28 @@ aipo.wiki.finFilterSearch = function(portlet_id) {
  * @param thisnode
  * @param event
  */
-aipo.wiki.filterSetDefault=function(portlet_id,type){
-  var ul=dojo.query("ul.filtertype[data-type="+type+"]")[0];
-  var defval=ul.getAttribute("data-defaultparam");
-  var defaultli=dojo.query("li[data-param="+defval+"]",ul);
-  aipo.wiki.filterSelect(ul,defaultli);
+aipo.wiki.filterSetDefault = function (portlet_id, type) {
+  var ul = dojo.query("ul.filtertype[data-type=" + type + "]")[0];
+  var defval = ul.getAttribute("data-defaultparam");
+  var defaultli = dojo.query("li[data-param=" + defval + "]", ul);
+  aipo.wiki.filterSelect(ul, defaultli);
   aipo.wiki.filteredSearch(portlet_id);
 }
 
-aipo.wiki.filterSelect=function(ul,li){
-  dojo.query("li",ul).removeClass("selected");
+aipo.wiki.filterSelect = function (ul, li) {
+  dojo.query("li", ul).removeClass("selected");
   dojo.query(li).addClass("selected");
 }
 
-aipo.wiki.filterClick=function(portlet_id,thisnode,event){
-  var li=thisnode.parentNode;
-  var ul=li.parentNode;
-  var param=li.getAttribute("data-param");//liのdata-param
-  aipo.wiki.filterSelect(ul,li);
+aipo.wiki.filterClick = function (portlet_id, thisnode, event) {
+  var li = thisnode.parentNode;
+  var ul = li.parentNode;
+  var param = li.getAttribute("data-param");//liのdata-param
+  aipo.wiki.filterSelect(ul, li);
   aipo.wiki.filteredSearch(portlet_id);
 }
 
-aipo.wiki.onReceiveMessage = function(msg) {
+aipo.wiki.onReceiveMessage = function (msg) {
   if (!msg) {
     var arrDialog = dijit.byId("modalDialog");
     if (arrDialog) {
@@ -142,17 +142,17 @@ aipo.wiki.onReceiveMessage = function(msg) {
   }
 }
 
-aipo.wiki.onListReceiveMessage = function(msg){
-    if(!msg) {
-        var arrDialog = dijit.byId("modalDialog");
-        if(arrDialog){
-            arrDialog.hide();
-        }
-        aipo.portletReload('wiki');
+aipo.wiki.onListReceiveMessage = function (msg) {
+  if (!msg) {
+    var arrDialog = dijit.byId("modalDialog");
+    if (arrDialog) {
+      arrDialog.hide();
     }
-    if (dojo.byId('listmessageDiv')) {
-        dojo.byId('listmessageDiv').innerHTML = msg;
-    }
+    aipo.portletReload('wiki');
+  }
+  if (dojo.byId('listmessageDiv')) {
+    dojo.byId('listmessageDiv').innerHTML = msg;
+  }
 }
 
 /**
@@ -160,25 +160,25 @@ aipo.wiki.onListReceiveMessage = function(msg){
  *
  * @param portlet_id
  */
-aipo.wiki.initFilterSearch = function(portlet_id) {
-	var q = dojo.byId("q" + portlet_id);
-	var filters = dojo.byId('filters_' + portlet_id);
-	if (filters && q) {
-		var filterOffset = filters.offsetWidth;
-		if (aipo.userAgent.isAndroid4_0()) {
-			var searchForm = dojo.query("div.filterInputField")[0];
-			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
-			searchForm.style.left = filterOffset + "px";
-			filters.style.left = -filterOffset + "px";
-			q.style.width = fieldlength - filterOffset + "px";
-			searchForm.style.width = fieldlength - filterOffset + "px";
-			q.style.paddingLeft = "2px";
-		} else {
-			if(filterOffset != 0) {
-				q.style.paddingLeft = filterOffset + "px";
-			}
-		}
-	}
+aipo.wiki.initFilterSearch = function (portlet_id) {
+  var q = dojo.byId("q" + portlet_id);
+  var filters = dojo.byId('filters_' + portlet_id);
+  if (filters && q) {
+    var filterOffset = filters.offsetWidth;
+    if (aipo.userAgent.isAndroid4_0()) {
+      var searchForm = dojo.query("div.filterInputField")[0];
+      var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+      searchForm.style.left = filterOffset + "px";
+      filters.style.left = -filterOffset + "px";
+      q.style.width = fieldlength - filterOffset + "px";
+      searchForm.style.width = fieldlength - filterOffset + "px";
+      q.style.paddingLeft = "2px";
+    } else {
+      if (filterOffset != 0) {
+        q.style.paddingLeft = filterOffset + "px";
+      }
+    }
+  }
 }
 
 /**
@@ -186,57 +186,56 @@ aipo.wiki.initFilterSearch = function(portlet_id) {
  *
  * @param portlet_id
  */
-aipo.wiki.finFilterSearch = function(portlet_id) {
-	if (aipo.userAgent.isAndroid4_0()) {
-		var q = dojo.byId("q" + portlet_id);
-		var filters = dojo.byId('filters_' + portlet_id);
-		if (filters && q) {
-			var filterOffset = filters.offsetWidth;
-			var searchForm = dojo.query("div.filterInputField")[0];
-			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
-			searchForm.style.left = "0px";
-			filters.style.left = "0px";
-			q.style.width = fieldlength + filterOffset + "px";
-			searchForm.style.width = fieldlength + filterOffset + "px";
-			q.style.paddingLeft = filterOffset + 2 + "px";
-		}
-	}
+aipo.wiki.finFilterSearch = function (portlet_id) {
+  if (aipo.userAgent.isAndroid4_0()) {
+    var q = dojo.byId("q" + portlet_id);
+    var filters = dojo.byId('filters_' + portlet_id);
+    if (filters && q) {
+      var filterOffset = filters.offsetWidth;
+      var searchForm = dojo.query("div.filterInputField")[0];
+      var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+      searchForm.style.left = "0px";
+      filters.style.left = "0px";
+      q.style.width = fieldlength + filterOffset + "px";
+      searchForm.style.width = fieldlength + filterOffset + "px";
+      q.style.paddingLeft = filterOffset + 2 + "px";
+    }
+  }
 }
 /**
  * urlを整形して送信。
  */
-aipo.wiki.filteredSearch=function(portlet_id){
+aipo.wiki.filteredSearch = function (portlet_id) {
   //filtertype
+  var baseuri = dojo.byId("baseuri_" + portlet_id).value;
 
-  var baseuri=dojo.byId("baseuri_"+portlet_id).value;
+  var types = [];
+  var params = [];
+  dojo.query("ul.filtertype_" + portlet_id).forEach(function (ul) {
+    //console.info(ul);
+    var type = ul.getAttribute("data-type");
+    types.push(type);
 
-  var types=[];
-  var params=[];
-  dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
-      //console.info(ul);
-      var type=ul.getAttribute("data-type");
-      types.push(type);
-
-      var activeli=dojo.query("li.selected",ul)[0];
-      if(activeli){
-        var param=activeli.getAttribute("data-param");
-        params.push(param);
-      }else{
-        params.push(ul.getAttribute("data-defaultparam"));
-      }
+    var activeli = dojo.query("li.selected", ul)[0];
+    if (activeli) {
+      var param = activeli.getAttribute("data-param");
+      params.push(param);
+    } else {
+      params.push(ul.getAttribute("data-defaultparam"));
     }
-  );
-  var q=dojo.byId("q"+portlet_id);
-  var qs=[["filter",params.join(",")],
-          ["filtertype",types.join(",")],
-    ["keyword",q?q.value:""]
+  });
+  var q = dojo.byId("q" + portlet_id);
+  var qs = [
+    ["filter", params.join(",")],
+    ["filtertype", types.join(",")],
+    ["keyword", q ? q.value : ""]
   ];
-  aipo.viewPage(baseuri,portlet_id,qs);
+  aipo.viewPage(baseuri, portlet_id, qs);
 }
 
-aipo.wiki.formSwitchCategoryInput = function(button) {
+aipo.wiki.formSwitchCategoryInput = function (button) {
   if (button.form.is_new_category.value == 'TRUE'
-      || button.form.is_new_category.value == 'true') {
+    || button.form.is_new_category.value == 'true') {
     button.value = aimluck.io.escapeText("wiki_val_switch1");
     aipo.wiki.formCategoryInputOff(button.form);
   } else {
@@ -245,131 +244,129 @@ aipo.wiki.formSwitchCategoryInput = function(button) {
   }
 }
 
-aipo.wiki.formCategoryInputOn = function(form) {
+aipo.wiki.formCategoryInputOn = function (form) {
   dojo.byId('wikiCategorySelectField').style.display = "none";
   dojo.byId('wikiCategoryInputField').style.display = "";
 
   form.is_new_category.value = 'TRUE';
 }
 
-aipo.wiki.formCategoryInputOff = function(form) {
+aipo.wiki.formCategoryInputOff = function (form) {
   dojo.byId('wikiCategoryInputField').style.display = "none";
   dojo.byId('wikiCategorySelectField').style.display = "";
 
   form.is_new_category.value = 'FALSE';
 }
 
-aipo.wiki.onLoadCategoryDialog = function(portlet_id){
-
+aipo.wiki.onLoadCategoryDialog = function (portlet_id) {
   var obj = dojo.byId("category_name");
-  if(obj){
-     obj.focus();
+  if (obj) {
+    obj.focus();
+  }
+}
+
+aipo.wiki.insertTag = function (prefix, suffix, text, islist) {
+  var textarea = dojo.byId('wiki_note');
+  var start, end, sel, scrollPos, subst, res;
+
+  textarea.focus();
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    sel = document.selection.createRange().text;
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    start = textarea.selectionStart;
+    end = textarea.selectionEnd;
+    scrollPos = textarea.scrollTop;
+    sel = textarea.value.substring(start, end);
   }
 
+  if (sel.match(/ $/)) { // exclude ending space char, if any
+    sel = sel.substring(0, sel.length - 1);
+    suffix = suffix + " ";
+  }
+
+  res = (sel) ? sel : '';
+
+  if (sel) {
+    if (islist) {
+      var linefeed = res.match(/([\r\n|\r|\n])/);
+      if (linefeed) {
+        var lfchr = linefeed[0];
+        var arr = res.split(/\r\n|\r|\n/);
+        subst = '';
+        for (var i = 0; i < arr.length; i++) {
+          subst += prefix + arr[i] + suffix;
+          if (i < arr.length - 1) subst += lfchr;
+        }
+      } else {
+        subst = prefix + res + suffix;
+      }
+    } else {
+      subst = prefix + res + suffix;
+    }
+  } else {
+    subst = prefix + text + suffix;
+  }
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    var range = document.selection.createRange();
+    range.text = subst;
+    range.setEndPoint('EndToEnd', range);
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    textarea.value = textarea.value.substring(0, start) + subst +
+      textarea.value.substring(end);
+    if (sel) {
+      textarea.setSelectionRange(start + subst.length, start + subst.length);
+    } else {
+      textarea.setSelectionRange(start + subst.length, start + subst.length);
+    }
+    textarea.scrollTop = scrollPos;
+  }
 }
 
-aipo.wiki.insertTag = function(prefix, suffix, text, islist){
-	var textarea = dojo.byId('wiki_note');
-	var start, end, sel, scrollPos, subst, res;
-	
-	textarea.focus();
-	
-	if(typeof(document["selection"]) != "undefined"){ // isIE
-		sel = document.selection.createRange().text;
-	} else if(typeof(textarea["setSelectionRange"]) != "undefined"){
-		start = textarea.selectionStart;
-		end = textarea.selectionEnd;
-		scrollPos = textarea.scrollTop;
-		sel = textarea.value.substring(start, end);
-	}
-	
-	if (sel.match(/ $/)) { // exclude ending space char, if any
-		sel = sel.substring(0, sel.length - 1);
-		suffix = suffix + " ";
-	}
-	
-	res = (sel) ? sel : '';
-	
-	if(sel){
-	  if(islist){
-	    var linefeed=res.match(/([\r\n|\r|\n])/);
-	    if(linefeed){
-	      var lfchr=linefeed[0];
-	      var arr=res.split(/\r\n|\r|\n/);
-	      subst='';
-	      for(var i=0;i<arr.length;i++){
-	        subst += prefix + arr[i] + suffix;
-	        if(i<arr.length-1) subst += lfchr;
-	      }
-	    }else{
-	      subst = prefix + res + suffix;
-	    }
-	  }else{
-	    subst = prefix + res + suffix;
-	  }
-	} else {
-		subst = prefix + text + suffix;
-	}
-
-	if (typeof(document["selection"]) != "undefined") { // isIE
-		var range = document.selection.createRange();
-		range.text = subst;
-		range.setEndPoint('EndToEnd', range);
-	} else if (typeof(textarea["setSelectionRange"]) != "undefined") {
-		textarea.value = textarea.value.substring(0, start) + subst +
-		textarea.value.substring(end);
-		if (sel) {
-			textarea.setSelectionRange(start + subst.length, start + subst.length);
-		} else {
-			textarea.setSelectionRange(start + subst.length, start + subst.length);
-		}
-		textarea.scrollTop = scrollPos;
-	}
-
+aipo.wiki.bold = function () {
+  var tag = "'''";
+  var text = "太文字文";
+  aipo.wiki.insertTag(tag, tag, text, false);
 }
-
-aipo.wiki.bold=function(){
-  var tag="'''";
-  var text="太文字文";
-    aipo.wiki.insertTag(tag, tag, text, false);
-}
-aipo.wiki.italic=function(){
- var  tag="''";
-var   text="斜体文";
+aipo.wiki.italic = function () {
+  var tag = "''";
+  var text = "斜体文";
   aipo.wiki.insertTag(tag, tag, text, false);
 
 }
-aipo.wiki.underline=function(){
-var   text="下線";
-  aipo.wiki.insertTag("<u>", "</u>", text, false);
-}
-aipo.wiki.strikethrough=function(){
- var text="取り消し線";
-  aipo.wiki.insertTag("<del>", "</del>", text, false);
-}
-aipo.wiki.header=function(){
- var tag="=";
-  var text="見出し１";
+aipo.wiki.underline = function () {
+  var tag = "%%";
+  var text = "下線";
   aipo.wiki.insertTag(tag, tag, text, false);
 }
-aipo.wiki.headerTwo=function(){
- var  tag="==";
- var  text="見出し２";
+aipo.wiki.strikethrough = function () {
+  var tag = "%%%";
+  var text = "取り消し線";
   aipo.wiki.insertTag(tag, tag, text, false);
 }
-aipo.wiki.headerThree=function(){
- var  tag="===";
- var text="見出し３";
+aipo.wiki.header = function () {
+  var tag = "=";
+  var text = "見出し１";
   aipo.wiki.insertTag(tag, tag, text, false);
 }
-aipo.wiki.ulist=function(){
- var tag="* ";
- var  text="番号なし項目";
+aipo.wiki.headerTwo = function () {
+  var tag = "==";
+  var text = "見出し２";
+  aipo.wiki.insertTag(tag, tag, text, false);
+}
+aipo.wiki.headerThree = function () {
+  var tag = "===";
+  var text = "見出し３";
+  aipo.wiki.insertTag(tag, tag, text, false);
+}
+aipo.wiki.ulist = function () {
+  var tag = "* ";
+  var text = "番号なし項目";
   aipo.wiki.insertTag(tag, "", text, true);
 }
-aipo.wiki.olist=function(){
- var tag="# ";
- var text="番号付き項目";
+aipo.wiki.olist = function () {
+  var tag = "# ";
+  var text = "番号付き項目";
   aipo.wiki.insertTag(tag, "", text, true);
 }
-

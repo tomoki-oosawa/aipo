@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
@@ -84,6 +85,8 @@ public class WikiResultData implements ALData {
   private List<FileuploadBean> attachmentFileList =
     new ArrayList<FileuploadBean>();
 
+  private WikiModel model;
+
   /**
    *
    *
@@ -102,6 +105,10 @@ public class WikiResultData implements ALData {
 
     is_public = true;
     new_wiki = false;
+  }
+
+  public void initalizeWikiModel(RunData rundata) {
+    model = new WikiModel("", "");
   }
 
   /**
@@ -190,7 +197,10 @@ public class WikiResultData implements ALData {
       noteText = noteText.replaceAll("&lt;del&gt;", "<del>");
       noteText = noteText.replaceAll("&lt;/del&gt;", "</del>");
 
-      htmlText = WikiModel.toHtml(noteText);
+      if (null == model) {
+        model = new WikiModel("", "");
+      }
+      htmlText = model.render(noteText);
 
       /* TOCを削除 */
       if (htmlText.startsWith("<table id=\"toc\"")) {
