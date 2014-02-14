@@ -2331,7 +2331,6 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  max-width: 180px;
   padding: 4px 6px !important;
   margin: 0;
   text-decoration: none;
