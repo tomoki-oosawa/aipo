@@ -37,6 +37,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
@@ -218,8 +219,8 @@ public class WikiResultData implements ALData {
       }
 
     } catch (Exception e) {
-      logger.error("getNote", e);
-      return "Wikiの構文エラーが発生しました";
+      logger.error("WikiResultData.getNote", e);
+      return ALLocalizationUtils.getl10n("WIKI_ERROR");
     }
     return htmlText;
   }

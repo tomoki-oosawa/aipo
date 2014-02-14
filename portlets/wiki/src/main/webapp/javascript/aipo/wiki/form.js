@@ -370,3 +370,47 @@ aipo.wiki.olist = function () {
   var text = "番号付き項目";
   aipo.wiki.insertTag(tag, "", text, true);
 }
+
+aipo.wiki.table = function () {
+  var textarea = dojo.byId('wiki_note');
+  textarea.focus();
+
+  var start, end, sel, range, scrollPos;
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    range = document.selection.createRange();
+    sel = range.text;
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    start = textarea.selectionStart;
+    end = textarea.selectionEnd;
+    scrollPos = textarea.scrollTop;
+    sel = textarea.value.substring(start, end);
+  }
+
+  var tableText =
+    "{|\n" +
+      "|-\n" +
+      "! 見出しテキスト !! 見出しテキスト !! 見出しテキスト\n" +
+      "|-\n" +
+      "| セル内のテキスト || セル内のテキスト || セル内のテキスト\n" +
+      "|-\n" +
+      "| セル内のテキスト || セル内のテキスト || セル内のテキスト\n" +
+      "|-\n" +
+      "| セル内のテキスト || セル内のテキスト || セル内のテキスト\n" +
+      "|}";
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    range.text = tableText;
+    range.setEndPoint('EndToEnd', range);
+  } else {
+    textarea.value = textarea.value.substring(0, start) + tableText +
+      textarea.value.substring(end);
+    if (sel) {
+      textarea.setSelectionRange(start + tableText.length, start + tableText.length);
+    } else {
+      textarea.setSelectionRange(start + tableText.length, start + tableText.length);
+    }
+    textarea.scrollTop = scrollPos;
+  }
+
+}
+
