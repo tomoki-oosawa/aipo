@@ -3517,11 +3517,25 @@ ul.attachments {
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
   margin: 1em 0;
 }
+.auiWikiContent h1 {
+  font-size: large;
+}
+.auiWikiContent h2 {
+  font-size: larger;
+}
 .auiWikiContent ul {
   margin: 1em;
 }
 .auiWikiContent ol {
-  margin: 1em 2em;
+  margin: 1em 1em 1em 2em;
+}
+.auiWikiContent table {
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+.auiWikiContent th, .auiWikiContent td {
+  border: solid 1px #d2d2d2 !important;
+  padding: 5px;
 }
 
 /***************************************************
