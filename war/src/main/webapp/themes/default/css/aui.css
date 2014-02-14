@@ -4249,3 +4249,21 @@ a:hover .auiWFicon [class^="icon-"] {
     opacity: 1;
   }
 }
+
+/***************************************************
+	errorbox
+--------------------------------------------------*/
+.errorbox {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.errorbox h1 {
+  font-size: 1.2em;
+  margin: 1em 0;
+}
+.errorbox ul, .errorbox ol {
+  margin: 1em 0 1em 1em;
+}
+.errorbox ol {
+  margin-left: 2em;
+}
