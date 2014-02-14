@@ -19,9 +19,13 @@
 
 ## ---------------------------------------------------------------------------
 #if  ("$!mode"=="new_form")
+#set ($action_str = $l10n.WIKI_ADD)
 #set ($subtitle = $l10n.WIKI_ADDITION)
+#set ($event_submit = "eventSubmit_doWiki_insert")
 #else
+#set ($action_str = $l10n.WIKI_UPDATE)
 #set ($subtitle = $l10n.WIKI_EDITION)
+#set ($event_submit = "eventSubmit_doWiki_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -100,7 +104,7 @@
         </tr>
 		#ALtablefooter()
 		#ALbuttonheader()
-			<input name="" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="追加する" onclick="aimluck.io.setHiddenValue(this);">
+			#ALsubmit($event_submit $action_str)
 			#ALajaxbuttonClose()
         #ALbuttonfooter()
 	#ALformfooter()
