@@ -284,13 +284,7 @@ dojo.declare(
 
             var style = this.domNode.style;
             if(this.id=="imageDialog"){
-            	if(dojo.byId("imageDialog").style.width == 0) {
-            		//loading
-            		style.left = Math.floor((viewport.l + (viewport.w - mb.w)/2)) + "px";
-            	}else{
-                    style.left = "";
-            		style.marginLeft = Math.floor(-dojo.byId("imageDialog").style.width.replace("px","")/2) + "px";
-            	}
+        		style.marginLeft = Math.floor(-dojo.byId("imageDialog").style.width.replace("px","")/2) + "px";
             }
             if(Math.floor((viewport.t + (viewport.h - mb.h)/2)) > 0){
                 style.top = Math.floor((viewport.t + (viewport.h - mb.h)/2)) + "px";
