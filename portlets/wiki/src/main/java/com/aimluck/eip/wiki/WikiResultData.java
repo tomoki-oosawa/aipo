@@ -198,9 +198,6 @@ public class WikiResultData implements ALData {
       noteText = noteText.replaceAll("&lt;del&gt;", "<del>");
       noteText = noteText.replaceAll("&lt;/del&gt;", "</del>");
 
-      /* 改行タグ */
-      noteText = noteText.replaceAll("\n", "<br>");
-
       if (null == model) {
         model = new WikiModel("", "");
       }
