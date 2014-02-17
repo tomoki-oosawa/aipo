@@ -83,7 +83,8 @@
                                 <a onclick="aipo.wiki.ulist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ul"></i></span></a>
                                 <a onclick="aipo.wiki.olist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ol"></i></span></a>
 								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_TABLE</span></a>
-            </div>
+								<a onclick="aipo.wiki.quote()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_QUOTE</span></a>
+			</div>
             
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
         </tr>
