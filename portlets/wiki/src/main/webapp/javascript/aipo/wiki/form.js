@@ -368,6 +368,36 @@ aipo.wiki.encloseTag = function (prefix, suffix, text) {
   }
 }
 
+aipo.wiki.replaceTag = function(text){
+  var textarea = dojo.byId('wiki_note');
+  textarea.focus();
+
+  var start, end, sel, range, scrollPos;
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    range = document.selection.createRange();
+    sel = range.text;
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    start = textarea.selectionStart;
+    end = textarea.selectionEnd;
+    scrollPos = textarea.scrollTop;
+    sel = textarea.value.substring(start, end);
+  }
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    range.text = text;
+    range.setEndPoint('EndToEnd', range);
+  } else {
+    textarea.value = textarea.value.substring(0, start) + text +
+      textarea.value.substring(end);
+    if (sel) {
+      textarea.setSelectionRange(start + text.length, start + text.length);
+    } else {
+      textarea.setSelectionRange(start + text.length, start + text.length);
+    }
+    textarea.scrollTop = scrollPos;
+  }
+}
+
 aipo.wiki.bold = function () {
   var tag = "'''";
   var text = "太文字文";
@@ -431,22 +461,13 @@ aipo.wiki.pre = function () {
   aipo.wiki.encloseTag("{code}", "{code}", text);
 }
 
+aipo.wiki.hr = function () {
+  var text = "----";
+  aipo.wiki.replaceTag(text);
+}
+
 aipo.wiki.table = function () {
-  var textarea = dojo.byId('wiki_note');
-  textarea.focus();
-
-  var start, end, sel, range, scrollPos;
-  if (typeof(document["selection"]) != "undefined") { // isIE
-    range = document.selection.createRange();
-    sel = range.text;
-  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
-    start = textarea.selectionStart;
-    end = textarea.selectionEnd;
-    scrollPos = textarea.scrollTop;
-    sel = textarea.value.substring(start, end);
-  }
-
-  var tableText =
+  var text =
     "{|\n" +
       "|-\n" +
       "! 見出しテキスト !! 見出しテキスト !! 見出しテキスト\n" +
@@ -457,21 +478,7 @@ aipo.wiki.table = function () {
       "|-\n" +
       "| セル内のテキスト || セル内のテキスト || セル内のテキスト\n" +
       "|}";
-
-  if (typeof(document["selection"]) != "undefined") { // isIE
-    range.text = tableText;
-    range.setEndPoint('EndToEnd', range);
-  } else {
-    textarea.value = textarea.value.substring(0, start) + tableText +
-      textarea.value.substring(end);
-    if (sel) {
-      textarea.setSelectionRange(start + tableText.length, start + tableText.length);
-    } else {
-      textarea.setSelectionRange(start + tableText.length, start + tableText.length);
-    }
-    textarea.scrollTop = scrollPos;
-  }
-
+  aipo.wiki.replaceTag(text);
 }
 
 
