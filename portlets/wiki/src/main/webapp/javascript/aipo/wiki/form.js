@@ -414,3 +414,10 @@ aipo.wiki.table = function () {
 
 }
 
+
+aipo.wiki.quote = function () {
+	  var tag = ">";
+	  var text = "引用文";
+	  aipo.wiki.insertTag(tag, tag, text, true);
+	}
+
