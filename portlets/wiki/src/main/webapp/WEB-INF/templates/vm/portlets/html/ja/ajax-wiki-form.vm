@@ -82,6 +82,7 @@
                                 <a onclick="aipo.wiki.headerThree()" href="javascript:void(0);"><span class="auiButtonIcon">h3</span></a>
                                 <a onclick="aipo.wiki.ulist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ul"></i></span></a>
                                 <a onclick="aipo.wiki.olist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ol"></i></span></a>
+                                <a onclick="aipo.wiki.externallink()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-external-link"></i></span></a>
 								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_TABLE</span></a>
             </div>
             

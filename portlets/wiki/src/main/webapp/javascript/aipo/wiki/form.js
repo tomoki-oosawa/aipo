@@ -371,6 +371,11 @@ aipo.wiki.olist = function () {
   aipo.wiki.insertTag(tag, "", text, true);
 }
 
+aipo.wiki.externallink = function () {
+	  var text = "[http:// 外部リンク]";
+	  aipo.wiki.insertTag("", "", text, true);
+	}
+
 aipo.wiki.table = function () {
   var textarea = dojo.byId('wiki_note');
   textarea.focus();
