@@ -85,6 +85,7 @@
                                 <a onclick="aipo.wiki.externallink()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-external-link"></i></span></a>
 								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_TABLE</span></a>
 								<a onclick="aipo.wiki.quote()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_QUOTE</span></a>
+								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_FORMATTED</span></a>
 			</div>
             
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>

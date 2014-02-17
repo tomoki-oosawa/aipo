@@ -112,6 +112,8 @@ public class WikipediaParser extends AbstractParser implements IParser {
               // wikipedia table handling
               if (parseTable()) {
                 continue;
+              } else if (parseCode()) {
+                continue;
               }
             }
             break;
@@ -937,6 +939,20 @@ public class WikipediaParser extends AbstractParser implements IParser {
         fWikiModel.append(table);
         // table.filter(fSource, fWikiModel);
         return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean parseCode() {
+    if (isStartOfLine()) {
+      setPosition(fCurrentPosition - 1);
+      WPCodeBlock code = codeBlock();
+      if (code != null) {
+        createContentToken(1);
+        fWikiModel.reduceTokenStack(code);
+        fCurrentPosition = getPosition();
+        fWikiModel.append(code);
       }
     }
     return false;

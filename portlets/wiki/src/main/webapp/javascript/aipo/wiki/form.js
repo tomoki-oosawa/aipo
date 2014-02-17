@@ -324,6 +324,50 @@ aipo.wiki.insertTag = function (prefix, suffix, text, islist) {
   }
 }
 
+aipo.wiki.encloseTag = function (prefix, suffix, text) {
+  var textarea = dojo.byId('wiki_note');
+  var start, end, sel, scrollPos, subst, res;
+
+  textarea.focus();
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    sel = document.selection.createRange().text;
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    start = textarea.selectionStart;
+    end = textarea.selectionEnd;
+    scrollPos = textarea.scrollTop;
+    sel = textarea.value.substring(start, end);
+  }
+
+  if (sel.match(/ $/)) { // exclude ending space char, if any
+    sel = sel.substring(0, sel.length - 1);
+    suffix = suffix + " ";
+  }
+
+  res = (sel) ? sel : '';
+
+  if (sel) {
+    subst = prefix + "\n" + res + "\n" + suffix;
+  } else {
+    subst = prefix + "\n" + text + "\n" + suffix;
+  }
+
+  if (typeof(document["selection"]) != "undefined") { // isIE
+    var range = document.selection.createRange();
+    range.text = subst;
+    range.setEndPoint('EndToEnd', range);
+  } else if (typeof(textarea["setSelectionRange"]) != "undefined") {
+    textarea.value = textarea.value.substring(0, start) + subst +
+      textarea.value.substring(end);
+    if (sel) {
+      textarea.setSelectionRange(start + subst.length, start + subst.length);
+    } else {
+      textarea.setSelectionRange(start + subst.length, start + subst.length);
+    }
+    textarea.scrollTop = scrollPos;
+  }
+}
+
 aipo.wiki.bold = function () {
   var tag = "'''";
   var text = "太文字文";
@@ -372,9 +416,20 @@ aipo.wiki.olist = function () {
 }
 
 aipo.wiki.externallink = function () {
-	  var text = "[http:// 外部リンク]";
-	  aipo.wiki.insertTag("", "", text, true);
-	}
+  var text = "[http:// 外部リンク]";
+  aipo.wiki.insertTag("", "", text, true);
+}
+
+aipo.wiki.quote = function () {
+  var tag = ">";
+  var text = "引用文";
+  aipo.wiki.insertTag(tag, tag, text, true);
+}
+
+aipo.wiki.pre = function () {
+  var text = "整形済みテキスト";
+  aipo.wiki.encloseTag("{code}", "{code}", text);
+}
 
 aipo.wiki.table = function () {
   var textarea = dojo.byId('wiki_note');
@@ -420,9 +475,5 @@ aipo.wiki.table = function () {
 }
 
 
-aipo.wiki.quote = function () {
-	  var tag = ">";
-	  var text = "引用文";
-	  aipo.wiki.insertTag(tag, tag, text, true);
-	}
+
 
