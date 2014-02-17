@@ -111,6 +111,59 @@ public class WikipediaScanner {
     return null;
   }
 
+  public WPBlockQuote blockQuote() {
+    WPBlockQuote code = null;
+    try {
+      if (fScannerPosition < 0) {
+        // simulate newline
+        fScannerPosition = 0;
+      }
+      if (fSource[fScannerPosition++] != '{') {
+        return null;
+      }
+      if (fSource[fScannerPosition++] != 'q'
+        || fSource[fScannerPosition++] != 'u'
+        || fSource[fScannerPosition++] != 'o'
+        || fSource[fScannerPosition++] != 't'
+        || fSource[fScannerPosition++] != 'e') {
+        return null;
+      }
+      if (fSource[fScannerPosition++] != '}') {
+        return null;
+      }
+      int contentsStart = fScannerPosition;
+      char ch = ' ';
+      while (true) {
+        ch = fSource[fScannerPosition++];
+        switch (ch) {
+          case '{':
+            int cposition =
+              findNestedEndSingle(fSource, '{', '}', fScannerPosition);
+            if (cposition >= 0) {
+              String block =
+                new String(fSource).substring(fScannerPosition, cposition - 1);
+              if ("quote".equals(block)) {
+                int contentsEnd = fScannerPosition;
+                code = new WPBlockQuote();
+                String contents =
+                  new String(fSource).substring(contentsStart, contentsEnd - 1);
+                code.setContents(contents);
+
+                /** remove end {quote} tag */
+                fScannerPosition = fScannerPosition + "{quote}".length();
+                return code;
+              }
+              continue;
+            }
+            break;
+        }
+      }
+    } catch (IndexOutOfBoundsException e) {
+      fScannerPosition = fSource.length;
+    }
+    return null;
+  }
+
   /**
    * Scan a wikipedia table.
    * 

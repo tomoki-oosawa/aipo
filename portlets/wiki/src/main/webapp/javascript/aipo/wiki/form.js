@@ -451,9 +451,8 @@ aipo.wiki.externallink = function () {
 }
 
 aipo.wiki.quote = function () {
-  var tag = ">";
   var text = "引用文";
-  aipo.wiki.insertTag(tag, tag, text, true);
+  aipo.wiki.encloseTag("{quote}", "{quote}", text);
 }
 
 aipo.wiki.pre = function () {
