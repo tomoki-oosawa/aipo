@@ -50,13 +50,11 @@
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$groupUrl', '$!portlet.ID')">$l10n.ADDRESSBOOK_GROUP_MANAGEMENT</a>
 </div>
-</div>
-
-<div class="auiWidget clearfix">
 
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$companyUrl', '$!portlet.ID')">$l10n.ADDRESSBOOK_COMPANY_MANAGEMENT</a>
 </div>
+
 </div>
 
 #**
