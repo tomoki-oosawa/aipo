@@ -848,14 +848,18 @@ table.simpleTable .caption {
 	imageDialog
 --------------------------------------------------*/
 #imageDialog {
-	left:50%;
+  position: absolute;
+  z-index: 999;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
 }
 
 /* addressbookDialog */
 .addressbookDialog {
   border: 5px solid #d2d2d2;
   background-color: #fff;
-  width: 600px;
+  /*width: 600px;*/
   z-index: 999;
   position: absolute;
 }
@@ -900,7 +904,7 @@ table.simpleTable .caption {
 /* fileuploadViewDialog */
 .fileuploadViewDialog {
   z-index: 999;
-  width: 600px;
+  /*width: 600px;*/
   position: absolute;
 }
 
@@ -923,12 +927,6 @@ table.simpleTable .caption {
 
 /* END fileuploadDialog */
 /* tutorialDialog */
-.tutorialDialog {
-  z-index: 999;
-  width: 600px;
-  position: absolute;
-}
-
 .tutorialDialogUnderlayWrapper {
   left: 0;
   top: 0;
