@@ -1564,6 +1564,7 @@ CREATE TABLE EIP_T_WIKI
 (
     WIKI_ID INTEGER NOT NULL,
     WIKI_NAME VARCHAR (64) NOT NULL,
+    PARENT_ID INTEGER DEFAULT 0,
     CATEGORY_ID INTEGER,
     NOTE TEXT,
     CREATE_USER_ID INTEGER,
@@ -1573,6 +1574,8 @@ CREATE TABLE EIP_T_WIKI
     FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_WIKI_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(WIKI_ID)
 );
+
+CREATE INDEX eip_t_wiki_wiki_name_parent_id_index ON EIP_T_WIKI (WIKI_NAME, PARENT_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_WIKI_FILE
@@ -1591,6 +1594,8 @@ CREATE TABLE EIP_T_WIKI_FILE
     FOREIGN KEY (WIKI_ID) REFERENCES EIP_T_WIKI (WIKI_ID) ON DELETE CASCADE,
     PRIMARY KEY (FILE_ID)
 );
+
+CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE

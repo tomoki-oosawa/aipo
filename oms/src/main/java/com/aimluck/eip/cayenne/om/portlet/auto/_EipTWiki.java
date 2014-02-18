@@ -11,6 +11,7 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String CREATE_USER_ID_PROPERTY = "createUserId";
     public static final String NOTE_PROPERTY = "note";
+    public static final String PARENT_ID_PROPERTY = "parentId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String UPDATE_USER_ID_PROPERTY = "updateUserId";
     public static final String WIKI_NAME_PROPERTY = "wikiName";
@@ -49,6 +50,14 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     }
     public String getNote() {
         return (String)readProperty("note");
+    }
+    
+    
+    public void setParentId(Integer parentId) {
+        writeProperty("parentId", parentId);
+    }
+    public Integer getParentId() {
+        return (Integer)readProperty("parentId");
     }
     
     

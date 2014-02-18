@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.util.RunData;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
@@ -108,8 +107,8 @@ public class WikiResultData implements ALData {
     new_wiki = false;
   }
 
-  public void initalizeWikiModel(RunData rundata) {
-    model = new WikiModel("", "");
+  public void initalizeWikiModel(String imgUri, String internalLinkUri) {
+    model = new WikiModel(imgUri, internalLinkUri);
   }
 
   /**

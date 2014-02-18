@@ -99,6 +99,8 @@ public class WikiFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
+  private EipTWiki parentWiki = null;
+
   /**
    * @param action
    * @param rundata
@@ -531,6 +533,20 @@ public class WikiFormData extends ALAbstractFormData {
 
   public String getFolderName() {
     return folderName;
+  }
+
+  public void setParentWiki(EipTWiki wiki) {
+    this.parentWiki = wiki;
+  }
+
+  public String getParentIdString() {
+    if (null != parentWiki
+      && parentWiki.getParentId() != null
+      && parentWiki.getParentId().intValue() != 0) {
+      return String.valueOf(parentWiki.getParentId());
+    } else {
+      return "";
+    }
   }
 
 }

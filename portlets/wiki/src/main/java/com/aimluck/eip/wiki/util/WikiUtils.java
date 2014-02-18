@@ -350,4 +350,14 @@ public class WikiUtils {
     return result != 0;
   }
 
+  public static EipTWiki getEipTWiki(String name, String parentId) {
+    SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    Expression nameExp =
+      ExpressionFactory.matchExp(EipTWiki.WIKI_NAME_PROPERTY, name);
+    Expression parentExp =
+      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
+    query.setQualifier(nameExp.andExp(parentExp));
+    query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY);
+    return query.fetchSingle();
+  }
 }

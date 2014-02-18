@@ -588,6 +588,7 @@
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="NOTE" type="CLOB"/>
+		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="WIKI_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
@@ -1190,6 +1191,7 @@
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
 		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
 		<obj-attribute name="wikiName" type="java.lang.String" db-attribute-path="WIKI_NAME"/>
