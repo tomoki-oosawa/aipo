@@ -2052,12 +2052,21 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
- auiBlankBox
+	auiBlankBox
 --------------------------------------------------*/
 .auiBlankBox {
   text-align: left;
 }
 
+/***************************************************
+	auiWikiContent
+--------------------------------------------------*/
+.auiWikiContent table th, .auiWikiContent table td {
+  display: table-cell !important;
+  margin-top: 0 !important;
+  padding: 5px !important;
+  background: none !important;
+}
 
 /***************************************************
 	mobile class - undermost
