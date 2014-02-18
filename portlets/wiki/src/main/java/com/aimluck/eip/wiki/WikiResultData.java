@@ -197,6 +197,25 @@ public class WikiResultData implements ALData {
       noteText = noteText.replaceAll("&lt;del&gt;", "<del>");
       noteText = noteText.replaceAll("&lt;/del&gt;", "</del>");
 
+      /* 改行タグ */
+      noteText = noteText.replaceAll("\n", "<br>");
+
+      /* 添付ファイル */
+      for (FileuploadBean attachmentfile : attachmentFileList) {
+        noteText =
+          noteText.replace("!" + attachmentfile.getFileName() + "!", "<br>"
+            + "<img class='width_thumbs' border='0' alt='"
+            + attachmentfile.getFileName()
+            + "' title='"
+            + attachmentfile.getFileName()
+            + "' src='"
+            + "template/WikiFileThumbnailScreen?entityid="
+            + id
+            + "&attachmentindex="
+            + attachmentfile.getFileId()
+            + "'>");
+      }
+
       if (null == model) {
         model = new WikiModel("", "");
       }
