@@ -332,7 +332,7 @@ public class WikiSelectData extends
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
         for (WikiResultData category : categoryList) {
-          if (categoryId.equals(category.getParentId().toString())) {
+          if (categoryId.equals(category.getId().toString())) {
             existCategory = true;
             break;
           }
