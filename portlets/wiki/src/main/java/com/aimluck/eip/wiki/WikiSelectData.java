@@ -41,7 +41,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
-import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -70,7 +69,7 @@ public class WikiSelectData extends
     .getLogger(WikiSelectData.class.getName());
 
   /** カテゴリ一覧 */
-  private List<WikiCategoryResultData> categoryList;
+  private List<WikiResultData> categoryList;
 
   /** 部署一覧 */
   private List<ALEipGroup> postList;
@@ -99,6 +98,8 @@ public class WikiSelectData extends
   private EipTWiki parentWiki = null;
 
   private String baseInternalLink = null;
+
+  private String baseImageLink = null;
 
   /**
    * 
@@ -138,6 +139,7 @@ public class WikiSelectData extends
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+
       baseInternalLink =
         jsLink
           .getPortletById(portlet.getID())
@@ -145,6 +147,10 @@ public class WikiSelectData extends
           .addQueryData("portletid", portlet.getID())
           .addQueryData("callback", "aipo.wiki.onLoadWikiDetail")
           .toString();
+
+      String baseLink = jsLink.getPortletById(portlet.getID()).toString();
+      baseImageLink = baseLink + "/template/WikiFileThumbnailScreen";
+
     } catch (TurbineException e) {
       logger.error("init", e);
     }
@@ -165,8 +171,8 @@ public class WikiSelectData extends
     if (StringUtils.isEmpty(categoryId)) {
       return true;
     }
-    for (WikiCategoryResultData data : categoryList) {
-      if (data.getCategoryId().toString().equals(categoryId)) {
+    for (WikiResultData data : categoryList) {
+      if (data.getParentId().toString().equals(categoryId)) {
         return true;
       }
     }
@@ -178,9 +184,9 @@ public class WikiSelectData extends
     if (categoryList == null) {
       return;
     }
-    for (WikiCategoryResultData data : categoryList) {
-      if (data.getCategoryId().toString().equals(categoryId)) {
-        categoryName = data.getCategoryName();
+    for (WikiResultData data : categoryList) {
+      if (data.getParentId().toString().equals(categoryId)) {
+        categoryName = data.getName();
         return;
       }
     }
@@ -253,8 +259,8 @@ public class WikiSelectData extends
     this.filterType = filterType;
 
     boolean existCategory = false;
-    for (WikiCategoryResultData data : categoryList) {
-      if (categoryId.equals(data.getCategoryId().toString())) {
+    for (WikiResultData data : categoryList) {
+      if (categoryId.equals(data.getParentId().toString())) {
         existCategory = true;
         break;
       }
@@ -303,12 +309,6 @@ public class WikiSelectData extends
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
 
-    Expression baseExp =
-      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, Integer
-        .valueOf(0));
-
-    query.setQualifier(baseExp);
-
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       // 選択したキーワードを指定する．
       String keyword = "%" + target_keyword.getValue() + "%";
@@ -352,8 +352,8 @@ public class WikiSelectData extends
       }
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
-        for (WikiCategoryResultData category : categoryList) {
-          if (categoryId.equals(category.getCategoryId().toString())) {
+        for (WikiResultData category : categoryList) {
+          if (categoryId.equals(category.getParentId().toString())) {
             existCategory = true;
             break;
           }
@@ -432,7 +432,7 @@ public class WikiSelectData extends
       rd.initField();
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
-      rd.setCategoryId(record.getCategoryId().longValue());
+      // rd.setCategoryId(record.getCategoryId().longValue());
       rd.setUpdateUser(ALEipUtils
         .getALEipUser(record.getUpdateUserId())
         .getAliasName()
@@ -481,7 +481,7 @@ public class WikiSelectData extends
           + "&name=${title}&parentId="
           + String.valueOf(record.getParentId().intValue() == 0 ? record
             .getWikiId() : record.getParentId());
-      rd.initalizeWikiModel("", link);
+      rd.initalizeWikiModel(baseImageLink, link);
 
       // 登録ユーザ名の設定
       ALEipUser createdUser =
@@ -501,10 +501,10 @@ public class WikiSelectData extends
       rd.setUpdateUser(updatedUserName);
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
-      rd.setCategoryId(record.getCategoryId().longValue());
-      rd.setCategoryName(WikiUtils
-        .getEipTWikiCategory(record.getCategoryId())
-        .getCategoryName());
+      // rd.setCategoryId(record.getCategoryId().longValue());
+      // rd.setCategoryName(WikiUtils
+      // .getEipTWikiCategory(record.getCategoryId())
+      // .getCategoryName());
       rd.setNote(record.getNote());
       rd.setCreateUser(ALEipUtils
         .getALEipUser(record.getCreateUserId())
@@ -516,6 +516,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setBaseInternalLink(baseImageLink);
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));
@@ -534,7 +535,7 @@ public class WikiSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
+    // map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
     map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
     map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);
@@ -549,7 +550,7 @@ public class WikiSelectData extends
     return categoryName;
   }
 
-  public List<WikiCategoryResultData> getCategoryList() {
+  public List<WikiResultData> getCategoryList() {
     return categoryList;
   }
 

@@ -25,7 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiCategoryFormData;
+import com.aimluck.eip.wiki.WikiFormData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -56,7 +56,7 @@ public class WikiCategoryFormScreen extends ALVelocityScreen {
   }
 
   protected void doWiki_category_form(RunData rundata, Context context) {
-    WikiCategoryFormData formData = new WikiCategoryFormData();
+    WikiFormData formData = new WikiFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
 

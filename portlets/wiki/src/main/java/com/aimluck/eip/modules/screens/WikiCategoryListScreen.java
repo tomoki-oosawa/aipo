@@ -25,7 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiCategorySelectData;
+import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -47,9 +47,9 @@ public class WikiCategoryListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      WikiCategorySelectData listData = new WikiCategorySelectData();
+      WikiSelectData listData = new WikiSelectData();
       listData.initField();
-      listData.loadCategoryList(rundata);
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
 
       context.put("isCategory", true);

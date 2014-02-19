@@ -31,14 +31,13 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
-import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiCategoryResultData;
+import com.aimluck.eip.wiki.WikiResultData;
 
 /**
  * Wikiのユーティリティクラスです。 <BR>
@@ -79,6 +78,9 @@ public class WikiUtils {
 
   public static final String WIKI_PORTLET_NAME = "Wiki";
 
+  /** トップレベルwiki */
+  public static final int PARENT_WIKI = 0;
+
   /**
    * Wikiカテゴリ オブジェクトモデルを取得します。 <BR>
    * 
@@ -86,8 +88,8 @@ public class WikiUtils {
    * @param context
    * @return
    */
-  public static EipTWikiCategory getEipTWikiCategory(RunData rundata,
-      Context context) throws ALPageNotFoundException, ALDBErrorException {
+  public static EipTWiki getEipTWikiCategory(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
     String categoryid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
@@ -97,8 +99,7 @@ public class WikiUtils {
       throw new ALPageNotFoundException();
     }
 
-    EipTWikiCategory category =
-      getEipTWikiCategory(Integer.parseInt(categoryid));
+    EipTWiki category = getEipTWikiCategory(Integer.parseInt(categoryid));
 
     if (null == category) {
       throw new ALPageNotFoundException();
@@ -114,46 +115,51 @@ public class WikiUtils {
    * @param context
    * @return
    */
-  public static EipTWikiCategory getEipTWikiCategory(Integer integer) {
+  public static EipTWiki getEipTWikiCategory(Integer integer) {
     try {
-      return Database.get(EipTWikiCategory.class, integer);
+      SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+      return query
+        .setQualifier(
+          ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, integer))
+        .fetchSingle();
     } catch (Exception ex) {
       logger.error("wiki", ex);
       return null;
     }
   }
 
-  public static List<WikiCategoryResultData> loadCategoryList(RunData rundata) {
+  /**
+   * parent_id:0のデータ一覧を取得する
+   * 
+   * @param rundata
+   * @return
+   */
+  public static List<WikiResultData> loadCategoryList(RunData rundata) {
     // カテゴリ一覧
-    List<WikiCategoryResultData> categoryList =
-      new ArrayList<WikiCategoryResultData>();
+    List<WikiResultData> categoryList = new ArrayList<WikiResultData>();
     try {
-      SelectQuery<EipTWikiCategory> query =
-        Database.query(EipTWikiCategory.class);
+      SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+      query.setQualifier(ExpressionFactory.matchExp(
+        EipTWiki.PARENT_ID_PROPERTY,
+        PARENT_WIKI));
 
-      WikiCategoryResultData otherRd = null;
-
-      List<EipTWikiCategory> aList =
-        query
-          .orderAscending(EipTWikiCategory.CATEGORY_NAME_PROPERTY)
-          .fetchList();
+      List<EipTWiki> aList =
+        query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY).fetchList();
 
       int size = aList.size();
       for (int i = 0; i < size; i++) {
-        EipTWikiCategory record = aList.get(i);
-        WikiCategoryResultData rd = new WikiCategoryResultData();
+        EipTWiki record = aList.get(i);
+        WikiResultData rd = new WikiResultData();
         rd.initField();
-        rd.setCategoryId(record.getCategoryId().longValue());
-        rd.setCategoryName(record.getCategoryName());
-        if (record.getCategoryId().longValue() == 1) {
-          // カテゴリ「その他」は最後に追加するため，ここではリストに追加しない．
-          otherRd = rd;
-        } else {
-          categoryList.add(rd);
-        }
-      }
-      if (otherRd != null) {
-        categoryList.add(otherRd);
+        rd.setId(record.getWikiId().longValue());
+        rd.setName(record.getWikiName());
+        rd.setUpdateUser(ALEipUtils
+          .getALEipUser(record.getUpdateUserId())
+          .getAliasName()
+          .getValue());
+        rd.setCreateDate(record.getCreateDate());
+        rd.setUpdateDate(record.getUpdateDate());
+        categoryList.add(rd);
       }
     } catch (Exception ex) {
       logger.error("wiki", ex);
@@ -327,11 +333,11 @@ public class WikiUtils {
     return Database.get(EipTWiki.class, pk);
   }
 
-  public static int getEipTWikiCategoryWikiCount(EipTWikiCategory category) {
+  public static int getEipTWikiCategoryWikiCount(EipTWiki category) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     query.setQualifier(ExpressionFactory.matchDbExp(
-      EipTWiki.EIP_TWIKI_CATEGORY_PROPERTY,
-      category));
+      EipTWiki.PARENT_ID_PROPERTY,
+      category.getWikiId()));
     return query.getCount();
 
   }

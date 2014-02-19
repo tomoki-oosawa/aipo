@@ -56,11 +56,14 @@ public class WikiResultData implements ALData {
 
   private ALNumberField parentId;
 
-  /** カテゴリ ID */
-  private ALNumberField category_id;
+  /** 親 ID */
+  private ALNumberField parent_id;
 
-  /** カテゴリ名 */
-  private ALStringField category_name;
+  /** 親wiki名 */
+  private ALStringField parent_name;
+
+  /** 親フラグ */
+  private boolean is_parent;
 
   /** 公開/非公開フラグ */
   private boolean is_public;
@@ -89,6 +92,9 @@ public class WikiResultData implements ALData {
 
   private WikiModel model;
 
+  /** URL */
+  private ALStringField baseImageLink;
+
   /**
    *
    *
@@ -98,13 +104,14 @@ public class WikiResultData implements ALData {
     id = new ALNumberField();
     name = new ALStringField();
     parentId = new ALNumberField();
-    category_id = new ALNumberField();
-    category_name = new ALStringField();
+    parent_id = new ALNumberField();
+    parent_name = new ALStringField();
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
+    baseImageLink = new ALStringField();
 
     is_public = true;
     new_wiki = false;
@@ -147,38 +154,6 @@ public class WikiResultData implements ALData {
   }
 
   /**
-   * @param i
-   */
-  public void setCategoryId(long i) {
-    category_id.setValue(i);
-  }
-
-  /**
-   * @param string
-   */
-  public void setCategoryName(String string) {
-    category_name.setValue(string);
-  }
-
-  /**
-   * @return
-   */
-  public ALNumberField getCategoryId() {
-    return category_id;
-  }
-
-  /**
-   * @return
-   */
-  public String getCategoryName() {
-    return category_name.toString();
-  }
-
-  public String getCategoryNameHtml() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
-  }
-
-  /**
    * @return
    */
   public String getNote() {
@@ -214,7 +189,8 @@ public class WikiResultData implements ALData {
             + "' title='"
             + attachmentfile.getFileName()
             + "' src='"
-            + "template/WikiFileThumbnailScreen?entityid="
+            + baseImageLink
+            + "?entityid="
             + id
             + "&attachmentindex="
             + attachmentfile.getFileId()
@@ -305,6 +281,10 @@ public class WikiResultData implements ALData {
     update_user.setValue(str);
   }
 
+  public void setBaseInternalLink(String str) {
+    baseImageLink.setValue(str);
+  }
+
   /**
    * 公開/非公開フラグ．
    * 
@@ -335,5 +315,33 @@ public class WikiResultData implements ALData {
 
   public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
+  }
+
+  public ALNumberField getParentId() {
+    return parent_id;
+  }
+
+  public void setParentId(long i) {
+    this.parent_id.setValue(i);
+  }
+
+  public ALStringField getParentName() {
+    return parent_name;
+  }
+
+  public String getParentNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(parent_name.toString());
+  }
+
+  public void setParentName(String str) {
+    this.parent_name.setValue(str);
+  }
+
+  public boolean isParent() {
+    return is_parent;
+  }
+
+  public void setParentFlag(boolean bool) {
+    this.is_parent = bool;
   }
 }

@@ -35,7 +35,6 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
-import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiFile;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -76,10 +75,10 @@ public class WikiFormData extends ALAbstractFormData {
   /** */
   private boolean is_new_category;
 
-  private EipTWikiCategory category;
+  private EipTWiki category;
 
   /** カテゴリ一覧 */
-  private List<WikiCategoryResultData> categoryList;
+  private List<WikiResultData> categoryList;
 
   private int uid;
 
@@ -241,7 +240,7 @@ public class WikiFormData extends ALAbstractFormData {
       parentId.setValue(wiki.getParentId());
 
       // カテゴリID
-      category_id.setValue(wiki.getCategoryId());
+      category_id.setValue(wiki.getParentId());
       // 内容
       note.setValue(wiki.getNote());
 
@@ -328,8 +327,8 @@ public class WikiFormData extends ALAbstractFormData {
         }
       } else {
         category =
-          Database.get(EipTWikiCategory.class, Integer
-            .valueOf((int) category_id.getValue()));
+          Database.get(EipTWiki.class, Integer.valueOf((int) category_id
+            .getValue()));
       }
 
       // 新規オブジェクトモデル
@@ -337,9 +336,15 @@ public class WikiFormData extends ALAbstractFormData {
       // トピック名
       wiki.setWikiName(name.getValue());
 
-      wiki.setParentId(Integer.valueOf(postedParentId));
+      // wiki.setParentId(Integer.valueOf(postedParentId));
+
       // カテゴリID
-      wiki.setEipTWikiCategory(category);
+      if (null == category) {
+        wiki.setParentId(WikiUtils.PARENT_WIKI);
+      } else {
+        wiki.setParentId(category.getWikiId());
+      }
+
       // メモ
       wiki.setNote(note.getValue());
       // 作成者
@@ -389,11 +394,13 @@ public class WikiFormData extends ALAbstractFormData {
       TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
 
       // 新規オブジェクトモデル
-      category = Database.create(EipTWikiCategory.class);
+      category = Database.create(EipTWiki.class);
       // カテゴリ名
-      category.setCategoryName(category_name.getValue());
+      category.setWikiName(category_name.getValue());
+      // 親ID
+      category.setParentId(WikiUtils.PARENT_WIKI);
       // ユーザーID
-      category.setTurbineUser(tuser);
+      category.setCreateUser(tuser);
       // 更新ユーザーID
       category.setUpdateUserId(Integer.valueOf(uid));
       // 作成日
@@ -431,8 +438,8 @@ public class WikiFormData extends ALAbstractFormData {
         }
       } else {
         category =
-          Database.get(EipTWikiCategory.class, Integer
-            .valueOf((int) category_id.getValue()));
+          Database.get(EipTWiki.class, Integer.valueOf((int) category_id
+            .getValue()));
       }
 
       // 新規オブジェクトモデル
@@ -440,7 +447,7 @@ public class WikiFormData extends ALAbstractFormData {
       // トピック名
       wiki.setWikiName(name.getValue());
       // カテゴリID
-      wiki.setEipTWikiCategory(category);
+      wiki.setParentId(category.getParentId());
       // メモ
       wiki.setNote(note.getValue());
       TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
@@ -545,7 +552,7 @@ public class WikiFormData extends ALAbstractFormData {
     return name;
   }
 
-  public List<WikiCategoryResultData> getCategoryList() {
+  public List<WikiResultData> getCategoryList() {
     return categoryList;
   }
 

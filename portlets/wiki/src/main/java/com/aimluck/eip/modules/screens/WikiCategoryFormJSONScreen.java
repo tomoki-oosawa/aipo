@@ -27,7 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.wiki.WikiCategoryFormData;
+import com.aimluck.eip.wiki.WikiFormData;
 
 /**
  * WikiカテゴリをJSONデータとして出力するクラスです。 <br />
@@ -48,7 +48,7 @@ public class WikiCategoryFormJSONScreen extends ALJSONScreen {
 
       if (ALEipConstants.MODE_INSERT.equals(mode)) {
         //
-        WikiCategoryFormData formData = new WikiCategoryFormData();
+        WikiFormData formData = new WikiFormData();
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
         } else {
@@ -60,7 +60,7 @@ public class WikiCategoryFormJSONScreen extends ALJSONScreen {
 
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
 
-        WikiCategoryFormData formData = new WikiCategoryFormData();
+        WikiFormData formData = new WikiFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
@@ -71,7 +71,7 @@ public class WikiCategoryFormJSONScreen extends ALJSONScreen {
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
 
-        WikiCategoryFormData formData = new WikiCategoryFormData();
+        WikiFormData formData = new WikiFormData();
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
         } else {

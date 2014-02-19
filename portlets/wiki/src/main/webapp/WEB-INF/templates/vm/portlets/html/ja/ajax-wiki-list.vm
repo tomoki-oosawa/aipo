@@ -114,7 +114,7 @@
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
     #foreach($record in $result.categoryList)
-      <li data-param="$!record.CategoryId" #if("$!result.CategoryId"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"=="$!record.CategoryId") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
+      <li data-param="$!record.Id" #if("$!result.CategoryId"=="$!record.Id") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"=="$!record.Id") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!{record.Name}</a></li>
     #end
     </ul>
   </div>
