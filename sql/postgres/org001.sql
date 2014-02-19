@@ -1542,21 +1542,6 @@ CREATE TABLE EIP_M_GPDB_KUBUN_VALUE
 );
 
 -----------------------------------------------------------------------------
--- EIP_T_WIKI_CATEGORY
------------------------------------------------------------------------------
-
-CREATE TABLE EIP_T_WIKI_CATEGORY
-(
-    CATEGORY_ID INTEGER NOT NULL,
-    USER_ID INTEGER NOT NULL,
-    UPDATE_USER_ID INTEGER NOT NULL,
-    CATEGORY_NAME VARCHAR (64) NOT NULL,
-    CREATE_DATE DATE,
-    UPDATE_DATE TIMESTAMP,
-    PRIMARY KEY(CATEGORY_ID)
-);
-
------------------------------------------------------------------------------
 -- EIP_T_WIKI
 -----------------------------------------------------------------------------
 
@@ -1565,13 +1550,11 @@ CREATE TABLE EIP_T_WIKI
     WIKI_ID INTEGER NOT NULL,
     WIKI_NAME VARCHAR (64) NOT NULL,
     PARENT_ID INTEGER DEFAULT 0,
-    CATEGORY_ID INTEGER,
     NOTE TEXT,
     CREATE_USER_ID INTEGER,
     UPDATE_USER_ID INTEGER,
     CREATE_DATE DATE,
     UPDATE_DATE TIMESTAMP,
-    FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_WIKI_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(WIKI_ID)
 );
 
@@ -1692,7 +1675,6 @@ CREATE SEQUENCE pk_eip_t_gpdb_record_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun_value INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
-CREATE SEQUENCE pk_eip_t_wiki_category INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
 
 -----------------------------------------------------------------------------
@@ -1773,7 +1755,6 @@ ALTER SEQUENCE pk_eip_t_gpdb_record OWNED BY EIP_T_GPDB_RECORD.GPDB_RECORD_ID;
 ALTER SEQUENCE pk_eip_t_gpdb_record_file OWNED BY EIP_T_GPDB_RECORD_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun OWNED BY EIP_M_GPDB_KUBUN.GPDB_KUBUN_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun_value OWNED BY EIP_M_GPDB_KUBUN_VALUE.GPDB_KUBUN_VALUE_ID;
-ALTER SEQUENCE pk_eip_t_wiki_category OWNED BY EIP_T_WIKI_CATEGORY.CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
 ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
 
@@ -2035,6 +2016,3 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
-
-INSERT INTO EIP_T_WIKI_CATEGORY VALUES(1,0,0,'未分類',now(), now());
-SELECT setval('pk_eip_t_wiki_category',1);
