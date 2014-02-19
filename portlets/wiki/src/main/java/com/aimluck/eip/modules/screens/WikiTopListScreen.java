@@ -49,6 +49,7 @@ public class WikiTopListScreen extends ALVelocityScreen {
     try {
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
+      listData.loadCategoryList(rundata, context);
       listData.doViewList(this, rundata, context);
       context.put("isTop", true);
 
