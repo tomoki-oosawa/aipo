@@ -99,8 +99,6 @@ public class WikiSelectData extends
 
   private String baseInternalLink = null;
 
-  private String baseImageLink = null;
-
   /**
    * 
    * @param action
@@ -127,29 +125,13 @@ public class WikiSelectData extends
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
 
-    /** for selected category deleted */
-    if (!validateCategory()) {
-      this.categoryId = "";
-    }
-
-    updateCategoryName();
-
     postList = ALEipUtils.getMyGroups(rundata);
 
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-
-      baseInternalLink =
-        jsLink
-          .getPortletById(portlet.getID())
-          .addQueryData("template", "WikiInternalLinkScreen")
-          .addQueryData("portletid", portlet.getID())
-          .addQueryData("callback", "aipo.wiki.onLoadWikiDetail")
-          .toString();
-
       String baseLink = jsLink.getPortletById(portlet.getID()).toString();
-      baseImageLink = baseLink + "/template/WikiFileThumbnailScreen";
+      baseInternalLink = baseLink + "/template/WikiFileThumbnailScreen";
 
     } catch (TurbineException e) {
       logger.error("init", e);
@@ -172,7 +154,7 @@ public class WikiSelectData extends
       return true;
     }
     for (WikiResultData data : categoryList) {
-      if (data.getId().toString().equals(categoryId)) {
+      if (data.getParentId().toString().equals(categoryId)) {
         return true;
       }
     }
@@ -185,7 +167,7 @@ public class WikiSelectData extends
       return;
     }
     for (WikiResultData data : categoryList) {
-      if (data.getId().toString().equals(categoryId)) {
+      if (data.getParentId().toString().equals(categoryId)) {
         categoryName = data.getName();
         return;
       }
@@ -260,7 +242,7 @@ public class WikiSelectData extends
 
     boolean existCategory = false;
     for (WikiResultData data : categoryList) {
-      if (categoryId.equals(data.getId().toString())) {
+      if (categoryId.equals(data.getParentId().toString())) {
         existCategory = true;
         break;
       }
@@ -308,17 +290,14 @@ public class WikiSelectData extends
 
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
-
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       // 選択したキーワードを指定する．
       String keyword = "%" + target_keyword.getValue() + "%";
 
       Expression exp =
         ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, keyword);
-
       Expression exp2 =
         ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
-
       query.andQualifier(exp.orExp(exp2));
     }
     return buildSelectQueryForFilter(query, rundata, context);
@@ -353,7 +332,7 @@ public class WikiSelectData extends
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
         for (WikiResultData category : categoryList) {
-          if (categoryId.equals(category.getId().toString())) {
+          if (categoryId.equals(category.getParentId().toString())) {
             existCategory = true;
             break;
           }
@@ -476,12 +455,7 @@ public class WikiSelectData extends
     try {
       WikiResultData rd = new WikiResultData();
       rd.initField();
-      String link =
-        baseInternalLink
-          + "&name=${title}&parentId="
-          + String.valueOf(record.getParentId().intValue() == 0 ? record
-            .getWikiId() : record.getParentId());
-      rd.initalizeWikiModel(baseImageLink, link);
+      rd.initalizeWikiModel("", baseInternalLink);
 
       // 登録ユーザ名の設定
       ALEipUser createdUser =
@@ -516,7 +490,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
-      rd.setBaseInternalLink(baseImageLink);
+      rd.setBaseInternalLink(baseInternalLink);
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));

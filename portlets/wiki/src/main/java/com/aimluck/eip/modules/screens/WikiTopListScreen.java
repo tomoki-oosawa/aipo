@@ -25,18 +25,18 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiFormData;
+import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
- * Wikiを処理するクラスです。 <br />
+ * Wikiカテゴリの一覧を処理するクラスです。 <br />
  * 
  */
-public class WikiFormScreen extends ALVelocityScreen {
+public class WikiTopListScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiFormScreen.class.getName());
+    .getLogger(WikiTopListScreen.class.getName());
 
   /**
    * 
@@ -47,23 +47,15 @@ public class WikiFormScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      String page = "";
-      if (rundata.getParameters().containsKey("wikipage")) {
-        page = rundata.getParameters().getString("wikipage");
-      }
-      if ("parent".equals(page)) {
-        context.put("childpage", false);
-      } else {
-        context.put("childpage", true);
-      }
-      WikiFormData formData = new WikiFormData();
-      formData.initField();
-      formData.doViewForm(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
-      setTemplate(rundata, context, layout_template);
+      WikiSelectData listData = new WikiSelectData();
+      listData.initField();
+      listData.doViewList(this, rundata, context);
+      context.put("isTop", true);
 
-    } catch (Exception e) {
-      logger.error("WikiFormScreen.doOutput", e);
+      String layout_template = "portlets/html/ja/ajax-wiki-top-list.vm";
+      setTemplate(rundata, context, layout_template);
+    } catch (Exception ex) {
+      logger.error("[WikiTopListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
