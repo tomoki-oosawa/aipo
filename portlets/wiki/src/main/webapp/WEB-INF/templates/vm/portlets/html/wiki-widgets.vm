@@ -18,16 +18,16 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
-#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiCategoryListScreen')))
+#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiTopListScreen')))
+
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
     <div class="auiWidget clearfix widgetButton">
-        <a title="$l10n.WIKI_CREATE" href="javascript:void(0)" #if($!isCategory) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_CREATE</a>
+        <a title="$l10n.WIKI_CREATE" href="javascript:void(0)" #if($!isTop) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_CREATE</a>
     </div>
     <div id="subNavigation">
         <div class="auiWidget clearfix">
             <ul>
-				<li #if ("$!result.CategoryId" == "" || "$!result.CategoryId" == "0") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filtertype","category").addQueryData("filter","0").addQueryData("reset_params","true"))','$!portlet.ID');">$l10n.WIKI_ALL_CATEGORY</a></li>
 				#foreach($record in $!result.CategoryList )
 				<li #if ("$!result.CategoryId" == "$!record.Id.toString()") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen").addQueryData("filtertype","category").addQueryData("filter",$!record.Id).addQueryData("reset_params","true"))','$!portlet.ID');">$!{record.Name}</a></li>
 				#end

@@ -179,22 +179,6 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
 
-
------------------------------------------------------------------------------
--- EIP_T_WIKI_CATEGORY
------------------------------------------------------------------------------
-
-CREATE TABLE EIP_T_WIKI_CATEGORY
-(
-    CATEGORY_ID INTEGER NOT NULL,
-    USER_ID INTEGER NOT NULL,
-    UPDATE_USER_ID INTEGER NOT NULL,
-    CATEGORY_NAME VARCHAR (64) NOT NULL,
-    CREATE_DATE DATE,
-    UPDATE_DATE TIMESTAMP,
-    PRIMARY KEY(CATEGORY_ID)
-);
-
 -----------------------------------------------------------------------------
 -- EIP_T_WIKI
 -----------------------------------------------------------------------------

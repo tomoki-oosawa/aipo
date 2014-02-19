@@ -61,16 +61,17 @@ public class WikiFormData extends ALAbstractFormData {
   /** wiki名 */
   private ALStringField name;
 
+  /** カテゴリ ID */
   private ALNumberField parentId;
 
-  /** カテゴリ ID */
-  private ALNumberField category_id;
-
   /** カテゴリ名 */
-  private ALStringField category_name;
+  private ALStringField parent_name;
 
   /** メモ */
   private ALStringField note;
+
+  /** 親ページ判断 */
+  private boolean is_child;
 
   /** */
   private boolean is_new_category;
@@ -115,7 +116,7 @@ public class WikiFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    is_new_category = rundata.getParameters().getBoolean("is_new_category");
+    is_child = rundata.getParameters().getBoolean("is_child");
     uid = ALEipUtils.getUserId(rundata);
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
@@ -145,15 +146,12 @@ public class WikiFormData extends ALAbstractFormData {
     name.setFieldName(getl10n("WIKI_TITLE"));
     name.setTrim(true);
 
-    parentId = new ALNumberField();
-    parentId.setValue(0);
-
     // カテゴリID
-    category_id = new ALNumberField();
-    category_id.setFieldName(getl10n("WIKI_CATEGORY"));
+    parentId = new ALNumberField();
+    parentId.setFieldName(getl10n("WIKI_CATEGORY"));
     // カテゴリ
-    category_name = new ALStringField();
-    category_name.setFieldName(getl10n("WIKI_CATEGORY_NAME"));
+    parent_name = new ALStringField();
+    parent_name.setFieldName(getl10n("WIKI_CATEGORY_NAME"));
     // メモ
     note = new ALStringField();
     note.setFieldName(getl10n("WIKI_NOTE"));
@@ -174,11 +172,11 @@ public class WikiFormData extends ALAbstractFormData {
     note.setNotNull(true);
     // メモの文字数制限
     note.limitMaxLength(10000);
-    if (is_new_category) {
+    if (is_child) {
       // カテゴリ名必須項目
-      category_name.setNotNull(true);
+      parent_name.setNotNull(true);
       // カテゴリ名文字数制限
-      category_name.limitMaxLength(50);
+      parent_name.limitMaxLength(50);
     }
   }
 
@@ -195,9 +193,9 @@ public class WikiFormData extends ALAbstractFormData {
     name.validate(msgList);
     // メモ
     note.validate(msgList);
-    if (is_new_category) {
+    if (is_child) {
       // カテゴリ名
-      category_name.validate(msgList);
+      parent_name.validate(msgList);
     }
 
     boolean duplication = false;
@@ -205,8 +203,7 @@ public class WikiFormData extends ALAbstractFormData {
       && !StringUtils.isEmpty(entityId)
       && StringUtils.isNumeric(entityId)) {
       duplication =
-        WikiUtils.isTitleDuplicate(name.getValue(), Integer
-          .parseInt(postedParentId), Integer.parseInt(entityId));
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(entityId));
     } else {
       duplication =
         WikiUtils.isTitleDuplicate(name.getValue(), Integer
@@ -238,9 +235,6 @@ public class WikiFormData extends ALAbstractFormData {
       name.setValue(wiki.getWikiName());
 
       parentId.setValue(wiki.getParentId());
-
-      // カテゴリID
-      category_id.setValue(wiki.getParentId());
       // 内容
       note.setValue(wiki.getNote());
 
@@ -320,31 +314,17 @@ public class WikiFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      if (is_new_category) {
-        // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context, msgList)) {
-          return false;
-        }
-      } else {
-        category =
-          Database.get(EipTWiki.class, Integer.valueOf((int) category_id
-            .getValue()));
-      }
 
       // 新規オブジェクトモデル
       EipTWiki wiki = Database.create(EipTWiki.class);
       // トピック名
       wiki.setWikiName(name.getValue());
-
-      // wiki.setParentId(Integer.valueOf(postedParentId));
-
-      // カテゴリID
+      // 親ID
       if (null == category) {
         wiki.setParentId(WikiUtils.PARENT_WIKI);
       } else {
         wiki.setParentId(category.getWikiId());
       }
-
       // メモ
       wiki.setNote(note.getValue());
       // 作成者
@@ -395,8 +375,6 @@ public class WikiFormData extends ALAbstractFormData {
 
       // 新規オブジェクトモデル
       category = Database.create(EipTWiki.class);
-      // カテゴリ名
-      category.setWikiName(category_name.getValue());
       // 親ID
       category.setParentId(WikiUtils.PARENT_WIKI);
       // ユーザーID
@@ -431,23 +409,11 @@ public class WikiFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
-      if (is_new_category) {
-        // カテゴリの登録処理
-        if (!insertCategoryData(rundata, context, msgList)) {
-          return false;
-        }
-      } else {
-        category =
-          Database.get(EipTWiki.class, Integer.valueOf((int) category_id
-            .getValue()));
-      }
 
       // 新規オブジェクトモデル
       EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
       // トピック名
       wiki.setWikiName(name.getValue());
-      // カテゴリID
-      wiki.setParentId(category.getParentId());
       // メモ
       wiki.setNote(note.getValue());
       TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
@@ -517,12 +483,12 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
-   * カテゴリIDを取得します。 <BR>
+   * 子ページかどうか判断します。 <BR>
    * 
    * @return
    */
-  public ALNumberField getCategoryId() {
-    return category_id;
+  public boolean getChild() {
+    return is_child;
   }
 
   /**
@@ -530,8 +496,8 @@ public class WikiFormData extends ALAbstractFormData {
    * 
    * @return
    */
-  public ALStringField getCategoryName() {
-    return category_name;
+  public ALStringField getParentName() {
+    return parent_name;
   }
 
   /**
@@ -552,10 +518,6 @@ public class WikiFormData extends ALAbstractFormData {
     return name;
   }
 
-  public List<WikiResultData> getCategoryList() {
-    return categoryList;
-  }
-
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
     return fileuploadList;
   }
@@ -566,6 +528,16 @@ public class WikiFormData extends ALAbstractFormData {
 
   public void setParentWiki(EipTWiki wiki) {
     this.parentWiki = wiki;
+  }
+
+  public String getParentIdString() {
+    if (null != parentWiki
+      && parentWiki.getParentId() != null
+      && parentWiki.getParentId().intValue() != 0) {
+      return String.valueOf(parentWiki.getParentId());
+    } else {
+      return "";
+    }
   }
 
   public String getParentWikiIdString() {
