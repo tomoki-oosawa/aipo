@@ -60,6 +60,15 @@ public class WikiResultData implements ALData {
   /** カテゴリ名 */
   private ALStringField category_name;
 
+  /** 親 ID */
+  private ALNumberField parent_id;
+
+  /** 親wiki名 */
+  private ALStringField parent_name;
+
+  /** 親フラグ */
+  private boolean is_parent;
+
   /** 公開/非公開フラグ */
   private boolean is_public;
 
@@ -341,5 +350,29 @@ public class WikiResultData implements ALData {
 
   public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
+  }
+
+  public ALNumberField getParentId() {
+    return parent_id;
+  }
+
+  public void setParentId(long i) {
+    this.parent_id.setValue(i);
+  }
+
+  public ALStringField getParentName() {
+    return parent_name;
+  }
+
+  public void setParentName(String str) {
+    this.parent_name.setValue(str);
+  }
+
+  public boolean isParent() {
+    return is_parent;
+  }
+
+  public void setParentFlag(boolean bool) {
+    this.is_parent = bool;
   }
 }
