@@ -138,10 +138,9 @@ public class WikiSelectData extends
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-      baseInternalLink =
-        jsLink.getPortletById(portlet.getID()).addQueryData(
-          "template",
-          "WikiInternalLinkScreen").toString();
+      String baseLink = jsLink.getPortletById(portlet.getID()).toString();
+      baseInternalLink = baseLink + "/template/WikiFileThumbnailScreen";
+
     } catch (TurbineException e) {
       logger.error("init", e);
     }
@@ -499,6 +498,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setBaseInternalLink(baseInternalLink);
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));

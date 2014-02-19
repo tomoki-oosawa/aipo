@@ -87,6 +87,9 @@ public class WikiResultData implements ALData {
 
   private WikiModel model;
 
+  /** URL */
+  private ALStringField baseInternalLink;
+
   /**
    *
    *
@@ -102,6 +105,7 @@ public class WikiResultData implements ALData {
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
+    baseInternalLink = new ALStringField();
 
     is_public = true;
     new_wiki = false;
@@ -211,7 +215,8 @@ public class WikiResultData implements ALData {
             + "' title='"
             + attachmentfile.getFileName()
             + "' src='"
-            + "template/WikiFileThumbnailScreen?entityid="
+            + baseInternalLink
+            + "?entityid="
             + id
             + "&attachmentindex="
             + attachmentfile.getFileId()
@@ -300,6 +305,10 @@ public class WikiResultData implements ALData {
 
   public void setUpdateUser(String str) {
     update_user.setValue(str);
+  }
+
+  public void setBaseInternalLink(String str) {
+    baseInternalLink.setValue(str);
   }
 
   /**
