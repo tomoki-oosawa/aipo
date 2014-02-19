@@ -41,7 +41,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
-import com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -419,7 +418,7 @@ public class WikiSelectData extends
       rd.initField();
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
-      rd.setCategoryId(record.getCategoryId().longValue());
+      // rd.setCategoryId(record.getCategoryId().longValue());
       rd.setUpdateUser(ALEipUtils
         .getALEipUser(record.getUpdateUserId())
         .getAliasName()
@@ -483,10 +482,10 @@ public class WikiSelectData extends
       rd.setUpdateUser(updatedUserName);
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
-      rd.setCategoryId(record.getCategoryId().longValue());
-      rd.setCategoryName(WikiUtils
-        .getEipTWikiCategory(record.getCategoryId())
-        .getCategoryName());
+      // rd.setCategoryId(record.getCategoryId().longValue());
+      // rd.setCategoryName(WikiUtils
+      // .getEipTWikiCategory(record.getCategoryId())
+      // .getCategoryName());
       rd.setNote(record.getNote());
       rd.setCreateUser(ALEipUtils
         .getALEipUser(record.getCreateUserId())
@@ -517,7 +516,7 @@ public class WikiSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
+    // map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
     map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
     map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);

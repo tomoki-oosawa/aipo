@@ -6,9 +6,7 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
  * regenerated. If you need to make any customizations, please use subclass.
  */
 public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
-
-  public static final String CATEGORY_ID_PROPERTY = "categoryId";
-
+  // public static final String CATEGORY_ID_PROPERTY = "categoryId";
   public static final String CREATE_DATE_PROPERTY = "createDate";
 
   public static final String CREATE_USER_ID_PROPERTY = "createUserId";
@@ -25,19 +23,18 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
 
   public static final String CREATE_USER_PROPERTY = "createUser";
 
-  public static final String EIP_TWIKI_CATEGORY_PROPERTY = "eipTWikiCategory";
-
+  // public static final String EIP_TWIKI_CATEGORY_PROPERTY =
+  // "eipTWikiCategory";
   public static final String UPDATE_USER_PROPERTY = "updateUser";
 
   public static final String WIKI_ID_PK_COLUMN = "WIKI_ID";
 
-  public void setCategoryId(Integer categoryId) {
-    writeProperty("categoryId", categoryId);
-  }
-
-  public Integer getCategoryId() {
-    return (Integer) readProperty("categoryId");
-  }
+  // public void setCategoryId(Integer categoryId) {
+  // writeProperty("categoryId", categoryId);
+  // }
+  // public Integer getCategoryId() {
+  // return (Integer)readProperty("categoryId");
+  // }
 
   public void setCreateDate(java.util.Date createDate) {
     writeProperty("createDate", createDate);
@@ -104,14 +101,17 @@ public class _EipTWiki extends org.apache.cayenne.CayenneDataObject {
     return (com.aimluck.eip.cayenne.om.security.TurbineUser) readProperty("createUser");
   }
 
-  public void setEipTWikiCategory(
-      com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory eipTWikiCategory) {
-    setToOneTarget("eipTWikiCategory", eipTWikiCategory, true);
-  }
-
-  public com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory getEipTWikiCategory() {
-    return (com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory) readProperty("eipTWikiCategory");
-  }
+  // public void
+  // setEipTWikiCategory(com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory
+  // eipTWikiCategory) {
+  // setToOneTarget("eipTWikiCategory", eipTWikiCategory, true);
+  // }
+  //
+  // public com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory
+  // getEipTWikiCategory() {
+  // return
+  // (com.aimluck.eip.cayenne.om.portlet.EipTWikiCategory)readProperty("eipTWikiCategory");
+  // }
 
   public void setUpdateUser(
       com.aimluck.eip.cayenne.om.security.TurbineUser updateUser) {
