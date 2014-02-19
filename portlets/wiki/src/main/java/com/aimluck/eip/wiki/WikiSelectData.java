@@ -69,7 +69,7 @@ public class WikiSelectData extends
     .getLogger(WikiSelectData.class.getName());
 
   /** カテゴリ一覧 */
-  private List<WikiCategoryResultData> categoryList;
+  private List<WikiResultData> categoryList;
 
   /** 部署一覧 */
   private List<ALEipGroup> postList;
@@ -160,8 +160,8 @@ public class WikiSelectData extends
     if (StringUtils.isEmpty(categoryId)) {
       return true;
     }
-    for (WikiCategoryResultData data : categoryList) {
-      if (data.getCategoryId().toString().equals(categoryId)) {
+    for (WikiResultData data : categoryList) {
+      if (data.getParentId().toString().equals(categoryId)) {
         return true;
       }
     }
@@ -173,9 +173,9 @@ public class WikiSelectData extends
     if (categoryList == null) {
       return;
     }
-    for (WikiCategoryResultData data : categoryList) {
-      if (data.getCategoryId().toString().equals(categoryId)) {
-        categoryName = data.getCategoryName();
+    for (WikiResultData data : categoryList) {
+      if (data.getParentId().toString().equals(categoryId)) {
+        categoryName = data.getName();
         return;
       }
     }
@@ -248,8 +248,8 @@ public class WikiSelectData extends
     this.filterType = filterType;
 
     boolean existCategory = false;
-    for (WikiCategoryResultData data : categoryList) {
-      if (categoryId.equals(data.getCategoryId().toString())) {
+    for (WikiResultData data : categoryList) {
+      if (categoryId.equals(data.getParentId().toString())) {
         existCategory = true;
         break;
       }
@@ -338,8 +338,8 @@ public class WikiSelectData extends
       }
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
-        for (WikiCategoryResultData category : categoryList) {
-          if (categoryId.equals(category.getCategoryId().toString())) {
+        for (WikiResultData category : categoryList) {
+          if (categoryId.equals(category.getParentId().toString())) {
             existCategory = true;
             break;
           }
@@ -531,7 +531,7 @@ public class WikiSelectData extends
     return categoryName;
   }
 
-  public List<WikiCategoryResultData> getCategoryList() {
+  public List<WikiResultData> getCategoryList() {
     return categoryList;
   }
 

@@ -78,6 +78,9 @@ public class WikiUtils {
 
   public static final String WIKI_PORTLET_NAME = "Wiki";
 
+  /** トップレベルwiki */
+  public static final int PARENT_WIKI = 0;
+
   /**
    * Wikiカテゴリ オブジェクトモデルを取得します。 <BR>
    * 
@@ -85,8 +88,8 @@ public class WikiUtils {
    * @param context
    * @return
    */
-  public static EipTWikiCategory getEipTWikiCategory(RunData rundata,
-      Context context) throws ALPageNotFoundException, ALDBErrorException {
+  public static EipTWiki getEipTWikiCategory(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
     String categoryid =
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
@@ -96,8 +99,7 @@ public class WikiUtils {
       throw new ALPageNotFoundException();
     }
 
-    EipTWikiCategory category =
-      getEipTWikiCategory(Integer.parseInt(categoryid));
+    EipTWiki category = getEipTWikiCategory(Integer.parseInt(categoryid));
 
     if (null == category) {
       throw new ALPageNotFoundException();
@@ -113,9 +115,13 @@ public class WikiUtils {
    * @param context
    * @return
    */
-  public static EipTWikiCategory getEipTWikiCategory(Integer integer) {
+  public static EipTWiki getEipTWikiCategory(Integer integer) {
     try {
-      return Database.get(EipTWikiCategory.class, integer);
+      SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+      return query
+        .setQualifier(
+          ExpressionFactory.matchDbExp(EipTWiki.PARENT_ID_PROPERTY, integer))
+        .fetchSingle();
     } catch (Exception ex) {
       logger.error("wiki", ex);
       return null;
@@ -135,7 +141,7 @@ public class WikiUtils {
       SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
       query.setQualifier(ExpressionFactory.matchDbExp(
         EipTWiki.PARENT_ID_PROPERTY,
-        0));
+        PARENT_WIKI));
 
       List<EipTWiki> aList =
         query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY).fetchList();
@@ -323,11 +329,11 @@ public class WikiUtils {
     }
   }
 
-  public static int getEipTWikiCategoryWikiCount(EipTWikiCategory category) {
+  public static int getEipTWikiCategoryWikiCount(EipTWiki category) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     query.setQualifier(ExpressionFactory.matchDbExp(
-      EipTWiki.EIP_TWIKI_CATEGORY_PROPERTY,
-      category));
+      EipTWiki.PARENT_ID_PROPERTY,
+      category.getWikiId()));
     return query.getCount();
 
   }

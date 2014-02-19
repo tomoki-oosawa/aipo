@@ -54,11 +54,14 @@ public class WikiResultData implements ALData {
   /** トピック名 */
   private ALStringField name;
 
-  /** カテゴリ ID */
-  private ALNumberField category_id;
+  /** 親 ID */
+  private ALNumberField parent_id;
 
-  /** カテゴリ名 */
-  private ALStringField category_name;
+  /** 親wiki名 */
+  private ALStringField parent_name;
+
+  /** 親フラグ */
+  private boolean is_parent;
 
   /** 公開/非公開フラグ */
   private boolean is_public;
@@ -98,8 +101,8 @@ public class WikiResultData implements ALData {
   public void initField() {
     id = new ALNumberField();
     name = new ALStringField();
-    category_id = new ALNumberField();
-    category_name = new ALStringField();
+    parent_id = new ALNumberField();
+    parent_name = new ALStringField();
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
@@ -145,38 +148,6 @@ public class WikiResultData implements ALData {
    */
   public void setName(String string) {
     name.setValue(string);
-  }
-
-  /**
-   * @param i
-   */
-  public void setCategoryId(long i) {
-    category_id.setValue(i);
-  }
-
-  /**
-   * @param string
-   */
-  public void setCategoryName(String string) {
-    category_name.setValue(string);
-  }
-
-  /**
-   * @return
-   */
-  public ALNumberField getCategoryId() {
-    return category_id;
-  }
-
-  /**
-   * @return
-   */
-  public String getCategoryName() {
-    return category_name.toString();
-  }
-
-  public String getCategoryNameHtml() {
-    return ALCommonUtils.replaceToAutoCR(category_name.toString());
   }
 
   /**
@@ -341,5 +312,33 @@ public class WikiResultData implements ALData {
 
   public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
+  }
+
+  public ALNumberField getParentId() {
+    return parent_id;
+  }
+
+  public void setParentId(long i) {
+    this.parent_id.setValue(i);
+  }
+
+  public ALStringField getParentName() {
+    return parent_name;
+  }
+
+  public String getParentNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(parent_name.toString());
+  }
+
+  public void setParentName(String str) {
+    this.parent_name.setValue(str);
+  }
+
+  public boolean isParent() {
+    return is_parent;
+  }
+
+  public void setParentFlag(boolean bool) {
+    this.is_parent = bool;
   }
 }
