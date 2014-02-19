@@ -318,11 +318,9 @@ public class WikiUtils {
     String id = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     try {
       if (StringUtils.isEmpty(id)) {
-        throw new ALPageNotFoundException();
+        return null;
       }
       return Database.get(EipTWiki.class, Integer.valueOf(id));
-    } catch (ALPageNotFoundException pageNotFound) {
-      throw pageNotFound;
     } catch (Exception e) {
       logger.error("[WikiUtils]", e);
       throw new ALDBErrorException();
@@ -370,6 +368,15 @@ public class WikiUtils {
     Expression parentExp =
       ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
     query.setQualifier(nameExp.andExp(parentExp));
+    query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY);
+    return query.fetchSingle();
+  }
+
+  public static EipTWiki getEipTWikiOne() {
+    SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    Expression parentExp =
+      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, PARENT_WIKI);
+    query.setQualifier(parentExp);
     query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY);
     return query.fetchSingle();
   }

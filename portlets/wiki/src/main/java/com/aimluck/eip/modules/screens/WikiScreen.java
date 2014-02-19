@@ -64,15 +64,15 @@ public class WikiScreen extends ALVelocityScreen {
       ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
         .getString(ALEipConstants.LIST_FILTER_TYPE));
 
-      context.put("ajax_onloadimage", "true");
-
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
       listData.loadCategoryList(rundata, context);
-      listData.setRowsNum(Integer.parseInt(portlet
-        .getPortletConfig()
-        .getInitParameter("p1a-rows")));
-      listData.doViewList(this, rundata, context);
+      // listData.setRowsNum(Integer.parseInt(portlet
+      // .getPortletConfig()
+      // .getInitParameter("p1a-rows")));
+      if (!listData.doViewDetail(this, rundata, context)) {
+        listData.doViewDetailOne(this, rundata, context);
+      }
 
       String layout_template = "portlets/html/ja/ajax-wiki.vm";
       setTemplate(rundata, context, layout_template);

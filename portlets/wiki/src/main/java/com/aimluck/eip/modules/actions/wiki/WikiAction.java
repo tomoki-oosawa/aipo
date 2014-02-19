@@ -60,10 +60,12 @@ public class WikiAction extends ALBaseAction {
     listData.loadCategoryList(rundata, context);
     listData.initField();
     listData.setFiltersFromPSML(portlet, context, rundata);
-    listData.setRowsNum(Integer.parseInt(portlet
-      .getPortletConfig()
-      .getInitParameter("p1a-rows")));
-    listData.doViewList(this, rundata, context);
+    // listData.setRowsNum(Integer.parseInt(portlet
+    // .getPortletConfig()
+    // .getInitParameter("p1a-rows")));
+    if (!listData.doViewDetail(this, rundata, context)) {
+      listData.doViewDetailOne(this, rundata, context);
+    }
     setTemplate(rundata, "wiki");
   }
 

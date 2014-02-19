@@ -44,15 +44,18 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiFileUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -611,4 +614,41 @@ public class WikiSelectData extends
       return "";
     }
   }
+
+  public void doViewDetailOne(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
+      action.setMode(ALEipConstants.MODE_DETAIL);
+      EipTWiki obj = WikiUtils.getEipTWikiOne();
+      if (obj != null) {
+        data = getResultDataDetail(obj);
+      }
+      action.setResultData(this);
+      action.putData(rundata, context);
+
+      if (null != data) {
+
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
+        ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
+          .valueOf(obj.getWikiId()));
+        rundata.getParameters().setString("filtertype", "category");
+        rundata.getParameters().setString(
+          "filter",
+          String.valueOf(obj.getWikiId()));
+        setCategory(rundata, context);
+        parseFilterMap(rundata, context);
+      }
+
+    } catch (ALPageNotFoundException ignore) {
+    } catch (ALDBErrorException e) {
+      logger.error("doViewDetailOne", e);
+    } catch (ALPermissionException e) {
+      logger.error("doViewDetailOne", e);
+    }
+  }
+
 }
