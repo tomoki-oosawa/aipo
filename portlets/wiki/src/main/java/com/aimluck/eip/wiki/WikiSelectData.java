@@ -167,7 +167,7 @@ public class WikiSelectData extends
       return;
     }
     for (WikiResultData data : categoryList) {
-      if (data.getParentId().toString().equals(categoryId)) {
+      if (data.getId().toString().equals(categoryId)) {
         categoryName = data.getName();
         return;
       }
