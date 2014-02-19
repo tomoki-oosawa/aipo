@@ -4292,3 +4292,15 @@ a:hover .auiWFicon [class^="icon-"] {
     opacity: 1;
   }
 }
+
+/***************************************************
+	externallink
+--------------------------------------------------*/
+.externallink:after {
+  display: inline-block;
+  font-size: larger;
+  font-family: 'FontAwesome';
+  content: "\f14d";
+  color: #333333;
+  margin-left: 3px;
+}

@@ -18,11 +18,12 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
-#set ($parentUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiParentListScreen')))
+#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiTopListScreen')))
+
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
     <div class="auiWidget clearfix widgetButton">
-        <a title="$l10n.WIKI_CREATE" href="javascript:void(0)" #if($!isCategory) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_CREATE</a>
+        <a title="$l10n.WIKI_CREATE" href="javascript:void(0)" #if($!isTop) class="auiButton"#else class="auiButtonAction"#end onclick="aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);">$l10n.WIKI_CREATE</a>
     </div>
     <div id="subNavigation">
         <div class="auiWidget clearfix">
@@ -32,7 +33,7 @@
 				#end
             </ul>
             <div style="margin:0.5em 0;">
-                <a href="javascript:void(0)" onclick="aipo.viewPage('$parentUrl', '$!portlet.ID')">${l10n.WIKI_MANAGEMENT}</a>
+                <a href="javascript:void(0)" onclick="aipo.viewPage('$categoryUrl', '$!portlet.ID')">${l10n.WIKI_MANAGEMENT}</a>
             </div>
         </div>
     </div>
