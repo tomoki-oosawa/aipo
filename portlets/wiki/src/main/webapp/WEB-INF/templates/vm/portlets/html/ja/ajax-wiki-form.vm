@@ -42,9 +42,12 @@
 		<input name="is_child" type="hidden" value="$!result.Child"/>
         #if("$!mode"=="new_form")
         	<input type="hidden" name="mode" value="insert" />
+			<input name="parentId" type="hidden" value="$!result.getParentWikiIdString()"/>
         #else
         	<input type="hidden" name="mode" value="update" />
-        #end
+			<input name="parentId" type="hidden" value="$!result.getParentId()"/>
+		#end
+		
 		#ALtableheaderWide()
 		#if($!childpage)
 		<tr>
@@ -69,16 +72,20 @@
 		#end
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
-            #ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
+			#if(!$result.isChildForm())
+				#ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
+			#else
+				#ALtditem("#ALtextfieldw100('name' $!result.getDestWikiName() 50 'active')")
+			#end
         </tr>
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
             #ALtditemheader()
             <div class="mb5">
                                 <a onclick="aipo.wiki.bold()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-bold" ></i></span></a>
-                                <a onclick="aipo.wiki.italic()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-italic"�?</i></span></a>
-                                <a onclick="aipo.wiki.underline()" href="javascript:void(0);" ><span class="auiButtonIcon"><i class="icon-underline"�?</i></span></a>
-                                <a onclick="aipo.wiki.strikethrough()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-strikethrough"�?</i></span></a>
+                                <a onclick="aipo.wiki.italic()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-italic"　></i></span></a>
+                                <a onclick="aipo.wiki.underline()" href="javascript:void(0);" ><span class="auiButtonIcon"><i class="icon-underline"　></i></span></a>
+                                <a onclick="aipo.wiki.strikethrough()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-strikethrough"　></i></span></a>
                                 <a onclick="aipo.wiki.header()" href="javascript:void(0);"><span class="auiButtonIcon">h1</span></a>
                                 <a onclick="aipo.wiki.headerTwo()" href="javascript:void(0);"><span class="auiButtonIcon">h2</span></a>
                                 <a onclick="aipo.wiki.headerThree()" href="javascript:void(0);"><span class="auiButtonIcon">h3</span></a>
@@ -90,7 +97,7 @@
 								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_FORMATTED</span></a>
 								<a onclick="aipo.wiki.hr()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_HR</span></a>
 			</div>
-            
+
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
         </tr>
 		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>

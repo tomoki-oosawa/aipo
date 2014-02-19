@@ -320,7 +320,10 @@ public class WikiFormData extends ALAbstractFormData {
       // トピック名
       wiki.setWikiName(name.getValue());
       // 親ID
-      if (null == category) {
+
+      if (StringUtils.isNotEmpty(postedParentId)) {
+        wiki.setParentId(Integer.valueOf(postedParentId));
+      } else if (null == category) {
         wiki.setParentId(WikiUtils.PARENT_WIKI);
       } else {
         wiki.setParentId(category.getWikiId());

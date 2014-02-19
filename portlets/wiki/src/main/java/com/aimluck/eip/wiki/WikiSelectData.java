@@ -102,6 +102,8 @@ public class WikiSelectData extends
 
   private String baseInternalLink = null;
 
+  private String baseImageLink = null;
+
   /**
    * 
    * @param action
@@ -133,8 +135,17 @@ public class WikiSelectData extends
     try {
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+
+      baseInternalLink =
+        jsLink
+          .getPortletById(portlet.getID())
+          .addQueryData("template", "WikiInternalLinkScreen")
+          .addQueryData("portletid", portlet.getID())
+          .addQueryData("callback", "aipo.wiki.onLoadWikiDetail")
+          .toString();
+
       String baseLink = jsLink.getPortletById(portlet.getID()).toString();
-      baseInternalLink = baseLink + "/template/WikiFileThumbnailScreen";
+      baseImageLink = baseLink + "/template/WikiFileThumbnailScreen";
 
     } catch (TurbineException e) {
       logger.error("init", e);
@@ -464,7 +475,12 @@ public class WikiSelectData extends
     try {
       WikiResultData rd = new WikiResultData();
       rd.initField();
-      rd.initalizeWikiModel("", baseInternalLink);
+      String link =
+        baseInternalLink
+          + "&name=${title}&parentId="
+          + String.valueOf(record.getParentId().intValue() == 0 ? record
+            .getWikiId() : record.getParentId());
+      rd.initalizeWikiModel(baseImageLink, link);
 
       // 登録ユーザ名の設定
       ALEipUser createdUser =
@@ -499,7 +515,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
-      rd.setBaseInternalLink(baseInternalLink);
+      rd.setBaseInternalLink(baseImageLink);
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));
