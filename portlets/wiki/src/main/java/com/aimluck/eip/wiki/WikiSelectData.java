@@ -139,9 +139,12 @@ public class WikiSelectData extends
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       baseInternalLink =
-        jsLink.getPortletById(portlet.getID()).addQueryData(
-          "template",
-          "WikiInternalLinkScreen").toString();
+        jsLink
+          .getPortletById(portlet.getID())
+          .addQueryData("template", "WikiInternalLinkScreen")
+          .addQueryData("portletid", portlet.getID())
+          .addQueryData("callback", "aipo.wiki.onLoadWikiDetail")
+          .toString();
     } catch (TurbineException e) {
       logger.error("init", e);
     }
@@ -299,14 +302,23 @@ public class WikiSelectData extends
 
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+
+    Expression baseExp =
+      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, Integer
+        .valueOf(0));
+
+    query.setQualifier(baseExp);
+
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       // 選択したキーワードを指定する．
       String keyword = "%" + target_keyword.getValue() + "%";
 
       Expression exp =
         ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, keyword);
+
       Expression exp2 =
         ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
+
       query.andQualifier(exp.orExp(exp2));
     }
     return buildSelectQueryForFilter(query, rundata, context);
@@ -464,7 +476,12 @@ public class WikiSelectData extends
     try {
       WikiResultData rd = new WikiResultData();
       rd.initField();
-      rd.initalizeWikiModel("", baseInternalLink);
+      String link =
+        baseInternalLink
+          + "&name=${title}&parentId="
+          + String.valueOf(record.getParentId().intValue() == 0 ? record
+            .getWikiId() : record.getParentId());
+      rd.initalizeWikiModel("", link);
 
       // 登録ユーザ名の設定
       ALEipUser createdUser =

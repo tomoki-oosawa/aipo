@@ -137,7 +137,7 @@ INSERT INTO eip_m_gpdb_kubun_value VALUES (47, 1, '沖縄県', 47, now(), now())
 CREATE TABLE `eip_t_wiki` (
   `wiki_id` int(11) NOT NULL AUTO_INCREMENT,
   `wiki_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
-  `parent_id` int(11) DEFAULT 0,
+  `parent_id` int(11) DEFAULT 0 NOT NULL,
   `category_id` int(11) DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
   `create_user_id` int(11) DEFAULT NULL,

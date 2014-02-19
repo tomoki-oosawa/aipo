@@ -54,6 +54,8 @@ public class WikiResultData implements ALData {
   /** トピック名 */
   private ALStringField name;
 
+  private ALNumberField parentId;
+
   /** カテゴリ ID */
   private ALNumberField category_id;
 
@@ -95,6 +97,7 @@ public class WikiResultData implements ALData {
   public void initField() {
     id = new ALNumberField();
     name = new ALStringField();
+    parentId = new ALNumberField();
     category_id = new ALNumberField();
     category_name = new ALStringField();
     create_user = new ALStringField();

@@ -52,29 +52,32 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     String name = rundata.getParameters().getString("name", "");
-    String parentId =
-      rundata.getParameters().getString(ALEipConstants.ENTITY_ID, "");
+    String parentId = rundata.getParameters().getString("parentId", "");
 
     if (StringUtils.isEmpty(name) || StringUtils.isEmpty(parentId)) {
       throw new ALPageNotFoundException("some parameter is empty");
     }
 
     try {
-      EipTWiki wiki = WikiUtils.getEipTWiki(name, parentId);
-      if (null == wiki) {
+      EipTWiki destWiki = WikiUtils.getEipTWiki(name, parentId);
+      EipTWiki parentWiki = WikiUtils.getEipTWiki(Integer.valueOf(parentId));
+      if (null == destWiki) {
+        ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
         WikiFormData formData = new WikiFormData();
         formData.initField();
-        formData.setParentWiki(wiki);
+        formData.setParentWiki(parentWiki);
+        formData.setDestWikiName(name);
         formData.loadCategoryList(rundata, context);
         formData.doViewForm(this, rundata, context);
         String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
         setTemplate(rundata, context, layout_template);
       } else {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
-          .valueOf(wiki.getWikiId()));
+          .valueOf(destWiki.getWikiId()));
         WikiSelectData detailData = new WikiSelectData();
         detailData.initField();
         detailData.loadCategoryList(rundata, context);
+        detailData.setParentWiki(parentWiki);
         detailData.doViewDetail(this, rundata, context);
         String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
         setTemplate(rundata, context, layout_template);
