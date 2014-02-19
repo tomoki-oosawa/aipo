@@ -47,8 +47,8 @@
 		 *##else#*
 		 	*##set($break=false)#*
 		 	*##foreach($record in $result.CategoryList)#if(!$break)#*
-		 		*##if ($!result.issetFilter("category",$!{record.CategoryId}))#*
-					*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.wiki.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></a>#*
+		 		*##if ($!result.issetFilter("category",$!{record.Id}))#*
+					*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.wiki.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.Name</span></a>#*
 		 			*##set($break=true)#*
 		 		*##end#*
 		 	*##end#end#*
@@ -77,7 +77,7 @@
 		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
 			<li #if (!$!result.issetFilter("category")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("category")) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
 			#foreach( $record in $result.CategoryList )
-			<li #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end  data-param="$!{record.CategoryId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.CategoryId})) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!record.CategoryName</a></li>
+			<li #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end  data-param="$!{record.Id}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!record.Name</a></li>
 			#end
 		</ul>
 	</div>

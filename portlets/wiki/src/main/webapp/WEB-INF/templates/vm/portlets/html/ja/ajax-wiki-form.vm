@@ -55,7 +55,7 @@
         	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
         		#ALselectpdheaderw100("category_id" "")
         		#foreach( $record in $result.CategoryList )
-        			<option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+        			<option value='$!record.Id' #if ($!result.CategoryId.toString() == $!record.Id.toString()) selected="selected" #end>$!record.Name</option>
         		#end
         		#ALselectfooter()
         	</div>
@@ -63,7 +63,7 @@
         		<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.WIKI_TYPE_NEW_WORD#else$l10n.WIKI_SELECT_DATE_FROM_LIST#end " onclick="aipo.wiki.formSwitchCategoryInput(this)" />
         	</div>
         	#ALtditemfooter()
-        
+
         </tr>
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
@@ -88,7 +88,7 @@
 								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_FORMATTED</span></a>
 								<a onclick="aipo.wiki.hr()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_HR</span></a>
 			</div>
-            
+
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
         </tr>
 		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
