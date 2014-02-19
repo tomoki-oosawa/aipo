@@ -363,6 +363,12 @@ public class WikiSelectData extends
       if (!existCategory) {
         categoryId = "";
         current_filterMap.remove("category");
+      } else {
+        Expression exp =
+          ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, categoryId);
+        Expression exp2 =
+          ExpressionFactory.matchDbExp(EipTWiki.WIKI_ID_PK_COLUMN, categoryId);
+        query.andQualifier(exp.orExp(exp2));
       }
 
       updateCategoryName();
