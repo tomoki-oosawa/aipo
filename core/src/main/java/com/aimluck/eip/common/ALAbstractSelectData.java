@@ -70,7 +70,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   private List<Object> list;
 
   /** 詳細データ */
-  private Object data;
+  protected Object data;
 
   /** 総ページ数 */
   protected int pages_num = 1;
