@@ -54,6 +54,8 @@ public class WikiResultData implements ALData {
   /** トピック名 */
   private ALStringField name;
 
+  private ALNumberField parentId;
+
   /** 親 ID */
   private ALNumberField parent_id;
 
@@ -91,7 +93,7 @@ public class WikiResultData implements ALData {
   private WikiModel model;
 
   /** URL */
-  private ALStringField baseInternalLink;
+  private ALStringField baseImageLink;
 
   /**
    *
@@ -101,6 +103,7 @@ public class WikiResultData implements ALData {
   public void initField() {
     id = new ALNumberField();
     name = new ALStringField();
+    parentId = new ALNumberField();
     parent_id = new ALNumberField();
     parent_name = new ALStringField();
     create_user = new ALStringField();
@@ -108,7 +111,7 @@ public class WikiResultData implements ALData {
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
-    baseInternalLink = new ALStringField();
+    baseImageLink = new ALStringField();
 
     is_public = true;
     new_wiki = false;
@@ -186,7 +189,7 @@ public class WikiResultData implements ALData {
             + "' title='"
             + attachmentfile.getFileName()
             + "' src='"
-            + baseInternalLink
+            + baseImageLink
             + "?entityid="
             + id
             + "&attachmentindex="
@@ -279,7 +282,7 @@ public class WikiResultData implements ALData {
   }
 
   public void setBaseInternalLink(String str) {
-    baseInternalLink.setValue(str);
+    baseImageLink.setValue(str);
   }
 
   /**

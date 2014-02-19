@@ -61,6 +61,8 @@ public class WikiFormData extends ALAbstractFormData {
   /** wiki名 */
   private ALStringField name;
 
+  private ALNumberField parentId;
+
   /** カテゴリ ID */
   private ALNumberField category_id;
 
@@ -100,6 +102,10 @@ public class WikiFormData extends ALAbstractFormData {
 
   private EipTWiki parentWiki = null;
 
+  private String postedParentId = null;
+
+  private String destWikiName = "";
+
   /**
    * @param action
    * @param rundata
@@ -114,6 +120,11 @@ public class WikiFormData extends ALAbstractFormData {
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
     folderName = rundata.getParameters().getString("folderName");
+    postedParentId = rundata.getParameters().getString("parentId", "0");
+    if (!StringUtils.isNumeric(postedParentId)
+      || Integer.valueOf(postedParentId).intValue() < 0) {
+      postedParentId = "0";
+    }
   }
 
   /**
@@ -133,6 +144,9 @@ public class WikiFormData extends ALAbstractFormData {
     name = new ALStringField();
     name.setFieldName(getl10n("WIKI_TITLE"));
     name.setTrim(true);
+
+    parentId = new ALNumberField();
+    parentId.setValue(0);
 
     // カテゴリID
     category_id = new ALNumberField();
@@ -191,9 +205,12 @@ public class WikiFormData extends ALAbstractFormData {
       && !StringUtils.isEmpty(entityId)
       && StringUtils.isNumeric(entityId)) {
       duplication =
-        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(entityId));
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer
+          .parseInt(postedParentId), Integer.parseInt(entityId));
     } else {
-      duplication = WikiUtils.isTitleDuplicate(name.getValue());
+      duplication =
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer
+          .parseInt(postedParentId));
     }
     if (duplication) {
       msgList.add(getl10n("WIKI_DUPLICATE_TITLE"));
@@ -219,6 +236,9 @@ public class WikiFormData extends ALAbstractFormData {
 
       // wiki名
       name.setValue(wiki.getWikiName());
+
+      parentId.setValue(wiki.getParentId());
+
       // カテゴリID
       category_id.setValue(wiki.getParentId());
       // 内容
@@ -315,8 +335,16 @@ public class WikiFormData extends ALAbstractFormData {
       EipTWiki wiki = Database.create(EipTWiki.class);
       // トピック名
       wiki.setWikiName(name.getValue());
+
+      // wiki.setParentId(Integer.valueOf(postedParentId));
+
       // カテゴリID
-      wiki.setParentId(category.getWikiId());
+      if (null == category) {
+        wiki.setParentId(WikiUtils.PARENT_WIKI);
+      } else {
+        wiki.setParentId(category.getWikiId());
+      }
+
       // メモ
       wiki.setNote(note.getValue());
       // 作成者
@@ -419,7 +447,7 @@ public class WikiFormData extends ALAbstractFormData {
       // トピック名
       wiki.setWikiName(name.getValue());
       // カテゴリID
-      wiki.setParentId(category.getWikiId());
+      wiki.setParentId(category.getParentId());
       // メモ
       wiki.setNote(note.getValue());
       TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
@@ -540,14 +568,38 @@ public class WikiFormData extends ALAbstractFormData {
     this.parentWiki = wiki;
   }
 
-  public String getParentIdString() {
-    if (null != parentWiki
-      && parentWiki.getParentId() != null
-      && parentWiki.getParentId().intValue() != 0) {
-      return String.valueOf(parentWiki.getParentId());
+  public String getParentWikiIdString() {
+    if (null != parentWiki) {
+      return String.valueOf(parentWiki.getWikiId());
     } else {
-      return "";
+      return "0";
     }
   }
 
+  public String getParentWikiName() {
+    if (null == parentWiki) {
+      return "";
+    }
+    String name = parentWiki.getWikiName();
+    if (StringUtils.isEmpty(name)) {
+      return "";
+    }
+    return new ALStringField(name).toString();
+  }
+
+  public boolean isChildForm() {
+    return null != parentWiki;
+  }
+
+  public void setDestWikiName(String name) {
+    this.destWikiName = name;
+  }
+
+  public String getDestWikiName() {
+    return new ALStringField(destWikiName).toString();
+  }
+
+  public String getParentId() {
+    return parentId.toString();
+  }
 }

@@ -329,6 +329,10 @@ public class WikiUtils {
     }
   }
 
+  public static EipTWiki getEipTWiki(Integer pk) {
+    return Database.get(EipTWiki.class, pk);
+  }
+
   public static int getEipTWikiCategoryWikiCount(EipTWiki category) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     query.setQualifier(ExpressionFactory.matchDbExp(
@@ -338,15 +342,18 @@ public class WikiUtils {
 
   }
 
-  public static boolean isTitleDuplicate(String title) {
-    return isTitleDuplicate(title, null);
+  public static boolean isTitleDuplicate(String title, Integer parentId) {
+    return isTitleDuplicate(title, parentId, null);
   }
 
-  public static boolean isTitleDuplicate(String title, Integer pk) {
+  public static boolean isTitleDuplicate(String title, Integer parentId,
+      Integer pk) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     Expression titleExp =
       ExpressionFactory.matchExp(EipTWiki.WIKI_NAME_PROPERTY, title);
-    query.andQualifier(titleExp);
+    Expression parentExp =
+      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
+    query.andQualifier(titleExp).andQualifier(parentExp);
     if (pk != null) {
       Expression pkExp =
         ExpressionFactory.noMatchDbExp(EipTWiki.WIKI_ID_PK_COLUMN, pk);

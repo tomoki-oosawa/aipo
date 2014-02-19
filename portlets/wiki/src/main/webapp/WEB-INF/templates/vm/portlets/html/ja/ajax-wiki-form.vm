@@ -42,9 +42,12 @@
 		<input name="is_new_category" type="hidden" value="$!result.NewCategory"/>
         #if("$!mode"=="new_form")
         	<input type="hidden" name="mode" value="insert" />
+			<input name="parentId" type="hidden" value="$!result.getParentWikiIdString()"/>
         #else
         	<input type="hidden" name="mode" value="update" />
-        #end
+			<input name="parentId" type="hidden" value="$!result.getParentId()"/>
+		#end
+		
 		#ALtableheaderWide()
 		<tr>
         	#ALtdcaption("#ALrequired($!result.getFieldName('category_id'))")
@@ -67,7 +70,11 @@
         </tr>
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
-            #ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
+			#if(!$result.isChildForm())
+				#ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
+			#else
+				#ALtditem("#ALtextfieldw100('name' $!result.getDestWikiName() 50 'active')")
+			#end
         </tr>
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
