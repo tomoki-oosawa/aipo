@@ -167,7 +167,7 @@ public class WikiSelectData extends
       return;
     }
     for (WikiResultData data : categoryList) {
-      if (data.getParentId().toString().equals(categoryId)) {
+      if (data.getId().toString().equals(categoryId)) {
         categoryName = data.getName();
         return;
       }
@@ -332,7 +332,7 @@ public class WikiSelectData extends
       boolean existCategory = false;
       if (categoryList != null && categoryList.size() > 0) {
         for (WikiResultData category : categoryList) {
-          if (categoryId.equals(category.getParentId().toString())) {
+          if (categoryId.equals(category.getId().toString())) {
             existCategory = true;
             break;
           }
