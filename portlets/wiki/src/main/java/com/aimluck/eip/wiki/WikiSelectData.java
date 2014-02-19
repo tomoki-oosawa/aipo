@@ -33,7 +33,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.util.template.JetspeedLink;
+import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
@@ -93,6 +96,10 @@ public class WikiSelectData extends
   /** ターゲット　 */
   private ALStringField target_keyword;
 
+  private EipTWiki parentWiki = null;
+
+  private String baseInternalLink = null;
+
   /**
    * 
    * @param action
@@ -127,6 +134,18 @@ public class WikiSelectData extends
     updateCategoryName();
 
     postList = ALEipUtils.getMyGroups(rundata);
+
+    try {
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+      baseInternalLink =
+        jsLink.getPortletById(portlet.getID()).addQueryData(
+          "template",
+          "WikiInternalLinkScreen").toString();
+    } catch (TurbineException e) {
+      logger.error("init", e);
+    }
+
   }
 
   /**
@@ -445,6 +464,7 @@ public class WikiSelectData extends
     try {
       WikiResultData rd = new WikiResultData();
       rd.initField();
+      rd.initalizeWikiModel("", baseInternalLink);
 
       // 登録ユーザ名の設定
       ALEipUser createdUser =
@@ -482,6 +502,7 @@ public class WikiSelectData extends
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));
+
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);
@@ -551,5 +572,19 @@ public class WikiSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
       .getPortletConfig()
       .getInitParameter("p12g-filtertypes"));
+  }
+
+  public void setParentWiki(EipTWiki wiki) {
+    this.parentWiki = wiki;
+  }
+
+  public String getParentIdString() {
+    if (null != parentWiki
+      && parentWiki.getParentId() != null
+      && parentWiki.getParentId().intValue() != 0) {
+      return String.valueOf(parentWiki.getParentId());
+    } else {
+      return "";
+    }
   }
 }

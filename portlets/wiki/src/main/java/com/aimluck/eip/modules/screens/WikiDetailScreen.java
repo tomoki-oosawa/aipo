@@ -49,6 +49,7 @@ public class WikiDetailScreen extends ALVelocityScreen {
     try {
       WikiSelectData detailData = new WikiSelectData();
       detailData.initField();
+      detailData.loadCategoryList(rundata, context);
       detailData.doViewDetail(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
