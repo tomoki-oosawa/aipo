@@ -120,7 +120,7 @@ public class WikiUtils {
       SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
       return query
         .setQualifier(
-          ExpressionFactory.matchDbExp(EipTWiki.PARENT_ID_PROPERTY, integer))
+          ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, integer))
         .fetchSingle();
     } catch (Exception ex) {
       logger.error("wiki", ex);
@@ -139,7 +139,7 @@ public class WikiUtils {
     List<WikiResultData> categoryList = new ArrayList<WikiResultData>();
     try {
       SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
-      query.setQualifier(ExpressionFactory.matchDbExp(
+      query.setQualifier(ExpressionFactory.matchExp(
         EipTWiki.PARENT_ID_PROPERTY,
         PARENT_WIKI));
 
