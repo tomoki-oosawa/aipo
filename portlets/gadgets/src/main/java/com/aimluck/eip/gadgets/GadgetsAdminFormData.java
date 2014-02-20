@@ -313,6 +313,12 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
       ALApplicationService.delete(appId);
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        ALEipUtils.getUserId(rundata),
+        ALEventlogConstants.PORTLET_TYPE_GADGET,
+        "アプリを削除");
+
     } catch (Throwable t) {
       logger.error(t, t);
       throw new ALDBErrorException();

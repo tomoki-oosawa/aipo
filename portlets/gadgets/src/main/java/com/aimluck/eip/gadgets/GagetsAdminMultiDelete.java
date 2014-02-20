@@ -29,7 +29,10 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 
@@ -56,6 +59,13 @@ public class GagetsAdminMultiDelete extends ALAbstractCheckList {
     try {
 
       ALApplicationService.delete(values);
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        ALEipUtils.getUserId(rundata),
+        ALEventlogConstants.PORTLET_TYPE_GADGET,
+        "アプリを削除");
+
     } catch (Throwable t) {
       logger.error(t, t);
       return false;
