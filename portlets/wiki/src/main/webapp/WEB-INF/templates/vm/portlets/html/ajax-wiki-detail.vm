@@ -40,26 +40,30 @@
   <td>
 	<div class="auiWikiContent">
 	$!result.Detail.getNote()
-    #if($!result.Detail.AttachmentFileList.size() > 0)
-    <div class="mt20">
-		<ul>
-    	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-    		<li>&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
-    		#if($attachmentFile.isImage())
-    			<div id='popc' style='position:absolute'></div>
-    			<div class="thumbBlock">
-    				<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','WikiFileRawScreen').addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-    				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("WikiFileThumbnailScreen").addQueryData("entityid", $!result.Detail.Id).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br />
-    			</div>
-			#end
-			</li>
-		#end
-        </ul>
-    </div>
-	#end
     </div>
   </td>
 </tr>
+
+#if($!result.Detail.AttachmentFileList.size() > 0)
+<tr>
+  <td class="caption">$l10n.WIKI_FILE_ATTACH</td>
+  <td>
+	<ul>
+	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+		<li>&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
+		#if($attachmentFile.isImage())
+			<div id='popc' style='position:absolute'></div>
+			<div class="thumbBlock">
+				<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','WikiFileRawScreen').addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("WikiFileThumbnailScreen").addQueryData("entityid", $!result.Detail.Id).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br />
+			</div>
+		#end
+		</li>
+	#end
+    </ul>
+  </td>
+</tr>
+#end
 
 #ALtdcaption($l10n.WIKI_CREATE_USER)
 #ALtditem($!result.Detail.createUser)

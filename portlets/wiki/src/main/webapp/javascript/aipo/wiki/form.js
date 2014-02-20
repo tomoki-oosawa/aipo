@@ -368,7 +368,7 @@ aipo.wiki.encloseTag = function (prefix, suffix, text) {
   }
 }
 
-aipo.wiki.replaceTag = function(text){
+aipo.wiki.replaceTag = function (text) {
   var textarea = dojo.byId('wiki_note');
   textarea.focus();
 
@@ -478,6 +478,11 @@ aipo.wiki.table = function () {
       "| セル内のテキスト || セル内のテキスト || セル内のテキスト\n" +
       "|}";
   aipo.wiki.replaceTag(text);
+}
+
+aipo.wiki.image = function () {
+  var text = "画像ファイル名";
+  aipo.wiki.insertTag("!", "!", text, true);
 }
 
 
