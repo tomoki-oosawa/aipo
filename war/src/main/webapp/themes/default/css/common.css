@@ -708,10 +708,13 @@ table.simpleTable .caption {
 /***************************************************
 	modalDialog
 --------------------------------------------------*/
-/* End hides from IE-mac */ .modalDialog {
-  width: 550px;
+/* End hides from IE-mac */
+.modalDialog {
+  width: 700px;
   z-index: 997;
   position: absolute;
+  margin-left: -350px;
+  left: 50%;
 }
 
 .modalDialogTitleBar {
@@ -825,11 +828,22 @@ table.simpleTable .caption {
   display: inline;
 }
 
+/***************************************************
+	imageDialog
+--------------------------------------------------*/
+#imageDialog {
+  position: absolute;
+  z-index: 999;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+}
+
 /* addressbookDialog */
 .addressbookDialog {
   border: 5px solid #d2d2d2;
   background-color: #fff;
-  width: 600px;
+  /*width: 600px;*/
   z-index: 999;
   position: absolute;
 }
@@ -874,7 +888,7 @@ table.simpleTable .caption {
 /* fileuploadViewDialog */
 .fileuploadViewDialog {
   z-index: 999;
-  width: 600px;
+  /*width: 600px;*/
   position: absolute;
 }
 
@@ -897,12 +911,6 @@ table.simpleTable .caption {
 
 /* END fileuploadDialog */
 /* tutorialDialog */
-.tutorialDialog {
-  z-index: 999;
-  width: 600px;
-  position: absolute;
-}
-
 .tutorialDialogUnderlayWrapper {
   left: 0;
   top: 0;
@@ -2315,7 +2323,6 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  max-width: 180px;
   padding: 4px 6px !important;
   margin: 0;
   text-decoration: none;
