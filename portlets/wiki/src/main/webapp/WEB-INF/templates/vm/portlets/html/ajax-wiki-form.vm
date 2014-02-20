@@ -85,11 +85,12 @@
                                 <a onclick="aipo.wiki.headerThree()" href="javascript:void(0);"><span class="auiButtonIcon">h3</span></a>
                                 <a onclick="aipo.wiki.ulist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ul"></i></span></a>
                                 <a onclick="aipo.wiki.olist()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-list-ol"></i></span></a>
-                                <a onclick="aipo.wiki.externallink()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-external-link"></i></span></a>
-								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_TABLE</span></a>
-								<a onclick="aipo.wiki.quote()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_QUOTE</span></a>
-								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_FORMATTED</span></a>
-								<a onclick="aipo.wiki.hr()" href="javascript:void(0);"><span class="auiButtonIcon">$l10n.WIKI_HR</span></a>
+                                <a onclick="aipo.wiki.externallink()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-link"></i></span></a>
+								<a onclick="aipo.wiki.quote()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-quote-right"></i></span></a>
+								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-code"></i></span></a>
+								<a onclick="aipo.wiki.hr()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-minus"></i></span></a>
+								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-table"></i></span></a>
+								<a onclick="aipo.wiki.image()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-camera"></i></span></a>
 			</div>
 
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
