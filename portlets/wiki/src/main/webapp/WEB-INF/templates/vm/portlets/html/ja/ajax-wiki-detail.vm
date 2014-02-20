@@ -32,7 +32,7 @@
 #if($!result.Detail.isChild())
 #ALtdcaption($l10n.WIKI_PARENT)
 #ALtditemheader()
-$!result.Detail.getParentName()
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$!result.Detail.parentId))', '$!portlet.ID', aipo.wiki.onLoadWikiDetail);" >$!result.Detail.getParentName()</a>
 #ALtditemfooter()
 #end
 <tr>
