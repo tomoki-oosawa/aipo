@@ -57,8 +57,6 @@ public class WikiFormScreen extends ALVelocityScreen {
       formData.loadTopWikiList(rundata, context);
       if ("parent".equals(page)) {
         formData.setIsChild(false);
-      } else {
-        formData.setIsChild(true);
       }
       formData.doViewForm(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-wiki-form.vm";

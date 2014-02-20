@@ -42,10 +42,8 @@
 		<input name="is_child" type="hidden" value="$!result.Child"/>
         #if("$!mode"=="new_form")
         	<input type="hidden" name="mode" value="insert" />
-			<input name="parentId" type="hidden" value="$!result.getParentWikiIdString()"/>
         #else
         	<input type="hidden" name="mode" value="update" />
-			<input name="parentId" type="hidden" value="$!result.getParentId()"/>
 		#end
 		
 		#ALtableheaderWide()
@@ -57,7 +55,7 @@
         		#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
         	</div>
         	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-        		#ALselectpdheaderw100("parent_id" "")
+        		#ALselectpdheaderw100("parentId" "")
         		#foreach( $record in $result.TopWikiList )
         			<option value='$!record.Id' #if ($!result.getParentWikiIdString() == $!record.Id.toString()) selected="selected" #end>$!record.Name</option>
         		#end
@@ -68,7 +66,7 @@
 		#end
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
-			#if(!$result.isChildForm())
+			#if(!$result.isChildForm() || "$!mode" != "new_form")
 				#ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
 			#else
 				#ALtditem("#ALtextfieldw100('name' $!result.getDestWikiName() 50 'active')")

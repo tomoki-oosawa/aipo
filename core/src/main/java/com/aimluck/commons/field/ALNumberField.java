@@ -248,7 +248,7 @@ public class ALNumberField extends ALAbstractField {
    * 
    * @return
    */
-  protected boolean isNotNullValue() {
+  public boolean isNotNullValue() {
     if (value == null || value.trim().length() <= 0) {
       return false;
     }

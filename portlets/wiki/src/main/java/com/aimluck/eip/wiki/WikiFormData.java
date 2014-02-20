@@ -114,9 +114,9 @@ public class WikiFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-    Boolean tmp = rundata.getParameters().getBoolean("is_child");
-    if (null != tmp) {
-      is_child = tmp;
+    String _isChild = rundata.getParameters().getString("is_child");
+    if (null != _isChild) {
+      is_child = Boolean.valueOf(_isChild);
     }
     uid = ALEipUtils.getUserId(rundata);
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
@@ -168,8 +168,7 @@ public class WikiFormData extends ALAbstractFormData {
     note.setNotNull(true);
     // メモの文字数制限
     note.limitMaxLength(10000);
-    if (is_child) {
-      // カテゴリ名必須項目
+    if (is_child != null && is_child) {
       parentId.setNotNull(true);
       parentId.limitValue(0, Integer.MAX_VALUE);
     }
@@ -188,7 +187,7 @@ public class WikiFormData extends ALAbstractFormData {
     name.validate(msgList);
     // メモ
     note.validate(msgList);
-    if (is_child) {
+    if (is_child != null && is_child) {
       // 親wiki名
       parentId.validate(msgList);
     }
@@ -245,6 +244,13 @@ public class WikiFormData extends ALAbstractFormData {
         fbean.setFileId(file.getFileId());
         fbean.setFileName(file.getFileName());
         fileuploadList.add(fbean);
+      }
+
+      if (wiki.getParentId().intValue() != 0) {
+        setParentWiki(WikiUtils.getEipTWiki(wiki.getParentId()));
+        is_child = true;
+      } else {
+        is_child = false;
       }
 
     } catch (Exception e) {
@@ -385,6 +391,11 @@ public class WikiFormData extends ALAbstractFormData {
       EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
       // トピック名
       wiki.setWikiName(name.getValue());
+
+      if (parentId.isNotNullValue()) {
+        wiki.setParentId((int) parentId.getValue());
+      }
+
       // メモ
       wiki.setNote(note.getValue());
       TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
@@ -439,7 +450,7 @@ public class WikiFormData extends ALAbstractFormData {
     }
 
     if (ALEipConstants.MODE_NEW_FORM.equals(getMode())) {
-      if (!isChild()) {
+      if (isChild()) {
         /** set selected parent wiki */
         String filtertype =
           ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
@@ -476,7 +487,7 @@ public class WikiFormData extends ALAbstractFormData {
    * @return
    */
   public boolean isChild() {
-    return is_child || isChildForm();
+    return is_child == null ? true : is_child.booleanValue() || isChildForm();
   }
 
   public void setIsChild(boolean isChild) {

@@ -28,7 +28,7 @@
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="wiki" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-rows" value="5" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1a-rows" value="5" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>Wiki表示件数（トップページ）</title>
             </meta-info>
