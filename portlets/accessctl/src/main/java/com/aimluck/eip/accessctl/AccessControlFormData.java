@@ -49,6 +49,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -454,6 +456,15 @@ public class AccessControlFormData extends ALAbstractFormData {
       Database.delete(aclroles.get(0));
 
       Database.commit();
+
+      // イベントログに保存
+      for (EipTAclRole role : aclroles) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          role.getRoleId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
+          "ロール 「" + role.getRoleName() + "」 削除");
+      }
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlFormData.deleteFormData", ex);
@@ -505,6 +516,13 @@ public class AccessControlFormData extends ALAbstractFormData {
 
       // ロールを登録
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        aclrole.getRoleId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
+        "ロール 「" + aclrole.getRoleName() + "」 追加");
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlFormData.insertFormData", ex);
@@ -555,6 +573,13 @@ public class AccessControlFormData extends ALAbstractFormData {
 
       // ロールを更新
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        aclrole.getRoleId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
+        "ロール 「" + aclrole.getRoleName() + "」 更新");
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlFormData.updateFormData", ex);
