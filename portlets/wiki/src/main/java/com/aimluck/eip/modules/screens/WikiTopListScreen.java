@@ -24,6 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -47,11 +48,13 @@ public class WikiTopListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
+      clearSearchCriteria(rundata, context);
+
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
       listData.loadTopWikiList(rundata, context);
+      listData.setIsTop(true);
       listData.doViewList(this, rundata, context);
-      context.put("isTop", true);
 
       String layout_template = "portlets/html/ja/ajax-wiki-top-list.vm";
       setTemplate(rundata, context, layout_template);
@@ -67,6 +70,15 @@ public class WikiTopListScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     return WikiUtils.WIKI_PORTLET_NAME;
+  }
+
+  private void clearSearchCriteria(RunData rundata, Context context) {
+    ALEipUtils.removeTemp(rundata, context, ALEipConstants.LIST_FILTER_TYPE);
+    ALEipUtils.removeTemp(rundata, context, ALEipConstants.LIST_FILTER);
+    ALEipUtils.removeTemp(rundata, context, WikiSelectData.class.getName()
+      + ALEipConstants.LIST_FILTER_TYPE);
+    ALEipUtils.removeTemp(rundata, context, WikiSelectData.class.getName()
+      + ALEipConstants.LIST_FILTER);
   }
 
 }
