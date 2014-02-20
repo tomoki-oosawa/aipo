@@ -284,7 +284,12 @@ dojo.declare(
 
             var style = this.domNode.style;
             if(this.id=="imageDialog"){
-        		style.marginLeft = Math.floor(-dojo.byId("imageDialog").style.width.replace("px","")/2) + "px";
+                if(dojo.byId("imageDialog").style.width == 0) {
+                    //loading
+                    style.marginLeft = "-150px";
+                }else{
+                    style.marginLeft = Math.floor(-dojo.byId("imageDialog").style.width.replace("px","")/2) + "px";
+                }
             }
             if(Math.floor((viewport.t + (viewport.h - mb.h)/2)) > 0){
                 style.top = Math.floor((viewport.t + (viewport.h - mb.h)/2)) + "px";
