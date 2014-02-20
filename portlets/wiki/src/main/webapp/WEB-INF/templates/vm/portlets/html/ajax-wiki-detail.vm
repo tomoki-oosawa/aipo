@@ -29,11 +29,12 @@
 #ALtableheaderWide()
 #ALtdcaption($l10n.WIKI_TITLE)
 #ALtditem($!result.Detail.name)
-#ALtdcaption($l10n.WIKI_CATEGORY)
+#if($!result.Detail.isChild())
+#ALtdcaption($l10n.WIKI_PARENT)
 #ALtditemheader()
-$!result.Detail.CategoryNameHtml
+$!result.Detail.getParentName()
 #ALtditemfooter()
-
+#end
 <tr>
   <td class="caption">$l10n.WIKI_NOTE</td>
   <td>

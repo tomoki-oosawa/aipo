@@ -338,4 +338,8 @@ public class WikiResultData implements ALData {
   public void setParentFlag(boolean bool) {
     this.is_parent = bool;
   }
+
+  public boolean isChild() {
+    return 0 != this.parent_id.getValue();
+  }
 }

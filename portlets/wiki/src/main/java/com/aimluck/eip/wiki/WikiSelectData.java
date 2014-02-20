@@ -97,8 +97,6 @@ public class WikiSelectData extends
   /** ターゲット　 */
   private ALStringField target_keyword;
 
-  private EipTWiki parentWiki = null;
-
   private String baseInternalLink = null;
 
   private String baseImageLink = null;
@@ -519,6 +517,13 @@ public class WikiSelectData extends
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));
 
+      rd.setParentId(record.getParentId());
+
+      if (record.getParentId().intValue() != 0) {
+        EipTWiki parentWiki = WikiUtils.getEipTWiki(record.getParentId());
+        rd.setParentName(parentWiki.getWikiName());
+      }
+
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);
@@ -588,20 +593,6 @@ public class WikiSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
       .getPortletConfig()
       .getInitParameter("p12g-filtertypes"));
-  }
-
-  public void setParentWiki(EipTWiki wiki) {
-    this.parentWiki = wiki;
-  }
-
-  public String getParentIdString() {
-    if (null != parentWiki
-      && parentWiki.getParentId() != null
-      && parentWiki.getParentId().intValue() != 0) {
-      return String.valueOf(parentWiki.getParentId());
-    } else {
-      return "";
-    }
   }
 
   public void doViewDetailOne(ALAction action, RunData rundata, Context context) {

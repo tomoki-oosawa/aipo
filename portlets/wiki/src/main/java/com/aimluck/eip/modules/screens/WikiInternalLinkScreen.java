@@ -77,7 +77,6 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         WikiSelectData detailData = new WikiSelectData();
         detailData.initField();
         detailData.loadTopWikiList(rundata, context);
-        detailData.setParentWiki(parentWiki);
         detailData.doViewDetail(this, rundata, context);
         String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
         setTemplate(rundata, context, layout_template);
