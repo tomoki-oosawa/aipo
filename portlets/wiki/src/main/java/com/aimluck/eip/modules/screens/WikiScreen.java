@@ -22,7 +22,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.ParameterParser;
@@ -55,22 +54,16 @@ public class WikiScreen extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
-
       ParameterParser parser = rundata.getParameters();
       ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
         .getString(ALEipConstants.LIST_FILTER));
       ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
         .getString(ALEipConstants.LIST_FILTER_TYPE));
-
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
       listData.loadTopWikiList(rundata, context);
-      if (!listData.doViewDetail(this, rundata, context)) {
-        listData.doViewDetailOne(this, rundata, context);
-      }
-
+      listData.doViewDetailOne(this, rundata, context);
       String layout_template = "portlets/html/ja/ajax-wiki.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

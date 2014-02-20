@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.wiki;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -36,6 +38,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.wiki.util.WikiFileUtils;
+import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * 
@@ -74,6 +77,12 @@ public class WikiMultiDelete extends ALAbstractCheckList {
 
         // entityIdを取得
         Integer entityId = wiki.getWikiId();
+
+        if (WikiUtils.getChildCount(entityId) > 0) {
+          msgList.add(getl10n("WIKI_HAS_CHILDREN"));
+          return false;
+        }
+
         // Wiki名を取得
         String wikiName = wiki.getWikiName();
         // 添付ファイルの削除
@@ -91,7 +100,7 @@ public class WikiMultiDelete extends ALAbstractCheckList {
       }
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[WikiMultiDelete]", t);
+      logger.error("WikiMultiDelete.action", t);
       return false;
     }
     return true;

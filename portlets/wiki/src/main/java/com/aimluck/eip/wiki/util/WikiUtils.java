@@ -380,4 +380,11 @@ public class WikiUtils {
     query.orderAscending(EipTWiki.WIKI_NAME_PROPERTY);
     return query.fetchSingle();
   }
+
+  public static int getChildCount(Integer parentId) {
+    SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
+    return query.andQualifier(exp).getCount();
+  }
 }

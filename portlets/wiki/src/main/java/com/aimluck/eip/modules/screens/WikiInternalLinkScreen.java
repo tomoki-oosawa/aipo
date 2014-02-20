@@ -34,14 +34,14 @@ import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
- * Wikiの詳細画面を処理するクラスです。 <br />
+ * Wikiの内部リンクを処理するクラスです。 <br />
  * 
  */
 public class WikiInternalLinkScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiDetailScreen.class.getName());
+    .getLogger(WikiInternalLinkScreen.class.getName());
 
   /**
    * 
@@ -81,8 +81,8 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
         setTemplate(rundata, context, layout_template);
       }
-    } catch (Exception ex) {
-      logger.error("[WikiDetailScreen] Exception.", ex);
+    } catch (Exception e) {
+      logger.error("WikiInternalLinkScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }

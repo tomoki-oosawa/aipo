@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -101,8 +100,6 @@ public class WikiFormData extends ALAbstractFormData {
 
   private EipTWiki parentWiki = null;
 
-  // private final String postedParentId = null;
-
   private String destWikiName = "";
 
   /**
@@ -122,11 +119,6 @@ public class WikiFormData extends ALAbstractFormData {
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
     folderName = rundata.getParameters().getString("folderName");
-    // postedParentId = rundata.getParameters().getString("parentId", "0");
-    // if (!StringUtils.isNumeric(postedParentId)
-    // || Integer.valueOf(postedParentId).intValue() < 0) {
-    // postedParentId = "0";
-    // }
   }
 
   /**
@@ -283,11 +275,7 @@ public class WikiFormData extends ALAbstractFormData {
       // entityIdの取得
       int entityId = wiki.getWikiId();
 
-      SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
-      Expression exp =
-        ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, entityId);
-      List<EipTWiki> fetchList = query.andQualifier(exp).fetchList();
-      if (fetchList.size() > 0) {
+      if (WikiUtils.getChildCount(entityId) > 0) {
         msgList.add(getl10n("WIKI_HAS_CHILDREN"));
         return false;
       }
@@ -309,7 +297,7 @@ public class WikiFormData extends ALAbstractFormData {
 
     } catch (Throwable t) {
       Database.rollback();
-      logger.error("[WikiFormData]", t);
+      logger.error("WikiFormData.deleteFormData", t);
       return false;
     }
     return true;

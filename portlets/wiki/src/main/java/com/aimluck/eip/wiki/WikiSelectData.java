@@ -547,7 +547,6 @@ public class WikiSelectData extends
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
-    // map.putValue("category", EipTWikiCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
     map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
     map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);
