@@ -237,4 +237,6 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_GPDB = "Webデータベース";
 
+  public static final String PORTLET_TYPE_STR_FACILITY = "設備管理";
+
 }
