@@ -101,7 +101,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   private EipTWiki parentWiki = null;
 
-  private String postedParentId = null;
+  // private final String postedParentId = null;
 
   private String destWikiName = "";
 
@@ -122,11 +122,11 @@ public class WikiFormData extends ALAbstractFormData {
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
     folderName = rundata.getParameters().getString("folderName");
-    postedParentId = rundata.getParameters().getString("parentId", "0");
-    if (!StringUtils.isNumeric(postedParentId)
-      || Integer.valueOf(postedParentId).intValue() < 0) {
-      postedParentId = "0";
-    }
+    // postedParentId = rundata.getParameters().getString("parentId", "0");
+    // if (!StringUtils.isNumeric(postedParentId)
+    // || Integer.valueOf(postedParentId).intValue() < 0) {
+    // postedParentId = "0";
+    // }
   }
 
   /**
@@ -148,6 +148,7 @@ public class WikiFormData extends ALAbstractFormData {
     name.setTrim(true);
     parentId = new ALNumberField();
     parentId.setFieldName(getl10n("WIKI_PARENT_NAME"));
+    parentId.setValue(0);
     parentName = new ALStringField();
     parentName.setFieldName(getl10n("WIKI_PARENT_NAME"));
     note = new ALStringField();
@@ -197,11 +198,12 @@ public class WikiFormData extends ALAbstractFormData {
       && !StringUtils.isEmpty(entityId)
       && StringUtils.isNumeric(entityId)) {
       duplication =
-        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(entityId));
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(parentId
+          .toString()), Integer.parseInt(entityId));
     } else {
       duplication =
-        WikiUtils.isTitleDuplicate(name.getValue(), Integer
-          .parseInt(postedParentId));
+        WikiUtils.isTitleDuplicate(name.getValue(), Integer.parseInt(parentId
+          .toString()));
     }
     if (duplication) {
       msgList.add(getl10n("WIKI_DUPLICATE_TITLE"));
@@ -332,8 +334,8 @@ public class WikiFormData extends ALAbstractFormData {
       wiki.setWikiName(name.getValue());
       // 親ID
 
-      if (StringUtils.isNotEmpty(postedParentId)) {
-        wiki.setParentId(Integer.valueOf(postedParentId));
+      if (parentId.isNotNullValue()) {
+        wiki.setParentId(Integer.valueOf(parentId.toString()));
       } else if (null == category) {
         wiki.setParentId(WikiUtils.PARENT_WIKI);
       } else {
