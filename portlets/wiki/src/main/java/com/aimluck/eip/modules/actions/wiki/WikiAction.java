@@ -57,15 +57,10 @@ public class WikiAction extends ALBaseAction {
     clearWikiSession(rundata, context);
 
     WikiSelectData listData = new WikiSelectData();
-    listData.loadCategoryList(rundata, context);
-    listData.initField();
     listData.setFiltersFromPSML(portlet, context, rundata);
-    // listData.setRowsNum(Integer.parseInt(portlet
-    // .getPortletConfig()
-    // .getInitParameter("p1a-rows")));
-    if (!listData.doViewDetail(this, rundata, context)) {
-      listData.doViewDetailOne(this, rundata, context);
-    }
+    listData.loadTopWikiList(rundata, context);
+    listData.initField();
+    listData.doViewDetailOne(this, rundata, context);
     setTemplate(rundata, "wiki");
   }
 
@@ -81,8 +76,7 @@ public class WikiAction extends ALBaseAction {
       Context context, RunData rundata) {
     WikiSelectData listData = new WikiSelectData();
     listData.initField();
-    listData.loadCategoryList(rundata, context);
-
+    listData.loadTopWikiList(rundata, context);
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()

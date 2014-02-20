@@ -66,10 +66,7 @@ public class WikiScreen extends ALVelocityScreen {
 
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
-      listData.loadCategoryList(rundata, context);
-      // listData.setRowsNum(Integer.parseInt(portlet
-      // .getPortletConfig()
-      // .getInitParameter("p1a-rows")));
+      listData.loadTopWikiList(rundata, context);
       if (!listData.doViewDetail(this, rundata, context)) {
         listData.doViewDetailOne(this, rundata, context);
       }

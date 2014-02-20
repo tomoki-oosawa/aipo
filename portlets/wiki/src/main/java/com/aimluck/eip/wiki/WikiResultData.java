@@ -48,13 +48,9 @@ public class WikiResultData implements ALData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiResultData.class.getName());
 
-  /** トピック ID */
   private ALNumberField id;
 
-  /** トピック名 */
   private ALStringField name;
-
-  private ALNumberField parentId;
 
   /** 親 ID */
   private ALNumberField parent_id;
@@ -103,7 +99,6 @@ public class WikiResultData implements ALData {
   public void initField() {
     id = new ALNumberField();
     name = new ALStringField();
-    parentId = new ALNumberField();
     parent_id = new ALNumberField();
     parent_name = new ALStringField();
     create_user = new ALStringField();
@@ -112,7 +107,6 @@ public class WikiResultData implements ALData {
     update_date = new ALDateTimeField();
     note = new ALStringField();
     baseImageLink = new ALStringField();
-
     is_public = true;
     new_wiki = false;
   }

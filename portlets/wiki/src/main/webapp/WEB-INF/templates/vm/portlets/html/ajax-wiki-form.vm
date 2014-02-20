@@ -49,7 +49,7 @@
 		#end
 		
 		#ALtableheaderWide()
-		#if($!childpage)
+		#if($!result.isChild())
 		<tr>
         	#ALtdcaption("#ALrequired($!result.getFieldName('parentId'))")
         	#ALtditemheader()
@@ -57,17 +57,13 @@
         		#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
         	</div>
         	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
-        		#ALselectpdheaderw100("category_id" "")
-        		#foreach( $record in $result.CategoryList )
-        			<option value='$!record.CategoryId' #if ($!result.CategoryId.toString() == $!record.CategoryId.toString()) selected="selected" #end>$!record.CategoryName</option>
+        		#ALselectpdheaderw100("parent_id" "")
+        		#foreach( $record in $result.TopWikiList )
+        			<option value='$!record.Id' #if ($!result.getParentWikiIdString() == $!record.Id.toString()) selected="selected" #end>$!record.Name</option>
         		#end
         		#ALselectfooter()
         	</div>
-        	<div class="mt5">
-        		<input name="category_input_button" type="button" class="button" value=" #if(!$!{result.NewCategory})$l10n.WIKI_TYPE_NEW_WORD#else$l10n.WIKI_SELECT_DATE_FROM_LIST#end " onclick="aipo.wiki.formSwitchCategoryInput(this)" />
-        	</div>
         	#ALtditemfooter()
-        
         </tr>
 		#end
         <tr>

@@ -49,7 +49,7 @@ public class WikiCategoryListScreen extends ALVelocityScreen {
     try {
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
-      listData.loadCategoryList(rundata, context);
+      listData.loadTopWikiList(rundata, context);
       listData.doViewList(this, rundata, context);
 
       context.put("isCategory", true);

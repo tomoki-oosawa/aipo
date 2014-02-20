@@ -51,7 +51,7 @@ public class WikiFormJSONScreen extends ALJSONScreen {
         //
         WikiFormData formData = new WikiFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadTopWikiList(rundata, context);
         if (formData.doInsert(this, rundata, context)) {
         } else {
           JSONArray json =
@@ -63,7 +63,7 @@ public class WikiFormJSONScreen extends ALJSONScreen {
         //
         WikiFormData formData = new WikiFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadTopWikiList(rundata, context);
         if (formData.doUpdate(this, rundata, context)) {
         } else {
           JSONArray json =
@@ -75,7 +75,7 @@ public class WikiFormJSONScreen extends ALJSONScreen {
         //
         WikiFormData formData = new WikiFormData();
         formData.initField();
-        formData.loadCategoryList(rundata, context);
+        formData.loadTopWikiList(rundata, context);
         if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json =

@@ -67,7 +67,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         formData.initField();
         formData.setParentWiki(parentWiki);
         formData.setDestWikiName(name);
-        formData.loadCategoryList(rundata, context);
+        formData.loadTopWikiList(rundata, context);
         formData.doViewForm(this, rundata, context);
         String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
         setTemplate(rundata, context, layout_template);
@@ -76,7 +76,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
           .valueOf(destWiki.getWikiId()));
         WikiSelectData detailData = new WikiSelectData();
         detailData.initField();
-        detailData.loadCategoryList(rundata, context);
+        detailData.loadTopWikiList(rundata, context);
         detailData.setParentWiki(parentWiki);
         detailData.doViewDetail(this, rundata, context);
         String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";

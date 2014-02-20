@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set ($categoryList = $result.CategoryList)
+#set ($categoryList = $result.TopWikiList)
 #set ($categoryEtc = false)
 ## ---------------------------------------------------------------------------
 #if(!$!result.Detail)
@@ -27,9 +27,9 @@
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiScreen")' />
 	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
 	 	*##set($break=false)#*
-	 	*##foreach($record in $result.CategoryList)#if(!$break)#*
+	 	*##foreach($record in $result.TopWikiList)#if(!$break)#*
 	 		*##if ($!result.issetFilter("category",$!{record.Id}))#*
-				*#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.wiki.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.Name</span></a>#*
+				  *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.wiki.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.Name</span></a>#*
 	 			*##set($break=true)#*
 	 		*##end#*
 	 	*##end#end#*
@@ -40,9 +40,9 @@
 </div>
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
-		<p class="caption">$l10n.WIKI_CATEGORY</p>
+		<p class="caption">$l10n.WIKI_PARENT</p>
 		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
-			#foreach( $record in $result.CategoryList )
+			#foreach( $record in $result.TopWikiList )
 			<li #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end  data-param="$!{record.Id}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!record.Name</a></li>
 			#end
 		</ul>

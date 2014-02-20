@@ -71,8 +71,7 @@ public class WikiSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(WikiSelectData.class.getName());
 
-  /** カテゴリ一覧 */
-  private List<WikiResultData> categoryList;
+  private List<WikiResultData> topWikiList;
 
   /** 部署一覧 */
   private List<ALEipGroup> postList;
@@ -158,8 +157,8 @@ public class WikiSelectData extends
    * @param rundata
    * @param context
    */
-  public void loadCategoryList(RunData rundata, Context context) {
-    categoryList = WikiUtils.loadCategoryList(rundata);
+  public void loadTopWikiList(RunData rundata, Context context) {
+    topWikiList = WikiUtils.loadTopWikiList(rundata);
     setCategory(rundata, context);
   }
 
@@ -167,7 +166,7 @@ public class WikiSelectData extends
     if (StringUtils.isEmpty(categoryId)) {
       return true;
     }
-    for (WikiResultData data : categoryList) {
+    for (WikiResultData data : topWikiList) {
       if (data.getParentId().toString().equals(categoryId)) {
         return true;
       }
@@ -177,10 +176,10 @@ public class WikiSelectData extends
 
   private void updateCategoryName() {
     categoryName = "";
-    if (categoryList == null) {
+    if (topWikiList == null) {
       return;
     }
-    for (WikiResultData data : categoryList) {
+    for (WikiResultData data : topWikiList) {
       if (data.getId().toString().equals(categoryId)) {
         categoryName = data.getName();
         return;
@@ -255,7 +254,7 @@ public class WikiSelectData extends
     this.filterType = filterType;
 
     boolean existCategory = false;
-    for (WikiResultData data : categoryList) {
+    for (WikiResultData data : topWikiList) {
       if (categoryId.equals(data.getId().toString())) {
         existCategory = true;
         break;
@@ -340,12 +339,12 @@ public class WikiSelectData extends
       // カテゴリを含んでいる場合デフォルトとは別にフィルタを用意
       List<String> categoryIds = current_filterMap.get("category");
       categoryId = categoryIds.get(0).toString();
-      if (null == categoryList) {
-        categoryList = WikiUtils.loadCategoryList(rundata);
+      if (null == topWikiList) {
+        topWikiList = WikiUtils.loadTopWikiList(rundata);
       }
       boolean existCategory = false;
-      if (categoryList != null && categoryList.size() > 0) {
-        for (WikiResultData category : categoryList) {
+      if (topWikiList != null && topWikiList.size() > 0) {
+        for (WikiResultData category : topWikiList) {
           if (categoryId.equals(category.getId().toString())) {
             existCategory = true;
             break;
@@ -549,8 +548,8 @@ public class WikiSelectData extends
     return categoryName;
   }
 
-  public List<WikiResultData> getCategoryList() {
-    return categoryList;
+  public List<WikiResultData> getTopWikiList() {
+    return topWikiList;
   }
 
   /**
@@ -613,7 +612,19 @@ public class WikiSelectData extends
         context,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
       action.setMode(ALEipConstants.MODE_DETAIL);
-      EipTWiki obj = WikiUtils.getEipTWikiOne();
+
+      String sesFilter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+      String sesFilterType =
+        ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
+
+      String wikiId = getWikiIdFromSession(sesFilter, sesFilterType);
+      EipTWiki obj = null;
+      if (existWiki(wikiId)) {
+        obj = WikiUtils.getEipTWiki(Integer.parseInt(wikiId));
+      } else {
+        obj = WikiUtils.getEipTWikiOne();
+      }
+
       if (obj != null) {
         data = getResultDataDetail(obj);
       }
@@ -639,6 +650,37 @@ public class WikiSelectData extends
     } catch (ALPermissionException e) {
       logger.error("doViewDetailOne", e);
     }
+  }
+
+  private String getWikiIdFromSession(String filter, String filterType) {
+    String sesFilter = filter == null ? "" : filter;
+    String sesFilterType = filterType == null ? "" : filterType;
+
+    if ("category".equals(sesFilterType)) {
+      if (StringUtils.isNotEmpty(sesFilter) && StringUtils.isNumeric(sesFilter)) {
+        return sesFilter;
+      }
+    } else if ("post,category".equals(sesFilterType)) {
+      String[] splited = filter.split(",");
+      if (splited.length < 2) {
+        return "";
+      }
+      String id = filter.split(",")[1];
+      if (StringUtils.isNotEmpty(id) && StringUtils.isNumeric(id)) {
+        return id;
+      }
+    }
+
+    return "";
+  }
+
+  private boolean existWiki(String wikiId) {
+    for (WikiResultData data : topWikiList) {
+      if (data.getId().toString().equals(wikiId)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

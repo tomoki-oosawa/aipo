@@ -134,7 +134,7 @@ public class WikiUtils {
    * @param rundata
    * @return
    */
-  public static List<WikiResultData> loadCategoryList(RunData rundata) {
+  public static List<WikiResultData> loadTopWikiList(RunData rundata) {
     // カテゴリ一覧
     List<WikiResultData> categoryList = new ArrayList<WikiResultData>();
     try {
