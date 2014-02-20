@@ -92,6 +92,7 @@
 								<a onclick="aipo.wiki.pre()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-code"></i></span></a>
 								<a onclick="aipo.wiki.hr()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-minus"></i></span></a>
 								<a onclick="aipo.wiki.table()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-table"></i></span></a>
+								<a onclick="aipo.wiki.image()" href="javascript:void(0);"><span class="auiButtonIcon"><i class="icon-camera"></i></span></a>
 			</div>
 
 			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
