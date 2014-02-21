@@ -67,9 +67,13 @@
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 			#if(!$result.isChildForm() || "$!mode" != "new_form")
-				#ALtditem("#ALtextfieldw100('name' $!result.Name 50 'active')")
+				<td>
+				<input class="text w100" type="text" name="name" id="wiki_name" value="$!result.Name" maxlength="50" style="ime-mode:active" />
+				</td>
 			#else
-				#ALtditem("#ALtextfieldw100('name' $!result.getDestWikiName() 50 'active')")
+				<td>
+				<input class="text w100" type="text" name="name" id="wiki_name" value="$!result.getDestWikiName()" maxlength="50" style="ime-mode:active" />
+				</td>
 			#end
         </tr>
         <tr>
