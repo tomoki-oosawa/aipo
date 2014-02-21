@@ -1345,7 +1345,8 @@ public class WikipediaParser extends AbstractParser implements IParser {
 
     if (!fNoToC && fTableOfContentTag != null) {
       if (fHeadCounter > 3 || fForceToC) {
-        fTableOfContentTag.setShowToC(true);
+        /** bug fix */
+        // fTableOfContentTag.setShowToC(true);
       }
     }
 

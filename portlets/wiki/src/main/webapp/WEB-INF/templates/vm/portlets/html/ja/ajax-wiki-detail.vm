@@ -26,24 +26,21 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxdetailformheader("Wiki")
-#ALtableheaderWide()
-#ALtdcaption($l10n.WIKI_TITLE)
-#ALtditem($!result.Detail.name)
+<table class="listTable wide">
+<caption>
 #if($!result.Detail.isChild())
-#ALtdcaption($l10n.WIKI_PARENT)
-#ALtditemheader()
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$!result.Detail.parentId))', '$!portlet.ID', aipo.wiki.onLoadWikiDetail);" >$!result.Detail.getParentName()</a>
-#ALtditemfooter()
+<span class="floatRight" style="font-weight:normal"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$!result.Detail.parentId))', '$!portlet.ID', aipo.wiki.onLoadWikiDetail);" >$!result.Detail.getParentName()</a></span>
 #end
+$!result.Detail.name
+</caption>
+<tbody>
 <tr>
-  <td class="caption">$l10n.WIKI_NOTE</td>
-  <td>
+  <td colspan="2">
 	<div class="auiWikiContent">
 	$!result.Detail.getNote()
     </div>
   </td>
 </tr>
-
 #if($!result.Detail.AttachmentFileList.size() > 0)
 <tr>
   <td class="caption">$l10n.WIKI_FILE_ATTACH</td>
@@ -73,7 +70,8 @@
 #ALtditem($!result.Detail.updateUser)
 #ALtdcaption($l10n.WIKI_UPDATE_DATE)
 #ALtditem($updateDate_word)
-#ALtablefooter()
+	</tbody>
+</table>
 #ALbuttonheader()
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
