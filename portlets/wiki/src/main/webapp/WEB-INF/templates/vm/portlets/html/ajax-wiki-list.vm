@@ -110,7 +110,7 @@
     </ul>
   </div>
   <div>
-    <p class="caption">$l10n.WIKI_CATEGORY</p>
+    <p class="caption">$l10n.WIKI_PARENT</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
     #foreach($record in $result.TopWikiList)
