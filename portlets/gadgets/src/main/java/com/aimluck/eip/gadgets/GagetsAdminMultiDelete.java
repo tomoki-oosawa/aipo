@@ -39,7 +39,7 @@ import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 
+ *
  */
 public class GagetsAdminMultiDelete extends ALAbstractCheckList {
 
@@ -69,7 +69,9 @@ public class GagetsAdminMultiDelete extends ALAbstractCheckList {
             ALApplicationService.get(new ALApplicationGetRequest().withAppId(
               value).withStatus(Status.ALL).withIsDetail(true).withIsFetchXml(
               true));
-          titles.add(deletedApp.getTitle().toString());
+          if (deletedApp != null) {
+            titles.add(deletedApp.getTitle().toString());
+          }
         }
       }
 

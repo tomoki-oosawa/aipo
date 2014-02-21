@@ -311,13 +311,16 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
 
     try {
       // アプリ名を取得
-      String deletedAppTitle =
-        ALApplicationService.get(
-          new ALApplicationGetRequest()
-            .withAppId(appId)
-            .withStatus(Status.ALL)
-            .withIsDetail(true)
-            .withIsFetchXml(true)).getTitle().toString();
+      String deletedAppTitle = "";
+      ALApplication app =
+        ALApplicationService.get(new ALApplicationGetRequest()
+          .withAppId(appId)
+          .withStatus(Status.ALL)
+          .withIsDetail(true)
+          .withIsFetchXml(true));
+      if (app != null) {
+        deletedAppTitle = app.getTitle().toString();
+      }
 
       ALApplicationService.delete(appId);
 
