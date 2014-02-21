@@ -37,6 +37,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -198,6 +200,18 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
       // 会社を更新
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getCompanyId(),
+        ALEventlogConstants.PORTLET_TYPE_SYSTEM,
+        "社外アドレスを"
+          + protocol.getValue()
+          + "://"
+          + ipaddress.getValue()
+          + ":"
+          + (int) port.getValue()
+          + "に更新");
 
       // singletonの更新
       ALEipManager.getInstance().reloadCompany();

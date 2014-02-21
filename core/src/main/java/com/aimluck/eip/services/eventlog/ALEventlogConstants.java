@@ -45,6 +45,10 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_SYSTEM = 4;
 
+  public static final int PORTLET_TYPE_FACILITY = 5;
+
+  public static final int PORTLET_TYPE_GADGET = 6;
+
   public static final int PORTLET_TYPE_AJAXSCHEDULEWEEKLY = 100;
 
   public static final int PORTLET_TYPE_BLOG_ENTRY = 110;
