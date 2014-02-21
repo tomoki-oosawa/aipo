@@ -124,6 +124,7 @@
 #AUIrowTableWideScheduleList()
 #foreach ($record in $result.ScheduleList)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
+#set($trClass ="")
 #if(!$record.isStartDayEqualsEndDay())
 	#if($record.isDayStart())
 		<tr class="dayStart">
@@ -133,24 +134,28 @@
 #elseif($record.isStartDayEqualsToday())
 	#if($record.isDayStart())
 		<tr class="dayStart today">
+			#set($trClass ="today")			
 	#else
 		<tr class="today">
 	#end
 #elseif($record.isStartDateHoliday())
 	#if($record.isDayStart())
 		<tr class="dayStart sunday">
+			#set($trClass ="sunday")
 	#else
 		<tr class="sunday">
 	#end
 #elseif($record.StartDate.Value.Day==0)
 	#if($record.isDayStart())
 		<tr class="dayStart sunday">
+			#set($trClass ="sunday")
 	#else
 		<tr class="sunday">
 	#end
 #elseif($record.StartDate.Value.Day==6)
 	#if($record.isDayStart())
 		<tr class="dayStart saturday">
+			#set($trClass ="saturday")
 	#else
 		<tr class="saturday">
 	#end
@@ -168,7 +173,13 @@
 #set($tab = ["$l10n.SCHEDULE_DAY", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','oneday-group').addQueryData('view_start',$record.DateDay).addQueryData('filter',$filter).addQueryData('filtertype',$filtertype)"])
 #if($record.isDayStart())
 <td #if(${client}!="IPHONE")nowrap="nowrap" #end colspan="3" class="day"><a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');">${record.getDateShort()}</a></td>
-#else
+		</tr>
+		#if($trClass!="")
+		<tr class=$trClass>
+	    #else
+		<tr>
+		#end
+#end
 <td #if(${client}!="IPHONE") nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
 <td><div>
 #set ($count =0)
@@ -194,7 +205,6 @@
 #if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
 </div></td>
 <td class="wName mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
-#end
 </tr>
 #end
 #AUItablefooter()
