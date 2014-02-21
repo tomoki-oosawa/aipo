@@ -387,4 +387,36 @@ public class WikiUtils {
       ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
     return query.andQualifier(exp).getCount();
   }
+
+  public static String getWikiIdFromSession(String filter, String filterType) {
+    String sesFilter = filter == null ? "" : filter;
+    String sesFilterType = filterType == null ? "" : filterType;
+
+    if ("category".equals(sesFilterType)) {
+      if (StringUtils.isNotEmpty(sesFilter) && StringUtils.isNumeric(sesFilter)) {
+        return sesFilter;
+      }
+    } else if ("post,category".equals(sesFilterType)) {
+      String[] splited = filter.split(",");
+      if (splited.length < 2) {
+        return "";
+      }
+      String id = filter.split(",")[1];
+      if (StringUtils.isNotEmpty(id) && StringUtils.isNumeric(id)) {
+        return id;
+      }
+    }
+
+    return "";
+  }
+
+  public static boolean existWiki(String wikiId,
+      List<WikiResultData> topWikiList) {
+    for (WikiResultData data : topWikiList) {
+      if (data.getId().toString().equals(wikiId)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

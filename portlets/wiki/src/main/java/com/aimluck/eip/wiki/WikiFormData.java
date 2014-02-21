@@ -448,11 +448,10 @@ public class WikiFormData extends ALAbstractFormData {
         String fileterValue =
           ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
             + ALEipConstants.LIST_FILTER);
-        if (StringUtils.isNotEmpty(filtertype)
-          && StringUtils.isNotEmpty(fileterValue)
-          && "category".equals(filtertype)
-          && StringUtils.isNumeric(fileterValue)) {
-          setParentWiki(WikiUtils.getEipTWiki(Integer.parseInt(fileterValue)));
+        String wikiId =
+          WikiUtils.getWikiIdFromSession(fileterValue, filtertype);
+        if (StringUtils.isNotEmpty(wikiId) && StringUtils.isNumeric(wikiId)) {
+          setParentWiki(WikiUtils.getEipTWiki(Integer.parseInt(wikiId)));
         }
       }
     }

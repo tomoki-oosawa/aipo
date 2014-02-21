@@ -51,9 +51,6 @@
 		<tr>
         	#ALtdcaption("#ALrequired($!result.getFieldName('parentId'))")
         	#ALtditemheader()
-        	<div id="wikiCategoryInputField" #if(!$!{result.NewCategory})style="display:none"#end>
-        		#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')
-        	</div>
         	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
         		#ALselectpdheaderw100("parentId" "")
         		#foreach( $record in $result.TopWikiList )

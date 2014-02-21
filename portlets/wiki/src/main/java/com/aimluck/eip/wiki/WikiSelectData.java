@@ -616,9 +616,9 @@ public class WikiSelectData extends
       String sesFilterType =
         ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR);
 
-      String wikiId = getWikiIdFromSession(sesFilter, sesFilterType);
+      String wikiId = WikiUtils.getWikiIdFromSession(sesFilter, sesFilterType);
       EipTWiki obj = null;
-      if (existWiki(wikiId)) {
+      if (WikiUtils.existWiki(wikiId, topWikiList)) {
         obj = WikiUtils.getEipTWiki(Integer.parseInt(wikiId));
       } else {
         obj = WikiUtils.getEipTWikiOne();
@@ -649,37 +649,6 @@ public class WikiSelectData extends
     } catch (ALPermissionException e) {
       logger.error("doViewDetailOne", e);
     }
-  }
-
-  private String getWikiIdFromSession(String filter, String filterType) {
-    String sesFilter = filter == null ? "" : filter;
-    String sesFilterType = filterType == null ? "" : filterType;
-
-    if ("category".equals(sesFilterType)) {
-      if (StringUtils.isNotEmpty(sesFilter) && StringUtils.isNumeric(sesFilter)) {
-        return sesFilter;
-      }
-    } else if ("post,category".equals(sesFilterType)) {
-      String[] splited = filter.split(",");
-      if (splited.length < 2) {
-        return "";
-      }
-      String id = filter.split(",")[1];
-      if (StringUtils.isNotEmpty(id) && StringUtils.isNumeric(id)) {
-        return id;
-      }
-    }
-
-    return "";
-  }
-
-  private boolean existWiki(String wikiId) {
-    for (WikiResultData data : topWikiList) {
-      if (data.getId().toString().equals(wikiId)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   public void setIsTop(boolean isTop) {
