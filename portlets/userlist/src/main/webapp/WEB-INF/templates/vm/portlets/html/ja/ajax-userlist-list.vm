@@ -41,7 +41,7 @@ $l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
 #AUISummaryDivfooter()
 #AUIrowMTableWide()
 <tr>
-#ALtdheadW25("#ALajaxsortaddressbook('name_kana' '名前' $result 'UserListListScreen')")
+#ALtdheadAtt("#ALajaxsortaddressbook('name_kana' '名前' $result 'UserListListScreen')" 'class="wName"')
 #ALtdhead($l10n.USERLIST_POST_NAME)
 #ALtdheadheaderAtt('class="w15 mb_hid"')
 $l10n.USERLIST_POSITION

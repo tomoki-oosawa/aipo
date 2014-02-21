@@ -58,7 +58,7 @@
 ## ---------------------------------------------------------------------------
 $l10n.ACTIVITY_CONTENT
 </div></th>
-<th class="w20">
+<th class="wName">
 $l10n.ACTIVITY_NAME
 </th>
 <th class="thin">

@@ -47,7 +47,7 @@
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadW75("#ALajaxsort('category_name' $l10n.TODO_CATEGORY_NAME $result 'ToDoCategoryListScreen')")
-#ALtdheadW25Class("#ALajaxsort('user_name' $l10n.TODO_UPDATE_USER $result 'ToDoCategoryListScreen')" "mb_hide")
+#ALtdheadAtt("#ALajaxsort('user_name' $l10n.TODO_UPDATE_USER $result 'ToDoCategoryListScreen')"  'class="mb_hide wName"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
