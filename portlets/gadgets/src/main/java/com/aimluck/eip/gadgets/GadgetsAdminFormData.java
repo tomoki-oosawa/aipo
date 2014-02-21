@@ -310,6 +310,14 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
+      // アプリ名を取得
+      String deletedAppTitle =
+        ALApplicationService.get(
+          new ALApplicationGetRequest()
+            .withAppId(appId)
+            .withStatus(Status.ALL)
+            .withIsDetail(true)
+            .withIsFetchXml(true)).getTitle().toString();
 
       ALApplicationService.delete(appId);
 
@@ -317,7 +325,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         ALEipUtils.getUserId(rundata),
         ALEventlogConstants.PORTLET_TYPE_GADGET,
-        "アプリを削除");
+        "アプリ「" + deletedAppTitle + "」を削除");
 
     } catch (Throwable t) {
       logger.error(t, t);

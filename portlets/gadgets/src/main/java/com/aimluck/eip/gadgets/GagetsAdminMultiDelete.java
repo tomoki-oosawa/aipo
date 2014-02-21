@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.gadgets;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -27,11 +28,14 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
+import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -57,14 +61,28 @@ public class GagetsAdminMultiDelete extends ALAbstractCheckList {
       List<String> values, List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
     try {
+      List<String> titles = new ArrayList<String>();
+      // アプリ名を取得
+      for (String value : values) {
+        if (value != null) {
+          ALApplication deletedApp =
+            ALApplicationService.get(new ALApplicationGetRequest().withAppId(
+              value).withStatus(Status.ALL).withIsDetail(true).withIsFetchXml(
+              true));
+          titles.add(deletedApp.getTitle().toString());
+        }
+      }
 
+      // 削除
       ALApplicationService.delete(values);
 
       // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        ALEipUtils.getUserId(rundata),
-        ALEventlogConstants.PORTLET_TYPE_GADGET,
-        "アプリを削除");
+      for (String title : titles) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          ALEipUtils.getUserId(rundata),
+          ALEventlogConstants.PORTLET_TYPE_GADGET,
+          "アプリ「" + title + "」を削除");
+      }
 
     } catch (Throwable t) {
       logger.error(t, t);
