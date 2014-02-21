@@ -1525,7 +1525,7 @@ input[type=password] {
   left: 0 !important;
   width: 96% !important;
   height: auto !important;
-  margin: 0 2%;
+  margin: 0 2% !important;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
