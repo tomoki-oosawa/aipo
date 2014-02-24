@@ -23,5 +23,5 @@
 </div>
 <div class="auiPopupMeta clearfix">
 	<div class="auiPopupTitle">$title</div>
-	<div class="auiPopupClose"><a href="javascript:void(0)" onclick="aipo.fileupload.hideYoutubeDialog();"><i class="auiIcon auiIconDelete" title="閉じる"></i></a></div>
+	<div class="auiPopupClose"><a href="javascript:void(0)" onclick="aipo.fileupload.hideYoutubeDialog();"><i class="auiIcon auiIconDelete" title="$l10n.FILEUPLOAD_CLOSE"></i></a></div>
 </div>
