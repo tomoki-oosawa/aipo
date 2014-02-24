@@ -36,6 +36,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.account.AccountPositionResultData;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -78,6 +79,8 @@ public class AccountUtils {
   public static final String ACCOUNT_PERSON_PORTLET_NAME = "AccountPerson";
 
   public static final String ACCOUNT_LOGIN_PORTLET_NAME = "AccountLogin";
+
+  public static final String ACCOUNT_POSITION_PORTLET_NAME = "AccountPosition";
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -306,6 +309,27 @@ public class AccountUtils {
     }
 
     return resultList;
+  }
+
+  public static List<AccountPositionResultData> getAccountPositionResultList(
+      List<EipMPosition> result) {
+    List<AccountPositionResultData> list =
+      new ArrayList<AccountPositionResultData>();
+    for (EipMPosition model : result) {
+      list.add(getAccountPositionResultData(model));
+    }
+    return list;
+  }
+
+  public static AccountPositionResultData getAccountPositionResultData(
+      EipMPosition model) {
+    AccountPositionResultData data = new AccountPositionResultData();
+    data.initField();
+    data.setPositionId(model.getPositionId());
+    data.setPositionName(model.getPositionName());
+    data.setUpdate_date(model.getUpdateDate());
+    data.setCreateDate(model.getCreateDate());
+    return data;
   }
 
   /**
