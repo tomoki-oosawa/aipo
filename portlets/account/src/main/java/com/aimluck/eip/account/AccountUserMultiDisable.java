@@ -136,7 +136,10 @@ public class AccountUserMultiDisable extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           user.getUserId(),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「" + user.getLoginName() + "」を無効化");
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を無効化");
       }
 
       Database.commit();

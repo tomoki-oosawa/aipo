@@ -103,7 +103,10 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           user.getUserId(),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「" + user.getLoginName() + "」を有効化");
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を有効化");
       }
 
       Database.commit();

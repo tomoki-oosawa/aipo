@@ -908,7 +908,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           Integer.parseInt(user.getUserId()),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「" + user.getUserName() + "」を追加");
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を追加");
 
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
@@ -1109,7 +1112,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           Integer.parseInt(user.getUserId()),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「" + user.getUserName() + "」を更新");
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を更新");
 
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
@@ -1204,7 +1210,13 @@ public class AccountUserFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         target_user.getUserId(),
         ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-        "ユーザー「" + target_user.getLoginName() + "」を無効化");
+        "ユーザー「"
+          + new StringBuffer()
+            .append(target_user.getLastName())
+            .append(" ")
+            .append(target_user.getFirstName())
+            .toString()
+          + "」を無効化");
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
@@ -1272,7 +1284,13 @@ public class AccountUserFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         target_user.getUserId(),
         ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-        "ユーザー「" + target_user.getLoginName() + "」を有効化");
+        "ユーザー「"
+          + new StringBuffer()
+            .append(target_user.getLastName())
+            .append(" ")
+            .append(target_user.getFirstName())
+            .toString()
+          + "」を有効化");
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
@@ -1446,7 +1464,10 @@ public class AccountUserFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         user.getUserId(),
         ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-        "ユーザー「" + user.getLoginName() + "」を削除");
+        "ユーザー「"
+          + new StringBuffer().append(user.getLastName()).append(" ").append(
+            user.getFirstName()).toString()
+          + "」を削除");
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService
