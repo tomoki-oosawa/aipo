@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.account.AccountChangeTurnFormData;
+import com.aimluck.eip.account.AccountPostChangeTurnFormData;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
@@ -61,7 +61,8 @@ public class AccountPostChangeTurnFormScreen extends ALVelocityScreen {
     // セッションに残る ENTITY_ID を削除する．
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
-    AccountChangeTurnFormData formData = new AccountChangeTurnFormData();
+    AccountPostChangeTurnFormData formData =
+      new AccountPostChangeTurnFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
