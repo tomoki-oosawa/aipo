@@ -103,7 +103,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
       if (res) {
         if (positions.getValue() == null || positions.getValue().equals("")) {// 初期
           SelectQuery<EipMPosition> query = Database.query(EipMPosition.class);
-          // query.orderAscending(EipMPosition.SORT_PROPERTY);
+          query.orderAscending(EipMPosition.SORT_PROPERTY);
           accountPositionList =
             AccountUtils.getAccountPositionResultList(query.fetchList());
         } else {// データ送信時
@@ -117,13 +117,13 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
           SelectQuery<EipMPosition> query = Database.query(EipMPosition.class);
           List<EipMPosition> list = query.fetchList();
 
-          // for (int i = 0; i < accountPositionIds.length; i++) {
-          // EipMPosition accountPosition =
-          // getEipMPositionFromFacilityId(list, accountPositionIds[i]);
-          // accountPositionList.add(AccountUtils
-          // .getAccountPositionResultData(accountPosition));
-          // rawAccountPositionList.add(accountPosition);
-          // }
+          for (int i = 0; i < accountPositionIds.length; i++) {
+            EipMPosition accountPosition =
+              getEipMPositionFromAccountPositionId(list, accountPositionIds[i]);
+            accountPositionList.add(AccountUtils
+              .getAccountPositionResultData(accountPosition));
+            rawAccountPositionList.add(accountPosition);
+          }
         }
       }
     } catch (Exception ex) {
@@ -201,13 +201,13 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
     try {
       int newPosition = 1;
       for (EipMPosition accountPosition : rawAccountPositionList) {
-        // accountPosition.setSort(newPosition);
+        accountPosition.setSort(newPosition);
         newPosition++;
       }
       Database.commit();
     } catch (Exception e) {
       Database.rollback();
-      logger.error("facilities", e);
+      logger.error("accountPosition", e);
       res = false;
     }
     return res;
@@ -260,17 +260,16 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
    * @param userName
    * @return
    */
-  // private EipMPosition getEipMPositionFromFacilityId(
-  // List<EipMPosition> AccountPositionList, String AccountPositionId) {
-  // for (int i = 0; i < AccountPositionList.size(); i++) {
-  // EipMPosition accountPosition = AccountPositionList.get(i);
-  // if (accountPosition.AccountPositionId().toString().equals(
-  // AccountPositionId)) {
-  // return accountPosition;
-  // }
-  // }
-  // return null;
-  // }
+  private EipMPosition getEipMPositionFromAccountPositionId(
+      List<EipMPosition> AccountPositionList, String AccountPositionId) {
+    for (int i = 0; i < AccountPositionList.size(); i++) {
+      EipMPosition accountPosition = AccountPositionList.get(i);
+      if (accountPosition.getPositionId().toString().equals(AccountPositionId)) {
+        return accountPosition;
+      }
+    }
+    return null;
+  }
 
   /**
    * ユーザ情報のリストを取得する．

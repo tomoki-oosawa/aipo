@@ -9,6 +9,7 @@ public class _EipMPosition extends org.apache.cayenne.CayenneDataObject {
 
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String POSITION_NAME_PROPERTY = "positionName";
+    public static final String SORT_PROPERTY = "sort";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
 
     public static final String POSITION_ID_PK_COLUMN = "POSITION_ID";
@@ -26,6 +27,14 @@ public class _EipMPosition extends org.apache.cayenne.CayenneDataObject {
     }
     public String getPositionName() {
         return (String)readProperty("positionName");
+    }
+    
+    
+    public void setSort(Integer sort) {
+        writeProperty("sort", sort);
+    }
+    public Integer getSort() {
+        return (Integer)readProperty("sort");
     }
     
     

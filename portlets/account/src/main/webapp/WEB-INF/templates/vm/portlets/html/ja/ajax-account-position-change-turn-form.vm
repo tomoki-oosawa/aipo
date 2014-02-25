@@ -24,7 +24,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
-#if($result.List.size() == 0)
+#if($result.PositionList.size() == 0)
 <div class="message">$l10n.ACCOUNT_POSITION_MSG_NO_ACCOUNT_POSITION_REGISTERED</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -35,7 +35,7 @@
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
 $l10n.ACCOUNT_POSITION_MSG_OPERATION_ORDER1<br>
  $l10n.ACCOUNT_POSITION_MSG_OPETATION_ORDER2</div>
-#ALajaxscreenformheader("AccountPositionChangeTurnForm" $jslink $portlet "AccountPositionChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.facility.onReceiveMessage)")
+#ALajaxscreenformheader("AccountPositionChangeTurnForm" $jslink $portlet "AccountPositionChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_position.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 <table class="dialogTable wide">
@@ -49,12 +49,10 @@ $l10n.ACCOUNT_POSITION_MSG_OPERATION_ORDER1<br>
 <div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_POSITION_DECEND_ORDER_10" class="auiButtonIcon"><span><i class="icon-double-angle-down"></i></span></a></div>
 </td>
 <td width="65%"><select id="member_so_$!portlet.ID" name="member_so" size="20" multiple="multiple" style="WIDTH: 100%">
-#if($!result.List.size() <= 0)
+#if($!result.PositionList.size() <= 0)
 <option value=""></option>
 #else
-#foreach($record in $!result.List)
-	$!record.PositionName
-	$!record.PositionId
+#foreach($record in $!result.PositionList)
 <option value="$!record.PositionId">$!record.PositionName</option>
 #end
 #end
@@ -65,7 +63,7 @@ $l10n.ACCOUNT_POSITION_MSG_OPERATION_ORDER1<br>
 </table>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doFacility_change_turn_update' "$l10n.ACCOUNT_POSITION_UPDATE" 'setHiddenValue(this);aipo.facility.sortsubmit(this.form)')
+#ALsubmitJS('eventSubmit_doAccount_position_change_turn_update' "$l10n.ACCOUNT_POSITION_UPDATE" 'setHiddenValue(this);aipo.account_position.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
