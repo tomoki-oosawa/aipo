@@ -40,7 +40,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
- * 設備の順番情報のフォームデータを管理するためのクラスです。 <br />
+ * 役職の順番情報のフォームデータを管理するためのクラスです。 <br />
  */
 public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
 
@@ -48,12 +48,12 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountPositionChangeTurnFormData.class.getName());
 
-  // 設備名のリスト　ソート後
+  // 役職名のリスト　ソート後
   private ALStringField positions;
 
   private String[] accountPositionIds = null;
 
-  /** 設備情報のリスト */
+  /** 役職情報のリスト */
   private List<AccountPositionResultData> accountPositionList = null;
 
   private List<EipMPosition> rawAccountPositionList = null;
@@ -81,9 +81,9 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    // ユーザ名のリスト
+    // 名のリスト
     positions = new ALStringField();
-    positions.setFieldName("部署名リスト");
+    positions.setFieldName("役職名リスト");
     positions.setTrim(true);
   }
 
@@ -154,7 +154,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を読み込みます。 <BR>
+   * 『役職』を読み込みます。 <BR>
    * 
    * @param rundata
    * @param context
@@ -173,7 +173,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を追加します。 <BR>
+   * 『役職』を追加します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -187,7 +187,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を更新します。 <BR>
+   * 『役職』を更新します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -214,7 +214,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を削除します。 <BR>
+   * 『役職』を削除します。 <BR>
    * 
    * @param rundata
    * @param context
@@ -254,7 +254,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 指定した設備IDのオブジェクトを取得する．
+   * 指定した役職IDのオブジェクトを取得する．
    * 
    * @param userList
    * @param userName
@@ -272,7 +272,7 @@ public class AccountPositionChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * ユーザ情報のリストを取得する．
+   * 役職情報のリストを取得する．
    * 
    * @return
    */
