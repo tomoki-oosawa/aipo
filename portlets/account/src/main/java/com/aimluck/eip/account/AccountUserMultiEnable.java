@@ -100,13 +100,21 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
         user.setDisabled("F");
 
         // イベントログに保存
+        String name = "";
+        if (user.getLastName() != null
+          && !" ".equals(user.getLastName())
+          && user.getFirstName() != null
+          && !" ".equals(user.getFirstName())) {
+          name =
+            new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString();
+        } else {
+          name = user.getEmail();
+        }
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           user.getUserId(),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「"
-            + new StringBuffer().append(user.getLastName()).append(" ").append(
-              user.getFirstName()).toString()
-            + "」を有効化");
+          "ユーザー「" + name + "」を有効化");
       }
 
       Database.commit();

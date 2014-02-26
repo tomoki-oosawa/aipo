@@ -182,13 +182,21 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         Database.commit();
 
         // イベントログに保存
+        String name = "";
+        if (user.getLastName() != null
+          && !" ".equals(user.getLastName())
+          && user.getFirstName() != null
+          && !" ".equals(user.getFirstName())) {
+          name =
+            new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString();
+        } else {
+          name = user.getEmail();
+        }
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           user.getUserId(),
           ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「"
-            + new StringBuffer().append(user.getLastName()).append(" ").append(
-              user.getFirstName()).toString()
-            + "」を削除");
+          "ユーザー「" + name + "」を削除");
 
         // PSMLを削除
         JetspeedUser juser =
