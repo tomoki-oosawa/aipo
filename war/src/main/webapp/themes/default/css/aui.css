@@ -4256,6 +4256,8 @@ a:hover .auiWFicon [class^="icon-"] {
 .errorbox {
   max-width: 500px;
   margin: 0 auto;
+  padding: 20px;
+  text-align: center;
 }
 .errorbox h1 {
   font-size: 1.2em;
@@ -4266,4 +4268,18 @@ a:hover .auiWFicon [class^="icon-"] {
 }
 .errorbox ol {
   margin-left: 2em;
+}
+.errorbox li {
+  text-align: left;
+}
+.modalDialog .errorbox {
+  max-width: 100%;
+  padding: 0;
+}
+
+.errorboxContent {
+  border-top: solid 1px #d2d2d2;
+  text-align: left;
+  margin-top: 10px;
+  padding-top: 10px;
 }
