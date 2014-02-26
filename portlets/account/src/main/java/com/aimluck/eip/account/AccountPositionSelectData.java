@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.account;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -48,6 +50,9 @@ public class AccountPositionSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountPositionSelectData.class.getName());
 
+  /** フィルターなしの全役職リスト */
+  private List<AccountPositionResultData> accountPositionAllList;
+
   /**
    * 
    * @param action
@@ -57,6 +62,8 @@ public class AccountPositionSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+
+    loadAccountPositionAllList(rundata, context);
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
@@ -86,6 +93,16 @@ public class AccountPositionSelectData extends
       logger.error("AccountPositionSelectData.selectList", ex);
       return null;
     }
+  }
+
+  public static List<AccountPositionResultData> getAccountPositionList(
+      String groupname) {
+    List<AccountPositionResultData> list =
+      new ArrayList<AccountPositionResultData>();
+    SelectQuery<EipMPosition> query = Database.query(EipMPosition.class);
+    query.orderAscending(EipMPosition.SORT_PROPERTY);
+    list = AccountUtils.getAccountPositionResultList(query.fetchList());
+    return list;
   }
 
   /**
@@ -136,6 +153,11 @@ public class AccountPositionSelectData extends
     return rd;
   }
 
+  public void loadAccountPositionAllList(RunData rundata, Context context) {
+    accountPositionAllList = new ArrayList<AccountPositionResultData>();
+    accountPositionAllList.addAll(AccountUtils.getAccountPositionAllList());
+  }
+
   /**
    * @return
    */
@@ -143,6 +165,7 @@ public class AccountPositionSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("position_name", EipMPosition.POSITION_NAME_PROPERTY);
+    map.putValue("sort", EipMPosition.SORT_PROPERTY);
     return map;
   }
 

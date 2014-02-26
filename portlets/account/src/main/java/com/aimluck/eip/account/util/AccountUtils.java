@@ -311,6 +311,28 @@ public class AccountUtils {
     return resultList;
   }
 
+  public static List<AccountPositionResultData> getAccountPositionAllList() {
+    List<AccountPositionResultData> AccountPositionAllList =
+      new ArrayList<AccountPositionResultData>();
+
+    try {
+      List<EipMPosition> aList =
+        Database.query(EipMPosition.class).orderAscending(
+          EipMPosition.SORT_PROPERTY).fetchList();
+
+      for (EipMPosition record : aList) {
+        AccountPositionResultData rd = new AccountPositionResultData();
+        rd.initField();
+        rd.setPositionId(record.getPositionId());
+        rd.setPositionName(record.getPositionName());
+        AccountPositionAllList.add(rd);
+      }
+    } catch (Exception ex) {
+      logger.error("accountposition", ex);
+    }
+    return AccountPositionAllList;
+  }
+
   public static List<AccountPositionResultData> getAccountPositionResultList(
       List<EipMPosition> result) {
     List<AccountPositionResultData> list =

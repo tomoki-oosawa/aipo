@@ -25,7 +25,7 @@ aipo.account_position.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        aipo.portletReload('account_position');
+        aipo.portletReload('account_company');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;
