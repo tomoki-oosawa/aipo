@@ -36,6 +36,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.account.AccountPostResultData;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -476,5 +477,32 @@ public class AccountUtils {
       }
     }
     return true;
+  }
+
+  public static List<AccountPostResultData> getAccountPostResultList(
+      List<EipMPost> result) {
+    List<AccountPostResultData> list = new ArrayList<AccountPostResultData>();
+    for (EipMPost model : result) {
+      list.add(getAccountPostResultData(model));
+    }
+    return list;
+  }
+
+  public static AccountPostResultData getAccountPostResultData(EipMPost model) {
+    AccountPostResultData data = new AccountPostResultData();
+    data.initField();
+    data.setPostId(model.getPostId());
+    data.setCompanyId(model.getCompanyId());
+    data.setPostName(model.getPostName());
+    data.setZipcode(model.getZipcode());
+    data.setAddress(model.getAddress());
+    data.setInTelephone(model.getInTelephone());
+    data.setOutTelephone(model.getOutTelephone());
+    data.setFaxNumber(model.getFaxNumber());
+    data.setCreateDate(model.getCreateDate().toString());
+    data.setUpdateDate(model.getUpdateDate().toString());
+    data.setSort(model.getSort());
+    data.setGroupName(model.getGroupName());
+    return data;
   }
 }

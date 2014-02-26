@@ -21,53 +21,43 @@ package com.aimluck.eip.account;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
-import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
+import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 部署の順番情報のフォームデータを管理するためのクラスです。 <br />
  */
-public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
+public class AccountPostChangeTurnFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountPostChangeTurnFormData.class.getName());
 
-  // 部署名のリスト
+  // ユーザ名のリスト
   private ALStringField positions;
 
-  private String[] postNames = null;
-
-  private final String[] userNames = null;
+  private String[] postIds = null;
 
   /** 部署情報のリスト */
-  private List<EipMPost> postList = null;
+  private List<AccountPostResultData> postList = null;
 
-  /** ユーザ情報のリスト */
-  private List<ALEipUser> userList = null;
+  private List<EipMPost> rawpostList = null;
 
   /**
    * 初期化します。
@@ -81,7 +71,8 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    postList = new ArrayList<EipMPost>();
+    postList = new ArrayList<AccountPostResultData>();
+    rawpostList = new ArrayList<EipMPost>();
   }
 
   /**
@@ -91,7 +82,7 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
    */
   @Override
   public void initField() {
-    // 部署名のリスト
+    // ユーザ名のリスト
     positions = new ALStringField();
     positions.setFieldName(ALLocalizationUtils
       .getl10nFormat("ACCOUNT_POSTNAME_LIST"));
@@ -113,63 +104,30 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
       res = super.setFormData(rundata, context, msgList);
       if (res) {
         if (positions.getValue() == null || positions.getValue().equals("")) {
-          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-          ObjectId oid =
-            new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
-          Expression exp1 =
-            ExpressionFactory.matchAllDbExp(
-              oid.getIdSnapshot(),
-              Expression.GREATER_THAN);
-          Expression exp2 =
-            ExpressionFactory.matchExp(TurbineUser.COMPANY_ID_PROPERTY, Integer
-              .valueOf(1));
-          Expression exp3 =
-            ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
-          query.setQualifier(exp1);
-          query.andQualifier(exp2);
-          query.andQualifier(exp3);
-          userList = ALEipUtils.getUsersFromSelectQuery(query);
-
-          SelectQuery<TurbineUserGroupRole> postQuery =
-            Database.query(TurbineUserGroupRole.class);
-          List<TurbineUserGroupRole> postList = postQuery.fetchList();
-
+          SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+          query.orderAscending(EipMPost.SORT_PROPERTY);
+          postList = AccountUtils.getAccountPostResultList(query.fetchList());
         } else {
+          // データ送信時
           StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
-          postNames = new String[st.countTokens()];
+          postIds = new String[st.countTokens()];
           int count = 0;
           while (st.hasMoreTokens()) {
-            postNames[count] = st.nextToken();
+            postIds[count] = st.nextToken();
             count++;
           }
-          SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-          Expression exp1 =
-            ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-          Expression exp2 =
-            ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
-          query.setQualifier(exp1);
-          query.andQualifier(exp2);
+          SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+          List<EipMPost> list = query.fetchList();
 
-          List<TurbineUser> list = query.fetchList();
-
-          TurbineUser turbineUser = null;
-          int length = userNames.length;
-          for (int i = 0; i < length; i++) {
-            turbineUser = getEipUserRecord(list, userNames[i]);
-            ALEipUser user = new ALEipUser();
-            user.initField();
-            user.setName(turbineUser.getLoginName());
-            user.setAliasName(turbineUser.getFirstName(), turbineUser
-              .getLastName());
-            userList.add(user);
+          for (int i = 0; i < postIds.length; i++) {
+            EipMPost post = getEipMPostFromPostId(list, postIds[i]);
+            postList.add(AccountUtils.getAccountPostResultData(post));
+            rawpostList.add(post);
           }
         }
       }
-    } catch (RuntimeException ex) {
-      logger.error("AccountPostChangeTurnFormData.setFormData", ex);
-      return false;
     } catch (Exception ex) {
-      logger.error("AccountPostChangeTurnFormData.setFormData", ex);
+      logger.error("posts", ex);
       return false;
     }
     return res;
@@ -192,33 +150,6 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    if (positions.getValue() != null && (!positions.getValue().equals(""))) {
-      // 受信したユーザ ID の検証
-      StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
-      ALStringField field = null;
-      while (st.hasMoreTokens()) {
-        field = new ALStringField();
-        field.setTrim(true);
-        field.setValue(st.nextToken());
-        field.limitMaxLength(30); // ユーザ名の最大文字数が 30 文字．クラス AccountFormData を参照．
-        field.setCharacterType(ALStringField.TYPE_ASCII);
-        field.validate(msgList);
-        String unameValue = field.getValue();
-        int length = unameValue.length();
-        for (int i1 = 0; i1 < length; i1++) {
-          if (isSymbol(unameValue.charAt(i1))) {
-            // 使用されているのが妥当な記号であるかの確認
-            if (!(unameValue.charAt(i1) == "_".charAt(0)
-              || unameValue.charAt(i1) == "-".charAt(0) || unameValue
-                .charAt(i1) == ".".charAt(0))) {
-              msgList.add(ALLocalizationUtils
-                .getl10nFormat("ACCOUNT_ALERT_LOGINNAME_CHAR0"));
-              break;
-            }
-          }
-        }
-      }
-    }
     return (msgList.size() == 0);
   }
 
@@ -236,7 +167,7 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
     try {
       return true;
     } catch (Exception e) {
-      logger.error("AccountPostChangeTurnFormData.loadFormData", e);
+      logger.error("posts", e);
       return false;
     }
   }
@@ -268,27 +199,10 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
       List<String> msgList) {
     boolean res = true;
     try {
-      Expression exp1 =
-        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, userNames);
-      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class, exp1);
-      query.orderAscending(TurbineUser.EIP_MUSER_POSITION_PROPERTY
-        + "."
-        + EipMUserPosition.POSITION_PROPERTY);
-      List<TurbineUser> list = query.fetchList();
-
-      LinkedHashMap<String, TurbineUser> loginnameUserMap =
-        new LinkedHashMap<String, TurbineUser>();
-      for (TurbineUser user : list) {
-        loginnameUserMap.put(user.getLoginName(), user);
-      }
-
       int newPosition = 1;
-      for (String name : userNames) {
-        TurbineUser user = loginnameUserMap.get(name);
-        EipMUserPosition userPosition = user.getEipMUserPosition();
-        userPosition.setPosition(newPosition);
+      for (EipMPost post : rawpostList) {
+        post.setSort(newPosition);
         newPosition++;
-
       }
       Database.commit();
     } catch (Exception e) {
@@ -319,7 +233,6 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
    * @param ch
    * @return
    */
-  @Override
   protected boolean isSymbol(char ch) {
     byte[] chars;
 
@@ -341,37 +254,17 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
   }
 
   /**
-   * 指定した部署名のオブジェクトを取得する．
-   * 
-   * @param postList
-   * @param postName
-   * @return
-   */
-  private EipMPost getEipPostRecord(List<EipMPost> postList, String postName) {
-    int size = postList.size();
-    for (int i = 0; i < size; i++) {
-      EipMPost record = postList.get(i);
-      if (record.getPostName().equals(postName)) {
-        return record;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * 指定したユーザ名のオブジェクトを取得する．
+   * 指定した部署IDのオブジェクトを取得する．
    * 
    * @param userList
    * @param userName
    * @return
    */
-  private TurbineUser getEipUserRecord(List<TurbineUser> userList,
-      String userName) {
-    int size = userList.size();
-    for (int i = 0; i < size; i++) {
-      TurbineUser record = userList.get(i);
-      if (record.getLoginName().equals(userName)) {
-        return record;
+  private EipMPost getEipMPostFromPostId(List<EipMPost> postList, String postId) {
+    for (int i = 0; i < postList.size(); i++) {
+      EipMPost post = postList.get(i);
+      if (post.getPostId().toString().equals(postId)) {
+        return post;
       }
     }
     return null;
@@ -382,8 +275,7 @@ public class AccountPostChangeTurnFormData extends AccountChangeTurnFormData {
    * 
    * @return
    */
-  public List<EipMPost> getPostList() {
+  public List<AccountPostResultData> getPostList() {
     return postList;
   }
-
 }

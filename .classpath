@@ -177,5 +177,6 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
+	<classpathentry kind="var" path="M2_REPO/com/aimluck/eip/aipo-core/7.0.2/aipo-core-7.0.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

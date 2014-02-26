@@ -1973,3 +1973,5 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
+
+ALTER TABLE EIP_M_POST ADD SORT INTEGER NOT NULL;

@@ -818,3 +818,14 @@ aipo.schedule.setWrapperHeight = function() {
     	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
+aipo.schedule.multipleSelect=function(select) {
+	var values = select.val() || [];
+    setTimeout(function(){
+        select.val(values.length ? values : ['']).change();
+    }, 1000);
+	var firstOption = '<option value="" disabled="disabled"';
+    firstOption += (select.val() || []).length > 0 ? '' : ' selected="selected"';
+    firstOption += '>&laquo; Select ' + (select.attr('title') || 'Options') + ' &raquo;';
+    firstOption += '</option>';
+    select.prepend(firstOption);
+}

@@ -133,3 +133,5 @@ INSERT INTO eip_m_gpdb_kubun_value VALUES (44, 1, '大分県', 44, now(), now())
 INSERT INTO eip_m_gpdb_kubun_value VALUES (45, 1, '宮崎県', 45, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (47, 1, '沖縄県', 47, now(), now());
+
+ALTER TABLE `eip_m_post` ADD `sort` int(11) NOT NULL AFTER `update_date`;

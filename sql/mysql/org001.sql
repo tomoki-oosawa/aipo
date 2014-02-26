@@ -1228,3 +1228,5 @@ ALTER TABLE `container_config` ADD INDEX (`name`);
 
 ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 
+ALTER TABLE `eip_m_post` ADD INDEX(`sort`) ;
+

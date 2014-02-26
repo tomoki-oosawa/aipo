@@ -25,7 +25,7 @@
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.PostList) || $result.PostList.size() == 0)
-<div class="message">$l10n.ACCOUNT_ALERT_NO_USER</div>
+<div class="message">$l10n.ACCOUNT_ALERT_NO_POST</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div style="padding:0px 0px 5px 5px">

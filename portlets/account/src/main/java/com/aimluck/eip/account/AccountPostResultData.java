@@ -58,6 +58,9 @@ public class AccountPostResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
+  /** ソート */
+  private ALNumberField sort;
+
   /** グループ名 */
   private ALStringField group_name;
 
@@ -65,6 +68,7 @@ public class AccountPostResultData implements ALData {
    * 
    * 
    */
+  @Override
   public void initField() {
     post_id = new ALNumberField();
     company_id = new ALNumberField();
@@ -76,6 +80,7 @@ public class AccountPostResultData implements ALData {
     fax_number = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
+    sort = new ALNumberField();
     group_name = new ALStringField();
   }
 
@@ -151,6 +156,20 @@ public class AccountPostResultData implements ALData {
    */
   public ALStringField getZipcode() {
     return zipcode;
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getSort() {
+    return sort;
+  }
+
+  /**
+   * @param int
+   */
+  public void setSort(int num) {
+    sort.setValue(num);
   }
 
   /**
