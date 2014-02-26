@@ -37,7 +37,7 @@
 #set($tabs = [[$subtitle , "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-## IE文字化け対策
+## IEæ–?­—åŒ–ã‘å¯¾ç­?
 <span id="schedule_val_category1" style="display:none;">$l10n.SCHEDULE_OTHER</span>
 <span id="schedule_val_repeat1" style="display:none">$l10n.SCHEDULE_REPEATING</span>
 <span id="schedule_val_repeat2" style="display:none">$l10n.SCHEDULE_DONOT_REPEAT</span>
@@ -215,7 +215,7 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 #ALtditem("#ALtextfield('name' $!result.Name '100%' 50 'active')")
 
-#* 共有カテゴリ連携（ここから） *#
+#* å…±æœ‰ã‚«ãƒ?‚´ãƒªé€£æº?ˆã“ã“ã‹ã‚‰ï¼?*#
 #if($!result.isDisplayManHour())
 #ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditemheader()
@@ -223,7 +223,7 @@
 #ALselectfooter()
 #ALtditemfooter()
 #end
-#* 共有カテゴリ連携（ここまで） *#
+#* å…±æœ‰ã‚«ãƒ?‚´ãƒªé€£æº?ˆã“ã“ã¾ã§??*#
 
 #ALtdcaption("$!result.getFieldName('place')")
 #ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
@@ -240,7 +240,8 @@
 #ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
 <div id="memberFieldButton">
-	<table style="width:98%;">
+	<table class ="w100">
+  ##<table style="width:98%;">
 		<tbody>
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
@@ -307,7 +308,8 @@
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
-	<table style="width:98%;">
+	<table class ="w100">
+  ##<table style="width:98%;">
 		<tbody>
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
