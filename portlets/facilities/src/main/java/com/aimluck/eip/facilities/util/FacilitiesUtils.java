@@ -412,7 +412,7 @@ public class FacilitiesUtils {
     try {
       List<EipMFacilityGroup> result =
         Database.query(EipMFacilityGroup.class).orderAscending(
-          EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+          EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup group : result) {
         FacilityGroupResultData data = new FacilityGroupResultData();
@@ -479,6 +479,15 @@ public class FacilitiesUtils {
     data.setUpdateDate(model.getUpdateDate());
     data.setCreateDate(model.getCreateDate());
     data.setUserId(model.getUserId());
+    return data;
+  }
+
+  public static FacilityGroupResultData getFacilityGroupResultData(
+      EipMFacilityGroup model) {
+    FacilityGroupResultData data = new FacilityGroupResultData();
+    data.initField();
+    data.setGroupId(model.getGroupId());
+    data.setGroupName(model.getGroupName());
     return data;
   }
 }

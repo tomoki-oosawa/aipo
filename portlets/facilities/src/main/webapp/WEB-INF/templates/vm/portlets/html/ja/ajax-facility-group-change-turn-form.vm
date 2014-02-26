@@ -24,8 +24,8 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
-#if((! $!result.FacilityList) || $result.FacilityList.size() == 0)
-<div class="message">$l10n.FACILITIES_MSG_NO_FACILITIES_REGISTERED</div>
+#if((! $!result.facilityGroupList) || $result.facilityGroupList.size() == 0)
+<div class="message">$l10n.FACILITIES_GROUP_MSG_NO_FACILITIES_REGISTERED</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div style="padding:0px 0px 5px 5px">
@@ -52,8 +52,8 @@ $l10n.FACILITIES_GROUP_MSG_OPERATION_ORDER1<br>
 #if(($!result.UserList) && $!result.UserList.size() <= 0)
 <option value=""></option>
 #else
-#foreach($record in $!result.FacilityList)
-<option value="$!record.facilityId">$!record.FacilityName</option>
+#foreach($record in $!result.facilityGroupList)
+<option value="$!record.GroupId">$!record.GroupName</option>
 #end
 #end
 </select>
