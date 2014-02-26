@@ -202,7 +202,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
     try {
       int newPosition = 1;
       for (EipMFacilityGroup facilityGroup : rawFacilityGroupList) {
-        // facilityGroup.setSort(newPosition);
+        facilityGroup.setSort(newPosition);
         newPosition++;
       }
       Database.commit();

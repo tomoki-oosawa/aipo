@@ -22,6 +22,7 @@ package com.aimluck.eip.facilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -306,6 +307,23 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       rundata.getParameters().setProperties(facilitygroup);
       // 設備グループ名
       facilitygroup.setGroupName(facility_group_name.getValue());
+
+      // 設備グループの順番
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement
+        .append("SELECT MAX(sort) as max_sort FROM eip_m_facility_group");
+      List<DataRow> maxnum =
+        Database
+          .sql(EipMFacility.class, statement.toString())
+          .fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      facilitygroup.setSort(++lastnum);
 
       for (Object record : facilityList) {
         FacilityResultData frd = (FacilityResultData) record;
