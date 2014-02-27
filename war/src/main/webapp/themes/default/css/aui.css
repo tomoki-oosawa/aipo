@@ -3515,13 +3515,18 @@ ul.attachments {
 	auiWikiContent
 --------------------------------------------------*/
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
-  margin: 1em 0;
+  margin: 1em 0 !important;
 }
 .auiWikiContent h1 {
   font-size: large;
+  border-bottom: solid 1px #d2d2d2;
 }
 .auiWikiContent h2 {
   font-size: larger;
+  border-bottom: solid 1px #d2d2d2;
+}
+.auiWikiContent h3 {
+  border-bottom: dotted 1px #d2d2d2;
 }
 .auiWikiContent ul {
   margin: 1em;
@@ -3536,6 +3541,9 @@ ul.attachments {
 .auiWikiContent th, .auiWikiContent td {
   border: solid 1px #d2d2d2 !important;
   padding: 5px;
+}
+.auiWikiContent hr {
+  margin: 20px 0;
 }
 
 /***************************************************
