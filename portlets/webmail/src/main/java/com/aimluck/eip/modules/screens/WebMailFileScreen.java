@@ -123,7 +123,7 @@ public class WebMailFileScreen extends RawScreen {
       out.flush();
       out.close();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("WebMailFileScreen.doOutput", e);
     }
 
   }
