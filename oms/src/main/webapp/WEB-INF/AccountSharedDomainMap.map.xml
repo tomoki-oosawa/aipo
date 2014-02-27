@@ -47,6 +47,7 @@
 		<db-attribute name="OUT_TELEPHONE" type="VARCHAR" length="15"/>
 		<db-attribute name="POST_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POST_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="SORT" type="INTEGER"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
 	</db-entity>
@@ -155,10 +156,10 @@
 		<obj-attribute name="companyId" type="java.lang.Integer" db-attribute-path="COMPANY_ID"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="FAX_NUMBER"/>
-		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
 		<obj-attribute name="inTelephone" type="java.lang.String" db-attribute-path="IN_TELEPHONE"/>
 		<obj-attribute name="outTelephone" type="java.lang.String" db-attribute-path="OUT_TELEPHONE"/>
 		<obj-attribute name="postName" type="java.lang.String" db-attribute-path="POST_NAME"/>
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
 	</obj-entity>

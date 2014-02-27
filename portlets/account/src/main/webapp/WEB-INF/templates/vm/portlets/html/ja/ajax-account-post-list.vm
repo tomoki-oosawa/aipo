@@ -40,6 +40,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPostFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonLink($l10n.ACCOUNT_POST_SORT $orderPost)
 </div>
 #AUIajaxpageview('AccountPostListScreen' $result)
 #AUISummaryDivfooter()

@@ -60,13 +60,13 @@
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-sort" value="post_name" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1a-sort" value="sort" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>部署ソート方法</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-sort.style.items" value="post_name" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-sort.style.items" value="sort" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-sort.style.values" value="部署名" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
@@ -131,13 +131,13 @@
         <parameter name="p1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-sort" value="post_name" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p1a-sort" value="sort" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>部署ソート方法</title>
             </meta-info>
         </parameter>
         <parameter name="p1a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p1a-sort.style.items" value="post_name" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p1a-sort.style.items" value="sort" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1a-sort.style.values" value="部署名" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows" value="10" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
