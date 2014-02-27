@@ -26,7 +26,7 @@
 <div class="auiPopup clearfix">
 	<div class="auiPopupHead clearfix">
 		<div class="auiPopupTool">
-			<a href="javascript:void(0)" class="auiButtonIcon" title="閉じる" onclick="aipo.webmail.close();">
+			<a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.close();">
 				<span><i class="icon-remove"></i></span>
 			</a>
 		</div>
