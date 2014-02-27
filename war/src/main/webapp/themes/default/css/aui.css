@@ -2432,7 +2432,7 @@ select {
   min-height: 32px;
   min-height: 20px \9; /* IE8 and below */
   padding: 5px;
-  max-width: 300px;
+  max-width: 100%;
 }
 
 *:first-child + html select {

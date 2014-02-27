@@ -240,7 +240,8 @@
 #ALtdcaption($l10n.SCHEDULE_ENTRY_USER)
 #ALtditemheader()
 <div id="memberFieldButton">
-	<table style="width:98%;">
+	<table class ="w100">
+  ##<table style="width:98%;">
 		<tbody>
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
@@ -307,7 +308,8 @@
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
 <div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
-	<table style="width:98%;">
+	<table class ="w100">
+  ##<table style="width:98%;">
 		<tbody>
 			<tr class="member">
 				<td style="width:80%; border:none;"></td>
