@@ -18,34 +18,37 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<div class="auiPopup clearfix">
-    <table class="roundBlockWrapperTop">
-      <tbody>
-        <tr>
-          <td class="roundBlockTitle wide">$l10n.WAR_DATABASE_ERROR</td>
-          <td class="roundBlockIcon last"><div style="float:right">#ALdialogCloseButtonCommon()</div></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="roundBlockWrapperBottom clearfix">
-      <div class="roundBlockContent">
-<div style="padding:5px;" >
-$l10n.WAR_NOT_FOUND_PAGE_AND_REASON
-<div style="padding:5px;">
-<ul>
-<li>$l10n.WAR_DELETE_DATA</li>
-<li>$l10n.ERROR_WRONG_URL</li>
-<li>$l10n.WAR_STOP_DATABACE</li>
-</ul>
+<div class="auiPopup">
+	<div class="auiPopupHead clearfix">
+		<div class="auiPopupTool">
+			<div>#ALdialogCloseButtonCommon()
+			</div>
+		</div>
+		<div class="auiPopupTitle">$l10n.WAR_ERROR</div>
+    </div>
+    <div class="errorbox">
+		<div vlass="mb20">
+			<!-- <img width="100" height="30" src="../themes/default/images/logo_com_20130613.png" alt="Aipo.com" /> -->
+        </div>
+        <h1>$l10n.WAR_SESSION_TIMEOUT</h1>
+		<p>$l10n.WAR_RELOADING</p>
+		<!--
+		<div class="errorboxContent">
+			<div dojotype="aimluck.widget.Timeout" redirecturl="">timeout</div>
+			<p>センタリングさせない詳細メッセージ等は「errorboxContent」内に</p>
+			<ul>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+			</ul>
+			<ol>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+			</ol>
+			<a href="#">リンク</a> <a href="#">リンク</a> <a href="#">リンク</a>
+		</div>
+		-->
+    </div>
 </div>
-</div>
-#if($config.getString("support.mail"))
-$l10n.WAR_INQUILY
-<br />
-[e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
-#end
-#ALbuttonheader()
-#ALajaxbuttonClose()
-#ALbuttonfooter()
-#ALdialogfooter()
 

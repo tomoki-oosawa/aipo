@@ -19,15 +19,28 @@
 
 ## ---------------------------------------------------------------------------
 <div class="errorbox">
-    <h1>$l10n.WAR_DBERROR_TITLE</h1>
-    $l10n.WAR_DBERROR_CONTENT
-    #if($config.getString("support.mail"))
-    <p>
-    $l10n.WAR_NO_ERROR_URL_INQUILY
-    </p>
-    <p>
-    [e-mail : <a href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</a> ]
-    </p>
-    #end
-    <a href="${context_path}/portal">$l10n.WORKFLOW_BACK</a>
+    <div class="errorbox">
+		<div vlass="mb20">
+			<!-- <img width="100" height="30" src="../themes/default/images/logo_com_20130613.png" alt="Aipo.com" /> -->
+        </div>
+        <h1>$l10n.WAR_SESSION_TIMEOUT</h1>
+		<p>$l10n.WAR_RELOADING</p>
+		<!--
+		<div class="errorboxContent">
+			<div dojotype="aimluck.widget.Timeout" redirecturl="">timeout</div>
+			<p>センタリングさせない詳細メッセージ等は「errorboxContent」内に</p>
+			<ul>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+			</ul>
+			<ol>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+				<li>リストパターン</li>
+			</ol>
+			<a href="#">リンク</a> <a href="#">リンク</a> <a href="#">リンク</a>
+		</div>
+		-->
+    </div>
 </div>
