@@ -81,7 +81,7 @@ public class MsgboardTopicFileRawScreen extends FileuploadRawScreen {
     } catch (ALPermissionException e) {
       throw new Exception();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("MsgboardTopicFileRawScreen.doOutput", e);
     }
   }
 

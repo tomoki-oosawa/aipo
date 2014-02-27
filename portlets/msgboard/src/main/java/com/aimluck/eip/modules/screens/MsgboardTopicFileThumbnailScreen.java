@@ -50,7 +50,7 @@ public class MsgboardTopicFileThumbnailScreen extends FileuploadThumbnailScreen 
       super.setFileName(msgboardfile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("MsgboardTopicFileThumbnailScreen.doOutput", e);
     }
   }
 }
