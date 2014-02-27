@@ -18,11 +18,11 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($indicator_str = "$l10.NOTE_SEND_DATA")
-#set ($action_str = "$l10.NOTE_DO_ADD")
-#set ($subtitle = "$l10.NOTE_ADD_MEMO")
+#set ($indicator_str = "$l10n.NOTE_SEND_DATA")
+#set ($action_str = "$l10n.NOTE_DO_ADD")
+#set ($subtitle = "$l10n.NOTE_ADD_MEMO")
 #set ($event_submit = "eventSubmit_doNote_insert")
-#set ($do_action_str = "${action_str}$l10.NOTE_DO")
+#set ($do_action_str = "${action_str}$l10n.NOTE_DO")
 #set ($tabs = [[$subtitle, "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
