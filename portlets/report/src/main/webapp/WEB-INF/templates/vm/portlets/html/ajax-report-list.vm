@@ -44,7 +44,7 @@
 <tr>
 #ALtdhead("#ALajaxsort('report_name' $l10n.REPORT_SETFIELDNAME_REPORT_NAME $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('start_date' $l10n.REPORT_SETFIELDNAME_CREATEDATE $result 'ReportListScreen')")
-#ALtdhead("#ALajaxsort('user_id' $l10n.REPORT_CREATER $result 'ReportListScreen')")
+#ALtdheadAtt("#ALajaxsort('user_id' $l10n.REPORT_CREATER $result 'ReportListScreen')" 'class="wName"')
 #ALtdhead("#ALajaxsort('create_date' $l10n.REPORT_CREATE_DATE $result 'ReportListScreen')")
 </tr>
 #foreach ($record in $result.List)

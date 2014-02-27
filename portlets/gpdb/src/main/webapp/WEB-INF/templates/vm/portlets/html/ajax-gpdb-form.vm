@@ -27,7 +27,7 @@
 #set ($subtitle = "$l10n.GPDB_DATABASE_ADD")
 #set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('reset_keyword_params','true')))
 #else
-#set ($action_str = "$l10n.GPDB_EDIT")
+#set ($action_str = "$l10n.GPDB_UPDATE")
 #set ($subtitle = "$l10n.GPDB_DATABASE_EDIT")
 #set ($event_submit = "eventSubmit_doGpdb_update")
 #end

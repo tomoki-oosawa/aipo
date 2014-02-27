@@ -50,6 +50,8 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -510,6 +512,13 @@ public class AccountPostFormData extends ALAbstractFormData {
       record.setUpdateDate(now);
       // 部署を追加
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getPostId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "部署「" + record.getPostName() + "」を追加");
+
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
       if (is_join_member) {
@@ -634,6 +643,12 @@ public class AccountPostFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getPostId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "部署「" + record.getPostName() + "」を更新");
+
     } catch (RuntimeException ex) {
       throw ex;
     } catch (Exception ex) {
@@ -679,6 +694,12 @@ public class AccountPostFormData extends ALAbstractFormData {
       Database.delete(record);
 
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        record.getPostId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "部署「" + record.getPostName() + "」を削除");
 
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();

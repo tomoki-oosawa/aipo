@@ -99,7 +99,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadThin($l10n.ACCOUNT_STATUS)
 #ALtdheadW33("#ALajaxsort('login_name' $l10n.ACCOUNT_USER_ACCOUNT $result 'AccountUserListScreen')")
-#ALtdheadW25("#ALajaxsort('name_kana' $l10n.ACCOUNT_USER_NAME $result 'AccountUserListScreen')")
+#ALtdheadAtt("#ALajaxsort('name_kana' $l10n.ACCOUNT_USER_NAME $result 'AccountUserListScreen')"'class="wName"')
 #ALtdheadW25Class($l10n.ACCOUNT_POST_NAME "mb_hide")
 #ALtdheadW10Class($l10n.ACCOUNT_POSITION_NAME "mb_hide")
 </tr>

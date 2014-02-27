@@ -47,16 +47,18 @@
 
 </ul>
 
-<div style="margin:0.5em 0;">
+<div #if("${client}" == "IPHONE")style="margin:0.5em 0;border: medium none; padding: 5px;"#else style="margin:0.5em 0;" #end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$groupUrl', '$!portlet.ID')">$l10n.ADDRESSBOOK_GROUP_MANAGEMENT</a>
 </div>
+#if("${client}" != "IPHONE")
 </div>
 
-<div class="auiWidget clearfix">
-
-<div style="margin:0.5em 0;">
+<div class ="auiWidget clearfix">
+#end
+<div #if("${client}" == "IPHONE")style="margin:0.5em 0;border: medium none; padding: 5px;"#else style="margin:0.5em 0;" #end>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$companyUrl', '$!portlet.ID')">$l10n.ADDRESSBOOK_COMPANY_MANAGEMENT</a>
 </div>
+
 </div>
 
 #**

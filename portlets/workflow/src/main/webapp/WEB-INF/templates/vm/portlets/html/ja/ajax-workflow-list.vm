@@ -69,7 +69,7 @@
 <tr>
 #ALtdheadAtt("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowListScreen')" 'class=""')
 #ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowListScreen')" 'class="thin"')
-#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin"')#else#ALtdheadAtt("$title" 'class="thin"')#end
+#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin wName"')#else#ALtdheadAtt("$title" 'class="thin  wName"')#end
 #ALtdheadAtt("#ALajaxsort('create_date' $l10n.WORKFLOW_CREATEDATE $result 'WorkflowListScreen')" 'class="thin"')
 </tr>
 #foreach ($record in $result.List)
@@ -84,9 +84,9 @@
 		<a href="javascript:void(0);" onclick="aipo.container.gadgetService.requestCheckActivity($record.ActivityId);aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowDetailScreen").addQueryData("mode","detail").addQueryData("entityid",$record.RequestId).addQueryData("prvid",$record.RequestId))','$!portlet.ID',aipo.workflow.onFocusComment);">$!record.CategoryName#if($!record.RequestName != '') : $!record.RequestName #end</a>
 	</div>
 </td>
-#ALtdcellAtt("$!record.StateString" 'nowrap="nowrap" align="center"')
-#ALtdcellAtt("$user" 'nowrap="nowrap" align="center"')
-#ALtdcellAtt("$!record.CreateDateTime" 'nowrap="nowrap" align="center"')
+#ALtdcellAtt("$!record.StateString" 'nowrap="nowrap"')
+#ALtdcellAtt("<div>$user</div>" '')
+#ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end
 #AUItablefooter()

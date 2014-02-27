@@ -75,6 +75,8 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
@@ -902,6 +904,15 @@ public class AccountUserFormData extends ALAbstractFormData {
 
         Database.commit();
 
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          Integer.parseInt(user.getUserId()),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を追加");
+
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
           .getInstance()
@@ -1096,6 +1107,16 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setPhotoModifiedSmartphone(user
             .getPhotoModifiedSmartphone());
         }
+
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          Integer.parseInt(user.getUserId()),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "ユーザー「"
+            + new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString()
+            + "」を更新");
+
         // WebAPIとのDB同期
         if (!ALDataSyncFactoryService
           .getInstance()
@@ -1185,6 +1206,18 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        target_user.getUserId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "ユーザー「"
+          + new StringBuffer()
+            .append(target_user.getLastName())
+            .append(" ")
+            .append(target_user.getFirstName())
+            .toString()
+          + "」を無効化");
+
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
       if (!ALDataSyncFactoryService
@@ -1243,8 +1276,21 @@ public class AccountUserFormData extends ALAbstractFormData {
         return false;
       }
 
-      (list.get(0)).setDisabled("F");
+      TurbineUser target_user = list.get(0);
+      (target_user).setDisabled("F");
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        target_user.getUserId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "ユーザー「"
+          + new StringBuffer()
+            .append(target_user.getLastName())
+            .append(" ")
+            .append(target_user.getFirstName())
+            .toString()
+          + "」を有効化");
 
       // WebAPIとのDB同期
       String[] user_name_list = { user_name };
@@ -1413,6 +1459,15 @@ public class AccountUserFormData extends ALAbstractFormData {
       user.setLoginName(dummy_user_name);
 
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        user.getUserId(),
+        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+        "ユーザー「"
+          + new StringBuffer().append(user.getLastName()).append(" ").append(
+            user.getFirstName()).toString()
+          + "」を削除");
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService

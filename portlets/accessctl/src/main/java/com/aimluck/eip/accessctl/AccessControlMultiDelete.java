@@ -32,6 +32,8 @@ import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * ロールの複数削除を行うためのクラスです。 <BR>
@@ -66,8 +68,16 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
       }
 
       Database.deleteAll(roles);
-
       Database.commit();
+
+      // イベントログに保存
+      for (EipTAclRole role : roles) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          role.getRoleId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
+          "ロール 「" + role.getRoleName() + "」 削除");
+      }
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlMultiDelete.action", ex);

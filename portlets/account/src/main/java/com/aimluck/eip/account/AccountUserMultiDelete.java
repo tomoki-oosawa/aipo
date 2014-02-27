@@ -46,6 +46,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -178,6 +180,23 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         AccountUtils.acceptWorkflow(record.getUserId());
 
         Database.commit();
+
+        // イベントログに保存
+        String name = "";
+        if (user.getLastName() != null
+          && !" ".equals(user.getLastName())
+          && user.getFirstName() != null
+          && !" ".equals(user.getFirstName())) {
+          name =
+            new StringBuffer().append(user.getLastName()).append(" ").append(
+              user.getFirstName()).toString();
+        } else {
+          name = user.getEmail();
+        }
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          user.getUserId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "ユーザー「" + name + "」を削除");
 
         // PSMLを削除
         JetspeedUser juser =

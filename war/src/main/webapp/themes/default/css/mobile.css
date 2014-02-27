@@ -207,10 +207,9 @@ input[type=password] {
 	auiRowTable
 --------------------------------------------------*/
 .auiRowTable tr.mb_hide + tr {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
-
- .auiRowTable div a {
+.auiRowTable div a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -1526,7 +1525,7 @@ input[type=password] {
   left: 0 !important;
   width: 96% !important;
   height: auto !important;
-  margin: 0 2%;
+  margin: 0 2% !important;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;

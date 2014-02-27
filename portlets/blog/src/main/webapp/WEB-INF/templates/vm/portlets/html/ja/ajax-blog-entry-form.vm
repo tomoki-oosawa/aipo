@@ -105,7 +105,7 @@
 </tr>
 #ALtablefooter()
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.BLOG_ADD" onclick="aimluck.io.setHiddenValue(this);">
+#ALsubmit($event_submit $action_str)
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

@@ -127,7 +127,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         if (message != null
           && message.indexOf(ALConstants.DB_ERROR_DETECT) != -1) {
           setOrgParametersForError(data);
-          data.setScreenTemplate(ALConstants.DB_ERROR_TEMPLATE);
+          ALEipUtils.redirectDBError(data);
           return;
         }
       }

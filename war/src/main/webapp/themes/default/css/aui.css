@@ -1984,15 +1984,15 @@ input.auiButtonSearch.active {
   border-bottom: solid 1px #ededed;
 }
 .auiRowTable .dayStart td {
-  border-top: solid 1px #ededed;
+  border-top: solid 1px #d2d2d2;
 }
 .auiRowTable .day,
 .auiRowTable .time {
   white-space: nowrap;
 }
 .auiRowTable .day {
-  width: 80px;
   white-space: nowrap;
+  background: #f6f6f6;
 }
 .auiRowTable .day a {
   white-space: nowrap;
@@ -2011,15 +2011,14 @@ input.auiButtonSearch.active {
   display: inline;
 }
 .auiRowTable .today .day {
-  /*color:#060;*/
-  background: #f5f5f5;
+  font-weight: bold;
 }
 .auiRowTable tr:hover {
-  background: #f5f5f5;
+  background: #f6f6f6;
 }
 .auiRowTable tr:hover td,
 .auiRowTable tr:hover th {
-  background: #f5f5f5;
+  background: #f6f6f6;
 }
 .auiRowTable tr.unread td {
   font-weight: bold;
