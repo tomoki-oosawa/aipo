@@ -197,6 +197,7 @@ public class FacilityGroupSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group_name", EipMFacilityGroup.GROUP_NAME_PROPERTY);
+    map.putValue("sort", EipMFacilityGroup.SORT_PROPERTY);
     return map;
   }
 
