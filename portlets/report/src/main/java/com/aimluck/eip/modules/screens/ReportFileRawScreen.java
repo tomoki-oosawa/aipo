@@ -37,15 +37,14 @@ public class ReportFileRawScreen extends FileuploadRawScreen {
     .getLogger(ReportFileRawScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTReportFile reportfile =
-          ReportUtils.getEipTReportFile(rundata);
+      EipTReportFile reportfile = ReportUtils.getEipTReportFile(rundata);
 
       super.setFilePath(ReportUtils.getSaveDirPath(
         Database.getDomainName(),
@@ -54,7 +53,7 @@ public class ReportFileRawScreen extends FileuploadRawScreen {
       super.setFileName(reportfile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("ReportFileRawScreen.doOutput", e);
     }
   }
 }

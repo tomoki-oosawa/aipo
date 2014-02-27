@@ -54,7 +54,7 @@ public class WorkflowFileRawScreen extends FileuploadRawScreen {
       super.setFileName(workflowfile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("WorkflowFileRawScreen.doOutput", e);
     }
   }
 }

@@ -54,7 +54,7 @@ public class GpdbRecordFileThumbnailScreen extends FileuploadThumbnailScreen {
       super.setFileName(file.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("GpdbRecordFileThumbnailScreen.doOutput", e);
     }
   }
 }

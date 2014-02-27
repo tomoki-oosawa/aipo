@@ -91,7 +91,7 @@ public class CabinetJSONScreen extends ALJSONScreen {
       result = json.toString();
 
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("CabinetJSONScreen.getJSONString", e);
     }
 
     return result;

@@ -49,7 +49,7 @@ public class ReportFileThumbnailScreen extends FileuploadThumbnailScreen {
       super.setFileName(reportfile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("ReportFileThumbnailScreen.doOutput", e);
     }
   }
 }

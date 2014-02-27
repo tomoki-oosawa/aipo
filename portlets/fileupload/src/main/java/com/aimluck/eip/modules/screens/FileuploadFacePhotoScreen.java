@@ -105,7 +105,7 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
       super.setFileName("photo.jpg");
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]" , e);
+      logger.error("FileuploadFacePhotoScreen.doOutput", e);
     }
   }
 }
