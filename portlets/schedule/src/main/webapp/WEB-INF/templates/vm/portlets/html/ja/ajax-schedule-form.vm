@@ -37,7 +37,7 @@
 #set($tabs = [[$subtitle , "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-## IEæ–?­—åŒ–ã‘å¯¾ç­?
+## IE文字化け対策
 <span id="schedule_val_category1" style="display:none;">$l10n.SCHEDULE_OTHER</span>
 <span id="schedule_val_repeat1" style="display:none">$l10n.SCHEDULE_REPEATING</span>
 <span id="schedule_val_repeat2" style="display:none">$l10n.SCHEDULE_DONOT_REPEAT</span>
@@ -215,7 +215,7 @@
 #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 #ALtditem("#ALtextfield('name' $!result.Name '100%' 50 'active')")
 
-#* å…±æœ‰ã‚«ãƒ?‚´ãƒªé€£æº?ˆã“ã“ã‹ã‚‰ï¼?*#
+#* 共有カテゴリ連携（ここから） *#
 #if($!result.isDisplayManHour())
 #ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditemheader()
@@ -223,7 +223,7 @@
 #ALselectfooter()
 #ALtditemfooter()
 #end
-#* å…±æœ‰ã‚«ãƒ?‚´ãƒªé€£æº?ˆã“ã“ã¾ã§??*#
+#* 共有カテゴリ連携（ここまで） *#
 
 #ALtdcaption("$!result.getFieldName('place')")
 #ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
