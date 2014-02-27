@@ -71,7 +71,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
 
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOAddressBookCompanyCsvFileScreen.getCSVstring", e);
       return null;
     }
   }
@@ -114,7 +114,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
       }
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOAddressBookCompanyCsvFileScreen.getCSVString", e);
       return null;
     }
   }
