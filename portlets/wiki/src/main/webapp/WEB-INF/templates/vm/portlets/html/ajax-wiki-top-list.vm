@@ -23,17 +23,18 @@
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
-<h2>$l10n.WIKI_MANAGEMENT</h2>
+<h2>fdsa$l10n.WIKI_MANAGEMENT</h2>
 #if($result.List.size() <= 0)
 #AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.aipo.wiki.onLoadWikiDialog);")
 #else
-	
+
 <div class="auiSummaryMeta clearfix">
 <p>
 #AUIbuttonAction($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
 </p>
 </div>
 #AUISummaryDiv()
+#AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiTopListScreen' $result)
 #AUISummaryDivfooter()
 <table class="auiRowTable auiMbTable wide">
@@ -41,17 +42,23 @@
 	<colgroup style="width: 9em;"></colgroup>
 	<tbody>
 		<tr>
-			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "class='w75")
-			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_CREATE_USER $result 'WikiListScreen')" "class='w25 mb_hide'")
+			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
+			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>
+			#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+			<input name="check$!record.Id" type="checkbox" value="$!record.Id" />
+		    #ALtdcellfooter()
 		    #ALtdcellheaderAtt('class="auiMTCaption"')
 				<div>
 					<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$record.Id))');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
 			<td><div>$!record.UpdateUser</div></td>
+			<td>$!record.UpdateDate</td>
 		</tr>
 		#end
 	</tbody>

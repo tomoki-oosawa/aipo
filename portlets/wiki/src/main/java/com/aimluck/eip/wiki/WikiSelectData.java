@@ -53,7 +53,6 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -304,21 +303,15 @@ public class WikiSelectData extends
 
   private SelectQuery<EipTWiki> getSelectQuery(RunData rundata, Context context) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
-    if (isTop) {
-      query.where(Operations.eq(
-        EipTWiki.PARENT_ID_PROPERTY,
-        WikiUtils.PARENT_WIKI));
-    } else {
-      if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
-        // 選択したキーワードを指定する．
-        String keyword = "%" + target_keyword.getValue() + "%";
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      // 選択したキーワードを指定する．
+      String keyword = "%" + target_keyword.getValue() + "%";
 
-        Expression exp =
-          ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, keyword);
-        Expression exp2 =
-          ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
-        query.andQualifier(exp.orExp(exp2));
-      }
+      Expression exp =
+        ExpressionFactory.likeExp(EipTWiki.WIKI_NAME_PROPERTY, keyword);
+      Expression exp2 =
+        ExpressionFactory.likeExp(EipTWiki.NOTE_PROPERTY, keyword);
+      query.andQualifier(exp.orExp(exp2));
     }
     return buildSelectQueryForFilter(query, rundata, context);
   }
