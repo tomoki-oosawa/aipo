@@ -16,27 +16,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
+## ---------------------------------------------------------------------------
+## ---------------------------------------------------------------------------
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new").addQueryData("wikipage","parent")))##.addQueryData("page","parent")
 
 ## ---------------------------------------------------------------------------
-#set ($navilist = [[$l10n.WIKI_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WIKI_LIST, ""]])
-## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
-//<![CDATA[
-    dojo.provide('aipo.wiki');
 
-    ptConfig['$!portlet.ID'] = { group:"wiki", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.wiki.menuSelected = 0;
+#AUIcontentsAreaHeader()
+<h2>$l10n.WIKI_MANAGEMENT</h2>
+#ALajaxlistformheader("$l10n.WIKI_DATA")
 
-//]]>
-</script>
-##if($!result.hasAuthority())
-#ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#if(!$!result.Detail)
-#parse("/portlets/html/ja/ajax-wiki-nothing.vm")
-#else
-#parse("/portlets/html/ja/ajax-wiki-view.vm")
-#end
-#ALcontentfooter()
-##else
-##parse("/portlets/html/PermissionError.vm")
-##end
+#AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+
+#AUIcontentsAreaFooter()
+
+#parse("/portlets/html/ja/wiki-widgets.vm")

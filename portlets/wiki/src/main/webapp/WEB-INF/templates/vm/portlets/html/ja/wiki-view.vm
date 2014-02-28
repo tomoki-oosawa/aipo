@@ -31,7 +31,11 @@
 </script>
 ##if($!result.hasAuthority())
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
+#if(!$!result.Detail)
+#parse("/portlets/html/ja/ajax-wiki-nothing.vm")
+#else
 #parse("/portlets/html/ja/ajax-wiki-view.vm")
+#end
 #ALcontentfooter()
 ##else
 ##parse("/portlets/html/PermissionError.vm")

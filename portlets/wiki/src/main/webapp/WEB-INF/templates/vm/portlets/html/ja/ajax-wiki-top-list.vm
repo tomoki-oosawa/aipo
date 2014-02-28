@@ -25,6 +25,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>$l10n.WIKI_MANAGEMENT</h2>
+<<<<<<< OURS
 <div class="auiSummaryMeta auiFilter clearfix">
 <form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
@@ -54,8 +55,11 @@
 </form>
 </div>
 #ALajaxlistformheaderAction('Wiki')
+=======
+#ALajaxlistformheader("$l10n.WIKI_DATA")
+>>>>>>> THEIRS
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.aipo.wiki.onLoadWikiDialog);")
+#AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
 #else
 #AUISummaryFilterDivHeader()
 	#AUISearchHeaderMarginOne()
@@ -99,6 +103,7 @@
 		#end
 	</tbody>
 </table>
+#ALformfooter()
 #end
 #AUIcontentsAreaFooter()
 
