@@ -1743,6 +1743,10 @@ $item.get(0)
 <form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
 #end
 
+#macro(AUISearchHeaderMarginOne)
+<form class="auiSearch floatLeft" style="margin-right:1em;">
+#end
+
 #macro(AUISearchInput $id $name $value $option)
 	<input class="text floatLeft long" type="text" id="$id" name="$name" value="$value" $option/>
 #end

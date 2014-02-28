@@ -57,6 +57,18 @@
 #if($result.List.size() <= 0)
 #AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.aipo.wiki.onLoadWikiDialog);")
 #else
+#AUISummaryFilterDivHeader()
+	#AUISearchHeaderMarginOne()
+		<div class="filterInputField">
+			<div class="filters"><!--span class="filterTip"><span>Wiki名Wiki名</span><a href="javascript:void()" onclick="this.parentNode.style.display='none'"><i class="auiIcon auiIconDelete"></i></a></span--></div>
+			<a href="javascript:void(0);" onclick="if(document.getElementById('menubar_auiFilter_1').style.display!='none'){document.getElementById('menubar_auiFilter_1').style.display='none'}else{document.getElementById('menubar_auiFilter_1').style.display='block'}" title="フィルタ" class="filterDropDrawer"><span><i class="auiIcon auiIconArwBottom"></i></span></a>
+			<input class="text" type="text" name="q" id="q" style="width:320px;">
+		</div>
+		#AUIButtonSearch("aimluck.io.setHiddenValue(this);" $l10n.WIKI_SEARCH)
+	#AUISearchFooter()
+#AUISummaryFilterDivFooter()
+
+
 #AUISummaryDiv()
 #AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiTopListScreen' $result)

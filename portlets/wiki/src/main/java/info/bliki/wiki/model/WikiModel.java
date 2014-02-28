@@ -25,6 +25,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
+import com.aimluck.eip.wiki.util.WikiUtils;
+
 /**
  * Standard model implementation
  * 
@@ -178,17 +181,31 @@ public class WikiModel extends AbstractWikiModel {
           URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
       }
 
-      String jstext =
-        "aipo.common.showDialog('"
-          + href
-          + "', '"
-          + queryPairs.get("portletid")
-          + "', "
-          + queryPairs.get("callback")
-          + ");";
+      EipTWiki destWiki =
+        WikiUtils.getEipTWiki(topicDescription, queryPairs.get("parentId"));
+      String jstext = "";
+      if (null == destWiki) {
+        jstext =
+          "aipo.common.showDialog('"
+            + href
+            + "', '"
+            + queryPairs.get("portletid")
+            + "', "
+            + queryPairs.get("callback")
+            + ");";
+        aTagNode.addAttribute("class", "wikiNew", true);
+      } else {
+        jstext =
+          "aipo.viewPage('"
+            + href
+            + "', '"
+            + queryPairs.get("portletid")
+            + "');";
 
+      }
       aTagNode.addHrefJavascript();
       aTagNode.addAttribute("onclick", jstext, false);
+
     } catch (MalformedURLException ignore) {
       aTagNode.addAttribute("href", href, true);
     } catch (UnsupportedEncodingException ignore) {
