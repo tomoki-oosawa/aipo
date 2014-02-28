@@ -93,7 +93,7 @@
     			<a onclick="aipo.wiki.image()" href="javascript:void(0);" title="$l10n.WIKI_IMAGE"><span class="auiButtonIcon"><i class="icon-camera"></i></span></a>
 			</div>
 
-			<textarea id = "wiki_note"class="text wide" name="note" rows="10" cols="40">$!result.Note</textarea>
+			<textarea id="wiki_note"class="text wide" name="note" rows="20" cols="40">$!result.Note</textarea>
         </tr>
 		<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
         <td class="caption">$l10n.WIKI_FILE_ATTACH</td>
