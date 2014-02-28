@@ -45,14 +45,14 @@
         #else
         	<input type="hidden" name="mode" value="update" />
 		#end
-		
+
 		#ALtableheaderWide()
-		#if($!result.isChild())
 		<tr>
         	#ALtdcaption("#ALrequired($!result.getFieldName('parentId'))")
         	#ALtditemheader()
-        	<div id="wikiCategorySelectField" #if($!{result.NewCategory})style="display:none"#end>
+        	<div id="wikiCategorySelectField">
         		#ALselectpdheaderw100("parentId" "")
+				<option value='0'#if ($!result.getParentWikiIdString() == '0') selected="selected" #end>$l10n.WIKI_NOT_SET</option>
         		#foreach( $record in $result.TopWikiList )
         			<option value='$!record.Id' #if ($!result.getParentWikiIdString() == $!record.Id.toString()) selected="selected" #end>$!record.Name</option>
         		#end
@@ -60,7 +60,6 @@
         	</div>
         	#ALtditemfooter()
         </tr>
-		#end
         <tr>
             #ALtdcaption("#ALrequired($!result.getFieldName('name'))")
 			#if(!$result.isChildForm() || "$!mode" != "new_form")
