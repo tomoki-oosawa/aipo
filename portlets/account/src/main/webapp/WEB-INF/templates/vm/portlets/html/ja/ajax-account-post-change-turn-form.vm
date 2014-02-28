@@ -35,13 +35,13 @@
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
 $l10n.ACCOUNT_MULTICHOICE_MSG0<br>
 $l10n.ACCOUNT_MULTICHOICE_MSG</div>
-#ALajaxscreenformheader("accountPostChangeTurnForm" $jslink $portlet "AccountPostChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_user.onReceiveMessage)")
+#ALajaxscreenformheader("AccountPostChangeTurnForm" $jslink $portlet "AccountPostChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_post.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 <table class="dialogTable wide">
 <tbody>
 <tr>
-<td class="caption" width="30%" nowrap="">$l10n.ACCOUNT_USER_LIST</td>
+<td class="caption" width="30%" nowrap="">$l10n.ACCOUNT_POST_LIST</td>
 <td width="5%">
 <div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_10" class="auiButtonIcon"><span><i class="icon-double-angle-up"></i></span></a></div>
 <div class="mb40"><a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_1" class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></a></div
@@ -52,7 +52,7 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 #if($!result.PostList.size() <= 0)
 <option value=""></option>
 #else
-#foreach($record in $!result.PostList)	
+#foreach($record in $!result.PostList)
 <option value="$!record.PostName">$!record.PostName</option>
 #end
 #end
@@ -62,7 +62,7 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 </tbody>
 </table>
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doAccount_change_turn_update' $l10n.ACCOUNT_UPDATE 'setHiddenValue(this);aipo.account_user.submit2(this.form)')
+#ALsubmitJS('eventSubmit_doAccount_change_turn_update' $l10n.ACCOUNT_UPDATE 'setHiddenValue(this);aipo.account_post.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
