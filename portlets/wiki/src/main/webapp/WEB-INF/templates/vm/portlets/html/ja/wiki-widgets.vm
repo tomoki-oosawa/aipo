@@ -23,7 +23,11 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
     <div class="auiWidget clearfix widgetButton">
+		#if($!result.isTop())
+        #AUIbutton($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+		#else
         #AUIbuttonAction($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+		#end
 	</div>
     <div id="subNavigation">
         <div class="auiWidget clearfix">
