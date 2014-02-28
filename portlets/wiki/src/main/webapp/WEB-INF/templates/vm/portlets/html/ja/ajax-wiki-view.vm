@@ -35,7 +35,7 @@
 	<input type="hidden" name="template" value="WikiListScreen"/>
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen")' />
 
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
+#ALajaxbuttonEditCallbackWithoutButtonDisabled("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
 
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
 

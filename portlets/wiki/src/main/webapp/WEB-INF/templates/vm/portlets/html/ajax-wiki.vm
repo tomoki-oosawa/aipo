@@ -38,9 +38,8 @@
 		#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$!result.Detail.getId())" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
 	</div>
 </div>
-<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 	<div>
-		<p class="caption">$l10n.WIKI_PARENT</p>
 		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
 			#foreach( $record in $result.TopWikiList )
 			<li #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end  data-param="$!{record.Id}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!record.Name</a></li>

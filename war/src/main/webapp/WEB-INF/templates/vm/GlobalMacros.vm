@@ -479,6 +479,10 @@ $theLink
 <input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
+#macro(ALajaxbuttonEditCallbackWithoutButtonDisabled $url $portlet_id $callback)
+<input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+#end
+
 #macro(ALajaxbuttonNameEditCallback $url $portlet_id $callback $name)
 <input name="ajaxbuttonEdit" class="button" type="button" value='$name' onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end

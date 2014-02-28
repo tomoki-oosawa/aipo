@@ -77,12 +77,8 @@ public class WikiAction extends ALBaseAction {
     WikiSelectData listData = new WikiSelectData();
     listData.initField();
     listData.loadTopWikiList(rundata, context);
-    listData.setRowsNum(Integer.parseInt(ALEipUtils
-      .getPortlet(rundata, context)
-      .getPortletConfig()
-      .getInitParameter("p1b-rows")));
-    listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "wiki-list");
+    listData.doViewDetailOne(this, rundata, context);
+    setTemplate(rundata, "wiki-view");
   }
 
   private void clearWikiSession(RunData rundata, Context context) {
