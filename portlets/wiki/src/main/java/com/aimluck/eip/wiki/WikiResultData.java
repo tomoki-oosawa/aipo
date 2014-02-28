@@ -70,6 +70,9 @@ public class WikiResultData implements ALData {
   /** メモ */
   private ALStringField note;
 
+  /** 所有者 ID */
+  private ALNumberField owner_id;
+
   /** 登録者名 */
   private ALStringField create_user;
 
@@ -91,6 +94,8 @@ public class WikiResultData implements ALData {
   /** URL */
   private ALStringField baseImageLink;
 
+  private ALStringField baseImageRawLink;
+
   /**
    *
    *
@@ -101,12 +106,15 @@ public class WikiResultData implements ALData {
     name = new ALStringField();
     parent_id = new ALNumberField();
     parent_name = new ALStringField();
+    owner_id = new ALNumberField();
     create_user = new ALStringField();
     update_user = new ALStringField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
     baseImageLink = new ALStringField();
+    baseImageRawLink = new ALStringField();
+
     is_public = true;
     new_wiki = false;
   }
@@ -177,18 +185,32 @@ public class WikiResultData implements ALData {
       /* 添付ファイル */
       for (FileuploadBean attachmentfile : attachmentFileList) {
         htmlText =
-          htmlText.replace("!" + attachmentfile.getFileName() + "!", "<br>"
-            + "<img class='width_thumbs' border='0' alt='"
-            + attachmentfile.getFileName()
-            + "' title='"
-            + attachmentfile.getFileName()
-            + "' src='"
-            + baseImageLink
-            + "?entityid="
-            + id
-            + "&attachmentindex="
-            + attachmentfile.getFileId()
-            + "'>");
+          htmlText
+            .replace(
+              "!" + attachmentfile.getFileName() + "!",
+              "<br>"
+                + "<a href=\"javascript:void(0);\" onclick=\"aipo.fileupload.showImageDialog('"
+                + baseImageRawLink
+                + "/ownerid/"
+                + owner_id.getValue()
+                + "/entityid/"
+                + id
+                + "/attachmentindex/"
+                + attachmentfile.getFileId()
+                + "/f/"
+                + attachmentfile.getFileName()
+                + "');\" >"
+                + "<img class='width_thumbs' border='0' alt='"
+                + attachmentfile.getFileName()
+                + "' title='"
+                + attachmentfile.getFileName()
+                + "' src='"
+                + baseImageLink
+                + "?entityid="
+                + id
+                + "&attachmentindex="
+                + attachmentfile.getFileId()
+                + "'></a>");
       }
 
     } catch (Exception e) {
@@ -264,6 +286,10 @@ public class WikiResultData implements ALData {
     baseImageLink.setValue(str);
   }
 
+  public void setBaseImageRawLink(String str) {
+    baseImageRawLink.setValue(str);
+  }
+
   /**
    * 公開/非公開フラグ．
    * 
@@ -296,8 +322,16 @@ public class WikiResultData implements ALData {
     attachmentFileList = list;
   }
 
+  public ALNumberField getOwnerId() {
+    return owner_id;
+  }
+
   public ALNumberField getParentId() {
     return parent_id;
+  }
+
+  public void setOwnerId(long i) {
+    this.owner_id.setValue(i);
   }
 
   public void setParentId(long i) {
