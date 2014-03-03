@@ -446,8 +446,10 @@ aipo.wiki.olist = function () {
 }
 
 aipo.wiki.externallink = function () {
-  var text = "[http:// 外部リンク]";
-  aipo.wiki.insertTag("", "", text, true);
+  var tag = "[[";
+  var end = "]]";
+  var text = "wiki名";
+  aipo.wiki.insertTag(tag, end, text, false);
 }
 
 aipo.wiki.quote = function () {
