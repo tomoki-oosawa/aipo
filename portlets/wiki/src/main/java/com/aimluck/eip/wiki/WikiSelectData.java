@@ -626,7 +626,19 @@ public class WikiSelectData extends
       if (WikiUtils.existWiki(wikiId, topWikiList)) {
         obj = WikiUtils.getEipTWiki(Integer.parseInt(wikiId));
       } else {
-        obj = WikiUtils.getEipTWikiOne();
+        try {
+          // 子ページ表示
+          String entityId = rundata.getParameters().getString("entityId", "");
+          EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
+          if (eipTWiki != null) {
+            obj = eipTWiki;
+          }
+        } catch (Exception e) {
+          logger.error("doViewDetailOne", e);
+        }
+        if (obj == null) {
+          obj = WikiUtils.getEipTWikiOne();
+        }
       }
 
       if (obj != null) {

@@ -22,6 +22,7 @@ package com.aimluck.eip.modules.screens;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -80,7 +81,12 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         detailData.initField();
         detailData.loadTopWikiList(rundata, context);
         detailData.doViewDetail(this, rundata, context);
+        JetspeedRunData jdata = (JetspeedRunData) rundata;
         String layout_template = "portlets/html/ja/ajax-wiki.vm";
+        String jspeid = (String) jdata.getUser().getTemp("js_peid");
+        if (jspeid != null) {
+          layout_template = "portlets/html/ja/ajax-wiki-view.vm";
+        }
         setTemplate(rundata, context, layout_template);
       }
     } catch (Exception e) {
