@@ -62,6 +62,7 @@
 		<tr>
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
 			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiListScreen')" "")
 			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
 			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
@@ -75,6 +76,11 @@
 					<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$record.Id))');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
+			#if($!record.getParentId() == 0)
+				<td><div>$!record.getParentId()</div></td>
+			#else
+				<td><div>$!record.ParentName</div></td>
+			#end
 			<td><div>$!record.UpdateUser</div></td>
 			<td>$!record.UpdateDate</td>
 		</tr>

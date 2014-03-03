@@ -435,6 +435,12 @@ public class WikiSelectData extends
       rd.setId(record.getWikiId().longValue());
       rd.setName(record.getWikiName());
       // rd.setCategoryId(record.getCategoryId().longValue());
+      rd.setParentId(record.getParentId());
+      if (record.getParentId() != 0) {
+        rd.setParentName(WikiUtils
+          .getEipTWiki(record.getParentId())
+          .getWikiName());
+      }
       rd.setUpdateUser(ALEipUtils
         .getALEipUser(record.getUpdateUserId())
         .getAliasName()
