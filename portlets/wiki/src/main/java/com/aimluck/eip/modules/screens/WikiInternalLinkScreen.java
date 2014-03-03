@@ -80,7 +80,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         detailData.initField();
         detailData.loadTopWikiList(rundata, context);
         detailData.doViewDetail(this, rundata, context);
-        String layout_template = "portlets/html/ja/ajax-wiki-detail.vm";
+        String layout_template = "portlets/html/ja/ajax-wiki.vm";
         setTemplate(rundata, context, layout_template);
       }
     } catch (Exception e) {
