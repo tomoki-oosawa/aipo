@@ -33,7 +33,7 @@
         <div class="auiWidget clearfix">
             <ul>
 				#foreach($record in $!result.TopWikiList )
-				<li #if ("$!result.CategoryId" == "$!record.Id.toString()") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen").addQueryData("filtertype","category").addQueryData("filter",$!record.Id).addQueryData("reset_params","true").addQueryData("entityid",$record.Id))','$!portlet.ID');">$!{record.Name}</a></li>
+				<li #if ("$!result.CategoryId" == "$!record.Id.toString()" && !$!result.isTop()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen").addQueryData("filtertype","category").addQueryData("filter",$!record.Id).addQueryData("reset_params","true").addQueryData("entityid",$record.Id))','$!portlet.ID');">$!{record.Name}</a></li>
 				#end
             </ul>
             <div style="margin:0.5em 0;">
