@@ -139,10 +139,10 @@ public class WikiFormData extends ALAbstractFormData {
     name.setFieldName(getl10n("WIKI_TITLE"));
     name.setTrim(true);
     parentId = new ALNumberField();
-    parentId.setFieldName(getl10n("WIKI_PARENT_NAME"));
+    parentId.setFieldName(getl10n("WIKI_PARENT"));
     parentId.setValue(0);
     parentName = new ALStringField();
-    parentName.setFieldName(getl10n("WIKI_PARENT_NAME"));
+    parentName.setFieldName(getl10n("WIKI_PARENT"));
     note = new ALStringField();
     note.setFieldName(getl10n("WIKI_NOTE"));
     note.setTrim(false);
