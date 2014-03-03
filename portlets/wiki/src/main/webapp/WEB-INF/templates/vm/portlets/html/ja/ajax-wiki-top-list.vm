@@ -25,20 +25,12 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>$l10n.WIKI_MANAGEMENT</h2>
-<<<<<<< OURS
-<div class="auiSummaryMeta auiFilter clearfix">
+#AUISummaryFilterDivHeader()
 <form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
-<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen")' />
-<input type="hidden" name="template" value="WikiListScreen"/>
-
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiTopListScreen")' />
+<input type="hidden" name="template" value="WikiTopListScreen"/>
 <div class="filters" id="filters_$!portlet.ID">
-#if("$!result.PostName"!="")
-<span class="filterTip">
-<span>$!result.PostName</span>
-<a href="javascript:void(0);" class="btn" onclick="aipo.wiki.filterSetDefault('$!portlet.ID','post');"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#end
 #if("$!result.CategoryName"!="")
 <span class="filterTip">
 <span>$!result.CategoryName</span>
@@ -48,31 +40,17 @@
 </div>
 
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.wiki.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
-<input class="text floatLeft long" style="margin-right:5px;" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.wiki.initFilterSearch("$!portlet.ID");' onblur='aipo.wiki.finFilterSearch("$!portlet.ID");' />
+<input class="text" style="width:320px;" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.wiki.initFilterSearch("$!portlet.ID");' onblur='aipo.wiki.finFilterSearch("$!portlet.ID");' />
 </div>
-<a href="javascript:void(0);" class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;">$l10n.WIKI_SEARCH</a>
+#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;" $l10n.WIKI_SEARCH)
 <div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
-</form>
-</div>
-#ALajaxlistformheaderAction('Wiki')
-=======
-#ALajaxlistformheader("$l10n.WIKI_DATA")
->>>>>>> THEIRS
-#if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.WIKI_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
-#else
-#AUISummaryFilterDivHeader()
-	#AUISearchHeaderMarginOne()
-		<div class="filterInputField">
-			<div class="filters"><!--span class="filterTip"><span>Wiki名Wiki名</span><a href="javascript:void()" onclick="this.parentNode.style.display='none'"><i class="auiIcon auiIconDelete"></i></a></span--></div>
-			<a href="javascript:void(0);" onclick="if(document.getElementById('menubar_auiFilter_1').style.display!='none'){document.getElementById('menubar_auiFilter_1').style.display='none'}else{document.getElementById('menubar_auiFilter_1').style.display='block'}" title="フィルタ" class="filterDropDrawer"><span><i class="auiIcon auiIconArwBottom"></i></span></a>
-			<input class="text" type="text" name="q" id="q" style="width:320px;">
-		</div>
-		#AUIButtonSearch("aimluck.io.setHiddenValue(this);" $l10n.WIKI_SEARCH)
-	#AUISearchFooter()
+#AUISearchFooter()
 #AUISummaryFilterDivFooter()
-
-
+#ALajaxlistformheaderAction('Wiki')
+#ALajaxlistformheader("$l10n.WIKI_DATA")
+#if($result.List.size() <= 0)
+<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+#else
 #AUISummaryDiv()
 #AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiTopListScreen' $result)
@@ -84,6 +62,7 @@
 		<tr>
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
 			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiListScreen')" "")
 			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
 			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
@@ -97,6 +76,11 @@
 					<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiDetailScreen").addQueryData("entityid",$record.Id))');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
+			#if($!record.getParentId() == 0)
+				<td><div>$!record.getParentId()</div></td>
+			#else
+				<td><div>$!record.ParentName</div></td>
+			#end
 			<td><div>$!record.UpdateUser</div></td>
 			<td>$!record.UpdateDate</td>
 		</tr>
@@ -106,5 +90,17 @@
 #ALformfooter()
 #end
 #AUIcontentsAreaFooter()
+<img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:130px; display:none;">
+  <div>
+    <p class="caption">$l10n.WIKI_PARENT</p>
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
+      <li data-param="" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
+    #foreach($record in $result.TopWikiList)
+      <li data-param="$!record.Id" #if("$!result.CategoryId"=="$!record.Id") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"=="$!record.Id") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!{record.Name}</a></li>
+    #end
+    </ul>
+  </div>
+</div>
 
 #parse("/portlets/html/ja/wiki-widgets.vm")

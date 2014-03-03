@@ -48,7 +48,7 @@ public class WikiTopListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      clearSearchCriteria(rundata, context);
+      // clearSearchCriteria(rundata, context);
 
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
