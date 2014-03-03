@@ -52,6 +52,8 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     String name = rundata.getParameters().getString("name", "");
+    name = WikiUtils.convertEncording(name);
+
     String parentId = rundata.getParameters().getString("parentId", "");
 
     if (StringUtils.isEmpty(name) || StringUtils.isEmpty(parentId)) {
