@@ -62,9 +62,9 @@
 		<tr>
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
 			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
-			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiTopListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiTopListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiTopListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>
