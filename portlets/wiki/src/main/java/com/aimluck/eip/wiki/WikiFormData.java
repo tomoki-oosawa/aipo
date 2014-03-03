@@ -383,9 +383,16 @@ public class WikiFormData extends ALAbstractFormData {
       wiki.setWikiName(name.getValue());
 
       if (parentId.isNotNullValue()) {
+
+        int entityId = wiki.getWikiId();
+        if (parentId.getValue() != 0) {
+          if (WikiUtils.getChildCount(entityId) > 0) {
+            msgList.add(getl10n("WIKI_HAS_CHILDREN_EDIT"));
+            return false;
+          }
+        }
         wiki.setParentId((int) parentId.getValue());
       }
-
       // メモ
       wiki.setNote(note.getValue());
       TurbineUser turbineUser = ALEipUtils.getTurbineUser(Integer.valueOf(uid));
