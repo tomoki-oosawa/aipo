@@ -93,7 +93,6 @@
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:130px; display:none;">
   <div>
-    <p class="caption">$l10n.WIKI_PARENT</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
     #foreach($record in $result.TopWikiList)
