@@ -28,8 +28,8 @@
 #AUISummaryFilterDivHeader()
 <form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
-<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiTopListScreen")' />
-<input type="hidden" name="template" value="WikiTopListScreen"/>
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen")' />
+<input type="hidden" name="template" value="WikiListScreen"/>
 <div class="filters" id="filters_$!portlet.ID">
 #if("$!result.CategoryName"!="")
 <span class="filterTip">
@@ -54,7 +54,7 @@
 <div id="listmessageDiv"></div>
 #AUISummaryDiv()
 #AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
-#AUIajaxpageview('WikiTopListScreen' $result)
+#AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 <table class="auiRowTable auiMbTable wide">
 	<colgroup span="3"></colgroup>
@@ -62,10 +62,10 @@
 	<tbody>
 		<tr>
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
-			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiTopListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiTopListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiTopListScreen')" "class='wName'")
-			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiTopListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>

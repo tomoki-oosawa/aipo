@@ -33,11 +33,11 @@ import com.aimluck.eip.wiki.util.WikiUtils;
  * Wikiカテゴリの一覧を処理するクラスです。 <br />
  * 
  */
-public class WikiTopListScreen extends ALVelocityScreen {
+public class WikiListScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiTopListScreen.class.getName());
+    .getLogger(WikiListScreen.class.getName());
 
   /**
    * 
@@ -58,10 +58,10 @@ public class WikiTopListScreen extends ALVelocityScreen {
       listData.setIsTop(true);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-wiki-top-list.vm";
+      String layout_template = "portlets/html/ja/ajax-wiki-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[WikiTopListScreen] Exception.", ex);
+      logger.error("[WikiListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

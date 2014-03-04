@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
-#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiTopListScreen')))
+#set ($categoryUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiListScreen')))
 
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea">
