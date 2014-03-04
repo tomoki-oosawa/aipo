@@ -20,11 +20,13 @@
 #set ($indicator_id = "indicator-list-")
 
 #set ($categoryEtc = false)
+#set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
 #if(!$!result.Detail)
-<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+<h2>$l10n.WIKI_MANAGEMENT</h2>
+#AUIbuttonActionInBlankBox($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
 #else
 
 <div class="auiSummaryMeta auiFilter clearfix">
@@ -32,8 +34,8 @@
 <form name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
 	<input type="hidden" name="_name" value="Wiki" />
 	<input type="hidden" name="secid" value="$secid" />
-	<input type="hidden" name="template" value="WikiListScreen"/>
-	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen")' />
+	<input type="hidden" name="template" value="WikiViewScreen"/>
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen")' />
 
 #ALajaxbuttonEditCallbackWithoutButtonDisabled("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
 

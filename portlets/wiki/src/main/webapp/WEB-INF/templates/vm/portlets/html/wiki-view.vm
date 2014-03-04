@@ -24,18 +24,14 @@
 //<![CDATA[
     dojo.provide('aipo.wiki');
 
-    ptConfig['$!portlet.ID'] = { group:"wiki", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiListScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"wiki", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen"))', reloadFunction:aipo.reloadPage };
     aipo.wiki.menuSelected = 0;
 
 //]]>
 </script>
 ##if($!result.hasAuthority())
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#if(!$!result.Detail)
-#parse("/portlets/html/ja/ajax-wiki-nothing.vm")
-#else
 #parse("/portlets/html/ja/ajax-wiki-view.vm")
-#end
 #ALcontentfooter()
 ##else
 ##parse("/portlets/html/PermissionError.vm")
