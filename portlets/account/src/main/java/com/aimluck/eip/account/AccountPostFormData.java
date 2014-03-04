@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -458,6 +459,33 @@ public class AccountPostFormData extends ALAbstractFormData {
       EipMPost record = Database.create(EipMPost.class);
       // 部署名
       record.setPostName(post_name.getValue());
+      
+      // 設備の順番を調整
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement.append("SELECT MAX(sort) as max_sort FROM eip_m_post");
+      String querydata = statement.toString();
+      List<DataRow> maxnum =
+        Database.sql(EipMPost.class, querydata).fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      // 最大のソートナンバーの後ろに振られていないデータを追加
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMPost.SORT_PROPERTY, null);
+      SelectQuery<EipMPost> querynotsort = Database.query(EipMPost.class);
+      querynotsort.orderAscending(EipMPost.UPDATE_DATE_PROPERTY);
+      querynotsort.setQualifier(exp2);
+      List<EipMPost> post_notsort_list = querynotsort.fetchList();
+      for (EipMPost postdata2 : post_notsort_list) {
+        postdata2.setSort(++lastnum);
+      }
+
+      record.setSort(++lastnum);
+      
       // 会社ID
       record.setCompanyId(Integer.valueOf(1));
       // 郵便番号
