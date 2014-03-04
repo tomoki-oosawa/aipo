@@ -30,7 +30,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiFormData;
 import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
@@ -63,18 +62,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
 
     try {
       EipTWiki destWiki = WikiUtils.getEipTWiki(name, parentId);
-      EipTWiki parentWiki = WikiUtils.getEipTWiki(Integer.valueOf(parentId));
-      if (null == destWiki) {
-        ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
-        WikiFormData formData = new WikiFormData();
-        formData.initField();
-        formData.setParentWiki(parentWiki);
-        formData.setDestWikiName(name);
-        formData.loadTopWikiList(rundata, context);
-        formData.doViewForm(this, rundata, context);
-        String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
-        setTemplate(rundata, context, layout_template);
-      } else {
+      if (null != destWiki) {
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
           .valueOf(destWiki.getWikiId()));
         WikiSelectData detailData = new WikiSelectData();
@@ -88,6 +76,9 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
           layout_template = "portlets/html/ja/ajax-wiki-view.vm";
         }
         setTemplate(rundata, context, layout_template);
+      } else {
+        // 子ページ削除時処理
+        throw new ALPageNotFoundException();
       }
     } catch (Exception e) {
       logger.error("WikiInternalLinkScreen.doOutput", e);

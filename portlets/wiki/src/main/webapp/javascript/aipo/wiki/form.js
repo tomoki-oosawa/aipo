@@ -155,6 +155,19 @@ aipo.wiki.onListReceiveMessage = function (msg) {
   }
 }
 
+aipo.wiki.onViewReceiveMessage = function (msg) {
+  if (!msg) {
+    var arrDialog = dijit.byId("modalDialog");
+    if (arrDialog) {
+      arrDialog.hide();
+    }
+    location.reload();
+  }
+  if (dojo.byId('viewmessageDiv')) {
+    dojo.byId('viewmessageDiv').innerHTML = msg;
+  }
+}
+
 /**
  * 検索バーの幅を調節する。
  *

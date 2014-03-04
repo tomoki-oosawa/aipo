@@ -630,9 +630,12 @@ public class WikiSelectData extends
         try {
           // 子ページ表示
           String entityId = rundata.getParameters().getString("entityId", "");
-          EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
-          if (eipTWiki != null) {
-            obj = eipTWiki;
+          if (!StringUtils.isEmpty(entityId)) {
+            EipTWiki eipTWiki =
+              WikiUtils.getEipTWiki(Integer.parseInt(entityId));
+            if (eipTWiki != null) {
+              obj = eipTWiki;
+            }
           }
         } catch (Exception e) {
           logger.error("doViewDetailOne", e);

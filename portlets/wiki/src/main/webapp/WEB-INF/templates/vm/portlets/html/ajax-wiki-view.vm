@@ -31,15 +31,17 @@
 
 <div class="auiSummaryMeta auiFilter clearfix">
 
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+<div id="viewmessageDiv"></div>
 <form name="form$!portlet.ID" id="form$!portlet.ID" action="#" method="post" onsubmit="return false;">
 	<input type="hidden" name="_name" value="Wiki" />
 	<input type="hidden" name="secid" value="$secid" />
 	<input type="hidden" name="template" value="WikiViewScreen"/>
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen")' />
 
-#ALajaxbuttonEditCallbackWithoutButtonDisabled("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
+#ALajaxbuttonEditCallbackWithoutButtonDisabled("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$!result.Detail.Id)" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
 
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onReceiveMessage")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('entityid',$!result.Detail.Id).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onViewReceiveMessage")
 
 </form>
 

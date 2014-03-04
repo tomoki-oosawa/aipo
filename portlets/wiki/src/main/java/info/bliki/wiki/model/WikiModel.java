@@ -50,6 +50,12 @@ public class WikiModel extends AbstractWikiModel {
 
   private final String fExternalWikiBaseURL;
 
+  private final static String WIKII_NTERNAL_LINK_FORM_SCREEN =
+    "WikiInternalLinkFormScreen";
+
+  private final static String WIKII_NTERNAL_LINK_SCREEN =
+    "WikiInternalLinkScreen";
+
   /**
    * 
    * @param imageBaseURL
@@ -185,9 +191,13 @@ public class WikiModel extends AbstractWikiModel {
         WikiUtils.getEipTWiki(topicDescription, queryPairs.get("parentId"));
       String jstext = "";
       if (null == destWiki) {
+        String hrefForm =
+          href.replaceFirst(
+            WIKII_NTERNAL_LINK_SCREEN,
+            WIKII_NTERNAL_LINK_FORM_SCREEN);
         jstext =
           "aipo.common.showDialog('"
-            + href
+            + hrefForm
             + "', '"
             + queryPairs.get("portletid")
             + "', "
