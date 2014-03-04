@@ -553,6 +553,7 @@ public class WikiSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("wiki_name", EipTWiki.WIKI_NAME_PROPERTY);
+    map.putValue("parent_name", EipTWiki.PARENT_ID_PROPERTY);
     map.putValue("update_user", EipTWiki.UPDATE_USER_ID_PROPERTY);
     map.putValue("update_date", EipTWiki.UPDATE_DATE_PROPERTY);
     return map;
