@@ -48,8 +48,9 @@ public class WikiListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      String filterType = rundata.getParameters().getString("filtertype", "");
-      if (filterType.isEmpty()) {
+
+      String filterType = rundata.getParameters().getString("filtertype");
+      if (filterType != null && filterType.contains("new")) {
         clearSearchCriteria(rundata, context);
       }
       WikiSelectData listData = new WikiSelectData();
