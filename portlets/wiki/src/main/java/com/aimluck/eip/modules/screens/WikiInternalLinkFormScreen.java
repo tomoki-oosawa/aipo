@@ -22,7 +22,6 @@ package com.aimluck.eip.modules.screens;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -30,18 +29,18 @@ import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiSelectData;
+import com.aimluck.eip.wiki.WikiFormData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiの内部リンクを処理するクラスです。 <br />
  * 
  */
-public class WikiInternalLinkScreen extends ALVelocityScreen {
+public class WikiInternalLinkFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiInternalLinkScreen.class.getName());
+    .getLogger(WikiInternalLinkFormScreen.class.getName());
 
   /**
    * 
@@ -62,34 +61,22 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
 
     try {
       EipTWiki destWiki = WikiUtils.getEipTWiki(name, parentId);
+      EipTWiki parentWiki = WikiUtils.getEipTWiki(Integer.valueOf(parentId));
       if (null == destWiki) {
-        // 子ページ削除時・編集時親wiki変更時
-        // 該当データがない場合は親のWikiを表示する
-        destWiki = WikiUtils.getEipTWiki(Integer.valueOf(parentId));
-        if (null == destWiki) {
-          // 該当データがない場合は0番のWikiを表示する
-          destWiki = WikiUtils.getEipTWikiOne();
-        }
-      }
-      if (null != destWiki) {
-        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
-          .valueOf(destWiki.getWikiId()));
-        WikiSelectData detailData = new WikiSelectData();
-        detailData.initField();
-        detailData.loadTopWikiList(rundata, context);
-        detailData.doViewDetail(this, rundata, context);
-        JetspeedRunData jdata = (JetspeedRunData) rundata;
-        String layout_template = "portlets/html/ja/ajax-wiki.vm";
-        String jspeid = (String) jdata.getUser().getTemp("js_peid");
-        if (jspeid != null) {
-          layout_template = "portlets/html/ja/ajax-wiki-view.vm";
-        }
+        ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+        WikiFormData formData = new WikiFormData();
+        formData.initField();
+        formData.setParentWiki(parentWiki);
+        formData.setDestWikiName(name);
+        formData.loadTopWikiList(rundata, context);
+        formData.doViewForm(this, rundata, context);
+        String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
         setTemplate(rundata, context, layout_template);
       } else {
         throw new ALPageNotFoundException();
       }
     } catch (Exception e) {
-      logger.error("WikiInternalLinkScreen.doOutput", e);
+      logger.error("WikiInternalLinkFormScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }
