@@ -348,7 +348,7 @@ public class WikiUtils {
       Integer pk) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     Expression titleExp =
-      ExpressionFactory.matchExp(EipTWiki.WIKI_NAME_PROPERTY, title);
+      ExpressionFactory.likeIgnoreCaseExp(EipTWiki.WIKI_NAME_PROPERTY, title);
     Expression parentExp =
       ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
     query.andQualifier(titleExp).andQualifier(parentExp);
@@ -364,7 +364,7 @@ public class WikiUtils {
   public static EipTWiki getEipTWiki(String name, String parentId) {
     SelectQuery<EipTWiki> query = Database.query(EipTWiki.class);
     Expression nameExp =
-      ExpressionFactory.matchExp(EipTWiki.WIKI_NAME_PROPERTY, name);
+      ExpressionFactory.likeIgnoreCaseExp(EipTWiki.WIKI_NAME_PROPERTY, name);
     Expression parentExp =
       ExpressionFactory.matchExp(EipTWiki.PARENT_ID_PROPERTY, parentId);
     query.setQualifier(nameExp.andExp(parentExp));
