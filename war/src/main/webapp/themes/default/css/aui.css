@@ -2834,6 +2834,9 @@ ul.attachments {
 .tlClipImage img {
   max-width: 90px;
   max-height: 90px;
+  width: auto;
+  height: auto;
+  -ms-interpolation-mode: bicubic;
 }
 
 .tlClipImage .freeSizeHidden {
