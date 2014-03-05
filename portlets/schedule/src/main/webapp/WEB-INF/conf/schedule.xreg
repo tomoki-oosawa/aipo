@@ -78,6 +78,14 @@
         <parameter name="p2a-days.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-days.style.items" value="1,2,3,4,5,6,7" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-days.style.values" value="1日,2日,3日,4日,5日,6日,7日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-day" value="1" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>表示開始曜日</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p2b-day.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-day.style.items" value="7,1,2" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2b-day.style.values" value="土曜日,日曜日,月曜日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-user" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択ユーザー／設備</title>

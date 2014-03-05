@@ -169,7 +169,16 @@ public class AjaxScheduleMonthlySelectData extends
     cal.setTime(viewMonth.getValue());
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    cal.add(Calendar.DATE, -dayofweek + 1);
+    String day_of_start_str =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2b-day");
+    int day_of_start = Integer.parseInt(day_of_start_str);
+    if (day_of_start - dayofweek > 0) {
+      day_of_start -= 7;
+    }
+    cal.add(Calendar.DATE, -dayofweek + day_of_start);
 
     // 月間スケジュールコンテナの初期化
     try {

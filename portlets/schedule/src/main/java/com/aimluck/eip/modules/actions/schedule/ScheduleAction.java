@@ -137,6 +137,11 @@ public class ScheduleAction extends ALBaseAction {
         portlet.getPortletConfig().getInitParameter("p1c-rows");
       context.put("time_interval", time_interval);
 
+      // 開始曜日を取得する.
+      String day_of_week_start =
+        portlet.getPortletConfig().getInitParameter("p2b-day");
+      context.put("day_of_week_start", day_of_week_start);
+
       // 表示日数を取得する.
       String weekly_days =
         portlet.getPortletConfig().getInitParameter("p2a-days");
@@ -363,6 +368,11 @@ public class ScheduleAction extends ALBaseAction {
     String time_interval =
       portlet.getPortletConfig().getInitParameter("p1c-rows");
     context.put("time_interval", time_interval);
+
+    // 開始曜日を取得する.
+    String day_of_week_start =
+      portlet.getPortletConfig().getInitParameter("p2b-day");
+    context.put("day_of_week_start", day_of_week_start);
 
     // 表示日数を取得する.
     String weekly_days =

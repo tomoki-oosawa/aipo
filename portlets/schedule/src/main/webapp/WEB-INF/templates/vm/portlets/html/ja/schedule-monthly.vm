@@ -121,8 +121,20 @@
 #else
 #ALtableheaderCalendar("100%")
 <tr>
-#foreach($test in ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
-<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+#if($day_of_week_start!="2")
+#if($day_of_week_start=="7")
+<th class="saturday" style="width:14.3%" nowrap="nowrap">$l10n.SCHEDULE_SATURDAY</th>
+#end
+<th class="sunday" style="width:14.3%" nowrap="nowrap">$l10n.SCHEDULE_SUNDAY</th>
+#end
+#foreach($weekday in ["$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY"])
+<th style="width:14.3%" nowrap="nowrap">$weekday</th>
+#end
+#if($day_of_week_start!="7")
+<th class="saturday" style="width:14.3%" nowrap="nowrap">$l10n.SCHEDULE_SATURDAY</th>
+#if($day_of_week_start=="2")
+<th class="sunday" style="width:14.3%" nowrap="nowrap">$l10n.SCHEDULE_SUNDAY</th>
+#end
 #end
 </tr>
 #set($entityids = "")

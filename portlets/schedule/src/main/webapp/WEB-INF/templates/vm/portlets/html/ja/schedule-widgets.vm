@@ -38,77 +38,85 @@
 #AUIbuttonAction($l10n.SCHEDULE_ADD_SCHEDULE "javascript:aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)','$!portlet.ID',aipo.schedule.onLoadScheduleDialog);")
 </div>
 <div class="auiWidget clearfix">
-    <table class="auiCalendar">
-    	<tbody id="mc_table"><tr>
-    	<th colspan="7" style="line-height:1.7em;">
-    		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>$l10n.SCHEDULE_YEAR<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>$l10n.SCHEDULE_MONTH</div>
+	<table class="auiCalendar">
+		<tbody id="mc_table"><tr>
+		<th colspan="7" style="line-height:1.7em;">
+			<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>$l10n.SCHEDULE_YEAR<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>$l10n.SCHEDULE_MONTH</div>
 			<div class="floatRight">
-    		<div class="auiSelectButton">
-    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()" title="$l10n.SCHEDULE_PREV_MONTH"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></div>
-    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()" title="$l10n.SCHEDULE_NEXT_MONTH"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></div>
-    		</div>
+			<div class="auiSelectButton">
+				<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()" title="$l10n.SCHEDULE_PREV_MONTH"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></div>
+				<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()" title="$l10n.SCHEDULE_NEXT_MONTH"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></div>
 			</div>
-    	</th>
-    	</tr>
-    	<tr class="week">
-    		<td class="sunday">$l10n.SCHEDULE_SUNDAY</td>
-    		<td>$l10n.SCHEDULE_MONDAY</td>
-    		<td>$l10n.SCHEDULE_TUSEDAY</td>
-    		<td>$l10n.SCHEDULE_WEDNESDAY</td>
-    		<td>$l10n.SCHEDULE_THURSDAY</td>
-    		<td>$l10n.SCHEDULE_FRIDAY</td>
-    		<td class="saturday">$l10n.SCHEDULE_SATURDAY</td>
-    	</tr>
-    	#set($entityids = "")
-    	#set($weekListSize = $result.MonthlyCalendarContainer.WeekList.size())
-    	#set($weekcount = 0)
-    	#foreach($record4 in $result.MonthlyCalendarContainer.WeekList)
-    	<tr class="monthlyCalendarAutoTr">
-    	#foreach($record in $record4.DayList)
-    	#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
-    	#set ($color_style = "")
+			</div>
+		</th>
+		</tr>
+		<tr class="week">
+			#if($day_of_week_start!="2")
+				#if($day_of_week_start=="7")
+					<td class="saturday">$l10n.SCHEDULE_SATURDAY</td>
+				#end
+				<td class="sunday">$l10n.SCHEDULE_SUNDAY</td>
+			#end
+			#foreach($weekday in ["$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY"])
+				<td>$weekday</td>
+			#end
+			#if($day_of_week_start!="7")
+				<td class="saturday">$l10n.SCHEDULE_SATURDAY</td>
+				#if($day_of_week_start=="2")
+					<td class="sunday">$l10n.SCHEDULE_SUNDAY</td>
+				#end
+			#end
+		</tr>
+		#set($entityids = "")
+		#set($weekListSize = $result.MonthlyCalendarContainer.WeekList.size())
+		#set($weekcount = 0)
+		#foreach($record4 in $result.MonthlyCalendarContainer.WeekList)
+		<tr class="monthlyCalendarAutoTr">
+		#foreach($record in $record4.DayList)
+		#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
+		#set ($color_style = "")
 		#set ($color_style_ohtermonth = "")
 		#set ($color_style_selected = "")
 
-    	#if($!{record.Date.Value.Day} == 0)
-    	#set ($color_style = " sunday")
-    	#elseif($!{record.Date.Value.Day} == 6)
-    	#set ($color_style = " saturday")
-    	#end
+		#if($!{record.Date.Value.Day} == 0)
+		#set ($color_style = " sunday")
+		#elseif($!{record.Date.Value.Day} == 6)
+		#set ($color_style = " saturday")
+		#end
 
-    	#if($!{record.isHoliday()})
-    	#set ($color_style = " holiday")
-    	#end
+		#if($!{record.isHoliday()})
+		#set ($color_style = " holiday")
+		#end
 
-    	#if(! ($!{result.MonthlyCalendarViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
-    	#set ($color_style_ohtermonth = " out")
-    	#end
+		#if(! ($!{result.MonthlyCalendarViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
+		#set ($color_style_ohtermonth = " out")
+		#end
 
-    	#if($!{record.Today}==$!{result.MonthlyCalendarToday.toString()})
-    	#set ($color_style = " today")
-    	#end
+		#if($!{record.Today}==$!{result.MonthlyCalendarToday.toString()})
+		#set ($color_style = " today")
+		#end
 
-    	#if($!{record.Today}==$!{result.ViewDate.toString()})
-    	#set ($color_style_selected = " selected")
-    	#end
+		#if($!{record.Today}==$!{result.ViewDate.toString()})
+		#set ($color_style_selected = " selected")
+		#end
 
-    	<td class="${color_style}${color_style_ohtermonth}${color_style_selected}">
-    		#ALMonthlyCalendarOnedayLink($!portlet.ID $filter $record)
-    	</td>
-    	#end
-    	</tr>
-    	#end
-    </tbody></table>
-    <img src="images/common/dot.gif" width="1" height="1" alt="" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
-    	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleMonthlyJSONScreen"))'
-    	,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group"))'
-    	,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');" />
+		<td class="${color_style}${color_style_ohtermonth}${color_style_selected}">
+			#ALMonthlyCalendarOnedayLink($!portlet.ID $filter $record)
+		</td>
+		#end
+		</tr>
+		#end
+	</tbody></table>
+	<img src="images/common/dot.gif" width="1" height="1" alt="" onload="aipo.calendar.initMonthlyCalendar('$!portlet.ID'
+		,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleMonthlyJSONScreen"))'
+		,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleListScreen").addQueryData("tab","oneday-group").addQueryData("filter",$filter).addQueryData("filtertype","group"))'
+		,'$!{result.ViewDate.Month}','$!{result.ViewDate.Day}');" />
    	</div>
 	<div class="auiWidget clearfix" style="display:none;">
-	    <ul>
-	    	<li #if ("$!result.Viewtype" == "calendar") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar'))','$!portlet.ID')">$l10n.SCHEDULE_BLOCK</a></li>
-	    	<li #if ("$!result.Viewtype" == "list") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list'))','$!portlet.ID')">$l10n.SCHEDULE_LIST</a></li>
-	    </ul>
+		<ul>
+			<li #if ("$!result.Viewtype" == "calendar") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar'))','$!portlet.ID')">$l10n.SCHEDULE_BLOCK</a></li>
+			<li #if ("$!result.Viewtype" == "list") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','list'))','$!portlet.ID')">$l10n.SCHEDULE_LIST</a></li>
+		</ul>
 	</div>
 
 </div>
