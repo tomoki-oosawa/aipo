@@ -311,6 +311,7 @@ public class WikiUtils {
       .append(className)
       .append(ALEipConstants.LIST_FILTER_TYPE)
       .toString());
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
   }
 
   public static EipTWiki getEipTWiki(RunData rundata, Context context)
