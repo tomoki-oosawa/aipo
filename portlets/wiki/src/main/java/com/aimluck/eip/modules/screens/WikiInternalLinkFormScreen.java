@@ -50,9 +50,12 @@ public class WikiInternalLinkFormScreen extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-    String name = rundata.getParameters().getString("name", "");
-    name = WikiUtils.convertEncording(name);
-
+    byte[] bytename = rundata.getParameters().getBytes("name");
+    String useragent = rundata.getRequest().getHeader("User-Agent");
+    String name = new String(bytename, "UTF-8");
+    if (useragent.contains("Firefox")) {
+      name = WikiUtils.convertEncording(name);
+    }
     String parentId = rundata.getParameters().getString("parentId", "");
 
     if (StringUtils.isEmpty(name) || StringUtils.isEmpty(parentId)) {
