@@ -177,7 +177,9 @@ public class AccountUtils {
       Expression exp =
         ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
           .valueOf(id));
-      List<EipMPost> list = Database.query(EipMPost.class, exp).fetchList();
+      List<EipMPost> list =
+        Database.query(EipMPost.class, exp).orderAscending(
+          EipMPost.SORT_PROPERTY).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;

@@ -156,6 +156,7 @@
 		<obj-attribute name="companyId" type="java.lang.Integer" db-attribute-path="COMPANY_ID"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="faxNumber" type="java.lang.String" db-attribute-path="FAX_NUMBER"/>
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
 		<obj-attribute name="inTelephone" type="java.lang.String" db-attribute-path="IN_TELEPHONE"/>
 		<obj-attribute name="outTelephone" type="java.lang.String" db-attribute-path="OUT_TELEPHONE"/>
 		<obj-attribute name="postName" type="java.lang.String" db-attribute-path="POST_NAME"/>
