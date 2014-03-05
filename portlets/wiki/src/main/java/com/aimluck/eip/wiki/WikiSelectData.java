@@ -291,7 +291,12 @@ public class WikiSelectData extends
   @Override
   public ResultList<EipTWiki> selectList(RunData rundata, Context context) {
     try {
-      target_keyword.setValue(WikiUtils.getTargetKeyword(rundata, context));
+      if (WikiUtils.hasResetFlag(rundata, context)) {
+        WikiUtils.resetFilter(rundata, context, this.getClass().getName());
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(WikiUtils.getTargetKeyword(rundata, context));
+      }
 
       SelectQuery<EipTWiki> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
