@@ -247,6 +247,14 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     // MonthlyCalendarに表示する月を登録
     this.setMonthlyCalendarViewMonth(viewMonth.getYear(), viewMonth.getMonth());
 
+    // 開始曜日を取得する.
+    String day_of_week_start =
+      ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("p2b-day");
+    context.put("day_of_week_start", day_of_week_start);
+
     // 表示開始日時
     Calendar cal = Calendar.getInstance();
     Calendar tmpCal = Calendar.getInstance();

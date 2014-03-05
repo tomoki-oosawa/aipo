@@ -102,7 +102,7 @@
         <parameter name="p3b-group.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view" value="1" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
-                <title>bToDoの表示</title>
+                <title>ToDoの表示</title>
             </meta-info>
         </parameter>
         <parameter name="p5a-view.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
