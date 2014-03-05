@@ -624,25 +624,24 @@ public class WikiSelectData extends
 
       String wikiId = WikiUtils.getWikiIdFromSession(sesFilter, sesFilterType);
       EipTWiki obj = null;
-      if (WikiUtils.existWiki(wikiId, topWikiList)) {
-        obj = WikiUtils.getEipTWiki(Integer.parseInt(wikiId));
-      } else {
+      String entityId = rundata.getParameters().getString("entityId", "");
+      if (!StringUtils.isEmpty(entityId)) {
         try {
           // 子ページ表示
-          String entityId = rundata.getParameters().getString("entityId", "");
-          if (!StringUtils.isEmpty(entityId)) {
-            EipTWiki eipTWiki =
-              WikiUtils.getEipTWiki(Integer.parseInt(entityId));
-            if (eipTWiki != null) {
-              obj = eipTWiki;
-            }
+          EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
+          if (eipTWiki != null) {
+            obj = eipTWiki;
           }
         } catch (Exception e) {
           logger.error("doViewDetailOne", e);
         }
-        if (obj == null) {
-          obj = WikiUtils.getEipTWikiOne();
+      } else {
+        if (WikiUtils.existWiki(wikiId, topWikiList)) {
+          obj = WikiUtils.getEipTWiki(Integer.parseInt(wikiId));
         }
+      }
+      if (obj == null) {
+        obj = WikiUtils.getEipTWikiOne();
       }
 
       if (obj != null) {
@@ -652,14 +651,17 @@ public class WikiSelectData extends
       action.putData(rundata, context);
 
       if (null != data) {
-
+        Integer categoryId = 0;
+        if (obj.getParentId() == 0) {
+          categoryId = obj.getWikiId();
+        } else {
+          categoryId = obj.getParentId();
+        }
         ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "category");
         ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
-          .valueOf(obj.getWikiId()));
+          .valueOf(categoryId));
         rundata.getParameters().setString("filtertype", "category");
-        rundata.getParameters().setString(
-          "filter",
-          String.valueOf(obj.getWikiId()));
+        rundata.getParameters().setString("filter", String.valueOf(categoryId));
         setCategory(rundata, context);
         parseFilterMap(rundata, context);
       }
