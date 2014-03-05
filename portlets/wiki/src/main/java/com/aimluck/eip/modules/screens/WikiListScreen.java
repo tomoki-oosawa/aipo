@@ -24,7 +24,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -49,7 +48,7 @@ public class WikiListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       if (WikiUtils.hasResetFlag(rundata, context)) {
-        clearSearchCriteria(rundata, context);
+        WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
       }
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
@@ -71,15 +70,6 @@ public class WikiListScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     return WikiUtils.WIKI_PORTLET_NAME;
-  }
-
-  private void clearSearchCriteria(RunData rundata, Context context) {
-    ALEipUtils.removeTemp(rundata, context, ALEipConstants.LIST_FILTER_TYPE);
-    ALEipUtils.removeTemp(rundata, context, ALEipConstants.LIST_FILTER);
-    ALEipUtils.removeTemp(rundata, context, WikiSelectData.class.getName()
-      + ALEipConstants.LIST_FILTER_TYPE);
-    ALEipUtils.removeTemp(rundata, context, WikiSelectData.class.getName()
-      + ALEipConstants.LIST_FILTER);
   }
 
 }
