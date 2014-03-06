@@ -26,44 +26,17 @@
 		</div>
 		<div class="auiPopupTitle">$l10n.WAR_DATABASE_ERROR</div>
     </div>
-    <div class="errorbox">
+    <div class="errorbox mb20">
 		<div class="mb20">
-			<!-- <img width="100" height="30" src="../themes/default/images/logo_com_20130613.png" alt="Aipo.com" /> -->
+			<!-- <img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /> -->
         </div>
-        <h1>$l10n.WAR_SESSION_TIMEOUT</h1>
-		<p>$l10n.WAR_RELOADING</p>
-		<div class="errorboxContent">		
-			<!--
-			<div dojotype="aimluck.widget.Timeout" redirecturl="">timeout</div>
-			<p>センタリングさせない詳細メッセージ等は「errorboxContent」内に</p>
-			<ul>
-				<li>リストパターン</li>
-				<li>リストパターン</li>
-				<li>リストパターン</li>
-			</ul>
-			<ol>
-				<li>リストパターン</li>
-				<li>リストパターン</li>
-				<li>リストパターン</li>
-			</ol>
-			<a href="#">リンク</a> <a href="#">リンク</a> <a href="#">リンク</a>
-			-->
-			<div style="padding:5px;" >
-			$l10n.WAR_NOT_FOUND_PAGE_AND_REASON
-				<div style="padding:5px;">
-					<ul>
-						<li>$l10n.WAR_DELETE_DATA</li>
-						<li>$l10n.ERROR_WRONG_URL</li>
-						<li>$l10n.WAR_STOP_DATABACE</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+        <h1>$l10n.WAR_DBERROR_TITLE</h1>
+		<p>$l10n.WAR_DBERROR_CONTENT</p>
     #if($config.getString("support.mail"))
     $l10n.WAR_INQUILY
     <br />
     [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
 	#end
-    </div>
+	</div>
 </div>
 
