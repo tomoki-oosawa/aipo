@@ -177,5 +177,10 @@
 	<classpathentry kind="var" path="M2_REPO/info/bliki/wiki/bliki-core/3.0.19/bliki-core-3.0.19.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jetspeed/aipo-jetspeed/7.0.2/aipo-jetspeed-7.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/gnu/inet/libidn/1.15/libidn-1.15.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
