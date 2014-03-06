@@ -420,26 +420,4 @@ public class WikiUtils {
     }
     return false;
   }
-
-  /**
-   * rundata.getParameters().getStrings()などで取得した文字列のエンコードを行う
-   * 
-   * @param str
-   *          変換前文字列
-   * @return 変換後文字列
-   */
-  public static String convertEncording(String str) {
-    try {
-      String replace = new String(str.getBytes("8859_1"), "UTF-8");
-      if (replace != null && replace.matches("^\\?+$")) {
-        // 変換後文字列が全て?の場合は変換せずに返す
-        // firefox以外の場合にrundata.getParameters().getStrings()で文字化けせず取得できるため
-        // TODO 原因わかり次第対応
-        return str;
-      }
-      return replace;
-    } catch (Exception e) {
-      return null;
-    }
-  }
 }

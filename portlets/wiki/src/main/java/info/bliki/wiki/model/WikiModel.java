@@ -1,5 +1,7 @@
 package info.bliki.wiki.model;
 
+import gnu.inet.encoding.Punycode;
+import gnu.inet.encoding.PunycodeException;
 import info.bliki.htmlcleaner.ContentToken;
 import info.bliki.htmlcleaner.TagToken;
 import info.bliki.wiki.filter.Encoder;
@@ -24,6 +26,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.wiki.util.WikiUtils;
@@ -55,6 +60,9 @@ public class WikiModel extends AbstractWikiModel {
 
   private final static String WIKII_NTERNAL_LINK_SCREEN =
     "WikiInternalLinkScreen";
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WikiModel.class.getName());
 
   /**
    * 
@@ -151,7 +159,14 @@ public class WikiModel extends AbstractWikiModel {
     WPATag aTagNode = new WPATag();
     if (topic.length() > 0) {
       aTagNode.addAttribute("title", topic, true);
-      String encodedtopic = encodeTitleToUrl(topic, true);
+      String punyTopic = "";
+      try {
+        // multibyte strings convert to punycode
+        punyTopic = Punycode.encode(topic);
+      } catch (PunycodeException e) {
+        logger.error("WikiModel.appendInternalLink", e);
+      }
+      String encodedtopic = encodeTitleToUrl(punyTopic, true);
       if (replaceColon()) {
         encodedtopic = encodedtopic.replace(':', '/');
       }

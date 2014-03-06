@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import gnu.inet.encoding.Punycode;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -52,8 +54,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     String name = rundata.getParameters().getString("name", "");
-    name = WikiUtils.convertEncording(name);
-
+    name = Punycode.decode(name);
     String parentId = rundata.getParameters().getString("parentId", "");
 
     if (StringUtils.isEmpty(name) || StringUtils.isEmpty(parentId)) {
