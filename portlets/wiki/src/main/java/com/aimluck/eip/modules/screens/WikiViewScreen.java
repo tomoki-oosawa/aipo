@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -47,7 +46,6 @@ public class WikiViewScreen extends WikiScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
     try {
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
