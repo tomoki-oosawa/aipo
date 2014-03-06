@@ -357,6 +357,12 @@ public class WikiFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
 
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        wiki.getWikiId(),
+        ALEventlogConstants.PORTLET_TYPE_WIKI,
+        wiki.getWikiName());
+
     } catch (Exception e) {
       logger.error("WikiFormData.insertFormData", e);
       return false;
@@ -418,6 +424,12 @@ public class WikiFormData extends ALAbstractFormData {
 
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        wiki.getWikiId(),
+        ALEventlogConstants.PORTLET_TYPE_WIKI,
+        wiki.getWikiName());
 
     } catch (Exception e) {
       logger.error("WikiFormData.updateFormData", e);
