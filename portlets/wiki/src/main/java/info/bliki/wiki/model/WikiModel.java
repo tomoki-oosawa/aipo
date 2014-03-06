@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -166,7 +167,16 @@ public class WikiModel extends AbstractWikiModel {
       } catch (PunycodeException e) {
         logger.error("WikiModel.appendInternalLink", e);
       }
-      String encodedtopic = encodeTitleToUrl(punyTopic, true);
+
+      /** この関数のデコード版がないため通常のURLエンコードを使う */
+      // String encodedtopic = encodeTitleToUrl(punyTopic, true);
+      String encodedtopic = "";
+      try {
+        encodedtopic = URLEncoder.encode(punyTopic, "UTF-8");
+      } catch (UnsupportedEncodingException e) {
+        logger.error("WikiModel.appendInternalLink", e);
+      }
+
       if (replaceColon()) {
         encodedtopic = encodedtopic.replace(':', '/');
       }
