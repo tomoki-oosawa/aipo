@@ -1255,5 +1255,3 @@ ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
 
 ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`, `parent_id`);
-
-ALTER TABLE `eip_t_wiki_file` ADD INDEX (`wiki_id`);
