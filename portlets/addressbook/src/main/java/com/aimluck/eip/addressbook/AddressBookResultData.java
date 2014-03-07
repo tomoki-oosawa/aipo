@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.addressbookuser.beans.AddressBookUserGroupLiteBean;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳のリザルトデータクラスです。
@@ -70,6 +71,9 @@ public class AddressBookResultData implements ALData {
 
   /** 役職名 */
   private ALStringField position_name;
+
+  /** 備考 */
+  private ALStringField note;
 
   /** 公開フラグ */
   private ALStringField public_flag;
@@ -116,6 +120,7 @@ public class AddressBookResultData implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
     address_id = new ALNumberField();
     name = new ALStringField();
@@ -130,6 +135,7 @@ public class AddressBookResultData implements ALData {
     post_name = new ALStringField();
     post_list = new ArrayList<AddressBookUserGroupLiteBean>();
     position_name = new ALStringField();
+    note = new ALStringField();
     public_flag = new ALStringField();
     company_name_kana = new ALStringField();
     zipcode = new ALStringField();
@@ -298,6 +304,14 @@ public class AddressBookResultData implements ALData {
    */
   public ALStringField getPositionName() {
     return position_name;
+  }
+
+  public void setNote(String string) {
+    note.setValue(string);
+  }
+
+  public String getNote() {
+    return ALEipUtils.getMessageList(note.getValue());
   }
 
   /**

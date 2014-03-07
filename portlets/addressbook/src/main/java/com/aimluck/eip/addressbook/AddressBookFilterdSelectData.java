@@ -238,6 +238,7 @@ public class AddressBookFilterdSelectData extends
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
       rd.setPositionName(record.getPositionName());
+      rd.setNote(record.getNote());
       rd.setPublicFlag(record.getPublicFlag());
 
       EipMAddressbookCompany company = record.getEipMAddressbookCompany();

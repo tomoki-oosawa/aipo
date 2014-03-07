@@ -224,6 +224,12 @@ public class AddressBookFormData extends ALAbstractFormData {
     position_name.setFieldName(ALLocalizationUtils
       .getl10n("ADDRESSBOOK_SETFIELDNAME_POSITION"));
     position_name.setTrim(true);
+
+    note = new ALStringField();
+    note.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_SETFIELDNAME_NOTE"));
+    note.setTrim(true);
+
     public_flag = new ALStringField();
     public_flag.setFieldName(ALLocalizationUtils
       .getl10n("ADDRESSBOOK_SETFIELDNAME_PUBLIC"));
@@ -643,6 +649,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       cellular_mail.setValue(address.getCellularMail());
       position_name.setValue(address.getPositionName());
+      note.setValue(address.getNote());
       public_flag.setValue(address.getPublicFlag());
 
       create_date.setValue(address.getCreateDate());
@@ -715,6 +722,9 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       address.setCellularMail(cellular_mail.getValue());
       address.setPositionName(position_name.getValue());
+
+      // メモの設定
+      address.setNote(note.getValue());
 
       // 会社の設定
       boolean hasCompany = false;
@@ -905,6 +915,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       }
 
       address.setPositionName(position_name.getValue());
+      address.setNote(note.getValue());
 
       if (user_id == address.getOwnerId()) {
         address.setPublicFlag(public_flag.getValue());
