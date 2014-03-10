@@ -51,4 +51,7 @@
     <Match class="com.aimluck.eip.schedule.CellScheduleFormFacilityData">
     	<Bug pattern="DLS_DEAD_LOCAL_STORE" />
     </Match>
+    <Match class="com.aimluck.eip.services.psmlmanager.db.CayenneDatabasePsmlManagerService">
+    	<Bug pattern="BC_VACUOUS_INSTANCEOF" />
+    </Match>
 </FindBugsFilter>
