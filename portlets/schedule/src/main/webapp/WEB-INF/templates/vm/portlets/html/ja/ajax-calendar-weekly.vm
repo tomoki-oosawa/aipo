@@ -699,7 +699,8 @@ dojo.addOnLoad(function () {
             				html += ' ';
             			}
             			params+="&m_id="+data[i].name;
-            			html+="<span class=\"dispUser color" + i +"\">" +data[i].aliasName+ "</span>";
+						var j = i % aipo.calendar.maximum_to;
+            			html+="<span class=\"dispUser color" + j +"\">" +data[i].aliasName+ "</span>";
             			aimluck.io.addOption(dojo.byId("member_to-"+'$!portlet.ID'), data[i].name, data[i].aliasName, true);
             		}
             		dojo.byId("member_to_input-"+'$!portlet.ID').innerHTML=html;
