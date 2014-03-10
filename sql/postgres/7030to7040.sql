@@ -178,3 +178,17 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
+
+-----------------------------------------------------------------------------
+-- EIP_M_USER_HOLIDAY
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_M_USER_HOLIDAY
+(
+	HOLIDAY_ID INTEGER NOT NULL,
+	HOLIDAY_DATE DATE,
+	HOLIDAY_TITLE varchar (99) NOT NULL,
+	CREATE_USER_ID INTEGER NOT NULL,
+ 	UPDATE_USER_ID INTEGER NOT NULL,
+ 	PRIMARY KEY(HOLIDAY_ID)
+);

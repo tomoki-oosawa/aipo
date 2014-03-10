@@ -50,6 +50,13 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="ZIPCODE" type="VARCHAR" length="8"/>
 	</db-entity>
+	<db-entity name="eip_m_user_holiday">
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="HOLIDAY_DATE" type="DATE" isMandatory="true"/>
+		<db-attribute name="HOLIDAY_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="HOLIDAY_TITLE" type="VARCHAR" isMandatory="true"/>
+		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
 	<db-entity name="eip_m_user_position">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POSITION" type="INTEGER"/>
@@ -162,6 +169,12 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="zipcode" type="java.lang.String" db-attribute-path="ZIPCODE"/>
 	</obj-entity>
+	<obj-entity name="EipMUserHoliday" className="com.aimluck.eip.cayenne.om.account.EipMUserHoliday" dbEntityName="eip_m_user_holiday">
+		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
+		<obj-attribute name="holidayDate" type="java.util.Date" db-attribute-path="HOLIDAY_DATE"/>
+		<obj-attribute name="holidayTitle" type="java.lang.String" db-attribute-path="HOLIDAY_TITLE"/>
+		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+	</obj-entity>
 	<obj-entity name="EipMUserPosition" className="com.aimluck.eip.cayenne.om.account.EipMUserPosition" dbEntityName="eip_m_user_position">
 		<obj-attribute name="position" type="java.lang.Integer" db-attribute-path="POSITION"/>
 	</obj-entity>
@@ -224,6 +237,10 @@
 	<db-relationship name="turbineGroup" source="eip_m_post" target="turbine_group" toMany="true">
 		<db-attribute-pair source="GROUP_NAME" target="GROUP_NAME"/>
 	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_m_user_holiday" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+		<db-attribute-pair source="UPDATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_m_user_position" target="turbine_user" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
@@ -243,6 +260,7 @@
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
 	</db-relationship>
 	<obj-relationship name="turbineGroup" source="EipMPost" target="TurbineGroup" db-relationship-path="turbineGroup"/>
+	<obj-relationship name="turbineUser" source="EipMUserHoliday" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="turbineUser" source="EipMUserPosition" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTAclRole" source="EipTAclPortletFeature" target="EipTAclRole" db-relationship-path="eipTAclRole"/>
 	<obj-relationship name="eipTAclPortletFeature" source="EipTAclRole" target="EipTAclPortletFeature" db-relationship-path="eipTAclPortletFeature"/>

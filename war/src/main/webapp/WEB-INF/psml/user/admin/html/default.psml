@@ -102,5 +102,11 @@
                 <property name="row" value="0"/>
             </layout>
         </entry>
+        <entry id="140" parent="Holiday">
+            <layout position="13" size="-1">
+                <property name="column" value="0"/>
+                <property name="row" value="0"/>
+            </layout>
+        </entry>
     </portlets>
 </portlets>
