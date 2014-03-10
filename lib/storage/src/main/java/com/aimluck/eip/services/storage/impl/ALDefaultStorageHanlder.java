@@ -122,7 +122,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
           throw new RuntimeException("createNewFile error");
         }
       } catch (RuntimeException e) {
-        throw e;
+        logger.error("Can't create file...:" + file);
       } catch (Exception e) {
         logger.error("Can't create file...:" + file);
       }
