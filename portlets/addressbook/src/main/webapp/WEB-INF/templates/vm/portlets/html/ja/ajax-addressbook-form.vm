@@ -119,6 +119,8 @@
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("position_name"))
 #ALtditem("#ALtextfieldw100('position_name' $!result.PositionName 50 'active')")
+#ALtdcaption($!result.getFieldName("note"))
+#ALtditem("#ALtextarea('note' $!result.Note 5 40)")
 #if($mode=="new_form" || $!result.OwnerId == $!result.UserId)
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
