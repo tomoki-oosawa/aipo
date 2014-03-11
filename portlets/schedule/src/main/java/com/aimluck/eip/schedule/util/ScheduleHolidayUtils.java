@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.schedule.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -27,6 +30,8 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.account.EipMUserHoliday;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.schedule.ScheduleHolidayResultData;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -66,6 +71,37 @@ public class ScheduleHolidayUtils {
       return userholiday;
     } catch (Exception ex) {
       logger.error("userholidays", ex);
+      return null;
+    }
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static List<ScheduleHolidayResultData> loadHolidayList(
+      RunData rundata, Context context) {
+    try {
+      List<ScheduleHolidayResultData> holidayList =
+        new ArrayList<ScheduleHolidayResultData>();
+      SelectQuery<EipMUserHoliday> query =
+        Database.query(EipMUserHoliday.class);
+      query.orderAscending(EipMUserHoliday.HOLIDAY_TITLE_PROPERTY);
+      List<EipMUserHoliday> aList = query.fetchList();
+
+      for (EipMUserHoliday record : aList) {
+        ScheduleHolidayResultData rd = new ScheduleHolidayResultData();
+        rd.initField();
+        rd.setHolidayId(record.getUserHolidayId().longValue());
+        rd.setHolidayTitle(record.getHolidayTitle());
+        rd.setHolidayDate(record.getHolidayDate());
+        holidayList.add(rd);
+      }
+
+      return holidayList;
+    } catch (Exception ex) {
+      logger.error("scheduleholiday", ex);
       return null;
     }
   }

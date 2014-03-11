@@ -37,7 +37,6 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -67,7 +66,7 @@ public class ScheduleHolidaySelectData extends
   protected String viewtype;
 
   /** フィルターなしの全設備リスト */
-  private List<FacilityResultData> facilityAllList;
+  private List<ScheduleHolidayResultData> holidayList;
 
   /**
    * 
@@ -144,6 +143,7 @@ public class ScheduleHolidaySelectData extends
       rd.initField();
       rd.setHolidayId(record.getUserHolidayId().longValue());
       rd.setHolidayTitle(record.getHolidayTitle());
+      rd.setHolidayDate(record.getHolidayDate());
       return rd;
     } catch (Exception ex) {
       logger.error("facilities", ex);
@@ -280,6 +280,13 @@ public class ScheduleHolidaySelectData extends
     return id1 == (int) id2;
   }
 
+  public void loadHolidayList(RunData rundata, Context context) {
+    holidayList = ScheduleHolidayUtils.loadHolidayList(rundata, context);
+  }
+
+  public List<ScheduleHolidayResultData> getHolidayList() {
+    return holidayList;
+  }
   // public List<FacilityGroupResultData> getAllFacilityGroup() {
   // return AllFacilitygroup;
   // }

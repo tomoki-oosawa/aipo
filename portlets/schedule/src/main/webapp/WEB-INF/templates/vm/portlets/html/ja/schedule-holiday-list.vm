@@ -22,6 +22,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/schedule_admin/form.js")
+#ALjavascript("javascript/aipo/schedule_holiday/form.js")
 #ALjavascript("javascript/aipo/widget/MemberAclSelectList.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
@@ -32,5 +33,5 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-schedule-admin-holiday-list.vm")
+#parse("/portlets/html/ja/ajax-schedule-holiday-list.vm")
 

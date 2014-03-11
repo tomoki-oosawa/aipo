@@ -93,10 +93,6 @@ public class ScheduleHolidayResultData implements ALData {
     return holiday_title;
   }
 
-  // public String getFacilityTitleHtml() {
-  // return ALCommonUtils.replaceToAutoCR(holiday_name.toString());
-  // }
-
   /**
    * @return
    */
@@ -111,7 +107,7 @@ public class ScheduleHolidayResultData implements ALData {
     holiday_id.setValue(i);
   }
 
-  public void setUserId(Date data) {
+  public void setHolidayDate(Date data) {
     holiday_date.setValue(data);
   }
 
@@ -149,8 +145,4 @@ public class ScheduleHolidayResultData implements ALData {
   public void setUpdateUserID(long i) {
     update_user_id.setValue(i);
   }
-  //
-  // public List<ScheduleHolidayResultData> getHolidayGroupList() {
-  // return ScheduleHolidayList;
-  // }
 }

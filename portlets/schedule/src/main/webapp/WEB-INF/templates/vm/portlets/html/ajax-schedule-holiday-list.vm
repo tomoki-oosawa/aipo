@@ -19,8 +19,10 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
-#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryFormScreen").addQueryData("entityid","new")))
-#set ($newAfterFunction1 = "aipo.workflow_category.onLoadWorkflowCategoryDialog")
+##set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryFormScreen").addQueryData("entityid","new")))
+#set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleHolidayFormScreen").addQueryData("entityid","new")))
+##set ($newAfterFunction1 = "aipo.workflow_category.onLoadWorkflowCategoryDialog")
+#set ($newAfterFunction1 = "aipo.schedule_holiday.onLoadScheduleHolidayDialog")
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteFormScreen").addQueryData("entityid","new")))
 #set ($newAfterFunction2 = "aipo.workflow_route.onLoadWorkflowRouteDialog")
 ## ---------------------------------------------------------------------------
@@ -44,7 +46,7 @@ $l10n.SCHEDULE_MSG_NO_HOLIDAYS<br />
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete($l10n.SCHEDULE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
 </div>
-#AUIajaxpageview('WorkflowCategoryListScreen' $result)
+#AUIajaxpageview('ScheduleHolidayListScreen' $result)
 #AUISummaryDivfooter()
 
 
@@ -56,52 +58,66 @@ $l10n.SCHEDULE_MSG_NO_HOLIDAYS<br />
 <tbody>
 <tr>
 #ALtdhead("#ALswitchCheckbox()")
-#ALtdhead("#ALajaxsort('category_name' $l10n.SCHEDULE_HOLIDAY_TITLE $result 'WorkflowCategoryListScreen')")
-#ALtdhead("#ALajaxsort('route_name' $l10n.SCHEDULE_HOLIDAY_DATE $result 'WorkflowCategoryListScreen')")
+#ALtdhead("#ALajaxsort('holiday_id' $l10n.SCHEDULE_HOLIDAY_TITLE $result 'ScheduleHolidayListScreen')")
+#ALtdhead("#ALajaxsort('holiday_date' $l10n.SCHEDULE_HOLIDAY_DATE $result 'ScheduleHolidayListScreen')")
 </tr>
 
 #foreach ($record in $result.List)
 <tr>
-	
-#if($!{client}=="IPHONE")
-#ALtdcellheaderAtt('align="center" class="auiMTCheck"')
-<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId' />
-#ALtdcellfooter()
-#ALtdcellheaderAtt('class="auiMTCaption"')
+#ALtdcellAtt("<input name='check$!record.HolidayId' type='checkbox' value='$!record.HolidayId'/>" 'align="center"')
+#ALtdcellheader()
 <div>
-<a href='javascript:void(0);' onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">
-$!record.CategoryName</a>
+<a href="javascript:void(0);" onclick="">$record.HolidayTitle</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellheader()
 <div>
-#if($!record.HasRouteName)
-	$!record.RouteName
-#end
+$!record.HolidayDate
 </div>
 #ALtdcellfooter()
-#else
+
+
 	
 	
-	
-#if($!record.CategoryId.toString() == "1")
-#ALtdcellAtt("<input type='checkbox' disabled='disabled' />" 'align="center"')
-#else
-#ALtdcellAtt("<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId'/>" 'align="center"')
-#end
-#ALtdcellheader()
-<div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
-</div>
-#ALtdcellfooter()
-#ALtdcellheader()
-<div>
-#if($!record.HasRouteName)
-$!record.RouteName
-#end
-</div>
-#ALtdcellfooter()
-#end
+###if($!{client}=="IPHONE")
+###ALtdcellheaderAtt('align="center" class="auiMTCheck"')
+##<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId' />
+###ALtdcellfooter()
+###ALtdcellheaderAtt('class="auiMTCaption"')
+##<div>
+##<a href='javascript:void(0);' onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">
+##$!record.CategoryName</a>
+##</div>
+###ALtdcellfooter()
+###ALtdcellheader()
+##<div>
+###if($!record.HasRouteName)
+##	$!record.RouteName
+###end
+##</div>
+###ALtdcellfooter()
+###else
+##	
+##	
+##	
+###if($!record.CategoryId.toString() == "1")
+###ALtdcellAtt("<input type='checkbox' disabled='disabled' />" 'align="center"')
+###else
+###ALtdcellAtt("<input name='check$!record.CategoryId' type='checkbox' value='$!record.CategoryId'/>" 'align="center"')
+###end
+###ALtdcellheader()
+##<div>
+##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
+##</div>
+###ALtdcellfooter()
+###ALtdcellheader()
+##<div>
+###if($!record.HasRouteName)
+##$!record.RouteName
+###end
+##</div>
+###ALtdcellfooter()
+###end
 </tr>
 #end
 
