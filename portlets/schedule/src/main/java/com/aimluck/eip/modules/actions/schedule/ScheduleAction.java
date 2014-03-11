@@ -249,7 +249,7 @@ public class ScheduleAction extends ALBaseAction {
       }
       if (template.equals("schedule-calendar")) {
         tab = "calendar";
-        listData = new AjaxScheduleWeeklyGroupEmptySelectData();
+        listData = new ScheduleOnedaySelectData();
         boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
         context.put("isMeie", Boolean.valueOf(isMsie));
 
