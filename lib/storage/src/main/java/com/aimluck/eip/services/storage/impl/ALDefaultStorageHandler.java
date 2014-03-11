@@ -43,10 +43,10 @@ import com.aimluck.eip.services.storage.ALStorageHandler;
 /**
  *
  */
-public class ALDefaultStorageHanlder extends ALStorageHandler {
+public class ALDefaultStorageHandler extends ALStorageHandler {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALDefaultStorageHanlder.class.getName());
+    .getLogger(ALDefaultStorageHandler.class.getName());
 
   private static final String EXT_FILENAME = ".txt";
 
@@ -54,7 +54,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
   public static ALStorageHandler getInstance() {
     if (instance == null) {
-      instance = new ALDefaultStorageHanlder();
+      instance = new ALDefaultStorageHandler();
     }
     return instance;
   }
@@ -121,10 +121,8 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         if (!file.createNewFile()) {
           throw new RuntimeException("createNewFile error");
         }
-      } catch (RuntimeException e) {
-        logger.error("Can't create file...:" + file);
-      } catch (Exception e) {
-        logger.error("Can't create file...:" + file);
+      } catch (IOException e) {
+        logger.error("Can't create file...:" + file, e);
       }
     }
 
@@ -263,6 +261,7 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
           }
         }
       }
+      throw new RuntimeException("createNewFile error");
     } catch (FileNotFoundException e) {
       logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
     } catch (IOException e) {
