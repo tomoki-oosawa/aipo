@@ -69,7 +69,6 @@ public class ScheduleHolidayResultData implements ALData {
     holiday_title = new ALStringField();
     create_user_id = new ALNumberField();
     update_user_id = new ALNumberField();
-    // ScheduleHolidayList = new ArrayList<ScheduleHolidayResultData>();
   }
 
   /**
