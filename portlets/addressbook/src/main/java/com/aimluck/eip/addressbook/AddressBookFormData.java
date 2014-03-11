@@ -442,6 +442,8 @@ public class AddressBookFormData extends ALAbstractFormData {
     cellular_mail.limitMaxLength(50);
     position_name.limitMaxLength(50);
 
+    note.limitMaxLength(1000);
+
     // 会社情報
     if (is_new_company) {
       // 会社名
@@ -530,6 +532,8 @@ public class AddressBookFormData extends ALAbstractFormData {
       msgList
         .add(ALLocalizationUtils.getl10n("ADDRESSBOOK_ALERT_SET_CELLMAIL"));
     }
+
+    note.validate(msgList);
 
     position_name.validate(msgList);
 
