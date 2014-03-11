@@ -1629,6 +1629,7 @@ input.auiButtonSearch.active {
 .auiButtonIconDummy {
   width: 16px;
   height: 16px;
+  line-height: 16px;
   padding: 3px !important;
   font-size: 14px;
   color: #666666 !important;
@@ -1653,12 +1654,19 @@ input.auiButtonSearch.active {
   cursor: pointer;
   vertical-align: baseline;
 }
+.auiButtonIcon [class^=auiButton],
+.auiButtonIcon [class^=icon-],
+.auiButtonIconDummy [class^=auiButton],
+.auiButtonIconDummy [class^=icon-] {
+  font-size: 14px;
+}
 
 [class^="auiButton"] [class^="icon-"] {
   line-height: 16px;
 }
 [class^="auiButton"] .icon-remove {
   font-size: 15px !important;
+  line-height: 15px !important;
 }
 
 *:first-child + html .auiButtonIcon span,
@@ -1679,6 +1687,14 @@ input.auiButtonSearch.active {
   cursor: default !important;
 }
 
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+  cursor: default !important;
+}
 .auiButtonGroup {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -3498,6 +3514,44 @@ ul.attachments {
 }
 
 /***************************************************
+	auiWikiContent
+--------------------------------------------------*/
+.auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
+  margin: 1em 0 !important;
+}
+.auiWikiContent h1 {
+  font-size: large;
+  border-bottom: solid 1px #d2d2d2;
+}
+.auiWikiContent h2 {
+  font-size: larger;
+  border-bottom: solid 1px #d2d2d2;
+}
+.auiWikiContent h3 {
+  border-bottom: dotted 1px #d2d2d2;
+}
+.auiWikiContent ul {
+  margin: 1em;
+}
+.auiWikiContent ol {
+  margin: 1em 1em 1em 2em;
+}
+.auiWikiContent table {
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+.auiWikiContent th, .auiWikiContent td {
+  border: solid 1px #d2d2d2 !important;
+  padding: 5px;
+}
+.auiWikiContent hr {
+  margin: 20px 0;
+}
+.auiWikiContent .wikiNew {
+  color: #ff9900;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
@@ -4284,4 +4338,16 @@ a:hover .auiWFicon [class^="icon-"] {
   text-align: left;
   margin-top: 10px;
   padding-top: 10px;
+}
+
+/***************************************************
+	externallink
+--------------------------------------------------*/
+.externallink:after {
+  display: inline-block;
+  font-size: larger;
+  font-family: 'FontAwesome';
+  content: "\f08e";
+  color: #333333;
+  margin-left: 3px;
 }

@@ -243,4 +243,6 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_GADGET = "アプリ管理";
 
+  public static final String PORTLET_TYPE_STR_WIKI = "Wiki";
+
 }

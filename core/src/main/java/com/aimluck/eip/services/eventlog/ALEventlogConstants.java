@@ -127,4 +127,6 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_ACCESSCTL = 350;
 
+  public static final int PORTLET_TYPE_WIKI = 360;
+
 }
