@@ -261,82 +261,143 @@ public class ProjectUtils {
    * @return 進捗情報
    */
   public static List<DataRow> getProjectProgress(Integer projectId) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("WITH base AS (");
-    sb.append("  SELECT");
-    sb.append("        task.progress_rate"); // 進捗率
-    sb.append("      , task.start_plan_date"); // 開始予定日
-    sb.append("      , task.end_plan_date"); // 完了予定日
-    sb.append("      , task.plan_workload"); // 計画工数
-    sb.append("      , member.workload"); // 工数
-    sb.append("      , CASE");
-    sb.append("          WHEN CURRENT_DATE < task.end_plan_date");
-    sb.append("            THEN");
-    sb
-      .append("              CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
-    sb.append("                THEN 0");
-    sb.append("                ELSE CURRENT_DATE - task.start_plan_date + 1");
-    sb.append("              END");
-    sb.append("            ELSE");
-    sb.append("              task.end_plan_date - task.start_plan_date + 1");
-    sb.append("        END AS lapsed_days"); // 基準日までのタスク経過日数
-    sb
-      .append("      , task.end_plan_date - task.start_plan_date + 1 AS task_days"); // タスク経過日数
-    sb.append("      , task.update_date AS task_update_date"); // 更新日
-    sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
-    sb.append("        JOIN ( ");
-    sb.append("          SELECT");
-    sb.append("              task_id");
-    sb.append("              , SUM(workload) AS workload");
-    sb.append("            FROM");
-    sb.append("              eip_t_project_task_member");
-    sb.append("            GROUP BY");
-    sb.append("              task_id");
-    sb.append("        ) AS member ");
-    sb.append("          ON member.task_id = task.task_id");
-    sb.append("   WHERE");
-    sb.append("         task.project_id = #bind($project_id)");
-    sb.append("     AND NOT EXISTS(");
-    sb.append("           SELECT 0");
-    sb.append("             FROM eip_t_project_task AS sub");
-    sb.append("            WHERE");
-    sb.append("                  sub.parent_task_id = task.task_id");
-    sb.append("         )");
-    sb
-      .append("     AND start_plan_date <> TO_DATE(#bind($empty_date), #bind($date_format))");
-    sb
-      .append("     AND end_plan_date <> TO_DATE(#bind($empty_date), #bind($date_format))");
-    sb.append(")");
-    sb.append("SELECT");
-    sb.append("      #result('COUNT(0)' 'int' 'cnt')");
-    sb.append("    , #result('SUM(lapsed_days)' 'int' 'lapsed_days')");
-    sb.append("    , #result('SUM(task_days)' 'int' 'task_days')");
-    sb
-      .append("    , #result('SUM(task_days * progress_rate) / SUM(task_days)' 'int' 'result_per')");
-    sb
-      .append("    , #result('SUM(lapsed_days) * 100 / SUM(task_days)' 'int' 'plan_per')"); // 予定進捗
-    sb
-      .append("    , #result('SUM(plan_workload)' 'java.math.BigDecimal' 'plan_workload')");// 計画工数
-    sb
-      .append("    , #result('SUM(workload)' 'java.math.BigDecimal' 'workload')");// 実績工数
-    sb
-      .append("    , #result('SUM(task_days * progress_rate) / SUM(task_days)' 'int' 'result_per')");
-    sb
-      .append("    , #result('MAX(task_update_date)' 'java.util.Date' 'task_update_date')");
-    sb.append("  FROM");
-    sb.append("    base");
+    if (Database.isJdbcMySQL()) {
 
-    SQLTemplate<EipTProjectTask> sqltemp =
-      Database.sql(EipTProjectTask.class, String.valueOf(sb));
-    sqltemp.param("project_id", projectId);
-    sqltemp.param("date_format", DB_DATE_FORMAT);
-    sqltemp.param("empty_date", EMPTY_DATE);
+      SimpleDateFormat sdfSrc = new SimpleDateFormat("yyyy/MM/dd");
+      Date date = null;
+      try {
+        date = sdfSrc.parse(EMPTY_DATE);
+      } catch (ParseException e) {
+        logger.error("getProjectProgress", e);
+        throw new RuntimeException(e);
+      }
+      SimpleDateFormat sdfDest = new SimpleDateFormat("yyyy-MM-dd");
+      String formatedEmptyDate = sdfDest.format(date);
 
-    List<DataRow> result = sqltemp.fetchListAsDataRow();
+      StringBuilder sb = new StringBuilder();
+      sb
+        .append("SELECT task.progress_rate, task.start_plan_date, task.end_plan_date, task.plan_workload, member.workload, ");
+      sb.append("  CASE WHEN ");
+      sb.append("    CURRENT_DATE < task.end_plan_date ");
+      sb.append("  THEN");
+      sb.append("    CASE WHEN ");
+      sb.append("      CURRENT_DATE - task.start_plan_date + 1 < 0 THEN 0 ");
+      sb.append("    ELSE");
+      sb.append("      CURRENT_DATE - task.start_plan_date + 1 ");
+      sb.append("    END");
+      sb.append("  ELSE");
+      sb.append("    task.end_plan_date - task.start_plan_date + 1 ");
+      sb.append("  END");
+      sb.append("  AS lapsed_days, ");
+      sb
+        .append("  task.end_plan_date - task.start_plan_date + 1 AS task_days, task.update_date AS task_update_date FROM eip_t_project_task AS task ");
+      sb.append("  JOIN");
+      sb.append("  (");
+      sb
+        .append("    SELECT task_id, SUM(workload) AS workload FROM eip_t_project_task_member GROUP BY task_id");
+      sb.append("  ) AS member ON member.task_id = task.task_id ");
+      sb.append("  WHERE task.project_id = #bind($project_id) AND NOT EXISTS");
+      sb.append("  (");
+      sb
+        .append("    SELECT 0 FROM eip_t_project_task AS sub WHERE sub.parent_task_id = task.task_id");
+      sb.append("  )");
+      sb
+        .append("  AND start_plan_date <> #bind($empty_date) AND end_plan_date <> #bind($empty_date)");
 
-    return result;
+      String subQuery = sb.toString();
 
+      StringBuilder main = new StringBuilder();
+      main
+        .append(
+          "SELECT COUNT(0) AS cnt, SUM(lapsed_days) AS lapsed_days, SUM(task_days) AS task_days, SUM(task_days * progress_rate) / SUM(task_days) AS result_per, SUM(lapsed_days) * 100 / SUM(task_days) AS plan_per, SUM(plan_workload) AS plan_workload, SUM(workload) AS workload, SUM(task_days * progress_rate) / SUM(task_days) AS result_per, MAX(task_update_date) AS task_update_date FROM")
+        .append("(")
+        .append(subQuery)
+        .append(") AS base");
+
+      String query = main.toString();
+      SQLTemplate<EipTProjectTask> sqltemp =
+        Database.sql(EipTProjectTask.class, query);
+      sqltemp.param("project_id", projectId);
+      sqltemp.param("empty_date", formatedEmptyDate);
+      List<DataRow> result = sqltemp.fetchListAsDataRow();
+      return result;
+    } else {
+
+      StringBuilder sb = new StringBuilder();
+      sb.append("WITH base AS (");
+      sb.append("  SELECT");
+      sb.append("        task.progress_rate"); // 進捗率
+      sb.append("      , task.start_plan_date"); // 開始予定日
+      sb.append("      , task.end_plan_date"); // 完了予定日
+      sb.append("      , task.plan_workload"); // 計画工数
+      sb.append("      , member.workload"); // 工数
+      sb.append("      , CASE");
+      sb.append("          WHEN CURRENT_DATE < task.end_plan_date");
+      sb.append("            THEN");
+      sb
+        .append("              CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
+      sb.append("                THEN 0");
+      sb.append("                ELSE CURRENT_DATE - task.start_plan_date + 1");
+      sb.append("              END");
+      sb.append("            ELSE");
+      sb.append("              task.end_plan_date - task.start_plan_date + 1");
+      sb.append("        END AS lapsed_days"); // 基準日までのタスク経過日数
+      sb
+        .append("      , task.end_plan_date - task.start_plan_date + 1 AS task_days"); // タスク経過日数
+      sb.append("      , task.update_date AS task_update_date"); // 更新日
+      sb.append("    FROM");
+      sb.append("      eip_t_project_task AS task");
+      sb.append("        JOIN ( ");
+      sb.append("          SELECT");
+      sb.append("              task_id");
+      sb.append("              , SUM(workload) AS workload");
+      sb.append("            FROM");
+      sb.append("              eip_t_project_task_member");
+      sb.append("            GROUP BY");
+      sb.append("              task_id");
+      sb.append("        ) AS member ");
+      sb.append("          ON member.task_id = task.task_id");
+      sb.append("   WHERE");
+      sb.append("         task.project_id = #bind($project_id)");
+      sb.append("     AND NOT EXISTS(");
+      sb.append("           SELECT 0");
+      sb.append("             FROM eip_t_project_task AS sub");
+      sb.append("            WHERE");
+      sb.append("                  sub.parent_task_id = task.task_id");
+      sb.append("         )");
+      sb
+        .append("     AND start_plan_date <> TO_DATE(#bind($empty_date), #bind($date_format))");
+      sb
+        .append("     AND end_plan_date <> TO_DATE(#bind($empty_date), #bind($date_format))");
+      sb.append(")");
+      sb.append("SELECT");
+      sb.append("      #result('COUNT(0)' 'int' 'cnt')");
+      sb.append("    , #result('SUM(lapsed_days)' 'int' 'lapsed_days')");
+      sb.append("    , #result('SUM(task_days)' 'int' 'task_days')");
+      sb
+        .append("    , #result('SUM(task_days * progress_rate) / SUM(task_days)' 'int' 'result_per')");
+      sb
+        .append("    , #result('SUM(lapsed_days) * 100 / SUM(task_days)' 'int' 'plan_per')"); // 予定進捗
+      sb
+        .append("    , #result('SUM(plan_workload)' 'java.math.BigDecimal' 'plan_workload')");// 計画工数
+      sb
+        .append("    , #result('SUM(workload)' 'java.math.BigDecimal' 'workload')");// 実績工数
+      sb
+        .append("    , #result('SUM(task_days * progress_rate) / SUM(task_days)' 'int' 'result_per')");
+      sb
+        .append("    , #result('MAX(task_update_date)' 'java.util.Date' 'task_update_date')");
+      sb.append("  FROM");
+      sb.append("    base");
+
+      SQLTemplate<EipTProjectTask> sqltemp =
+        Database.sql(EipTProjectTask.class, String.valueOf(sb));
+      sqltemp.param("project_id", projectId);
+      sqltemp.param("date_format", DB_DATE_FORMAT);
+      sqltemp.param("empty_date", EMPTY_DATE);
+
+      List<DataRow> result = sqltemp.fetchListAsDataRow();
+      return result;
+    }
   }
 
   // ---------------------------------------------------
