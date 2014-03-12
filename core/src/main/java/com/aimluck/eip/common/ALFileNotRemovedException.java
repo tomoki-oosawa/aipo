@@ -30,4 +30,12 @@ public class ALFileNotRemovedException extends Exception {
    */
   private static final long serialVersionUID = 5975426959528143587L;
 
+  public ALFileNotRemovedException() {
+    super();
+  }
+
+  public ALFileNotRemovedException(Throwable cause) {
+    super(cause);
+  }
+
 }

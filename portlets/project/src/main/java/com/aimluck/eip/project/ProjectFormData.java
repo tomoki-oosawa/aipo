@@ -331,7 +331,9 @@ public class ProjectFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, loginUser.getUserId());
+        Database.get(TurbineUser.class, Integer.valueOf(loginUser
+          .getUserId()
+          .toString()));
 
       // 新規オブジェクトモデル
       EipTProject project = Database.create(EipTProject.class);
@@ -360,6 +362,9 @@ public class ProjectFormData extends ALAbstractFormData {
       }
       project.setProgressRate(progressRate);
 
+      // プロジェクトを登録
+      Database.commit();
+
       // -----------------------
       // メンバーの登録
       // -----------------------
@@ -370,6 +375,9 @@ public class ProjectFormData extends ALAbstractFormData {
         member.setUserId((int) user.getUserId().getValue());
       }
 
+      // メンバーを登録
+      Database.commit();
+
       // 添付ファイルを登録する．
       pfile.insertAttachmentFiles(
         fileuploadList,
@@ -377,9 +385,6 @@ public class ProjectFormData extends ALAbstractFormData {
         uid,
         project,
         msgList);
-
-      // プロジェクトを登録
-      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

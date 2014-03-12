@@ -26,7 +26,7 @@
 	#set ($event_submit = "eventSubmit_doGpdb_insert")
 	#set ($subtitle = "$l10n.GPDB_SELECTION_ITEMS_ADD")
 #else
-	#set ($action_str = "l10n.GPDB_UPDATE")
+	#set ($action_str = "$l10n.GPDB_UPDATE")
 	#set ($subtitle = "$l10n.GPDB_SELECTION_ITEMS_EDIT")
 	#set ($event_submit = "eventSubmit_doGpdb_update")
 #end

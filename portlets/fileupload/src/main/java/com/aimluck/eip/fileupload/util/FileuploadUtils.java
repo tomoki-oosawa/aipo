@@ -521,7 +521,7 @@ public class FileuploadUtils {
       new BufferedImage(
         targetImage.getWidth(null),
         targetImage.getHeight(null),
-        imgfile.getType());
+        BufferedImage.TYPE_3BYTE_BGR);
     Graphics2D g = tmpImage.createGraphics();
     g.setColor(Color.WHITE);
     g.fillRect(0, 0, shrinkedWidth, shrinkedHeight);

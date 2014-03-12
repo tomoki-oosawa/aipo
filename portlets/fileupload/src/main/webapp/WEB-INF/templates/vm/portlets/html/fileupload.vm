@@ -18,17 +18,21 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.FILEUPLOAD_ADD)
 #set ($event_submit = "eventSubmit_doFileupload_insert")
-#set($tabs = [["ファイルアップロード", "",""]])
+#set($tabs = [[$l10n.FILEUPLOAD_FILEUPLOAD, "",""]])
 ## ---------------------------------------------------------------------------
 <script language="JavaScript" type="text/JavaScript">
 <!--
 
-function get_data(){
+function get_data(pid){
     #if($!receiveFile && $!receiveFile == "true")
-    window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape');
-    window.parent.close();
+	#if($!result.MaxSize == 1)
+	window.opener.aipo.fileupload.replaceFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #else
+    window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #end
+	window.parent.close();
     #end
 }
 
@@ -45,7 +49,7 @@ function getFileName(){
 function checkFile(){
     var filename = getFileName();
     if(filename == ""){
-        alert('ファイルを選択してください。');
+        alert("$l10n.FILEUPLOAD_SELECT_FILE");
         return false;
     }
     return true;
@@ -58,7 +62,7 @@ function checkFile(){
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-<h3>添付ファイルの追加</h3>
+<h3>$l10n.FILEUPLOAD_ADD_ATTACHMENT</h3>
 <form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','update'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
 <input type="hidden" name="mode" value="update" />
 <input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
@@ -66,14 +70,14 @@ function checkFile(){
 <input type="hidden" name="nsize" id="nsize" value="$nsize" />
 <input type="hidden" name="secid" value="$secid" />
 <div id="uploadContainer">
-<div style="padding:2px 0px 5px 0px">追加したいファイルを選択してください。</div>
+<div style="padding:2px 0px 5px 0px">$l10n.FILEUPLOAD_SELECT_FILE_ADD</div>
 <span id="inputField">
 <input type="file" id="attachment" name="attachment"/>
 </span>
 </div>
 <div style="padding:10px 0px 3px 0px">
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALbutton("cancel" "閉じる" 'window.close()')
+#ALsubmit($event_submit $action_str)#ALbutton("cancel" "$l10n.FILEUPLOAD_CLOSE" 'window.close()')
 #ALbuttonfooter()
 </div>
 </form>

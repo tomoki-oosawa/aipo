@@ -133,3 +133,165 @@ INSERT INTO eip_m_gpdb_kubun_value VALUES (44, 1, '大分県', 44, now(), now())
 INSERT INTO eip_m_gpdb_kubun_value VALUES (45, 1, '宮崎県', 45, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (47, 1, '沖縄県', 47, now(), now());
+
+CREATE TABLE `eip_t_wiki` (
+  `wiki_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wiki_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `parent_id` int(11) DEFAULT 0 NOT NULL,
+  `note` text COLLATE utf8_unicode_ci,
+  `create_user_id` int(11) DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`wiki_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_wiki_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `wiki_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `file_path` text COLLATE utf8_unicode_ci NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
+ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`, `parent_id`);
+
+CREATE TABLE `eip_t_project` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_name` text NOT NULL,
+  `explanation` text,
+  `admin_user_id` int(11) NOT NULL,
+  `progress_flg` varchar(1) NOT NULL,
+  `progress_rate` int(11) DEFAULT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `update_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task` (
+  `task_id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_task_id` int(11) DEFAULT NULL,
+  `project_id` int(11) NOT NULL,
+  `tracker` text NOT NULL,
+  `task_name` text NOT NULL,
+  `explanation` text,
+  `status` text NOT NULL,
+  `priority` text NOT NULL,
+  `start_plan_date` date DEFAULT NULL,
+  `end_plan_date` date DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `plan_workload` decimal(5,3) DEFAULT NULL,
+  `progress_rate` int(11) DEFAULT NULL,
+  `order_no` int(11) DEFAULT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `update_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `workload` decimal(5,3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `task_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_comment_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_m_project_kubun` (
+  `project_kubun_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_kubun_cd` text NOT NULL,
+  `project_kubun_name` text NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`project_kubun_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_m_project_kubun_value` (
+  `project_kubun_value_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_kubun_id` int(11) NOT NULL,
+  `project_kubun_value_cd` text NOT NULL,
+  `project_kubun_value` text NOT NULL,
+  `order_no` int(11) NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`project_kubun_value_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--区分マスタデータ
+INSERT INTO eip_m_project_kubun(project_kubun_id, project_kubun_cd, project_kubun_name) VALUES(1,'tracker','トラッカー');
+INSERT INTO eip_m_project_kubun(project_kubun_id, project_kubun_cd, project_kubun_name) VALUES(2,'status','ステータス');
+INSERT INTO eip_m_project_kubun(project_kubun_id, project_kubun_cd, project_kubun_name) VALUES(3,'priority','優先度');
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(1,1,'1','機能',1);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(2,1,'2','バグ',2);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(3,1,'3','サポート',3);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(4,2,'1','新規',1);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(5,2,'2','進行中',2);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(6,2,'3','解決',3);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(7,2,'4','フィードバック',4);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(8,2,'5','終了',5);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(9,2,'6','却下',6);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(10,3,'1','高',1);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(11,3,'2','中',2);
+INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(12,3,'3','低',3);

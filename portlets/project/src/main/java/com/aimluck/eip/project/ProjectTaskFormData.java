@@ -642,7 +642,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   private boolean setInsertUpdate(EipTProjectTask task) {
 
     // プロジェクトID
-    task.setProject(project);
+    task.setEipTProject(project);
     // 分類
     task.setTracker(tracker.getValue());
     // タスク名

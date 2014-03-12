@@ -1075,9 +1075,15 @@ public class ALEipUtils {
       String template =
         rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
-        if (template.endsWith("DetailScreen")) {
-          VelocityContext context = new VelocityContext();
-          setupContext(rundata, context);
+        if (template.endsWith("DetailScreen")
+          || (template.endsWith("FormScreen"))) {
+          Context context =
+            org.apache.turbine.services.velocity.TurbineVelocity
+              .getContext(rundata);
+          if (null == context) {
+            context = new VelocityContext();
+            setupContext(rundata, context);
+          }
           try {
             ServletOutputStream out = null;
             HttpServletResponse response = rundata.getResponse();

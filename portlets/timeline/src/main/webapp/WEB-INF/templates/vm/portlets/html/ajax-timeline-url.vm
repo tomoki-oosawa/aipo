@@ -20,8 +20,8 @@
 ## ---------------------------------------------------------------------------
 <div class="tlInputAttachment">
 <div class="floatRight">
-  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" class="auiIcon auiIconDelete" title="$l10n.TIMELINE_DELETION">
-    <span>x</span>
+  <a href="javascript:aipo.timeline.deleteClip('$portlet.ID')" title="$l10n.TIMELINE_DELETION">
+    <span class="auiWFicon"><i class="icon-remove"></i></span>
   </a>
 </div>
 <div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">

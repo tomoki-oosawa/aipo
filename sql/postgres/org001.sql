@@ -1542,6 +1542,45 @@ CREATE TABLE EIP_M_GPDB_KUBUN_VALUE
 );
 
 -----------------------------------------------------------------------------
+-- EIP_T_WIKI
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI
+(
+    WIKI_ID INTEGER NOT NULL,
+    WIKI_NAME VARCHAR (64) NOT NULL,
+    PARENT_ID INTEGER DEFAULT 0 NOT NULL,
+    NOTE TEXT,
+    CREATE_USER_ID INTEGER,
+    UPDATE_USER_ID INTEGER,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY(WIKI_ID)
+);
+
+CREATE INDEX eip_t_wiki_wiki_name_parent_id_index ON EIP_T_WIKI (WIKI_NAME, PARENT_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_WIKI_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    WIKI_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (WIKI_ID) REFERENCES EIP_T_WIKI (WIKI_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 
@@ -1635,6 +1674,8 @@ CREATE SEQUENCE pk_eip_t_gpdb_record INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_gpdb_record_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun_value INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1714,6 +1755,8 @@ ALTER SEQUENCE pk_eip_t_gpdb_record OWNED BY EIP_T_GPDB_RECORD.GPDB_RECORD_ID;
 ALTER SEQUENCE pk_eip_t_gpdb_record_file OWNED BY EIP_T_GPDB_RECORD_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun OWNED BY EIP_M_GPDB_KUBUN.GPDB_KUBUN_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun_value OWNED BY EIP_M_GPDB_KUBUN_VALUE.GPDB_KUBUN_VALUE_ID;
+ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
+ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
 
 -----------------------------------------------------------------------------
 -- CREATE INDEX

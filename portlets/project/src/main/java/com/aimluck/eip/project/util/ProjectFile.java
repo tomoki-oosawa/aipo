@@ -74,7 +74,9 @@ public class ProjectFile<T extends IProjectFile, M> {
     "");
 
   /** プロジェクトの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  public static final String CATEGORY_KEY = "project";
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.project.categorykey",
+    "");
 
   /***/
   private final Class<T> classT;

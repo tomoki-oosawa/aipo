@@ -110,7 +110,7 @@ aipo.timeline.nextThumbnail = function(pid) {
 		value++;
 		page.value = value;
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-		dojo.byId("count_" + pid).innerHTML = max + " 件中 " + page.value + " 件";
+		dojo.byId("count_" + pid).innerHTML = maxval + " 件中 " + page.value + " 件";
 	}
 }
 
@@ -162,7 +162,39 @@ aipo.timeline.refreshImageList = function(pid, i) {
 	var w = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalWidth;
 	var h = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").naturalHeight;
 
-	if ((w > 80) && (h > 80) || dojo.isIE) {
+	if (dojo.isIE) {
+		// IE対応
+		var img = new Image();
+		img.src = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").src;
+		var iew = img.width;
+		var ieh = img.height;
+		if ((iew > 80) && (ieh > 80)){
+			// 描画対象
+			if (aipo.timeline.revmaxlist.hasOwnProperty(pid)) {
+				revmax = aipo.timeline.revmaxlist[pid];
+			}
+			revmax++;
+			aipo.timeline.revmaxlist[pid] = revmax;
+
+			var info = dojo.byId("tlClipImage_" + pid + "_1_untiview");
+
+			var divNode = document.createElement('div');
+			divNode.id = "tlClipImage_" + pid + "_" + revmax;
+			divNode.className = "tlClipImage";
+			divNode.style.display = "none";
+
+			var imgNode = document.createElement('img');
+			imgNode.src = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").src;
+			imgNode.name = dojo.byId("tlClipImage_" + pid + "_" + i + "_img").name;
+
+			divNode.appendChild(imgNode);
+			info.parentNode.insertBefore(divNode, info);
+			var delay = 200;
+			setTimeout(function() {
+				showImageList(pid);
+			}, delay);
+		}
+	}else if ((w > 80) && (h > 80)){
 		// 描画対象
 		if (aipo.timeline.revmaxlist.hasOwnProperty(pid)) {
 			revmax = aipo.timeline.revmaxlist[pid];
@@ -184,9 +216,6 @@ aipo.timeline.refreshImageList = function(pid, i) {
 		divNode.appendChild(imgNode);
 		info.parentNode.insertBefore(divNode, info);
 		var delay = 0;
-		if (dojo.isIE) {
-			delay = 200;
-		}
 		setTimeout(function() {
 			showImageList(pid);
 		}, delay);
@@ -351,21 +380,14 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 	if (arrDialog) {
 		arrDialog.hide();
 	}
-	var form = dojo.query("#likeForm_" + portletId + "_" + timelineId)[0];
+	var form = dojo.byId("likeForm_" + portletId + "_" + timelineId);
 	var a = dojo.query("#likeForm_" + portletId + "_" + timelineId + " > a")[0];
 	var inputname = dojo.query("#likeForm_" + portletId + "_" + timelineId
 			+ " > input")[1];
 	if (mode == 'like') {
-		var onsubmit = form.getAttribute("onsubmit");
-		if (typeof onsubmit == "string") {
-			onsubmit = onsubmit.replace("\'like\'", "\'dislike\'");
-			form.setAttribute("onsubmit", onsubmit);
-		} else {
-			var onsubmitString = onsubmit.toString().replace("\'like\'",
-					"\'dislike\'");
-			onsubmitString = onsubmitString.substring(onsubmitString
-					.indexOf("{") + 1, onsubmitString.lastIndexOf("}") - 1);
-			form.setAttribute("onsubmit", new Function(onsubmitString));
+		form.onsubmit = function(event) {
+			aimluck.io.submit(form, '', portletId,
+					aipo.timeline.onReceiveLikeMessage(portletId, timelineId, 'dislike', isComment))
 		}
 		var onclick = a.getAttribute("onclick");
 		if (typeof onclick == "string") {
@@ -381,21 +403,14 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 		}
 		a.innerHTML = "いいね！を取り消す";
 		if (isComment) {
-			aipo.timeline.increaseComLikeValue(timelineId);
+			aipo.timeline.increaseComLikeValue(portletId, timelineId);
 		} else {
-			aipo.timeline.increaseLikeValue(timelineId);
+			aipo.timeline.increaseLikeValue(portletId, timelineId);
 		}
 	} else if (mode == 'dislike') {
-		var onsubmit = form.getAttribute("onsubmit");
-		if (typeof onsubmit == "string") {
-			onsubmit = onsubmit.replace("\'dislike\'", "\'like\'");
-			form.setAttribute("onsubmit", onsubmit);
-		} else {
-			var onsubmitString = onsubmit.toString().replace("\'dislike\'",
-					"\'like\'");
-			onsubmitString = onsubmitString.substring(onsubmitString
-					.indexOf("{") + 1, onsubmitString.lastIndexOf("}") - 1);
-			form.setAttribute("onsubmit", new Function(onsubmitString));
+		form.onsubmit = function(event) {
+			aimluck.io.submit(form, '', portletId,
+					aipo.timeline.onReceiveLikeMessage(portletId, timelineId, 'like', isComment))
 		}
 		var onclick = a.getAttribute("onclick");
 		if (typeof onclick == "string") {
@@ -411,16 +426,16 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 		}
 		a.innerHTML = "いいね！";
 		if (isComment) {
-			aipo.timeline.decreaseComLikeValue(timelineId);
+			aipo.timeline.decreaseComLikeValue(portletId, timelineId);
 		} else {
-			aipo.timeline.decreaseLikeValue(timelineId);
+			aipo.timeline.decreaseLikeValue(portletId, timelineId);
 		}
 	}
 }
 
-aipo.timeline.increaseLikeValue = function(timelineId) {
-	var div = dojo.query("#like_" + timelineId)[0];
-	var a = dojo.query("#like_" + timelineId + " > a")[0];
+aipo.timeline.increaseLikeValue = function(portletId, timelineId) {
+	var div = dojo.query("#like_" + portletId + "_" + timelineId)[0];
+	var a = dojo.query("#like_" + portletId + "_" + timelineId + " > a")[0];
 	if (dojo.isFF > 0) {
 		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
 	} else {
@@ -445,8 +460,8 @@ aipo.timeline.increaseLikeValue = function(timelineId) {
 	}
 }
 
-aipo.timeline.increaseComLikeValue = function(timelineId) {
-	var a = dojo.query("#likeCount_" + timelineId)[0];
+aipo.timeline.increaseComLikeValue = function(portletId, timelineId) {
+	var a = dojo.query("#likeCount_" + portletId + "_" + timelineId)[0];
 	if (dojo.isFF > 0) {
 		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
 	} else {
@@ -464,8 +479,8 @@ aipo.timeline.increaseComLikeValue = function(timelineId) {
 	}
 }
 
-aipo.timeline.decreaseLikeValue = function(timelineId) {
-	var a = dojo.query("#like_" + timelineId + " > a")[0];
+aipo.timeline.decreaseLikeValue = function(portletId, timelineId) {
+	var a = dojo.query("#like_" + portletId + "_" + timelineId + " > a")[0];
 	if (dojo.isFF > 0) {
 		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
 	} else {
@@ -485,8 +500,8 @@ aipo.timeline.decreaseLikeValue = function(timelineId) {
 	}
 }
 
-aipo.timeline.decreaseComLikeValue = function(timelineId) {
-	var a = dojo.query("#likeCount_" + timelineId)[0];
+aipo.timeline.decreaseComLikeValue = function(portletId, timelineId) {
+	var a = dojo.query("#likeCount_" + portletId + "_" + timelineId)[0];
 	if (dojo.isFF > 0) {
 		var likeLinkString = a.textContent; // FirefoxではinnerTextが動作しないため
 	} else {

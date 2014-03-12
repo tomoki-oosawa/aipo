@@ -80,7 +80,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
 
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
       return null;
     }
   }
@@ -144,7 +144,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
       }
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOScheduleCsvFileScreen.getCSVStringDB", e);
       return null;
     }
   }

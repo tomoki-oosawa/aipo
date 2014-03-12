@@ -91,7 +91,7 @@
 #ALtdhead("#ALswitchCheckbox()")
 ##ヘッダー名を変更する場合はEventlogCsvExportScreenも変更してください
 #ALtdhead("#ALajaxsort('event_date' $l10n.EVENTLOG_DATE $result 'EventlogScreen')")
-#ALtdhead("#ALajaxsort('user_name' $l10n.EVENTLOG_NAME $result 'EventlogScreen')")
+#ALtdheadAtt("#ALajaxsort('user_name' $l10n.EVENTLOG_NAME $result 'EventlogScreen')"'class="wName"')
 #ALtdheadAtt("#ALajaxsort('portlet_id' $l10n.EVENTLOG_FEATURE_NAME $result 'EventlogScreen')" 'class="center mb_hide"')
 #ALtdheadAtt("#ALajaxsort('event_type' $l10n.EVENTLOG_OPERATION $result 'EventlogScreen')" 'class="center mb_hide"')
 #ALtdheadAtt("#ALajaxsort('ip_addr' $l10n.EVENTLOG_IP $result 'EventlogScreen')" 'class="mb_hide"')

@@ -629,7 +629,7 @@ aipo.schedule.shrinkMember = function(){
    var node = dojo.byId("memberFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
        var m_t = dojo.byId("member_to");
         if(m_t){
             var t_o = m_t.options;
@@ -659,7 +659,7 @@ aipo.schedule.expandMember = function(){
    var node = dojo.byId("memberFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
        var m_t = dojo.byId("member_to");
        if(m_t){
             var t_o = m_t.options;
@@ -689,7 +689,7 @@ aipo.schedule.shrinkFacility = function(){
    var node = dojo.byId("facilityFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
        var f_t = dojo.byId("facility_to");
         if(f_t){
             var t_o = f_t.options;
@@ -718,7 +718,7 @@ aipo.schedule.expandFacility = function(){
    var node = dojo.byId("facilityFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
        var f_t = dojo.byId("facility_to");
        if(f_t){
             var t_o = f_t.options;

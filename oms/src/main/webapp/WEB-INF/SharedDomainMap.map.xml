@@ -445,7 +445,7 @@
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="EXPLANATION" type="CLOB"/>
-		<db-attribute name="PROGRESS_FLG" type="CHAR" isMandatory="true"/>
+		<db-attribute name="PROGRESS_FLG" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="PROGRESS_RATE" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="PROJECT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="PROJECT_NAME" type="CLOB" isMandatory="true"/>
@@ -463,12 +463,9 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_t_project_member">
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="PROJECT_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
-		<db-key-generator>
-			<db-generator-type>ORACLE</db-generator-type>
-		</db-key-generator>
 	</db-entity>
 	<db-entity name="eip_t_project_task">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
@@ -520,7 +517,7 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_t_project_task_member">
-		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/>
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="TASK_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="WORKLOAD" type="DECIMAL" isMandatory="true"/>
@@ -683,6 +680,26 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="WHATSNEW_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_wiki">
+		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="NOTE" type="CLOB"/>
+		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="WIKI_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="WIKI_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+	</db-entity>
+	<db-entity name="eip_t_wiki_file">
+		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="WIKI_ID" type="INTEGER" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_workflow_category">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
@@ -1342,6 +1359,24 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipTWiki" className="com.aimluck.eip.cayenne.om.portlet.EipTWiki" dbEntityName="eip_t_wiki">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
+		<obj-attribute name="note" type="java.lang.String" db-attribute-path="NOTE"/>
+		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+		<obj-attribute name="wikiName" type="java.lang.String" db-attribute-path="WIKI_NAME"/>
+	</obj-entity>
+	<obj-entity name="EipTWikiFile" className="com.aimluck.eip.cayenne.om.portlet.EipTWikiFile" dbEntityName="eip_t_wiki_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="wikiId" type="java.lang.Integer" db-attribute-path="WIKI_ID"/>
+	</obj-entity>
 	<obj-entity name="EipTWorkflowCategory" className="com.aimluck.eip.cayenne.om.portlet.EipTWorkflowCategory" dbEntityName="eip_t_workflow_category">
 		<obj-attribute name="categoryName" type="java.lang.String" db-attribute-path="CATEGORY_NAME"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1603,10 +1638,13 @@
 	<db-relationship name="turbineUser" source="eip_t_project" target="turbine_user" toMany="false">
 		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
 	</db-relationship>
-	<db-relationship name="project" source="eip_t_project_file" target="eip_t_project" toMany="false">
+	<db-relationship name="eipTProject" source="eip_t_project_file" target="eip_t_project" toMany="false">
 		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
 	</db-relationship>
-	<db-relationship name="project" source="eip_t_project_member" target="eip_t_project" toMany="false">
+	<db-relationship name="eipTProject" source="eip_t_project_member" target="eip_t_project" toMany="false">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProject" source="eip_t_project_task" target="eip_t_project" toMany="false">
 		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTProjectTaskComment" source="eip_t_project_task" target="eip_t_project_task_comment" toMany="true">
@@ -1618,28 +1656,25 @@
 	<db-relationship name="eipTProjectTaskMember" source="eip_t_project_task" target="eip_t_project_task_member" toMany="true">
 		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
 	</db-relationship>
-	<db-relationship name="project" source="eip_t_project_task" target="eip_t_project" toMany="false">
-		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
-	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_project_task" target="turbine_user" toMany="false">
 		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_comment" target="eip_t_project_task" toMany="false">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTProjectTaskCommentFile" source="eip_t_project_task_comment" target="eip_t_project_task_comment_file" toMany="true">
 		<db-attribute-pair source="COMMENT_ID" target="COMMENT_ID"/>
 	</db-relationship>
-	<db-relationship name="task" source="eip_t_project_task_comment" target="eip_t_project_task" toMany="false">
-		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
-	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_project_task_comment" target="turbine_user" toMany="false">
 		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
 	</db-relationship>
-	<db-relationship name="comment" source="eip_t_project_task_comment_file" target="eip_t_project_task_comment" toMany="false">
+	<db-relationship name="eipTProjectTaskComment" source="eip_t_project_task_comment_file" target="eip_t_project_task_comment" toMany="false">
 		<db-attribute-pair source="COMMENT_ID" target="COMMENT_ID"/>
 	</db-relationship>
-	<db-relationship name="task" source="eip_t_project_task_file" target="eip_t_project_task" toMany="false">
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_file" target="eip_t_project_task" toMany="false">
 		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
 	</db-relationship>
-	<db-relationship name="task" source="eip_t_project_task_member" target="eip_t_project_task" toMany="false">
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_member" target="eip_t_project_task" toMany="false">
 		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTReportFiles" source="eip_t_report" target="eip_t_report_file" toMany="true">
@@ -1716,6 +1751,18 @@
 	</db-relationship>
 	<db-relationship name="turbineUser" source="eip_t_todo_category" target="turbine_user" toMany="false">
 		<db-attribute-pair source="USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="createUser" source="eip_t_wiki" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTWikiFiles" source="eip_t_wiki" target="eip_t_wiki_file" toMany="true">
+		<db-attribute-pair source="WIKI_ID" target="WIKI_ID"/>
+	</db-relationship>
+	<db-relationship name="updateUser" source="eip_t_wiki" target="turbine_user" toMany="false">
+		<db-attribute-pair source="UPDATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTWiki" source="eip_t_wiki_file" target="eip_t_wiki" toMany="false">
+		<db-attribute-pair source="WIKI_ID" target="WIKI_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTWorkflowRequest" source="eip_t_workflow_category" target="eip_t_workflow_request" toMany="true">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
@@ -1810,20 +1857,21 @@
 	<obj-relationship name="eipTNote" source="EipTNoteMap" target="EipTNote" db-relationship-path="eipTNote"/>
 	<obj-relationship name="eipTProjectFiles" source="EipTProject" target="EipTProjectFile" db-relationship-path="eipTProjectFiles"/>
 	<obj-relationship name="eipTProjectMember" source="EipTProject" target="EipTProjectMember" db-relationship-path="eipTProjectMember"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProject" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
 	<obj-relationship name="turbineUser" source="EipTProject" target="TurbineUser" db-relationship-path="turbineUser"/>
-	<obj-relationship name="eipTProject" source="EipTProjectFile" target="EipTProject" db-relationship-path="project"/>
-	<obj-relationship name="eipTProject" source="EipTProjectMember" target="EipTProject" db-relationship-path="project"/>
+	<obj-relationship name="eipTProject" source="EipTProjectFile" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProject" source="EipTProjectMember" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProject" source="EipTProjectTask" target="EipTProject" db-relationship-path="eipTProject"/>
 	<obj-relationship name="eipTProjectTaskComment" source="EipTProjectTask" target="EipTProjectTaskComment" db-relationship-path="eipTProjectTaskComment"/>
 	<obj-relationship name="eipTProjectTaskFile" source="EipTProjectTask" target="EipTProjectTaskFile" db-relationship-path="eipTProjectTaskFile"/>
 	<obj-relationship name="eipTProjectTaskMember" source="EipTProjectTask" target="EipTProjectTaskMember" db-relationship-path="eipTProjectTaskMember"/>
-	<obj-relationship name="project" source="EipTProjectTask" target="EipTProject" db-relationship-path="project"/>
 	<obj-relationship name="turbineUser" source="EipTProjectTask" target="TurbineUser" db-relationship-path="turbineUser"/>
-	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskComment" target="EipTProjectTask" db-relationship-path="task"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskComment" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
 	<obj-relationship name="eipTProjectTaskCommentFile" source="EipTProjectTaskComment" target="EipTProjectTaskCommentFile" db-relationship-path="eipTProjectTaskCommentFile"/>
 	<obj-relationship name="turbineUser" source="EipTProjectTaskComment" target="TurbineUser" db-relationship-path="turbineUser"/>
-	<obj-relationship name="eipTProjectTaskComment" source="EipTProjectTaskCommentFile" target="EipTProjectTaskComment" db-relationship-path="comment"/>
-	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskFile" target="EipTProjectTask" db-relationship-path="task"/>
-	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskMember" target="EipTProjectTask" db-relationship-path="task"/>
+	<obj-relationship name="eipTProjectTaskComment" source="EipTProjectTaskCommentFile" target="EipTProjectTaskComment" db-relationship-path="eipTProjectTaskComment"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskFile" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskMember" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
 	<obj-relationship name="eipTReportFiles" source="EipTReport" target="EipTReportFile" db-relationship-path="eipTReportFiles"/>
 	<obj-relationship name="eipTReportMap" source="EipTReport" target="EipTReportMap" db-relationship-path="eipTReportMap"/>
 	<obj-relationship name="eipTReportMemberMap" source="EipTReport" target="EipTReportMemberMap" db-relationship-path="eipTReportMemberMap"/>
@@ -1847,6 +1895,9 @@
 	<obj-relationship name="turbineUser" source="EipTTodo" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTodoArray" source="EipTTodoCategory" target="EipTTodo" db-relationship-path="eipTTodo"/>
 	<obj-relationship name="turbineUser" source="EipTTodoCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="createUser" source="EipTWiki" target="TurbineUser" db-relationship-path="createUser"/>
+	<obj-relationship name="updateUser" source="EipTWiki" target="TurbineUser" db-relationship-path="updateUser"/>
+	<obj-relationship name="eipTWiki" source="EipTWikiFile" target="EipTWiki" db-relationship-path="eipTWiki"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowCategory" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>
 	<obj-relationship name="eipTWorkflowRoute" source="EipTWorkflowCategory" target="EipTWorkflowRoute" db-relationship-path="eipTWorkflowRoute"/>
 	<obj-relationship name="eipTWorkflowRequest" source="EipTWorkflowFile" target="EipTWorkflowRequest" db-relationship-path="eipTWorkflowRequest"/>

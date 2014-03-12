@@ -54,6 +54,8 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TTIMELINE_LIKE1_PROPERTY = "eipTTimelineLike1";
     public static final String EIP_TTODO_PROPERTY = "eipTTodo";
     public static final String EIP_TTODO_CATEGORY_PROPERTY = "eipTTodoCategory";
+    public static final String EIP_TWIKI_CREATE_USER_PROPERTY = "eipTWikiCreateUser";
+    public static final String EIP_TWIKI_UPDATE_USER_PROPERTY = "eipTWikiUpdateUser";
     public static final String EIP_TWORKFLOW_REQUEST_PROPERTY = "eipTWorkflowRequest";
     public static final String TURBINE_USER_GROUP_ROLE_PROPERTY = "turbineUserGroupRole";
 
@@ -456,6 +458,28 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTTodoCategory() {
         return (List)readProperty("eipTTodoCategory");
+    }
+    
+    
+    public void addToEipTWikiCreateUser(com.aimluck.eip.cayenne.om.portlet.EipTWiki obj) {
+        addToManyTarget("eipTWikiCreateUser", obj, true);
+    }
+    public void removeFromEipTWikiCreateUser(com.aimluck.eip.cayenne.om.portlet.EipTWiki obj) {
+        removeToManyTarget("eipTWikiCreateUser", obj, true);
+    }
+    public List getEipTWikiCreateUser() {
+        return (List)readProperty("eipTWikiCreateUser");
+    }
+    
+    
+    public void addToEipTWikiUpdateUser(com.aimluck.eip.cayenne.om.portlet.EipTWiki obj) {
+        addToManyTarget("eipTWikiUpdateUser", obj, true);
+    }
+    public void removeFromEipTWikiUpdateUser(com.aimluck.eip.cayenne.om.portlet.EipTWiki obj) {
+        removeToManyTarget("eipTWikiUpdateUser", obj, true);
+    }
+    public List getEipTWikiUpdateUser() {
+        return (List)readProperty("eipTWikiUpdateUser");
     }
     
     

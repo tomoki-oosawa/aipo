@@ -129,7 +129,7 @@ aipo.report.shrinkMember = function(){
    var node = dojo.byId("memberFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
        var m_t = dojo.byId("members");
         if(m_t){
             var t_o = m_t.options;
@@ -160,7 +160,7 @@ aipo.report.shrinkMap = function(){
    var node = dojo.byId("mapFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none;\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
        var m_t = dojo.byId("positions");
         if(m_t){
             var t_o = m_t.options;
@@ -190,7 +190,7 @@ aipo.report.expandMember = function(){
    var node = dojo.byId("memberFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
        var m_t = dojo.byId("members");
        if(m_t){
             var t_o = m_t.options;
@@ -220,7 +220,7 @@ aipo.report.expandMap = function(){
    var node = dojo.byId("mapFieldButton");
    if(node){
        var HTML = "";
-       HTML += "<table style=\"width:98%;\"><tbody><tr><td style=\"width:80%; border:none\">";
+       HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
        var m_t = dojo.byId("positions");
        if(m_t){
             var t_o = m_t.options;

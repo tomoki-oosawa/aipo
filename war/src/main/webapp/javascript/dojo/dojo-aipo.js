@@ -3041,8 +3041,8 @@ if(!dojo._hasResource["dojo.dnd.Manager"]){ // _hasResource checks added by
 
 	dojo.extend(dojo.dnd.Manager, {
 		// avatar's offset from the mouse
-		OFFSET_X: 16,
-		OFFSET_Y: 16,
+		OFFSET_X: -10,
+		OFFSET_Y: 5,
 		// methods
 		overSource: function(source){
 			// summary: called when a source detected a mouse-over conditiion

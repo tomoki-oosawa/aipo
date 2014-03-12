@@ -178,3 +178,47 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
+
+-----------------------------------------------------------------------------
+-- EIP_T_WIKI
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI
+(
+    WIKI_ID INTEGER NOT NULL,
+    WIKI_NAME VARCHAR (64) NOT NULL,
+    PARENT_ID INTEGER DEFAULT 0 NOT NULL,
+    NOTE TEXT,
+    CREATE_USER_ID INTEGER,
+    UPDATE_USER_ID INTEGER,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY(WIKI_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_WIKI_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    WIKI_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (WIKI_ID) REFERENCES EIP_T_WIKI (WIKI_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
+
+ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
+ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
+
+CREATE INDEX eip_t_wiki_wiki_name_parent_id_index ON EIP_T_WIKI (WIKI_NAME, PARENT_ID);
+CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);

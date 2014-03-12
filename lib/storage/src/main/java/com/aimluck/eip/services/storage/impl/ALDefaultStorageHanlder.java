@@ -76,7 +76,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     FileOutputStream os = null;
     try {
       if (!file.exists()) {
-        file.createNewFile();
+        if (!file.createNewFile()) {
+          throw new RuntimeException("createNewFile error");
+        }
       }
       os = new FileOutputStream(filepath);
       int c;
@@ -111,10 +113,14 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
         if (parent != null) {
           File dir = new File(parent);
           if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+              throw new RuntimeException("mkdir error");
+            }
           }
         }
-        file.createNewFile();
+        if (!file.createNewFile()) {
+          throw new RuntimeException("createNewFile error");
+        }
       } catch (Exception e) {
         logger.error("Can't create file...:" + file);
       }
@@ -162,7 +168,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     File file = new File(filepath);
     FileOutputStream os = null;
     try {
-      file.createNewFile();
+      if (!file.createNewFile()) {
+        throw new RuntimeException("createNewFile error");
+      }
       os = new FileOutputStream(filepath);
       int c;
       while ((c = is.read()) != -1) {
@@ -212,7 +220,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     try {
       String filepath = path + separator() + fileName;
       File file = new File(filepath);
-      file.createNewFile();
+      if (!file.createNewFile()) {
+        throw new RuntimeException("createNewFile error");
+      }
       int c;
       BufferedInputStream bis = null;
       BufferedOutputStream bos = null;
@@ -436,13 +446,17 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
 
     String[] files = folder.list();
     if (files == null) {
-      folder.delete();
+      if (!folder.delete()) {
+        throw new RuntimeException("delete error");
+      }
       return true;
     }
 
     int length = files.length;
     if (length <= 0) {
-      folder.delete();
+      if (!folder.delete()) {
+        throw new RuntimeException("delete error");
+      }
       return true;
     }
 
@@ -452,14 +466,18 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       tmpfile = new File(folderPath + files[i]);
       if (tmpfile.exists()) {
         if (tmpfile.isFile()) {
-          tmpfile.delete();
+          if (!tmpfile.delete()) {
+            throw new RuntimeException("delete error");
+          }
         } else if (tmpfile.isDirectory()) {
           deleteFolder(tmpfile);
         }
       }
     }
 
-    folder.delete();
+    if (!folder.delete()) {
+      throw new RuntimeException("delete error");
+    }
     return true;
   }
 
@@ -539,7 +557,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
       new File(getDocumentPath(rootPath, dir) + separator() + filename);
 
     if (file != null && file.exists()) {
-      file.delete();
+      if (!file.delete()) {
+        throw new RuntimeException("delete error");
+      }
     }
 
     return true;
@@ -551,7 +571,9 @@ public class ALDefaultStorageHanlder extends ALStorageHandler {
     File file = new File(filePath);
 
     if (file != null && file.exists()) {
-      file.delete();
+      if (!file.delete()) {
+        throw new RuntimeException("delete error");
+      }
     }
 
     return true;

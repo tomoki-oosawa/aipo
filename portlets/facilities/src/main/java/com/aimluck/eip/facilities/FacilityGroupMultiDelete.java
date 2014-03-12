@@ -33,6 +33,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 設備の複数削除を行うためのクラスです。 <BR>
@@ -79,6 +81,14 @@ public class FacilityGroupMultiDelete extends ALAbstractCheckList {
       // 設備を削除
       Database.deleteAll(flist);
       Database.commit();
+
+      for (EipMFacilityGroup facilityGroup : flist) {
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          facilityGroup.getGroupId(),
+          ALEventlogConstants.PORTLET_TYPE_FACILITY,
+          "設備グループ「" + facilityGroup.getGroupName() + "」を削除");
+      }
     } catch (Exception ex) {
       Database.rollback();
       logger.error("facilities", ex);

@@ -40,6 +40,40 @@
     </pluginManagement>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+            <execution>
+                <id>copy-resources</id>
+                <phase>initialize</phase>
+		        <configuration>
+		          <target>
+		            <echo message="copy localization files from ja.properties"/>
+		            <property name="localizationDir" value="src/main/resources/com/aimluck/eip/modules/localization"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_de.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_el.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_en.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_es.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_fr.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_it.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_ko.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_my.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_nl.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_no.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pl.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pt.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_tr.properties"/>
+		            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_zh.properties"/>
+		          </target>
+		        </configuration>
+        		<goals>
+	              <goal>run</goal>
+	            </goals>
+            </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
         <executions>
@@ -154,6 +188,9 @@
                 <include>../../../../target/aipo/javascript/aipo/mygroup/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/gpdb/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileuploadadv/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/wiki/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/project/raphael-min.js</include>
+                <include>../../../../target/aipo/javascript/aipo/project/form.js</include>
               </includes>
             </aggregation>
             <aggregation>
@@ -189,31 +226,6 @@
           <jswarn>false</jswarn>
           <statistics>false</statistics>
           <force>true</force>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.5</version>
-        <configuration>
-          <target>
-            <echo message="copy localization files from ja.properties"/>
-            <property name="localizationDir" value="src/main/resources/com/aimluck/eip/modules/localization"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_de.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_el.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_en.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_es.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_fr.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_it.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_ko.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_my.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_nl.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_no.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pl.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pt.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_tr.properties"/>
-            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_zh.properties"/>
-          </target>
         </configuration>
       </plugin>
     </plugins>

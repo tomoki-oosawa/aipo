@@ -40,7 +40,7 @@ CREATE TABLE eip_t_project_task (
     , end_plan_date          date                                       --完了予定日
     , start_date             date                                       --開始実績日
     , end_date               date                                       --完了実績日
-    , plan_workload          decimal                                    --計画工数（時間）
+    , plan_workload          decimal(5,3)                               --計画工数（時間）
     , progress_rate          integer                                    --進捗率
     , order_no               integer                                    --表示順
     , create_user_id         integer                        not null    --登録ユーザーID
@@ -56,7 +56,7 @@ CREATE TABLE eip_t_project_task_member (
       id              integer                not null    --ID
     , task_id         integer                not null    --タスクID
     , user_id         integer                not null    --ユーザーID
-    , workload        decimal                not null    --工数
+    , workload        decimal(5,3)           not null    --工数
     , primary key (id)
 );
 

@@ -5,11 +5,27 @@ h1, h2, h3, h4, h5, h6, p, pre, address, cite {
   font-size: 100%;
 }
 
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
 blockquote {
-  margin: 2em;
+  margin: 10px 2em;
   padding: 10px;
   border: solid 3px #d2d2d2;
   background: #fff;
+}
+
+pre {
+  display: block;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 10px 0;
+  padding: 10px;
+  background: #f6f6f6;
 }
 
 blockquote h1, blockquote h2, blockquote h3, blockquote h4, blockquote h5, blockquote h6, blockquote p {
@@ -20,27 +36,8 @@ address {
   font-style: normal;
 }
 
-ul, ol {
-  margin: 1em 2em;
-  padding: 1px 0;
-}
-
-li ul, li ol {
-  margin: 0 10px;
-}
-
-dd {
-  margin-left: 0;
-}
-
-form {
-  margin: 0;
-  padding: 0;
-}
-
 fieldset {
-  padding: 0 .5em .5em .5em;
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
 }
 
 legend {
@@ -85,12 +82,6 @@ th a {
 a:hover, a:hover strong, a:hover span {
   color: #ff9900;
   text-decoration: none;
-}
-
-div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, blockquote, th, td {
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
 }
 
 ul li {
@@ -149,7 +140,7 @@ h3 {
   line-height: 150%;
   padding: 2px 0;
   margin: 0 0 10px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #ededed;
 }
 
 h4 {
@@ -159,22 +150,18 @@ h4 {
   margin: 0 0 10px;
 }
 
-blockquote {
-  border: 5px solid #d2d2d2;
-  background: #f5f5f5;
-  padding: 3px;
-}
-
 div.outer {
-  border-top: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
+  border-left: 1px solid #ededed;
   border-bottom: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
   margin-bottom: 2px;
   margin-top: 2px;
 }
 
-.clearfix, .inner {zoom:1;}
+.clearfix, .inner {
+  zoom: 1;
+}
 
 .clearfix:after, .inner:after {
   content: "";
@@ -182,7 +169,9 @@ div.outer {
   clear: both;
 }
 
-.clear {clear:both;}
+.clear {
+  clear: both;
+}
 
 .alignleft {
   float: left;
@@ -252,7 +241,6 @@ table.center {
 
 .button {
   cursor: pointer;
-  cursor: hand;
 }
 
 .text {
@@ -328,7 +316,8 @@ table.center {
 }
 
 .roundMainWrapper {
-  padding: 10px;
+  padding: 0 5px;
+  background: white;
 }
 .roundMainWrapper noscript .alert {
   -webkit-border-radius: 8px;
@@ -408,11 +397,6 @@ table.roundBlockWrapperTop td.roundBlockIcon img {
   padding: 8px 1px 0 4px;
   vertical-align: top;
   width: 100%;
-}
-
-.roundBlockContent {
-	padding-left:5px;
-	padding-right:5px;
 }
 
 .relativeBlock{
@@ -724,10 +708,13 @@ table.simpleTable .caption {
 /***************************************************
 	modalDialog
 --------------------------------------------------*/
-/* End hides from IE-mac */ .modalDialog {
-  width: 550px;
+/* End hides from IE-mac */
+.modalDialog {
+  width: 700px;
   z-index: 997;
   position: absolute;
+  margin-left: -350px;
+  left: 50%;
 }
 
 .modalDialogTitleBar {
@@ -841,11 +828,22 @@ table.simpleTable .caption {
   display: inline;
 }
 
+/***************************************************
+	imageDialog
+--------------------------------------------------*/
+#imageDialog {
+  position: absolute;
+  z-index: 999;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+}
+
 /* addressbookDialog */
 .addressbookDialog {
   border: 5px solid #d2d2d2;
   background-color: #fff;
-  width: 600px;
+  /*width: 600px;*/
   z-index: 999;
   position: absolute;
 }
@@ -890,7 +888,7 @@ table.simpleTable .caption {
 /* fileuploadViewDialog */
 .fileuploadViewDialog {
   z-index: 999;
-  width: 600px;
+  /*width: 600px;*/
   position: absolute;
 }
 
@@ -913,12 +911,6 @@ table.simpleTable .caption {
 
 /* END fileuploadDialog */
 /* tutorialDialog */
-.tutorialDialog {
-  z-index: 999;
-  width: 600px;
-  position: absolute;
-}
-
 .tutorialDialogUnderlayWrapper {
   left: 0;
   top: 0;
@@ -935,8 +927,8 @@ table.simpleTable .caption {
 /* END tutorialDialog */
 .popupMenu {
   position: absolute;
-  border-top: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
+  border-left: 1px solid #ededed;
   border-bottom: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
   background: #f5f5f5;
@@ -1054,7 +1046,7 @@ table.simpleTable .caption {
 
 .menuSeparatorBottom {
   height: 50%;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #ededed;
   margin: 0 2px;
   font-size: 1px;
 }
@@ -1691,15 +1683,15 @@ div.termScheduleDivTgt {
 
 table.weeklyTableHead {
   margin-top: 5px;
-  border-top: solid 1px #ddd;
-  border-right: solid 1px #ddd;
+  border-top: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
 }
 
 div.weeklyBorder {
   width: 100%;
   height: 2px;
-  border-right: solid #ddd 1px;
-  background-color: #ddd;
+  border-right: solid #d2d2d2 1px;
+  background-color: #d2d2d2;
   font-size: 1px;
   line-height: 1px;
 }
@@ -2365,7 +2357,7 @@ ul.blockList li a.selected {
 
 /* tip Class */
 .tipDivider {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
 
 .supportPopup .tipDivider {
@@ -2461,6 +2453,10 @@ ul.blockList li a.selected {
   float: left;
   padding-left: 5px;
   overflow: hidden;
+}
+
+.menubar.multi > div.single {
+  width: 197px;
 }
 
 .menubar.multi .caption {

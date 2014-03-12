@@ -508,7 +508,7 @@ public class ProjectUtils {
       SelectQuery<EipTProjectTask> query =
         Database.query(EipTProjectTask.class);
       query.setQualifier(ExpressionFactory.matchExp(
-        EipTProjectTask.PROJECT_PROPERTY,
+        EipTProjectTask.EIP_TPROJECT_PROPERTY,
         projectId));
 
       List<EipTProjectTask> list = query.fetchList();
