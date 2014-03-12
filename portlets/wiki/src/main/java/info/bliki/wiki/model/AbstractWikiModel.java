@@ -438,6 +438,7 @@ public abstract class AbstractWikiModel implements IWikiModel, IContext {
     TagNode aTagNode = new TagNode("a");
     aTagNode.addAttribute("href", link, true);
     aTagNode.addAttribute("rel", "nofollow", true);
+    aTagNode.addAttribute("target", "_blank", true);
     if (withoutSquareBrackets) {
       aTagNode.addAttribute("class", "externallink", true);
       aTagNode.addAttribute("title", link, true);
