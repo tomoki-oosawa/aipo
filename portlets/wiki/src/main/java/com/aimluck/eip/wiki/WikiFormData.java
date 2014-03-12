@@ -36,6 +36,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTWiki;
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTWikiHistory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -50,6 +51,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.wiki.util.WikiFileUtils;
+import com.aimluck.eip.wiki.util.WikiHistoryUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
@@ -353,6 +355,13 @@ public class WikiFormData extends ALAbstractFormData {
       }
 
       Database.commit();
+      // 履歴
+      EipTWikiHistory wikiHistory = Database.create(EipTWikiHistory.class);
+      wikiHistory.setWikiId(wiki.getWikiId());
+      wikiHistory.setNote(note.getValue());
+      wikiHistory.setUpdateUserId(turbineUser.getUserId());
+      wikiHistory.setUpdateDate(Calendar.getInstance().getTime());
+      wikiHistory.setVersion(0);
 
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
@@ -421,6 +430,14 @@ public class WikiFormData extends ALAbstractFormData {
       }
 
       Database.commit();
+      // 履歴
+      EipTWikiHistory wikiHistory = Database.create(EipTWikiHistory.class);
+      wikiHistory.setWikiId(wiki.getWikiId());
+      wikiHistory.setNote(note.getValue());
+      wikiHistory.setUpdateUserId(turbineUser.getUserId());
+      wikiHistory.setUpdateDate(Calendar.getInstance().getTime());
+      int version = WikiHistoryUtils.getVersion(wiki.getWikiId());
+      wikiHistory.setVersion(version);
 
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
