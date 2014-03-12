@@ -1581,6 +1581,24 @@ CREATE TABLE EIP_T_WIKI_FILE
 CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);
 
 -----------------------------------------------------------------------------
+-- EIP_T_WIKI_HISTORY
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_WIKI_HISTORY
+(
+    HISTORY_ID INTEGER NOT NULL,
+    WIKI_ID INTEGER,
+    NOTE TEXT,
+    UPDATE_USER_ID INTEGER,
+    UPDATE_DATE DATE,
+    VERSION INTEGER NOT NULL,
+    FOREIGN KEY (WIKI_ID) REFERENCES EIP_T_WIKI (WIKI_ID) ON DELETE CASCADE,
+    PRIMARY KEY(HISTORY_ID)
+);
+
+CREATE INDEX eip_t_wiki_wiki_history_wiki_id_index ON EIP_T_WIKI_HISTORY (WIKI_ID);
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 
@@ -1676,6 +1694,7 @@ CREATE SEQUENCE pk_eip_m_gpdb_kubun INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun_value INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_wiki_history INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1757,6 +1776,7 @@ ALTER SEQUENCE pk_eip_m_gpdb_kubun OWNED BY EIP_M_GPDB_KUBUN.GPDB_KUBUN_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun_value OWNED BY EIP_M_GPDB_KUBUN_VALUE.GPDB_KUBUN_VALUE_ID;
 ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
 ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_wiki_history OWNED BY EIP_T_WIKI_HISTORY.HISTORY_ID;
 
 -----------------------------------------------------------------------------
 -- CREATE INDEX
