@@ -213,7 +213,7 @@ public class WikiModel extends AbstractWikiModel {
       }
 
       EipTWiki destWiki =
-        WikiUtils.getEipTWiki(topicDescription, queryPairs.get("parentId"));
+        WikiUtils.getEipTWiki(topic, queryPairs.get("parentId"));
       String jstext = "";
       if (null == destWiki) {
         String hrefForm =
