@@ -49,6 +49,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.wiki.util.WikiFileUtils;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
@@ -91,6 +92,8 @@ public class WikiFormData extends ALAbstractFormData {
 
   private String mode = null;
 
+  private String update_date = null;
+
   /** 添付ファイルリスト */
   private List<FileuploadLiteBean> fileuploadList =
     new ArrayList<FileuploadLiteBean>();
@@ -119,6 +122,7 @@ public class WikiFormData extends ALAbstractFormData {
     entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
     mode = rundata.getParameters().getString(ALEipConstants.MODE, "");
     folderName = rundata.getParameters().getString("folderName");
+    update_date = ALEipUtils.getTemp(rundata, context, "update_date");
   }
 
   /**
@@ -201,6 +205,13 @@ public class WikiFormData extends ALAbstractFormData {
       msgList.add(getl10n("WIKI_DUPLICATE_TITLE"));
     }
 
+    if (update_date != null) {
+      EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
+      if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
+        msgList.add(ALLocalizationUtils.getl10n("WIKI_CONFLICT_ERROR"));
+      }
+    }
+
     return (msgList.size() == 0);
   }
 
@@ -246,6 +257,9 @@ public class WikiFormData extends ALAbstractFormData {
       } else {
         is_child = false;
       }
+      ALEipUtils.setTemp(rundata, context, "update_date", wiki
+        .getUpdateDate()
+        .toString());
 
     } catch (Exception e) {
       logger.error("WikiFormData.loadFormData", e);
