@@ -23,6 +23,7 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -201,6 +202,12 @@ public class WikiFormData extends ALAbstractFormData {
       msgList.add(getl10n("WIKI_DUPLICATE_TITLE"));
     }
 
+    /** 親wikiは自分自身を親に選択できないようにする */
+    if (StringUtils.isNotEmpty(entityId)
+      && entityId.equals(parentId.toString())) {
+      msgList.add(getl10n("WIKI_PARENT_ERROR"));
+    }
+
     return (msgList.size() == 0);
   }
 
@@ -245,6 +252,20 @@ public class WikiFormData extends ALAbstractFormData {
         is_child = true;
       } else {
         is_child = false;
+      }
+
+      if (!is_child) {
+        /** remove this wiki from topWikiList */
+        Iterator<WikiResultData> it = topWikiList.iterator();
+        while (it.hasNext()) {
+          WikiResultData result = it.next();
+          if (result
+            .getId()
+            .toString()
+            .equals(String.valueOf(wiki.getWikiId()))) {
+            it.remove();
+          }
+        }
       }
 
     } catch (Exception e) {
