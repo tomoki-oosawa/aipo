@@ -500,6 +500,10 @@ aipo.wiki.image = function () {
   aipo.wiki.insertTag("!", "!", text, true);
 }
 
+aipo.wiki.file = function () {
+  var text = "添付ファイル名";
+  aipo.wiki.insertTag("?", "?", text, true);
+}
 
 
 
