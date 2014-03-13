@@ -552,7 +552,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, loginUser.getUserId());
+        Database.get(TurbineUser.class, Integer.valueOf(loginUser
+          .getUserId()
+          .toString()));
 
       // 新規オブジェクトモデル
       EipTProjectTask task = Database.create(EipTProjectTask.class);

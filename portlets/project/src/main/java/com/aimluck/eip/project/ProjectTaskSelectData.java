@@ -24,7 +24,9 @@ package com.aimluck.eip.project;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -192,129 +194,173 @@ public class ProjectTaskSelectData extends
   @Override
   protected ResultList<EipTProjectTask> selectList(RunData rundata,
       Context context) {
-    try {
 
-      // キーワード
-      target_keyword =
-        ProjectUtils.getParameter(rundata, context, "target_keyword");
-      // 担当者
-      target_user_id =
-        ProjectUtils.getParameter(rundata, context, "target_user_id");
-      // 分類
-      target_tracker =
-        ProjectUtils.getParameter(rundata, context, "target_tracker");
-      // 優先度
-      target_priority =
-        ProjectUtils.getParameter(rundata, context, "target_priority");
-      // ステータス
-      target_status =
-        ProjectUtils.getParameter(rundata, context, "target_status");
-      // 進捗率FROM
-      target_progress_rate_from =
-        ProjectUtils
-          .getParameter(rundata, context, "target_progress_rate_from");
-      // 進捗率TO
-      target_progress_rate_to =
-        ProjectUtils.getParameter(rundata, context, "target_progress_rate_to");
-      // 進捗遅れ
-      target_delay =
-        ProjectUtils.getParameter(rundata, context, "target_delay");
+    if (null == selectedProjectId) {
+      return null;
+    }
 
-      // -------------------------
-      // 共通SELECT句
-      // -------------------------
-      StringBuilder sl = new StringBuilder();
-      sl.append(", task.task_id"); // タスクID
-      sl.append(", task.task_name"); // タスク名
-      sl.append(", task.parent_task_id");// 親タスクID
-      sl.append(", task.project_id");// プロジェクトID
-      sl.append(", task.tracker");// 分類
-      sl.append(", task.explanation"); // 説明
-      sl.append(", task.status"); // ステータス
-      sl.append(", task.priority"); // 優先度
-      sl.append(", task.start_plan_date"); // 開始予定日
-      sl.append(", task.end_plan_date"); // 完了予定日
-      sl.append(", task.start_date"); // 開始実績日
-      sl.append(", task.end_date"); // 完了実績日
-      sl.append(", task.plan_workload"); // 計画工数
-      sl.append(", task.progress_rate"); // 進捗率
-      sl.append(", task.update_date"); // 更新日
+    // キーワード
+    target_keyword =
+      ProjectUtils.getParameter(rundata, context, "target_keyword");
+    // 担当者
+    target_user_id =
+      ProjectUtils.getParameter(rundata, context, "target_user_id");
+    // 分類
+    target_tracker =
+      ProjectUtils.getParameter(rundata, context, "target_tracker");
+    // 優先度
+    target_priority =
+      ProjectUtils.getParameter(rundata, context, "target_priority");
+    // ステータス
+    target_status =
+      ProjectUtils.getParameter(rundata, context, "target_status");
+    // 進捗率FROM
+    target_progress_rate_from =
+      ProjectUtils.getParameter(rundata, context, "target_progress_rate_from");
+    // 進捗率TO
+    target_progress_rate_to =
+      ProjectUtils.getParameter(rundata, context, "target_progress_rate_to");
+    // 進捗遅れ
+    target_delay = ProjectUtils.getParameter(rundata, context, "target_delay");
 
-      if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
-        sl.append(", CASE");
-        sl
-          .append("    WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
-        sl.append("      THEN 0");
-        sl.append("    WHEN CURRENT_DATE < task.end_plan_date");
-        sl.append("      THEN");
-        sl
-          .append("        CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
-        sl.append("          THEN 0");
-        sl.append("          ELSE CURRENT_DATE - task.start_plan_date + 1");
-        sl.append("        END");
-        sl.append("      ELSE");
-        sl.append("        task.end_plan_date - task.start_plan_date + 1");
-        sl.append("  END AS lapsed_days"); // 基準日までのタスク経過日数
-        sl
-          .append(", CASE WHEN task.end_plan_date - task.start_plan_date + 1 < 0");
-        sl.append("    THEN 0");
-        sl.append("    ELSE task.end_plan_date - task.start_plan_date + 1");
-        sl.append("  END AS task_days"); // タスク日数
-      }
+    // -------------------------
+    // 共通SELECT句
+    // -------------------------
+    StringBuilder sl = new StringBuilder();
+    sl.append(", task.task_id"); // タスクID
+    sl.append(", task.task_name"); // タスク名
+    sl.append(", task.parent_task_id");// 親タスクID
+    sl.append(", task.project_id");// プロジェクトID
+    sl.append(", task.tracker");// 分類
+    sl.append(", task.explanation"); // 説明
+    sl.append(", task.status"); // ステータス
+    sl.append(", task.priority"); // 優先度
+    sl.append(", task.start_plan_date"); // 開始予定日
+    sl.append(", task.end_plan_date"); // 完了予定日
+    sl.append(", task.start_date"); // 開始実績日
+    sl.append(", task.end_date"); // 完了実績日
+    sl.append(", task.plan_workload"); // 計画工数
+    sl.append(", task.progress_rate"); // 進捗率
+    sl.append(", task.update_date"); // 更新日
 
-      // -------------------------
-      // WHERE句作成
-      // -------------------------
-      List<String> whereList = new ArrayList<String>();
+    if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
+      sl.append(", CASE");
+      sl
+        .append("    WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
+      sl.append("      THEN 0");
+      sl.append("    WHEN CURRENT_DATE < task.end_plan_date");
+      sl.append("      THEN");
+      sl
+        .append("        CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
+      sl.append("          THEN 0");
+      sl.append("          ELSE CURRENT_DATE - task.start_plan_date + 1");
+      sl.append("        END");
+      sl.append("      ELSE");
+      sl.append("        task.end_plan_date - task.start_plan_date + 1");
+      sl.append("  END AS lapsed_days"); // 基準日までのタスク経過日数
+      sl
+        .append(", CASE WHEN task.end_plan_date - task.start_plan_date + 1 < 0");
+      sl.append("    THEN 0");
+      sl.append("    ELSE task.end_plan_date - task.start_plan_date + 1");
+      sl.append("  END AS task_days"); // タスク日数
+    }
 
-      // キーワード
-      if (target_keyword != null && target_keyword.trim().length() > 0) {
-        whereList.add(" tree.task_name LIKE #bind($target_keyword)");
+    // -------------------------
+    // WHERE句作成
+    // -------------------------
+    List<String> whereList = new ArrayList<String>();
+
+    // キーワード
+    if (target_keyword != null && target_keyword.trim().length() > 0) {
+      whereList.add(" tree.task_name LIKE #bind($target_keyword)");
+    }
+    // 担当者
+    if (target_user_id != null && !target_user_id.equals("all")) {
+      StringBuilder where = new StringBuilder();
+      where.append(" EXISTS(");
+      where.append("   SELECT 0");
+      where.append("     FROM eip_t_project_task_member AS member");
+      where.append("    WHERE member.task_id = tree.task_id");
+      where.append("      AND member.user_id = #bind($target_user_id)");
+      where.append(" )");
+      whereList.add(String.valueOf(where));
+    }
+    // 分類
+    if (target_tracker != null && !target_tracker.equals("all")) {
+      whereList.add(" tree.tracker = #bind($target_tracker)");
+    }
+    // 優先度
+    if (target_priority != null && !target_priority.equals("all")) {
+      whereList.add(" tree.priority = #bind($target_priority)");
+    }
+    // ステータス
+    if (target_status != null && !target_status.equals("all")) {
+      whereList.add(" tree.status = #bind($target_status)");
+    }
+    // 進捗率FROM
+    if (target_progress_rate_from != null
+      && !target_progress_rate_from.equals("0")) {
+      whereList.add(" tree.progress_rate >= #bind($target_progress_rate_from)");
+    }
+    // 進捗率TO
+    if (target_progress_rate_to != null
+      && !target_progress_rate_to.equals("100")) {
+      whereList.add(" tree.progress_rate <= #bind($target_progress_rate_to)");
+    }
+    // 進捗遅れ
+    if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
+      whereList
+        .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
+    }
+
+    StringBuilder sb = new StringBuilder();
+    SQLTemplate<EipTProjectTask> sqltemp = null;
+
+    if (Database.isJdbcMySQL()) {
+      String tempTableName = "tree" + String.valueOf(new Date().getTime());
+
+      sb.append("CALL WITH_EMULATOR(");
+      sb.append("  \"tree\",");
+      sb.append("  \"SELECT ");
+      sb.append("    task.order_no AS path, 0 AS indent");
+      sb.append(sl);
+      // #bindが使用できない
+      sb
+        .append("    FROM eip_t_project_task AS task WHERE task.project_id = ")
+        .append(selectedProjectId)
+        .append(" AND task.parent_task_id IS NULL\",");
+      sb.append("  \"SELECT ");
+      sb
+        .append("  concat(concat(tree.path, ','), task.order_no) AS path, concat(concat(path, ','), 1) AS indent");
+      sb.append(sl);
+      sb
+        .append("    FROM eip_t_project_task AS task JOIN tree ON tree.task_id = task.parent_task_id\",");
+      sb
+        .append("  \"SELECT task_id, task_name, parent_task_id, project_id, tracker, explanation, status, priority, start_plan_date, end_plan_date, start_date, end_date, plan_workload, progress_rate, update_date, indent FROM tree");
+
+      // WHERE句セット
+      for (int i = 0; i < whereList.size(); i++) {
+        if (i == 0) {
+          sb.append(" WHERE ");
+        } else {
+          sb.append(" AND ");
+        }
+        sb.append(whereList.get(i));
       }
-      // 担当者
-      if (target_user_id != null && !target_user_id.equals("all")) {
-        StringBuilder where = new StringBuilder();
-        where.append(" EXISTS(");
-        where.append("   SELECT 0");
-        where.append("     FROM eip_t_project_task_member AS member");
-        where.append("    WHERE member.task_id = tree.task_id");
-        where.append("      AND member.user_id = #bind($target_user_id)");
-        where.append(" )");
-        whereList.add(String.valueOf(where));
-      }
-      // 分類
-      if (target_tracker != null && !target_tracker.equals("all")) {
-        whereList.add(" tree.tracker = #bind($target_tracker)");
-      }
-      // 優先度
-      if (target_priority != null && !target_priority.equals("all")) {
-        whereList.add(" tree.priority = #bind($target_priority)");
-      }
-      // ステータス
-      if (target_status != null && !target_status.equals("all")) {
-        whereList.add(" tree.status = #bind($target_status)");
-      }
-      // 進捗率FROM
-      if (target_progress_rate_from != null
-        && !target_progress_rate_from.equals("0")) {
-        whereList
-          .add(" tree.progress_rate >= #bind($target_progress_rate_from)");
-      }
-      // 進捗率TO
-      if (target_progress_rate_to != null
-        && !target_progress_rate_to.equals("100")) {
-        whereList.add(" tree.progress_rate <= #bind($target_progress_rate_to)");
-      }
-      // 進捗遅れ
-      if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
-        whereList
-          .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
-      }
+      sb.append(getOrderBy(rundata, context));
+
+      sb.append("\",");
+      sb.append("  \"0\",");
+      sb.append("  \"\"");
+      sb.append(");");
+
+      sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
+    } else {
 
       // -------------------------
       // SQL作成
       // -------------------------
-      StringBuilder sb = new StringBuilder();
+
       sb.append("WITH RECURSIVE tree(path) AS (");
       sb.append("  SELECT");
       sb.append("        ARRAY[task.order_no] AS path");
@@ -363,134 +409,143 @@ public class ProjectTaskSelectData extends
         sb.append(whereList.get(i));
       }
       sb.append(getOrderBy(rundata, context));
-
-      SQLTemplate<EipTProjectTask> sqltemp =
-        Database.sql(EipTProjectTask.class, String.valueOf(sb));
+      sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
       sqltemp.param("project_id", selectedProjectId);
+    }
 
+    // 分類
+    if (target_keyword != null && target_keyword.trim().length() > 0) {
+      sqltemp.param("target_keyword", "%" + target_keyword + "%");
+    }
+    // 担当者
+    if (target_user_id != null && !target_user_id.equals("all")) {
+      sqltemp.param("target_user_id", Integer.valueOf(target_user_id));
+    }
+    // 分類
+    if (target_tracker != null && !target_tracker.equals("all")) {
+      sqltemp.param("target_tracker", target_tracker);
+    }
+    // 優先度
+    if (target_priority != null && !target_priority.equals("all")) {
+      sqltemp.param("target_priority", target_priority);
+    }
+    // ステータス
+    if (target_status != null && !target_status.equals("all")) {
+      sqltemp.param("target_status", target_status);
+    }
+    // 進捗率FROM
+    if (target_progress_rate_from != null
+      && !target_progress_rate_from.equals("0")) {
+      sqltemp.param("target_progress_rate_from", Integer
+        .valueOf(target_progress_rate_from));
+    }
+    // 進捗率TO
+    if (target_progress_rate_to != null
+      && !target_progress_rate_to.equals("100")) {
+      sqltemp.param("target_progress_rate_to", Integer
+        .valueOf(target_progress_rate_to));
+    }
+
+    ResultList<EipTProjectTask> list = new ResultList<EipTProjectTask>();
+
+    // 取得値を設定する
+    List<DataRow> result = sqltemp.fetchListAsDataRow();
+    for (int i = 0; i < result.size(); i++) {
+
+      DataRow row = result.get(i);
+
+      Object parentTaskId = row.get("parent_task_id");
+      Object explanation = row.get("explanation");
+      Object startPlanDate = row.get("start_plan_date");
+      Object endPlanDate = row.get("end_plan_date");
+      Object startDate = row.get("start_date");
+      Object endDate = row.get("end_date");
+      Object updateDate = row.get("update_date");
+
+      EipTProjectTask task = new EipTProjectTask();
+      // タスクID
+      task.setTaskId(row.get("task_id").toString());
+      // タスク名
+      task.setTaskName(row.get("task_name").toString());
+      // 親タスクID
+      if (parentTaskId != null) {
+        task.setParentTaskId(Integer.valueOf(parentTaskId.toString()));
+      }
+      // プロジェクトID
+      task.setProjectId(Integer.valueOf(row.get("project_id").toString()));
       // 分類
-      if (target_keyword != null && target_keyword.trim().length() > 0) {
-        sqltemp.param("target_keyword", "%" + target_keyword + "%");
-      }
-      // 担当者
-      if (target_user_id != null && !target_user_id.equals("all")) {
-        sqltemp.param("target_user_id", Integer.valueOf(target_user_id));
-      }
-      // 分類
-      if (target_tracker != null && !target_tracker.equals("all")) {
-        sqltemp.param("target_tracker", target_tracker);
-      }
-      // 優先度
-      if (target_priority != null && !target_priority.equals("all")) {
-        sqltemp.param("target_priority", target_priority);
+      task.setTracker(row.get("tracker").toString());
+      // 説明
+      if (explanation != null) {
+        task.setExplanation(explanation.toString());
       }
       // ステータス
-      if (target_status != null && !target_status.equals("all")) {
-        sqltemp.param("target_status", target_status);
+      task.setStatus(row.get("status").toString());
+      // 優先度
+      task.setPriority(row.get("priority").toString());
+      // 開始予定日
+      if (startPlanDate == null) {
+        task.setStartPlanDate(ProjectUtils.getEmptyDate());
+      } else {
+        task.setStartPlanDate((Date) startPlanDate);
       }
-      // 進捗率FROM
-      if (target_progress_rate_from != null
-        && !target_progress_rate_from.equals("0")) {
-        sqltemp.param("target_progress_rate_from", Integer
-          .valueOf(target_progress_rate_from));
+      // 完了予定日
+      if (endPlanDate == null) {
+        task.setEndPlanDate(ProjectUtils.getEmptyDate());
+      } else {
+        task.setEndPlanDate((Date) endPlanDate);
       }
-      // 進捗率TO
-      if (target_progress_rate_to != null
-        && !target_progress_rate_to.equals("100")) {
-        sqltemp.param("target_progress_rate_to", Integer
-          .valueOf(target_progress_rate_to));
+      // 開始実績日
+      if (startDate == null) {
+        task.setStartDate(ProjectUtils.getEmptyDate());
+      } else {
+        task.setStartDate((Date) startDate);
       }
-
-      ResultList<EipTProjectTask> list = new ResultList<EipTProjectTask>();
-
-      // 取得値を設定する
-      List<DataRow> result = sqltemp.fetchListAsDataRow();
-      for (int i = 0; i < result.size(); i++) {
-
-        DataRow row = result.get(i);
-
-        Object parentTaskId = row.get("parent_task_id");
-        Object explanation = row.get("explanation");
-        Object startPlanDate = row.get("start_plan_date");
-        Object endPlanDate = row.get("end_plan_date");
-        Object startDate = row.get("start_date");
-        Object endDate = row.get("end_date");
-        Object updateDate = row.get("update_date");
-
-        EipTProjectTask task = new EipTProjectTask();
-        // タスクID
-        task.setTaskId(row.get("task_id").toString());
-        // タスク名
-        task.setTaskName(row.get("task_name").toString());
-        // 親タスクID
-        if (parentTaskId != null) {
-          task.setParentTaskId(Integer.valueOf(parentTaskId.toString()));
+      // 完了日
+      if (endDate == null) {
+        task.setEndDate(ProjectUtils.getEmptyDate());
+      } else {
+        task.setEndDate((Date) endDate);
+      }
+      // 計画工数
+      task.setPlanWorkload(new BigDecimal(row.get("plan_workload").toString()));
+      // 進捗率
+      task
+        .setProgressRate(Integer.valueOf(row.get("progress_rate").toString()));
+      // 更新日
+      task.setUpdateDate((Date) updateDate);
+      // タスク名表示インデント
+      if (Database.isJdbcMySQL()) {
+        String indent = row.get("indent").toString();
+        String[] split = indent.split(",");
+        List<String> strList = Arrays.asList(split);
+        List<Integer> intList = new ArrayList<Integer>();
+        for (String id : strList) {
+          intList.add(Integer.valueOf(id));
         }
-        // プロジェクトID
-        task.setProjectId(Integer.valueOf(row.get("project_id").toString()));
-        // 分類
-        task.setTracker(row.get("tracker").toString());
-        // 説明
-        if (explanation != null) {
-          task.setExplanation(explanation.toString());
-        }
-        // ステータス
-        task.setStatus(row.get("status").toString());
-        // 優先度
-        task.setPriority(row.get("priority").toString());
-        // 開始予定日
-        if (startPlanDate == null) {
-          task.setStartPlanDate(ProjectUtils.getEmptyDate());
+        Collections.sort(intList);
+        Collections.reverse(intList);
+        if (!intList.isEmpty()) {
+          task.setIndent(intList.get(0));
         } else {
-          task.setStartPlanDate((Date) startPlanDate);
+          task.setIndent(0);
         }
-        // 完了予定日
-        if (endPlanDate == null) {
-          task.setEndPlanDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setEndPlanDate((Date) endPlanDate);
-        }
-        // 開始実績日
-        if (startDate == null) {
-          task.setStartDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setStartDate((Date) startDate);
-        }
-        // 完了日
-        if (endDate == null) {
-          task.setEndDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setEndDate((Date) endDate);
-        }
-        // 計画工数
-        task
-          .setPlanWorkload(new BigDecimal(row.get("plan_workload").toString()));
-        // 進捗率
-        task.setProgressRate(Integer.valueOf(row
-          .get("progress_rate")
-          .toString()));
-        // 更新日
-        task.setUpdateDate((Date) updateDate);
-        // タスク名表示インデント
+      } else {
         task.setIndent(Integer.valueOf(row.get("indent").toString()));
-
-        list.add(task);
-      }
-      // 件数をセットする．
-      setPageParam(list.size());
-      taskCount = list.size();
-
-      // インデント表示フラグ
-      if (!whereList.isEmpty()) {
-        indentFlg = false;
       }
 
-      return list;
-
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return null;
+      list.add(task);
     }
+    // 件数をセットする．
+    setPageParam(list.size());
+    taskCount = list.size();
+
+    // インデント表示フラグ
+    if (!whereList.isEmpty()) {
+      indentFlg = false;
+    }
+
+    return list;
   }
 
   /**
