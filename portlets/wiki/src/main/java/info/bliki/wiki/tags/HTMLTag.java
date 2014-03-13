@@ -71,7 +71,7 @@ public class HTMLTag extends TagNode {
     List<Object> children = node.getChildren();
     if (children.size() == 0) {
       // don't render empty tags (see Issue98)
-      if (!name.equals("a") && !name.endsWith("br")) {
+      if (!name.equals("a") && !name.equals("br")) {
         // because of section tags allow <a href=\"#Section..." />
         return;
       }
