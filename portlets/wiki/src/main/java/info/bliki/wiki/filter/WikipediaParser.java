@@ -178,16 +178,16 @@ public class WikipediaParser extends AbstractParser implements IParser {
               // addParagraph();
               // }
               // }
-            } else if (isEmptyLine(2)) {
-              if (fWikiModel.stackSize() > 0
-                && (fWikiModel.peekNode() instanceof PTag)) {
-                // close <p> tag for one newline
-                createContentToken(1);
-                fWikiModel.reduceTokenStack(Configuration.HTML_PARAGRAPH_OPEN);
-                fCurrentPosition--;
-                continue;
-              }
             } else {
+              if (isEmptyLine(2)) {
+                if (fWikiModel.stackSize() > 0
+                  && (fWikiModel.peekNode() instanceof PTag)) {
+                  // add <br> tag for one newline
+                  createContentToken(2);
+                  fWikiModel.pushNode(new HTMLTag("br"));
+                  fWikiModel.popNode();
+                }
+              }
               TagToken tag = fWikiModel.peekNode();
               if (tag instanceof WPPreTag) {
                 addPreformattedText();
