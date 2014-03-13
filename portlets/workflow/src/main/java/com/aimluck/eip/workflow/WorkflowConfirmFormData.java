@@ -89,6 +89,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   public void initField() {
     // コメント
     comment = new ALStringField();
+    comment.setFieldName(ALLocalizationUtils.getl10n("WORKFLOW_COMMENT"));
     comment.setTrim(true);
 
     // 承認フラグ

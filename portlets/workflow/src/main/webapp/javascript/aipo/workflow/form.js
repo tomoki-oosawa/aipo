@@ -331,8 +331,9 @@ aipo.workflow.NoteChangeConfirm = function(flgName){
 aipo.workflow.onReceiveMessage = function(msg){
     //送信時に作成した場合selectを削除。
 	var select=dojo.byId("attachments_select");
-	if(typeof select!="undefined"&& select!=null)
+	if(typeof select!="undefined"&& select!=null) {
 		select.parentNode.removeChild(select);
+	}
 
 	if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
@@ -357,16 +358,16 @@ aipo.workflow.onReceiveMessage = function(msg){
 }
 
 aipo.workflow.onAccept = function(portletId){
-	dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
-    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
+	//dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    //dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "accept";
 }
 
 aipo.workflow.onDenial = function(portletId){
-    dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
-    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
+    //dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    //dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "denial";
