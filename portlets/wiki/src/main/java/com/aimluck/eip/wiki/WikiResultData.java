@@ -96,6 +96,8 @@ public class WikiResultData implements ALData {
 
   private ALStringField baseImageRawLink;
 
+  private ALStringField baseFileRawLink;
+
   /**
    *
    *
@@ -114,6 +116,7 @@ public class WikiResultData implements ALData {
     note = new ALStringField();
     baseImageLink = new ALStringField();
     baseImageRawLink = new ALStringField();
+    baseFileRawLink = new ALStringField();
 
     is_public = true;
     new_wiki = false;
@@ -182,7 +185,7 @@ public class WikiResultData implements ALData {
       }
       htmlText = model.render(noteText);
 
-      /* 添付ファイル */
+      /* 添付ファイル画像 */
       for (FileuploadBean attachmentfile : attachmentFileList) {
         htmlText =
           htmlText
@@ -211,6 +214,23 @@ public class WikiResultData implements ALData {
                 + "&attachmentindex="
                 + attachmentfile.getFileId()
                 + "'></a>");
+      }
+      /* 添付ファイル */
+      for (FileuploadBean attachmentfile : attachmentFileList) {
+        htmlText =
+          htmlText.replace(
+            "?" + attachmentfile.getFileName() + "?",
+            "<a href=\""
+              + baseFileRawLink
+              + "/entityid/"
+              + id
+              + "/attachmentindex/"
+              + attachmentfile.getFileId()
+              + "/f/"
+              + attachmentfile.getURLEncodedValue()
+              + "\">"
+              + attachmentfile.getFileName()
+              + "</a>");
       }
 
     } catch (Exception e) {
@@ -288,6 +308,10 @@ public class WikiResultData implements ALData {
 
   public void setBaseImageRawLink(String str) {
     baseImageRawLink.setValue(str);
+  }
+
+  public void setBaseFileRawLink(String str) {
+    baseFileRawLink.setValue(str);
   }
 
   /**

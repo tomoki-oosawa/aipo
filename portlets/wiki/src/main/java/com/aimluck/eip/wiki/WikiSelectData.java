@@ -103,6 +103,8 @@ public class WikiSelectData extends
 
   private String baseImageRawLink = null;
 
+  private String baseFileRawLink = null;
+
   private boolean isTop = false;
 
   /**
@@ -149,7 +151,7 @@ public class WikiSelectData extends
       baseImageLink = baseLink + "/template/WikiFileThumbnailScreen";
       baseImageRawLink =
         baseLink + "/template/FileuploadViewScreen/screen/WikiFileRawScreen";
-
+      baseFileRawLink = baseLink + "/template/WikiFileRawScreen";
     } catch (TurbineException e) {
       logger.error("init", e);
     }
@@ -532,6 +534,7 @@ public class WikiSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
       rd.setBaseInternalLink(baseImageLink);
       rd.setBaseImageRawLink(baseImageRawLink);
+      rd.setBaseFileRawLink(baseFileRawLink);
 
       rd.setAttachmentFiles(WikiFileUtils
         .getAttachmentFiles(record.getWikiId()));
