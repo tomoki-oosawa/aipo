@@ -500,6 +500,11 @@ aipo.wiki.image = function () {
   aipo.wiki.insertTag("!", "!", text, true);
 }
 
+aipo.wiki.showPreviewDialog = function(url){
+	var note = dojo.byId("wiki_note").value;
+	url+="&note="+encodeURI(note);
+	aipo.common.showDialog(url);
+}
 
 
 

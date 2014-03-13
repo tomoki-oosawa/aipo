@@ -25,18 +25,18 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.wiki.WikiFormData;
+import com.aimluck.eip.wiki.WikiSelectData;
 import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
- * Wikiを処理するクラスです。 <br />
+ * Wikiプレビュー画面を処理するクラスです。 <br />
  * 
  */
-public class WikiFormScreen extends ALVelocityScreen {
+public class WikiPreviewScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WikiFormScreen.class.getName());
+    .getLogger(WikiPreviewScreen.class.getName());
 
   /**
    * 
@@ -56,21 +56,17 @@ public class WikiFormScreen extends ALVelocityScreen {
         note = rundata.getParameters().getString("note");
       }
 
-      WikiFormData formData = new WikiFormData();
-      formData.initField();
-      formData.loadTopWikiList(rundata, context);
-      if ("parent".equals(page)) {
-        formData.setIsChild(false);
-      }
-      formData.doViewForm(this, rundata, context);
+      WikiSelectData previewData = new WikiSelectData();
+      previewData.initField();
+      previewData.doViewDetail(this, rundata, context);
       if (note != null) {
-        formData.setNote(note);
+        previewData.setTempNote(note, rundata, context);
       }
-      String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
+      String layout_template = "portlets/html/ja/ajax-wiki-preview.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception e) {
-      logger.error("WikiFormScreen.doOutput", e);
+      logger.error("WikiPreviewScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }

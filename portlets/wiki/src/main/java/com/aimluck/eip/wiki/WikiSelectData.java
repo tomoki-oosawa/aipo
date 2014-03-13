@@ -103,6 +103,12 @@ public class WikiSelectData extends
 
   private String baseImageRawLink = null;
 
+  private String entityId = null;
+
+  private String tempNote = null;
+
+  private String tempWikiNote = null;
+
   private boolean isTop = false;
 
   /**
@@ -127,6 +133,7 @@ public class WikiSelectData extends
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
     }
+    entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
@@ -685,6 +692,22 @@ public class WikiSelectData extends
 
   public boolean isTop() {
     return isTop;
+  }
+
+  public void setTempNote(String tn, RunData rundata, Context context) {
+    WikiResultData result = new WikiResultData();
+    result.initField();
+    result.setNote(tn);
+    tempNote = tn;
+    tempWikiNote = result.getNote();
+  }
+
+  public String getTempNote() {
+    return tempNote;
+  }
+
+  public String getTempWikiNote() {
+    return tempWikiNote;
   }
 
 }
