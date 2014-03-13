@@ -146,7 +146,6 @@ public class CellScheduleFormDateData extends AbstractCellScheduleFormData {
           EipMFacility.FACILITY_ID_PK_COLUMN,
           facilityIds);
       fquery.setQualifier(fexp);
-      fquery.orderAscending(EipMFacility.SORT_PROPERTY);
       form_data.getFacilityMemberList().addAll(
         FacilitiesUtils.getFacilitiesFromSelectQuery(fquery));
     }

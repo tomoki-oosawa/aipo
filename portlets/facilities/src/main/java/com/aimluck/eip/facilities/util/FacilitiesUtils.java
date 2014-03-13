@@ -325,7 +325,8 @@ public class FacilitiesUtils {
       SelectQuery<EipMFacility> query) {
     List<FacilityResultData> list = new ArrayList<FacilityResultData>();
     try {
-      List<EipMFacility> aList = query.fetchList();
+      List<EipMFacility> aList =
+        query.orderAscending(EipMFacility.SORT_PROPERTY).fetchList();
 
       for (EipMFacility record : aList) {
         FacilityResultData rd = new FacilityResultData();
