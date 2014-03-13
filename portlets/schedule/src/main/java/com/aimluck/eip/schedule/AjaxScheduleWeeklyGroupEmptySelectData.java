@@ -201,6 +201,7 @@ public class AjaxScheduleWeeklyGroupEmptySelectData extends
     Expression exp =
       ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_list);
     facility_query.setQualifier(exp);
+    facility_query.orderAscending(EipMFacility.SORT_PROPERTY);
     temp_list.addAll(FacilitiesUtils
       .getFacilitiesFromSelectQuery(facility_query));
     int tmpsize = temp_list.size();

@@ -20,8 +20,6 @@
 package com.aimluck.eip.facilities.util;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -341,13 +339,13 @@ public class FacilitiesUtils {
     } catch (Exception ex) {
       logger.error("[Exception]", ex);
     }
-    Collections.sort(list, new Comparator<FacilityResultData>() {
-      @Override
-      public int compare(FacilityResultData str1, FacilityResultData str2) {
-        return str1.getStringFacilityName().compareTo(
-          str2.getStringFacilityName());
-      }
-    });
+    // Collections.sort(list, new Comparator<FacilityResultData>() {
+    // @Override
+    // public int compare(FacilityResultData str1, FacilityResultData str2) {
+    // return str1.getStringFacilityName().compareTo(
+    // str2.getStringFacilityName());
+    // }
+    // });
     return list;
   }
 

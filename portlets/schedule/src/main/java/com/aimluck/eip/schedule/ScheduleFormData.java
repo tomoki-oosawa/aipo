@@ -1004,6 +1004,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             EipMFacility.FACILITY_ID_PK_COLUMN,
             facilityIds);
         fquery.setQualifier(fexp);
+        fquery.orderAscending(EipMFacility.SORT_PROPERTY);
         facilityList.addAll(FacilitiesUtils
           .getFacilitiesFromSelectQuery(fquery));
       }
