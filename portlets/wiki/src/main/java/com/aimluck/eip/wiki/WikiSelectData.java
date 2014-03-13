@@ -146,7 +146,7 @@ public class WikiSelectData extends
           .toString();
 
       String baseLink = jsLink.getPortletById(portlet.getID()).toString();
-      baseImageLink = baseLink + "/template/WikiFileThumbnailScreen";
+      baseImageLink = baseLink + "/template/WikiFileRawScreen";
       baseImageRawLink =
         baseLink + "/template/FileuploadViewScreen/screen/WikiFileRawScreen";
 

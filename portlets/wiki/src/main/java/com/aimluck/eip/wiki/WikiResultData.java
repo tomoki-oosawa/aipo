@@ -200,7 +200,7 @@ public class WikiResultData implements ALData {
                 + "/f/"
                 + attachmentfile.getFileName()
                 + "');\" >"
-                + "<img class='width_thumbs' border='0' alt='"
+                + "<img border='0' alt='"
                 + attachmentfile.getFileName()
                 + "' title='"
                 + attachmentfile.getFileName()
