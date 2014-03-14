@@ -34,6 +34,7 @@ import java.util.Map;
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -1602,5 +1603,52 @@ public class ProjectUtils {
     }
 
     return String.valueOf(path);
+  }
+
+  public static String getEscapedStringForMysql(String text) {
+    if (StringUtils.isEmpty(text)) {
+      return text;
+    }
+    StringBuffer buf = new StringBuffer();
+    for (int i = 0; i < text.length(); i++) {
+      char c = text.charAt(i);
+      switch (c) {
+        case 0: /* Must be escaped for 'mysql' */
+          buf.append('\\');
+          buf.append('0');
+          break;
+        case '\n': /* Must be escaped for logs */
+          buf.append('\\');
+          buf.append('n');
+          break;
+        case '\r':
+          buf.append('\\');
+          buf.append('r');
+          break;
+        case '\\':
+          buf.append('\\');
+          buf.append('\\');
+          break;
+        case '\'':
+          buf.append('\\');
+          buf.append('\'');
+          break;
+        case '"': /* Better safe than sorry */
+          buf.append('\\');
+          buf.append('"');
+          break;
+        case '\032': /* This gives problems on Win32 */
+          buf.append('\\');
+          buf.append('Z');
+          break;
+        default:
+          buf.append(c);
+      }
+    }
+    return buf.toString();
+  }
+
+  public static String getLikeEnclosed(String text) {
+    return new StringBuffer().append("'%").append(text).append("%'").toString();
   }
 }
