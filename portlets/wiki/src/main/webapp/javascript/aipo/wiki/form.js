@@ -502,7 +502,7 @@ aipo.wiki.image = function () {
 
 aipo.wiki.showPreviewDialog = function(url){
 	var note = dojo.byId("wiki_note").value;
-	url+="&note="+encodeURI(note);
+	url+="&note="+encodeURIComponent(note);
 	aipo.common.showDialog(url);
 }
 
