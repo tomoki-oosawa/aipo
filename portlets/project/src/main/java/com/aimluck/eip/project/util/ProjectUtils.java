@@ -1534,57 +1534,99 @@ public class ProjectUtils {
   public static String getTaskTopicPath(Integer taskId) {
 
     StringBuilder sb = new StringBuilder();
-    sb.append("WITH RECURSIVE tree(path) AS (");
-    sb.append("  SELECT");
-    sb.append("        ARRAY[task.order_no] AS path");
-    sb.append("      , task.task_id");
-    sb.append("      , task.task_name");
-    sb.append("      , task.parent_task_id");
-    sb.append("      , project.project_name");
-    sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
-    sb.append("        JOIN eip_t_project AS project");
-    sb.append("          ON project.project_id = task.project_id");
-    sb.append("    WHERE");
-    sb.append("      task.task_id = #bind($task_id)");
-    sb.append("  UNION ALL ");
-    sb.append("  SELECT");
-    sb.append("        tree.path || ARRAY[task.order_no] AS path");
-    sb.append("      , task.task_id");
-    sb.append("      , task.task_name");
-    sb.append("      , task.parent_task_id");
-    sb.append("      , project.project_name");
-    sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
-    sb.append("        JOIN eip_t_project AS project");
-    sb.append("          ON project.project_id = task.project_id");
-    sb.append("        JOIN tree");
-    sb.append("          ON tree.parent_task_id = task.task_id");
-    sb.append(")");
-    sb.append("SELECT");
-    sb.append("      task_name");
-    sb.append("    , 1 AS sort");
-    sb.append("    , path");
-    sb.append("  FROM");
-    sb.append("    tree");
-    sb.append("  WHERE");
-    sb.append("    tree.task_id <> #bind($task_id)");
-    sb.append(" UNION ALL ");
-    sb.append("SELECT");
-    sb.append("      project_name AS task_name");
-    sb.append("    , 0 AS sort");
-    sb.append("    , ARRAY[0] AS path");
-    sb.append("  FROM");
-    sb.append("    eip_t_project_task AS task");
-    sb.append("      JOIN eip_t_project AS project");
-    sb.append("        ON project.project_id = task.project_id");
-    sb.append("  WHERE");
-    sb.append("    task.task_id = #bind($task_id)");
-    sb.append("  ORDER BY sort, path DESC");
+    SQLTemplate<EipTProjectTask> sqltemp = null;
 
-    SQLTemplate<EipTProjectTask> sqltemp =
-      Database.sql(EipTProjectTask.class, String.valueOf(sb));
-    sqltemp.param("task_id", taskId);
+    if (Database.isJdbcMySQL()) {
+
+      String tempTableName = "tree" + String.valueOf(new Date().getTime());
+
+      sb.append("CALL WITH_EMULATOR(");
+      sb.append("  \"tree\",");
+      sb
+        .append("  \"SELECT CONVERT(task.order_no, CHAR(255)) AS path, task.task_id, task.task_name, task.parent_task_id, project.project_name ");
+      sb
+        .append("    FROM eip_t_project_task AS task JOIN eip_t_project AS project ON project.project_id = task.project_id ");
+      sb.append("    WHERE task.task_id = ").append(taskId).append("\",");
+      sb
+        .append("  \"SELECT CONCAT(tree.path, ',', task.order_no) AS path, task.task_id, task.task_name, task.parent_task_id, project.project_name ");
+      sb
+        .append("    FROM eip_t_project_task AS task JOIN eip_t_project AS project ON project.project_id = task.project_id JOIN tree ON tree.parent_task_id = task.task_id\",");
+      sb
+        .append(
+          "  \"SELECT task_name, 1 AS sort, path FROM tree WHERE tree.task_id <> ")
+        .append(taskId)
+        .append(" ");
+      sb.append("  UNION ALL ");
+      sb
+        .append("  SELECT project_name AS task_name, 0 AS sort, CONVERT(0, CHAR(255)) AS path ");
+      sb
+        .append("    FROM eip_t_project_task AS task JOIN eip_t_project AS project ON project.project_id = task.project_id ");
+      sb.append("    WHERE task.task_id = ").append(taskId).append(
+        " ORDER BY sort, path DESC\",");
+      sb.append("  \"0\",");
+      sb.append("  \"\"");
+      sb.append(");");
+
+      String result = sb.toString();
+      sqltemp =
+        Database.sql(EipTProjectTask.class, result.replaceAll(
+          "tree",
+          tempTableName));
+
+    } else {
+
+      sb.append("WITH RECURSIVE tree(path) AS (");
+      sb.append("  SELECT");
+      sb.append("        ARRAY[task.order_no] AS path");
+      sb.append("      , task.task_id");
+      sb.append("      , task.task_name");
+      sb.append("      , task.parent_task_id");
+      sb.append("      , project.project_name");
+      sb.append("    FROM");
+      sb.append("      eip_t_project_task AS task");
+      sb.append("        JOIN eip_t_project AS project");
+      sb.append("          ON project.project_id = task.project_id");
+      sb.append("    WHERE");
+      sb.append("      task.task_id = #bind($task_id)");
+      sb.append("  UNION ALL ");
+      sb.append("  SELECT");
+      sb.append("        tree.path || ARRAY[task.order_no] AS path");
+      sb.append("      , task.task_id");
+      sb.append("      , task.task_name");
+      sb.append("      , task.parent_task_id");
+      sb.append("      , project.project_name");
+      sb.append("    FROM");
+      sb.append("      eip_t_project_task AS task");
+      sb.append("        JOIN eip_t_project AS project");
+      sb.append("          ON project.project_id = task.project_id");
+      sb.append("        JOIN tree");
+      sb.append("          ON tree.parent_task_id = task.task_id");
+      sb.append(")");
+      sb.append("SELECT");
+      sb.append("      task_name");
+      sb.append("    , 1 AS sort");
+      sb.append("    , path");
+      sb.append("  FROM");
+      sb.append("    tree");
+      sb.append("  WHERE");
+      sb.append("    tree.task_id <> #bind($task_id)");
+      sb.append(" UNION ALL ");
+      sb.append("SELECT");
+      sb.append("      project_name AS task_name");
+      sb.append("    , 0 AS sort");
+      sb.append("    , ARRAY[0] AS path");
+      sb.append("  FROM");
+      sb.append("    eip_t_project_task AS task");
+      sb.append("      JOIN eip_t_project AS project");
+      sb.append("        ON project.project_id = task.project_id");
+      sb.append("  WHERE");
+      sb.append("    task.task_id = #bind($task_id)");
+      sb.append("  ORDER BY sort, path DESC");
+
+      sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
+      sqltemp.param("task_id", taskId);
+
+    }
 
     List<DataRow> result = sqltemp.fetchListAsDataRow();
     if (result == null || result.isEmpty()) {
