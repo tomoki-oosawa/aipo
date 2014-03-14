@@ -322,7 +322,8 @@ public class ProjectTaskSelectData extends
       sb.append("CALL WITH_EMULATOR(");
       sb.append("  \"tree\",");
       sb.append("  \"SELECT ");
-      sb.append("    task.order_no AS path, 0 AS indent");
+      sb
+        .append("    CONVERT(task.order_no, CHAR(255)) AS path, CONVERT(0, CHAR(255)) AS indent");
       sb.append(sl);
       // #bindが使用できない
       sb
@@ -354,7 +355,11 @@ public class ProjectTaskSelectData extends
       sb.append("  \"\"");
       sb.append(");");
 
-      sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
+      String result = sb.toString();
+      sqltemp =
+        Database.sql(EipTProjectTask.class, result.replaceAll(
+          "tree",
+          tempTableName));
     } else {
 
       // -------------------------

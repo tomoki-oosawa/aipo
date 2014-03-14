@@ -113,6 +113,22 @@ public class ALNumberField extends ALAbstractField {
   }
 
   /**
+   * 入力フィールド値（数字）を取得します。
+   * 
+   * @return
+   */
+  public int getValueWithInt() {
+    int value = 0;
+    if (isNumberValue()) {
+      try {
+        value = Integer.parseInt(this.value);
+      } catch (NumberFormatException ignore) {
+      }
+    }
+    return value;
+  }
+
+  /**
    * 入力フィールド値の文字列表現を取得します。
    * 
    * @return

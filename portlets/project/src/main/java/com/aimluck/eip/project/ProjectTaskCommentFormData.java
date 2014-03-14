@@ -205,7 +205,8 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, loginUser.getUserId());
+        Database
+          .get(TurbineUser.class, loginUser.getUserId().getValueWithInt());
 
       // 新規オブジェクトモデル
       EipTProjectTaskComment newComment =

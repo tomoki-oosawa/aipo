@@ -106,7 +106,6 @@
 	<classpathentry kind="src" output="target/test-classes" path="portlets/fileuploadadv/src/test/java"/>
 	<classpathentry kind="src" path="portlets/gpdb/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/gpdb/src/test/java"/>
-	<classpathentry kind="src" path="portlets/project/src/main/java"/>
 	<classpathentry kind="src" path="portlets/wiki/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/wiki/src/test/java"/>
 	<classpathentry kind="src" path="portlets/project/src/main/java"/>

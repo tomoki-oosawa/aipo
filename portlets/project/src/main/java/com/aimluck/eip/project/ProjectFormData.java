@@ -331,9 +331,8 @@ public class ProjectFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(loginUser
-          .getUserId()
-          .toString()));
+        Database
+          .get(TurbineUser.class, loginUser.getUserId().getValueWithInt());
 
       // 新規オブジェクトモデル
       EipTProject project = Database.create(EipTProject.class);
@@ -423,7 +422,8 @@ public class ProjectFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, loginUser.getUserId());
+        Database
+          .get(TurbineUser.class, loginUser.getUserId().getValueWithInt());
 
       // プロジェクト名
       project.setProjectName(project_name.getValue());
@@ -650,7 +650,7 @@ public class ProjectFormData extends ALAbstractFormData {
    * @return ログインユーザーID
    */
   public int getLoginUserId() {
-    return (int) loginUser.getUserId().getValue();
+    return loginUser.getUserId().getValueWithInt();
   }
 
   /**

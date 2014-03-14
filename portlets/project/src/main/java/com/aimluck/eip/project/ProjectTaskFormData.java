@@ -552,9 +552,8 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
       // ログインユーザーの取得
       TurbineUser tuser =
-        Database.get(TurbineUser.class, Integer.valueOf(loginUser
-          .getUserId()
-          .toString()));
+        Database
+          .get(TurbineUser.class, loginUser.getUserId().getValueWithInt());
 
       // 新規オブジェクトモデル
       EipTProjectTask task = Database.create(EipTProjectTask.class);
@@ -674,7 +673,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       task.setProgressRate((int) progress_rate.getValue());
     }
     // 更新者
-    task.setUpdateUserId((int) loginUser.getUserId().getValue());
+    task.setUpdateUserId(loginUser.getUserId().getValueWithInt());
     // 更新日
     task.setUpdateDate(Calendar.getInstance().getTime());
 
@@ -818,7 +817,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     }
 
     project.setProgressRate(ProjectUtils.getProjectProgressRate(projectId));
-    project.setUpdateUserId((int) loginUser.getUserId().getValue());
+    project.setUpdateUserId(loginUser.getUserId().getValueWithInt());
     project.setUpdateDate(Calendar.getInstance().getTime());
 
     return true;
@@ -1187,7 +1186,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
    * @return ログインユーザーID
    */
   public int getLoginUserId() {
-    return (int) loginUser.getUserId().getValue();
+    return loginUser.getUserId().getValueWithInt();
   }
 
   /**
