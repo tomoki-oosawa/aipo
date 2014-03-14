@@ -340,13 +340,6 @@ public class FacilitiesUtils {
     } catch (Exception ex) {
       logger.error("[Exception]", ex);
     }
-    // Collections.sort(list, new Comparator<FacilityResultData>() {
-    // @Override
-    // public int compare(FacilityResultData str1, FacilityResultData str2) {
-    // return str1.getStringFacilityName().compareTo(
-    // str2.getStringFacilityName());
-    // }
-    // });
     return list;
   }
 
