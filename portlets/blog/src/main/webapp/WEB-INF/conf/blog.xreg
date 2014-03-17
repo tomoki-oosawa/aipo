@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>ブログ</title>
-            <description>日記のほか日報などに活用できるブログです。</description>
+            <description>共有テーマを設定して記事を作成できます。全てのブログ記事からキーワードを入力して検索することができるため、日記のほか日報、ノウハウ共有などにも最適です。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="blog" hidden="true" cachedOnName="true" cachedOnValue="true"/>

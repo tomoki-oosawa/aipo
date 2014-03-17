@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>報告書</title>
-            <description>特定のユーザへ報告書を通知し共有できます。</description>
+            <description>報告したいメンバーを指定して、報告書を作成できます。既読機能により、メンバーが報告書を確認したかどうかを管理することもできます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="report" hidden="true" cachedOnName="true" cachedOnValue="true"/>

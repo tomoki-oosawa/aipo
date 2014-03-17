@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>掲示板</title>
-            <description>カテゴリやトピックを設定して、お知らせなどを掲載できます。</description>
+            <description>カテゴリを設定して、お知らせなどを掲載できます。カテゴリ毎に閲覧や返信の権限設定を行うことも可能です。キーワードを入力して検索することができます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="msgboard-topic" hidden="true" cachedOnName="true" cachedOnValue="true"/>

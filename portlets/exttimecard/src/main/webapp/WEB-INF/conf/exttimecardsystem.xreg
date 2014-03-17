@@ -25,7 +25,7 @@
         <security-ref parent="admin-view"/>
         <meta-info>
             <title>タイムカード管理</title>
-            <description>出退勤を1クリックで登録できます。</description>
+            <description>出勤、退勤はもちろん外出も1クリックで登録できます。ひと月ごとに自動で集計されるため計算の手間がかかりません。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="exttimecardsystem-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
