@@ -3636,6 +3636,11 @@ tr:first-child #gantt_task > table td {
   background: #f0f0f0;
   z-index: 1;
 }
+#gantt_area .gantt_tip > div {
+  width: 0%;
+  height: 100%;
+  background: #999999;
+}
 #gantt_area .gantt_link {
   cursor: pointer;
   position: absolute;
