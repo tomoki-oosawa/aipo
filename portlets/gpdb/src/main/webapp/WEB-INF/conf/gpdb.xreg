@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Webデータベース</title>
-            <description>色々な用途に使用できるデータベースを作成できます。</description>
+            <description>項目を自由に設定してオリジナルの表を作成できます。データの追加も簡単に行えます。表計算ソフトを使う必要がないため複数人で同時に編集ができ、管理が分散しません。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="gpdb-top" hidden="true" cachedOnName="true" cachedOnValue="true"/>

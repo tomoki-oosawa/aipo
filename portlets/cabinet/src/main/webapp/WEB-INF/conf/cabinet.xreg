@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>フォルダ</title>
-            <description>階層化されたフォルダでファイルを共有できます。</description>
+            <description>ファイルを共有するための機能です。フォルダを階層化して管理できます。また、フォルダ毎にアクセス権限も設定できるため誰が何を閲覧できるかを管理できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="cabinet" hidden="true" cachedOnName="true" cachedOnValue="true"/>
