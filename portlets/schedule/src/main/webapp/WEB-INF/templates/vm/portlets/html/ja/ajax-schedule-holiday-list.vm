@@ -31,7 +31,7 @@
 #end
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIbuttonAction($l10n.SCHEDULE_ADD_HOLIDAY "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
+#AUIbuttonAction($l10n.SCHEDULE_ADD_HOLIDAY "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.schedule_holiday.onLoadScheduleHolidayDialog);")
 </div>
 
 #AUISummaryDivfooter()

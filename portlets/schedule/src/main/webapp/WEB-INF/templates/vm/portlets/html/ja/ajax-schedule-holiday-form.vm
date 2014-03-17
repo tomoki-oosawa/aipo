@@ -38,34 +38,15 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("workflowcategoryForm" $jslink $portlet "WorkflowCategoryFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.workflow_category.onReceiveMessage)")
+#ALajaxscreenformheader("ScheduleHolidayForm" $jslink $portlet "ScheduleHolidayFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule_holiday.onReceiveMessage)")
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
-#ALtdcaption("#ALrequired($!result.getFieldName('category_name'))")
-#ALtditem("#ALtextfieldw100('category_name' $!result.CategoryName 50 'active')")
-#ALtdcaption("$!result.getFieldName('route_id')")
-#ALtditemheader()
-#ALselectpdheaderw100("route_id" "aipo.workflow_category.onChangeSelecter('$!portlet.ID','$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','routetemplate')',value,'$Route','$RouteChangeFlag');")
-<option value="0">$l10n.WORKFLOW_NO_SPECIFIED</option>
-#foreach( $record in $result.RouteList )
-<option value="$!record.RouteId" #if ($!result.RouteId.toString() == $!record.RouteId.toString()) selected #end>$!record.RouteName</option>
-#end
-</select>
-<input id=$RouteChangeFlag type="checkbox" style="display:none"/>
-<input #if ($!result.RouteId.toString() == "" || $!result.RouteId.toString() == "0") style="display:none;border:medium none;width:90%;" #else style="border:medium none;width:90%;" #end id="$Route_id" name="$Route" value="$!result.RouteH" readonly="readonly" />
-#ALtditemfooter()
-#ALtdcaption($!result.getFieldName("ordertemplate"))
-#ALtditemheader()
-#ALtextarea('ordertemplate' $!result.Template 10 40)
-#ALtditemfooter()
-#ALtdcaption($!result.getFieldName("note"))
-#ALtditemheader()
-#ALtextarea('note' $!result.Note 10 40)
-#ALtditemfooter()
+#ALtdcaption("#ALrequired($!result.getFieldName('holiday_title'))")
+#ALtditem("#ALtextfieldw100('category_name' $!result.holidayTitle 50 'active')")
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

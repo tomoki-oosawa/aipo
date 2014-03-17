@@ -20,7 +20,6 @@
 dojo.provide("aipo.schedule_holiday");
 
 aipo.schedule_holiday.onLoadScheduleHolidayDialog = function(portlet_id){
-	alert("test");
     var obj = dojo.byId("holiday_name");
     if(obj){
        obj.focus();
@@ -34,7 +33,7 @@ aipo.schedule_holiday.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
-        aipo.portletReload('schedule_admin');
+        aipo.portletReload('schedule_holiday');
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg;

@@ -21,7 +21,6 @@
 #set ($navilist = [["$l10n.SCHEDULE_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.SCHEDULE_WORKING_ARRANGEMENTS_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/schedule_admin/form.js")
 #ALjavascript("javascript/aipo/schedule_holiday/form.js")
 #ALjavascript("javascript/aipo/widget/MemberAclSelectList.js")
 <script language="JavaScript" type="text/javascript">
@@ -29,7 +28,7 @@
 
     dojo.require("aipo.widget.MemberAclSelectList");
 
-    ptConfig['$!portlet.ID'] = { group:"schedule_admin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleAdminAclListScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"schedule_holiday", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleHolidayListScreen"))', reloadFunction:aipo.reloadPage };
 
 //]]>
 </script>

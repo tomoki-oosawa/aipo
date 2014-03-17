@@ -103,6 +103,7 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
    */
   @Override
   protected void setValidator() {
+    holiday_title.setNotNull(true);
   }
 
   /**
@@ -114,6 +115,7 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
+    holiday_title.validate(msgList);
     return (msgList.size() == 0);
   }
 
@@ -191,4 +193,12 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
     return false;
   }
 
+  /**
+   * 休日名を取得します。 <BR>
+   * 
+   * @return
+   */
+  public ALStringField getHolidayTitle() {
+    return holiday_title;
+  }
 }
