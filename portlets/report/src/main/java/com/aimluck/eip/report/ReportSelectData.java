@@ -377,6 +377,20 @@ public class ReportSelectData extends
         Integer.valueOf((int) login_user.getUserId().getValue());
       rd.setIsSelfReport(record.getUserId().intValue() == login_user_id
         .intValue());
+      Expression mapexp =
+        ExpressionFactory.matchExp(EipTReportMap.REPORT_ID_PROPERTY, record
+          .getReportId());
+      List<EipTReportMap> list =
+        Database.query(EipTReportMap.class, mapexp).fetchList();
+      // メッセージを既読した人数
+      Integer readNotes = 0;
+      for (EipTReportMap reportmap : list) {
+        if (reportmap.getStatus().equals(ReportUtils.DB_STATUS_READ)) {
+          readNotes++;
+        }
+      }
+      rd.setSentReport(list.size());
+      rd.setReadReport(readNotes.longValue());
       return rd;
     } catch (Exception ex) {
       logger.error("report", ex);

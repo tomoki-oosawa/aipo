@@ -24,7 +24,7 @@
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.REPORT_DETAIL)
+#ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
@@ -185,7 +185,7 @@ ${record.Note}
 #end
 #ALbuttonheader()
 <input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
-#ALajaxbuttonClose()
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.REPORT_CLOSE" onclick="aipo.report.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

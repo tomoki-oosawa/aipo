@@ -84,6 +84,12 @@ public class ReportResultData implements ALData {
   /** <code>statusList</code> メンバーの状態 */
   private Map<Integer, String> statusList;
 
+  /** 送信した報告書数 */
+  private ALNumberField sent_report;
+
+  /** 既読報告書数 */
+  private ALNumberField read_report;
+
   /**
    *
    *
@@ -108,6 +114,8 @@ public class ReportResultData implements ALData {
     mapList = new ArrayList<ALEipUser>();
     is_self_report = false;
     statusList = new HashMap<Integer, String>();
+    sent_report = new ALNumberField();
+    read_report = new ALNumberField();
   }
 
   /**
@@ -293,5 +301,21 @@ public class ReportResultData implements ALData {
 
   public String getStatus(long id) {
     return statusList.get(Integer.valueOf((int) id));
+  }
+
+  public ALNumberField getSentReport() {
+    return sent_report;
+  }
+
+  public void setSentReport(long value) {
+    sent_report.setValue(value);
+  }
+
+  public ALNumberField getReadReport() {
+    return read_report;
+  }
+
+  public void setReadReport(long value) {
+    read_report.setValue(value);
   }
 }
