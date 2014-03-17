@@ -372,7 +372,6 @@ public class ReportSelectData extends
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
       rd.setClientId(client.getUserId().getValue());
-      List<Integer> users = new ArrayList<Integer>();
       EipTReportMap map = null;
       List<EipTReportMap> tmp_maps = ReportUtils.getEipTReportMap(record);
 
@@ -380,7 +379,6 @@ public class ReportSelectData extends
         int size = tmp_maps.size();
         for (int i = 0; i < size; i++) {
           map = tmp_maps.get(i);
-          users.add(map.getUserId());
           rd.setReportStat(map.getStatus());
         }
       }
