@@ -24,9 +24,7 @@ package com.aimluck.eip.project;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -354,7 +352,7 @@ public class ProjectTaskSelectData extends
       sb.append("  \"tree\",");
       sb.append("  \"SELECT ");
       sb
-        .append("    CONVERT(task.order_no, CHAR(255)) AS path, CONVERT(0, CHAR(255)) AS indent");
+        .append("    CONVERT(task.order_no, CHAR(255)) AS path, CONVERT(0, CHAR(255)) AS indent, CONVERT(LPAD(task.order_no,10,'0'), CHAR(255)) AS lpad_path");
       sb.append(sl);
       sb
         .append("    FROM eip_t_project_task AS task WHERE task.project_id = ")
@@ -362,7 +360,7 @@ public class ProjectTaskSelectData extends
         .append(" AND task.parent_task_id IS NULL\",");
       sb.append("  \"SELECT ");
       sb
-        .append("  concat(concat(tree.path, ','), task.order_no) AS path, concat(concat(path, ','), 1) AS indent");
+        .append("  concat(tree.path, ',', task.order_no) AS path, concat(path, ',', 1) AS indent, concat(tree.lpad_path, ',', LPAD(task.order_no,10,'0')) AS lpad_path");
       sb.append(sl);
       sb
         .append("    FROM eip_t_project_task AS task JOIN tree ON tree.task_id = task.parent_task_id\",");
@@ -598,15 +596,8 @@ public class ProjectTaskSelectData extends
       if (Database.isJdbcMySQL()) {
         String indent = row.get("indent").toString();
         String[] split = indent.split(",");
-        List<String> strList = Arrays.asList(split);
-        List<Integer> intList = new ArrayList<Integer>();
-        for (String id : strList) {
-          intList.add(Integer.valueOf(id));
-        }
-        Collections.sort(intList);
-        Collections.reverse(intList);
-        if (!intList.isEmpty()) {
-          task.setIndent(intList.get(0));
+        if (split.length > 0) {
+          task.setIndent(split.length - 1);
         } else {
           task.setIndent(0);
         }
@@ -661,7 +652,11 @@ public class ProjectTaskSelectData extends
       }
 
     } else {
-      return "  ORDER BY path";
+      if (Database.isJdbcMySQL()) {
+        return "  ORDER BY lpad_path";
+      } else {
+        return "  ORDER BY path";
+      }
     }
   }
 

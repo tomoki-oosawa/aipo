@@ -275,6 +275,8 @@ public class ProjectUtils {
       SimpleDateFormat sdfDest = new SimpleDateFormat("yyyy-MM-dd");
       String formatedEmptyDate = sdfDest.format(date);
 
+      // TODO CURRENT_DATEを変更する
+
       StringBuilder sb = new StringBuilder();
       sb
         .append("SELECT task.progress_rate, task.start_plan_date, task.end_plan_date, task.plan_workload, member.workload, ");
@@ -309,11 +311,8 @@ public class ProjectUtils {
 
       StringBuilder main = new StringBuilder();
       main
-        .append(
-          "SELECT COUNT(0) AS cnt, SUM(lapsed_days) AS lapsed_days, SUM(task_days) AS task_days, SUM(task_days * progress_rate) / SUM(task_days) AS result_per, SUM(lapsed_days) * 100 / SUM(task_days) AS plan_per, SUM(plan_workload) AS plan_workload, SUM(workload) AS workload, SUM(task_days * progress_rate) / SUM(task_days) AS result_per, MAX(task_update_date) AS task_update_date FROM")
-        .append("(")
-        .append(subQuery)
-        .append(") AS base");
+        .append("SELECT COUNT(0) AS cnt, SUM(lapsed_days) AS lapsed_days, SUM(task_days) AS task_days, CONVERT(SUM(task_days * progress_rate) / SUM(task_days), SIGNED) AS result_per, CONVERT(SUM(lapsed_days) * 100 / SUM(task_days), SIGNED) AS plan_per, CONVERT(SUM(plan_workload), SIGNED) AS plan_workload, CONVERT(SUM(workload), SIGNED) AS workload, CONVERT(SUM(task_days * progress_rate) / SUM(task_days), SIGNED) AS result_per, MAX(task_update_date) AS task_update_date FROM");
+      main.append("(").append(subQuery).append(") AS base");
 
       String query = main.toString();
       SQLTemplate<EipTProjectTask> sqltemp =
@@ -994,67 +993,128 @@ public class ProjectUtils {
    */
   public static List<DataRow> getChildTaskMember(Integer taskId) {
 
-    // SELECT句
-    StringBuilder sl = new StringBuilder();
-    sl.append("        task.task_id");
-    sl
-      .append("      , CASE WHEN task.start_plan_date = TO_DATE(#bind($empty_date), #bind($date_format))");
-    sl.append("          THEN NULL");
-    sl.append("          ELSE task.start_plan_date");
-    sl.append("        END AS start_plan_date");
-    sl
-      .append("      , CASE WHEN task.end_plan_date = TO_DATE(#bind($empty_date), #bind($date_format))");
-    sl.append("          THEN NULL");
-    sl.append("          ELSE task.end_plan_date");
-    sl.append("        END AS end_plan_date");
+    if (null == taskId) {
+      return null;
+    }
 
-    StringBuilder sb = new StringBuilder();
-    sb.append("WITH RECURSIVE children AS (");
-    sb.append("  SELECT");
-    sb.append(sl);
-    sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
-    sb.append("    WHERE");
-    sb.append("      task.parent_task_id = #bind($task_id)");
-    sb.append("  UNION ALL ");
-    sb.append("  SELECT");
-    sb.append(sl);
-    sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
-    sb.append("        JOIN children");
-    sb.append("          ON children.task_id = task.parent_task_id");
-    sb.append(")");
-    sb.append("SELECT");
-    sb.append("      #result('member.user_id' 'int' 'user_id')");
-    sb
-      .append("    , #result('SUM(CASE WHEN children.start_plan_date IS NULL OR children.end_plan_date IS NULL");
-    sb.append("                     THEN 0");
-    sb.append("                     ELSE member.workload");
-    sb.append("                   END)' 'java.math.BigDecimal' 'workload')");
-    sb.append("  FROM");
-    sb.append("    children");
-    sb.append("      JOIN eip_t_project_task_member AS member ");
-    sb.append("        ON member.task_id = children.task_id");
-    sb.append(" WHERE");
-    sb.append("    NOT EXISTS(");
-    sb.append("      SELECT");
-    sb.append("          0");
-    sb.append("        FROM");
-    sb.append("          eip_t_project_task AS task");
-    sb.append("       WHERE");
-    sb.append("          task.parent_task_id = children.task_id");
-    sb.append("      )");
-    sb.append(" GROUP BY member.user_id");
-    sb.append(" ORDER BY member.user_id");
+    SQLTemplate<EipTProjectTask> sqltemp = null;
 
-    SQLTemplate<EipTProjectTask> sqltemp =
-      Database.sql(EipTProjectTask.class, String.valueOf(sb));
-    sqltemp.param("task_id", taskId);
-    sqltemp.param("date_format", DB_DATE_FORMAT);
-    sqltemp.param("empty_date", EMPTY_DATE);
+    if (Database.isJdbcMySQL()) {
+
+      SimpleDateFormat sdfSrc = new SimpleDateFormat("yyyy/MM/dd");
+      Date date = null;
+      try {
+        date = sdfSrc.parse(EMPTY_DATE);
+      } catch (ParseException e) {
+        logger.error("getProjectProgress", e);
+        throw new RuntimeException(e);
+      }
+      SimpleDateFormat sdfDest = new SimpleDateFormat("yyyy-MM-dd");
+      String formatedEmptyDate = sdfDest.format(date);
+
+      // SELECT句
+      StringBuilder sl = new StringBuilder();
+      sl.append("        task.task_id");
+      sl.append("      , CASE WHEN task.start_plan_date = ").append(
+        getSingleQuoteEnclosed(formatedEmptyDate));
+      sl.append("          THEN NULL");
+      sl.append("          ELSE task.start_plan_date");
+      sl.append("        END AS start_plan_date");
+      sl.append("      , CASE WHEN task.end_plan_date = ").append(
+        getSingleQuoteEnclosed(formatedEmptyDate));
+      sl.append("          THEN NULL");
+      sl.append("          ELSE task.end_plan_date");
+      sl.append("        END AS end_plan_date");
+
+      StringBuilder sb = new StringBuilder();
+      sb.append("CALL WITH_EMULATOR(");
+      sb.append("  \"children\",");
+      sb.append("  \"SELECT ");
+      sb.append(sl);
+      sb.append("    FROM eip_t_project_task AS task ");
+      sb.append("    WHERE task.parent_task_id = ").append(
+        String.valueOf(taskId)).append(" \",");
+      sb.append("  \"SELECT ");
+      sb.append(sl);
+      sb
+        .append("    FROM eip_t_project_task AS task JOIN children ON children.task_id = task.parent_task_id\",");
+      sb
+        .append("  \"SELECT member.user_id AS user_id, SUM(CASE WHEN children.start_plan_date IS NULL OR children.end_plan_date IS NULL THEN 0 ELSE member.workload END) AS workload ");
+      sb
+        .append("    FROM children JOIN eip_t_project_task_member AS member  ON member.task_id = children.task_id ");
+      sb
+        .append("    WHERE NOT EXISTS ( SELECT 0 FROM eip_t_project_task AS task WHERE task.parent_task_id = children.task_id ) GROUP BY member.user_id ORDER BY member.user_id\",");
+      sb.append("  \"0\",");
+      sb.append("  \"\"");
+      sb.append(");");
+
+      String result = sb.toString();
+      String tempTableName = "children" + String.valueOf(new Date().getTime());
+      sqltemp =
+        Database.sql(EipTProjectTask.class, result.replaceAll(
+          "children",
+          tempTableName));
+    } else {
+      // SELECT句
+      StringBuilder sl = new StringBuilder();
+      sl.append("        task.task_id");
+      sl
+        .append("      , CASE WHEN task.start_plan_date = TO_DATE(#bind($empty_date), #bind($date_format))");
+      sl.append("          THEN NULL");
+      sl.append("          ELSE task.start_plan_date");
+      sl.append("        END AS start_plan_date");
+      sl
+        .append("      , CASE WHEN task.end_plan_date = TO_DATE(#bind($empty_date), #bind($date_format))");
+      sl.append("          THEN NULL");
+      sl.append("          ELSE task.end_plan_date");
+      sl.append("        END AS end_plan_date");
+
+      StringBuilder sb = new StringBuilder();
+      sb.append("WITH RECURSIVE children AS (");
+      sb.append("  SELECT");
+      sb.append(sl);
+      sb.append("    FROM");
+      sb.append("      eip_t_project_task AS task");
+      sb.append("    WHERE");
+      sb.append("      task.parent_task_id = #bind($task_id)");
+      sb.append("  UNION ALL ");
+      sb.append("  SELECT");
+      sb.append(sl);
+      sb.append("    FROM");
+      sb.append("      eip_t_project_task AS task");
+      sb.append("        JOIN children");
+      sb.append("          ON children.task_id = task.parent_task_id");
+      sb.append(")");
+      sb.append("SELECT");
+      sb.append("      #result('member.user_id' 'int' 'user_id')");
+      sb
+        .append("    , #result('SUM(CASE WHEN children.start_plan_date IS NULL OR children.end_plan_date IS NULL");
+      sb.append("                     THEN 0");
+      sb.append("                     ELSE member.workload");
+      sb.append("                   END)' 'java.math.BigDecimal' 'workload')");
+      sb.append("  FROM");
+      sb.append("    children");
+      sb.append("      JOIN eip_t_project_task_member AS member ");
+      sb.append("        ON member.task_id = children.task_id");
+      sb.append(" WHERE");
+      sb.append("    NOT EXISTS(");
+      sb.append("      SELECT");
+      sb.append("          0");
+      sb.append("        FROM");
+      sb.append("          eip_t_project_task AS task");
+      sb.append("       WHERE");
+      sb.append("          task.parent_task_id = children.task_id");
+      sb.append("      )");
+      sb.append(" GROUP BY member.user_id");
+      sb.append(" ORDER BY member.user_id");
+
+      sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
+      sqltemp.param("task_id", taskId);
+      sqltemp.param("date_format", DB_DATE_FORMAT);
+      sqltemp.param("empty_date", EMPTY_DATE);
+    }
 
     List<DataRow> result = sqltemp.fetchListAsDataRow();
-
     return result;
   }
 
