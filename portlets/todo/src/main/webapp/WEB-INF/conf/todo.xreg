@@ -24,7 +24,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>ToDo</title>
-            <description>作業の進捗を共有できるToDoです。</description>
+            <description>やるべき作業を管理するための機能です。メンバーにも共有されるため、全員で作業の進捗状況をリアルタイムに確認することができます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="todo" hidden="true" cachedOnName="true" cachedOnValue="true"/>

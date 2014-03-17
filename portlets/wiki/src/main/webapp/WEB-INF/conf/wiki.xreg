@@ -24,7 +24,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>Wiki</title>
-            <description>文書を共有できるWikiです。</description>
+            <description>独自のWikiが作成できます。文章中への表や画像の挿入、記事の装飾もボタン一つで行うことができるため、どなたでも簡単にページの追加・編集を行えます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="wiki" hidden="true" cachedOnName="true" cachedOnValue="true"/>
@@ -44,7 +44,7 @@
         <parameter name="p1b-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.items" value="5,10,20,50" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p1b-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        
+
         <parameter name="action" value="wiki.WikiAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="WikiFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>

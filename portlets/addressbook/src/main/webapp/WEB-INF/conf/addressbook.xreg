@@ -25,7 +25,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>アドレス帳</title>
-            <description>電話番号やメールアドレスを共有できます。</description>
+            <description>個人のアドレス、会社情報が管理・共有できます。非公開で登録することもできるため、幅広く管理できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="addressbook" hidden="true" cachedOnName="true" cachedOnValue="true"/>
