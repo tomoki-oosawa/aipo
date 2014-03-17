@@ -2992,6 +2992,26 @@ ul.blockList li a.selected {
 .colorFacebook {color: #4862a3 !important;}
 
 /***************************************************
+  background
+--------------------------------------------------*/
+.bgRed, .bgRed td, .bgRed div {
+  background: #ffe5e5 !important;
+}
+
+.bgGray, .bgGray td, .bgGray div {
+  background: #f0f0f0 !important;
+}
+
+/***************************************************
+    ellipsis
+--------------------------------------------------*/
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/***************************************************
 	mobile class
 --------------------------------------------------*/
 .pc_hide {display:none !important;}
