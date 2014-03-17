@@ -74,7 +74,7 @@
 <input type="hidden" name="is_repeat" value="$!{result.Repeat}" />
 <input type="hidden" name="is_span" value="$!{result.Span}" />
 <input type="hidden" name="is_member" value="TRUE" />
-<input name="is_facility" type="hidden" #if (! $!{result.isSpan()} || ($!{result.PublicFlag.toString()} == "O")) value="TRUE" #else value="FALSE" #end />
+<input name="is_facility" type="hidden" #if ($!{result.PublicFlag.toString()} == "O") value="TRUE" #else value="FALSE" #end />
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}" />
 #if($afterbehavior)
 <input type="hidden" name="afterbehavior" value="1" />
@@ -306,7 +306,7 @@
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
+<div id="facilityFieldButton" style="display:#if($!{result.PublicFlag.toString()} == "P")none#end">
 	<table class="w100">
 		<tbody>
 			<tr class="member">
