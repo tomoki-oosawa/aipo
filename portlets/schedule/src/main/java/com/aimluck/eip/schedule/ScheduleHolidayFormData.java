@@ -29,12 +29,17 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.account.EipMUserHoliday;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.util.ScheduleHolidayUtils;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -51,13 +56,16 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   /** 休日名 */
   private ALStringField holiday_title;
 
-  /** メモ */
+  /** 日付 */
   private ALDateTimeField holiday_date;
 
+  /** ID */
   private Integer holiday_id;
 
+  /** 作成者名 */
   private ALNumberField create_user_id;
 
+  /** 更新者名 */
   private ALNumberField update_user_id;
 
   /** 休日一覧 */
@@ -94,6 +102,11 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
     holiday_title.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_COMPANY_HOLIDAY"));
     holiday_title.setTrim(true);
+
+    holiday_date = new ALDateTimeField();
+    holiday_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_HOLIDAY_DATE"));
+
   }
 
   /**
@@ -148,7 +161,25 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      EipMUserHoliday holiday =
+        ScheduleHolidayUtils.getEipMUserHoliday(rundata, context);
+      if (holiday == null) {
+        return false;
+      }
+      // タイトル
+      holiday_title.setValue(holiday.getHolidayTitle());
+      // 日付
+      holiday_date.setValue(holiday.getHolidayDate());
+      // 作成者
+      create_user_id.setValue(holiday.getCreateUserId());
+      // 更新者
+      update_user_id.setValue(holiday.getUpdateUserId());
+    } catch (Exception ex) {
+      logger.error("holiday", ex);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -162,7 +193,26 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      // 新規オブジェクトモデル
+      EipMUserHoliday holiday = Database.create(EipMUserHoliday.class);
+
+      // タイトル
+      holiday.setHolidayTitle(holiday_title.getValue());
+      // 日付
+      holiday.setHolidayDate(holiday_date.getValue());
+      // 作成者
+      holiday.setCreateUserId(create_user_id);
+      // 更新者
+      holiday.setUpdateUserId(update_user_id);
+
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("[ScheduleHolidayFormData]", t);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -176,7 +226,30 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      // オブジェクトモデルを取得
+      EipMUserHoliday holiday =
+        ScheduleHolidayUtils.getEipMUserHoliday(rundata, context);
+      if (holiday == null) {
+        return false;
+      }
+      // タイトル
+      holiday.setHolidayTitle(holiday_title.getValue());
+      // 日付
+      holiday.setHolidayDate(holiday_date.getValue());
+      // 作成者
+      holiday.setCreateUserId(create_user_id);
+      // 更新者
+      holiday.setUpdateUserId(update_user_id);
+
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("[ScheduleHolidayFormData]", t);
+      return false;
+    }
+    return true;
+
   }
 
   /**
@@ -190,7 +263,39 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      // オブジェクトモデルを取得
+      EipMUserHoliday holiday =
+        ScheduleHolidayUtils.getEipMUserHoliday(rundata, context);
+      if (holiday == null) {
+        return false;
+      }
+
+      // entityIdの取得
+      int entityId = holiday.getUserHolidayId();
+      // タイトルの取得
+      String holidayName = holiday.getHolidayTitle();
+
+      // UserHolidayを削除
+      Database.delete(holiday);
+      Database.commit();
+
+      TimelineUtils.deleteTimelineActivity(rundata, context, "holiday", holiday
+        .getUserHolidayId()
+        .toString());
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
+        holidayName);
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("[ScheduleHolidayFormData]", t);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -200,5 +305,32 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
    */
   public ALStringField getHolidayTitle() {
     return holiday_title;
+  }
+
+  /**
+   * 日付を取得します。<BR>
+   * 
+   * @return
+   */
+  public ALDateTimeField getHolidayDate() {
+    return holiday_date;
+  }
+
+  /**
+   * 作成者を取得します。<BR>
+   * 
+   * @return
+   */
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
+  /**
+   * 更新者を取得します。<BR>
+   * 
+   * @return
+   */
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
   }
 }
