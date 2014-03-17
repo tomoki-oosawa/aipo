@@ -74,7 +74,7 @@ public class WebMailFormData extends ALAbstractFormData {
   private final int FIELD_SUBJECT_MAX_LEN = 256;
 
   /** 宛先（To，CC，BCC）の最大文字数 */
-  private final int FIELD_RECIPIENT_MAX_LEN = 512;
+  private final int FIELD_RECIPIENT_MAX_LEN = 1300;
 
   /** メール本文の最大文字数 */
   private final int FIELD_BODY_MAX_LEN = 50000;
