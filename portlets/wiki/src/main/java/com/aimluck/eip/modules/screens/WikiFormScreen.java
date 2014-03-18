@@ -51,6 +51,7 @@ public class WikiFormScreen extends ALVelocityScreen {
       if (rundata.getParameters().containsKey("wikipage")) {
         page = rundata.getParameters().getString("wikipage");
       }
+      ALEipUtils.removeTemp(rundata, context, "update_date");
 
       WikiFormData formData = new WikiFormData();
       formData.initField();

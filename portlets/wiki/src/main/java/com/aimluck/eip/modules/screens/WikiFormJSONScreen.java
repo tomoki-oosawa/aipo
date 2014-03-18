@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -27,6 +29,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.wiki.WikiFormData;
 import com.aimluck.eip.wiki.WikiMultiDelete;
 
@@ -70,6 +74,15 @@ public class WikiFormJSONScreen extends ALJSONScreen {
             JSONArray
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
+          @SuppressWarnings("unchecked")
+          List<String> msgList =
+            (List<String>) context.get(ALEipConstants.ERROR_MESSAGE_LIST);
+          if (msgList.contains(ALLocalizationUtils
+            .getl10n("WIKI_CONFLICT_ERROR"))) {
+            if (msgList.size() == 1) {
+              ALEipUtils.removeTemp(rundata, context, "update_date");
+            }
+          }
         }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
         //
