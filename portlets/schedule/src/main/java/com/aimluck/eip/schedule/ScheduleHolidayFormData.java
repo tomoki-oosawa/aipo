@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.schedule;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,7 +33,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.account.EipMUserHoliday;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -83,12 +83,6 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    String holidayid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-    if (holidayid != null && Integer.valueOf(holidayid) != null) {
-      holiday_id = Integer.valueOf(holidayid);
-    }
   }
 
   /**
@@ -97,16 +91,17 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
+    Date now = new Date();
     // 休日名
     holiday_title = new ALStringField();
     holiday_title.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_COMPANY_HOLIDAY"));
     holiday_title.setTrim(true);
 
-    holiday_date = new ALDateTimeField();
+    holiday_date = new ALDateTimeField("yyyy-MM-dd");
     holiday_date.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_HOLIDAY_DATE"));
-
+    holiday_date.setValue(now);
   }
 
   /**
@@ -197,14 +192,21 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
       // 新規オブジェクトモデル
       EipMUserHoliday holiday = Database.create(EipMUserHoliday.class);
 
+      // 作成者ID
+      int ownerid = ALEipUtils.getUserId(rundata);
+
       // タイトル
       holiday.setHolidayTitle(holiday_title.getValue());
       // 日付
       holiday.setHolidayDate(holiday_date.getValue());
       // 作成者
-      holiday.setCreateUserId(create_user_id);
+      holiday.setCreateUserId(ownerid);
       // 更新者
-      holiday.setUpdateUserId(update_user_id);
+      holiday.setUpdateUserId(ownerid);
+
+      // ユーザーID
+      holiday.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
+        .getUserId(rundata)));
 
       Database.commit();
     } catch (Throwable t) {
@@ -233,14 +235,16 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
       if (holiday == null) {
         return false;
       }
+      // 作成者ID
+      int ownerid = ALEipUtils.getUserId(rundata);
       // タイトル
       holiday.setHolidayTitle(holiday_title.getValue());
       // 日付
       holiday.setHolidayDate(holiday_date.getValue());
       // 作成者
-      holiday.setCreateUserId(create_user_id);
+      holiday.setCreateUserId(holiday.getCreateUserId());
       // 更新者
-      holiday.setUpdateUserId(update_user_id);
+      holiday.setUpdateUserId(ownerid);
 
       Database.commit();
     } catch (Throwable t) {
