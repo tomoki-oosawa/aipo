@@ -43,6 +43,7 @@ import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -105,7 +106,7 @@ public class GpdbKubunChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // 区分値のリスト
     positions = new ALStringField();
-    positions.setFieldName("値リスト");
+    positions.setFieldName(ALLocalizationUtils.getl10n("GPDB_VALUE_LIST"));
     positions.setTrim(true);
   }
 

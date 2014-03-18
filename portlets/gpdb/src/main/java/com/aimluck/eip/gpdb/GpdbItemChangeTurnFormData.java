@@ -43,6 +43,7 @@ import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -105,7 +106,8 @@ public class GpdbItemChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // 項目定義のリスト
     positions = new ALStringField();
-    positions.setFieldName("項目定義リスト");
+    positions.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_DEFINED_ITEM_LIST"));
     positions.setTrim(true);
   }
 
