@@ -3140,15 +3140,17 @@ ul.attachments {
   position: absolute;
   display: block;
   right: 0;
-  width: 20px;
+  width: 24px;
   height: 26px;
   top: 2px;
-  right: 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  -ms-border-radius: 0 2px 2px 0;
+  -o-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  -webkit-box-shadow: -3px 0 3px 0px white;
+  -moz-box-shadow: -3px 0 3px 0px white;
+  box-shadow: -3px 0 3px 0px white;
   vertical-align: middle;
   background: #ffffff;
 }

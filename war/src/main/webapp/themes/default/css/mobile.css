@@ -289,7 +289,6 @@ input[type=password] {
   color: #1b1b1b;
   overflow: hidden;
 }
-
 .auiMbTable .auiMTCheck ~ .auiMTCaption .auiIcon {
   float: left;
   margin: 2px 5px 0 0;
@@ -302,6 +301,22 @@ input[type=password] {
 }
 .auiRowTable.auiMbTable div a {
   line-height: normal;
+}
+
+/***************************************************
+	auiMbCellTable
+--------------------------------------------------*/
+.auiMbCellTable,
+.modalDialog td .auiMbCellTable {
+  display: table;
+}
+.auiMbCellTable tr,
+.modalDialog td .auiMbCellTable tr {
+  display: table-row;
+}
+.auiMbCellTable td,
+.modalDialog td .auiMbCellTable td {
+  display: table-cell;
 }
 
 /***************************************************
