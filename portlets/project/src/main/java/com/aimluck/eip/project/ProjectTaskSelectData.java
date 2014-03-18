@@ -270,16 +270,27 @@ public class ProjectTaskSelectData extends
     sl.append(", task.update_date"); // 更新日
 
     if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
+      /**
+       * CURRENT_DATE in SQL depend on Database locale, so unify the time in
+       * java
+       */
       sl.append(", CASE");
       sl
         .append("    WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
       sl.append("      THEN 0");
-      sl.append("    WHEN CURRENT_DATE < task.end_plan_date");
-      sl.append("      THEN");
       sl
-        .append("        CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
+        .append("    WHEN ")
+        .append(ProjectUtils.getCurrentDateWithCast())
+        .append(" < task.end_plan_date");
+      sl.append("      THEN");
+      sl.append("        CASE WHEN ").append(
+        ProjectUtils.getCurrentDateWithCast()).append(
+        " - task.start_plan_date + 1 < 0");
       sl.append("          THEN 0");
-      sl.append("          ELSE CURRENT_DATE - task.start_plan_date + 1");
+      sl
+        .append("          ELSE ")
+        .append(ProjectUtils.getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1");
       sl.append("        END");
       sl.append("      ELSE");
       sl.append("        task.end_plan_date - task.start_plan_date + 1");

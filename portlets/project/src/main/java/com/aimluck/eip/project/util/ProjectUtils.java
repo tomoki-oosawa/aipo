@@ -262,6 +262,9 @@ public class ProjectUtils {
    * @return 進捗情報
    */
   public static List<DataRow> getProjectProgress(Integer projectId) {
+
+    /** CURRENT_DATE in SQL depend on Database locale, so unify the time in java */
+
     if (Database.isJdbcMySQL()) {
 
       SimpleDateFormat sdfSrc = new SimpleDateFormat("yyyy/MM/dd");
@@ -275,18 +278,19 @@ public class ProjectUtils {
       SimpleDateFormat sdfDest = new SimpleDateFormat("yyyy-MM-dd");
       String formatedEmptyDate = sdfDest.format(date);
 
-      // TODO CURRENT_DATEを変更する
-
       StringBuilder sb = new StringBuilder();
       sb
         .append("SELECT task.progress_rate, task.start_plan_date, task.end_plan_date, task.plan_workload, member.workload, ");
       sb.append("  CASE WHEN ");
-      sb.append("    CURRENT_DATE < task.end_plan_date ");
+      sb.append("    ").append(getCurrentDateWithCast()).append(
+        " < task.end_plan_date ");
       sb.append("  THEN");
       sb.append("    CASE WHEN ");
-      sb.append("      CURRENT_DATE - task.start_plan_date + 1 < 0 THEN 0 ");
+      sb.append("      ").append(getCurrentDateWithCast()).append(
+        " - task.start_plan_date + 1 < 0 THEN 0 ");
       sb.append("    ELSE");
-      sb.append("      CURRENT_DATE - task.start_plan_date + 1 ");
+      sb.append("      ").append(getCurrentDateWithCast()).append(
+        " - task.start_plan_date + 1 ");
       sb.append("    END");
       sb.append("  ELSE");
       sb.append("    task.end_plan_date - task.start_plan_date + 1 ");
@@ -332,12 +336,18 @@ public class ProjectUtils {
       sb.append("      , task.plan_workload"); // 計画工数
       sb.append("      , member.workload"); // 工数
       sb.append("      , CASE");
-      sb.append("          WHEN CURRENT_DATE < task.end_plan_date");
+      sb.append("          WHEN ").append(getCurrentDateWithCast()).append(
+        " < task.end_plan_date");
       sb.append("            THEN");
       sb
-        .append("              CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
+        .append("              CASE WHEN ")
+        .append(getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1 < 0");
       sb.append("                THEN 0");
-      sb.append("                ELSE CURRENT_DATE - task.start_plan_date + 1");
+      sb
+        .append("                ELSE ")
+        .append(getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1");
       sb.append("              END");
       sb.append("            ELSE");
       sb.append("              task.end_plan_date - task.start_plan_date + 1");
@@ -718,8 +728,6 @@ public class ProjectUtils {
       SimpleDateFormat sdfDest = new SimpleDateFormat("yyyy-MM-dd");
       String formatedEmptyDate = sdfDest.format(date);
 
-      // TODO CURRENT_DATEをJavaで時刻を取得するようにする
-
       // SELECT句
       StringBuilder sl = new StringBuilder();
       sl.append("        task.task_id");
@@ -750,13 +758,18 @@ public class ProjectUtils {
       sl
         .append("          WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
       sl.append("            THEN 0");
-      sl.append("          WHEN CURRENT_DATE < task.end_plan_date");
+      sl.append("          WHEN ").append(getCurrentDateWithCast()).append(
+        " < task.end_plan_date");
       sl.append("            THEN");
       sl
-        .append("              CASE WHEN CURRENT_DATE - TIMESTAMPADD(DAY, 1, task.start_plan_date) < 0");
+        .append("              CASE WHEN ")
+        .append(getCurrentDateWithCast())
+        .append(" - TIMESTAMPADD(DAY, 1, task.start_plan_date) < 0");
       sl.append("                THEN 0");
       sl
-        .append("                ELSE CURRENT_DATE - TIMESTAMPADD(DAY, 1, task.start_plan_date)");
+        .append("                ELSE ")
+        .append(getCurrentDateWithCast())
+        .append(" - TIMESTAMPADD(DAY, 1, task.start_plan_date)");
       sl.append("              END");
       sl.append("            ELSE");
       sl
@@ -809,9 +822,6 @@ public class ProjectUtils {
           tempTableName));
 
     } else {
-
-      // TODO CURRENT_DATEをJavaで時刻を取得するようにする
-
       // SELECT句
       StringBuilder sl = new StringBuilder();
       sl.append("        task.task_id");
@@ -842,12 +852,18 @@ public class ProjectUtils {
       sl
         .append("          WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
       sl.append("            THEN 0");
-      sl.append("          WHEN CURRENT_DATE < task.end_plan_date");
+      sl.append("          WHEN ").append(getCurrentDateWithCast()).append(
+        " < task.end_plan_date");
       sl.append("            THEN");
       sl
-        .append("              CASE WHEN CURRENT_DATE - task.start_plan_date + 1 < 0");
+        .append("              CASE WHEN ")
+        .append(getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1 < 0");
       sl.append("                THEN 0");
-      sl.append("                ELSE CURRENT_DATE - task.start_plan_date + 1");
+      sl
+        .append("                ELSE ")
+        .append(getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1");
       sl.append("              END");
       sl.append("            ELSE");
       sl.append("              task.end_plan_date - task.start_plan_date + 1");
@@ -1867,5 +1883,15 @@ public class ProjectUtils {
 
   public static String getSingleQuoteEnclosed(String text) {
     return new StringBuffer().append("'").append(text).append("'").toString();
+  }
+
+  public static String getCurrentDateWithCast() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String currentDate = sdf.format(new Date());
+    return new StringBuilder()
+      .append("CAST(")
+      .append(ProjectUtils.getSingleQuoteEnclosed(currentDate))
+      .append(" AS DATE)")
+      .toString();
   }
 }
