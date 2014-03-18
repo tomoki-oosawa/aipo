@@ -2083,6 +2083,13 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	project
+--------------------------------------------------*/
+#gantt_area {
+  border-bottom: solid 1px #d2d2d2;
+}
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none !important;}

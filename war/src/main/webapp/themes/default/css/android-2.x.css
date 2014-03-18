@@ -23,3 +23,24 @@
 .auiMbTable .auiMTCheck {
   padding: 0 10px 0 5px;
 }
+
+/***************************************************
+	project
+--------------------------------------------------*/
+#gantt_task > table th {
+  height: 40px;
+}
+#gantt_task > table td {
+  height: 30px;
+}
+
+#gantt_area {
+  overflow-x: visible !important;
+  border-bottom: solid 1px #d2d2d2;
+}
+#gantt_area .gantt_area_month td {
+  height: 19px;
+}
+#gantt_area .gantt_area_day td {
+  height: 20px;
+}

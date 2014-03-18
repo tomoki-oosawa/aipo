@@ -60,3 +60,20 @@ body {
 .auiMbTable .auiMTCheck {
   padding: 2px 10px 0 5px;
 }
+
+/***************************************************
+	project
+--------------------------------------------------*/
+#gantt_task > table th {
+  height: 38px;
+}
+#gantt_task > table td {
+  height: 29px;
+}
+
+#gantt_area .gantt_area_month td {
+  height: 18px;
+}
+#gantt_area .gantt_area_day td {
+  height: 19px;
+}
