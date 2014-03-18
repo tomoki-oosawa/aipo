@@ -462,7 +462,10 @@ public class AccessControlFormData extends ALAbstractFormData {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           role.getRoleId(),
           ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-          "ロール 「" + role.getRoleName() + "」 削除");
+          ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
+            + role.getRoleName()
+            + ALLocalizationUtils.getl10n("ACCESSCTL_DELETE_BRACKET"));
+
       }
 
     } catch (Exception ex) {
@@ -521,7 +524,9 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        "ロール 「" + aclrole.getRoleName() + "」 追加");
+        ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
+          + aclrole.getRoleName()
+          + ALLocalizationUtils.getl10n("ACCESSCTL_ADD_BRACKET"));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -578,7 +583,9 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        "ロール 「" + aclrole.getRoleName() + "」 更新");
+        ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
+          + aclrole.getRoleName()
+          + ALLocalizationUtils.getl10n("ACCESSCTL_UPDATE_BRACKET"));
 
     } catch (Exception ex) {
       Database.rollback();
