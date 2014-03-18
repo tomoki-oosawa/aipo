@@ -86,7 +86,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error("ALDefaultStorageHanlder.saveFile", e);
+      logger.error("ALDefaultStorageHandler.saveFile", e);
     } finally {
       if (os != null) {
         try {
@@ -134,7 +134,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error("ALDefaultStorageHanlder.createNewFile", e);
+      logger.error("ALDefaultStorageHandler.createNewFile", e);
     } finally {
       if (os != null) {
         try {
@@ -177,7 +177,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
         os.write(c);
       }
     } catch (IOException e) {
-      logger.error("ALDefaultStorageHanlder.createNewFile", e);
+      logger.error("ALDefaultStorageHandler.createNewFile", e);
     } finally {
       if (os != null) {
         try {
@@ -235,7 +235,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
           bos.write(c);
         }
       } catch (IOException e) {
-        logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
+        logger.error("ALDefaultStorageHandler.createNewTmpFile", e);
       } finally {
 
         IOUtils.closeQuietly(bis);
@@ -250,7 +250,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
             + EXT_FILENAME), "UTF-8"));
         w.println(realFileName);
       } catch (IOException e) {
-        logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
+        logger.error("ALDefaultStorageHandler.createNewTmpFile", e);
       } finally {
         if (w != null) {
           try {
@@ -261,11 +261,10 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
           }
         }
       }
-      throw new RuntimeException("createNewFile error");
     } catch (FileNotFoundException e) {
-      logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
+      logger.error("ALDefaultStorageHandler.createNewTmpFile", e);
     } catch (IOException e) {
-      logger.error("ALDefaultStorageHanlder.createNewTmpFile", e);
+      logger.error("ALDefaultStorageHandler.createNewTmpFile", e);
     }
   }
 
@@ -318,14 +317,14 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       destChannel = new FileOutputStream(to).getChannel();
       destChannel.transferFrom(srcChannel, 0, srcChannel.size());
     } catch (Exception ex) {
-      logger.error("ALDefaultStorageHanlder.copyFile", ex);
+      logger.error("ALDefaultStorageHandler.copyFile", ex);
       res = false;
     } finally {
       if (destChannel != null) {
         try {
           destChannel.close();
         } catch (IOException ex) {
-          logger.error("ALDefaultStorageHanlder.copyFile", ex);
+          logger.error("ALDefaultStorageHandler.copyFile", ex);
           res = false;
         }
       }
@@ -333,7 +332,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
         try {
           srcChannel.close();
         } catch (IOException ex) {
-          logger.error("ALDefaultStorageHanlder.copyFile", ex);
+          logger.error("ALDefaultStorageHandler.copyFile", ex);
           res = false;
         }
       }
@@ -624,7 +623,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
       }
     } catch (Exception e) {
-      logger.error("ALDefaultStorageHanlder.deleteOldFolder", e);
+      logger.error("ALDefaultStorageHandler.deleteOldFolder", e);
       return false;
     }
     return flag;
