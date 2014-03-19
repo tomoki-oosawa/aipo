@@ -20,9 +20,6 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleHolidayFormScreen").addQueryData("entityid","new")))
-#set ($newAfterFunction1 = "aipo.schedule_holiday.onLoadScheduleHolidayDialog")
-#set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowRouteFormScreen").addQueryData("entityid","new")))
-#set ($newAfterFunction2 = "aipo.workflow_route.onLoadWorkflowRouteDialog")
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
@@ -42,7 +39,7 @@ $l10n.SCHEDULE_MSG_NO_HOLIDAYS<br />
 
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.SCHEDULE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.SCHEDULE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleHolidayFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.schedule_holiday.onReceiveMessage")
 </div>
 #AUIajaxpageview('ScheduleHolidayListScreen' $result)
 #AUISummaryDivfooter()
@@ -81,9 +78,9 @@ $!record.HolidayDate
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.SCHEDULE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.workflow_category.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete($l10n.SCHEDULE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleHolidayFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule_holiday.onReceiveMessage")
 </div>
-#AUIajaxpageview('WorkflowCategoryListScreen' $result)
+#AUIajaxpageview('ScheduleHolidayListScreen' $result)
 #AUISummaryDivfooter()
 
 #end

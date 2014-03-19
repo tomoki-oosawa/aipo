@@ -19,7 +19,8 @@
 
 package com.aimluck.eip.schedule;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -59,9 +60,6 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   /** 日付 */
   private ALDateTimeField holiday_date;
 
-  /** ID */
-  private Integer holiday_id;
-
   /** 作成者名 */
   private ALNumberField create_user_id;
 
@@ -91,7 +89,6 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    Date now = new Date();
     // 休日名
     holiday_title = new ALStringField();
     holiday_title.setFieldName(ALLocalizationUtils
@@ -101,7 +98,36 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
     holiday_date = new ALDateTimeField("yyyy-MM-dd");
     holiday_date.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_HOLIDAY_DATE"));
-    holiday_date.setValue(now);
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  @Override
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    boolean res = super.setFormData(rundata, context, msgList);
+    if (res) {
+      try {
+        if (holiday_date.toString().equals("")) {
+          Calendar cal = Calendar.getInstance();
+          cal.set(Calendar.MINUTE, (int) Math
+            .floor(cal.get(Calendar.MINUTE) / 5.0) * 5); // 5分刻みに調整
+          holiday_date.setValue(cal.getTime());
+        } else {
+          holiday_date.setValue(holiday_date.getValue());
+        }
+      } catch (Exception ex) {
+        logger.error("report", ex);
+      }
+    }
+    return res;
   }
 
   /**
@@ -112,6 +138,7 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected void setValidator() {
     holiday_title.setNotNull(true);
+    holiday_date.setNotNull(true);
   }
 
   /**
@@ -124,6 +151,7 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList) {
     holiday_title.validate(msgList);
+    holiday_date.validate(msgList);
     return (msgList.size() == 0);
   }
 
@@ -197,8 +225,16 @@ public class ScheduleHolidayFormData extends ALAbstractFormData {
 
       // タイトル
       holiday.setHolidayTitle(holiday_title.getValue());
+
+      String tmpDate =
+        rundata.getParameters().getString("holiday_date_year")
+          + "-"
+          + rundata.getParameters().getString("holiday_date_month")
+          + "-"
+          + rundata.getParameters().getString("holiday_date_day");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
       // 日付
-      holiday.setHolidayDate(holiday_date.getValue());
+      holiday.setHolidayDate(sdf.parse(tmpDate));
       // 作成者
       holiday.setCreateUserId(ownerid);
       // 更新者

@@ -46,9 +46,7 @@
 #ALtditem("#ALtextfieldw100('holiday_title' $!result.holidayTitle 50 'active')")
 #ALtdcaption("#ALrequired($!result.getFieldName('holiday_date'))")
 #ALtditemheaderAtt('class="auiSetDate"')
-<div class="mb5">
-<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_HOLIDAY_DATE" hiddenId="HolidayDate" initValue="$!{result.HolidayDate.Year}/$!{result.HolidayDate.Month}/$!{result.HolidayDate.Day}" inputId="input_date" dateId="HolidayDate" displayCheck="none"></div>
-</div>
+<div dojoType="aipo.widget.DropdownDatepicker" id="datepicker" widgetId="datepicker" iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_HOLIDAY_DATE" hiddenId="holiday_date" initValue="$!{result.HolidayDate.Year}/$!{result.HolidayDate.Month}/$!{result.HolidayDate.Day}" inputId="input_date" dateId="holiday_date" displayCheck="none"></div>
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

@@ -36,6 +36,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
+import com.aimluck.eip.cayenne.om.account.EipMUserHoliday;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SelectQuery;
+
 /**
  * 祝日を保持するシングルトンクラスです。 <br />
  * この実装は同期化されない点に注意してください。
@@ -106,9 +110,9 @@ public class ALEipHolidaysManager {
     if (date == null) {
       return null;
     }
-
+    // DBから会社の休日に関するデータを読み込む
+    loadHolidays();
     ALHoliday holiDay = null;
-
     holiDay = isHoliday(userHolidays, date);
     if (holiDay == null) {
       holiDay = isHoliday(defaultHolidays, date);
@@ -160,6 +164,22 @@ public class ALEipHolidaysManager {
             new FileInputStream(userFile),
             ALEipConstants.DEF_CONTENT_ENCODING));
         loadHoliday(reader, userHolidays);
+      }
+
+      // DBから会社の休日を読み込む
+      ALHoliday holiDay = null;
+      SelectQuery<EipMUserHoliday> query =
+        Database.query(EipMUserHoliday.class);
+      query.orderAscending(EipMUserHoliday.HOLIDAY_TITLE_PROPERTY);
+      List<EipMUserHoliday> aList = query.fetchList();
+      for (EipMUserHoliday record : aList) {
+        holiDay =
+          new ALHoliday(record.getHolidayTitle(), record
+            .getHolidayDate()
+            .toString());
+        String key =
+          new SimpleDateFormat("yyyy-MM-dd").format(record.getHolidayDate());
+        userHolidays.put(key, holiDay);
       }
 
       /*-
