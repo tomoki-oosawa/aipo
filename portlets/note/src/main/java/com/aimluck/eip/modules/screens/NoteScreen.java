@@ -38,6 +38,7 @@ import com.aimluck.eip.note.NoteClientSelectData;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモの一覧を処理するクラスです。
@@ -96,7 +97,7 @@ public class NoteScreen extends ALVelocityScreen {
     // エラーメッセージ
     List<String> msgList = new ArrayList<String>();
     ALNumberField state = new ALNumberField();
-    state.setFieldName("状態");
+    state.setFieldName(ALLocalizationUtils.getl10n("NOTE_STATE"));
     // 0 から 100 まで
     state.limitValue(0, 100);
     // 必須項目

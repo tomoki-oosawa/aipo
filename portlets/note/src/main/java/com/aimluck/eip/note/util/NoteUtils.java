@@ -62,6 +62,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -541,13 +542,13 @@ public class NoteUtils {
     if (note.getSubjectType().equals("0")) {
       subject = note.getCustomSubject();
     } else if (note.getSubjectType().equals("1")) {
-      subject = "再度電話します";
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN_NO_PERIOD");
     } else if (note.getSubjectType().equals("2")) {
-      subject = "電話をしてください";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_CALL_BACK");
     } else if (note.getSubjectType().equals("3")) {
-      subject = "電話がありました";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
     } else if (note.getSubjectType().equals("4")) {
-      subject = "伝言があります";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TAKE_A_MESSAGE");
     }
     return subject + " (" + note.getClientName() + ")";
   }
@@ -792,20 +793,19 @@ public class NoteUtils {
       if ("0".equals(subjectType)) {
         subject = note.getCustomSubject();
       } else if ("1".equals(subjectType)) {
-        subject = "再度電話します。";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
       } else if ("2".equals(subjectType)) {
-        subject = "折返しお電話ください。";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
       } else if ("3".equals(subjectType)) {
-        subject = "連絡があったことをお伝えください。";
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
       } else if ("4".equals(subjectType)) {
-        subject = "伝言をお願いします。";
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
       String title =
-        new StringBuilder(note.getClientName())
-          .append("様より伝言「")
-          .append(subject)
-          .append("」がありました。")
-          .toString();
+        new String(ALLocalizationUtils.getl10nFormat(
+          "NOTE_CLIENT_NAME_SUBJECT_TEXT",
+          ALCommonUtils.replaceToAutoCR(note.getClientName()),
+          ALCommonUtils.replaceToAutoCR(subject)));
       String portletParams =
         new StringBuilder("?template=NoteDetailScreen")
           .append("&entityid=")

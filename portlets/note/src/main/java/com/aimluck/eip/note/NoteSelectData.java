@@ -56,6 +56,7 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモの検索データを管理するためのクラスです。
@@ -335,23 +336,27 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
       if (NoteUtils.NOTE_STAT_NEW.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_NEW);
         rd.setNoteStatImage("images/note/note_new_message.gif");
-        rd.setNoteStatImageDescription("新着");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_NEW_MESSAGE"));
         // 新着数をカウントアップする．
         // newNoteAllSum++;
       } else if (NoteUtils.NOTE_STAT_UNREAD.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_UNREAD);
         rd.setNoteStatImage("images/note/note_unread_message.gif");
-        rd.setNoteStatImageDescription("未読");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_UNREAD_MESSAGE"));
         // 受信履歴の未読数をカウントアップする．
         unreadNotesAllSum++;
       } else if (NoteUtils.NOTE_STAT_READ.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_READ);
         rd.setNoteStatImage("images/note/note_read_message.gif");
-        rd.setNoteStatImageDescription("既読");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_READ_MESSAGE"));
       } else {
         rd.setNoteStat(NoteUtils.NOTE_STAT_DELETED);
         rd.setNoteStatImage("images/note/note_deleted_message.gif");
-        rd.setNoteStatImageDescription("削除済み");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_DELETED_MESSAGE"));
       }
 
       if (record.getMessage() == null || record.getMessage().equals("")) {
