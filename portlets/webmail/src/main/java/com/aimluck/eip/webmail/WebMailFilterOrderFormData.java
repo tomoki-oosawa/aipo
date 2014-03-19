@@ -38,6 +38,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -120,7 +121,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("フィルタリスト");
+    positions.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_FILTER_LIST"));
     positions.setTrim(true);
   }
 
