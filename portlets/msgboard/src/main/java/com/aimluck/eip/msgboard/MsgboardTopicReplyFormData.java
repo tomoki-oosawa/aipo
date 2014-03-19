@@ -64,6 +64,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板返信のフォームデータを管理するクラスです。 <BR>
@@ -155,11 +156,12 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   public void initField() {
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_NOTE"));
     note.setTrim(false);
     // Attachment
     attachment = new ALStringField();
-    attachment.setFieldName("添付ファイル");
+    attachment
+      .setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_FILE_ATTACH"));
     attachment.setTrim(true);
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();

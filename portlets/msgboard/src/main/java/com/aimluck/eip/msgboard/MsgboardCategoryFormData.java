@@ -50,6 +50,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板カテゴリのフォームデータを管理するクラスです。 <BR>
@@ -129,15 +130,17 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   public void initField() {
     // カテゴリ名
     category_name = new ALStringField();
-    category_name.setFieldName("カテゴリ名");
+    category_name.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_CATEGORY_NAME"));
     category_name.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_MEMO"));
     note.setTrim(true);
     // 閲覧/返信フラグ
     access_flag = new ALNumberField();
-    access_flag.setFieldName("閲覧/返信");
+    access_flag.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_CHANGE_VIEWS"));
     access_flag.setValue(0);
     // メンバーリスト
     memberList = new ArrayList<ALEipUser>();

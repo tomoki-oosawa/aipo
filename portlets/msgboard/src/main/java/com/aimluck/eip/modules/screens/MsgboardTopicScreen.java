@@ -40,6 +40,7 @@ import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックの一覧を処理するクラスです。
@@ -102,7 +103,7 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
     // エラーメッセージ
     List<String> msgList = new ArrayList<String>();
     ALNumberField state = new ALNumberField();
-    state.setFieldName("状態");
+    state.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_STATUS"));
     // 0 から 100 まで
     state.limitValue(0, 100);
     // 必須項目
