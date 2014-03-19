@@ -47,6 +47,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アドレス帳の会社情報登録フォームデータクラスです。
@@ -102,51 +103,61 @@ public class AddressBookCompanyFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     company_name = new ALStringField();
-    company_name.setFieldName("会社名");
+    company_name.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_COMPANY_NAME"));
     company_name.setTrim(true);
 
     company_name_kana = new ALStringField();
-    company_name_kana.setFieldName("会社名（フリガナ）");
+    company_name_kana.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_COMPANY_NAME_KANA"));
     company_name_kana.setTrim(true);
 
     post_name = new ALStringField();
-    post_name.setFieldName("部署名");
+    post_name
+      .setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_POST_NAME"));
     post_name.setTrim(true);
 
     // 郵便番号
     zipcode1 = new ALStringField();
-    zipcode1.setFieldName("郵便番号");
+    zipcode1.setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_ZIPCODE"));
     zipcode1.setTrim(true);
     zipcode2 = new ALStringField();
-    zipcode2.setFieldName("郵便番号");
+    zipcode2.setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_ZIPCODE"));
     zipcode2.setTrim(true);
 
     address = new ALStringField();
-    address.setFieldName("住所");
+    address.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_COMPANY_ADDRESS"));
     address.setTrim(true);
 
     telephone1 = new ALStringField();
-    telephone1.setFieldName("電話番号");
+    telephone1.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_TELEPHONE"));
     telephone1.setTrim(true);
     telephone2 = new ALStringField();
-    telephone2.setFieldName("電話番号");
+    telephone2.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_TELEPHONE"));
     telephone2.setTrim(true);
     telephone3 = new ALStringField();
-    telephone3.setFieldName("電話番号");
+    telephone3.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_TELEPHONE"));
     telephone3.setTrim(true);
 
     fax_number1 = new ALStringField();
-    fax_number1.setFieldName("FAX番号");
+    fax_number1.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_FAX_NUMBER"));
     fax_number1.setTrim(true);
     fax_number2 = new ALStringField();
-    fax_number2.setFieldName("FAX番号");
+    fax_number2.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_FAX_NUMBER"));
     fax_number2.setTrim(true);
     fax_number3 = new ALStringField();
-    fax_number3.setFieldName("FAX番号");
+    fax_number3.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_FAX_NUMBER"));
     fax_number3.setTrim(true);
 
     url = new ALStringField();
-    url.setFieldName("URL");
+    url.setFieldName(ALLocalizationUtils.getl10n("ADDRESSBOOK_URL"));
     url.setTrim(true);
 
   }
