@@ -26,107 +26,98 @@
 #ALdialogheader("タスク詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("タスク")
-<div class="alignleft">
-    $!result.Detail.TopicPath
-	<div id="messageDiv"></div>
-</div>
+<form onsubmit="return false;" method="post" action="#" id="" name="">
+                    <table class="listTable wide mb0">
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="clearfix">
+                                    <div class="alignleft">
+										<strong>
+									$!result.Detail.TaskName
+                                        </strong>
+                                    <br>
+                                    $!result.Detail.TopicPath
+                                    </div>
 <div class="alignright">
-	#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormScreen').addQueryData('entityid',$entityid).addQueryData('projectid',$!{result.Detail.ProjectId})" "$!portlet.ID" "aipo.project.onLoadProjectTaskDialog")
-	#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete').addQueryData('projectid',$!{result.Detail.ProjectId})" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormScreen').addQueryData('entityid',$entityid).addQueryData('projectid',$!{result.Detail.ProjectId})" "$!portlet.ID" "aipo.project.onLoadProjectTaskDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete').addQueryData('projectid',$!{result.Detail.ProjectId})" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
 </div>
+                                    </div>
 
-##ALtableheaderWide()
-<table class="listTable wide" style="clear:both">
-  <tbody>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
+                    <table class="listTable noBorder wide mb0 mt0">
+                        <tbody>
+                        </tbody><colgroup class="w15"></colgroup>
+                        <colgroup></colgroup>
+                        <colgroup class="w15"></colgroup>
+                        <colgroup class="w20"></colgroup>
+                            <tbody>
 #ALtdcaption("分類")
 #ALtditemheader()
 $!result.Detail.TrackerString
-#ALtditemfooter()
-
-#ALtdcaption("タスク名")
-#ALtditemheader()
-$!result.Detail.TaskName
-#ALtditemfooter()
-
-#ALtdcaption("説明")
-#ALtditemheader()
-$!result.Detail.Explanation
-#ALtditemfooter()
-
-#ALtdcaption("ステータス")
-#ALtditemheader()
-$!result.Detail.StatusString
-#ALtditemfooter()
-
-#ALtdcaption("優先度")
-#ALtditemheader()
-$!result.Detail.PriorityString
-#ALtditemfooter()
-
-#ALtdcaption("担当者")
-#ALtditemheader()
-<table style="width:100%">
-#foreach($record in $!result.Detail.MemberList)
-	<tr>
-		<td style="border-bottom:none;">$!record.UserName</td>
-		<td style="border-bottom:none;">作業時間：$!{record.Workload}時間</td>
-	</tr>
-#end
-</table>
-#ALtditemfooter()
-
-#ALtdcaption("開始予定日")
+#ALtdcellfooter()
+      <td class="caption">開始予定日</td>
 #ALtditemheader()
 #if($!{result.Detail.StartPlanDate.toString()} != "")
 $!{result.Detail.StartPlanDate.Year}年$!{result.Detail.StartPlanDate.Month}月$!{result.Detail.StartPlanDate.Day}日$!{result.Detail.StartPlanDate.DayOfWeek}
 #end
 #ALtditemfooter()
 
-#ALtdcaption("完了予定日")
+#ALtdcaption("ステータス")
+#ALtditemheader()
+$!result.Detail.StatusString
+#ALtdcellfooter()
+      <td class="caption">期日</td>
 #ALtditemheader()
 #if($!{result.Detail.EndPlanDate.toString()} != "")
 $!{result.Detail.EndPlanDate.Year}年$!{result.Detail.EndPlanDate.Month}月$!{result.Detail.EndPlanDate.Day}日$!{result.Detail.EndPlanDate.DayOfWeek}
 #end
 #ALtditemfooter()
-
-#ALtdcaption("開始実績日")
+#ALtdcaption("優先度")
 #ALtditemheader()
-#if($!{result.Detail.StartDate.toString()} != "")
-$!{result.Detail.StartDate.Year}年$!{result.Detail.StartDate.Month}月$!{result.Detail.StartDate.Day}日$!{result.Detail.StartDate.DayOfWeek}
+$!result.Detail.PriorityString
+#ALtdcellfooter()
+<td class="caption">予定工数</td>
+#ALtditemheader()
+$!{result.Detail.PlanWorkload}h
+#ALtditemfooter()
+#ALtdcaption("担当者")
+<td>
+	<ul class="w70">
+#foreach($record in $!result.Detail.MemberList)
+		<li class="clearfix">
+			<div class="floatLeft w80">$!record.UserName</div>
+			<div class="floatRight w20 right">$!{record.Workload}h</div>
+		</li>
 #end
-#ALtditemfooter()
-
-#ALtdcaption("完了実績日")
-#ALtditemheader()
-#if($!{result.Detail.EndDate.toString()} != "")
-$!{result.Detail.EndDate.Year}年$!{result.Detail.EndDate.Month}月$!{result.Detail.EndDate.Day}日$!{result.Detail.EndDate.DayOfWeek}
-#end
-#ALtditemfooter()
-
-#ALtdcaption("計画工数")
-#ALtditemheader()
-$!{result.Detail.PlanWorkload}時間
-#ALtditemfooter()
-
-#ALtdcaption("進捗率")
+	</ul>
+</td>
+#ALtdcellfooter()
+<td class="caption">進捗率</td>
 #ALtditemheader()
 $!{result.Detail.ProgressRate}%
 #ALtditemfooter()
 
-#if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
-#ALtdcaptionAtt("ファイル" "style='border-bottom:none;'")
-#ALtditemheaderAtt("style='border-bottom:none;'")
-#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-	<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskFileRawScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
-#end
-#ALtditemfooter()
-#end
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="listTable wide mt0">
+                        <tbody>
+							<tr>
+								<td>
+							<div class="caption mb10">説明</div>
+$!result.Detail.Explanation
+                                </td>
+                            </tr>
+						</tbody>
+					</table>
+				</form>
 
-#ALtablefooter()
-#ALformfooter()
-
-##if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
 
 #ALajaxdetailformheader("コメント")
 <table class="listTable wide mb0">

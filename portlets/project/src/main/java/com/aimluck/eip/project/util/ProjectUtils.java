@@ -1826,9 +1826,7 @@ public class ProjectUtils {
       if (path.length() > 0) {
         path.append(" > ");
       }
-      path.append("<strong>");
       path.append(String.valueOf(row.get("task_name")));
-      path.append("</strong>");
     }
 
     return String.valueOf(path);
