@@ -37,6 +37,7 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("projectForm" $jslink $portlet "ProjectFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessage)")
+<input type="hidden" name="progress_flg" id="progress_flg" value="t">
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
 #else
@@ -45,10 +46,10 @@
 #ALtableheaderWide()
 ##プロジェクト名
 #ALtdcaption("#ALrequired($!result.getFieldName('project_name'))")
-#ALtditem("#ALtextfield('project_name' $!result.ProjectName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('project_name' $!result.ProjectName 50 'active')")
 ##説明
 #ALtdcaption("$!result.getFieldName('explanation')")
-#ALtditem("<textarea class='text wide' name='explanation'>$!result.Explanation</textarea>")
+#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation'>$!result.Explanation</textarea>")
 ##管理者
 #ALtdcaption("#ALrequired($!result.getFieldName('admin_user_id'))")
 #ALtditemheader()
@@ -115,15 +116,6 @@
   </div>
 </td>
 </tr>
-##進捗率
-#ALtdcaption("$!result.getFieldName('progress_rate')")
-#ALtditemheader()
-#ALtextfield('progress_rate' $!result.ProgressRate.toString() '10%' 50 'active')%
-<div>
-<input name="progress_flg_checkbox" type="checkbox" value="" id="$!{portlet.ID}progress_flg_id" #if($!result.ProgressFlg.toString() == "t") checked="checked" #end onchange="aipo.project.formFlgToggle(this,'progress_flg');"/>&nbsp;<label for="$!{portlet.ID}progress_flg_id">タスク情報から自動計算する</label>
-<input name="progress_flg" type="hidden" id="progress_flg" value="$!result.ProgressFlg.toString()" />
-</div>
-#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 <input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">
