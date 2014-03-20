@@ -151,6 +151,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName;
 
+  /** 全プロジェクトの一覧 */
+  private List<ProjectResultData> allProject;
+
   private int uid;
 
   /** ファイル操作オブジェクト */
@@ -188,6 +191,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
     uid = ALEipUtils.getUserId(rundata);
     projectMembers = ProjectUtils.getProjectMembers(projectId);
+    allProject = ProjectUtils.getAllProject(); // 全プロジェクト
 
     try {
       taskId =
@@ -272,8 +276,10 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     hasChildren = false;
     // 担当者リスト
     taskMembers = new ArrayList<ProjectTaskMemberResultData>();
-    // プロジェクトリスト
+    // プロジェクトメンバーリスト
     projectMembers = new ArrayList<ALEipUser>();
+    // 　全てのプロジェクト
+    allProject = new ArrayList<ProjectResultData>();
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadBean>();
   }
@@ -1208,6 +1214,15 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   }
 
   /**
+   * プロジェクトidを取得します。
+   * 
+   * @return 親タスクID
+   */
+  public Integer getProjectId() {
+    return projectId;
+  }
+
+  /**
    * 分類リストを返します。
    * 
    * @return 分類リスト
@@ -1259,5 +1274,14 @@ public class ProjectTaskFormData extends ALAbstractFormData {
    */
   public List<FileuploadBean> getAttachmentFileNameList() {
     return fileuploadList;
+  }
+
+  /**
+   * 全プロジェクトのリストを返す
+   * 
+   * @return 全プロジェクトのリスト
+   */
+  public List<ProjectResultData> getAllProject() {
+    return allProject;
   }
 }

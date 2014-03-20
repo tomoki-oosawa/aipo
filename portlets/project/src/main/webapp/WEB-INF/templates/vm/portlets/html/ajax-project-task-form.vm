@@ -44,6 +44,15 @@
 <input type="hidden" name="mode" value="update" />
 #end
 #ALtableheaderWide()
+##プロジェクト名
+#ALtdcaption("#ALrequired($l10n.PROJECT_PROJECT)")
+#ALtditemheader()
+<select class="w100" name="projectId" id="projectId">
+#foreach($record in $!result.getAllProject())
+	<option value='$!{record.getProjectId()}' #if ($!{result.getProjectId().toString()} == $!{record.getProjectId().toString()}) selected="selected" #end>$!{record.getProjectName()}</option>
+#end
+</select>
+#ALtditemfooter()
 ##分類
 #ALtdcaption("#ALrequired($!result.getFieldName('tracker'))")
 #ALtditemheader()
