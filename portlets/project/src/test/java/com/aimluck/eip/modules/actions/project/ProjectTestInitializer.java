@@ -88,12 +88,9 @@ public class ProjectTestInitializer {
             "WEB-INF",
             "conf",
             "JetspeedJResources.properties"));
-
     EasyMock.expect(request.getMethod()).andStubReturn("POST");
     EasyMock.expect(request.getContextPath()).andStubReturn("/context");
-    EasyMock.expect(request.getRequestURI()).andStubReturn(
-      "/context/no_such_file.txt");
-
+    EasyMock.expect(request.getRequestURI()).andStubReturn("");
     EasyMock.expect(context.getRealPath("/")).andStubReturn(getRoot());
 
     EasyMock.replay(config);
