@@ -44,24 +44,28 @@ $!result.Detail.Explanation
 $!result.Detail.AdminUserName
 #ALtditemfooter()
 
-#ALtdcaption("メンバー")
+#ALtdcaption("参加ユーザー")
 #ALtditemheader()
+<ul>
 #foreach($record in $!result.Detail.MemberList)
-$!record.AliasName<br />
+	<li>
+$!record.AliasName
+    </li>
 #end
-#ALtditemfooter()
-
-#ALtdcaption("進捗率")
-#ALtditemheader()
-$!{result.Detail.ProgressRate}%
+</ul>
 #ALtditemfooter()
 
 #if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption("ファイル")
 #ALtditemheader()
+
+<ul>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+	<li>
 <a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
+    </li>
 #end
+</ul>
 #ALtditemfooter()
 #end
 
