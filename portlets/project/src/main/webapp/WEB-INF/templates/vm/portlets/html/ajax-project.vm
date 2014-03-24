@@ -25,14 +25,38 @@
 #if($result.isProjectEmpty())
 	<div class="message">プロジェクトは作成されていません。</div>
 #else
+    <div class="auiSummaryMeta clearfix auiFilter">
+	  <input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectScreen")' />
+      <div class="filters floatLeft" id="filters_$!{portlet.ID}">
+		#if(!$!result.issetFilter("project_id") || $!result.issetFilter("project_id", "0"))
+		  <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>すべてのプロジェクト</span></a>
+        #else
+	  		#set($break=false)
+		 	#foreach($record in $result.AllProject)
+		 		#if(!$break)
+					#if($!result.issetFilter("project_id", $!{record.getProjectId().toString()}))
+					<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.ProjectName</span></a>
+		 			#set($break=true)
+					#end
+		 		#end
+			#end
+		#end
+	  </div>
+	  #if("$result.List.size()" != "0")
+		#AUIajaxpageview('ProjectScreen' $result)
+	  #end
+    </div>
 	
-    <div class="auiSummaryMeta clearfix">
-      <div class="filters floatLeft">
-    	<a href="javascript:void(0);" onclick="popupToggle(this,'menubar_auiFilter_1');"><span class="filterTip"><span>すべてのプロジェクト</span></span></a>
-      </div>
-      #AUISummaryDiv()
-      #AUIajaxpageview('ProjectScreen' $result)
-      #AUISummaryDivfooter()
+	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
+	<div>
+		<p class="caption">プロジェクト</p>
+		<ul class="filtertype_$!portlet.ID"data-type="project_id" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのプロジェクト</a></li>
+			#foreach($record in $result.AllProject)
+			<li #if ($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected"#end data-param="$!record.ProjectId"><a href="javascript:void(0)"  #if($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$record.ProjectName</a></li>
+			#end
+		</ul>
+	</div>
     </div>
     
     #if($result.isTaskEmpty())
@@ -44,7 +68,6 @@
         <colgroup class="thin"></colgroup>
         <tbody>
         #foreach ($record in $result.List)
-            #set ($progressRate = "$!{record.ProgressRate}%") ##進捗率
             #set ($workload = "$!{record.WorkloadFormat}h")   ##工数
             #if (!$!{record.ResultDisplayFlg})
             	#set ($progressRate = "-")
@@ -52,12 +75,30 @@
             	#set ($forecastWorkload = "-")
 			#end
 			<tr>
-            <td class="auiMTCaption"><div>$!record.TaskName</div></td>
+            <td class="auiMTCaption">
+				$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
+			</td>
             <td class="mb_hide" nowrap="nowrap">
             #if($!{record.Delay})
-            <span style="color:red;">$progressRate</span>
+				#if(!$!record.HasChildrenForForm)
+					<select name="progress_rate" style="color:red;">
+    				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end>${rate}%</option>
+					#end
+					</select>
+				#else
+                    <span style="color:red;">$!{record.ProgressRate.toString()}%</span>
+				#end
             #else
-            <span>$progressRate</span>
+				#if(!$!record.HasChildrenForForm)
+                    <select name="progress_rate">
+        				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+        					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end>${rate}%</option>
+        				#end
+        			</select>
+				#else
+                    <span>$!{record.ProgressRate.toString()}%</span>
+				#end
             #end
             </td>
             <td class="mb_hide" nowrap="nowrap">

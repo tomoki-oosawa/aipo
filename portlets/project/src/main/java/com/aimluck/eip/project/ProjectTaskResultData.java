@@ -122,6 +122,9 @@ public class ProjectTaskResultData implements ALData {
   /** 子タスク保持フラグ */
   private boolean hasChildren;
 
+  /** フォーム用の子タスク保持フラグ */
+  private boolean hasChildrenForForm;
+
   /** インデント表示フラグ */
   private boolean indentFlg;
 
@@ -168,6 +171,7 @@ public class ProjectTaskResultData implements ALData {
     resultDisplayFlg = true;
     hasChildren = false;
     indentFlg = false;
+    hasChildrenForForm = false;
   }
 
   /**
@@ -911,4 +915,20 @@ public class ProjectTaskResultData implements ALData {
   public String getPriorityString() {
     return ProjectUtils.getKubunValueString("priority", priority.getValue());
   }
+
+  /**
+   * @return hasChildrenForForm
+   */
+  public boolean isHasChildrenForForm() {
+    return hasChildrenForForm;
+  }
+
+  /**
+   * @param hasChildrenForForm
+   *          セットする hasChildrenForForm
+   */
+  public void setHasChildrenForForm(boolean hasChildrenForForm) {
+    this.hasChildrenForForm = hasChildrenForForm;
+  }
+
 }

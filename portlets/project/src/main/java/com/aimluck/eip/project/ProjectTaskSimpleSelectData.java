@@ -41,7 +41,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskFile;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
@@ -61,7 +61,8 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ProjectTaskSimpleSelectData extends
-    ALAbstractSelectData<EipTProjectTask, EipTProjectTask> implements ALData {
+    ALAbstractMultiFilterSelectData<EipTProjectTask, EipTProjectTask> implements
+    ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -491,10 +492,11 @@ public class ProjectTaskSimpleSelectData extends
     sb
       .append("    CONVERT(task.order_no, CHAR(255)) AS path, CONVERT(0, CHAR(255)) AS indent, CONVERT(LPAD(task.order_no,10,'0'), CHAR(255)) AS lpad_path");
     sb.append(sl);
-    sb
-      .append("    FROM eip_t_project_task AS task WHERE task.project_id = ")
-      .append(selectedProjectId)
-      .append(" AND task.parent_task_id IS NULL\",");
+    sb.append("    FROM eip_t_project_task AS task WHERE ");
+    if (0 != selectedProjectId) {
+      sb.append("task.project_id = ").append(selectedProjectId).append(" AND ");
+    }
+    sb.append("task.parent_task_id IS NULL\",");
     sb.append("  \"SELECT ");
     sb
       .append("  concat(tree.path, ',', task.order_no) AS path, concat(path, ',', 1) AS indent, concat(tree.lpad_path, ',', LPAD(task.order_no,10,'0')) AS lpad_path");
@@ -517,7 +519,7 @@ public class ProjectTaskSimpleSelectData extends
     }
     sb.append(getOrderBy(rundata, context));
     sb.append(" LIMIT ").append(getRowsNum()).append(" OFFSET ").append(
-      current_page - 1);
+      (current_page - 1) * getRowsNum());
 
     sb.append("\",");
     sb.append("  \"0\",");
@@ -536,10 +538,11 @@ public class ProjectTaskSimpleSelectData extends
     sb
       .append("    CONVERT(task.order_no, CHAR(255)) AS path, CONVERT(0, CHAR(255)) AS indent, CONVERT(LPAD(task.order_no,10,'0'), CHAR(255)) AS lpad_path");
     sb.append(sl);
-    sb
-      .append("    FROM eip_t_project_task AS task WHERE task.project_id = ")
-      .append(selectedProjectId)
-      .append(" AND task.parent_task_id IS NULL\",");
+    sb.append("    FROM eip_t_project_task AS task WHERE ");
+    if (0 != selectedProjectId) {
+      sb.append("task.project_id = ").append(selectedProjectId).append(" AND ");
+    }
+    sb.append("task.parent_task_id IS NULL\",");
     sb.append("  \"SELECT ");
     sb
       .append("  concat(tree.path, ',', task.order_no) AS path, concat(path, ',', 1) AS indent, concat(tree.lpad_path, ',', LPAD(task.order_no,10,'0')) AS lpad_path");
@@ -580,8 +583,11 @@ public class ProjectTaskSimpleSelectData extends
     sb.append(sl);
     sb.append("    FROM");
     sb.append("      eip_t_project_task AS task");
-    sb.append("    WHERE task.project_id = #bind($project_id)");
-    sb.append("      AND task.parent_task_id IS NULL");
+    sb.append("    WHERE ");
+    if (0 != selectedProjectId) {
+      sb.append("task.project_id = #bind($project_id) AND ");
+    }
+    sb.append("       task.parent_task_id IS NULL");
     sb.append("  UNION ALL ");
     sb.append("  SELECT");
     sb.append("        tree.path || ARRAY[task.order_no] AS path");
@@ -624,7 +630,7 @@ public class ProjectTaskSimpleSelectData extends
     }
     sb.append(getOrderBy(rundata, context));
     sb.append(" LIMIT ").append(getRowsNum()).append(" OFFSET ").append(
-      current_page - 1);
+      (current_page - 1) * getRowsNum());
     return sb.toString();
   }
 
@@ -638,8 +644,11 @@ public class ProjectTaskSimpleSelectData extends
     sb.append(sl);
     sb.append("    FROM");
     sb.append("      eip_t_project_task AS task");
-    sb.append("    WHERE task.project_id = #bind($project_id)");
-    sb.append("      AND task.parent_task_id IS NULL");
+    sb.append("    WHERE ");
+    if (0 != selectedProjectId) {
+      sb.append("task.project_id = #bind($project_id) AND ");
+    }
+    sb.append("       task.parent_task_id IS NULL");
     sb.append("  UNION ALL ");
     sb.append("  SELECT");
     sb.append("        tree.path || ARRAY[task.order_no] AS path");
@@ -841,6 +850,9 @@ public class ProjectTaskSimpleSelectData extends
     // 子タスクが2件以上あればtrue
     // 並び替えボタン表示用
     data.setHasChildren(cntChild >= 2);
+
+    // 進捗更新用
+    data.setHasChildrenForForm(cntChild > 0);
 
     // 経過タスク日数
     int lapsedDays =
@@ -1295,10 +1307,8 @@ public class ProjectTaskSimpleSelectData extends
     }
 
     if (StringUtils.isEmpty(filter) || StringUtils.isEmpty(filterType)) {
-      ProjectResultData data = allProject.get(0);
-      if (null != data) {
-        selectedProjectId = data.getProjectId().getValueWithInt();
-      }
+      selectedProjectId = 0;
+      setFilter(rundata, context);
       return;
     }
 
@@ -1311,15 +1321,18 @@ public class ProjectTaskSimpleSelectData extends
     }
 
     if (!existProject) {
-      ProjectResultData data = allProject.get(0);
-      if (null != data) {
-        selectedProjectId = data.getProjectId().getValueWithInt();
-      } else {
-        selectedProjectId = null;
-      }
+      selectedProjectId = 0;
     } else {
       selectedProjectId = Integer.valueOf(filter);
     }
+    setFilter(rundata, context);
+
+  }
+
+  private void setFilter(RunData rundata, Context context) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
+      .valueOf(selectedProjectId));
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
   }
 
 }
