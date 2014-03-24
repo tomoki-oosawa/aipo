@@ -140,8 +140,8 @@
 	$!result.StartPlanDateString
 #end
 #ALtditemfooter()
-##完了予定日
-#ALtdcaption($!result.getFieldName("end_plan_date"))
+##期日
+#ALtdcaption("$l10n.PROJECT_DEADLINE")
 #ALtditemheader()
 #if(!$!result.HasChildren)
 	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="完了予定日" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
@@ -149,8 +149,8 @@
 	$!result.EndPlanDateString
 #end
 #ALtditemfooter()
-##計画工数
-#ALtdcaption("計画工数")
+##予定工数
+#ALtdcaption("$l10n.PROJECT_EXPECTED_WORKLOAD")
 #ALtditemheader()
 #if(!$!result.HasChildren)
 	#ALtextfield('plan_workload' $!{result.getPlanWorkloadString()} '3em' 50 'active')h
