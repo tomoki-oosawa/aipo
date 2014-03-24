@@ -39,6 +39,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTProject;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectMember;
+import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -208,6 +209,19 @@ public class ProjectSelectData extends
         }
         data.setForecastWorkload(forecastWorkload);
         data.setTaskUpdateDate((Date) row.get("task_update_date"));
+
+        SelectQuery<EipTProjectTask> query =
+          Database.query(EipTProjectTask.class);
+        Expression exp1 =
+          ExpressionFactory.matchExp(
+            EipTProjectTask.PROJECT_ID_PROPERTY,
+            record.getProjectId());
+        Expression exp2 =
+          ExpressionFactory
+            .lessExp(EipTProjectTask.PROGRESS_RATE_PROPERTY, 100);
+        query.setQualifier(exp1.andExp(exp2));
+
+        data.setReminderTask(query.getCount());
       }
 
     }

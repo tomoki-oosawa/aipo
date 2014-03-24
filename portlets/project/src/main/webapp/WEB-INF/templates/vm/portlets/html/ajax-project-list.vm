@@ -51,27 +51,20 @@
 #AUISummaryDiv()
 #AUIajaxpageview('ProjectListScreen' $result)
 #AUISummaryDivfooter()
-<table class="auiRowTable wide">
-<colgroup style="width:20em;"></colgroup>
-<colgroup style="width:15em;"></colgroup>
-<colgroup style="width:5em;"></colgroup>
-<colgroup style="width:5em;"></colgroup>
-<colgroup style="width:5em;"></colgroup>
-<colgroup style="width:1em;"></colgroup>
-<colgroup style="width:5em;"></colgroup>
-<colgroup style="width:1em;"></colgroup>
-<colgroup style="width:5em;"></colgroup>
-<colgroup style="width:7em;"></colgroup>
-<colgroup style=""></colgroup>
-<tbody>
-<tr>
+
+
+<table class="auiRowTable auiMbTable wide">
+								<tbody>
+								<tr>
 #ALtdhead("#ALajaxsort('project_name' 'プロジェクト名' $result 'ProjectListScreen')")
+#ALtdhead("進捗率")
+#ALtdhead("実績工数")
+#ALtdhead("予定工数")
+#ALtdhead("残タスク")
 #ALtdhead("管理者")
-#ALtdheadAtt("進捗（予定/実績）" "colspan=2 style='text-align:center;'")
-#ALtdheadAtt("工数（計画/実績/予測）" "colspan=5 style='text-align:center;'")
 #ALtdhead("更新日")
-#ALtdhead("")
-</tr>
+
+
 #foreach ($record in $result.List)
 	#if($!{record.planProgressRate.toString()} == "")
 		#set($planProgressRate = "-")
@@ -100,42 +93,22 @@
 		</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
-		<div>$!record.AdminUserName</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:right;'")
-		<div>$planProgressRate&nbsp;&nbsp;/</div>
+		<div>$!{record.progressRate}%</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
-		#if($!{record.Delay})
-			<div style="color:red;">$!{record.progressRate}%</div>
-		#else
-			<div>$!{record.progressRate}%</div>
-		#end
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:right;'")
-		<div>$planWorkload</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:center;'")
-		/
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:center;'")
 		<div>$workload</div>
 	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:center;'")
-		/
+	#ALtdcellheader()
+		<div>$planWorkload</div>
 	#ALtdcellfooter()
-	#ALtdcellheaderAtt("style='text-align:left;'")
-		#if($!{record.WorkloadOver})
-			<div style="color:red;">$forecastWorkload</div>
-		#else
-			<div>$forecastWorkload</div>
-		#end
+	#ALtdcellheader()
+		<div>$!{record.ReminderTask}</div>
+	#ALtdcellfooter()
+	#ALtdcellheader()
+		<div>$!{record.AdminUserName}</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
 		<div>$!{record.TaskUpdateDate.Year}/$!{record.TaskUpdateDate.Month}/$!{record.TaskUpdateDate.Day}</div>
-	#ALtdcellfooter()
-	#ALtdcellheader()
-		<div><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen').addQueryData('filter',$!record.ProjectId).addQueryData('filtertype','project_id'))', '$!portlet.ID');aipo.project.reloadProgress();"><span>ガントチャート</span></a></div>
 	#ALtdcellfooter()
 	</tr>
 #end

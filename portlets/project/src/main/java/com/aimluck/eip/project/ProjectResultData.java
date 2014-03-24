@@ -90,6 +90,9 @@ public class ProjectResultData implements ALData {
   /** 完了予測工数 */
   protected BigDecimal forecast_workload;
 
+  /** 残タスク数 **/
+  protected int remainder_task;
+
   /** 小数値項目フォーマット */
   private final DecimalFormat df = new DecimalFormat("#.##");
 
@@ -112,6 +115,7 @@ public class ProjectResultData implements ALData {
     task_update_date = new ALDateTimeField();
     plan_workload = new BigDecimal(0);
     workload = new BigDecimal(0);
+    remainder_task = 0;
     forecast_workload = new BigDecimal(0);
   }
 
@@ -444,6 +448,25 @@ public class ProjectResultData implements ALData {
    */
   public String getForecastWorkloadFormat() {
     return df.format(forecast_workload);
+  }
+
+  /**
+   * 残タスク数を設定する
+   * 
+   * @param i
+   *          残タスク数
+   */
+  public void setReminderTask(int i) {
+    remainder_task = i;
+  }
+
+  /**
+   * 残タスク数を取得する（表示用）
+   * 
+   * @return 残タスク数
+   */
+  public int getReminderTask() {
+    return remainder_task;
   }
 
   /**
