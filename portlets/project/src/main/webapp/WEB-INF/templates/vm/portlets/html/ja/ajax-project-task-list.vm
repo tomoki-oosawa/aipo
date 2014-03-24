@@ -102,7 +102,7 @@
 		#ALtdheadAtt("#ALajaxsort('status' 'ステータス' $result 'ProjectTaskListScreen')" "class='thin'")
 		#ALtdheadAtt("#ALajaxsort('tracker' '担当者' $result 'ProjectTaskListScreen')" "class='wName'")
 		#ALtdheadAtt("#ALajaxsort('progress_rate' '進捗率' $result 'ProjectTaskListScreen')" "class='thin'")
-		#ALtdheadAtt("#ALajaxsort('workload' '実測工数' $result 'ProjectTaskListScreen')" "class='thin'")
+		#ALtdheadAtt("#ALajaxsort('workload' '実績工数' $result 'ProjectTaskListScreen')" "class='thin'")
 		#ALtdheadAtt("#ALajaxsort('plan_workload' '予定工数' $result 'ProjectTaskListScreen')" "class='thin'")
         #ALtdheadAtt("#ALajaxsort('start_plan_date' '開始日' $result 'ProjectTaskListScreen')" "class='w10'")
 		#ALtdheadAtt("#ALajaxsort('end_plan_date' '期日' $result 'ProjectTaskListScreen')" "class='w10'")
