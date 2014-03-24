@@ -487,41 +487,37 @@ public class Database {
   public static boolean isJdbcPostgreSQL() {
 
     DataContext dataContext = DataContext.getThreadDataContext();
-    String url = null;
+    String adapterName = null;
     try {
-      url =
-        dataContext
-          .getParentDataDomain()
-          .getNode(Database.getDomainName() + "domainNode")
-          .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL();
-    } catch (SQLException e) {
+      adapterName =
+        ((AutoAdapter) dataContext.getParentDataDomain().getNode(
+          Database.getDomainName() + "domainNode").getAdapter())
+          .getAdapter()
+          .getClass()
+          .getName();
+    } catch (Exception e) {
       logger.warn(e.getMessage(), e);
     }
 
-    return url != null && url.startsWith("jdbc:postgresql");
+    return adapterName != null && adapterName.endsWith("PostgresAdapter");
   }
 
   public static boolean isJdbcMySQL() {
 
     DataContext dataContext = DataContext.getThreadDataContext();
-    String url = null;
+    String adapterName = null;
     try {
-      url =
-        dataContext
-          .getParentDataDomain()
-          .getNode(Database.getDomainName() + "domainNode")
-          .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL();
-    } catch (SQLException e) {
+      adapterName =
+        ((AutoAdapter) dataContext.getParentDataDomain().getNode(
+          Database.getDomainName() + "domainNode").getAdapter())
+          .getAdapter()
+          .getClass()
+          .getName();
+    } catch (Exception e) {
       logger.warn(e.getMessage(), e);
     }
 
-    return url != null && url.startsWith("jdbc:mysql");
+    return adapterName != null && adapterName.endsWith("MySQLAdapter");
   }
 
   protected static DBCPDataSourceFactory createDataSourceFactory() {

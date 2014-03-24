@@ -35,6 +35,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.project.ProjectSelectData;
 import com.aimluck.eip.project.ProjectTaskSelectData;
+import com.aimluck.eip.project.ProjectTaskSimpleSelectData;
 import com.aimluck.eip.project.util.ProjectUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -90,11 +91,15 @@ public class ProjectAction extends ALBaseAction {
     // セッション情報のクリア
     clearSession(rundata, context);
 
-    if (ALEipConstants.MODE_LIST.equals(getMode())) {
-      doProject_list(rundata, context);
-    } else if (getMode() == null) {
-      doProject_list(rundata, context);
-    }
+    ProjectTaskSimpleSelectData listData = new ProjectTaskSimpleSelectData();
+    listData.setFiltersFromPSML(portlet, context, rundata);
+    listData.initField();
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1a-rows")));
+    listData.doViewList(this, rundata, context);
+    setTemplate(rundata, "project");
   }
 
   /**

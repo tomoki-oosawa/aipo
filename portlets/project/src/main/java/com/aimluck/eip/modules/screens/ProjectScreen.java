@@ -27,7 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.project.ProjectSelectData;
+import com.aimluck.eip.project.ProjectTaskSimpleSelectData;
 import com.aimluck.eip.project.util.ProjectUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,11 +53,11 @@ public class ProjectScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
 
-      ProjectSelectData listData = new ProjectSelectData();
+      ProjectTaskSimpleSelectData listData = new ProjectTaskSimpleSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
-        context).getPortletConfig().getInitParameter("p1b-rows")));
+        context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-project.vm";

@@ -36,6 +36,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.project.util.ProjectUtils;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タスクのResultDataです。 <BR>
@@ -582,7 +583,7 @@ public class ProjectTaskResultData implements ALData {
    * @return 更新日
    */
   public ALDateTimeField getUpdateDate() {
-    return update_date;
+    return ALEipUtils.getFormattedTime(update_date);
   }
 
   /**

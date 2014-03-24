@@ -105,7 +105,7 @@
 		<div>$!{record.ReminderTask}</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
-		<div>$!{record.AdminUserName}</div>
+		<div>$!record.AdminUserName</div>
 	#ALtdcellfooter()
 	#ALtdcellheader()
 		<div>$!{record.TaskUpdateDate.Year}/$!{record.TaskUpdateDate.Month}/$!{record.TaskUpdateDate.Day}</div>
