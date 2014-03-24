@@ -181,8 +181,8 @@ aipo.project.formFlgToggle = function(chkbox, id) {
  * 担当者の入力フォームを削除する
  */
 aipo.project.removeMemberForm = function(i) {
-	var ul = dojo.byId('members_form');
-	ul.removeChild(dojo.byId("members_li_" + i));
+	var tbody = dojo.byId('members_form');
+	tbody.removeChild(dojo.byId("members_tr_" + i));
 }
 
 /**
@@ -190,16 +190,20 @@ aipo.project.removeMemberForm = function(i) {
  */
 aipo.project.addMemberForm = function() {
 
-	//選択肢のul要素
-	var ul = dojo.byId('members_form');
-	var cntMember = ul.children.length;
+	//選択肢のtbody要素
+	var tbody = dojo.byId('members_form');
+	var cntMember = tbody.children.length-1;
 	cntMember++;
 
 	//担当者選択
+	var newMembersSelectTd = document.createElement("td");
 	var newMembersSelect = dojo.clone(dojo.byId('task_member_1'));
 	newMembersSelect.id = "task_member_" + cntMember;
 
 	//作業時間タイトル
+	var newTitleTd = document.createElement("td");
+	newTitleTd.className = "p15";
+	newTitleTd.noWrap="true";
 	var newTitleHeader = document.createTextNode("  作業時間");
 	var newTitleFooter = document.createTextNode("時間 ");
 
@@ -211,27 +215,30 @@ aipo.project.addMemberForm = function() {
 	newTextBox.className = "text";
 	newTextBox.value = "";
 	newTextBox.style.imeMode = "active";
-	newTextBox.style.width = "10%";
+	newTextBox.style.width = "3em";
 	newTextBox.maxLength = 5;
 
 	//削除リンク
-	var newDeleteLinkText = document.createTextNode("削除");
+	var newDeleteLinkIcon = document.createElement('i');
+	newDeleteLinkIcon.className ="icon-remove";
 	var newDeleteLink = document.createElement("a");
-	newDeleteLink.appendChild(newDeleteLinkText);
+	newDeleteLink.appendChild(newDeleteLinkIcon);
 	newDeleteLink.onclick = function() {
 		aipo.project.removeMemberForm(cntMember);
 	};
 	newDeleteLink.href = "javascript:void(0);";
 
-	//li要素を追加
-	var newLi = document.createElement('li');
-	newLi.id = "members_li_" + cntMember;
-	newLi.appendChild(newMembersSelect);
-	newLi.appendChild(newTitleHeader);
-	newLi.appendChild(newTextBox);
-	newLi.appendChild(newTitleFooter);
-	newLi.appendChild(newDeleteLink);
-	ul.appendChild(newLi);
+	//tr要素を追加
+	var newTr = document.createElement('tr');
+	newTr.id = "members_tr_" + cntMember;
+	newTr.appendChild(newMembersSelectTd);
+	newMembersSelectTd.appendChild(newMembersSelect);
+	newTr.appendChild(newTitleTd);
+	newTitleTd.appendChild(newTitleHeader);
+	newTitleTd.appendChild(newTextBox);
+	newTitleTd.appendChild(newTitleFooter);
+	newTitleTd.appendChild(newDeleteLink);
+	tbody.insertBefore(newTr, tbody.childNodes[cntMember]);
 }
 
 /**

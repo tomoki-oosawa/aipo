@@ -263,7 +263,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     end_date_check = new ALStringField();
     end_date_check.setFieldName("指定しない");
     // 計画工数
-    plan_workload = new BigDecimal(0);
+    plan_workload = null;
     // 計画工数（入力値用）
     planWorkloadString = null;
     // 進捗率
@@ -439,7 +439,11 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         }
 
         try {
-          plan_workload = new BigDecimal(planWorkloadString);
+          if (planWorkloadString.equals("")) {
+            plan_workload = new BigDecimal(0);
+          } else {
+            plan_workload = new BigDecimal(planWorkloadString);
+          }
           if (plan_workload.compareTo(BigDecimal.valueOf(0)) < 0) {
             msgList.add("『 <span class='em'>計画工数</span> 』には0以上の値を入力してください。");
           }
@@ -1166,6 +1170,18 @@ public class ProjectTaskFormData extends ALAbstractFormData {
    */
   public BigDecimal getPlanWorkload() {
     return plan_workload;
+  }
+
+  /**
+   * 計画工数を取得します。
+   * 
+   * @return 計画工数
+   */
+  public String getPlanWorkloadString() {
+    if (plan_workload == null) {
+      return "";
+    }
+    return plan_workload.toString();
   }
 
   /**
