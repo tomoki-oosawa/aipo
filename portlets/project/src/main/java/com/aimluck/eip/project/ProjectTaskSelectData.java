@@ -786,6 +786,12 @@ public class ProjectTaskSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("task_name", "task_name");
+    map.putValue("tracker", "tracker");
+    map.putValue("status", "status");
+    map.putValue("workload", "workload");
+    map.putValue("plan_workload", "plan_workload");
+    map.putValue("start_plan_date", "start_plan_date");
+    map.putValue("end_plan_date", "end_plan_date");
     map.putValue("progress_rate", "progress_rate");
     return map;
   }
