@@ -3551,6 +3551,17 @@ ul.attachments {
   color: #ff9900;
 }
 
+.auiWikiDiff {
+  background: #f6f6f6;
+  padding: 10px;
+}
+.auiWikiDiff .diff_in {
+  background: #a9dba9;
+}
+.auiWikiDiff .diff_out {
+  background: #ffcccc;
+}
+
 /***************************************************
 	auiIcon
 --------------------------------------------------*/
