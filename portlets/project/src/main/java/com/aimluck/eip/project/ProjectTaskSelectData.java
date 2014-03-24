@@ -497,7 +497,7 @@ public class ProjectTaskSelectData extends
         }
         sb.append(whereList.get(i));
       }
-      sb.append(getOrderBy(rundata, context));
+      // sb.append(getOrderBy(rundata, context));ソート部分削除
       sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
       sqltemp.param("project_id", selectedProjectId);
 
