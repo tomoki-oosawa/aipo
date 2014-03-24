@@ -43,6 +43,8 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
+<input name="start_date_check" type="hidden" value="TRUE" id="start_date_flag">
+<input name="end_date_check" type="hidden" value="TRUE" id="end_date_flag">
 #ALtableheaderWide()
 ##プロジェクト名
 #ALtdcaption("#ALrequired($l10n.PROJECT_PROJECT)")
@@ -54,10 +56,9 @@
 </select>
 #ALtditemfooter()
 ##分類
-#ALtdcaption("#ALrequired($!result.getFieldName('tracker'))")
+#ALtdcaption("$!result.getFieldName('tracker')")
 #ALtditemheader()
 <select name="tracker" id="tracker">
-	<option value=''></option>
 #foreach($mapEntry in $result.TrackerMap.entrySet())
 	<option value='$!mapEntry.key' #if ($!result.Tracker.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
 #end
@@ -65,66 +66,60 @@
 #ALtditemfooter()
 ##タスク名
 #ALtdcaption("#ALrequired($!result.getFieldName('task_name'))")
-#ALtditem("#ALtextfield('task_name' $!result.TaskName '90%' 50 'active')")
+#ALtditem("#ALtextfieldw100('task_name' $!result.TaskName 50 'active')")
 ##説明
 #ALtdcaption("$!result.getFieldName('explanation')")
-#ALtditem("<textarea class='text wide' name='explanation'>$!result.Explanation</textarea>")
+#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation'>$!result.Explanation</textarea>")
 ##ステータス
-#ALtdcaption("#ALrequired($!result.getFieldName('status'))")
+#ALtdcaption("$!result.getFieldName('status')")
 #ALtditemheader()
 <select name="status" id="status">
-	<option value=''></option>
 #foreach($mapEntry in $result.StatusMap.entrySet())
 	<option value='$!mapEntry.key' #if ($!result.Status.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
 #end
 </select>
 #ALtditemfooter()
 ##優先度
-#ALtdcaption("#ALrequired($!result.getFieldName('priority'))")
+#ALtdcaption("$!result.getFieldName('priority')")
 #ALtditemheader()
 <select name="priority" id="status">
-	<option value=''></option>
 #foreach($mapEntry in $result.PriorityMap.entrySet())
-	<option value='$!mapEntry.key' #if ($!result.Priority.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+	<option value='$!mapEntry.key' #if ($!result.Priority.Value == $!mapEntry.key.toString()) selected="selected" #elseif($!mapEntry.key.toString().equals("2"))selected #end>$!mapEntry.value</option>
 #end
 </select>
 #ALtditemfooter()
 ##担当者
-#if(!$!result.HasChildren)
-	#ALtdcaption("#ALrequired('担当者')")
-#else
-	#ALtdcaption("担当者")
-#end
+#ALtdcaption("担当者")
 #ALtditemheader()
 #if(!$!result.HasChildren)
-	<div><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">担当者を追加</a></div>
-	<ul id="members_form">
+	<table class="w100 auiMbCellTable"><tbody id="members_form">
 	#foreach( $taskMember in $result.TaskMembers )
 		##担当者が登録されている場合（更新時）
-		<li id="members_li_$velocityCount">
-		<select name="task_member" id="task_member_$velocityCount">
+		<tr id="members_tr_$velocityCount">
+		<td><select name="task_member" id="task_member_$velocityCount" class="w100">
 		#foreach( $record in $result.ProjectMembers )
 			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
-		</select>
-		作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:10%;ime-mode:$mode" />時間
+		</select></td>
+		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" />時間
 		#if($velocityCount > 1)
 		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)">削除</a>
 		#end
-		</li>
+		</td></tr>
 	#end
 	#if(!$result.TaskMembers || $result.TaskMembers.isEmpty())
 		##担当者が登録されていない場合（新規登録時）
-		<li id="members_li_1">
-		<select name="task_member" id="task_member_1">
+		<tr id="members_tr_1">
+		<td><select name="task_member" id="task_member_1" class="w100">
 		#foreach( $record in $result.ProjectMembers )
 			<option value="$record.UserId" #if ($!result.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
-		</select>
-		作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:10%;ime-mode:$mode" />時間
-		</li>
+		</select></td>
+		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" />時間
+		</td></tr>
 	#end
-	</ul>
+	<tr><td colspan="2"><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">担当者を追加</a></td></tr>
+	</tbody></table>
 #else
 	<table style="width:100%">
 	#foreach($record in $!result.TaskMembers)
@@ -154,38 +149,32 @@
 	$!result.EndPlanDateString
 #end
 #ALtditemfooter()
-##開始実績日
-#ALtdcaption($!result.getFieldName("start_date"))
-#ALtditemheader()
-#if(!$!result.HasChildren)
-	<div dojoType="aipo.widget.DropdownDatepicker" id="startdatepicker" widgetId="startdatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="開始実績日" hiddenId="start_date" #if ($!result.StartDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartDate.Year}/$!{result.StartDate.Month}/$!{result.StartDate.Day}"checked="checked" #end inputId="input_startdate" dateId="start_date" displayCheck=""></div>
-#else
-	$!result.StartDateString
-#end
-#ALtditemfooter()
-##完了実績日
-#ALtdcaption($!result.getFieldName("end_date"))
-#ALtditemheader()
-#if(!$!result.HasChildren)
-	<div dojoType="aipo.widget.DropdownDatepicker" id="enddatepicker" widgetId="enddatepicker"  iconURL="images/icon/icon_date.gif" iconAlt="完了実績日" #if ($!result.EndDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndDate.Year}/$!{result.EndDate.Month}/$!{result.EndDate.Day}" #end dateId="end_date"></div>
-#else
-	$!result.EndDateString
-#end
-#ALtditemfooter()
 ##計画工数
 #ALtdcaption("計画工数")
 #ALtditemheader()
 #if(!$!result.HasChildren)
-	#ALtextfield('plan_workload' $!result.PlanWorkload.toString() '10%' 50 'active')時間
+	#ALtextfield('plan_workload' $!{result.getPlanWorkloadString()} '3em' 50 'active')h
 #else
-	$!result.PlanWorkload.toString()
+	$!{result.getPlanWorkloadString()}
 #end
 #ALtditemfooter()
 ##進捗率
 #ALtdcaption("$!result.getFieldName('progress_rate')")
 #ALtditemheader()
 #if(!$!result.HasChildren)
-	#ALtextfield('progress_rate' $!result.ProgressRate.toString() '10%' 50 'active')%
+<select name="progress_rate" id="progress_rate">
+<option value="0" #if ($!result.ProgressRate.toString() == "0") selected="selected" #end>0%</option>
+<option value="10" #if ($!result.ProgressRate.toString() == "10") selected="selected" #end>10%</option>
+<option value="20" #if ($!result.ProgressRate.toString() == "20") selected="selected" #end>20%</option>
+<option value="30" #if ($!result.ProgressRate.toString() == "30") selected="selected" #end>30%</option>
+<option value="40" #if ($!result.ProgressRate.toString() == "40") selected="selected" #end>40%</option>
+<option value="50" #if ($!result.ProgressRate.toString() == "50") selected="selected" #end>50%</option>
+<option value="60" #if ($!result.ProgressRate.toString() == "60") selected="selected" #end>60%</option>
+<option value="70" #if ($!result.ProgressRate.toString() == "70") selected="selected" #end>70%</option>
+<option value="80" #if ($!result.ProgressRate.toString() == "80") selected="selected" #end>80%</option>
+<option value="90" #if ($!result.ProgressRate.toString() == "90") selected="selected" #end>90%</option>
+<option value="100" #if ($!result.ProgressRate.toString() == "100") selected="selected" #end>100%</option>
+</select>
 #else
 	$!result.ProgressRate.toString()
 #end
