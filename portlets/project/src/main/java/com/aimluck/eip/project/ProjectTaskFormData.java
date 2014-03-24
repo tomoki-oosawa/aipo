@@ -38,6 +38,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateField;
+import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
@@ -374,37 +375,37 @@ public class ProjectTaskFormData extends ALAbstractFormData {
    */
   @Override
   protected boolean validate(List<String> msgList) {
-    try {
 
-      tracker.validate(msgList);
-      task_name.validate(msgList);
-      status.validate(msgList);
-      priority.validate(msgList);
-      progress_rate.validate(msgList);
+    tracker.validate(msgList);
+    task_name.validate(msgList);
+    status.validate(msgList);
+    priority.validate(msgList);
+    progress_rate.validate(msgList);
 
-      if (!hasChildren) {
-        if (taskMembers.isEmpty()) {
-          // 担当者が未入力の場合
-          msgList.add("『 <span class='em'>担当者</span> 』を入力してください。");
-        } else {
-          // 担当者入力有の場合
+    if (!hasChildren) {
+      if (taskMembers.isEmpty()) {
+        // 担当者が未入力の場合
+        msgList.add("『 <span class='em'>担当者</span> 』を入力してください。");
+      } else {
+        // 担当者入力有の場合
 
-          List<Long> checkMemberId = new ArrayList<Long>();
-          for (Iterator<ProjectTaskMemberResultData> iter =
-            taskMembers.iterator(); iter.hasNext();) {
-            ProjectTaskMemberResultData data = iter.next();
-            long id = data.getUserId().getValue();
+        List<Long> checkMemberId = new ArrayList<Long>();
+        for (Iterator<ProjectTaskMemberResultData> iter =
+          taskMembers.iterator(); iter.hasNext();) {
+          ProjectTaskMemberResultData data = iter.next();
+          long id = data.getUserId().getValue();
 
-            if (checkMemberId.contains(id)) {
-              msgList.add("『 <span class='em'>担当者</span> 』が重複しています。");
-              break;
-            }
-
-            checkMemberId.add(id);
+          if (checkMemberId.contains(id)) {
+            msgList.add("『 <span class='em'>担当者</span> 』が重複しています。");
+            break;
           }
-        }
 
-        // 開始予定日＞完了予定日の場合エラー
+          checkMemberId.add(id);
+        }
+      }
+
+      // 開始予定日＞完了予定日の場合エラー
+      try {
         if (start_plan_date.getYear().length() > 0
           && end_plan_date.getYear().length() > 0
           && !ProjectUtils.isEmptyDate(start_plan_date.getValue().getDate())
@@ -420,8 +421,14 @@ public class ProjectTaskFormData extends ALAbstractFormData {
               .add("『 <span class='em'>開始予定日</span> 』は『 <span class='em'>完了予定日</span> 』以前を入力してください。");
           }
         }
+      } catch (NumberFormatException e1) {
+        e1.printStackTrace();
+      } catch (ALIllegalDateException e1) {
+        e1.printStackTrace();
+      }
 
-        // 開始実績日＞完了実績日の場合エラー
+      // 開始実績日＞完了実績日の場合エラー
+      try {
         if (start_date.getYear().length() > 0
           && end_date.getYear().length() > 0
           && !ProjectUtils.isEmptyDate(start_date.getValue().getDate())
@@ -437,24 +444,24 @@ public class ProjectTaskFormData extends ALAbstractFormData {
               .add("『 <span class='em'>開始実績日</span> 』は『 <span class='em'>完了実績日</span> 』以前を入力してください。");
           }
         }
-
-        try {
-          if (planWorkloadString.equals("")) {
-            plan_workload = new BigDecimal(0);
-          } else {
-            plan_workload = new BigDecimal(planWorkloadString);
-          }
-          if (plan_workload.compareTo(BigDecimal.valueOf(0)) < 0) {
-            msgList.add("『 <span class='em'>計画工数</span> 』には0以上の値を入力してください。");
-          }
-        } catch (Exception e) {
-          msgList.add("『 <span class='em'>計画工数</span> 』は数値を入力してください。");
-        }
+      } catch (NumberFormatException e1) {
+        e1.printStackTrace();
+      } catch (ALIllegalDateException e1) {
+        e1.printStackTrace();
       }
 
-    } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return false;
+      try {
+        if (planWorkloadString.equals("")) {
+          plan_workload = new BigDecimal(0);
+        } else {
+          plan_workload = new BigDecimal(planWorkloadString);
+        }
+        if (plan_workload.compareTo(BigDecimal.valueOf(0)) < 0) {
+          msgList.add("『 <span class='em'>計画工数</span> 』には0以上の値を入力してください。");
+        }
+      } catch (Exception e) {
+        msgList.add("『 <span class='em'>計画工数</span> 』は数値を入力してください。");
+      }
     }
 
     return msgList.isEmpty();

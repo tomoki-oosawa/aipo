@@ -199,8 +199,7 @@ public class ProjectTaskSelectData extends
     }
 
     // キーワード
-    target_keyword =
-      ProjectUtils.getParameter(rundata, context, "target_keyword");
+    target_keyword = ProjectUtils.getParameter(rundata, context, "keyword");
     // 担当者
     target_user_id =
       ProjectUtils.getParameter(rundata, context, "target_user_id");
@@ -404,7 +403,8 @@ public class ProjectTaskSelectData extends
 
       // キーワード
       if (target_keyword != null && target_keyword.trim().length() > 0) {
-        whereList.add(" tree.task_name LIKE #bind($target_keyword)");
+        whereList
+          .add(" tree.task_name LIKE #bind($target_keyword) OR tree.explanation LIKE #bind($target_keyword)");
       }
       // 担当者
       if (target_user_id != null && !target_user_id.equals("all")) {
@@ -497,7 +497,7 @@ public class ProjectTaskSelectData extends
         }
         sb.append(whereList.get(i));
       }
-      sb.append(getOrderBy(rundata, context));
+      // sb.append(getOrderBy(rundata, context));ソート部分削除
       sqltemp = Database.sql(EipTProjectTask.class, String.valueOf(sb));
       sqltemp.param("project_id", selectedProjectId);
 
@@ -729,7 +729,7 @@ public class ProjectTaskSelectData extends
     // 実績工数
     List<ProjectTaskMemberResultData> memberList = data.getMemberList();
     BigDecimal workload = BigDecimal.valueOf(0);
-    workload.setScale(1);
+    workload = workload.setScale(1);
     for (int i = 0; i < memberList.size(); i++) {
       ProjectTaskMemberResultData member = memberList.get(i);
       workload = workload.add(member.getWorkload());
