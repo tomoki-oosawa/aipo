@@ -181,7 +181,7 @@
 #ALtditemfooter()
 ##ファイル
 <tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-<td class="caption">ファイル</td>
+<td class="caption">添付ファイル</td>
 <td>
   <div class="clearfix">
   <div>
