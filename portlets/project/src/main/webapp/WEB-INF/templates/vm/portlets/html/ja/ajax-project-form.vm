@@ -22,12 +22,12 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = "$l10n.PROJECT_DO_ADD")
 #set ($event_submit = "eventSubmit_doProject_insert")
-#set ($subtitle = "プロジェクト追加")
+#set ($subtitle = "$l10n.PROJECT_PROJECT_ADD")
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = "プロジェクト編集")
+#set ($action_str = "$l10n.PROJECT_UPDATE")
+#set ($subtitle = "$l10n.PROJECT_PROJECT_EDIT")
 #set ($event_submit = "eventSubmit_doProject_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -49,13 +49,13 @@
 #ALtditem("#ALtextfieldw100('project_name' $!result.ProjectName 50 'active')")
 ##説明
 #ALtdcaption("$!result.getFieldName('explanation')")
-#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation'>$!result.Explanation</textarea>")
+#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation' onchange='aipo.project.onChangeNote()'>$!result.Explanation</textarea>")
 ##管理者
 #ALtdcaption("#ALrequired($!result.getFieldName('admin_user_id'))")
 #ALtditemheader()
 #set($screenlink = "$jslink.getPortletById($!portlet.ID).addPathInfo('template','UserLiteJSONScreen')")
 <select name="target_group_name" id="target_group_name" style="width:49%;float:left;" onchange="aipo.project.changeGroup('$screenlink', this.options[this.selectedIndex].value, '$!result.AdminUserId')">
-<option value="LoginUser">すべてのグループ</option>
+<option value="LoginUser">$l10n.PROJECT_ALL_GLOUP</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!{record.Name.toString()}" #if($!result.TargetGroupName == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
 #end
@@ -68,27 +68,27 @@
 </select>&nbsp;<span id="destuserDiv"></span>
 #ALtditemfooter()
 ##メンバー
-#ALtdcaption("#ALrequired('メンバー')")
+#ALtdcaption("#ALrequired($l10n.PROJECT_MENVERS)")
 #ALtditemheader()
 <div id="mapFieldButton"></div>
 <div id="mapField">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">左側にメンバーを追加してください。</div>
+    <div class="spaceTop spaceLeft small">$l10n.PROJECT_MEMBER_ADD</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
         buttonRemoveId="button_member_remove"
         memberFromId="tmp_member_from"
-        memberToTitle="メンバー一覧"
+        memberToTitle="$l10n.PROJECT_MEMBER_LIST"
         memberToId="members"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="すべてのグループ"
+        groupSelectPreOptionValue="$l10n.PROJECT_ALL_GLOUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
@@ -101,15 +101,15 @@
 #ALtditemfooter()
 ##ファイル
 <tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-<td class="caption">ファイル</td>
+<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 <td>
   <div class="clearfix">
-  <div>
-  	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+   <div>
+  #IFFileUpload()
   </div>
   	<ul id="attachments_$!{portlet.ID}" class="attachments">
   	#foreach($record in $!result.AttachmentFileNameList )
-  	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+  	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.PROJECT_DELETE</span></li>
   	#end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
