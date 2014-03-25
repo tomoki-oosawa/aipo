@@ -297,7 +297,6 @@ public class ProjectTaskSimpleSelectData extends
       sl.append("  END AS task_days"); // タスク日数
     }
 
-    StringBuilder sb = new StringBuilder();
     SQLTemplate<EipTProjectTask> sqltemp = null;
     SQLTemplate<EipTProjectTask> sqlCountTemp = null;
 
@@ -878,7 +877,7 @@ public class ProjectTaskSimpleSelectData extends
     // 実績工数
     List<ProjectTaskMemberResultData> memberList = data.getMemberList();
     BigDecimal workload = BigDecimal.valueOf(0);
-    workload.setScale(1);
+    workload = workload.setScale(1);
     for (int i = 0; i < memberList.size(); i++) {
       ProjectTaskMemberResultData member = memberList.get(i);
       workload = workload.add(member.getWorkload());
