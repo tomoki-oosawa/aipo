@@ -150,6 +150,11 @@ h4 {
   margin: 0 0 10px;
 }
 
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 div.outer {
   border-top: 1px solid #ededed;
   border-left: 1px solid #ededed;
@@ -161,6 +166,7 @@ div.outer {
 
 .clearfix, .inner {
   zoom: 1;
+  display: block;
 }
 
 .clearfix:after, .inner:after {
@@ -313,6 +319,8 @@ table.center {
 #wrapper {
   min-width: 960px;
   padding: 0;
+  -ms-word-break: break-all;
+  word-break: break-all;
 }
 
 .roundMainWrapper {
@@ -399,24 +407,26 @@ table.roundBlockWrapperTop td.roundBlockIcon img {
   width: 100%;
 }
 
-.relativeBlock{
-position:relative;
-margin:5px 0;
-width:100%;
+.relativeBlock {
+  position: relative;
+  margin: 5px 0;
+  width: 100%;
 }
-.absoluteRight{
-position:absolute;
-top:0;
-right:0;
+
+.absoluteRight {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
-.absoluteLeft{
-position:absolute;
-top:0;
-left:0;
+
+.absoluteLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .relativeBlock table {
-	z-index:0;
+  z-index: 0;
 }
 
 .submenu {
@@ -525,8 +535,25 @@ td.item {
   padding: 0;
   word-break: break-all;
 }
+.listTable td {
+  height: 24px;
+}
+.listTable td table {
+  border-collapse: collapse;
+}
 .listTable td table tr:first-child td {
   border-top: none;
+}
+.listTable td table td div {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.listTable td > div {
+  width: 100%;
+  overflow: hidden;
 }
 .listTable caption {
   background: #f0f0f0;
@@ -642,19 +669,16 @@ table.tableWrapper {
   width: 100%;
   word-break: break-all;
 }
-
 table.tableWrapper td.tableLeft {
   padding-right: 15px;
   vertical-align: top;
   width: 200px;
 }
-
 table.tableWrapper td.tableLeft div.scroll {
   width: 200px;
   overflow: auto;
   overflow-y: hidden;
 }
-
 table.tableWrapper td.tableCenter {
   vertical-align: top;
 }
@@ -888,7 +912,6 @@ table.simpleTable .caption {
 /* fileuploadViewDialog */
 .fileuploadViewDialog {
   z-index: 999;
-  /*width: 600px;*/
   position: absolute;
 }
 
@@ -2697,9 +2720,17 @@ ul.blockList li a.selected {
 /***************************************************
 	cell data width
 --------------------------------------------------*/
-.wName {width:7.5em}
-.wCategory {width:10em}
-.wCheckbox {width:28px}
+.wName, .wCreater, .wUpdater {
+  width: 9em;
+}
+
+.wCategory {
+  width: 10em;
+}
+
+.wCheckbox {
+  width: 28px;
+}
 
 /***************************************************
 	margin&padding
@@ -2963,6 +2994,13 @@ ul.blockList li a.selected {
 }
 
 /***************************************************
+	line-height
+--------------------------------------------------*/
+.lh32 {
+  line-height: 32px;
+}
+
+/***************************************************
 	font
 --------------------------------------------------*/
 .fs10 {font-size: 10px !important;}
@@ -3010,7 +3048,18 @@ ul.blockList li a.selected {
 }
 
 /***************************************************
-    ellipsis
+	placeholder
+--------------------------------------------------*/
+.placeholder {
+  position: absolute;
+  line-height: 32px;
+  padding-left: 4px;
+  color: #999999;
+  cursor: text;
+}
+
+/***************************************************
+	ellipsis
 --------------------------------------------------*/
 .ellipsis {
   overflow: hidden;
