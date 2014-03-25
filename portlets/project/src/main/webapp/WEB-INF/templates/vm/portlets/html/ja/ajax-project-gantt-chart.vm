@@ -42,35 +42,12 @@
 	<div class="floatRight">
 		<div class="auiSelectButton">
 			<ul>
-			#set($tab = ["一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-			<li><a class="first" style="width:4em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+			#set($tab = ["タスク一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+			<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 			#set($tab = ["ガントチャート", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
 			<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 			</ul>
 		</div>
-	</div>
-	<div class="clearfix">
-		<select id="base_date_from_year" name="base_date_from_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
-		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
-			<option value="$num" #if ($!result.BaseDateFrom.Year == "$num") selected="selected" #end>$!{num}年</option>
-		#end
-		</select>
-		<select id="base_date_from_month" name="base_date_from_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
-		#foreach ( $num in [1..12] )
-			<option value="$num" #if ($!result.BaseDateFrom.Month == "$num") selected="selected" #end>$!{num}月</option>
-		#end
-		</select>
-		～
-		<select id="base_date_to_year" name="base_date_to_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
-		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
-			<option value="$num" #if ($!result.BaseDateTo.Year == "$num") selected="selected" #end>$!{num}年</option>
-		#end
-		</select>
-		<select id="base_date_to_month" name="base_date_to_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
-		#foreach ( $num in [1..12] )
-			<option value="$num" #if ($!result.BaseDateTo.Month == "$num") selected="selected" #end>$!{num}月</option>
-		#end
-		</select>
 	</div>
 	<div class="auiSummaryMeta clearfix">
 		<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); aipo.project.reloadProgress(); return false;">
@@ -81,56 +58,46 @@
 		</form>
 		<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 	</div>
-	<div class="clearfix">
-		担当者：
-		<select name="target_user_id" id="target_user_id" class="mw49" onchange="aipo.project.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-		<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_user_id","all"))'>すべてのユーザー</option>
-		#foreach($record in $!result.ProjectMembers)
-			<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_user_id","$!record.UserId"))' #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
-		#end
-		</select>
-		分類：
-		<select name="target_tracker" id="target_tracker" class="mw49" onchange="aipo.project.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-		<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_tracker","all"))'>すべての分類</option>
-		#foreach($mapEntry in $result.TrackerMap.entrySet())
-			<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_tracker","$!mapEntry.key"))' #if($!result.TargetTracker != "all") #if($!result.TargetTracker == $!mapEntry.key.toString()) selected="selected" #end #end>$!mapEntry.value</option>
-		#end
-		</select>
-		優先度：
-		<select name="target_priority" id="target_priority" class="mw49" onchange="aipo.project.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-		<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_priority","all"))'>すべての優先度</option>
-		#foreach($mapEntry in $result.PriorityMap.entrySet())
-			<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_priority","$!mapEntry.key"))' #if($!result.TargetPriority != "all") #if($!result.TargetPriority == $!mapEntry.key.toString()) selected="selected" #end #end>$!mapEntry.value</option>
-		#end
-		</select>
-		ステータス：
-		<select name="target_status" id="target_status" class="mw49" onchange="aipo.project.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')">
-		<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_status","all"))'>すべてのステータス</option>
-		#foreach($mapEntry in $result.StatusMap.entrySet())
-			<option value='$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen").addQueryData("target_status","$!mapEntry.key"))' #if($!result.TargetStatus != "all") #if ($!result.TargetStatus == $!mapEntry.key.toString()) selected="selected" #end #end>$!mapEntry.value</option>
-		#end
-		</select>
-	</div>
-	<div class="clearfix">
-		進捗率：
+	<div class="auiSummaryMeta clearfix">
 		<select id="target_progress_rate_from" name="target_progress_rate_from" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')" >
 		#foreach ( $num in [0..10] )
 			#set( $num = $num * 10 )
 			<option value="$num" #if ($!result.TargetProgressRateFrom == "$num") selected="selected" #end>$!{num}%</option>
 		#end
 		</select>
-		～
+		-
 		<select id="target_progress_rate_to" name="target_progress_rate_to" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')" >
 		#foreach ( $num in [0..10] )
 			#set( $num = $num * 10 )
 			<option value="$num" #if ($!result.TargetProgressRateTo == "$num" || (!$!result.TargetProgressRateTo && $num == 100)) selected="selected" #end>$!{num}%</option>
 		#end
 		</select>
-		<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのタスクのみ表示</label>
+		<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのみ表示</label>
 		<input type="hidden" id="target_delay" name="target_delay" value="$!result.TargetDelay">
 	</div>
-	<div class="clearfix">
-		<label><input type="checkbox" id="progress_line_checkbox" name="progress_line_checkbox" onclick="aipo.project.onChangeProgressLine(this, '$baselink', '$!portlet.ID');" #if($!result.ProgressLineChecked == "t") checked #end>イナズマ線を表示</label>
+
+	<div class="auiSummaryMeta clearfix">
+		<select id="base_date_from_year" name="base_date_from_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
+			<option value="$num" #if ($!result.BaseDateFrom.Year == "$num") selected="selected" #end>$!{num}年</option>
+		#end
+		</select>
+		<select id="base_date_from_month" name="base_date_from_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [1..12] )
+			<option value="$num" #if ($!result.BaseDateFrom.Month == "$num") selected="selected" #end>$!{num}月</option>
+		#end
+		</select>
+		-
+		<select id="base_date_to_year" name="base_date_to_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
+			<option value="$num" #if ($!result.BaseDateTo.Year == "$num") selected="selected" #end>$!{num}年</option>
+		#end
+		</select>
+		<select id="base_date_to_month" name="base_date_to_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [1..12] )
+			<option value="$num" #if ($!result.BaseDateTo.Month == "$num") selected="selected" #end>$!{num}月</option>
+		#end
+		</select>
 	</div>
 	#if($result.List.size() == 0)
 		<div class="message">指定された条件に該当するレコードはありません。</div>
@@ -152,14 +119,15 @@
 		#set($dataTop = $lineHeightHdr * 3 + 4) ##データ部TOPのy座標(+4は枠線分)
 
 		#########タスク名の一覧#########
-		<div id="gantt_task" style="float:left;">
-			<table style="border-collapse:collapse; border:${tableBorderWidth}px solid ${tableBorderColor};">
+	<div class="clearfix">
+		<div id="gantt_task">
+			<table class="ganttTaskTable">
 				<tr>
-					<th style="height:62px; border:${tableBorderWidth}px solid ${tableBorderColor};">タスク</th>
+					<th>タスク</th>
 				</tr>
 				#foreach ($record in $result.List)
 				<tr>
-					<td style="font-size:10px; height:${lineHeight}px; border-left:${tableBorderWidth}px solid ${tableBorderColor}; border-right:${tableBorderWidth}px solid ${tableBorderColor}; padding:0 5px;">
+					<td>
 						<div>
 						$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
 						</div>
@@ -170,12 +138,11 @@
 		</div>
 		#########ガントチャート#########
 
-		<div id="gantt_area" style="position:relative;overflow-x:auto;overflow-y:hidden;">
-			<div style="position:relative;overflow-x:hidden;overflow-y:hidden;width:${tableWidth}px;padding-bottom:20px;">
+		<div id="gantt_area">
+			<div style="width:${tableWidth}px;">
 				##==============表描画==============
-				<table id="gantt_table" style="border-collapse:collapse; border:${tableBorderWidth}px solid ${tableBorderColor};z-index:1;position:relative;">
-					<tr>
-					#set($styleHdr = "text-align:center; font-size:10px; table-layout:fixed; height:${lineHeightHdr}px; border:${tableBorderWidth}px solid ${tableBorderColor}; padding:0;")
+				<table id="gantt_table">
+					<tr class="gantt_area_month">
 					##月部分
 					#set($monthCnt = 0)
 					#foreach ($day in [1..$!result.Days])
@@ -185,26 +152,26 @@
 						#set($monthCnt = $monthCnt + 1)
 						#set($nextDay = $day + 1)
 						#if($day == $!result.Days || $month != $!result.getMonth($nextDay))
-							<td style="$styleHdr" colspan="$monthCnt"><div>$year年$monthDisp月</div></td>
+							<td colspan="$monthCnt"><div>$year年$monthDisp月</div></td>
 							#set($monthCnt = 0)
 						#end
 					#end
 					</tr>
 					##週部分
-					<tr>
-					#set($weekCnt = 0)
-					#foreach ($day in [1..$!result.Days])
-						#set($week = $!result.getWeek($day))
-						#set($weekCnt = $weekCnt + 1)
-						#set($nextDay = $day + 1)
-						#if($day == $!result.Days || $week != $!result.getWeek($nextDay))
-							<td style="$styleHdr" colspan="$weekCnt"><div>$week</div></td>
-							#set($weekCnt = 0)
-						#end
-					#end
-					</tr>
+					##<tr>
+					###set($weekCnt = 0)
+					###foreach ($day in [1..$!result.Days])
+					##	#set($week = $!result.getWeek($day))
+					##	#set($weekCnt = $weekCnt + 1)
+					##	#set($nextDay = $day + 1)
+					##	#if($day == $!result.Days || $week != $!result.getWeek($nextDay))
+					##		<td style="$styleHdr" colspan="$weekCnt"><div>$week</div></td>
+					##		#set($weekCnt = 0)
+					##	#end
+					###end
+					##</tr>
 					##日付部分
-					<tr>
+					<tr class="gantt_area_day">
 					#set($todayDay = 0)
 					#set($todayId = "")
 					#foreach ($day in [1..$!result.Days])
@@ -226,12 +193,12 @@
 						#else
 							#set($dayClass = "")
 						#end
-						<td style="${styleHdr}${todayLine}"${todayId}${dayClass}><div style="width:${cellWidth}px;margin-left:-1px;">$!result.getDay($day)</div></td>
+						<td ${dayClass}><div>$!result.getDay($day)</div></td>
 					#end
 					</tr>
 					##データ部分
 					#foreach ($record in $result.List)
-					<tr>
+					<tr class="gantt_area_cell">
 						#foreach ($day in [1..$!result.Days])
 							#if($todayDay == $day)
 								#set($borderRight = "border-right: ${tableBorderWidth}px solid ${todayLineColor};")
@@ -248,8 +215,7 @@
 							#else
 								#set($dayClass = "")
 							#end
-							<td style="text-align:center; font-size:8px; table-layout:fixed; height:${lineHeight}px;
-										${borderRight}"${dayClass}></td>
+							<td ${dayClass}></td>
 						#end
 					</tr>
 					#end
@@ -279,21 +245,21 @@
 						#set($title = "${record.ProgressRate.Value}%&#10;${record.MemberListString}&#10;開始日：${startDate}&#10;完了日：${endDate}")
 
 						##予定グラフ
-				<div style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;border:${borderWidthGraph}px solid ${borderColorGraph};background-color:${bgColorPlan};z-index:1;"
-						id="plan$velocityCount"></div>
-				<div style="cursor:pointer;position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;padding:${borderWidthGraph}px;z-index:4;"
-						id="link$velocityCount" onclick="aipo.common.showDialog('$onclick')" title="$title"></div>
+				<div class="gantt_tip" style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;border:${borderWidthGraph}px"
+						id="plan$velocityCount">
 
-						##実績グラフ
 						#if($record.ProgressRate.Value.intValue() > 0)
-				<div style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthNow}px;margin:${borderWidthGraph}px;background-color:${bgColorResult};z-index:2;"
-						id="result$velocityCount"></div>
+							<div class="w$record.ProgressRate.Value.intValue()"></div>
 
 							##完了フラグ
 							#if($record.ProgressRate.Value.intValue() == 100)
-				<div id="progress_finish$velocityCount"></div>
+									<div id="progress_finish$velocityCount"></div>
 							#end
 						#end
+				</div>
+				<div class="gantt_link" style="cursor:pointer;position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;padding:${borderWidthGraph}px;z-index:4;"
+                        id="link$velocityCount" onclick="aipo.common.showDialog('$onclick')" title="$title"><span>$record.ProgressRate.Value.intValue()%</span> </div>
+
 
 						##未来開始予定
 						#if($record.NoStart)
@@ -312,6 +278,7 @@
 			<div id="todayDay" style="display:none;">$todayDay</div>
 			<div id="nowTime" style="display:none;">$result.NowTime</div>
 		</div>
+	</div>
 	#end
 #end
 #AUIcontentsAreaFooter()
