@@ -26,8 +26,6 @@
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
-
-<h2>ガントチャート</h2>
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 </div>
@@ -39,25 +37,32 @@
 #elseif(!$result.List)
 	<div class="message">プロジェクトを選択してください。</div>
 #else
+
+	<div class="auiSummaryMeta clearfix">
 	<div class="floatRight">
 		<div class="auiSelectButton">
-			<ul>
-			#set($tab = ["タスク一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-			<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-			#set($tab = ["ガントチャート", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-			<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-			</ul>
+							<ul>
+								#set($tab = ["タスク一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+								<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+								#set($tab = ["ガントチャート", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+								<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+							</ul>
 		</div>
 	</div>
-	<div class="auiSummaryMeta clearfix">
-		<form class="auiSearch" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit="aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); aipo.project.reloadProgress(); return false;">
-		<input type="hidden" name="template" value="ProjectGanttChartScreen"/>
-		<input class="text floatLeft" type="text" name="target_keyword" id="q$!{portlet.ID}" style="margin-right:5px;" value="$!result.targetKeyword"/>
-		<a class="auiButtonSearch floatLeft" onclick="dojo.byId('searchForm_$!{portlet.ID}').onsubmit();">検索</a>
-		<input type="hidden" id="progress_line_checked" name="progress_line_checked" value="$!result.ProgressLineChecked">
-		</form>
-		<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 	</div>
+	<div class="auiSummaryMeta clearfix">
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+<input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen")' />
+<input type="hidden" name="template" value="ProjectGanttChartScreen"/>
+<div class="filterInputField">
+<div class="filters" id="filters_$!portlet.ID">
+	</div>
+<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" ><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
+</div>
+#AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()	</div>
 	<div class="auiSummaryMeta clearfix">
 		<select id="target_progress_rate_from" name="target_progress_rate_from" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')" >
 		#foreach ( $num in [0..10] )
