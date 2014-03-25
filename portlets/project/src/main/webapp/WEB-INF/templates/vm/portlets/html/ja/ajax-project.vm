@@ -21,6 +21,8 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+
 ## ---------------------------------------------------------------------------
 #if($result.isProjectEmpty())
 	<div class="message">プロジェクトは作成されていません。</div>
@@ -62,6 +64,8 @@
     #if($result.isTaskEmpty())
 		<div class="message">タスクは作成されていません。</div>
     #else
+		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+		<div id="messageDiv-$!portlet.ID"></div>
         <table class="auiRowTable auiMbTable wide">
         <colgroup></colgroup>
         <colgroup class="thin"></colgroup>
@@ -81,9 +85,9 @@
             <td class="mb_hide" nowrap="nowrap">
             #if($!{record.Delay})
 				#if(!$!record.HasChildrenForForm)
-					<select name="progress_rate" style="color:red;">
+					<select name="progress_rate" style="color:red;" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
     				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end>${rate}%</option>
+    					<option #if ($!{record.ProgressRate.toString()} == "$rate") selected="selected" #end value="${rate}">${rate}%</option>
 					#end
 					</select>
 				#else
@@ -91,9 +95,9 @@
 				#end
             #else
 				#if(!$!record.HasChildrenForForm)
-                    <select name="progress_rate">
+                    <select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
         				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-        					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end>${rate}%</option>
+        					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end value="${rate}">${rate}%</option>
         				#end
         			</select>
 				#else
