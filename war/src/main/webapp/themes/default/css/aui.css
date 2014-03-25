@@ -3918,7 +3918,7 @@ ul.attachments {
 #gantt_task > table td {
   height: 30px;
   padding: 0 5px;
-  border-top: solid 1px #f6f6f6;
+  border-top: solid 1px #ededed;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -3938,13 +3938,11 @@ tr:first-child #gantt_task > table td {
   overflow-x: auto;
   overflow-y: hidden;
   border-right: solid 1px #d2d2d2;
-  border-right: solid 1px #d2d2d2;
 }
 #gantt_area > div {
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
-  width: 1221px;
 }
 #gantt_area td {
   table-layout: fixed;
@@ -3974,7 +3972,7 @@ tr:first-child #gantt_task > table td {
 #gantt_area .gantt_area_month td.today,
 #gantt_area .gantt_area_day td.today,
 #gantt_area .gantt_area_cell td.today {
-  border-right: solid 1px #e63439;
+  border-right: solid 1px #ff3333;
 }
 #gantt_area .gantt_tip {
   position: absolute;
