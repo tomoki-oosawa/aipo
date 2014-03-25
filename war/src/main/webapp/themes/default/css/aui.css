@@ -4362,7 +4362,6 @@ iframe.iframe_messagelist {
   position: fixed;
   bottom: 0;
   right: 10px;
-  height: 330px;
   width: 300px;
   z-index: 9000;
   background: white;
