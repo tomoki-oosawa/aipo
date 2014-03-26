@@ -197,7 +197,6 @@ public class ProjectTaskSelectData extends
     if (null == selectedProjectId) {
       return null;
     }
-
     // キーワード
     target_keyword = ProjectUtils.getParameter(rundata, context, "keyword");
     // 担当者
@@ -318,7 +317,7 @@ public class ProjectTaskSelectData extends
             .getEscapedStringForMysql(target_keyword)));
       }
       // 担当者
-      if (target_user_id != null && !target_user_id.equals("all")) {
+      if (target_user_id != null && !"".equals(target_user_id)) {
         StringBuilder where = new StringBuilder();
         where.append(" EXISTS(");
         where.append("   SELECT 0");
@@ -329,15 +328,15 @@ public class ProjectTaskSelectData extends
         whereList.add(String.valueOf(where));
       }
       // 分類
-      if (target_tracker != null && !target_tracker.equals("all")) {
+      if (target_tracker != null && !"".equals(target_tracker)) {
         whereList.add(" tree.tracker = " + target_tracker);
       }
       // 優先度
-      if (target_priority != null && !target_priority.equals("all")) {
+      if (target_priority != null && !"".equals(target_priority)) {
         whereList.add(" tree.priority = " + target_priority);
       }
       // ステータス
-      if (target_status != null && !target_status.equals("all")) {
+      if (target_status != null && !"".equals(target_status)) {
         whereList.add(" tree.status = " + target_status);
       }
       // 進捗率FROM
@@ -407,7 +406,7 @@ public class ProjectTaskSelectData extends
           .add(" tree.task_name LIKE #bind($target_keyword) OR tree.explanation LIKE #bind($target_keyword)");
       }
       // 担当者
-      if (target_user_id != null && !target_user_id.equals("all")) {
+      if (target_user_id != null && !"".equals(target_user_id)) {
         StringBuilder where = new StringBuilder();
         where.append(" EXISTS(");
         where.append("   SELECT 0");
@@ -418,15 +417,15 @@ public class ProjectTaskSelectData extends
         whereList.add(String.valueOf(where));
       }
       // 分類
-      if (target_tracker != null && !target_tracker.equals("all")) {
+      if (target_tracker != null && !"".equals(target_tracker)) {
         whereList.add(" tree.tracker = #bind($target_tracker)");
       }
       // 優先度
-      if (target_priority != null && !target_priority.equals("all")) {
+      if (target_priority != null && !"".equals(target_priority)) {
         whereList.add(" tree.priority = #bind($target_priority)");
       }
       // ステータス
-      if (target_status != null && !target_status.equals("all")) {
+      if (target_status != null && !"".equals(target_status)) {
         whereList.add(" tree.status = #bind($target_status)");
       }
       // 進捗率FROM
@@ -506,19 +505,19 @@ public class ProjectTaskSelectData extends
         sqltemp.param("target_keyword", "%" + target_keyword + "%");
       }
       // 担当者
-      if (target_user_id != null && !target_user_id.equals("all")) {
+      if (target_user_id != null && !"".equals(target_user_id)) {
         sqltemp.param("target_user_id", Integer.valueOf(target_user_id));
       }
       // 分類
-      if (target_tracker != null && !target_tracker.equals("all")) {
+      if (target_tracker != null && !"".equals(target_tracker)) {
         sqltemp.param("target_tracker", target_tracker);
       }
       // 優先度
-      if (target_priority != null && !target_priority.equals("all")) {
+      if (target_priority != null && !"".equals(target_priority)) {
         sqltemp.param("target_priority", target_priority);
       }
       // ステータス
-      if (target_status != null && !target_status.equals("all")) {
+      if (target_status != null && !"".equals(target_status)) {
         sqltemp.param("target_status", target_status);
       }
       // 進捗率FROM
@@ -850,6 +849,22 @@ public class ProjectTaskSelectData extends
     return target_user_id;
   }
 
+  public String getTargetUserName() {
+    if (!"".equals(getTargetUserId()) && getTargetUserId() != null) {
+      try {
+        return ALEipUtils
+          .getALEipUser(Integer.parseInt(target_user_id))
+          .getAliasName()
+          .toString();
+      } catch (Exception e) {
+        return null;
+
+      }
+    } else {
+      return null;
+    }
+  }
+
   /**
    * 検索した分類を取得します。
    * 
@@ -857,6 +872,14 @@ public class ProjectTaskSelectData extends
    */
   public String getTargetTracker() {
     return target_tracker;
+  }
+
+  public String getTargetTrackerName() {
+    if (!"".equals(getTargetTracker()) && getTargetTracker() != null) {
+      return getTrackerMap().get(target_tracker);
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -868,6 +891,14 @@ public class ProjectTaskSelectData extends
     return target_priority;
   }
 
+  public String getTargetPriorityName() {
+    if (!"".equals(getTargetPriority()) && getTargetPriority() != null) {
+      return getPriorityMap().get(target_priority);
+    } else {
+      return null;
+    }
+  }
+
   /**
    * 検索したステータスを取得します。
    * 
@@ -875,6 +906,14 @@ public class ProjectTaskSelectData extends
    */
   public String getTargetStatus() {
     return target_status;
+  }
+
+  public String getTargetStatusName() {
+    if (!"".equals(getTargetStatus()) && getTargetStatus() != null) {
+      return getStatusMap().get(target_status);
+    } else {
+      return null;
+    }
   }
 
   /**

@@ -25,9 +25,6 @@
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')")
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<div class="auiSummaryMeta clearfix">
-<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
-</div>
 #if(!$result.AllProject)
 	<div class="message">プロジェクトが登録されていません。</div>
 #elseif(!$result.List)
@@ -47,52 +44,63 @@
 				</div>
 #AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
-<input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen")' />
+<input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter",$!result.selectedProjectId).addQueryData("filtertype","project_id").addQueryData('tab','list'))' />
 <input type="hidden" name="template" value="ProjectTaskListScreen"/>
 <div class="filterInputField">
 <div class="filters" id="filters_$!portlet.ID">
-	</div>
-<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" ><i class="auiIcon auiIconArwBottom"></i></a>
-<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
+#if("$!result.TargetUserId"!="")
+<span class="filterTip">
+<span>$!result.TargetUserName</span>
+<a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_user_id");'><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end
+#if("$!result.TargetTracker"!="")
+<span class="filterTip">
+<span>$!result.TargetTrackerName</span>
+<a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_tracker");'><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end
+#if("$!result.TargetPriority"!="")
+<span class="filterTip">
+<span>$!result.TargetPriorityName</span>
+<a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_priority");'><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end
+#if("$!result.TargetStatus"!="")
+<span class="filterTip">
+<span>$!result.TargetStatusName</span>
+<a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_status");'><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end
+</div>
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.project.initFilterSearch("$!portlet.ID");' onblur='aipo.project.finFilterSearch("$!portlet.ID");' />
 </div>
 #AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
+#AUISummaryDiv()
 	<div class="floatLeft">
-						<select name="" id="">
-							<option value="">0%</option>
-							<option value="">10%</option>
-							<option value="">20%</option>
-							<option value="">30%</option>
-							<option value="">40%</option>
-							<option value="">50%</option>
-							<option value="">60%</option>
-							<option value="">70%</option>
-							<option value="">80%</option>
-							<option value="">90%</option>
-							<option value="">100%</option>
-						</select>
-						-
-						<select name="" id="">
-							<option value="">0%</option>
-							<option value="">10%</option>
-							<option value="">20%</option>
-							<option value="">30%</option>
-							<option value="">40%</option>
-							<option value="">50%</option>
-							<option value="">60%</option>
-							<option value="">70%</option>
-							<option value="">80%</option>
-							<option value="">90%</option>
-							<option value="" selected="selected">100%</option>
-						</select>
-						<label><input type="checkbox">進捗遅れのみ表示</label>
+						<select id="target_progress_rate_from" name="target_progress_rate_from" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')" >
+ 		#foreach ( $num in [0..10] )
+ 			#set( $num = $num * 10 )
+ 			<option value="$num" #if ($!result.TargetProgressRateFrom == "$num") selected="selected" #end>$!{num}%</option>
+ 		#end
+ 		</select>
+ 		～
+ 		<select id="target_progress_rate_to" name="target_progress_rate_to" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')" >
+ 		#foreach ( $num in [0..10] )
+ 			#set( $num = $num * 10 )
+			<option value="$num" #if ($!result.TargetProgressRateTo == "$num" || (!$!result.TargetProgressRateTo && $num == 100)) selected="selected" #end>$!{num}%</option>
+		#end
+		</select>
+						<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのみ表示</label>
 	</div>
 	#if($result.List.size() == 0)
 		<div class="message">指定された条件に該当するレコードはありません。</div>
+		#AUISummaryDivfooter()
 	#else
-		#AUISummaryDiv()
 		#AUIajaxpageview('ProjectTaskListScreen' $result)
 		#AUISummaryDivfooter()
 		#AUIrowMTableWide()
@@ -101,11 +109,11 @@
 		#ALtdheadAtt("分類" "class='thin'")
 		#ALtdheadAtt("ステータス" "class='thin'")
 		#ALtdheadAtt("担当者" "class='wName'")
-		#ALtdheadAtt("進捗率" "class='thin'")
-		#ALtdheadAtt("実績工数" "class='thin'")
-		#ALtdheadAtt("予定工数" "class='thin'")
-        #ALtdheadAtt("開始日" "class='w10'")
-		#ALtdheadAtt("期日" "class='w10'")
+		#ALtdheadAtt("進捗率" "class='thin mb_hide'")
+		#ALtdheadAtt("実績工数" "class='thin mb_hide'")
+		#ALtdheadAtt("予定工数" "class='thin mb_hide'")
+        #ALtdheadAtt("開始日" "class='w10 mb_hide'")
+		#ALtdheadAtt("期日" "class='w10 mb_hide'")
 		</tr>
 	#foreach ($record in $result.List)
 			<tr>
@@ -147,6 +155,45 @@
 	#end
 #end
 #AUIcontentsAreaFooter()
+<img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
+  <div>
+	<p class="caption">担当者</p>
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="target_user_id" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのユーザー</a></li>
+    #foreach($record in $result.projectMembers)
+      <li data-param="$!record.UserId" #if($!result.TargetUserId == $!record.UserId.toString()) class="selected" #end><a href="javascript:void(0);" #if($!result.TargetUserId == $!record.UserId.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">分類</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_tracker" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべての分類</a></li>
+    #foreach($record in $result.TrackerMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if($!result.TargetTracker == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">優先度</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_priority" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのステータス</a></li>
+    #foreach($record in $result.PriorityMap.entrySet())
+      <li data-param="$!record.key" #if($!result.TargetPriority == $!record.key.toString()) class="selected" #end><a href="javascript:void(0);" #if($!result.TargetPriority == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">ステータス</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_status" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのステータス</a></li>
+    #foreach($record in $result.StatusMap.entrySet())
+      <li data-param="$!record.key" #if($!result.TargetStatus == $!record.key.toString()) class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus" == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+</div>
 
 #parse("/portlets/html/ja/project-widgets.vm")
 

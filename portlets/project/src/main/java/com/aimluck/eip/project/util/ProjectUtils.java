@@ -1677,6 +1677,25 @@ public class ProjectUtils {
     return val;
   }
 
+  public static void setParameterList(RunData rundata, Context context) {
+    String filter = rundata.getParameters().getString("filter", "");
+    String filterType = rundata.getParameters().getString("filtertype", "");
+    if (filterType.isEmpty()) {
+      return;
+    }
+
+    if (filterType
+      .equals("target_user_id,target_tracker,target_priority,target_status")) {
+      String[] filterTypeList = filterType.split(",");
+      String[] filterList = filter.split(",");
+      for (int i = 0; i <= 4; i++) {
+        ALEipUtils.setTemp(rundata, context, filterTypeList[i], filterList[i]);
+
+      }
+
+    }
+  }
+
   /**
    * 予定進捗率を計算します。
    * 

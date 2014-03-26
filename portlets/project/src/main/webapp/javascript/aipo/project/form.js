@@ -527,15 +527,111 @@ aipo.project.toggleMenu = function (node, filters, event) {
 };
 
 /**
- * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
+ * 指定したフィルタにデフォルト値を設定する。(または消す)
  * @param portlet_id
  * @param thisnode
  * @param event
  */
+aipo.project.filterSetDefault = function (portlet_id, type) {
+  var ul = dojo.query("ul.filtertype[data-type=" + type + "]")[0];
+  var defval = ul.getAttribute("data-defaultparam");
+  var defaultli = dojo.query("li[data-param=" + defval + "]", ul);
+  aipo.project.filterSelect(ul, defaultli);
+  aipo.project.filteredSearch(portlet_id);
+}
+
+aipo.project.filterSelect = function (ul, li) {
+  dojo.query("li", ul).removeClass("selected");
+  dojo.query(li).addClass("selected");
+}
+
 aipo.project.filterClick = function (portlet_id, thisnode, event) {
   var li = thisnode.parentNode;
   var ul = li.parentNode;
   var param = li.getAttribute("data-param");//liのdata-param
-  aipo.msgboard.filterSelect(ul, li);
-  aipo.msgboard.filteredSearch(portlet_id);
-};
+  aipo.project.filterSelect(ul, li);
+  aipo.project.filteredSearch(portlet_id);
+}
+
+
+/**
+ * 検索バーの幅を調節する。
+ *
+ * @param portlet_id
+ */
+aipo.project.initFilterSearch = function (portlet_id) {
+  var q = dojo.byId("q" + portlet_id);
+  var filters = dojo.byId('filters_' + portlet_id);
+  if (filters && q) {
+    var filterOffset = filters.offsetWidth;
+    if (aipo.userAgent.isAndroid4_0()) {
+      var searchForm = dojo.query("div.filterInputField")[0];
+      var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+      searchForm.style.left = filterOffset + "px";
+      filters.style.left = -filterOffset + "px";
+      q.style.width = fieldlength - filterOffset + "px";
+      searchForm.style.width = fieldlength - filterOffset + "px";
+      q.style.paddingLeft = "2px";
+    } else {
+      if (filterOffset != 0) {
+        q.style.paddingLeft = filterOffset + "px";
+      }
+    }
+  }
+}
+
+/**
+ * 検索バーの幅を調節する。
+ *
+ * @param portlet_id
+ */
+aipo.project.finFilterSearch = function (portlet_id) {
+  if (aipo.userAgent.isAndroid4_0()) {
+    var q = dojo.byId("q" + portlet_id);
+    var filters = dojo.byId('filters_' + portlet_id);
+    if (filters && q) {
+      var filterOffset = filters.offsetWidth;
+      var searchForm = dojo.query("div.filterInputField")[0];
+      var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+      searchForm.style.left = "0px";
+      filters.style.left = "0px";
+      q.style.width = fieldlength + filterOffset + "px";
+      searchForm.style.width = fieldlength + filterOffset + "px";
+      q.style.paddingLeft = filterOffset + 2 + "px";
+    }
+  }
+}
+/**
+ * urlを整形して送信。
+ */
+aipo.project.filteredSearch = function (portlet_id) {
+  //filtertype
+  var baseuri = dojo.byId("baseuri_" + portlet_id).value;
+
+  var types = [];
+  var params = [];
+  dojo.query("ul.filtertype_" + portlet_id).forEach(function (ul) {
+    //console.info(ul);
+    var type = ul.getAttribute("data-type");
+    types.push(type);
+
+    var activeli = dojo.query("li.selected", ul)[0];
+    if (activeli) {
+      var param = activeli.getAttribute("data-param");
+      params.push(param);
+    } else {
+      params.push(ul.getAttribute("data-defaultparam"));
+    }
+  });
+  var q = dojo.byId("q" + portlet_id);
+  
+  var qs = [
+    ["target_user_id", params[0]],
+    ["target_tracker", params[1]],
+    ["target_priority", params[2]],
+    ["target_status", params[3]],
+    ["keyword", q ? q.value : ""]
+  ];
+  aipo.viewPage(baseuri, portlet_id, qs);
+}
+
