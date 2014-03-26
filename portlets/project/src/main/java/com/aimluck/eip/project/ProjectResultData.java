@@ -35,6 +35,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * プロジェクトのResultDataです。 <BR>
@@ -162,8 +163,8 @@ public class ProjectResultData implements ALData {
    * 
    * @return 説明
    */
-  public ALStringField getExplanation() {
-    return explanation;
+  public String getExplanation() {
+    return ALEipUtils.getMessageList(explanation.getValue());
   }
 
   /**

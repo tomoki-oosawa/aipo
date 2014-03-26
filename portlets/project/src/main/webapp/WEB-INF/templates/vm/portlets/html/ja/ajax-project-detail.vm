@@ -23,48 +23,47 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("プロジェクト詳細")
+#ALdialogheader("$l10n.PROJECT_PROJECT_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("プロジェクト")
+#ALajaxdetailformheader("$l10n.PROJECT_PROJECT")
 #ALtableheaderWide()
 <div id="messageDiv"></div>
 
-#ALtdcaption("プロジェクト名")
-#ALtditemheader()
-$!result.Detail.ProjectName
-#ALtditemfooter()
+#ALtdcaption("$l10n.PROJECT_NAME")
+#ALtditem($!result.Detail.ProjectName)
 
-#ALtdcaption("説明")
-#ALtditemheader()
-$!result.Detail.Explanation
-#ALtditemfooter()
+#ALtdcaption("$l10n.PROJECT_EXPLANATION")
+#ALtditem($!result.Detail.Explanation)
 
-#ALtdcaption("管理者")
-#ALtditemheader()
-$!result.Detail.AdminUserName
-#ALtditemfooter()
+#ALtdcaption("$l10n.PROJECT_ADMIN_USER")
+#ALtditem($!result.Detail.AdminUserName)
 
-#ALtdcaption("参加ユーザー")
+#ALtdcaption("$l10n.PROJECT_MENVERS")
 #ALtditemheader()
 <ul>
-#foreach($record in $!result.Detail.MemberList)
-	<li>
-$!record.AliasName
-    </li>
-#end
+	#foreach($record in $!result.Detail.MemberList)
+	<li>$!record.AliasName</li>
+	#end
 </ul>
 #ALtditemfooter()
 
 #if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
-#ALtdcaption("ファイル")
+#ALtdcaption("$l10n.PROJECT_FILE_ATTACH")
 #ALtditemheader()
 
 <ul>
-#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-	<li>
-<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
-    </li>
-#end
+	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+	<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
+		#if($attachmentFile.isImage())
+		<div id='popc' style='position:absolute'></div>
+		<div class="thumbBlock">
+			<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectFileRawScreen').addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectFileThumbnailScreen").addQueryData("attachmentIndex", $attachmentFile.FileId)">
+			</a><br>
+		</div>
+		#end
+	</li>
+	#end
 </ul>
 #ALtditemfooter()
 #end
