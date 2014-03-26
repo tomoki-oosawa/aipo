@@ -191,7 +191,18 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
           msgList.add(getl10n("PROJECT_UPDATE_ERROR"));
           return false;
         }
+
+        if ("100".equals(value)) {
+          /** 100%の場合はステータスを終了にする */
+          task.setStatus("5");
+        } else if (task.getProgressRate().intValue() == 100
+          && !"100".equals(value)) {
+          /** 100%の状態から下がるときはステータスを進行中にする */
+          task.setStatus("2");
+        }
+
         task.setProgressRate(Integer.valueOf(value));
+
         task.setUpdateDate(new Date());
         Database.commit();
 
