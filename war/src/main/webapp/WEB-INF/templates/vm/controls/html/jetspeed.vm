@@ -243,6 +243,7 @@ function setWrapperHeight() {
 #ALtabElementMaximize("Memo" "icon-pencil")
 #ALtabElementMaximize("Gpdb" "icon-hdd")
 #ALtabElementMaximize("Wiki" "icon-edit-sign")
+#ALtabElementMaximize("Project" "icon-tasks")
 </ul>
 </div>
 #if($menus && $menus.size()>0 && $gadgetCounts>0)
