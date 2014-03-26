@@ -99,7 +99,7 @@
 #if($result.isMatch(0, $limitState))
 #set($lsStyle = ' style="background-color:#FFFFE5"')
 #elseif($result.isMatch(1, $limitState))
-#set($lsStyle = ' style="background-color:#FFE5E5"')
+#set($lsStyle = '  class="bgRed"')
 #else
 #set($lsStyle = '')
 #end
