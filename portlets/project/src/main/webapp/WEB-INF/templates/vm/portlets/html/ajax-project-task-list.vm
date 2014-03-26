@@ -88,7 +88,7 @@
  			<option value="$num" #if ($!result.TargetProgressRateFrom == "$num") selected="selected" #end>$!{num}%</option>
  		#end
  		</select>
- 		～
+ 		-
  		<select id="target_progress_rate_to" name="target_progress_rate_to" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')" >
  		#foreach ( $num in [0..10] )
  			#set( $num = $num * 10 )
@@ -98,8 +98,8 @@
 						<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのみ表示</label>
 	</div>
 	#if($result.List.size() == 0)
-		<div class="message">指定された条件に該当するレコードはありません。</div>
 		#AUISummaryDivfooter()
+		<div class="message">指定された条件に該当するレコードはありません。</div>
 	#else
 		#AUIajaxpageview('ProjectTaskListScreen' $result)
 		#AUISummaryDivfooter()
