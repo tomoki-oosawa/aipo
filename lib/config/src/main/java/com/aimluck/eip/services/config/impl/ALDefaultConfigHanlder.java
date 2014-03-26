@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.services.config.impl;
 
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -93,13 +94,13 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
             config.getValue());
         }
       }
-    } catch (Throwable t) {
-      // ignore
+    } catch (CayenneRuntimeException e) {
+      throw e;
+    } catch (Exception ignore) {
     }
     if (config == null) {
       return defaultValue;
     }
-
     return config.getValue();
   }
 
