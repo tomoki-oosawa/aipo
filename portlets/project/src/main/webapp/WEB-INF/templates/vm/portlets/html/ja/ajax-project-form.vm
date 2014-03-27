@@ -49,7 +49,7 @@
 #ALtditem("#ALtextfieldw100('project_name' $!result.ProjectName 50 'active')")
 ##説明
 #ALtdcaption("$!result.getFieldName('explanation')")
-#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation' onchange='aipo.project.onChangeNote()'>$!result.Explanation</textarea>")
+#ALtditem("<textarea class='text w100' rows='10' cols='40' name='explanation'>$!result.Explanation</textarea>")
 ##管理者
 #ALtdcaption("#ALrequired($!result.getFieldName('admin_user_id'))")
 #ALtditemheader()
