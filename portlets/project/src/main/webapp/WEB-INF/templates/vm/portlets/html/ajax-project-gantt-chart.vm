@@ -138,7 +138,7 @@
 		#set($lineHeight = 30)              ##1行の高さ（データ）(px)
 		#set($cellWidth = 20)               ##セル幅
 		#set($tableWidth = $!result.Days * 20 + 1) ##ガントチャート表の幅
-		#set($dataTop = $lineHeightHdr * 3 + 4) ##データ部TOPのy座標(+4は枠線分)
+		#set($dataTop = $lineHeightHdr * 2 + 3) ##データ部TOPのy座標(+3は枠線分)
 
 		#########タスク名の一覧#########
 	#if($result.isAndroid2())
