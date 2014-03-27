@@ -27,6 +27,8 @@
 <div class="auiWidget clearfix">
 #if ($!result.SelectedProjectId)
 #AUIbuttonAction("タスクを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.project.onLoadProjectTaskDialog);")
+#else
+#AUIbutton("タスクを追加する" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.project.onLoadProjectTaskDialog);")
 #end
 </div>
 <div class="auiWidget clearfix">
@@ -35,9 +37,9 @@
 #foreach($record in $!result.AllProject )
 <li #if ($!result.SelectedProjectId && $!result.SelectedProjectId.toString() == $!record.ProjectId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter",$!record.ProjectId).addQueryData("filtertype","project_id").addQueryData('tab','list').addQueryData('reset_condition','true'))','$!portlet.ID');">$!{record.ProjectName}</a></li>
 #end
+</ul>
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectListScreen')', '$!portlet.ID');">プロジェクトの管理</a>
 </div>
-</ul>
 </div>
 </div>
