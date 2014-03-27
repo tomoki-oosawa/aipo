@@ -122,7 +122,11 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();
-      throw new RuntimeException(t);
+      if (t instanceof CayenneRuntimeException) {
+        throw (CayenneRuntimeException) t;
+      } else {
+        throw new RuntimeException(t);
+      }
     }
   }
 }
