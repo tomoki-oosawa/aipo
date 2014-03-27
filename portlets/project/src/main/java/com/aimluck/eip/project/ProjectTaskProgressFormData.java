@@ -194,7 +194,7 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
 
         if ("100".equals(value)) {
           /** 100%の場合はステータスを終了にする */
-          task.setStatus("5");
+          task.setStatus("4");
         } else if (task.getProgressRate().intValue() == 100
           && !"100".equals(value)) {
           /** 100%の状態から下がるときはステータスを進行中にする */
