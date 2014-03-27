@@ -133,7 +133,7 @@
 #ALtditemfooter()
 ##開始予定日
 #ALtdcaption($!result.getFieldName("start_plan_date"))
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
 	<div dojoType="aipo.widget.DropdownDatepicker" id="start_plan_date_picker" widgetId="start_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="開始予定日" hiddenId="start_date" #if ($!result.StartPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartPlanDate.Year}/$!{result.StartPlanDate.Month}/$!{result.StartPlanDate.Day}"checked="checked" #end inputId="input_start_plan_date" dateId="start_plan_date" displayCheck=""></div>
 #else
@@ -142,7 +142,7 @@
 #ALtditemfooter()
 ##期日
 #ALtdcaption("$l10n.PROJECT_DEADLINE")
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
 	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="完了予定日" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
 #else
@@ -185,11 +185,11 @@
 <td>
   <div class="clearfix">
   <div>
-  	<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  	#IFFileUpload()
   </div>
   	<ul id="attachments_$!{portlet.ID}" class="attachments">
   	#foreach($record in $!result.AttachmentFileNameList )
-  	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span></li>
+  	<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.DELETE</span></li>
   	#end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
