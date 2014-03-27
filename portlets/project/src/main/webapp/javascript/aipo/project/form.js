@@ -199,7 +199,7 @@ aipo.project.addMemberForm = function () {
 
   //選択肢のtbody要素
   var tbody = dojo.byId('members_form');
-  var cntMember = tbody.children.length - 1;
+  var cntMember = tbody.children.length;
   cntMember++;
 
   //担当者選択
@@ -212,7 +212,7 @@ aipo.project.addMemberForm = function () {
   newTitleTd.className = "p15";
   newTitleTd.noWrap = "true";
   var newTitleHeader = document.createTextNode("  作業時間");
-  var newTitleFooter = document.createTextNode("時間 ");
+  var newTitleFooter = document.createTextNode(" h ");
 
   //テキストボックス
   var newTextBox = document.createElement("input");
@@ -245,7 +245,7 @@ aipo.project.addMemberForm = function () {
   newTitleTd.appendChild(newTextBox);
   newTitleTd.appendChild(newTitleFooter);
   newTitleTd.appendChild(newDeleteLink);
-  tbody.insertBefore(newTr, tbody.childNodes[cntMember]);
+  tbody.appendChild(newTr);
 }
 
 /**

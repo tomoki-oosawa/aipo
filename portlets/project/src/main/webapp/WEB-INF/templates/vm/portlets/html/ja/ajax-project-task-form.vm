@@ -101,9 +101,9 @@
 			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
 		</select></td>
-		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" />時間
+		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> h
 		#if($velocityCount > 1)
-		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)">削除</a>
+		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)"><i class="icon-remove"></i></a>
 		#end
 		</td></tr>
 	#end
@@ -115,9 +115,11 @@
 			<option value="$record.UserId" #if ($!result.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
 		</select></td>
-		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" />時間
+		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> h
 		</td></tr>
 	#end
+	</tbody></table>
+	<table class="w100"><tbody>
 	<tr><td colspan="2"><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">担当者を追加</a></td></tr>
 	</tbody></table>
 #else
