@@ -21,11 +21,12 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#set ($subtitle = $l10n.PROJECT_TASK_DETAIL)
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("タスク詳細")
+#ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader("タスク")
+#ALajaxdetailformheader($l10n.PROJECT_TASK)
 <form onsubmit="return false;" method="post" action="#" id="" name="">
                     <table class="listTable wide mb0">
                         <tbody>
@@ -57,48 +58,48 @@
                         <colgroup class="w15"></colgroup>
                         <colgroup class="w20"></colgroup>
                             <tbody>
-#ALtdcaption("分類")
+#ALtdcaption($l10n.PROJECT_CATEGORY)
 #ALtditemheader()
 $!result.Detail.TrackerString
 #ALtdcellfooter()
-      <td class="caption">開始予定日</td>
+      <td class="caption">$l10n.PROJECT_START_PLAN_DATE</td>
 #ALtditemheader()
 #if($!{result.Detail.StartPlanDate.toString()} != "")
-$!{result.Detail.StartPlanDate.Year}年$!{result.Detail.StartPlanDate.Month}月$!{result.Detail.StartPlanDate.Day}日$!{result.Detail.StartPlanDate.DayOfWeek}
+$!{result.Detail.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.StartPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.StartPlanDate.DayOfWeek}
 #end
 #ALtditemfooter()
 
-#ALtdcaption("ステータス")
+#ALtdcaption($l10n.PROJECT_STATUS)
 #ALtditemheader()
 $!result.Detail.StatusString
 #ALtdcellfooter()
-      <td class="caption">期日</td>
+      <td class="caption">$l10n.PROJECT_END_PLAN_DATE</td>
 #ALtditemheader()
 #if($!{result.Detail.EndPlanDate.toString()} != "")
-$!{result.Detail.EndPlanDate.Year}年$!{result.Detail.EndPlanDate.Month}月$!{result.Detail.EndPlanDate.Day}日$!{result.Detail.EndPlanDate.DayOfWeek}
+$!{result.Detail.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.EndPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.EndPlanDate.DayOfWeek}
 #end
 #ALtditemfooter()
-#ALtdcaption("優先度")
+#ALtdcaption($l10n.PROJECT_PRIORITY)
 #ALtditemheader()
 $!result.Detail.PriorityString
 #ALtdcellfooter()
-<td class="caption">予定工数</td>
+<td class="caption">$l10n.PROJECT_EXPECTED_WORKLOAD</td>
 #ALtditemheader()
-$!{result.Detail.PlanWorkload}h
+$!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 #ALtditemfooter()
-#ALtdcaption("担当者")
+#ALtdcaption($l10n.PROJECT_MEMBER)
 <td>
 	<ul class="w70">
 #foreach($record in $!result.Detail.MemberList)
 		<li class="clearfix">
 			<div class="floatLeft w80">$!record.UserName</div>
-			<div class="floatRight w20 right">$!{record.Workload}h</div>
+			<div class="floatRight w20 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
 		</li>
 #end
 	</ul>
 </td>
 #ALtdcellfooter()
-<td class="caption">進捗率</td>
+<td class="caption">$l10n.PROJECT_PROGRESS_RATE</td>
 #ALtditemheader()
 $!{result.Detail.ProgressRate}%
 #ALtditemfooter()
@@ -110,7 +111,7 @@ $!{result.Detail.ProgressRate}%
                         <tbody>
 							<tr>
 								<td>
-							<div class="caption mb10">説明</div>
+							<div class="caption mb10">$l10n.PROJECT_EXPLANATION</div>
 $!result.Detail.Explanation
                                 </td>
                             </tr>
@@ -119,9 +120,9 @@ $!result.Detail.Explanation
 				</form>
 
 
-#ALajaxdetailformheader("コメント")
+#ALajaxdetailformheader($l10n.PROJECT_COMMENT)
 <table class="listTable wide mb0">
-<caption>コメント</caption>
+<caption>$l10n.PROJECT_COMMENT</caption>
 #if (!$result.Detail.CommentList.isEmpty())
 <tbody>
 #foreach ($record in $result.Detail.CommentList)
@@ -141,7 +142,7 @@ $!result.Detail.Explanation
 					#end
 				</div>
 				<div class="alignleft">
-					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.Year}年$!{record.CreateDate.Month}月$!{record.CreateDate.Day}日$!{record.CreateDate.Hour}時$!{record.CreateDate.Minute}分
+					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.Year}${l10n.PROJECT_YEAR}$!{record.CreateDate.Month}${l10n.PROJECT_MONTH}$!{record.CreateDate.Day}${l10n.PROJECT_DATE}$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.Hour}:$!{record.CreateDate.Minute}
 				</div>
 			</div>
 			<div><br>
@@ -179,13 +180,13 @@ $!result.Detail.Explanation
 	<table class="listTable wide">
 		<tbody>
 			<tr>
-				<td class="caption"><span class="required">内容</span></td>
+				<td class="caption"><span class="required">$l10n.PROJECT_CONTENT</span></td>
 				<td>
 					#ALtextarea('comment' '' 5 40)
 				</td>
 			</tr>
 			<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-				<td class="caption">添付ファイル</td>
+				<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 				<td>
 					<div class="clearfix">
 					<div>
@@ -201,7 +202,7 @@ $!result.Detail.Explanation
 	</table>
 
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="コメントする" onclick="aimluck.io.setHiddenValue(this);">
+<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.PROJECT_DO_COMMENT" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
