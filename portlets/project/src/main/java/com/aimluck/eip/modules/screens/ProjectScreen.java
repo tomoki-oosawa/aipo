@@ -22,6 +22,9 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.ParameterParser;
@@ -55,6 +58,8 @@ public class ProjectScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
 
+      clearSession(rundata, context);
+
       ParameterParser parser = rundata.getParameters();
       ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
         .getString(ALEipConstants.LIST_FILTER));
@@ -86,6 +91,27 @@ public class ProjectScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     return ProjectUtils.PROJECT_PORTLET_NAME;
+  }
+
+  /**
+   * セッション情報をクリアする
+   * 
+   * @param rundata
+   *          RunData
+   * @param context
+   *          Context
+   */
+  private void clearSession(RunData rundata, Context context) {
+    List<String> list = new ArrayList<String>();
+    list.add("target_keyword");
+    list.add("target_user_id");
+    list.add("target_tracker");
+    list.add("target_priority");
+    list.add("target_status");
+    list.add("target_progress_rate_from");
+    list.add("target_progress_rate_to");
+    list.add("target_delay");
+    ALEipUtils.removeTemp(rundata, context, list);
   }
 
 }

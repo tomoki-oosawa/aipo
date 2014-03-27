@@ -697,7 +697,7 @@ public class ProjectTaskSelectData extends
       whereList.add(" tree.task_name LIKE #bind($target_keyword)");
     }
     // 担当者
-    if (target_user_id != null && !target_user_id.equals("all")) {
+    if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {
       StringBuilder where = new StringBuilder();
       where.append(" EXISTS(");
       where.append("   SELECT 0");
@@ -708,29 +708,31 @@ public class ProjectTaskSelectData extends
       whereList.add(String.valueOf(where));
     }
     // 分類
-    if (target_tracker != null && !target_tracker.equals("all")) {
+    if (StringUtils.isNotEmpty(target_tracker) && !target_tracker.equals("all")) {
       whereList.add(" tree.tracker = #bind($target_tracker)");
     }
     // 優先度
-    if (target_priority != null && !target_priority.equals("all")) {
+    if (StringUtils.isNotEmpty(target_priority)
+      && !target_priority.equals("all")) {
       whereList.add(" tree.priority = #bind($target_priority)");
     }
     // ステータス
-    if (target_status != null && !target_status.equals("all")) {
+    if (StringUtils.isNotEmpty(target_status) && !target_status.equals("all")) {
       whereList.add(" tree.status = #bind($target_status)");
     }
     // 進捗率FROM
-    if (target_progress_rate_from != null
+    if (StringUtils.isNotEmpty(target_progress_rate_from)
       && !target_progress_rate_from.equals("0")) {
       whereList.add(" tree.progress_rate >= #bind($target_progress_rate_from)");
     }
     // 進捗率TO
-    if (target_progress_rate_to != null
+    if (StringUtils.isNotEmpty(target_progress_rate_to)
       && !target_progress_rate_to.equals("100")) {
       whereList.add(" tree.progress_rate <= #bind($target_progress_rate_to)");
     }
     // 進捗遅れ
-    if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
+    if (StringUtils.isNotEmpty(target_delay)
+      && target_delay.equals(ProjectUtils.FLG_ON)) {
       whereList
         .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
     }
@@ -743,32 +745,34 @@ public class ProjectTaskSelectData extends
     sqlCountTemp.param("project_id", selectedProjectId);
 
     // 分類
-    if (target_keyword != null && target_keyword.trim().length() > 0) {
+    if (StringUtils.isNotEmpty(target_keyword)
+      && target_keyword.trim().length() > 0) {
       sqltemp.param("target_keyword", "%" + target_keyword + "%");
       sqlCountTemp.param("target_keyword", "%" + target_keyword + "%");
     }
     // 担当者
-    if (target_user_id != null && !target_user_id.equals("all")) {
+    if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {
       sqltemp.param("target_user_id", Integer.valueOf(target_user_id));
       sqlCountTemp.param("target_user_id", Integer.valueOf(target_user_id));
     }
     // 分類
-    if (target_tracker != null && !target_tracker.equals("all")) {
+    if (StringUtils.isNotEmpty(target_tracker) && !target_tracker.equals("all")) {
       sqltemp.param("target_tracker", target_tracker);
       sqlCountTemp.param("target_tracker", target_tracker);
     }
     // 優先度
-    if (target_priority != null && !target_priority.equals("all")) {
+    if (StringUtils.isNotEmpty(target_priority)
+      && !target_priority.equals("all")) {
       sqltemp.param("target_priority", target_priority);
       sqlCountTemp.param("target_priority", target_priority);
     }
     // ステータス
-    if (target_status != null && !target_status.equals("all")) {
+    if (StringUtils.isNotEmpty(target_status) && !target_status.equals("all")) {
       sqltemp.param("target_status", target_status);
       sqlCountTemp.param("target_status", target_status);
     }
     // 進捗率FROM
-    if (target_progress_rate_from != null
+    if (StringUtils.isNotEmpty(target_progress_rate_from)
       && !target_progress_rate_from.equals("0")) {
       sqltemp.param("target_progress_rate_from", Integer
         .valueOf(target_progress_rate_from));
@@ -776,7 +780,7 @@ public class ProjectTaskSelectData extends
         .valueOf(target_progress_rate_from));
     }
     // 進捗率TO
-    if (target_progress_rate_to != null
+    if (StringUtils.isNotEmpty(target_progress_rate_to)
       && !target_progress_rate_to.equals("100")) {
       sqltemp.param("target_progress_rate_to", Integer
         .valueOf(target_progress_rate_to));

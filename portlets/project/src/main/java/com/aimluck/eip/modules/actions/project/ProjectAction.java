@@ -31,7 +31,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.project.ProjectSelectData;
 import com.aimluck.eip.project.ProjectTaskSelectData;
@@ -48,29 +47,6 @@ public class ProjectAction extends ALBaseAction {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProjectAction.class.getName());
-
-  /** ソート値のキー */
-  private static final String LIST_SORT_STR = new StringBuffer()
-    .append(ProjectTaskSelectData.class.getName())
-    .append(ALEipConstants.LIST_SORT)
-    .toString();
-
-  /** ソート項目のキー */
-  private static final String LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(ProjectTaskSelectData.class.getName())
-    .append(ALEipConstants.LIST_SORT_TYPE)
-    .toString();
-
-  /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(ProjectTaskSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
-
-  /** フィルタ項目のキー */
-  private static final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
-    ProjectTaskSelectData.class.getName()).append(
-    ALEipConstants.LIST_FILTER_TYPE).toString();
 
   /**
    * 通常表示の際の処理を記述します。
@@ -205,6 +181,14 @@ public class ProjectAction extends ALBaseAction {
    */
   private void clearSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
+    list.add("target_keyword");
+    list.add("target_user_id");
+    list.add("target_tracker");
+    list.add("target_priority");
+    list.add("target_status");
+    list.add("target_progress_rate_from");
+    list.add("target_progress_rate_to");
+    list.add("target_delay");
     ALEipUtils.removeTemp(rundata, context, list);
   }
 
