@@ -133,7 +133,7 @@
 #ALtditemfooter()
 ##開始予定日
 #ALtdcaption($!result.getFieldName("start_plan_date"))
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
 	<div dojoType="aipo.widget.DropdownDatepicker" id="start_plan_date_picker" widgetId="start_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="開始予定日" hiddenId="start_date" #if ($!result.StartPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartPlanDate.Year}/$!{result.StartPlanDate.Month}/$!{result.StartPlanDate.Day}"checked="checked" #end inputId="input_start_plan_date" dateId="start_plan_date" displayCheck=""></div>
 #else
@@ -142,7 +142,7 @@
 #ALtditemfooter()
 ##期日
 #ALtdcaption("$l10n.PROJECT_DEADLINE")
-#ALtditemheader()
+#ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
 	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="完了予定日" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
 #else
