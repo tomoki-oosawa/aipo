@@ -28,94 +28,89 @@
 <h2>プロジェクトの管理</h2>
 #AUISummaryDiv()
 #if($result.ProjectCount != 0)
-#AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
+	#AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
 #end
 #AUISummaryDivfooter()
-#if($result.ProjectCount != 0)
-#AUISummaryDiv()
-<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
-#ALformfooter()
-#AUISummaryDivfooter()
-#end
+
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("プロジェクト")
 #if($result.ProjectCount == 0)
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
-#AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
-#else
-#AUISummaryDiv()
-#AUIajaxpageview('ProjectListScreen' $result)
-#AUISummaryDivfooter()
-
-
-<table class="auiRowTable auiMbTable wide">
-								<tbody>
-								<tr>
-#ALtdhead("#ALajaxsort('project_name' 'プロジェクト名' $result 'ProjectListScreen')")
-#ALtdhead("進捗率")
-#ALtdhead("実績工数")
-#ALtdhead("予定工数")
-#ALtdhead("残タスク")
-#ALtdhead("管理者")
-#ALtdhead("更新日")
-
-
-#foreach ($record in $result.List)
-	#if($!{record.planProgressRate.toString()} == "")
-		#set($planProgressRate = "-")
-	#else
-		#set($planProgressRate = "$!{record.planProgressRate}%")
-	#end
-	#if($!{record.PlanWorkload.toString()} == "")
-		#set($planWorkload = "-")
-	#else
-		#set($planWorkload = "$!{record.PlanWorkloadFormat}h")
-	#end
-	#if($!{record.Workload.toString()} == "")
-		#set($workload = "-")
-	#else
-		#set($workload = "$!{record.WorkloadFormat}h")
-	#end
-	#if($!{record.ForecastWorkload.toString()} == "")
-		#set($forecastWorkload = "-")
-	#else
-		#set($forecastWorkload = "$!{record.ForecastWorkloadFormat}h")
-	#end
-	<tr>
-	#ALtdcellheaderAtt('class="auiMTCaption"')
-		<div>
-		<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectDetailScreen").addQueryData("entityid",$record.ProjectId))');">$!record.ProjectName</a>
-		</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt('class="center" nowrap')
-		<div>$!{record.progressRate}%</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-		<div>$workload</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-		<div>$planWorkload</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-		<div>$!{record.ReminderTask}</div>
-	#ALtdcellfooter()
-	#ALtdcellheader()
-		<div>$!record.AdminUserName</div>
-	#ALtdcellfooter()
-	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-		<div>$!{record.TaskUpdateDate.Year}/$!{record.TaskUpdateDate.Month}/$!{record.TaskUpdateDate.Day}</div>
-	#ALtdcellfooter()
+    #AUIrowTableWide()
+    <tr>
+	<td colspan="4" class="auiNoData">
+    <p class="mh10">
+    #AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
+    </p>
+    </td>
 	</tr>
-#end
-</table>
-#AUISummaryDiv()
-#AUIajaxpageview('ProjectListScreen' $result)
-#AUISummaryDivfooter()
+    #AUItablefooter()
+#else
+    #AUISummaryDiv()
+    #AUIajaxpageview('ProjectListScreen' $result)
+    #AUISummaryDivfooter()
+    
+    <table class="auiRowTable auiMbTable wide">
+		<tbody>
+    		<tr>
+    #ALtdhead("#ALajaxsort('project_name' 'プロジェクト名' $result 'ProjectListScreen')")
+    #ALtdhead("進捗率")
+    #ALtdhead("実績工数")
+    #ALtdhead("予定工数")
+    #ALtdhead("残タスク")
+    #ALtdhead("管理者")
+    #ALtdhead("更新日")
+			</tr>
+    #foreach ($record in $result.List)
+    	#if($!{record.planProgressRate.toString()} == "")
+    		#set($planProgressRate = "-")
+    	#else
+    		#set($planProgressRate = "$!{record.planProgressRate}%")
+    	#end
+    	#if($!{record.PlanWorkload.toString()} == "")
+    		#set($planWorkload = "-")
+    	#else
+    		#set($planWorkload = "$!{record.PlanWorkloadFormat}h")
+    	#end
+    	#if($!{record.Workload.toString()} == "")
+    		#set($workload = "-")
+    	#else
+    		#set($workload = "$!{record.WorkloadFormat}h")
+    	#end
+    	#if($!{record.ForecastWorkload.toString()} == "")
+    		#set($forecastWorkload = "-")
+    	#else
+    		#set($forecastWorkload = "$!{record.ForecastWorkloadFormat}h")
+    	#end
+    	<tr #if($record.isDelay()) class="bgRed" #end>
+    	#ALtdcellheaderAtt('class="auiMTCaption"')
+    		<div>
+    		<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectDetailScreen").addQueryData("entityid",$record.ProjectId))');">$!record.ProjectName</a>
+    		</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center" nowrap')
+    		<div>$!{record.progressRate}%</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$workload</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$planWorkload</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$!{record.ReminderTask}</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheader()
+    		<div>$!record.AdminUserName</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$!{record.TaskUpdateDate.Year}/$!{record.TaskUpdateDate.Month}/$!{record.TaskUpdateDate.Day}</div>
+    	#ALtdcellfooter()
+    	</tr>
+    #end
+    </table>
+    #AUISummaryDiv()
+    #AUIajaxpageview('ProjectListScreen' $result)
+    #AUISummaryDivfooter()
 #end
 #ALformfooter()
 #AUIcontentsAreaFooter()

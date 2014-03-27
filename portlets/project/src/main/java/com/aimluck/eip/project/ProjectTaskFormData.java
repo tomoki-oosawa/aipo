@@ -627,9 +627,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
 
       // プロジェクト情報を更新
-      if (updateProject(project.getProjectId())) {
-        Database.commit();
-      }
+      ProjectFormUtils.updateProject(project.getProjectId(), loginUser
+        .getUserId()
+        .getValueWithInt());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -718,33 +718,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   }
 
   /**
-   * プロジェクトを更新する
-   * 
-   * @param projectId
-   *          プロジェクトID
-   * @return TRUE:更新実行 FALSE:更新しない
-   */
-  private boolean updateProject(Integer projectId) {
-
-    // オブジェクトモデルを取得
-    EipTProject project = ProjectUtils.getEipTProject(projectId);
-    if (project == null) {
-      return false;
-    }
-
-    if (ProjectUtils.FLG_OFF.equals(project.getProgressFlg())) {
-      // 自動計算しない場合
-      return false;
-    }
-
-    project.setProgressRate(ProjectUtils.getProjectProgressRate(projectId));
-    project.setUpdateUserId(loginUser.getUserId().getValueWithInt());
-    project.setUpdateDate(Calendar.getInstance().getTime());
-
-    return true;
-  }
-
-  /**
    * タスクを更新します。
    * 
    * @param rundata
@@ -822,9 +795,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
 
       // プロジェクト情報を更新
-      if (updateProject(task.getProjectId())) {
-        Database.commit();
-      }
+      ProjectFormUtils.updateProject(project.getProjectId(), loginUser
+        .getUserId()
+        .getValueWithInt());
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

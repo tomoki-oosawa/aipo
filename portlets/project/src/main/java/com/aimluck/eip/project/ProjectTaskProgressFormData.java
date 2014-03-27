@@ -40,6 +40,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.project.util.ProjectFormUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -208,6 +209,10 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
 
         // 親タスク情報を更新
         ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
+
+        // プロジェクト情報を更新
+        ProjectFormUtils.updateProject(task.getProjectId(), ALEipUtils
+          .getUserId(rundata));
       }
     } catch (Exception e) {
       Database.rollback();

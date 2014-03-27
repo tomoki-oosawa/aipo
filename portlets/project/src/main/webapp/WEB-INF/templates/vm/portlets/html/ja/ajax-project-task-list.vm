@@ -119,7 +119,7 @@
         		#ALtdheadAtt("期日" "class='w10'")
         	</tr>
         	#foreach ($record in $result.List)
-        	<tr>
+        	<tr #if($!{record.Delay}) class="bgRed" #end>
         		#ALtdcellheaderAtt('class="auiMTCaption"')
         		<div>
         			$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');" style="display:inline;">$!record.TaskName</a>
@@ -130,13 +130,13 @@
         		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
         		#ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
         		#if(!$!record.HasChildrenForForm)
-            		<select name="progress_rate" #if($!{record.Delay}) style="color:red;" #end onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
+            		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
             		#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
             			<option #if($!{record.ProgressRate.toString()} == "${rate}") selected="selected" #end value="${rate}">${rate}%</option>
             		#end
             		</select>
         		#else
-                    <span #if($!{record.Delay}) style="color:red;" #end>$!{record.ProgressRate.toString()}%</span>
+                    <span>$!{record.ProgressRate.toString()}%</span>
         		#end
         		#ALtdcellfooter()
         		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide"')

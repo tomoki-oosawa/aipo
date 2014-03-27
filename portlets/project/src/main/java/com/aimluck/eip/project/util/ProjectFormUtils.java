@@ -23,6 +23,7 @@
 package com.aimluck.eip.project.util;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,7 @@ import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTProject;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskMember;
 import com.aimluck.eip.orm.Database;
@@ -146,4 +148,30 @@ public class ProjectFormUtils {
     return updateParentTask(task.getParentTaskId());
   }
 
+  /**
+   * プロジェクトを更新する
+   * 
+   * @param projectId
+   *          プロジェクトID
+   * @return TRUE:更新実行 FALSE:更新しない
+   */
+  public static void updateProject(Integer projectId, Integer loginUserId) {
+
+    // オブジェクトモデルを取得
+    EipTProject project = ProjectUtils.getEipTProject(projectId);
+    if (project == null) {
+      return;
+    }
+
+    if (ProjectUtils.FLG_OFF.equals(project.getProgressFlg())) {
+      // 自動計算しない場合
+      return;
+    }
+
+    project.setProgressRate(ProjectUtils.getProjectProgressRate(projectId));
+    project.setUpdateUserId(loginUserId);
+    project.setUpdateDate(Calendar.getInstance().getTime());
+
+    Database.commit();
+  }
 }

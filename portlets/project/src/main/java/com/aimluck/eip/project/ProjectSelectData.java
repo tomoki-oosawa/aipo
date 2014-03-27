@@ -219,8 +219,15 @@ public class ProjectSelectData extends
         Expression exp2 =
           ExpressionFactory
             .lessExp(EipTProjectTask.PROGRESS_RATE_PROPERTY, 100);
-        query.setQualifier(exp1.andExp(exp2));
-
+        /** ステータスが新規、進行中、フィードバックのものだけ残りタスクとする */
+        Expression expNew =
+          ExpressionFactory.matchExp(EipTProjectTask.STATUS_PROPERTY, "1");
+        Expression expProgress =
+          ExpressionFactory.matchExp(EipTProjectTask.STATUS_PROPERTY, "2");
+        Expression expFeedback =
+          ExpressionFactory.matchExp(EipTProjectTask.STATUS_PROPERTY, "3");
+        query.setQualifier(exp1.andExp(exp2).andExp(
+          expNew.orExp(expProgress).orExp(expFeedback)));
         data.setReminderTask(query.getCount());
       }
 
