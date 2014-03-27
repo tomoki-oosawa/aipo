@@ -663,8 +663,11 @@ aipo.project.projectSearch = function (portlet_id) {
       }
     }
   );
+  var q = dojo.byId("q" + portlet_id);
   var qs = [
-    [types.join(","), params.join(",")]
+    ["filter", params.join(",")],
+    ["filtertype", types.join(",")],
+    ["keyword", q ? q.value : ""]
   ];
   aipo.viewPage(baseuri, portlet_id, qs);
 };
