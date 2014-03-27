@@ -139,10 +139,10 @@
                     <span>$!{record.ProgressRate.toString()}%</span>
         		#end
         		#ALtdcellfooter()
-        		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide"')
-        		#ALtdcellAtt("<div>$!{record.PlanWorkloadFormat}h</div>" 'class="center mb_hide"')
-        		#ALtdcellAtt("<div>$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日</div>" 'class="mb_hide"')
-        		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" '')
+        		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("<div>$!{record.PlanWorkloadFormat}h</div>" 'class="center mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("<div>$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日</div>" 'class="mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'nowrap="nowrap"')
         	</tr>
         	#end
     	#AUItablefooter()
