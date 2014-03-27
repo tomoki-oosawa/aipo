@@ -52,10 +52,10 @@
 	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 	<div>
 		<p class="caption">プロジェクト</p>
-		<ul class="filtertype_$!portlet.ID"data-type="project_id" data-defaultparam="0">
-			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのプロジェクト</a></li>
+		<ul class="filtertype_$!portlet.ID" data-type="project_id" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>すべてのプロジェクト</a></li>
 			#foreach($record in $result.AllProject)
-			<li #if ($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected"#end data-param="$!record.ProjectId"><a href="javascript:void(0)"  #if($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$record.ProjectName</a></li>
+			<li #if ($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected"#end data-param="$!record.ProjectId"><a href="javascript:void(0)"  #if($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>$record.ProjectName</a></li>
 			#end
 		</ul>
 	</div>

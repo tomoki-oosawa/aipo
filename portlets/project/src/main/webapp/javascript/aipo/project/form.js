@@ -553,6 +553,13 @@ aipo.project.filterClick = function (portlet_id, thisnode, event) {
   aipo.project.filteredSearch(portlet_id);
 }
 
+aipo.project.projectFilterClick = function (portlet_id, thisnode) {
+  var li = thisnode.parentNode;
+  var ul = li.parentNode;
+  aipo.project.filterSelect(ul, li);
+  aipo.project.projectSearch(portlet_id);
+}
+
 
 /**
  * 検索バーの幅を調節する。
@@ -624,7 +631,7 @@ aipo.project.filteredSearch = function (portlet_id) {
     }
   });
   var q = dojo.byId("q" + portlet_id);
-  
+
   var qs = [
     ["target_user_id", params[0]],
     ["target_tracker", params[1]],
@@ -634,4 +641,31 @@ aipo.project.filteredSearch = function (portlet_id) {
   ];
   aipo.viewPage(baseuri, portlet_id, qs);
 }
+
+/**
+ * urlを整形して送信。
+ */
+aipo.project.projectSearch = function (portlet_id) {
+  var baseuri = dojo.byId("baseuri_" + portlet_id).value;
+  var types = [];
+  var params = [];
+  dojo.query("ul.filtertype_" + portlet_id).forEach(function (ul) {
+      //console.info(ul);
+      var type = ul.getAttribute("data-type");
+      types.push(type);
+
+      var activeli = dojo.query("li.selected", ul)[0];
+      if (activeli) {
+        var param = activeli.getAttribute("data-param");
+        params.push(param);
+      } else {
+        params.push(ul.getAttribute("data-defaultparam"));
+      }
+    }
+  );
+  var qs = [
+    [types.join(","), params.join(",")]
+  ];
+  aipo.viewPage(baseuri, portlet_id, qs);
+};
 

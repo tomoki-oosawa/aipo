@@ -98,6 +98,7 @@ public class ProjectAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
+    listData.setTopView(true);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "project");
   }
@@ -204,22 +205,6 @@ public class ProjectAction extends ALBaseAction {
    */
   private void clearSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
-    // エンティティIDの初期化
-    list.add("entityid");
-    list.add(LIST_SORT_STR);
-    list.add(LIST_SORT_TYPE_STR);
-    list.add(LIST_FILTER_STR);
-    list.add(LIST_FILTER_TYPE_STR);
-    // 表示条件
-    list.add("target_keyword"); // キーワード
-    list.add("target_user_id"); // ユーザー
-    list.add("target_tracker"); // 分類
-    list.add("target_priority"); // 優先度
-    list.add("target_status"); // ステータス
-    list.add("target_progress_rate_from"); // ガントチャート表示From
-    list.add("target_progress_rate_to"); // ガントチャート表示To
-    list.add("target_delay"); // 進捗遅れ
-    list.add("progress_line_checked"); // イナズマ線表示
     ALEipUtils.removeTemp(rundata, context, list);
   }
 

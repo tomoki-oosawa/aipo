@@ -66,6 +66,7 @@ public class ProjectScreen extends ALVelocityScreen {
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));
+      listData.setTopView(true);
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-project.vm";
