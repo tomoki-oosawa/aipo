@@ -31,10 +31,11 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タスクのコメントResultDataです。 <BR>
- *
+ * 
  */
 public class ProjectTaskCommentResultData implements ALData {
 
@@ -85,7 +86,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * コメントIDを取得する
-   *
+   * 
    * @return コメントID
    */
   public ALNumberField getCommentId() {
@@ -94,7 +95,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * コメントIDを設定する
-   *
+   * 
    * @param i
    *          コメントID
    */
@@ -104,7 +105,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * タスクIDを取得する
-   *
+   * 
    * @return タスクID
    */
   public ALNumberField getTaskId() {
@@ -113,7 +114,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * タスクIDを設定する
-   *
+   * 
    * @param i
    *          タスクID
    */
@@ -123,16 +124,16 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * コメントを取得する
-   *
+   * 
    * @return タスクID
    */
-  public ALStringField getComment() {
-    return comment;
+  public String getComment() {
+    return ALEipUtils.getMessageList(comment.getValue());
   }
 
   /**
    * コメントを設定する
-   *
+   * 
    * @param s
    *          コメント
    */
@@ -142,7 +143,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成者IDを取得する
-   *
+   * 
    * @return 作成者ID
    */
   public ALNumberField getCreateUserId() {
@@ -151,7 +152,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成者IDを設定する
-   *
+   * 
    * @param i
    *          作成者ID
    */
@@ -161,7 +162,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成者を取得する
-   *
+   * 
    * return 作成者
    */
   public ALStringField getCreateUser() {
@@ -170,7 +171,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成者を設定する
-   *
+   * 
    * @param str
    *          作成者
    */
@@ -180,7 +181,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成日を取得する
-   *
+   * 
    * @return 作成日
    */
   public ALDateTimeField getCreateDate() {
@@ -189,7 +190,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 作成日を設定する
-   *
+   * 
    * @param dt
    *          作成日
    */
@@ -199,7 +200,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 更新日を取得する
-   *
+   * 
    * @return 更新日
    */
   public ALDateTimeField getUpdateDate() {
@@ -208,7 +209,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 更新日を設定する
-   *
+   * 
    * @param dt
    *          更新日
    */
@@ -218,7 +219,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 添付ファイルリストを取得します。
-   *
+   * 
    * @return list 添付ファイルリスト
    */
   public List<FileuploadBean> getAttachmentFileList() {
@@ -227,7 +228,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 添付ファイルリストを設定します。
-   *
+   * 
    * @param list
    *          添付ファイルリスト
    */
@@ -237,7 +238,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 顔写真フラグを設定する
-   *
+   * 
    * @param b
    *          フラグ
    */
@@ -247,7 +248,7 @@ public class ProjectTaskCommentResultData implements ALData {
 
   /**
    * 顔写真フラグを取得する
-   *
+   * 
    * @return has_photo
    */
   public boolean hasPhoto() {

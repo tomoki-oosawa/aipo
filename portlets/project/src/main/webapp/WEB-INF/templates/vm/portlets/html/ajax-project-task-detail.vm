@@ -26,6 +26,9 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+<div id="messageDivComment"></div>
+<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxdetailformheader($l10n.PROJECT_TASK)
 <form onsubmit="return false;" method="post" action="#" id="" name="">
                     <table class="listTable wide mb0">
@@ -172,8 +175,6 @@ $!result.Detail.Explanation
 ##end
 #ALformfooter()
 
-<div id="messageDivComment"></div>
-<div id="messageDiv_$!portlet.ID"></div>
 #ALajaxscreenformheader("projectTaskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessageComment)")
 <input type="hidden" name="mode" value="comment_insert" />
 <input type="hidden" name="entityid" value="${result.Detail.TaskId}" />
