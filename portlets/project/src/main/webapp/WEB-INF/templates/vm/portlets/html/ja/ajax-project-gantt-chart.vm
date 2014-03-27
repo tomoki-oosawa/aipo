@@ -141,7 +141,13 @@
 		#set($dataTop = $lineHeightHdr * 3 + 4) ##データ部TOPのy座標(+4は枠線分)
 
 		#########タスク名の一覧#########
+	#if($result.isAndroid2())
+	<table>
+	<tr>
+	<td class="top">
+	#else
 	<div class="clearfix">
+	#end
 		<div id="gantt_task">
 			<table class="ganttTaskTable">
 				<tr>
@@ -157,7 +163,8 @@
 				</tr>
 				#end
 			</table>
-		</div>
+		</div>##gantt_task
+		#if($result.isAndroid2())</td><td class="top">#end
 		#########ガントチャート#########
 
 		<div id="gantt_area">
@@ -299,8 +306,12 @@
 			<div id="count" style="display:none;">$result.List.size()</div>
 			<div id="todayDay" style="display:none;">$todayDay</div>
 			<div id="nowTime" style="display:none;">$result.NowTime</div>
-		</div>
+		</div>##gantt_area
+	#if($result.isAndroid2())
+	</td></tr></table>
+	#else
 	</div>
+	#end
 	#end
 #end
 #AUIcontentsAreaFooter()

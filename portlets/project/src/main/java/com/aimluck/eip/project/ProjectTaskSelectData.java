@@ -127,6 +127,9 @@ public class ProjectTaskSelectData extends
 
   private Calendar calTo;
 
+  /** Android2かどうか */
+  private boolean isAndroid2;
+
   /**
    * 初期設定
    * 
@@ -177,6 +180,8 @@ public class ProjectTaskSelectData extends
     // イナズマ線表示
     progress_line_checked =
       ProjectUtils.getParameter(rundata, context, "progress_line_checked");
+    // ユーザーエージェントがAndroid2ならTrue
+    isAndroid2 = ALEipUtils.isAndroid2Browser(rundata);
   }
 
   /**
@@ -1117,6 +1122,15 @@ public class ProjectTaskSelectData extends
    */
   public String getProgressLineChecked() {
     return progress_line_checked;
+  }
+
+  /**
+   * Android2かどうかを返します。
+   * 
+   * @return Android2かどうか
+   */
+  public boolean isAndroid2() {
+    return isAndroid2;
   }
 
   /**
