@@ -690,13 +690,14 @@ public class ProjectTaskSimpleSelectData extends
   private List<String> getMySQLWhereList() {
     List<String> whereList = new ArrayList<String>();
     // キーワード
-    if (target_keyword != null && target_keyword.trim().length() > 0) {
+    if (StringUtils.isNotEmpty(target_keyword)
+      && target_keyword.trim().length() > 0) {
       whereList.add(" tree.task_name LIKE "
         + ProjectUtils.getLikeEnclosed(ProjectUtils
           .getEscapedStringForMysql(target_keyword)));
     }
     // 担当者
-    if (target_user_id != null && !target_user_id.equals("all")) {
+    if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {
       StringBuilder where = new StringBuilder();
       where.append(" EXISTS(");
       where.append("   SELECT 0");
@@ -707,29 +708,31 @@ public class ProjectTaskSimpleSelectData extends
       whereList.add(String.valueOf(where));
     }
     // 分類
-    if (target_tracker != null && !target_tracker.equals("all")) {
+    if (StringUtils.isNotEmpty(target_tracker) && !target_tracker.equals("all")) {
       whereList.add(" tree.tracker = " + target_tracker);
     }
     // 優先度
-    if (target_priority != null && !target_priority.equals("all")) {
+    if (StringUtils.isNotEmpty(target_priority)
+      && !target_priority.equals("all")) {
       whereList.add(" tree.priority = " + target_priority);
     }
     // ステータス
-    if (target_status != null && !target_status.equals("all")) {
+    if (StringUtils.isNotEmpty(target_status) && !target_status.equals("all")) {
       whereList.add(" tree.status = " + target_status);
     }
     // 進捗率FROM
-    if (target_progress_rate_from != null
+    if (StringUtils.isNotEmpty(target_progress_rate_from)
       && !target_progress_rate_from.equals("0")) {
       whereList.add(" tree.progress_rate >= " + target_progress_rate_from);
     }
     // 進捗率TO
-    if (target_progress_rate_to != null
+    if (StringUtils.isNotEmpty(target_progress_rate_to)
       && !target_progress_rate_to.equals("100")) {
       whereList.add(" tree.progress_rate <= " + target_progress_rate_to);
     }
     // 進捗遅れ
-    if (target_delay != null && target_delay.equals(ProjectUtils.FLG_ON)) {
+    if (StringUtils.isNotEmpty(target_delay)
+      && target_delay.equals(ProjectUtils.FLG_ON)) {
       whereList
         .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
     }

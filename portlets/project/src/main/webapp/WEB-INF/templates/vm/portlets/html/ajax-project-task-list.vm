@@ -87,16 +87,16 @@
     #AUISummaryDiv()
     <select name="target_progress_rate_from" id="target_progress_rate_from" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')">
     #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    	<option value="${rate}" #if ($!result.TargetProgressRateFrom == "${rate}") selected="selected" #end>${rate}%</option>
+    	<option value="${rate}" #if ("$!result.TargetProgressRateFrom" == "${rate}") selected="selected" #end>${rate}%</option>
     #end
     </select>
     -
     <select name="target_progress_rate_to" id="target_progress_rate_to" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')">
     #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    	<option value="${rate}" #if ($!result.TargetProgressRateTo == "$rate" || (!$!result.TargetProgressRateTo && $rate == 100)) selected="selected" #end>${rate}%</option>
+    	<option value="${rate}" #if ("$!result.TargetProgressRateTo" == "$rate" || (!$!result.TargetProgressRateTo && $rate == 100)) selected="selected" #end>${rate}%</option>
     #end
     </select>
-    <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのみ表示</label>
+    <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end>進捗遅れのみ表示</label>
     #if("$result.List.size()" != "0")
 		#AUIajaxpageview('ProjectTaskListScreen' $result)
     #end
@@ -159,9 +159,9 @@
   <div>
 	<p class="caption">担当者</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="target_user_id" data-defaultparam="">
-      <li data-param="" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのユーザー</a></li>
+      <li data-param="" #if("$!result.TargetUserId" == "" || "$!result.TargetUserId" == "0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのユーザー</a></li>
     #foreach($record in $result.projectMembers)
-      <li data-param="$!record.UserId" #if($!result.TargetUserId == $!record.UserId.toString()) class="selected" #end><a href="javascript:void(0);" #if($!result.TargetUserId == $!record.UserId.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
+      <li data-param="$!record.UserId" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
     #end
     </ul>
   </div>
