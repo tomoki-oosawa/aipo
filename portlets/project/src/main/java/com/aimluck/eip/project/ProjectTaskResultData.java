@@ -293,8 +293,8 @@ public class ProjectTaskResultData implements ALData {
    * 
    * @return 説明
    */
-  public ALStringField getExplanation() {
-    return explanation;
+  public String getExplanation() {
+    return ALEipUtils.getMessageList(explanation.getValue());
   }
 
   /**
