@@ -23,128 +23,110 @@
 #set ($indicator_id = "indicator-list-")
 #set ($orderProjectTask = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskChangeTurnFormScreen").addQueryData("projectid","$result.SelectedProjectId"))
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')")
+#set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-##<div class="auiSummaryMeta clearfix">
-##<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
-##</div>
+
 #if(!$result.AllProject)
-<div class="message">プロジェクトが登録されていません。</div>
+	<div class="message">プロジェクトが登録されていません。</div>
 #elseif(!$result.List)
-<div class="message">プロジェクトを選択してください。</div>
+	<div class="message">プロジェクトを選択してください。</div>
 #else
-#AUISummaryDiv()
-<div class="floatRight">
-	<div class="auiSelectButton">
-		<ul>
-			#set($tab = ["タスク一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-			#set($tab = ["ガントチャート", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
-		</ul>
-	</div>
-</div>
-#AUISummaryDivfooter()
-#AUISummaryFilterDivHeader()
-#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
-<input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen")' />
-<input type="hidden" name="template" value="ProjectTaskListScreen"/>
-<div class="filterInputField">
-	<div class="filters" id="filters_$!portlet.ID"></div>
-	<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" ><i class="auiIcon auiIconArwBottom"></i></a>
-	<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
-</div>
-#AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
-#AUISearchIndicator()
-#AUISearchFooter()
-#AUISummaryFilterDivFooter()
-#AUISummaryDiv()
-<select name="" id="">
-	<option value="">0%</option>
-	<option value="">10%</option>
-	<option value="">20%</option>
-	<option value="">30%</option>
-	<option value="">40%</option>
-	<option value="">50%</option>
-	<option value="">60%</option>
-	<option value="">70%</option>
-	<option value="">80%</option>
-	<option value="">90%</option>
-	<option value="">100%</option>
-</select>
--
-<select name="" id="">
-	<option value="">0%</option>
-	<option value="">10%</option>
-	<option value="">20%</option>
-	<option value="">30%</option>
-	<option value="">40%</option>
-	<option value="">50%</option>
-	<option value="">60%</option>
-	<option value="">70%</option>
-	<option value="">80%</option>
-	<option value="">90%</option>
-	<option value="" selected="selected">100%</option>
-</select>
-<label><input type="checkbox">進捗遅れのみ表示</label>
-#AUISummaryDivfooter()
-#if($result.List.size() == 0)
-<div class="message">指定された条件に該当するレコードはありません。</div>
-#else
-#AUISummaryDiv()
-#AUIajaxpageview('ProjectTaskListScreen' $result)
-#AUISummaryDivfooter()
-#AUIrowMTableWide()
-	<tr>
-		#ALtdhead("タスク名")
-		#ALtdheadAtt("分類" "class='thin'")
-		#ALtdheadAtt("ステータス" "class='thin'")
-		#ALtdheadAtt("担当者" "class='wName'")
-		#ALtdheadAtt("進捗率" "class='thin'")
-		#ALtdheadAtt("実績工数" "class='thin'")
-		#ALtdheadAtt("予定工数" "class='thin'")
-        #ALtdheadAtt("開始日" "class='w10'")
-		#ALtdheadAtt("期日" "class='w10'")
-	</tr>
-	#foreach ($record in $result.List)
-	<tr>
-		#ALtdcellheaderAtt('class="auiMTCaption"')
-		<div>
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
-		</div>
-		#ALtdcellfooter()
-		##	#ALtdcellAtt("<div>$!record.TrackerString</div>" 'nowrap="nowrap"')
-		#ALtdcellAtt("<div>$!record.StatusString</div>" 'nowrap="nowrap"')
-		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
-		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'nowrap="nowrap"')
-		#ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
-		<select>
-			<option #if ($!{record.ProgressRate.toString()} == "0" )  selected="selected" #end>0%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "10")  selected="selected" #end>10%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "20")  selected="selected" #end>20%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "30")  selected="selected" #end>30%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "40")  selected="selected" #end>40%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "50")  selected="selected" #end>50%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "60")  selected="selected" #end>60%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "70")  selected="selected" #end>70%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "80")  selected="selected" #end>80%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "90")  selected="selected" #end>90%</option>
-			<option #if ($!{record.ProgressRate.toString()} == "100") selected="selected" #end>100%</option>
-		</select>
-		#ALtdcellfooter()
-		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide"')
-		#ALtdcellAtt("<div>$!{record.PlanWorkloadFormat}h</div>" 'class="center mb_hide"')
-		#ALtdcellAtt("<div>$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日</div>" 'class="mb_hide"')
-		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'class="mb_hide"')
-	</tr>
-	#end
-
-
-	#AUItablefooter()
-	#AUISummaryDiv()
-	#AUIajaxpageview('ProjectTaskListScreen' $result)
-	#AUISummaryDivfooter()
-	#end
+    #AUISummaryDiv()
+    <div class="floatRight">
+    	<div class="auiSelectButton">
+    		<ul>
+    			#set($tab = ["タスク一覧", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+    			#set($tab = ["ガントチャート", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+    		</ul>
+    	</div>
+    </div>
+    #AUISummaryDivfooter()
+    #AUISummaryFilterDivHeader()
+    #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+    <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen")' />
+    <input type="hidden" name="template" value="ProjectTaskListScreen"/>
+    <div class="filterInputField">
+    	<div class="filters" id="filters_$!portlet.ID"></div>
+    	<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" ><i class="auiIcon auiIconArwBottom"></i></a>
+    	<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
+    </div>
+    #AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
+    #AUISearchIndicator()
+    #AUISearchFooter()
+    #AUISummaryFilterDivFooter()
+	
+    #AUISummaryDiv()
+    <select name="" id="">
+    #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    	<option value="${rate}">${rate}%</option>
+    #end
+    </select>
+    -
+    <select name="" id="">
+    #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    	<option value="${rate}" #if(${rate} == 100) selected="selected" #end>${rate}%</option>
+    #end
+    </select>
+    <label><input type="checkbox">進捗遅れのみ表示</label>
+    #AUISummaryDivfooter()
+    #if($result.List.size() == 0)
+		<div class="message">指定された条件に該当するレコードはありません。</div>
+    #else
+        #if("$result.List.size()" != "0")
+            #AUISummaryDiv()
+            #AUIajaxpageview('ProjectTaskListScreen' $result)
+            #AUISummaryDivfooter()
+        #end
+        #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+        <div id="messageDiv-$!portlet.ID"></div>
+        #AUIrowMTableWide()
+        	<tr>
+        		#ALtdhead("タスク名")
+        		#ALtdheadAtt("分類" "class='thin'")
+        		#ALtdheadAtt("ステータス" "class='thin'")
+        		#ALtdheadAtt("担当者" "class='wName'")
+        		#ALtdheadAtt("進捗率" "class='thin'")
+        		#ALtdheadAtt("実績工数" "class='thin'")
+        		#ALtdheadAtt("予定工数" "class='thin'")
+                #ALtdheadAtt("開始日" "class='w10'")
+        		#ALtdheadAtt("期日" "class='w10'")
+        	</tr>
+        	#foreach ($record in $result.List)
+        	<tr>
+        		#ALtdcellheaderAtt('class="auiMTCaption"')
+        		<div>
+        			$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
+        		</div>
+        		#ALtdcellfooter()
+        		#ALtdcellAtt("<div>$!record.StatusString</div>" 'nowrap="nowrap"')
+        		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
+        		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'nowrap="nowrap"')
+        		#ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
+        		#if(!$!record.HasChildrenForForm)
+            		<select name="progress_rate" #if($!{record.Delay}) style="color:red;" #end onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
+            		#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+            			<option #if($!{record.ProgressRate.toString()} == "${rate}") selected="selected" #end value="${rate}">${rate}%</option>
+            		#end
+            		</select>
+        		#else
+                    <span #if($!{record.Delay}) style="color:red;" #end>$!{record.ProgressRate.toString()}%</span>
+        		#end
+        		#ALtdcellfooter()
+        		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide"')
+        		#ALtdcellAtt("<div>$!{record.PlanWorkloadFormat}h</div>" 'class="center mb_hide"')
+        		#ALtdcellAtt("<div>$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日</div>" 'class="mb_hide"')
+        		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'class="mb_hide"')
+        	</tr>
+        	#end
+    	#AUItablefooter()
+    	#AUISummaryDiv()
+    	#AUIajaxpageview('ProjectTaskListScreen' $result)
+    	#AUISummaryDivfooter()
+    #end
 #end
 #AUIcontentsAreaFooter()
 

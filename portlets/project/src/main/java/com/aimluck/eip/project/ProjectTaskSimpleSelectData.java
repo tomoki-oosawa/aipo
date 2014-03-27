@@ -1385,6 +1385,14 @@ public class ProjectTaskSimpleSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
       .valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
+
+    ALEipUtils.setTemp(rundata, context, new StringBuffer()
+      .append(ProjectTaskSelectData.class.getName())
+      .append(ALEipConstants.LIST_FILTER)
+      .toString(), String.valueOf(selectedProjectId));
+    ALEipUtils.setTemp(rundata, context, new StringBuffer().append(
+      ProjectTaskSelectData.class.getName()).append(
+      ALEipConstants.LIST_FILTER_TYPE).toString(), "project_id");
   }
 
   public void setTopView(boolean bool) {

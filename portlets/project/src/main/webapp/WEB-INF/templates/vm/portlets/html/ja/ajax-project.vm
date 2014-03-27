@@ -72,38 +72,20 @@
         <colgroup class="thin"></colgroup>
         <tbody>
         #foreach ($record in $result.List)
-            #set ($workload = "$!{record.WorkloadFormat}h")   ##工数
-            #if (!$!{record.ResultDisplayFlg})
-            	#set ($progressRate = "-")
-            	#set ($workload = "-")
-            	#set ($forecastWorkload = "-")
-			#end
 			<tr>
             <td class="auiMTCaption">
 				$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
 			</td>
             <td class="mb_hide" nowrap="nowrap">
-            #if($!{record.Delay})
-				#if(!$!record.HasChildrenForForm)
-					<select name="progress_rate" style="color:red;" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
-    				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    					<option #if ($!{record.ProgressRate.toString()} == "$rate") selected="selected" #end value="${rate}">${rate}%</option>
-					#end
-					</select>
-				#else
-                    <span style="color:red;">$!{record.ProgressRate.toString()}%</span>
+			#if(!$!record.HasChildrenForForm)
+				<select name="progress_rate" #if($!{record.Delay}) style="color:red;" #end onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
+				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+					<option #if ($!{record.ProgressRate.toString()} == "$rate") selected="selected" #end value="${rate}">${rate}%</option>
 				#end
-            #else
-				#if(!$!record.HasChildrenForForm)
-                    <select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
-        				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-        					<option #if ($!{record.ProgressRate.toString()} == "$rate" )  selected="selected" #end value="${rate}">${rate}%</option>
-        				#end
-        			</select>
-				#else
-                    <span>$!{record.ProgressRate.toString()}%</span>
-				#end
-            #end
+				</select>
+			#else
+                <span #if($!{record.Delay}) style="color:red;" #end>$!{record.ProgressRate.toString()}%</span>
+			#end
             </td>
             <td class="mb_hide" nowrap="nowrap">
 			$!{record.UpdateDate}
