@@ -128,7 +128,7 @@
         		#ALtdcellAtt("$!record.TrackerString" 'nowrap="nowrap" class="mb_hide"')
 				#ALtdcellAtt("$!record.StatusString" 'nowrap="nowrap"')
         		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
-        		#ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
+        		#ALtdcellheaderAtt('class="mb_hide"')
         		#if(!$!record.HasChildrenForForm)
             		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
             		#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
@@ -139,10 +139,10 @@
                     <span>$!{record.ProgressRate.toString()}%</span>
         		#end
         		#ALtdcellfooter()
-        		#ALtdcellAtt("<div>$!{record.WorkloadFormat}h</div>" 'class="center mb_hide" nowrap="nowrap"')
-        		#ALtdcellAtt("<div>$!{record.PlanWorkloadFormat}h</div>" 'class="center mb_hide" nowrap="nowrap"')
-        		#ALtdcellAtt("<div>$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日</div>" 'class="mb_hide" nowrap="nowrap"')
-        		#ALtdcellAtt("<div>$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日</div>" 'nowrap="nowrap"')
+        		#ALtdcellAtt("$!{record.WorkloadFormat}h" 'class="center mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("$!{record.PlanWorkloadFormat}h" 'class="center mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日" 'class="mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日" 'nowrap="nowrap"')
         	</tr>
         	#end
     	#AUItablefooter()
