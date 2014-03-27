@@ -97,15 +97,13 @@
     #end
     </select>
     <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if($!result.TargetDelay == "t") checked #end>進捗遅れのみ表示</label>
-    #AUISummaryDivfooter()
+    #if("$result.List.size()" != "0")
+		#AUIajaxpageview('ProjectTaskListScreen' $result)
+    #end
+	#AUISummaryDivfooter()
     #if($result.List.size() == 0)
 		<div class="message">指定された条件に該当するレコードはありません。</div>
     #else
-        #if("$result.List.size()" != "0")
-            #AUISummaryDiv()
-            #AUIajaxpageview('ProjectTaskListScreen' $result)
-            #AUISummaryDivfooter()
-        #end
         #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
         <div id="messageDiv-$!portlet.ID"></div>
         #AUIrowMTableWide()
@@ -148,9 +146,11 @@
         	</tr>
         	#end
     	#AUItablefooter()
+		#if("$result.List.size()" != "0")
     	#AUISummaryDiv()
     	#AUIajaxpageview('ProjectTaskListScreen' $result)
     	#AUISummaryDivfooter()
+		#end
     #end
 #end
 #AUIcontentsAreaFooter()

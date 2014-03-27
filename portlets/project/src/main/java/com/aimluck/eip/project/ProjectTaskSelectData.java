@@ -159,7 +159,11 @@ public class ProjectTaskSelectData extends
     viewDateMaxYear = cal.get(Calendar.YEAR) + 10;
 
     // メンバー
-    projectMembers = ProjectUtils.getProjectMembers(selectedProjectId);
+    if (0 != selectedProjectId.intValue()) {
+      projectMembers = ProjectUtils.getProjectMembers(selectedProjectId);
+    } else {
+      projectMembers = ALEipUtils.getUsers("LoginUser");
+    }
 
     // 基準日(From,To)
     calFrom = ProjectUtils.getViewCalendar(rundata, context, "base_date_from");
