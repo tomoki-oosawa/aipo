@@ -83,7 +83,7 @@
     #AUISearchIndicator()
     #AUISearchFooter()
     #AUISummaryFilterDivFooter()
-	
+
     #AUISummaryDiv()
     <select name="target_progress_rate_from" id="target_progress_rate_from" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')">
     #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
@@ -141,8 +141,18 @@
         		#ALtdcellfooter()
         		#ALtdcellAtt("$!{record.WorkloadFormat}h" 'class="center mb_hide" nowrap="nowrap"')
         		#ALtdcellAtt("$!{record.PlanWorkloadFormat}h" 'class="center mb_hide" nowrap="nowrap"')
-        		#ALtdcellAtt("$!{record.StartPlanDate.Year}年$!{record.StartPlanDate.Month}月$!{record.StartPlanDate.Day}日" 'class="mb_hide" nowrap="nowrap"')
-        		#ALtdcellAtt("$!{record.EndPlanDate.Year}年$!{record.EndPlanDate.Month}月$!{record.EndPlanDate.Day}日" 'nowrap="nowrap"')
+				#if($!{record.StartPlanDate.toString()} != "")
+				#set ($StartPlanDate = "$!{record.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.StartPlanDate.Day}${l10n.PROJECT_DATE}")
+				#else
+				#set ($StartPlanDate = "")
+				#end
+        		#ALtdcellAtt("$StartPlanDate" 'class="mb_hide" nowrap="nowrap"')
+				#if($!{record.EndPlanDate.toString()} != "")
+				#set ($EndPlanDate = "$!{record.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.EndPlanDate.Day}${l10n.PROJECT_DATE}")
+				#else
+				#set ($EndPlanDate = "")
+				#end
+        		#ALtdcellAtt("$EndPlanDate" 'nowrap="nowrap"')
         	</tr>
         	#end
     	#AUItablefooter()
