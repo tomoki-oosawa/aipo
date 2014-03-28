@@ -144,7 +144,11 @@ public class ProjectResultData implements ALData {
    * 
    * @return プロジェクト名
    */
-  public String getProjectName() {
+  public ALStringField getProjectName() {
+    return project_name;
+  }
+
+  public String getProjectNameHtml() {
     return ALCommonUtils.replaceToAutoCR(project_name.toString());
   }
 
