@@ -150,9 +150,13 @@ input[type=password] {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet, .auiPortletHead, .auiPortletHead .inner, .auiPortletTitle, .auiPortletBody, .auiPortletBody .inner, .auiPortletFoot, .auiPortletFoot .inner {
-	background-image:none;
+  background-image: none !important;
 }
-.auiPortletHead {
+
+.auiPortlet {
+  margin: 0;
+}
+.auiPortlet .auiPortletHead {
   position: absolute;
   top: 0;
   width: 100%;
@@ -166,11 +170,10 @@ input[type=password] {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.auiPortletHead .inner {
+.auiPortlet .auiPortletHead .inner {
   margin: 1px 0;
 }
-
-.auiPortletTitle {
+.auiPortlet .auiPortletTitle {
   display: block;
   width: 48%;
   margin-left: 45px;
@@ -184,32 +187,29 @@ input[type=password] {
   font-weight: bold;
   color: #333;
 }
-.auiPortletTitle a {
+.auiPortlet .auiPortletTitle a {
   color: #ffffff;
   text-decoration: none;
   padding: 0;
 }
-
-.auiPortletTool {
+.auiPortlet .auiPortletTool {
   display: none;
 }
-
-.auiPortletBody {
+.auiPortlet .auiPortletBody {
   margin-top: 6px;
+  border: none;
 }
-
-.auiPortletBody .inner {
-	padding:0 5px;
+.auiPortlet .auiPortletBody .inner {
+  padding: 0 5px;
 }
 
 /***************************************************
 	auiRowTable
 --------------------------------------------------*/
 .auiRowTable tr.mb_hide + tr {
-  border-top: solid 1px #f0f0f0;
+  border-top: solid 1px #ededed;
 }
-
- .auiRowTable div a {
+.auiRowTable div a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -1525,7 +1525,7 @@ input[type=password] {
   left: 0 !important;
   width: 96% !important;
   height: auto !important;
-  margin: 0 2%;
+  margin: 0 2% !important;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1800,25 +1800,41 @@ table tr.caption {
 	dijitCalendar
 --------------------------------------------------*/
 .dijitCalendarContainer {
-    width:auto;
-	max-width:300px;
+  width: auto;
+  max-width: 300px;
 }
-.dijitCalendarMonthContainer th {/* month */
-    font-size:20px;
+
+.dijitCalendarDateTemplate {
+  /* cell */
 }
-.dijitCalendarDayLabelTemplate {/* week */
+.dijitCalendarDateTemplate span {
+  padding: 4px 8px;
 }
-.dijitCalendarDateLabel {/* day */
-    font-size:20px;
+
+.dijitCalendarMonthContainer th {
+  /* month */
+  font-size: 16px;
 }
-.dijitCalendarYearLabel {/* year */
-    font-size:16px;
+
+.dijitCalendarDayLabelTemplate {
+  /* week */
+}
+
+.dijitCalendarDateLabel {
+  /* day */
+  font-size: 16px;
+}
+
+.dijitCalendarYearLabel {
+  /* year */
+  font-size: 16px;
 }
 
 /* .calendar */
 .calendarWrapper {
-	overflow-x:visible;
+  overflow-x: visible;
 }
+
 /***************************************************
 	addressbookDialog
 --------------------------------------------------*/
@@ -2035,12 +2051,21 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
- auiBlankBox
+	auiBlankBox
 --------------------------------------------------*/
 .auiBlankBox {
   text-align: left;
 }
 
+/***************************************************
+	auiWikiContent
+--------------------------------------------------*/
+.auiWikiContent table th, .auiWikiContent table td {
+  display: table-cell !important;
+  margin-top: 0 !important;
+  padding: 5px !important;
+  background: none !important;
+}
 
 /***************************************************
 	mobile class - undermost

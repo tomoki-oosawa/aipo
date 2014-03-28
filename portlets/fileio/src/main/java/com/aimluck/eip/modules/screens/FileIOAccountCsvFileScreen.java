@@ -89,7 +89,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
 
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOAccountCsvFileScreen.getCSVString", e);
       return null;
     }
   }
@@ -176,7 +176,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
       }
       return sb.toString();
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileIOAccountCsvFileScreen.getCSVStringDB", e);
       return null;
     }
   }

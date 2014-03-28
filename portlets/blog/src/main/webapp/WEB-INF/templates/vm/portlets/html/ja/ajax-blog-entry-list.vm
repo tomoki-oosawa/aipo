@@ -41,7 +41,7 @@
 </div>
 
 #if($result.List.size() == 0)
-<div class="message">$l10n.BLOG_NOTHING_ENTRY。</div>
+<div class="message">$l10n.BLOG_NOTHING_ENTRY2</div>
 <div id="messageDivList_$!portlet.ID"></div>
 #else
 <div id="auiBlogEntries">
@@ -81,7 +81,7 @@
 <div class="auiWidget clearfix mb_hide">
 <form class="auiForm">
 <select name="groupId" onChange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="wide">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","LoginUser").addQueryData("target_user_id", "all"))">すべてのグループ</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","LoginUser").addQueryData("target_user_id", "all"))">$l10n.BLOG_GROUP_LIST</option>
 #foreach( $record in $!result.MyGroupList )
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogEntryListScreen").addQueryData("groupid","$!{record.Name.toString()}"))" #if($!result.GroupId == $!record.Name.toString()) selected #set($groupName = $!record.Name) #end>$!record.AliasName</option>
 #end

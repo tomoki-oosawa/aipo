@@ -230,6 +230,10 @@ $theLink
 <th class="w75">$text</th>
 #end
 
+#macro(ALtdheadW75Class $text $class)
+<th class="w75 $class">$text</th>
+#end
+
 #macro(ALtdheadAtt $text $option)
 <th $option>$text</th>
 #end
@@ -473,6 +477,10 @@ $theLink
 
 #macro(ALajaxbuttonEditCallback $url $portlet_id $callback)
 <input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
+#end
+
+#macro(ALajaxbuttonEditCallbackWithoutButtonDisabled $url $portlet_id $callback)
+<input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aipo.common.showDialog('$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
 #macro(ALajaxbuttonNameEditCallback $url $portlet_id $callback $name)
@@ -1687,7 +1695,7 @@ $item.get(0)
 
 #macro(AUIconfigheader $portlet_id $width)
 <div class="floatRight clearfix relative">
-<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><span class="auiIcon auiIconSetting mr5"></span>$l10n.WAR_SET_UP</a></div>
+<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('${portlet_id}');"><i class="icon-cog mr5"></i>$l10n.WAR_SET_UP</a></div>
 <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="width: ${width}; right: 0px; display: none; ">
 <ul>
 #end
@@ -1733,6 +1741,10 @@ $item.get(0)
 
 #macro(AUISearchHeader $id $name $action $onsubmit)
 <form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
+#end
+
+#macro(AUISearchHeaderMarginOne)
+<form class="auiSearch floatLeft" style="margin-right:1em;">
 #end
 
 #macro(AUISearchInput $id $name $value $option)

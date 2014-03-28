@@ -75,6 +75,7 @@ import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログのユーティリティクラスです。 <BR>
@@ -584,7 +585,7 @@ public class BlogUtils {
         // aタグが入れ子でない限り、差は必ず0か1
         src = src.concat("</a>");
       }
-      src = src.concat("・・・");
+      src = src.concat(ALLocalizationUtils.getl10n("WAR_LONG_ROUND"));
     }
     return src;
   }

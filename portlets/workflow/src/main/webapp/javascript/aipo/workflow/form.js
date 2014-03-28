@@ -25,6 +25,143 @@ aipo.workflow.onLoadWorkflowDetail = function(portlet_id){
     aipo.portletReload('whatsnew');
 }
 
+aipo.workflow.toggleMenu=function (node,filters,event){
+	var rect=filters.getBoundingClientRect();
+	var html=document.documentElement.getBoundingClientRect();
+	if (node.style.display == "none") {
+        dojo.query("div.menubar").style("display", "none");
+
+        var scroll={
+        	left:document.documentElement.scrollLeft||document.body.scrollLeft,
+        	top:document.documentElement.scrollTop||document.body.scrollTop
+        };
+        node.style.opacity="0";
+        setTimeout( function(){
+			dojo.style(node, "display" , "block");
+		}, 0);
+        if(html.right-node.clientWidth>rect.left){
+       		node.style.left=rect.left+scroll.left+"px";
+        }else{
+        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
+        }
+         if(html.bottom-node.clientHeight>rect.bottom||event){
+       		node.style.top=rect.bottom+scroll.top+"px";
+        }else{
+        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
+        }
+        node.style.opacity="";
+    } else {
+        dojo.query("div.menubar").style("display", "none");
+    }
+}
+
+/**
+ * 検索バーの幅を調節する。
+ *
+ * @param portlet_id
+ */
+aipo.workflow.initFilterSearch = function(portlet_id) {
+	var q = dojo.byId("q" + portlet_id);
+	var filters = dojo.byId('filters_' + portlet_id);
+	if (filters && q) {
+		var filterOffset = filters.offsetWidth;
+		if (aipo.userAgent.isAndroid4_0()) {
+			var searchForm = dojo.query("div.filterInputField")[0];
+			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+			searchForm.style.left = filterOffset + "px";
+			filters.style.left = -filterOffset + "px";
+			q.style.width = fieldlength - filterOffset + "px";
+			searchForm.style.width = fieldlength - filterOffset + "px";
+			q.style.paddingLeft = "2px";
+		} else {
+			if(filterOffset != 0) {
+				q.style.paddingLeft = filterOffset + "px";
+			}
+		}
+	}
+}
+
+/**
+ * 検索バーの幅を調節する。
+ *
+ * @param portlet_id
+ */
+aipo.workflow.finFilterSearch = function(portlet_id) {
+	if (aipo.userAgent.isAndroid4_0()) {
+		var q = dojo.byId("q" + portlet_id);
+		var filters = dojo.byId('filters_' + portlet_id);
+		if (filters && q) {
+			var filterOffset = filters.offsetWidth;
+			var searchForm = dojo.query("div.filterInputField")[0];
+			var fieldlength = parseInt(dojo.getComputedStyle(q).width);
+			searchForm.style.left = "0px";
+			filters.style.left = "0px";
+			q.style.width = fieldlength + filterOffset + "px";
+			searchForm.style.width = fieldlength + filterOffset + "px";
+			q.style.paddingLeft = filterOffset + 2 + "px";
+		}
+	}
+}
+
+/**
+ * urlを整形して送信。
+ */
+aipo.workflow.filteredSearch=function(portlet_id){
+	//filtertype
+
+	var baseuri=dojo.byId("baseuri_"+portlet_id).value;
+
+	var types=[];
+	var params=[];
+	dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
+			//console.info(ul);
+			var type=ul.getAttribute("data-type");
+			types.push(type);
+
+			var activeli=dojo.query("li.selected",ul)[0];
+			if(activeli){
+				var param=activeli.getAttribute("data-param");
+				params.push(param);
+			}else{
+				params.push(ul.getAttribute("data-defaultparam"));
+			}
+		}
+	);
+	var q=dojo.byId("q"+portlet_id);
+	var qs=[["filter",params.join(",")],
+	        ["filtertype",types.join(",")],
+		["keyword",q?q.value:""]
+	];
+	aipo.viewPage(baseuri,portlet_id,qs);
+};
+
+/**
+ * 指定したフィルタにデフォルト値を設定する。(または消す)
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.workflow.filterSetDefault=function(portlet_id,type){
+	var ul=dojo.query("ul.filtertype[data-type="+type+"]")[0];
+	var defval=ul.getAttribute("data-defaultparam");
+	var defaultli=dojo.query("li[data-param="+defval+"]",ul);
+	aipo.workflow.filterSelect(ul,defaultli);
+	aipo.workflow.filteredSearch(portlet_id);
+};
+
+aipo.workflow.filterSelect=function(ul,li){
+	dojo.query("li",ul).removeClass("selected");
+	dojo.query(li).addClass("selected");
+};
+
+aipo.workflow.filterClick=function(portlet_id,thisnode,event){
+	var li=thisnode.parentNode;
+	var ul=li.parentNode;
+	var param=li.getAttribute("data-param");//liのdata-param
+	aipo.msgboard.filterSelect(ul,li);
+	aipo.msgboard.filteredSearch(portlet_id);
+}
+
 aipo.workflow.onLoadWorkflowDialog = function(portlet_id){
     var picker = dijit.byId("membernormalselect");
     if(picker){
@@ -194,8 +331,9 @@ aipo.workflow.NoteChangeConfirm = function(flgName){
 aipo.workflow.onReceiveMessage = function(msg){
     //送信時に作成した場合selectを削除。
 	var select=dojo.byId("attachments_select");
-	if(typeof select!="undefined"&& select!=null)
+	if(typeof select!="undefined"&& select!=null) {
 		select.parentNode.removeChild(select);
+	}
 
 	if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
@@ -220,16 +358,16 @@ aipo.workflow.onReceiveMessage = function(msg){
 }
 
 aipo.workflow.onAccept = function(portletId){
-	dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
-    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
+	//dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    //dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "accept";
 }
 
 aipo.workflow.onDenial = function(portletId){
-    dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
-    dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
+    //dojo.query('.auiButtonAction').forEach(function(e){dojo.removeClass(e, 'auiButtonAction')});
+    //dojo.query("input[name='eventSubmit_doWorkflow_accept']").forEach(function(e){dojo.addClass(e, 'auiButtonDisabled')});
     var form = dojo.byId("workflowForm"+portletId);
     aipo.workflow._portletId = portletId;
     form.mode.value = "denial";

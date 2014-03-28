@@ -49,6 +49,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -307,6 +309,13 @@ public class FacilityFormData extends ALAbstractFormData {
       // 設備を削除
       Database.delete(facility);
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facility.getFacilityId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備「" + facility.getFacilityName() + "」を削除");
+
       // orm.doDelete(facility);
     } catch (Exception ex) {
       Database.rollback();
@@ -381,6 +390,12 @@ public class FacilityFormData extends ALAbstractFormData {
 
       // 設備を登録
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facility.getFacilityId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備「" + facility.getFacilityName() + "」を追加");
 
       // ACL
       // EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
@@ -471,6 +486,12 @@ public class FacilityFormData extends ALAbstractFormData {
 
       // 設備を更新
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facility.getFacilityId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備「" + facility.getFacilityName() + "」を更新");
     } catch (Exception ex) {
       Database.rollback();
       logger.error("facilities", ex);

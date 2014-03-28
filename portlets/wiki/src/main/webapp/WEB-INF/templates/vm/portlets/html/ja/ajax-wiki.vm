@@ -1,0 +1,70 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($categoryList = $result.TopWikiList)
+#set ($categoryEtc = false)
+## ---------------------------------------------------------------------------
+#if(!$!result.Detail)
+<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+#else
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiScreen")' />
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
+	 	*##set($break=false)#*
+	 	*##foreach($record in $result.TopWikiList)#if(!$break)#*
+	 		*##if ($!result.issetFilter("category",$!{record.Id}))#*
+				  *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.wiki.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.Name</span></a>#*
+	 			*##set($break=true)#*
+	 		*##end#*
+	 	*##end#end#*
+	*#</div>
+	<div class="floatRight">
+		#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$!result.Detail.getId())" "$!portlet.ID" "aipo.wiki.onLoadWikiDialog")
+	</div>
+</div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
+	<div>
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="0">
+			#foreach( $record in $result.TopWikiList )
+			<li #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end  data-param="$!{record.Id}" ><a href="javascript:void(0);" #if ($!result.issetFilter("category",$!{record.Id})) class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$!record.Name</a></li>
+			#end
+		</ul>
+	</div>
+</div>
+<div class="auiWikiContent">
+	$!result.Detail.getNote()
+	#if($!result.Detail.AttachmentFileList.size() > 0)
+    <div style="padding-top:15px;">
+    	<ul>
+    	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+    		<li>&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
+    		#if($attachmentFile.isImage())
+    			<div id='popc' style='position:absolute'></div>
+    			<div class="thumbBlock">
+    				<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','WikiFileRawScreen').addPathInfo("ownerid", $!result.Detail.OwnerId).addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+    				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("WikiFileThumbnailScreen").addQueryData("entityid", $!result.Detail.Id).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br />
+    			</div>
+    		#end
+    		</li>
+    	#end
+        </ul>
+    </div>
+    #end
+</div>
+#end

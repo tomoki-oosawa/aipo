@@ -43,7 +43,7 @@
 			#end
 		#end
 		$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-		<i id="menubar_button_hdSetting" class="auiIcon auiIconSetting"></i>
+		<span class="auiWFicon"><i id="menubar_button_hdSetting" class="icon-cog"></i></span>
 		</a>
 		<div class="menubar body-child" id="menubar_hdSetting" style="position: absolute; display:none;">
 		<ul>

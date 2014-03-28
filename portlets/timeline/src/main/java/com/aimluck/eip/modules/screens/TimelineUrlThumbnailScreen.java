@@ -53,7 +53,7 @@ public class TimelineUrlThumbnailScreen extends FileuploadThumbnailScreen {
       super.setLastModified(new Date());
       super.doOutput(rundata);
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("TimelineUrlThumbnailScreen.doOutput", e);
     }
   }
 }

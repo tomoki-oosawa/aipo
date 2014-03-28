@@ -38,7 +38,7 @@
 #AUISummaryDiv()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="AddressBookListScreen"/>
-#AUISearchInput("q$!{portlet.ID}" "sword" "$!result.targetKeyword" "style='margin-right:5px;'")
+#AUISearchInput("q$!{portlet.ID}" "sword" "$!result.searchWord" "style='margin-right:5px;'")
 #AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.ADDRESSBOOK_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
@@ -79,7 +79,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheaderAtt('align="center" class="auiMTCheck"')
-<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" /></td>
+<input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>

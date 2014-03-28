@@ -86,6 +86,8 @@ $!record.Name <br />
 #end
 #ALtdcaption($l10n.ADDRESSBOOK_POSITION_NAME)
 #ALtditem($result.getStringCR($!result.Detail.PositionName))
+#ALtdcaption($l10n.ADDRESSBOOK_NOTE)
+#ALtditem($!result.Detail.Note)
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.ADDRESSBOOK_CREATE_USER_NAME)
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")

@@ -201,7 +201,6 @@ public class AddressBookCorpFilterdSelectData extends
         rd.setPositionName(ALCommonUtils.compressString(ALEipUtils
           .getPositionName(record.getPositionId()), getStrLength()));
       }
-
       rd.setCreateDate(ALDateUtil.format(record.getCreated(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getModified(), "yyyy年M月d日"));
       return rd;

@@ -30,4 +30,15 @@ public class ALPageNotFoundException extends Exception {
    */
   private static final long serialVersionUID = 5975426959528143587L;
 
+  public ALPageNotFoundException() {
+    super();
+  }
+
+  public ALPageNotFoundException(String s) {
+    super(s);
+  }
+
+  public ALPageNotFoundException(Throwable throwable) {
+    super(throwable);
+  }
 }

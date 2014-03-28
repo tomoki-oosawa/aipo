@@ -524,7 +524,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
             ALStorageService.copyTmpFile(
               uid,
               folderName,
-              String.valueOf(filebean.getFileId()),
+              String.valueOf(newfilebean.getFileId()),
               BlogUtils.FOLDER_FILEDIR_BLOG,
               BlogUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
               filename);

@@ -1942,7 +1942,8 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 				html += ' ';
 			}
 			params+="&m_id="+data[i].name;
-			html+="<span class=\"dispUser color" + i +"\">" + aliasName+ "</span>";
+			var j = i % aipo.calendar.maximum_to;
+			html+="<span class=\"dispUser color" + j +"\">" + aliasName+ "</span>";
 			aimluck.io.addOption(dojo.byId("member_to-"+_portletId), data[i].name, aliasName, true);
 		}
 		dojo.byId("member_to_input-"+_portletId).innerHTML=html;

@@ -133,3 +133,30 @@ INSERT INTO eip_m_gpdb_kubun_value VALUES (44, 1, '大分県', 44, now(), now())
 INSERT INTO eip_m_gpdb_kubun_value VALUES (45, 1, '宮崎県', 45, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO eip_m_gpdb_kubun_value VALUES (47, 1, '沖縄県', 47, now(), now());
+
+CREATE TABLE `eip_t_wiki` (
+  `wiki_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wiki_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `parent_id` int(11) DEFAULT 0 NOT NULL,
+  `note` text COLLATE utf8_unicode_ci,
+  `create_user_id` int(11) DEFAULT NULL,
+  `update_user_id` int(11) DEFAULT NULL,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`wiki_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_wiki_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `wiki_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `file_path` text COLLATE utf8_unicode_ci NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
+ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`, `parent_id`);

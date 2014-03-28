@@ -40,10 +40,11 @@
 #if($result.List.size() == 0)
 <div class="message">$l10n.ACTIVITY_ALERT_NO_YOUR_SELECT</div>
 #else
-<div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllListScreen' $result)
-</div>
+#AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
+#AUIajaxpageview('ActivityAllListScreen' $result)
+#AUISummaryDivfooter()
+
 <table class="auiRowTable wide">
 <colgroup style="">
 </colgroup><colgroup style="width:8em;">
@@ -57,7 +58,7 @@
 ## ---------------------------------------------------------------------------
 $l10n.ACTIVITY_CONTENT
 </div></th>
-<th class="w20">
+<th class="wName">
 $l10n.ACTIVITY_NAME
 </th>
 <th class="thin">

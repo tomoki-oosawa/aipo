@@ -35,6 +35,8 @@ import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 役職を複数削除するためのクラスです．
@@ -82,6 +84,11 @@ public class AccountPositionMultiDelete extends ALAbstractCheckList {
       int psize = postisions.size();
       for (int i = 0; i < psize; i++) {
         Database.delete(list.get(i));
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          list.get(i).getPositionId(),
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "役職「" + list.get(i).getPositionName() + "」を削除");
       }
 
       // この役職に設定されているユーザーの役職IDを0とする

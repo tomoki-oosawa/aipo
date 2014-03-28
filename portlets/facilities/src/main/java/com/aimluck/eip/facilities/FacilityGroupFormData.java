@@ -42,6 +42,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 設備のフォームデータを管理するクラスです。 <BR>
@@ -279,6 +281,13 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       // 設備グループを削除
       Database.delete(facility);
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facility.getGroupId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備グループ「" + facility.getGroupName() + "」を削除");
+
       // orm.doDelete(facility);
     } catch (Exception ex) {
       Database.rollback();
@@ -316,6 +325,12 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       }
       // 設備を登録
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facilitygroup.getGroupId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備グループ「" + facilitygroup.getGroupName() + "」を追加");
     } catch (Exception ex) {
       Database.rollback();
       logger.error("facilities", ex);
@@ -386,6 +401,12 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       facilityGroup.setGroupName(facility_group_name.getValue());
       // 設備を更新
       Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        facilityGroup.getGroupId(),
+        ALEventlogConstants.PORTLET_TYPE_FACILITY,
+        "設備グループ「" + facilityGroup.getGroupName() + "」を更新");
     } catch (Exception ex) {
       Database.rollback();
       logger.error("facilities", ex);

@@ -26,7 +26,7 @@ import com.aimluck.eip.services.storage.ALStorageFactoryService;
 import com.aimluck.eip.services.storage.ALStorageHandler;
 
 /**
- * 
+ *
  */
 public class ALDefaultStorageFactoryService extends ALStorageFactoryService {
 
@@ -39,6 +39,6 @@ public class ALDefaultStorageFactoryService extends ALStorageFactoryService {
    */
   @Override
   public ALStorageHandler getStorageHandler() {
-    return ALDefaultStorageHanlder.getInstance();
+    return ALDefaultStorageHandler.getInstance();
   }
 }

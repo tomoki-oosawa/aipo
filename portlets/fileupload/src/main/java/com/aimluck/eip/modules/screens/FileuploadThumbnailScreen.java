@@ -129,14 +129,14 @@ public class FileuploadThumbnailScreen extends RawScreen {
       out.flush();
 
     } catch (Exception e) {
-      logger.error("[ERROR]", e);
+      logger.error("FileuploadThumbnailScreen.doOutput", e);
     } finally {
       try {
         if (out != null) {
           out.close();
         }
       } catch (IOException ex) {
-        logger.error("[ERROR]", ex);
+        logger.error("FileuploadThumbnailScreen.doOutput", ex);
       }
     }
   }
