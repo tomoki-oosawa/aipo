@@ -86,10 +86,7 @@ public class ProjectSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p2a-sort"));
+      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "sort");
     }
 
     allProject = ProjectUtils.getAllProject(); // 全プロジェクト
