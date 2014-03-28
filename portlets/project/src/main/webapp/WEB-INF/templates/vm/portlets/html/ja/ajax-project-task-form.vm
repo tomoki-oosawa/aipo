@@ -65,7 +65,7 @@
     #ALtditemheader()
     <select name="tracker" id="tracker">
     #foreach($mapEntry in $result.TrackerMap.entrySet())
-    	<option value='$!mapEntry.key' #if ($!result.Tracker.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+    	<option value='$!mapEntry.key' #if ("$!result.Tracker.Value" == "$!mapEntry.key.toString()") selected="selected" #end>$!mapEntry.value</option>
     #end
     </select>
     #ALtditemfooter()
@@ -80,7 +80,7 @@
     #ALtditemheader()
     <select name="status" id="status">
     #foreach($mapEntry in $result.StatusMap.entrySet())
-    	<option value='$!mapEntry.key' #if ($!result.Status.Value == $!mapEntry.key.toString()) selected="selected" #end>$!mapEntry.value</option>
+    	<option value='$!mapEntry.key' #if ("$!result.Status.Value" == "$!mapEntry.key.toString()") selected="selected" #end>$!mapEntry.value</option>
     #end
     </select>
     #ALtditemfooter()
@@ -89,7 +89,7 @@
     #ALtditemheader()
     <select name="priority" id="status">
     #foreach($mapEntry in $result.PriorityMap.entrySet())
-    	<option value='$!mapEntry.key' #if ($!result.Priority.Value == $!mapEntry.key.toString()) selected="selected" #elseif($!mapEntry.key.toString().equals("2"))selected #end>$!mapEntry.value</option>
+    	<option value='$!mapEntry.key' #if ("$!result.Priority.Value" == "$!mapEntry.key.toString()") selected="selected" #elseif($!mapEntry.key.toString().equals("2"))selected #end>$!mapEntry.value</option>
     #end
     </select>
     #ALtditemfooter()
@@ -117,7 +117,7 @@
     		<tr id="members_tr_1">
     		<td><select name="task_member" id="task_member_1" class="w100">
     		#foreach( $record in $result.ProjectMembers )
-    			<option value="$record.UserId" #if ($!result.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
+    			<option value="$record.UserId" #if ("$!result.UserId.toString()" == "$!record.UserId.toString()") selected="selected" #end>$!record.AliasName</option>
     		#end
     		</select></td>
     		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
