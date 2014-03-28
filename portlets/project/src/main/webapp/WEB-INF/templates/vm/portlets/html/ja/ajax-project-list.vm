@@ -48,7 +48,7 @@
     #AUISummaryDiv()
     #AUIajaxpageview('ProjectListScreen' $result)
     #AUISummaryDivfooter()
-    
+
     <table class="auiRowTable auiMbTable wide">
 		<tbody>
     		<tr>
@@ -103,7 +103,7 @@
     		<div>$!record.AdminUserName</div>
     	#ALtdcellfooter()
     	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-    		<div>$!{record.TaskUpdateDate.Year}/$!{record.TaskUpdateDate.Month}/$!{record.TaskUpdateDate.Day}</div>
+    		<div>$!{record.TaskUpdateDate.Year}年$!{record.TaskUpdateDate.Month}月$!{record.TaskUpdateDate.Day}日</div>
     	#ALtdcellfooter()
     	</tr>
     #end
