@@ -132,7 +132,7 @@ public class ProjectTaskResultData implements ALData {
   private ALNumberField indent;
 
   /** パンくずリスト */
-  private String topicPath;
+  private ALStringField topicPath;
 
   /** 小数値項目フォーマット */
   private final DecimalFormat df = new DecimalFormat("#.##");
@@ -167,7 +167,7 @@ public class ProjectTaskResultData implements ALData {
     attachmentFileList = new ArrayList<FileuploadBean>();
     commentList = new ArrayList<ProjectTaskCommentResultData>();
     indent = new ALNumberField();
-    topicPath = "";
+    topicPath = new ALStringField();
     resultDisplayFlg = true;
     hasChildren = false;
     indentFlg = false;
@@ -830,7 +830,7 @@ public class ProjectTaskResultData implements ALData {
    *          パンくずリスト
    */
   public void setTopicPath(String i) {
-    topicPath = i;
+    topicPath.setValue(i);
   }
 
   /**
@@ -838,7 +838,7 @@ public class ProjectTaskResultData implements ALData {
    * 
    * @return パンくずリスト
    */
-  public String getTopicPath() {
+  public ALStringField getTopicPath() {
     return topicPath;
   }
 
