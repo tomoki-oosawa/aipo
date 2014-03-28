@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -185,8 +186,12 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     } catch (NumberFormatException e) {
       parentTaskId = null;
     }
-    projectId =
-      Integer.valueOf(ALEipUtils.getParameter(rundata, context, "projectid"));
+    String _projectId = ALEipUtils.getParameter(rundata, context, "projectid");
+    if (StringUtils.isNotEmpty(_projectId) && StringUtils.isNumeric(_projectId)) {
+      projectId = Integer.valueOf((_projectId));
+    } else {
+      projectId = 0;
+    }
     project = ProjectUtils.getEipTProject(projectId);
     loginUser = ALEipUtils.getALEipUser(rundata);
     folderName = rundata.getParameters().getString("folderName");
@@ -1182,5 +1187,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
    */
   public List<ProjectResultData> getAllProject() {
     return allProject;
+  }
+
+  public boolean isProjectExists() {
+    return null != project;
   }
 }

@@ -170,7 +170,7 @@
 	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_tracker" data-defaultparam="">
       <li data-param="" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべての分類</a></li>
     #foreach($record in $result.TrackerMap.entrySet())
-      <li data-param="$!record.key" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if($!result.TargetTracker == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+      <li data-param="$!record.key" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
     #end
     </ul>
   </div>
@@ -179,7 +179,7 @@
 	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_priority" data-defaultparam="">
       <li data-param="" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのステータス</a></li>
     #foreach($record in $result.PriorityMap.entrySet())
-      <li data-param="$!record.key" #if($!result.TargetPriority == $!record.key.toString()) class="selected" #end><a href="javascript:void(0);" #if($!result.TargetPriority == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+      <li data-param="$!record.key" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
     #end
     </ul>
   </div>
@@ -188,7 +188,7 @@
 	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_status" data-defaultparam="">
       <li data-param="" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>すべてのステータス</a></li>
     #foreach($record in $result.StatusMap.entrySet())
-      <li data-param="$!record.key" #if($!result.TargetStatus == $!record.key.toString()) class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus" == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+      <li data-param="$!record.key" #if("$!result.TargetStatus" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus" == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
     #end
     </ul>
   </div>
