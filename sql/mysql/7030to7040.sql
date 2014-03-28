@@ -279,7 +279,7 @@ CREATE TABLE `eip_m_project_kubun_value` (
   PRIMARY KEY (`project_kubun_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---区分マスタデータ
+-- 区分マスタデータ
 
 INSERT INTO eip_m_project_kubun(project_kubun_id, project_kubun_cd, project_kubun_name) VALUES(1,'tracker','トラッカー');
 INSERT INTO eip_m_project_kubun(project_kubun_id, project_kubun_cd, project_kubun_name) VALUES(2,'status','ステータス');
