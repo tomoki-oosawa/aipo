@@ -2743,6 +2743,11 @@ ul.attachments {
   margin-left: 60px;
   margin-bottom: 10px;
 }
+.timeline .messageContents .tlClipBoard {
+  border: solid 1px #ededed;
+  margin: 10px 0 5px;
+  padding: 10px;
+}
 .timeline .comments {
   margin: 0 0 10px 60px;
   background: #f6f6f6;
@@ -2753,9 +2758,6 @@ ul.attachments {
   margin-bottom: 10px;
 }
 
-/*.timeline .message .comments:last-child {
-	margin-bottom:0;
-}*/
 .timeline .comments .messageContents {
   margin-left: 42px;
 }
