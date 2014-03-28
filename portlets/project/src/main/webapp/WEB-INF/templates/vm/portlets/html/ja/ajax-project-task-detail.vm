@@ -151,18 +151,20 @@ $!result.Detail.Explanation
 			<div><br>
 				${record.Comment}
 				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
-					<div class="mt20">
+					<div style="padding-top:15px;">
+						<ul>
 						#foreach( $attachmentFile in $!record.AttachmentFileList )
-						<img src="images/msgboard/msgboard_item.gif">&nbsp;<a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskCommentFileRawScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br>
+						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskCommentFileRawScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
 							#if($attachmentFile.isImage())
-								<div style="padding-top:3px;padding-left:12px;">
-									<div id='popc' style='position:absolute'>
-									</div>
+								<div id='popc' style='position:absolute'></div>
+								<div class="thumbBlock">
 									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskCommentFileRawScreen').addPathInfo("entityid", $!record.CommentId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
 									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskCommentFileThumbnailScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
 								</div>
 							#end
+						</li>
 						#end
+						</ul>
 					</div>
 				#end
 			</div>
@@ -190,9 +192,7 @@ $!result.Detail.Explanation
 				<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 				<td>
 					<div class="clearfix">
-					<div>
-					<iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" style="height:30px; width:150px;" src="$!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
-					</div>
+					<div>#IFFileUpload()</div>
 					<ul id="attachments_$!{portlet.ID}" class="attachments">
 					</ul>
 					</div>
