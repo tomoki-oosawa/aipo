@@ -106,7 +106,7 @@
     			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
     		#end
     		</select></td>
-    		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
+    		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD <input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
     		#if($velocityCount > 1)
     		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)"><i class="icon-remove"></i></a>
     		#end
@@ -120,7 +120,7 @@
     			<option value="$record.UserId" #if ("$!result.UserId.toString()" == "$!record.UserId.toString()") selected="selected" #end>$!record.AliasName</option>
     		#end
     		</select></td>
-    		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
+    		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD <input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
     		</td></tr>
     	#end
     	</tbody></table>

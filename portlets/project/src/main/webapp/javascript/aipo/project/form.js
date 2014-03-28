@@ -211,7 +211,7 @@ aipo.project.addMemberForm = function () {
   var newTitleTd = document.createElement("td");
   newTitleTd.className = "p15";
   newTitleTd.noWrap = "true";
-  var newTitleHeader = document.createTextNode("  作業時間");
+  var newTitleHeader = document.createTextNode("  作業時間 ");
   var newTitleFooter = document.createTextNode(" h ");
 
   //テキストボックス
