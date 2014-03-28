@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	</div>
-	<div class="auiSummaryMeta clearfix">
+	<div class="auiSummaryMeta auiFilter clearfix">
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
 <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen")' />
 <input type="hidden" name="template" value="ProjectGanttChartScreen"/>
@@ -219,6 +219,8 @@
 							#set($dayClass = " class='saturday'")
 						#elseif($result.isSunday($day))
 							#set($dayClass = " class='sunday'")
+						#elseif($result.isToday($day))
+							#set($dayClass = " class='today'")
 						#else
 							#set($dayClass = "")
 						#end
@@ -241,6 +243,8 @@
 								#set($dayClass = " class='saturday'")
 							#elseif($result.isSunday($day))
 								#set($dayClass = " class='sunday'")
+							#elseif($result.isToday($day))
+								#set($dayClass = " class='today'")
 							#else
 								#set($dayClass = "")
 							#end
@@ -274,7 +278,7 @@
 						#set($title = "${record.ProgressRate.Value}%&#10;${record.MemberListString}&#10;開始日：${startDate}&#10;完了日：${endDate}")
 
 						##予定グラフ
-				<div class="gantt_tip" style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;border:${borderWidthGraph}px"
+				<div class="gantt_tip" style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;"
 						id="plan$velocityCount">
 
 						#if($record.ProgressRate.Value.intValue() > 0)
