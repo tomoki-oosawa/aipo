@@ -889,6 +889,17 @@ public class ProjectTaskResultData implements ALData {
         .get(Calendar.DAY_OF_MONTH) > cal.get(Calendar.DAY_OF_MONTH));
   }
 
+  /**
+   * 完了済であるかを取得する
+   * 
+   * @return TRUE:ステータスが新規、進行中、フィードバックのもの以外を完了済とする
+   */
+  public boolean isFinishStatus() {
+    return !(status.getValue().equals("1") || status.getValue().equals("2") || status
+      .getValue()
+      .equals("3"));
+  }
+
   // ---------------------------------------------------
   // 区分値取得
   // ---------------------------------------------------
