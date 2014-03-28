@@ -115,6 +115,23 @@ $!{result.Detail.ProgressRate}%
 			<td>
 		<div class="caption mb10">$l10n.PROJECT_EXPLANATION</div>
 $!result.Detail.Explanation
+#if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
+					<div style="padding-top:15px;">
+						<ul>
+						#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskFileRawScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+							#if($attachmentFile.isImage())
+								<div id='popc' style='position:absolute'></div>
+								<div class="thumbBlock">
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskFileRawScreen').addPathInfo("entityid", $result.Detail.TaskId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskFileThumbnailScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
+							#end
+						</li>
+						#end
+						</ul>
+					</div>
+#end
             </td>
         </tr>
 	</tbody>
