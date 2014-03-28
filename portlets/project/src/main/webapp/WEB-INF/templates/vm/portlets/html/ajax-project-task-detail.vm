@@ -30,37 +30,36 @@
 <div id="messageDivComment"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxdetailformheader($l10n.PROJECT_TASK)
-<form onsubmit="return false;" method="post" action="#" id="" name="">
-                    <table class="listTable wide mb0">
-                        <tbody>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="clearfix">
-                                    <div class="alignleft">
-										<strong>
-									$!result.Detail.TaskName
-                                        </strong>
-                                    <br>
-                                    $!result.Detail.TopicPath
-                                    </div>
+<table class="listTable wide mb0">
+    <tbody>
+        <tr>
+            <td colspan="4">
+                <div class="clearfix">
+                <div class="alignleft">
+					<strong>
+				$!result.Detail.TaskName
+                    </strong>
+                <br>
+                $!result.Detail.TopicPath
+                </div>
 <div class="alignright">
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormScreen').addQueryData('entityid',$entityid).addQueryData('projectid',$!{result.Detail.ProjectId})" "$!portlet.ID" "aipo.project.onLoadProjectTaskDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete').addQueryData('projectid',$!{result.Detail.ProjectId})" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
 </div>
-                                    </div>
+                </div>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-                    <table class="listTable noBorder wide mb0 mt0">
-                        <tbody>
-                        </tbody><colgroup class="w15"></colgroup>
-                        <colgroup></colgroup>
-                        <colgroup class="w15"></colgroup>
-                        <colgroup class="w20"></colgroup>
-                            <tbody>
+<table class="listTable noBorder wide mb0 mt0">
+    <tbody>
+    </tbody><colgroup class="w15"></colgroup>
+    <colgroup></colgroup>
+    <colgroup class="w15"></colgroup>
+    <colgroup class="w20"></colgroup>
+        <tbody>
 #ALtdcaption($l10n.PROJECT_CATEGORY)
 #ALtditemheader()
 $!result.Detail.TrackerString
@@ -107,21 +106,20 @@ $!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 $!{result.Detail.ProgressRate}%
 #ALtditemfooter()
 
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="listTable wide mt0">
-                        <tbody>
-							<tr>
-								<td>
-							<div class="caption mb10">$l10n.PROJECT_EXPLANATION</div>
+        </tr>
+    </tbody>
+</table>
+<table class="listTable wide mt0">
+    <tbody>
+		<tr>
+			<td>
+		<div class="caption mb10">$l10n.PROJECT_EXPLANATION</div>
 $!result.Detail.Explanation
-                                </td>
-                            </tr>
-						</tbody>
-					</table>
-				</form>
-
+            </td>
+        </tr>
+	</tbody>
+</table>
+#ALformfooter()
 
 #ALajaxdetailformheader($l10n.PROJECT_COMMENT)
 <table class="listTable wide mb0">
@@ -174,7 +172,6 @@ $!result.Detail.Explanation
 </tbody>
 #end
 </table>
-##end
 #ALformfooter()
 
 #ALajaxscreenformheader("projectTaskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessageComment)")
@@ -183,8 +180,8 @@ $!result.Detail.Explanation
 	<table class="listTable wide">
 		<tbody>
 			<tr>
-				<td class="caption"><span class="required">$l10n.PROJECT_CONTENT</span></td>
-				<td>
+				<td class="caption" style="border-top:none;"><span class="required">$l10n.PROJECT_CONTENT</span></td>
+				<td style="border-top:none;">
 					#ALtextarea('comment' '' 5 40)
 				</td>
 			</tr>
@@ -203,7 +200,7 @@ $!result.Detail.Explanation
 	</table>
 
 #ALbuttonheader()
-<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.PROJECT_DO_COMMENT" onclick="aimluck.io.setHiddenValue(this);">
+<input name="submit" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.PROJECT_DO_COMMENT" onclick="aimluck.io.setHiddenValue(this);">
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
