@@ -130,6 +130,8 @@ public class ProjectTaskSimpleSelectData extends
 
   private boolean topView = false;
 
+  private Integer loginUserId = null;
+
   /**
    * 初期設定
    * 
@@ -180,6 +182,8 @@ public class ProjectTaskSimpleSelectData extends
     // イナズマ線表示
     progress_line_checked =
       ProjectUtils.getParameter(rundata, context, "progress_line_checked");
+
+    loginUserId = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -329,11 +333,19 @@ public class ProjectTaskSimpleSelectData extends
 
     // インデント表示フラグ
     if (Database.isJdbcMySQL()) {
-      if (!getMySQLWhereList().isEmpty()) {
+      if (topView) {
+        if (getMySQLWhereList().size() > 2) {
+          indentFlg = false;
+        }
+      } else if (!getMySQLWhereList().isEmpty()) {
         indentFlg = false;
       }
     } else {
-      if (!getPostgresWhereList().isEmpty()) {
+      if (topView) {
+        if (getPostgresWhereList().size() > 2) {
+          indentFlg = false;
+        }
+      } else if (!getPostgresWhereList().isEmpty()) {
         indentFlg = false;
       }
     }
@@ -472,7 +484,12 @@ public class ProjectTaskSimpleSelectData extends
     sb
       .append("    FROM eip_t_project_task AS task JOIN tree ON tree.task_id = task.parent_task_id\",");
     sb
-      .append("  \"SELECT task_id, task_name, parent_task_id, project_id, tracker, explanation, status, priority, start_plan_date, end_plan_date, start_date, end_date, plan_workload, progress_rate, update_date, indent FROM tree");
+      .append("  \"SELECT tree.task_id AS task_id, task_name, parent_task_id, project_id, tracker, explanation, status, priority, start_plan_date, end_plan_date, start_date, end_date, plan_workload, progress_rate, update_date, indent FROM tree");
+
+    if (topView) {
+      sb
+        .append(" LEFT jOIN eip_t_project_task_member AS m ON tree.task_id = m.task_id ");
+    }
 
     List<String> whereList = getMySQLWhereList();
 
@@ -484,16 +501,6 @@ public class ProjectTaskSimpleSelectData extends
         sb.append(" AND ");
       }
       sb.append(whereList.get(i));
-    }
-
-    if (topView) {
-      /** ノーマル画面では新規、進行中、フィードバック待ちのみ表示する */
-      if (whereList.isEmpty()) {
-        sb.append(" WHERE ");
-      } else {
-        sb.append(" AND ");
-      }
-      sb.append(" tree.status IN ('1', '2', '3') ");
     }
 
     sb.append(getOrderBy(rundata, context));
@@ -528,7 +535,12 @@ public class ProjectTaskSimpleSelectData extends
     sb.append(sl);
     sb
       .append("    FROM eip_t_project_task AS task JOIN tree ON tree.task_id = task.parent_task_id\",");
-    sb.append("  \"SELECT Count(task_id) AS count FROM tree");
+    sb.append("  \"SELECT Count(tree.task_id) AS count FROM tree");
+
+    if (topView) {
+      sb
+        .append(" LEFT jOIN eip_t_project_task_member AS m ON tree.task_id = m.task_id ");
+    }
 
     List<String> whereList = getMySQLWhereList();
 
@@ -540,16 +552,6 @@ public class ProjectTaskSimpleSelectData extends
         sb.append(" AND ");
       }
       sb.append(whereList.get(i));
-    }
-
-    if (topView) {
-      /** ノーマル画面では新規、進行中、フィードバック待ちのみ表示する */
-      if (whereList.isEmpty()) {
-        sb.append(" WHERE ");
-      } else {
-        sb.append(" AND ");
-      }
-      sb.append(" tree.status IN ('1', '2', '3') ");
     }
 
     sb.append("\",");
@@ -587,7 +589,7 @@ public class ProjectTaskSimpleSelectData extends
     sb.append("          ON tree.task_id = task.parent_task_id");
     sb.append(") ");
     sb.append("SELECT");
-    sb.append("        #result('task_id')"); // タスクID
+    sb.append("        #result('tree.task_id' 'int' 'task_id')"); // タスクID
     sb.append("      , #result('task_name')"); // タスク名
     sb.append("      , #result('parent_task_id')");// 親タスクID
     sb.append("      , #result('project_id')");// プロジェクトID
@@ -606,6 +608,11 @@ public class ProjectTaskSimpleSelectData extends
     sb.append("  FROM");
     sb.append("    tree ");
 
+    if (topView) {
+      sb
+        .append(" LEFT jOIN eip_t_project_task_member AS m ON tree.task_id = m.task_id ");
+    }
+
     List<String> whereList = getPostgresWhereList();
     // WHERE句セット
     for (int i = 0; i < whereList.size(); i++) {
@@ -615,16 +622,6 @@ public class ProjectTaskSimpleSelectData extends
         sb.append(" AND ");
       }
       sb.append(whereList.get(i));
-    }
-
-    if (topView) {
-      /** ノーマル画面では新規、進行中、フィードバック待ちのみ表示する */
-      if (whereList.isEmpty()) {
-        sb.append(" WHERE ");
-      } else {
-        sb.append(" AND ");
-      }
-      sb.append(" tree.status IN ('1', '2', '3') ");
     }
 
     sb.append(getOrderBy(rundata, context));
@@ -659,9 +656,14 @@ public class ProjectTaskSimpleSelectData extends
     sb.append("          ON tree.task_id = task.parent_task_id");
     sb.append(") ");
     sb.append("SELECT");
-    sb.append("        COUNT(task_id) AS count");
+    sb.append("        COUNT(tree.task_id) AS count");
     sb.append("  FROM");
     sb.append("    tree ");
+
+    if (topView) {
+      sb
+        .append(" LEFT jOIN eip_t_project_task_member AS m ON tree.task_id = m.task_id ");
+    }
 
     List<String> whereList = getPostgresWhereList();
     // WHERE句セット
@@ -672,16 +674,6 @@ public class ProjectTaskSimpleSelectData extends
         sb.append(" AND ");
       }
       sb.append(whereList.get(i));
-    }
-
-    if (topView) {
-      /** ノーマル画面では新規、進行中、フィードバック待ちのみ表示する */
-      if (whereList.isEmpty()) {
-        sb.append(" WHERE ");
-      } else {
-        sb.append(" AND ");
-      }
-      sb.append(" tree.status IN ('1', '2', '3') ");
     }
 
     return sb.toString();
@@ -737,6 +729,12 @@ public class ProjectTaskSimpleSelectData extends
         .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
     }
 
+    if (topView) {
+      /** ノーマル画面では新規、進行中、フィードバック、担当しているタスクのみ表示する */
+      whereList.add(" m.user_id = " + String.valueOf(loginUserId));
+      whereList.add(" tree.status IN ('1', '2', '3') ");
+    }
+
     return whereList;
   }
 
@@ -786,6 +784,13 @@ public class ProjectTaskSimpleSelectData extends
       whereList
         .add(" (tree.task_days <> 0 AND tree.lapsed_days * 100 / tree.task_days > tree.progress_rate)");
     }
+
+    if (topView) {
+      /** ノーマル画面では新規、進行中、フィードバック、担当しているタスクのみ表示する */
+      whereList.add(" m.user_id = #bind($user_id)");
+      whereList.add(" tree.status IN ('1', '2', '3') ");
+    }
+
     return whereList;
   }
 
@@ -836,6 +841,11 @@ public class ProjectTaskSimpleSelectData extends
         .valueOf(target_progress_rate_to));
       sqlCountTemp.param("target_progress_rate_to", Integer
         .valueOf(target_progress_rate_to));
+    }
+
+    if (topView) {
+      sqltemp.param("user_id", loginUserId);
+      sqlCountTemp.param("user_id", loginUserId);
     }
   }
 
