@@ -22,12 +22,12 @@
 
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
-#set ($action_str = "追加する")
+#set ($action_str = $l10n.PROJECT_DO_ADD)
 #set ($event_submit = "eventSubmit_doTask_insert")
-#set ($subtitle = "タスク追加")
+#set ($subtitle = $l10n.PROJECT_TASK_ADD)
 #else
-#set ($action_str = "更新する")
-#set ($subtitle = "タスク編集")
+#set ($action_str = $l10n.PROJECT_UPDATE)
+#set ($subtitle = $l10n.PROJECT_TASK_EDIT)
 #set ($event_submit = "eventSubmit_doTask_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
@@ -89,7 +89,7 @@
 </select>
 #ALtditemfooter()
 ##担当者
-#ALtdcaption("担当者")
+#ALtdcaption($l10n.PROJECT_MEMBER)
 #ALtditemheader()
 #if(!$!result.HasChildren)
 	<table class="w100 auiMbCellTable"><tbody id="members_form">
@@ -101,7 +101,7 @@
 			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
 		</select></td>
-		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> h
+		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD<input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
 		#if($velocityCount > 1)
 		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)"><i class="icon-remove"></i></a>
 		#end
@@ -115,19 +115,19 @@
 			<option value="$record.UserId" #if ($!result.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
 		#end
 		</select></td>
-		<td class="p15" nowrap>作業時間<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> h
+		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD<input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
 		</td></tr>
 	#end
 	</tbody></table>
 	<table class="w100"><tbody>
-	<tr><td colspan="2"><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">担当者を追加</a></td></tr>
+	<tr><td colspan="2"><a href="javascript:void(0);" onclick="aipo.project.addMemberForm();">$l10n.PROJECT_MEMBER_ADD</a></td></tr>
 	</tbody></table>
 #else
 	<table style="width:100%">
 	#foreach($record in $!result.TaskMembers)
 		<tr>
 			<td style="border-bottom:none;">$!record.UserName</td>
-			<td style="border-bottom:none;">作業時間：$!{record.Workload}時間</td>
+			<td style="border-bottom:none;">$l10n.PROJECT_WORKLOAD：$!{record.Workload} $l10n.PROJECT_MANHOUR</td>
 		</tr>
 	#end
 	</table>
@@ -137,7 +137,7 @@
 #ALtdcaption($!result.getFieldName("start_plan_date"))
 #ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
-	<div dojoType="aipo.widget.DropdownDatepicker" id="start_plan_date_picker" widgetId="start_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="開始予定日" hiddenId="start_date" #if ($!result.StartPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartPlanDate.Year}/$!{result.StartPlanDate.Month}/$!{result.StartPlanDate.Day}"checked="checked" #end inputId="input_start_plan_date" dateId="start_plan_date" displayCheck=""></div>
+	<div dojoType="aipo.widget.DropdownDatepicker" id="start_plan_date_picker" widgetId="start_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.PROJECT_START_PLAN_DATE" hiddenId="start_date" #if ($!result.StartPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.StartPlanDate.Year}/$!{result.StartPlanDate.Month}/$!{result.StartPlanDate.Day}"checked="checked" #end inputId="input_start_plan_date" dateId="start_plan_date" displayCheck=""></div>
 #else
 	$!result.StartPlanDateString
 #end
@@ -146,7 +146,7 @@
 #ALtdcaption("$l10n.PROJECT_DEADLINE")
 #ALtditemheaderAtt('class="auiSetDate"')
 #if(!$!result.HasChildren)
-	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="完了予定日" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
+	<div dojoType="aipo.widget.DropdownDatepicker" id="end_plan_date_picker" widgetId="end_plan_date_picker"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.PROJECT_END_PLAN_DATE" #if ($!result.EndPlanDateCheck.toString() == "TRUE") initValue="" #else initValue="$!{result.EndPlanDate.Year}/$!{result.EndPlanDate.Month}/$!{result.EndPlanDate.Day}" #end dateId="end_plan_date"></div>
 #else
 	$!result.EndPlanDateString
 #end
@@ -183,7 +183,7 @@
 #ALtditemfooter()
 ##ファイル
 <tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-<td class="caption">添付ファイル</td>
+<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 <td>
   <div class="clearfix">
   <div>
