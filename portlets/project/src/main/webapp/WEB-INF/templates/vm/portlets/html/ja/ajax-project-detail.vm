@@ -30,7 +30,7 @@
 <div id="messageDiv"></div>
 
 #ALtdcaption("$l10n.PROJECT_NAME")
-#ALtditem($!result.Detail.ProjectName)
+#ALtditem($!result.Detail.ProjectNameHtml)
 
 #ALtdcaption("$l10n.PROJECT_EXPLANATION")
 #ALtditem($!result.Detail.Explanation)
