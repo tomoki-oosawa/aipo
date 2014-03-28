@@ -94,7 +94,7 @@
 			<option value="$num" #if ("$!result.TargetProgressRateTo" == "$num" || (!$!result.TargetProgressRateTo && $num == 100)) selected="selected" #end>$!{num}%</option>
 		#end
 		</select>
-		<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end>進捗遅れのみ表示</label>
+		<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end />進捗遅れのみ表示</label>
 		<input type="hidden" id="target_delay" name="target_delay" value="$!result.TargetDelay">
 	</div>
 
