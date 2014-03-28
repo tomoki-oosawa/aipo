@@ -302,6 +302,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     // 進捗率の入力範囲制限
     progress_rate.limitMaxValue(100);
     progress_rate.limitMinValue(0);
+
   }
 
   /**
@@ -336,8 +337,12 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
             // 作業時間
             BigDecimal w = BigDecimal.valueOf(0);
-            if (workload[i] != null && workload[i].length() > 0) {
-              w = new BigDecimal(workload[i]);
+            try {
+              if (workload[i] != null && workload[i].length() > 0) {
+                w = new BigDecimal(workload[i]);
+              }
+            } catch (Exception e) {
+              msgList.add("『 <span class='em'>作業時間</span> 』は数値を入力してください。");
             }
 
             ProjectTaskMemberResultData member =
