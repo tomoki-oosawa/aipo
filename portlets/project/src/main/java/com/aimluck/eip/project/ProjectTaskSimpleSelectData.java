@@ -873,9 +873,17 @@ public class ProjectTaskSimpleSelectData extends
 
     } else {
       if (Database.isJdbcMySQL()) {
-        return "  ORDER BY lpad_path";
+        if (topView) {
+          return "  ORDER BY end_plan_date ASC, lpad_path ASC";
+        } else {
+          return "  ORDER BY lpad_path";
+        }
       } else {
-        return "  ORDER BY path";
+        if (topView) {
+          return "  ORDER BY end_plan_date ASC, path ASC";
+        } else {
+          return "  ORDER BY path";
+        }
       }
     }
   }

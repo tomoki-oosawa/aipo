@@ -374,6 +374,15 @@ public class ProjectTaskResultData implements ALData {
   }
 
   /**
+   * 完了予定日をフォーマットしていで取得する
+   * 
+   * @return 完了予定日
+   */
+  public String getEndPlanDateWithFormat(String format) {
+    return end_plan_date.toString(format);
+  }
+
+  /**
    * 完了予定日を設定する
    * 
    * @param dt
