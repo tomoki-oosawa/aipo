@@ -230,7 +230,7 @@ public class ProjectFormData extends ALAbstractFormData {
       project_name.validate(msgList);
 
       if (memberList.isEmpty()) {
-        msgList.add("『 <span class='em'>プロジェクトメンバー</span> 』を選択してください。");
+        msgList.add("『 <span class='em'>参加ユーザー</span> 』を選択してください。");
       }
 
       boolean containsAdminUser = false;
@@ -241,7 +241,7 @@ public class ProjectFormData extends ALAbstractFormData {
         }
       }
       if (!containsAdminUser) {
-        msgList.add("『 <span class='em'>プロジェクトメンバー</span> 』に管理者を含めてください。");
+        msgList.add("『 <span class='em'>参加ユーザー</span> 』に管理者を含めてください。");
       }
 
     } catch (Exception ex) {
