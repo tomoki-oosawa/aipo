@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -107,7 +109,7 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
   public void initField() {
     // 内容
     comment = new ALStringField();
-    comment.setFieldName("内容");
+    comment.setFieldName(getl10n("PROJECT_CONTENT"));
     comment.setNotNull(true);
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadBean>();
@@ -240,7 +242,7 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         newComment.getCommentId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理タスクコメント 追加");
+        getl10n("PROJECT_EVENTLOG_TASK_COMMENT_ADD"));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -314,7 +316,7 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         taskComment.getCommentId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理タスクコメント 削除");
+        getl10n("PROJECT_EVENTLOG_TASK_COMMENT_DELETE"));
 
     } catch (Exception ex) {
       Database.rollback();

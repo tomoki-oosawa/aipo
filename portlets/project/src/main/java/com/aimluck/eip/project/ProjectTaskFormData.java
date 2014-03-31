@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -220,61 +222,61 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   public void initField() {
     // 分類
     tracker = new ALStringField();
-    tracker.setFieldName("分類");
+    tracker.setFieldName(getl10n("PROJECT_CATEGORY"));
     tracker.setNotNull(true);
     // タスク名
     task_name = new ALStringField();
-    task_name.setFieldName("タスク名");
+    task_name.setFieldName(getl10n("PROJECT_TASK_NAME"));
     task_name.setTrim(true);
     task_name.setNotNull(true);
 
     // 説明
     explanation = new ALStringField();
-    explanation.setFieldName("説明");
+    explanation.setFieldName(getl10n("PROJECT_EXPLANATION"));
     explanation.setTrim(true);
     // ステータス
     status = new ALStringField();
-    status.setFieldName("ステータス");
+    status.setFieldName(getl10n("PROJECT_STATUS"));
     status.setNotNull(true);
     // 優先度
     priority = new ALStringField();
-    priority.setFieldName("優先度");
+    priority.setFieldName(getl10n("PROJECT_PRIORITY"));
     priority.setNotNull(true);
     // 開始予定日
     start_plan_date = new ALDateField();
-    start_plan_date.setFieldName("開始予定日");
+    start_plan_date.setFieldName(getl10n("PROJECT_START_PLAN_DATE"));
     start_plan_date.setValue(new Date());
     // 完了予定日
     end_plan_date = new ALDateField();
-    end_plan_date.setFieldName("完了予定日");
+    end_plan_date.setFieldName(getl10n("PROJECT_END_PLAN_DATE"));
     end_plan_date.setValue(new Date());
     // 開始実績日
     start_date = new ALDateField();
-    start_date.setFieldName("開始実績日");
+    start_date.setFieldName(getl10n("PROJECT_START_DATE"));
     start_date.setValue(new Date());
     // 完了実績日
     end_date = new ALDateField();
-    end_date.setFieldName("完了実績日");
+    end_date.setFieldName(getl10n("PROJECT_END_DATE"));
     end_date.setValue(new Date());
     // 開始予定日指定フラグ
     start_plan_date_check = new ALStringField();
-    start_plan_date_check.setFieldName("指定しない");
+    start_plan_date_check.setFieldName(getl10n("PROJECT_NOT_SPECIFIED"));
     // 締切予定日指定フラグ
     end_plan_date_check = new ALStringField();
-    end_plan_date_check.setFieldName("指定しない");
+    end_plan_date_check.setFieldName(getl10n("PROJECT_NOT_SPECIFIED"));
     // 開始実績日指定フラグ
     start_date_check = new ALStringField();
-    start_date_check.setFieldName("指定しない");
+    start_date_check.setFieldName(getl10n("PROJECT_NOT_SPECIFIED"));
     // 締切実績日指定フラグ
     end_date_check = new ALStringField();
-    end_date_check.setFieldName("指定しない");
+    end_date_check.setFieldName(getl10n("PROJECT_NOT_SPECIFIED"));
     // 計画工数
     plan_workload = null;
     // 計画工数（入力値用）
     planWorkloadString = null;
     // 進捗率
     progress_rate = new ALNumberField();
-    progress_rate.setFieldName("進捗率");
+    progress_rate.setFieldName(getl10n("PROJECT_PROGRESS_RATE"));
     progress_rate.setValue(0);
     progress_rate.limitMinValue(0);
     progress_rate.limitMaxValue(100);
@@ -342,7 +344,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
                 w = new BigDecimal(workload[i]);
               }
             } catch (Exception e) {
-              msgList.add("『 <span class='em'>作業時間</span> 』は数値を入力してください。");
+              msgList.add(getl10n("PROJECT_VALIDATE_WORKLOAD"));
             }
 
             ProjectTaskMemberResultData member =
@@ -395,7 +397,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     if (!hasChildren) {
       if (taskMembers.isEmpty()) {
         // 担当者が未入力の場合
-        msgList.add("『 <span class='em'>担当者</span> 』を入力してください。");
+        msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER"));
       } else {
         // 担当者入力有の場合
 
@@ -406,7 +408,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           long id = data.getUserId().getValue();
 
           if (checkMemberId.contains(id)) {
-            msgList.add("『 <span class='em'>担当者</span> 』が重複しています。");
+            msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER_DUPLICATE"));
             break;
           }
 
@@ -427,14 +429,13 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           end.setTime(end_plan_date.getValue().getDate());
 
           if (start.compareTo(end) > 0) {
-            msgList
-              .add("『 <span class='em'>開始予定日</span> 』は『 <span class='em'>完了予定日</span> 』以前を入力してください。");
+            msgList.add(getl10n("PROJECT_VALIDATE_PLAN_START_DATE"));
           }
         }
       } catch (NumberFormatException e1) {
-        e1.printStackTrace();
+        logger.error("ProjectTaskFormData.validate", e1);
       } catch (ALIllegalDateException e1) {
-        e1.printStackTrace();
+        logger.error("ProjectTaskFormData.validate", e1);
       }
 
       // 開始実績日＞完了実績日の場合エラー
@@ -450,14 +451,13 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           end.setTime(end_date.getValue().getDate());
 
           if (start.compareTo(end) > 0) {
-            msgList
-              .add("『 <span class='em'>開始実績日</span> 』は『 <span class='em'>完了実績日</span> 』以前を入力してください。");
+            msgList.add(getl10n("PROJECT_VALIDATE_START_DATE"));
           }
         }
       } catch (NumberFormatException e1) {
-        e1.printStackTrace();
+        logger.error("ProjectTaskFormData.validate", e1);
       } catch (ALIllegalDateException e1) {
-        e1.printStackTrace();
+        logger.error("ProjectTaskFormData.validate", e1);
       }
 
       try {
@@ -467,10 +467,10 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           plan_workload = new BigDecimal(planWorkloadString);
         }
         if (plan_workload.compareTo(BigDecimal.valueOf(0)) < 0) {
-          msgList.add("『 <span class='em'>計画工数</span> 』には0以上の値を入力してください。");
+          msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD"));
         }
       } catch (Exception e) {
-        msgList.add("『 <span class='em'>計画工数</span> 』は数値を入力してください。");
+        msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD_INTEGER"));
       }
     }
 
@@ -645,7 +645,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理タスク 「" + task.getTaskName() + "」 追加");
+        getl10nFormat("PROJECT_EVENTLOG_TASK_ADD", task.getTaskName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -813,7 +813,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理タスク 「" + task.getTaskName() + "」 更新");
+        getl10nFormat("PROJECT_EVENTLOG_TASK_UPDATE", task.getTaskName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -845,7 +845,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       }
 
       if (hasChildren) {
-        msgList.add("子タスクが存在するため削除できません。");
+        msgList.add(getl10n("PROJECT_VALIDATE_HAS_CHILD"));
         return false;
       }
 
@@ -869,7 +869,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理タスク 「" + task.getTaskName() + "」 削除");
+        getl10nFormat("PROJECT_EVENTLOG_TASK_DELETE", task.getTaskName()));
 
     } catch (Exception ex) {
       Database.rollback();

@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -139,22 +141,22 @@ public class ProjectFormData extends ALAbstractFormData {
   public void initField() {
     // プロジェクト名
     project_name = new ALStringField();
-    project_name.setFieldName("プロジェクト名");
+    project_name.setFieldName(getl10n("PROJECT_NAME"));
     project_name.setTrim(true);
     // 説明
     explanation = new ALStringField();
-    explanation.setFieldName("説明");
+    explanation.setFieldName(getl10n("PROJECT_EXPLANATION"));
     explanation.setTrim(true);
     // 管理者ID
     admin_user_id = new ALNumberField();
-    admin_user_id.setFieldName("管理者");
+    admin_user_id.setFieldName(getl10n("PROJECT_ADMIN_USER"));
     // 進捗率
     progress_rate = new ALNumberField();
-    progress_rate.setFieldName("進捗率");
+    progress_rate.setFieldName(getl10n("PROJECT_PROGRESS_RATE"));
     progress_rate.setValue(0);
     // 進捗率自動計算フラグ
     progress_flg = new ALStringField();
-    progress_flg.setFieldName("メール配信");
+    progress_flg.setFieldName(getl10n("PROJECT_MAIL_SEND"));
     progress_flg.setTrim(false);
     progress_flg.setValue(ProjectUtils.FLG_OFF);
     // ファイルリスト
@@ -230,7 +232,7 @@ public class ProjectFormData extends ALAbstractFormData {
       project_name.validate(msgList);
 
       if (memberList.isEmpty()) {
-        msgList.add("『 <span class='em'>参加ユーザー</span> 』を選択してください。");
+        msgList.add(getl10n("PROJECT_VALIDATE_MEMBER_ADD"));
       }
 
       boolean containsAdminUser = false;
@@ -241,7 +243,7 @@ public class ProjectFormData extends ALAbstractFormData {
         }
       }
       if (!containsAdminUser) {
-        msgList.add("『 <span class='em'>参加ユーザー</span> 』に管理者を含めてください。");
+        msgList.add(getl10n("PROJECT_VALIDATE_ADMIN_ADD"));
       }
 
     } catch (Exception ex) {
@@ -389,7 +391,7 @@ public class ProjectFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理プロジェクト 「" + project.getProjectName() + "」 追加");
+        getl10nFormat("PROJECT_EVENTLOG_ADD", project.getProjectName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -497,7 +499,7 @@ public class ProjectFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理プロジェクト 「" + project.getProjectName() + "」 更新");
+        getl10nFormat("PROJECT_EVENTLOG_UPDATE", project.getProjectName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -529,7 +531,7 @@ public class ProjectFormData extends ALAbstractFormData {
       }
 
       if (!ProjectUtils.getEipTProjectTaskCheck(project.getProjectId())) {
-        msgList.add("タスクが登録されているため、削除できません。");
+        msgList.add(getl10n("PROJECT_VALIDATE_NOT_DELETE"));
         return false;
       }
 
@@ -571,7 +573,7 @@ public class ProjectFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
         ALEventlogConstants.PORTLET_TYPE_NONE,
-        "プロジェクト管理プロジェクト 「" + project.getProjectName() + "」 削除");
+        getl10nFormat("PROJECT_EVENTLOG_DELETE", project.getProjectName()));
 
     } catch (Exception ex) {
       Database.rollback();

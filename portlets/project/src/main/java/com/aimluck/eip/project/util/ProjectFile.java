@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project.util;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -148,7 +150,7 @@ public class ProjectFile<T extends IProjectFile, M> {
           filebean = new FileuploadBean();
           filebean.initField();
           filebean.setFolderName("photo");
-          filebean.setFileName("以前の写真ファイル");
+          filebean.setFileName(getl10n("PROJECT_PREVIOUS_PICTURE_FILE"));
           fileNameList.add(filebean);
         } else {
           BufferedReader reader = null;

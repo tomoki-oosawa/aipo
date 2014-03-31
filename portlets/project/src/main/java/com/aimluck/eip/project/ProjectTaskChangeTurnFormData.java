@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +106,7 @@ public class ProjectTaskChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // 項目定義のリスト
     positions = new ALStringField();
-    positions.setFieldName("タスクリスト");
+    positions.setFieldName(getl10n("PROJECT_TASK_LIST"));
     positions.setTrim(true);
   }
 

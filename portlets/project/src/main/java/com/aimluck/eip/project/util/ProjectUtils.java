@@ -84,9 +84,6 @@ public class ProjectUtils {
   /** フラグ：OFF */
   public static final String FLG_OFF = "f";
 
-  /** エラーメッセージ：データが存在するプロジェクトDB削除不可エラー */
-  public static final String ERRMSG_DB_DELETE = "タスクが登録されているため、削除できません。";
-
   /**
    * 日付空扱い
    */
