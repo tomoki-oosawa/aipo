@@ -511,7 +511,7 @@ img.avatar,
   overflow: hidden;
 }
 .auiPortlet .auiPortletBody .auiPortletHead .inner {
-  padding: 0 !important;
+  padding: 9px 10px !important;
 }
 .auiPortlet .auiPortletTitle {
   float: left;
