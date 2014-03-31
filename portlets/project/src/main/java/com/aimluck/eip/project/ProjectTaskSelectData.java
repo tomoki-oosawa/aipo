@@ -52,6 +52,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.project.util.ProjectFile;
+import com.aimluck.eip.project.util.ProjectFormUtils;
 import com.aimluck.eip.project.util.ProjectUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -130,6 +131,8 @@ public class ProjectTaskSelectData extends
   /** Android2かどうか */
   private boolean isAndroid2;
 
+  private Integer loginUserId;
+
   /**
    * 初期設定
    * 
@@ -182,6 +185,8 @@ public class ProjectTaskSelectData extends
       ProjectUtils.getParameter(rundata, context, "progress_line_checked");
     // ユーザーエージェントがAndroid2ならTrue
     isAndroid2 = ALEipUtils.isAndroid2Browser(rundata);
+
+    loginUserId = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -924,6 +929,8 @@ public class ProjectTaskSelectData extends
     // インデント表示フラグ
     data.setIndentFlg(indentFlg);
 
+    data.setEditable(ProjectFormUtils.isEditable(taskId, loginUserId));
+
     return data;
   }
 
@@ -1395,4 +1402,5 @@ public class ProjectTaskSelectData extends
       .valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
   }
+
 }

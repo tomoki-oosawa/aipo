@@ -57,6 +57,8 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
 
   private String value = null;
 
+  private Integer loginUserId = null;
+
   /**
    * 初期化します。
    * 
@@ -74,6 +76,7 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
     name = rundata.getParameters().getString("name", "");
     taskId = rundata.getParameters().getString("taskId", "");
     value = rundata.getParameters().getString("value", "");
+    loginUserId = ALEipUtils.getUserId(rundata);
   }
 
   /**
@@ -120,11 +123,13 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList) {
     // 進捗率更新
     if ("progress_rate".equals(name)) {
-      if (StringUtils.isEmpty(taskId) || StringUtils.isEmpty(value)) {
+      if (StringUtils.isEmpty(taskId)
+        || StringUtils.isEmpty(value)
+        || !(StringUtils.isNumeric(taskId) && StringUtils.isNumeric(value))) {
         msgList.add(getl10n("PROJECT_UPDATE_ERROR"));
       }
-      if (!(StringUtils.isNumeric(taskId) && StringUtils.isNumeric(value))) {
-        msgList.add(getl10n("PROJECT_UPDATE_ERROR"));
+      if (!ProjectFormUtils.isEditable(taskId, loginUserId)) {
+        msgList.add(getl10n("PROJECT_TASK_NOT_UPDATE"));
       }
     }
     return msgList.isEmpty();

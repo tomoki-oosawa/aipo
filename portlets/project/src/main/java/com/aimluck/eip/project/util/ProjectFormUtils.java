@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.DataRow;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -35,6 +36,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTProject;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskMember;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 
 /**
  * プロジェクト管理のユーティリティクラスです。
@@ -174,4 +176,41 @@ public class ProjectFormUtils {
 
     Database.commit();
   }
+
+  /**
+   * task member or project admin able to update
+   * 
+   * @return
+   */
+  public static boolean isEditable(Integer taskId, Integer userId) {
+    EipTProjectTask task = Database.get(EipTProjectTask.class, taskId);
+    EipTProject project = Database.get(EipTProject.class, task.getProjectId());
+    if (null == project) {
+      return false;
+    }
+    if (project.getAdminUserId().equals(userId)) {
+      return true;
+    }
+    List<EipTProjectTaskMember> list =
+      Database
+        .query(EipTProjectTaskMember.class)
+        .where(Operations.eq(EipTProjectTaskMember.TASK_ID_PROPERTY, taskId))
+        .fetchList();
+    for (EipTProjectTaskMember member : list) {
+      if (member.getUserId().equals(userId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean isEditable(String taskId, Integer userId) {
+    if (StringUtils.isEmpty(taskId)
+      || !StringUtils.isNumeric(taskId)
+      || null == userId) {
+      return false;
+    }
+    return isEditable(Integer.valueOf(taskId), userId);
+  }
+
 }

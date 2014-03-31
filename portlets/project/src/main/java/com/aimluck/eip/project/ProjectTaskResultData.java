@@ -137,6 +137,8 @@ public class ProjectTaskResultData implements ALData {
   /** 小数値項目フォーマット */
   private final DecimalFormat df = new DecimalFormat("#.##");
 
+  private boolean editable;
+
   /**
    * 初期設定を行います
    */
@@ -172,6 +174,7 @@ public class ProjectTaskResultData implements ALData {
     hasChildren = false;
     indentFlg = false;
     hasChildrenForForm = false;
+    editable = false;
   }
 
   /**
@@ -949,6 +952,14 @@ public class ProjectTaskResultData implements ALData {
    */
   public void setHasChildrenForForm(boolean hasChildrenForForm) {
     this.hasChildrenForForm = hasChildrenForForm;
+  }
+
+  public boolean isEditable() {
+    return editable;
+  }
+
+  public void setEditable(boolean editable) {
+    this.editable = editable;
   }
 
 }

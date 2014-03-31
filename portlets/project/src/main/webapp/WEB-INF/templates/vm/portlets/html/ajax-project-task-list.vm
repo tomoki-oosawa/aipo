@@ -129,7 +129,7 @@
 				#ALtdcellAtt("$!record.StatusString" 'nowrap="nowrap"')
         		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
         		#ALtdcellheaderAtt('class="mb_hide"')
-        		#if(!$!record.HasChildrenForForm)
+        		#if(!$!record.HasChildrenForForm && $!record.isEditable())
             		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
             		#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
             			<option #if($!{record.ProgressRate.toString()} == "${rate}") selected="selected" #end value="${rate}">${rate}%</option>
