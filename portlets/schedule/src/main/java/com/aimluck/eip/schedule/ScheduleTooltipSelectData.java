@@ -295,7 +295,10 @@ public class ScheduleTooltipSelectData extends
             // 確定スケジュールかどうか
             rd.setConfirm("C".equals(map.getStatus()));
           }
-          users.add(map.getUserId());
+          // 削除したユーザーはツールチップに表示しない
+          if (!("R".equals(map.getStatus()) || "D".equals(map.getStatus()))) {
+            users.add(map.getUserId());
+          }
 
           if (userid == map.getUserId().intValue()) {
             EipTCommonCategory category = map.getEipTCommonCategory();
