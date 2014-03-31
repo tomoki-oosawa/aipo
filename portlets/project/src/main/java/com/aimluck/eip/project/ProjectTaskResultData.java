@@ -898,9 +898,12 @@ public class ProjectTaskResultData implements ALData {
    * @return TRUE:ステータスが新規、進行中、フィードバックのもの以外を完了済とする
    */
   public boolean isFinishStatus() {
-    return !(status.getValue().equals("1") || status.getValue().equals("2") || status
-      .getValue()
-      .equals("3"));
+    for (String _status : ProjectUtils.completeStatus) {
+      if (status.getValue().equals(_status)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // ---------------------------------------------------

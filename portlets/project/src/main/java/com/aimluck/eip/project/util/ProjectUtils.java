@@ -25,8 +25,10 @@ package com.aimluck.eip.project.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +106,16 @@ public class ProjectUtils {
    * 日付フォーマット（画面表示用）
    */
   public static final String DISP_DATE_FORMAT = "yyyy年M月d日（E）";
+
+  /** 新規、進行中、フィードバック */
+  public static final List<String> incompleteStatus = Arrays.asList(
+    "1",
+    "2",
+    "3");
+
+  /** 完了、却下、停止 */
+  public static final List<String> completeStatus = Arrays
+    .asList("4", "5", "6");
 
   // ---------------------------------------------------
   // プロジェクト関連
@@ -1911,4 +1923,34 @@ public class ProjectUtils {
       .append(" AS DATE)")
       .toString();
   }
+
+  public static Expression getIncompleteExpression() {
+    Expression exp = null;
+    for (String status : incompleteStatus) {
+      Expression tmp =
+        ExpressionFactory.matchExp(EipTProjectTask.STATUS_PROPERTY, status);
+      if (null == exp) {
+        exp = tmp;
+      } else {
+        exp.orExp(tmp);
+      }
+    }
+    return exp;
+  }
+
+  public static String getIncompleteSQL(String column) {
+    StringBuilder build = new StringBuilder();
+    build.append(" ").append(column).append(" IN (");
+    Iterator<String> it = incompleteStatus.iterator();
+    while (it.hasNext()) {
+      String status = it.next();
+      build.append("'").append(status).append("'");
+      if (it.hasNext()) {
+        build.append(",");
+      }
+    }
+    build.append(") ");
+    return build.toString();
+  }
+
 }

@@ -732,7 +732,7 @@ public class ProjectTaskSimpleSelectData extends
     if (topView) {
       /** ノーマル画面では新規、進行中、フィードバック、担当しているタスクのみ表示する */
       whereList.add(" m.user_id = " + String.valueOf(loginUserId));
-      whereList.add(" tree.status IN ('1', '2', '3') ");
+      whereList.add(ProjectUtils.getIncompleteSQL("tree.status"));
     }
 
     return whereList;
@@ -788,7 +788,7 @@ public class ProjectTaskSimpleSelectData extends
     if (topView) {
       /** ノーマル画面では新規、進行中、フィードバック、担当しているタスクのみ表示する */
       whereList.add(" m.user_id = #bind($user_id)");
-      whereList.add(" tree.status IN ('1', '2', '3') ");
+      whereList.add(ProjectUtils.getIncompleteSQL("tree.status"));
     }
 
     return whereList;
