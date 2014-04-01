@@ -31,7 +31,7 @@
 	  <input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectScreen")' />
       <div class="filters floatLeft" id="filters_$!{portlet.ID}">
 		#if(!$!result.issetFilter("project_id") || $!result.issetFilter("project_id", "0"))
-		  <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>すべてのプロジェクト</span></a>
+		  <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.PROJECT_ALL_PROJECT</span></a>
         #else
 	  		#set($break=false)
 		 	#foreach($record in $result.AllProject)
@@ -51,9 +51,9 @@
 	
 	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 	<div>
-		<p class="caption">プロジェクト</p>
+		<p class="caption">$l10n.PROJECT_PROJECT</p>
 		<ul class="filtertype_$!portlet.ID" data-type="project_id" data-defaultparam="0">
-			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>すべてのプロジェクト</a></li>
+			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_PROJECT</a></li>
 			#foreach($record in $result.AllProject)
 			<li #if ($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected"#end data-param="$!record.ProjectId"><a href="javascript:void(0)"  #if($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>$record.ProjectName</a></li>
 			#end
@@ -62,7 +62,7 @@
     </div>
     
     #if($result.isTaskEmpty())
-		<div class="message">タスクは作成されていません。</div>
+		<div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
     #else
 		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 		<div id="messageDiv-$!portlet.ID"></div>
@@ -88,7 +88,7 @@
 			#end
             </td>
             <td class="mb_hide" nowrap="nowrap">
-			$!{record.getEndPlanDateWithFormat("yyyy年MM月dd日")}
+			$!{record.getEndPlanDateWithFormat("$l10n.PROJECT_DAY")}
 			</td>
 			</tr>
         #end

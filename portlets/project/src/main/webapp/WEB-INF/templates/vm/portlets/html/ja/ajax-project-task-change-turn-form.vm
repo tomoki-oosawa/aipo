@@ -22,16 +22,16 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($subtitle = "順番変更")
+#set ($subtitle = "$l10n.PROJECT_CHANGE_ORDER")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
 #if((! $!result.ProjectTaskList) || $result.ProjectTaskList.isEmpty())
-<div class="message">タスクは登録されていません。</div>
+<div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">&nbsp;の各ボタンで、マウスで選択したタスクの順番を自由に変更できます。<br>
- Windows では 『Ctrl キー + マウスクリック』、Macintosh では 『コマンドキー+マウスクリック』 で複数選択ができます。</div>
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">$l10n.PROJECT_FILTER_ORDER_MSG<br>
+ $l10n.PROJECT_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("ProjectTaskChangeTurnForm" $jslink $portlet "ProjectTaskChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.project.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
@@ -39,12 +39,12 @@
 <table class="dialogTable wide">
 <tbody>
 <tr>
-<td class="caption" width="30%" nowrap="">タスク一覧</td>
+<td class="caption" width="30%" nowrap="">$l10n.PROJECT_TASK_LIST</td>
 <td width="5%">
-<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('project_so_$!portlet.ID'))" title="10 ずつ順番を上げる"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
-<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('project_so_$!portlet.ID'))" title="1 ずつ順番を上げる"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
-<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('project_so_$!portlet.ID'))" title="1 ずつ順番を下げる"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
-<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('project_so_$!portlet.ID'))" title="10 ずつ順番を下げる"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_TEN"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_ONE"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_ONE"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_TEN"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
 </td>
 <td width="65%"><select id="project_so_$!portlet.ID" name="project_so" size="20" multiple="multiple" style="WIDTH: 100%">
 #if($!result.UserList.size() <= 0)
@@ -61,7 +61,7 @@
 </table>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doProjectTask_change_turn_update' "更新する" 'setHiddenValue(this);aipo.project.sortsubmit(this.form)')
+#ALsubmitJS('eventSubmit_doProjectTask_change_turn_update' "$l10n.PROJECT_UPDATE" 'setHiddenValue(this);aipo.project.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()

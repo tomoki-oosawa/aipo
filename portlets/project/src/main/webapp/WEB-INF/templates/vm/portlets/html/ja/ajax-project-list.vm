@@ -25,21 +25,21 @@
 #set ($addProject = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectFormScreen").addQueryData("entityid","new")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-<h2>プロジェクトの管理</h2>
+<h2>$l10n.PROJECT_PROJECT_MANAGEMENT</h2>
 #AUISummaryDiv()
 #if($result.ProjectCount != 0)
-	#AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
+	#AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
 #end
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
-#ALajaxlistformheader("プロジェクト")
+#ALajaxlistformheader("$l10n.PROJECT_PROJECT")
 #if($result.ProjectCount == 0)
     #AUIrowTableWide()
     <tr>
 	<td colspan="4" class="auiNoData">
     <p class="mh10">
-    #AUIbuttonAction("プロジェクトを追加する" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
+    #AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
     </p>
     </td>
 	</tr>
@@ -52,13 +52,13 @@
     <table class="auiRowTable auiMbTable wide">
 		<tbody>
     		<tr>
-    #ALtdhead("#ALajaxsort('project_name' 'プロジェクト名' $result 'ProjectListScreen')")
-    #ALtdhead("進捗率")
-    #ALtdhead("実績工数")
-    #ALtdhead("予定工数")
-    #ALtdhead("残タスク")
-    #ALtdhead("管理者")
-    #ALtdhead("更新日")
+    #ALtdhead("#ALajaxsort('project_name' "$l10n.PROJECT_NAME" $result 'ProjectListScreen')")
+    #ALtdhead("$l10n.PROJECT_PROGRESS_RATE")
+    #ALtdhead("$l10n.PROJECT_ACTUAL_WORKLOAD")
+    #ALtdhead("$l10n.PROJECT_EXPECTED_WORKLOAD")
+    #ALtdhead("$l10n.PROJECT_REST_OF_TASK_")
+    #ALtdhead("$l10n.PROJECT_ADMIN_USER")
+    #ALtdhead("$l10n.PROJECT_UPDATE_DATE")
 			</tr>
     #foreach ($record in $result.List)
     	#if($!{record.planProgressRate.toString()} == "")
@@ -103,7 +103,7 @@
     		<div>$!record.AdminUserName</div>
     	#ALtdcellfooter()
     	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-    		<div>$!{record.TaskUpdateDate.Year}年$!{record.TaskUpdateDate.Month}月$!{record.TaskUpdateDate.Day}日</div>
+    		<div>$!{record.TaskUpdateDate.Year}$l10n.PROJECT_YEAR$!{record.TaskUpdateDate.Month}$l10n.PROJECT_MONTH$!{record.TaskUpdateDate.Day}$l10n.PROJECT_DATE</div>
     	#ALtdcellfooter()
     	</tr>
     #end
