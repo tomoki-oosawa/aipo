@@ -1195,6 +1195,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   }
 
   public boolean isProjectExists() {
-    return null != project;
+    return allProject != null && allProject.size() > 0;
   }
 }
