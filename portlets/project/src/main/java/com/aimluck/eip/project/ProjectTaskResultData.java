@@ -277,7 +277,11 @@ public class ProjectTaskResultData implements ALData {
    * 
    * @return タスク名
    */
-  public String getTaskName() {
+  public ALStringField getTaskName() {
+    return task_name;
+  }
+
+  public String getTaskNameHtml() {
     return ALCommonUtils.replaceToAutoCR(task_name.toString());
   }
 

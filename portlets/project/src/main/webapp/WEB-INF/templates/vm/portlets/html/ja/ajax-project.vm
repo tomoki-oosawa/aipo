@@ -48,7 +48,7 @@
 		#AUIajaxpageview('ProjectScreen' $result)
 	  #end
     </div>
-	
+
 	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 	<div>
 		<p class="caption">$l10n.PROJECT_PROJECT</p>
@@ -60,7 +60,7 @@
 		</ul>
 	</div>
     </div>
-    
+
     #if($result.isTaskEmpty())
 		<div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
     #else
@@ -74,7 +74,7 @@
         #foreach ($record in $result.List)
 			<tr #if($!{record.Delay}) class="bgRed" #end>
             <td class="auiMTCaption">
-				$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
+				$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskNameHtml</a>
 			</td>
             <td class="mb_hide" nowrap="nowrap">
 			#if(!$!record.HasChildrenForForm)
