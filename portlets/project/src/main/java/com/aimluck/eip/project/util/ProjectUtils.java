@@ -22,6 +22,8 @@
 
 package com.aimluck.eip.project.util;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,6 +105,9 @@ public class ProjectUtils {
    * 日付フォーマット（画面表示用）
    */
   public static final String DISP_DATE_FORMAT = "yyyy年M月d日（E）";
+
+  /** 小数値項目フォーマット */
+  private final static DecimalFormat df = new DecimalFormat("#.0##");
 
   /** 新規、進行中、フィードバック */
   public static final List<String> incompleteStatus = Arrays.asList(
@@ -998,7 +1003,8 @@ public class ProjectUtils {
         data.initField();
         data.setUserId(user.getUserId().getValue());
         data.setUserName(user.getAliasName().getValue());
-        data.setWorkload(member.getWorkload());
+        BigDecimal workload = new BigDecimal(df.format(member.getWorkload()));
+        data.setWorkload(workload);
         members.add(data);
       }
     } catch (Exception ex) {

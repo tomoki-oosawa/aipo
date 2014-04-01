@@ -25,6 +25,7 @@ package com.aimluck.eip.project;
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -121,6 +122,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /** 計画工数（入力値用） */
   private String planWorkloadString;
+
+  /** 小数値項目フォーマット */
+  private final DecimalFormat df = new DecimalFormat("#.0##");
 
   /** 進捗率 */
   private ALNumberField progress_rate;
@@ -539,7 +543,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         end_date.setValue(task.getEndDate());
       }
       // 計画工数
-      plan_workload = task.getPlanWorkload();
+      plan_workload = new BigDecimal(df.format(task.getPlanWorkload()));
       // 進捗率
       progress_rate.setValue(task.getProgressRate());
 
