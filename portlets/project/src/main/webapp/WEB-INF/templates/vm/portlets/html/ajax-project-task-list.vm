@@ -102,7 +102,7 @@
     #end
 	#AUISummaryDivfooter()
     #if($result.List.size() == 0)
-		<div class="message">指定された条件に該当するレコードはありません。</div>
+		<div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
     #else
         #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
         <div id="messageDiv-$!portlet.ID"></div>
