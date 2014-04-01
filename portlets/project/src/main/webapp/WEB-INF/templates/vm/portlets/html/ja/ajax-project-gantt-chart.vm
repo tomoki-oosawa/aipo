@@ -34,12 +34,12 @@
 	<div class="auiSummaryMeta clearfix">
 	<div class="floatRight">
 		<div class="auiSelectButton">
-							<ul>
-								#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-								<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
-								#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-								<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
-							</ul>
+			<ul>
+				#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+				<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+				#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+				<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+			</ul>
 		</div>
 	</div>
 	</div>
@@ -120,6 +120,9 @@
 			<option value="$num" #if ($!result.BaseDateTo.Month == "$num") selected="selected" #end>$!{num}$l10n.PROJECT_MONTH</option>
 		#end
 		</select>
+	    #if("$result.List.size()" != "0")
+			#AUIajaxpageview('ProjectGanttChartScreen' $result)
+		#end
 	</div>
 	#if($result.List.size() == 0)
 		<div class="message">$l10n.PROJECT_NO_RECORD</div>
@@ -316,6 +319,11 @@
 	#else
 	</div>
 	#end
+		#if("$result.List.size()" != "0")
+    	#AUISummaryDiv()
+    	#AUIajaxpageview('ProjectGanttChartScreen' $result)
+    	#AUISummaryDivfooter()
+		#end
 	#end
 #end
 #AUIcontentsAreaFooter()
