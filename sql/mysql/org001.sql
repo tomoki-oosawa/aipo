@@ -1178,6 +1178,128 @@ CREATE TABLE `eip_t_wiki_file` (
   PRIMARY KEY (`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_project` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_name` text NOT NULL,
+  `explanation` text,
+  `admin_user_id` int(11) NOT NULL,
+  `progress_flg` varchar(1) NOT NULL,
+  `progress_rate` int(11) DEFAULT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `update_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task` (
+  `task_id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_task_id` int(11) DEFAULT NULL,
+  `project_id` int(11) NOT NULL,
+  `tracker` text NOT NULL,
+  `task_name` text NOT NULL,
+  `explanation` text,
+  `status` text NOT NULL,
+  `priority` text NOT NULL,
+  `start_plan_date` date DEFAULT NULL,
+  `end_plan_date` date DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `plan_workload` decimal(5,3) DEFAULT NULL,
+  `progress_rate` int(11) DEFAULT NULL,
+  `order_no` int(11) DEFAULT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `update_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_member` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `workload` decimal(5,3) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `task_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `create_user_id` int(11) NOT NULL,
+  `create_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  PRIMARY KEY (`comment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `task_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_project_task_comment_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) DEFAULT NULL,
+  `comment_id` int(11) DEFAULT NULL,
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_m_project_kubun` (
+  `project_kubun_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_kubun_cd` text NOT NULL,
+  `project_kubun_name` text NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`project_kubun_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO eip_m_project_kubun VALUES(1,'tracker','トラッカー', now(), now()),(2,'status','ステータス', now(), now()),(3,'priority','優先度', now(), now());
+
+CREATE TABLE `eip_m_project_kubun_value` (
+  `project_kubun_value_id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_kubun_id` int(11) NOT NULL,
+  `project_kubun_value_cd` text NOT NULL,
+  `project_kubun_value` text NOT NULL,
+  `order_no` int(11) NOT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`project_kubun_value_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO eip_m_project_kubun_value  VALUES(1,1,'1','機能',1, now(), now()),(2,1,'2','バグ',2, now(), now()),(3,1,'3','サポート',3, now(), now()),(4,2,'1','新規',1, now(), now()),(5,2,'2','進行中',2, now(), now()),(6,2,'3','フィードバック',3, now(), now()),(7,2,'4','完了',4, now(), now()),(8,2,'5','却下',5, now(), now()),(9,2,'6','停止',6, now(), now()),(10,3,'1','高',1, now(), now()),(11,3,'2','中',2, now(), now()),(12,3,'3','低',3, now(), now());
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1255,3 +1377,117 @@ ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
 
 ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`, `parent_id`);
+
+delimiter |
+
+CREATE PROCEDURE WITH_EMULATOR(
+recursive_table varchar(100), # name of recursive table
+initial_SELECT varchar(21845), # seed a.k.a. anchor
+recursive_SELECT varchar(21845), # recursive member
+final_SELECT varchar(21845), # final SELECT on UNION result
+max_recursion int unsigned, # safety against infinite loop, use 0 for default
+create_table_options varchar(21845) # you can add CREATE-TABLE-time options
+# to your recursive_table, to speed up initial/recursive/final SELECTs; example:
+# "(KEY(some_column)) ENGINE=MEMORY"
+)
+
+BEGIN
+  declare new_rows int unsigned;
+  declare show_progress int default 0; # set to 1 to trace/debug execution
+  declare recursive_table_next varchar(120);
+  declare recursive_table_union varchar(120);
+  declare recursive_table_tmp varchar(120);
+  set recursive_table_next  = concat(recursive_table, "_next");
+  set recursive_table_union = concat(recursive_table, "_union");
+  set recursive_table_tmp   = concat(recursive_table, "_tmp");
+  # If you need to reference recursive_table more than
+  # once in recursive_SELECT, remove the TEMPORARY word.
+  SET @str = # create and fill T0
+    CONCAT("CREATE TEMPORARY TABLE IF NOT EXISTS ", recursive_table, " ",
+    create_table_options, " AS ", initial_SELECT);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  SET @str = # create U
+    CONCAT("CREATE TEMPORARY TABLE IF NOT EXISTS ", recursive_table_union, " LIKE ", recursive_table);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  SET @str = # create T1
+    CONCAT("CREATE TEMPORARY TABLE IF NOT EXISTS ", recursive_table_next, " LIKE ", recursive_table);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  if max_recursion = 0 then
+    set max_recursion = 100; # a default to protect the innocent
+  end if;
+  recursion: repeat
+    # add T0 to U (this is always UNION ALL)
+    SET @str =
+      CONCAT("INSERT INTO ", recursive_table_union, " SELECT * FROM ", recursive_table);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    # we are done if max depth reached
+    set max_recursion = max_recursion - 1;
+    if not max_recursion then
+      if show_progress then
+        select concat("max recursion exceeded");
+      end if;
+      leave recursion;
+    end if;
+    # fill T1 by applying the recursive SELECT on T0
+    SET @str =
+      CONCAT("INSERT INTO ", recursive_table_next, " ", recursive_SELECT);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    # we are done if no rows in T1
+    select row_count() into new_rows;
+    if show_progress then
+      select concat(new_rows, " new rows found");
+    end if;
+    if not new_rows then
+      leave recursion;
+    end if;
+    # Prepare next iteration:
+    # T1 becomes T0, to be the source of next run of recursive_SELECT,
+    # T0 is recycled to be T1.
+    SET @str =
+      CONCAT("ALTER TABLE ", recursive_table, " RENAME ", recursive_table_tmp);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    # we use ALTER TABLE RENAME because RENAME TABLE does not support temp tables
+    SET @str =
+      CONCAT("ALTER TABLE ", recursive_table_next, " RENAME ", recursive_table);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    SET @str =
+      CONCAT("ALTER TABLE ", recursive_table_tmp, " RENAME ", recursive_table_next);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    # empty T1
+    SET @str =
+      CONCAT("TRUNCATE TABLE ", recursive_table_next);
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+  until 0 end repeat;
+  # eliminate T0 and T1
+  SET @str =
+    CONCAT("DROP TEMPORARY TABLE ", recursive_table_next, ", ", recursive_table);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  # Final (output) SELECT uses recursive_table name
+  SET @str =
+    CONCAT("ALTER TABLE ", recursive_table_union, " RENAME ", recursive_table);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  # Run final SELECT on UNION
+  SET @str = final_SELECT;
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  # No temporary tables may survive:
+  SET @str =
+    CONCAT("DROP TEMPORARY TABLE ", recursive_table);
+  PREPARE stmt FROM @str;
+  EXECUTE stmt;
+  # We are done :-)
+END|
+
+delimiter ;
+
