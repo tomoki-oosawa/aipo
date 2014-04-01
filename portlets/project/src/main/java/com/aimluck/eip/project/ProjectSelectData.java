@@ -171,12 +171,15 @@ public class ProjectSelectData extends
 
       DataRow row = result.get(0);
 
-      if (Integer.valueOf(row.get("cnt").toString()) > 0) {
+      if (Double.valueOf(row.get("cnt").toString()) > 0) {
 
         // 経過タスク日数
-        int lapsedDays = Integer.valueOf(row.get("lapsed_days").toString());
+        int lapsedDays =
+          (int) (Double.valueOf(row.get("lapsed_days").toString())
+            .doubleValue());
         // タスク日数
-        int taskDays = Integer.valueOf(row.get("task_days").toString());
+        int taskDays =
+          (int) (Double.valueOf(row.get("task_days").toString()).doubleValue());
 
         if (lapsedDays > taskDays) {
           // 経過タスク日数≦タスク日数にする
