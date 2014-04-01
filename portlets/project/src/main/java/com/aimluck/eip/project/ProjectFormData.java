@@ -390,7 +390,7 @@ public class ProjectFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_ADD", project.getProjectName()));
 
     } catch (Exception ex) {
@@ -498,7 +498,7 @@ public class ProjectFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_UPDATE", project.getProjectName()));
 
     } catch (Exception ex) {
@@ -572,7 +572,7 @@ public class ProjectFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         project.getProjectId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_DELETE", project.getProjectName()));
 
     } catch (Exception ex) {

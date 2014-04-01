@@ -644,7 +644,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_TASK_ADD", task.getTaskName()));
 
     } catch (Exception ex) {
@@ -812,7 +812,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_TASK_UPDATE", task.getTaskName()));
 
     } catch (Exception ex) {
@@ -868,7 +868,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         task.getTaskId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10nFormat("PROJECT_EVENTLOG_TASK_DELETE", task.getTaskName()));
 
     } catch (Exception ex) {
@@ -1195,6 +1195,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   }
 
   public boolean isProjectExists() {
-    return null != project;
+    return allProject != null && allProject.size() > 0;
   }
 }
