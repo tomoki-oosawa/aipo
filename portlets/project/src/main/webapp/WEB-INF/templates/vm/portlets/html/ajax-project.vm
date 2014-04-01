@@ -88,7 +88,7 @@
 			#end
             </td>
             <td class="mb_hide" nowrap="nowrap">
-			$!{record.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.EndPlanDate.Day}${l10n.PROJECT_DATE}
+			$!{record.getEndPlanDateWithFormat("$l10n.PROJECT_DAY")}
 			</td>
 			</tr>
         #end
