@@ -52,7 +52,7 @@
     <table class="auiRowTable auiMbTable wide">
 		<tbody>
     		<tr>
-    #ALtdhead("#ALajaxsort('project_name' "$l10n.PROJECT_NAME" $result 'ProjectListScreen')")
+    #ALtdhead("#ALajaxsort('project_name' $l10n.PROJECT_NAME $result 'ProjectListScreen')")
     #ALtdhead("$l10n.PROJECT_PROGRESS_RATE")
     #ALtdhead("$l10n.PROJECT_ACTUAL_WORKLOAD")
     #ALtdhead("$l10n.PROJECT_EXPECTED_WORKLOAD")
