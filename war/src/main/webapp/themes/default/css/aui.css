@@ -3937,7 +3937,7 @@ tr:first-child #gantt_task > table td {
   position: relative;
   overflow-x: auto;
   overflow-y: hidden;
-  border-right: solid 1px #d2d2d2;
+  /* border-right: solid 1px #d2d2d2; */
 }
 #gantt_area > div {
   position: relative;
