@@ -1929,7 +1929,7 @@ public class ProjectUtils {
       if (null == exp) {
         exp = tmp;
       } else {
-        exp.orExp(tmp);
+        exp = exp.orExp(tmp);
       }
     }
     return exp;
