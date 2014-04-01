@@ -388,6 +388,8 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_GADGET;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WIKI) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WIKI;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_PROJECT) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_PROJECT;
     } else {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_STR_NONE;
     }

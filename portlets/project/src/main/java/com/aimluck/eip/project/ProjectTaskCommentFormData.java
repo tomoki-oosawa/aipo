@@ -241,7 +241,7 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         newComment.getCommentId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10n("PROJECT_EVENTLOG_TASK_COMMENT_ADD"));
 
     } catch (Exception ex) {
@@ -315,7 +315,7 @@ public class ProjectTaskCommentFormData extends ALAbstractFormData {
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         taskComment.getCommentId(),
-        ALEventlogConstants.PORTLET_TYPE_NONE,
+        ALEventlogConstants.PORTLET_TYPE_PROJECT,
         getl10n("PROJECT_EVENTLOG_TASK_COMMENT_DELETE"));
 
     } catch (Exception ex) {
