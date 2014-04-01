@@ -275,7 +275,7 @@
 							#set($endDate = "${record.EndDate.Year}$l10n.PROJECT_YEAR${record.EndDate.Month}$l10n.PROJECT_MONTH${record.EndDate.Day}$l10n.PROJECT_DATE")
 						#end
 						##タイトル
-						#set($title = "${record.ProgressRate.Value}%&#10;${record.MemberListString}&#10;$l10n.PROJECT_START_DATE：${record.startPlanDate}&#10;$l10n.PROJECT_END_DATE：${record.endPlanDate}")
+						#set($title = "${record.ProgressRate.Value}%&#10;${record.MemberListString}&#10;$l10n.PROJECT_START_DATE：${record.startPlanDate}&#10;$l10n.PROJECT_END_PLAN_DATE：${record.endPlanDate}")
 
 						##予定グラフ
 				<div class="gantt_tip" style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;"
