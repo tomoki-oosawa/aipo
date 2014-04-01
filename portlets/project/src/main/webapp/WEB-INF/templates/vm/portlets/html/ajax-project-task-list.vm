@@ -108,15 +108,15 @@
         <div id="messageDiv-$!portlet.ID"></div>
         #AUIrowMTableWide()
         	<tr>
-        		#ALtdhead("$l10n.PROJECT_TASK_NAME")
+        		#ALtdhead("#ALajaxsort('task_name' $l10n.PROJECT_TASK_NAME $result 'ProjectTaskListScreen')")
         		#ALtdheadAtt("$l10n.PROJECT_CATEGORY" "class='thin'")
-        		#ALtdheadAtt("$l10n.PROJECT_STATUS" "class='thin'")
+        		#ALtdheadAtt("#ALajaxsort('status' $l10n.PROJECT_STATUS $result 'ProjectTaskListScreen')" "class='thin'")
         		#ALtdheadAtt("$l10n.PROJECT_MEMBER" "class='wName'")
-        		#ALtdheadAtt("$l10n.PROJECT_PROGRESS_RATE" "class='thin'")
+        		#ALtdheadAtt("#ALajaxsort('progress_rate' $l10n.PROJECT_PROGRESS_RATE $result 'ProjectTaskListScreen')" "class='thin'")
         		#ALtdheadAtt("$l10n.PROJECT_ACTUAL_WORKLOAD" "class='thin'")
         		#ALtdheadAtt("$l10n.PROJECT_EXPECTED_WORKLOAD" "class='thin'")
-                #ALtdheadAtt("$l10n.PROJECT_START_DATE" "class='w10'")
-        		#ALtdheadAtt("$l10n.PROJECT_END_PLAN_DATE" "class='w10'")
+                #ALtdheadAtt("#ALajaxsort('start_plan_date' $l10n.PROJECT_START_DATE $result 'ProjectTaskListScreen')" "class='w10'")
+        		#ALtdheadAtt("#ALajaxsort('end_plan_date' $l10n.PROJECT_END_PLAN_DATE $result 'ProjectTaskListScreen')" "class='w10'")
         	</tr>
         	#foreach ($record in $result.List)
         	<tr class="#if($!{record.Delay})bgRed #end #if($!{record.FinishStatus})bgGray #end">
