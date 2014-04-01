@@ -96,7 +96,7 @@
     	<option value="${rate}" #if ("$!result.TargetProgressRateTo" == "$rate" || (!$!result.TargetProgressRateTo && $rate == 100)) selected="selected" #end>${rate}%</option>
     #end
     </select>
-    <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end />$l10n.PROJECT_TASK_ONLY_DELAYED</label>
+    <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end />&nbsp;$l10n.PROJECT_TASK_ONLY_DELAYED</label>
     #if("$result.List.size()" != "0")
 		#AUIajaxpageview('ProjectTaskListScreen' $result)
     #end
