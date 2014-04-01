@@ -103,7 +103,7 @@
     		<div>$!record.AdminUserName</div>
     	#ALtdcellfooter()
     	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
-    		<div>$!{record.TaskUpdateDate.Year}$l10n.PROJECT_YEAR$!{record.TaskUpdateDate.Month}$l10n.PROJECT_MONTH$!{record.TaskUpdateDate.Day}$l10n.PROJECT_DATE</div>
+    		<div>$!{record.TaskUpdateDate}</div>
     	#ALtdcellfooter()
     	</tr>
     #end

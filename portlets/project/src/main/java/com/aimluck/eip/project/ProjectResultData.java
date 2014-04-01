@@ -301,7 +301,7 @@ public class ProjectResultData implements ALData {
    * @return 更新日
    */
   public ALDateTimeField getTaskUpdateDate() {
-    return task_update_date;
+    return ALEipUtils.getFormattedTime(task_update_date);
   }
 
   /**
