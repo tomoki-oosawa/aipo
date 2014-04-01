@@ -222,3 +222,187 @@ ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
 
 CREATE INDEX eip_t_wiki_wiki_name_parent_id_index ON EIP_T_WIKI (WIKI_NAME, PARENT_ID);
 CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT (
+      PROJECT_ID         INTEGER                        NOT NULL    --プロジェクトID
+    , PROJECT_NAME       TEXT                           NOT NULL    --プロジェクト名
+    , EXPLANATION        TEXT                                       --説明
+    , ADMIN_USER_ID      INTEGER                        NOT NULL    --管理者
+    , PROGRESS_FLG       CHARACTER VARYING(1)           NOT NULL    --進捗率入力フラグ 1:進捗率を入力する 0:タスクを元に自動計算する
+    , PROGRESS_RATE      INTEGER                                    --進捗率
+    , CREATE_USER_ID     INTEGER                        NOT NULL    --登録ユーザーID
+    , UPDATE_USER_ID     INTEGER                        NOT NULL    --更新ユーザーID
+    , CREATE_DATE        TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
+    , UPDATE_DATE        TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , PRIMARY KEY (PROJECT_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_MEMBER (
+      ID          INTEGER                        NOT NULL    --ID
+    , PROJECT_ID  INTEGER                        NOT NULL    --プロジェクトID
+    , USER_ID     INTEGER                        NOT NULL    --ユーザーID
+    , PRIMARY KEY (ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK (
+      TASK_ID                INTEGER                        NOT NULL    --タスクID
+    , PARENT_TASK_ID         INTEGER                                    --親タスクID
+    , PROJECT_ID             INTEGER                        NOT NULL    --プロジェクトID
+    , TRACKER                TEXT                           NOT NULL    --トラッカー 1:機能 2:バグ 3:サポート
+    , TASK_NAME              TEXT                           NOT NULL    --タスク名
+    , EXPLANATION            TEXT                                       --説明
+    , STATUS                 TEXT                           NOT NULL    --ステータス 1:新規 2:進行中 3:解決 4:フィードバック 5:終了 6:却下
+    , PRIORITY               TEXT                           NOT NULL    --優先度 1:高 2:中 3:低
+    , START_PLAN_DATE        DATE                                       --開始予定日
+    , END_PLAN_DATE          DATE                                       --完了予定日
+    , START_DATE             DATE                                       --開始実績日
+    , END_DATE               DATE                                       --完了実績日
+    , PLAN_WORKLOAD          DECIMAL(5,3)                               --計画工数（時間）
+    , PROGRESS_RATE          INTEGER                                    --進捗率
+    , ORDER_NO               INTEGER                                    --表示順
+    , CREATE_USER_ID         INTEGER                        NOT NULL    --登録ユーザーID
+    , UPDATE_USER_ID         INTEGER                        NOT NULL    --更新ユーザーID
+    , CREATE_DATE            TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
+    , UPDATE_DATE            TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , PRIMARY KEY (TASK_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_MEMBER (
+      ID              INTEGER                NOT NULL    --ID
+    , TASK_ID         INTEGER                NOT NULL    --タスクID
+    , USER_ID         INTEGER                NOT NULL    --ユーザーID
+    , WORKLOAD        DECIMAL(5,3)           NOT NULL    --工数
+    , PRIMARY KEY (ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_COMMENT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_COMMENT (
+      COMMENT_ID            INTEGER                        NOT NULL    --コメントID
+    , TASK_ID               INTEGER                        NOT NULL    --タスクID
+    , COMMENT               TEXT                           NOT NULL    --コメント
+    , CREATE_USER_ID        INTEGER                        NOT NULL    --登録ユーザーID
+    , CREATE_DATE           TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
+    , UPDATE_DATE           TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , PRIMARY KEY (COMMENT_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_FILE (
+      FILE_ID           INTEGER                NOT NULL
+    , OWNER_ID          INTEGER
+    , PROJECT_ID        INTEGER
+    , FILE_NAME         CHARACTER VARYING(128) NOT NULL
+    , FILE_PATH         TEXT                   NOT NULL
+    , FILE_THUMBNAIL    BYTEA
+    , CREATE_DATE       DATE
+    , UPDATE_DATE       TIMESTAMP WITHOUT TIME ZONE
+    , PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_FILE (
+      FILE_ID         INTEGER                NOT NULL
+    , OWNER_ID        INTEGER
+    , TASK_ID         INTEGER
+    , FILE_NAME       CHARACTER VARYING(128) NOT NULL
+    , FILE_PATH       TEXT                   NOT NULL
+    , FILE_THUMBNAIL  BYTEA
+    , CREATE_DATE     DATE
+    , UPDATE_DATE     TIMESTAMP WITHOUT TIME ZONE
+    , PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_COMMENT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_COMMENT_FILE (
+      FILE_ID         INTEGER                NOT NULL
+    , OWNER_ID        INTEGER
+    , COMMENT_ID      INTEGER
+    , FILE_NAME       CHARACTER VARYING(128) NOT NULL
+    , FILE_PATH       TEXT                   NOT NULL
+    , FILE_THUMBNAIL  BYTEA
+    , CREATE_DATE     DATE
+    , UPDATE_DATE     TIMESTAMP WITHOUT TIME ZONE
+    , PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_M_PROJECT_KUBUN
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_M_PROJECT_KUBUN (
+      PROJECT_KUBUN_ID     INTEGER                        NOT NULL    --区分ID
+    , PROJECT_KUBUN_CD     TEXT                           NOT NULL    --区分コード
+    , PROJECT_KUBUN_NAME   TEXT                           NOT NULL    --区分名
+    , CREATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --登録日
+    , UPDATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , PRIMARY KEY (PROJECT_KUBUN_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_M_PROJECT_KUBUN_VALUE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_M_PROJECT_KUBUN_VALUE (
+      PROJECT_KUBUN_VALUE_ID  INTEGER                        NOT NULL    --区分値ID
+    , PROJECT_KUBUN_ID        INTEGER                        NOT NULL    --区分ID
+    , PROJECT_KUBUN_VALUE_CD  TEXT                           NOT NULL    --区分値コード
+    , PROJECT_KUBUN_VALUE     TEXT                           NOT NULL    --区分値
+    , ORDER_NO                INTEGER                        NOT NULL    --表示順
+    , CREATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --登録日
+    , UPDATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , PRIMARY KEY (PROJECT_KUBUN_VALUE_ID)
+);
+
+CREATE SEQUENCE pk_eip_t_project INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_comment INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_comment_file INCREMENT 20;
+
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (1,'tracker','トラッカー', now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (2,'status','ステータス', now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (3,'priority','優先度', now(), now());
+
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(1,1,'1','機能',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(2,1,'2','バグ',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(3,1,'3','サポート',3, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(4,2,'1','新規',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(5,2,'2','進行中',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(6,2,'3','フィードバック',3, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(7,2,'4','完了',4, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(8,2,'5','却下',5, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(9,2,'6','停止',6, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(10,3,'1','高',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(12,3,'3','低',3, now(), now());
