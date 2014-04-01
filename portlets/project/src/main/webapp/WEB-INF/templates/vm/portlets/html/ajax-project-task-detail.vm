@@ -37,7 +37,7 @@
                 <div class="clearfix">
                 <div class="alignleft">
 					<strong>
-				$!result.Detail.TaskName
+				$!result.Detail.TaskNameHtml
                     </strong>
                 <br>
                 $!result.Detail.TopicPath
