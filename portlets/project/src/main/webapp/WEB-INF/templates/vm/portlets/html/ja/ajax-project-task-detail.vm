@@ -91,11 +91,11 @@ $!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 #ALtditemfooter()
 #ALtdcaption($l10n.PROJECT_MEMBER)
 <td>
-	<ul class="w70">
+	<ul class="w90">
 #foreach($record in $!result.Detail.MemberList)
 		<li class="clearfix">
-			<div class="floatLeft w80">$!record.UserName</div>
-			<div class="floatRight w20 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
+			<div class="floatLeft w70">$!record.UserName</div>
+			<div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
 		</li>
 #end
 	</ul>
