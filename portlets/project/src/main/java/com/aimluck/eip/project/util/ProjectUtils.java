@@ -660,7 +660,7 @@ public class ProjectUtils {
     if (!ProjectUtils.isEmptyDate(model.getEndDate())) {
       data.setEndDate(model.getEndDate());
     }
-    data.setPlanWorkload(model.getPlanWorkload()); // 計画工数
+    data.setPlanWorkload(new BigDecimal(df.format(model.getPlanWorkload()))); // 計画工数
     data.setProgressRate(model.getProgressRate()); // 進捗率
     data.setCreateDate(model.getCreateDate());// 登録日
     data.setUpdateDate(model.getUpdateDate());// 更新日

@@ -23,6 +23,7 @@
 package com.aimluck.eip.project;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
@@ -42,6 +43,9 @@ public class ProjectTaskMemberResultData implements ALData {
 
   /** 工数 */
   protected BigDecimal workload;
+
+  /** 小数値項目フォーマット */
+  private final DecimalFormat df = new DecimalFormat("#.0##");
 
   /**
    * 初期設定を行います
@@ -97,7 +101,7 @@ public class ProjectTaskMemberResultData implements ALData {
    * @return 工数
    */
   public BigDecimal getWorkload() {
-    return workload;
+    return new BigDecimal(df.format(workload));
   }
 
   /**

@@ -135,7 +135,7 @@ public class ProjectTaskResultData implements ALData {
   private ALStringField topicPath;
 
   /** 小数値項目フォーマット */
-  private final DecimalFormat df = new DecimalFormat("#.##");
+  private final DecimalFormat df = new DecimalFormat("#.0##");
 
   private boolean editable;
 
