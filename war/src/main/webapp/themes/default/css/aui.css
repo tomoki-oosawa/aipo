@@ -362,7 +362,7 @@ img.avatar,
 }
 
 .activityTable tr:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityTable td {
@@ -417,7 +417,7 @@ img.avatar,
 }
 
 .activityList li:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityList .meta {
@@ -484,7 +484,7 @@ img.avatar,
 
 .startPopupHead {
   margin-bottom: 35px;
-  font-size:32px;
+  font-size: 32px;
   text-align: center;
 }
 
@@ -990,17 +990,15 @@ img.avatar,
 	dialogTable
 --------------------------------------------------*/
 .dialogTable {
-  margin: 15px 0;
+  margin: 10px 0;
   border-top: solid 1px #ededed;
   border-collapse: collapse;
 }
-
 .dialogTable th,
 .dialogTable td {
   padding: 10px;
   border-bottom: solid 1px #ededed;
 }
-
 .dialogTable .caption {
   font-weight: bold;
 }
@@ -1032,12 +1030,6 @@ img.avatar,
 .auiWidget li {
   padding: 0;
   background: none;
-}
-.auiWidget li span {
-  display: block;
-  line-height: 1.8em;
-  padding: 0.3em 0 0.3em 18px;
-  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
 .auiWidget li a {
   display: block;
@@ -1212,7 +1204,7 @@ button,
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
   cursor: pointer;
-  background-color: #f5f5f5;
+  background-color: #f6f6f6;
   background-image: -moz-linear-gradient(top, white, #e6e6e6);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, white, #e6e6e6);
@@ -1899,7 +1891,7 @@ input.auiButtonSearch.active {
 .auiSummaryMeta {
   position: relative;
   width: 100%;
-  line-height: 2em;
+  line-height: 32px;
   margin: 10px 0;
   vertical-align: middle;
 }
@@ -1956,7 +1948,7 @@ input.auiButtonSearch.active {
 }
 
 .auiGridTable .even {
-  background: #f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+  background: #f0f0f0;
 }
 
 .auiGridTable .sunday td,
@@ -3031,7 +3023,6 @@ ul.attachments {
 }
 
 .filters {
-  /*white-space:nowrap;*/
   color: #999999;
   line-height: 30px;
   cursor: text;

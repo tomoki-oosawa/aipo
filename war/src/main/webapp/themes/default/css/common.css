@@ -329,138 +329,26 @@ table.center {
   margin: 0 5px 5px;
 }
 
-*:first-child+html .roundMainWrapper {/* IE7 Hack */
-	padding-bottom:30px;
-}
-
-.roundBlockWrapperTop {
-	border-collapse:collapse;
-	border-spacing:0;
-	height:45px;
-	width:100%;
-	padding:0;
-	margin:0;
-}
-.roundBlockWrapperBottom {
-	padding:0 18px 20px 18px;
-}
-.roundBlockWrapperTop .roundBlockTitle {
-  white-space: nowrap;
-  padding: 12px 10px 0 30px;
-  vertical-align: top;
-  text-shadow: #F4F4F4 0 1px;
-  background: transparent url(../images/common/icon_p.gif) no-repeat 12px 13px;
-}
-
-.roundBlockWrapperTop .roundBlockTitle a {
-  color: #313131;
-}
-
-.roundBlockWrapperTop .roundBlockTitle a:hover {
-  color: #666;
-}
-
-.roundBlockWrapperTop .roundBlockIcon {
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat left top;
-  white-space: nowrap;
-  padding: 12px 5px 0 5px;
-  vertical-align: top;
-}
-
-table.roundBlockWrapperTop td.roundBlockIcon img {
-  margin: 0 3px 0 0;
-  vertical-align: middle;
-}
-
-.roundBlockWrapperTop .roundBlockMenu {
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat left top;
-  white-space: nowrap;
-  padding: 11px 5px 0 5px;
-  vertical-align: top;
-}
-
-.roundBlockWrapperTop .roundBlockMenu img {
-  margin: 0 3px 0;
-  vertical-align: middle;
-}
-
-.roundBlockWrapperTop .roundBlockNavi {
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat left top;
-  white-space: nowrap;
-  padding: 0 2px 0 10px;
-}
-
-.roundBlockWrapperTop .last {
-  padding-right: 15px;
-}
-
-.roundBlockWrapperTop .endcap {
-  white-space: nowrap;
-  padding: 8px 1px 0 4px;
-  vertical-align: top;
+.relativeBlock {
+  position: relative;
+  margin: 5px 0;
   width: 100%;
 }
 
-.relativeBlock{
-position:relative;
-margin:5px 0;
-width:100%;
+.absoluteRight {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
-.absoluteRight{
-position:absolute;
-top:0;
-right:0;
-}
-.absoluteLeft{
-position:absolute;
-top:0;
-left:0;
+
+.absoluteLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .relativeBlock table {
-	z-index:0;
-}
-
-.submenu {
-  width: 200px;
-  background: transparent url(../images/common/bg_submenu_t.gif) no-repeat scroll center top;
-  padding: 20px 0 0;
-}
-
-.submenu ul {
-  background: transparent url(../images/common/bg_submenu.gif) repeat-y scroll center top;
-}
-
-.submenu ul li {
-  display: block;
-  width: 186px;
-  background: transparent url(../images/common/line_01.gif) repeat-x scroll left bottom;
-  margin: 0 7px 0;
-  padding: 0 0 1px;
-}
-
-.submenu ul li a {
-  display: block;
-  width: 161px;
-  padding: 5px 5px 5px 20px;
-  background: url(../images/common/circle_right_gray.gif) no-repeat scroll 5px center;
-  text-decoration: none;
-}
-
-.submenu ul li.selected a {
-  background: #eeeeee url(../images/common/circle_right.gif) no-repeat scroll 5px center;
-  color: #666;
-}
-
-.submenu ul li a:hover {
-  background: #eeeeee url(../images/common/circle_right_gray_on.gif) no-repeat scroll 5px center;
-  color: #666;
-  text-decoration: underline;
-}
-
-div.endcap {
-  background: white url(../images/common/bg_submenu_b.gif) no-repeat scroll center top;
-  height: 20px;
+  z-index: 0;
 }
 
 a.button:link, a.button:visited, a.button:active {
@@ -527,8 +415,23 @@ td.item {
   padding: 0;
   word-break: break-all;
 }
+.listTable td {
+  height: 24px;
+}
+.listTable td table {
+  border-collapse: collapse;
+}
 .listTable td table tr:first-child td {
   border-top: none;
+}
+.listTable td table td div {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.listTable td > div {
+  overflow: hidden;
 }
 .listTable caption {
   background: #f0f0f0;
@@ -644,55 +547,26 @@ table.tableWrapper {
   width: 100%;
   word-break: break-all;
 }
-
 table.tableWrapper td.tableLeft {
   padding-right: 15px;
   vertical-align: top;
   width: 200px;
 }
-
 table.tableWrapper td.tableLeft div.scroll {
   width: 200px;
   overflow: auto;
   overflow-y: hidden;
 }
-
 table.tableWrapper td.tableCenter {
   vertical-align: top;
 }
 
-table.simpleTable {
-	margin-top:5px;
-	margin-bottom:5px;
-	border-spacing:0;
-	border-collapse:collapse;
-}
-table.simpleTable td {
-	border:1px solid #C9C9C9;
-	padding:3px;
-}
-table.simpleTable th, table.simpleTable thead td {
-	border:1px solid #C9C9C9;
-	padding:1px 2px 1px 2px;
-	background:#EEE url(../images/common/bg_slash.gif) repeat left top;
-	white-space:nowrap;
-	text-align:center;
-	font-weight:normal;
-}
-table.simpleTable .caption {
-	background:#E5E5E5 url(../images/common/bg_slash.gif) repeat left top;
-	min-width:130px;
-	min-width:-moz-intrinsic;
-	width:130px;
-	white-space:nowrap;
-	font-weight:normal;
-}
 .popup {
   display: block;
   width: auto !important;
   padding: 5px;
   border: 3px solid #d2d2d2;
-  background: #f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
+  background: #f7f7f7;
 }
 
 .popup:after {
@@ -703,8 +577,9 @@ table.simpleTable .caption {
   visibility: hidden;
 }
 
-/* Hides from IE-mac \*/ * html .popup {
-	height:1%;
+/* Hides from IE-mac \*/
+* html .popup {
+  height: 1%;
 }
 
 /***************************************************
@@ -842,14 +717,6 @@ table.simpleTable .caption {
 }
 
 /* addressbookDialog */
-.addressbookDialog {
-  border: 5px solid #d2d2d2;
-  background-color: #fff;
-  /*width: 600px;*/
-  z-index: 999;
-  position: absolute;
-}
-
 .addressbookDialogUnderlayWrapper {
   position: absolute;
   left: 0;
@@ -890,7 +757,6 @@ table.simpleTable .caption {
 /* fileuploadViewDialog */
 .fileuploadViewDialog {
   z-index: 999;
-  /*width: 600px;*/
   position: absolute;
 }
 
@@ -1011,107 +877,13 @@ table.simpleTable .caption {
   background-image: url(images/submenu_disabled.gif);
 }
 
-.menuBarSeparator {
-  width: 3px;
-  height: 16px;
-  white-space: nowrap;
-  margin: 0;
-  position: relative;
-  padding: 2px;
-  display: inline;
-  display: -moz-inline-box;
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat center -8px;
-  vertical-align: top;
-}
-
-* html .menuBarSeparator {
-  vertical-align: baseline;
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
-}
-
-* + html .menuBarSeparator {
-  vertical-align: baseline;
-  background: transparent url(../images/common/bg_con_s.gif) no-repeat 2px -6px;
-}
-
-.menuSeparator {
-  font-size: 1px;
-  margin: 0;
-}
-
-.menuSeparatorTop {
-  height: 50%;
-  border-bottom: 1px solid #c0c0c0;
-  margin: 0 2px;
-  font-size: 1px;
-}
-
-.menuSeparatorBottom {
-  height: 50%;
-  border-top: 1px solid #ededed;
-  margin: 0 2px;
-  font-size: 1px;
-}
-
-* html .menuBar {
-  padding: 1px;
-}
-
-* + html .menuBar {
-  padding: 1px;
-}
-
-.menuBar .menuItem {
-  white-space: nowrap;
-  margin: 0;
-  position: relative;
-  z-index: 1;
-  padding: 2px;
-  display: inline;
-  display: -moz-inline-box;
-  cursor: pointer;
-  cursor: hand;
-}
-
-.menuBar .menuBarItemHover .menuItem {
-  padding: 1px;
-  border: 1px solid #ff9900;
-  background: #fff5d8;
-  cursor: pointer;
-  cursor: hand;
-}
-
-.menuBar .menuItemDisabled span {
-  color: #4f6582;
-}
-
-.menuBar img {
-  padding-right: 0;
-}
-
-.menuItemSub {
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 18px;
-  height: 16px;
-}
-
-* html .menuItemSub {
-  padding-top: 2px;
-  padding-bottom: 1px;
-}
-
-* + html .menuItemSub {
-  padding-top: 2px;
-  padding-bottom: 1px;
-}
-
 .datePickerContainer {
+  display: block;
   text-align: center;
   width: 140px;
   padding: 5px;
   border: 3px solid #d2d2d2;
-  background: #f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
+  background: #f7f7f7;
 }
 
 .datePickerContainer:after {
@@ -1122,132 +894,139 @@ table.simpleTable .caption {
   visibility: hidden;
 }
 
-.datePickerContainer {
-  display: inline-block;
-}
-
-/* Hides from IE-mac \*/ * html .datePickerContainer {
-  height:1%;
-}
-
-.datePickerContainer {
-  display: block;
+/* Hides from IE-mac \*/
+* html .datePickerContainer {
+  height: 1%;
 }
 
 .calendarContainer .monthLabelContainer {
-	font-weight:bold;
-	text-align:center;
+  font-weight: bold;
+  text-align: center;
 }
 
 .calendarContainer .monthLabelContainer .incrementControl {
-	padding:2px;
-	font-size:.7em;
-	color:#f90;
+  padding: 2px;
+  font-size: .7em;
+  color: #f90;
 }
 
 * html .calendarContainer .monthLabelContainer .incrementControl {
-	padding:4px;
-	font-size:.6em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+  padding: 4px;
+  font-size: .6em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
-*+html .calendarContainer .monthLabelContainer .incrementControl {
-	padding:4px;
-	font-size:.6em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+* + html .calendarContainer .monthLabelContainer .incrementControl {
+  padding: 4px;
+  font-size: .6em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 .calendarContainer .incrementControl {
-	cursor:pointer;
-	cursor:hand;
+  cursor: pointer;
+  cursor: hand;
 }
 
 .calendarContainer .increase {
-	float:right;
+  float: right;
 }
 
 .calendarContainer .decrease {
-	float:left;
+  float: left;
 }
 
 .timePickerContainer {
-	text-align:center;
-	width:115px;
-	padding:5px;
-	border:3px solid #ddd;
-	background:#f7f7f7 url(../images/common/bg_slash.gif) repeat left top;
+  text-align: center;
+  width: 115px;
+  padding: 5px;
+  border: 3px solid #ddd;
+  background: #f7f7f7;
 }
 
 .timePickerContainer:after {
-	content:" ";
-	display:block;
-	height:0;
-	clear:both;
-	visibility:hidden;
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
 }
+
 .timePickerContainer {
-	display:inline-block;
+  display: inline-block;
 }
-/* Hides from IE-mac \*/ * html .timePickerContainer {
-	height:1%;
+
+/* Hides from IE-mac \*/
+* html .timePickerContainer {
+  height: 1%;
 }
+
 .timePickerContainer {
-	display:block;
+  display: block;
 }
-/* End hides from IE-mac */ .timeContainer {
-	border-collapse:collapse;
-	border-spacing:0;
-	border-top:2px solid #ddd;
+
+/* End hides from IE-mac */
+.timeContainer {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-top: 2px solid #ddd;
 }
+
 .timeContainer .timeLabelContainer {
-	font-weight:bold;
-	font-size:.8em;
-	text-align:center;
-	background:#fff5d8 url(../images/common/bg_slash.gif) repeat left top;
-	border:1px solid #ddd;
-	border-bottom:2px solid #ddd;
-	padding:0 .2em 0 .2em;
+  font-weight: bold;
+  font-size: .8em;
+  text-align: center;
+  background: #fff5d8;
+  border: 1px solid #ddd;
+  border-bottom: 2px solid #ddd;
+  padding: 0 .2em 0 .2em;
 }
+
 * html .timeContainer .timeLabelContainer {
-	font-size:.7em;
-	border-bottom:1px solid #ddd;
-	padding:.2em .25em .2em .25em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+  font-size: .7em;
+  border-bottom: 1px solid #ddd;
+  padding: .2em .25em .2em .25em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
-*+html .timeContainer .timeLabelContainer {
-	font-size:.7em;
-	border-bottom:1px solid #ddd;
-	padding:.2em .25em .2em .25em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+
+* + html .timeContainer .timeLabelContainer {
+  font-size: .7em;
+  border-bottom: 1px solid #ddd;
+  padding: .2em .25em .2em .25em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
+
 .timeContainer .timeHoursContainer, .timeContainer .timeMnituesContainer {
-	border-collapse:collapse;
-	border-spacing:0;
-	padding:.1em .2em .1em .2em;
+  border-collapse: collapse;
+  border-spacing: 0;
+  padding: .1em .2em .1em .2em;
 }
+
 .timeContainer .timeHoursContainer td, .timeContainer .timeMnituesContainer td {
-	border:1px solid #ddd;
-	text-align:center;
-	font-size:.8em;
-	background:#fff;
-	cursor:pointer;
-	cursor:hand;
-	padding:.1em .2em .1em .2em;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: .8em;
+  background: #fff;
+  cursor: pointer;
+  cursor: hand;
+  padding: .1em .2em .1em .2em;
 }
+
 * html .timeContainer .timeHoursContainer td, * html .timeContainer .timeMnituesContainer td {
-	font-size:.7em;
-	padding:.2em .25em .2em .25em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+  font-size: .7em;
+  padding: .2em .25em .2em .25em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
-*+html .timeContainer .timeHoursContainer td, *+html .timeContainer .timeMnituesContainer td {
-	font-size:.7em;
-	padding:.2em .25em .2em .25em;
-	font-family:'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
+
+* + html .timeContainer .timeHoursContainer td, * + html .timeContainer .timeMnituesContainer td {
+  font-size: .7em;
+  padding: .2em .25em .2em .25em;
+  font-family: 'メイリオ', Meiryo, Verdana, 'ヒラギノ角ゴPro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック', sans-serif;
 }
+
 .timeContainer .timeHoursContainer td.selectedItem, .timeContainer .timeMnituesContainer td.selectedItem {
-	background:#ddd;
-	color:#FFF;
-	font-weight:bold;
+  background: #ddd;
+  color: #FFF;
+  font-weight: bold;
 }
 
 .modalDialog .listTable table.none {
@@ -1294,7 +1073,6 @@ table.simpleTable .caption {
 *:first-child + html .memberlistToTop {
   line-height: 2em;
 }
-
 
 .indicator {
   background: url(../images/common/indicator.gif) no-repeat left;
@@ -1720,24 +1498,23 @@ div.tableBorderM {
 }
 
 div.sunday, td.sunday {
-  /*background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;*/
-  background: #fef6f1;
+  background: #FFEFE5;
 }
+
 div.saturday, td.saturday {
-  /*background:#EBF0F6 url(../images/common/bg_slash.gif) repeat left top;*/
-  background: #f4f7fa;
+  background: #EBF0F6;
 }
+
 div.holiday, td.holiday {
-  /*background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;*/
-  background: #fef6f1;
+  background: #ffefe5;
 }
+
 div.today, td.today {
-  /*background:#ddffdd url(../images/common/bg_slash.gif) repeat left top;*/
-  background: #edfeed;
+  background: #f1f1f1;
 }
+
 div.off, td.off {
-  /*background:#EFEFEF url(../images/common/bg_slash.gif) repeat left top;*/
-  background: #f6f6f6;
+  background: #EFEFEF;
 }
 
 .calendarWrapper {
@@ -1790,22 +1567,18 @@ div.off, td.off {
 }
 
 .calendar th.sunday {
-  /*background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;*/
   background: #fef6f1;
 }
 
 .calendar th.saturday {
-  /*background:#EBF0F6 url(../images/common/bg_slash.gif) repeat left top;*/
   background: #f4f7fa;
 }
 
 .calendar th.holiday {
-  /*background:#FFEFE5 url(../images/common/bg_slash.gif) repeat left top;*/
   background: #fef6f1;
 }
 
 .calendar th.today {
-  /*background:#ddffdd url(../images/common/bg_slash.gif) repeat left top;*/
   background: #edfeed;
 }
 
