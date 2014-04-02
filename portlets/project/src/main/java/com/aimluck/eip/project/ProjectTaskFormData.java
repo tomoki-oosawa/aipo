@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -47,7 +46,6 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTProject;
-import com.aimluck.eip.cayenne.om.portlet.EipTProjectMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskMember;
@@ -408,22 +406,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         // 担当者入力有の場合
 
         List<Long> checkMemberId = new ArrayList<Long>();
-        SelectQuery<EipTProjectMember> query =
-          Database.query(EipTProjectMember.class);
-
-        Expression exp =
-          ExpressionFactory.matchExp(
-            EipTProjectMember.EIP_TPROJECT_PROPERTY,
-            projectId);
-
-        List<EipTProjectMember> MemberList =
-          query.setQualifier(exp).fetchList();
-        List<Integer> MemberIdList = new ArrayList<Integer>();
-
-        for (EipTProjectMember member : MemberList) {
-          MemberIdList.add(member.getUserId());
-        }
-
         for (Iterator<ProjectTaskMemberResultData> iter =
           taskMembers.iterator(); iter.hasNext();) {
           ProjectTaskMemberResultData data = iter.next();
@@ -432,11 +414,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           if (checkMemberId.contains(id)) {
             msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER_DUPLICATE"));
             break;
-          }
-
-          // 担当者がプロジェクトの参加ユーザーではない場合
-          if (!MemberIdList.contains(id)) {
-            msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER_NOT_EXIST"));
           }
 
           checkMemberId.add(id);
@@ -500,6 +477,21 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD_INTEGER"));
       }
 
+    }
+
+    boolean isProjectMember = false;
+    for (ProjectTaskMemberResultData data : taskMembers) {
+      for (ALEipUser user : projectMembers) {
+        if (data.getUserId().toString().equals(user.getUserId().toString())) {
+          isProjectMember = true;
+          break;
+        }
+      }
+    }
+
+    // 担当者がプロジェクトの参加ユーザーではない場合
+    if (!isProjectMember) {
+      msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER_NOT_EXIST"));
     }
 
     return msgList.isEmpty();

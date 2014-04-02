@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,11 +54,13 @@ import com.aimluck.eip.cayenne.om.portlet.EipTProjectTask;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskCommentFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskMember;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.project.ProjectResultData;
@@ -1956,4 +1959,56 @@ public class ProjectUtils {
     return build.toString();
   }
 
+  public static List<EipTProjectMember> getProjectMember(Integer projectId) {
+    List<EipTProjectMember> result =
+      Database.query(EipTProjectMember.class).where(
+        Operations.eq("projectId", projectId)).fetchList();
+    return result;
+  }
+
+  public static Map<String, String> getProjectMemberMap(Integer projectId) {
+    Map<String, String> map = new HashMap<String, String>();
+    List<EipTProjectMember> result = getProjectMember(projectId);
+    if (result.isEmpty()) {
+      return map;
+    }
+    List<Integer> idList = new ArrayList<Integer>();
+    for (EipTProjectMember member : result) {
+      idList.add(member.getUserId());
+    }
+    List<ALEipUser> users = getALEipUsers(idList);
+    for (EipTProjectMember member : result) {
+      for (ALEipUser user : users) {
+        if (user.getUserId().getValueWithInt() == member.getUserId().intValue()) {
+          map.put(user.getUserId().toString(), user.getAliasName().toString());
+          continue;
+        }
+      }
+    }
+    return map;
+  }
+
+  private static List<TurbineUser> getTurbineUsers(List<Integer> idList) {
+    if (idList.isEmpty()) {
+      return new ArrayList<TurbineUser>(0);
+    }
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression inExp =
+      ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, idList);
+    query.setQualifier(inExp);
+    return query.fetchList();
+  }
+
+  private static List<ALEipUser> getALEipUsers(List<Integer> idList) {
+    List<TurbineUser> list = getTurbineUsers(idList);
+    List<ALEipUser> users = new ArrayList<ALEipUser>();
+    for (TurbineUser user : list) {
+      try {
+        users.add(ALEipUtils.getALEipUser(user));
+      } catch (ALDBErrorException ignore) {
+        // no occur
+      }
+    }
+    return users;
+  }
 }

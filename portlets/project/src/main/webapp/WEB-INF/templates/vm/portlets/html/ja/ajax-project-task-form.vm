@@ -31,6 +31,7 @@
 #set ($event_submit = "eventSubmit_doTask_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
+#set ($projectMemberJsonUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectMemberJSONScreen")))
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #if(!$!result.isProjectExists())
@@ -43,10 +44,10 @@
     <div id="messageDiv"></div>
     #ALajaxscreenformheader("taskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessage)")
     #if($mode=="new_form")
-    <input type="hidden" name="mode" value="insert" />
+    <input type="hidden" name="mode" value="insert" id="mode-$!portlet.ID" />
     <input type="hidden" name="parent_task_id" value="$!result.ParentTaskId" />
     #else
-    <input type="hidden" name="mode" value="update" />
+    <input type="hidden" name="mode" value="update" id="mode-$!portlet.ID" />
     #end
     <input name="start_date_check" type="hidden" value="TRUE" id="start_date_flag">
     <input name="end_date_check" type="hidden" value="TRUE" id="end_date_flag">
@@ -54,7 +55,7 @@
     ##プロジェクト名
     #ALtdcaption("#ALrequired($l10n.PROJECT_PROJECT)")
     #ALtditemheader()
-    <select class="w100" name="projectId" id="projectId">
+    <select class="w100" name="projectId" id="projectId" onchange='aipo.project.changeProjectMember("$projectMemberJsonUrl", {projectId: this.value});'>
     #foreach($record in $!result.getAllProject())
     	<option value='$!{record.getProjectId()}' #if ($!{result.getProjectId().toString()} == $!{record.getProjectId().toString()}) selected="selected" #end>$!{record.getProjectName()}</option>
     #end
@@ -101,11 +102,13 @@
     	#foreach( $taskMember in $result.TaskMembers )
     		##担当者が登録されている場合（更新時）
     		<tr id="members_tr_$velocityCount">
-    		<td><select name="task_member" id="task_member_$velocityCount" class="w100">
+    		<td>
+			<select name="task_member" id="task_member_$velocityCount" class="w100 sys-taskmember">
     		#foreach( $record in $result.ProjectMembers )
     			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
     		#end
-    		</select></td>
+    		</select>
+			</td>
     		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD <input class="text" type="text" name="workload" id="workload_$velocityCount" value="$!taskMember.Workload" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
     		#if($velocityCount > 1)
     		<a href="javascript:void(0);" onclick="aipo.project.removeMemberForm($velocityCount)"><i class="icon-remove"></i></a>
@@ -115,7 +118,7 @@
     	#if(!$result.TaskMembers || $result.TaskMembers.isEmpty())
     		##担当者が登録されていない場合（新規登録時）
     		<tr id="members_tr_1">
-    		<td><select name="task_member" id="task_member_1" class="w100">
+    		<td><select name="task_member" id="task_member_1" class="w100 sys-taskmember">
     		#foreach( $record in $result.ProjectMembers )
     			<option value="$record.UserId" #if ("$!result.UserId.toString()" == "$!record.UserId.toString()") selected="selected" #end>$!record.AliasName</option>
     		#end

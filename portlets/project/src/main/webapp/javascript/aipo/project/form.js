@@ -123,6 +123,11 @@ aipo.project.onLoadProjectTaskDialog = function (portlet_id) {
   if (obj) {
     obj.focus();
   }
+  var projectId = dojo.byId("projectId");
+  var mode = dojo.byId("mode-" + portlet_id);
+  if (projectId && mode && mode.value == "insert") {
+    projectId.onchange();
+  }
 }
 
 /**
@@ -670,5 +675,37 @@ aipo.project.projectSearch = function (portlet_id) {
     ["keyword", q ? q.value : ""]
   ];
   aipo.viewPage(baseuri, portlet_id, qs);
+};
+
+aipo.project.changeProjectMember = function (url, params) {
+  aimluck.io.sendRawData(url, params, function (args, data) {
+    /** data.type is response with json-comment-filtered */
+    if (data.type.length <= 2) {
+      return;
+    }
+
+    var selectList = dojo.query("select.sys-taskmember");
+    selectList.forEach(
+      function (select) {
+        for (var i = select.options.length; 0 < select.options.length; i--) {
+          select.options.remove(i - 1);
+        }
+      }
+    );
+
+    var count = 0;
+    var jsonstring = data.type.substr(2, data.type.length - 4);
+    JSON.parse(jsonstring, function (key, value) {
+      if (typeof value == "string") {
+        selectList.forEach(
+          function (select) {
+            select.options[count] = new Option(value, key);
+          }
+        );
+        count++;
+      }
+    });
+
+  });
 };
 
