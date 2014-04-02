@@ -48,13 +48,11 @@
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
 							#if ($attachmentUrl.isThumbnailFlag())
-								<a href="$attachmentUrl.Url" target="_blank">
 								#if($attachmentUrl.isYoutubeFlag())
 									<img src="https://i.ytimg.com/vi/$attachmentUrl.YoutubeId/0.jpg" border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" />
 								#else
 									<img class="freeSizeHidden width_thumbs" onload="if(aipo && aipo.timeline && aipo.timeline.resizeThumbnailTag){aipo.timeline.resizeThumbnailTag(this);}else{dojo.connect(null,'onload',this,function(){aipo.timeline.resizeThumbnailTag(this);});} " border="0" alt="$attachmentUrl.Title" title="$attachmentUrl.Title" src="$jslink.getTemplate('TimelineUrlThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentUrl.TimelineUrlId})" />
 								#end
-								</a>
 							#end
 						</div>
 						<div class="tlClipContents">
