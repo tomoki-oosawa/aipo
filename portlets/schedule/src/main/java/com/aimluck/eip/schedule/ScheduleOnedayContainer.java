@@ -114,10 +114,6 @@ public class ScheduleOnedayContainer implements ALData {
         * 12
         + Integer.parseInt(rd.getEndDate().getMinute())
         / 5;
-    if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
-      && rd.getEndDate().getHour().equals("0")) {
-      ed = 12 * 24;
-    }
     if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
       if (sta > st) {
         st = sta;
