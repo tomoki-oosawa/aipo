@@ -62,7 +62,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -804,8 +803,8 @@ public class NoteUtils {
       String title =
         new String(ALLocalizationUtils.getl10nFormat(
           "NOTE_CLIENT_NAME_SUBJECT_TEXT",
-          ALCommonUtils.replaceToAutoCR(note.getClientName()),
-          ALCommonUtils.replaceToAutoCR(subject)));
+          note.getClientName(),
+          subject));
       String portletParams =
         new StringBuilder("?template=NoteDetailScreen")
           .append("&entityid=")
