@@ -34,6 +34,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ロールの複数削除を行うためのクラスです。 <BR>
@@ -75,7 +76,10 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           role.getRoleId(),
           ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-          "ロール 「" + role.getRoleName() + "」 削除");
+          ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
+            + role.getRoleName()
+            + ALLocalizationUtils.getl10n("ACCESSCTL_DELETE_BRACKET"));
+
       }
 
     } catch (Exception ex) {
