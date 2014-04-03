@@ -695,17 +695,19 @@ aipo.project.changeProjectMember = function (url, params) {
 
     var count = 0;
     var jsonstring = data.type.substr(2, data.type.length - 4);
-    JSON.parse(jsonstring, function (key, value) {
-      if (typeof value == "string") {
+    var jsonObj = dojo.fromJson(jsonstring);
+
+    if(dojo.isArray(jsonObj) && jsonObj.length > 0 && jsonObj[0]){
+      var jsonArray = jsonObj[0];
+      for (var key in jsonArray) {
         selectList.forEach(
           function (select) {
-            select.options[count] = new Option(value, key);
+            select.options[count] = new Option(jsonArray[key], key);
           }
         );
         count++;
       }
-    });
-
+    }
   });
 };
 
