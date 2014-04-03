@@ -51,6 +51,8 @@ $!result.Detail.WbrGpdbName
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gpdb.onLoadGpdbDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onReceiveMessage")
 #ALbutton("ajaxbuttonLink" "$l10n.GPDB_SETTING_ITEM" "aipo.common.hideDialog();aipo.viewPage('$GpdbItem', '$!portlet.ID')")
+#set( $csvUrl = "$!jslink.getTemplate('GpdbCsvFileScreen').addQueryData('gpdb_id',$entityid)"  )
+#ALbutton("ajaxbuttonLink" "$l10n.GPDB_EXPORT" "aipo.gpdb.downloadCsv('$csvUrl')" )
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

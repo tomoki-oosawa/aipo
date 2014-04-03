@@ -347,3 +347,7 @@ aipo.gpdb.toggleMenu = function (node,filters,event){
         dojo.query("div.menubar").style("display", "none");
     }
 }
+
+aipo.gpdb.downloadCsv = function(url){
+	window.location.href = url;
+}
