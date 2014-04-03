@@ -161,11 +161,9 @@ public class AccountPositionFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("ACCOUNT_POSITION_NAME_CAUTION")
-          + position_name
-          + ALLocalizationUtils.getl10n("ACCOUNT_ALREADY_REGISTERED"));
-
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_VALIDATE_POSITION",
+          position_name));
       }
     } catch (Exception ex) {
       logger.error("AccountPositionFormData.validate", ex);
