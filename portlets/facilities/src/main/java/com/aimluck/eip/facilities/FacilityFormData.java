@@ -52,6 +52,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 設備のフォームデータを管理するクラスです。 <BR>
@@ -101,11 +102,12 @@ public class FacilityFormData extends ALAbstractFormData {
   public void initField() {
     // 設備名
     facility_name = new ALStringField();
-    facility_name.setFieldName("設備名");
+    facility_name.setFieldName(ALLocalizationUtils
+      .getl10n("FACILITIES_FACILITY_NAME"));
     facility_name.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("メモ");
+    note.setFieldName(ALLocalizationUtils.getl10n("FACILITIES_MEMO"));
     note.setTrim(false);
   }
 
@@ -191,9 +193,9 @@ public class FacilityFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add("設備名『 <span class='em'>"
-          + facility_name.toString()
-          + "</span> 』は既に登録されています。");
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "FACILITIES_FACILITY_IS_ALREADY_ADDED",
+          facility_name.toString()));
       }
     } catch (Exception ex) {
       logger.error("facilities", ex);
@@ -314,7 +316,9 @@ public class FacilityFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         facility.getFacilityId(),
         ALEventlogConstants.PORTLET_TYPE_FACILITY,
-        "設備「" + facility.getFacilityName() + "」を削除");
+        ALLocalizationUtils.getl10nFormat(
+          "FACILITIES_DELETED_FACILITY_WITH_NAME",
+          facility.getFacilityName()));
 
       // orm.doDelete(facility);
     } catch (Exception ex) {
@@ -395,7 +399,9 @@ public class FacilityFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         facility.getFacilityId(),
         ALEventlogConstants.PORTLET_TYPE_FACILITY,
-        "設備「" + facility.getFacilityName() + "」を追加");
+        ALLocalizationUtils.getl10nFormat(
+          "FACILITIES_ADDED_FACILITY_WITH_NAME",
+          facility.getFacilityName()));
 
       // ACL
       // EipTAclMap scheduleAcl = Database.create(EipTAclMap.class);
@@ -491,7 +497,9 @@ public class FacilityFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         facility.getFacilityId(),
         ALEventlogConstants.PORTLET_TYPE_FACILITY,
-        "設備「" + facility.getFacilityName() + "」を更新");
+        ALLocalizationUtils.getl10nFormat(
+          "FACILITIES_UPDATED_FACILITY_WITH_NAME",
+          facility.getFacilityName()));
     } catch (Exception ex) {
       Database.rollback();
       logger.error("facilities", ex);

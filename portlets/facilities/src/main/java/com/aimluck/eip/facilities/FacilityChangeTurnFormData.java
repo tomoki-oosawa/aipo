@@ -38,6 +38,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 設備の順番情報のフォームデータを管理するためのクラスです。 <br />
@@ -83,7 +84,8 @@ public class FacilityChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("設備名リスト");
+    positions.setFieldName(ALLocalizationUtils
+      .getl10n("FACILITIES_FACILITY_NAME_LIST"));
     positions.setTrim(true);
   }
 
