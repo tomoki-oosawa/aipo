@@ -76,12 +76,9 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           role.getRoleId(),
           ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-          ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
-            + role.getRoleName()
-            + ALLocalizationUtils.getl10n("ACCESSCTL_DELETE_BRACKET"));
-
+          ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_DELETE", role
+            .getRoleName()));
       }
-
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlMultiDelete.action", ex);

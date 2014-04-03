@@ -462,10 +462,8 @@ public class AccessControlFormData extends ALAbstractFormData {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           role.getRoleId(),
           ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-          ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
-            + role.getRoleName()
-            + ALLocalizationUtils.getl10n("ACCESSCTL_DELETE_BRACKET"));
-
+          ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_DELETE", role
+            .getRoleName()));
       }
 
     } catch (Exception ex) {
@@ -524,9 +522,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
-          + aclrole.getRoleName()
-          + ALLocalizationUtils.getl10n("ACCESSCTL_ADD_BRACKET"));
+        ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_ADD", aclrole
+          .getRoleName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -583,10 +580,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        ALLocalizationUtils.getl10n("ACCESSCTL_ROLE_BRACKET")
-          + aclrole.getRoleName()
-          + ALLocalizationUtils.getl10n("ACCESSCTL_UPDATE_BRACKET"));
-
+        ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_UPDATE", aclrole
+          .getRoleName()));
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlFormData.updateFormData", ex);
