@@ -44,6 +44,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログテーマのフォームデータを管理するクラスです。 <BR>
@@ -86,11 +87,11 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
     // カテゴリ名
     thema_name = new ALStringField();
-    thema_name.setFieldName("テーマ名");
+    thema_name.setFieldName(ALLocalizationUtils.getl10n("BLOG_THEME_NAME"));
     thema_name.setTrim(true);
     // メモ
     description = new ALStringField();
-    description.setFieldName("メモ");
+    description.setFieldName(ALLocalizationUtils.getl10n("BLOG_MEMO"));
     description.setTrim(true);
   }
 

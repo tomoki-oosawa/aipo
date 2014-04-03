@@ -162,24 +162,25 @@ public class BlogEntryFormData extends ALAbstractFormData {
   public void initField() {
     // 更新日時
     create_date = new ALDateTimeField(BlogUtils.DATE_TIME_FORMAT);
-    create_date.setFieldName("日時");
+    create_date.setFieldName(ALLocalizationUtils.getl10n("BLOG_DAY_HOUR"));
     // Title
     title = new ALStringField();
-    title.setFieldName("タイトル");
+    title.setFieldName(ALLocalizationUtils.getl10n("BLOG_TITLE"));
     title.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("記事");
+    note.setFieldName(ALLocalizationUtils.getl10n("BLOG_ENTRY"));
     note.setTrim(false);
     // ブログID
     blog_id = new ALNumberField();
-    blog_id.setFieldName("ブログ");
+    blog_id.setFieldName(ALLocalizationUtils.getl10n("BLOG_BLOG"));
     // カテゴリID
     thema_id = new ALNumberField();
-    thema_id.setFieldName("テーマ");
+    thema_id.setFieldName(ALLocalizationUtils.getl10n("BLOG_THEME"));
     // 公開区分
     allow_comments = new ALStringField();
-    allow_comments.setFieldName("コメント付加フラグ");
+    allow_comments.setFieldName(ALLocalizationUtils
+      .getl10n("BLOG_ALLOW_COMMENT"));
     allow_comments.setValue("T");
     allow_comments.setTrim(true);
 
