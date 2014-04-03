@@ -1,4 +1,12 @@
-@charset "utf-8";
+@charset "UTF-8";
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("../font/fontawesome-webfont.eot?v=3.2.0");
+  src: url("../font/fontawesome-webfont.eot?#iefix&v=3.2.0") format("embedded-opentype"), url("../font/fontawesome-webfont.woff?v=3.2.0") format("woff"), url("../font/fontawesome-webfont.ttf?v=3.2.0") format("truetype"), url("../font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.0") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
 }
@@ -60,6 +68,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   padding-top: 3px;
 }
 
+.hdGiftSpace,
 .hdMessege,
 .hdActivity,
 .hdUserName,
@@ -74,6 +83,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   white-space: nowrap;
 }
 
+.hdGiftSpace a,
 .hdMessege a,
 .hdActivity a,
 .hdUserName a,
@@ -136,6 +146,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   background-position: 0px 0px;
 }
 
+/*IE6*/
 .hdUserName .avatar {
   float: left;
   width: 23px;
@@ -189,8 +200,28 @@ img.avatar,
   outline: 0;
 }
 
+.hdIcon {
+  float: left !important;
+  font-size: 9px;
+  height: 13px;
+  line-height: 13px !important;
+  padding: 0 2px 0 1px;
+  text-align: center;
+  margin-top: 5px;
+  margin-right: 2px;
+}
+.hdIcon i {
+  font-size: 15px;
+  text-align: center;
+  line-height: 13px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #ff9900;
+}
+
 .counter {
-  float: left;
+  float: left !important;
   font-size: 9px;
   height: 13px;
   min-width: 11px;
@@ -214,6 +245,108 @@ img.avatar,
 }
 
 /***************************************************
+	hdNavi_v2
+--------------------------------------------------*/
+/*
+.hdInformation {
+}
+*:first-child+html .hdInformation {
+	padding-right:0 !important;
+}
+.hdInformation a {
+	display:block;
+    position:relative;
+    padding:0 3px !important;
+    text-decoration:none;
+}
+*/
+/*
+.hdInformation .counter {
+	display:none;
+	position:absolute !important;
+    margin:0 !important;
+    top:0;
+    right:0;
+}
+.hdNavi .active .counter {
+	display:block;
+}
+.hdNavi a.active i[class^="icon-"] {
+	color:$gray;
+}
+.hdNavi a:hover i[class^="icon-"] {
+    color:darken($gray,20);
+}
+.hdNavi .hdUserName i[class^="icon-"] {
+	font-size:12px;
+    color:$gray;
+}
+.hdNavi .hdUserName a:hover i[class^="icon-"] {
+	color:$linkColorHover;
+}
+
+.hdInformation i[class^="icon-"] {
+	display:block;
+    font-size:23px;
+    width:24px;
+    text-align:center;
+    color:$grayLight;
+	cursor:pointer;
+    text-decoration:none;
+}*/
+/*
+.hdNavi_v2 {
+	float:right;
+}
+.hdNavi_v2 > div {
+	float:left;
+    padding:0 !important;
+}
+.hdNavi_v2 > div > a {
+	display:block;
+    position:relative;
+    padding:5px 3px !important;
+}
+.hdNavi_v2 .counter {
+	display:none;
+	position:absolute !important;
+    top:0;
+    right:0;
+    margin:0;
+    color:$white;
+    height:13px !important;
+    line-height:13px !important;
+    min-width:11px !important;
+}
+.hdNavi_v2 .active .counter {
+	display:block;
+}
+
+.hdMessage i[class^="icon-"],
+.hdActivity i[class^="icon-"],
+.hdInformation i[class^="icon-"] {
+	display:block;
+    font-size:23px;
+    width:24px;
+    text-align:center;
+    color:$grayLight;
+	cursor:pointer;
+    text-decoration:none;
+}
+.hdNavi_v2 a.active i[class^="icon-"] {
+	color:$gray;
+}
+.hdNavi_v2 a:hover i[class^="icon-"] {
+    color:darken($gray,20);
+}
+.hdNavi_v2 .hdUserName i[class^="icon-"] {
+	font-size:12px;
+    color:$gray;
+}
+.hdNavi_v2 .hdUserName a:hover i[class^="icon-"] {
+	color:$linkColorHover;
+}*/
+/***************************************************
 	Popup
 --------------------------------------------------*/
 .dijitPopup {
@@ -224,9 +357,9 @@ img.avatar,
 
 .auiPopup,
 .activityPopup {
-  background: #FFF;
+  background: white;
   padding: 9px;
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -244,20 +377,48 @@ img.avatar,
   top: 0;
 }
 
+.supportPopup {
+  	/*width:320px;
+      padding:5px;*/
+}
+
+.startPopup {
+  width: 600px;
+  padding: 45px 50px 30px;
+  position: relative;
+}
+
+.startPopupTool {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.startPopupHead {
+  margin-bottom: 35px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.startPopupContent {
+  text-align: left;
+}
+
+.startPopup img.middle {
+  vertical-align: -0.2em !important;
+}
+
+.startPopup input[type=checkbox],
+.startPopup input[type=radio] {
+  vertical-align: -0.18em;
+  vertical-align: 0\9;
+  *vertical-align: 0;
+}
+
 .auiPopupHead {
   padding-left: 20px;
   margin-bottom: 10px;
   background: transparent url(../images/common/icon_p.gif) no-repeat left center;
-}
-
-
-.borderAuiHead .auiPopupHead {
-  margin-bottom: 0px;
-}
-
-.borderAuiHead .roundBlockContent {
-  margin-top:5px;
-  border-top: solid 1px #c0c0c0;
 }
 
 .auiPopupHead .auiPopupTitle {
@@ -316,7 +477,7 @@ img.avatar,
 .auiPopup h2,
 #activityListPane h2 {
   padding: 0 0 5px;
-  border-bottom: solid 1px #c0c0c0;
+  border-bottom: solid 1px silver;
 }
 
 .auiPopup .roundBlockWrapperTop,
@@ -362,7 +523,7 @@ img.avatar,
 }
 
 .activityTable tr:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityTable td {
@@ -417,7 +578,7 @@ img.avatar,
 }
 
 .activityList li:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityList .meta {
@@ -469,27 +630,106 @@ img.avatar,
   max-height: 1000px;
 }
 
-/* startPopup */
-.startPopup {
-  width: 600px;
-  padding: 45px 50px 30px;
+/***************************************************
+	auiColumns
+--------------------------------------------------*/
+.auiColumnWrapper {
+  padding: 10px;
+}
+
+.auiColumn {
+  float: left;
+}
+
+/***************************************************
+	auiPortlet_old
+--------------------------------------------------*/
+.auiPortlet_old {
+  background: url(../images/common/portlet_x.gif?20130918) repeat-x bottom center;
+}
+.auiPortlet_old .auiPortletHead {
+  background: url(../images/common/portlet_x.gif?20130918) repeat-x left -189px;
+  height: 45px;
+}
+.auiPortlet_old .auiPortletHead .inner {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat left 0;
+  height: 45px;
   position: relative;
 }
-
-.startPopupTool {
-  position: absolute;
-  right: 0;
-  top: 0;
+.auiPortlet_old .auiPortletBody .auiPortletHead .inner {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat left 0 !important;
+  padding: 0 !important;
 }
-
-.startPopupHead {
-  margin-bottom: 35px;
-  font-size:32px;
+.auiPortlet_old .auiPortletTitle {
+  float: left;
+  padding: 13px 0 0 30px;
+  white-space: nowrap;
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat left -144px;
+}
+.auiPortlet_old .auiPortletTool {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -50px;
+  top: 0;
+  right: 0;
+  float: right;
+  min-width: 25px;
+  height: 32px;
+  padding: 13px 10px 0 0;
+  position: absolute;
+}
+.auiPortlet_old .auiPortletTool > div {
+  float: left;
+  padding: 0 5px;
+  border-left: solid 1px #d2d2d2;
+  background: #ffffff;
+  box-shadow: -5px 0 3px #ffffff;
+  -webkit-box-shadow: -5px 0 3px #fff;
+  white-space: nowrap;
+}
+.auiPortlet_old .auiPortletSetting .menubar {
+  right: 15px;
+}
+.auiPortlet_old *:first-child + html .auiPortletSetting .menubar {
+  top: 30px;
+  z-index: 9999;
+  zoom: 1;
+}
+.auiPortlet_old .auiPortletDelete a {
+  background: none;
+  color: #666666;
+  font-size: 15px;
+}
+.auiPortlet_old .auiPortletDelete a:hover {
+  color: white;
+}
+.auiPortlet_old .auiPortletDelete a, .auiPortlet_old .auiPortletDelete i {
+  line-height: 16px;
+  text-decoration: none;
   text-align: center;
 }
-
-.startPopupContent {
-  text-align: left;
+.auiPortlet_old .auiPortletBody {
+  background: white url(../images/common/portlet_l.gif?20130918) repeat-y left 0;
+}
+.auiPortlet_old .auiPortletBody .inner {
+  background: url(../images/common/portlet_r.gif?20130918) repeat-y right 0;
+  padding: 4px 22px 0 22px;
+}
+.auiPortlet_old .auiPortletBody .inner:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.auiPortlet_old .auiPortletFoot {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat left -102px;
+}
+.auiPortlet_old .auiPortletFoot .inner {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -124px;
+  height: 20px;
+}
+.auiPortlet_old .auiPortletBody .auiPortletFoot .inner {
+  background: url(../images/common/portlet_x.gif?20130918) no-repeat right -124px !important;
+  padding: 0 !important;
 }
 
 /***************************************************
@@ -689,7 +929,7 @@ img.avatar,
   height: 30px;
   line-height: 30px;
   padding: 0 1em;
-  border-left: solid 1px #c0c0c0;
+  border-left: solid 1px silver;
 }
 
 #footer div.copyright {
@@ -990,17 +1230,15 @@ img.avatar,
 	dialogTable
 --------------------------------------------------*/
 .dialogTable {
-  margin: 15px 0;
+  margin: 10px 0;
   border-top: solid 1px #ededed;
   border-collapse: collapse;
 }
-
 .dialogTable th,
 .dialogTable td {
   padding: 10px;
   border-bottom: solid 1px #ededed;
 }
-
 .dialogTable .caption {
   font-weight: bold;
 }
@@ -1032,12 +1270,6 @@ img.avatar,
 .auiWidget li {
   padding: 0;
   background: none;
-}
-.auiWidget li span {
-  display: block;
-  line-height: 1.8em;
-  padding: 0.3em 0 0.3em 18px;
-  background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
 .auiWidget li a {
   display: block;
@@ -1151,6 +1383,7 @@ img.avatar,
 }
 
 #auiContentsAreaInner {
+  position: relative;
   margin-left: 200px;
 }
 
@@ -1212,7 +1445,7 @@ button,
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   vertical-align: middle;
   cursor: pointer;
-  background-color: #f5f5f5;
+  background-color: #f6f6f6;
   background-image: -moz-linear-gradient(top, white, #e6e6e6);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, white, #e6e6e6);
@@ -1221,7 +1454,7 @@ button,
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
   border: 1px solid #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
+  border-color: #d2d2d2 #d2d2d2 silver;
   border-bottom-color: #b3b3b3;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1444,7 +1677,7 @@ button {
 *:first-child + html .auiButtonIconDummy,
 *:first-child + html input.auiButtonBold,
 *:first-child + html input.auiButtonSearch {
-  padding: 0 2px;
+  padding: 0 1px;
 }
 
 input[type=submit],
@@ -1491,7 +1724,7 @@ button.auiButtonSmall {
 /* auiButtonAction */
 .auiButtonAction,
 input.auiButtonAction {
-  color: #ffffff;
+  color: #ffffff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
   background-color: #ffb133;
   background-color: #fa9828;
@@ -1631,7 +1864,6 @@ input.auiButtonSearch.active {
   height: 16px;
   line-height: 16px;
   padding: 3px !important;
-  font-size: 14px;
   color: #666666 !important;
 }
 .auiButtonIcon:hover i,
@@ -1673,6 +1905,7 @@ input.auiButtonSearch.active {
 *:first-child + html .auiButtonIconDummy span {
   display: block;
 }
+
 *:first-child + html .auiButtonIcon i,
 *:first-child + html .auiButtonIconDummy i {
   width: 16px;
@@ -1685,47 +1918,6 @@ input.auiButtonSearch.active {
 .auiButtonIconDummy span,
 .auiButtonIconDummy i {
   cursor: default !important;
-}
-
-.auiButtonDummy,
-.auiButtonDummy span,
-.auiButtonDummy i,
-.auiButtonIconDummy,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: default !important;
-}
-.auiButtonGroup {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  border-radius: 10px;
-}
-
-.auiButtonGroup .auiButton {
-  margin: 0 -1px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-}
-
-.auiButtonGroup .auiButton:hover {
-  border: solid 1px #c0c0c0;
-}
-
-.auiButtonGroup .left {
-  -webkit-border-radius: 2px 0 0 2px;
-  -moz-border-radius: 2px 0 0 2px;
-  -ms-border-radius: 2px 0 0 2px;
-  border-radius: 2px 0 0 2px;
-}
-
-.auiButtonGroup .right {
-  -webkit-border-radius: 0 2px 2px 0;
-  -moz-border-radius: 0 2px 2px 0;
-  -ms-border-radius: 0 2px 2px 0;
-  border-radius: 0 2px 2px 0;
 }
 
 /***************************************************
@@ -1759,7 +1951,7 @@ input.auiButtonSearch.active {
   -ms-border-radius: 0;
   -o-border-radius: 0;
   border-radius: 0;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
+  border-color: #d2d2d2 #d2d2d2 silver;
 }
 
 .auiSelectButton a.first,
@@ -1795,7 +1987,7 @@ input.auiButtonSearch.active {
 
 .auiSelectButton .active a {
   background: #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
+  border-color: #d2d2d2 #d2d2d2 silver;
   cursor: default;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
 }
@@ -1859,7 +2051,7 @@ input.auiButtonSearch.active {
   left: 0px;
   width: 360px;
   padding: 10px;
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -1899,7 +2091,7 @@ input.auiButtonSearch.active {
 .auiSummaryMeta {
   position: relative;
   width: 100%;
-  line-height: 2em;
+  line-height: 32px;
   margin: 10px 0;
   vertical-align: middle;
 }
@@ -1946,13 +2138,13 @@ input.auiButtonSearch.active {
 .auiGridTable th {
   padding: 8px 5px;
   white-space: nowrap;
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
   background: #f0f0f0;
 }
 
 .auiGridTable td {
   padding: 8px 5px;
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
 }
 
 .auiGridTable .even {
@@ -2023,9 +2215,6 @@ input.auiButtonSearch.active {
   line-height: 35px;
   overflow: hidden;
 }
-.auiRowTable .auiMTCaption div a {
-  display: inline;
-}
 .auiRowTable .today .day {
   font-weight: bold;
 }
@@ -2044,6 +2233,29 @@ input.auiButtonSearch.active {
   width: 20px;
 }
 
+/*
+.auiRowTable .sunday .day,
+.auiRowTable .holiday .day {
+	color:#ff3333;
+}
+.auiRowTable .sunday td,
+.auiRowTable .sunday th,
+.auiRowTable .holiday td,
+.auiRowTable .holiday th {
+	background:#ffefe5;
+}
+*/
+/*.auiRowTable .saturday .day {
+	color:#3333ff;
+}
+.auiRowTable .saturday td,
+.auiRowTable .saturday th {
+	background:#ebf0f6;
+}*/
+/*.auiRowTable .today td,
+.auiRowTable .today th {
+	background:#e0ffe0;
+}*/
 .auiRowTable.scheduleList {
   border-bottom: solid 1px #ededed;
 }
@@ -2131,6 +2343,10 @@ input.auiButtonSearch.active {
   display: inline-block;
   height: 26px;
   line-height: 26px;
+}
+
+.auiDirectoryList .d1 span {
+  margin-left: 0px;
 }
 
 .auiDirectoryList .d2 span {
@@ -2239,6 +2455,26 @@ input.auiButtonSearch.active {
 
 .auiSakuin li.active a {
   background: #f0f0f0 none;
+}
+
+/***************************************************
+	auiScheduleWeekly
+--------------------------------------------------*/
+.auiScheduleWeek {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.auiScheduleWeek td {
+  width: 14.28571%;
+  border: solid 1px #d2d2d2;
+}
+.auiScheduleWeek .weekDay td {
+  text-align: center;
+}
+.auiScheduleWeek .dayTop, .auiScheduleWeek .dayBottom {
+  height: 17px;
+  line-height: 17px;
 }
 
 /***************************************************
@@ -2403,7 +2639,7 @@ select {
 
 textarea,
 select {
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -2446,12 +2682,12 @@ html > body input[type=password] {
 
 select {
   min-height: 32px;
-  min-height: 20px \9; /* IE8 and below */
   padding: 5px;
   max-width: 100%;
 }
 
 *:first-child + html select {
+  /*    height:$inputHeight +2;*/
   padding: 0;
 }
 
@@ -2692,8 +2928,8 @@ ul.attachments {
 
 .tlDisplayChanger {
   position: relative;
-  height: 10px;
-  line-height: 10px;
+  height: 15px;
+  line-height: 15px;
   /*text-align:right;*/
   border-top: 1px solid #ededed;
   z-index: 1;
@@ -2705,18 +2941,6 @@ ul.attachments {
   top: -9px;
   right: 15px;
 }
-
-*:first-child + html .tlDisplayChanger .btn {
-  /*IE7*/
-  top: -10px;
-}
-
-.tlDisplayChanger .indicator {
-  vertical-align: middle;
-  float: left;
-  margin: 1px 0;
-}
-
 .tlDisplayChanger .btn a {
   font-size: 11px;
 }
@@ -2724,15 +2948,30 @@ ul.attachments {
   height: 20px;
   line-height: 20px;
 }
-
-.tlDisplayGroup {
-  cursor: pointer;
+.tlDisplayChanger .indicator {
+  vertical-align: middle;
+  float: left;
+  margin: 1px 0;
 }
-
 .tlDisplayChanger .menubar {
   top: 10px;
   right: 0;
   width: 12em;
+}
+
+*:first-child + html .tlDisplayChanger .btn {
+  /*IE7*/
+  top: -10px;
+}
+
+.tlDisplayGroup {
+  /*	display:inline-block;
+  	max-width:12em;
+  	text-overflow:ellipsis;
+  	white-space:nowrap;
+  	overflow:hidden;*/
+  cursor: pointer;
+  /*IE7*/
 }
 
 .timeline .avatar {
@@ -2753,6 +2992,16 @@ ul.attachments {
   background: #f6f6f6;
   overflow: hidden;
 }
+.timeline .comments .messageContents {
+  margin-left: 42px;
+}
+.timeline .comments .message {
+  margin: 0;
+  padding: 5px !important;
+  border: none;
+  border-bottom: solid 1px #ededed;
+  border-top: solid 1px #fff !important;
+}
 .timeline .message .comments {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -2762,8 +3011,19 @@ ul.attachments {
   margin-left: 42px;
 }
 
-.timeline .comments .avatar {
+.timeline .message .comments .avatar {
   margin: 0 10px 0 0;
+}
+.timeline .commentCaption {
+  padding: 3px 5px;
+  font-size: smaller;
+  border-top: solid 1px #fff;
+  border-bottom: solid 1px #ededed;
+}
+.timeline .timeline {
+  width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 .messageContents .name {
@@ -2795,27 +3055,6 @@ ul.attachments {
   padding: 0;
 }
 
-.timeline .commentCaption {
-  padding: 3px 5px;
-  font-size: smaller;
-  border-top: solid 1px #fff;
-  border-bottom: solid 1px #e6e6e6;
-}
-
-.timeline .comments .message {
-  margin: 0;
-  padding: 5px !important;
-  border: none;
-  border-bottom: solid 1px #e6e6e6;
-  border-top: solid 1px #fff !important;
-}
-
-.timeline .timeline {
-  width: 100%;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-
 /* tlImageBox */
 .tlImageBlock {
   margin: 10px 0;
@@ -2832,7 +3071,7 @@ ul.attachments {
   max-height: 200px;
   height: auto;
   padding: 4px;
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
 }
 
 .tlImageBlock a:hover img,
@@ -2855,12 +3094,6 @@ ul.attachments {
   width: auto;
   height: auto;
   -ms-interpolation-mode: bicubic;
-}
-
-.tlClipImage .freeSizeHidden {
-  max-width: none;
-  max-height: none;
-  visibility: hidden;
 }
 
 .tlClipContents {
@@ -3005,7 +3238,7 @@ ul.attachments {
 .dijitCalendarTimeContainer {
   text-align: center;
   padding: 5px 0;
-  border-bottom: solid 1px #c0c0c0;
+  border-bottom: solid 1px silver;
   -webkit-box-shadow: 0 1px 0 #f9f9f9;
   -moz-box-shadow: 0 1px 0 #f9f9f9;
   box-shadow: 0 1px 0 #f9f9f9;
@@ -3031,15 +3264,13 @@ ul.attachments {
 }
 
 .filters {
-  /*white-space:nowrap;*/
   color: #999999;
   line-height: 30px;
   cursor: text;
 }
 
 .filterTip {
-  display: block;
-  float: left;
+  display: inline-block;
   background: #f0f0f0;
   color: #000;
   margin: 0 2px 4px !important;
@@ -3123,7 +3354,7 @@ ul.attachments {
   position: absolute;
   height: 30px;
   overflow: hidden;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .filterInputField input[type=text] {
@@ -3133,6 +3364,39 @@ ul.attachments {
   background: transparent;
 }
 
+/*
+.filterInputField {
+	float:left;
+	position:relative;
+    height:$inputHeight + 2;
+}
+*:first-child+html .filterInputField {
+	overflow:hidden;
+}
+.filterInputField .filterTip > a {
+	position:absolute;
+	margin:5px -3px 0 3px;
+}
+*:first-child+html .filterInputField .filterTip > a {
+	margin-top:4px;
+}
+.filterInputField input.text {
+	width:auto;
+	min-width:auto;
+}
+.filterInputField .filters {
+	position:absolute;
+    top:0;
+    left:0;
+	height:$inputHeight;
+	padding:1px 1px 0 1px;
+	overflow:hidden;
+	white-space:normal;
+}
+*:first-child+html .filterInputField .filters {
+	padding-top:2px;
+}
+*/
 .filterInputField .menubar.multi {
   left: auto;
   right: 0;
@@ -3142,15 +3406,17 @@ ul.attachments {
   position: absolute;
   display: block;
   right: 0;
-  width: 20px;
+  width: 24px;
   height: 26px;
   top: 2px;
-  right: 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  -ms-border-radius: 0 2px 2px 0;
+  -o-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  -webkit-box-shadow: -3px 0 3px 0px white;
+  -moz-box-shadow: -3px 0 3px 0px white;
+  box-shadow: -3px 0 3px 0px white;
   vertical-align: middle;
   background: #ffffff;
 }
@@ -3179,6 +3445,17 @@ ul.attachments {
 
 .auiFilter .auiSearch .auiButtonSearch {
   margin-left: 5px;
+}
+
+.filters.colors .filterTip {
+  color: white !important;
+  cursor: default;
+}
+
+.filters.colors .filterTip > a {
+  color: white !important;
+  position: static;
+  margin: 0 0 0 6px;
 }
 
 /***************************************************
@@ -3337,10 +3614,10 @@ ul.attachments {
 .auiWLCover a {
   display: block;
   height: 100%;
-  background: #ffffff\9;
-  /*IE7*/
+  background: white \9;
+  /*IE8*/
   -ms-filter: "alpha(opacity=0)";
-  /*IE7*/
+  /*IE8*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -3451,6 +3728,51 @@ ul.attachments {
 }
 
 /***************************************************
+	auiUserChecklist
+--------------------------------------------------*/
+.auiCheckList {
+  margin: 5px 0;
+  overflow: auto !important;
+  max-height: 200px;
+  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
+}
+.auiCheckList ul {
+  border-left: solid 1px #d2d2d2;
+  border-right: solid 1px #d2d2d2;
+}
+.auiCheckList li {
+  display: block;
+  float: left;
+  padding: 0;
+  background: none;
+}
+.auiCheckList label {
+  display: block;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.auiCheckList label:hover {
+  background: #f0f0f0;
+}
+.auiCheckList .avatar {
+  width: 23px;
+  height: 23px;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+.auiCL2 li {
+  width: 50%;
+}
+
+.auiCL3 li {
+  width: 33.3%;
+}
+
+/***************************************************
 	auiDispChanger
 --------------------------------------------------*/
 .auiDispChanger {
@@ -3516,6 +3838,37 @@ ul.attachments {
 }
 
 /***************************************************
+	webdbFelds
+--------------------------------------------------*/
+.webdbFelds th {
+  text-align: left;
+}
+.webdbFelds input[type=text] {
+  width: 100%;
+}
+
+.webdbFieldType {
+  width: 120px;
+}
+.webdbFieldType select {
+  width: 120px;
+}
+
+.webdbFieldCheck {
+  text-align: center;
+  width: 50px;
+}
+.webdbFieldCheck label {
+  width: 100%;
+  display: block;
+}
+.webdbFieldCheck label input[type=radio],
+.webdbFieldCheck label input[type=checkbox] {
+  height: 32px;
+  cursor: pointer;
+}
+
+/***************************************************
 	auiWikiContent
 --------------------------------------------------*/
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
@@ -3557,8 +3910,134 @@ ul.attachments {
 }
 
 /***************************************************
+	project
+--------------------------------------------------*/
+#gantt_task {
+  float: left;
+  border: solid 1px #d2d2d2;
+  border-top: none;
+}
+#gantt_task > table th {
+  height: 40px;
+  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_task > table td {
+  height: 30px;
+  padding: 0 5px;
+  border-top: solid 1px #ededed;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_task > table td > div {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+tr:first-child #gantt_task > table td {
+  border-top: none;
+}
+
+#gantt_table {
+  border-bottom: solid 1px #d2d2d2;
+}
+
+#gantt_area {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+#gantt_area > div {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+#gantt_area td {
+  table-layout: fixed;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_area .gantt_area_month td,
+#gantt_area .gantt_area_day td {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 10px;
+  border: solid 1px #d2d2d2;
+  border-left: none;
+  text-align: center;
+}
+#gantt_area .gantt_area_day td div {
+  margin-left: -1px;
+}
+#gantt_area .gantt_area_cell td {
+  text-align: center;
+  font-size: 8px;
+  height: 30px;
+  border-right: 1px solid #d2d2d2;
+}
+#gantt_area .gantt_area_month td.today,
+#gantt_area .gantt_area_day td.today,
+#gantt_area .gantt_area_cell td.today {
+  border-right: solid 1px #ff3333;
+}
+#gantt_area .gantt_tip {
+  position: absolute;
+  height: 10px;
+  font-size: 10px;
+  border: 1px solid #999999;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #f0f0f0;
+  z-index: 1;
+}
+#gantt_area .gantt_tip > div {
+  width: 0%;
+  height: 100%;
+  background: #999999;
+}
+#gantt_area .gantt_link {
+  cursor: pointer;
+  position: absolute;
+  font-size: 10px;
+  height: 10px;
+  line-height: 10px;
+  z-index: 4;
+}
+#gantt_area .gantt_link span {
+  display: block;
+  position: absolute;
+  width: 30px;
+  right: -35px;
+  height: 10px;
+  line-height: 10px;
+  padding-left: 5px;
+  margin: 0;
+}
+
+/***************************************************
 	auiIcon
 --------------------------------------------------*/
+/*
+auiIconは「class="auiIcon auiIconSetting"」と
+ベースクラスとサブクラスを同時に付与させること。
+
+基本形（リンク版）：<a href="#" class="auiIcon auiIconSetting"><span>設定</span></a>
+基本形（span版）：<span class="auiIcon auiIconSetting"><span>設定</span></span>
+
+auiIconでアイコンの形状全てを一元管理し
+サブクラスはあくまで背景位置の変更のみを行う。
+
+IE6は透過PNGが利用できないため透過GIFへ置き換えている。
+そのためバリを表示させないためhoverアクションを封じる。
+*/
 .auiIcon {
   display: block;
   display: inline-block;
@@ -3578,22 +4057,6 @@ ul.attachments {
 * html .auiIcon {
   background-image: url(../images/icon/auiIconSprites20131205.gif);
   background-repeat: no-repeat;
-}
-
-.auiButton .auiIcon,
-.auiButtonAction .auiIcon,
-.auiButtonBold .auiIcon,
-.auiButtonSearch .auiIcon,
-.auiButtonSmall .auiIcon,
-.auiButtonDisabled .auiIcon,
-.auiButtonIcon .auiIcon,
-.auiButtonDummy .auiIcon,
-.auiButtonIconDummy .auiIcon,
-input[type=submit] .auiIcon,
-input[type=button] .auiIcon,
-input[type=reset] .auiIcon,
-button .auiIcon {
-  vertical-align: middle;
 }
 
 .auiIcon span {
@@ -4220,14 +4683,6 @@ a.auiIconMailOpen:hover {
 /***************************************************
 	auiWFicon
 --------------------------------------------------*/
-.auiWFicon {
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-}
-
 .auiWFicon,
 .auiWFicon [class^="icon-"] {
   display: inline-block;
@@ -4257,23 +4712,41 @@ a:hover .auiWFicon [class^="icon-"] {
 .loader {
   padding: 10px;
   height: 20px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   background: url(../images/common/indicator.gif) no-repeat center center;
   background-size: 16px;
+  text-align: center;
 }
 .loader img {
   vertical-align: middle;
+}
+
+.auiLoadWrapper {
+  position: relative;
+}
+.auiLoadWrapper .loader {
+  position: absolute;
+  padding: 0;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  zoom: 1;
+}
+
+/*IE8Hack*/
+html > body .auiLoadWrapper .loader {
+  background-color/*\**/: white \9;
+  filter: alpha(opacity=80);
+  -ms-filter: "alpha(opacity=80)";
 }
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
   position: absolute;
   background: #fff;
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;

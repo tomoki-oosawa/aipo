@@ -245,4 +245,6 @@ public class ALActionEventlogConstants {
 
   public static final String PORTLET_TYPE_STR_WIKI = "Wiki";
 
+  public static final String PORTLET_TYPE_STR_PROJECT = "プロジェクト管理";
+
 }

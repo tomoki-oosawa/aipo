@@ -57,6 +57,7 @@
     <module>gpdb</module>
     <module>fileuploadadv</module>
     <module>wiki</module>
+    <module>project</module>
   </modules>
 
   <dependencies>

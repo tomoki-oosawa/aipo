@@ -189,6 +189,8 @@
                 <include>../../../../target/aipo/javascript/aipo/gpdb/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileuploadadv/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/wiki/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/project/raphael-min.js</include>
+                <include>../../../../target/aipo/javascript/aipo/project/form.js</include>
               </includes>
             </aggregation>
             <aggregation>
