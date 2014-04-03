@@ -310,21 +310,26 @@ public class ReportFormData extends ALAbstractFormData {
 
     // 時間
     if (startDate.getValue().compareTo(endDate.getValue()) > 0) {
-      msgList.add("『 終了日時 』は『 開始日時 』以降の時間を指定してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("REPORT_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
     }
 
     // 社内参加者
     if (memberList == null || memberList.size() <= 0) {
-      msgList.add("『 <span class='em'>社内参加者</span> 』を指定してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("REPORT_MESSAGE_SELECT_SETFIELDNAME_MENVERS"));
     } else if (!(memberList.get(0) instanceof ALEipUser)) {
-      msgList.add("社内参加者のユーザーが全て無効、もしくは削除されています。有効なユーザーが一人以上いる経路を選択してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("REPORT_ALERT_SETFIELDNAME_MENVERS_NO_ROUTE"));
     }
 
     // 通知先
     if (mapList == null || mapList.size() <= 0) {
-      msgList.add("『 <span class='em'>通知先</span> 』を指定してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("REPORT_MESSAGE_SELECT_SETFIELDNAME_POSITIONS"));
     } else if (!(mapList.get(0) instanceof ALEipUser)) {
-      msgList.add("通知先のユーザーが全て無効、もしくは削除されています。有効なユーザーが一人以上いる経路を選択してください。");
+      msgList.add(ALLocalizationUtils
+        .getl10n("REPORT_ALERT_SETFIELDNAME_POSITIONS_NO_ROUTE"));
     }
 
     return (msgList.size() == 0);
