@@ -164,17 +164,19 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
   public void initField() {
     // トピック名
     topic_name = new ALStringField();
-    topic_name.setFieldName("タイトル");
+    topic_name.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_TITLE"));
     topic_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
-    category_id.setFieldName("カテゴリ");
+    category_id.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_PORTLET_CATEGORY"));
     // カテゴリ
     category_name = new ALStringField();
-    category_name.setFieldName("カテゴリ名");
+    category_name.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_CATEGORY_NAME"));
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_NOTE"));
     note.setTrim(false);
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();
