@@ -44,7 +44,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 　役職を管理するフォームデータを管理するクラスです。 <BR>
@@ -161,9 +160,9 @@ public class AccountPositionFormData extends ALAbstractFormData {
       }
 
       if (query.fetchList().size() != 0) {
-        msgList.add(ALLocalizationUtils.getl10nFormat(
-          "ACCOUNT_VALIDATE_POSITION",
-          position_name));
+        msgList.add("役職名『 <span class='em'>"
+          + position_name
+          + "</span> 』は既に登録されています。");
       }
     } catch (Exception ex) {
       logger.error("AccountPositionFormData.validate", ex);

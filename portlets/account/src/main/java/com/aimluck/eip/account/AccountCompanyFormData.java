@@ -180,7 +180,6 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @return
    * 
    */
-
   @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
@@ -189,7 +188,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
     if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
       if (!zipcode1.validate(dummy) || !zipcode2.validate(dummy)) {
-        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_WITHIN_SEVEN"));
+        msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
       }
     }
     if (!telephone1.getValue().equals("")
@@ -198,8 +197,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       if (!telephone1.validate(dummy)
         || !telephone2.validate(dummy)
         || !telephone3.validate(dummy)) {
-        msgList
-          .add(ALLocalizationUtils.getl10n("ACCOUNT_PHONE_NUMBER_CAUTION"));
+        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
       }
     }
     if (!fax_number1.getValue().equals("")
@@ -208,7 +206,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       if (!fax_number1.validate(dummy)
         || !fax_number2.validate(dummy)
         || !fax_number3.validate(dummy)) {
-        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_SET_FAX_NOMBER"));
+        msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
       }
     }
 

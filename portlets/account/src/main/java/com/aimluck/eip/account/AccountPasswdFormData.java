@@ -39,7 +39,6 @@ import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントのパスワードのフォームデータを管理するためのクラスです。 <br />
@@ -115,7 +114,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
     new_passwd_confirm.validate(msgList);
 
     if (!new_passwd.toString().equals(new_passwd_confirm.toString())) {
-      msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_ALERT_NEWPW"));
+      msgList.add("確認用のパスワードと一致しません。");
     }
     return (msgList.size() == 0);
   }
@@ -169,8 +168,7 @@ public class AccountPasswdFormData extends ALAbstractFormData {
         .getInstance()
         .getDataSyncHandler()
         .checkConnect()) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
+        msgList.add("コントロールパネルWebAPIのデータベースの接続に失敗したため、処理は実行されませんでした。");
         return false;
       }
 
