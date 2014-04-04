@@ -48,6 +48,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -114,14 +115,16 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   public void initField() {
     // 区分ID
     gpdb_kubun_id = new ALStringField();
-    gpdb_kubun_id.setFieldName("選択項目");
+    gpdb_kubun_id.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_SELECTION_ITEMS"));
     // 区分名
     gpdb_kubun_name = new ALStringField();
-    gpdb_kubun_name.setFieldName("選択項目");
+    gpdb_kubun_name.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_SELECTION_ITEMS"));
     gpdb_kubun_name.setTrim(true);
     // 区分値
     gpdb_kubun_value = new ALStringField();
-    gpdb_kubun_value.setFieldName("値");
+    gpdb_kubun_value.setFieldName(ALLocalizationUtils.getl10n("GPDB_VALUE"));
     gpdb_kubun_value.setTrim(true);
   }
 

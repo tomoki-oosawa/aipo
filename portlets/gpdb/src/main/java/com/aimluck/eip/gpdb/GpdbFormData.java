@@ -47,6 +47,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -100,11 +101,12 @@ public class GpdbFormData extends ALAbstractFormData {
   public void initField() {
     // Webデータベース名
     gpdb_name = new ALStringField();
-    gpdb_name.setFieldName("データベース名");
+    gpdb_name.setFieldName(ALLocalizationUtils.getl10n("GPDB_DATABASE_NAME"));
     gpdb_name.setTrim(true);
     // メール配信フラグ
     mail_flg = new ALStringField();
-    mail_flg.setFieldName("メール通知");
+    mail_flg
+      .setFieldName(ALLocalizationUtils.getl10n("GPDB_MAIL_NOTIFICATION"));
     mail_flg.setTrim(false);
     mail_flg.setValue(GpdbUtils.FLG_OFF);
   }
