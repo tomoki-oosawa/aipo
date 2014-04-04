@@ -801,10 +801,8 @@ public class NoteUtils {
         subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
       String title =
-        new String(ALLocalizationUtils.getl10nFormat(
-          "NOTE_CLIENT_NAME_SUBJECT_TEXT",
-          note.getClientName(),
-          subject));
+        ALLocalizationUtils.getl10nFormat("NOTE_CLIENT_NAME_SUBJECT_TEXT", note
+          .getClientName(), subject);
       String portletParams =
         new StringBuilder("?template=NoteDetailScreen")
           .append("&entityid=")
