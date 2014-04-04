@@ -396,7 +396,7 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     tuser.setMigrateVersion(baseuser.getMigrateVersion());
-    Database.commit();
+    // Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる
     Group group = JetspeedSecurity.getGroup("LoginUser");
@@ -441,9 +441,6 @@ public class ALUserManagement extends TurbineBaseService implements
 
     } catch (Exception e) {
       Database.rollback();
-      Database.delete(user_group_role);
-      Database.delete(tuser);
-      Database.commit();
 
       String message = "Failed to create account '" + user.getUserName() + "'";
       logger.error(message, e);
