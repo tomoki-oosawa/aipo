@@ -60,6 +60,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -153,31 +154,33 @@ public class WebMailFormData extends ALAbstractFormData {
   public void initField() {
     // メール作成のタイプ
     mailType = new ALNumberField();
-    mailType.setFieldName("タイプ");
+    mailType.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SETFIELDNAME_TYPE"));
 
     // To
     to = new ALStringField();
-    to.setFieldName("宛先");
+    to.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_SETFIELDNAME_TO"));
     to.setTrim(true);
 
     // CC
     cc = new ALStringField();
-    cc.setFieldName("CC");
+    cc.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_SETFIELDNAME_CC"));
     cc.setTrim(true);
 
     // BCC
     bcc = new ALStringField();
-    bcc.setFieldName("BCC");
+    bcc.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_SETFIELDNAME_BCC"));
     bcc.setTrim(true);
 
     // Subject
     subject = new ALStringField();
-    subject.setFieldName("件名");
+    subject.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SETFIELDNAME_SUBJECT"));
     subject.setTrim(true);
 
     // Body
     body = new ALStringField();
-    body.setFieldName("本文");
+    body.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_SETFIELDNAME_BODY"));
     body.setTrim(false);
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();

@@ -49,6 +49,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * メール送信時に使用するアドレス帳のフォームデータを管理するためのクラスです。 <br />
@@ -263,20 +264,24 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // 社内／社外
     type_company = new ALStringField();
-    type_company.setFieldName("社内／社外");
+    type_company.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_IN_OUT_OFFICE"));
     type_company.setValue(Integer.toString(TYPE_INTERNAL));
 
     // グループ名
     current_internal_group_name = new ALStringField();
-    current_internal_group_name.setFieldName("グループ名");
+    current_internal_group_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_GROUP_NAME"));
     current_internal_group_name.setValue("all");
 
     // グループ名
     current_external_group_name = new ALStringField();
-    current_external_group_name.setFieldName("グループ名");
+    current_external_group_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_GROUP_NAME"));
     current_external_group_name.setValue("all");
   }
 

@@ -47,6 +47,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -171,12 +172,14 @@ public class WebMailFilterFormData extends ALAbstractFormData {
   public void initField() {
     // フィルタ名
     filter_name = new ALStringField();
-    filter_name.setFieldName("フィルタ名");
+    filter_name
+      .setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_FILTER_NAME"));
     filter_name.setTrim(true);
 
     // フィルタ文字列
     filter_string = new ALStringField();
-    filter_string.setFieldName("振り分け条件");
+    filter_string.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_DIVIDE_CONDITION"));
     filter_string.setTrim(true);
 
     // フィルタ種別
@@ -185,7 +188,8 @@ public class WebMailFilterFormData extends ALAbstractFormData {
 
     // 振り分け先フォルダ
     dst_folder_id = new ALNumberField();
-    dst_folder_id.setFieldName("振り分け先");
+    dst_folder_id.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_DIVIDE_FOLDER"));
 
     // フォルダ一覧
     folderList = new ArrayList<WebMailFolderResultData>();

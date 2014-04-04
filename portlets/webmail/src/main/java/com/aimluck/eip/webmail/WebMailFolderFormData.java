@@ -53,6 +53,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -178,7 +179,8 @@ public class WebMailFolderFormData extends ALAbstractFormData {
   public void initField() {
     // フォルダ名
     folder_name = new ALStringField();
-    folder_name.setFieldName("フォルダ名");
+    folder_name
+      .setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_FOLDER_NAME"));
     folder_name.setTrim(true);
   }
 
