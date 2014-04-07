@@ -36,7 +36,7 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("projectForm" $jslink $portlet "ProjectFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessage)")
+#ALajaxscreenformheader("projectForm" $jslink $portlet "ProjectFormJSONScreen" "aimluck.io.selectAllOptions(this.members);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessage)")
 <input type="hidden" name="progress_flg" id="progress_flg" value="t">
 #if($mode=="new_form")
 <input type="hidden" name="mode" value="insert" />
