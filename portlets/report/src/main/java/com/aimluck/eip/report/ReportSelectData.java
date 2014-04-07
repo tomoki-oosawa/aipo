@@ -372,19 +372,6 @@ public class ReportSelectData extends
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
       rd.setClientId(client.getUserId().getValue());
-      List<Integer> users = new ArrayList<Integer>();
-      EipTReportMap map = null;
-      List<EipTReportMap> tmp_maps = ReportUtils.getEipTReportMap(record);
-
-      if (record.getParentId().intValue() == 0) {
-        int size = tmp_maps.size();
-        for (int i = 0; i < size; i++) {
-          map = tmp_maps.get(i);
-          users.add(map.getUserId());
-          rd.setReportStat(map.getStatus());
-        }
-      }
-
       // 自身の報告書かを設定する
       Integer login_user_id =
         Integer.valueOf((int) login_user.getUserId().getValue());
