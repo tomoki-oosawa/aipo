@@ -427,4 +427,14 @@ public abstract class ALMailHandler {
 
     return msgList;
   }
+
+  /**
+   * アカウントフォルダ容量計算
+   * 
+   * @param userRootFolderName
+   * @param accountName
+   * @return
+   */
+  abstract public long getFolderSize(String org_id, int user_id, int account_id);
+
 }

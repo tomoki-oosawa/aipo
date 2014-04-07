@@ -103,6 +103,12 @@ public class AccountResultData implements ALData {
   /** グループ名 */
   private ALStringField group_name;
 
+  /** メール容量 */
+  private ALNumberField mail_size;
+
+  /** メール容量(＋単位) */
+  private ALStringField mail_size_str;
+
   private long photo_modified;
 
   /**
@@ -137,6 +143,8 @@ public class AccountResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     group_name = new ALStringField();
+    mail_size = new ALNumberField();
+    mail_size_str = new ALStringField();
     setPhotoModified(0L);
   }
 
@@ -565,6 +573,36 @@ public class AccountResultData implements ALData {
    */
   public void setPhotoModified(long photo_modified) {
     this.photo_modified = photo_modified;
+  }
+
+  /**
+   * @return mail_size
+   */
+  public ALNumberField getMailSize() {
+    return mail_size;
+  }
+
+  /**
+   * @param mail_size
+   *          セットする mail_size
+   */
+  public void setMailSize(long mail_size) {
+    this.mail_size.setValue(mail_size);
+  }
+
+  /**
+   * @return mail_size_str
+   */
+  public ALStringField getMailSizeStr() {
+    return mail_size_str;
+  }
+
+  /**
+   * @param mail_size_str
+   *          セットする mail_size_str
+   */
+  public void setMailSizeStr(String mail_size_str) {
+    this.mail_size_str.setValue(mail_size_str);
   }
 
 }

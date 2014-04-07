@@ -247,6 +247,39 @@ public class ALMailUtils {
   }
 
   /**
+   * メールアカウント一覧を取得する．
+   * 
+   * @param userId
+   * @param accountId
+   * @return
+   */
+  public static List<EipMMailAccount> getMailAccountList(int userId) {
+    if (userId < 0) {
+      return null;
+    }
+
+    try {
+
+      SelectQuery<EipMMailAccount> query =
+        Database.query(EipMMailAccount.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, Integer
+          .valueOf(userId));
+
+      List<EipMMailAccount> fetchList = query.andQualifier(exp1).fetchList();
+
+      if (fetchList == null || fetchList.size() <= 0) {
+        logger.debug("[WebMail] Not found AccountID...");
+        return null;
+      }
+      return fetchList;
+    } catch (Exception ex) {
+      logger.error("ALMailUtils.getMailAccountList", ex);
+      return null;
+    }
+  }
+
+  /**
    * メールアカウント名を取得する．
    * 
    * @param userId
