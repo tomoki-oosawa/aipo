@@ -47,7 +47,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.util.ALMailUtils;
@@ -56,7 +55,6 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
-import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -509,22 +507,7 @@ public class AccountUtils {
           ALMailHandler handler =
             ALMailFactoryService.getInstance().getMailHandler();
 
-          int type_flag = 0;
-          int type = ALFolder.TYPE_RECEIVE;
-          // 受信フォルダと送信フォルダの2回分まわす。
-          while (type_flag < 2) {
-            if (type_flag == 1) {
-              type = ALFolder.TYPE_SEND;
-            }
-            type_flag++;
-            ALFolder alFolder =
-              handler.getALFolder(type, orgId, userId, accountId);
-            // ローカルファイルに保存されているファイルを削除する．
-            totalSize +=
-              ALStorageService.getFolderSize(alFolder.getFullName().split(
-                Database.getDomainName())[0], alFolder.getFullName().split(
-                Database.getDomainName())[1]);
-          }
+          totalSize += handler.getFolderSize(orgId, userId, accountId);
         }
       }
 
