@@ -50,6 +50,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.mail.ALFolder;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
+import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -495,40 +496,35 @@ public class AccountUtils {
     try {
 
       // ユーザーが持っているアカウントを取得。
-      SelectQuery<EipMMailAccount> ac_query =
-        Database.query(EipMMailAccount.class);
-
-      Expression ac_exp =
-        ExpressionFactory.matchExp(EipMMailAccount.USER_ID_PROPERTY, userId);
-
-      List<EipMMailAccount> accounts =
-        ac_query.setQualifier(ac_exp).fetchList();
+      List<EipMMailAccount> accounts = ALMailUtils.getMailAccountList(userId);
 
       String orgId = Database.getDomainName();
 
       // 全アカウントに対してフォルダの容量を取得していく。
-      for (EipMMailAccount account : accounts) {
+      if (accounts != null) {
+        for (EipMMailAccount account : accounts) {
 
-        Integer accountId = account.getAccountId();
+          Integer accountId = account.getAccountId();
 
-        ALMailHandler handler =
-          ALMailFactoryService.getInstance().getMailHandler();
+          ALMailHandler handler =
+            ALMailFactoryService.getInstance().getMailHandler();
 
-        int type_flag = 0;
-        int type = ALFolder.TYPE_RECEIVE;
-        // 受信フォルダと送信フォルダの2回分まわす。
-        while (type_flag < 2) {
-          if (type_flag == 1) {
-            type = ALFolder.TYPE_SEND;
+          int type_flag = 0;
+          int type = ALFolder.TYPE_RECEIVE;
+          // 受信フォルダと送信フォルダの2回分まわす。
+          while (type_flag < 2) {
+            if (type_flag == 1) {
+              type = ALFolder.TYPE_SEND;
+            }
+            type_flag++;
+            ALFolder alFolder =
+              handler.getALFolder(type, orgId, userId, accountId);
+            // ローカルファイルに保存されているファイルを削除する．
+            totalSize +=
+              ALStorageService.getFolderSize(alFolder.getFullName().split(
+                Database.getDomainName())[0], alFolder.getFullName().split(
+                Database.getDomainName())[1]);
           }
-          type_flag++;
-          ALFolder alFolder =
-            handler.getALFolder(type, orgId, userId, accountId);
-          // ローカルファイルに保存されているファイルを削除する．
-          totalSize +=
-            ALStorageService.getFolderSize(alFolder.getFullName().split(
-              Database.getDomainName())[0], alFolder.getFullName().split(
-              Database.getDomainName())[1]);
         }
       }
 
