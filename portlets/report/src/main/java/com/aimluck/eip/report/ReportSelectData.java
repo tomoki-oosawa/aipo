@@ -377,6 +377,21 @@ public class ReportSelectData extends
         Integer.valueOf((int) login_user.getUserId().getValue());
       rd.setIsSelfReport(record.getUserId().intValue() == login_user_id
         .intValue());
+
+      List<Integer> users = new ArrayList<Integer>();
+      EipTReportMap map = null;
+      List<EipTReportMap> tmp_maps = ReportUtils.getEipTReportMap(record);
+      HashMap<Integer, String> statusList = new HashMap<Integer, String>();
+
+      if (record.getParentId().intValue() == 0) {
+        int size = tmp_maps.size();
+        for (int i = 0; i < size; i++) {
+          map = tmp_maps.get(i);
+          users.add(map.getUserId());
+          statusList.put(map.getUserId(), map.getStatus());
+        }
+        rd.setStatusList(statusList);
+      }
       return rd;
     } catch (Exception ex) {
       logger.error("report", ex);
