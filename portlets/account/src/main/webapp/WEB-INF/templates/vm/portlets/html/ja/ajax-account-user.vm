@@ -124,7 +124,8 @@ $!postname
 #end
 </div>
 #ALtdcellfooter()
-#ALtdcellheaderAtt("<div>$!record.PositionName</div>" 'class="mb_hide"')
+#ALtdcellheaderAtt('class="mb_hide"')
+<div>$!record.PositionName</div>
 #ALtdcellfooter()
 #if("$disabled_flg" == "N")
 #ALtdcellAtt($l10n.ACCOUNT_INVALID 'class="center" nowrap="nowrap"')
