@@ -340,8 +340,6 @@ public class AccountUserSelectData extends
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
       rd.setHasPhoto(record.hasPhoto());
       rd.setPhotoModified(record.getPhotoModified().getTime());
-      rd.setMailSize(AccountUtils.getStorageSizeOfUserMail(id));
-      rd.setMailSizeStr(AccountUtils.getSizeStr(rd.getMailSize().getValue()));
 
       return rd;
     } catch (Exception ex) {

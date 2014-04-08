@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.account.util;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,16 +39,12 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
-import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.mail.ALMailFactoryService;
-import com.aimluck.eip.mail.ALMailHandler;
-import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -481,63 +476,5 @@ public class AccountUtils {
       }
     }
     return true;
-  }
-
-  /**
-   * 指定されたuserIdが使用しているメールの総容量を返します。 <BR>
-   * 
-   * @param userId
-   * @return メールの容量
-   */
-  public static long getStorageSizeOfUserMail(Integer userId) {
-    long totalSize = 0;
-    try {
-
-      // ユーザーが持っているアカウントを取得。
-      List<EipMMailAccount> accounts = ALMailUtils.getMailAccountList(userId);
-
-      String orgId = Database.getDomainName();
-
-      // 全アカウントに対してフォルダの容量を取得していく。
-      if (accounts != null) {
-        for (EipMMailAccount account : accounts) {
-
-          Integer accountId = account.getAccountId();
-
-          ALMailHandler handler =
-            ALMailFactoryService.getInstance().getMailHandler();
-
-          totalSize += handler.getFolderSize(orgId, userId, accountId);
-        }
-      }
-
-    } catch (Throwable t) {
-    }
-
-    return totalSize;
-  }
-
-  /**
-   * データ容量を単位つきで返します。 <BR>
-   * 
-   * @param size
-   * @return 文字列
-   */
-  public static String getSizeStr(long size) {
-    if (1024 > size) {
-      return size + " Byte";
-    } else if (1024 * 1024 > size) {
-      double dsize = size;
-      dsize = dsize / 1024;
-      BigDecimal bi = new BigDecimal(String.valueOf(dsize));
-      double value = bi.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-      return value + " KByte";
-    } else {
-      double dsize = size;
-      dsize = dsize / 1024 / 1024;
-      BigDecimal bi = new BigDecimal(String.valueOf(dsize));
-      double value = bi.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-      return value + " MB";
-    }
   }
 }

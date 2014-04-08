@@ -82,16 +82,4 @@ public class ALDbMailHandler extends ALMailHandler {
     return true;
   }
 
-  /**
-   * アカウントフォルダ容量計算
-   * 
-   * @param userRootFolderName
-   * @param accountName
-   * @return
-   */
-  @Override
-  public long getFolderSize(String org_id, int user_id, int account_id) {
-    return 0L;
-  }
-
 }
