@@ -118,6 +118,9 @@ public class AccountEditSelectData extends
       rd.setPostIdList(postIds);
       rd.setPostNameList(postNames);
       rd.setPositionName(getPositionName(record.getPositionId()));
+      rd.setMailSize(AccountUtils.getStorageSizeOfUserMail(Integer.valueOf(
+        record.getUserId()).intValue()));
+      rd.setMailSizeStr(AccountUtils.getSizeStr(rd.getMailSize().getValue()));
 
       EipMCompany company_data =
         AccountUtils.getEipMCompany(Long
