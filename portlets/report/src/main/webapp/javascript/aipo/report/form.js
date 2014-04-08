@@ -264,3 +264,11 @@ aipo.report.setWrapperHeight = function() {
     	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
+
+aipo.report.hideDialog = function() {
+    var arrDialog = dijit.byId("modalDialog");
+    if(arrDialog){
+       arrDialog.hide();
+    }
+    aipo.portletReload('report');
+}
