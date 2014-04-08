@@ -541,6 +541,109 @@ public class ProjectUtils {
     return true;
   }
 
+  /**
+   * プロジェクト作成時に参加メンバーへ通知メールを送る
+   * 
+   * @param taskId
+   *          タスクID
+   * @return 成否
+   */
+  public static boolean sendMailForProjectMembers(RunData rundata,
+      Context context, EipTProject project, List<ALEipUser> memberList) {
+
+    String orgId = Database.getDomainName();
+    String subject =
+      "["
+        + ALOrgUtilsService.getAlias()
+        + "]"
+        + ALLocalizationUtils.getl10n("PROJECT_MAIL_TITLE");
+
+    try {
+      List<ALEipUserAddr> destMemberList =
+        ALMailUtils.getALEipUserAddrs(
+          memberList,
+          ALEipUtils.getUserId(rundata),
+          false);
+
+      List<ALAdminMailMessage> messageList =
+        new ArrayList<ALAdminMailMessage>();
+      for (ALEipUserAddr destMember : destMemberList) {
+        ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+        message.setPcSubject(subject);
+        message.setCellularSubject(subject);
+        message.setPcBody(createProjectMemberMsg(rundata, message
+          .getPcMailAddr(), project));
+        message.setCellularBody(createProjectMemberMsg(rundata, message
+          .getCellMailAddr(), project));
+        messageList.add(message);
+      }
+
+      ALMailService.sendAdminMailAsync(new ALAdminMailContext(orgId, ALEipUtils
+        .getUserId(rundata), messageList, ALMailUtils
+        .getSendDestType(ALMailUtils.KEY_MSGTYPE_WORKFLOW)));
+
+    } catch (Exception ex) {
+      logger.error("project", ex);
+      return false;
+    }
+    return true;
+
+  }
+
+  /**
+   * 送信するメールの内容を作成する．
+   * 
+   * @return
+   */
+  public static String createProjectMemberMsg(RunData rundata, String addr,
+      EipTProject project) {
+    VelocityContext context = new VelocityContext();
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    String CR = ALMailUtils.CR;
+
+    context.put("user_email", addr);
+
+    // （さんの申請は承認されました。など）
+    StringBuffer message = new StringBuffer("");
+    message.append(CR);
+    message.append(
+      getl10nFormat("PROJECT_MAIL_TEXT2", project.getProjectName())).append(CR);
+    context.put("message", message);
+
+    // サービス
+    context.put("serviceAlias", ALOrgUtilsService.getAlias());
+    // サービス（Aipo）へのアクセス
+    context.put("enableAsp", enableAsp);
+    context.put("globalurl", ALMailUtils.getGlobalurl());
+    context.put("localurl", ALMailUtils.getLocalurl());
+    CustomLocalizationService locService =
+      (CustomLocalizationService) ServiceUtil
+        .getServiceByName(LocalizationService.SERVICE_NAME);
+    String lang = locService.getLocale(rundata).getLanguage();
+    StringWriter writer = new StringWriter();
+    try {
+      if (lang != null && lang.equals("ja")) {
+        Template template =
+          Velocity.getTemplate("portlets/mail/"
+            + lang
+            + "/project-notification-mail.vm", "utf-8");
+        template.merge(context, writer);
+      } else {
+        Template template =
+          Velocity.getTemplate(
+            "portlets/mail/project-notification-mail.vm",
+            "utf-8");
+        template.merge(context, writer);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    writer.flush();
+    String ret = writer.getBuffer().toString();
+    return ret;
+
+  }
+
   // ---------------------------------------------------
   // タスク関連
   // ---------------------------------------------------
@@ -1240,16 +1343,13 @@ public class ProjectUtils {
         ALAdminMailMessage message = new ALAdminMailMessage(destMember);
         message.setPcSubject(subject);
         message.setCellularSubject(subject);
-        message.setPcBody(createMsg(
+        message.setPcBody(createTaskMemberMsg(
           rundata,
           message.getPcMailAddr(),
           task,
           project));
-        message.setCellularBody(createMsg(
-          rundata,
-          message.getCellMailAddr(),
-          task,
-          project));
+        message.setCellularBody(createTaskMemberMsg(rundata, message
+          .getCellMailAddr(), task, project));
         messageList.add(message);
       }
 
@@ -1266,11 +1366,11 @@ public class ProjectUtils {
   }
 
   /**
-   * パソコンへ送信するメールの内容を作成する．
+   * 送信するメールの内容を作成する．
    * 
    * @return
    */
-  public static String createMsg(RunData rundata, String addr,
+  public static String createTaskMemberMsg(RunData rundata, String addr,
       EipTProjectTask task, EipTProject project) {
     VelocityContext context = new VelocityContext();
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
