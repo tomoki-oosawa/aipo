@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.screens;
 
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -97,6 +98,9 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
 
     } catch (ALPermissionException e) {
       throw new Exception();
+    } catch (CayenneRuntimeException e) {
+      Database.rollback();
+      logger.error("CabinetFileRawScreen.doOutput", e);
     } catch (Exception e) {
       logger.error("CabinetFileRawScreen.doOutput", e);
     }
