@@ -317,8 +317,11 @@ public class ALEipUtils {
    */
   public static Portlet getPortlet(RunData rundata, String portletId) {
     try {
-      Portlets portlets =
-        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+      Profile profile = ((JetspeedRunData) rundata).getProfile();
+      if (profile == null) {
+        return null;
+      }
+      Portlets portlets = profile.getDocument().getPortlets();
       if (portlets == null) {
         return null;
       }
