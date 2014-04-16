@@ -1305,7 +1305,7 @@ input[type=password] {
 
 .widgetButton {
   position: absolute;
-  padding: 5px;
+  padding: 5px !important;
 }
 
 .snDrawer {

@@ -1250,6 +1250,9 @@ img.avatar,
   float: left;
   width: 180px;
 }
+#auiWidgetsArea div:first-child {
+  padding-top: 0;
+}
 
 #auiWidgetsArea2 {
   float: right;
@@ -1258,7 +1261,7 @@ img.avatar,
 
 .auiWidget {
   clear: both;
-  padding: 0.8em 0;
+  padding: 10px 0;
   border-bottom: solid 1px #ededed;
 }
 .auiWidget h2 {
@@ -2109,6 +2112,9 @@ input.auiButtonSearch.active {
 }
 .auiSummaryMeta form {
   line-height: 32px;
+}
+.auiSummaryMeta:first-child {
+  margin-top: 0 !important;
 }
 
 *:first-child + html .auiSummaryMeta {
