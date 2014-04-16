@@ -33,6 +33,7 @@ import java.util.Vector;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
 
+import org.apache.cayenne.CayenneRuntimeException;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.profile.ProfileLocator;
@@ -177,7 +178,10 @@ public class ALUserManagement extends TurbineBaseService implements
       throws JetspeedSecurityException {
     TurbineUser user = null;
     try {
-      if (principal instanceof UserNamePrincipal) {
+      if (principal == null) {
+        throw new UserException(
+          "Invalid Principal Type in getUser: principal is null");
+      } else if (principal instanceof UserNamePrincipal) {
         user = ALEipUtils.getTurbineUser(principal.getName());
       } else if (principal instanceof UserIdPrincipal) {
         user = ALEipUtils.getTurbineUser(Integer.valueOf(principal.getName()));
@@ -186,6 +190,8 @@ public class ALUserManagement extends TurbineBaseService implements
           + principal.getClass().getName());
       }
     } catch (IllegalStateException e) {
+      throw e;
+    } catch (CayenneRuntimeException e) {
       // session Timeout Errorによるerrorはログに残さない。
       throw e;
     } catch (Exception e) {
@@ -336,7 +342,12 @@ public class ALUserManagement extends TurbineBaseService implements
       }
 
       // ユーザを更新する．
-      Database.commit();
+      try {
+        Database.commit();
+      } catch (CayenneRuntimeException e) {
+        Database.rollback();
+        throw new UserException("Failed to commit user object to database ", e);
+      }
     } catch (Exception e) {
       e.printStackTrace();
       logger.error("Failed to save user object ", e);
