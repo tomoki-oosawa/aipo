@@ -104,6 +104,9 @@ public class ALRoleManagement extends TurbineBaseService implements
     HashMap<String, GroupRole> roles;
 
     try {
+      if (user == null) {
+        throw new RoleException("Failed to retrieve user ");
+      }
       Expression exp =
         ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
           .valueOf(user.getUserId()));
