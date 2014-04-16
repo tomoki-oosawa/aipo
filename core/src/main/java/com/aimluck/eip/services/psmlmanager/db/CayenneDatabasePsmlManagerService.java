@@ -840,6 +840,11 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     String page = null;
 
     DataContext dataContext = DataContext.getThreadDataContext();
+    if (dataContext == null) {
+      String message = "PSMLManager: Must specify a dataContext";
+      logger.warn("CayenneDatabasePsmlManagerService.refresh: " + message);
+      return null;
+    }
     if (user != null) {
       tableName = "JETSPEED_USER_PROFILE";
       records = selectJetspeedUserProfilePeer(dataContext, locator, false);
@@ -1358,6 +1363,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     Database.beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedGroupProfile> list = dataContext.performQuery(query);
+    Database.finishTransaction();
     return list;
   }
 
@@ -1377,6 +1383,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
     Database.beginTransaction(dataContext);
     @SuppressWarnings("unchecked")
     List<JetspeedRoleProfile> list = dataContext.performQuery(query);
+    Database.finishTransaction();
     return list;
   }
 
@@ -1403,6 +1410,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       Database.beginTransaction(dataContext);
       List<JetspeedUserProfile> list = dataContext.performQuery(query);
       ALEipManager.getInstance().setUserProfile(locator, list);
+      Database.finishTransaction();
       return list;
     }
   }

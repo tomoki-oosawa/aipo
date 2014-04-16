@@ -576,6 +576,23 @@ public class Database {
     }
   }
 
+  public static void finishTransaction() {
+    Transaction threadTransaction = Transaction.getThreadTransaction();
+    if (threadTransaction != null) {
+      try {
+        threadTransaction.commit();
+      } catch (IllegalStateException e) {
+        logger.error(e.getMessage(), e);
+      } catch (SQLException e) {
+        logger.error(e.getMessage(), e);
+      } catch (CayenneException e) {
+        logger.error(e.getMessage(), e);
+      } finally {
+        Transaction.bindThreadTransaction(null);
+      }
+    }
+  }
+
   public static String castToIntRawColumn(String column) {
     if (isJdbcMySQL()) {
       return "CAST(" + column + " AS UNSIGNED)";
