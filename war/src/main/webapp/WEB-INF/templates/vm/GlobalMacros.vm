@@ -1322,7 +1322,11 @@ $link.get(0)
 
 #macro(ALtdcellFooterLink $career)
 <hr style="border:solid 1px #ffffff; color:#ffffff" />
+#if($!result.Theme!="")
 <div style="background:#005699;"><img src="themes/$!result.Theme/images/common/dot.gif" width="1" height="1" /></div>
+#else
+<div style="background:#005699;"><img src="themes/$theme/images/common/dot.gif" width="1" height="1" /></div>
+#end
 <div style="background:$config.getString("aipo.color.cell.vm.menu.bottom"); text-align:center;"><a href="$!jslink.getAction('controls.Restore',$!portlet.ID)" accesskey="0">[0] $l10n.WAR_GROBALMACRO_TOP</a> | <a href="$jslink.setAction($config.getString('action.logout'))">$l10n.CELL_LOGOUT</a></div>
 #end
 
