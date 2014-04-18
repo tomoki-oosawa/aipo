@@ -33,18 +33,6 @@
 #elseif(!$result.List)
 	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
 #else
-    <div class="auiSummaryMeta clearfix">
-    <div class="floatRight">
-    	<div class="auiSelectButton">
-    		<ul>
-    			#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-    			#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
-    		</ul>
-    	</div>
-    </div>
-    </div>
     #AUISummaryFilterDivHeader()
     #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
     <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen")' />
@@ -83,6 +71,19 @@
     #AUISearchIndicator()
     #AUISearchFooter()
     #AUISummaryFilterDivFooter()
+
+	<div class="auiSummaryMeta clearfix">
+    <div class="floatRight">
+    	<div class="auiSelectButton">
+    		<ul>
+    			#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+    			#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+    		</ul>
+    	</div>
+    </div>
+    </div>
 
     #AUISummaryDiv()
     <select name="target_progress_rate_from" id="target_progress_rate_from" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')">
