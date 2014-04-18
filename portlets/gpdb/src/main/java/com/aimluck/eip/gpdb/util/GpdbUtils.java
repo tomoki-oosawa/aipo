@@ -26,9 +26,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -93,6 +95,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * Webデータベースのユーティリティクラスです。
@@ -797,6 +800,27 @@ public class GpdbUtils {
             Integer userid = Integer.valueOf(value);
             value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
           }
+        } else if (ITEM_TYPE_DATE.equals(type)) {
+          // 日付の場合、フォーマットを変換する。
+          SimpleDateFormat sdf_data =
+            new SimpleDateFormat(ALLocalizationUtils
+              .getl10n("GPDB_DATE_FORMAT_DATA"));
+          SimpleDateFormat sdf_show =
+            new SimpleDateFormat(ALLocalizationUtils
+              .getl10n("GPDB_DATE_FORMAT_SHOW"));
+          Date date = sdf_data.parse(value);
+          value = sdf_show.format(date);
+        } else if (ITEM_TYPE_CREATE_DATE.equals(type)
+          || ITEM_TYPE_UPDATE_DATE.equals(type)) {
+          // 登録日、更新日の場合、フォーマットを変換する。
+          SimpleDateFormat sdf_data =
+            new SimpleDateFormat(ALLocalizationUtils
+              .getl10n("GPDB_TIMESTAMP_FORMAT_DATA"));
+          SimpleDateFormat sdf_show =
+            new SimpleDateFormat(ALLocalizationUtils
+              .getl10n("GPDB_TIMESTAMP_FORMAT_SHOW"));
+          Date date = sdf_data.parse(value);
+          value = sdf_show.format(date);
         }
       }
 
