@@ -73,6 +73,12 @@ public class ProjectResultData implements ALData {
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
 
+  /** 作成者 */
+  protected ALStringField create_user_name;
+
+  /** 更新者 */
+  protected ALStringField update_user_name;
+
   /** 登録日 */
   protected ALDateTimeField create_date;
 
@@ -111,6 +117,8 @@ public class ProjectResultData implements ALData {
     progress_rate = new ALNumberField();
     plan_progress_rate = new ALNumberField();
     memberList = new ArrayList<ALEipUser>();
+    create_user_name = new ALStringField();
+    update_user_name = new ALStringField();
     create_date = new ALDateTimeField("M月d日");
     update_date = new ALDateTimeField("M月d日");
     task_update_date = new ALDateTimeField();
@@ -255,6 +263,36 @@ public class ProjectResultData implements ALData {
    */
   public void setPlanProgressRate(long i) {
     plan_progress_rate.setValue(i);
+  }
+
+  /**
+   * @return create_user_name
+   */
+  public ALStringField getCreateUserName() {
+    return create_user_name;
+  }
+
+  /**
+   * @param create_user_name
+   *          セットする create_user_name
+   */
+  public void setCreateUserName(String string) {
+    create_user_name.setValue(string);
+  }
+
+  /**
+   * @return update_user_name
+   */
+  public ALStringField getUpdateUserName() {
+    return update_user_name;
+  }
+
+  /**
+   * @param update_user_name
+   *          セットする update_user_name
+   */
+  public void setUpdateUserName(String string) {
+    update_user_name.setValue(string);
   }
 
   /**
