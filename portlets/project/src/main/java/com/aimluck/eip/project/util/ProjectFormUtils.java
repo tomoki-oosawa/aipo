@@ -48,9 +48,16 @@ public class ProjectFormUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProjectFormUtils.class.getName());
 
-  public static void updateParentTaskDelegate(Integer taskId) {
-    updateParentTask(taskId);
-    Database.commit();
+  public static boolean updateParentTaskDelegate(Integer taskId) {
+    try {
+      updateParentTask(taskId);
+      Database.commit();
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("Exception", e);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -155,26 +162,34 @@ public class ProjectFormUtils {
    * 
    * @param projectId
    *          プロジェクトID
+   * @return
    * @return TRUE:更新実行 FALSE:更新しない
    */
-  public static void updateProject(Integer projectId, Integer loginUserId) {
+  public static boolean updateProject(Integer projectId, Integer loginUserId) {
 
-    // オブジェクトモデルを取得
-    EipTProject project = ProjectUtils.getEipTProject(projectId);
-    if (project == null) {
-      return;
+    try {
+      // オブジェクトモデルを取得
+      EipTProject project = ProjectUtils.getEipTProject(projectId);
+      if (project == null) {
+        return false;
+      }
+
+      if (ProjectUtils.FLG_OFF.equals(project.getProgressFlg())) {
+        // 自動計算しない場合
+        return false;
+      }
+
+      project.setProgressRate(ProjectUtils.getProjectProgressRate(projectId));
+      project.setUpdateUserId(loginUserId);
+      project.setUpdateDate(Calendar.getInstance().getTime());
+
+      Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("Exception", ex);
+      return false;
     }
-
-    if (ProjectUtils.FLG_OFF.equals(project.getProgressFlg())) {
-      // 自動計算しない場合
-      return;
-    }
-
-    project.setProgressRate(ProjectUtils.getProjectProgressRate(projectId));
-    project.setUpdateUserId(loginUserId);
-    project.setUpdateDate(Calendar.getInstance().getTime());
-
-    Database.commit();
+    return true;
   }
 
   /**
