@@ -190,8 +190,8 @@ public class ToDoResultData implements ALData {
   /**
    * @return
    */
-  public String getTodoNameString() {
-    return todo_name.toString();
+  public ALStringField getTodoNameString() {
+    return todo_name;
   }
 
   /**
