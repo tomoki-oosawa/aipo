@@ -293,7 +293,9 @@ public class ExtTimecardSelectData extends
             rd.setUpdateDate(now);
             Database.commit();
             startDay = system.getStartDay();
-          } catch (Exception ignore) {
+          } catch (Exception ex) {
+            Database.rollback();
+            logger.error("exttimecard", ex);
           }
         }
       }
