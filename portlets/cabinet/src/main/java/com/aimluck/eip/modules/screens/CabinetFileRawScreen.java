@@ -98,6 +98,7 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
     } catch (ALPermissionException e) {
       throw new Exception();
     } catch (Exception e) {
+      Database.rollback();
       logger.error("CabinetFileRawScreen.doOutput", e);
     }
 
