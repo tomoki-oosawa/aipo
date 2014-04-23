@@ -248,6 +248,9 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     }
     context.put("showTab", showTab);
 
+    // 修正 ：Aipoの変数化（jetspeed.vm）．
+    context.put("alias", ALOrgUtilsService.getAlias());
+
     // お知らせ用
     ALEipInformation information = ALEipInformation.getInstance();
     String informationCookie = "";
