@@ -360,6 +360,7 @@ public class ALRoleManagement extends TurbineBaseService implements
       }
 
     } catch (Exception e) {
+      Database.rollback();
       throw new RoleException("Revoke role '"
         + rolename
         + "' to user '"

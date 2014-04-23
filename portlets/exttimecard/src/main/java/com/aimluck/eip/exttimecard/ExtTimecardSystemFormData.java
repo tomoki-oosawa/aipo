@@ -262,6 +262,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       Database.commit();
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("exttimecard", ex);
       return false;
     }
@@ -303,6 +304,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_EXTTIMECARD_SYSTEM,
         record.getSystemName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("exttimecard", ex);
       return false;
     }

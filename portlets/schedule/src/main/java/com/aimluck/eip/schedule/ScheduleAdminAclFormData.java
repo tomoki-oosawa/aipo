@@ -205,51 +205,57 @@ public class ScheduleAdminAclFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
-    String sql =
-      "delete from eip_t_acl_map where target_id = #bind($target_id) and target_type = #bind($target_type) and feature = #bind($feature)";
+    try {
 
-    Database
-      .sql(EipTAclMap.class, sql)
-      .param("target_id", currentResultData.getId().getValue())
-      .param("target_type", currentResultData.getType().toString())
-      .param("feature", "schedule")
-      .execute();
+      String sql =
+        "delete from eip_t_acl_map where target_id = #bind($target_id) and target_type = #bind($target_type) and feature = #bind($feature)";
 
-    Enumeration<?> parameterNames = rundata.getRequest().getParameterNames();
+      Database
+        .sql(EipTAclMap.class, sql)
+        .param("target_id", currentResultData.getId().getValue())
+        .param("target_type", currentResultData.getType().toString())
+        .param("feature", "schedule")
+        .execute();
 
-    while (parameterNames.hasMoreElements()) {
-      String next = (String) parameterNames.nextElement();
-      if (next.startsWith("acl")) {
-        String tmpId = next.substring(3);
-        String value = rundata.getRequest().getParameter(next);
-        Integer id = null;
-        String type = null;
-        Integer level = null;
-        if (tmpId.startsWith("ug")) {
-          id = Integer.valueOf(tmpId.substring(2));
-          type = "ug";
-        } else if (tmpId.startsWith("u")) {
-          id = Integer.valueOf(tmpId.substring(1));
-          type = "u";
-        }
-        try {
-          level = Integer.valueOf(value);
-        } catch (Throwable ignore) {
-          // ignore
-        }
-        if (id != null && type != null && level != null) {
-          EipTAclMap model = Database.create(EipTAclMap.class);
-          model.setFeature("schedule");
-          model.setId(id);
-          model.setType(type);
-          model.setTargetId((int) currentResultData.getId().getValue());
-          model.setTargetType(currentResultData.getType().toString());
-          model.setLevel(level);
+      Enumeration<?> parameterNames = rundata.getRequest().getParameterNames();
+
+      while (parameterNames.hasMoreElements()) {
+        String next = (String) parameterNames.nextElement();
+        if (next.startsWith("acl")) {
+          String tmpId = next.substring(3);
+          String value = rundata.getRequest().getParameter(next);
+          Integer id = null;
+          String type = null;
+          Integer level = null;
+          if (tmpId.startsWith("ug")) {
+            id = Integer.valueOf(tmpId.substring(2));
+            type = "ug";
+          } else if (tmpId.startsWith("u")) {
+            id = Integer.valueOf(tmpId.substring(1));
+            type = "u";
+          }
+          try {
+            level = Integer.valueOf(value);
+          } catch (Throwable ignore) {
+            // ignore
+          }
+          if (id != null && type != null && level != null) {
+            EipTAclMap model = Database.create(EipTAclMap.class);
+            model.setFeature("schedule");
+            model.setId(id);
+            model.setType(type);
+            model.setTargetId((int) currentResultData.getId().getValue());
+            model.setTargetType(currentResultData.getType().toString());
+            model.setLevel(level);
+          }
         }
       }
-    }
 
-    Database.commit();
+      Database.commit();
+    } catch (Exception e) {
+      Database.rollback();
+      throw new ALDBErrorException();
+    }
 
     return true;
   }

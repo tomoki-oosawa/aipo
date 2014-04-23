@@ -785,7 +785,12 @@ public class CabinetUtils {
         .withExternalId(String.valueOf(file.getFileId())));
     }
 
-    Database.commit();
+    try {
+      Database.commit();
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("createCabinetActivity" + e);
+    }
     if (isDeletePrev) {
       RecentActivity.delete();
     }

@@ -45,9 +45,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardSystemMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardSystemMultiDelete.class.getName());
 
   /**
    * 
@@ -123,7 +122,12 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
           item.setUpdateDate(now);
         }
       }
-      Database.commit();
+      try {
+        Database.commit();
+      } catch (Exception e) {
+        Database.rollback();
+        logger.error("setAllTimecardMapDefault" + e);
+      }
     }
   }
 }

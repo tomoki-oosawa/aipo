@@ -399,6 +399,7 @@ public class WikiFormData extends ALAbstractFormData {
         wiki.getWikiName());
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("WikiFormData.insertFormData", e);
       return false;
     }
@@ -467,6 +468,7 @@ public class WikiFormData extends ALAbstractFormData {
         wiki.getWikiName());
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("WikiFormData.updateFormData", e);
       return false;
     }

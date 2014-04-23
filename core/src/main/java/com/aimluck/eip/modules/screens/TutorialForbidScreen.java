@@ -49,7 +49,12 @@ public class TutorialForbidScreen extends ALVelocityScreen {
     // 新規オブジェクトモデル
     TurbineUser user = ALEipUtils.getTurbineUser(ALEipUtils.getUserId(rundata));
     user.setTutorialForbid("T");
-    Database.commit();
+    try {
+      Database.commit();
+    } catch (Exception e) {
+      Database.rollback();
+      throw e;
+    }
   }
 
   /**

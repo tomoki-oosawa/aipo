@@ -99,28 +99,4 @@ public class ALFileMailHandler extends ALMailHandler {
       .toString());
   }
 
-  /**
-   * アカウントフォルダ容量計算
-   * 
-   * @param userRootFolderName
-   * @param accountName
-   * @return
-   */
-  @Override
-  public long getFolderSize(String org_id, int user_id, int account_id) {
-    StringBuilder key = new StringBuilder();
-    String categoryKeytmp = getCategoryKey();
-
-    if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
-      key.append(categoryKeytmp);
-    }
-    key.append(ALStorageService.separator());
-    key.append(user_id);
-    key.append(ALStorageService.separator());
-    key.append(account_id);
-
-    return ALStorageService.getFolderSize(ALMailUtils.rootFolderPath, key
-      .toString());
-  }
-
 }

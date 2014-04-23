@@ -50,6 +50,10 @@ public abstract class ALDeleteFileUtil {
         throw fe;
       }
     }
-    Database.commit();
+    try {
+      Database.commit();
+    } catch (Exception e) {
+      Database.rollback();
+    }
   }
 }

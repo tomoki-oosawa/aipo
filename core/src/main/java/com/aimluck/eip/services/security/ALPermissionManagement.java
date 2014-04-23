@@ -79,6 +79,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<?> getPermissions(String rolename)
       throws JetspeedSecurityException {
     Role role = null;
@@ -126,6 +127,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Iterator<TurbinePermission> getPermissions()
       throws JetspeedSecurityException {
     List<TurbinePermission> permissions;
@@ -142,6 +144,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void addPermission(Permission permission)
       throws JetspeedSecurityException {
     if (permissionExists(permission.getName())) {
@@ -169,6 +172,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void savePermission(Permission permission)
       throws JetspeedSecurityException {
 
@@ -200,6 +204,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void removePermission(String permissionName)
       throws JetspeedSecurityException {
     try {
@@ -225,7 +230,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
         JetspeedSecurityCache.removeAllPermissions(permissionName);
       }
     } catch (Exception e) {
-
+      Database.rollback();
       String message = "Failed to remove permission '" + permissionName + "'";
       logger.error(message, e);
       throw new PermissionException(message, e);
@@ -238,6 +243,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void grantPermission(String roleName, String permissionName)
       throws JetspeedSecurityException {
     try {
@@ -252,6 +258,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
       Database.commit();
 
     } catch (Exception e) {
+      Database.rollback();
       String message =
         "Grant permission '"
           + permissionName
@@ -266,6 +273,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public void revokePermission(String roleName, String permissionName)
       throws JetspeedSecurityException {
     try {
@@ -306,6 +314,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public boolean hasPermission(String roleName, String permissionName)
       throws JetspeedSecurityException {
     List<TurbineRolePermission> permissions;
@@ -344,6 +353,7 @@ public class ALPermissionManagement extends TurbineBaseService implements
   /**
    *
    */
+  @Override
   public Permission getPermission(String permissionName)
       throws JetspeedSecurityException {
     List<TurbinePermission> permissions;

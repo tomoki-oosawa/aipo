@@ -91,6 +91,7 @@ public class ALGroupManagement extends TurbineBaseService implements
     try {
       Database.commit();
     } catch (Exception e) {
+      Database.rollback();
       throw new GroupException("Failed to create group '"
         + group.getName()
         + "'", e);
@@ -215,6 +216,7 @@ public class ALGroupManagement extends TurbineBaseService implements
       }
 
     } catch (Exception e) {
+      Database.rollback();
       throw new GroupException("Failed to create group '"
         + group.getName()
         + "'", e);
@@ -336,6 +338,7 @@ public class ALGroupManagement extends TurbineBaseService implements
       Database.commit();
 
     } catch (Exception e) {
+      Database.rollback();
       throw new GroupException("Unjoin group '"
         + groupname
         + "' to user '"

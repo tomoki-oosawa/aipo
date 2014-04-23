@@ -338,6 +338,7 @@ public class ALUserManagement extends TurbineBaseService implements
       // ユーザを更新する．
       Database.commit();
     } catch (Exception e) {
+      Database.rollback();
       e.printStackTrace();
       logger.error("Failed to save user object ", e);
       throw new UserException("Failed to save user object ", e);
@@ -396,7 +397,7 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     tuser.setMigrateVersion(baseuser.getMigrateVersion());
-    // Database.commit();
+    Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる
     Group group = JetspeedSecurity.getGroup("LoginUser");

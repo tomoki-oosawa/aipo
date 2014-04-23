@@ -414,6 +414,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
           ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT)));
 
       } catch (Exception ex) {
+        Database.rollback();
         logger.error("report", ex);
         return false;
       }
@@ -421,6 +422,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
+      Database.rollback();
       logger.error("[ReportreportReplyFormData]", e);
       throw new ALDBErrorException();
     }
