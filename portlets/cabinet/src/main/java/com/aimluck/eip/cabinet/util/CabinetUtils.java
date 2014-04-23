@@ -746,57 +746,49 @@ public class CabinetUtils {
    * 
    * @param file
    * @param loginName
-   * @return
    */
-  public static boolean createCabinetActivity(EipTCabinetFile file,
+  public static void createCabinetActivity(EipTCabinetFile file,
       String loginName, List<String> recipients, boolean isNew) {
-    try {
-      ALActivity RecentActivity =
-        ALActivity.getRecentActivity("Cabinet", file.getFileId(), 0f);
-      boolean isDeletePrev =
-        RecentActivity != null && RecentActivity.isReplace(loginName);
 
-      String title =
-        new StringBuilder("ファイル「")
-          .append(file.getFileTitle())
-          .append("」を")
-          .append(isNew ? "追加しました。" : "編集しました。")
-          .toString();
-      String portletParams =
-        new StringBuilder("?template=CabinetFileDetailScreen").append(
-          "&entityid=").append(file.getFileId()).toString();
+    ALActivity RecentActivity =
+      ALActivity.getRecentActivity("Cabinet", file.getFileId(), 0f);
+    boolean isDeletePrev =
+      RecentActivity != null && RecentActivity.isReplace(loginName);
 
-      if (recipients != null && recipients.size() > 0) {
-        ALActivityService.create(new ALActivityPutRequest()
-          .withAppId("Cabinet")
-          .withLoginName(loginName)
-          .withPortletParams(portletParams)
-          .withRecipients(recipients)
-          .withTitle(title)
-          .withUserId(file.getUpdateUserId())
-          .withPriority(0f)
-          .withExternalId(String.valueOf(file.getFileId())));
-      } else {
-        ALActivityService.create(new ALActivityPutRequest()
-          .withAppId("Cabinet")
-          .withLoginName(loginName)
-          .withPortletParams(portletParams)
-          .withTitle(title)
-          .withUserId(file.getUpdateUserId())
-          .withPriority(0f)
-          .withExternalId(String.valueOf(file.getFileId())));
-      }
+    String title =
+      new StringBuilder("ファイル「")
+        .append(file.getFileTitle())
+        .append("」を")
+        .append(isNew ? "追加しました。" : "編集しました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=CabinetFileDetailScreen").append(
+        "&entityid=").append(file.getFileId()).toString();
 
-      Database.commit();
-      if (isDeletePrev) {
-        RecentActivity.delete();
-      }
-    } catch (Exception ex) {
-      Database.rollback();
-      logger.error("cabinet", ex);
-      return false;
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Cabinet")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTitle(title)
+        .withUserId(file.getUpdateUserId())
+        .withPriority(0f)
+        .withExternalId(String.valueOf(file.getFileId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Cabinet")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTitle(title)
+        .withUserId(file.getUpdateUserId())
+        .withPriority(0f)
+        .withExternalId(String.valueOf(file.getFileId())));
     }
-    return true;
+
+    if (isDeletePrev) {
+      RecentActivity.delete();
+    }
   }
 
   /**
