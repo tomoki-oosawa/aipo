@@ -74,5 +74,7 @@
 	// 新しく入力する
 	NEW_INPUT_STR:"New entry",
 	// 一覧から選択する
-	SELECT_FROM_LIST_STR:"Select from the list."
+	SELECT_FROM_LIST_STR:"Select from the list.",
+	// 閉じる
+	CLOSE_STR:"Close"
 }
