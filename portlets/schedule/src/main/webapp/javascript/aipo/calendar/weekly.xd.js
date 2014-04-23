@@ -190,6 +190,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	           t_o[i].selected = true;
 	           _params += "&m_id=" + t_o[i].value;
 	       }
+	    }else{
+	      _params += "&m_empty=empty";
 	    }
 	    var chk_all = dojo.byId('showAll-' + _portletId);
 	    if(chk_all) { _params += "&s_all=" + chk_all.value;}
