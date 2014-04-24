@@ -313,6 +313,11 @@ public class ScheduleTooltipSelectData extends
           facilityIds.add(map.getUserId());
         }
       }
+
+      if (users.isEmpty()) {
+        users.add(-1);
+      }
+
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
