@@ -103,7 +103,7 @@ public class CabinetSelectData extends
   protected boolean isFileUploadable;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -276,7 +276,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -339,7 +339,7 @@ public class CabinetSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -390,12 +390,17 @@ public class CabinetSelectData extends
     }
 
     query.distinct(true);
+    if (ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR) != null
+        && !"".equals(ALEipUtils
+          .getTemp(rundata, context, LIST_FILTER_TYPE_STR))) {
+        ALEipUtils.removeTemp(rundata, context, LIST_FILTER_TYPE_STR);
+      }
 
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -443,7 +448,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -521,7 +526,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -531,7 +536,7 @@ public class CabinetSelectData extends
 
   /**
    * ファイル総数を取得する． <BR>
-   * 
+   *
    * @return
    */
   public int getFileSum() {
@@ -541,7 +546,7 @@ public class CabinetSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -585,7 +590,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
