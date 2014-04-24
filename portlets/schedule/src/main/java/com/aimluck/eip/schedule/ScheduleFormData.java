@@ -1828,7 +1828,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
-      throw new ALDBErrorException();
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
+      return false;
+      // throw new ALDBErrorException();
     }
     if (ScheduleUtils.MAIL_FOR_ALL.equals(schedule.getMailFlag())
       || ScheduleUtils.MAIL_FOR_UPDATE.equals(schedule.getMailFlag())) {
