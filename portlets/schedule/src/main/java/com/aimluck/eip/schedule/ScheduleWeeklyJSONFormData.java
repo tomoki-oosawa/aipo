@@ -219,7 +219,8 @@ public class ScheduleWeeklyJSONFormData {
             }
           }
         }
-        if (!(rundata.getParameters().getString("m_empty").equals("empty"))) {
+        if (rundata.getParameters().getString("m_empty") != null
+          && !"empty".equals((rundata.getParameters().getString("m_empty")))) {
           termScheduleList.add(_termScheduleList);
         }
       }
