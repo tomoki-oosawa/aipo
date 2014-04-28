@@ -122,6 +122,12 @@ public class NoteUtils {
 
     int uid = ALEipUtils.getUserId(rundata);
 
+    if (noteId == null || noteId.equals("") || Integer.valueOf(noteId) == null) {
+      // アカウントIDが空の場合
+      logger.debug("[Note] Empty NoteID...");
+      return null;
+    }
+
     // アクセス権の判定
     Expression exp1 =
       ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
@@ -138,13 +144,6 @@ public class NoteUtils {
     }
 
     try {
-      if (noteId == null
-        || noteId.equals("")
-        || Integer.valueOf(noteId) == null) {
-        // アカウントIDが空の場合
-        logger.debug("[Note] Empty NoteID...");
-        return null;
-      }
 
       Expression exp =
         ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN, Integer
