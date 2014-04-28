@@ -114,9 +114,11 @@ public class ALPortalToolkitService extends JetspeedPortalToolkitService {
             }
           }
         } else {
-          logger.error(" The portlet "
-            + psmlEntry.getParent()
-            + " does not exist in the Registry ");
+          if (!"ScheduleAdmin".equals(psmlEntry.getParent())) {
+            logger.error(" The portlet "
+              + psmlEntry.getParent()
+              + " does not exist in the Registry ");
+          }
           continue;
         }
       } catch (JetspeedException e) {
