@@ -329,6 +329,9 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
       tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
       tuser.setMigrateVersion(baseuser.getMigrateVersion());
+      // ユーザを更新する．
+
+      Database.commit();
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {
@@ -340,16 +343,9 @@ public class ALUserManagement extends TurbineBaseService implements
         }
         grantRoles(user, hasAdminCredential);
       }
-
-      // ユーザを更新する．
-      try {
-        Database.commit();
-      } catch (CayenneRuntimeException e) {
-        Database.rollback();
-        throw new UserException("Failed to commit user object to database ", e);
-      }
     } catch (Exception e) {
       e.printStackTrace();
+      Database.rollback();
       logger.error("Failed to save user object ", e);
       throw new UserException("Failed to save user object ", e);
     }
