@@ -584,7 +584,6 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       return profile.getDocument();
     } catch (Exception e) // insert failed
     {
-      Database.rollback();
       logger.warn(
         "CayenneDatabasePsmlManagerService.createOrSaveDocument: profile: "
           + profile
