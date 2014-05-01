@@ -460,11 +460,9 @@ public class JetspeedPortalToolkitService extends TurbineBaseService implements
               .getConstraints(constraints), position);
           }
         } else {
-          if (!"ScheduleAdmin".equals(psmlEntry.getParent())) {
-            logger.error(" The portlet "
-              + psmlEntry.getParent()
-              + " does not exist in the Registry ");
-          }
+          logger.error(" The portlet "
+            + psmlEntry.getParent()
+            + " does not exist in the Registry ");
           continue;
         }
       } catch (JetspeedException e) {
