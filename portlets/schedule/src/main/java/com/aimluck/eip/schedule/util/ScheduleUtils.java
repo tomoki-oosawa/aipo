@@ -796,7 +796,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-      // 日
+        // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;

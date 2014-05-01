@@ -78,6 +78,8 @@ $!record <br />
 #else
 #ALtdcell($l10n.ACCOUNT_ISNOT_ADMIN)
 #end
+##ALtdcaption("Webメール容量")
+##ALtdcell($!result.Detail.MailSizeStr)
 #ALtablefooter()
 #ALbuttonheader()
 #if(!$!{noedit})

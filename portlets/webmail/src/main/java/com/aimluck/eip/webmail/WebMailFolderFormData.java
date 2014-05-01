@@ -427,7 +427,6 @@ public class WebMailFolderFormData extends ALAbstractFormData {
         folder_name.getValue());
       return true;
     } catch (Throwable t) {
-      Database.rollback();
       logger.error("[WebMailFolderFormData]", t);
       return false;
     }

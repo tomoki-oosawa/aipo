@@ -184,7 +184,6 @@ public class PsmlDBUtils {
         Database.commit();
       }
     } catch (ALDBErrorException e) {
-      Database.rollback();
       logger.error(e, e);
     }
 

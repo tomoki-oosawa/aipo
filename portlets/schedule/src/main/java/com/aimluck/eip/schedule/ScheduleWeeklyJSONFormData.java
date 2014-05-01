@@ -665,12 +665,8 @@ public class ScheduleWeeklyJSONFormData {
         }
 
         if (viewDate != null) {
-          try {
-            ScheduleUtils.insertDummySchedule(schedule, userId, viewDate
-              .getValue(), viewDate.getValue(), memberIdList, facilityIdList);
-          } catch (Exception e) {
-            logger.error("updateFormData" + e);
-          }
+          ScheduleUtils.insertDummySchedule(schedule, userId, viewDate
+            .getValue(), viewDate.getValue(), memberIdList, facilityIdList);
         }
 
         Database.commit();

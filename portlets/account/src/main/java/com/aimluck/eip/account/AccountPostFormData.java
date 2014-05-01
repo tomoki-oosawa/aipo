@@ -650,7 +650,6 @@ public class AccountPostFormData extends ALAbstractFormData {
         "部署「" + record.getPostName() + "」を更新");
 
     } catch (RuntimeException ex) {
-      Database.rollback();
       throw ex;
     } catch (Exception ex) {
       Database.rollback();

@@ -303,11 +303,7 @@ public class WhatsNewUtils {
         if (entries.size() == uids.size()) {
           // 全員から新着が消えていたら、全てのレコードを削除する
           Database.deleteAll(entries);
-          try {
-            Database.commit();
-          } catch (Exception e) {
-            logger.error("shiftWhatsNewReadFlagPublic" + e);
-          }
+          Database.commit();
           return;
         }
 

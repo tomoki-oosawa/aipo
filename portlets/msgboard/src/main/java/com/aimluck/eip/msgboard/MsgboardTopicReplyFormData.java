@@ -449,13 +449,11 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD)));
         }
       } catch (Exception ex) {
-        Database.rollback();
         msgList.add("メールを送信できませんでした。");
         logger.error("msgboard", ex);
         return false;
       }
     } catch (Exception e) {
-      Database.rollback();
       logger.error("[MsgboardTopicReplyFormData]", e);
       throw new ALDBErrorException();
     }

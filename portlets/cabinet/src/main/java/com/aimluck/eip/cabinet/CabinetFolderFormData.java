@@ -584,7 +584,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           folder_hierarchy_list,
           delete_parent_id);
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     }
@@ -662,7 +661,6 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       res = true;
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     }

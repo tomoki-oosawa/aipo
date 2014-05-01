@@ -50,12 +50,7 @@ public class ProjectFormUtils {
 
   public static void updateParentTaskDelegate(Integer taskId) {
     updateParentTask(taskId);
-    try {
-      Database.commit();
-    } catch (Exception e) {
-      Database.rollback();
-      logger.error("updateParentTaskDelegate" + e);
-    }
+    Database.commit();
   }
 
   /**
@@ -150,12 +145,7 @@ public class ProjectFormUtils {
       }
     }
 
-    try {
-      Database.commit();
-    } catch (Exception e) {
-      Database.rollback();
-      logger.error("updateParentTask" + e);
-    }
+    Database.commit();
     // 親タスクを更新する
     return updateParentTask(task.getParentTaskId());
   }
@@ -184,12 +174,7 @@ public class ProjectFormUtils {
     project.setUpdateUserId(loginUserId);
     project.setUpdateDate(Calendar.getInstance().getTime());
 
-    try {
-      Database.commit();
-    } catch (Exception e) {
-      Database.rollback();
-      logger.error("updateProject" + e);
-    }
+    Database.commit();
   }
 
   /**

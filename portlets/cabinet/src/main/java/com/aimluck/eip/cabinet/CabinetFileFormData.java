@@ -620,11 +620,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
     } catch (RuntimeException ex) {
-      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     }

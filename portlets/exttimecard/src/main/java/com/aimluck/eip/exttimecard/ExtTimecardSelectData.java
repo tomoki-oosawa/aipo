@@ -294,7 +294,6 @@ public class ExtTimecardSelectData extends
             Database.commit();
             startDay = system.getStartDay();
           } catch (Exception ignore) {
-            Database.rollback();
           }
         }
       }

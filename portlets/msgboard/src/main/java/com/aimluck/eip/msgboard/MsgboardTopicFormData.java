@@ -500,10 +500,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       ALStorageService.deleteTmpFolder(uid, folderName);
 
     } catch (RuntimeException ex) {
-      Database.rollback();
       throw ex;
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("msgboard", ex);
       return false;
     }
@@ -565,7 +563,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         category.getCategoryName());
 
     } catch (ALPermissionException e) {
-      Database.rollback();
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception ex) {
@@ -673,7 +670,6 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (RuntimeException ex) {
-      Database.rollback();
       throw ex;
     } catch (Exception ex) {
       Database.rollback();

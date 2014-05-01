@@ -1525,7 +1525,6 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       // 会社IDの設定
       company_id.setValue(company.getCompanyId().longValue());
     } catch (Exception ex) {
-      Database.rollback();
       logger.debug("AddressBookFormData insertFormData out / false");
       logger.error("fileio", ex);
       return false;

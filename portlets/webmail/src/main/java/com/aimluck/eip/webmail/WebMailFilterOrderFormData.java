@@ -257,7 +257,6 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         Database.commit();
       }
     } catch (Exception e) {
-      Database.rollback();
       logger.error("webmail", e);
       res = false;
     }

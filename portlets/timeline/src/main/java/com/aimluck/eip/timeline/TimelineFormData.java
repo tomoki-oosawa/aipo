@@ -324,12 +324,10 @@ public class TimelineFormData extends ALAbstractFormData {
         topic.getCreateDate().toString());
 
     } catch (RuntimeException ex) {
-      Database.rollback();
       // RuntimeException
       logger.error("timeline", ex);
       return false;
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("timeline", ex);
       return false;
     }

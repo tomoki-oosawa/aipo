@@ -360,7 +360,6 @@ public class MyGroupFormData extends ALAbstractFormData {
 
       ALEipUtils.reloadMygroup(rundata);
     } catch (RuntimeException ex) {
-      Database.rollback();
       throw ex;
     } catch (Exception ex) {
       Database.rollback();

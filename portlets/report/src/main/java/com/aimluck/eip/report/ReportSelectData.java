@@ -611,7 +611,6 @@ public class ReportSelectData extends
 
       return rd;
     } catch (Exception ex) {
-      Database.rollback();
       logger.error("report", ex);
       return null;
     }

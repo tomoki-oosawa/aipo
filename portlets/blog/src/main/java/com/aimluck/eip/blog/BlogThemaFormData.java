@@ -254,7 +254,6 @@ public class BlogThemaFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
         thema_name.getValue());
     } catch (ALPermissionException e) {
-      Database.rollback();
       ALEipUtils.redirectPermissionError(rundata);
       return false;
     } catch (Exception ex) {

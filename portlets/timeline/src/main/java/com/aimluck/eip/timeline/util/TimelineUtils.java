@@ -775,19 +775,14 @@ public class TimelineUtils {
   }
 
   public static void deleteLikes(int timelineId) {
-    try {
-      SelectQuery<EipTTimelineLike> query =
-        Database.query(EipTTimelineLike.class);
-      query.andQualifier(ExpressionFactory.matchDbExp(
-        EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
-        timelineId));
-      List<EipTTimelineLike> likes = query.fetchList();
-      Database.deleteAll(likes);
-      Database.commit();
-    } catch (Exception e) {
-      Database.rollback();
-      logger.error("deleteLikes" + e);
-    }
+    SelectQuery<EipTTimelineLike> query =
+      Database.query(EipTTimelineLike.class);
+    query.andQualifier(ExpressionFactory.matchDbExp(
+      EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+      timelineId));
+    List<EipTTimelineLike> likes = query.fetchList();
+    Database.deleteAll(likes);
+    Database.commit();
   }
 
   public static Document getDocument(String string) {
