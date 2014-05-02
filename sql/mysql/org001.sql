@@ -418,7 +418,9 @@ CREATE TABLE `eip_t_eventlog` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`eventlog_id`)
+  PRIMARY KEY (`eventlog_id`),
+  KEY `eventtype_index` (`event_type`),
+  KEY `eip_t_eventlog_userid_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard` (
@@ -442,7 +444,8 @@ CREATE TABLE `eip_t_ext_timecard` (
   `remarks` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`timecard_id`)
+  PRIMARY KEY (`timecard_id`),
+  KEY `eip_t_ext_timecard_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard_system` (
@@ -574,7 +577,8 @@ CREATE TABLE `eip_t_msgboard_topic` (
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`topic_id`)
+  PRIMARY KEY (`topic_id`),
+  KEY `eip_t_msgboard_topic_category_id_index` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_note` (
@@ -601,7 +605,8 @@ CREATE TABLE `eip_t_note_map` (
   `del_flg` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note_stat` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirm_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_note_map_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_schedule` (
