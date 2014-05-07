@@ -87,7 +87,7 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
       // グループ情報を削除
       try {
         Database.delete(group);
-        // Database.commit();
+        Database.commit();
       } catch (Exception ex) {
         Database.rollback();
         logger.error("AddressBookGroupMultiDelete.action", ex);
@@ -113,13 +113,12 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
 
       List<EipTAddressbookGroupMap> maps = mapquery.fetchList();
       Database.deleteAll(maps);
+      Database.commit();
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AddressBookGroupMultiDelete.action", ex);
       return false;
     }
-
-    // Database.commit();
 
     // 検索画面用フィルタにて設定されているグループフィルタをセッションから削除する。
     String filtername =
