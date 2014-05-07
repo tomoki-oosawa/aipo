@@ -605,7 +605,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(new Date());
 
-      Database.commit();
+      // Database.commit();
       post_id = record.getPostId().intValue();
 
       TurbineGroup group =
@@ -641,7 +641,7 @@ public class AccountPostFormData extends ALAbstractFormData {
         }
       }
 
-      Database.commit();
+      // Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
