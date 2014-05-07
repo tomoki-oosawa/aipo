@@ -62,82 +62,87 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
   @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
+
+    List<Integer> intValues = new ArrayList<Integer>();
+    int valuesize = values.size();
+    for (int i = 0; i < valuesize; i++) {
+      intValues.add(Integer.valueOf(values.get(i)));
+    }
+
+    SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
+    Expression exp2 =
+      ExpressionFactory.inDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+    query.setQualifier(exp2);
+
+    List<EipTBlogThema> themalist = query.fetchList();
+    if (themalist == null || themalist.size() == 0) {
+      return false;
+    }
+
+    // これらテーマに含まれる記事を「その他」に移す
+    List<Integer> themaIds = new ArrayList<Integer>();
+    EipTBlogThema thema = null;
+    int themasize = themalist.size();
+    for (int i = 0; i < themasize; i++) {
+      thema = themalist.get(i);
+      themaIds.add(thema.getThemaId());
+    }
+
+    SelectQuery<EipTBlogEntry> reqquery = Database.query(EipTBlogEntry.class);
+    Expression reqexp1 =
+      ExpressionFactory.inDbExp(EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY
+        + "."
+        + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+    reqquery.setQualifier(reqexp1);
+    List<EipTBlogEntry> requests = reqquery.fetchList();
+    if (requests != null && requests.size() > 0) {
+      EipTBlogEntry request = null;
+      EipTBlogThema defaultThema = BlogUtils.getEipTBlogThema(Long.valueOf(1));
+      int size = requests.size();
+      for (int i = 0; i < size; i++) {
+        request = requests.get(i);
+        request.setEipTBlogThema(defaultThema);
+      }
+    }
+
     try {
-
-      List<Integer> intValues = new ArrayList<Integer>();
-      int valuesize = values.size();
-      for (int i = 0; i < valuesize; i++) {
-        intValues.add(Integer.valueOf(values.get(i)));
-      }
-
-      SelectQuery<EipTBlogThema> query = Database.query(EipTBlogThema.class);
-      Expression exp2 =
-        ExpressionFactory.inDbExp(EipTBlogThema.THEMA_ID_PK_COLUMN, values);
-      query.setQualifier(exp2);
-
-      List<EipTBlogThema> themalist = query.fetchList();
-      if (themalist == null || themalist.size() == 0) {
-        return false;
-      }
-
-      // これらテーマに含まれる記事を「その他」に移す
-      List<Integer> themaIds = new ArrayList<Integer>();
-      EipTBlogThema thema = null;
-      int themasize = themalist.size();
-      for (int i = 0; i < themasize; i++) {
-        thema = themalist.get(i);
-        themaIds.add(thema.getThemaId());
-      }
-
-      SelectQuery<EipTBlogEntry> reqquery = Database.query(EipTBlogEntry.class);
-      Expression reqexp1 =
-        ExpressionFactory.inDbExp(EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY
-          + "."
-          + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
-      reqquery.setQualifier(reqexp1);
-      List<EipTBlogEntry> requests = reqquery.fetchList();
-      if (requests != null && requests.size() > 0) {
-        EipTBlogEntry request = null;
-        EipTBlogThema defaultThema =
-          BlogUtils.getEipTBlogThema(Long.valueOf(1));
-        int size = requests.size();
-        for (int i = 0; i < size; i++) {
-          request = requests.get(i);
-          request.setEipTBlogThema(defaultThema);
-        }
-      }
-
-      // Database.commit();
-
-      int themalistsize = themalist.size();
-
-      // カテゴリを削除
-      for (int i = 0; i < themalistsize; i++) {
-        EipTBlogThema delete_thema = themalist.get(i);
-
-        // entityIdを取得
-        Integer entityId = delete_thema.getThemaId();
-        // カテゴリ名を取得
-        String themaName = delete_thema.getThemaName();
-        // カテゴリを削除
-        Database.delete(delete_thema);
-        Database.commit();
-
-        // ログに保存
-        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          entityId,
-          ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
-          themaName);
-      }
-      // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
-      String filtername =
-        BlogEntrySelectData.class.getName() + ALEipConstants.LIST_FILTER;
-      ALEipUtils.removeTemp(rundata, context, filtername);
+      Database.commit();
     } catch (Exception ex) {
       Database.rollback();
       logger.error("blog", ex);
       return false;
     }
+
+    int themalistsize = themalist.size();
+
+    // カテゴリを削除
+    for (int i = 0; i < themalistsize; i++) {
+      EipTBlogThema delete_thema = themalist.get(i);
+
+      // entityIdを取得
+      Integer entityId = delete_thema.getThemaId();
+      // カテゴリ名を取得
+      String themaName = delete_thema.getThemaName();
+      try {
+        // カテゴリを削除
+        Database.delete(delete_thema);
+        Database.commit();
+      } catch (Exception ex) {
+        Database.rollback();
+        logger.error("blog", ex);
+        return false;
+      }
+
+      // ログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_BLOG_THEMA,
+        themaName);
+    }
+    // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
+    String filtername =
+      BlogEntrySelectData.class.getName() + ALEipConstants.LIST_FILTER;
+    ALEipUtils.removeTemp(rundata, context, filtername);
     return true;
   }
 
