@@ -1070,11 +1070,11 @@ public class ALMailUtils {
 
     boolean enableUpdate = false;
 
+    EipMMailAccount mailAccount = null;
+    EipTMailFolder mailFolder = null;
+
     try {
       Date createdDate = Calendar.getInstance().getTime();
-
-      EipMMailAccount mailAccount = null;
-      EipTMailFolder mailFolder = null;
 
       if (accountType == ACCOUNT_TYPE_INIT) {
         mailAccount = Database.create(EipMMailAccount.class);
@@ -1177,6 +1177,9 @@ public class ALMailUtils {
         mailAccount.getAccountName());
     } catch (Throwable t) {
       Database.rollback();
+      Database.delete(mailAccount);
+      Database.delete(mailFolder);
+      Database.commit();
       logger.error("ALMailUtils.insertMailAccountData", t);
       return false;
     }
