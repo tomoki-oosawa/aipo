@@ -40,8 +40,6 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.PersistenceState;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
@@ -1344,38 +1342,91 @@ public class GpdbUtils {
   }
 
   /**
-   * 区分値を持たない区分を削除する
+   * 区分値を持たない区分を削除する。追加SQLも最後に実行する。
    * 
-   * @return TRUE 成功 FALSE 失敗
+   * @return TRUE 成功 FALSE 失敗。
+   * @throws Exception
    */
-  public static boolean removeGpdbKubunNoValue() {
+  public static boolean removeGpdbKubunNoValue(Integer kubun_id,
+      Integer value_id) throws Exception {
+    return removeGpdbKubunNoValue(kubun_id, value_id, "");
+  }
+
+  /**
+   * 区分値を持たない区分を削除する。delete_idのkubun_valueも削除する。
+   * 
+   * @return TRUE 成功 FALSE 失敗。
+   * @throws Exception
+   */
+  public static boolean removeGpdbKubunNoValue(Integer kubun_id,
+      Integer value_id, Integer delete_id) throws Exception {
+    String add_sql =
+      "DELETE FROM eip_m_gpdb_kubun_value a WHERE a.gpdb_kubun_value_id = "
+        + delete_id;
+    return removeGpdbKubunNoValue(kubun_id, value_id, add_sql);
+  }
+
+  /**
+   * 区分値を持たない区分を削除する。追加SQLも最後に実行する。
+   * 
+   * @return TRUE 成功 FALSE 失敗。
+   * @throws Exception
+   */
+  public static boolean removeGpdbKubunNoValue(Integer kubun_id,
+      Integer value_id, String add_sql) throws Exception {
 
     try {
       String sql =
         "SELECT * FROM eip_m_gpdb_kubun a"
-          + " WHERE NOT EXISTS("
+          + " WHERE (NOT EXISTS("
           + "   SELECT 0 FROM eip_m_gpdb_kubun_value b"
-          + "   WHERE a.gpdb_kubun_id = b.gpdb_kubun_id)";
+          + "   WHERE a.gpdb_kubun_id = b.gpdb_kubun_id) "
+          + " OR ("
+          + "((SELECT COUNT(c.gpdb_kubun_id) FROM eip_m_gpdb_kubun_value c WHERE c.gpdb_kubun_id = a.gpdb_kubun_id) = 1)"
+          + " AND "
+          + " (SELECT COUNT(c.gpdb_kubun_value_id) FROM eip_m_gpdb_kubun_value c WHERE c.gpdb_kubun_id = a.gpdb_kubun_id AND c.gpdb_kubun_value_id = "
+          + value_id
+          + ") = 1"
+          + ")"
+          + ")";
 
       List<EipMGpdbKubun> kubunList =
         Database.sql(EipMGpdbKubun.class, sql).fetchList();
 
       if (kubunList == null || kubunList.isEmpty()) {
-        return true;
+        return false;
       }
+
+      StringBuffer idList = null;
 
       for (EipMGpdbKubun kubun : kubunList) {
         // 上記SQLで取得するとEipMGpdbKubunのステータスがTRANSIENTになり、
         // 削除などができなくなるためCOMMITTEDを設定
-        DataContext.getThreadDataContext().registerNewObject(kubun);
-        kubun.setPersistenceState(PersistenceState.COMMITTED);
+        // DataContext.getThreadDataContext().registerNewObject(kubun);
+        // kubun.setPersistenceState(PersistenceState.COMMITTED);
+        if (idList == null) {
+          idList = new StringBuffer();
+          idList.append("(");
+        } else {
+          idList.append(",");
+        }
+        idList.append(kubun.getGpdbKubunId().toString());
+      }
+      idList.append(")");
+
+      String dsql =
+        "DELETE FROM eip_m_gpdb_kubun "
+          + " WHERE gpdb_kubun_id IN "
+          + idList.toString()
+          + ";";
+      if (!add_sql.isEmpty()) {
+        dsql += add_sql;
       }
 
-      Database.deleteAll(kubunList);
+      Database.sql(EipMGpdbKubun.class, dsql).execute();// Database.commitも行われる。
 
     } catch (Exception ex) {
-      logger.error("Exception", ex);
-      return false;
+      throw new Exception();
     }
     return true;
   }

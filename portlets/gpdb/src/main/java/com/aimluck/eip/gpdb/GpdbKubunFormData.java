@@ -430,6 +430,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
+
     try {
       // オブジェクトモデルを取得
       EipMGpdbKubunValue value =
@@ -458,11 +459,11 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       // 更新日
       value.setUpdateDate(Calendar.getInstance().getTime());
 
-      // 区分値を更新
-      Database.commit();
-
-      // 区分値を持たない区分を削除
-      if (GpdbUtils.removeGpdbKubunNoValue()) {
+      // 区分が変わっているなら、区分値を持たない区分があるかを調べ、削除。その際にcommitも行われるので、それ以外の時には別にcommitを行う。
+      if (gpdbKubun.getGpdbKubunId().equals(value.getGpdbKubunId())
+        || !GpdbUtils.removeGpdbKubunNoValue(gpdbKubun.getGpdbKubunId(), value
+          .getGpdbKubunValueId())) {
+        // 区分値を更新
         Database.commit();
       }
 
@@ -481,6 +482,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       logger.error("Exception", ex);
       return false;
     }
+    Database.commit();
     return true;
   }
 
@@ -526,13 +528,11 @@ public class GpdbKubunFormData extends ALAbstractFormData {
       // 区分マスタ
       gpdbKubun = GpdbUtils.getEipMGpdbKubun(value.getGpdbKubunId());
 
-      // 区分値を削除
-      Database.delete(value);
-      Database.commit();
-
-      // 区分値を持たない区分を削除
-      if (GpdbUtils.removeGpdbKubunNoValue()) {
-        Database.commit();
+      // 区分値を持たない区分があるかを調べ、削除。その際にcommitも行われるので、それ以外の時には別にcommitを行う。
+      if (!GpdbUtils.removeGpdbKubunNoValue(gpdbKubun.getGpdbKubunId(), value
+        .getGpdbKubunValueId(), value.getGpdbKubunValueId())) {
+        // 区分値を削除
+        Database.delete(value);
       }
 
       // イベントログに保存
