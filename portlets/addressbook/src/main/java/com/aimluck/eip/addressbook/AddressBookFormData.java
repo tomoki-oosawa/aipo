@@ -760,7 +760,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       address.setCreateDate(now);
       address.setUpdateDate(now);
 
-      Database.commit();
+      // Database.commit();
 
       // Address-Groupマッピングテーブルへのデータ追加
       Integer id = address.getAddressId();

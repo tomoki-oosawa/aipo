@@ -60,43 +60,49 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
   @Override
   protected boolean action(RunData rundata, Context context,
       List<String> values, List<String> msgList) {
-    try {
-      // address-groupテーブルのデータを削除
-      SelectQuery<EipMAddressGroup> query =
-        Database.query(EipMAddressGroup.class);
-      Expression exp1 =
-        ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
-          .valueOf(ALEipUtils.getUserId(rundata)));
-      query.setQualifier(exp1);
-      Expression exp2 =
-        ExpressionFactory.inDbExp(EipMAddressGroup.GROUP_ID_PK_COLUMN, values);
-      query.andQualifier(exp2);
+    // address-groupテーブルのデータを削除
+    SelectQuery<EipMAddressGroup> query =
+      Database.query(EipMAddressGroup.class);
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipMAddressGroup.OWNER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
+    query.setQualifier(exp1);
+    Expression exp2 =
+      ExpressionFactory.inDbExp(EipMAddressGroup.GROUP_ID_PK_COLUMN, values);
+    query.andQualifier(exp2);
 
-      List<EipMAddressGroup> groups = query.fetchList();
+    List<EipMAddressGroup> groups = query.fetchList();
 
-      int grouplistsize = groups.size();
+    int grouplistsize = groups.size();
 
-      // 会社情報を削除
-      for (int i = 0; i < grouplistsize; i++) {
-        EipMAddressGroup group = groups.get(i);
+    // 会社情報を削除
+    for (int i = 0; i < grouplistsize; i++) {
+      EipMAddressGroup group = groups.get(i);
 
-        // entityIdを取得
-        Integer entityId = group.getGroupId();
-        // グループ名を取得
-        String groupName = group.getGroupName();
+      // entityIdを取得
+      Integer entityId = group.getGroupId();
+      // グループ名を取得
+      String groupName = group.getGroupName();
 
-        // グループ情報を削除
+      // グループ情報を削除
+      try {
         Database.delete(group);
-        Database.commit();
-
-        // ログに保存
-        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          entityId,
-          ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_GROUP,
-          groupName);
+        // Database.commit();
+      } catch (Exception ex) {
+        Database.rollback();
+        logger.error("AddressBookGroupMultiDelete.action", ex);
+        return false;
       }
 
-      // Address group Mapテーブルデータの削除
+      // ログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_ADDRESSBOOK_GROUP,
+        groupName);
+    }
+
+    // Address group Mapテーブルデータの削除
+    try {
       SelectQuery<EipTAddressbookGroupMap> mapquery =
         Database.query(EipTAddressbookGroupMap.class);
       Expression mapexp =
@@ -107,19 +113,18 @@ public class AddressBookGroupMultiDelete extends ALAbstractCheckList {
 
       List<EipTAddressbookGroupMap> maps = mapquery.fetchList();
       Database.deleteAll(maps);
-
-      Database.commit();
-
-      // 検索画面用フィルタにて設定されているグループフィルタをセッションから削除する。
-      String filtername =
-        AddressBookFilterdSelectData.class.getName()
-          + ALEipConstants.LIST_FILTER;
-      ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AddressBookGroupMultiDelete.action", ex);
       return false;
     }
+
+    // Database.commit();
+
+    // 検索画面用フィルタにて設定されているグループフィルタをセッションから削除する。
+    String filtername =
+      AddressBookFilterdSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+    ALEipUtils.removeTemp(rundata, context, filtername);
     return true;
   }
 
