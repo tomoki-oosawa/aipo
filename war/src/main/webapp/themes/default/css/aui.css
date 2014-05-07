@@ -1934,11 +1934,9 @@ input.auiButtonSearch.active {
 .auiSelectButton {
   background: #fff;
 }
-
 .auiSelectButton ul {
   display: inline;
 }
-
 .auiSelectButton li,
 .auiSelectButton div {
   float: left;
@@ -1946,7 +1944,6 @@ input.auiButtonSearch.active {
   padding: 0;
   line-height: 1;
 }
-
 .auiSelectButton a,
 .auiWidget .auiSelectButton a {
   display: block;
@@ -1961,7 +1958,19 @@ input.auiButtonSearch.active {
   border-radius: 0;
   border-color: #d2d2d2 #d2d2d2 silver;
 }
-
+.auiSelectButton a [class*=icon-] {
+  line-height: 30px;
+}
+.auiSelectButton a .icon-backward,
+.auiSelectButton a .icon-forward {
+  font-size: 10px;
+}
+.auiSelectButton a .icon-backward {
+  margin-right: 2px;
+}
+.auiSelectButton a .icon-forward {
+  margin-left: 1px;
+}
 .auiSelectButton a.first,
 .auiSelectButton a.btn {
   margin-left: 0;
@@ -1972,7 +1981,6 @@ input.auiButtonSearch.active {
   -webkit-border-bottom-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-
 .auiSelectButton a.last,
 .auiSelectButton a.btn {
   margin-right: 0;
@@ -1983,38 +1991,31 @@ input.auiButtonSearch.active {
   -webkit-border-bottom-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-
 .auiSelectButton a:hover span {
   color: #333333;
 }
-
 .auiSelectButton span i,
 .auiSelectButton span img {
   margin: 6px 0;
 }
-
 .auiSelectButton .active a {
   background: #d2d2d2;
   border-color: #d2d2d2 #d2d2d2 silver;
   cursor: default;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
 }
-
 .auiSelectButton .active a:focus,
 .auiSelectButton .active a:active {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
-
 .auiSelectButton .active a:hover span {
   cursor: default;
 }
-
 .auiSelectButton .auiIconArrowLeft {
   margin-left: -4px !important;
 }
-
 .auiWidget .auiSelectButton span {
   padding: 0;
   background-image: none;
