@@ -256,7 +256,7 @@ public class ALDefaultSocialApplicationHanlder extends
       app.setCreateDate(date);
       app.setUpdateDate(date);
 
-      Database.commit();
+      // Database.commit();
 
       app.setAppId(String.valueOf(app.getId()));
 
@@ -874,7 +874,7 @@ public class ALDefaultSocialApplicationHanlder extends
           + "'";
       Database.sql(Activity.class, sql).execute();
 
-      Database.commit();
+      // Database.commit();
 
       // タイムラインに更新情報を追加
       if (priority == 0f) {
@@ -934,7 +934,7 @@ public class ALDefaultSocialApplicationHanlder extends
           // 更新日
           timeline.setUpdateDate(tCal.getTime());
 
-          Database.commit();
+          // Database.commit();
 
           this.daysFirstActivate(request.getLoginName());
 
@@ -1046,8 +1046,8 @@ public class ALDefaultSocialApplicationHanlder extends
             timelineMap.setIsRead(1);
           }
         }
-        Database.commit();
       }
+      Database.commit();
     } catch (Throwable t) {
       Database.rollback();
       throw new RuntimeException(t);
