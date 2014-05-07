@@ -844,9 +844,6 @@ public class WorkflowFormData extends ALAbstractFormData {
         return false;
       }
 
-      // リクエストを登録
-      Database.commit();
-
       // 再申請済みを設定する
       oldrequest.setProgress(WorkflowUtils.DB_PROGRESS_REAPPLY);
       // リクエストを登録
