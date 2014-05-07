@@ -107,7 +107,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
         }
       }
 
-      Database.commit();
+      // Database.commit();
 
       int themalistsize = themalist.size();
 
