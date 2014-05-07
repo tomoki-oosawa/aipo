@@ -3334,7 +3334,7 @@ ul.attachments {
 
 .filterTip > a {
   position: absolute;
-  margin: 6px -3px 0 3px;
+  margin: 6px -5px 0 5px;
 }
 
 *:first-child + html .filterTip > a {
