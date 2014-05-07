@@ -217,7 +217,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
         like.setTimelineId(timeline_id);
         like.setCreateDate(Calendar.getInstance().getTime());
 
-        Database.commit();
+        // Database.commit();
 
         if (like.getOwnerId() != 0) {
           // オブジェクトモデルを取得
@@ -255,7 +255,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
             List<Activity> maps = dQuery.fetchList();
             Database.deleteAll(maps);
 
-            Database.commit();
+            // Database.commit();
 
           }
 
