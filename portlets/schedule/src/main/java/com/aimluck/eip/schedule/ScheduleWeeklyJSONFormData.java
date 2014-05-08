@@ -467,6 +467,7 @@ public class ScheduleWeeklyJSONFormData {
           return true;
         }
 
+        EipTSchedule originalSchedule = schedule;
         schedule.setStartDate(startDate.getValue());
         schedule.setEndDate(endDate.getValue());
         Date now = new Date();
@@ -492,14 +493,21 @@ public class ScheduleWeeklyJSONFormData {
                 null,
                 null)) {
                 msgList.add("duplicate_facility");
-                Database.rollback();
+                schedule = originalSchedule;
                 return false;
               }
             }
           }
         }
 
-        Database.commit();
+        try {
+          Database.commit();
+        } catch (Exception e) {
+          Database.rollback();
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DATABASE_ERROR"));
+          logger.error("ScheduleWeeklyJSONFormData.updateFormData", e);
+          return false;
+        }
         res = true;
         // イベントログに保存
         sendEventLog(rundata, context);
@@ -658,7 +666,6 @@ public class ScheduleWeeklyJSONFormData {
               schedule.getScheduleId(),
               viewDate.getValue())) {
               msgList.add("duplicate_facility");
-              Database.rollback();
               return false;
             }
           }
@@ -669,7 +676,14 @@ public class ScheduleWeeklyJSONFormData {
             .getValue(), viewDate.getValue(), memberIdList, facilityIdList);
         }
 
-        Database.commit();
+        try {
+          Database.commit();
+        } catch (Exception e) {
+          Database.rollback();
+          msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DATABASE_ERROR"));
+          logger.error("ScheduleWeeklyJSONFormData.updateFormData", e);
+          return false;
+        }
         res = true;
 
         // イベントログに保存
