@@ -1105,13 +1105,27 @@ public class ALEipUtils {
           return true;
         }
       }
-      duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "DBError");
-      rundata.setRedirectURI(duri.toString());
-      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+      if (template == null || ("".equals(template))) {
+        duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "DBError");
+        rundata.setRedirectURI(duri.toString());
+        rundata.getResponse().sendRedirect(rundata.getRedirectURI());
 
-      JetspeedLinkFactory.putInstance(jsLink);
-      jsLink = null;
-      return true;
+        JetspeedLinkFactory.putInstance(jsLink);
+        jsLink = null;
+        return true;
+      } else {
+        if (!template.endsWith("DBError")) {
+          duri.addPathInfo(JetspeedResources.PATH_TEMPLATE_KEY, "DBError");
+          rundata.setRedirectURI(duri.toString());
+          rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+
+          JetspeedLinkFactory.putInstance(jsLink);
+          jsLink = null;
+          return true;
+        } else {
+          return true;
+        }
+      }
     } catch (TurbineException e) {
 
       logger.error("ALEipUtils.redirectDBError", e);
