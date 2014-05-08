@@ -1399,28 +1399,25 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       // ToDoを削除する
       String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodo.class, sql4).execute();
+      Database.sql(EipTTodo.class, sql4);
 
       String sql5 =
         "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodoCategory.class, sql5).execute();
+      Database.sql(EipTTodoCategory.class, sql5);
 
       // ブログを削除する
       String sql6 = "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
-      Database.sql(EipTBlog.class, sql6).execute();
+      Database.sql(EipTBlog.class, sql6);
 
       // ブログの足跡を削除する
       String sql7 =
         "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql7).execute();
+      Database.sql(EipTBlogFootmarkMap.class, sql7);
 
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(deleteuser.getUserId());
 
-      // ソーシャルアプリ関連データ削除
-      ALApplicationService.deleteUserData(user_name);
-
-      Database.commit();
+      // Database.commit();
 
       // 他のユーザの順番を変更する．
       SelectQuery<EipMUserPosition> p_query =
@@ -1457,6 +1454,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       String dummy_user_name =
         ALEipUtils.dummy_user_head + userId + "_" + user_name;
       user.setLoginName(dummy_user_name);
+
+      // ソーシャルアプリ関連データ削除およびデータベースの更新
+      ALApplicationService.deleteUserData(user_name);
 
       Database.commit();
 

@@ -617,14 +617,14 @@ public class AccountPostFormData extends ALAbstractFormData {
       // グループ名
       group.setGroupAliasName(post_name.getValue());
 
-      // グループを更新
+      // グループを更新およびデータベースの更新
       JetspeedSecurity.saveGroup(group);
 
       // singletonオブジェクトのリフレッシュ
       ALEipManager.getInstance().reloadPost();
 
       if (is_join_member) {
-        // グループからユーザーを削除
+        // グループからユーザーを削除およびデータベースの更新
         List<ALEipUser> users = ALEipUtils.getUsers(record.getGroupName());
         int size = users.size();
         for (int i = 0; i < size; i++) {
@@ -641,7 +641,7 @@ public class AccountPostFormData extends ALAbstractFormData {
         }
       }
 
-      // Database.commit();
+      Database.commit();
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(

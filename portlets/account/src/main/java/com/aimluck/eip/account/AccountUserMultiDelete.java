@@ -117,6 +117,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
+      // イベントログの保存に利用するデータを退避しておくための変数を定義
+      Integer[] userIdForEventlog = new Integer[size];
+      String[] userNameForEventlog = new String[size];
+
       for (int i = 0; i < size; i++) {
         TurbineUser record = ulist.get(i);
         String user_name = record.getLoginName();
@@ -173,30 +177,24 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
             + "'";
         Database.sql(EipTBlogFootmarkMap.class, sql7);
 
-        // ソーシャルアプリ関連データ削除
-        ALApplicationService.deleteUserData(user_name);
-
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());
 
-        Database.commit();
+        // Database.commit();
 
-        // イベントログに保存
-        String name = "";
+        // イベントログの保存に利用するデータを退避
+        userIdForEventlog[i] = user.getUserId();
+        userNameForEventlog[i] = "";
         if (user.getLastName() != null
           && !" ".equals(user.getLastName())
           && user.getFirstName() != null
           && !" ".equals(user.getFirstName())) {
-          name =
+          userNameForEventlog[i] =
             new StringBuffer().append(user.getLastName()).append(" ").append(
               user.getFirstName()).toString();
         } else {
-          name = user.getEmail();
+          userNameForEventlog[i] = user.getEmail();
         }
-        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          user.getUserId(),
-          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-          "ユーザー「" + name + "」を削除");
 
         // PSMLを削除
         JetspeedUser juser =
@@ -225,7 +223,20 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         }
       }
 
+      for (int i = 0; i < size; i++) {
+        // ソーシャルアプリ関連データ削除およびデータベースの更新（メソッド内部でデータベースの更新が行われる）
+        ALApplicationService.deleteUserData(user_name_list[i]);
+      }
+
       Database.commit();
+
+      // イベントログに保存
+      for (int i = 0; i < size; i++) {
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          userIdForEventlog[i],
+          ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
+          "ユーザー「" + userNameForEventlog[i] + "」を削除");
+      }
 
       // WebAPIとのDB同期
       if (!ALDataSyncFactoryService
