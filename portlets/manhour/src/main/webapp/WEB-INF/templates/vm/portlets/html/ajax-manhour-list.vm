@@ -114,7 +114,7 @@
 #ALtdcellheader()
 $!record.Name
 #if(! $!record.Public)
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#AUIiconSecretAtt("title='非公開'")
 #end
 #if($!record.Duplicate)
 <img src="images/schedule/schedule_duplicate.gif" border="0" width="16" height="16" align="absmiddle" alt="重複スケジュール" title="重複スケジュール"/>

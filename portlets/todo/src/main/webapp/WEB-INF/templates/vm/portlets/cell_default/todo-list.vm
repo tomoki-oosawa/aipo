@@ -42,7 +42,7 @@
 #ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.TodoId)"><span style="color:$color">$!record.TodoName</span></a>
 #if(! ${record.isPublic()})
 （非公開）
-##<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開">
+###AUIiconSecretAtt("title='非公開'")
 #end
 #ALcell_li_footer($career)
 #end
