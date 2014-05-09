@@ -939,10 +939,18 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       address.setUpdateDate(now);
 
       Database.commit();
+      // insertMap(address.getAddressId());
+      return true;
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("fileio", ex);
+      return false;
+    }
+  }
 
-      // Address-Groupマッピングテーブルへのデータ追加
-      Integer id = address.getAddressId();
-
+  private void insertMap(Integer id) throws Exception {
+    // Address-Groupマッピングテーブルへのデータ追加
+    try {
       for (int i = 0; i < groupModelList.size(); i++) {
         EipTAddressbookGroupMap map =
           Database.create(EipTAddressbookGroupMap.class);
@@ -951,12 +959,11 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       }
 
       Database.commit();
-      return true;
     } catch (Exception ex) {
       Database.rollback();
-      logger.error("fileio", ex);
-      return false;
+      throw ex;
     }
+
   }
 
   @Override
