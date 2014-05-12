@@ -86,6 +86,8 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
@@ -1039,8 +1041,12 @@ public class ALEipUtils {
             templete.merge(context, writer);
             writer.flush();
             writer.close();
+          } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+          } catch (ParseErrorException e) {
+            throw new RuntimeException(e);
           } catch (Exception e) {
-            return false;
+            throw new RuntimeException(e);
           }
           return true;
         }
@@ -1099,8 +1105,12 @@ public class ALEipUtils {
             templete.merge(context, writer);
             writer.flush();
             writer.close();
+          } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+          } catch (ParseErrorException e) {
+            throw new RuntimeException(e);
           } catch (Exception e) {
-            return false;
+            throw new RuntimeException(e);
           }
           return true;
         }
@@ -1180,8 +1190,12 @@ public class ALEipUtils {
             templete.merge(context, writer);
             writer.flush();
             writer.close();
+          } catch (ResourceNotFoundException e) {
+            throw new RuntimeException(e);
+          } catch (ParseErrorException e) {
+            throw new RuntimeException(e);
           } catch (Exception e) {
-            return false;
+            throw new RuntimeException(e);
           }
           return true;
         } else if (template.endsWith("Screen")) {
