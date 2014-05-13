@@ -70,10 +70,12 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipInformation;
+import com.aimluck.eip.common.ALEipMaintenance;
 import com.aimluck.eip.common.ALFunction;
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.maintenance.ALMaintenanceService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
@@ -277,6 +279,17 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     context.put("information_cookie_name", informationCookie);
     context.put("information_text", informationText);
     context.put("information_title", ALEipInformation.INFORMATION_TITLE);
+
+    // メンテナンス告知
+    String dbServer = ALMaintenanceService.getDbServer();
+    ALEipMaintenance maintenance = new ALEipMaintenance();
+    maintenance.initField();
+    if (dbServer != null && !"".equals(dbServer)) {
+      maintenance = ALMaintenanceService.getLatestMaintenance(dbServer);
+      context.put("maintenance_title", maintenance.getTitle());
+      context.put("maintenance_text", maintenance.getBody());
+      context.put("maintenance_display", maintenance.isShow());
+    }
 
     // 修正 ：ポートレットの最大化画面にタブを常に表示するように修正した．
     try {
