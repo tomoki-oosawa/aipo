@@ -1,5 +1,6 @@
 package com.aimluck.eip.modules.actions;
 
+import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.util.template.JetspeedLink;
@@ -16,23 +17,29 @@ public class ALChangeToPC extends ActionEvent {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALChangeToPC.class.getName());
 
+  private boolean isLogin(JetspeedUser loginuser) {
+    return (loginuser != null && loginuser.hasLoggedIn());
+  }
+
   @Override
   public void doPerform(RunData data) throws Exception {
+    JetspeedUser loginuser = (JetspeedUser) data.getUser();
 
-    data.getSession().setAttribute("changeToPc", "true");
-    JetspeedLink jsLink = null;
+    if (isLogin(loginuser)) {
+      data.getSession().setAttribute("changeToPc", "true");
+      JetspeedLink jsLink = null;
 
-    try {
-      jsLink = JetspeedLinkFactory.getInstance(data);
-    } catch (Exception e) {
-      logger.error("Error getting jsLink", e);
+      try {
+        jsLink = JetspeedLinkFactory.getInstance(data);
+      } catch (Exception e) {
+        logger.error("Error getting jsLink", e);
+      }
+      data.setRedirectURI(jsLink.getHomePage().addQueryData(
+        "action",
+        "controls.Restore").toString());
+      data.getResponse().sendRedirect(data.getRedirectURI());
+      JetspeedLinkFactory.putInstance(jsLink);
+      jsLink = null;
     }
-    data.setRedirectURI(jsLink.getHomePage().addQueryData(
-      "action",
-      "controls.Restore").toString());
-    data.getResponse().sendRedirect(data.getRedirectURI());
-    JetspeedLinkFactory.putInstance(jsLink);
-    jsLink = null;
-
   }
 }
