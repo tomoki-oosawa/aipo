@@ -637,7 +637,7 @@ $item.get(0)
 ## #foreach($nav in $navigations)
 ## #if($index <= 0)
 ## #if($nav.get(1) == "") $nav.get(0) #else <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end
-## #else #if($!navigations.size() == 2 || $nav.get(1) == "") Ôºû $nav.get(0) #else  Ôºû <a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end#end
+## #else #if($!navigations.size() == 2 || $nav.get(1) == "") Ë[ÅE$nav.get(0) #else  Ë[ÅE<a class="small" href="$!utils.escapeXML($nav.get(1))">$nav.get(0)</a> #end#end
 ## #set($index = $index + 1)
 ## #end
 ##                                                               </div>
@@ -658,7 +658,7 @@ $item.get(0)
 		<div class="mhRight clearfix">
 			#ALMessage()
 			#if($data.User.getUserName() != "admin")
-				<div class="hdActivity" title="„ÅäÁü•„Çâ„Åõ">
+				<div class="hdActivity" title="ÅEä‰?ÉÉÇâÅEÅE>
 					<a href="javascript:void(0)" onClick="activitySwitch()">
 						#ALActivity()
 					</a>
@@ -848,7 +848,7 @@ $item.get(0)
           <ul>
 #set($index = 0)
 #foreach($tab in $tabs)
-	#if($tab.Title.toString()!="„Éö„Éº„Ç∏Ë®≠ÂÆö" && $tab.Title.toString()!="„É°„ÉÉ„Çª„Éº„Ç∏")
+	#if($tab.Title.toString()!="ÅEö‚#é·ÇåÊÑ´„MÅE && $tab.Title.toString()!="ÅEÅÉÉÉÅEéÉÉé·ÇÅE)
             <li#if ($tab.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($tab.Link)">$tab.Title</a></li>
 	#end
 #set($index = $index + 1)
@@ -1052,7 +1052,7 @@ $l10n.WAR_GRABALMACRO_REQUIRED_ITEM
 #end
 
 #macro(ALcell_must)
-Ôºà‚ÄªÔºâ
+Ë[à·~éèéá
 #end
 
 #macro(ALcell_pageview $career $link $result)
@@ -1371,26 +1371,26 @@ $link.get(0)
 
 #macro(ALcell_msgboard_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.TopicName}</h3>
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYÔºö$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
-$l10n.BLOG_POSTING_NAMEÔºö$!{detail.OwnerName}„ÄÄ$l10n.WORKFLOW_CATEGORYÔºö$!{detail.CategoryName}</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYË[ÅE!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
+$l10n.BLOG_POSTING_NAMEË[ÅE!{detail.OwnerName}ÅEÄ$l10n.WORKFLOW_CATEGORYË[ÅE!{detail.CategoryName}</p>
 $!{detail.Note}
 #end
 
 #macro(ALcell_blog_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.Title}</h3>
 ##$!{detail.CreateDate}
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYÔºö$!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAMEÔºö$!detail.OwnerName„ÄÄ$l10n.BLOG_THEME_CELLÔºö$!{detail.ThemaName}</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYË[ÅE!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAMEË[ÅE!detail.OwnerNameÅEÄ$l10n.BLOG_THEME_CELLË[ÅE!{detail.ThemaName}</p>
 $!{detail.Note}
 #end
 
 #macro(ALcell_msgboard_comment $career $comment )
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYÔºö$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAMEÔºö$!comment.OwnerName„ÄÄ##ÔΩ∂ÔæÉÔΩ∫ÔæûÔæòÔºö$!{comment.ParentTopic.CategoryName}
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYË[ÅE!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAMEË[ÅE!comment.OwnerNameÅEÄ##Ë\ãÌèÅË\çÌèúË]òË[ÅE!{comment.ParentTopic.CategoryName}
 </p>
 $!{comment.Note}
 #end
 
 #macro(ALcell_blog_comment $career $comment )
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYÔºö$!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAMEÔºö$!comment.OwnerName„ÄÄ</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAYË[ÅE!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAMEË[ÅE!comment.OwnerNameÅEÄ</p>
 $!{comment.Comment}
 #end
 
@@ -1563,12 +1563,12 @@ $item.get(0)
     <div class="auiSelectButton floatLeft">
       <ul class="floatLeft">
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="Ââç„ÅÆ $rowsNum ‰ª∂"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="ÅEç‚!ÅE$rowsNum ‚πÅE><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #else
 	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="Ê¨°„ÅÆ $nextCount ‰ª∂"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+        <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="„™ÅÉÅá$nextCount ‚πÅE><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #else
 	    <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
 #end
@@ -1620,13 +1620,13 @@ $item.get(0)
 
 #macro(AUIsearchresult $keyword)
 #if($!keyword && $!keyword != "")
-<div class="floatLeft auiSearchResult">$l10n.CABINET_SEARCH_RESULTÔºö$!keyword</div>
+<div class="floatLeft auiSearchResult">$l10n.CABINET_SEARCH_RESULTË[ÅE!keyword</div>
 #end
 #end
 
 #macro(AUInewsearchresult $keyword)
 #if($!keyword && $!keyword != "")
-<div class="auiSummaryMeta auiSearchResult">$l10n.CABINET_SEARCH_RESULTÔºö$!keyword</div>
+<div class="auiSummaryMeta auiSearchResult">$l10n.CABINET_SEARCH_RESULTË[ÅE!keyword</div>
 #end
 #end
 
@@ -1656,7 +1656,7 @@ $item.get(0)
 </div>
 #end
 
-##„Éï„Ç£„É´„Çø„ÉºÊ©üËÉΩ„ÅÇ„Çä
+##ÅEï‚"ÇÉÉÜÉÇêÉÉé‰Ö?‰ÅèÉÅÇÅEÅE
 #macro(AUISummaryFilterDivHeader)
 <div class="auiSummaryMeta auiFilter clearfix">
 #end
@@ -1665,7 +1665,7 @@ $item.get(0)
 </div>
 #end
 
-##Ë°®Ë®òÊè∫„Çå
+##‰üÅEÅE„çç·Çå
 #macro(AUISummaryDiv)
 	#AUISummaryDivHeader()
 #end
@@ -1729,10 +1729,10 @@ $item.get(0)
 #end
 #end
 
-#macro(AuiAlert $title $text $flag)
+#macro(AuiAlert $title $text $id $js $flag)
 #if (${flag})
-<div class="alert bgGray">
-<div class="alertTool"><a href="javascript:void(0)"><i class="icon-remove"></i></a></div>
+<div class="alert bgGray" id="$!{id}">
+<div class="alertTool"><a href="javascript:void(0)" onclick="document.getElementById('$!{id}').style.display='none';$js)"><i class="icon-remove"></i></a></div>
 #if($!title != "")
 <div class="alertHead">
 $!{title}
