@@ -153,7 +153,7 @@ public class WebMailUtils {
 
     if (WebMailFormData.TYPE_REPLY_MAIL == mailType
       || WebMailFormData.TYPE_REPLY_ALL_MAIL == mailType) {
-      return ALMailUtils.getReplyMessage(msg);
+      return msg;
     } else if (WebMailFormData.TYPE_FORWARD_MAIL == mailType) {
       return ALMailUtils.getForwardMessage(msg);
     } else {
