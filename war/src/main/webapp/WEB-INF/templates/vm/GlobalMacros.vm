@@ -1729,6 +1729,22 @@ $item.get(0)
 #end
 #end
 
+#macro(AuiAlert $title $text $id $js $flag)
+#if (${flag})
+<div class="alert bgGray" id="$!{id}">
+<div class="alertTool"><a href="javascript:void(0)" onclick="document.getElementById('$!{id}').style.display='none';$js"><i class="icon-remove"></i></a></div>
+#if($!title != "")
+<div class="alertHead">
+$!{title}
+</div>
+#end
+<div class="alertBody">
+$!{text}
+</div>
+</div>
+#end
+#end
+
 #macro(AUIiconSecretAtt $option)
 	<i class="auiIcon auiIconSecret" $option></i>
 #end
