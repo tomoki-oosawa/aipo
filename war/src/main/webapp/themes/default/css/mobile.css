@@ -1,4 +1,13 @@
 @charset "utf-8";
+.bRadius4, .roundMainWrapper noscript .alert, .alertCount, #mobileHeader .mhLeft,
+#mobileHeader .mhRight, #mobileHeader .auiMbBtn, #mobileHeader_v2 .auiMbBtn, #mobileHeader_v3 .auiMbBtn {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+
 /***************************************************
 	style denial
 --------------------------------------------------*/
@@ -107,18 +116,21 @@ input[type=password] {
 	set PortletOuter
 --------------------------------------------------*/
 #roundWrapper .roundMainWrapper {
-  padding: 46px 0 0;
+  padding: 45px 0 0;
 }
+
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
   background-image: none;
 }
+
 #roundWrapper .roundBlockWrapperTop {
   width: 100%;
+  height: 45px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
-  border-top: solid 1px #dcdcdc;
   border-bottom: solid 1px #d0d0d0;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #roundWrapper .roundBlockWrapperTop .roundBlockIcon {
@@ -138,11 +150,6 @@ input[type=password] {
 }
 
 .roundMainWrapper noscript .alert {
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   margin: 5px;
 }
 
@@ -166,9 +173,6 @@ input[type=password] {
   box-sizing: border-box;
   background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
   border-bottom: solid 1px #d0d0d0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
 }
 .auiPortlet .auiPortletHead .inner {
   margin: 1px 0;
@@ -407,10 +411,6 @@ input[type=password] {
   right: 3px;
   background: red -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.3)));
   padding: 1px 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  border-radius: 4px;
   font-size: 9px;
   color: #fff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -468,7 +468,6 @@ input[type=password] {
 #mobileHeader .mhRight {
   position: absolute;
   top: 3px;
-  border-radius: 4px;
 }
 #mobileHeader .mhLeft {
   left: 5px;
@@ -486,11 +485,6 @@ input[type=password] {
   min-width: 35px;
   margin: 0;
   padding: 0 5px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -564,11 +558,12 @@ input[type=password] {
   left: 0;
   z-index: 1000;
   width: 100%;
+  height: 45px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
-  border-top: solid 1px #dcdcdc;
   border-bottom: solid 1px #d0d0d0;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 #mobileHeader_v2 .inner {
   position: relative;
@@ -669,11 +664,6 @@ input[type=password] {
   padding: 0 5px;
   font-size: 14px;
   color: white !important;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -835,11 +825,6 @@ input[type=password] {
   padding: 0 5px;
   font-size: 14px;
   color: white !important;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1735,39 +1720,39 @@ table tr.caption {
   border-collapse: collapse;
   background: #f0f0f0;
   border: 1px solid #d2d2d2;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  border-radius: 4px;
 }
+
 .auiScMonth th {
-    padding:5px 0;
-    text-align:center;
-	vertical-align:middle;
+  padding: 5px 0;
+  text-align: center;
+  vertical-align: middle;
 }
+
 .auiScMonthLabel {
-	font-size:16px;
+  font-size: 14px;
 }
+
 .auiScWeek {
-    font-weight:normal;
-    padding-top:.15em;
-    padding-bottom:0em;
-    color:#293a4b;
-    text-align:center;
-	border-bottom:solid 1px #c0c0c0;
+  font-weight: normal;
+  padding-top: .15em;
+  padding-bottom: 0em;
+  color: #293a4b;
+  text-align: center;
 }
+
 .auiScDate {
-    font-size: 0.9em;
-    font-weight: normal;
-    text-align: center;
-    letter-spacing: 1px;
-	border-right:solid 1px #c0c0c0;
-	border-bottom:solid 1px #c0c0c0;
-	background:#e0e0e0;
+  font-size: 0.9em;
+  font-weight: normal;
+  text-align: center;
+  letter-spacing: 1px;
+  border-top: solid 1px #d2d2d2;
+  background: #f6f6f6;
+  cursor: pointer;
 }
 .auiScDate:hover {
 	background:#ffffff;
 }
+
 .auiScDateLabel {
 	display:block;
 	padding:5px;
@@ -1777,12 +1762,14 @@ table tr.caption {
 	text-shadow:0 1px 0 rgba(255,255,255,0.8);
 	font-size:16px;
 }
+
 .auiScPrevMonth,
 .auiScNextMonth {
     color:#999999;
 	background:#e0e0e0;
     cursor:pointer;
 }
+
 .auiScCurrentMonth {
 }
 .auiScCurrentDate {
