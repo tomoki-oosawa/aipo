@@ -30,6 +30,7 @@ import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileException;
 import org.apache.jetspeed.om.profile.psml.PsmlParameter;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -551,6 +552,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
       profile.store();
 
+    } catch (IndexOutOfBoundsException ex) {
+      logger.error("schedule", ex);
+    } catch (ProfileException ex) {
+      logger.error("schedule", ex);
     } catch (Exception ex) {
       logger.error("schedule", ex);
       return false;
