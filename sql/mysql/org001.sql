@@ -497,7 +497,9 @@ CREATE TABLE `eip_t_mail` (
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`mail_id`),
-  KEY `eip_t_mail_user_id_index` (`user_id`)
+  KEY `eip_t_mail_user_id_index` (`user_id`),
+  KEY `eip_t_mail_type_index` (`type`),
+  KEY `eip_t_mail_read_flg_index` (`read_flg`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_mail_filter` (
@@ -627,7 +629,8 @@ CREATE TABLE `eip_t_schedule` (
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`schedule_id`)
+  PRIMARY KEY (`schedule_id`),
+  KEY `eip_t_schedule_start_date_index` (`start_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_schedule_map` (
@@ -639,7 +642,8 @@ CREATE TABLE `eip_t_schedule_map` (
   `common_category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `eip_t_schedule_map_schedule_id_index` (`schedule_id`),
-  KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`)
+  KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`),
+  KEY `eip_t_schedule_map_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timecard` (
@@ -666,7 +670,8 @@ CREATE TABLE `eip_t_timeline` (
    `create_date` datetime DEFAULT NULL,
    `update_date` datetime DEFAULT NULL,
    PRIMARY KEY(`timeline_id`),
-   KEY `parent_id` (`parent_id`)
+   KEY `parent_id` (`parent_id`),
+   KEY `eip_t_timeline_parent_id_owner_id_index` (`parent_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timeline_map` (

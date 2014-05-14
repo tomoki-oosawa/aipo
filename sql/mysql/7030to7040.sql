@@ -418,3 +418,8 @@ CREATE INDEX eip_t_eventlog_userid_index ON eip_t_eventlog(user_id);
 CREATE INDEX eip_t_msgboard_topic_category_id_index ON eip_t_msgboard_topic(category_id);
 CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(role_id);
 CREATE INDEX eip_t_workflow_request_map_request_id_index ON eip_t_workflow_request_map(request_id);
+CREATE INDEX eip_t_schedule_map_user_id_index ON eip_t_schedule_map(user_id);
+CREATE INDEX eip_t_schedule_start_date_index ON eip_t_schedule(start_date);
+CREATE INDEX eip_t_mail_type_index ON eip_t_mail(type);
+CREATE INDEX eip_t_mail_read_flg_index ON eip_t_mail(read_flg);
+CREATE INDEX eip_t_timeline_parent_id_owner_id_index ON eip_t_timeline(parent_id,owner_id);
