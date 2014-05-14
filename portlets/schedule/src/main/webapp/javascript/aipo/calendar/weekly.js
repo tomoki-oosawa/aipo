@@ -1213,6 +1213,11 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
 
         this.startHeight = parseInt(dojo.getComputedStyle(this.node).height);
         this.startTop = parseInt(dojo.getComputedStyle(this.node).top);
+
+        this.startStart_date = ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.startDateHour + '-' + this.dragSource.schedule.startDateMinute;
+        this.startEnd_date = ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.endDateHour + '-' + this.dragSource.schedule.endDateMinute;
+        this.movedFlag="false";
+
         if(this.startHeight - 6 < this.startY-this.startAbsoluteY) {
             this.isResize = true;
         }
@@ -1298,6 +1303,10 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.dragSource.schedule.endDateMinute = minute;
         this.dragSource.schedule.endDate = hour + ':'+ minute;
         dojo.byId('scheduleDivSepalater-'+ id + '-' + this.portletId).innerHTML = '-';
+        if(this.startStart_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.startDateHour + '-' + this.dragSource.schedule.startDateMinute
+        		|| this.startEnd_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.endDateHour + '-' + this.dragSource.schedule.endDateMinute){
+        	this.movedFlag="true";
+        }
         return;
     },
     onMouseUp: function (e) {
@@ -1343,6 +1352,12 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         params += "&start_date=" + ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.startDateHour + '-' + this.dragSource.schedule.startDateMinute;
         params += "&end_date=" + ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + this.dragSource.schedule.endDateHour + '-' + this.dragSource.schedule.endDateMinute;
 
+        if(this.movedFlag =="false"){
+        	aipo.common.showDialog(ptConfig[this.portletId].detailUrl+"&entityId="+this.dragSource.schedule.scheduleId+"&view_date="+ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index]+"&userid="+this.dragSource.schedule.ownerId,this.portletId,aipo.schedule.onLoadScheduleDetail);
+        	//** FIXME IEで追加ダイアログを閉じるとスクロールバーのｙ座標が強制的に０になってしまう現象
+        	aipo.schedule.tmpScroll = parseInt(dojo.byId('weeklyScrollPane_'+this.portletId)["scrollTop"]);
+        	//**//
+        }
         aipo.calendar.populateWeeklySchedule(this.portletId, params);
         aipo.portletReload('schedule', this.portletId);
 
