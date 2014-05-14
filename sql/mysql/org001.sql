@@ -823,7 +823,8 @@ CREATE TABLE `eip_t_workflow_request_map` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_workflow_request_map_request_id_index` (`request_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_workflow_route` (

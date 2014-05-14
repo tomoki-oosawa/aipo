@@ -991,6 +991,7 @@ CREATE TABLE EIP_T_WORKFLOW_REQUEST_MAP
    FOREIGN KEY (REQUEST_ID) REFERENCES EIP_T_WORKFLOW_REQUEST (REQUEST_ID) ON DELETE CASCADE,
    PRIMARY KEY(ID)
 );
+CREATE INDEX eip_t_workflow_request_map_request_id_index ON EIP_T_WORKFLOW_REQUEST_MAP(REQUEST_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_MEMO
