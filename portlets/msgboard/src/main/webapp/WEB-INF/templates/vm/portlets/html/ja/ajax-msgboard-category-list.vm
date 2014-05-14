@@ -57,10 +57,11 @@
 <tr>
 #ALtdcellheader()
 <div>
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
+<a  style="display:block" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">
 #if(! ${record.isPublic()})
-<img src="images/msgboard/msgboard_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="$l10n.MSGBOARD_CLOSE_PUBLIC" title="$l10n.MSGBOARD_CLOSE_PUBLIC">
+#AUIiconSecretWithMr5Att("alt='$l10n.MSGBOARD_CLOSE_PUBLIC' title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
 #end
+$record.CategoryName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("$!{record.OwnerName}" "class='mb_hide'")

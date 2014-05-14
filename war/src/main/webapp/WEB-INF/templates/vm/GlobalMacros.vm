@@ -1749,7 +1749,8 @@ $!{text}
 	<i class="auiIcon auiIconSecret" $option></i>
 #end
 
-
+#macro(AUIiconSecretWithMr5Att $option)
+	<i class="auiIcon auiIconSecret mr5" $option></i>#end
 
 
 
