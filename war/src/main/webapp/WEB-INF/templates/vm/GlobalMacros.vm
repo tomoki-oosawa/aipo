@@ -668,6 +668,7 @@ $item.get(0)
 		</div>
 		</div>
 	</div>
+	#ALMaintenance()
 	<!-- /Smartphone Header -->
 	#end
 	<div class="auiPortletHead"><div class="inner">
