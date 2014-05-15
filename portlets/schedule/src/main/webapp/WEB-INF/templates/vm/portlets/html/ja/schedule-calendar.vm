@@ -282,7 +282,7 @@
 						</td>
 						#if(${client} == "IPAD" && ($!top_form && $!top_form == 'simple')||(${isMac} && ${isMac} == 1))
 						#else
-						<td class="weeklyTermTailTd_$!portlet.ID" style="display: none" width="18">
+						<td class="weeklyTermTailTd_$!portlet.ID" width="18">
               <div class="weeklyTermTail">&nbsp;</div>
             </td>
 						#end

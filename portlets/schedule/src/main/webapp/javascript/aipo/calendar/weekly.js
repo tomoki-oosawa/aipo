@@ -123,16 +123,16 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			if(dateCell)dateCell.innerHTML = "<span>7日</span>";
 			child.style.left = i * (100.0 / 7.0) + "%";
 			child.style.display = "";
-			child.style.width = "14.2857%";
+			child.style.width = (100.0 / 7.0) + "%";
 			childBody.style.left = i * (100.0 / 7.0) + "%";
 			childBody.style.display = "";
-			childBody.style.width = "14.2857%";
+			childBody.style.width = (100.0 / 7.0) + "%";
 			childTerm.style.left = i * (100.0 / 7.0) + "%";
 			childTerm.style.display = "";
-			childTerm.style.width = "14.2857%";
+			childTerm.style.width = (100.0 / 7.0) + "%";
 			add.style.left =  i * (100.0 / 7.0) + "%";
 			add.style.display = "";
-			add.style.width = "14.2857%";
+			add.style.width = (100.0 / 7.0) + "%";
 			if(i == 0){
 				removeClass(childTerm, "weeklyTermRightR");
 			}
@@ -613,7 +613,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                         name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
                     }
                     if(width==100)width='99.99999';
-                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
+                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div style="width:1px; height:100%; float:right; background-color:#d2d2d2;"></div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
                     count++;
                 }
                 dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;
