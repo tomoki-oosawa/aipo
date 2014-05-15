@@ -2593,7 +2593,7 @@ ul.attachments {
   padding: 10px;
 }
 .timeline .commentsBorder, .timeline .comments .message, .timeline .commentCaption, .timeline .commentInputDummy, .timeline .commentField {
-  border-top: solid 2px #fff !important;
+  border-top: solid 1px #fff !important;
 }
 .timeline .comments {
   margin: 0 0 10px 60px;
