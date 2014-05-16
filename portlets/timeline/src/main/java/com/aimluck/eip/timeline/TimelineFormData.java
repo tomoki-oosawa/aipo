@@ -20,7 +20,9 @@
 package com.aimluck.eip.timeline;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class TimelineFormData extends ALAbstractFormData {
 
@@ -99,12 +101,12 @@ public class TimelineFormData extends ALAbstractFormData {
   private String folderName = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -120,8 +122,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -136,8 +138,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * タイムラインの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -149,10 +151,10 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -161,7 +163,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -207,7 +209,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -259,15 +261,24 @@ public class TimelineFormData extends ALAbstractFormData {
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipImage") != null) {
           String str = ALEipUtils.getParameter(rundata, context, "tlClipImage");
-          URL u = new URL(str);
-          URLConnection uc = u.openConnection();
-          uc.setRequestProperty("Referer", str); // Refererを記述
-          InputStream is = uc.getInputStream();
-          url.setThumbnail(FileuploadUtils.getBytesShrink(
-            is,
-            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-            msgList));
+          URI uri = new URI(str).normalize();
+          String path =
+            uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
+          URL u =
+            new URL(String.format("%s://%s%s", uri.getScheme(), uri
+              .getAuthority(), path));
+          try {
+            URLConnection uc = u.openConnection();
+            uc.setRequestProperty("Referer", str); // Refererを記述
+            InputStream is = uc.getInputStream();
+            url.setThumbnail(FileuploadUtils.getBytesShrink(
+              is,
+              FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+              msgList));
+          } catch (IOException e) { // サムネイルの取得に失敗した場合、サムネイルなしで投稿
+            logger.error("timeline", e);
+          }
         }
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipTitle") != null) {
@@ -431,7 +442,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているトピックを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -444,7 +455,7 @@ public class TimelineFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -483,7 +494,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -507,7 +518,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -521,7 +532,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclUpdateTopicOthers() {
@@ -530,7 +541,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {
@@ -538,7 +549,7 @@ public class TimelineFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setHasPhoto(boolean bool) {
@@ -555,7 +566,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * タイムラインで使用したセッション情報を消去する．
-   * 
+   *
    */
   public void clearTimelineSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
