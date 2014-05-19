@@ -237,17 +237,18 @@ public class TimelineFormData extends ALAbstractFormData {
         EipTTimeline parent =
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
 
-        if (parent
-          .getTimelineType()
-          .equals(EipTTimeline.TIMELINE_TYPE_TIMELINE)) {// 通常のコメント挿入時
-          parent.setUpdateDate(tCal.getTime());
-        } else if (parent.getTimelineType().equals(
-          EipTTimeline.TIMELINE_TYPE_ACTIVITY)) {
-          parent.setUpdateDate(tCal.getTime());
-          if (parent.getParentId().intValue() != 0) {
-            EipTTimeline grandpa =
-              Database.get(EipTTimeline.class, parent.getParentId());
-            grandpa.setUpdateDate(tCal.getTime());
+        if (parent != null && parent.getTimelineType() != null) {
+          if (EipTTimeline.TIMELINE_TYPE_TIMELINE.equals(parent
+            .getTimelineType())) {// 通常のコメント挿入時
+            parent.setUpdateDate(tCal.getTime());
+          } else if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(parent
+            .getTimelineType())) {
+            parent.setUpdateDate(tCal.getTime());
+            if (parent.getParentId().intValue() != 0) {
+              EipTTimeline grandpa =
+                Database.get(EipTTimeline.class, parent.getParentId());
+              grandpa.setUpdateDate(tCal.getTime());
+            }
           }
         }
 
