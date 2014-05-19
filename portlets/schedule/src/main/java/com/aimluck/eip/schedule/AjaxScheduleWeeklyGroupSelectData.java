@@ -143,6 +143,19 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   private String has_acl_other;
 
+  /** 保持する日数(簡易ブロック表示用) */
+  private final int days;
+
+  public AjaxScheduleWeeklyGroupSelectData() {
+    super();
+    days = 7;
+  }
+
+  public AjaxScheduleWeeklyGroupSelectData(int d) {
+    super();
+    days = d;
+  }
+
   /**
    *
    */
@@ -225,7 +238,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
     tmpCal.setTime(cal2.getTime());
     // 週間スケジュールコンテナの初期化
     try {
-      weekCon = new AjaxScheduleWeekContainer();
+      weekCon = new AjaxScheduleWeekContainer(days);
       weekCon.initField();
       weekCon.setViewStartDate(cal2);
     } catch (Exception e) {

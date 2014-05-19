@@ -195,6 +195,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	    if(chk_all) { _params += "&s_all=" + chk_all.value;}
     }
 
+    if((dojo.byId("view_type_"+_portletId) != null) && (dojo.byId("view_type_"+_portletId).value != null)){
+    	_params += "&view_type=" + dojo.byId("view_type_"+_portletId).value;
+    	ptConfig[_portletId].scheduleDivDaySum = dojo.byId("view_type_"+_portletId).value;
+    }
+
     djConfig.usePlainJson=true;
     ptConfig[_portletId].reloadFunction = aipo.calendar.populateWeeklySchedule;
 
@@ -522,6 +527,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
                 tmpDraggable.position = 0;
                 tmpDraggable.division = 1;
                 tmpDraggable.portletId = _portletId;
+
+                if(item.index >= ptConfig[_portletId].scheduleDivDaySum) return;
 
                 scheduleDiv[item.index].push(draggable);
                 if(item['public'] || item.member){

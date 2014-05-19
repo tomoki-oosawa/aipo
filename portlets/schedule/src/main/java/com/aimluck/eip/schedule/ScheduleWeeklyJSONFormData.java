@@ -107,6 +107,8 @@ public class ScheduleWeeklyJSONFormData {
 
   private boolean ignore_duplicate_facility;
 
+  private int view_type;
+
   public void initField() {
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
@@ -147,6 +149,14 @@ public class ScheduleWeeklyJSONFormData {
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+      if (rundata.getParameters().getString("view_type") != null
+        && !"".equals(rundata.getParameters().getString("view_type"))) {
+        view_type =
+          Integer.parseInt(rundata.getParameters().getString("view_type"));
+      } else {
+        view_type = 7;
+      }
+
       AjaxScheduleResultData rd;
       ScheduleBean bean;
       List<List<ScheduleBean>> termScheduleList =
@@ -159,7 +169,7 @@ public class ScheduleWeeklyJSONFormData {
       List<String> dayOfWeekList = new ArrayList<String>();
 
       AjaxScheduleWeeklyGroupSelectData listData =
-        new AjaxScheduleWeeklyGroupSelectData();
+        new AjaxScheduleWeeklyGroupSelectData(view_type);
       // ScheduleWeeklySelectData listData = new
       // ScheduleWeeklySelectData();
       listData.initField();

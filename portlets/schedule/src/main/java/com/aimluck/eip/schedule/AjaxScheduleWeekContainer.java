@@ -36,6 +36,18 @@ public class AjaxScheduleWeekContainer implements ALData {
   /** <code>dayList</code> スケジュールリスト */
   private List<AjaxScheduleDayContainer> dayList;
 
+  /** 日数(簡易ブロック表示用) */
+  private int days;
+
+  public AjaxScheduleWeekContainer() {
+    super();
+  }
+
+  public AjaxScheduleWeekContainer(int d) {
+    super();
+    days = d;
+  }
+
   /*
    *
    */
@@ -50,7 +62,7 @@ public class AjaxScheduleWeekContainer implements ALData {
    * @param cal
    */
   public void setViewStartDate(Calendar cal) {
-    for (int i = 1; i <= 7; i++) {
+    for (int i = 1; i <= days; i++) {
       // 日付を1日ずつずらす
       AjaxScheduleDayContainer con = new AjaxScheduleDayContainer();
       con.initField();
