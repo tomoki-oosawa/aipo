@@ -37,7 +37,6 @@ import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
@@ -49,7 +48,6 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.util.ALMailUtils;
@@ -547,15 +545,6 @@ public class AccountUtils {
       double value = bi.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
       return value + " MB";
     }
-  }
-
-  public static <T> void deleteFiles(int id, String property, String orgId,
-      int uid, String portletName, List<String> fpaths, Class<T> clazz)
-      throws ALFileNotRemovedException {
-    ALDeleteFileUtil.deleteFiles(id, property, getSaveDirPath(
-      orgId,
-      uid,
-      portletName), fpaths, clazz);
   }
 
   public static String getSaveDirPath(String orgId, int uid, String portletName) {
