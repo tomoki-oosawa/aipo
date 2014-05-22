@@ -31,11 +31,13 @@ import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
@@ -47,6 +49,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
 import com.aimluck.eip.mail.util.ALMailUtils;
@@ -55,6 +58,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -83,6 +87,10 @@ public class AccountUtils {
   public static final String ACCOUNT_PERSON_PORTLET_NAME = "AccountPerson";
 
   public static final String ACCOUNT_LOGIN_PORTLET_NAME = "AccountLogin";
+
+  /** 添付ファイルを保管するディレクトリの指定 */
+  public static final String FOLDER_FILEDIR_ACCOUNT = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -539,5 +547,26 @@ public class AccountUtils {
       double value = bi.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
       return value + " MB";
     }
+  }
+
+  public static <T> void deleteFiles(int id, String property, String orgId,
+      int uid, String portletName, List<String> fpaths, Class<T> clazz)
+      throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(id, property, getSaveDirPath(
+      orgId,
+      uid,
+      portletName), fpaths, clazz);
+  }
+
+  public static String getSaveDirPath(String orgId, int uid, String portletName) {
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_ACCOUNT,
+      getCategoryKey(portletName) + ALStorageService.separator() + uid);
+  }
+
+  public static String getCategoryKey(String portletName) {
+    return JetspeedResources.getString(
+      "aipo." + portletName + ".categorykey",
+      "");
   }
 }

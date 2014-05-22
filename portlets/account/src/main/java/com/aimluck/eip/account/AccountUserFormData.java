@@ -45,10 +45,13 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
@@ -69,6 +72,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -1405,14 +1409,49 @@ public class AccountUserFormData extends ALAbstractFormData {
         "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
       Database.sql(EipTTodoCategory.class, sql5).execute();
 
-      // ブログを削除する
-      String sql6 = "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
-      Database.sql(EipTBlog.class, sql6).execute();
+      String orgId = Database.getDomainName();
+      // ブログの削除
+      SelectQuery<EipTBlog> EipBlogSQL =
+        Database.query(EipTBlog.class).where(
+          Operations.in(EipTBlog.OWNER_ID_PROPERTY, userId));
+      List<EipTBlog> EipBlogList = EipBlogSQL.fetchList();
+      if (EipBlogList != null && EipBlogList.size() > 0) {
+        List<EipTBlogEntry> EipTBlogEntryList =
+          Database
+            .query(EipTBlogEntry.class)
+            .where(Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
+            .fetchList();
+
+        for (EipTBlogEntry entry : EipTBlogEntryList) {
+          List<String> fpaths = new ArrayList<String>();
+          List<?> files = entry.getEipTBlogFiles();
+          if (files != null && files.size() > 0) {
+            int fileSize = files.size();
+            for (int j = 0; j < fileSize; j++) {
+              fpaths.add(((EipTBlogFile) files.get(j)).getFilePath());
+            }
+
+            ALDeleteFileUtil.deleteFiles(
+              entry.getEntryId(),
+              EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
+              AccountUtils.getSaveDirPath(orgId, entry.getOwnerId(), "blog"),
+              fpaths,
+              EipTBlogFile.class);
+
+          }
+        }
+        Database
+          .query(EipTBlogEntry.class)
+          .where(Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
+          .deleteAll();
+
+        EipBlogSQL.deleteAll();
+      }
 
       // ブログの足跡を削除する
-      String sql7 =
+      String sql6 =
         "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql7).execute();
+      Database.sql(EipTBlogFootmarkMap.class, sql6).execute();
 
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(deleteuser.getUserId());
