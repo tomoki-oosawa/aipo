@@ -160,7 +160,7 @@ $!result.Detail.Explanation
 					#end
 				</div>
 				<div class="alignleft">
-					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.Year}${l10n.PROJECT_YEAR}$!{record.CreateDate.Month}${l10n.PROJECT_MONTH}$!{record.CreateDate.Day}${l10n.PROJECT_DATE}$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}
+					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.getFormattedYearDateDayOfWeekTime()}
 				</div>
 			</div>
 			<div><br>

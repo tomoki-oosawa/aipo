@@ -40,7 +40,7 @@
 <dt>件名</dt>
 <dd>$!{result.Detail.Subject}</dd>
 <dt>受信日</dt>
-<dd>$!{result.Detail.Date.Year}年$!{result.Detail.Date.Month}月$!{result.Detail.Date.Day}日 $!{result.Detail.Date.Hour}時$!{result.Detail.Date.Minute}分</dd>
+<dd>$!{result.Detail.Date.getFormattedYearDateDayOfWeekTime()}</dd>
 <dt>$person</dt>
 <dd>$person_value</dd>
 </dl>

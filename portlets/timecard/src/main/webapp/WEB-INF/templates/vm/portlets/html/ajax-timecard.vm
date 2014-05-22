@@ -34,7 +34,7 @@
 #if (!$!result.Detail || $!result.Detail.WorkFlag.toString() != "0")
 #if($!{result.Detail.WorkDate})
 #set($workdate = $!{result.Detail.WorkDate})
-<br/>出勤時間 ： $!{workdate.Year}年$!{workdate.Month}月$!{workdate.Day}日 $!{workdate.Hour}時$!{workdate.Minute}分
+<br/>出勤時間 ： $!{workdate.getFormattedYearDateDayOfWeekTime()}
 #end
 #end
 #ALtdcellfooter()
