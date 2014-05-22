@@ -825,9 +825,6 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
     	singleWidth = 7.2;
     } else if(dojo.byId("view_type_" + _portletId).value == "4"){
     	singleWidth = 1.75;
-    	if(scheduleDivLeft > 57){
-    		scheduleDivLeft = 100;
-    	}
     }
 
     scheduleDiv.sort(aipo.calendar.sortByRegion);
@@ -877,7 +874,7 @@ aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) 
         	        else
         	        	width = scheduleDivWidth * offsetW * singleWidth;
 
-        	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i])) * singleWidth;
+        	        left = (scheduleDivLeft + ((scheduleDivWidth/(overlapNumArray[i]+1)) * positionLeftArray[i]) * singleWidth );
 
         	        if(left + width > 100){
         	        	width = 100 - left;
