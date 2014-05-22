@@ -262,6 +262,151 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
+   * 曜日付きの時刻を含む年月日(YYYY年MM月DD日(曜日) HH:mm)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedYearDateDayOfWeekTime() {
+    String year_date_dayOfWeek_time;
+    try {
+      String yearDate =
+        new SimpleDateFormat("yyyy年M月d日").format(calendar.getTime());
+      String dayOfWeek = ALDateUtil.getDayOfWeek(calendar) + " ";
+      String time = new SimpleDateFormat("H:mm").format(calendar.getTime());
+
+      year_date_dayOfWeek_time = yearDate + dayOfWeek + time;
+
+    } catch (Exception ex) {
+      year_date_dayOfWeek_time = null;
+    }
+    if (calendar == null || isNullDateTime(year_date_dayOfWeek_time)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(year_date_dayOfWeek_time);
+    }
+  }
+
+  /**
+   * 年月日(YYYY年MM月DD日)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedYearDate() {
+    String year_date;
+    try {
+      year_date = new SimpleDateFormat("yyyy年M月d日").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      year_date = null;
+    }
+    if (calendar == null || isNullDateTime(year_date)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(year_date);
+    }
+  }
+
+  /**
+   * 年月日(YYYY/MM/DD)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getYearDate() {
+    String year_date;
+    try {
+      year_date = new SimpleDateFormat("yyyy/M/d").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      year_date = null;
+    }
+    if (calendar == null || isNullDateTime(year_date)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(year_date);
+    }
+  }
+
+  /**
+   * 年月(YYYY年MM月)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedYearMonth() {
+    String year_month;
+    try {
+      year_month = new SimpleDateFormat("yyyy年M月").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      year_month = null;
+    }
+    if (calendar == null || isNullDateTime(year_month)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(year_month);
+    }
+  }
+
+  /**
+   * 月日(MM月DD日)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedDate() {
+    String date;
+    try {
+      date = new SimpleDateFormat("M月d日").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      date = null;
+    }
+    if (calendar == null || isNullDateTime(date)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(date);
+    }
+  }
+
+  /**
+   * 時刻を含む月日(M月D日 H:mm)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedDateTime() {
+    String date_time;
+    try {
+      date_time = new SimpleDateFormat("M月d日 H:mm").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      date_time = null;
+    }
+    if (calendar == null || isNullDateTime(date_time)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(date_time);
+    }
+  }
+
+  /**
+   * 時刻(H:mm)の日時表示形式で取得します。
+   * 
+   * @return
+   */
+  public String getFormattedTime() {
+    String time;
+    try {
+      time = new SimpleDateFormat("H:mm").format(calendar.getTime());
+
+    } catch (Exception ex) {
+      time = null;
+    }
+    if (calendar == null || isNullDateTime(time)) {
+      return ALStringUtil.sanitizing(null);
+    } else {
+      return ALStringUtil.sanitizing(time);
+    }
+  }
+
+  /**
    * 年の文字列表現を取得します。
    * 
    * @return
