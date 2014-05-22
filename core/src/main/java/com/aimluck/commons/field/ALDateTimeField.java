@@ -262,7 +262,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 曜日付きの時刻を含む年月日(YYYY年MM月DD日(曜日) HH:mm)の日時表示形式で取得します。
+   * 曜日付きの時刻を含む年月日(YYYY年M月d日(曜日) H:mm)の日時表示形式で取得します。
    * 
    * @return
    */
@@ -287,7 +287,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 年月日(YYYY年MM月DD日)の日時表示形式で取得します。
+   * 年月日(YYYY年M月d日)の日時表示形式で取得します。
    * 
    * @return
    */
@@ -307,7 +307,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 年月日(YYYY/MM/DD)の日時表示形式で取得します。
+   * 年月日(YYYY/M/d)の日時表示形式で取得します。
    * 
    * @return
    */
@@ -327,7 +327,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 年月(YYYY年MM月)の日時表示形式で取得します。
+   * 年月(YYYY年M月)の日時表示形式で取得します。
    * 
    * @return
    */
@@ -347,7 +347,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 月日(MM月DD日)の日時表示形式で取得します。
+   * 月日(M月d日)の日時表示形式で取得します。
    * 
    * @return
    */
@@ -367,7 +367,7 @@ public class ALDateTimeField extends ALAbstractField {
   }
 
   /**
-   * 時刻を含む月日(M月D日 H:mm)の日時表示形式で取得します。
+   * 時刻を含む月日(M月d日 H:mm)の日時表示形式で取得します。
    * 
    * @return
    */
