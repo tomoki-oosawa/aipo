@@ -1766,9 +1766,9 @@ $item.get(0)
 #end
 
 
-#macro(AsyncLoad $id $async_url)
-	<div id="$id">
+#macro(AsyncLoad $async_url)
+	<div>
 		<div class="indicator">読み込み中...</div>
-		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(dojo.byId('$id'), '$async_url', true);"/>
+		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', true);"/>
 	</div>
 #end

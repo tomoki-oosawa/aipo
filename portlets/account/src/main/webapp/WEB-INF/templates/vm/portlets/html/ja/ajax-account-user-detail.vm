@@ -82,7 +82,7 @@ $!record <br />
 #end
 #ALtdcaption("Webメール容量")
 <td>
-#AsyncLoad("asyncLoadTarget_$!portlet.ID" "$async_url")
+#AsyncLoad("$async_url")
 </td>
 #ALtablefooter()
 #ALbuttonheader()
