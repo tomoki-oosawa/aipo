@@ -273,6 +273,7 @@ public class TimelineSelectData extends
       rd.initField();
       rd.setTimelineId(record.getTimelineId().longValue());
       rd.setNote(record.getNote());
+      rd.setNote(rd.getNote());
       rd.setOwnerId(record.getOwnerId().longValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
