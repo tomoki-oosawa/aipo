@@ -27,6 +27,8 @@
 <input name="ajaxbuttonEnable" class="button" type="button" value="$l10n.ACCOUNT_MAKE_VALID" onclick="aimluck.io.ajaxEnableSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 
+#set ($async_url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserDetailMailSizeScreen').addQueryData('user_id',$!{result.Detail.UserId}))")
+
 ## ---------------------------------------------------------------------------
 #ALdialogheader($l10n.ACCOUNT_USER_DETAIL)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -79,7 +81,9 @@ $!record <br />
 #ALtdcell($l10n.ACCOUNT_ISNOT_ADMIN)
 #end
 #ALtdcaption("Webメール容量")
-#ALtdcell($!result.Detail.MailSizeStr)
+<td>
+#AsyncLoad("asyncLoadTarget_$!portlet.ID" "$async_url")
+</td>
 #ALtablefooter()
 #ALbuttonheader()
 #if(!$!{noedit})
