@@ -1371,7 +1371,7 @@ $link.get(0)
 
 #macro(ALcell_msgboard_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.TopicName}</h3>
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDate.getFormattedYearDateDayOfWeekTime()}<br />
 $l10n.BLOG_POSTING_NAME：$!{detail.OwnerName}　$l10n.WORKFLOW_CATEGORY：$!{detail.CategoryName}</p>
 $!{detail.Note}
 #end
@@ -1379,7 +1379,7 @@ $!{detail.Note}
 #macro(ALcell_blog_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.Title}</h3>
 ##$!{detail.CreateDate}
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDateAlternative.Year}/$!{detail.CreateDateAlternative.Month}/$!{detail.CreateDateAlternative.Day}$!{detail.CreateDateAlternative.toStringDayOfWeek()}$!{detail.CreateDateAlternative.Hour}:$!{detail.CreateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAME：$!detail.OwnerName　$l10n.BLOG_THEME_CELL：$!{detail.ThemaName}</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDateAlternative.getFormattedYearDateDayOfWeekTime()}<br />$l10n.BLOG_POSTING_NAME：$!detail.OwnerName　$l10n.BLOG_THEME_CELL：$!{detail.ThemaName}</p>
 $!{detail.Note}
 #end
 
@@ -1390,7 +1390,7 @@ $!{comment.Note}
 #end
 
 #macro(ALcell_blog_comment $career $comment )
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{comment.UpdateDateAlternative.Year}/$!{comment.UpdateDateAlternative.Month}/$!{comment.UpdateDateAlternative.Day}$!{comment.UpdateDateAlternative.toStringDayOfWeek()}$!{comment.UpdateDateAlternative.Hour}:$!{comment.UpdateDateAlternative.Minute}<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　</p>
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{comment.UpdateDateAlternative.getFormattedYearDateDayOfWeekTime()}<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　</p>
 $!{comment.Comment}
 #end
 

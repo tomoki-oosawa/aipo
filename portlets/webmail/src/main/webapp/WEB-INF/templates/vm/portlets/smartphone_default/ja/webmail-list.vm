@@ -58,7 +58,7 @@ ${StatStr}
 #end
 #ALcell_li_header($career)
 <a href="$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_show_mail','1').addQueryData('entityid', $!record.MailId).addQueryData('tab', $!result.currentTab)">$MailSubject<br /><small>
-$!record.Person&nbsp;$!{record.Date.Year}${l10n.WEBMAIL_YEAR}$!{record.Date.Month}${l10n.WEBMAIL_MONTH}$!{record.Date.Day}${l10n.WEBMAIL_DAY} $!{record.Date.Hour}:$!{record.Date.Minute}</small></a>
+$!record.Person&nbsp;$!{record.Date.getFormattedYearDateDayOfWeekTime()}</small></a>
 #ALcell_li_footer($career)
 #end
 #ALcell_radius_footer($career)

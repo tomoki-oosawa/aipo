@@ -41,7 +41,7 @@
 </tr>
 <tr>
 #ALtdhead('$l10n.WEBMAIL_RECEIVE_DATA')
-#ALtdcell("$!{result.Detail.Date.Year}${l10n.WEBMAIL_YEAR}$!{result.Detail.Date.Month}${l10n.WEBMAIL_MONTH}$!{result.Detail.Date.Day}${l10n.WEBMAIL_DAY} $!{result.Detail.Date.Hour}${l10n.WEBMAIL_HOUR}$!{result.Detail.Date.Minute}${l10n.WEBMAIL_MINUTE}")
+#ALtdcell("$!{result.Detail.Date.getFormattedYearDateDayOfWeekTime()}")
 </tr>
 <tr>
 #ALtdhead($person)
