@@ -687,7 +687,8 @@ public class ScheduleFormData extends ALAbstractFormData {
               end_date = start_date;
             } else if ("".equals(rundata.getParameters().get("end_date_hour"))
               || "".equals(rundata.getParameters().get("end_date_minute"))) {
-              end_date.setValue(start_date.getValue());
+              // 片方だけが"--"の時は開始日時と同じにせずにバリデートエラーにする
+              end_date = null;
             }
           }
         }
@@ -2907,6 +2908,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public boolean getIsSameDate() {
     return is_same_date;
+  }
+
+  /**
+   * 開始時刻と終了時刻が同じかどうか返します。
+   * 
+   * @return
+   */
+  public boolean getIsSameTime() {
+    return start_date.getTime().equals(end_date.getTime());
   }
 
   /**
