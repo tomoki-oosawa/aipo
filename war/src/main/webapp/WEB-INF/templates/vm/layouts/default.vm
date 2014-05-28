@@ -131,7 +131,7 @@ dojo.addOnLoad(function() {
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
-    if(window.webkitNotifications) {
+    if(window.webkitNotifications || window.Notification) {
       aipo.container.gadgetService.requestDesktopNotifyEnable();
     }
 #end
