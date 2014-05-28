@@ -28,8 +28,8 @@
 #ALcell_dt($career $l10n.SCHEDULE_NAME)#ALcell_dd($career "$!{result.Detail.User.AliasName}")
 #ALcell_dt($career $l10n.SCHEDULE_DATE)#ALcell_dd_header($career)
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}から
-$!{result.Detail.EndDate.Year}/$!{result.Detail.EndDate.Month}/$!{result.Detail.EndDate.Day}$!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.StartDate.getFormattedYearDate()}から
+$!{result.Detail.EndDate.getFormattedYearDate()}
 #if(! ${result.Detail.isPublic()})
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
@@ -41,7 +41,7 @@ $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 $l10n.SCHEDULE_SUB_REPEAT
 #else
-$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}
+$!{result.Detail.StartDate.getFormattedYearDate()}
 $!{result.Detail.DateForCell}
 #if(! ${result.Detail.isPublic()})
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC

@@ -40,7 +40,7 @@ $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 $l10n.SCHEDULE_SUB_REPEAT
 #else
-$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}
+$!{result.Detail.StartDate.getFormattedYearDate()}
 $!{result.Detail.DateForCell}
 #if(! ${result.Detail.isPublic()})
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC

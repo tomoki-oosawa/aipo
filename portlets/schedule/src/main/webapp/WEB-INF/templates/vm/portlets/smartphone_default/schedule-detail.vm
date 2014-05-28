@@ -36,8 +36,8 @@
 #ALtdhead('日時')
 <td>
 #if($!{result.Detail.isSpan()})
-$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}から
-$!{result.Detail.EndDate.Year}/$!{result.Detail.EndDate.Month}/$!{result.Detail.EndDate.Day}$!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.StartDate.getFormattedYearDate()}から
+$!{result.Detail.EndDate.getFormattedYearDate()}
 #if(! ${result.Detail.isPublic()})
 (非公開)
 #end
@@ -49,7 +49,7 @@ $!{result.Detail.DateForCell}
 #end
 (繰り返し)
 #else
-$!{result.Detail.StartDate.Year}/$!{result.Detail.StartDate.Month}/$!{result.Detail.StartDate.Day}$!{result.Detail.StartDate.DayOfWeek}
+$!{result.Detail.StartDate.getFormattedYearDate()}
 $!{result.Detail.DateForCell}
 #if(! ${result.Detail.isPublic()})
 (非公開)

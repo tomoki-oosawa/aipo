@@ -36,7 +36,7 @@
 
 #if($mode!="new_form" && ($!{result.FormData.EditRepeatFlag.toString()} != "-1"))
 <h3>編集範囲</h3>
-#if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) すべての予定 #else $!{result.FormData.ViewDate.Year}年$!{result.FormData.ViewDate.Month}月$!{result.FormData.ViewDate.Day}日の予定のみ #end #ALcell_br($career)
+#if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) すべての予定 #else $!{result.FormData.ViewDate.getFormattedYearDate()}の予定のみ #end #ALcell_br($career)
 #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0)
 
 <h3>繰り返しの設定</h3>

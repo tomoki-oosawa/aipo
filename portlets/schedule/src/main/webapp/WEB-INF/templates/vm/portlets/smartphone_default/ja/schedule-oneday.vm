@@ -28,7 +28,7 @@
 #ALcell_contents_header($career)
 #ALcell_navilist($career $daylist)
 
-<h3>$!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日$!{result.ViewDate.DayOfWeek}</h3>
+<h3>$!{result.ViewDate.getFormattedYearDate()}</h3>
 #if($!{result.List.size()} <= 0)
 <p class="center">予定はありません。</p>
 #else

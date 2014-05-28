@@ -67,7 +67,7 @@ $!result.Detail.TrackerString
       <td class="caption">$l10n.PROJECT_START_PLAN_DATE</td>
 #ALtditemheader()
 #if($!{result.Detail.StartPlanDate.toString()} != "")
-$!{result.Detail.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.StartPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.StartPlanDate.DayOfWeek}
+$!{result.Detail.StartPlanDate.getFormattedYearDate()}
 #end
 #ALtditemfooter()
 
@@ -78,7 +78,7 @@ $!result.Detail.StatusString
       <td class="caption">$l10n.PROJECT_END_PLAN_DATE</td>
 #ALtditemheader()
 #if($!{result.Detail.EndPlanDate.toString()} != "")
-$!{result.Detail.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.EndPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.EndPlanDate.DayOfWeek}
+$!{result.Detail.EndPlanDate.getFormattedYearDate()}
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.PROJECT_PRIORITY)

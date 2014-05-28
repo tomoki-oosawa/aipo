@@ -142,13 +142,13 @@
         		#ALtdcellAtt("$!{record.Workload}h" 'class="center mb_hide" nowrap="nowrap"')
         		#ALtdcellAtt("$!{record.PlanWorkload}h" 'class="center mb_hide" nowrap="nowrap"')
 				#if($!{record.StartPlanDate.toString()} != "")
-				#set ($StartPlanDate = "$!{record.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.StartPlanDate.Day}${l10n.PROJECT_DATE}")
+				#set ($StartPlanDate = "$!{record.StartPlanDate.getFormattedYearDate()}")
 				#else
 				#set ($StartPlanDate = "")
 				#end
         		#ALtdcellAtt("$StartPlanDate" 'class="mb_hide" nowrap="nowrap"')
 				#if($!{record.EndPlanDate.toString()} != "")
-				#set ($EndPlanDate = "$!{record.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.EndPlanDate.Day}${l10n.PROJECT_DATE}")
+				#set ($EndPlanDate = "$!{record.EndPlanDate.getFormattedYearDate()}")
 				#else
 				#set ($EndPlanDate = "")
 				#end

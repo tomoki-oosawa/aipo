@@ -51,7 +51,7 @@ function swapRadio(id) {
 #if($hasMember && $!{result.Detail.isRepeat()})
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
 <input id="radio_3" name="del_flag" type="radio" value="3" checked="checked">
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+自分の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
 <input id="radio_2" name="del_flag" type="radio" value="2">
@@ -59,7 +59,7 @@ function swapRadio(id) {
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_1');return false;">
 <input id="radio_1" name="del_flag" type="radio" value="1">
-参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+参加ユーザー全員の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
@@ -77,7 +77,7 @@ function swapRadio(id) {
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
 <input id="radio_3" name="del_flag" type="radio" value="3" checked="checked">
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+自分の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
 <input id="radio_2" name="del_flag" type="radio" value="2">
@@ -94,7 +94,7 @@ function swapRadio(id) {
 #if($hasMember && $!{result.Detail.isRepeat()})
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
 <input id="radio_3" name="del_flag" type="radio" value="3" checked="checked">
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+自分の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
 <input id="radio_2" name="del_flag" type="radio" value="2">
@@ -102,7 +102,7 @@ function swapRadio(id) {
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_1');return false;">
 <input id="radio_1" name="del_flag" type="radio" value="1">
-参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+参加ユーザー全員の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
@@ -120,7 +120,7 @@ function swapRadio(id) {
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
 <input id="radio_3" name="del_flag" type="radio" value="3" checked="checked">
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+自分の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
 <input id="radio_2" name="del_flag" type="radio" value="2">
@@ -136,7 +136,7 @@ function swapRadio(id) {
 #if($!{result.Detail.isRepeat()})
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
 <input id="radio_3" name="del_flag" type="radio" value="3" checked="checked">
-自分の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+自分の $!{result.ViewDate.getFormattedYearDate()} の予定のみ
 </a></li>
 <li><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
 <input id="radio_2" name="del_flag" type="radio" value="2">
