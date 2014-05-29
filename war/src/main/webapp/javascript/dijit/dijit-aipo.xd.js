@@ -5822,7 +5822,7 @@ dojo.declare(
 					}
 					// this key is for the disabled document window
 					if(evt.keyCode != dojo.keys.TAB){ // allow tabbing into the dialog for a11y
-						dojo.stopEvent(evt);
+						//dojo.stopEvent(evt);
 					// opera won't tab to a div
 					}else if (!dojo.isOpera){
 						try{

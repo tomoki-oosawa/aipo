@@ -114,7 +114,7 @@ dojo.declare(
 		},
 
 		onLoad: function(){
-			// summary: 
+			// summary:
 			//		when href is specified we need to reposition the dialog after the data is loaded
 			this._position();
 			this.inherited("onLoad",arguments);
@@ -173,7 +173,7 @@ dojo.declare(
 
 		_position: function(){
 			// summary: position modal dialog in center of screen
-			
+
 			if(dojo.hasClass(dojo.body(),"dojoMove")){ return; }
 			var viewport = dijit.getViewport();
 			var mb = dojo.marginBox(this.domNode);
@@ -212,7 +212,7 @@ dojo.declare(
 					while(node){
 						if(node == this.domNode){
 							if(evt.keyCode == dojo.keys.ESCAPE){
-								this.hide(); 
+								this.hide();
 							}else{
 								return; // just let it go
 							}
@@ -221,7 +221,7 @@ dojo.declare(
 					}
 					// this key is for the disabled document window
 					if(evt.keyCode != dojo.keys.TAB){ // allow tabbing into the dialog for a11y
-						dojo.stopEvent(evt);
+						//dojo.stopEvent(evt);
 					// opera won't tab to a div
 					}else if (!dojo.isOpera){
 						try{
@@ -235,7 +235,7 @@ dojo.declare(
 		show: function(){
 			// summary: display the dialog
 
-			// first time we show the dialog, there's some initialization stuff to do			
+			// first time we show the dialog, there's some initialization stuff to do
 			if(!this._alreadyInitialized){
 				this._setup();
 				this._alreadyInitialized=true;
@@ -273,7 +273,7 @@ dojo.declare(
 			// summary
 			//		Hide the dialog
 
-			// if we haven't been initialized yet then we aren't showing and we can just return		
+			// if we haven't been initialized yet then we aren't showing and we can just return
 			if(!this._alreadyInitialized){
 				return;
 			}
@@ -372,7 +372,7 @@ dojo.declare(
 			}
 			this.containerNode.focus();
 		}
-	}	
+	}
 );
 
 
