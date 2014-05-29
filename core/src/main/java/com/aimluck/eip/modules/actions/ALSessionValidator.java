@@ -62,6 +62,7 @@ import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -458,6 +459,10 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       context.put("rpctoken", rpctoken);
       context.put("checkUrl", checkUrl);
       context.put("st", gadgetContext.getSecureToken());
+      context.put("hasAuthorityCustomize", ALEipUtils.getHasAuthority(
+        data,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE));
 
       try {
         context.put("tutorialForbid", false);
