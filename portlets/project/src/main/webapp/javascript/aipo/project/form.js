@@ -687,13 +687,13 @@ aipo.project.changeProjectMember = function (url, params) {
     var selectList = dojo.query("select.sys-taskmember");
     selectList.forEach(
       function (select) {
-        for (var i = select.options.length; 0 < select.options.length; i--) {
+        for (var i = select.options.length; 0 < select.options.length-1; i--) {
           select.options.remove(i - 1);
         }
       }
     );
 
-    var count = 0;
+    var count = 1;
     var jsonstring = data.type.substr(2, data.type.length - 4);
     var jsonObj = dojo.fromJson(jsonstring);
 
