@@ -163,7 +163,7 @@ public class CabinetSelectData extends
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
-      } else if (table_colum_num == 4) {
+      } else if (table_colum_num == 2 || table_colum_num == 4) {
         String id =
           ALEipUtils
             .getPortlet(rundata, context)
@@ -376,17 +376,39 @@ public class CabinetSelectData extends
     }
 
     if (!(post_name.equals("") || post_name.equals("0"))) {
-      HashSet<Integer> userIds = new HashSet<Integer>();
-      List<Integer> userId = ALEipUtils.getUserIds(post_name);
-      if (userId.isEmpty()) {
-        userId.add(-1);
+      boolean existPost = false;
+      for (int i = 0; i < myGroupList.size(); i++) {
+        String pid = myGroupList.get(i).getName().toString();
+        if (pid.equals(post_name)) {
+          existPost = true;
+          break;
+        }
       }
-      userIds.addAll(userId);
-      Expression exp =
-        ExpressionFactory.inExp(
-          EipTCabinetFile.CREATE_USER_ID_PROPERTY,
-          userIds);
-      query.andQualifier(exp);
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+        String pid = item.getValue().getGroupName().toString();
+        if (pid.equals(post_name)) {
+          existPost = true;
+          break;
+        }
+      }
+
+      if (existPost) {
+        HashSet<Integer> userIds = new HashSet<Integer>();
+        List<Integer> userId = ALEipUtils.getUserIds(post_name);
+        if (userId.isEmpty()) {
+          userId.add(-1);
+        }
+        userIds.addAll(userId);
+        Expression exp =
+          ExpressionFactory.inExp(
+            EipTCabinetFile.CREATE_USER_ID_PROPERTY,
+            userIds);
+        query.andQualifier(exp);
+      } else {
+        post_name = "0";
+        updatePostNames();
+      }
     }
 
     query.distinct(true);
