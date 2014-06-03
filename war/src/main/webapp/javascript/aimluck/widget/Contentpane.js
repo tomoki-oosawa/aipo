@@ -39,8 +39,10 @@ dojo.declare(
         params: new Array(),
         reloadIds: new Array(),
 		viewPage: function(href){
-			this.href = href;
-		    return this._prepareLoad(true);
+			if(!this._xhrDfd){
+				this.href = href;
+				return this._prepareLoad(true);
+			}
 		},
         setParam: function(key, value) {
             this.params[key] = value;
