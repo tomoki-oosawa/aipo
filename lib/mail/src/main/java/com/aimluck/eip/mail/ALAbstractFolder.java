@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -221,6 +222,18 @@ public abstract class ALAbstractFolder implements ALFolder {
       if (personAddress != null && personAddress.length > 0) {
         InternetAddress iaddress = (InternetAddress) personAddress[0];
         String personaladdr = iaddress.toString();
+
+        if (personaladdr.indexOf("=?") != -1) {
+          // 宛先の名前が指定されている時
+          String charsetName =
+            personaladdr.substring(personaladdr.indexOf("=?") + 2, personaladdr
+              .indexOf("?", 2));
+          if (!Charset.isSupported(charsetName)) {
+            // 名前に使われているCharsetがサポートされていなければ、メールアドレス部分だけをデコードする
+            personaladdr = personaladdr.substring(personaladdr.indexOf("<"));
+          }
+        }
+
         personaladdr = MimeUtility.decodeText(personaladdr);
         if (personAddress.length > 1) {
           personaladdr += "，...";
