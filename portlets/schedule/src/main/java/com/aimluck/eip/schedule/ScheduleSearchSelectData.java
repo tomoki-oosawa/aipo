@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -38,6 +39,9 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -56,6 +60,9 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private final ALStringField target_keyword = new ALStringField();
 
   private int userid;
+
+  /** 閲覧権限の有無 */
+  private boolean hasAclviewOther;
 
   /** 内容 */
   private ALStringField description;
@@ -77,6 +84,18 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
     userid = ALEipUtils.getUserId(rundata);
 
+    // アクセスコントロール
+    int loginUserId = ALEipUtils.getUserId(rundata);
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    hasAclviewOther =
+      aclhandler.hasAuthority(
+        loginUserId,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
   }
 
   @Override
@@ -170,6 +189,10 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       }
 
       boolean is_member = record.isMember();
+
+      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+        return rd;
+      }
 
       if ("C".equals(record.getPublicFlag())
         && (userid != record.getOwnerId().intValue())
