@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -796,7 +797,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3655,6 +3656,24 @@ public class ScheduleUtils {
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
       boolean isSearch, boolean isiCal) {
+    return getScheduleList(
+      userId,
+      viewStart,
+      viewEnd,
+      users,
+      facilities,
+      keyword,
+      page,
+      limit,
+      isSearch,
+      isiCal,
+      true);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
+      Date viewStart, Date viewEnd, List<Integer> users,
+      List<Integer> facilities, String keyword, int page, int limit,
+      boolean isSearch, boolean isiCal, boolean hasAclviewOther) {
 
     StringBuilder select = new StringBuilder();
 
@@ -3704,6 +3723,13 @@ public class ScheduleUtils {
         .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.note LIKE #bind($keyword) OR eip_t_schedule.place LIKE #bind($keyword) ");
       body.append(" ) ");
 
+    }
+
+    if (!hasAclviewOther) {
+      // 他の人のスケジュールの一覧表示権限がない場合
+      body.append(" AND (eip_t_schedule_map.user_id =");
+      body.append(userId);
+      body.append(")");
     }
 
     if ((users != null && users.size() > 0)
@@ -3828,6 +3854,7 @@ public class ScheduleUtils {
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
+    HashSet<Integer> schedule_idHash = new HashSet<Integer>();
 
     List<VEipTScheduleList> list = new ArrayList<VEipTScheduleList>();
     for (DataRow row : fetchList) {
@@ -3839,8 +3866,15 @@ public class ScheduleUtils {
       object.setMember(is_member.intValue() > 0);
       object.setUserCount(u_count.intValue());
       object.setFacilityCount(f_count.intValue());
-      list.add(object);
-
+      if (isSearch) {
+        // キーワード検索の時は、同じ予定は追加しない
+        Integer schedule_idForHash = (Integer) row.get("schedule_id");
+        if (schedule_idHash.add(schedule_idForHash)) {
+          list.add(object);
+        }
+      } else {
+        list.add(object);
+      }
     }
 
     if (page > 0 && limit > 0) {

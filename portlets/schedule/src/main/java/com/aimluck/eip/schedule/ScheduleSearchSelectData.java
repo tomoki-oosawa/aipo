@@ -168,7 +168,8 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       getCurrentPage(),
       getRowsNum(),
       true,
-      false);
+      false,
+      hasAclviewOther);
   }
 
   /**
@@ -191,7 +192,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       boolean is_member = record.isMember();
 
       if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
-        return rd;
+        return null;
       }
 
       if ("C".equals(record.getPublicFlag())
