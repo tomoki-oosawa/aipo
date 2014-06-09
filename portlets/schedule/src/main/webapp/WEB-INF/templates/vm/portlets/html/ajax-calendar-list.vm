@@ -24,7 +24,7 @@
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-     ptConfig['$!portlet.ID'] = { group:"schedule", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage };
+     ptConfig['$!portlet.ID'] = { group:"schedule", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage, xhrUrl:"" };
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
