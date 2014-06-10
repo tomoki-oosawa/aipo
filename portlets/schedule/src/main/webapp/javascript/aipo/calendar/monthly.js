@@ -66,8 +66,8 @@ aipo.calendar.initMonthlyCalendar = function(portlet_id,json_url,oneday_link,mon
 
 	// 表示するデータをAjaxで取得
 
-    if(ptConfig[mc_data.portlet_id].xhrUrl != url){
-        ptConfig[mc_data.portlet_id].xhrUrl = url;
+    if(ptConfig[mc_data.portlet_id].xhrUrl != json_url){
+        ptConfig[mc_data.portlet_id].xhrUrl = json_url;
 	    dojo.xhrGet({
 	        portletId: mc_data.portlet_id,
 	        url: json_url,
@@ -103,8 +103,8 @@ aipo.calendar.createMonthlyCalendar = function(json_url){
 
 	// 表示するデータをAjaxで取得
 	var mc_data = aipo.calendar.monthly_calendar_data;
-    if(ptConfig[mc_data.portlet_id].xhrUrl != url){
-        ptConfig[mc_data.portlet_id].xhrUrl = url;
+    if(ptConfig[mc_data.portlet_id].xhrUrl != json_url){
+        ptConfig[mc_data.portlet_id].xhrUrl = json_url;
 	    dojo.xhrGet({
 	        portletId: mc_data.portlet_id,
 	        url: json_url,
