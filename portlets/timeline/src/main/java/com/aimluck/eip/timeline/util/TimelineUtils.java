@@ -932,6 +932,7 @@ public class TimelineUtils {
 
       NodeList nodeListImage = document.getElementsByTagName("img");
       List<String> images = new ArrayList<String>();
+
       for (int i = 0; i < nodeListImage.getLength(); i++) {
         Element element = (Element) nodeListImage.item(i);
         String src = element.getAttribute("src");
@@ -953,6 +954,19 @@ public class TimelineUtils {
         }
       }
       tub.setImages(images);
+
+      NodeList nodeListProperty = document.getElementsByTagName("meta");
+      for (int i = 0; i < nodeListProperty.getLength(); i++) {
+        Element element = (Element) nodeListProperty.item(i);
+        String property = element.getAttribute("property");
+        if (property.equals("og:image")) {
+          String ogimage = element.getAttribute("content");
+          if (ogimage != null) {
+            images.add(0, ogimage);
+            break;
+          }
+        }
+      }
 
       NodeList nodeListTitle = document.getElementsByTagName("title");
       for (int i = 0; i < nodeListTitle.getLength(); i++) {
