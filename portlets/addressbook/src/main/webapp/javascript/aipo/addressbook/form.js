@@ -115,6 +115,7 @@ aipo.addressbook.onSubmitSerchButton = function(form,url,portlet_id,tab,indicato
      }
 
      var search_params = [["sword",form.sword.value],["tab",tab],["mode",form.mode.value]];
+     aimluck.io.disableForm(form, true);
      aipo.viewPage(exec_url, portlet_id, search_params);
 
 }
