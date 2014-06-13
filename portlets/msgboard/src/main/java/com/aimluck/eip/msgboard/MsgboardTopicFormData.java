@@ -552,7 +552,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         Database.create(EipTMsgboardCategoryMap.class);
       map.setEipTMsgboardCategory(category);
       map.setUserId(Integer.valueOf(userid));
-      map.setStatus(MsgboardUtils.STAT_VALUE_OWNER);
+      map.setStatus(MsgboardUtils.STAT_VALUE_ALL);
 
       Database.commit();
 
