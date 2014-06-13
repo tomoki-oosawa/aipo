@@ -43,6 +43,8 @@ dojo.declare("aipo.widget.ActivityList", [dijit._Widget, dijit._Templated], {
     	}
     	if(window.webkitNotifications) {
             content.viewPage("?template=ActivityListScreen&s=1&p=" + window.webkitNotifications.checkPermission());
+     	} else if(window.Notification){
+    		content.viewPage("?template=ActivityListScreen&s=1&p=" + window.Notification.permission);
      	} else {
             content.viewPage("?template=ActivityListScreen&s=0");
         }

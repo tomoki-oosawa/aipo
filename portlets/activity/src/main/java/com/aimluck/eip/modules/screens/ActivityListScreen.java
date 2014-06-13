@@ -55,7 +55,8 @@ public class ActivityListScreen extends ALVelocityScreen {
       String support = rundata.getParameters().getString("s");
       context.put("notifySupport", "1".equals(support));
       String permission = rundata.getParameters().getString("p");
-      context.put("notifyPermission", "0".equals(permission));
+      context.put("notifyPermission", "0".equals(permission)
+        || "granted".equals(permission));
 
       ActivitySelectData listData = new ActivitySelectData();
       listData.initField();
