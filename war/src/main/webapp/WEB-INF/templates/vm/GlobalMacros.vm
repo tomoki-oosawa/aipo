@@ -1768,8 +1768,8 @@ $!{text}
 	<input class="text floatLeft long" type="text" id="$id" name="$name" value="$value" $option/>
 #end
 
-#macro(AUIButtonSearch $onclick $text)
-	<a href="javascript:void(0)" class="auiButtonSearch floatLeft" onclick="$onclick">$text</a>
+#macro(AUIButtonSearch $text)
+	<input type="submit" class="auiButtonSearch floatLeft" value="$text"/>
 #end
 
 #macro(AUISearchIndicator)

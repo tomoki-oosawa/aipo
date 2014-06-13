@@ -56,7 +56,7 @@
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.msgboard.initFilterSearch("$!portlet.ID");' onblur='aipo.msgboard.finFilterSearch("$!portlet.ID");' />
 </div>
 
-#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;" "$l10n.MSGBOARD_SEARCH")
+#AUIButtonSearch("$l10n.MSGBOARD_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
