@@ -180,26 +180,42 @@ aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
 
     var url = "?template=ActivityNotifyEnableJSONScreen";
     if (aipo.activityDesktopNotifyEnable != null) {
-        if (!aipo.activityDesktopNotifyEnable || (window.webkitNotifications && window.webkitNotifications.checkPermission() != 0)) {
-            window.webkitNotifications.requestPermission(function() {
-                if (window.webkitNotifications.checkPermission() == 0) {
-                    url += "&enable=T";
-                    gadgets.io.makeNonProxiedRequest(url,
-                            handleJSONResponse,
-                            makeRequestParams,
-                            "application/javascript");
-                }
-            });
-        } else  if (!aipo.activityDesktopNotifyEnable || (window.Notification && window.Notification.permission != "granted")) {
-            window.Notification.requestPermission(function() {
-                if (window.Notification.permission == "granted") {
-                    url += "&enable=T";
-                    gadgets.io.makeNonProxiedRequest(url,
-                            handleJSONResponse,
-                            makeRequestParams,
-                            "application/javascript");
-                }
-            });
+        if (window.webkitNotifications && (!aipo.activityDesktopNotifyEnable || window.webkitNotifications.checkPermission() != 0)) {
+        	if(window.webkitNotifications.checkPermission() == 0) {
+                url += "&enable=T";
+                gadgets.io.makeNonProxiedRequest(url,
+                        handleJSONResponse,
+                        makeRequestParams,
+                        "application/javascript");
+        	} else {
+        		window.webkitNotifications.requestPermission(function() {
+        			if (window.webkitNotifications.checkPermission() == 0) {
+        				url += "&enable=T";
+        				gadgets.io.makeNonProxiedRequest(url,
+        						handleJSONResponse,
+        						makeRequestParams,
+        					"application/javascript");
+        			}
+        		});
+        	}
+        } else  if (window.Notification && (!aipo.activityDesktopNotifyEnable || window.Notification.permission != "granted")) {
+        	if(window.Notification.permission == "granted") {
+                url += "&enable=T";
+                gadgets.io.makeNonProxiedRequest(url,
+                        handleJSONResponse,
+                        makeRequestParams,
+                        "application/javascript");
+        	} else {
+        		window.Notification.requestPermission(function() {
+        			if (window.Notification.permission == "granted") {
+        				url += "&enable=T";
+        				gadgets.io.makeNonProxiedRequest(url,
+        						handleJSONResponse,
+        						makeRequestParams,
+        						"application/javascript");
+        			}
+        		});
+        	}
         } else {
             url += "&enable=F";
             gadgets.io.makeNonProxiedRequest(url,
@@ -294,7 +310,6 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
                             icon: 'images/favicon48.png',
                             body: activity.text
                             });
-            			popup.show();
             			popup.ondisplay = function(event) {
             				setTimeout(function() {
             					event.currentTarget.close();
