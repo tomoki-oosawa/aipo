@@ -94,10 +94,12 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicNameHtml #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
+<div>
 #if($!record.CategoryId.toString() != "1" && ! $!record.Public)
-#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
-#end</div>
+#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")&nbsp;
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
 #ALtdcellAtt("<div>$!record.OwnerNameHtml</div>" '')
@@ -116,10 +118,12 @@
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
-<div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicNameHtml #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
+<div>
 #if($!record.CategoryId.toString() != "1" && ! $!record.Public)
-#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
-#end</div>
+#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")&nbsp;
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))', '$!portlet.ID', aipo.msgboard.onLoadMsgboardDetail);">$!record.TopicName #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
+</div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
