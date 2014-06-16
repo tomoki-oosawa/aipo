@@ -259,7 +259,7 @@ public class TimelineResultData implements ALData {
       }
     } else {
       if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(timeline_type)) {
-        return note.getValue();
+        return note.toString();
       } else {
         return getNote();
       }
