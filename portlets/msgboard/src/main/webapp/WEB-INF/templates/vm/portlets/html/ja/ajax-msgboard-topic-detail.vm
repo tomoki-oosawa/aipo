@@ -29,12 +29,8 @@
 <div id="messageDiv_$!portlet.ID"></div>
 #ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
-	#if(! $!{result.ParentTopic.isPublic()})
-		#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
-	#end
-##&gt;&nbsp;$!{result.ParentTopic.TopicName}
 	<caption>
-	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryNameHtml</span>$!{result.ParentTopic.TopicNameHtml}
+	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryNameHtml#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")#end</span>$!{result.ParentTopic.TopicNameHtml}
 	</caption>
 		<tbody>
 			<tr>
