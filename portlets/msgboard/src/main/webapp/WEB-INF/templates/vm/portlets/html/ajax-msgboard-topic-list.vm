@@ -87,10 +87,10 @@
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')
 <div>
-$!record.CategoryName
 #if(! ${record.isPublic()})
 #AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
 #end
+$!record.CategoryName
 </div>
 </td>
 #ALtdcellAtt("$!{record.OwnerName}" 'class="mb_hide" nowrap="nowrap"')
