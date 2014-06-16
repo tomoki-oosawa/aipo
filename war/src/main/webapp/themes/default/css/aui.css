@@ -1201,29 +1201,62 @@ img.avatar,
   background: url(../images/login_btn_back.png) 0px -100px no-repeat !important;
 }
 
+/***************************************************
+	alert
+--------------------------------------------------*/
 .loginAlert,
 .alert {
   margin: 10px 0;
   padding: 10px;
   background: #ffcccc;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
   -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 1s;
+}
+.loginAlert .alertTool,
+.alert .alertTool {
+  float: right;
+}
+.loginAlert .alertTool a i,
+.alert .alertTool a i {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  text-decoration: none;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+.loginAlert .alertHead,
+.alert .alertHead {
+  border-bottom: solid 1px #d2d2d2;
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  line-height: 20px;
+}
+.roundMainWrapper > .loginAlert, .roundMainWrapper >
+.alert {
+  margin: 10px 5px 0 5px;
 }
 
 .alertSuccess {
   margin: 10px 0;
   padding: 10px;
   background: #f0f0f0;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
 }
 
 /***************************************************

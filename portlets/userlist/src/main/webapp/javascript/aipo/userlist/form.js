@@ -115,6 +115,7 @@ aipo.userlist.onSubmitSearchButton = function(form,url,p_id,tab,indicator_id){
      }
 
      var search_params = [["sword",form.sword.value],["tab",tab],["mode",form.mode.value]];
+     aimluck.io.disableForm(form, true);
      aipo.viewPage(exec_url, p_id, search_params);
 
 

@@ -188,6 +188,13 @@ public class ToDoResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALStringField getTodoNameString() {
+    return todo_name;
+  }
+
+  /**
    * @param i
    */
   public void setCategoryId(long i) {

@@ -7,3 +7,6 @@
 #macro(ALMessage)
 ##
 #end
+#macro(ALMaintenance)
+##
+#end

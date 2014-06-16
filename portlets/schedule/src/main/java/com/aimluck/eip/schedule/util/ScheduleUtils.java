@@ -3659,13 +3659,14 @@ public class ScheduleUtils {
     StringBuilder select = new StringBuilder();
 
     select.append("select");
-    if (isSearch) {
+    if (!isSearch) {
+      select.append(" eip_t_schedule_map.id, ");
+      select.append(" eip_t_schedule_map.user_id,");
+      select.append(" eip_t_schedule_map.status,");
+      select.append(" eip_t_schedule_map.type,");
+    } else {
       select.append(" distinct");
     }
-    select.append(" eip_t_schedule_map.id, ");
-    select.append(" eip_t_schedule_map.user_id,");
-    select.append(" eip_t_schedule_map.status,");
-    select.append(" eip_t_schedule_map.type,");
 
     select.append(" eip_t_schedule.schedule_id,");
     select.append(" eip_t_schedule_map.common_category_id,");
@@ -3774,6 +3775,7 @@ public class ScheduleUtils {
       body.append(" OR ( eip_t_schedule.owner_id = #bind($user_id)))");
       body.append(" AND (eip_t_schedule_map.status <> 'D')");
     }
+    body.append(" AND (eip_t_schedule_map.status <> 'R')");
 
     StringBuilder last = new StringBuilder();
 
@@ -3791,7 +3793,6 @@ public class ScheduleUtils {
     if (hasKeyword) {
       countQuery.param("keyword", "%" + keyword + "%");
     }
-
     int countValue = 0;
     if (page > 0 && limit > 0) {
       List<DataRow> fetchCount = countQuery.fetchListAsDataRow();

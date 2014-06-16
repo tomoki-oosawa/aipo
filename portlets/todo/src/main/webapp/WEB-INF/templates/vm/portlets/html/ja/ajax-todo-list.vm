@@ -57,7 +57,7 @@
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
-#AUIButtonSearch("dojo.byId('searchForm_$!portlet.ID').onsubmit();" "$l10n.TODO_SEARCH")
+#AUIButtonSearch("$l10n.TODO_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
@@ -113,9 +113,9 @@
 #ALtdcellheaderAtt('class="auiMTCaption"')
 <div>
 #if(! $!record.Public)
-#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")&nbsp;
+#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")
 #end
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoNameString</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UserName</div>" "")
