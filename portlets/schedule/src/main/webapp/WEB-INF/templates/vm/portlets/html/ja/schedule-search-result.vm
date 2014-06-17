@@ -28,9 +28,9 @@
 		    #foreach( $record in $result.MyGroupList )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch",$!{record.Name.toString()}).addQueryData("target_user_id_at_serch","all"))" #if("$!result.TargetGroupName" == "$!record.Name.toString()") selected="selected" #end>$!record.AliasName</option>
 		    #end
-        #if($result.PostMap.size() > 0)
+        #if($result.PostMap.size() && ($result.PostMap.size() > 0))
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch","all").addQueryData("target_user_id_at_serch", "all"))">----------</option>
-		    #end
+		#end
         #foreach( $record in $result.PostMap )
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name_at_serch",$!{record.GroupName.toString()}).addQueryData("target_user_id_at_serch", "all"))" #if("$!result.TargetGroupName" == "$!record.GroupName.toString()") selected="selected" #end>$!record.PostName</option>
         #end
