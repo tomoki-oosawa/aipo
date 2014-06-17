@@ -79,10 +79,6 @@ public class ScheduleiCalSelectData extends ScheduleSearchSelectData {
       endDate,
       tmpUsers,
       tmpFacilities,
-      null,
-      -1,
-      -1,
-      false,
       true);
   }
 
