@@ -123,8 +123,8 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
             item.setUpdateDate(now);
           }
         }
-        Database.commit();
       }
+      Database.commit();
     } catch (Exception ex) {
       Database.rollback();
       logger.error("exttimecard", ex);
