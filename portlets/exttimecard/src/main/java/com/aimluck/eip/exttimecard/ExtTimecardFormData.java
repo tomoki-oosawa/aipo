@@ -1088,6 +1088,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         super.doInsert(action, rundata, context);
       }
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("exttimecard", ex);
       return false;
     }
