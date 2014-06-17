@@ -45,9 +45,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardSystemMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardSystemMultiDelete.class.getName());
 
   /**
    * 
@@ -104,26 +103,31 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
   }
 
   private void setAllTimecardMapDefault(EipTExtTimecardSystem work) {
-    Expression exp1 =
-      ExpressionFactory.matchExp(
-        EipTExtTimecardSystemMap.EIP_TEXT_TIMECARD_SYSTEM_PROPERTY,
-        work);
-    List<EipTExtTimecardSystemMap> list =
-      Database
-        .query(EipTExtTimecardSystemMap.class)
-        .setQualifier(exp1)
-        .fetchList();
-    if (list.size() > 0) {
-      EipTExtTimecardSystem system =
-        Database.get(EipTExtTimecardSystem.class, 1);
-      if (system != null) {
-        Date now = new Date();
-        for (EipTExtTimecardSystemMap item : list) {
-          item.setEipTExtTimecardSystem(system);
-          item.setUpdateDate(now);
+    try {
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystemMap.EIP_TEXT_TIMECARD_SYSTEM_PROPERTY,
+          work);
+      List<EipTExtTimecardSystemMap> list =
+        Database
+          .query(EipTExtTimecardSystemMap.class)
+          .setQualifier(exp1)
+          .fetchList();
+      if (list.size() > 0) {
+        EipTExtTimecardSystem system =
+          Database.get(EipTExtTimecardSystem.class, 1);
+        if (system != null) {
+          Date now = new Date();
+          for (EipTExtTimecardSystemMap item : list) {
+            item.setEipTExtTimecardSystem(system);
+            item.setUpdateDate(now);
+          }
         }
+        Database.commit();
       }
-      Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("exttimecard", ex);
     }
   }
 }
