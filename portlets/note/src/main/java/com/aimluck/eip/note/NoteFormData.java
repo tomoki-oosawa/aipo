@@ -469,6 +469,7 @@ public class NoteFormData extends ALAbstractFormData {
       NoteUtils.sendNoteActivity(note, user.getName().getValue(), recipients);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("note", ex);
       return false;
     }
