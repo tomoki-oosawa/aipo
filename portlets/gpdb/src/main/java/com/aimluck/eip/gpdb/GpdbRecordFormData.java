@@ -206,7 +206,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
           // 必須チェック
 
           if (value == null || "".equals(value.trim())) {
-            msgList.add("『 " + item.getGpdbItemName() + " 』を入力してください。");
+            msgList.add("『 <span class='em'>"
+              + item.getGpdbItemName()
+              + "</span> 』を入力してください。");
 
           } else if (GpdbUtils.ITEM_TYPE_DATE.equals(type)) {
             // 日付の場合、選択されていなければエラー
@@ -215,7 +217,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
               ALEipUtils.getParameter(rundata, context, field + "_year");
 
             if (dateYear == null || "".equals(dateYear.trim())) {
-              msgList.add("『 " + item.getGpdbItemName() + " 』を入力してください。");
+              msgList.add("『 <span class='em'>"
+                + item.getGpdbItemName()
+                + "</span> 』を入力してください。");
             }
           }
         }
@@ -225,14 +229,18 @@ public class GpdbRecordFormData extends ALAbstractFormData {
           if (value != null
             && value.trim().length() > 0
             && !ALStringUtil.isMailAddress(value)) {
-            msgList.add("『 " + item.getGpdbItemName() + " 』を正しく入力してください。");
+            msgList.add("『 <span class='em'>"
+              + item.getGpdbItemName()
+              + " </span>』を正しく入力してください。");
           }
         } else if (GpdbUtils.ITEM_TYPE_LINK.equals(type)) {
           // リンク
           if (value != null
             && value.trim().length() > 0
             && !GpdbUtils.isUrl(value)) {
-            msgList.add("『 " + item.getGpdbItemName() + " 』を正しく入力してください。");
+            msgList.add("『 <span class='em'>"
+              + item.getGpdbItemName()
+              + "</span> 』を正しく入力してください。");
           }
         }
       }
