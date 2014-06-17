@@ -454,6 +454,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         return false;
       }
     } catch (Exception e) {
+      Database.rollback();
       logger.error("[MsgboardTopicReplyFormData]", e);
       throw new ALDBErrorException();
     }
