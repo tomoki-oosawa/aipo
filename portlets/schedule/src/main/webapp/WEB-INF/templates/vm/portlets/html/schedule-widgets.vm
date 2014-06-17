@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
-#ALjavascript("javascript/aipo/calendar/monthly.js")
 ## ---------------------------------------------------------------------------
 #set ($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new')")
 #set ($indicator_id = "indicator-list-")

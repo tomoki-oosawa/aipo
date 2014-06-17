@@ -21,13 +21,11 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["新着情報一覧", ""]])
 #set ($tabs = [["新着情報","",""]])
 ## ---------------------------------------------------------------------------
-
-#ALjavascript("javascript/aipo/whatsnew/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"whatsnew", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WhatsNewListScreen"))', reloadFunction:aipo.reloadPage };
-	
+
 //]]>
 </script>
 

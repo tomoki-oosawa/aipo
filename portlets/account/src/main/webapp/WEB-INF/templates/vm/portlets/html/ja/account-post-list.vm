@@ -19,7 +19,6 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/account_company/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"account_company", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPostListScreen"))', reloadFunction:aipo.reloadPage };

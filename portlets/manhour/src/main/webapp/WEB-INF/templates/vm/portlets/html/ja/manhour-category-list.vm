@@ -21,7 +21,6 @@
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["共有カテゴリ一覧", ""]])
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/manhour/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

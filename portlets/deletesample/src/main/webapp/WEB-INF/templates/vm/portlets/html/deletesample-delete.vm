@@ -19,7 +19,6 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/deletesample/form.js")
     #set($tabs = [["サンプルデータの削除", "",""]])
     #ALtabheader($tabs "")
 <div style="text-align:center;">

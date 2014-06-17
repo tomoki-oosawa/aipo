@@ -17,12 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aipo/webmail/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-    
+
     dojo.require("aipo.widget.AddressbookDialog");
-    
+
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFolderListScreen"))', reloadFunction:aipo.webmail.reloadMailList };
     aipo.webmail.menuSelected = 1;
 

@@ -20,9 +20,6 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["$l10n.SCHEDULE_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.SCHEDULE_WORKING_ARRANGEMENTS_LIST", ""]])
 ## ---------------------------------------------------------------------------
-
-#ALjavascript("javascript/aipo/schedule_admin/form.js")
-#ALjavascript("javascript/aipo/widget/MemberAclSelectList.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 

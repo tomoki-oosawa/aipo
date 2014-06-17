@@ -19,7 +19,6 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/eventlog/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"eventlog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","EventlogScreen"))', reloadFunction:aipo.reloadPage };

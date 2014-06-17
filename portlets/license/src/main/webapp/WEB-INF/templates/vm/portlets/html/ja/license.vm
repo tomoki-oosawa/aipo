@@ -19,11 +19,10 @@
 
 ## ---------------------------------------------------------------------------
 
-#ALjavascript("javascript/aipo/license/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"license", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","LicenseScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.license.menuSelected = 1;  
+    aipo.license.menuSelected = 1;
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-license.vm")

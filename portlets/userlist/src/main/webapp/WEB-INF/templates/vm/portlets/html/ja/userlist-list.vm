@@ -20,8 +20,6 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [[$l10n.USERLIST_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.USERLIST_ADDRESS_LIST, ""]])
 ## ---------------------------------------------------------------------------
-
-#ALjavascript("javascript/aipo/userlist/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"userlist", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen"))', reloadFunction:aipo.reloadPage };

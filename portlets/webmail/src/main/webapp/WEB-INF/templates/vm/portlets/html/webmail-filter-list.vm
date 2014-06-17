@@ -20,12 +20,11 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [[$l10n.WEBMAIL_TOP, "$!jslink.getAction('controls.Restore',$!portlet.ID)"], [$l10n.WEBMAIL_FILTERLIST, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_filter_list','1')"]])
 ## ---------------------------------------------------------------------------
-#ALjavascript("javascript/aipo/webmail/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-    
+
     dojo.require("aipo.widget.AddressbookDialog");
-    
+
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterListScreen"))', reloadFunction:aipo.webmail.reloadMailList };
     aipo.webmail.menuSelected = 1;
 

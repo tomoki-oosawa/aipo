@@ -20,8 +20,6 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["タイムカード一覧", ""]])
 ## ---------------------------------------------------------------------------
-
-#ALjavascript("javascript/aipo/timecard/form.js")
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
