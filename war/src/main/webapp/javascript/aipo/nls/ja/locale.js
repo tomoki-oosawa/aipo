@@ -75,4 +75,6 @@
 	NEW_INPUT_STR:"\u65b0\u3057\u304f\u5165\u529b\u3059\u308b",
 	// 一覧から選択する
 	SELECT_FROM_LIST_STR:"\u4e00\u89a7\u304b\u3089\u9078\u629e\u3059\u308b"
+	// 閉じる
+	CLOSE_STR:"\u9589\u3058\u308b"
 }
