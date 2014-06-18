@@ -512,6 +512,11 @@ public class WikiFormData extends ALAbstractFormData {
       }
     }
 
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      entityId = null;
+      update_date = null;
+    }
+
     return res;
   }
 
