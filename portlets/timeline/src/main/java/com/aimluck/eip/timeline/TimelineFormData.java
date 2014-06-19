@@ -250,6 +250,8 @@ public class TimelineFormData extends ALAbstractFormData {
               grandpa.setUpdateDate(tCal.getTime());
             }
           }
+        } else {
+          return false;
         }
 
       } else if (ALEipUtils.getParameter(rundata, context, "tlClipUrl") != null
