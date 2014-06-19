@@ -749,6 +749,10 @@ public class WhatsNewUtils {
       }
 
       return rd;
+    } catch (RuntimeException ex) {
+      Database.rollback();
+      logger.error("whatsnew", ex);
+      return null;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("whatsnew", ex);
