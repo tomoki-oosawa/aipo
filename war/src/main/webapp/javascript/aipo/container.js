@@ -304,20 +304,24 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             		}
             	}else if(window.Notification && window.Notification.permission == "granted"){
             		var popups = new Array();
+            		var userAgent = window.navigator.userAgent.toLowerCase();
             		for (key in data.activities) {
             			var activity = data.activities[key];
             			var popup = new window.Notification( activity.displayName, {
                             icon: 'images/favicon48.png',
                             body: activity.text
                             });
-            			popup.ondisplay = function(event) {
-            				setTimeout(function() {
-            					event.currentTarget.close();
-            				}, 7 * 1000);
-            			}
             			popups.push(popup);
             		}
 
+            		 if (userAgent.indexOf("chrome") > -1){
+            		setTimeout(function() {
+            			for (var i=0; i< popups.length; i ++) {
+            				var p=popups[i];
+            			    	p.close();
+            		}
+            		},10000);
+            		 }
             	}
             }
         }
