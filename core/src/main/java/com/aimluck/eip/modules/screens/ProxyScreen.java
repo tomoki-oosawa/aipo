@@ -22,6 +22,7 @@ package com.aimluck.eip.modules.screens;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,13 @@ public class ProxyScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProxyScreen.class.getName());
+
+  /** User-Agent */
+  public static final String USER_AGENT =
+    "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0; Avant Browser)";
+
+  /** Accept-Encoding */
+  public static final String ACCEPT_ENCODING = "identity";
 
   /**
    * 
@@ -72,7 +80,10 @@ public class ProxyScreen extends ALVelocityScreen {
         uri.getAuthority(),
         path));
 
-    InputStream in = url.openStream();
+    URLConnection urlCon = url.openConnection();
+    urlCon.addRequestProperty("User-agent", USER_AGENT);
+    urlCon.addRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+    InputStream in = urlCon.getInputStream();
     ServletOutputStream out = null;
     HttpServletResponse response = rundata.getResponse();
     out = response.getOutputStream();
