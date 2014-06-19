@@ -3644,7 +3644,7 @@ public class ScheduleUtils {
       null,
       users,
       facilities,
-      null,
+      keyword,
       page,
       limit,
       true,
