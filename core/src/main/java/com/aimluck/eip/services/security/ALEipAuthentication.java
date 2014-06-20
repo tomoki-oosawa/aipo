@@ -90,6 +90,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     ALBaseUser baseUser = (ALBaseUser) user;
     if (cellular_uid == null
       || cellular_uid.length() == 0
+      || baseUser == null
       || !cellular_uid.equals(baseUser.getCelluarUId())) {
       logger.error("Invalid cellular uid for user: " + username);
       throw new UnknownUserException(
