@@ -38,8 +38,5 @@
     [e-mail : <A Href="mailto:$config.getString("support.mail")">$config.getString("support.mail")</A> ]
 	#end
 	</div>
-	#ALbuttonheader()
-	#ALajaxbuttonClose()
-	#ALbuttonfooter()
 </div>
 
