@@ -37,7 +37,7 @@
 #end
 #if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
-#AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+#AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))" "aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookCompanyListScreen').addQueryData('mode','ajaxsearch'))','$!portlet.ID','$!result.currentTab','search-${indicator_id}'); return false;")
 <input name="mode" type="hidden" value="ajaxsearch" />
 #AUISearchInput("sword" "sword" "$!result.searchWord" "maxlength='100' style='margin-right:5px;ime-mode:active'")
 #AUIButtonSearch("$l10n.ADDRESSBOOK_SEARCH")
