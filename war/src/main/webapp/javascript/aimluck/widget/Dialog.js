@@ -81,7 +81,7 @@ dojo.declare(
     {
     	//読み込み中...
         loadingMessage:"<div class='auiPopup indicatorDialog center'><i class='auiIcon auiIconIndicator'></i> "+nlsStrings.LOADING_STR+"</div>",
-    	errorMessage: "<div class='auiPopup indicatorDialog center'>${errorState}</div>",
+    	errorMessage: "<div class='auiPopup indicatorDialog center'><div class='clearfix'><div class='auiPopupTool'><a href='javascript:void(0)' class='auiButtonIcon' title="+nlsStrings.CLOSE_STR+" onClick='aipo.common.hideDialog();'><span><i class='icon-remove'></i></span></a></div><div class='auiWLCaption'>${errorState}</div></div></div>",
     	templateString:null,
         templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",//<div dojoAttachPoint=\"titleBar\" class=\"modalDialogTitleBar\" tabindex=\"0\" waiRole=\"dialog\">&nbsp;</div>
         duration: 10,
