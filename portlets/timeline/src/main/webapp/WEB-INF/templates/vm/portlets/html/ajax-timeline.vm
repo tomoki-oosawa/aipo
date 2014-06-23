@@ -60,7 +60,7 @@
   	#ALajaxIndicatorglay("$indicator_id" "$!portlet.ID" "&nbsp;")
     <span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
     <span id="getTimelineOnClick" style="display:none;"></span>
-	<input type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
+	<input type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="this.classList.remove('auiButtonAction');aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
   </div>
   <div class="floatLeft mr10 #if(!$result.isFileUploadable())mb_hide#end">
     #IFFileUpload()
