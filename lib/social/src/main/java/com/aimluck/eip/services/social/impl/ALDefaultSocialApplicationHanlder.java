@@ -412,7 +412,7 @@ public class ALDefaultSocialApplicationHanlder extends
       }
       return status.intValue() == 1;
     } catch (Throwable t) {
-      logger.warn("[ALDefaultSocialApplicationHanlder]", t);
+      // logger.warn("[ALDefaultSocialApplicationHanlder]", t);
       return false;
     }
   }
