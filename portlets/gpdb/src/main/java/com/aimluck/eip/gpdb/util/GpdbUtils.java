@@ -808,8 +808,13 @@ public class GpdbUtils {
           SimpleDateFormat sdf_show =
             new SimpleDateFormat(ALLocalizationUtils
               .getl10n("GPDB_DATE_FORMAT_SHOW"));
-          Date date = sdf_data.parse(value);
-          value = sdf_show.format(date);
+          String tmpValue = value;
+          try {
+            Date date = sdf_data.parse(value);
+            value = sdf_show.format(date);
+          } catch (Exception e) {
+            value = tmpValue;
+          }
         } else if (ITEM_TYPE_CREATE_DATE.equals(type)
           || ITEM_TYPE_UPDATE_DATE.equals(type)) {
           // 登録日、更新日の場合、フォーマットを変換する。
@@ -819,8 +824,13 @@ public class GpdbUtils {
           SimpleDateFormat sdf_show =
             new SimpleDateFormat(ALLocalizationUtils
               .getl10n("GPDB_TIMESTAMP_FORMAT_SHOW"));
-          Date date = sdf_data.parse(value);
-          value = sdf_show.format(date);
+          String tmpValue = value;
+          try {
+            Date date = sdf_data.parse(value);
+            value = sdf_show.format(date);
+          } catch (Exception e) {
+            value = tmpValue;
+          }
         }
       }
 
