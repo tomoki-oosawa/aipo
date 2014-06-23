@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
@@ -44,13 +45,6 @@ public class ProxyScreen extends ALVelocityScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProxyScreen.class.getName());
-
-  /** User-Agent */
-  public static final String USER_AGENT =
-    "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0; Avant Browser)";
-
-  /** Accept-Encoding */
-  public static final String ACCEPT_ENCODING = "identity";
 
   /**
    * 
@@ -81,8 +75,10 @@ public class ProxyScreen extends ALVelocityScreen {
         path));
 
     URLConnection urlCon = url.openConnection();
-    urlCon.addRequestProperty("User-agent", USER_AGENT);
-    urlCon.addRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+    urlCon.addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
+    urlCon.addRequestProperty(
+      "Accept-Encoding",
+      ALURLConnectionUtils.ACCEPT_ENCODING);
     InputStream in = urlCon.getInputStream();
     ServletOutputStream out = null;
     HttpServletResponse response = rundata.getResponse();
