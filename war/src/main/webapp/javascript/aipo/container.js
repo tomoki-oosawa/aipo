@@ -310,14 +310,15 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
                             icon: 'images/favicon48.png',
                             body: activity.text
                             });
-            			popup.ondisplay = function(event) {
+            			popup.onshow = function(event) {
             				setTimeout(function() {
-            					event.currentTarget.close();
+            					if(event.currentTarget) {
+            						event.currentTarget.close();
+            					}
             				}, 7 * 1000);
             			}
             			popups.push(popup);
             		}
-
             	}
             }
         }
