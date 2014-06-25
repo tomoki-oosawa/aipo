@@ -168,8 +168,12 @@ public class ScheduleListContainer implements ALData {
       if (!repeat_del) {
         // 繰り返しスケジュールの変更／削除が無い場合
 
-        if (!rd.isDummy() && !rd2.isDummy()) {
-          // ダミースケジュールではないときに
+        if (!rd.isDummy()
+          && !rd2.isDummy()
+          && !rd.getPattern().equals("S")
+          && !rd2.getPattern().equals("S")) {
+          // 終日スケジュール・期間スケジュールではなく、
+          // ダミースケジュールでもないときに
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(
