@@ -1751,7 +1751,15 @@ $!{text}
 #end
 
 
-
+#macro(AUIlinkList $onclick $text $secret_option)
+	<div>
+		<a href="javascript:void(0);" onclick="$onclick">
+	#if($secret_option)
+		<i class="auiIcon auiIconSecret" $secret_option></i>&nbsp;
+	#end
+	$text</a>
+</div>
+#end
 
 
 

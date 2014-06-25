@@ -82,12 +82,13 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 <input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div>
+#set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId).addQueryData('tab','$!result.currentTab'))")
 #if($!record.PublicFlag.toString() == 'F')
-#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")&nbsp;
+#set ($secret_option = "title='$l10n.TODO_CLOSE_PUBLIC'")
+#else
+#set ($secret_option = false)
 #end
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');" >$!record.Name</a>
-</div>
+#AUIlinkList("aipo.common.showDialog('$url');" $result.getStringCR($!record.Name) $secret_option)
 #ALtdcellfooter()
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
