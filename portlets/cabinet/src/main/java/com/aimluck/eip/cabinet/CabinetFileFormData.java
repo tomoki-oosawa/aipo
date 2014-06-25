@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイルフォームデータを管理するクラス <BR>
- *
+ * 
  */
 public class CabinetFileFormData extends ALAbstractFormData {
 
@@ -98,12 +98,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private RunData rundata;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -154,8 +154,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -185,7 +185,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -230,8 +230,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -249,10 +249,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -268,7 +268,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         }
       }
     }
-    if (fileuploadList != null &&fileids.length > 1) {
+    if (fileuploadList != null && fileids.length > 1) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_LAUNCH_MORE"));
     }
     if (ALEipConstants.MODE_UPDATE.equals(getMode()) && fileids == null) {
@@ -291,7 +291,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -329,7 +329,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -383,7 +383,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -453,11 +453,22 @@ public class CabinetFileFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
 
+      EipTCabinetFolder parentFolder;
+      if (Integer.valueOf(folder.getPublicFlag()) == CabinetUtils.ACCESS_PUBLIC_ALL) {
+        Integer parentFolderId =
+          CabinetUtils.getAccessControlFolderId(folder.getFolderId());
+        parentFolder =
+          Database
+            .get(EipTCabinetFolder.class, Integer.valueOf(parentFolderId));
+      } else {
+        parentFolder = folder;
+      }
+
       // アクティビティ
       List<Integer> userIds =
-        CabinetUtils.getWhatsNewInsertList(rundata, folder
+        CabinetUtils.getWhatsNewInsertList(rundata, parentFolder
           .getFolderId()
-          .intValue(), folder.getPublicFlag());
+          .intValue(), parentFolder.getPublicFlag());
 
       // nullなら誰にも公開しない
       if (userIds != null) {
@@ -499,7 +510,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * データベースとファイルシステムに格納されているファイルを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -634,8 +645,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @return
    */
   public ALNumberField getFolderId() {
@@ -644,7 +655,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルタイトルを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileTitle() {
@@ -653,7 +664,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイル名を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileName() {
@@ -662,7 +673,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイル名を取得する(長い名前は折り返す)． <BR>
-   *
+   * 
    * @return
    */
   public String getFileNameHtml() {
@@ -671,7 +682,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルサイズを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getFileSize() {
@@ -680,7 +691,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * メモを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -696,7 +707,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -711,7 +722,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override
