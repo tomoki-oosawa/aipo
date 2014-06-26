@@ -40,7 +40,7 @@
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MemoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.memo.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MemoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.memo.onReceiveMessage")
 </div>
 #AUIajaxpageview('MemoListScreen' $result)
 </div>
@@ -69,7 +69,7 @@
 #ALtablefooter()
 <div class="auiSummaryMeta clearfix">
 	<div class="floatLeft">
-        #AUIajaxbuttonCheckboxDelete('削除する' "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MemoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.memo.onReceiveMessage")
+        #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','MemoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.memo.onReceiveMessage")
     </div>
     #AUIajaxpageview('MemoListScreen' $result)
 </div>

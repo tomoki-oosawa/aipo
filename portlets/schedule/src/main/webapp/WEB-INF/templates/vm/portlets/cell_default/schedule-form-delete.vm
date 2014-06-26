@@ -100,7 +100,7 @@ $l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
 #ALcell_hr($career '1')
-#ALcell_submit($career 'eventSubmit_doSchedule_delete' $l10n.SCHEDULE_DELETE)
+#ALcell_submit($career 'eventSubmit_doSchedule_delete' "$l10n.SCHEDULE_DELETE")
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

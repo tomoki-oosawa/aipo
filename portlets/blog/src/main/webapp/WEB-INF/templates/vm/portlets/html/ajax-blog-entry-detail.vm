@@ -53,7 +53,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','BlogEntryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.blog.onLoadMsgboardDialog")
 #end
 #if($!{result.Deletable})
-#ALbutton("eventSubmit_doBlog_entry_delete" "$l10n.BLOG_DO_DELETE " "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
+#ALbutton("eventSubmit_doBlog_entry_delete" "$l10n.COMMON_DELETE" "aipo.blog.delBlogEntry(this,'$indicator_id','$!{portlet.ID}');")
 #end
 </div>
 </div>
@@ -110,7 +110,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   </div>
   <div class="alignright">
   #if($!{result.OtherCommentDeletable} || ($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!{result.CommentDeletable}))
-    #ALbutton("eventSubmit_doBlog_comment_delete" "$l10n.BLOG_DO_DELETE" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
+    #ALbutton("eventSubmit_doBlog_comment_delete" "$l10n.COMMON_DELETE" "aipo.blog.delCommentReply(this, ${record.CommentId}, '$!indicator_id', '$!portlet.ID');")
   #end
   </div>
   </div>

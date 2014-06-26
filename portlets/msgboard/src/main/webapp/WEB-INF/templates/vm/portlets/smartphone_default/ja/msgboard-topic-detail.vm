@@ -58,7 +58,7 @@ function onCommentDelete(form) {
 <input type="hidden" name="entityid" value=$!{result.ParentTopic.TopicId}>
 <input type="hidden" name="mode" value="delete">
 <input type="hidden" name="secid" value="$secid" />
-<p class="right ma0"><input type="button" onClick="onTopicDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="削除する"></p>
+<p class="right ma0"><input type="button" onClick="onTopicDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="$l10n.COMMON_DELETE"></p>
 </form>
 #end
 <h3>コメント一覧</h3>
@@ -86,7 +86,7 @@ function onCommentDelete(form) {
         <input type="hidden" name="topic_reply_id" value=${record.TopicId}>
         <input type="hidden" name="mode" value="delete_reply">
         <input type="hidden" name="secid" value="$secid" />
-        <p class="right ma0"><input type="button" onClick="onCommentDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="削除する"></p>
+        <p class="right ma0"><input type="button" onClick="onCommentDelete(this.form);return false" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="$l10n.COMMON_DELETE"></p>
         </form>
         #end
     #end

@@ -45,7 +45,7 @@ $l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.EXTTIMECARD_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
 #ALajaxIndicator("$!indicator_id" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('ExtTimecardSystemListScreen' $result)
@@ -77,7 +77,7 @@ $l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.EXTTIMECARD_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.exttimecardsystem.onReceiveMessage")
 </div>
 #AUIajaxpageview('ExtTimecardSystemListScreen' $result)
 #AUISummaryDivfooter()

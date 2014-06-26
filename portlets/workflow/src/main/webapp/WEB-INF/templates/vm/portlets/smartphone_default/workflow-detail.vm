@@ -54,7 +54,7 @@
 #ALtablefooterBorder()
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
-#ALcell_submit($career 'eventSubmit_doWorkflow_delete' '$l10n.WORKFLOW_DO_REMOVE')
+#ALcell_submit($career 'eventSubmit_doWorkflow_delete' '$l10n.COMMON_DELETE')
 #end
 
 #if($!result.Detail.OldRequestLinks.size() > 0)

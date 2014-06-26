@@ -79,7 +79,7 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_to' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_to' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
 #ALtditemfooter()
 <td  class="caption">CC</td>
 #ALtditemheader()
@@ -88,7 +88,7 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_cc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_cc' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
 #ALtditemfooter()
 <td  class="caption">BCC</td>
 #ALtditemheader()
@@ -97,7 +97,7 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_bcc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_bcc' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
 #ALtditemfooter()
 </tr>
 #ALtablefooter()

@@ -48,7 +48,7 @@
 <input type="submit" class="submit" name="eventSubmit_doBlog_entry_form" value="$l10n.BLOG_EDIT">
 #end
 #if($result.Deletable)
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_detail" value="$l10n.BLOG_DO_DELETE ">
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_detail" value="$l10n.COMMON_DELETE">
 #end
 #ALcell_formfooter()
 #ALcell_hr($career '1')
@@ -71,7 +71,7 @@ $l10n.BLOG_COMMENT_CELL_NOTHING
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
 <input type="hidden" name="comment_id" value=${record.CommentId}>
 <input type="hidden" name="mode" value="view">
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_comment_delete" value="$l10n.BLOG_DO_DELETE">
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_comment_delete" value="$l10n.COMMON_DELETE">
 #ALcell_formfooter()
 #end
 #ALcell_dl_footer($career)

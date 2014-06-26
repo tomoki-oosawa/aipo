@@ -38,7 +38,7 @@
 #ALajaxlistformheader('$l10n.GPDB_DATA')
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
-			#AUIajaxbuttonCheckboxDelete("$l10n.GPDB_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+			#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 			#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)
@@ -98,7 +98,7 @@
 	#AUItablefooter()
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
-			#AUIajaxbuttonCheckboxDelete("$l10n.GPDB_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+			#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
 		</div>
 	#AUIajaxpageview('GpdbRecordListScreen' $result)
 	</div>

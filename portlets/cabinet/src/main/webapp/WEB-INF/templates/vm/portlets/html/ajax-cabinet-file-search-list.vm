@@ -108,7 +108,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALtablefooter()
 #ALbuttonheaderRight()
 $l10n.CABINET_THE_SELECTED_FILE
-#ALajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator.id" "$!portlet.ID" "aipo.cabinet.onReceiveMessage")
+#ALajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator.id" "$!portlet.ID" "aipo.cabinet.onReceiveMessage")
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('CabinetFileSearchListScreen' $result)
 #ALformfooter()

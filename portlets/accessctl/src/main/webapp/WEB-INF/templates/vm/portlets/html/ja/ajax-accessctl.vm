@@ -47,7 +47,7 @@
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCESSCTL_DO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccessControlFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.accessctl.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccessControlFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.accessctl.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccessControlScreen' $result)
 #AUISummaryDivfooter()
@@ -109,7 +109,7 @@
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCESSCTL_DO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccessControlFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.accessctl.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccessControlFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.accessctl.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccessControlScreen' $result)
 #AUISummaryDivfooter()

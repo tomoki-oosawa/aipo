@@ -67,7 +67,7 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
@@ -162,7 +162,7 @@ $!postname
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 </div>

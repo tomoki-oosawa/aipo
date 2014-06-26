@@ -53,7 +53,7 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #AUISummaryDiv()
-#AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 <table class="auiRowTable auiMbTable wide">

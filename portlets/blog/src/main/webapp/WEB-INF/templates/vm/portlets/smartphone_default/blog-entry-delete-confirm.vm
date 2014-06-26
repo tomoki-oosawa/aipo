@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-#set ($action_str = "削除する")
+#set ($action_str = $l10n.COMMON_DELETE)
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')")
 #set($linklist = [["記事一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')"], ["記事追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"],["みんなのブログ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["記事検索", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
 #ALcell_pagetitle_iphone($career "記事削除確認")
@@ -37,7 +37,7 @@
 #end
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
-<p class="center"><input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="削除する"></p>
+<p class="center"><input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="$l10n.COMMON_DELETE"></p>
 #ALcell_formfooter()
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)
