@@ -796,7 +796,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -2415,6 +2415,47 @@ public class ScheduleUtils {
         }
       }
     }
+
+    // facilityIDを元にデータを取得
+    if (f_ids != null && f_ids.size() > 0) {
+      Expression f_exp =
+        ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
+      List<EipMFacility> facilities =
+        Database.query(EipMFacility.class, f_exp).fetchList();
+      if (facilities.size() == 0) {
+        return null;
+      }
+      int f_size = facilities.size();
+      for (int i = 0; i < f_size; i++) {
+        EipMFacility f_user = facilities.get(i);
+        user = new UserFacilityLiteBean();
+        user.initField();
+        user.setUserFacilityId(f_user.getFacilityId().intValue());
+        user.setName("f" + user.getUserFacilityId());
+        user.setAliasName(f_user.getFacilityName());
+        user.setUserFacilityType("F");
+        ulist.add(user);
+      }
+    }
+
+    return ulist;
+  }
+
+  public static List<UserFacilityLiteBean> getALEipFacility(String[] ids,
+      RunData rundata) throws ALDBErrorException {
+
+    List<UserFacilityLiteBean> ulist = new ArrayList<UserFacilityLiteBean>();
+
+    int ids_len = ids.length;
+    List<String> f_ids = new ArrayList<String>();
+    for (int i = 0; i < ids_len; i++) {
+      if (ids[i].startsWith("f")) {
+        // facilityIDをセット
+        f_ids.add(ids[i].replace("f", ""));
+      }
+    }
+
+    UserFacilityLiteBean user = null;
 
     // facilityIDを元にデータを取得
     if (f_ids != null && f_ids.size() > 0) {

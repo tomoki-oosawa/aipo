@@ -55,7 +55,7 @@ public class ScheduleCalendarUserSelectJSONScreen extends
       .getString("groupname"));
 
     String groupname = rundata.getParameters().getString("groupname");
-
+    String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
     if ("pickup".equals(groupname)) {
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       List<UserFacilityLiteBean> memberList =
@@ -68,8 +68,18 @@ public class ScheduleCalendarUserSelectJSONScreen extends
         memberList.add(login_user);
       } else {
         String pickedMembers[] = pickedMember.split(",");
-        List<UserFacilityLiteBean> ulist =
-          ScheduleUtils.getALEipUserFacility(pickedMembers, rundata);
+        List<UserFacilityLiteBean> ulist;
+        if ("F".equals(has_acl_other)) {
+          ulist = ScheduleUtils.getALEipFacility(pickedMembers, rundata);
+          if (pickedMember.contains(String.valueOf(ALEipUtils
+            .getUserId(rundata)))) {
+            UserFacilityLiteBean login_user =
+              UserFacilityUtils.getUserFacilityLiteBean(rundata);
+            ulist.add(login_user);
+          }
+        } else {
+          ulist = ScheduleUtils.getALEipUserFacility(pickedMembers, rundata);
+        }
         if (ulist == null || ulist.size() == 0) {
           UserFacilityLiteBean login_user =
             UserFacilityUtils.getUserFacilityLiteBean(rundata);

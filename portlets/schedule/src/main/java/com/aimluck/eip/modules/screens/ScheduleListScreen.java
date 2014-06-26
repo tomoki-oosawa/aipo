@@ -106,8 +106,18 @@ public class ScheduleListScreen extends ScheduleScreen {
           memberList.add(login_user);
         } else {
           String selected_users[] = selected_user.split(",");
-          List<UserFacilityLiteBean> ulist =
-            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          List<UserFacilityLiteBean> ulist;
+          if ("F".equals(has_acl_other)) {
+            ulist = ScheduleUtils.getALEipFacility(selected_users, rundata);
+            if (selected_user.contains(String.valueOf(ALEipUtils
+              .getUserId(rundata)))) {
+              UserFacilityLiteBean login_user =
+                UserFacilityUtils.getUserFacilityLiteBean(rundata);
+              ulist.add(login_user);
+            }
+          } else {
+            ulist = ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          }
           if (ulist == null || ulist.size() == 0) {
             UserFacilityLiteBean login_user =
               UserFacilityUtils.getUserFacilityLiteBean(rundata);
