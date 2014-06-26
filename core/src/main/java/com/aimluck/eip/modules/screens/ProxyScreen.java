@@ -22,6 +22,7 @@ package com.aimluck.eip.modules.screens;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
@@ -72,7 +74,12 @@ public class ProxyScreen extends ALVelocityScreen {
         uri.getAuthority(),
         path));
 
-    InputStream in = url.openStream();
+    URLConnection urlCon = url.openConnection();
+    urlCon.addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
+    urlCon.addRequestProperty(
+      "Accept-Encoding",
+      ALURLConnectionUtils.ACCEPT_ENCODING);
+    InputStream in = urlCon.getInputStream();
     ServletOutputStream out = null;
     HttpServletResponse response = rundata.getResponse();
     out = response.getOutputStream();

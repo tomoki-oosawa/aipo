@@ -73,6 +73,7 @@ import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.TimelineUrlBeans;
 import com.aimluck.eip.timeline.TimelineUserResultData;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * タイムラインのユーティリティクラス <BR>
@@ -100,13 +101,6 @@ public class TimelineUtils {
   public static final String FILE_ENCODING = JetspeedResources.getString(
     "content.defaultencoding",
     "UTF-8");
-
-  /** User-Agent */
-  public static final String USER_AGENT =
-    "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0; Avant Browser)";
-
-  /** Accept-Encoding */
-  public static final String ACCEPT_ENCODING = "identity";
 
   /** 全てのユーザーが閲覧／返信可 */
   public static final int ACCESS_PUBLIC_ALL = 0;
@@ -797,8 +791,10 @@ public class TimelineUtils {
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
-      con.addRequestProperty("User-Agent", USER_AGENT);
-      con.addRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+      con.addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
+      con.addRequestProperty(
+        "Accept-Encoding",
+        ALURLConnectionUtils.ACCEPT_ENCODING);
 
       // HTTPヘッダのcontentTypeのcharsetを読み込む
       String contentType = con.getContentType();
@@ -838,8 +834,12 @@ public class TimelineUtils {
         reconnection.setConnectTimeout(10000);
         reconnection.setUseCaches(false);
         reconnection.addRequestProperty("_", UUID.randomUUID().toString());
-        reconnection.addRequestProperty("User-Agent", USER_AGENT);
-        reconnection.addRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+        reconnection.addRequestProperty(
+          "User-Agent",
+          ALURLConnectionUtils.USER_AGENT);
+        reconnection.addRequestProperty(
+          "Accept-Encoding",
+          ALURLConnectionUtils.ACCEPT_ENCODING);
 
         reader =
           new BufferedReader(new InputStreamReader(reconnection
