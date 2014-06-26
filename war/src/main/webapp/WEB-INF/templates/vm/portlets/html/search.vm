@@ -52,7 +52,7 @@ limitations under the License.
                     <td class="$!{skin.ContentStyleClass}" align="left">
                       <input tabindex='1' id="search" type="text" name="search" size="50" value="$!search"/>
                       &nbsp;<input type="submit"
-                                   border="0" alt="Search" value="${l10n.COMMON_SAERCH}" name="eventSubmit_doSearch"/>
+                                   border="0" alt="Search" value="${l10n.COMMON_SEARCH}" name="eventSubmit_doSearch"/>
                     </td>
                     <td width="5%" class="$!{skin.ContentStyleClass}" align="left">&nbsp;</td>
               </tr>

@@ -23,7 +23,7 @@
 
 #AUISearchHeader("searchForm_" "searchForm_" "#" "aipo.addressbook.onSubmitSerchButton(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookScreen')','$!portlet.ID','','$indicator_id'); return false;")
 <input class="text floatLeft" type="text" name="sword" id="sword" style="width:60%; margin-right:5px;" value="$!result.SearchWord" />
-#AUIButtonSearch("$l10n.COMMON_SAERCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 <input name="mode" type="hidden" value="ajaxsearch" />
 &nbsp;
 <i class="indicator" id="${indicator_id}$!{portlet.ID}" style="display:none;"></i>
