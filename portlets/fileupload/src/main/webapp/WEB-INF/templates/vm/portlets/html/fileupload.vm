@@ -77,7 +77,7 @@ function checkFile(){
 </div>
 <div style="padding:10px 0px 3px 0px">
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)#ALbutton("cancel" "$l10n.FILEUPLOAD_CLOSE" 'window.close()')
+#ALsubmit($event_submit $action_str)#ALbutton("cancel" "$l10n.COMMON_CLOSE" 'window.close()')
 #ALbuttonfooter()
 </div>
 </form>
