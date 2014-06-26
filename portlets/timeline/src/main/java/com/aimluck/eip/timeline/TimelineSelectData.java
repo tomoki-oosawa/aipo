@@ -34,6 +34,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -62,6 +63,8 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -576,10 +579,28 @@ public class TimelineSelectData extends
             userlist.add(data_map.get(j).getLoginName());
           }
 
+          boolean hasAuthority = true;
+          if ("Schedule".equals(coac_item.getAppId())) {
+            int userid = ALEipUtils.getUserId(rundata);
+
+            ALAccessControlFactoryService aclservice =
+              (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+                .getInstance())
+                .getService(ALAccessControlFactoryService.SERVICE_NAME);
+            ALAccessControlHandler aclhandler =
+              aclservice.getAccessControlHandler();
+
+            hasAuthority =
+              aclhandler.hasAuthority(
+                userid,
+                ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+                ALAccessControlConstants.VALUE_ACL_LIST);
+          }
+
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString()) || (userlist
+            .contains("-1") && hasAuthority))) {
             iter.remove();
           }
         }
@@ -693,10 +714,28 @@ public class TimelineSelectData extends
             userlist.add(data_map.get(j).getLoginName());
           }
 
+          boolean hasAuthority = true;
+          if ("Schedule".equals(coac_item.getAppId())) {
+            int userid = ALEipUtils.getUserId(rundata);
+
+            ALAccessControlFactoryService aclservice =
+              (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+                .getInstance())
+                .getService(ALAccessControlFactoryService.SERVICE_NAME);
+            ALAccessControlHandler aclhandler =
+              aclservice.getAccessControlHandler();
+
+            hasAuthority =
+              aclhandler.hasAuthority(
+                userid,
+                ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+                ALAccessControlConstants.VALUE_ACL_LIST);
+          }
+
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString()) || (userlist
+            .contains("-1") && hasAuthority))) {
             iter.remove();
           }
         }
