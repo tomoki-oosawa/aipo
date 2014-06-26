@@ -56,7 +56,7 @@
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.msgboard.initFilterSearch("$!portlet.ID");' onblur='aipo.msgboard.finFilterSearch("$!portlet.ID");' />
 </div>
 
-#AUIButtonSearch("$l10n.MSGBOARD_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SAERCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
@@ -129,7 +129,6 @@ $!record.CategoryName
     </ul>
   </div>
 </div>
-
 
 <!-- END Contents Area -->
 

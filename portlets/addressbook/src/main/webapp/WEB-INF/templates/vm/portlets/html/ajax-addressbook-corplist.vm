@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($button_flag = "true")
+#set ($button_flag = "false")
 ## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookGroupFormScreen").addQueryData("entityid","new")))
@@ -49,7 +49,7 @@
 #AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))" "aipo.addressbook.onSubmitSerchButton(this,'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookListScreen'))','$!portlet.ID','$!result.currentTab','$!indicator_id'); return false;")
 <input name="mode" type="hidden" value="ajaxsearch" />
 #AUISearchInput("sword" "sword" "$!result.targetKeyword" "maxlength='100' style='margin-right:5px;ime-mode:active'")
-#AUIButtonSearch("$l10n.ADDRESSBOOK_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SAERCH")
 #AUISearchFooter()
 #AUISummaryDivfooter()
 
