@@ -660,6 +660,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
         } catch (Exception e) {
           logger.error("exttimecard", e);
+          return false;
         }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
         String session_date = rundata.getParameters().get("date");
