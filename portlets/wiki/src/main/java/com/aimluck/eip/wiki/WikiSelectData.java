@@ -142,6 +142,7 @@ public class WikiSelectData extends
           .getPortletById(portlet.getID())
           .addQueryData("template", "WikiInternalLinkScreen")
           .addQueryData("portletid", portlet.getID())
+          .addQueryData("existWidgets", "marking_widgets_" + portlet.getID())
           .addQueryData("callback", "aipo.wiki.onLoadWikiDetail")
           .toString();
 
