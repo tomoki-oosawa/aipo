@@ -508,6 +508,7 @@ public class TimelineUtils {
       return entry;
     } catch (ALPageNotFoundException ex) {
       // 指定した トピック ID のレコードが見つからない場合
+      logger.debug("[TimelineUtils] Not found ID...");
       throw new ALDBErrorException();
     } catch (Exception ex) {
       logger.error("[EntryUtils]", ex);
