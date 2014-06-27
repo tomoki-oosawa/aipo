@@ -1042,10 +1042,13 @@ public class ALEipUtils {
             writer.flush();
             writer.close();
           } catch (ResourceNotFoundException e) {
+            logger.error("ALEipUtils.redirectPageNotFound", e);
             throw new RuntimeException(e);
           } catch (ParseErrorException e) {
+            logger.error("ALEipUtils.redirectPageNotFound", e);
             throw new RuntimeException(e);
           } catch (Exception e) {
+            logger.error("ALEipUtils.redirectPageNotFound", e);
             throw new RuntimeException(e);
           }
           return true;
@@ -1106,10 +1109,13 @@ public class ALEipUtils {
             writer.flush();
             writer.close();
           } catch (ResourceNotFoundException e) {
+            logger.error("ALEipUtils.redirectDBError", e);
             throw new RuntimeException(e);
           } catch (ParseErrorException e) {
+            logger.error("ALEipUtils.redirectDBError", e);
             throw new RuntimeException(e);
           } catch (Exception e) {
+            logger.error("ALEipUtils.redirectDBError", e);
             throw new RuntimeException(e);
           }
           return true;
@@ -1191,10 +1197,13 @@ public class ALEipUtils {
             writer.flush();
             writer.close();
           } catch (ResourceNotFoundException e) {
+            logger.error("ALEipUtils.redirectPermissionError", e);
             throw new RuntimeException(e);
           } catch (ParseErrorException e) {
+            logger.error("ALEipUtils.redirectPermissionError", e);
             throw new RuntimeException(e);
           } catch (Exception e) {
+            logger.error("ALEipUtils.redirectPermissionError", e);
             throw new RuntimeException(e);
           }
           return true;
