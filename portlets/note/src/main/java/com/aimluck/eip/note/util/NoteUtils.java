@@ -122,28 +122,29 @@ public class NoteUtils {
 
     int uid = ALEipUtils.getUserId(rundata);
 
-    if (noteId == null || noteId.equals("") || Integer.valueOf(noteId) == null) {
-      // アカウントIDが空の場合
-      logger.debug("[Note] Empty NoteID...");
-      return null;
-    }
-
-    // アクセス権の判定
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
-        .valueOf(noteId));
-    Expression exp2 =
-      ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, uid);
-
-    List<EipTNoteMap> maps =
-      Database.query(EipTNoteMap.class, exp1.andExp(exp2)).fetchList();
-    if (maps == null || maps.size() == 0) {
-      // 指定したアカウントIDのレコードが見つからない場合
-      logger.debug("[Note] Invalid user access...");
-      return null;
-    }
-
     try {
+      if (noteId == null
+        || noteId.equals("")
+        || Integer.valueOf(noteId) == null) {
+        // アカウントIDが空の場合
+        logger.debug("[Note] Empty NoteID...");
+        return null;
+      }
+
+      // アクセス権の判定
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
+          .valueOf(noteId));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, uid);
+
+      List<EipTNoteMap> maps =
+        Database.query(EipTNoteMap.class, exp1.andExp(exp2)).fetchList();
+      if (maps == null || maps.size() == 0) {
+        // 指定したアカウントIDのレコードが見つからない場合
+        logger.debug("[Note] Invalid user access...");
+        return null;
+      }
 
       Expression exp =
         ExpressionFactory.matchDbExp(EipTNote.NOTE_ID_PK_COLUMN, Integer
