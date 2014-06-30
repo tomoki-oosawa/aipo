@@ -2671,10 +2671,16 @@ form {
   max-width: 100%;
 }
 
-input,
+input[type=text],
+input[type=password],
 textarea,
 select {
   margin: 0;
+  vertical-align: middle;
+}
+
+input[type=text],
+input[type=password] {
   vertical-align: middle;
 }
 
