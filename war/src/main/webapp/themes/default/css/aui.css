@@ -2679,8 +2679,8 @@ select {
   vertical-align: middle;
 }
 
-input[type=text],
-input[type=password] {
+input[type=radio],
+input[type=checkbox] {
   vertical-align: middle;
 }
 
