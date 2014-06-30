@@ -881,10 +881,28 @@ public class TimelineSelectData extends
     target_group_name = getTargetGroupName(rundata, context);
     current_filter = target_group_name;
     if ((!target_group_name.equals("")) && (!target_group_name.equals("all"))) {
-      userList = ALEipUtils.getUsers(target_group_name);
-    } else if ((!target_group_name.equals(""))
-      && (!target_group_name.equals("all"))) {
-      userList = ALEipUtils.getUsers(target_group_name);
+      boolean existPost = false;
+      for (int i = 0; i < myGroupList.size(); i++) {
+        String pid = myGroupList.get(i).getName().toString();
+        if (pid.equals(target_group_name)) {
+          existPost = true;
+          break;
+        }
+      }
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+        String pid = item.getValue().getGroupName().toString();
+        if (pid.equals(target_group_name)) {
+          existPost = true;
+          break;
+        }
+      }
+      if (existPost) {
+        userList = ALEipUtils.getUsers(target_group_name);
+      } else {
+        target_group_name = "all";
+        userList = ALEipUtils.getUsers("LoginUser");
+      }
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
