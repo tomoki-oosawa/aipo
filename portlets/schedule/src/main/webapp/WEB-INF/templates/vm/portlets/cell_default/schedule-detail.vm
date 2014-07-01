@@ -122,7 +122,7 @@ ${record.FacilityName}
 #ALcell_submit($career 'eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_BE_DECIDED)
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
-#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' "$l10n.SCHEDULE_DELETE")
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' "$l10n.COMMON_DELETE")
 #ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #end
 #elseif($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})
@@ -130,7 +130,7 @@ ${record.FacilityName}
 #ALcell_submit($career 'eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_BE_TEMP_SCHEDULE)
 #if($!{result.Detail.isEditable()})
 #ALcell_submit($career "$event_submit" $l10n.SCHEDULE_EDIT)
-#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' "$l10n.SCHEDULE_DELETE")
+#ALcell_submit($career 'eventSubmit_doSchedule_form_delete' "$l10n.COMMON_DELETE")
 #ALcell_submit($career 'eventSubmit_doSchedule_form_copy' $l10n.SCHEDULE_COPY)
 #end
 #end

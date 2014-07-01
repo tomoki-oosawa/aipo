@@ -93,7 +93,6 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 <colgroup style="width:10em;"></colgroup>
 <colgroup style="width:10em;"></colgroup>
 #end
-<colgroup style="width:10em;"></colgroup>
 <tbody>
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
