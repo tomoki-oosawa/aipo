@@ -28,32 +28,32 @@
 <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen")' />
 <input type="hidden" name="template" value="ToDoListScreen"/>
 <div class="filterInputField">
-<div class="filters" id="filters_$!portlet.ID">
+<div class="filters" id="filters_$!portlet.ID">#*
 
-#foreach($record in $result.postList)
-#if($!result.issetFilter("post",$!{record.Name}))
-<span class="filterTip">
-<span>$!record.AliasName</span>
-<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#end#end
+*##foreach($record in $result.postList)#*
+*##if($!result.issetFilter("post",$!{record.Name}))#*
+*#<span class="filterTip">#*
+*#<span>$!record.AliasName</span>#*
+*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>#*
+*#</span>#*
+*##end#end#*
 
-#foreach($record in $result.PostMap)
-#if($!result.issetFilter("post",$!{record.GroupName}))
-<span class="filterTip">
-<span>$!record.PostName</span>
-<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#end#end
+*##foreach($record in $result.PostMap)#*
+*##if($!result.issetFilter("post",$!{record.GroupName}))#*
+*#<span class="filterTip">#*
+*#<span>$!record.PostName</span>#*
+*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>#*
+*#</span>#*
+*##end#end#*
 
-#foreach($record in $result.CategoryList)
-#if($!result.issetFilter("category",$!{record.CategoryId}))
-<span class="filterTip">
-<span>$!record.CategoryName</span>
-<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','category')"><i class="auiIcon auiIconDelete"></i></a>
-</span>
-#end#end
-</div>
+*##foreach($record in $result.CategoryList)#*
+*##if($!result.issetFilter("category",$!{record.CategoryId}))#*
+*#<span class="filterTip">#*
+*#<span>$!record.CategoryName</span>#*
+*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','category')"><i class="auiIcon auiIconDelete"></i></a>#*
+*#</span>#*
+*##end#end#*
+*#</div>
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
@@ -153,6 +153,9 @@
 
 <img src="images/common/dot.gif" alt="" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0){dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 
+#ALformfooter()
+#AUIcontentsAreaFooter()
+
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px; display:none; top:85px; left:276px;">
 <div>
 <p class="caption">$l10n.COMMON_GROUP</p>
@@ -176,9 +179,6 @@
 </ul>
 </div>
 </div>
-
-#ALformfooter()
-#AUIcontentsAreaFooter()
 
 #parse("/portlets/html/ja/todo-widgets.vm")
 

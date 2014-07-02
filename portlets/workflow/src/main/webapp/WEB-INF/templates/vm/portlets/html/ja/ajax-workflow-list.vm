@@ -95,6 +95,7 @@
 </div>
 #end
 #ALformfooter()
+#AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
   <div class="single">
@@ -107,6 +108,5 @@
     </ul>
   </div>
 </div>
-#AUIcontentsAreaFooter()
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/workflow-widgets.vm")

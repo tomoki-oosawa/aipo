@@ -158,6 +158,7 @@ public class WikiModel extends AbstractWikiModel {
     String hrefLink;
     String description = topicDescription;
     WPATag aTagNode = new WPATag();
+    WPATag aTagNode2 = new WPATag();
     if (topic.length() > 0) {
       aTagNode.addAttribute("title", topic, true);
       String punyTopic = "";
@@ -214,13 +215,34 @@ public class WikiModel extends AbstractWikiModel {
 
       EipTWiki destWiki =
         WikiUtils.getEipTWiki(topic, queryPairs.get("parentId"));
-      String jstext = "";
+      String jstext =
+        "dojo.byId('wiki_hide_a_"
+          + topic
+          + "_"
+          + queryPairs.get("portletid")
+          + "').outerHTML = dojo.byId('wiki_hide_a_"
+          + topic
+          + "_"
+          + queryPairs.get("portletid")
+          + "').outerHTML.replace(/marking_widgets_"
+          + queryPairs.get("portletid")
+          + "/g, dojo.byId('marking_widgets_exist') != null);dojo.byId('wiki_hide_a_"
+          + topic
+          + "_"
+          + queryPairs.get("portletid")
+          + "').click();";
+      String jstext2 = "";
+      // String jstext =
+      // "dojo.query('.auiWikiContent').forEach(function(elem) {elem.innerHTML = elem.innerHTML.replace(/marking_widgets_"
+      // + queryPairs.get("portletid")
+      // + "/g, dojo.byId('marking_widgets_exist') != null); alert('s');});";
+      // String jstext = "";
       if (null == destWiki) {
         String hrefForm =
           href.replaceFirst(
             WIKII_NTERNAL_LINK_SCREEN,
             WIKII_NTERNAL_LINK_FORM_SCREEN);
-        jstext =
+        jstext2 +=
           "aipo.common.showDialog('"
             + hrefForm
             + "', '"
@@ -230,7 +252,7 @@ public class WikiModel extends AbstractWikiModel {
             + ");";
         aTagNode.addAttribute("class", "wikiNew", true);
       } else {
-        jstext =
+        jstext2 +=
           "aipo.viewPage('"
             + href
             + "', '"
@@ -239,7 +261,13 @@ public class WikiModel extends AbstractWikiModel {
 
       }
       aTagNode.addHrefJavascript();
+      aTagNode2.addAttribute("onclick", jstext2, false);
       aTagNode.addAttribute("onclick", jstext, false);
+      aTagNode2.addAttribute("style", "display:none;", false);
+      aTagNode2.addAttribute("id", "wiki_hide_a_"
+        + topic
+        + "_"
+        + queryPairs.get("portletid"), false);
 
     } catch (MalformedURLException ignore) {
       aTagNode.addAttribute("href", href, true);
@@ -258,6 +286,8 @@ public class WikiModel extends AbstractWikiModel {
     } else {
       aTagNode.addChild(new ContentToken(description));
     }
+    pushNode(aTagNode2);
+    popNode();
     popNode();
   }
 

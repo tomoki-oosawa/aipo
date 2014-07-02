@@ -627,11 +627,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         try {
           if (!(this.entity_id > 0)) {
-            entity_id =
-              Integer.parseInt(ALEipUtils.getTemp(
-                rundata,
-                context,
-                ALEipConstants.ENTITY_ID));
+            String entity_idstr =
+              ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+            if (entity_idstr == null
+              || entity_idstr.equals("")
+              || Integer.valueOf(entity_idstr) == null) {
+              // アカウントIDが空の場合
+              logger.debug("[ExtTimecard] Empty entityID...");
+              return false;
+            }
+            entity_id = Integer.parseInt(entity_idstr);
           }
           if ("".equals(this.type.getValue())) {
             String type = rundata.getParameters().get("type");
@@ -655,6 +660,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
         } catch (Exception e) {
           logger.error("exttimecard", e);
+          return false;
         }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
         String session_date = rundata.getParameters().get("date");

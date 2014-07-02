@@ -478,7 +478,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       int newfilebeansSize = newfilebeans.size();
       if (newfilebeansSize > 0) {
         FileuploadLiteBean newfilebean = null;
-        for (int j = 0; j < length; j++) {
+        for (int j = 0; j < newfilebeansSize; j++) {
           newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();

@@ -74,7 +74,7 @@ public class WebMailFileScreen extends RawScreen {
           WebMailUtils.ACCOUNT_ID));
       int mailindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
       int attachmentIndex = rundata.getParameters().getInt("attachmentIndex");
-      if (attachmentIndex < 0) {
+      if (mailindex < 0 || attachmentIndex < 0) {
         return;
       }
 
@@ -87,6 +87,9 @@ public class WebMailFileScreen extends RawScreen {
         ALMailFactoryService.getInstance().getMailHandler();
       ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountid);
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
+      if (msg == null) {
+        return;
+      }
 
       String fileName;
       boolean isMsie = ALEipUtils.isMsieBrowser(rundata);

@@ -441,21 +441,44 @@ public class MsgboardTopicSelectData extends
       // 部署を含んでいる場合デフォルトとは別にフィルタを用意
 
       List<String> postIds = current_filterMap.get("post");
-
-      HashSet<Integer> userIds = new HashSet<Integer>();
-      for (String post : postIds) {
-        List<Integer> userId = ALEipUtils.getUserIds(post);
-        userIds.addAll(userId);
+      boolean existPost = false;
+      for (int i = 0; i < postList.size(); i++) {
+        String pid = postList.get(i).getName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
       }
-      if (userIds.isEmpty()) {
-        userIds.add(-1);
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      if (postIds != null && !postIds.isEmpty()) {
+        for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+          String pid = item.getValue().getGroupName().toString();
+          if (pid.equals(postIds.get(0).toString())) {
+            existPost = true;
+            break;
+          }
+        }
       }
-      Expression exp =
-        ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, userIds);
-      query.andQualifier(exp);
+      if (existPost) {
+        HashSet<Integer> userIds = new HashSet<Integer>();
+        for (String post : postIds) {
+          List<Integer> userId = ALEipUtils.getUserIds(post);
+          userIds.addAll(userId);
+        }
+        if (userIds.isEmpty()) {
+          userIds.add(-1);
+        }
+        Expression exp =
+          ExpressionFactory.inExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, userIds);
+        query.andQualifier(exp);
 
-      postId = postIds.get(0).toString();
-      updatePostName();
+        postId = postIds.get(0).toString();
+        updatePostName();
+      } else {
+        postId = "";
+        updatePostName();
+        current_filterMap.remove("post");
+      }
     }
 
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);

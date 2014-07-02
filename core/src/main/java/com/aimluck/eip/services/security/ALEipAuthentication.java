@@ -130,6 +130,10 @@ public class ALEipAuthentication extends TurbineBaseService implements
         logger.warn("User denied authentication: " + username, e);
         throw new LoginException(e.toString());
       }
+      if (user == null) {
+        logger.error("Invalid password for user: " + username);
+        throw new FailedLoginException("Credential authentication failure");
+      }
     } else {
       try {
         user = JetspeedUserManagement.getUser(new UserNamePrincipal(username));
@@ -141,19 +145,18 @@ public class ALEipAuthentication extends TurbineBaseService implements
         logger.warn("User denied authentication: " + username, e);
         throw new LoginException(e.toString());
       }
-
       if (user == null || !user.getPassword().equals(password)) {
         logger.error("Invalid password for user: " + username);
         throw new FailedLoginException("Credential authentication failure");
       }
+    }
 
-      if (ALEipConstants.USER_STAT_DISABLED.equals(user.getDisabled())) {
-        logger.error("User deleted : " + username);
-        throw new FailedLoginException(ALEipConstants.USER_STAT_DISABLED);
-      } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user.getDisabled())) {
-        logger.error("User disabled : " + username);
-        throw new FailedLoginException(ALEipConstants.USER_STAT_NUTRAL);
-      }
+    if (ALEipConstants.USER_STAT_DISABLED.equals(user.getDisabled())) {
+      logger.error("User deleted : " + username);
+      throw new FailedLoginException(ALEipConstants.USER_STAT_DISABLED);
+    } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user.getDisabled())) {
+      logger.error("User disabled : " + username);
+      throw new FailedLoginException(ALEipConstants.USER_STAT_NUTRAL);
     }
 
     // Check for password expiration
