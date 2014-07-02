@@ -619,6 +619,7 @@ aipo.timeline.submit = function(form, indicator_id, pid, callback, cnt) {
 }
 
 aipo.timeline.write = function(inthis, indicator_id, pid) {
+	dojo.query(inthis).removeClass("auiButtonAction");
 	aipo.timeline.addText(dojo.byId('form' + pid), pid);
 	aipo.timeline.addHiddenValue(dojo.byId('form' + pid), 'mode', 'insert');
 	aimluck.io.setHiddenValue(inthis);
