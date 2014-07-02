@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.blog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -324,6 +326,26 @@ public class BlogThemaFormData extends ALAbstractFormData {
         // テーマ「その他」は削除不可
         msgList.add("このテーマは削除できません。");
         return false;
+      }
+      // 記事を「その他」に移す
+      List<String> values = new ArrayList<String>();
+      values.add(thema.getThemaId().toString());
+      SelectQuery<EipTBlogEntry> reqquery = Database.query(EipTBlogEntry.class);
+      Expression reqexp1 =
+        ExpressionFactory.inDbExp(EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY
+          + "."
+          + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      reqquery.setQualifier(reqexp1);
+      List<EipTBlogEntry> requests = reqquery.fetchList();
+      if (requests != null && requests.size() > 0) {
+        EipTBlogEntry request = null;
+        EipTBlogThema defaultThema =
+          BlogUtils.getEipTBlogThema(Long.valueOf(1));
+        int size = requests.size();
+        for (int i = 0; i < size; i++) {
+          request = requests.get(i);
+          request.setEipTBlogThema(defaultThema);
+        }
       }
 
       // entityIdを取得
