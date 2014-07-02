@@ -28,6 +28,7 @@ import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -628,5 +629,12 @@ public class CabinetSelectData extends
 
   public String getSelectedPostName() {
     return post_name;
+  }
+
+  public void setFiltersPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID, portlet
+      .getPortletConfig()
+      .getInitParameter("p3a-folder"));
   }
 }

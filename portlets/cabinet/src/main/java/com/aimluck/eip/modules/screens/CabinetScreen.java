@@ -21,6 +21,7 @@ package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -48,6 +49,11 @@ public class CabinetScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
+      ParameterParser parser = rundata.getParameters();
+
+      CabinetUtils.passPSML(rundata, context, "p3a-folder", parser
+        .getString(CabinetUtils.KEY_FOLDER_ID));
+
       CabinetSelectData listData = new CabinetSelectData();
       listData.setIsNormalContext(true);
       listData.initField();

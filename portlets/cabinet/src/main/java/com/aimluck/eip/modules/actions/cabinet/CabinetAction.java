@@ -93,6 +93,9 @@ public class CabinetAction extends ALBaseAction {
     listData.setTableColumNum(Integer.parseInt(ALEipUtils.getPortlet(
       rundata,
       context).getPortletConfig().getInitParameter("p1e-rows")));
+
+    listData.setFiltersPSML(portlet, context, rundata);
+
     if (listData.doViewList(this, rundata, context)) {
       setTemplate(rundata, "cabinet");
     }
