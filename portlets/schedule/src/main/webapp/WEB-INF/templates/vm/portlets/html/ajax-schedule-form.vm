@@ -252,9 +252,7 @@
 	</table>
 </div>
 <div id="memberField" style="display:none;">
-<table class="none">
-  <tr><td>
-    <div class="spaceTop spaceLeft small">$l10n.SCHEDULE_ADD_ENTRY_USER</div>
+ <div class="spaceTop spaceLeft small">$l10n.SCHEDULE_ADD_ENTRY_USER</div>
     <div dojoType="aipo.widget.MemberNormalSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
@@ -275,33 +273,45 @@
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
-  </td></tr>
-  <tr><td>
+
 #if($!{result.Owner} || $!{result.EditFlag.toString()} == "T")
     <div class="p">
     	<div id="edit_control_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_EDIT_PERMISSION</div>
-    	<div id="edit_control_context_$!{portlet.ID}" style="display:none;">
- 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "T") checked="checked" #end /><label for="edit_control_flagT_$!{portlet.ID}">$l10n.SCHEDULE_EDIT_THE_SCHEDULE</label><br/>
-  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "F") checked="checked" #end /><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label></div>
-	</div>
+    </div>
+	<div id="edit_control_context_$!{portlet.ID}" style="display:none;">
+	 	<div class="p">
+ 	   		<input name="edit_flag" type="radio" value="T" id="edit_control_flagT_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "T") checked="checked" #end /><label for="edit_control_flagT_$!{portlet.ID}">$l10n.SCHEDULE_EDIT_THE_SCHEDULE</label>
+  		 </div>
+  		  <div class="p">
+  	  		<input name="edit_flag" type="radio" value="F" id="edit_control_flagF_$!{portlet.ID}" #if ("$!{result.EditFlag.toString()}" == "F") checked="checked" #end /><label for="edit_control_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_EDIT_THE_SCHEDULE</label>
+		  </div>
+     </div>
 #end
 #if($mode!="new_form" && $!result.Member)
     <div class="p">
     	<div id="change_tmpreserve_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_RETURN_TEMP_SCHEDULE</div>
-    	<div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
-   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "T")  checked="checked" #end /><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label><br/>
-    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "F") checked="checked" #end /><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label></div>
-    </div>
+     </div>
+     <div id="change_tmpreserve_context_$!{portlet.ID}" style="display:none;">
+        <div class="p">
+   	 		<input name="change_tmpreserve_flag" type="radio" value="T" id="change_tmpreserve_flagT_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "T")  checked="checked" #end /><label for="change_tmpreserve_flagT_$!{portlet.ID}">$l10n.SCHEDULE_RETURN_TO_TEMP_SCHEDULE</label>
+    	</div>
+    	<div class="p">
+    		<input name="change_tmpreserve_flag" type="radio" value="F" id="change_tmpreserve_flagF_$!{portlet.ID}" #if ("$!{result.ChangeTmpreserveFlag.toString()}" == "F") checked="checked" #end /><label for="change_tmpreserve_flagF_$!{portlet.ID}">$l10n.SCHEDULE_DONOT_RETURN_TO_TEMP_SCHEDULE</label>
+   	  </div>
+     </div>
 #end
 <div class="p">
     	<div id="mail_title_$!{portlet.ID}" style="background:inherit;cursor: pointer;text-decoration:underline;border:inherit;">$l10n.SCHEDULE_SET_MAIL_DOR_ENTRY_USER</div>
-    	<div id="mail_context_$!{portlet.ID}" style="display:none;">
-	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if("$!{result.MailFlag}"=="A") checked="checked" #end /><label for="mail_flag_A">$l10n.SCHEDULE_DO_INFORM</label><br />
+ </div>
+ <div id="mail_context_$!{portlet.ID}" style="display:none;">
+ 		<div class="p">
+	  	  <input name="mail_flag" type="radio" value="A" id="mail_flag_A" #if("$!{result.MailFlag}"=="A") checked="checked" #end /><label for="mail_flag_A">$l10n.SCHEDULE_DO_INFORM</label>
+	   	  </div>
+	   	  <div class="p">
 	   	  <input name="mail_flag" type="radio" value="N" id="mail_flag_N" #if("$!{result.MailFlag}"=="N") checked="checked" #end /><label for="mail_flag_N">$l10n.SCHEDULE_DONT_INFORM</label>
-	   	</div>
+          </div>
+        </div>
 </div>
-  </td></tr>
-</table>
 </div>
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
