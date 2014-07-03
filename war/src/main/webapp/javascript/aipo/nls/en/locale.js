@@ -76,5 +76,13 @@
 	// 一覧から選択する
 	SELECT_FROM_LIST_STR:"Select from the list.",
 	// 閉じる
-	CLOSE_STR:"Close"
+	CLOSE_STR:"Close",
+	//簡易表示
+	SIMPLE_VIEW:"Simple mode",
+	//詳細表示
+	DETAIL_VIEW:"Verbose Mode",
+	//なお、フォルダに含まれるメールはすべて削除されます。\nまた、このフォルダを振り分け先として指定してあるフィルタは、振り分け先がデフォルト（フォルダリストの一番上のフォルダ）に変更されます。
+	WEBMAIL_DELETE_FOLDER_MESSAGE:"All mails in the folder will be deleted.",
+	//\n保存されているメールはすべて削除されます。
+	WEBMAIL_DELETE_ACCOUNT_MESSAGE:"\nAll mails will be deleted."
 }
