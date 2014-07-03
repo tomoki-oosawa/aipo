@@ -105,16 +105,19 @@
                 <include>aimluck/dnd/*.js</include>
                 <include>aimluck/widget/*.js</include>
                 <include>aipo/widget/ActivityList.js</include>
+                <include>aipo/widget/GroupSelectList.js</include>
+                <include>aipo/widget/GroupNormalSelectList.js</include>
+                <include>aipo/widget/MemberSelectList.js</include>
+                <include>aipo/widget/MemberNormalSelectList.js</include>
+                <include>aipo/workflow/MemberNormalSelectList.js</include>
                 <include>aipo/widget/DateCalendar.js</include>
                 <include>aipo/widget/DropdownActivityChecker.js</include>
                 <include>aipo/widget/DropdownDatepicker.js</include>
                 <include>aipo/widget/DropdownGrouppicker.js</include>
                 <include>aipo/widget/DropdownMemberpicker.js</include>
-                <include>aipo/widget/GroupNormalSelectList.js</include>
-                <include>aipo/widget/GroupSelectList.js</include>
-                <include>aipo/widget/MemberSelectList.js</include>
-                <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/widget/ToolTip.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.js</include>
                 <include>aipo/gadgets.js</include>
                 <include>aipo/container.js</include>
               </includes>
@@ -139,16 +142,19 @@
                 <include>aimluck/dnd/*.xd.js</include>
                 <include>aimluck/widget/*.xd.js</include>
                 <include>aipo/widget/ActivityList.xd.js</include>
+                <include>aipo/widget/GroupSelectList.xd.js</include>
+                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
+                <include>aipo/widget/MemberSelectList.xd.js</include>
+                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+                <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/DateCalendar.xd.js</include>
                 <include>aipo/widget/DropdownActivityChecker.xd.js</include>
                 <include>aipo/widget/DropdownDatepicker.xd.js</include>
                 <include>aipo/widget/DropdownGrouppicker.xd.js</include>
                 <include>aipo/widget/DropdownMemberpicker.xd.js</include>
-                <include>aipo/widget/GroupSelectList.xd.js</include>
-                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberSelectList.xd.js</include>
-                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/ToolTip.xd.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.xd.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.xd.js</include>
                 <include>aipo/gadgets.js</include>
                 <include>aipo/container.js</include>
               </includes>
@@ -157,6 +163,8 @@
               <insertNewLine>true</insertNewLine>
               <output>target/aipo/javascript/aipo/common.js</output>
               <includes>
+                <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/common/dialog.js</include>
                 <include>../../../../target/aipo/javascript/aipo/accessctl/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/account_company/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/account_person/form.js</include>
@@ -165,19 +173,15 @@
                 <include>../../../../target/aipo/javascript/aipo/addressbook/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/blog/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/cabinet/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/calendar/weekly.js</include>
-                <include>../../../../target/aipo/javascript/aipo/calendar/monthly.js</include>
                 <include>../../../../target/aipo/javascript/aipo/cellular/form.js</include>
-                <include>../../../../target/aipo/javascript/aipo/common/dialog.js</include>
-                <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/deletesample/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/eventlog/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/exttimecard/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/exttimecardsystem/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/facility/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileupload/widget/FileuploadDialog.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileupload/widget/FileuploadViewDialog.js</include>
-                <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/fileuploadadv/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/gpdb/form.js</include>
@@ -193,6 +197,8 @@
                 <include>../../../../target/aipo/javascript/aipo/project/raphael-min.js</include>
                 <include>../../../../target/aipo/javascript/aipo/psml/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/report/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/calendar/weekly.js</include>
+                <include>../../../../target/aipo/javascript/aipo/calendar/monthly.js</include>
                 <include>../../../../target/aipo/javascript/aipo/schedule/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/schedule_admin/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/system/form.js</include>
