@@ -91,14 +91,7 @@ aipo.webmail.onLoadMailListDetail = function(){
 }
 
 aipo.webmail.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id, receive) {
-    var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
- 	   dw_del: nlsStrings.DW_DEL,
- 	   dw_this: nlsStrings.DW_THIS,
- 	   dw_name: button.form._name.value
- 	});
-    confirmString=confirmString+nlsStrings.WEBMAIL_DELETE_FOLDER_MESSAGE;
- 	 // この'+button.form._name.value+'を削除してよろしいですか?なお、フォルダに含まれるメールはすべて削除されます。\nまた、このフォルダを振り分け先として指定してあるフィルタは、振り分け先がデフォルト（フォルダリストの一番上のフォルダ）に変更されます。
- 	if (confirm(confirmString)) {
+	if(confirm('この'+button.form._name.value+'を削除してよろしいですか？なお、フォルダに含まれるメールはすべて削除されます。\nまた、このフォルダを振り分け先として指定してあるフィルタは、振り分け先がデフォルト（フォルダリストの一番上のフォルダ）に変更されます。')) {
 		aimluck.io.disableForm(button.form, true);
 		aimluck.io.setHiddenValue(button);
 		button.form.action = url;
@@ -155,11 +148,11 @@ aipo.webmail.switchHeader = function(button,portlet_id) {
 	var is_header_tiny=dojo.byId("is_header_tiny");
     if(is_header_tiny.value == 'TRUE' || is_header_tiny.value == 'true') {
         //簡易表示の際に「詳細表示」ボタンを押した→詳細部分をonにして簡易部分をoffにする 。詳細表示になったのでis_header_tinyがfalse
-        button.innerHTML = nlsStrings.SIMPLE_VIEW;
+        button.innerHTML = '簡易表示';
         aipo.webmail.switchHeaderDetail();
     } else {
         //詳細表示の際に「簡易表示」ボタンを押した→簡易部分をonにして詳細部分をoffにする
-        button.innerHTML = nlsStrings.DETAIL_VIEW;
+        button.innerHTML = '詳細表示';
         aipo.webmail.switchHeaderTiny();
     }
 }
@@ -179,27 +172,13 @@ aipo.webmail.switchHeaderDetail = function() {
 }
 
 aipo.webmail.doDeleteAccount = function(url,p_id) {
-    var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-	   dw_del: nlsStrings.DW_DEL,
-	   dw_this: nlsStrings.DW_THIS,
-	   dw_name: button.form._name.value
-	});
-    confirmString=confirmString+nlsStrings.WEBMAIL_DELETE_ACCOUNT_MESSAGE;
-	 // この'+button.form._name.value+'を削除してよろしいですか?\n保存されているメールはすべて削除されます。
-	if (confirm(confirmString)) {
+    if(confirm("このメールアカウントを削除してもよろしいですか？\n保存されているメールはすべて削除されます。")) {
         aipo.viewPage(url,p_id);
     }
 }
 
 aipo.webmail.doDeleteFilter = function(url,p_id) {
-
-	 var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-	   dw_del: nlsStrings.DW_DEL,
-	   dw_this: nlsStrings.DW_THIS,
-	   dw_name: button.form._name.value
-	 });
-	 // この'+button.form._name.value+'を削除してよろしいですか?
-	 if (confirm(confirmString)) {
+    if(confirm("このフィルタを削除してもよろしいですか？")) {
         aipo.viewPage(url,p_id);
     }
 }
