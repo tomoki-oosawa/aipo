@@ -76,5 +76,7 @@
 	// 一覧から選択する
 	SELECT_FROM_LIST_STR:"\u4e00\u89a7\u304b\u3089\u9078\u629e\u3059\u308b",
 	// 閉じる
-	CLOSE_STR:"\u9589\u3058\u308b"
+	CLOSE_STR:"\u9589\u3058\u308b",
+	// 'この'+button.form.name+'を削除してよろしいですか？なお、フォルダに含まれるファイルやフォルダはすべて削除されます。'
+	CABINET_DW_STR:"${cabinet_dw_this}${cabinet_dw_name}\u3092${cabinet_dw_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f\u306a\u304a\u3001\u30d5\u30a9\u30eb\u30c0\u306b\u542b\u307e\u308c\u308b\u30d5\u30a1\u30a4\u30eb\u3084\u30d5\u30a9\u30eb\u30c0\u306f\u3059\u3079\u3066\u524a\u9664\u3055\u308c\u307e\u3059\u3002"
 }

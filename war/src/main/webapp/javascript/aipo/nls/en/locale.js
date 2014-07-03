@@ -76,5 +76,7 @@
 	// 一覧から選択する
 	SELECT_FROM_LIST_STR:"Select from the list.",
 	// 閉じる
-	CLOSE_STR:"Close"
+	CLOSE_STR:"Close",
+	// 'この'+button.form.name+'を削除してよろしいですか？なお、フォルダに含まれるファイルやフォルダはすべて削除されます。'
+	CABINET_DW_STR:"${cabinet_dw_del} ${cabinet_dw_this} ${cabinet_dw_name}? All files and folders in folder will be delete."
 }

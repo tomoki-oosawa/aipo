@@ -21,6 +21,10 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 
 dojo.provide("aipo.cabinet");
 
+dojo.require("dojo.string");
+dojo.requireLocalization("aipo", "locale");
+
+
 aipo.cabinet.onLoadCabinetFileDialog = function(pid) {
 
 	var obj = dojo.byId("file_title");
@@ -103,8 +107,15 @@ aipo.cabinet.viewpageByFolderId = function(url, p_id, f_id) {
 
 aipo.cabinet.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
 		receive) {
-	if (confirm('この' + button.form._name.value
-			+ 'を削除してよろしいですか？なお、フォルダに含まれるファイルやフォルダはすべて削除されます。')) {
+
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.CABINET_DW_STR, {
+	    cabinet_dw_del: nlsStrings.DW_DEL,
+	    cabinet_dw_this: nlsStrings.DW_THIS,
+	    cabinet_dw_name: button.form._name.value
+	  });
+	// 'この'+button.form.name+'を削除してよろしいですか？なお、フォルダに含まれるファイルやフォルダはすべて削除されます。'
+	if (confirm(confirmString)) {
 		aimluck.io.disableForm(button.form, true);
 		aimluck.io.setHiddenValue(button);
 		button.form.action = url;
@@ -131,7 +142,7 @@ aipo.cabinet.toggleMenu = function(node, filter, alwaysPulldown) {
 
 	if (node.style.display == "none") {
 		dojo.query("div.menubar").style("display", "none");
-		
+
 		var scroll = {
 			left : document.documentElement.scrollLeft
 					|| document.body.scrollLeft,
