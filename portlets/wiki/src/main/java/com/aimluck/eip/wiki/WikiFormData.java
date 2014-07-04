@@ -187,7 +187,21 @@ public class WikiFormData extends ALAbstractFormData {
     note.validate(msgList);
     if (is_child != null && is_child) {
       // 親wiki名
-      parentId.validate(msgList);
+      if (parentId.validate(msgList)) {
+        if (parentId.getValueWithInt() != 0) {
+          EipTWiki parentWiki =
+            WikiUtils.getEipTWiki(parentId.getValueWithInt());
+          if (parentWiki != null) {
+            if (parentWiki.getParentId() != 0) {
+              msgList.add(ALLocalizationUtils
+                .getl10n("WIKI_CONFLICT_PARENT_ERROR"));
+            }
+          } else {
+            msgList.add(ALLocalizationUtils
+              .getl10n("WIKI_CONFLICT_PARENT_ERROR"));
+          }
+        }
+      }
     }
 
     boolean duplication = false;
@@ -214,8 +228,12 @@ public class WikiFormData extends ALAbstractFormData {
 
     if (update_date != null) {
       EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
-      if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
-        msgList.add(ALLocalizationUtils.getl10n("WIKI_CONFLICT_ERROR"));
+      if (eipTWiki != null) {
+        if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
+          msgList.add(ALLocalizationUtils.getl10n("WIKI_CONFLICT_ERROR"));
+        }
+      } else {
+        msgList.add(ALLocalizationUtils.getl10n("WIKI_ALREADY_DELETE"));
       }
     }
 
