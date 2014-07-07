@@ -345,9 +345,11 @@ public class TimelineFormData extends ALAbstractFormData {
 
     } catch (RuntimeException ex) {
       // RuntimeException
+      Database.rollback();
       logger.error("timeline", ex);
       return false;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("timeline", ex);
       return false;
     }
