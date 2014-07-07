@@ -749,6 +749,7 @@ public class CabinetUtils {
    */
   public static void createCabinetActivity(EipTCabinetFile file,
       String loginName, List<String> recipients, boolean isNew) {
+
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Cabinet", file.getFileId(), 0f);
     boolean isDeletePrev =
@@ -785,7 +786,6 @@ public class CabinetUtils {
         .withExternalId(String.valueOf(file.getFileId())));
     }
 
-    Database.commit();
     if (isDeletePrev) {
       RecentActivity.delete();
     }
