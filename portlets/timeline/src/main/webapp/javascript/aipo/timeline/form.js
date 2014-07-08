@@ -100,6 +100,7 @@ aipo.timeline.onScroll = function(url, pid, page, max) {
 }
 
 aipo.timeline.nextThumbnail = function(pid) {
+	var nlsStrings = dojo.i18n.getLocalization("aipo","locale");
 	var page = dojo.byId("TimelinePage_" + pid);
 	var value = parseInt(page.value);
 	var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
@@ -110,11 +111,15 @@ aipo.timeline.nextThumbnail = function(pid) {
 		value++;
 		page.value = value;
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-		dojo.byId("count_" + pid).innerHTML = maxval + " 件中 " + page.value + " 件";
+		dojo.byId("count_" + pid).innerHTML = dojo.string.substitute(nlsStrings.NUMBER_STR, {
+		    maxval: maxval,
+		    value: page.value
+		  });
 	}
 }
 
 aipo.timeline.prevThumbnail = function(pid) {
+	var nlsStrings = dojo.i18n.getLocalization("aipo","locale");
 	var page = dojo.byId("TimelinePage_" + pid);
 	var value = parseInt(page.value);
 	var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value
@@ -125,8 +130,10 @@ aipo.timeline.prevThumbnail = function(pid) {
 		value--;
 		page.value = value;
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "";
-		dojo.byId("count_" + pid).innerHTML = maxval + " 件中 " + page.value
-				+ " 件";
+		dojo.byId("count_" + pid).innerHTML = dojo.string.substitute(nlsStrings.NUMBER_STR, {
+		    maxval: maxval,
+		    value: page.value
+		  });
 	}
 }
 
@@ -136,6 +143,7 @@ if (!aipo.timeline.revmaxlist) {
 
 aipo.timeline.refreshImageList = function(pid, i) {
 	function showImageList(pid) {
+		var nlsStrings = dojo.i18n.getLocalization("aipo","locale");
 		var page = dojo.byId("TimelinePage_" + pid);
 		var value = parseInt(page.value);
 		if (aipo.timeline.revmaxlist[pid] > 0) {
@@ -147,8 +155,10 @@ aipo.timeline.refreshImageList = function(pid, i) {
 			if (!value) {
 				value = 1;
 			}
-			dojo.byId("count_" + pid).innerHTML = aipo.timeline.revmaxlist[pid]
-					+ " 件中 " + value + " 件";
+			dojo.byId("count_" + pid).innerHTML = dojo.string.substitute(nlsStrings.NUMBER_STR, {
+			    maxval: aipo.timeline.revmaxlist[pid],
+			    value: value
+			  });
 			dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value = aipo.timeline.revmaxlist[pid];
 		}
 	}
@@ -371,6 +381,7 @@ aipo.timeline.onReceiveMessageToList = function(msg) {
 
 aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 		isComment) {
+	var nlsStrings = dojo.i18n.getLocalization("aipo","locale");
 	var pidspan = dojo.byId("getTimelinePortletId");
 	if (pidspan == undefined)
 		pid = portletId;
@@ -401,7 +412,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 							.lastIndexOf("}") - 1);
 			a.setAttribute("onclick", new Function(onclickString));
 		}
-		a.innerHTML = "いいね！を取り消す";
+		a.innerHTML = nlsStrings.REMOVE_LIKE_STR;
 		if (isComment) {
 			aipo.timeline.increaseComLikeValue(portletId, timelineId);
 		} else {
@@ -424,7 +435,7 @@ aipo.timeline.onReceiveLikeMessage = function(portletId, timelineId, mode,
 							.lastIndexOf("}") - 1);
 			a.setAttribute("onclick", new Function(onclickString));
 		}
-		a.innerHTML = "いいね！";
+		a.innerHTML = nlsStrings.LIKE_STR;
 		if (isComment) {
 			aipo.timeline.decreaseComLikeValue(portletId, timelineId);
 		} else {
