@@ -88,6 +88,13 @@ public class ScheduleListScreen extends ScheduleScreen {
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
+      if (has_acl_other.equals("F")) {
+        if (rundata.getParameters().get("filter") == null
+          || rundata.getParameters().get("filter").equals("Facility")) {
+          rundata.getParameters().add("filter", "null");
+          rundata.getParameters().remove("filtertype");
+        }
+      }
 
       if ("calendar".equals(currentTab)) {
         // tab = "calendar"
