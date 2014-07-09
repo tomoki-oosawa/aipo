@@ -236,6 +236,7 @@ aimluck.io.disableForm = function(form, bool) {
         span.style.display = elements[i].style.display;
         elements[i].parentNode.insertBefore(span, elements[i]);
         span.appendChild(document.createTextNode(elements[i].value))
+        dojo.removeClass(span, "auiButtonAction");
         dojo.addClass(span, "auiButtonDisabled");
         elements[i].style.display = "none";
         dojo.addClass(elements[i], uuid);
