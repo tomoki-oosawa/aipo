@@ -23,9 +23,12 @@
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-
+    dojo.addOnLoad(function () {
     ptConfig['$!portlet.ID'] = { group:"cabinet", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.cabinet.menuSelected = 0;
+
+    });
+
 
 //]]>
 </script>

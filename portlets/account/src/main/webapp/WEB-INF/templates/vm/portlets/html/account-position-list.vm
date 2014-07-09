@@ -21,8 +21,12 @@
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
+    dojo.addOnLoad(function () {
     ptConfig['$!portlet.ID'] = { group:"account_company", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPositionListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.account_company.menuSelected = 1;
+
+    });
+
 //]]>
 </script>
 #if(${client}=="IPHONE")

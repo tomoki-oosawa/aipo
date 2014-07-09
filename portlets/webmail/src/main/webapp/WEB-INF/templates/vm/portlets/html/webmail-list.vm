@@ -25,10 +25,14 @@
 
     dojo.require("aipo.widget.AddressbookDialog");
 
+    dojo.addOnLoad(function () {
     ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen"))', reloadUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen"))', reloadFunction:aipo.webmail.reloadMailList };
     aipo.webmail.menuSelected = 0;
 
     aipo.webmail.onProcessingTimer();
+
+    });
+
 
 //]]>
 </script>

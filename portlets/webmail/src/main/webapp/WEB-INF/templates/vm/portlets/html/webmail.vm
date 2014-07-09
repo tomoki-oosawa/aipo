@@ -22,10 +22,13 @@
 
     dojo.require("aipo.widget.AddressbookDialog");
 
-    ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen"))', reloadFunction:aipo.webmail.reloadMailList };
+    dojo.addOnLoad(function () {
 
-	aipo.webmail.onProcessingTimer();
+        ptConfig['$!portlet.ID'] = { group:"webmail", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen"))', reloadFunction:aipo.webmail.reloadMailList };
 
+	    aipo.webmail.onProcessingTimer();
+
+	});
 //]]>
 </script>
 #parse("/portlets/html/ja/ajax-webmail.vm")
