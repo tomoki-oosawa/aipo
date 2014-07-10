@@ -38,9 +38,9 @@
     	<div class="auiSelectButton">
     		<ul>
     			#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
     			#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
     		</ul>
     	</div>
     </div>
@@ -83,6 +83,8 @@
     #AUISearchIndicator()
     #AUISearchFooter()
     #AUISummaryFilterDivFooter()
+    <div class="center loader" id="indicator-$!portlet.ID" style="display:none"></div>
+<div id="content-$!portlet.ID" style="visibility:visible">
 
     #AUISummaryDiv()
     <select name="target_progress_rate_from" id="target_progress_rate_from" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')">
@@ -163,6 +165,7 @@
 		#end
     #end
 #end
+</div>
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">

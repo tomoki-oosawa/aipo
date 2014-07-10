@@ -711,3 +711,10 @@ aipo.project.changeProjectMember = function (url, params) {
   });
 };
 
+aipo.project.setIndicator = function(portlet_id) {
+
+    obj_content = dojo.byId('content-'+portlet_id);
+    dojo.style(obj_content, "visibility" , "hidden");
+    obj_indicator = dojo.byId('indicator-'+portlet_id);
+    dojo.style(obj_indicator, "display" , "");
+}
