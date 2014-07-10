@@ -39,7 +39,7 @@ $!result.Detail.RouteName
 #ALtditem($!result.Detail.Template)
 #ALtdcaption("$l10n.WORKFLOW_MEMO")
 #ALtditem($!result.Detail.Note)
-#ALtdcaption("$l10n.WORKFLOW_DATE_ADD")
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption("$l10n.WORKFLOW_DATE_UPDATE")
 #ALtditem($!result.Detail.UpdateDate)

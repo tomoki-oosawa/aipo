@@ -110,7 +110,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
     create_date = new ALDateField();
     create_date.setFieldName(ALLocalizationUtils
-      .getl10n("ADDRESSBOOK_CREATE_DATE"));
+      .getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateField();
     update_date.setFieldName(ALLocalizationUtils
