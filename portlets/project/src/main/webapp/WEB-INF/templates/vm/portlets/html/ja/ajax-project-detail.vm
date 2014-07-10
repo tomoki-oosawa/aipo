@@ -46,6 +46,21 @@
 	#end
 </ul>
 #ALtditemfooter()
+#ALtdcaption("$l10n.PROJECT_CREATE_DATE")
+#ALtditem($!result.Detail.CreateDate.toString())
+
+#ALtdcaption("$l10n.PROJECT_UPDATE_DATE")
+#ALtditem($!result.Detail.UpdateDate.toString())
+
+#ALtdcaption("$l10n.PROJECT_UPDATE_USER")
+#ALtditem($!result.Detail.UpdateUserName)
+
+#ALtdcaption("$l10n.PROJECT_CREATE_USER")
+#ALtditem($!result.Detail.CreateUserName)
+
+
+
+
 
 #if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption("$l10n.PROJECT_FILE_ATTACH")

@@ -247,11 +247,18 @@ public class ProjectSelectData extends
     data.setExplanation(record.getExplanation()); // 説明
     data.setAdminUserId(record.getAdminUserId()); // 管理者ID
     data.setProgressFlg(record.getProgressFlg()); // 進捗率入力フラグ
-
     data.setProgressRate(record.getProgressRate()); // 進捗率
-
-    // 管理者名
     try {
+      // 作成者
+      data.setCreateUserName(ALEipUtils.getALEipUser(
+        record.getTurbineUser().getUserId()).getAliasName().getValue());
+
+      // 更新者
+      data.setUpdateUserName(ALEipUtils
+        .getALEipUser(record.getUpdateUserId())
+        .getAliasName()
+        .getValue());
+      // 管理者名
       data.setAdminUserName(ALEipUtils
         .getALEipUser(record.getAdminUserId())
         .getAliasName()
