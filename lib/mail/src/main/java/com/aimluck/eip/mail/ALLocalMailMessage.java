@@ -535,6 +535,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
           addresses[index] = new InternetAddress(token, false);
         } catch (AddressException ae) {
           addresses[index] = new InternetAddress();
+          if (index > 0 && token.contains("\r\n\t")) {
+            token = token.substring(4);
+          }
           ((InternetAddress) addresses[index]).setAddress(token);
         }
         index++;
