@@ -51,7 +51,6 @@
 #if($result.List.size() == 0)
 $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #else
-
 #ALajaxlistformheader($l10n.ADDRESSBOOK_ADDRESS)
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -83,12 +82,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId).addQueryData('tab','$!result.currentTab'))")
-#if($!record.PublicFlag.toString() == 'F')
-#set ($secret_option = "title='$l10n.TODO_CLOSE_PUBLIC'")
-#else
-#set ($secret_option = false)
-#end
-#AUIlinkList("aipo.common.showDialog('$url');" $result.getStringCR($!record.Name) $secret_option)
+#AUIlinkList("aipo.common.showDialog('$url');" $!record.Name $!record.PublicFlag.toString() "title='$l10n.TODO_CLOSE_PUBLIC'")
 #ALtdcellfooter()
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>

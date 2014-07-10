@@ -1747,17 +1747,15 @@ $!{text}
 #end
 
 #macro(AUIiconSecretAtt $option)
-	<i class="auiIcon auiIconSecret" $option></i>
-#end
+<i class="auiIcon auiIconSecret" $option></i>#*
+*##end
 
 
-#macro(AUIlinkList $onclick $text $secret_option)
-	<div>
-		<a href="javascript:void(0);" onclick="$onclick">
-	#if($secret_option)
-		<i class="auiIcon auiIconSecret" $secret_option></i>&nbsp;
-	#end
-	$text</a>
+#macro(AUIlinkList $onclick $text $public_flag $option)
+<div>
+<a href="javascript:void(0);" onclick="$onclick">
+#if($public_flag=='F')#AUIiconSecretAtt($!option)#end$text
+</a>
 </div>
 #end
 
