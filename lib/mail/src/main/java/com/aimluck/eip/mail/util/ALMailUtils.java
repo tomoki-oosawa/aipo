@@ -355,6 +355,53 @@ public class ALMailUtils {
   }
 
   /**
+   * メールの返信に必要な値をセットする．
+   * 
+   * @param msg
+   * @return
+   */
+  public static ALMailMessage getReplyAllMessage(ALMailMessage mailmsg) {
+    if (mailmsg == null) {
+      return null;
+    }
+
+    ALLocalMailMessage msg = null;
+    try {
+      msg = (ALLocalMailMessage) mailmsg;
+
+      StringBuffer sb = new StringBuffer();
+      sb.append("From: ").append(getFromDelegate(msg)).append(CR);
+      sb
+        .append("To: ")
+        .append(
+          getAddressString(msg.getRecipients(Message.RecipientType.TO, false)))
+        .append(CR);
+      sb.append("Sent: ").append(msg.getSentDate()).append(CR);
+      sb
+        .append("Subject: ")
+        .append(UnicodeCorrecter.correctToISO2022JP(msg.getSubject()))
+        .append(CR)
+        .append(" ")
+        .append(CR);
+
+      msg.setSubject(MimeUtility.encodeText(UnicodeCorrecter
+        .correctToISO2022JP(msg.getSubject())));
+      String[] lines = msg.getBodyTextArray();
+      if (lines != null && lines.length > 0) {
+        int length = lines.length;
+        for (int i = 0; i < length; i++) {
+          sb.append(lines[i]).append(CR);
+        }
+      }
+      msg.setText(UnicodeCorrecter.correctToISO2022JP(sb.toString()));
+    } catch (Exception e) {
+      logger.error("ALMailUtils.getReplyMessage", e);
+      return null;
+    }
+    return msg;
+  }
+
+  /**
    * メールの転送に必要な値をセットする．
    * 
    * @param msg
