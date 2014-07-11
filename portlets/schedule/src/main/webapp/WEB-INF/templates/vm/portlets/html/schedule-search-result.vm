@@ -93,7 +93,7 @@
 <th #if(${client}=="IPHONE")class="w50"#else class="w20" #end>$l10n.SCHEDULE_DATE</th>
 <th #if(${client}=="IPHONE")class="w50"#else class="w33" #end>$l10n.SCHEDULE_TITLE</th>
 <th class="w33 mb_hide">$l10n.SCHEDULE_NOTE</th>
-<th class="w20 mb_hide">$l10n.SCHEDULE_CREATE_USER</th>
+<th class="w20 mb_hide">$l10n.COMMON_CREATE_USER</th>
 </tr>
 #foreach ($record in $result.List)
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('view_date', $!{record.ViewDate.toString()}).addQueryData('ignore_viewdate', 'true')")

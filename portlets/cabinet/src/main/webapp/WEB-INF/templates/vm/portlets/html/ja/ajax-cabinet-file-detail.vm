@@ -40,7 +40,7 @@
 #ALtditem("$!{result.Detail.Counter} $l10n.CABINET_TIME")
 #ALtdcaption("$l10n.CABINET_FILE_SIZE")
 #ALtditem("$!{result.Detail.FileSize} KB")
-#ALtdcaption("$l10n.CABINET_REGISTRANT")
+#ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditem("$!{result.Detail.CreateUser} （$!{result.Detail.CreateDate}）")
 #ALtdcaption("$l10n.CABINET_MODIFIED")
 #ALtditem("$!{result.Detail.UpdateUser} （$!{result.Detail.UpdateDate}）")

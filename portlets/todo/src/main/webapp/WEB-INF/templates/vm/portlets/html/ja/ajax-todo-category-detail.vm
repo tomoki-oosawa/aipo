@@ -32,7 +32,7 @@
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.TODO_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
-#ALtdcaption($l10n.TODO_CREATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem($!result.Detail.UserName)
 #ALtdcaption($l10n.TODO_UPDATE_USER_NAME)
 #ALtditem($!result.Detail.UpdateUserName)
