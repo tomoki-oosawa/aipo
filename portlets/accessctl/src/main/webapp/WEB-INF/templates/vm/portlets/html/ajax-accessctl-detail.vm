@@ -46,7 +46,7 @@ $!utils.escapeXML($record)<br />
 #ALtditem($!result.Detail.Note)
 #ALtdcaption($l10n.ACCESSCTL_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption($l10n.ACCESSCTL_UPDATE_DATE)
+#ALtdcaption($l10n.COMMON_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()

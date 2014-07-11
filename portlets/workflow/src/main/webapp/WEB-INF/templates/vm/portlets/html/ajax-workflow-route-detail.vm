@@ -35,7 +35,7 @@ $!{result.Detail.RouteV}
 #ALtditem($!result.Detail.Note)
 #ALtdcaption("$l10n.WORKFLOW_DATE_ADD")
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption("$l10n.WORKFLOW_DATE_UPDATE")
+#ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()

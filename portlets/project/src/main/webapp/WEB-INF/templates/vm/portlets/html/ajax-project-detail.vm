@@ -49,7 +49,7 @@
 #ALtdcaption("$l10n.PROJECT_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate.toString())
 
-#ALtdcaption("$l10n.PROJECT_UPDATE_DATE")
+#ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate.toString())
 
 #ALtdcaption("$l10n.PROJECT_UPDATE_USER")

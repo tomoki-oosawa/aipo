@@ -58,7 +58,7 @@
     #ALtdhead("$l10n.PROJECT_EXPECTED_WORKLOAD")
     #ALtdhead("$l10n.PROJECT_REST_OF_TASK_")
     #ALtdhead("$l10n.PROJECT_ADMIN_USER")
-    #ALtdhead("$l10n.PROJECT_UPDATE_DATE")
+    #ALtdhead("$l10n.COMMON_UPDATE_DATE")
 			</tr>
     #foreach ($record in $result.List)
     	#if($!{record.planProgressRate.toString()} == "")

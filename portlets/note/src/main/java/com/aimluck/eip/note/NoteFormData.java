@@ -682,7 +682,7 @@ public class NoteFormData extends ALAbstractFormData {
     create_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CREATE_TIME"));
 
     update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    update_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_UPDATE_TIME"));
+    update_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_DATE"));
 
     // 現在の年
     currentYear = Calendar.getInstance().get(Calendar.YEAR);

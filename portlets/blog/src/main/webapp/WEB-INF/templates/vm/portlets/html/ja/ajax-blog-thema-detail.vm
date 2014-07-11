@@ -35,7 +35,7 @@
 #ALtditem($!result.Detail.UpdateUserName)
 #ALtdcaption($l10n.BLOG_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption($l10n.BLOG_UPDATE_DATE)
+#ALtdcaption($l10n.COMMON_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()
