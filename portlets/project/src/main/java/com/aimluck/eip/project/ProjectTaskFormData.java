@@ -399,10 +399,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     progress_rate.validate(msgList);
 
     if (!hasChildren) {
-      if (taskMembers.isEmpty()) {
-        // 担当者が未入力の場合
-        msgList.add(getl10n("PROJECT_VALIDATE_TASKMEMBER"));
-      } else {
+      if (!taskMembers.isEmpty()) {
         // 担当者入力有の場合
 
         List<Long> checkMemberId = new ArrayList<Long>();
@@ -480,13 +477,17 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     }
 
     boolean isProjectMember = false;
-    for (ProjectTaskMemberResultData data : taskMembers) {
-      for (ALEipUser user : projectMembers) {
-        if (data.getUserId().toString().equals(user.getUserId().toString())) {
-          isProjectMember = true;
-          break;
+    if (!taskMembers.isEmpty()) {
+      for (ProjectTaskMemberResultData data : taskMembers) {
+        for (ALEipUser user : projectMembers) {
+          if (data.getUserId().toString().equals(user.getUserId().toString())) {
+            isProjectMember = true;
+            break;
+          }
         }
       }
+    } else {
+      isProjectMember = true;
     }
 
     // 担当者がプロジェクトの参加ユーザーではない場合

@@ -108,6 +108,7 @@
     		<tr id="members_tr_$velocityCount">
     		<td>
 			<select name="task_member" id="task_member_$velocityCount" class="w100 sys-taskmember">
+    		<option value="" >($l10n.PROJECT_NOT_SPECIFIED)</option>
     		#foreach( $record in $result.ProjectMembers )
     			<option value="$record.UserId" #if ($!taskMember.UserId.toString() == $!record.UserId.toString()) selected="selected" #end>$!record.AliasName</option>
     		#end
@@ -123,8 +124,9 @@
     		##担当者が登録されていない場合（新規登録時）
     		<tr id="members_tr_1">
     		<td><select name="task_member" id="task_member_1" class="w100 sys-taskmember">
+    		<option value="" >($l10n.PROJECT_NOT_SPECIFIED)</option>
     		#foreach( $record in $result.ProjectMembers )
-    			<option value="$record.UserId" #if ("$!result.UserId.toString()" == "$!record.UserId.toString()") selected="selected" #end>$!record.AliasName</option>
+    		<option value="$record.UserId" #if ("$!result.UserId.toString()" == "$!record.UserId.toString()") selected="selected" #end>$!record.AliasName</option>
     		#end
     		</select></td>
     		<td class="p15" nowrap>$l10n.PROJECT_WORKLOAD <input class="text" type="text" name="workload" id="workload_1" value="" maxlength="50" style="width:3em;ime-mode:$mode" /> $l10n.PROJECT_MANHOUR
