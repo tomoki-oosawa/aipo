@@ -479,6 +479,15 @@ public abstract class ALAbstractFolder implements ALFolder {
       ALStorageService.saveFile(new ByteArrayInputStream(b.toString().getBytes(
         "utf-8")), getFullName(), ALFolder.FILE_UIDL);
 
+      List<String> nowUIDL = loadUID();// 最新のUIDを取得
+      for (String value : oldUIDL) {
+        if (!nowUIDL.contains(value)) {// 欠損があった場合には再帰してもう１度保存を試みる。
+          saveUID(oldUIDL);
+          break;
+        } else {
+        }
+      }
+
     } catch (IOException ioe) {
     } finally {
 
