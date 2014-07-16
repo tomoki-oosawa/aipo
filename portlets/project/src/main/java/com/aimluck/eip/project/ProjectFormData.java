@@ -235,17 +235,6 @@ public class ProjectFormData extends ALAbstractFormData {
         msgList.add(getl10n("PROJECT_VALIDATE_MEMBER_ADD"));
       }
 
-      boolean containsAdminUser = false;
-      for (ALEipUser member : memberList) {
-        if (admin_user_id.getValue() == member.getUserId().getValue()) {
-          containsAdminUser = true;
-          break;
-        }
-      }
-      if (!containsAdminUser) {
-        msgList.add(getl10n("PROJECT_VALIDATE_ADMIN_ADD"));
-      }
-
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
@@ -371,13 +360,27 @@ public class ProjectFormData extends ALAbstractFormData {
       // -----------------------
 
       List<ALEipUser> mailUserList = new ArrayList<ALEipUser>();
-
+      boolean containsAdminUser = false;
       for (ALEipUser user : memberList) {
         EipTProjectMember member = Database.create(EipTProjectMember.class);
         member.setEipTProject(project);
         member.setUserId((int) user.getUserId().getValue());
-
+        if (admin_user_id.getValue() == user.getUserId().getValue()) {
+          containsAdminUser = true;
+        }
         mailUserList.add(user);
+      }
+
+      // プロジェクトの管理者がメンバーに含まれない場合は、さらに管理者をメンバーに登録する
+      if (!containsAdminUser) {
+        EipTProjectMember member = Database.create(EipTProjectMember.class);
+        member.setEipTProject(project);
+        member.setUserId((int) admin_user_id.getValue());
+        ALEipUser user =
+          ALEipUtils.getALEipUser((int) admin_user_id.getValue());
+        if (user != null) {
+          mailUserList.add(user);
+        }
       }
 
       if (mailUserList.size() > 0) {
@@ -476,13 +479,27 @@ public class ProjectFormData extends ALAbstractFormData {
       ProjectUtils.removeProjectMember(project);
 
       List<ALEipUser> mailUserList = new ArrayList<ALEipUser>();
-
+      boolean containsAdminUser = false;
       for (ALEipUser user : memberList) {
         EipTProjectMember member = Database.create(EipTProjectMember.class);
         member.setEipTProject(project);
         member.setUserId((int) user.getUserId().getValue());
-
+        if (admin_user_id.getValue() == user.getUserId().getValue()) {
+          containsAdminUser = true;
+        }
         if (!oldMemberIdList.contains(member.getUserId())) {
+          mailUserList.add(user);
+        }
+      }
+
+      // プロジェクトの管理者がメンバーに含まれない場合は、さらに管理者をメンバーに登録する
+      if (!containsAdminUser) {
+        EipTProjectMember member = Database.create(EipTProjectMember.class);
+        member.setEipTProject(project);
+        member.setUserId((int) admin_user_id.getValue());
+        ALEipUser user =
+          ALEipUtils.getALEipUser((int) admin_user_id.getValue());
+        if (user != null) {
           mailUserList.add(user);
         }
       }
