@@ -83,7 +83,8 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
 #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId))")
-#AUIlinkList("aipo.common.showDialog('$url');" $!record.Name $!record.PublicFlag.toString() "title='$l10n.TODO_CLOSE_PUBLIC'")
+#if ($!record.PublicFlag.toString() == 'T')#set($publicFlag=true)#else#set($publicFlag=false)#end
+#AUIlinkList("aipo.common.showDialog('$url');" $!record.Name $publicFlag "title='$l10n.TODO_CLOSE_PUBLIC'")
 #ALtdcellfooter()
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>

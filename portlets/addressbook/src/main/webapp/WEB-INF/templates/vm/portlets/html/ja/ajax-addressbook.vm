@@ -46,7 +46,8 @@
     <tr>
     #ALtdcellheader()
     #set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId).addQueryData('tab','$!result.currentTab'))")
-	#AUIlinkList("aipo.common.showDialog('$url');" $result.getStringCR($!record.Name) $!record.PublicFlag.toString() "title='$l10n.TODO_CLOSE_PUBLIC'")
+	#if ($!record.PublicFlag.toString() == 'T')#set($publicFlag=true)#else#set($publicFlag=false)#end
+	#AUIlinkList("aipo.common.showDialog('$url');" $result.getStringCR($!record.Name) $publicFlag "title='$l10n.TODO_CLOSE_PUBLIC'")
     #ALtdcellfooter()
     #ALtdcellheader()
     <div>

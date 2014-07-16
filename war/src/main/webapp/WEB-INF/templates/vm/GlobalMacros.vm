@@ -1746,21 +1746,15 @@ $!{text}
 #end
 #end
 
-#macro(AUIiconSecretAtt $option)
-<i class="auiIcon auiIconSecret" $option></i>#*
-*##end
-
+#macro(AUIiconSecretAtt $option $class)
+<i class="auiIcon auiIconSecret $!{class}" $option></i>
+#end
 
 #macro(AUIlinkList $onclick $text $public_flag $option)
 <div>
-<a href="javascript:void(0);" onclick="$onclick">
-#if($public_flag=='F')#AUIiconSecretAtt($!option)#end$text
-</a>
+<a href="javascript:void(0);" onclick="$onclick">#if(!$public_flag)#AUIiconSecretAtt($!option "mr5")#end$text</a>
 </div>
 #end
-
-
-
 
 #macro(AUISearchHeader $id $name $action $onsubmit)
 <form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
