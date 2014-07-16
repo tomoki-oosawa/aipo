@@ -141,15 +141,11 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
     return (ResultList<VEipTScheduleList>) ScheduleUtils.getScheduleList(
       Integer.valueOf(userid),
-      null,
-      null,
       tmpUsers,
       tmpFacilities,
       target_keyword.getValue(),
       getCurrentPage(),
-      getRowsNum(),
-      true,
-      false);
+      getRowsNum());
   }
 
   /**

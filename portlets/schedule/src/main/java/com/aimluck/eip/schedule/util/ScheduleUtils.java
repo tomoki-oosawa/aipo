@@ -3636,6 +3636,38 @@ public class ScheduleUtils {
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
+      List<Integer> users, List<Integer> facilities, String keyword, int page,
+      int limit) {
+    return getScheduleList(
+      userId,
+      null,
+      null,
+      users,
+      facilities,
+      keyword,
+      page,
+      limit,
+      true,
+      true);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
+      Date viewStart, Date viewEnd, List<Integer> users,
+      List<Integer> facilities, boolean isDetail) {
+    return getScheduleList(
+      userId,
+      viewStart,
+      viewEnd,
+      users,
+      facilities,
+      null,
+      -1,
+      -1,
+      false,
+      isDetail);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities) {
     return getScheduleList(
@@ -3651,139 +3683,126 @@ public class ScheduleUtils {
       false);
   }
 
-  public static List<VEipTScheduleList> getScheduleList(int userId,
+  protected static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
-      boolean isSearch, boolean isiCal) {
+      boolean isSearch, boolean isDetail) {
+
+    boolean isMySQL = Database.isJdbcMySQL();
 
     StringBuilder select = new StringBuilder();
 
     select.append("select");
     if (!isSearch) {
-      select.append(" eip_t_schedule_map.id, ");
-      select.append(" eip_t_schedule_map.user_id,");
-      select.append(" eip_t_schedule_map.status,");
-      select.append(" eip_t_schedule_map.type,");
-    } else {
-      select.append(" distinct");
+      select.append(" t3.id, ");
+      select.append(" t3.user_id, ");
+      select.append(" t3.status, ");
+      select.append(" t3.type, ");
+      select.append(" t3.common_category_id, ");
     }
-
-    select.append(" eip_t_schedule.schedule_id,");
-    select.append(" eip_t_schedule_map.common_category_id,");
-    select.append(" eip_t_schedule.owner_id,");
-    select.append(" eip_t_schedule.parent_id,");
-    select.append(" eip_t_schedule.name,");
-    select.append(" eip_t_schedule.place,");
-    select.append(" eip_t_schedule.start_date,");
-    select.append(" eip_t_schedule.end_date,");
-    select.append(" eip_t_schedule.update_date,");
-    select.append(" eip_t_schedule.public_flag,");
-    select.append(" eip_t_schedule.repeat_pattern,");
-    select.append(" eip_t_schedule.create_user_id,");
-    if (isSearch || isiCal) {
-      select.append(" eip_t_schedule.note,");
+    select.append(" t4.schedule_id,");
+    select.append(" t4.owner_id,");
+    select.append(" t4.parent_id,");
+    select.append(" t4.name,");
+    select.append(" t4.place,");
+    select.append(" t4.start_date,");
+    select.append(" t4.end_date,");
+    select.append(" t4.update_date,");
+    select.append(" t4.public_flag,");
+    select.append(" t4.repeat_pattern,");
+    select.append(" t4.create_user_id,");
+    select.append(" t4.edit_flag,");
+    if (isDetail) {
+      select.append(" t4.note,");
     }
-    select.append(" eip_t_schedule.edit_flag,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = eip_t_schedule_map.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = t4.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
 
     StringBuilder count = new StringBuilder();
-    count.append("select count(distinct eip_t_schedule.schedule_id) AS c ");
+    count.append("select count(t4.schedule_id) AS c ");
 
-    StringBuilder body = new StringBuilder();
-    body
-      .append(" FROM eip_t_schedule_map, eip_t_schedule WHERE eip_t_schedule_map.schedule_id = eip_t_schedule.schedule_id");
     boolean hasKeyword = false;
-    if (keyword != null && keyword.length() > 0) {
-      hasKeyword = true;
-      body.append(" AND (");
+    StringBuilder body = new StringBuilder();
+    if (isSearch) {
+      body.append(" FROM eip_t_schedule t4 ");
+      body.append(" WHERE ");
+      body.append(" EXISTS ( ");
       body
-        .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.note LIKE #bind($keyword) OR eip_t_schedule.place LIKE #bind($keyword) ");
+        .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
+      if (keyword != null && keyword.length() > 0) {
+        hasKeyword = true;
+        body.append(" AND (");
+        body
+          .append(" t4.name LIKE #bind($keyword) OR t4.note LIKE #bind($keyword) OR t4.place LIKE #bind($keyword) ");
+        body.append(" ) ");
+
+      }
+      body
+        .append(" AND ( t4.public_flag = 'O' OR  ( t3.type = 'U' AND t3.user_id = #bind($user_id) ) OR  (t4.owner_id = #bind($user_id)) ) ");
       body.append(" ) ");
-
-    }
-
-    if ((users != null && users.size() > 0)
-      || (facilities != null && facilities.size() > 0)) {
-      body.append(" AND (");
-    }
-
-    if (users != null && users.size() > 0) {
-      body.append(" ((eip_t_schedule_map.type = 'U')");
-      body.append(" AND (eip_t_schedule_map.user_id IN (");
-
-      boolean isFirst = true;
-      for (Integer num : users) {
-        if (!isFirst) {
-          body.append(",");
-
-        }
-        body.append(num.intValue());
-        isFirst = false;
-      }
-      body.append(")))");
-    }
-
-    if (facilities != null && facilities.size() > 0) {
-      if (users != null && users.size() > 0) {
-        body.append(" OR ");
-      }
-      body.append(" ((eip_t_schedule_map.type = 'F')");
-      body.append(" AND (eip_t_schedule_map.user_id IN (");
-
-      boolean isFirst = true;
-      for (Integer num : facilities) {
-        if (!isFirst) {
-          body.append(",");
-
-        }
-        body.append(num.intValue());
-        isFirst = false;
-      }
-      body.append(")))");
-    }
-
-    if ((users != null && users.size() > 0)
-      || (facilities != null && facilities.size() > 0)) {
-      body.append(")");
-    }
-
-    if (viewStart != null && viewEnd != null) {
-      body.append(" AND (((eip_t_schedule.end_date >= '");
-      body
-        .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
-      body.append("') AND (eip_t_schedule.start_date <= '");
-      body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
-
-      body
-        .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
     } else {
-      if (isSearch) {
-        body.append(" AND (eip_t_schedule.public_flag = 'O'");
-
-      } else {
-        body.append(" AND (eip_t_schedule.public_flag <> 'P'");
+      body.append(" FROM eip_t_schedule_map t3 ");
+      if (isMySQL) {
+        body.append(" FORCE INDEX (eip_t_schedule_map_schedule_id_index) ");
       }
-      body
-        .append(" OR ((SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) > 0 )");
-      body
-        .append(" OR (eip_t_schedule_map.type = 'U' AND eip_t_schedule_map.user_id = #bind($user_id))");
-      body.append(" OR ( eip_t_schedule.owner_id = #bind($user_id)))");
-      body.append(" AND (eip_t_schedule_map.status <> 'D')");
+      body.append(" , eip_t_schedule t4 ");
+      body.append(" WHERE ");
+      body.append(" t3.schedule_id = t4.schedule_id AND (t3.status <> 'R') ");
+      if ((users != null && users.size() > 0)
+        || (facilities != null && facilities.size() > 0)) {
+        body.append(" AND (t3.type, t3.user_id) IN ( ");
+        boolean isFirst = true;
+        if (users != null && users.size() > 0) {
+          for (Integer num : users) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('U', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        if (facilities != null && facilities.size() > 0) {
+          for (Integer num : facilities) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('F', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        body.append(" ) ");
+      }
+      if (viewStart != null && viewEnd != null) {
+        body.append(" AND ( ");
+        body.append(" ( ");
+        body.append(" t4.start_date <= '");
+        body
+          .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
+        body.append("' ");
+        body.append(" AND t4.end_date >= '");
+        body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+          .format(viewStart));
+        body.append("' ");
+        body.append(" ) ");
+        body.append(" OR  t4.repeat_pattern NOT IN ('N', 'S') ");
+        body.append(" ) ");
+      }
     }
-    body.append(" AND (eip_t_schedule_map.status <> 'R')");
 
     StringBuilder last = new StringBuilder();
 
     last
-      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule.update_date DESC");
-
+      .append(" ORDER BY t4.start_date DESC, t4.end_date DESC, t4.update_date DESC ");
     if (!isSearch) {
-      last.append(" ,eip_t_schedule_map.type DESC, eip_t_schedule_map.user_id");
+      last.append(" , t3.type DESC, t3.user_id ");
     }
 
     SQLTemplate<VEipTScheduleList> countQuery =
@@ -3793,6 +3812,7 @@ public class ScheduleUtils {
     if (hasKeyword) {
       countQuery.param("keyword", "%" + keyword + "%");
     }
+
     int countValue = 0;
     if (page > 0 && limit > 0) {
       List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
