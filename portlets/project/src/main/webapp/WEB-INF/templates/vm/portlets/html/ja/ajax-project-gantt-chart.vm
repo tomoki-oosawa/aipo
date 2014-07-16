@@ -35,9 +35,9 @@
 		<div class="auiSelectButton">
 			<ul>
 				#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
-				<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+				<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 				#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
-				<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');aipo.project.reloadProgress();"><span>$tab.get(0)</span></a></li>
+				<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 			</ul>
 		</div>
 	</div>
