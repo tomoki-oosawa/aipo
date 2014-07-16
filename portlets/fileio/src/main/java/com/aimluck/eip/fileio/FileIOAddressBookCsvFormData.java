@@ -239,7 +239,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     create_user = new ALStringField();
     create_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_AUTHOR"));
     update_user = new ALStringField();
-    update_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_MODIFIED_BY"));
+    update_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_USER"));
     create_date = new ALDateField();
     create_date.setFieldName(ALLocalizationUtils
       .getl10n("FILEIO_CREATION_DATE"));

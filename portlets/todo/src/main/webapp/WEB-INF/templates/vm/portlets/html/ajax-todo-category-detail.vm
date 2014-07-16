@@ -34,7 +34,7 @@
 #ALtditem($!result.Detail.UpdateDate)
 #ALtdcaption($l10n.TODO_CREATE_USER_NAME)
 #ALtditem($!result.Detail.UserName)
-#ALtdcaption($l10n.TODO_UPDATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_UPDATE_USER_NAME)
 #ALtditem($!result.Detail.UpdateUserName)
 #ALtablefooter()
 #ALbuttonheader()

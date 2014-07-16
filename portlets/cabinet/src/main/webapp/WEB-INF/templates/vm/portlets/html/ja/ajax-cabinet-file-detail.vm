@@ -42,7 +42,7 @@
 #ALtditem("$!{result.Detail.FileSize} KB")
 #ALtdcaption("$l10n.CABINET_REGISTRANT")
 #ALtditem("$!{result.Detail.CreateUser} （$!{result.Detail.CreateDate}）")
-#ALtdcaption("$l10n.CABINET_MODIFIED")
+#ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditem("$!{result.Detail.UpdateUser} （$!{result.Detail.UpdateDate}）")
 #ALtablefooter()
 #ALbuttonheader()
