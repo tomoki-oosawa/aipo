@@ -390,6 +390,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
       // exclude default company
       query.setQualifier(AddressBookUtils.excludeDefaultCompanyCriteria());
+      query.orderAscending(EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY);
 
       List<EipMAddressbookCompany> aList = query.fetchList();
       int size = aList.size();
