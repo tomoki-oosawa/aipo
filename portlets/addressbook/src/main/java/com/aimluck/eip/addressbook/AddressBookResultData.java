@@ -314,7 +314,7 @@ public class AddressBookResultData implements ALData {
     return ALEipUtils.getMessageList(note.getValue());
   }
 
-  public String getNoteRow() {
+  public String getNoteRaw() {
     return note.getValue();
   }
 

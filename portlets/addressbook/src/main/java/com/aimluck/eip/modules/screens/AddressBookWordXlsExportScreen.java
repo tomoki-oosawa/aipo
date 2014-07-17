@@ -55,7 +55,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -181,7 +181,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
             rd.getCompanyFaxNumber().getValue(),
             rd.getCompanyUrl().getValue(),
             rd.getPositionName().getValue(),
-            rd.getNoteRow() };
+            rd.getNoteRaw() };
 
         rowcount = rowcount + 1;
         addRow(sheet.createRow(rowcount), cell_enc_types, rows);
@@ -209,7 +209,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
