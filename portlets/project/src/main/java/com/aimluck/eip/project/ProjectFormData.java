@@ -234,7 +234,7 @@ public class ProjectFormData extends ALAbstractFormData {
       if (memberList.isEmpty()) {
         msgList.add(getl10n("PROJECT_VALIDATE_MEMBER_ADD"));
       }
-
+      
     } catch (Exception ex) {
       logger.error("Exception", ex);
       return false;
