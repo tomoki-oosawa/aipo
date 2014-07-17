@@ -314,6 +314,10 @@ public class AddressBookResultData implements ALData {
     return ALEipUtils.getMessageList(note.getValue());
   }
 
+  public String getNoteRaw() {
+    return note.getValue();
+  }
+
   /**
    * 公開フラグを設定します。
    * 

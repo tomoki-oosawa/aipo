@@ -130,6 +130,7 @@ public class FileIOAction extends ALBaseAction {
     sequency.add("10");
     sequency.add("11");
     sequency.add("19");
+    sequency.add("20");
     ALCSVUtils.setSequency(rundata, context, sequency);
 
     setTemplate(rundata, "fileio-addressbook-csv");

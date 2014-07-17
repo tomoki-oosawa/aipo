@@ -223,6 +223,7 @@ public class FileIOAddressBookCsvSelectData extends
         data.setPostName(formData.getPostName().getValue());
         data.setPositionName(formData.getPositionName().getValue());
         data.setCompanyUrl(formData.getCompUrl());
+        data.setNote(formData.getNote().getValue());
 
         FileIOAddressBookCsvData pdata; // 同じデータがないか判別
         for (k = 0; k < collectList.size(); k++) {
@@ -406,6 +407,7 @@ public class FileIOAddressBookCsvSelectData extends
         data.setPositionName(formData.getPositionName().getValue());
         data.setCompanyUrl(formData.getCompUrl());
         data.setSameCompany(formData.getSameCompany());
+        data.setNote(formData.getNote().getValue());
 
         if (is_company_only && formData.getSameCompany()) {
           data.setIsError(true);
