@@ -260,6 +260,10 @@ public class AddressBookWordSelectData extends
         ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_MAIL_PROPERTY, "%"
           + word
           + "%");
+      Expression exp19 =
+        ExpressionFactory.likeExp(EipMAddressbook.NOTE_PROPERTY, "%"
+          + word
+          + "%");
 
       Expression exp21 =
         ExpressionFactory.likeExp(
@@ -308,12 +312,16 @@ public class AddressBookWordSelectData extends
             + "."
             + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
           "%" + transWords[i] + "%");
+      Expression exp37 =
+        ExpressionFactory.likeExp(EipMAddressbook.NOTE_PROPERTY, "%"
+          + transWords[i]
+          + "%");
 
       if (word != null && !"".equals(word)) {
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp21).orExp(
-          exp22).orExp(exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(
-          exp34).orExp(exp35).orExp(exp36));
+          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp19).orExp(
+          exp21).orExp(exp22).orExp(exp23).orExp(exp31).orExp(exp32).orExp(
+          exp33).orExp(exp34).orExp(exp35).orExp(exp36).orExp(exp37));
       }
     }
 
