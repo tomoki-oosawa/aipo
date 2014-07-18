@@ -68,7 +68,7 @@
 </select>&nbsp;<span id="destuserDiv"></span>
 #ALtditemfooter()
 ##メンバー
-#ALtdcaption("#ALrequired($l10n.PROJECT_MENVERS)")
+#ALtdcaption("$l10n.PROJECT_MENVERS")
 #ALtditemheader()
 <div id="mapFieldButton"></div>
 <div id="mapField">
