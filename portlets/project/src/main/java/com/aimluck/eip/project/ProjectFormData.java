@@ -230,6 +230,7 @@ public class ProjectFormData extends ALAbstractFormData {
     try {
 
       project_name.validate(msgList);
+      admin_user_id.validate(msgList);
 
     } catch (Exception ex) {
       logger.error("Exception", ex);
