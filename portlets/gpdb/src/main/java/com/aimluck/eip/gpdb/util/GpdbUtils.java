@@ -1082,7 +1082,7 @@ public class GpdbUtils {
   public static EipMGpdbKubunValue getEipMGpdbKubunValue(String gpdbKubunValueId) {
     try {
 
-      if (gpdbKubunValueId == null) {
+      if (gpdbKubunValueId == null || gpdbKubunValueId.isEmpty()) {
         // Request IDが空の場合
         logger.debug("[GpdbUtils] Empty ID...");
         return null;
