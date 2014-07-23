@@ -545,6 +545,15 @@ $theLink
 <span class="caution">$text</span>
 #end
 
+#macro(ALtelLink $tel)
+#if(${client} == "IPHONE")
+#set($telLink =$tel.toString().replaceAll("-",""))
+<a  href="tel:$telLink">$tel</a>
+#else
+$tel
+#end
+#end
+
 #* S O R T *#
 #macro(ALsort $key $name $result $link)
 #if($!result.CurrentSort && $!result.CurrentSort == "$key" && $!result.CurrentSortType && $!result.CurrentSortType == "asc")#set($sorttype ="desc")#set($sortHead ="headDown") #else #set($sorttype ="asc")#set($sortHead ="headUp")#end
