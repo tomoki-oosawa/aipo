@@ -470,7 +470,7 @@ public class UserSelectData extends
   }
 
   private Map<Integer, Boolean> getAdminInfo(ResultList<TurbineUser> list) {
-    if (list.isEmpty()) {
+    if (list == null || list.isEmpty()) {
       return new HashMap<Integer, Boolean>();
     }
 
@@ -495,7 +495,7 @@ public class UserSelectData extends
           Operations.in(TurbineUserGroupRole.TURBINE_USER_PROPERTY, userIds))
         .fetchList();
 
-    if (roleList.isEmpty()) {
+    if (roleList == null) {
       return new HashMap<Integer, Boolean>();
     } else {
       Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
