@@ -497,13 +497,13 @@ public class UserSelectData extends
 
     if (roleList == null) {
       return new HashMap<Integer, Boolean>();
-    } else {
-      Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
-      for (TurbineUserGroupRole role : roleList) {
-        map.put(role.getTurbineUser().getUserId(), Boolean.TRUE);
-      }
-      return map;
     }
+    Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+    for (TurbineUserGroupRole role : roleList) {
+      map.put(role.getTurbineUser().getUserId(), Boolean.TRUE);
+    }
+    return map;
+
   }
 
   private void setAdminInfo(Object obj, Map<Integer, Boolean> map) {
