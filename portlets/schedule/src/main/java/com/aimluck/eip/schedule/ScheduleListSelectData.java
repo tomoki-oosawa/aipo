@@ -207,20 +207,25 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     Integer targetId = null;
     boolean isFacility = false;
-    if ((target_user_id != null) && (!target_user_id.equals(""))) {
-      if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
-        String fid =
-          target_user_id.substring(
-            ScheduleUtils.TARGET_FACILITY_ID.length(),
-            target_user_id.length());
-        targetId = Integer.valueOf(fid);
-        isFacility = true;
-      } else {
-        targetId = Integer.valueOf(target_user_id);
-      }
+    if (!hasAclviewOther
+      && !target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
+      targetId = userid;
     } else {
-      // 表示できるユーザがいない場合の処理
-      return new ArrayList<VEipTScheduleList>();
+      if ((target_user_id != null) && (!target_user_id.equals(""))) {
+        if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
+          String fid =
+            target_user_id.substring(
+              ScheduleUtils.TARGET_FACILITY_ID.length(),
+              target_user_id.length());
+          targetId = Integer.valueOf(fid);
+          isFacility = true;
+        } else {
+          targetId = Integer.valueOf(target_user_id);
+        }
+      } else {
+        // 表示できるユーザがいない場合の処理
+        return new ArrayList<VEipTScheduleList>();
+      }
     }
 
     return ScheduleUtils.getScheduleList(Integer.valueOf(userid), viewStart
