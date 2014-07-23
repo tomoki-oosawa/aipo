@@ -123,7 +123,7 @@ public class ProjectTaskSimpleSelectData extends
   private int viewDateMaxYear;
 
   /** インデント表示フラグ */
-  private boolean indentFlg = true;
+  private final boolean indentFlg = true;
 
   private Calendar calFrom;
 
@@ -462,55 +462,6 @@ public class ProjectTaskSimpleSelectData extends
       }
     }
     return query;
-  }
-
-  /**
-   * ソート句を構築します。
-   * 
-   * @param crt
-   * @return
-   */
-  protected String getOrderBy(RunData rundata, Context context) {
-
-    String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
-    String sort_type = ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR);
-    String crt_key = null;
-
-    Attributes map = getColumnMap();
-    if (sort != null && sort.length() > 0) {
-      crt_key = map.getValue(sort);
-    }
-
-    current_sort = sort;
-    current_sort_type = sort_type;
-
-    if (crt_key != null && crt_key.length() > 0) {
-
-      // インデントを非表示
-      indentFlg = false;
-
-      if (sort_type != null
-        && ALEipConstants.LIST_SORT_TYPE_DESC.equals(sort_type)) {
-        return "  ORDER BY " + crt_key + " DESC";
-      } else {
-        return "  ORDER BY " + crt_key;
-      }
-
-    } else {
-      if (Database.isJdbcMySQL()) {
-        if (topView) {
-          return "  ORDER BY end_plan_date ASC, lpad_path ASC";
-        } else {
-          return "  ORDER BY lpad_path";
-        }
-      } else {
-        if (topView) {
-          return "  ORDER BY end_plan_date ASC, path ASC";
-        } else {
-          return "  ORDER BY path";
-        }
-      }
-    }
   }
 
   /**
