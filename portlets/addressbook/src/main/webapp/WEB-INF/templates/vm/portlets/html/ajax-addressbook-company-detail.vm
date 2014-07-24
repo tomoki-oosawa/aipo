@@ -36,7 +36,7 @@
 #ALtdcaption($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtditem("$result.getStringCR($!result.Detail.Address)")
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem("$!result.Detail.Telephone")
+#ALtditem("#ALtelLink($!result.Detail.Telephone)")
 #ALtdcaption($l10n.ADDRESSBOOK_FAX_NUMBER)
 #ALtditem("$!result.Detail.FaxNumber")
 #ALtdcaption($l10n.ADDRESSBOOK_URL)
