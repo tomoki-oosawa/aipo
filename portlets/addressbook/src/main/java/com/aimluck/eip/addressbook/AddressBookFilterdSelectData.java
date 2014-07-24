@@ -182,7 +182,7 @@ public class AddressBookFilterdSelectData extends
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
       rd.setPublicFlag(record.getPublicFlag());
-
+      rd.setNote(record.getNote());
       return rd;
     } catch (Exception ex) {
       logger.error("AddressBookFilterdSelectData.getResultData", ex);

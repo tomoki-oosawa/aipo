@@ -55,7 +55,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -120,10 +120,12 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
         "電話番号",
         "FAX番号",
         "URL",
-        "役職名" };
+        "役職名",
+        "備考" };
     // 0：日本語，1：英数字
     short[] cell_enc_types =
       {
+        HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
@@ -178,7 +180,8 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
             rd.getCompanyTelephone().getValue(),
             rd.getCompanyFaxNumber().getValue(),
             rd.getCompanyUrl().getValue(),
-            rd.getPositionName().getValue() };
+            rd.getPositionName().getValue(),
+            rd.getNoteRaw() };
 
         rowcount = rowcount + 1;
         addRow(sheet.createRow(rowcount), cell_enc_types, rows);
@@ -206,7 +209,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
