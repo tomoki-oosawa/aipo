@@ -42,15 +42,15 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.Email))
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem($!result.Detail.Telephone)
+#ALtditem("#ALtelLink($!result.Detail.Telephone)")
 #else
 #ALtdcaption($l10n.ADDRESSBOOK_OUT_TELEPHONE)
-#ALtditem($!result.Detail.Telephone)
+#ALtditem("#ALtelLink($!result.Detail.Telephone)")
 #ALtdcaption($l10n.ADDRESSBOOK_IN_TELEPHONE)
-#ALtditem($!result.Detail.Telephone)
+#ALtditem("#ALtelLink($!result.Detail.Telephone)")
 #end
 #ALtdcaption($l10n.ADDRESSBOOK_CELLULAR_PHONE)
-#ALtditem($!result.Detail.CellularPhone)
+#ALtditem("#ALtelLink($!result.Detail.CellularPhone)")
 #ALtdcaption($l10n.ADDRESSBOOK_CELLULAR_MAIL)
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
 
@@ -69,7 +69,7 @@ $!result.Detail.Name
 #ALtdcaption($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtditem($result.getStringCR($!result.Detail.CompanyAddress))
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem($!result.Detail.CompanyTelephone)
+#ALtditem("#ALtelLink($!result.Detail.CompanyTelephone)")
 #ALtdcaption($l10n.ADDRESSBOOK_FAX_NUMBER)
 #ALtditem($!result.Detail.CompanyFaxNumber)
 #ALtdcaption($l10n.ADDRESSBOOK_URL)
