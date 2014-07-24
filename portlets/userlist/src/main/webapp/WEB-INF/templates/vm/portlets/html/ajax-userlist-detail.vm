@@ -35,7 +35,7 @@ $!result.Detail.Name
 #ALtdcaption($l10n.USERLIST_OUT_TELEPHONE)
 #ALtditem("#ALtelLink($!result.Detail.OutTelephone)")
 #ALtdcaption($l10n.USERLIST_IN_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.InTelephone)")
+#ALtditem($!result.Detail.InTelephone)
 #ALtdcaption($l10n.USERLIST_CELLULAR_PHONE)
 #ALtditem("#ALtelLink($!result.Detail.CellularPhone)")
 #ALtdcaption($l10n.USERLIST_CELLULAR_MAIL)
