@@ -73,7 +73,11 @@ $!result.Detail.Name
 #ALtdcaption($l10n.ADDRESSBOOK_FAX_NUMBER)
 #ALtditem($!result.Detail.CompanyFaxNumber)
 #ALtdcaption($l10n.ADDRESSBOOK_URL)
+#if ($!result.Detail.CompanyUrl && $result.Detail.CompanyUrl.toString().length() > 0)
 #ALtditem("<a href='$utils.normalizeURL($result.Detail.CompanyUrl.toString())' target='_blank'>$result.getStringCR($!result.Detail.CompanyUrl)</a>")
+#else
+#ALtditem("")
+#end
 #ALtablefooter()
 #ALtditemfooter()
 #else
