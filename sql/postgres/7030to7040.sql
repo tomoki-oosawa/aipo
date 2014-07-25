@@ -236,8 +236,8 @@ CREATE TABLE EIP_T_PROJECT (
     , PROGRESS_RATE      INTEGER                                    --進捗率
     , CREATE_USER_ID     INTEGER                        NOT NULL    --登録ユーザーID
     , UPDATE_USER_ID     INTEGER                        NOT NULL    --更新ユーザーID
-    , CREATE_DATE        TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
-    , UPDATE_DATE        TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , CREATE_DATE        TIMESTAMP                                                          --登録日
+    , UPDATE_DATE        TIMESTAMP                                                          --更新日
     , PRIMARY KEY (PROJECT_ID)
 );
 
@@ -274,8 +274,8 @@ CREATE TABLE EIP_T_PROJECT_TASK (
     , ORDER_NO               INTEGER                                    --表示順
     , CREATE_USER_ID         INTEGER                        NOT NULL    --登録ユーザーID
     , UPDATE_USER_ID         INTEGER                        NOT NULL    --更新ユーザーID
-    , CREATE_DATE            TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
-    , UPDATE_DATE            TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , CREATE_DATE            TIMESTAMP                                                          --登録日
+    , UPDATE_DATE            TIMESTAMP                                                          --更新日
     , PRIMARY KEY (TASK_ID)
 );
 
@@ -300,8 +300,8 @@ CREATE TABLE EIP_T_PROJECT_TASK_COMMENT (
     , TASK_ID               INTEGER                        NOT NULL    --タスクID
     , COMMENT               TEXT                           NOT NULL    --コメント
     , CREATE_USER_ID        INTEGER                        NOT NULL    --登録ユーザーID
-    , CREATE_DATE           TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --登録日
-    , UPDATE_DATE           TIMESTAMP WITHOUT TIME ZONE    NOT NULL    --更新日
+    , CREATE_DATE           TIMESTAMP                                                          --登録日
+    , UPDATE_DATE           TIMESTAMP                                                          --更新日
     , PRIMARY KEY (COMMENT_ID)
 );
 
@@ -313,11 +313,11 @@ CREATE TABLE EIP_T_PROJECT_FILE (
       FILE_ID           INTEGER                NOT NULL
     , OWNER_ID          INTEGER
     , PROJECT_ID        INTEGER
-    , FILE_NAME         CHARACTER VARYING(128) NOT NULL
+    , FILE_NAME         VARCHAR (128) NOT NULL
     , FILE_PATH         TEXT                   NOT NULL
     , FILE_THUMBNAIL    BYTEA
     , CREATE_DATE       DATE
-    , UPDATE_DATE       TIMESTAMP WITHOUT TIME ZONE
+    , UPDATE_DATE       TIMESTAMP
     , PRIMARY KEY (FILE_ID)
 );
 
@@ -329,11 +329,11 @@ CREATE TABLE EIP_T_PROJECT_TASK_FILE (
       FILE_ID         INTEGER                NOT NULL
     , OWNER_ID        INTEGER
     , TASK_ID         INTEGER
-    , FILE_NAME       CHARACTER VARYING(128) NOT NULL
+    , FILE_NAME       VARCHAR (128) NOT NULL
     , FILE_PATH       TEXT                   NOT NULL
     , FILE_THUMBNAIL  BYTEA
     , CREATE_DATE     DATE
-    , UPDATE_DATE     TIMESTAMP WITHOUT TIME ZONE
+    , UPDATE_DATE     TIMESTAMP
     , PRIMARY KEY (FILE_ID)
 );
 
@@ -345,11 +345,11 @@ CREATE TABLE EIP_T_PROJECT_TASK_COMMENT_FILE (
       FILE_ID         INTEGER                NOT NULL
     , OWNER_ID        INTEGER
     , COMMENT_ID      INTEGER
-    , FILE_NAME       CHARACTER VARYING(128) NOT NULL
+    , FILE_NAME       VARCHAR (128) NOT NULL
     , FILE_PATH       TEXT                   NOT NULL
     , FILE_THUMBNAIL  BYTEA
     , CREATE_DATE     DATE
-    , UPDATE_DATE     TIMESTAMP WITHOUT TIME ZONE
+    , UPDATE_DATE     TIMESTAMP
     , PRIMARY KEY (FILE_ID)
 );
 
@@ -361,8 +361,8 @@ CREATE TABLE EIP_M_PROJECT_KUBUN (
       PROJECT_KUBUN_ID     INTEGER                        NOT NULL    --区分ID
     , PROJECT_KUBUN_CD     TEXT                           NOT NULL    --区分コード
     , PROJECT_KUBUN_NAME   TEXT                           NOT NULL    --区分名
-    , CREATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --登録日
-    , UPDATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , CREATE_DATE          TIMESTAMP                --登録日
+    , UPDATE_DATE          TIMESTAMP                --更新日
     , PRIMARY KEY (PROJECT_KUBUN_ID)
 );
 
@@ -376,8 +376,8 @@ CREATE TABLE EIP_M_PROJECT_KUBUN_VALUE (
     , PROJECT_KUBUN_VALUE_CD  TEXT                           NOT NULL    --区分値コード
     , PROJECT_KUBUN_VALUE     TEXT                           NOT NULL    --区分値
     , ORDER_NO                INTEGER                        NOT NULL    --表示順
-    , CREATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --登録日
-    , UPDATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , CREATE_DATE             TIMESTAMP               --登録日
+    , UPDATE_DATE             TIMESTAMP                --更新日
     , PRIMARY KEY (PROJECT_KUBUN_VALUE_ID)
 );
 
@@ -389,10 +389,33 @@ CREATE SEQUENCE pk_eip_t_project_task_member INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_project_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_project_task_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_project_task_comment_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_project_kubun INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_project_kubun_value INCREMENT 20;
+
+ALTER SEQUENCE pk_eip_t_project OWNED BY EIP_T_PROJECT.PROJECT_ID;
+ALTER SEQUENCE pk_eip_t_project_task OWNED BY EIP_T_PROJECT_TASK.TASK_ID;
+ALTER SEQUENCE pk_eip_t_project_task_comment OWNED BY EIP_T_PROJECT_TASK_COMMENT.TASK_ID;
+ALTER SEQUENCE pk_eip_t_project_member OWNED BY EIP_T_PROJECT_TASK_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_project_task_member OWNED BY EIP_T_PROJECT_TASK_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_project_file OWNED BY EIP_T_PROJECT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_project_task_file OWNED BY EIP_T_PROJECT_TASK_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_project_task_comment_file OWNED BY EIP_T_PROJECT_TASK_COMMENT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_m_project_kubun OWNED BY EIP_M_PROJECT_KUBUN.PROJECT_KUBUN_ID;
+ALTER SEQUENCE pk_eip_m_project_kubun_value OWNED BY EIP_M_PROJECT_KUBUN_VALUE.PROJECT_KUBUN_VALUE_ID;
+
+CREATE INDEX eip_t_project_member_project_id_user_id_index ON EIP_T_PROJECT_MEMBER (PROJECT_ID, USER_ID);
+CREATE INDEX eip_t_project_task_project_id_index ON EIP_T_PROJECT_TASK (PROJECT_ID);
+CREATE INDEX eip_t_project_task_parent_task_id_index ON EIP_T_PROJECT_TASK (PARENT_TASK_ID);
+CREATE INDEX eip_t_project_task_member_task_id_user_id_index ON EIP_T_PROJECT_TASK_MEMBER (TASK_ID, USER_ID);
+CREATE INDEX eip_t_project_task_comment_task_id_index ON EIP_T_PROJECT_TASK_COMMENT (TASK_ID);
+CREATE INDEX eip_t_project_file_project_id_index ON EIP_T_PROJECT_FILE (PROJECT_ID);
+CREATE INDEX eip_t_project_task_file_task_id_index ON EIP_T_PROJECT_TASK_FILE (TASK_ID);
+CREATE INDEX eip_t_project_task_comment_file_comment_id_index ON EIP_T_PROJECT_TASK_COMMENT_FILE (COMMENT_ID);
 
 INSERT INTO EIP_M_PROJECT_KUBUN VALUES (1,'tracker','トラッカー', now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN VALUES (2,'status','ステータス', now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN VALUES (3,'priority','優先度', now(), now());
+SELECT setval('pk_eip_m_project_kubun',3);
 
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(1,1,'1','機能',1, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(2,1,'2','バグ',2, now(), now());
@@ -406,3 +429,4 @@ INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(9,2,'6','停止',6, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(10,3,'1','高',1, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(12,3,'3','低',3, now(), now());
+SELECT setval('pk_eip_m_project_kubun_value',12);
