@@ -569,7 +569,7 @@ public class ProjectTaskSimpleSelectData extends
     // コメントリスト
     data.setCommentList(ProjectUtils.getProjectTaskCommentList("" + taskId));
     // パンくずリスト
-    data.setTopicPath(ProjectUtils.getTaskTopicPath(taskId));
+    data.setTopicPath(ProjectUtils.getTaskTopicPath(record.getProjectId()));
     return data;
   }
 

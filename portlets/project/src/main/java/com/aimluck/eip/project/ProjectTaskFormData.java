@@ -669,9 +669,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
       // タスクを登録
       Database.commit();
 
-      // 親タスク情報を更新
-      ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
-
       // プロジェクト情報を更新
       ProjectFormUtils.updateProject(project.getProjectId(), loginUser
         .getUserId()
@@ -863,9 +860,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
       // タスクを更新
       Database.commit();
-
-      // 親タスク情報を更新
-      ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
 
       // プロジェクト情報を更新
       ProjectFormUtils.updateProject(project.getProjectId(), loginUser
