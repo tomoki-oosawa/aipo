@@ -135,7 +135,7 @@ aipo.project.onLoadProjectTaskDialog = function (portlet_id) {
  */
 aipo.project.changeGroup = function (link, group, sel, userId) {
   if (!userId) {
-    userId = "user_id";
+    userId = "admin_user_id";
   }
   aimluck.utils.form.createSelect(userId, "destuserDiv", link + "?mode=group&groupname=" + group + "&inc_luser=true", "userId", "aliasName", sel, '', 'class="w49"');
 }
