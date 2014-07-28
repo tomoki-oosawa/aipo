@@ -212,9 +212,6 @@ public class ProjectTaskProgressFormData extends ALAbstractFormData {
         task.setUpdateDate(new Date());
         Database.commit();
 
-        // 親タスク情報を更新
-        ProjectFormUtils.updateParentTaskDelegate(task.getParentTaskId());
-
         // プロジェクト情報を更新
         ProjectFormUtils.updateProject(task.getProjectId(), ALEipUtils
           .getUserId(rundata));

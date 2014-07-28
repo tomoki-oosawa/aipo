@@ -22,12 +22,9 @@
 
 package com.aimluck.eip.project.util;
 
-import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.cayenne.DataRow;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -47,108 +44,6 @@ public class ProjectFormUtils {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProjectFormUtils.class.getName());
-
-  public static void updateParentTaskDelegate(Integer taskId) {
-    updateParentTask(taskId);
-    Database.commit();
-  }
-
-  /**
-   * 子タスクの値から親タスクの値を再計算し更新する。
-   * 
-   * @param taskId
-   *          タスクID
-   * @return FALSE:失敗
-   */
-  private static boolean updateParentTask(Integer taskId) {
-
-    if (taskId == null) {
-      return false;
-    }
-
-    // オブジェクトモデルを取得
-    EipTProjectTask task = ProjectUtils.getEipTProjectTask("" + taskId);
-    if (task == null) {
-      return false;
-    }
-    // 進捗情報取得
-    List<DataRow> datarow = ProjectUtils.getChildTask(task.getTaskId());
-
-    // 進捗情報設定
-    if (datarow != null) {
-
-      DataRow row = datarow.get(0);
-      Object cnt = row.get("cnt");
-
-      if (cnt != null && Integer.valueOf(cnt.toString()) > 0) {
-        // 計算対象子タスクがある場合
-
-        // 実績進捗率
-        task.setProgressRate(Integer.valueOf(row.get("result_per").toString()));
-        // 計画工数
-        task
-          .setPlanWorkload(new BigDecimal(row.get("plan_workload").toString()));
-        // 開始予定日
-        Object startPlanDate = row.get("start_plan_date");
-        if (startPlanDate == null) {
-          task.setStartPlanDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setStartPlanDate((Date) startPlanDate);
-        }
-        // 完了予定日
-        Object endPlanDate = row.get("end_plan_date");
-        if (endPlanDate == null) {
-          task.setEndPlanDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setEndPlanDate((Date) endPlanDate);
-        }
-        // 開始実績日
-        Object startDate = row.get("start_date");
-        if (startDate == null) {
-          task.setStartDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setStartDate((Date) startDate);
-        }
-        // 完了実績日
-        Object endDate = row.get("end_date");
-        if (endDate == null) {
-          task.setEndDate(ProjectUtils.getEmptyDate());
-        } else {
-          task.setEndDate((Date) endDate);
-        }
-
-      } else {
-        task.setStartPlanDate(ProjectUtils.getEmptyDate());
-        task.setEndPlanDate(ProjectUtils.getEmptyDate());
-        task.setStartDate(ProjectUtils.getEmptyDate());
-        task.setEndDate(ProjectUtils.getEmptyDate());
-        task.setPlanWorkload(BigDecimal.valueOf(0));
-        task.setProgressRate(0);
-      }
-    }
-
-    // 担当者情報を削除
-    ProjectUtils.removeProjectTaskMember(task);
-
-    // 担当者情報取得
-    List<DataRow> memberRow = ProjectUtils.getChildTaskMember(taskId);
-
-    // 担当者設定
-    if (datarow != null) {
-      for (int i = 0; i < memberRow.size(); i++) {
-        DataRow member = memberRow.get(i);
-        EipTProjectTaskMember data =
-          Database.create(EipTProjectTaskMember.class);
-        data.setEipTProjectTask(task);
-        data.setUserId(Integer.valueOf(member.get("user_id").toString()));
-        data.setWorkload(new BigDecimal(member.get("workload").toString()));
-      }
-    }
-
-    Database.commit();
-    // 親タスクを更新する
-    return updateParentTask(task.getParentTaskId());
-  }
 
   /**
    * プロジェクトを更新する
