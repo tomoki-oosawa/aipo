@@ -197,7 +197,7 @@ CREATE TABLE `eip_t_project_task` (
   `end_plan_date` date DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `plan_workload` decimal(5,3) DEFAULT NULL,
+  `plan_workload` decimal(8,3) DEFAULT NULL,
   `progress_rate` int(11) DEFAULT NULL,
   `order_no` int(11) DEFAULT NULL,
   `create_user_id` int(11) NOT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE `eip_t_project_task_member` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `task_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `workload` decimal(5,3) NOT NULL,
+  `workload` decimal(8,3) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
