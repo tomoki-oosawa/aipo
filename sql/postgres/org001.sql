@@ -1630,7 +1630,7 @@ CREATE TABLE EIP_T_PROJECT_TASK (
     , END_PLAN_DATE          DATE                                       --完了予定日
     , START_DATE             DATE                                       --開始実績日
     , END_DATE               DATE                                       --完了実績日
-    , PLAN_WORKLOAD          DECIMAL(5,3)                               --計画工数（時間）
+    , PLAN_WORKLOAD          DECIMAL(8,3)                               --計画工数（時間）
     , PROGRESS_RATE          INTEGER                                    --進捗率
     , ORDER_NO               INTEGER                                    --表示順
     , CREATE_USER_ID         INTEGER                        NOT NULL    --登録ユーザーID
@@ -1651,7 +1651,7 @@ CREATE TABLE EIP_T_PROJECT_TASK_MEMBER (
       ID              INTEGER                NOT NULL    --ID
     , TASK_ID         INTEGER                NOT NULL    --タスクID
     , USER_ID         INTEGER                NOT NULL    --ユーザーID
-    , WORKLOAD        DECIMAL(5,3)           NOT NULL    --工数
+    , WORKLOAD        DECIMAL(8,3)           NOT NULL    --工数
     , PRIMARY KEY (ID)
 );
 
