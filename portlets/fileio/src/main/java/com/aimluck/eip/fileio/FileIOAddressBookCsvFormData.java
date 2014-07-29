@@ -354,6 +354,14 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     comp_fax_number2.setValue("");
     comp_fax_number3.setValue("");
     comp_fax_number_full.setValue("");
+
+    // 備考
+    note = new ALStringField();
+    note.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_SETFIELDNAME_NOTE"));
+    note.setTrim(true);
+    note.setValue("");
+
     setSameCompany(false);
     setIsCompanyOnly(false);
   }
@@ -564,6 +572,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     comp_fax_number2.setNotNull(true);
     comp_fax_number3.setNotNull(true);
 
+    // 備考
+    note.limitMaxLength(1000);
   }
 
   @Override
@@ -649,6 +659,10 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
     if (!position_name.validate(msgList)) {
       position_name.setValue(null);
+    }
+
+    if (!note.validate(msgList)) {
+      note.setValue(null);
     }
 
     // 会社情報入力時用
@@ -929,6 +943,9 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       }
       // 公開区分の設定
       address.setPublicFlag(public_flag.getValue());
+
+      // 備考
+      address.setNote(note.getValue());
 
       // オーナIDの設定
       address.setOwnerId(Integer.valueOf(uid));
@@ -1793,6 +1810,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       case 19:
         comp_url.setValue(token);
         break;
+      case 20:
+        note.setValue(token);
 
       default:
         break;
