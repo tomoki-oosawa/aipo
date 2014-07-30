@@ -1812,6 +1812,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         break;
       case 20:
         note.setValue(token);
+        break;
 
       default:
         break;
