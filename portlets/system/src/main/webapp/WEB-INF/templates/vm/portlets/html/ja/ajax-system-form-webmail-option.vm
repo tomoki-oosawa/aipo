@@ -54,7 +54,7 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 #ALtditemfooter()
 #else
 <input name="pc_flg_schedule" type="hidden" value="$result.PcFlgSchedule.toString()" id="pc_flg_schedule_id" >
-<input name="cell_flg_schedule" type="hidden" value="$result.PcFlgSchedule.toString()" id="cell_flg_schedule_id">
+<input name="cell_flg_schedule" type="hidden" value="$result.CellFlgSchedule.toString()" id="cell_flg_schedule_id">
 #end
 #if($result.isActiveMsgboard())
 #ALtdcaption($l10n.SYSTEM_REPLY_OTHERS)
