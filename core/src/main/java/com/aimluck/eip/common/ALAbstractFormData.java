@@ -245,6 +245,7 @@ public abstract class ALAbstractFormData implements ALData {
    * @return TRUE 成功 FALSE 失敗
    */
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
+    List<String> msgList = new ArrayList<String>();
     try {
       if (!doCheckSecurity(rundata, context)) {
         return false;
@@ -262,7 +263,6 @@ public abstract class ALAbstractFormData implements ALData {
       rundata.getParameters().add(
         ALEipConstants.MODE,
         ALEipConstants.MODE_UPDATE);
-      List<String> msgList = new ArrayList<String>();
       setValidator();
 
       boolean res = false;
@@ -298,7 +298,9 @@ public abstract class ALAbstractFormData implements ALData {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
     } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
+      action.addErrorMessages(msgList);
+      action.putData(rundata, context);
       return false;
     }
   }
