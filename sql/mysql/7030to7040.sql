@@ -311,3 +311,7 @@ INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, 
 INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(10,3,'1','高',1);
 INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(11,3,'2','中',2);
 INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, project_kubun_value_cd, project_kubun_value, order_no) VALUES(12,3,'3','低',3);
+
+-- 20140801
+CREATE INDEX eip_t_schedule_date_index ON eip_t_schedule(`start_date`, `end_date`, `update_date`);
+-- 20140801

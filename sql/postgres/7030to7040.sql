@@ -430,3 +430,8 @@ INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(10,3,'1','高',1, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(12,3,'3','低',3, now(), now());
 SELECT setval('pk_eip_m_project_kubun_value',12);
+
+-- 20140801
+CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
+-- 20140801
+
