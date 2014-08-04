@@ -347,8 +347,17 @@ public class ProjectTaskFormData extends ALAbstractFormData {
               if (workload[i] != null && workload[i].length() > 0) {
                 w = new BigDecimal(workload[i]);
               }
+
+              if (w.compareTo(BigDecimal.valueOf(0)) < 0) {
+                msgList.add(getl10n("PROJECT_VALIDATE_WORKLOAD"));
+              } else if (w.precision() - w.scale() > 5) {
+                msgList
+                  .add(getl10n("PROJECT_VALIDATE_WORKLOAD_RATIONAL_INTEGER"));
+              } else if (w.scale() > 3) {
+                msgList.add(getl10n("PROJECT_VALIDATE_WORKLOAD_DECIMAL"));
+              }
             } catch (Exception e) {
-              msgList.add(getl10n("PROJECT_VALIDATE_WORKLOAD"));
+              msgList.add(getl10n("PROJECT_VALIDATE_WORKLOAD_INTEGER"));
             }
 
             ProjectTaskMemberResultData member =
@@ -469,6 +478,11 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         }
         if (plan_workload.compareTo(BigDecimal.valueOf(0)) < 0) {
           msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD"));
+        } else if (plan_workload.precision() - plan_workload.scale() > 5) {
+          msgList
+            .add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD_RATIONAL_INTEGER"));
+        } else if (plan_workload.scale() > 3) {
+          msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD_DECIMAL"));
         }
       } catch (Exception e) {
         msgList.add(getl10n("PROJECT_VALIDATE_PLAN_WORKLOAD_INTEGER"));
