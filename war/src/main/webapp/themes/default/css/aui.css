@@ -515,15 +515,15 @@ h1, h2, h3, h4, h5, h6, p, span {
 --------------------------------------------------*/
 .auiPortlet {
   background: white;
-  background: white url("../images/common/portlet_20140116.gif") repeat-x left bottom;
+  background: white url("../images/common/portlet_20140116.png") repeat-x left bottom;
   margin: 10px 5px;
 }
 .auiPortlet .auiPortletHead {
   border-bottom: solid 1px #ededed;
-  background: url("../images/common/portlet_20140116.gif") repeat-x left top;
+  background: url("../images/common/portlet_20140116.png") repeat-x left top;
 }
 .auiPortlet .auiPortletHead .inner {
-  background: url("../images/common/portlet_20140116.gif") no-repeat left -100px;
+  background: url("../images/common/portlet_20140116.png") no-repeat left -100px;
   padding: 9px 10px;
   position: relative;
   overflow: hidden;
@@ -536,7 +536,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   white-space: nowrap;
 }
 .auiPortlet .auiPortletTool {
-  background: url("../images/common/portlet_20140116.gif") no-repeat right -200px;
+  background: url("../images/common/portlet_20140116.png") no-repeat right -200px;
   top: 0;
   right: 0;
   float: right;
@@ -588,11 +588,11 @@ h1, h2, h3, h4, h5, h6, p, span {
   visibility: hidden;
 }
 .auiPortlet .auiPortletFoot {
-  background: url("../images/common/portlet_20140116.gif") no-repeat left -390px;
+  background: url("../images/common/portlet_20140116.png") no-repeat left -390px;
 }
 .auiPortlet .auiPortletFoot .inner {
   height: 10px;
-  background: url("../images/common/portlet_20140116.gif") no-repeat right -490px;
+  background: url("../images/common/portlet_20140116.png") no-repeat right -490px;
 }
 .auiPortlet .auiPortletBody .auiPortletFoot .inner {
   padding: 0 !important;
