@@ -28,7 +28,7 @@
         <security-ref parent="user-view"/>
         <meta-info>
             <title>プロジェクト管理</title>
-            <description>プロジェクトの進捗などを管理します。進捗をガントチャートで閲覧できます。</description>
+            <description>プロジェクトの進捗管理ができます。複数のプロジェクトを管理でき、タスクごとの進捗状況をガントチャートで閲覧することもできます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="project" hidden="true" cachedOnName="true" cachedOnValue="true"/>
