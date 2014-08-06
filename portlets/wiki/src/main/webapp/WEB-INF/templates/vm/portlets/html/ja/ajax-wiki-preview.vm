@@ -21,17 +21,4 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 
-#ALdialogheader($l10n.WIKI_EDITION_PREVIEW)
-#ALajaxdetailformheader("wikiPreview")
-
-<div class="auiWikiContent">
 $!result.getTempWikiNote()
-</div>
-
-	#ALbuttonheader()
-		#AUIajaxbuttonLink("$l10n.WIKI_BACK" "$!jslink.getPortletById($portlet.ID).addQueryData('template','WikiFormScreen').addQueryData('entityid',$!result.Detail.getId()).addQueryData('note',$!result.getTempNote())")
-		##ALajaxbuttonClose()
-    #ALbuttonfooter()
-#ALformfooter()
-
-#ALdialogfooter()

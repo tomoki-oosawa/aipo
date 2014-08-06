@@ -501,9 +501,14 @@ aipo.wiki.image = function () {
 }
 
 aipo.wiki.showPreviewDialog = function(url){
+	var target=dojo.byId("wikiPreview");
+	target.style.display = "block";
+
 	var note = dojo.byId("wiki_note").value;
 	url+="&note="+encodeURIComponent(note);
-	aipo.common.showDialog(url);
+
+	var outerHTML=false;
+	aipo.asyncLoad(target, url, outerHTML);
 }
 
 
