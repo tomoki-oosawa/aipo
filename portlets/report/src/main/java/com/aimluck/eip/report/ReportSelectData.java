@@ -21,7 +21,11 @@ package com.aimluck.eip.report;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -38,10 +42,13 @@ import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMemberMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -62,7 +69,7 @@ import com.aimluck.eip.util.ALEipUtils;
  * 
  */
 public class ReportSelectData extends
-    ALAbstractSelectData<EipTReport, EipTReport> implements ALData {
+    ALAbstractMultiFilterSelectData<EipTReport, EipTReport> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -76,6 +83,9 @@ public class ReportSelectData extends
 
   /** サブメニュー（全て） */
   public static final String SUBMENU_ALL = "all";
+
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
 
   /** 親レポートオブジェクト */
   private Object parentReport;
@@ -186,6 +196,9 @@ public class ReportSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
     // hasAuthorityOther = true;
     showReplyForm = true;
     target_keyword = new ALStringField();
@@ -223,6 +236,54 @@ public class ReportSelectData extends
       logger.error("report", ex);
       return null;
     }
+  }
+
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  @Override
+  protected SelectQuery<EipTReport> buildSelectQueryForFilter(
+      SelectQuery<EipTReport> query, RunData rundata, Context context) {
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTReport.USER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+    }
+    return query;
   }
 
   /**
@@ -670,6 +731,23 @@ public class ReportSelectData extends
 
   public Object getParentReport() {
     return parentReport;
+  }
+
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
   }
 
   /**
